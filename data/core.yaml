@@ -365,6 +365,7 @@ en:
   feature_info:
     hidden_warning: "{count} hidden features"
     hidden_details: "These features are currently hidden: {details}"
+  fb_road_license: Facebook Road Service License
   status:
     error: Unable to connect to API.
     offline: The API is offline. Please try editing later.

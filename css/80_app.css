@@ -4293,6 +4293,11 @@ img.tile-debug {
     color: #ccf;
 }
 
+.fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
+
 /* Notification Badges
 ------------------------------------------------------- */
 /* For an icon (e.g. new version) */
