@@ -547,6 +547,7 @@ en:
       osm:
         tooltip: Map data from OpenStreetMap
         title: OpenStreetMap data
+        key: U
       notes:
         tooltip: Note data from OpenStreetMap
         title: OpenStreetMap notes
@@ -1688,6 +1689,7 @@ en:
         background: "Show background options"
         background_switch: "Switch back to last background"
         map_data: "Show map data options"
+        osm_data_layer: "Toggle OSM map data layer"
         fullscreen: "Enter full screen mode"
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"

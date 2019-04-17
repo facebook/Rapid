@@ -116,6 +116,11 @@ export function uiMapData(context) {
     }
 
 
+    function toggleOSMDataLayer() {
+        toggleLayer('osm');
+    }
+
+
     function drawPhotoItems(selection) {
         var photoKeys = context.photos().overlayLayerIDs();
         var photoLayers = layers.all().filter(function(obj) { return photoKeys.indexOf(obj.id) !== -1; });
@@ -283,7 +288,11 @@ export function uiMapData(context) {
             .each(function(d) {
                 d3_select(this)
                     .call(tooltip()
-                        .title(t('map_data.layers.' + d.id + '.tooltip'))
+                        .html(true)
+                        .title(uiTooltipHtml(
+                            t('map_data.layers.' + d.id + '.tooltip'),
+                            d.id === 'osm' ? t('map_data.layers.osm.key') : null
+                        ))
                         .placement('bottom')
                     );
             });
@@ -855,6 +864,7 @@ export function uiMapData(context) {
 
         context.keybinding()
             .on(key, uiMapData.togglePane)
+            .on(t('map_data.layers.osm.key'), toggleOSMDataLayer)
             .on(t('area_fill.wireframe.key'), toggleWireframe);
     };
 
