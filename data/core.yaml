@@ -1346,6 +1346,11 @@ en:
       title: Unknown Roads
       message: "{feature} has no classification"
       tip: "Roads without a specific type may not appear in maps or routing."
+    dupe_node_on_road:
+      title: Very close nodes on road
+      message: "Very close nodes on road"
+      tip_merge: "Nodes are less than 2 meters away; you may want to merge them."
+      tip_move_away: "Nodes are less than 2 meters away but not mergable; you may want to move them further apart."
     fix:
       connect_almost_junction:
         annotation: Connected very close features.
@@ -1407,6 +1412,8 @@ en:
         title: Use different levels
       use_tunnel:
         title: Use a tunnel
+      merge_nodes:
+        title: Merge these nodes
   intro:
     done: done
     ok: OK
