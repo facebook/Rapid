@@ -282,6 +282,10 @@ export function uiFieldCombo(field, context) {
 
     function removeMultikey(d) {
         d3_event.stopPropagation();
+
+        // don't move source=digitalglobe on ML road
+        // TODO: switch to check on __fbid__
+        if (field.key === 'source' && _entity && _entity.id.startsWith('w-') && d.value === 'digitalglobe') return;
         var t = {};
         if (isMulti) {
             t[d.key] = undefined;
@@ -448,7 +452,11 @@ export function uiFieldCombo(field, context) {
             chips.select('a')
                 .on('click', removeMultikey)
                 .attr('class', 'remove')
-                .text('×');
+                .text(function(d) {
+                    // don't show 'x' on the digitalglobe label on ML road
+                    // TODO: switch to check on __fbid__
+                    return _entity && _entity.id.startsWith('w-') && field.key === 'source' && d.value === 'digitalglobe' ? '' : '×';
+                });
 
         } else {
             utilGetSetValue(input, displayValue(tags[field.key]));
