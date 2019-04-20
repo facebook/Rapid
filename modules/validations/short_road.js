@@ -1,0 +1,108 @@
+import { geoSphericalDistance } from '../geo';
+import { modeDrawLine } from '../modes';
+import { operationDelete } from '../operations/index';
+import { t } from '../util/locale';
+import { utilDisplayLabel } from '../util';
+import { validationIssue, validationIssueFix } from '../core/validator';
+
+
+export function validationShortRoad() {
+    var type = 'short_road';
+
+    // Thresholds for number of nodes and total length for a short road. A road
+    // is considered as "short" only if it has less than 7 nodes and is shorter
+    // than 20 meters.
+    var SHORT_WAY_NODES_THD = 7;
+    var SHORT_WAY_LENGTH_THD_METERS = 20;
+
+
+    function wayLength(way, graph) {
+        var length = 0;
+        for (var i = 0; i < way.nodes.length - 1; i++) {
+            var n1 = graph.entity(way.nodes[i]),
+                n2 = graph.entity(way.nodes[i + 1]);
+            length += geoSphericalDistance(n1.loc, n2.loc);
+        }
+        return length;
+    }
+
+    function continueDrawing(way, vertex, context) {
+        // make sure the vertex is actually visible and editable
+        var map = context.map();
+        if (!map.editable() || !map.trimmedExtent().contains(vertex.loc)) {
+            map.zoomToEase(vertex);
+        }
+
+        context.enter(
+            modeDrawLine(context, way.id, context.graph(), context.graph(), '', way.affix(vertex.id), true)
+        );
+    }
+
+
+    var validation = function(entity, context) {
+        if (entity.type !== 'way' || !entity.tags.highway || entity.isClosed() || entity.nodes.length >= SHORT_WAY_NODES_THD) return [];
+
+        var graph = context.graph(),
+            firstNode = graph.entity(entity.first()),
+            lastNode = graph.entity(entity.last()),
+            pwaysStart = graph.parentWays(firstNode),
+            pwaysEnd = graph.parentWays(lastNode),
+            firstNodeOK = pwaysStart.length > 1 || firstNode.tags.noexit === 'yes',
+            lastNodeOK = pwaysEnd.length > 1 || lastNode.tags.noexit === 'yes';
+        // only do check on roads with open ends
+        if ((firstNodeOK && lastNodeOK) || wayLength(entity, graph) >= SHORT_WAY_LENGTH_THD_METERS) return [];
+
+        var entityLabel = utilDisplayLabel(entity, context);
+        var fixes = [];
+        if (!firstNodeOK) {
+            fixes.push(new validationIssueFix({
+                icon: 'iD-operation-continue-left',
+                title: t('issues.fix.continue_from_start.title'),
+                entityIds: [entity.first()],
+                onClick: function() {
+                    var vertex = context.entity(entity.first());
+                    continueDrawing(entity, vertex, context);
+                }
+            }));
+        }
+        if (!lastNodeOK) {
+            fixes.push(new validationIssueFix({
+                icon: 'iD-operation-continue',
+                title: t('issues.fix.continue_from_end.title'),
+                entityIds: [entity.last()],
+                onClick: function() {
+                    var vertex = context.entity(entity.last());
+                    continueDrawing(entity, vertex, context);
+                }
+            }));
+        }
+        if (!operationDelete([entity.id], context).disabled()) {
+            fixes.push(new validationIssueFix({
+                icon: 'iD-operation-delete',
+                title: t('issues.fix.delete_feature.title'),
+                entityIds: [entity.id],
+                onClick: function() {
+                    var id = this.issue.entities[0].id;
+                    var operation = operationDelete([id], context);
+                    if (!operation.disabled()) {
+                        operation();
+                    }
+                }
+            }));
+        }
+
+        return [new validationIssue({
+            type: type,
+            severity: 'warning',
+            message: t('issues.short_road.message', { highway: entityLabel }),
+            tooltip: t('issues.short_road.tip'),
+            entities: [entity],
+            fixes: fixes
+        })];
+    };
+
+
+    validation.type = type;
+
+    return validation;
+}

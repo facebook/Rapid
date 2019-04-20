@@ -1586,6 +1586,11 @@
                     "tip": "Highways should connect to other highways or building entrances."
                 }
             },
+            "short_road": {
+                "title": "Short road",
+                "message": "{highway} is shorter than 20 meters.",
+                "tip": "You may want to consider deleting or extending it."
+            },
             "generic_name": {
                 "title": "Generic Names",
                 "message": "{feature} has the generic name \"{name}\"",
