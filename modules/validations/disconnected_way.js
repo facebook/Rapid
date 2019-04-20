@@ -70,13 +70,42 @@ export function validationDisconnectedWay() {
         });
     }
 
+    // check if entity is a new road that cannot eventually connect to any
+    // existing roads
+    function isNewRoadUnreachableFromExistingRoads(entity, graph) {
+        if (!entity.id.startsWith('w-') || !isTaggedAsHighway(entity)) return false;
+
+        var visitedWids = new Set();
+        return !connectToExistingRoadOrEntrance(entity, graph, visitedWids);
+    }
+
+    function connectToExistingRoadOrEntrance(way, graph, visitedWids) {
+        visitedWids.add(way.id);
+        for (var i = 0; i < way.nodes.length; i++) {
+            var vertex = graph.entity(way.nodes[i]);
+            if (vertex.tags.entrance && vertex.tags.entrance !== 'no') return true;
+
+            var parentWays = graph.parentWays(vertex);
+            for (var j = 0; j < parentWays.length; j++) {
+                var parentWay = parentWays[j];
+                if (visitedWids.has(parentWay.id)) continue;
+                if (isTaggedAsHighway(parentWay) && !parentWay.id.startsWith('w-')) return true;
+                if (connectToExistingRoadOrEntrance(parentWay, graph, visitedWids)) return true;
+            }
+        }
+        return false;
+    }
 
     var validation = function(entity, context) {
         var graph = context.graph();
 
         if (!isTaggedAsHighway(entity)) return [];
 
-        if (!isDisconnectedWay(entity, graph) && !isDisconnectedMultipolygon(entity, graph)) return [];
+        if (!isDisconnectedWay(entity, graph) && !isDisconnectedMultipolygon(entity, graph) &&
+            !isNewRoadUnreachableFromExistingRoads(entity, graph)) {
+            return [];
+        }
+
 
         var entityLabel = utilDisplayLabel(entity, context);
         var fixes = [];
@@ -89,7 +118,8 @@ export function validationDisconnectedWay() {
                     title: t('issues.fix.continue_from_start.title'),
                     entityIds: [entity.first()],
                     onClick: function() {
-                        var vertex = context.entity(entity.first());
+                        var ent = this.issue.entities[0];
+                        var vertex = context.entity(ent.first());
                         continueDrawing(entity, vertex, context);
                     }
                 }));
@@ -101,7 +131,8 @@ export function validationDisconnectedWay() {
                     title: t('issues.fix.continue_from_end.title'),
                     entityIds: [entity.last()],
                     onClick: function() {
-                        var vertex = context.entity(entity.last());
+                        var ent = this.issue.entities[0];
+                        var vertex = context.entity(ent.last());
                         continueDrawing(entity, vertex, context);
                     }
                 }));
@@ -126,8 +157,14 @@ export function validationDisconnectedWay() {
         return [new validationIssue({
             type: type,
             severity: 'warning',
-            message: t('issues.disconnected_way.highway.message', { highway: entityLabel }),
-            tooltip: t('issues.disconnected_way.highway.tip'),
+            message: (entity.id.startsWith('w-')
+                ? t('issues.disconnected_way.highway.message_new_road', { highway: entityLabel })
+                : t('issues.disconnected_way.highway.message', { highway: entityLabel })
+            ),
+            tooltip: (entity.id.startsWith('w-')
+                ? t('issues.disconnected_way.highway.tip_new_road')
+                : t('issues.disconnected_way.highway.tip')
+            ),
             entities: [entity],
             fixes: fixes
         })];
@@ -141,7 +178,7 @@ export function validationDisconnectedWay() {
             }
 
             context.enter(
-                modeDrawLine(context, way.id, context.graph(), context.graph(), way.affix(vertex.id), true)
+                modeDrawLine(context, way.id, context.graph(), context.graph(), '', way.affix(vertex.id), true)
             );
         }
     };
