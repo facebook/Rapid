@@ -125,6 +125,9 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
+            } else if (datum && datum.__fbid__) {   // hovering on FB road data
+                // no-op
+
             } else if (datum instanceof osmNote) {
                 if (context.mode().id === 'drag-note') return;
                 _wasNote = true;

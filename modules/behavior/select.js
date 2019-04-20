@@ -123,7 +123,10 @@ export function behaviorSelect(context) {
             datum = datum.parents[0];
         }
 
-        if (datum instanceof osmEntity) {    // clicked an entity..
+        if (datum && datum.__fbid__) {    // clicked an FB road ..
+            // no-op
+
+        } else if (datum instanceof osmEntity) {    // clicked an entity..
             var selectedIDs = context.selectedIDs();
             context.selectedNoteID(null);
             context.selectedErrorID(null);

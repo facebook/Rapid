@@ -1,0 +1,72 @@
+.mode-browse .layer-fb-roads .line,
+.mode-select .layer-fb-roads .line,
+.mode-browse .layer-fb-roads .vertex,
+.mode-select .layer-fb-roads .vertex {
+    cursor: pointer;
+    cursor: url(img/cursor-select-line.png), pointer;
+}
+
+/* Road Lines */
+
+.layer-fb-roads path.stroke {
+    stroke: #ff26d4;
+    stroke-width: 5;
+    fill: none;
+}
+.layer-fb-roads path.casing {
+    stroke: #f0f;
+    stroke-width: 7;
+    stroke-opacity: 0;
+    fill: none;
+}
+.layer-fb-roads path.shadow {
+    pointer-events: stroke;
+    stroke: #fff;
+    stroke-width: 20;
+    stroke-opacity: 0;
+    fill: none;
+}
+
+.low-zoom .layer-fb-roads path.stroke {
+    stroke-width: 3;
+}
+.low-zoom .layer-fb-roads path.casing {
+    stroke-width: 5;
+}
+.low-zoom .layer-fb-roads path.shadow {
+    stroke-width: 15;
+}
+
+.layer-fb-roads path.casing.hover:not(.selected) {
+    stroke-opacity: 1;
+}
+.layer-fb-roads path.shadow.hover:not(.selected) {
+    stroke-opacity: 0.4;
+}
+.layer-fb-roads path.shadow.selected {
+    stroke-opacity: 0.7;
+}
+
+/* Road Vertices */
+
+.layer-fb-roads g.vertex .fill {
+    fill: #fff;
+}
+.layer-fb-roads g.vertex .stroke {
+    stroke: #ff26d4;
+    stroke-width: 3;
+    fill: #fff;
+}
+.layer-fb-roads g.vertex .shadow {
+    pointer-events: fill;
+    fill: currentColor;
+    fill-opacity: 0;
+}
+
+.low-zoom .layer-fb-roads g.vertex .stroke {
+    stroke-width: 2;
+}
+
+.layer-fb-roads g.vertex.hover:not(.selected) .shadow {
+    fill-opacity: 0;
+}

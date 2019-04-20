@@ -1,3 +1,4 @@
+import serviceFbMLRoads from './fb_ml_roads';
 import serviceKeepRight from './keepRight';
 import serviceImproveOSM from './improveOSM';
 import serviceMapillary from './mapillary';
@@ -14,6 +15,7 @@ import serviceWikipedia from './wikipedia';
 
 
 export var services = {
+    fbMLRoads: serviceFbMLRoads,
     geocoder: serviceNominatim,
     keepRight: serviceKeepRight,
     improveOSM: serviceImproveOSM,
@@ -30,6 +32,7 @@ export var services = {
 };
 
 export {
+    serviceFbMLRoads,
     serviceKeepRight,
     serviceImproveOSM,
     serviceMapillary,

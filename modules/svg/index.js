@@ -2,6 +2,7 @@ export { svgAreas } from './areas.js';
 export { svgData } from './data.js';
 export { svgDebug } from './debug.js';
 export { svgDefs } from './defs.js';
+export { svgFbRoads } from './fb_roads.js';
 export { svgKeepRight } from './keepRight';
 export { svgIcon } from './icon.js';
 export { svgGeolocate } from './geolocate';

@@ -131,6 +131,10 @@ export function behaviorHover(context) {
                 entity = datum;
                 selector = '.data' + datum.__featurehash__;
 
+            } else if (datum && datum.__fbid__) {
+                entity = datum;
+                selector = '.data' + datum.__fbid__;
+
             } else if (datum instanceof qaError) {
                 entity = datum;
                 selector = '.' + datum.service + '.error_id-' + datum.id;

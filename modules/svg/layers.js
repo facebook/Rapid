@@ -3,6 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { svgData } from './data';
 import { svgDebug } from './debug';
+import { svgFbRoads } from './fb_roads';
 import { svgGeolocate } from './geolocate';
 import { svgKeepRight } from './keepRight';
 import { svgImproveOSM } from './improveOSM';
@@ -32,7 +33,8 @@ export function svgLayers(projection, context) {
         { id: 'openstreetcam', layer: svgOpenstreetcamImages(projection, context, dispatch) },
         { id: 'debug', layer: svgDebug(projection, context, dispatch) },
         { id: 'geolocate', layer: svgGeolocate(projection, context, dispatch) },
-        { id: 'touch', layer: svgTouch(projection, context, dispatch) }
+        { id: 'touch', layer: svgTouch(projection, context, dispatch) },
+        { id: 'fb-roads', layer: svgFbRoads(projection, context, dispatch) }
     ];
 
 
