@@ -33,6 +33,7 @@ export function svgLines(projection, context) {
         var nopeClass = context.getDebug('target') ? 'red ' : 'nocolor ';
         var getPath = svgPath(projection).geojson;
         var activeID = context.activeID();
+        var base = context.history().base();
 
         // The targets and nopes will be MultiLineString sub-segments of the ways
         var data = { targets: [], nopes: [] };
@@ -54,13 +55,20 @@ export function svgLines(projection, context) {
         targets.exit()
             .remove();
 
+        var editClass = function(d) {
+            return d.properties.nodes.some(function(n) {
+                return graph.entities[n.id] !== base.entities[n.id];
+            }) ? ' edited ': '';
+        };
+
         // enter/update
         targets.enter()
             .append('path')
             .merge(targets)
             .attr('d', getPath)
-            .attr('class', function(d) { return 'way line target target-allowed ' + targetClass + d.id; });
-
+            .attr('class', function(d) {
+                return 'way line target target-allowed ' + targetClass + d.id + editClass(d);
+            });
 
         // NOPE
         var nopeData = data.nopes.filter(getPath);
