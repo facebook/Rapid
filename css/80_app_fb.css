@@ -1,0 +1,18 @@
+svg.logo-rapid {
+    fill: #333;
+    color: #ff26d4;
+}
+
+/* Toolbar button */
+
+button.fb-roads-toggle svg.logo-rapid {
+    width: 46px;
+    height: 22px;
+}
+button.fb-roads-toggle.disabled {
+    cursor: pointer;
+}
+button.fb-roads-toggle.disabled use {
+    fill: rgba(0,0,0,.4);
+    color: rgba(0,0,0,.4);
+}

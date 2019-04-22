@@ -15,7 +15,8 @@
             "undo_redo": "Undo / Redo",
             "recent": "Recent",
             "favorites": "Favorites",
-            "add_feature": "Add Feature"
+            "add_feature": "Add Feature",
+            "fb_roads": "Assist"
         },
         "modes": {
             "add_feature": {
@@ -683,6 +684,11 @@
                     "tooltip": "Drag and drop a data file onto the page, or click the button to setup",
                     "title": "Custom Map Data",
                     "zoom": "Zoom to data"
+                },
+                "fb-roads": {
+                    "tooltip": "AI-assisted roads from Facebook",
+                    "title": "AI-assisted roads data",
+                    "key": "R"
                 }
             },
             "fill_area": "Fill Areas",
@@ -2079,6 +2085,7 @@
                     "background_switch": "Switch back to last background",
                     "map_data": "Show map data options",
                     "osm_data_layer": "Toggle OSM map data layer",
+                    "fb_roads_data": "Toggle AI-assisted roads data",
                     "fullscreen": "Enter full screen mode",
                     "sidebar": "Toggle sidebar",
                     "wireframe": "Toggle wireframe mode",

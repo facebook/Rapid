@@ -9,6 +9,7 @@ import { tooltip } from '../util/tooltip';
 import { geoExtent } from '../geo';
 import { modeBrowse } from '../modes';
 import { uiBackground } from './background';
+import { uiCmd } from './cmd';
 import { uiDisclosure } from './disclosure';
 import { uiHelp } from './help';
 import { uiIssues } from './issues';
@@ -18,6 +19,7 @@ import { uiTooltipHtml } from './tooltipHtml';
 
 export function uiMapData(context) {
     var key = t('map_data.key');
+    var fbRoadsDataToggleKey = uiCmd('⌥' + t('map_data.layers.fb-roads.key'));
     var features = context.features().keys();
     var layers = context.layers();
     var fills = ['wireframe', 'partial', 'full'];
@@ -109,7 +111,7 @@ export function uiMapData(context) {
         if (layer) {
             layer.enabled(enabled);
 
-            if (!enabled && (which === 'osm' || which === 'notes')) {
+            if (!enabled && (which === 'osm' || which === 'notes' || which === 'fb-roads')) {
                 context.enter(modeBrowse(context));
             }
 
@@ -352,6 +354,61 @@ export function uiMapData(context) {
                 d3_select(this)
                     .call(tooltip()
                         .title(t('map_data.layers.' + d.id + '.tooltip'))
+                        .placement('bottom')
+                    );
+            });
+
+        labelEnter
+            .append('input')
+            .attr('type', 'checkbox')
+            .on('change', function(d) { toggleLayer(d.id); });
+
+        labelEnter
+            .append('span')
+            .text(function(d) { return t('map_data.layers.' + d.id + '.title'); });
+
+
+        // Update
+        li
+            .merge(liEnter)
+            .classed('active', function (d) { return d.layer.enabled(); })
+            .selectAll('input')
+            .property('checked', function (d) { return d.layer.enabled(); });
+    }
+
+
+    function drawFbRoadsItems(selection) {
+        var fbRoadsKeys = ['fb-roads'];
+        var fbRoadsLayers = layers.all().filter(function(obj) { return fbRoadsKeys.indexOf(obj.id) !== -1; });
+
+        var ul = selection
+            .selectAll('.layer-list-fb-roads')
+            .data([0]);
+
+        ul = ul.enter()
+            .append('ul')
+            .attr('class', 'layer-list layer-list-fb-roads')
+            .merge(ul);
+
+        var li = ul.selectAll('.list-item')
+            .data(fbRoadsLayers);
+
+        li.exit()
+            .remove();
+
+        var liEnter = li.enter()
+            .append('li')
+            .attr('class', function(d) { return 'list-item list-item-' + d.id; });
+
+        var labelEnter = liEnter
+            .append('label')
+            .each(function(d) {
+                d3_select(this)
+                    .call(tooltip()
+                        .html(true)
+                        .title(uiTooltipHtml(
+                            t('map_data.layers.' + d.id + '.tooltip'),
+                            fbRoadsDataToggleKey))
                         .placement('bottom')
                     );
             });
@@ -691,6 +748,7 @@ export function uiMapData(context) {
     function updateDataLayers() {
         _dataLayerContainer
             .call(drawOsmItems)
+            .call(drawFbRoadsItems)
             .call(drawQAItems)
             .call(drawCustomDataItems)
             .call(drawVectorItems);      // Beta - Detroit mapping challenge
@@ -872,6 +930,11 @@ export function uiMapData(context) {
         context.keybinding()
             .on(key, uiMapData.togglePane)
             .on(t('map_data.layers.osm.key'), toggleOSMDataLayer)
+            .on(fbRoadsDataToggleKey, function () {
+                d3_event.preventDefault();
+                d3_event.stopPropagation();
+                toggleLayer('fb-roads');
+            })
             .on(t('area_fill.wireframe.key'), toggleWireframe)
             .on(t('map_data.highlight_way_edits.key'), toggleHighlightEdited);
     };
