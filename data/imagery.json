@@ -12336,6 +12336,30 @@
       "overlay": true
     },
     {
+      "id": "DigitalGlobe-FB",
+      "name": "DigitalGlobe Imagery for AI Road Detection",
+      "type": "tms",
+      "template": "https://www.facebook.com/maps/ml_roads?theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A&result_type=satellite_raster_tile&x={x}&y={y}&z={zoom}",
+      "zoomExtent": [11, 22],
+      "terms_url": "https://wiki.openstreetmap.org/w/images/c/cf/FacebookRoadMaskLicense.pdf",
+      "terms_text": "Terms",
+      "default": true,
+      "description": "DigitalGlobe +Vivid used for Facebook road detection."
+    },
+    {
+      "id": "fb_road_mask",
+      "name": "Facebook ML Road Mask",
+      "type": "tms",
+      "template": "https://www.facebook.com/maps/ml_roads?theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A&result_type=mask_raster_tile&x={x}&y={y}&z={zoom}",
+      "zoomExtent": [15, 22],
+      "overzoom": true,
+      "terms_url": "https://wiki.openstreetmap.org/w/images/c/cf/FacebookRoadMaskLicense.pdf",
+      "terms_text": "Terms",
+      "default": false,
+      "description": "Shows Facebook ML road prediction in raster tiles.",
+      "overlay": true
+    },
+    {
       "id": "DigitalGlobe-Premium",
       "name": "DigitalGlobe Premium Imagery",
       "type": "tms",
