@@ -12,3 +12,4 @@ export { operationRotate } from './rotate';
 export { operationSplit } from './split';
 export { operationStraighten } from './straighten';
 export { operationDetachNode } from './detach_node';
+export { operationCycleHighwayTag } from './cycle_highway_tag';

@@ -396,6 +396,13 @@
                 "annotation": "Detached a node from parent lines/areas.",
                 "restriction": "This node can't be detached because it would damage a \"{relation}\" relation.",
                 "connected_to_hidden": "This node can't be detached because it is connected to a hidden feature."
+            },
+            "cycle_highway_tag": {
+                "title": "Cycle Highway Tag",
+                "key": "J",
+                "description": "Shortcut to cycle selected highway through several different tags.",
+                "annotation": "Changed highway tag of selected way.",
+                "restriction": "This operation is only permitted for highways."
             }
         },
         "restriction": {
@@ -2142,7 +2149,8 @@
                     "circularize": "Circularize a closed line or area",
                     "reflect_long": "Reflect features across the longer axis",
                     "reflect_short": "Reflect features across the shorter axis",
-                    "delete": "Delete selected features"
+                    "delete": "Delete selected features",
+                    "cycle_highway_tag": "Change selected road type"
                 },
                 "commands": {
                     "title": "Commands",
