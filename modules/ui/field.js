@@ -26,10 +26,10 @@ export function uiField(context, presetField, entity, options) {
     // Don't show the remove and revert buttons for the "Sources" field on a
     // ML road with source=digitalglobe
     // TODO: switch to check on __fbid__
-    if (presetField.key === 'source' && entity.id.startsWith('w-') &&
+    if (presetField.key === 'source' && entity && entity.id.startsWith('w-') &&
         entity.tags.source === 'digitalglobe') {
-        options['remove'] = false;
-        options['revert'] = false;
+        options.remove = false;
+        options.revert = false;
     }
 
     var dispatch = d3_dispatch('change');
