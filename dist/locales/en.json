@@ -402,7 +402,7 @@
                 "key": "J",
                 "description": "Shortcut to cycle selected highway through several different tags.",
                 "annotation": "Changed highway tag of selected way.",
-                "restriction": "This operation is only permitted for highways."
+                "restriction": "This operation is only permitted for highways and untagged lines."
             }
         },
         "restriction": {
@@ -2092,10 +2092,10 @@
                     "background_switch": "Switch back to last background",
                     "map_data": "Show map data options",
                     "osm_data_layer": "Toggle OSM map data layer",
-                    "fb_roads_data": "Toggle AI-assisted roads data",
                     "fullscreen": "Enter full screen mode",
                     "sidebar": "Toggle sidebar",
                     "wireframe": "Toggle wireframe mode",
+                    "fb_roads_data": "Toggle AI-assisted roads data",
                     "minimap": "Toggle minimap",
                     "highlight_way_edits": "Highlight way edits in current session"
                 },
