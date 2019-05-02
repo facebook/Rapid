@@ -8,7 +8,6 @@ import { svgPath, svgPointTransform } from './index';
 
 var radii = {
     //       z16-, z17,  z18+
-    shadow: [6,    7,    7.5],
     stroke: [3.5,  4,    4.5],
     fill:   [2,    2,    2.5]
 };
@@ -111,8 +110,12 @@ export function svgFbRoads(projection, context, dispatch) {
         var geoData = [];
         if (roadsService && context.map().zoom() >= context.minEditableZoom()) {
             roadsService.loadTiles(projection);
-            geoData = roadsService.intersects(context.extent())
-                .filter(function(d) { return d.type === 'way' && !graph.entities[d.id]; })
+            geoData = roadsService
+                .intersects(context.extent())
+                .filter(function(d) {
+                    return d.type === 'way'
+                        && !graph.entities[d.id];
+                })
                 .filter(getPath);
         }
 
@@ -189,10 +192,6 @@ export function svgFbRoads(projection, context, dispatch) {
 
         enter
             .append('circle')
-            .attr('class', 'shadow');
-
-        enter
-            .append('circle')
             .attr('class', 'stroke');
 
         enter
@@ -210,7 +209,7 @@ export function svgFbRoads(projection, context, dispatch) {
                 return getTransform(roadsGraph.entities[d.nodes[nodeIdx]]);
             })
             .call(function(selection) {
-                ['shadow', 'stroke', 'fill'].forEach(function(cls) {
+                ['stroke', 'fill'].forEach(function(cls) {
                     selection.selectAll('.' + cls)
                         .attr('r', radii[cls][radiusIdx]);
                 });

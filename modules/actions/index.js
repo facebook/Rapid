@@ -30,6 +30,7 @@ export { actionReverse } from './reverse';
 export { actionRevert } from './revert';
 export { actionRotate } from './rotate';
 export { actionSplit } from './split';
+export { actionStitchFbRoad } from './stitch_fb_road';
 export { actionStraighten } from './straighten';
 export { actionUnrestrictTurn } from './unrestrict_turn';
 export { actionReflect } from './reflect.js';

@@ -472,6 +472,22 @@
             "hidden_details": "These features are currently hidden: {details}"
         },
         "fb_road_license": "Facebook Road Service License",
+        "fb_road_picker": {
+            "prompt": "How would you like to proceed with this selected feature?",
+            "option_accept": {
+                "label": "Use This Feature",
+                "description": "Does this look like an accurate road? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍",
+                "annotation": "Added an AI-assisted road.",
+                "tooltip": "Add this feature to the map to begin editing.",
+                "key": "A"
+            },
+            "option_reject": {
+                "label": "Remove This Feature",
+                "description": "Removing this road helps us improve our machine learning. If you are unsure whether or not this is an accurate road, feel free to leave it as is, nothing will be saved or lost. 👍",
+                "tooltip": "Remove this feature from the map.",
+                "key": "R"
+            }
+        },
         "status": {
             "error": "Unable to connect to API.",
             "offline": "The API is offline. Please try editing later.",

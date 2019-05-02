@@ -10,6 +10,7 @@ import {
     modeBrowse,
     modeSelect,
     modeSelectData,
+    modeSelectFbRoads,
     modeSelectNote,
     modeSelectError
 } from '../modes';
@@ -124,7 +125,10 @@ export function behaviorSelect(context) {
         }
 
         if (datum && datum.__fbid__) {    // clicked an FB road ..
-            // no-op
+            context
+                .selectedNoteID(null)
+                .selectedErrorID(null)
+                .enter(modeSelectFbRoads(context, datum));
 
         } else if (datum instanceof osmEntity) {    // clicked an entity..
             var selectedIDs = context.selectedIDs();

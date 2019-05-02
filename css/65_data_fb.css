@@ -37,14 +37,15 @@
     stroke-width: 15;
 }
 
-.layer-fb-roads path.casing.hover:not(.selected) {
+.layer-fb-roads path.casing.hover,
+.layer-fb-roads path.casing.selected {
     stroke-opacity: 1;
 }
 .layer-fb-roads path.shadow.hover:not(.selected) {
     stroke-opacity: 0.4;
 }
 .layer-fb-roads path.shadow.selected {
-    stroke-opacity: 0.7;
+    stroke-opacity: 0.4;
 }
 
 /* Road Vertices */
@@ -57,16 +58,7 @@
     stroke-width: 3;
     fill: #fff;
 }
-.layer-fb-roads g.vertex .shadow {
-    pointer-events: fill;
-    fill: currentColor;
-    fill-opacity: 0;
-}
 
 .low-zoom .layer-fb-roads g.vertex .stroke {
     stroke-width: 2;
-}
-
-.layer-fb-roads g.vertex.hover:not(.selected) .shadow {
-    fill-opacity: 0;
 }

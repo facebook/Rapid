@@ -16,3 +16,46 @@ button.fb-roads-toggle.disabled use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
+
+
+/* Sidebar component */
+
+.fb-road-picker svg.logo-rapid {
+    height: 40px;
+    margin-top: -10px;
+}
+
+.fb-road-picker .header .fb-road-picker-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.fb-road-picker .body {
+    padding: 20px;
+}
+
+.fb-road-picker .body h4 {
+    font-weight: normal;
+    text-align: center;
+}
+
+.fb-road-picker .preset-list-item {
+    margin: 15px 0;
+}
+
+.fb-road-picker .preset-list-item .preset-icon-container svg {
+    height: 34px;
+    width: 34px;
+}
+.fb-road-picker .preset-list-item .preset-icon-container svg use {
+    color: #4c4c4c;
+    fill: none;
+}
+
+.fb-road-picker .preset-list-item .tag-reference-body {
+    padding: 10px;
+}
+.fb-road-picker .preset-list-item .tag-reference-body.shown {
+    display: block;
+}

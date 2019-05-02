@@ -19,6 +19,7 @@ export { uiDataHeader } from './data_header';
 export { uiDisclosure } from './disclosure';
 export { uiEditMenu } from './edit_menu';
 export { uiEntityEditor } from './entity_editor';
+export { uiFbRoadPicker } from './fb_road_picker';
 export { uiFeatureInfo } from './feature_info';
 export { uiFeatureList } from './feature_list';
 export { uiField } from './field';
