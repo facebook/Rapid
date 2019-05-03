@@ -43,8 +43,16 @@ export function uiToolUndoRedo(context) {
             .placement('bottom')
             .html(true)
             .title(function (d) {
+                // Handle string- or object-style annotations. Object-style
+                // should include "type" and "description" keys, where
+                // "description" is used in place of a string-style annotation.
+                // See ui/fb_road_picker.js for the motivating use case.
                 return uiTooltipHtml(d.annotation() ?
-                    t(d.id + '.tooltip', {action: d.annotation()}) :
+                    t(d.id + '.tooltip', {
+                        action: d.annotation().description
+                            ? d.annotation().description
+                            : d.annotation(),
+                    }) :
                     t(d.id + '.nothing'), d.cmd);
             });
 

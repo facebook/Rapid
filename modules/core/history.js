@@ -124,10 +124,21 @@ export function coreHistory(context) {
 
 
         peekAnnotation: function() {
-            return _stack[_index].annotation; 
-        }, 
+            return _stack[_index].annotation;
+        },
 
-        
+
+        peekAllAnnotations: function() {
+            var result = [];
+            for (var i = 0; i <= _index; i++) {
+                if (_stack[i].annotation) {
+                    result.push(_stack[i].annotation);
+                }
+            }
+            return result;
+        },
+
+
         merge: function(entities, extent) {
             var stack = _stack.map(function(state) { return state.graph; });
             _stack[0].graph.rebase(entities, stack, false);

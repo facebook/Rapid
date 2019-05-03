@@ -11,14 +11,15 @@ var radii = {
     stroke: [3.5,  4,    4.5],
     fill:   [2,    2,    2.5]
 };
+var _enabled = false;
+var _initialized = false;
+var _roadsService;
+var _actioned;
 
 
 export function svgFbRoads(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     var layer = d3_select(null);
-    var _enabled = false;
-    var _initialized = false;
-    var _roadsService;
 
 
     function init() {
@@ -26,6 +27,13 @@ export function svgFbRoads(projection, context, dispatch) {
 
         _enabled = true;
         _initialized = true;
+        _actioned = new Set();
+
+        // Watch history to synchronize the displayed layer with features
+        // that have been accepted or rejected by the user.
+        context.history().on('undone', onHistoryUndone);
+        context.history().on('annotatedChange', onHistoryAnnotatedChange);
+        context.history().on('restore', onHistoryRestore);
     }
 
 
@@ -36,6 +44,54 @@ export function svgFbRoads(projection, context, dispatch) {
         }
 
         return _roadsService;
+    }
+
+
+    function isFbRoadsAnnotation(annotation) {
+        return annotation &&
+            (annotation.type === 'fb_accept_feature'
+            || annotation.type === 'fb_reject_feature');
+    }
+
+
+    function onHistoryUndone(currentStack, previousStack) {
+        var annotation = previousStack.annotation;
+        if (isFbRoadsAnnotation(annotation)) {
+            _actioned.delete(annotation.id);
+            if (drawData.enabled()) { dispatch.call('change'); }  // redraw
+        }
+    }
+
+
+    function onHistoryAnnotatedChange(/* difference */) {
+        var annotation = context.history().peekAnnotation();
+        if (isFbRoadsAnnotation(annotation)) {
+            _actioned.add(annotation.id);
+            if (drawData.enabled()) { dispatch.call('change'); }  // redraw
+        }
+    }
+
+
+    function onHistoryRestore() {
+        context.history().peekAllAnnotations().forEach(function (annotation) {
+            if (isFbRoadsAnnotation(annotation)) {
+                _actioned.add(annotation.id);
+                // origid (the original entity ID), a.k.a. datum.__origid__,
+                // is a hack used to deal with non-deterministic way-splitting
+                // in the roads service. Each way "split" will have an origid
+                // attribute for the original way it was derived from. In this
+                // particular case, restoring from history on page reload, we
+                // prevent new splits (possibly different from before the page
+                // reload) from being displayed by storing the origid and
+                // checking against it in drawData().
+                if (annotation.origid) {
+                    _actioned.add(annotation.origid);
+                }
+            }
+        });
+        if (_actioned.size && drawData.enabled()) {
+            dispatch.call('change');  // redraw
+        }
     }
 
 
@@ -114,7 +170,8 @@ export function svgFbRoads(projection, context, dispatch) {
                 .intersects(context.extent())
                 .filter(function(d) {
                     return d.type === 'way'
-                        && !graph.entities[d.id];
+                        && !_actioned.has(d.id)
+                        && !_actioned.has(d.__origid__);  // see onHistoryRestore()
                 })
                 .filter(getPath);
         }

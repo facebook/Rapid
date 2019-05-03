@@ -78,6 +78,7 @@ export function actionStitchFbRoad(wayId, fbGraph) {
             var dupeId = fbNode.tags.dupe;
 
             delete fbNode.__fbid__;
+            delete fbNode.__origid__;
             delete fbNode.tags.conn;
             delete fbNode.tags.dupe;
 

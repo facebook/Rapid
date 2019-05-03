@@ -125,6 +125,7 @@ function parseXML(xml, tile, callback, options) {
 
         var entity = parser(child, uid);
         entity.__fbid__ = child.attributes.id.value;
+        entity.__origid__ = origUid;
         return entity;
     }
 }

@@ -14,7 +14,16 @@ export function uiFbRoadPicker(context, keybinding) {
 
     function onAcceptRoad() {
         if (_datum) {
-            var annotation = t('fb_road_picker.option_accept.annotation');
+            // In place of a string annotation, this introduces an "object-style"
+            // annotation, where "type" and "description" are standard keys,
+            // and there may be additional properties. Note that this will be
+            // serialized to JSON while saving undo/redo state in history.save().
+            var annotation = {
+                type: 'fb_accept_feature',
+                description: t('fb_road_picker.option_accept.annotation'),
+                id: _datum.id,
+                origid: _datum.__origid__,
+            };
             context.perform(actionStitchFbRoad(_datum.id, serviceFbMLRoads.graph()), annotation);
             context.enter(modeSelect(context, [_datum.id]));
         }
@@ -22,8 +31,16 @@ export function uiFbRoadPicker(context, keybinding) {
 
 
     function onRejectRoad() {
-        context.perform(actionNoop());   // trigger redraw
-        context.enter(modeBrowse(context));
+        if (_datum) {
+            var annotation = {
+                type: 'fb_reject_feature',
+                description: t('fb_road_picker.option_reject.annotation'),
+                id: _datum.id,
+                origid: _datum.__origid__,
+            };
+            context.perform(actionNoop(), annotation);
+            context.enter(modeBrowse(context));
+        }
     }
 
 

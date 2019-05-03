@@ -484,6 +484,7 @@
             "option_reject": {
                 "label": "Remove This Feature",
                 "description": "Removing this road helps us improve our machine learning. If you are unsure whether or not this is an accurate road, feel free to leave it as is, nothing will be saved or lost. 👍",
+                "annotation": "Removed an AI-assisted road.",
                 "tooltip": "Remove this feature from the map.",
                 "key": "R"
             }
