@@ -20,8 +20,8 @@ var dispatch = d3_dispatch('authLoading', 'authDone', 'change', 'loading', 'load
 var urlroot = 'https://www.openstreetmap.org';
 var oauth = osmAuth({
     url: urlroot,
-    oauth_consumer_key: '5A043yRSEugj4DJ5TljuapfnrflWDte8jTOcWLlT',
-    oauth_secret: 'aB3jKq1TRsCOUrfOIZ6oQMEDmv2ptV76PA54NGLL',
+    oauth_consumer_key: 'MlAcABGGdqadlgrjpmG6qSQu3bwbAgxC7hW0vRwm',
+    oauth_secret: 'M0g3lCJTvpnwMic0HYYwwTMpVvugNRlkycQL7so5',
     loading: authLoading,
     done: authDone
 });
