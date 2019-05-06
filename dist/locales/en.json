@@ -1708,8 +1708,8 @@
                 "tip_move_away": "Nodes are less than 2 meters away but not mergable; you may want to move them further apart."
             },
             "y_shaped_connection": {
-                "title": "Abnormal connection shape on ML road",
-                "message": "Abnormal connection shape caused by short edges",
+                "title": "Possible extra node near connection",
+                "message": "Possible extra node near connection",
                 "tip": "You may want to delete or move nodes around to simplify the connection."
             },
             "fix": {
