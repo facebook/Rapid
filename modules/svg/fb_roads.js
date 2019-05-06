@@ -31,9 +31,9 @@ export function svgFbRoads(projection, context, dispatch) {
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
-        context.history().on('undone', onHistoryUndone);
-        context.history().on('annotatedChange', onHistoryAnnotatedChange);
-        context.history().on('restore', onHistoryRestore);
+        context.history().on('undone.fbroads', onHistoryUndone);
+        context.history().on('annotatedChange.fbroads', onHistoryAnnotatedChange);
+        context.history().on('restore.fbroads', onHistoryRestore);
     }
 
 
