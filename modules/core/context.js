@@ -6,6 +6,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t, currentLocale, addTranslation, setLocale } from '../util/locale';
 
+import { coreRapidContext } from './rapid_context';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { dataLocales, dataEn } from '../../data';
@@ -547,6 +548,9 @@ export function coreContext() {
         presets.init();
         areaKeys = presets.areaKeys();
     }
+
+    var rapidContext = coreRapidContext(context);
+    context.rapidContext = function() { return rapidContext; };
 
     return utilRebind(context, dispatch, 'on');
 }
