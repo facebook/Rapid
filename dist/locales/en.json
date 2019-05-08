@@ -399,7 +399,7 @@
             },
             "cycle_highway_tag": {
                 "title": "Cycle Highway Tag",
-                "key": "J",
+                "key": "C",
                 "description": "Shortcut to cycle selected highway through several different tags.",
                 "annotation": "Changed highway tag of selected way.",
                 "restriction": "This operation is only permitted for highways and untagged lines."
@@ -486,7 +486,7 @@
                 "description": "Removing this road helps us improve our machine learning. If you are unsure whether or not this is an accurate road, feel free to leave it as is, nothing will be saved or lost. 👍",
                 "annotation": "Removed an AI-assisted road.",
                 "tooltip": "Remove this feature from the map.",
-                "key": "R"
+                "key": "D"
             }
         },
         "status": {

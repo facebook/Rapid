@@ -8,7 +8,7 @@ import { uiTooltipHtml } from '../tooltipHtml';
 
 export function uiToolFbRoadsToggle(context) {
 
-    var fbRoadsDataToggleKey = uiCmd('⌥' + t('map_data.layers.fb-roads.key'));
+    var fbRoadsDataToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
     var tool = {
         id: 'fb_roads_toggle',
         label: t('toolbar.fb_roads')

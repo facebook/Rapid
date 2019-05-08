@@ -19,7 +19,7 @@ import { uiTooltipHtml } from './tooltipHtml';
 
 export function uiMapData(context) {
     var key = t('map_data.key');
-    var fbRoadsDataToggleKey = uiCmd('⌥' + t('map_data.layers.fb-roads.key'));
+    var fbRoadsDataToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
     var features = context.features().keys();
     var layers = context.layers();
     var fills = ['wireframe', 'partial', 'full'];

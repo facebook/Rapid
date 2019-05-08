@@ -67,7 +67,7 @@ export function operationCycleHighwayTag(selectedIDs, context) {
 
 
     operation.id = 'cycle_highway_tag';
-    operation.keys = [t('operations.cycle_highway_tag.key')];
+    operation.keys = ['⇧' + t('operations.cycle_highway_tag.key')];
     operation.title = t('operations.cycle_highway_tag.title');
     operation.behavior = behaviorOperation(context).which(operation);
 
