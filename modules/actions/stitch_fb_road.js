@@ -1,9 +1,9 @@
 import { geoVecInterp } from '../geo/vector';
-import { osmEntity } from '../osm';
+import { osmEntity, osmNode } from '../osm';
 
 
-function connectFbNodeToOSMWay(graph, fbNode, osmWid, nidA, nidB) {
-    // Try to insert fbNode on target osmWid between nidA and nidB if it does
+function maybeAddNodeToWay(graph, newNode, osmWid, nidA, nidB) {
+    // Try to insert newNode on target osmWid between nidA and nidB if it does
     // not alter the existing segment's angle much. There may be other nodes
     // between A and B from user edit or other automatic connections.
 
@@ -38,7 +38,7 @@ function connectFbNodeToOSMWay(graph, fbNode, osmWid, nidA, nidB) {
     }
 
     var insertIdx = idxA + 1;  // index to insert immediately before
-    while (insertIdx < idxB && sortFunc(fbNode, graph.entity(nidList[insertIdx])) > 0) {
+    while (insertIdx < idxB && sortFunc(newNode, graph.entity(nidList[insertIdx])) > 0) {
         insertIdx++;
     }
 
@@ -46,18 +46,23 @@ function connectFbNodeToOSMWay(graph, fbNode, osmWid, nidA, nidB) {
     // from an interpolated point on the segment.
     var locA = graph.entity(nidList[insertIdx - 1]).loc;
     var locB = graph.entity(nidList[insertIdx]).loc;
-    var locN = fbNode.loc;
+    var locN = newNode.loc;
     var coeff = Math.abs(locA[0] - locB[0]) > Math.abs(locA[1] - locB[1])
         ? (locN[0] - locA[0]) / (locB[0] - locA[0])
         : (locN[1] - locA[1]) / (locB[1] - locA[1]);
     var interpLoc = geoVecInterp(locA, locB, coeff);
-    if (Math.abs(locN[0] - interpLoc[0]) > 1e-5 ||
-        Math.abs(locN[1] - interpLoc[1]) > 1e-5) {
+    if (locationChanged(locN, interpLoc)) {
         return graph;
     }
 
-    graph = graph.replace(targetWay.addNode(fbNode.id, insertIdx));
+    graph = graph.replace(targetWay.addNode(newNode.id, insertIdx));
     return graph;
+}
+
+
+function locationChanged (loc1, loc2) {
+    return Math.abs(loc1[0] - loc2[0]) > 2e-5
+        || Math.abs(loc1[1] - loc2[1]) > 2e-5;
 }
 
 
@@ -82,20 +87,28 @@ export function actionStitchFbRoad(wayId, fbGraph) {
             delete fbNode.tags.conn;
             delete fbNode.tags.dupe;
 
-            if (dupeId && graph.hasEntity(dupeId)) {
-                fbWay.nodes[idx] = dupeId;
-            } else if (conn && graph.hasEntity(conn[0])) {
-                // conn=w316746574,n3229071295,n3229071273
+            var node = fbNode;
+            if (dupeId
+                && graph.hasEntity(dupeId)
+                && !locationChanged(graph.entity(dupeId).loc, node.loc)) {
+                node = graph.entity(dupeId);
+            } else if (
+                graph.hasEntity(node.id)
+                && locationChanged(graph.entity(node.id).loc, node.loc)) {
+                node = osmNode({ loc: node.loc });
+            }
+
+            if (conn && graph.hasEntity(conn[0])) {
+                //conn=w316746574,n3229071295,n3229071273
                 var osmWid = conn[0];
                 var nidA = conn[1];
                 var nidB = conn[2];
-                graph = connectFbNodeToOSMWay(graph, fbNode, osmWid, nidA, nidB);
-                graph = graph.replace(fbNode);
-            } else {
-                graph = graph.replace(fbNode);
+                graph = maybeAddNodeToWay(graph, node, osmWid, nidA, nidB);
             }
-        });
 
+            fbWay.nodes[idx] = node.id;
+            graph = graph.replace(node);
+        });
         graph = graph.replace(fbWay);
         return graph;
     };
