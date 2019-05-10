@@ -372,19 +372,19 @@ en:
   feature_info:
     hidden_warning: "{count} hidden features"
     hidden_details: "These features are currently hidden: {details}"
-  fb_road_license: Facebook Road Service License
+  fb_road_license: Facebook's Map With AI License
   fb_road_picker:
     prompt: How would you like to proceed with this selected feature?
     option_accept:
       label: Use This Feature
-      description: Does this look like an accurate road? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
-      annotation: Added an AI-assisted road.
+      description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
+      annotation: Added a Map With AI feature.
       tooltip: Add this feature to the map to begin editing.
       key: A
     option_reject:
       label: Remove This Feature
-      description: Removing this road helps us improve our machine learning. If you are unsure whether or not this is an accurate road, feel free to leave it as is, nothing will be saved or lost. 👍
-      annotation: Removed an AI-assisted road.
+      description: Removing this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
+      annotation: Removed a Map With AI feature.
       tooltip: Remove this feature from the map.
       key: D
   status:
@@ -583,8 +583,8 @@ en:
         title: Custom Map Data
         zoom: Zoom to data
       'fb-roads':
-        tooltip: AI-assisted roads from Facebook
-        title: AI-assisted roads data
+        tooltip: Features from Facebook's Map With AI
+        title: Map With AI Feature Layer
         key: R
     fill_area: Fill Areas
     highlight_way_edits:
@@ -1744,7 +1744,7 @@ en:
         fullscreen: "Enter full screen mode"
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"
-        fb_roads_data: "Toggle AI-assisted roads data"
+        fb_roads_data: "Toggle Map With AI Features"
         minimap: "Toggle minimap"
         highlight_way_edits: "Highlight way edits in current session"
       selecting:
