@@ -450,6 +450,7 @@ export function rendererBackground(context) {
                 background.findSource(requested) ||
                 best ||
                 background.findSource(context.storage('background-last-used')) ||
+                background.findSource('Maxar-FB') ||
                 background.findSource('Bing') ||
                 first ||
                 background.findSource('none')
