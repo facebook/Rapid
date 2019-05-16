@@ -23,8 +23,10 @@ function abortRequest(i) {
 }
 
 
-function apiURL(extent) {
-    return API_URL + '&bbox=' + extent.toParam();
+function apiURL(extent, taskExtent) {
+    var result = API_URL + '&bbox=' + extent.toParam();
+    if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
+    return result;
 }
 
 
@@ -163,7 +165,7 @@ export default {
     },
 
 
-    loadTiles: function(projection) {
+    loadTiles: function(projection, taskExtent) {
         var tiles = tiler.getTiles(projection);
 
         // abort inflight requests that are no longer needed
@@ -178,7 +180,7 @@ export default {
         tiles.forEach(function(tile) {
             if (_tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
 
-            _tileCache.inflight[tile.id] = d3_xml(apiURL(tile.extent))
+            _tileCache.inflight[tile.id] = d3_xml(apiURL(tile.extent, taskExtent))
                 .get(function(err, dom) {
                     delete _tileCache.inflight[tile.id];
                     if (err || !dom) return;

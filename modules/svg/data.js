@@ -483,6 +483,10 @@ export function svgData(projection, context, dispatch) {
             d3_text(url, function(err, data) {
                 if (err) return;
                 drawData.setFile(extension, data);
+                var isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
+                if (isTaskBoundsUrl) {
+                    context.rapidContext().setTaskExtentByGpxData(data);
+                }
             });
         } else {
             drawData.template(url);

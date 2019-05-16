@@ -4,6 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { geoScaleToZoom } from '../geo';
 import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
+import { utilStringQs } from '../util';
 
 
 var radii = {
@@ -20,6 +21,7 @@ var _actioned;
 export function svgFbRoads(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     var layer = d3_select(null);
+    var gpxInUrl = utilStringQs(window.location.hash).gpx;
 
 
     function init() {
@@ -154,7 +156,8 @@ export function svgFbRoads(projection, context, dispatch) {
             .merge(layer);
 
         var surface = context.surface();
-        if (!surface || surface.empty()) return;  // not ready to draw yet, starting up
+        var waitingForTaskExtent = gpxInUrl && !context.rapidContext().getTaskExtent();
+        if (!surface || surface.empty() || waitingForTaskExtent) return;  // not ready to draw yet, starting up
 
         var roadsService = getService();
         var graph = context.graph();
@@ -162,10 +165,11 @@ export function svgFbRoads(projection, context, dispatch) {
         var getPath = svgPath(projection, roadsGraph);
         var getTransform = svgPointTransform(projection);
 
+
         // Gather data
         var geoData = [];
         if (roadsService && context.map().zoom() >= context.minEditableZoom()) {
-            roadsService.loadTiles(projection);
+            roadsService.loadTiles(projection, context.rapidContext().getTaskExtent());
             geoData = roadsService
                 .intersects(context.extent())
                 .filter(function(d) {
