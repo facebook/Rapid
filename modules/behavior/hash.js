@@ -46,7 +46,7 @@ export function behaviorHash(context) {
 
         delete q.id;
         var selected = context.selectedIDs().filter(function(id) {
-            return !context.entity(id).isNew();
+            return context.hasEntity(id) && !context.entity(id).isNew();
         });
         if (selected.length) {
             newParams.id = selected.join(',');

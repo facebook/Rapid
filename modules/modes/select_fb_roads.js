@@ -63,6 +63,11 @@ export function modeSelectFbRoads(context, selectedDatum) {
     }
 
 
+    mode.selectedIDs = function() {
+        return [selectedDatum.id];
+    };
+
+
     mode.zoomToSelected = function() {
         var extent = selectedDatum.extent(roadsGraph);
         context.map().centerZoomEase(extent.center(), context.map().trimmedExtentZoom(extent));
