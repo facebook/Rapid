@@ -98,25 +98,14 @@ export function svgFbRoads(projection, context, dispatch) {
 
 
     function showLayer() {
+        throttledRedraw();
         layerOn();
-
-        layer
-            .style('opacity', 0)
-            .transition()
-            .duration(250)
-            .style('opacity', 1)
-            .on('end', function () { dispatch.call('change'); });
     }
 
 
     function hideLayer() {
         throttledRedraw.cancel();
-
-        layer
-            .transition()
-            .duration(250)
-            .style('opacity', 0)
-            .on('end', layerOff);
+        layerOff();
     }
 
 

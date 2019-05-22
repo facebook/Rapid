@@ -27,7 +27,7 @@ export function uiToolFbRoadsToggle(context) {
 
 
     tool.render = function(selection) {
-        var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+        var debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
 
         context.map()
             .on('move.fb_roads_toggle', debouncedUpdate)
@@ -68,7 +68,7 @@ export function uiToolFbRoadsToggle(context) {
             // update
             buttons
                 .merge(buttonsEnter)
-                .classed('disabled', function() { return !enabled(); });
+                .classed('layer-off', function() { return !enabled(); });
         }
     };
 

@@ -9,10 +9,7 @@ button.fb-roads-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-button.fb-roads-toggle.disabled {
-    cursor: pointer;
-}
-button.fb-roads-toggle.disabled use {
+button.fb-roads-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
