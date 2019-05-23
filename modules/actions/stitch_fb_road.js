@@ -2,17 +2,10 @@ import { geoVecInterp } from '../geo/vector';
 import { osmEntity, osmNode } from '../osm';
 
 
-function maybeAddNodeToWay(graph, newNode, osmWid, nidA, nidB) {
-    // Try to insert newNode on target osmWid between nidA and nidB if it does
+function findConnectionPoint(graph, newNode, targetWay, nodeA, nodeB) {
+    // Find the place to newNode on targetWay between nodeA and nodeB if it does
     // not alter the existing segment's angle much. There may be other nodes
     // between A and B from user edit or other automatic connections.
-
-    var targetWay = graph.entities[osmWid];
-    var nodeA = graph.entities[nidA];
-    var nodeB = graph.entities[nidB];
-
-    // target entities must exist
-    if (!targetWay || !nodeA || !nodeB) { return graph; }
 
     var sortByLon = Math.abs(nodeA.loc[0] - nodeB.loc[0]) > Math.abs(nodeA.loc[1] - nodeB.loc[1]);
     var sortFunc = sortByLon
@@ -28,13 +21,13 @@ function maybeAddNodeToWay(graph, newNode, osmWid, nidA, nidB) {
         };
 
     var nidList = targetWay.nodes;
-    var idxA = nidList.indexOf(nidA);
-    var idxB = nidList.indexOf(nidB);
+    var idxA = nidList.indexOf(nodeA.id);
+    var idxB = nidList.indexOf(nodeB.id);
 
     // Invariants for finding the insert index below: A and B must be in the
     // node list, in order, and the sort function must also order A before B
     if (idxA === -1 || idxB === -1 || idxA >= idxB || sortFunc(nodeA, nodeB) >= 0) {
-        return graph;
+        return null;
     }
 
     var insertIdx = idxA + 1;  // index to insert immediately before
@@ -42,8 +35,8 @@ function maybeAddNodeToWay(graph, newNode, osmWid, nidA, nidB) {
         insertIdx++;
     }
 
-    // Ensure insertion will not much alter segment angle by comparing distance
-    // from an interpolated point on the segment.
+    // Find the interpolated point on the segment where insertion will not
+    // alter the segment's angle.
     var locA = graph.entity(nidList[insertIdx - 1]).loc;
     var locB = graph.entity(nidList[insertIdx]).loc;
     var locN = newNode.loc;
@@ -51,16 +44,15 @@ function maybeAddNodeToWay(graph, newNode, osmWid, nidA, nidB) {
         ? (locN[0] - locA[0]) / (locB[0] - locA[0])
         : (locN[1] - locA[1]) / (locB[1] - locA[1]);
     var interpLoc = geoVecInterp(locA, locB, coeff);
-    if (locationChanged(locN, interpLoc)) {
-        return graph;
-    }
 
-    graph = graph.replace(targetWay.addNode(newNode.id, insertIdx));
-    return graph;
+    return {
+        insertIdx: insertIdx,
+        interpLoc: interpLoc,
+    };
 }
 
 
-function locationChanged (loc1, loc2) {
+function locationChanged(loc1, loc2) {
     return Math.abs(loc1[0] - loc2[0]) > 2e-5
         || Math.abs(loc1[1] - loc2[1]) > 2e-5;
 }
@@ -100,10 +92,17 @@ export function actionStitchFbRoad(wayId, fbGraph) {
 
             if (conn && graph.hasEntity(conn[0])) {
                 //conn=w316746574,n3229071295,n3229071273
-                var osmWid = conn[0];
-                var nidA = conn[1];
-                var nidB = conn[2];
-                graph = maybeAddNodeToWay(graph, node, osmWid, nidA, nidB);
+                var targetWay = graph.entities[conn[0]];
+                var nodeA = graph.entities[conn[1]];
+                var nodeB = graph.entities[conn[2]];
+
+                if (targetWay && nodeA && nodeB) {
+                    var result = findConnectionPoint(graph, node, targetWay, nodeA, nodeB);
+                    if (result && !locationChanged(result.interpLoc, node.loc)) {
+                        node.loc = result.interpLoc;
+                        graph = graph.replace(targetWay.addNode(node.id, result.insertIdx));
+                    }
+                }
             }
 
             fbWay.nodes[idx] = node.id;
