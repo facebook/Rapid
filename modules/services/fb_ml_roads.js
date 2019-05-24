@@ -24,7 +24,9 @@ function abortRequest(i) {
 
 
 function apiURL(extent, taskExtent) {
-    var result = API_URL + '&bbox=' + extent.toParam();
+    // fb_ml_road_url: if set, get road data from this url
+    var fb_ml_road_url = utilStringQs(window.location.hash).fb_ml_road_url;
+    var result = (fb_ml_road_url ? fb_ml_road_url : API_URL) + '&bbox=' + extent.toParam();
     if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
     return result;
 }
