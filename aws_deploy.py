@@ -29,8 +29,8 @@ def preflight_build():
     print("\nRunning npm install")
     subprocess.check_call(["npm", "install"])
 
-    print("\nRunning npm dist")
-    subprocess.check_call(["npm", "run", "dist"])
+    print("\nRunning npm run all")
+    subprocess.check_call(["npm", "run", "all"])
     
     print("\nCopying dist folder")
     subprocess.check_call(["cp", "-a", "dist", distdir])
