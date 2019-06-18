@@ -28,6 +28,13 @@ function apiURL(extent, taskExtent) {
     var fb_ml_road_url = utilStringQs(window.location.hash).fb_ml_road_url;
     var result = (fb_ml_road_url ? fb_ml_road_url : API_URL) + '&bbox=' + extent.toParam();
     if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
+
+    var custom_ml_road_tags = utilStringQs(window.location.hash).fb_ml_road_tags;
+    if (custom_ml_road_tags) {
+      custom_ml_road_tags.split(',').forEach(function (tag) {
+        result += '&allow_tags[]=' + tag;
+      });
+    }
     return result;
 }
 
