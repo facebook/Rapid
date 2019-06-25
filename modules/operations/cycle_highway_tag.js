@@ -13,6 +13,13 @@ export function operationCycleHighwayTag(selectedIDs, context) {
     var updateHighwayTag = function (tags) {
         var idx = tags.highway ? ROAD_TYPES.indexOf(tags.highway) : -1;
         tags.highway = ROAD_TYPES[(idx + 1) % ROAD_TYPES.length];
+
+        if (tags.highway === 'track') {
+            tags.surface = 'unpaved'; 
+        }
+        else { 
+            delete tags.surface; 
+        }
     }; 
 
 
