@@ -89,7 +89,8 @@
             },
             {
               "shortcuts": ["map_data.highlight_way_edits.key"],
-              "text": "shortcuts.browsing.display_options.highlight_way_edits"
+              "text": "shortcuts.browsing.display_options.highlight_way_edits", 
+              "rapid": true
             }
           ]
         },
@@ -223,6 +224,20 @@
               "modifiers": ["⌘"],
               "shortcuts": ["S"],
               "text": "shortcuts.editing.commands.save"
+            }, 
+            {
+              "section": "rapid",
+              "text": "shortcuts.editing.rapid.title"
+            },
+            {
+              "shortcuts": ["fb_road_picker.option_accept.key"],
+              "text": "shortcuts.editing.rapid.accept_feature", 
+              "rapid": true
+            },
+            {
+              "shortcuts": ["fb_road_picker.option_reject.key"],
+              "text": "shortcuts.editing.rapid.reject_feature",
+              "rapid": true
             }
           ]
         },
@@ -292,7 +307,8 @@
             {
               "modifiers": ["⇧"],
               "shortcuts": ["operations.cycle_highway_tag.key"],
-              "text": "shortcuts.editing.operations.cycle_highway_tag"
+              "text": "shortcuts.editing.operations.cycle_highway_tag",
+              "rapid": true
             }
           ]
         }

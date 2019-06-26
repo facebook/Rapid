@@ -1801,6 +1801,10 @@ en:
         undo: "Undo last action"
         redo: "Redo last action"
         save: "Save changes"
+      rapid: 
+        title: "RapiD AI-Assist"
+        accept_feature: "Add the selected feature"
+        reject_feature: "Remove the selected feature"
     tools:
       title: "Tools"
       info:
