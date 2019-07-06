@@ -3,21 +3,22 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
         "building_area",
         "social_facility",
         "social_facility_for"
     ],
     "moreFields": [
-        "opening_hours",
-        "wheelchair",
+        "email",
+        "fax",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "website",
+        "opening_hours",
         "phone",
-        "email",
-        "fax"
+        "website",
+        "wheelchair"
     ],
     "geometry": [
         "point",

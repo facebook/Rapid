@@ -1,10 +1,11 @@
+import _isEqual from 'lodash-es/isEqual';
+import _omit from 'lodash-es/omit';
 import { select as d3_select } from 'd3-selection';
 
 import { geoScaleToZoom } from '../geo';
 import { osmEntity } from '../osm';
-import { svgPassiveVertex, svgPointTransform } from './index';
-import _isEqual from 'lodash-es/isEqual';
-import _omit from 'lodash-es/omit'; 
+import { svgPassiveVertex, svgPointTransform } from './helpers';
+
 
 export function svgVertices(projection, context) {
     var radiuses = {
@@ -227,7 +228,7 @@ export function svgVertices(projection, context) {
 
         // Class for styling currently edited vertices
         var editClass = function(d) {
-            //If it doesn't exist in the base graph, it's new geometry. 
+            //If it doesn't exist in the base graph, it's new geometry.
             if (!base.entities[d.id] || !_isEqual(_omit(graph.entities[d.id], ['tags', 'v']), _omit(base.entities[d.id], ['tags', 'v']))) {
               return ' graphedited ';
             } else if (!_isEqual(graph.entities[d.id].tags, base.entities[d.id].tags)) {
@@ -246,15 +247,15 @@ export function svgVertices(projection, context) {
             .remove();
 
         var threeFourths = function (num) {
-            return (Math.round(3 * num) / 4).toFixed(2); 
-        }; 
+            return (Math.round(3 * num) / 4).toFixed(2);
+        };
 
         // enter/update
         targets.enter()
             .append('circle')
             .attr('r', function(d) {
                 return isEditedEnt(d, base, graph) && threeFourths(_radii[d.id])
-                  || _radii[d.id] 
+                  || _radii[d.id]
                   || radiuses.shadow[3];
             })
             .merge(targets)

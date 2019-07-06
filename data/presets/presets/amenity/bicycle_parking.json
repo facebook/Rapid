@@ -4,13 +4,16 @@
         "bicycle_parking",
         "capacity",
         "operator",
+        "operator/type",
         "covered",
         "access_simple",
-        "fee"
+        "fee",
+        "payment_multi_fee"
     ],
     "moreFields": [
-        "payment_multi",
-        "covered"
+        "colour",
+        "indoor",
+        "lit"
     ],
     "geometry": [
         "point",

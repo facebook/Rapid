@@ -41,12 +41,12 @@ describe('iD.validations.tag_suggests_area', function () {
     }
 
     function validate() {
-        var validator = iD.validationTagSuggestsArea();
+        var validator = iD.validationTagSuggestsArea(context);
         var changes = context.history().changes();
         var entities = changes.modified.concat(changes.created);
         var issues = [];
         entities.forEach(function(entity) {
-            issues = issues.concat(validator(entity, context));
+            issues = issues.concat(validator(entity, context.graph()));
         });
         return issues;
     }
@@ -88,8 +88,8 @@ describe('iD.validations.tag_suggests_area', function () {
         var issue = issues[0];
         expect(issue.type).to.eql('tag_suggests_area');
         expect(issue.severity).to.eql('warning');
-        expect(issue.entities).to.have.lengthOf(1);
-        expect(issue.entities[0].id).to.eql('w-1');
+        expect(issue.entityIds).to.have.lengthOf(1);
+        expect(issue.entityIds[0]).to.eql('w-1');
     });
 
     it('flags open way with both area and line tags', function() {
@@ -99,8 +99,8 @@ describe('iD.validations.tag_suggests_area', function () {
         var issue = issues[0];
         expect(issue.type).to.eql('tag_suggests_area');
         expect(issue.severity).to.eql('warning');
-        expect(issue.entities).to.have.lengthOf(1);
-        expect(issue.entities[0].id).to.eql('w-1');
+        expect(issue.entityIds).to.have.lengthOf(1);
+        expect(issue.entityIds[0]).to.eql('w-1');
     });
 
 });

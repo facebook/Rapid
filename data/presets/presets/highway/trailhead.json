@@ -4,8 +4,12 @@
         "name",
         "operator",
         "elevation",
+        "address",
         "access_simple",
         "fee",
+        "payment_multi_fee"
+    ],
+    "moreFields": [
         "opening_hours"
     ],
     "geometry": [

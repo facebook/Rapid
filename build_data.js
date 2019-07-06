@@ -10,8 +10,7 @@ const YAML = require('js-yaml');
 
 const fieldSchema = require('./data/presets/schema/field.json');
 const presetSchema = require('./data/presets/schema/preset.json');
-const suggestionBrands = require('name-suggestion-index').brands.brands;
-const nameSuggestionsWikidata = require('name-suggestion-index').wikidata.wikidata;
+const nsi = require('name-suggestion-index');
 const deprecated = require('./data/deprecated.json').dataDeprecated;
 
 // fontawesome icons
@@ -21,6 +20,7 @@ const far = require('@fortawesome/free-regular-svg-icons').far;
 const fab = require('@fortawesome/free-brands-svg-icons').fab;
 fontawesome.library.add(fas, far, fab);
 
+const request = require('request').defaults({ maxSockets: 1 });
 
 module.exports = function buildData() {
     var building;
@@ -54,8 +54,14 @@ module.exports = function buildData() {
 
         // Font Awesome icons used
         var faIcons = {
-            'fas-long-arrow-alt-right': {}
+            'fas-i-cursor': {},
+            'fas-lock': {},
+            'fas-long-arrow-alt-right': {},
+            'fas-th-list': {}
         };
+
+        // The Noun Project icons used
+        var tnpIcons = {};
 
         // Start clean
         shell.rm('-f', [
@@ -68,9 +74,9 @@ module.exports = function buildData() {
             'svg/fontawesome/*.svg',
         ]);
 
-        var categories = generateCategories(tstrings, faIcons);
+        var categories = generateCategories(tstrings, faIcons, tnpIcons);
         var fields = generateFields(tstrings, faIcons);
-        var presets = generatePresets(tstrings, faIcons);
+        var presets = generatePresets(tstrings, faIcons, tnpIcons);
         var defaults = read('data/presets/defaults.json');
         var translations = generateTranslations(fields, presets, tstrings);
         var taginfo = generateTaginfo(presets, fields);
@@ -103,7 +109,8 @@ module.exports = function buildData() {
                 prettyStringify(taginfo, { maxLength: 9999 })
             ),
             writeEnJson(tstrings),
-            writeFaIcons(faIcons)
+            writeFaIcons(faIcons),
+            writeTnpIcons(tnpIcons)
         ];
 
         return Promise.all(tasks)
@@ -140,7 +147,7 @@ function validate(file, instance, schema) {
 }
 
 
-function generateCategories(tstrings, faIcons) {
+function generateCategories(tstrings, faIcons, tnpIcons) {
     var categories = {};
     glob.sync(__dirname + '/data/presets/categories/*.json').forEach(function(file) {
         var category = read(file);
@@ -152,12 +159,16 @@ function generateCategories(tstrings, faIcons) {
         if (/^fa[srb]-/.test(category.icon)) {
             faIcons[category.icon] = {};
         }
+        // noun project icon, remember for later
+        if (/^tnp-/.test(category.icon)) {
+            tnpIcons[category.icon] = {};
+        }
     });
     return categories;
 }
 
 
-function generateFields(tstrings, faIcons) {
+function generateFields(tstrings, faIcons, tnpIcons) {
     var fields = {};
     glob.sync(__dirname + '/data/presets/fields/**/*.json').forEach(function(file) {
         var field = read(file);
@@ -185,42 +196,61 @@ function generateFields(tstrings, faIcons) {
         if (/^fa[srb]-/.test(field.icon)) {
             faIcons[field.icon] = {};
         }
+        // noun project icon, remember for later
+        if (/^tnp-/.test(field.icon)) {
+            tnpIcons[field.icon] = {};
+        }
     });
     return fields;
 }
 
 
 function suggestionsToPresets(presets) {
+    const brands = nsi.brands.brands;
+    const wikidata = nsi.wikidata.wikidata;
 
-    Object.keys(suggestionBrands).forEach(k => {
-        const suggestion = suggestionBrands[k];
+    Object.keys(brands).forEach(kvnd => {
+        const suggestion = brands[kvnd];
         const qid = suggestion.tags['brand:wikidata'];
         if (!qid || !/^Q\d+$/.test(qid)) return;   // wikidata tag missing or looks wrong..
 
-        const parts = k.split('|', 2);
-        const tag = parts[0].split('/', 2);
-        const key = tag[0];
-        const value = tag[1];
+        const parts = kvnd.split('|', 2);
+        const kv = parts[0];
         const name = parts[1].replace('~', ' ');
 
         let presetID, preset;
 
-        // sometimes we can find a more specific preset then key/value..
+        // sometimes we can choose a more specific preset then key/value..
         if (suggestion.tags.cuisine) {
-            presetID = key + '/' + value + '/' + suggestion.tags.cuisine;
-            preset = presets[presetID];
+            // cuisine can contain multiple values, so try them all in order
+            let cuisines = suggestion.tags.cuisine.split(';');
+            for (let i = 0; i < cuisines.length; i++) {
+                presetID = kv + '/' + cuisines[i].trim();
+                preset = presets[presetID];
+                if (preset) break;  // we matched one
+            }
+
         } else if (suggestion.tags.vending) {
             if (suggestion.tags.vending === 'parcel_pickup;parcel_mail_in') {
-                presetID = key + '/' + value + '/parcel_pickup_dropoff';
+                presetID = kv + '/parcel_pickup_dropoff';
             } else {
-                presetID = key + '/' + value + '/' + suggestion.tags.vending;
+                presetID = kv + '/' + suggestion.tags.vending;
             }
+            preset = presets[presetID];
+        }
+
+        // A few exceptions where the NSI tagging doesn't exactly match iD tagging..
+        if (kv === 'healthcare/clinic') {
+            presetID = 'amenity/clinic';
+            preset = presets[presetID];
+        } else if (kv === 'leisure/tanning_salon') {
+            presetID = 'shop/beauty/tanning';
             preset = presets[presetID];
         }
 
         // fallback to key/value
         if (!preset) {
-            presetID = key + '/' + value;
+            presetID = kv;
             preset = presets[presetID];
         }
 
@@ -230,17 +260,32 @@ function suggestionsToPresets(presets) {
             return;
         }
 
-        let wikidataTag = { 'brand:wikidata': qid };
-        let suggestionID = presetID + '/' + name;
+        let suggestionID = presetID + '/' + name.replace('/', '');
+
+        let tags = { 'brand:wikidata': qid };
+        for (let k in preset.tags) {
+            // prioritize suggestion tags over preset tags (for `vending`,`cuisine`, etc)
+            tags[k] = suggestion.tags[k] || preset.tags[k];
+        }
+
+        // Prefer a wiki commons logo sometimes.. #6361
+        const preferCommons = {
+            Q524757: true,    // KFC
+            Q177054: true,    // Burger King
+            Q1205312: true    // In-N-Out
+        };
 
         let logoURL;
-
-        let logoURLs = nameSuggestionsWikidata[qid] && nameSuggestionsWikidata[qid].logos;
+        let logoURLs = wikidata[qid] && wikidata[qid].logos;
         if (logoURLs) {
-            if (logoURLs.facebook) {
-                logoURL = logoURLs.facebook.replace('?type=square', '?type=large');
+            if (logoURLs.wikidata && preferCommons[qid]) {
+                logoURL = logoURLs.wikidata;
+            } else if (logoURLs.facebook) {
+                logoURL = logoURLs.facebook;
+            } else if (logoURLs.twitter) {
+                logoURL = logoURLs.twitter;
             } else {
-                logoURL = logoURLs.twitter || logoURLs.wikidata;
+                logoURL = logoURLs.wikidata;
             }
         }
 
@@ -249,11 +294,11 @@ function suggestionsToPresets(presets) {
             icon: preset.icon,
             imageURL: logoURL,
             geometry: preset.geometry,
-            tags: Object.assign({}, preset.tags, wikidataTag),
+            tags: tags,
             addTags: suggestion.tags,
-            removeTags: suggestion.tags,
             reference: preset.reference,
             countryCodes: suggestion.countryCodes,
+            terms: (suggestion.matchNames || []),
             matchScore: 2,
             suggestion: true
         };
@@ -270,7 +315,7 @@ function stripLeadingUnderscores(str) {
 }
 
 
-function generatePresets(tstrings, faIcons) {
+function generatePresets(tstrings, faIcons, tnpIcons) {
     var presets = {};
 
     glob.sync(__dirname + '/data/presets/presets/**/*.json').forEach(function(file) {
@@ -289,6 +334,10 @@ function generatePresets(tstrings, faIcons) {
         // fontawesome icon, remember for later
         if (/^fa[srb]-/.test(preset.icon)) {
             faIcons[preset.icon] = {};
+        }
+        // noun project icon, remember for later
+        if (/^tnp-/.test(preset.icon)) {
+            tnpIcons[preset.icon] = {};
         }
     });
 
@@ -401,6 +450,9 @@ function generateTaginfo(presets, fields) {
         } else if (/^iD-/.test(preset.icon)) {
             tag.icon_url = 'https://raw.githubusercontent.com/openstreetmap/iD/master/svg/iD-sprite/presets/' +
                 preset.icon.replace(/^iD-/, '') + '.svg?sanitize=true';
+        } else if (/^tnp-/.test(preset.icon)) {
+            tag.icon_url = 'https://raw.githubusercontent.com/openstreetmap/iD/master/svg/the-noun-project/' +
+                preset.icon.replace(/^tnp-/, '') + '.svg?sanitize=true';
         }
 
         coalesceTags(taginfo, tag);
@@ -653,6 +705,88 @@ function writeFaIcons(faIcons) {
             throw (error);
         }
     }
+}
+
+
+function writeTnpIcons(tnpIcons) {
+    /*
+     * The Noun Project doesn't allow anonymous API access. New "tnp-" icons will
+     * not be downloaded without a "the_noun_project.auth" file with a json object:
+     *  {
+     *      "consumer_key": "xxxxxx",
+     *      "consumer_secret": "xxxxxx"
+     *  }
+     *  */
+    var nounAuth;
+    if (fs.existsSync('./the_noun_project.auth')) {
+        nounAuth = JSON.parse(fs.readFileSync('./the_noun_project.auth', 'utf8'));
+    }
+    var baseURL = 'http://api.thenounproject.com/icon/';
+
+    var unusedSvgFiles = fs.readdirSync('svg/the-noun-project', 'utf8').reduce(function(obj, name) {
+        if (name.endsWith('.svg')) {
+            obj[name] = true;
+        }
+        return obj;
+    }, {});
+
+    for (var key in tnpIcons) {
+        var id = key.substring(4);
+        var fileName = id + '.svg';
+
+        if (unusedSvgFiles[fileName]) {
+            delete unusedSvgFiles[fileName];
+        }
+
+        var localPath = 'svg/the-noun-project/' + fileName;
+
+        // don't redownload existing icons
+        if (fs.existsSync(localPath)) continue;
+
+        if (!nounAuth) {
+            console.error('No authentication file for The Noun Project. Cannot download icon: ' + key);
+            continue;
+        }
+
+        var url = baseURL + id;
+        request.get(url, { oauth : nounAuth }, handleTheNounProjectResponse);
+    }
+
+    // remove icons that are not needed
+    for (var unusedFileName in unusedSvgFiles) {
+        shell.rm('-f', [
+            'svg/the-noun-project/' + unusedFileName
+        ]);
+    }
+}
+
+function handleTheNounProjectResponse(err, resp, body) {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    var icon = JSON.parse(body).icon;
+    if (icon.license_description !== 'public-domain') {
+        console.error('The icon "' + icon.term + '" (tnp-' + icon.id + ') from The Noun Project cannot be used in iD because it is not in the public domain.');
+        return;
+    }
+    var iconURL = icon.icon_url;
+    if (!iconURL) {
+        console.error('The Noun Project has not provided a URL to download the icon "' + icon.term + '" (tnp-' + icon.id + ').');
+        return;
+    }
+    request.get(iconURL, function(err2, resp2, svg) {
+        if (err2) {
+            console.error(err2);
+            return;
+        }
+        try {
+            writeFileProm('svg/the-noun-project/' + icon.id + '.svg', svg);
+        } catch (error) {
+            console.error(error);
+            throw (error);
+        }
+    });
 }
 
 

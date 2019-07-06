@@ -3,6 +3,7 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
         "building",
         "opening_hours",
@@ -10,7 +11,7 @@
     ],
     "moreFields": [
         "fee",
-        "payment_multi",
+        "payment_multi_fee",
         "website",
         "phone",
         "email",

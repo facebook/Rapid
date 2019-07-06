@@ -1,5 +1,4 @@
 import { geoExtent } from '../geo';
-import { utilStringQs } from '../util';
 
 import toGeoJSON from '@mapbox/togeojson';
 

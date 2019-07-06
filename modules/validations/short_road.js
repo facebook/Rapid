@@ -3,10 +3,10 @@ import { modeDrawLine } from '../modes';
 import { operationDelete } from '../operations/index';
 import { t } from '../util/locale';
 import { utilDisplayLabel } from '../util';
-import { validationIssue, validationIssueFix } from '../core/validator';
+import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationShortRoad() {
+export function validationShortRoad(context) {
     var type = 'short_road';
 
     // Thresholds for number of nodes and total length for a short road. A road
@@ -39,11 +39,10 @@ export function validationShortRoad() {
     }
 
 
-    var validation = function(entity, context) {
+    var validation = function(entity, graph) {
         if (entity.type !== 'way' || !entity.tags.highway || entity.isClosed() || entity.nodes.length >= SHORT_WAY_NODES_THD) return [];
 
-        var graph = context.graph(),
-            firstNode = graph.entity(entity.first()),
+        var firstNode = graph.entity(entity.first()),
             lastNode = graph.entity(entity.last()),
             pwaysStart = graph.parentWays(firstNode),
             pwaysEnd = graph.parentWays(lastNode),
@@ -52,7 +51,6 @@ export function validationShortRoad() {
         // only do check on roads with open ends
         if ((firstNodeOK && lastNodeOK) || wayLength(entity, graph) >= SHORT_WAY_LENGTH_THD_METERS) return [];
 
-        var entityLabel = utilDisplayLabel(entity, context);
         var fixes = [];
         if (!firstNodeOK) {
             fixes.push(new validationIssueFix({
@@ -82,7 +80,7 @@ export function validationShortRoad() {
                 title: t('issues.fix.delete_feature.title'),
                 entityIds: [entity.id],
                 onClick: function() {
-                    var id = this.issue.entities[0].id;
+                    var id = this.issue.entityIds[0];
                     var operation = operationDelete([id], context);
                     if (!operation.disabled()) {
                         operation();
@@ -94,9 +92,21 @@ export function validationShortRoad() {
         return [new validationIssue({
             type: type,
             severity: 'warning',
-            message: t('issues.short_road.message', { highway: entityLabel }),
-            tooltip: t('issues.short_road.tip'),
-            entities: [entity],
+            message: function(context) {
+                var entity = context.hasEntity(this.entityIds[0]);
+                if (!entity) return '';
+                var entityLabel = utilDisplayLabel(entity, context);
+                return t('issues.short_road.message', { highway: entityLabel });
+            },
+            reference: function(selection) {
+                selection.selectAll('.issue-reference')
+                    .data([0])
+                    .enter()
+                    .append('div')
+                    .attr('class', 'issue-reference')
+                    .text(t('issues.short_road.reference'));
+            },
+            entityIds: [entity.id],
             fixes: fixes
         })];
     };

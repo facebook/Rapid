@@ -3,14 +3,15 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
         "website",
-        "internet_access"
+        "internet_access",
+        "internet_access/fee"
     ],
     "moreFields": [
         "religion",
         "denomination",
-        "internet_access/fee",
         "internet_access/ssid",
         "phone",
         "email",

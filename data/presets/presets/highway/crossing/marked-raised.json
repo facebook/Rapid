@@ -8,15 +8,11 @@
         "vertex"
     ],
     "tags": {
-        "crossing": "marked",
-        "traffic_calming": "table"
-    },
-    "addTags": {
         "highway": "crossing",
         "crossing": "marked",
         "traffic_calming": "table"
     },
-    "removeTags": {
+    "addTags": {
         "highway": "crossing",
         "crossing": "marked",
         "traffic_calming": "table"

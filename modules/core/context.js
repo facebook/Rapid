@@ -1,7 +1,7 @@
 import _debounce from 'lodash-es/debounce';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { json as d3_json } from 'd3-request';
+import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 
 import { t, currentLocale, addTranslation, setLocale } from '../util/locale';
@@ -12,24 +12,21 @@ import { coreValidator } from './validator';
 import { dataLocales, dataEn } from '../../data';
 import { geoRawMercator } from '../geo/raw_mercator';
 import { modeSelect } from '../modes/select';
+import { osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { presetIndex } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilDetect } from '../util/detect';
-import { utilCallWhenIdle, utilKeybinding, utilRebind, utilStringQs } from '../util';
-
-
-export var areaKeys = {};
-
-export function setAreaKeys(value) {
-    areaKeys = value;
-}
+import { utilKeybinding, utilRebind, utilStringQs } from '../util';
 
 
 export function coreContext() {
-    var context = {};
-    context.version = '2.14.3';
+    var dispatch = d3_dispatch('enter', 'exit', 'change');
+    var context = utilRebind({}, dispatch, 'on');
+    var _deferred = new Set();
+
+    context.version = '2.15.3';
 
     // create a special translation that contains the keys in place of the strings
     var tkeys = JSON.parse(JSON.stringify(dataEn));  // clone deep
@@ -55,7 +52,6 @@ export function coreContext() {
     addTranslation('en', dataEn);
     setLocale('en');
 
-    var dispatch = d3_dispatch('enter', 'exit', 'change');
 
     // https://github.com/openstreetmap/iD/issues/772
     // http://mathiasbynens.be/notes/localstorage-pattern#comment-9
@@ -107,35 +103,64 @@ export function coreContext() {
         return context;
     };
 
-    context.loadTiles = utilCallWhenIdle(function(projection, callback) {
-        var cid;
-        function done(err, result) {
-            if (connection.getConnectionId() !== cid) {
-                if (callback) callback({ message: 'Connection Switched', status: -1 });
+
+    function afterLoad(cid, callback) {
+        return function(err, result) {
+            if (err) {
+                // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
+                if (err.status === 400 || err.status === 401 || err.status === 403) {
+                    if (connection) {
+                        connection.logout();
+                    }
+                }
+                if (typeof callback === 'function') {
+                    callback(err);
+                }
+                return;
+
+            } else if (connection && connection.getConnectionId() !== cid) {
+                if (typeof callback === 'function') {
+                    callback({ message: 'Connection Switched', status: -1 });
+                }
+                return;
+
+            } else {
+                history.merge(result.data, result.extent);
+                if (typeof callback === 'function') {
+                    callback(err, result);
+                }
                 return;
             }
-            if (!err) history.merge(result.data, result.extent);
-            if (callback) callback(err, result);
-        }
-        if (connection && context.editable()) {
-            cid = connection.getConnectionId();
-            connection.loadTiles(projection, done);
-        }
-    });
+        };
+    }
+
+
+    context.loadTiles = function(projection, callback) {
+        var handle = window.requestIdleCallback(function() {
+            _deferred.delete(handle);
+            if (connection && context.editable()) {
+                var cid = connection.getConnectionId();
+                connection.loadTiles(projection, afterLoad(cid, callback));
+            }
+        });
+        _deferred.add(handle);
+    };
+
+    context.loadTileAtLoc = function(loc, callback) {
+        var handle = window.requestIdleCallback(function() {
+            _deferred.delete(handle);
+            if (connection && context.editable()) {
+                var cid = connection.getConnectionId();
+                connection.loadTileAtLoc(loc, afterLoad(cid, callback));
+            }
+        });
+        _deferred.add(handle);
+    };
 
     context.loadEntity = function(entityID, callback) {
-        var cid;
-        function done(err, result) {
-            if (connection.getConnectionId() !== cid) {
-                if (callback) callback({ message: 'Connection Switched', status: -1 });
-                return;
-            }
-            if (!err) history.merge(result.data, result.extent);
-            if (callback) callback(err, result);
-        }
         if (connection) {
-            cid = connection.getConnectionId();
-            connection.loadEntity(entityID, done);
+            var cid = connection.getConnectionId();
+            connection.loadEntity(entityID, afterLoad(cid, callback));
         }
     };
 
@@ -166,11 +191,11 @@ export function coreContext() {
     };
 
     var minEditableZoom = 16;
-    context.minEditableZoom = function(_) {
+    context.minEditableZoom = function(val) {
         if (!arguments.length) return minEditableZoom;
-        minEditableZoom = _;
+        minEditableZoom = val;
         if (connection) {
-            connection.tileZoom(_);
+            connection.tileZoom(val);
         }
         return context;
     };
@@ -178,9 +203,9 @@ export function coreContext() {
 
     /* History */
     var inIntro = false;
-    context.inIntro = function(_) {
+    context.inIntro = function(val) {
         if (!arguments.length) return inIntro;
-        inIntro = _;
+        inIntro = val;
         return context;
     };
 
@@ -284,9 +309,9 @@ export function coreContext() {
     /* Copy/Paste */
     var copyIDs = [], copyGraph;
     context.copyGraph = function() { return copyGraph; };
-    context.copyIDs = function(_) {
+    context.copyIDs = function(val) {
         if (!arguments.length) return copyIDs;
-        copyIDs = _;
+        copyIDs = val;
         copyGraph = history.graph();
         return context;
     };
@@ -301,8 +326,8 @@ export function coreContext() {
     var features;
     context.features = function() { return features; };
     context.hasHiddenConnections = function(id) {
-        var graph = history.graph(),
-            entity = graph.entity(id);
+        var graph = history.graph();
+        var entity = graph.entity(id);
         return features.hasHiddenConnections(entity, graph);
     };
 
@@ -336,7 +361,8 @@ export function coreContext() {
         community: false,   // community bounding polygons
         imperial: false,    // imperial (not metric) bounding polygons
         driveLeft: false,   // driveLeft bounding polygons
-        target: false       // touch targets
+        target: false,      // touch targets
+        downloaded: false   // downloaded data from osm
     };
     context.debugFlags = function() {
         return debugFlags;
@@ -354,42 +380,42 @@ export function coreContext() {
 
     /* Container */
     var container = d3_select(document.body);
-    context.container = function(_) {
+    context.container = function(val) {
         if (!arguments.length) return container;
-        container = _;
+        container = val;
         container.classed('id-container', true);
         return context;
     };
     var embed;
-    context.embed = function(_) {
+    context.embed = function(val) {
         if (!arguments.length) return embed;
-        embed = _;
+        embed = val;
         return context;
     };
 
 
     /* Assets */
     var assetPath = '';
-    context.assetPath = function(_) {
+    context.assetPath = function(val) {
         if (!arguments.length) return assetPath;
-        assetPath = _;
+        assetPath = val;
         return context;
     };
 
     var assetMap = {};
-    context.assetMap = function(_) {
+    context.assetMap = function(val) {
         if (!arguments.length) return assetMap;
-        assetMap = _;
+        assetMap = val;
         return context;
     };
 
-    context.asset = function(_) {
-        var filename = assetPath + _;
+    context.asset = function(val) {
+        var filename = assetPath + val;
         return assetMap[filename] || filename;
     };
 
-    context.imagePath = function(_) {
-        return context.asset('img/' + _);
+    context.imagePath = function(val) {
+        return context.asset('img/' + val);
     };
 
 
@@ -408,16 +434,16 @@ export function coreContext() {
     context.loadLocale = function(callback) {
         if (locale && locale !== 'en' && dataLocales.hasOwnProperty(locale)) {
             localePath = localePath || context.asset('locales/' + locale + '.json');
-            d3_json(localePath, function(err, result) {
-                if (!err) {
+            d3_json(localePath)
+                .then(function(result) {
                     addTranslation(locale, result[locale]);
                     setLocale(locale);
                     utilDetect(true);
-                }
-                if (callback) {
-                    callback(err);
-                }
-            });
+                    if (callback) callback();
+                })
+                .catch(function(err) {
+                    if (callback) callback(err.message);
+                });
         } else {
             if (locale) {
                 setLocale(locale);
@@ -433,13 +459,22 @@ export function coreContext() {
     /* reset (aka flush) */
     context.reset = context.flush = function() {
         context.debouncedSave.cancel();
+
+        Array.from(_deferred).forEach(function(handle) {
+            window.cancelIdleCallback(handle);
+            _deferred.delete(handle);
+        });
+
         Object.values(services).forEach(function(service) {
             if (service && typeof service.reset === 'function') {
                 service.reset(context);
             }
         });
+
+        validator.reset();
         features.reset();
         history.reset();
+
         return context;
     };
 
@@ -455,31 +490,13 @@ export function coreContext() {
     }
 
     history = coreHistory(context);
+    validator = coreValidator(context);
 
     context.graph = history.graph;
     context.changes = history.changes;
     context.intersects = history.intersects;
     context.pauseChangeDispatch = history.pauseChangeDispatch;
     context.resumeChangeDispatch = history.resumeChangeDispatch;
-
-    validator = coreValidator(context);
-
-    // run validation upon restoring from page reload
-    history.on('restore', function() {
-        validator.validate();
-    });
-    // re-run validation upon a significant graph change
-    history.on('annotatedChange', function(difference) {
-        if (difference) {
-            validator.validate();
-        }
-    });
-    // re-run validation upon merging fetched data
-    history.on('merge', function(entities) {
-        if (entities && entities.length > 0) {
-            validator.validate();
-        }
-    });
 
     // Debounce save, since it's a synchronous localStorage write,
     // and history changes can happen frequently (e.g. when dragging).
@@ -509,13 +526,16 @@ export function coreContext() {
 
     if (services.maprules && utilStringQs(window.location.hash).maprules) {
         var maprules = utilStringQs(window.location.hash).maprules;
-        d3_json(maprules, function (err, mapcss) {
-            if (err) return;
-            services.maprules.init();
-            mapcss.forEach(function(mapcssSelector) {
-                return services.maprules.addRule(mapcssSelector);
+        d3_json(maprules)
+            .then(function(mapcss) {
+                services.maprules.init();
+                mapcss.forEach(function(mapcssSelector) {
+                    return services.maprules.addRule(mapcssSelector);
+                });
+            })
+            .catch(function() {
+                /* ignore */
             });
-        });
     }
 
     map = rendererMap(context);
@@ -534,23 +554,38 @@ export function coreContext() {
         }
     });
 
+    validator.init();
     background.init();
     features.init();
     photos.init();
 
-    if (utilStringQs(window.location.hash).presets) {
-        var external = utilStringQs(window.location.hash).presets;
+    var presetsParameter = utilStringQs(window.location.hash).presets;
+    if (presetsParameter && presetsParameter.indexOf('://') !== -1) {
+        // assume URL of external presets file
+
         presets.fromExternal(external, function(externalPresets) {
             context.presets = function() { return externalPresets; }; // default + external presets...
-            areaKeys = presets.areaKeys();
+            osmSetAreaKeys(presets.areaKeys());
+            osmSetPointTags(presets.pointTags());
+            osmSetVertexTags(presets.vertexTags());
         });
     } else {
-        presets.init();
-        areaKeys = presets.areaKeys();
+        var isVisible;
+        if (presetsParameter) {
+            // assume list of allowed preset IDs
+            var visiblePresetIDs = new Set(presetsParameter.split(','));
+            isVisible = function(presetID) {
+                return visiblePresetIDs.has(presetID);
+            };
+        }
+        presets.init(isVisible);
+        osmSetAreaKeys(presets.areaKeys());
+        osmSetPointTags(presets.pointTags());
+        osmSetVertexTags(presets.vertexTags());
     }
 
     var rapidContext = coreRapidContext(context);
     context.rapidContext = function() { return rapidContext; };
 
-    return utilRebind(context, dispatch, 'on');
+    return context;
 }

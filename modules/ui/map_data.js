@@ -3,23 +3,21 @@ import {
     select as d3_select
 } from 'd3-selection';
 
-import { svgIcon } from '../svg';
+import { svgIcon } from '../svg/icon';
 import { t, textDirection } from '../util/locale';
 import { tooltip } from '../util/tooltip';
 import { geoExtent } from '../geo';
-import { modeBrowse } from '../modes';
-import { uiBackground } from './background';
-import { uiCmd } from './cmd';
+import { modeBrowse } from '../modes/browse';
 import { uiDisclosure } from './disclosure';
-import { uiHelp } from './help';
-import { uiIssues } from './issues';
 import { uiSettingsCustomData } from './settings/custom_data';
 import { uiTooltipHtml } from './tooltipHtml';
+import { uiCmd } from './cmd';
 
 
 export function uiMapData(context) {
     var key = t('map_data.key');
     var fbRoadsDataToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
+    var osmDataToggleKey = uiCmd('⌥' + t('area_fill.wireframe.key'));
     var features = context.features().keys();
     var layers = context.layers();
     var fills = ['wireframe', 'partial', 'full'];
@@ -30,7 +28,6 @@ export function uiMapData(context) {
     var _pane = d3_select(null), _toggleButton = d3_select(null);
 
     var _fillSelected = context.storage('area-fill') || 'partial';
-    var _shown = false;
     var _dataLayerContainer = d3_select(null);
     var _photoOverlayContainer = d3_select(null);
     var _fillList = d3_select(null);
@@ -107,6 +104,10 @@ export function uiMapData(context) {
 
 
     function setLayer(which, enabled) {
+        // Don't allow layer changes while drawing - #6584
+        var mode = context.mode();
+        if (mode && /^draw/.test(mode.id)) return;
+
         var layer = layers.layer(which);
         if (layer) {
             layer.enabled(enabled);
@@ -122,11 +123,6 @@ export function uiMapData(context) {
 
     function toggleLayer(which) {
         setLayer(which, !showsLayer(which));
-    }
-
-
-    function toggleOSMDataLayer() {
-        toggleLayer('osm');
     }
 
 
@@ -295,15 +291,20 @@ export function uiMapData(context) {
         var labelEnter = liEnter
             .append('label')
             .each(function(d) {
-                d3_select(this)
-                    .call(tooltip()
-                        .html(true)
-                        .title(uiTooltipHtml(
-                            t('map_data.layers.' + d.id + '.tooltip'),
-                            d.id === 'osm' ? t('map_data.layers.osm.key') : null
-                        ))
-                        .placement('bottom')
-                    );
+                if (d.id === 'osm') {
+                    d3_select(this)
+                        .call(tooltip()
+                            .html(true)
+                            .title(uiTooltipHtml(t('map_data.layers.' + d.id + '.tooltip'), osmDataToggleKey))
+                            .placement('bottom')
+                        );
+                } else {
+                    d3_select(this)
+                        .call(tooltip()
+                            .title(t('map_data.layers.' + d.id + '.tooltip'))
+                            .placement('bottom')
+                        );
+                }
             });
 
         labelEnter
@@ -728,13 +729,44 @@ export function uiMapData(context) {
 
 
     function renderFeatureList(selection) {
-        var container = selection.selectAll('.layer-feature-list')
+        var container = selection.selectAll('.layer-feature-list-container')
             .data([0]);
 
-        _featureList = container.enter()
+        var containerEnter = container.enter()
+            .append('div')
+            .attr('class', 'layer-feature-list-container');
+
+        containerEnter
             .append('ul')
-            .attr('class', 'layer-list layer-feature-list')
-            .merge(container);
+            .attr('class', 'layer-list layer-feature-list');
+
+        var footer = containerEnter
+            .append('div')
+            .attr('class', 'feature-list-links section-footer');
+
+        footer
+            .append('a')
+            .attr('class', 'feature-list-link')
+            .attr('href', '#')
+            .text(t('issues.enable_all'))
+            .on('click', function() {
+                context.features().enableAll();
+            });
+
+        footer
+            .append('a')
+            .attr('class', 'feature-list-link')
+            .attr('href', '#')
+            .text(t('issues.disable_all'))
+            .on('click', function() {
+                context.features().disableAll();
+            });
+
+        // Update
+        container = container
+            .merge(containerEnter);
+
+        _featureList = container.selectAll('.layer-feature-list');
 
         updateFeatureList();
     }
@@ -805,46 +837,14 @@ export function uiMapData(context) {
         .html(true)
         .title(uiTooltipHtml(t('map_data.description'), key));
 
-    uiMapData.hidePane = function() {
-        uiMapData.setVisible(false);
-    };
+    function hidePane() {
+        context.ui().togglePanes();
+    }
 
     uiMapData.togglePane = function() {
         if (d3_event) d3_event.preventDefault();
         paneTooltip.hide(_toggleButton);
-        uiMapData.setVisible(!_toggleButton.classed('active'));
-    };
-
-    uiMapData.setVisible = function(show) {
-        if (show !== _shown) {
-            _toggleButton.classed('active', show);
-            _shown = show;
-
-            if (show) {
-                uiBackground.hidePane();
-                uiHelp.hidePane();
-                uiIssues.hidePane();
-                update();
-
-                _pane
-                    .style('display', 'block')
-                    .style('right', '-300px')
-                    .transition()
-                    .duration(200)
-                    .style('right', '0px');
-
-            } else {
-                _pane
-                    .style('display', 'block')
-                    .style('right', '0px')
-                    .transition()
-                    .duration(200)
-                    .style('right', '-300px')
-                    .on('end', function() {
-                        d3_select(this).style('display', 'none');
-                    });
-            }
-        }
+        context.ui().togglePanes(!_pane.classed('shown') ? _pane : undefined);
     };
 
     uiMapData.renderToggleButton = function(selection) {
@@ -862,7 +862,8 @@ export function uiMapData(context) {
 
         _pane = selection
             .append('div')
-            .attr('class', 'fillL map-pane map-data-pane hide');
+            .attr('class', 'fillL map-pane map-data-pane hide')
+            .attr('pane', 'map-data');
 
         var heading = _pane
             .append('div')
@@ -874,7 +875,7 @@ export function uiMapData(context) {
 
         heading
             .append('button')
-            .on('click', uiMapData.hidePane)
+            .on('click', hidePane)
             .call(svgIcon('#iD-icon-close'));
 
 
@@ -929,13 +930,17 @@ export function uiMapData(context) {
 
         context.keybinding()
             .on(key, uiMapData.togglePane)
-            .on(t('map_data.layers.osm.key'), toggleOSMDataLayer)
+            .on(t('area_fill.wireframe.key'), toggleWireframe)
+            .on(osmDataToggleKey, function() {
+                d3_event.preventDefault();
+                d3_event.stopPropagation();
+                toggleLayer('osm');
+            })
             .on(fbRoadsDataToggleKey, function () {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
                 toggleLayer('fb-roads');
             })
-            .on(t('area_fill.wireframe.key'), toggleWireframe)
             .on(t('map_data.highlight_way_edits.key'), toggleHighlightEdited);
     };
 

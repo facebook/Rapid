@@ -34,7 +34,7 @@ export function svgFbRoads(projection, context, dispatch) {
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
         context.history().on('undone.fbroads', onHistoryUndone);
-        context.history().on('annotatedChange.fbroads', onHistoryAnnotatedChange);
+        context.history().on('change.fbroads', onHistoryChange);
         context.history().on('restore.fbroads', onHistoryRestore);
     }
 
@@ -65,7 +65,7 @@ export function svgFbRoads(projection, context, dispatch) {
     }
 
 
-    function onHistoryAnnotatedChange(/* difference */) {
+    function onHistoryChange(/* difference */) {
         var annotation = context.history().peekAnnotation();
         if (isFbRoadsAnnotation(annotation)) {
             _actioned.add(annotation.id);

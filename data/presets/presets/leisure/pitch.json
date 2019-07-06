@@ -3,12 +3,15 @@
     "fields": [
         "name",
         "sport",
+        "access_simple",
         "surface",
         "lit"
     ],
     "moreFields": [
-        "access_simple",
-        "fee"
+        "covered",
+        "fee",
+        "indoor",
+        "payment_multi_fee"
     ],
     "geometry": [
         "point",

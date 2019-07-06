@@ -20,12 +20,12 @@ describe('iD.validations.incompatible_source', function () {
     }
 
     function validate() {
-        var validator = iD.validationIncompatibleSource();
+        var validator = iD.validationIncompatibleSource(context);
         var changes = context.history().changes();
         var entities = changes.modified.concat(changes.created);
         var issues = [];
         entities.forEach(function(entity) {
-            issues = issues.concat(validator(entity, context));
+            issues = issues.concat(validator(entity, context.graph()));
         });
         return issues;
     }
@@ -53,8 +53,8 @@ describe('iD.validations.incompatible_source', function () {
         expect(issues).to.have.lengthOf(1);
         var issue = issues[0];
         expect(issue.type).to.eql('incompatible_source');
-        expect(issue.entities).to.have.lengthOf(1);
-        expect(issue.entities[0].id).to.eql('w-1');
+        expect(issue.entityIds).to.have.lengthOf(1);
+        expect(issue.entityIds[0]).to.eql('w-1');
     });
 
 });

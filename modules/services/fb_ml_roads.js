@@ -1,11 +1,11 @@
 import _forEach from 'lodash-es/forEach';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { xml as d3_xml } from 'd3-request';
+import { xml as d3_xml } from 'd3-fetch';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
-import { utilIdleWorker, utilRebind, utilStringQs, utilTiler } from '../util';
+import { utilRebind, utilStringQs, utilTiler } from '../util';
 
 // constants
 var API_URL = 'https://www.facebook.com/maps/ml_roads?conflate_with_osm=true&theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A';
@@ -16,6 +16,7 @@ var dispatch = d3_dispatch('loadedData');
 var _graph;
 var _tileCache;
 var _tree;
+var _deferredFBRoadsParsing = new Set();
 
 
 function abortRequest(i) {
@@ -104,12 +105,17 @@ function parseXML(xml, tile, callback, options) {
 
     var root = xml.childNodes[0];
     var children = root.childNodes;
-    utilIdleWorker(children, parseChild, done);
-
-
-    function done(results) {
+    var handle = window.requestIdleCallback(function() {
+        _deferredFBRoadsParsing.delete(handle);
+        var results = [];
+        for (var i = 0; i < children.length; i++) {
+            var result = parseChild(children[i]);
+            if (result) results.push(result);
+        }
         callback(null, results);
-    }
+    });
+    _deferredFBRoadsParsing.add(handle);
+
 
     function parseChild(child) {
         var parser = parsers[child.nodeName];
@@ -154,6 +160,10 @@ export default {
 
 
     reset: function() {
+        Array.from(_deferredFBRoadsParsing).forEach(function(handle) {
+            window.cancelIdleCallback(handle);
+            _deferredFBRoadsParsing.delete(handle);
+        });
         if (_tileCache && _tileCache.inflight) {
             _forEach(_tileCache.inflight, abortRequest);
         }
@@ -189,11 +199,11 @@ export default {
         tiles.forEach(function(tile) {
             if (_tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
 
-            _tileCache.inflight[tile.id] = d3_xml(apiURL(tile.extent, taskExtent))
-                .get(function(err, dom) {
+            var controller = new AbortController();
+            d3_xml(apiURL(tile.extent, taskExtent), {signal: controller.signal})
+                .then(function (dom) {
                     delete _tileCache.inflight[tile.id];
-                    if (err || !dom) return;
-
+                    if (!dom) return;
                     parseXML(dom, tile, function(err, results) {
                         if (err) return;
                         _graph.rebase(results, [_graph], true);
@@ -201,7 +211,9 @@ export default {
                         _tileCache.loaded[tile.id] = true;
                         dispatch.call('loadedData');
                     });
-                });
+                })
+                .catch(function(err) {});
+            _tileCache.inflight[tile.id] = controller;
         });
     }
 };

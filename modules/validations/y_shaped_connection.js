@@ -2,10 +2,10 @@ import { geoAngle, geoSphericalDistance } from '../geo';
 import { modeSelect } from '../modes';
 import { operationDelete } from '../operations/index';
 import { t } from '../util/locale';
-import { validationIssue, validationIssueFix } from '../core/validator';
+import { validationIssue, validationIssueFix } from '../core/validation';
 
 
-export function validationYShapedConnection() {
+export function validationYShapedConnection(context) {
     /* We want to catch and warn about the following "shapes of connections"
      * that may appear in ML-generated roads:
      * (1) Two short edges around a connection node, causing a "Y-shaped" connection
@@ -23,6 +23,9 @@ export function validationYShapedConnection() {
      *             |
      * The potential fix is to remove the non-connection nodes causing the short edges,
      * so that the shape of the connection becomes more like a "T".
+     *
+     * This validation will flag issues on those excessive non-connection nodes around
+     * Y-shaped connections and suggest deletion or move as possible fixes.
      */
 
     var type = 'y_shaped_connection';
@@ -48,10 +51,11 @@ export function validationYShapedConnection() {
         });
     }
 
-    function createFixForNode(node, context) {
+    function createIssueAndFixForNode(node, context) {
         var deletable = !operationDelete([node.id], context).disabled();
+        var fix = undefined;
         if (deletable) {
-            return new validationIssueFix({
+            fix = new validationIssueFix({
                 icon: 'iD-operation-delete',
                 title: t('issues.fix.delete_node_around_conn.title'),
                 entityIds: [node.id],
@@ -64,81 +68,93 @@ export function validationYShapedConnection() {
                 }
             });
         } else {
-            return new validationIssueFix({
+            fix = new validationIssueFix({
                 icon: 'iD-operation-move',
                 title: t('issues.fix.move_node_around_conn.title'),
-                entityIds: [node.id],
-                onClick: function() {
-                    context.enter(modeSelect(context, [this.entityIds[0]]));
-                }
+                entityIds: [node.id]
             });
         }
+
+        return new validationIssue({
+            type: type,
+            severity: 'warning',
+            message: function(context) {
+                return t('issues.y_shaped_connection.message');
+            },
+            reference: function(selection) {
+                selection.selectAll('.issue-reference')
+                    .data([0])
+                    .enter()
+                    .append('div')
+                    .attr('class', 'issue-reference')
+                    .text(t('issues.y_shaped_connection.reference'));
+            },
+            entityIds: [node.id],
+            fixes: [fix]
+        });
     }
 
-    function findIssuesOnWay(way, node, context) {
-        // conditions for input node to be a possible Y-shaped connection:
-        // (1) it has edges on both side
+    // Check
+    // (1) if the edge between connNodeIdx and edgeNodeIdx is a short edge
+    // (2) if the node at connNodeIdx is a Y-shaped connection
+    // return true only if both (1) and (2) hold.
+    function isShortEdgeAndYShapedConnection(graph, way, connNodeIdx, edgeNodeIdx) {
+        // conditions for connNode to be a possible Y-shaped connection:
+        // (1) it is a connection node with edges on both side
         // (2) at least one edge is short
         // (3) the angle between the two edges are not close to 180 degrees
-        var issues = [];
-        var graph = context.graph();
-        var nids = way.nodes;
-        var i = nids.indexOf(node.id);
-        if (i > 0 && i < nids.length - 1) {
-            var prev = graph.entity(nids[i - 1]);
-            var next = graph.entity(nids[i + 1]);
-            var prevPways = getRelatedHighwayParents(prev, graph);
-            var nextPways = getRelatedHighwayParents(next, graph);
-            // cheap check first
-            if (prevPways.length >= 2 && nextPways.length >= 2) return issues;
-            var prevEdgeLen = geoSphericalDistance(node.loc, prev.loc),
-                nextEdgeLen = geoSphericalDistance(node.loc, next.loc);
-            if (prevEdgeLen >= SHORT_EDGE_THD_METERS && nextEdgeLen >= SHORT_EDGE_THD_METERS) return issues;
-            var prevEdgeGeoAngle = geoAngle(prev, node, context.projection);
-            var nextEdgeGeoAngle = geoAngle(node, next, context.projection);
-            var angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
-            var fixes = [];
-            if (prevPways.length < 2 && prevEdgeLen < SHORT_EDGE_THD_METERS &&
-                angleBetweenEdges > NON_FLAT_ANGLE_THD_DEGREES) {
-                fixes.push(createFixForNode(prev, context));
-            }
-            if (nextPways.length < 2 && nextEdgeLen < SHORT_EDGE_THD_METERS &&
-                angleBetweenEdges > NON_FLAT_ANGLE_THD_DEGREES) {
-                fixes.push(createFixForNode(next, context));
-            }
-            if (fixes.length > 0) {
-                issues.push(
-                    new validationIssue({
-                        type: type,
-                        severity: 'warning',
-                        message: t('issues.y_shaped_connection.message'),
-                        tooltip: t('issues.y_shaped_connection.tip'),
-                        entities: [node],
-                        fixes: fixes
-                    })
-                );
-            }
+
+        if (connNodeIdx <= 0 || connNodeIdx >= way.nodes.length - 1) return false;
+
+        // make sure the node at connNodeIdx is really a connection node
+        var connNid = way.nodes[connNodeIdx];
+        var connNode = graph.entity(connNid);
+        var pways = getRelatedHighwayParents(connNode, graph);
+        if (pways.length < 2) return false;
+
+        // check if the edge between connNode and edgeNode is short
+        var edgeNid = way.nodes[edgeNodeIdx];
+        var edgeNode = graph.entity(edgeNid);
+        var edgeLen = geoSphericalDistance(connNode.loc, edgeNode.loc);
+        if (edgeLen > SHORT_EDGE_THD_METERS) return false;
+
+        // check if connNode is a Y-shaped connection
+        var angleBetweenEdges = 0;
+        var otherNodeIdx = connNodeIdx < edgeNodeIdx ? connNodeIdx - 1 : connNodeIdx + 1;
+        var otherNid = way.nodes[otherNodeIdx];
+        var otherNode = graph.entity(otherNid);
+        if (otherNodeIdx < edgeNodeIdx) {
+            // node order along way: otherNode -> connNode -> edgeNode
+            var prevEdgeGeoAngle = geoAngle(otherNode, connNode, context.projection);
+            var nextEdgeGeoAngle = geoAngle(connNode, edgeNode, context.projection);
+            angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
+        } else {
+            // node order along way: edgeNode -> connNode -> otherNode
+            var prevEdgeGeoAngle = geoAngle(edgeNode, connNode, context.projection);
+            var nextEdgeGeoAngle = geoAngle(connNode, otherNode, context.projection);
+            angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
         }
 
-        return issues;
+        return angleBetweenEdges > NON_FLAT_ANGLE_THD_DEGREES;
     }
 
 
-    var validation = function(entity, context) {
-        // only do check on connection node
+    var validation = function(entity, graph) {
+        // Only flag issue on non-connection nodes on negative ways
         if (entity.type !== 'node') return [];
-        var pways = getRelatedHighwayParents(entity, context.graph());
-        if (pways.length < 2) return [];
+        var pways = getRelatedHighwayParents(entity, graph);
+        if (pways.length !== 1 || !pways[0].id.startsWith('w-')) return [];
 
-        // see if this is a "Y-shaped" connection caused by short edges on any ML road
-        for (var i = 0; i < pways.length; i++) {
-            var way = pways[i];
-            // TODO: switch to using __fbid__
-            if (!way.id.startsWith('w-')) continue;
-            var issues = findIssuesOnWay(way, entity, context);
-            if (issues.length > 0) return issues;
+        // check if either neighbor node on its parent way is a connection node
+        var issues = [];
+        var way = pways[0];
+        var idx = way.nodes.indexOf(entity.id);
+        if (idx <= 0) return issues;
+        if (isShortEdgeAndYShapedConnection(graph, way, idx - 1, idx) ||
+            isShortEdgeAndYShapedConnection(graph, way, idx + 1, idx)) {
+            issues.push(createIssueAndFixForNode(entity, context));
         }
-        return [];
+        return issues;
     };
 
 

@@ -3,6 +3,7 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "healthcare/speciality",
         "address",
         "emergency"
@@ -38,10 +39,6 @@
         "amenity": "hospital"
     },
     "addTags": {
-        "amenity": "hospital",
-        "healthcare": "hospital"
-    },
-    "removeTags": {
         "amenity": "hospital",
         "healthcare": "hospital"
     },

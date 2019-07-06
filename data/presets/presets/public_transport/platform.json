@@ -8,6 +8,10 @@
         "surface"
     ],
     "moreFields": [
+        "access",
+        "covered",
+        "indoor",
+        "layer",
         "lit",
         "wheelchair"
     ],
@@ -17,14 +21,6 @@
     ],
     "tags": {
         "public_transport": "platform"
-    },
-    "addTags": {
-        "public_transport": "platform",
-        "highway": "footway"
-    },
-    "removeTags": {
-        "public_transport": "platform",
-        "highway": "footway"
     },
     "terms": [
         "platform",

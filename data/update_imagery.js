@@ -49,7 +49,9 @@ const blacklist = {
     'OSM_Inspector-Multipolygon': true,
     'OSM_Inspector-Places': true,
     'OSM_Inspector-Routing': true,
-    'OSM_Inspector-Tagging': true
+    'OSM_Inspector-Tagging': true,
+
+    'EOXAT2018CLOUDLESS': true
 };
 
 const supportedWMSProjections = [
@@ -76,7 +78,7 @@ sources.concat(whitelist).forEach(function(source) {
         supportedWMSProjections.find(function(supportedProjection) {
             return source.available_projections.some(function(projection) {
                 return supportedProjection === projection;
-            })
+            });
         });
     if (source.type === 'wms' && supportedProjection === undefined) return;
     if (source.type === 'wms' && sources.some(function(otherSource) {

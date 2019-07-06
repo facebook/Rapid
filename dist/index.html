@@ -4,6 +4,7 @@
         <meta charset='utf-8'>
         <title>RapiD</title>
         <link rel='stylesheet' href='iD.css'>
+        <link rel='icon' type='image/png' href='data:image/png;base64,iVBORw0KGgo='>
 
         <!-- mobile devices -->
         <meta name='viewport' content='initial-scale=1.0 maximum-scale=1.0'>
@@ -17,12 +18,12 @@
     <body>
         <div id='id-container'></div>
         <script>
-            if (typeof iD == 'undefined' || !iD.Detect().support) {
+            if (typeof iD == 'undefined' || !iD.utilDetect().support) {
                 document.getElementById('id-container').innerHTML = 'Sorry, your browser is not currently supported. Please use Potlatch 2 to edit the map.';
                 document.getElementById('id-container').className = 'unsupported';
 
             } else {
-                var id = iD.Context();
+                var id = iD.coreContext();
 
                 // disable boundaries (unless we have an explicit disable_features list)
                 var q = iD.utilStringQs(window.location.hash.substring(1));

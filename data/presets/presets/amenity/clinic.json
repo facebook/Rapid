@@ -3,6 +3,7 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "healthcare/speciality",
         "address",
         "building_area",
@@ -29,10 +30,6 @@
         "amenity": "clinic"
     },
     "addTags": {
-        "amenity": "clinic",
-        "healthcare": "clinic"
-    },
-    "removeTags": {
         "amenity": "clinic",
         "healthcare": "clinic"
     },

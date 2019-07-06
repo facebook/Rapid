@@ -1,6 +1,7 @@
 {
     "icon": "maki-pitch",
     "fields": [
+        "name",
         "surface",
         "sport_racing_nonmotor",
         "lit",
@@ -8,23 +9,12 @@
         "lanes"
     ],
     "geometry": [
-        "point",
         "line",
         "area"
     ],
     "tags": {
         "leisure": "track",
         "sport": "running"
-    },
-    "addTags": {
-        "leisure": "track",
-        "sport": "running",
-        "highway": "footway"
-    },
-    "removeTags": {
-        "leisure": "track",
-        "sport": "running",
-        "highway": "footway"
     },
     "terms": [
         "athletics track",

@@ -1,5 +1,5 @@
 {
-    "icon": "maki-attraction",
+    "icon": "temaki-security_camera",
     "geometry": [
         "point",
         "vertex"
@@ -12,7 +12,10 @@
         "camera/direction",
         "surveillance/zone",
         "contact/webcam"
-     ],
+    ],
+    "moreFields": [
+        "manufacturer"
+    ],
     "terms": [
         "anpr",
         "alpr",

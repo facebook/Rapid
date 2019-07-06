@@ -1,10 +1,11 @@
 {
-    "icon": "maki-swimming",
+    "icon": "fas-swimmer",
     "fields": [
         "name",
         "access_simple",
         "supervised",
         "fee",
+        "payment_multi_fee",
         "lit"
     ],
     "moreFields": [

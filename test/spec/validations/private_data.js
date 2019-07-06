@@ -20,12 +20,12 @@ describe('iD.validations.private_data', function () {
     }
 
     function validate() {
-        var validator = iD.validationPrivateData();
+        var validator = iD.validationPrivateData(context);
         var changes = context.history().changes();
         var entities = changes.modified.concat(changes.created);
         var issues = [];
         entities.forEach(function(entity) {
-            issues = issues.concat(validator(entity, context));
+            issues = issues.concat(validator(entity, context.graph()));
         });
         return issues;
     }
@@ -65,8 +65,8 @@ describe('iD.validations.private_data', function () {
         expect(issues).to.have.lengthOf(1);
         var issue = issues[0];
         expect(issue.type).to.eql('private_data');
-        expect(issue.entities).to.have.lengthOf(1);
-        expect(issue.entities[0].id).to.eql('w-1');
+        expect(issue.entityIds).to.have.lengthOf(1);
+        expect(issue.entityIds[0]).to.eql('w-1');
     });
 
 });
