@@ -62,10 +62,6 @@
               "text": "shortcuts.browsing.display_options.map_data"
             },
             {
-              "shortcuts": ["map_data.layers.osm.key"],
-              "text": "shortcuts.browsing.display_options.osm_data_layer"
-            },
-            {
               "modifiers": ["⌃", "⌘"],
               "shortcuts": ["F", "F11"],
               "text": "shortcuts.browsing.display_options.fullscreen"
@@ -94,7 +90,7 @@
             },
             {
               "shortcuts": ["map_data.highlight_way_edits.key"],
-              "text": "shortcuts.browsing.display_options.highlight_way_edits", 
+              "text": "shortcuts.browsing.display_options.highlight_way_edits",
               "rapid": true
             }
           ]
@@ -229,14 +225,14 @@
               "modifiers": ["⌘"],
               "shortcuts": ["S"],
               "text": "shortcuts.editing.commands.save"
-            }, 
+            },
             {
               "section": "rapid",
               "text": "shortcuts.editing.rapid.title"
             },
             {
               "shortcuts": ["fb_road_picker.option_accept.key"],
-              "text": "shortcuts.editing.rapid.accept_feature", 
+              "text": "shortcuts.editing.rapid.accept_feature",
               "rapid": true
             },
             {
