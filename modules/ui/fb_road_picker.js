@@ -5,15 +5,48 @@ import { modeBrowse, modeSelect } from '../modes';
 import { serviceFbMLRoads } from '../services';
 import { svgIcon } from '../svg';
 import { tooltip } from '../util/tooltip';
+import { uiFlash } from './flash';
 import { uiTooltipHtml } from './tooltipHtml';
+import { utilStringQs } from '../util';
 
 
 export function uiFbRoadPicker(context, keybinding) {
     var _datum;
+    var ML_ROADS_LIMIT_NON_TM_MODE = 50;
+
+
+    function isAddRoadDisabled(_) {
+        // when task GPX is set in URL (TM mode), "add roads" is always enabled
+        var gpxInUrl = utilStringQs(window.location.hash).gpx;
+        if (gpxInUrl) return false;
+
+        var mlRoadsCount = 0;
+        var entities = context.graph().entities;
+        for (var eid in entities) {
+            var e = entities[eid];
+            if (eid.startsWith('w-') && e && e.tags['source'] === 'digitalglobe') {
+                mlRoadsCount += 1;
+            }
+        }
+        return mlRoadsCount >= ML_ROADS_LIMIT_NON_TM_MODE;
+    }
 
 
     function onAcceptRoad() {
         if (_datum) {
+            if (isAddRoadDisabled()) {
+                var flash = uiFlash()
+                    .duration(4000)
+                    .iconName('#iD-icon-rapid-plus-circle')
+                    .iconClass('operation disabled')
+                    .text(t(
+                        'fb_road_picker.option_accept.disabled_flash',
+                        {n: ML_ROADS_LIMIT_NON_TM_MODE}
+                    ));
+                flash();
+                return;
+            }
+
             // In place of a string annotation, this introduces an "object-style"
             // annotation, where "type" and "description" are standard keys,
             // and there may be additional properties. Note that this will be
@@ -64,6 +97,10 @@ export function uiFbRoadPicker(context, keybinding) {
             .append('button')
             .attr('class', 'preset-list-button')
             .on('click', p.onClick);
+
+        if (p.disabledFunction) {
+            presetButton = presetButton.classed('disabled', p.disabledFunction);
+        }
 
         if (p.tooltip) {
             presetButton = presetButton.call(p.tooltip);
@@ -154,10 +191,19 @@ export function uiFbRoadPicker(context, keybinding) {
             tooltip: tooltip()
                 .placement('bottom')
                 .html(true)
-                .title(uiTooltipHtml(
-                    t('fb_road_picker.option_accept.tooltip'),
-                    t('fb_road_picker.option_accept.key'))),
-            onClick: onAcceptRoad
+                .title(function() {
+                    return isAddRoadDisabled()
+                        ? uiTooltipHtml(t(
+                              'fb_road_picker.option_accept.disabled',
+                              {n: ML_ROADS_LIMIT_NON_TM_MODE}
+                          ))
+                        : uiTooltipHtml(
+                              t('fb_road_picker.option_accept.tooltip'),
+                              t('fb_road_picker.option_accept.key')
+                          );
+                }),
+            onClick: onAcceptRoad,
+            disabledFunction: isAddRoadDisabled
         });
 
         presetItem(bodyEnter, {

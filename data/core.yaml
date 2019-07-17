@@ -418,6 +418,8 @@ en:
       description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
       annotation: Added a Map With AI feature.
       tooltip: Add this feature to the map to begin editing.
+      disabled: To help improve OSM data quality, we only allow {n} ML roads to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more roads after saving.
+      disabled_flash: To help improve OSM data quality, we only allow {n} ML roads to be added in each mapping session.
       key: A
     option_reject:
       label: Remove This Feature
