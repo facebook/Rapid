@@ -192,7 +192,7 @@ export function uiInit(context) {
             .append('a')
             .attr('target', '_blank')
             .attr('tabindex', -1)
-            .attr('href', 'https://github.com/openstreetmap/iD/issues')
+            .attr('href', 'https://github.com/facebookincubator/RapiD/issues')
             .call(svgIcon('#iD-icon-bug', 'light'))
             .call(tooltip().title(t('report_a_bug')).placement('top'));
 
