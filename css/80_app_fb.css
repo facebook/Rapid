@@ -56,3 +56,41 @@ button.fb-roads-toggle.layer-off use {
 .fb-road-picker .preset-list-item .tag-reference-body.shown {
     display: block;
 }
+
+.modal-rapid .fillL{
+    background: rgba(0, 0, 0, 0.5); 
+    color: white;
+}
+
+.modal-rapid .modal-actions button {
+    text-align: center;
+    background: black; 
+    color: white;
+    border: 1px solid white;
+    width: 100%;
+    margin: 20px;
+    border-radius: 5px; 
+    font-size: 14px; 
+    font-weight: 500; 
+    height: 160px; 
+    box-sizing: border-box; 
+}
+
+.modal-rapid .modal-actions button.rapid-login-to-osm {
+    background: white; 
+    color: black; 
+    border: black;
+    height: 3rem;  
+}
+
+.modal-rapid .modal-actions button.rapid-explore {
+    height: 3rem;  
+}
+
+.modal-rapid .modal-section {
+    border: 0px; 
+}
+
+.modal-rapid p {
+    font-size: 14px; 
+}

@@ -8,6 +8,7 @@ import { localize } from './helper';
 
 import { coreGraph } from '../../core/graph';
 import { dataIntroGraph } from '../../../data/intro_graph.json';
+import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
@@ -22,6 +23,7 @@ import { uiIntroArea } from './area';
 import { uiIntroLine } from './line';
 import { uiIntroBuilding } from './building';
 import { uiIntroStartEditing } from './start_editing';
+import { uiIntroRapid } from './rapid';
 
 
 var chapterUi = {
@@ -31,6 +33,7 @@ var chapterUi = {
     area: uiIntroArea,
     line: uiIntroLine,
     building: uiIntroBuilding,
+    rapid: uiIntroRapid, 
     startEditing: uiIntroStartEditing
 };
 
@@ -41,18 +44,25 @@ var chapterFlow = [
     'area',
     'line',
     'building',
+    'rapid',
     'startEditing'
 ];
 
 
-export function uiIntro(context) {
+export function uiIntro(context, skipToRapid) {
     var INTRO_IMAGERY = 'EsriWorldImageryClarity';
     var introGraph = {};
+    var rapidGraph = {}; 
     var _currChapter;
 
     // create entities for intro graph and localize names
     for (var id in dataIntroGraph) {
         introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
+    }
+
+    // create entities for RapiD graph and localize names
+    for (var id in dataIntroRapidGraph) {
+        rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
     }
 
 
@@ -68,9 +78,12 @@ export function uiIntro(context) {
         var background = context.background().baseLayerSource();
         var overlays = context.background().overlayLayerSources();
         var opacity = d3_selectAll('#map .layer-background').style('opacity');
+        var fbRoadsOpacity = d3_selectAll('#map .layer-fb-roads').style('opacity');
         var caches = osm && osm.caches();
         var baseEntities = context.history().graph().base().entities;
         var countryCode = services.geocoder.countryCode;
+        var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities; 
+        var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
 
         // Show sidebar and disable the sidebar resizing button
         // (this needs to be before `context.inIntro(true)`)
@@ -83,7 +96,10 @@ export function uiIntro(context) {
         // Load semi-real data used in intro
         if (osm) { osm.toggle(false).reset(); }
         context.history().reset();
-        context.history().merge(Object.values(coreGraph().load(introGraph).entities));
+
+        var loadedGraph = coreGraph().load(introGraph); 
+        var graphEntities = Object.values(loadedGraph.entities);
+        context.history().merge(graphEntities);
         context.history().checkpoint('initial');
 
         // Setup imagery
@@ -97,12 +113,12 @@ export function uiIntro(context) {
             context.background().toggleOverlayLayer(d);
         });
 
-        // Setup data layers (only OSM)
+        // Setup data layers (only OSM & fb-roads)
         var layers = context.layers();
         layers.all().forEach(function(item) {
             // if the layer has the function `enabled`
             if (typeof item.layer.enabled === 'function') {
-                item.layer.enabled(item.id === 'osm');
+                item.layer.enabled(item.id === 'osm' || item.id === 'fb-roads');
             }
         });
 
@@ -111,8 +127,14 @@ export function uiIntro(context) {
             callback(null, t('intro.graph.countrycode'));
         };
 
+        if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset(); 
+
+        var coreGraphEntities = coreGraph().load(rapidGraph).entities; 
+        services.fbMLRoads.merge(Object.values(coreGraphEntities));
+        services.fbMLRoads.checkpoint('initial'); 
 
         d3_selectAll('#map .layer-background').style('opacity', 1);
+        d3_selectAll('#map .layer-fb-roads').style('opacity', 1);
 
         var curtain = uiCurtain();
         selection.call(curtain);
@@ -160,9 +182,12 @@ export function uiIntro(context) {
             curtain.remove();
             navwrap.remove();
             d3_selectAll('#map .layer-background').style('opacity', opacity);
+            d3_selectAll('#map .layer-fb-roads').style('opacity', fbRoadsOpacity);
             d3_selectAll('button.sidebar-toggle').classed('disabled', false);
             if (osm) { osm.toggle(true).reset().caches(caches); }
             context.history().reset().merge(Object.values(baseEntities));
+            if (services.fbMLRoads) {services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache);}
+            services.fbMLRoads.reset().merge(Object.values(fbMLRoadsEntities));
             context.background().baseLayerSource(background);
             overlays.forEach(function(d) { context.background().toggleOverlayLayer(d); });
             if (history) { context.history().fromJSON(history, false); }
@@ -203,8 +228,7 @@ export function uiIntro(context) {
             .attr('class', 'status')
             .call(svgIcon((textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-        enterChapter(chapters[0]);
-
+        enterChapter(chapters[skipToRapid ? 6 : 0]);
 
         function enterChapter(newChapter) {
             if (_currChapter) { _currChapter.exit(); }

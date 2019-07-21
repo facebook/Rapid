@@ -13,11 +13,13 @@ var TILEZOOM = 16;
 var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
 
+var _checkpoints = {};
 var _graph;
 var _tileCache;
 var _tree;
 var _deferredFBRoadsParsing = new Set();
 
+var _off; 
 
 function abortRequest(i) {
     i.abort();
@@ -158,8 +160,15 @@ export default {
         this.event = utilRebind(this, dispatch, 'on');
     },
 
+    // save the current history state
+    checkpoint: function(key) {
+        _checkpoints[key] = {
+            graph: _graph, 
+        };
+        return this;
+    },
 
-    reset: function() {
+    reset: function(key) {
         Array.from(_deferredFBRoadsParsing).forEach(function(handle) {
             window.cancelIdleCallback(handle);
             _deferredFBRoadsParsing.delete(handle);
@@ -167,9 +176,16 @@ export default {
         if (_tileCache && _tileCache.inflight) {
             _forEach(_tileCache.inflight, abortRequest);
         }
-        _graph = coreGraph();
-        _tree = coreTree(_graph);
-        _tileCache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        if (key !== undefined && _checkpoints.hasOwnProperty(key)) {
+            _graph = _checkpoints[key].graph;
+        }
+        else {
+            _graph = coreGraph();
+            _tree = coreTree(_graph);
+            _tileCache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };    
+        }
+
+        return this; 
     },
 
 
@@ -184,7 +200,41 @@ export default {
     },
 
 
+    merge: function(entities) {
+        _graph.rebase(entities, [_graph], false);
+        _tree.rebase(entities, false);
+    },
+
+
+    cache: function (obj) {
+        function cloneDeep(source) {
+            return JSON.parse(JSON.stringify(source));
+        }
+
+        if (!arguments.length) {
+            return {
+                tile: cloneDeep(_tileCache)
+            };
+        }
+
+        // access cache directly for testing 
+        if (obj === 'get') {
+            return _tileCache;
+        }
+
+        _tileCache = obj; 
+    },
+
+
+    toggle: function(val) {
+        _off = !val;
+        return this;
+    },
+
+
     loadTiles: function(projection, taskExtent) {
+        if (_off) return; 
+
         var tiles = tiler.getTiles(projection);
 
         // abort inflight requests that are no longer needed

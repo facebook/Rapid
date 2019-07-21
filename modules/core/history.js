@@ -372,6 +372,7 @@ export function coreHistory(context) {
                 _checkpoints = {};
             }
             dispatch.call('change');
+            dispatch.call('restore');
             return history;
         },
 
@@ -687,6 +688,7 @@ export function coreHistory(context) {
 
             var json = context.storage(getKey('saved_history'));
             if (json) history.fromJSON(json, true);
+            dispatch.call('restore');
         },
 
 

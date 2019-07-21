@@ -75,6 +75,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
 
     function onHistoryRestore() {
+        _actioned = new Set(); 
         context.history().peekAllAnnotations().forEach(function (annotation) {
             if (isFbRoadsAnnotation(annotation)) {
                 _actioned.add(annotation.id);

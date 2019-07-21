@@ -35,6 +35,7 @@ import { uiShortcuts } from './shortcuts';
 import { uiSidebar } from './sidebar';
 import { uiSpinner } from './spinner';
 import { uiSplash } from './splash';
+import { uiSplashRapid } from './splash_rapid';
 import { uiStatus } from './status';
 import { uiTopToolbar } from './top_toolbar';
 import { uiVersion } from './version';
@@ -299,9 +300,12 @@ export function uiInit(context) {
 
         if (!_initCounter++) {
             if (!hash.startWalkthrough) {
-                context.container()
-                    .call(uiSplash(context))
-                    .call(uiRestore(context));
+                var osm = context.connection();
+                if (osm.authenticated()) {
+                    context.container()
+                        .call(uiSplashRapid(context))
+                        .call(uiRestore(context));               
+                }
             }
 
             context.container()

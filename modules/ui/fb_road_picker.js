@@ -8,6 +8,7 @@ import { tooltip } from '../util/tooltip';
 import { uiFlash } from './flash';
 import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
+import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
 
 export function uiFbRoadPicker(context, keybinding) {
@@ -59,6 +60,17 @@ export function uiFbRoadPicker(context, keybinding) {
             };
             context.perform(actionStitchFbRoad(_datum.id, serviceFbMLRoads.graph()), annotation);
             context.enter(modeSelect(context, [_datum.id]));
+    
+            if (context.inIntro()) return;
+            
+            if (sessionStorage.getItem('acknowledgedLogin') === 'true') return;
+            sessionStorage.setItem('acknowledgedLogin', 'true'); 
+            var osm = context.connection();
+
+            if (!osm.authenticated()) {
+                context.container()
+                    .call(uiRapidFirstEdit(context));
+            }
         }
     }
 
@@ -77,7 +89,7 @@ export function uiFbRoadPicker(context, keybinding) {
     }
 
 
-    function presetItem(selection, p) {
+    function presetItem(selection, p, presetButtonClasses) {
         var presetItem = selection
             .append('div')
             .attr('class', 'preset-list-item');
@@ -95,7 +107,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var presetButton = presetWrap
             .append('button')
-            .attr('class', 'preset-list-button')
+            .attr('class', 'preset-list-button ' + presetButtonClasses)
             .on('click', p.onClick);
 
         if (p.disabledFunction) {
@@ -204,7 +216,7 @@ export function uiFbRoadPicker(context, keybinding) {
                 }),
             onClick: onAcceptRoad,
             disabledFunction: isAddRoadDisabled
-        });
+        }, 'fb-roads-accept');
 
         presetItem(bodyEnter, {
             iconName: '#iD-icon-rapid-minus-circle',
@@ -217,7 +229,7 @@ export function uiFbRoadPicker(context, keybinding) {
                     t('fb_road_picker.option_reject.tooltip'),
                     t('fb_road_picker.option_reject.key'))),
             onClick: onRejectRoad
-        });
+        }, 'fb-roads-reject');
 
         // Update body
         body = body
