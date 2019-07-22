@@ -11,7 +11,7 @@ export function validationCloseNodes(context) {
 
     var pointThresholdMeters = 0.2;
 
-    var defaultWayThresholdMeters = 0.2;
+    var defaultWayThresholdMeters = 2;
     // expect some features to be mapped with higher levels of detail
     var indoorThresholdMeters = 0.01;
     var buildingThresholdMeters = 0.05;
