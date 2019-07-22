@@ -992,7 +992,7 @@
             "login_with_osm": "Log in with OSM"
         },
         "version": {
-            "whats_new": "What's new in iD {version}"
+            "whats_new": "What's new in RapiD {version}"
         },
         "tag_reference": {
             "description": "Description",
@@ -1412,14 +1412,14 @@
             "key": "H",
             "help": {
                 "title": "Help",
-                "welcome": "Welcome to the iD editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser.",
+                "welcome": "Welcome to the RapiD editor for [OpenStreetMap](https://www.openstreetmap.org/). RapiD is an enhanced version of the [iD editor](https://github.com/openstreetmap/iD). With this editor you can update OpenStreetMap right from your web browser.",
                 "open_data_h": "Open Data",
                 "open_data": "Edits that you make on this map will be visible to everyone who uses OpenStreetMap. Your edits can be based on personal knowledge, on-the-ground surveying, or imagery collected from aerial or street level photos. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright).",
                 "before_start_h": "Before you start",
-                "before_start": "You should be familiar with OpenStreetMap and this editor before you start editing. iD contains a walkthrough to teach you the basics of editing OpenStreetMap. Click \"Start the Walkthrough\" on this screen to take the tutorial - it takes only about 15 minutes.",
+                "before_start": "You should be familiar with OpenStreetMap and this editor before you start editing. RapiD contains a walkthrough to teach you the basics of editing OpenStreetMap. Click \"Start the Walkthrough\" on this screen to take the tutorial - it takes only about 15 minutes.",
                 "open_source_h": "Open Source",
-                "open_source": "The iD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/openstreetmap/iD).",
-                "open_source_help": "You can help iD by [translating](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/openstreetmap/iD/issues)."
+                "open_source": "The RapiD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD).",
+                "open_source_help": "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
             },
             "overview": {
                 "title": "Overview",
@@ -1442,11 +1442,11 @@
                 "undo_redo": "Your edits are stored locally in your browser until you choose to save them to the OpenStreetMap server. You can undo edits by clicking the {undo} **Undo** button, and redo them by clicking the {redo} **Redo** button.",
                 "save_h": "Save",
                 "save": "Click {save} **Save** to finish your edits and send them to OpenStreetMap. You should remember to save your work frequently!",
-                "save_validation": "On the save screen, you'll have a chance to review what you've done. iD will also perform some basic checks for missing data and may offer helpful suggestions and warnings if something doesn't seem right.",
+                "save_validation": "On the save screen, you'll have a chance to review what you've done. RapiD will also perform some basic checks for missing data and may offer helpful suggestions and warnings if something doesn't seem right.",
                 "upload_h": "Upload",
                 "upload": "Before uploading your changes you must enter a [changeset comment](https://wiki.openstreetmap.org/wiki/Good_changeset_comments). Then click **Upload** to send your changes to OpenStreetMap, where they will be merged into the map and publicly visible to everyone.",
                 "backups_h": "Automatic Backups",
-                "backups": "If you can't finish your edits in one sitting, for example if your computer crashes or you close the browser tab, your edits are still saved in your browser's storage. You can come back later (on the same browser and computer), and iD will offer to restore your work.",
+                "backups": "If you can't finish your edits in one sitting, for example if your computer crashes or you close the browser tab, your edits are still saved in your browser's storage. You can come back later (on the same browser and computer), and RapiD will offer to restore your work.",
                 "keyboard_h": "Keyboard Shortcuts",
                 "keyboard": "You can view a list of keyboard shortcuts by pressing the `?` key."
             },
@@ -1496,7 +1496,7 @@
                 "disconnect_line_command": "To disconnect a road from another feature, {rightclick} right-click the connecting node and select the {disconnect} **Disconnect** command from the editing menu.",
                 "move_line_h": "Moving Lines",
                 "move_line_command": "To move an entire line, {rightclick} right-click the line and select the {move} **Move** command from the editing menu. Then move the mouse, and {leftclick} left-click to place the line in a new location.",
-                "move_line_connected": "Lines that are connected to other features will stay connected as you move the line to a new location. iD may prevent you from moving a line across another connected line.",
+                "move_line_connected": "Lines that are connected to other features will stay connected as you move the line to a new location. RapiD may prevent you from moving a line across another connected line.",
                 "delete_line_h": "Deleting Lines",
                 "delete_line": "If a line is entirely incorrect, for example a road that doesn't exist in the real world, it's OK to delete it. Be careful when deleting features: the background imagery you are using might be outdated, and a road that looks wrong could simply be newly built.",
                 "delete_line_command": "To delete a line, {rightclick} right-click on the line to select it and show the edit menu, then use the {delete} **Delete** command."
@@ -1527,16 +1527,16 @@
                 "edit_relation_add": "To add a feature to a relation, select the feature, then click the {plus} add button in the \"All relations\" section of the feature editor. You can choose from a list of nearby relations, or choose the \"New relation...\" option.",
                 "edit_relation_delete": "You can also click the {delete} **Delete** button to remove the selected feature from the relation. If you remove all of the members from a relation, the relation will be deleted automatically.",
                 "maintain_relation_h": "Maintaining Relations",
-                "maintain_relation": "For the most part, iD will maintain relations automatically as you edit. You should take care when replacing features that might be members of relations. For example if you delete a section of road and draw a new section of road to replace it, you should add the new section to the same relations (routes, turn restrictions, etc.) as the original.",
+                "maintain_relation": "For the most part, RapiD will maintain relations automatically as you edit. You should take care when replacing features that might be members of relations. For example if you delete a section of road and draw a new section of road to replace it, you should add the new section to the same relations (routes, turn restrictions, etc.) as the original.",
                 "relation_types_h": "Relation Types",
                 "multipolygon_h": "Multipolygons",
                 "multipolygon": "A *multipolygon* relation is a group of one or more *outer* features and one or more inner features. The outer features define the outer edges of the multipolygon, and the inner features define sub-areas or holes cut out from the inside of the multipolygon.",
                 "multipolygon_create": "To create a multipolygon, for example a building with a hole in it, draw the outer edge as an area and the inner edge as a line or different kind of area. Then `{shift}`+{leftclick} left-click to select both features, {rightclick} right-click to show the edit menu, and select the {merge} **Merge** command.",
-                "multipolygon_merge": "Merging several lines or areas will create a new multipolygon relation with all selected areas as members. iD will choose the inner and outer roles automatically, based on which features are contained inside other features.",
+                "multipolygon_merge": "Merging several lines or areas will create a new multipolygon relation with all selected areas as members. RapiD will choose the inner and outer roles automatically, based on which features are contained inside other features.",
                 "turn_restriction_h": "Turn restrictions",
                 "turn_restriction": "A *turn restriction* relation is a group of several road segments in an intersection. Turn restrictions consist of a *from* road, *via* node or roads, and a *to* road.",
                 "turn_restriction_field": "To edit turn restrictions, select a junction node where two or more roads meet. The feature editor will display a special \"Turn Restrictions\" field containing a model of the intersection.",
-                "turn_restriction_editing": "In the \"Turn Restrictions\" field, click to select a \"from\" road, and see whether turns are allowed or restricted to any of the \"to\" roads. You can click on the turn icons to toggle them between allowed and restricted. iD will create relations automatically and set the from, via, and to roles based on your choices.",
+                "turn_restriction_editing": "In the \"Turn Restrictions\" field, click to select a \"from\" road, and see whether turns are allowed or restricted to any of the \"to\" roads. You can click on the turn icons to toggle them between allowed and restricted. RapiD will create relations automatically and set the from, via, and to roles based on your choices.",
                 "route_h": "Routes",
                 "route": "A *route* relation is a group of one or more line features that together form a route network, like a bus route, train route, or highway route.",
                 "route_add": "To add a feature to a route relation, select the feature and scroll down to the \"All relations\" section of the feature editor, then click the {plus} add button to add this feature to a nearby existing relation or a new relation.",
@@ -1567,7 +1567,7 @@
             },
             "streetlevel": {
                 "title": "Street Level Photos",
-                "intro": "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The iD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [OpenStreetCam](https://www.openstreetcam.org).",
+                "intro": "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The RapiD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [OpenStreetCam](https://www.openstreetcam.org).",
                 "using_h": "Using Street Level Photos",
                 "using": "To use street level photos for mapping, click the {data} **Map data** panel on the side of the map to enable or disable the available photo layers.",
                 "photos": "When enabled, the photo layer displays a line along the sequence of photos. At higher zoom levels, a circle marks at each photo location, and at even higher zoom levels, a cone indicates the direction the camera was facing when the photo was taken.",
@@ -1586,7 +1586,7 @@
                 "title": "Quality Assurance",
                 "intro": "*Quality Assurance* (Q/A) tools can find improper tags, disconnected roads, and other issues with OpenStreetMap, which mappers can then fix. To view existing Q/A issues, click the {data} **Map data** panel to enable a specific Q/A layer.",
                 "tools_h": "Tools",
-                "tools": "The following tools are currently supported: [KeepRight](https://www.keepright.at/) and [ImproveOSM](https://improveosm.org/en/). Expect iD to support [Osmose](https://osmose.openstreetmap.fr/) and more Q/A tools in the future.",
+                "tools": "The following tools are currently supported: [KeepRight](https://www.keepright.at/) and [ImproveOSM](https://improveosm.org/en/). Expect RapiD to support [Osmose](https://osmose.openstreetmap.fr/) and more Q/A tools in the future.",
                 "issues_h": "Handling Issues",
                 "issues": "Handling Q/A issues is similar to handling notes. Click on a marker to view the issue details in the sidebar. Each tool has its own capabilities, but generally you can comment and/or close an issue."
             },

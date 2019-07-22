@@ -262,7 +262,7 @@ export function uiHelp(context) {
         shift: uiCmd.display('⇧'),
         alt: uiCmd.display('⌥'),
         return: uiCmd.display('↵'),
-        version: context.version
+        version: context.rapidContext().version
     };
 
     // For each section, squash all the texts into a single markdown document

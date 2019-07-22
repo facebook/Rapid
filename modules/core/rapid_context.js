@@ -5,7 +5,7 @@ import toGeoJSON from '@mapbox/togeojson';
 
 export function coreRapidContext(context) {
     var rapidContext = {};
-    rapidContext.version = '0.9.0';
+    rapidContext.version = '1.0.0';
 
     var taskExtent;
     rapidContext.setTaskExtentByGpxData = function(gpxData) {
