@@ -1,5 +1,6 @@
 import { t } from '../util/locale';
 import { modeBrowse } from '../modes';
+import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import { select as d3_select } from 'd3-selection'; 
 import { uiSplashRapid } from './splash_rapid'; 
@@ -17,21 +18,13 @@ export function uiRapidFirstEdit(context) {
             .append('div')
             .attr('class', 'fillL');
 
-        var rapidIcon = d3_select(document.createElement('div')); 
-            rapidIcon
-                .append('svg')
-                .attr('class', 'icon logo-rapid')
-                .append('use')
-                .attr('xlink:href', '#iD-logo-rapid')
-                .attr('fill', 'white'); 
-
         firstEditModal
             .append('div')
             .attr('class','modal-section')
             .append('h3')
             .html(t('rapid_first_edit.nice',
             {
-                rapidicon: rapidIcon.html(),
+                rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
             }));
             
         firstEditModal

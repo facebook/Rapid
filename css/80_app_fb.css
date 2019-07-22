@@ -91,6 +91,10 @@ button.fb-roads-toggle.layer-off use {
     border: 0px; 
 }
 
+.modal-rapid .modal-section .logo-rapid {
+    fill: white;
+}
+
 .modal-rapid p {
     font-size: 14px; 
 }

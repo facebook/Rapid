@@ -1,5 +1,6 @@
 import { t } from '../util/locale';
 import { uiIntro } from './intro';
+import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import { select as d3_select } from 'd3-selection'; 
 
@@ -25,37 +26,15 @@ export function uiSplashRapid(context) {
             .attr('class','modal-section')
             .append('h3').text(t('rapidsplash.welcome'));
 
-        var rapidIcon = d3_select(document.createElement('div')); 
-        rapidIcon
-            .append('svg')
-            .attr('class', 'icon logo-rapid')
-            .append('use')
-            .attr('xlink:href', '#iD-logo-rapid')
-            .attr('fill', 'white'); 
-
-        var walkThroughIcon = d3_select(document.createElement('div')); 
-        walkThroughIcon
-            .append('svg')
-            .attr('class', 'icon logo-walkthrough')
-            .append('use')
-            .attr('xlink:href', '#iD-logo-walkthrough');
-    
-        var editIcon = d3_select(document.createElement('div')); 
-        editIcon
-            .append('svg')
-            .attr('class', 'icon logo-features')
-            .append('use')
-            .attr('xlink:href', '#iD-logo-features');
-
         var welcomeSection = introModal
             .append('div')
             .attr('class','modal-section')
             .append('p')
             .html(t('rapidsplash.text', 
                 {
-                    rapidicon: rapidIcon.html(),
-                    walkthrough: walkThroughIcon.html(), 
-                    edit: editIcon.html()
+                    rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
+                    walkthrough: icon('#iD-logo-walkthrough', 'logo-walkthrough'),
+                    edit: icon('#iD-logo-features', 'logo-features')
                 }));
             
         var buttonWrap = introModal
