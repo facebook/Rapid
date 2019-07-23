@@ -301,10 +301,12 @@ export function uiInit(context) {
         if (!_initCounter++) {
             if (!hash.startWalkthrough) {
                 var osm = context.connection();
-                if (osm.authenticated()) {
+                if (context.history().lock() && context.history().restorableChanges()) {
+                    context.container()
+                        .call(uiRestore(context));
+                } else if (osm.authenticated()) {
                     context.container()
                         .call(uiSplashRapid(context))
-                        .call(uiRestore(context));               
                 }
             }
 
