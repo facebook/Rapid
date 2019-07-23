@@ -1,4 +1,4 @@
-# 1.0.0
+# [1.0.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.0)
 ##### 2019-Jul-22
 
 #### :tada: New Features
