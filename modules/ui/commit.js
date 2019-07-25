@@ -69,7 +69,7 @@ export function uiCommit(context) {
             tags = {
                 comment: context.storage('comment') || '',
                 created_by: ('RapiD ' + context.rapidContext().version).substr(0, 255),
-                // host: detected.host.substr(0, 255),
+                host: detected.host.substr(0, 255),
                 locale: detected.locale.substr(0, 255)
             };
 
@@ -94,7 +94,7 @@ export function uiCommit(context) {
                 if (sources.indexOf('streetlevel imagery') === -1) {
                     sources.push('streetlevel imagery');
                 }
-                
+
                 // add the photo overlays used during editing as sources
                 photoOverlaysUsed.forEach(function(photoOverlay) {
                     if (sources.indexOf(photoOverlay) === -1) {
