@@ -16,7 +16,7 @@ export function uiFbRoadPicker(context, keybinding) {
     var ML_ROADS_LIMIT_NON_TM_MODE = 50;
 
 
-    function isAddRoadDisabled(_) {
+    function isAddRoadDisabled() {
         // when task GPX is set in URL (TM mode), "add roads" is always enabled
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
         if (gpxInUrl) return false;
@@ -25,7 +25,7 @@ export function uiFbRoadPicker(context, keybinding) {
         var entities = context.graph().entities;
         for (var eid in entities) {
             var e = entities[eid];
-            if (eid.startsWith('w-') && e && e.tags['source'] === 'digitalglobe') {
+            if (eid.startsWith('w-') && e && e.tags.source === 'digitalglobe') {
                 mlRoadsCount += 1;
             }
         }
@@ -60,11 +60,11 @@ export function uiFbRoadPicker(context, keybinding) {
             };
             context.perform(actionStitchFbRoad(_datum.id, serviceFbMLRoads.graph()), annotation);
             context.enter(modeSelect(context, [_datum.id]));
-    
+
             if (context.inIntro()) return;
-            
+
             if (sessionStorage.getItem('acknowledgedLogin') === 'true') return;
-            sessionStorage.setItem('acknowledgedLogin', 'true'); 
+            sessionStorage.setItem('acknowledgedLogin', 'true');
             var osm = context.connection();
 
             if (!osm.authenticated()) {

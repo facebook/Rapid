@@ -75,7 +75,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
 
     function onHistoryRestore() {
-        _actioned = new Set(); 
+        _actioned = new Set();
         context.history().peekAllAnnotations().forEach(function (annotation) {
             if (isFbRoadsAnnotation(annotation)) {
                 _actioned.add(annotation.id);
@@ -150,7 +150,6 @@ export function svgFbRoads(projection, context, dispatch) {
         if (!surface || surface.empty() || waitingForTaskExtent) return;  // not ready to draw yet, starting up
 
         var roadsService = getService();
-        var graph = context.graph();
         var roadsGraph = roadsService && roadsService.graph();
         var getPath = svgPath(projection, roadsGraph);
         var getTransform = svgPointTransform(projection);

@@ -19,7 +19,7 @@ var _tileCache;
 var _tree;
 var _deferredFBRoadsParsing = new Set();
 
-var _off; 
+var _off;
 
 function abortRequest(i) {
     i.abort();
@@ -163,7 +163,7 @@ export default {
     // save the current history state
     checkpoint: function(key) {
         _checkpoints[key] = {
-            graph: _graph, 
+            graph: _graph,
         };
         return this;
     },
@@ -182,10 +182,10 @@ export default {
         else {
             _graph = coreGraph();
             _tree = coreTree(_graph);
-            _tileCache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };    
+            _tileCache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         }
 
-        return this; 
+        return this;
     },
 
 
@@ -217,12 +217,12 @@ export default {
             };
         }
 
-        // access cache directly for testing 
+        // access cache directly for testing
         if (obj === 'get') {
             return _tileCache;
         }
 
-        _tileCache = obj; 
+        _tileCache = obj;
     },
 
 
@@ -233,7 +233,7 @@ export default {
 
 
     loadTiles: function(projection, taskExtent) {
-        if (_off) return; 
+        if (_off) return;
 
         var tiles = tiler.getTiles(projection);
 
@@ -262,7 +262,7 @@ export default {
                         dispatch.call('loadedData');
                     });
                 })
-                .catch(function(err) {});
+                .catch(function() {});
             _tileCache.inflight[tile.id] = controller;
         });
     }

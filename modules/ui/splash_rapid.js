@@ -2,7 +2,7 @@ import { t } from '../util/locale';
 import { uiIntro } from './intro';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { select as d3_select } from 'd3-selection'; 
+
 
 export function uiSplashRapid(context) {
 
@@ -26,24 +26,24 @@ export function uiSplashRapid(context) {
             .attr('class','modal-section')
             .append('h3').text(t('rapidsplash.welcome'));
 
-        var welcomeSection = introModal
+        introModal
             .append('div')
             .attr('class','modal-section')
             .append('p')
-            .html(t('rapidsplash.text', 
+            .html(t('rapidsplash.text',
                 {
                     rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
                     walkthrough: icon('#iD-logo-walkthrough', 'logo-walkthrough'),
                     edit: icon('#iD-logo-features', 'logo-features')
                 }));
-            
+
         var buttonWrap = introModal
             .append('div')
             .attr('class', 'modal-actions');
 
         var walkthrough = buttonWrap
             .append('button')
-            .attr('class', 'walkthrough')            
+            .attr('class', 'walkthrough')
             .on('click', function() {
                 context.container().call(uiIntro(context, false));
                 modalSelection.close();
@@ -61,18 +61,18 @@ export function uiSplashRapid(context) {
 
         var rapidWalkthrough = buttonWrap
             .append('button')
-            .attr('class', 'rapid-walkthrough') 
+            .attr('class', 'rapid-walkthrough')
             .on('click', function() {
                 context.container().call(uiIntro(context, true));
                 modalSelection.close();
             });
-            
+
         rapidWalkthrough
             .append('svg')
             .attr('class', 'logo logo-rapid')
             .append('use')
             .attr('xlink:href', '#iD-logo-rapid')
-            .attr('fill', 'white'); 
+            .attr('fill', 'white');
 
         rapidWalkthrough
             .append('div')

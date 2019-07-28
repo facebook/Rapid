@@ -8,18 +8,17 @@ import {
 import { t } from '../../util/locale';
 import { modeBrowse} from '../../modes';
 import { utilRebind } from '../../util/rebind';
-import { icon, pad, selectMenuItem, transitionTime } from './helper';
+import { icon, pad, transitionTime } from './helper';
 import { services } from '../../services';
-import { svgLayers } from '../../svg/layers';
 
 
 export function uiIntroRapid(context, reveal) {
     var dispatch = d3_dispatch('done');
     var timeouts = [];
-    
-    var tulipLaneStart = [-85.6297512, 41.9561476]; 
+
+    var tulipLaneStart = [-85.6297512, 41.9561476];
     var tulipLaneMid = [-85.6281089, 41.9561288];
-    var tulipLaneEnd = [-85.6272670, 41.9558780]; 
+    var tulipLaneEnd = [-85.6272670, 41.9558780];
     var chapter = {
         title: 'intro.rapid.title'
     };
@@ -34,18 +33,18 @@ export function uiIntroRapid(context, reveal) {
         var padding = 70 * Math.pow(2, context.map().zoom() -18);
         var box = pad(tulipLaneEnd, padding, context);
         box.height = box.height + 65;
-        box.width = box.width + 65; 
+        box.width = box.width + 65;
 
-        return box; 
+        return box;
     }
 
     function tulipLaneBoundingBox(){
         var padding = 70 * Math.pow(2, context.map().zoom() -18);
         var box = pad(tulipLaneStart, padding, context);
         box.height = box.height + 65;
-        box.width = box.width + 600; 
+        box.width = box.width + 600;
 
-        return box; 
+        return box;
     }
 
 
@@ -69,11 +68,11 @@ export function uiIntroRapid(context, reveal) {
 
     function welcome() {
         if (fbRoadsEnabled(context)) {
-            fbRoadsToggle(context); 
+            fbRoadsToggle(context);
         }
         context.enter(modeBrowse(context));
         context.history().reset('initial');
-        services.fbMLRoads.reset('initial'); 
+        services.fbMLRoads.reset('initial');
         reveal('.intro-nav-wrap .chapter-rapid',
             t('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
             { buttonText: t('intro.ok'), buttonCallback: showHideRoads }
@@ -81,17 +80,19 @@ export function uiIntroRapid(context, reveal) {
     }
 
 
-    function showHideRoads() {        
+    function showHideRoads() {
         var msec = transitionTime(tulipLaneMid, context.map().center());
         if (msec) { reveal(null, null, { duration: 0 }); }
         context.map().centerZoomEase(tulipLaneMid, 18.5, msec);
-        
+
         timeout(function() {
-            var tooltip = reveal('button.fb-roads-toggle',
-                t('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') }));
+            reveal(
+                'button.fb-roads-toggle',
+                t('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') })
+            );
 
             var button = d3_select('.fb-roads-toggle');
-    
+
             button.on('click.intro', function() {
                 continueTo(selectRoad);
             });
@@ -105,17 +106,15 @@ export function uiIntroRapid(context, reveal) {
 
 
     function selectRoad() {
-        _tulipLaneID = null;
-
         // disallow scrolling
         d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
         reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road'));
 
         timeout(function() {
-            var fbRoad = d3_select('.data-layer.fb-roads'); 
+            var fbRoad = d3_select('.data-layer.fb-roads');
             fbRoad.on('click.intro', function() {
-                continueTo(addRoad); 
-            }); 
+                continueTo(addRoad);
+            });
         }, 250);
 
         function continueTo(nextStep) {
@@ -124,16 +123,15 @@ export function uiIntroRapid(context, reveal) {
     }
 
 
-    function addRoad() {        
+    function addRoad() {
         timeout(function() {
-            var tooltip = reveal('button.fb-roads-accept',
-                t('intro.rapid.add_road'));
+            reveal('button.fb-roads-accept', t('intro.rapid.add_road'));
 
-            var button = d3_select('button.fb-roads-accept')
+            var button = d3_select('button.fb-roads-accept');
             button.on('click.intro', function() {
-                continueTo(roadAdded)
+                continueTo(roadAdded);
             });
-        }, 250); 
+        }, 250);
 
 
         function continueTo(nextStep) {
@@ -154,9 +152,9 @@ export function uiIntroRapid(context, reveal) {
     }
 
     function showLint() {
-        var button = d3_select('li.issue-list-item.actionable > button'); 
+        var button = d3_select('li.issue-list-item.actionable > button');
         button.on('click.intro', function() {
-            continueTo(fixLint); 
+            continueTo(fixLint);
         });
 
         if (context.mode().id !== 'select') return chapter.restart();
@@ -178,10 +176,10 @@ export function uiIntroRapid(context, reveal) {
     function fixLint() {
         if (context.mode().id !== 'select') return chapter.restart();
 
-        var button = d3_select('li.issue-fix-item.actionable')
-            button.on('click.intro', function() {
-                continueTo(showFixedRoad)
-            });
+        var button = d3_select('li.issue-fix-item.actionable');
+        button.on('click.intro', function() {
+            continueTo(showFixedRoad);
+        });
 
         timeout(function() {
             reveal('li.issue-fix-item.actionable',
@@ -195,7 +193,7 @@ export function uiIntroRapid(context, reveal) {
         }
     }
 
-    
+
     function showFixedRoad() {
         if (context.mode().id !== 'select') return chapter.restart();
         timeout(function() {
@@ -218,14 +216,14 @@ export function uiIntroRapid(context, reveal) {
             reveal('#bar button.undo-button',
                 t('intro.rapid.undo_fix_lint', { button: icon(iconName, 'pre-text') })
             );
-    
+
             button.on('click.intro', function() {
                 continueTo(undoRoadAdd);
             });
 
         }, 250);
 
-        function continueTo(nextStep) {            
+        function continueTo(nextStep) {
             nextStep();
         }
     }
@@ -241,14 +239,14 @@ export function uiIntroRapid(context, reveal) {
             reveal('#bar button.undo-button',
                 t('intro.rapid.undo_road_add', { button: icon(iconName, 'pre-text') })
             );
-    
+
             button.on('click.intro', function() {
                 continueTo(afterUndoRoadAdd);
             });
 
         }, 250);
 
-        function continueTo(nextStep) {            
+        function continueTo(nextStep) {
             nextStep();
         }
     }
@@ -267,35 +265,36 @@ export function uiIntroRapid(context, reveal) {
     function selectRoadAgain() {
         timeout(function() {
             reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road_again'));
-            var fbRoad = d3_select('.data-layer.fb-roads'); 
-            fbRoad.on('click.intro', function() { deleteRoad() } ); 
+            var fbRoad = d3_select('.data-layer.fb-roads');
+            fbRoad.on('click.intro', function() { deleteRoad(); } );
         }, 250);
     }
 
 
-    function deleteRoad() {        
+    function deleteRoad() {
         timeout(function() {
-            var tooltip = reveal('button.fb-roads-reject',
-                t('intro.rapid.delete_road'));
-            var button = d3_select('button.fb-roads-reject')
-            button.on('click.intro', function() { showHelp() });
-        }, 250); 
+            reveal('button.fb-roads-reject', t('intro.rapid.delete_road'));
+            var button = d3_select('button.fb-roads-reject');
+            button.on('click.intro', function() { showHelp(); });
+        }, 250);
     }
 
 
     function showHelp() {
-        reveal('.map-control.help-control',
-            t('intro.rapid.help', 
-                { 
-                    rapid: icon('#iD-logo-rapid', 'pre-text'), 
-                    button: icon('#iD-icon-help', 'pre-text'), 
-                    key: t('help.key')
-                }), 
+        reveal(
+            '.map-control.help-control',
+            t('intro.rapid.help',
                 {
-                    buttonText: t('intro.ok'),
-                    buttonCallback: function() { allDone(); }
+                    rapid: icon('#iD-logo-rapid', 'pre-text'),
+                    button: icon('#iD-icon-help', 'pre-text'),
+                    key: t('help.key')
                 }
-        )
+            ),
+            {
+                buttonText: t('intro.ok'),
+                buttonCallback: function() { allDone(); }
+            }
+        );
     }
 
 
@@ -331,5 +330,5 @@ export function uiIntroRapid(context, reveal) {
 
 
     return utilRebind(chapter, dispatch, 'on');
-    
+
 }

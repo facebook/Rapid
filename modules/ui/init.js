@@ -34,7 +34,6 @@ import { uiScale } from './scale';
 import { uiShortcuts } from './shortcuts';
 import { uiSidebar } from './sidebar';
 import { uiSpinner } from './spinner';
-import { uiSplash } from './splash';
 import { uiSplashRapid } from './splash_rapid';
 import { uiStatus } from './status';
 import { uiTopToolbar } from './top_toolbar';
@@ -298,15 +297,15 @@ export function uiInit(context) {
 
         context.enter(modeBrowse(context));
 
+        var osm = context.connection();
         if (!_initCounter++) {
             if (!hash.startWalkthrough) {
-                var osm = context.connection();
                 if (context.history().lock() && context.history().restorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
                 } else if (osm.authenticated()) {
                     context.container()
-                        .call(uiSplashRapid(context))
+                        .call(uiSplashRapid(context));
                 }
             }
 
@@ -314,7 +313,6 @@ export function uiInit(context) {
                 .call(uiShortcuts(context));
         }
 
-        var osm = context.connection();
         var auth = uiLoading(context).message(t('loading_auth')).blocking(true);
 
         if (osm && auth) {
