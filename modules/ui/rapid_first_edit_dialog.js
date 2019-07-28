@@ -1,10 +1,8 @@
 import { t } from '../util/locale';
-import { modeBrowse } from '../modes';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { select as d3_select } from 'd3-selection'; 
-import { uiSplashRapid } from './splash_rapid'; 
-import { uiRestore } from './restore';
+import { uiSplashRapid } from './splash_rapid';
+
 
 export function uiRapidFirstEdit(context) {
 
@@ -26,12 +24,12 @@ export function uiRapidFirstEdit(context) {
             {
                 rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
             }));
-            
+
         firstEditModal
             .append('div')
             .attr('class','modal-section')
             .append('p')
-            .text(t('rapid_first_edit.text')); 
+            .text(t('rapid_first_edit.text'));
 
         var buttonWrap = firstEditModal
             .append('div')
@@ -39,7 +37,7 @@ export function uiRapidFirstEdit(context) {
 
         var exploring = buttonWrap
             .append('button')
-            .attr('class', 'rapid-explore')            
+            .attr('class', 'rapid-explore')
             .on('click', function() {
                 modalSelection.close();
             });
@@ -50,14 +48,13 @@ export function uiRapidFirstEdit(context) {
 
         var loginToOsm = buttonWrap
             .append('button')
-            .attr('class', 'rapid-login-to-osm') 
+            .attr('class', 'rapid-login-to-osm')
             .on('click', function() {
                 modalSelection.close();
 
                 var osm = context.connection();
-                osm.authenticate(function(err) {
-                    context.container()
-                    .call(uiSplashRapid(context))
+                osm.authenticate(function() {
+                    context.container().call(uiSplashRapid(context));
                 });
             });
 

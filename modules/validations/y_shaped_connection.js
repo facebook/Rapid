@@ -1,5 +1,4 @@
 import { geoAngle, geoSphericalDistance } from '../geo';
-import { modeSelect } from '../modes';
 import { operationDelete } from '../operations/index';
 import { t } from '../util/locale';
 import { validationIssue, validationIssueFix } from '../core/validation';
@@ -78,7 +77,7 @@ export function validationYShapedConnection(context) {
         return new validationIssue({
             type: type,
             severity: 'warning',
-            message: function(context) {
+            message: function() {
                 return t('issues.y_shaped_connection.message');
             },
             reference: function(selection) {
@@ -119,19 +118,21 @@ export function validationYShapedConnection(context) {
         if (edgeLen > SHORT_EDGE_THD_METERS) return false;
 
         // check if connNode is a Y-shaped connection
+        var prevEdgeGeoAngle = 0;
+        var nextEdgeGeoAngle = 0;
         var angleBetweenEdges = 0;
         var otherNodeIdx = connNodeIdx < edgeNodeIdx ? connNodeIdx - 1 : connNodeIdx + 1;
         var otherNid = way.nodes[otherNodeIdx];
         var otherNode = graph.entity(otherNid);
         if (otherNodeIdx < edgeNodeIdx) {
             // node order along way: otherNode -> connNode -> edgeNode
-            var prevEdgeGeoAngle = geoAngle(otherNode, connNode, context.projection);
-            var nextEdgeGeoAngle = geoAngle(connNode, edgeNode, context.projection);
+            prevEdgeGeoAngle = geoAngle(otherNode, connNode, context.projection);
+            nextEdgeGeoAngle = geoAngle(connNode, edgeNode, context.projection);
             angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
         } else {
             // node order along way: edgeNode -> connNode -> otherNode
-            var prevEdgeGeoAngle = geoAngle(edgeNode, connNode, context.projection);
-            var nextEdgeGeoAngle = geoAngle(connNode, otherNode, context.projection);
+            prevEdgeGeoAngle = geoAngle(edgeNode, connNode, context.projection);
+            nextEdgeGeoAngle = geoAngle(connNode, otherNode, context.projection);
             angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
         }
 

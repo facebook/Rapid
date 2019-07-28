@@ -33,7 +33,7 @@ var chapterUi = {
     area: uiIntroArea,
     line: uiIntroLine,
     building: uiIntroBuilding,
-    rapid: uiIntroRapid, 
+    rapid: uiIntroRapid,
     startEditing: uiIntroStartEditing
 };
 
@@ -52,7 +52,7 @@ var chapterFlow = [
 export function uiIntro(context, skipToRapid) {
     var INTRO_IMAGERY = 'EsriWorldImageryClarity';
     var introGraph = {};
-    var rapidGraph = {}; 
+    var rapidGraph = {};
     var _currChapter;
 
     // create entities for intro graph and localize names
@@ -61,7 +61,7 @@ export function uiIntro(context, skipToRapid) {
     }
 
     // create entities for RapiD graph and localize names
-    for (var id in dataIntroRapidGraph) {
+    for (id in dataIntroRapidGraph) {
         rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
     }
 
@@ -82,7 +82,7 @@ export function uiIntro(context, skipToRapid) {
         var caches = osm && osm.caches();
         var baseEntities = context.history().graph().base().entities;
         var countryCode = services.geocoder.countryCode;
-        var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities; 
+        var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
         var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
 
         // Show sidebar and disable the sidebar resizing button
@@ -97,7 +97,7 @@ export function uiIntro(context, skipToRapid) {
         if (osm) { osm.toggle(false).reset(); }
         context.history().reset();
 
-        var loadedGraph = coreGraph().load(introGraph); 
+        var loadedGraph = coreGraph().load(introGraph);
         var graphEntities = Object.values(loadedGraph.entities);
         context.history().merge(graphEntities);
         context.history().checkpoint('initial');
@@ -127,11 +127,11 @@ export function uiIntro(context, skipToRapid) {
             callback(null, t('intro.graph.countrycode'));
         };
 
-        if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset(); 
+        if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset();
 
-        var coreGraphEntities = coreGraph().load(rapidGraph).entities; 
+        var coreGraphEntities = coreGraph().load(rapidGraph).entities;
         services.fbMLRoads.merge(Object.values(coreGraphEntities));
-        services.fbMLRoads.checkpoint('initial'); 
+        services.fbMLRoads.checkpoint('initial');
 
         d3_selectAll('#map .layer-background').style('opacity', 1);
         d3_selectAll('#map .layer-fb-roads').style('opacity', 1);
