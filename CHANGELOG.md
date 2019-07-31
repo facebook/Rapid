@@ -1,3 +1,11 @@
+# [1.0.1](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.1)
+##### 2019-Jul-31
+
+#### :bug: Bugfixes
+* Added hostname to changeset tags.
+* Fixed lint errors when running with node 8 and 10.
+
+
 # [1.0.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.0)
 ##### 2019-Jul-22
 
