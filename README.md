@@ -11,6 +11,12 @@ For basic information about the iD editor (architecture, build and installation 
 if you're looking to help on issues.
 * To help with internationalization, please follow the [general translating page in iD repo](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating).
 
+## Country Data Requests
+To request RapiD data for other countries, please submit [a new issue](https://github.com/facebookincubator/RapiD/issues/new).
+
+## Available Countries
+Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries).
+
 ## License
 
 RapiD is available under the [ISC License](https://opensource.org/licenses/ISC).
