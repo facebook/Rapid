@@ -18,7 +18,7 @@ var _roadsService;
 var _actioned;
 
 
-export function svgFbRoads(projection, context, dispatch) {
+export function svgAiFeatures(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     var layer = d3_select(null);
     var gpxInUrl = utilStringQs(window.location.hash).gpx;
@@ -33,9 +33,9 @@ export function svgFbRoads(projection, context, dispatch) {
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
-        context.history().on('undone.fbroads', onHistoryUndone);
-        context.history().on('change.fbroads', onHistoryChange);
-        context.history().on('restore.fbroads', onHistoryRestore);
+        context.history().on('undone.aifeatures', onHistoryUndone);
+        context.history().on('change.aifeatures', onHistoryChange);
+        context.history().on('restore.aifeatures', onHistoryRestore);
     }
 
 
@@ -49,7 +49,7 @@ export function svgFbRoads(projection, context, dispatch) {
     }
 
 
-    function isFbRoadsAnnotation(annotation) {
+    function isAiFeaturesAnnotation(annotation) {
         return annotation &&
             (annotation.type === 'fb_accept_feature'
             || annotation.type === 'fb_reject_feature');
@@ -58,7 +58,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
     function onHistoryUndone(currentStack, previousStack) {
         var annotation = previousStack.annotation;
-        if (isFbRoadsAnnotation(annotation)) {
+        if (isAiFeaturesAnnotation(annotation)) {
             _actioned.delete(annotation.id);
             if (drawData.enabled()) { dispatch.call('change'); }  // redraw
         }
@@ -67,7 +67,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
     function onHistoryChange(/* difference */) {
         var annotation = context.history().peekAnnotation();
-        if (isFbRoadsAnnotation(annotation)) {
+        if (isAiFeaturesAnnotation(annotation)) {
             _actioned.add(annotation.id);
             if (drawData.enabled()) { dispatch.call('change'); }  // redraw
         }
@@ -77,7 +77,7 @@ export function svgFbRoads(projection, context, dispatch) {
     function onHistoryRestore() {
         _actioned = new Set();
         context.history().peekAllAnnotations().forEach(function (annotation) {
-            if (isFbRoadsAnnotation(annotation)) {
+            if (isAiFeaturesAnnotation(annotation)) {
                 _actioned.add(annotation.id);
                 // origid (the original entity ID), a.k.a. datum.__origid__,
                 // is a hack used to deal with non-deterministic way-splitting
@@ -134,7 +134,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
 
     function drawData(selection) {
-        layer = selection.selectAll('.layer-fb-roads')
+        layer = selection.selectAll('.layer-ai-features')
             .data(_enabled ? [0] : []);
 
         layer.exit()
@@ -142,7 +142,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
         layer = layer.enter()
             .append('g')
-            .attr('class', 'layer-fb-roads')
+            .attr('class', 'layer-ai-features')
             .merge(layer);
 
         var surface = context.surface();

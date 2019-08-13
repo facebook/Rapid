@@ -5,11 +5,11 @@ svg.logo-rapid {
 
 /* Toolbar button */
 
-button.fb-roads-toggle svg.logo-rapid {
+button.ai-features-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-button.fb-roads-toggle.layer-off use {
+button.ai-features-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }

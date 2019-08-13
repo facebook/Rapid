@@ -17,7 +17,7 @@ var _checkpoints = {};
 var _graph;
 var _tileCache;
 var _tree;
-var _deferredFBRoadsParsing = new Set();
+var _deferredAiFeaturesParsing = new Set();
 
 var _off;
 
@@ -108,7 +108,7 @@ function parseXML(xml, tile, callback, options) {
     var root = xml.childNodes[0];
     var children = root.childNodes;
     var handle = window.requestIdleCallback(function() {
-        _deferredFBRoadsParsing.delete(handle);
+        _deferredAiFeaturesParsing.delete(handle);
         var results = [];
         for (var i = 0; i < children.length; i++) {
             var result = parseChild(children[i]);
@@ -116,7 +116,7 @@ function parseXML(xml, tile, callback, options) {
         }
         callback(null, results);
     });
-    _deferredFBRoadsParsing.add(handle);
+    _deferredAiFeaturesParsing.add(handle);
 
 
     function parseChild(child) {
@@ -169,9 +169,9 @@ export default {
     },
 
     reset: function(key) {
-        Array.from(_deferredFBRoadsParsing).forEach(function(handle) {
+        Array.from(_deferredAiFeaturesParsing).forEach(function(handle) {
             window.cancelIdleCallback(handle);
-            _deferredFBRoadsParsing.delete(handle);
+            _deferredAiFeaturesParsing.delete(handle);
         });
         if (_tileCache && _tileCache.inflight) {
             _forEach(_tileCache.inflight, abortRequest);

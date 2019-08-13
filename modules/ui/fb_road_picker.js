@@ -216,7 +216,7 @@ export function uiFbRoadPicker(context, keybinding) {
                 }),
             onClick: onAcceptRoad,
             disabledFunction: isAddRoadDisabled
-        }, 'fb-roads-accept');
+        }, 'ai-features-accept');
 
         presetItem(bodyEnter, {
             iconName: '#iD-icon-rapid-minus-circle',
@@ -229,7 +229,7 @@ export function uiFbRoadPicker(context, keybinding) {
                     t('fb_road_picker.option_reject.tooltip'),
                     t('fb_road_picker.option_reject.key'))),
             onClick: onRejectRoad
-        }, 'fb-roads-reject');
+        }, 'ai-features-reject');
 
         // Update body
         body = body
