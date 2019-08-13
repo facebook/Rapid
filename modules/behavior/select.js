@@ -3,7 +3,7 @@ import { event as d3_event, mouse as d3_mouse, select as d3_select } from 'd3-se
 import { geoVecLength } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
-import { modeSelectFbRoads } from '../modes/select_fb_roads';
+import { modeSelectAiFeatures } from '../modes/select_ai_features';
 import { modeSelectData } from '../modes/select_data';
 import { modeSelectNote } from '../modes/select_note';
 import { modeSelectError } from '../modes/select_error';
@@ -136,7 +136,7 @@ export function behaviorSelect(context) {
             context
                 .selectedNoteID(null)
                 .selectedErrorID(null)
-                .enter(modeSelectFbRoads(context, datum));
+                .enter(modeSelectAiFeatures(context, datum));
 
         } else if (datum instanceof osmEntity) {    // clicked an entity..
             var selectedIDs = context.selectedIDs();

@@ -48,14 +48,14 @@ export function uiIntroRapid(context, reveal) {
     }
 
 
-    function fbRoadsEnabled(context) {
-        return context.layers().layer('fb-roads').enabled();
+    function aiFeaturesEnabled(context) {
+        return context.layers().layer('ai-features').enabled();
     }
 
 
-    function fbRoadsToggle(context) {
-        var fbRoads = context.layers().layer('fb-roads');
-        fbRoads.enabled(!fbRoads.enabled());
+    function aiFeaturesToggle(context) {
+        var aiFeatures = context.layers().layer('ai-features');
+        aiFeatures.enabled(!aiFeatures.enabled());
     }
 
 
@@ -67,8 +67,8 @@ export function uiIntroRapid(context, reveal) {
 
 
     function welcome() {
-        if (fbRoadsEnabled(context)) {
-            fbRoadsToggle(context);
+        if (aiFeaturesEnabled(context)) {
+            aiFeaturesToggle(context);
         }
         context.enter(modeBrowse(context));
         context.history().reset('initial');
@@ -87,11 +87,11 @@ export function uiIntroRapid(context, reveal) {
 
         timeout(function() {
             reveal(
-                'button.fb-roads-toggle',
+                'button.ai-features-toggle',
                 t('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') })
             );
 
-            var button = d3_select('.fb-roads-toggle');
+            var button = d3_select('.ai-features-toggle');
 
             button.on('click.intro', function() {
                 continueTo(selectRoad);
@@ -111,7 +111,7 @@ export function uiIntroRapid(context, reveal) {
         reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road'));
 
         timeout(function() {
-            var fbRoad = d3_select('.data-layer.fb-roads');
+            var fbRoad = d3_select('.data-layer.ai-features');
             fbRoad.on('click.intro', function() {
                 continueTo(addRoad);
             });
@@ -125,9 +125,9 @@ export function uiIntroRapid(context, reveal) {
 
     function addRoad() {
         timeout(function() {
-            reveal('button.fb-roads-accept', t('intro.rapid.add_road'));
+            reveal('button.ai-features-accept', t('intro.rapid.add_road'));
 
-            var button = d3_select('button.fb-roads-accept');
+            var button = d3_select('button.ai-features-accept');
             button.on('click.intro', function() {
                 continueTo(roadAdded);
             });
@@ -265,7 +265,7 @@ export function uiIntroRapid(context, reveal) {
     function selectRoadAgain() {
         timeout(function() {
             reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road_again'));
-            var fbRoad = d3_select('.data-layer.fb-roads');
+            var fbRoad = d3_select('.data-layer.ai-features');
             fbRoad.on('click.intro', function() { deleteRoad(); } );
         }, 250);
     }
@@ -273,8 +273,8 @@ export function uiIntroRapid(context, reveal) {
 
     function deleteRoad() {
         timeout(function() {
-            reveal('button.fb-roads-reject', t('intro.rapid.delete_road'));
-            var button = d3_select('button.fb-roads-reject');
+            reveal('button.ai-features-reject', t('intro.rapid.delete_road'));
+            var button = d3_select('button.ai-features-reject');
             button.on('click.intro', function() { showHelp(); });
         }, 250);
     }

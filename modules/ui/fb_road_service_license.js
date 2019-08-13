@@ -1,7 +1,7 @@
 import { t } from '../util/locale';
 
 
-export function uiFBRoadServiceLicense() {
+export function uiAiFeatureserviceLicense() {
 
     return function(selection) {
         selection.append('a')

@@ -14,23 +14,26 @@ export function getAIFeaturesToggleKey(context){
 }
 
 
-export function uiToolFbRoadsToggle(context) {
-    aiFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
+export function uiToolAiFeaturesToggle(context) {
+    aiFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.ai-features.key'));
 
     var tool = {
-        id: 'fb_roads_toggle',
-        label: t('toolbar.fb_roads')
+        id: 'ai_features_toggle',
+        label: t('toolbar.ai_features')
     };
 
 
     function enabled() {
-        return context.layers().layer('fb-roads').enabled();
+        return context.layers().layer('ai-features').enabled();
     }
 
 
     function toggle() {
-        var fbRoads = context.layers().layer('fb-roads');
-        fbRoads.enabled(!fbRoads.enabled());
+        var aiFeatures = context.layers().layer('ai-features');
+        aiFeatures.enabled(!aiFeatures.enabled());
+
+        var buildings = context.layers().layer('ai-buildings');
+        aiFeatures.enabled(!aiFeatures.enabled());
     }
 
 
@@ -38,11 +41,11 @@ export function uiToolFbRoadsToggle(context) {
         var debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
 
         context.map()
-            .on('move.fb_roads_toggle', debouncedUpdate)
-            .on('drawn.fb_roads_toggle', debouncedUpdate);
+            .on('move.ai_features_toggle', debouncedUpdate)
+            .on('drawn.ai_features_toggle', debouncedUpdate);
 
         context
-            .on('enter.fb_roads_toggle', update);
+            .on('enter.ai_features_toggle', update);
 
         update();
 
@@ -58,14 +61,14 @@ export function uiToolFbRoadsToggle(context) {
 
             var buttonsEnter = buttons.enter()
                 .append('button')
-                .attr('class', 'bar-button fb-roads-toggle')
+                .attr('class', 'bar-button ai-features-toggle')
                 .attr('tabindex', -1)
                 .on('click', toggle)
                 .call(tooltip()
                     .placement('bottom')
                     .html(true)
                     .title(uiTooltipHtml(
-                        t('shortcuts.browsing.display_options.fb_roads_data'),
+                        t('shortcuts.browsing.display_options.ai_features_data'),
                         aiFeaturesToggleKey))
                 )
                 .append('svg')

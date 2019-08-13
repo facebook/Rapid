@@ -1,7 +1,7 @@
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { getAIFeaturesToggleKey } from './tools/fb_roads_toggle'; 
+import { getAIFeaturesToggleKey } from './tools/ai_features_toggle'; 
 export function uiRapidFeatureToggle(context) {
 
     return function(selection) {

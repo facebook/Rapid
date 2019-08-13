@@ -14,7 +14,7 @@ en:
     recent: Recent
     favorites: Favorites
     add_feature: Add Feature
-    fb_roads: Assist
+    ai_features: Assist
   modes:
     add_feature:
       title: Add a feature
@@ -623,7 +623,7 @@ en:
         tooltip: "Drag and drop a data file onto the page, or click the button to setup"
         title: Custom Map Data
         zoom: Zoom to data
-      'fb-roads':
+      'ai-features':
         tooltip: Features from Facebook's Map With AI
         title: Map With AI Feature Layer
         key: R
@@ -1948,7 +1948,7 @@ en:
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
         minimap: "Toggle minimap"
-        fb_roads_data: "Toggle Map With AI Features"
+        ai_features_data: "Toggle Map With AI Features"
         highlight_way_edits: "Highlight way edits in current session"
       selecting:
         title: "Selecting features"
