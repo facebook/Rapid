@@ -4,11 +4,19 @@ import { t } from '../../util/locale';
 import { tooltip } from '../../util/tooltip';
 import { uiCmd } from '../cmd';
 import { uiTooltipHtml } from '../tooltipHtml';
+import {uiRapidFeatureToggle} from '../rapid_feature_toggle_dialog'; 
+
+var aiFeaturesToggleKey;
+
+
+export function getAIFeaturesToggleKey(context){
+    return aiFeaturesToggleKey; 
+}
 
 
 export function uiToolFbRoadsToggle(context) {
+    aiFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
 
-    var fbRoadsDataToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
     var tool = {
         id: 'fb_roads_toggle',
         label: t('toolbar.fb_roads')
@@ -58,7 +66,7 @@ export function uiToolFbRoadsToggle(context) {
                     .html(true)
                     .title(uiTooltipHtml(
                         t('shortcuts.browsing.display_options.fb_roads_data'),
-                        fbRoadsDataToggleKey))
+                        aiFeaturesToggleKey))
                 )
                 .append('svg')
                 .attr('class', 'logo-rapid')

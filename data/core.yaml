@@ -805,6 +805,12 @@ en:
     text: You'll need an OpenStreetMap account to save your work. Would you like to log in with OSM now or keep exploring?
     exploring: "I'm just exploring"
     login_with_osm: "Log in with OSM"
+  rapid_feature_toggle:
+    toggle_all: Toggle all {rapidicon} features
+    roads: Roads
+    roads_provided_by: provided by Facebook
+    buildings: Buildings 
+    buildings_provided_by: provided by Microsoft
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:
