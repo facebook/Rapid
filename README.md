@@ -15,7 +15,7 @@ if you're looking to help on issues.
 To request RapiD data for other countries, please submit [a new issue](https://github.com/facebookincubator/RapiD/issues/new).
 
 ## Available Countries for AI-generated Roads
-Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). If you would like to request roads for a new country, please [create an issue here](https://github.com/facebookincubator/RapiD/issues). We track all the requests and our progress on [this page](COUNTRY_REQUESTS.md)
+Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). If you would like to request roads for a new country, please [create an issue here](https://github.com/facebookincubator/RapiD/issues). We track all the requests and our progress on [this page](COUNTRY_REQUESTS.md).
 
 ## License
 
