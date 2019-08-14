@@ -22,18 +22,15 @@ export function uiToolAiFeaturesToggle(context) {
         label: t('toolbar.ai_features')
     };
 
+    
 
     function enabled() {
         return context.layers().layer('ai-features').enabled();
     }
 
 
-    function toggle() {
-        var aiFeatures = context.layers().layer('ai-features');
-        aiFeatures.enabled(!aiFeatures.enabled());
-
-        var buildings = context.layers().layer('ai-buildings');
-        aiFeatures.enabled(!aiFeatures.enabled());
+    function showFeatureToggleDialog() {
+        context.container().call(uiRapidFeatureToggle(context)); 
     }
 
 
@@ -63,7 +60,7 @@ export function uiToolAiFeaturesToggle(context) {
                 .append('button')
                 .attr('class', 'bar-button ai-features-toggle')
                 .attr('tabindex', -1)
-                .on('click', toggle)
+                .on('click', showFeatureToggleDialog)
                 .call(tooltip()
                     .placement('bottom')
                     .html(true)

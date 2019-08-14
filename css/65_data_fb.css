@@ -62,3 +62,7 @@
 .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }
+
+.layer-ai-features .road.hide, .layer-ai-features .building.hide {
+    display: none;
+}

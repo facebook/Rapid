@@ -1,6 +1,6 @@
 import _throttle from 'lodash-es/throttle';
 
-import { select as d3_select } from 'd3-selection';
+import { select as d3_select, selectAll as d3_selectAll } from 'd3-selection';
 import { geoScaleToZoom } from '../geo';
 import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
@@ -16,7 +16,8 @@ var _enabled = false;
 var _initialized = false;
 var _roadsService;
 var _actioned;
-
+var _roadsEnabled = false; 
+var _buildingsEnabled = false; 
 
 export function svgAiFeatures(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
@@ -30,6 +31,8 @@ export function svgAiFeatures(projection, context, dispatch) {
         _enabled = true;
         _initialized = true;
         _actioned = new Set();
+        _roadsEnabled = true; 
+        _buildingsEnabled = true; 
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
@@ -109,7 +112,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         layerOff();
     }
 
-
+    
     function layerOn() {
         layer.style('display', 'block');
     }
@@ -117,6 +120,18 @@ export function svgAiFeatures(projection, context, dispatch) {
 
     function layerOff() {
         layer.style('display', 'none');
+    }
+
+    function isBuilding(d){
+        if (d.tags.building && d.tags.building === "yes") {
+            return true;   
+        } else {
+            return false; 
+        }
+    }
+
+    function isRoad(d){
+        return d.tags.highway;
     }
 
 
@@ -128,6 +143,10 @@ export function svgAiFeatures(projection, context, dispatch) {
     function featureClasses(d) {
         return [
             'data' + d.__fbid__,
+            isBuilding(d) ? 'building' : 'road',
+            (isBuilding(d) && !_buildingsEnabled) 
+                || (isRoad(d) && !_roadsEnabled) 
+                ? 'hide' : null,
             d.geometry.type,
         ].filter(Boolean).join(' ');
     }
@@ -266,6 +285,35 @@ export function svgAiFeatures(projection, context, dispatch) {
             });
     }
 
+
+    drawData.toggleRoads = function() {
+        _roadsEnabled = !_roadsEnabled; 
+        var roadPaths = d3_selectAll('.road');
+        roadPaths.classed('hide', !_roadsEnabled); 
+        showLayer(); 
+        dispatch.call('change');
+    }
+    
+    
+    drawData.toggleBuildings = function() {
+        _buildingsEnabled = !_buildingsEnabled; 
+        var buildingPaths = d3_selectAll('.building');
+        buildingPaths.classed('hide', !_buildingsEnabled); 
+        showLayer(); 
+        dispatch.call('change');
+    }
+
+    drawData.showRoads = function() {
+        return _roadsEnabled; 
+    }
+
+    drawData.showBuildings = function() {
+        return _buildingsEnabled;
+    }
+
+    drawData.showAll = function() {
+        return _enabled;
+    }
 
     drawData.enabled = function(val) {
         if (!arguments.length) return _enabled;

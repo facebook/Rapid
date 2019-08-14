@@ -8,7 +8,7 @@ import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind, utilStringQs, utilTiler } from '../util';
 
 // constants
-var API_URL = 'https://www.facebook.com/maps/ml_roads?conflate_with_osm=true&theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A';
+var API_URL = 'https://www.facebook.com/maps/ml_roads?conflate_with_osm=true&theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A&result_type=road_building_vector_xml';
 var TILEZOOM = 16;
 var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
