@@ -138,6 +138,10 @@ svg.icon.logo-rapid {
     width: 100%; 
 }
 
+.modal-section.rapid-checkbox.disabled {
+    opacity: .5; 
+}
+
 .rapid-feature-checkbox {
     margin-left: auto; 
 }
@@ -145,7 +149,7 @@ svg.icon.logo-rapid {
 .modal-section.rapid-checkbox.section-divider {
     width: 95%;
     height: 1px; 
-    background: #ccca; 
+    background: #ccca;
     padding: 1px; 
     align-self: center; 
 }
@@ -201,7 +205,6 @@ hide this one and style something on top of it.  */
     transform: rotate(0deg) scale(0); 
     opacity: 1; 
 }
-
 
 .checkbox-label input:checked ~ .checkbox-custom::after {
     content: ""; 

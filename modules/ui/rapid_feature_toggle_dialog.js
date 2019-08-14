@@ -1,8 +1,51 @@
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { getAIFeaturesToggleKey } from './tools/ai_features_toggle'; 
+import { getAIFeaturesToggleKey } from './tools/ai_features_toggle';
+import { select as d3_select } from 'd3-selection';
 export function uiRapidFeatureToggle(context) {
+
+
+    function toggleSvgBuildings () {
+        var drawAiFeatures = context.layers().layer('ai-features');
+        drawAiFeatures.toggleBuildings(); 
+    }
+
+
+    function toggleSvgRoads() {
+        var drawAiFeatures = context.layers().layer('ai-features');
+        drawAiFeatures.toggleRoads(); 
+    }
+
+
+    function toggleAll() {
+        var drawAiFeatures = context.layers().layer('ai-features');
+        drawAiFeatures.enabled(!drawAiFeatures.enabled()); 
+
+        // We need to disable the physical checkboxes so that the user
+        // cannot interact with them. 
+        var roadCheckbox = d3_select('#road-toggle');
+        var buildingCheckbox = d3_select('#building-toggle');
+
+        // We also need to add a class to the whole option so that we 
+        // can style it accordingly. 
+        var roadOption = d3_select('#section-road-toggle');
+        var buildingOption = d3_select('#section-building-toggle');
+
+        if (drawAiFeatures.showAll()) {
+            roadCheckbox.attr('disabled', null);  
+            buildingCheckbox.attr('disabled', null);
+            roadOption.classed('disabled', false); 
+            buildingOption.classed('disabled', false); 
+            
+        } else {
+            roadCheckbox.attr('disabled', true); 
+            buildingCheckbox.attr('disabled', true); 
+            roadOption.classed('disabled', true); 
+            buildingOption.classed('disabled', true); 
+        }
+    }
+
 
     return function(selection) {
         var modalSelection = uiModal(selection);
@@ -14,37 +57,51 @@ export function uiRapidFeatureToggle(context) {
             .append('div')
             .attr('class', 'fillL feature stack');
 
+
+        var drawAiFeatures = context.layers().layer('ai-features');
+
         addCheckBox(modal, 
             'all-toggle',
             'rapid_feature_toggle.toggle_all', 
             null,
-            null); 
+            toggleAll, 
+            drawAiFeatures.showAll(),
+            false,
+            ); 
     
         modal
             .append('div')
             .attr('class','modal-section rapid-checkbox section-divider');
 
-        addCheckBox(modal, 
+        addCheckBox(modal,
             'road-toggle',
             'rapid_feature_toggle.roads', 
             'rapid_feature_toggle.roads_provided_by',
-            null); 
+            toggleSvgRoads,
+            drawAiFeatures.showRoads(),
+            !drawAiFeatures.showAll()
+            ); 
 
         addCheckBox(modal, 
             'building-toggle',
             'rapid_feature_toggle.buildings', 
             'rapid_feature_toggle.buildings_provided_by',
-            null); 
+            toggleSvgBuildings,
+            drawAiFeatures.showBuildings(),
+            !drawAiFeatures.showAll()
+            ); 
     
         modalSelection.select('button.close')
             .attr('class','hide');
 
     };
 
-    function addCheckBox(modal, id, label, description, handler) {
+    function addCheckBox(modal, id, label, description, handler, enabled, greyout) {
         var toggleOption = modal
         .append('div')
-        .attr('class','modal-section rapid-checkbox');
+        .attr('class','modal-section rapid-checkbox')
+        .classed('disabled', greyout)
+        .attr('id', 'section-' + id);
 
         var toggleOptionText =  toggleOption.append('div')
         .attr('class', 'rapid-feature-label-container'); 
@@ -82,7 +139,8 @@ export function uiRapidFeatureToggle(context) {
             .attr('type', 'checkbox')
             .attr('id', id)
             .attr('class', 'rapid-feature-checkbox')
-            .property('checked', true)
+            .property('checked', enabled)
+            .attr('disabled', greyout ? true : null)
             .on('click', handler); 
 
         customCheckbox
