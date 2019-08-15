@@ -26,5 +26,11 @@ Kenya - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
 ~~Philippines - [From Local Community](https://lists.openstreetmap.org/pipermail/talk/2019-August/083121.html)~~
 
+Zambia - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+
+Namibia - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+
+Botswana - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
