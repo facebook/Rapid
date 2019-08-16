@@ -6,6 +6,8 @@ If you would like to get RapiD support for a new country, please [create an issu
 
 ### Countries Requested
 
+~~Ethiopia - [Issue 8](https://github.com/facebookincubator/RapiD/issues/8)~~
+
 Brazil - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
 Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
