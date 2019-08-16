@@ -10,7 +10,7 @@ Brazil - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
 Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
-Mozambique - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Mozambique - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
 ~~Nigeria - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
