@@ -1,5 +1,6 @@
 import _debounce from 'lodash-es/debounce';
-
+import {dispatch as d3_dispatch} from 'd3-dispatch'; 
+import {event as d3_event} from 'd3-selection'; 
 import { t } from '../../util/locale';
 import { tooltip } from '../../util/tooltip';
 import { uiCmd } from '../cmd';
@@ -7,14 +8,18 @@ import { uiTooltipHtml } from '../tooltipHtml';
 import {uiRapidFeatureToggle} from '../rapid_feature_toggle_dialog'; 
 
 var aiFeaturesToggleKey;
-
+var toggleKeyDispatcher; 
 
 export function getAIFeaturesToggleKey(context){
     return aiFeaturesToggleKey; 
 }
-
+export function getToggleKeyDispatcher(){
+    return toggleKeyDispatcher; 
+}
 
 export function uiToolAiFeaturesToggle(context) {
+
+    toggleKeyDispatcher = d3_dispatch('ai_feature_toggle'); 
     aiFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.ai-features.key'));
 
     var tool = {
@@ -22,12 +27,23 @@ export function uiToolAiFeaturesToggle(context) {
         label: t('toolbar.ai_features')
     };
 
+    context.keybinding()
+        .on(aiFeaturesToggleKey, function () {
+        d3_event.preventDefault();
+        d3_event.stopPropagation();
+        toggleFeatures();
+    }); 
     
 
     function enabled() {
         return context.layers().layer('ai-features').enabled();
     }
 
+    function toggleFeatures() {
+        var drawAiFeatures = context.layers().layer('ai-features');
+        drawAiFeatures.enabled(!drawAiFeatures.enabled());
+        toggleKeyDispatcher.call('ai_feature_toggle');
+    }
 
     function showFeatureToggleDialog() {
         context.container().call(uiRapidFeatureToggle(context)); 
@@ -79,6 +95,8 @@ export function uiToolAiFeaturesToggle(context) {
                 .classed('layer-off', function() { return !enabled(); });
         }
     };
+
+
 
     return tool;
 }

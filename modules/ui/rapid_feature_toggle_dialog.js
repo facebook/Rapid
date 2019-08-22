@@ -1,9 +1,14 @@
+import {
+    event as d3_event,
+    select as d3_select 
+} from 'd3-selection';
+
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { getAIFeaturesToggleKey } from './tools/ai_features_toggle';
-import { select as d3_select } from 'd3-selection';
+import { getAIFeaturesToggleKey, getToggleKeyDispatcher } from './tools/ai_features_toggle';
 export function uiRapidFeatureToggle(context) {
+    var featureToggleKey = getAIFeaturesToggleKey(); 
 
 
     function toggleSvgBuildings () {
@@ -18,14 +23,29 @@ export function uiRapidFeatureToggle(context) {
     }
 
 
-    function toggleAll() {
+    function handleToggleAllClick(){
         var drawAiFeatures = context.layers().layer('ai-features');
         drawAiFeatures.enabled(!drawAiFeatures.enabled()); 
+        redrawOnToggle(); 
+    }
 
-        // We need to disable the physical checkboxes so that the user
+
+    function keyPressFormHandler(){
+        if (d3_event.shiftKey && 
+            d3_event.key === 'R'){
+            handleToggleAllClick(); 
+        }
+    }
+
+
+    function redrawOnToggle() {
+        var drawAiFeatures = context.layers().layer('ai-features');
+        // We need check/uncheck the 'all options' boxes, and 
+        // disable the other checkboxes so that the user
         // cannot interact with them. 
         var roadCheckbox = d3_select('#road-toggle');
         var buildingCheckbox = d3_select('#building-toggle');
+        var allCheckbox = d3_select('#all-toggle');
 
         // We also need to add a class to the whole option so that we 
         // can style it accordingly. 
@@ -33,12 +53,14 @@ export function uiRapidFeatureToggle(context) {
         var buildingOption = d3_select('#section-building-toggle');
 
         if (drawAiFeatures.showAll()) {
+            allCheckbox.property('checked', true); 
             roadCheckbox.attr('disabled', null);  
             buildingCheckbox.attr('disabled', null);
             roadOption.classed('disabled', false); 
             buildingOption.classed('disabled', false); 
             
         } else {
+            allCheckbox.property('checked', false); 
             roadCheckbox.attr('disabled', true); 
             buildingCheckbox.attr('disabled', true); 
             roadOption.classed('disabled', true); 
@@ -64,7 +86,7 @@ export function uiRapidFeatureToggle(context) {
             'all-toggle',
             'rapid_feature_toggle.toggle_all', 
             null,
-            toggleAll, 
+            handleToggleAllClick, 
             drawAiFeatures.showAll(),
             false,
             ); 
@@ -94,7 +116,11 @@ export function uiRapidFeatureToggle(context) {
         modalSelection.select('button.close')
             .attr('class','hide');
 
+        getToggleKeyDispatcher().on('ai_feature_toggle', function () { 
+            redrawOnToggle(); 
+        });  
     };
+
 
     function addCheckBox(modal, id, label, description, handler, enabled, greyout) {
         var toggleOption = modal
@@ -141,8 +167,9 @@ export function uiRapidFeatureToggle(context) {
             .attr('class', 'rapid-feature-checkbox')
             .property('checked', enabled)
             .attr('disabled', greyout ? true : null)
-            .on('click', handler); 
-
+            .on('click', handler)
+            .on('keypress', keyPressFormHandler); 
+            
         customCheckbox
             .append('div')
             .attr('class', 'checkbox-custom')
