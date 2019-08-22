@@ -935,11 +935,6 @@ export function uiMapData(context) {
                 d3_event.stopPropagation();
                 toggleLayer('osm');
             })
-            .on(aiFeaturesDataToggleKey, function () {
-                d3_event.preventDefault();
-                d3_event.stopPropagation();
-                toggleLayer('ai-features');
-            })
             .on(t('map_data.highlight_way_edits.key'), toggleHighlightEdited);
     };
 
