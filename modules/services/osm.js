@@ -9,12 +9,18 @@ import rbush from 'rbush';
 import { JXON } from '../util/jxon';
 import { geoExtent, geoRawMercator, geoVecAdd, geoZoomToScale } from '../geo';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
-import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilTiler, utilQsString } from '../util';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilTiler, utilQsString, utilStringQs } from '../util';
 
 
 var tiler = utilTiler();
 var dispatch = d3_dispatch('authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
 var urlroot = 'https://www.openstreetmap.org';
+var q = utilStringQs(window.location.hash.substring(1));
+var credentialsMode = 'omit';
+if (q.hasOwnProperty('osm_api_url')) {
+    urlroot = q.osm_api_url;
+    credentialsMode = 'include';
+}
 var oauth = osmAuth({
     url: urlroot,
     oauth_consumer_key: 'MlAcABGGdqadlgrjpmG6qSQu3bwbAgxC7hW0vRwm',
@@ -480,7 +486,7 @@ export default {
         } else {
             var url = urlroot + path;
             var controller = new AbortController();
-            d3_xml(url, { signal: controller.signal })
+            d3_xml(url, { signal: controller.signal, credentials: credentialsMode })
                 .then(function(data) {
                     done(null, data);
                 })
@@ -773,7 +779,7 @@ export default {
     status: function(callback) {
         var url = urlroot + '/api/capabilities';
         var errback = wrapcb(this, done, _connectionID);
-        d3_xml(url)
+        d3_xml(url, { credentials: credentialsMode })
             .then(function(data) { errback(null, data); })
             .catch(function(err) { errback(err.message); });
 
