@@ -1,5 +1,6 @@
 export * from './add_favorite';
 export * from './add_recent';
+export * from './download_osc';
 export * from './fb_roads_toggle';
 export * from './modes';
 export * from './notes';
