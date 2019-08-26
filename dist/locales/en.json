@@ -934,6 +934,11 @@
                 "help": "Another user changed some of the same map features you changed.\nClick on each feature below for more details about the conflict, and choose whether to keep\nyour changes or the other user's changes.\n"
             }
         },
+        "download_osc": {
+            "title": "Download",
+            "help": "Download current changes to the map in an osc file.",
+            "no_changes": "No changes to download."
+        },
         "merge_remote_changes": {
             "conflict": {
                 "deleted": "This feature has been deleted by {user}.",
