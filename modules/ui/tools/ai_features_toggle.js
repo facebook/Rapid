@@ -10,12 +10,16 @@ import {uiRapidFeatureToggle} from '../rapid_feature_toggle_dialog';
 var aiFeaturesToggleKey;
 var toggleKeyDispatcher; 
 
+
 export function getAIFeaturesToggleKey(context){
     return aiFeaturesToggleKey; 
 }
+
+
 export function getToggleKeyDispatcher(){
     return toggleKeyDispatcher; 
 }
+
 
 export function uiToolAiFeaturesToggle(context) {
 

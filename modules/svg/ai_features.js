@@ -219,6 +219,8 @@ export function svgAiFeatures(projection, context, dispatch) {
             .append('path')
             .attr('class', function(d) {
                 var linegroup = this.parentNode.__data__;
+//                var typeClasses = isBuilding(d) ? 'way area fill' : 'pathdata line ' + linegroup
+//                return typeClasses + ' ' + featureClasses(d);
                 return 'pathdata line ' + linegroup + ' ' + featureClasses(d);
             })
             .merge(paths)

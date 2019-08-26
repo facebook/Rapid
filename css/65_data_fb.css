@@ -53,6 +53,7 @@
 .layer-ai-features g.vertex .fill {
     fill: #fff;
 }
+
 .layer-ai-features g.vertex .stroke {
     stroke: #ff26d4;
     stroke-width: 3;
@@ -65,4 +66,23 @@
 
 .layer-ai-features .road.hide, .layer-ai-features .building.hide {
     display: none;
+}
+
+.layer-ai-features  path.line.building.stroke {
+    stroke-width: 5px;
+    stroke: #ff26d4;
+     fill: url(#ai-building);  
+    fill-opacity: 1; 
+}
+
+.layer-ai-features  path.line.building.shadow {
+    stroke-width: 12px;
+}
+
+.low-zoom .layer-ai-features path.line.building {
+    stroke-width: 3px;
+}
+
+.layer-ai-features .node.vertex.building circle{
+    opacity: 0; 
 }

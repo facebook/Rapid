@@ -88,7 +88,7 @@ export function uiRapidFeatureToggle(context) {
             null,
             handleToggleAllClick, 
             drawAiFeatures.showAll(),
-            false,
+            false
             ); 
     
         modal
