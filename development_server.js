@@ -27,8 +27,10 @@ if (isDevelopment) {
     gaze([
             'data/**/*.{js,json}',
             'data/core.yaml',
+            'data/rapid_config.yaml',
             // ignore the output files of `buildData`
             '!data/presets/categories.json',
+            '!data/rapid_config.json', 
             '!data/presets/fields.json',
             '!data/presets/presets.json',
             '!data/presets.yaml',

@@ -16,12 +16,12 @@ import {
     resources as ociResources
 } from 'osm-community-index';
 
+import { rapid_config } from './rapid_config.json'
 import { dataImagery } from './imagery.json';
 import { presets } from './presets/presets.json';
 import { defaults } from './presets/defaults.json';
 import { categories } from './presets/categories.json';
 import { fields } from './presets/fields.json';
-
 import { geoArea as d3_geoArea } from 'd3-geo';
 import whichPolygon from 'which-polygon';
 
@@ -53,5 +53,7 @@ export var data = {
         defaults: defaults,
         categories: categories,
         fields: fields
-    }
+    }, 
 };
+
+export var rapid_feature_config = rapid_config; 

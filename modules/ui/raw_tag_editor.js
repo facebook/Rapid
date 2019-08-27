@@ -282,7 +282,8 @@ export function uiRawTagEditor(context) {
 
         function isReadOnly(d) {
             // Read-only for source=digitalglobe on ML roads. TODO: switch to check on __fbid__
-            if (_entityID && _entityID.indexOf('w-') === 0 && d.key === 'source' && d.value === 'digitalglobe') {
+            if (_entityID && _entityID.indexOf('w-') === 0 && d.key === 'source' 
+                && (d.value === 'digitalglobe' || d.value === 'maxar')) {
                 return true;
             }
             for (var i = 0; i < _readOnlyTags.length; i++) {
