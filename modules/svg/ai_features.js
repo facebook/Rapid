@@ -32,7 +32,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         _initialized = true;
         _actioned = new Set();
         _roadsEnabled = true; 
-        _buildingsEnabled = true; 
+        _buildingsEnabled = false; 
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
