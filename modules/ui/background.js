@@ -93,6 +93,18 @@ export function uiBackground(context) {
     }
 
 
+    function chooseGrid(d) {
+
+        d3_event.preventDefault();
+        // _previousBackground = context.background().baseLayerSource();
+        // context.storage('grid-last-used-toggle', _previousBackground.id);
+        // context.storage('background-last-used', d.id);
+         context.background().numGridSplits(d.numSplit); 
+        // _backgroundList.call(updateLayerSelections);
+        // document.activeElement.blur();
+    }
+
+
     function customChanged(d) {
         if (d && d.template) {
             _customSource.template(d.template);
@@ -259,6 +271,58 @@ export function uiBackground(context) {
         updateOverlayList();
     }
 
+
+    function renderGridList(selection) {
+
+        // the grid list
+        var container = selection.selectAll('.layer-grid-list')
+            .data([0]);
+
+        var gridList = container.enter()
+            .append('ul')
+            .attr('class', 'layer-list layer-grid-list')
+            .attr('dir', 'auto')
+            .merge(container);
+
+            var gridItems = gridList.selectAll('li')
+                .data(
+                    [{numSplit: 0, name: 'No Grid'},
+                    {numSplit: 2, name: '2 x 2 Grid'},
+                    {numSplit: 3, name: '3 x 3 Grid'},
+                    {numSplit: 4, name: '4 x 4 Grid'},
+                    {numSplit: 5, name: '5 x 5 Grid'},
+                    {numSplit: 6, name: '6 x 6 Grid'},
+                    ], 
+                    function(d) { return d.name; }
+                );
+
+            var enter = gridItems.enter()
+            .insert('li', '.custom-gridsopt')
+            .attr('class', 'gridsopt'); 
+
+           
+            var label = enter.append('label'); 
+            label.append('input')
+                .attr('type', 'radio')
+                .attr('name', 'grids')
+                .property('checked', function(d){
+                    return (d.numSplit === context.background().numGridSplits());
+                })
+                .on('change', chooseGrid); 
+            
+            label.append('span')
+                .text(function(d) {return d.name}); 
+            
+            gridItems.exit()
+                .remove(); 
+
+            selection.style('display', 'block')
+
+
+    }
+
+
+
     function updateBackgroundList() {
         _backgroundList
             .call(drawListItems, 'radio', chooseBackground, function(d) { return !d.isHidden() && !d.overlay; });
@@ -364,6 +428,15 @@ export function uiBackground(context) {
             .call(uiDisclosure(context, 'overlay_list', true)
                 .title(t('background.overlays'))
                 .content(renderOverlayList)
+            );
+
+        // grid list
+        content
+            .append('div')
+            .attr('class', 'grid-overlay-list-container')
+            .call(uiDisclosure(context, 'grid_list', true)
+                .title(t('background.grids'))
+                .content(renderGridList)
             );
 
         // display options
