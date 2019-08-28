@@ -55,3 +55,45 @@
 .fill-wireframe.highlight-edited g.lines > path.line.graphedited, .fill-wireframe.highlight-edited g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke-width: 2 !important;
 }
+
+.bbox-svg {
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+}
+
+.map-bbox {
+    fill: none;
+    stroke: rgba(0, 255, 255, 0.70);
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.map-bbox.thick {
+    stroke-width: 5;
+}
+
+.grids-svg {
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+}
+
+.map-grids {
+    fill: none;
+    stroke: rgba(0, 255, 255, 0.40);
+    stroke-width: 2;
+    shape-rendering: crispEdges;
+    z-index: 1;
+    pointer-events: none;
+}

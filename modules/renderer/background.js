@@ -24,6 +24,7 @@ export function rendererBackground(context) {
     var _contrast = 1;
     var _saturation = 1;
     var _sharpness = 1;
+    var _numGridSplits = 0; // No grid by default.  
 
 
     function background(selection) {
@@ -131,6 +132,13 @@ export function rendererBackground(context) {
             .each(function(layer) { d3_select(this).call(layer); });
     }
 
+
+    background.numGridSplits = function(_) {
+        if (!arguments.length) return _numGridSplits;
+        _numGridSplits = _;
+        dispatch.call('change');
+        return background;
+    }
 
     background.updateImagery = function() {
         var b = baseLayer.source();

@@ -5,9 +5,10 @@ import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { event as d3_event, select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { geoPath as d3_geoPath } from 'd3-geo';
 
 import { t } from '../util/locale';
-import { geoExtent, geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
+import { geoExtent, geoExtentFromBounds, geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
 import { uiFlash } from '../ui/flash';
@@ -15,6 +16,7 @@ import { utilFastMouse, utilFunctor, utilRebind, utilSetTransform } from '../uti
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
+import { coreRapidContext } from '../core';
 
 
 // constants
@@ -539,6 +541,58 @@ export function rendererMap(context) {
     }
 
 
+    function drawMapGrid() {
+        // Add bounding box to imported OSM file layer
+        var d3Path = d3_geoPath(projection),
+            mapBoundsExtent = context.rapidContext().getTaskExtent(); 
+            bbox = {type: 'Polygon', coordinates: [mapBoundsExtent.polygon()]},            
+            minlat = mapBoundsExtent[0][1], 
+            minlon = mapBoundsExtent[0][0], 
+            maxlat = mapBoundsExtent[1][1], 
+            maxlon = mapBoundsExtent[1][0],  
+            numGridSplits = context.background().numGridSplits();
+
+        var gridsSvg = surface.selectAll('.grids-svg')
+            .data([0]);
+
+        //Since there is no z-order within an svg, 
+        //we want the grid to appear on top of everything else, 
+        // so insert(), not append(), it at the start of the data layer. 
+        gridsSvg.enter()
+            .insert('svg', ':first-child')
+            .attr('class', 'grids-svg');
+
+        var gridsData = [];
+
+        for (var i = 1; i < numGridSplits; i++) {
+            var midlon = minlon + (maxlon - minlon) * i / numGridSplits,
+                midlat = minlat + (maxlat - minlat) * i / numGridSplits;
+            gridsData.push({
+                type: 'LineString',
+                coordinates:[[midlon, minlat], [midlon, maxlat]]
+            });
+            gridsData.push({
+                type: 'LineString',
+                coordinates:[[minlon, midlat], [maxlon, midlat]]
+            });
+        }
+
+        var gridsPath = gridsSvg.selectAll('.map-grids')
+            .data(gridsData); 
+
+        gridsPath.enter()
+            .append('path')
+            .attr('class', 'map-grids')
+            .attr('d', d3Path); 
+    
+        gridsPath.attr('d', d3Path);
+        gridsPath.exit()
+            .remove();
+        gridsSvg.exit()
+            .remove();
+    }
+
+
     function redraw(difference, extent) {
         if (surface.empty() || !_redrawEnabled) return;
 
@@ -566,6 +620,10 @@ export function rendererMap(context) {
         surface
             .classed('low-zoom', zoom <= lowzoom(lat));
 
+
+        if (context.rapidContext().getTaskExtent()) { 
+            drawMapGrid();
+        }
 
         if (!difference) {
             supersurface.call(context.background());
