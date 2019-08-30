@@ -20,11 +20,11 @@ Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
 Democratic Republic of Congo - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
-Egypt - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Egypt - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
-Vietnam - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Vietnam - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
-Kenya - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Kenya - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
 ~~Philippines - [From Local Community](https://lists.openstreetmap.org/pipermail/talk/2019-August/083121.html)~~
 
