@@ -42,5 +42,7 @@ Uruguay - [Issue 19](https://github.com/facebookincubator/RapiD/issues/19)
 
 Moldova - [Issue 25](https://github.com/facebookincubator/RapiD/issues/25)
 
+China - [Issue 27](https://github.com/facebookincubator/RapiD/issues/27)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
