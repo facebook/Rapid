@@ -586,7 +586,10 @@ en:
     switch: Switch back to this background
     custom: Custom
     overlays: Overlays
-    grids: Grid
+    grid:
+      grids: Grids
+      no_grid: No Grid
+      n_by_n: "{num} by {num} Grid"
     imagery_source_faq: Imagery Info / Report a Problem
     reset: reset
     reset_all: Reset All

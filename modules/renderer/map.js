@@ -546,18 +546,18 @@ export function rendererMap(context) {
         var d3Path = d3_geoPath(projection),
             mapBoundsExtent = context.rapidContext().getTaskExtent(); 
             bbox = {type: 'Polygon', coordinates: [mapBoundsExtent.polygon()]},            
-            minlat = mapBoundsExtent[0][1], 
-            minlon = mapBoundsExtent[0][0], 
-            maxlat = mapBoundsExtent[1][1], 
-            maxlon = mapBoundsExtent[1][0],  
+            minlat = mapBoundsExtent[0][1],
+            minlon = mapBoundsExtent[0][0],
+            maxlat = mapBoundsExtent[1][1],
+            maxlon = mapBoundsExtent[1][0],
             numGridSplits = context.background().numGridSplits();
 
         var gridsSvg = surface.selectAll('.grids-svg')
             .data([0]);
 
-        //Since there is no z-order within an svg, 
-        //we want the grid to appear on top of everything else, 
-        // so insert(), not append(), it at the start of the data layer. 
+        // Since there is no z-order within an svg, 
+        // and we want the grid to appear on top of everything else, 
+        // insert(), not append(), it at the start of the data layer. 
         gridsSvg.enter()
             .insert('svg', ':first-child')
             .attr('class', 'grids-svg');
@@ -620,8 +620,8 @@ export function rendererMap(context) {
         surface
             .classed('low-zoom', zoom <= lowzoom(lat));
 
-
-        if (context.rapidContext().getTaskExtent()) { 
+        var taskExtent = context.rapidContext().getTaskExtent(); 
+        if (taskExtent && context.rapidContext.isTaskRectangular()) {
             drawMapGrid();
         }
 

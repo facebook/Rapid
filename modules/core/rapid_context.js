@@ -26,9 +26,17 @@ export function coreRapidContext(context) {
             taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
         }
     };
+
+
     rapidContext.getTaskExtent = function() {
         return taskExtent;
     };
+
+
+    rapidContext.isTaskRectangular = function() {
+        return taskExtent.geoExtentFromBounds() === taskExtent.rectangle();
+    };
+
 
     return rapidContext;
 }

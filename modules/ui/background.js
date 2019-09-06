@@ -13,6 +13,7 @@ import { uiMapInMap } from './map_in_map';
 import { uiSettingsCustomBackground } from './settings/custom_background';
 import { uiTooltipHtml } from './tooltipHtml';
 import { tooltip } from '../util/tooltip';
+import { coreRapidContext } from '../core';
 
 
 export function uiBackground(context) {
@@ -94,14 +95,8 @@ export function uiBackground(context) {
 
 
     function chooseGrid(d) {
-
         d3_event.preventDefault();
-        // _previousBackground = context.background().baseLayerSource();
-        // context.storage('grid-last-used-toggle', _previousBackground.id);
-        // context.storage('background-last-used', d.id);
-         context.background().numGridSplits(d.numSplit); 
-        // _backgroundList.call(updateLayerSelections);
-        // document.activeElement.blur();
+        context.background().numGridSplits(d.numSplit); 
     }
 
 
@@ -271,7 +266,6 @@ export function uiBackground(context) {
 
 
     function renderGridList(selection) {
-
         // the grid list
         var container = selection.selectAll('.layer-grid-list')
             .data([0]);
@@ -284,21 +278,19 @@ export function uiBackground(context) {
 
             var gridItems = gridList.selectAll('li')
                 .data(
-                    [{numSplit: 0, name: 'No Grid'},
-                    {numSplit: 2, name: '2 x 2 Grid'},
-                    {numSplit: 3, name: '3 x 3 Grid'},
-                    {numSplit: 4, name: '4 x 4 Grid'},
-                    {numSplit: 5, name: '5 x 5 Grid'},
-                    {numSplit: 6, name: '6 x 6 Grid'},
-                    ], 
+                    [{numSplit: 0, name: t('background.grid.no_grid')},
+                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 2})},
+                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 3})},
+                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 4})},
+                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 5})},
+                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 6})}], 
                     function(d) { return d.name; }
                 );
 
             var enter = gridItems.enter()
-            .insert('li', '.custom-gridsopt')
-            .attr('class', 'gridsopt'); 
+                .insert('li', '.custom-gridsopt')
+                .attr('class', 'gridsopt'); 
 
-           
             var label = enter.append('label'); 
             label.append('input')
                 .attr('type', 'radio')
@@ -315,8 +307,6 @@ export function uiBackground(context) {
                 .remove(); 
 
             selection.style('display', 'block')
-
-
     }
 
 
@@ -427,15 +417,18 @@ export function uiBackground(context) {
                 .content(renderOverlayList)
             );
 
-        // grid list
-        content
+        if (context.rapidContext.isTaskRectangular())
+        {
+            // grid list
+            content
             .append('div')
             .attr('class', 'grid-overlay-list-container')
             .call(uiDisclosure(context, 'grid_list', true)
-                .title(t('background.grids'))
+                .title(t('background.grid.grids'))
                 .content(renderGridList)
             );
-
+        }
+        
         // display options
         _displayOptionsContainer = content
             .append('div')
