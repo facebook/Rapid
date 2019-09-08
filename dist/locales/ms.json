@@ -1167,9 +1167,6 @@
                 "devices": {
                     "placeholder": "1, 2, 3..."
                 },
-                "diaper": {
-                    "label": "Menukar Lampin Tersedia"
-                },
                 "display": {
                     "label": "Paparan"
                 },
@@ -1279,12 +1276,6 @@
                 "hoops": {
                     "label": "Gelung",
                     "placeholder": "1, 2, 4..."
-                },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
                 },
                 "incline": {
                     "label": "Kecenderungan, Kecondongan"
@@ -2330,9 +2321,6 @@
                 },
                 "office/physician": {
                     "name": "Pakar Perubatan"
-                },
-                "office/political_party": {
-                    "name": "Parti Politik"
                 },
                 "office/private_investigator": {
                     "name": "Pejabat Penyiasat Peribadi"

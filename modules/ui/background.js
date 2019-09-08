@@ -135,6 +135,19 @@ export function uiBackground(context) {
             .classed('layer-custom', function(d) { return d.id === 'custom'; })
             .classed('best', function(d) { return d.best(); });
 
+        var label = enter
+            .append('label');
+
+        label
+            .append('input')
+            .attr('type', type)
+            .attr('name', 'layers')
+            .on('change', change);
+
+        label
+            .append('span')
+            .text(function(d) { return d.name(); });
+
         enter.filter(function(d) { return d.id === 'custom'; })
             .append('button')
             .attr('class', 'layer-browse')
@@ -155,23 +168,9 @@ export function uiBackground(context) {
             .append('span')
             .html('&#9733;');
 
-        var label = enter
-            .append('label');
-
-        label
-            .append('input')
-            .attr('type', type)
-            .attr('name', 'layers')
-            .on('change', change);
-
-        label
-            .append('span')
-            .text(function(d) { return d.name(); });
-
 
         layerList.selectAll('li')
-            .sort(sortSources)
-            .style('display', layerList.selectAll('li').data().length > 0 ? 'block' : 'none');
+            .sort(sortSources);
 
         layerList
             .call(updateLayerSelections);
@@ -236,7 +235,6 @@ export function uiBackground(context) {
             .attr('class', 'imagery-faq')
             .append('a')
             .attr('target', '_blank')
-            .attr('tabindex', -1)
             .call(svgIcon('#iD-icon-out-link', 'inline'))
             .attr('href', 'https://github.com/openstreetmap/iD/blob/master/FAQ.md#how-can-i-report-an-issue-with-background-imagery')
             .append('span')
@@ -316,7 +314,6 @@ export function uiBackground(context) {
 
         _toggleButton = selection
             .append('button')
-            .attr('tabindex', -1)
             .on('click', uiBackground.togglePane)
             .call(svgIcon('#iD-icon-layers', 'light'))
             .call(paneTooltip);

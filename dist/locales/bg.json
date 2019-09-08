@@ -1160,9 +1160,6 @@
                     "label": "Устройства",
                     "placeholder": "1, 2, 3..."
                 },
-                "diaper": {
-                    "label": "Стая за повиване"
-                },
                 "direction": {
                     "label": "Посока (Градуси по часовниковата стрелка)",
                     "placeholder": "45, 90, 180, 270"
@@ -1347,12 +1344,6 @@
                 "hoops": {
                     "label": "Кошове",
                     "placeholder": "1, 2, 4..."
-                },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
                 },
                 "incline": {
                     "label": "Наклон"

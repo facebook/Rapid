@@ -1068,9 +1068,6 @@
                     "label": "Preseos",
                     "placeholder": "1, 2, 3..."
                 },
-                "diaper": {
-                    "label": "Con cambiador de pañales"
-                },
                 "display": {
                     "label": "Pantalla"
                 },
@@ -1213,12 +1210,6 @@
                 "hoops": {
                     "label": "Númberu d'aros",
                     "placeholder": "1, 2, 4..."
-                },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
                 },
                 "incline": {
                     "label": "Pendiente"
@@ -3506,9 +3497,6 @@
                 },
                 "office/physician": {
                     "name": "Médicu"
-                },
-                "office/political_party": {
-                    "name": "Partíu políticu"
                 },
                 "office/research": {
                     "name": "Despachu d'investigación"

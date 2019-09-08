@@ -1299,9 +1299,6 @@
                 "description": {
                     "label": "Popis"
                 },
-                "diaper": {
-                    "label": "Obsahuje miesto na výmenu plienok"
-                },
                 "direction_cardinal": {
                     "label": "Svetové strany",
                     "options": {
@@ -1492,12 +1489,6 @@
                         "stables": "Áno",
                         "undefined": "Nie"
                     }
-                },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
                 },
                 "incline": {
                     "label": "Sklon"
@@ -3834,10 +3825,6 @@
                 },
                 "office/physician": {
                     "name": "Doktor"
-                },
-                "office/political_party": {
-                    "name": "Politická strana",
-                    "terms": "politicka strana"
                 },
                 "office/research": {
                     "name": "Výskum",

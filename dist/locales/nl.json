@@ -2509,9 +2509,6 @@
                     "label": "Aantal apparaten",
                     "placeholder": "1, 2, 3 …"
                 },
-                "diaper": {
-                    "label": "Luierverschoning mogelijk"
-                },
                 "diet_multi": {
                     "label": "Soorten diëten"
                 },
@@ -2805,12 +2802,6 @@
                         "stables": "Ja",
                         "undefined": "Nee"
                     }
-                },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
                 },
                 "incline": {
                     "label": "Helling"
@@ -6612,10 +6603,6 @@
                 "office/physician": {
                     "name": "Arts"
                 },
-                "office/political_party": {
-                    "name": "Politieke partij",
-                    "terms": "partijhoofdzetel,partijbureau"
-                },
                 "office/private_investigator": {
                     "name": "Kantoor van privédetective",
                     "terms": "privédetectivekantoor,rechercheurskantoor,onderzoekerskantoor"
@@ -7609,10 +7596,6 @@
                 "shop/wine": {
                     "name": "Wijnhandel",
                     "terms": "wijnwinkel,wijnproeverij,wijnzaak,wijnerij"
-                },
-                "tactile_paving": {
-                    "name": "Blindengeleidestrook",
-                    "terms": "geleidestrook,ribbelstrook"
                 },
                 "telecom/data_center": {
                     "name": "Datacenter"
@@ -8935,10 +8918,6 @@
             "OSM-CU-telegram": {
                 "name": "OSM Cuba op Telegram",
                 "description": "OpenStreetMap Cuba Telegram-chat"
-            },
-            "OSM-NI-telegram": {
-                "name": "OSM Nicaragua op Telegram",
-                "description": "OpenStreetMap Nicaragua Telegram-chat"
             },
             "Bay-Area-OpenStreetMappers": {
                 "name": "Bay Area OpenStreetMappers",
