@@ -1556,9 +1556,6 @@
                     "label": "裝置",
                     "placeholder": "1, 2, 3..."
                 },
-                "diaper": {
-                    "label": "設有換片設備"
-                },
                 "direction": {
                     "label": "方向 (順時針度數)",
                     "placeholder": "45, 90, 180, 270"
@@ -1779,12 +1776,6 @@
                         "stables": "是",
                         "undefined": "否"
                     }
-                },
-                "iata": {
-                    "label": "萬國航空運輸協會（IATA）"
-                },
-                "icao": {
-                    "label": "萬國民航組織（ICAO）"
                 },
                 "incline": {
                     "label": "斜"
@@ -4924,10 +4915,6 @@
                 },
                 "office/physician": {
                     "name": "醫生"
-                },
-                "office/political_party": {
-                    "name": "政黨",
-                    "terms": "Political Party,政黨,政治"
                 },
                 "office/research": {
                     "name": "研究所",

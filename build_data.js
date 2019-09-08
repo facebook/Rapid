@@ -63,6 +63,9 @@ module.exports = function buildData() {
         // The Noun Project icons used
         var tnpIcons = {};
 
+        // all fields searchable under "add field"
+        var searchableFieldIDs = {};
+
         // Start clean
         shell.rm('-f', [
             'data/presets/categories.json',
@@ -70,16 +73,18 @@ module.exports = function buildData() {
             'data/presets/presets.json',
             'data/presets.yaml',
             'data/taginfo.json',
+            'data/territory-languages.json',
             'dist/locales/en.json',
             'svg/fontawesome/*.svg',
         ]);
 
         var categories = generateCategories(tstrings, faIcons, tnpIcons);
-        var fields = generateFields(tstrings, faIcons);
-        var presets = generatePresets(tstrings, faIcons, tnpIcons);
+        var fields = generateFields(tstrings, faIcons, tnpIcons, searchableFieldIDs);
+        var presets = generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs);
         var defaults = read('data/presets/defaults.json');
-        var translations = generateTranslations(fields, presets, tstrings);
+        var translations = generateTranslations(fields, presets, tstrings, searchableFieldIDs);
         var taginfo = generateTaginfo(presets, fields);
+        var territoryLanguages = generateTerritoryLanguages();
 
         // Additional consistency checks
         validateCategoryPresets(categories, presets);
@@ -107,6 +112,10 @@ module.exports = function buildData() {
             writeFileProm(
                 'data/taginfo.json',
                 prettyStringify(taginfo, { maxLength: 9999 })
+            ),
+            writeFileProm(
+                'data/territory-languages.json',
+                prettyStringify({ dataTerritoryLanguages: territoryLanguages }, { maxLength: 9999 })
             ),
             writeEnJson(tstrings),
             writeFaIcons(faIcons),
@@ -169,7 +178,7 @@ function generateCategories(tstrings, faIcons, tnpIcons) {
 }
 
 
-function generateFields(tstrings, faIcons, tnpIcons) {
+function generateFields(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
     var fields = {};
     glob.sync(__dirname + '/data/presets/fields/**/*.json').forEach(function(file) {
         var field = read(file);
@@ -178,8 +187,13 @@ function generateFields(tstrings, faIcons, tnpIcons) {
         validate(file, field, fieldSchema);
 
         var t = tstrings.fields[id] = {
-            label: field.label
+            label: field.label,
+            terms: (field.terms || []).join(',')
         };
+
+        if (field.universal) {
+            searchableFieldIDs[id] = true;
+        }
 
         if (field.placeholder) {
             t.placeholder = field.placeholder;
@@ -316,7 +330,7 @@ function stripLeadingUnderscores(str) {
 }
 
 
-function generatePresets(tstrings, faIcons, tnpIcons) {
+function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
     var presets = {};
 
     glob.sync(__dirname + '/data/presets/presets/**/*.json').forEach(function(file) {
@@ -329,6 +343,12 @@ function generatePresets(tstrings, faIcons, tnpIcons) {
             name: preset.name,
             terms: (preset.terms || []).join(',')
         };
+
+        if (preset.moreFields) {
+            preset.moreFields.forEach(function(fieldID) {
+                searchableFieldIDs[fieldID] = true;
+            });
+        }
 
         presets[id] = preset;
 
@@ -347,7 +367,7 @@ function generatePresets(tstrings, faIcons, tnpIcons) {
 }
 
 
-function generateTranslations(fields, presets, tstrings) {
+function generateTranslations(fields, presets, tstrings, searchableFieldIDs) {
     var translations = JSON.parse(JSON.stringify(tstrings));  // deep clone
 
     Object.keys(translations.fields).forEach(function(id) {
@@ -374,6 +394,15 @@ function generateTranslations(fields, presets, tstrings) {
 
         if (f.placeholder) {
             field['placeholder#'] = id + ' field placeholder';
+        }
+
+        if (searchableFieldIDs[id]) {
+            if (f.terms && f.terms.length) {
+                field['terms#'] = 'terms: ' + f.terms.join();
+            }
+            field.terms = '[translate with synonyms or related terms for \'' + field.label + '\', separated by commas]';
+        } else {
+            delete field.terms;
         }
     });
 
@@ -409,7 +438,7 @@ function generateTaginfo(presets, fields) {
             'description': 'Online editor for OSM data.',
             'project_url': 'https://github.com/openstreetmap/iD',
             'doc_url': 'https://github.com/openstreetmap/iD/blob/master/data/presets/README.md',
-            'icon_url': 'https://raw.githubusercontent.com/openstreetmap/iD/master/dist/img/logo.png',
+            'icon_url': 'https://cdn.jsdelivr.net/gh/openstreetmap/iD/dist/img/logo.png',
             'keywords': [
                 'editor'
             ]
@@ -440,20 +469,20 @@ function generateTaginfo(presets, fields) {
 
         // add icon
         if (/^maki-/.test(preset.icon)) {
-            tag.icon_url = 'https://raw.githubusercontent.com/mapbox/maki/master/icons/' +
-                preset.icon.replace(/^maki-/, '') + '-15.svg?sanitize=true';
+            tag.icon_url = 'https://cdn.jsdelivr.net/gh/mapbox/maki/icons/' +
+                preset.icon.replace(/^maki-/, '') + '-15.svg';
         } else if (/^temaki-/.test(preset.icon)) {
-            tag.icon_url = 'https://raw.githubusercontent.com/bhousel/temaki/master/icons/' +
-                preset.icon.replace(/^temaki-/, '') + '.svg?sanitize=true';
+            tag.icon_url = 'https://cdn.jsdelivr.net/gh/bhousel/temaki/icons/' +
+                preset.icon.replace(/^temaki-/, '') + '.svg';
         } else if (/^fa[srb]-/.test(preset.icon)) {
-            tag.icon_url = 'https://raw.githubusercontent.com/openstreetmap/iD/master/svg/fontawesome/' +
-                preset.icon + '.svg?sanitize=true';
+            tag.icon_url = 'https://cdn.jsdelivr.net/gh/openstreetmap/iD/svg/fontawesome/' +
+                preset.icon + '.svg';
         } else if (/^iD-/.test(preset.icon)) {
-            tag.icon_url = 'https://raw.githubusercontent.com/openstreetmap/iD/master/svg/iD-sprite/presets/' +
-                preset.icon.replace(/^iD-/, '') + '.svg?sanitize=true';
+            tag.icon_url = 'https://cdn.jsdelivr.net/gh/openstreetmap/iD/svg/iD-sprite/presets/' +
+                preset.icon.replace(/^iD-/, '') + '.svg';
         } else if (/^tnp-/.test(preset.icon)) {
-            tag.icon_url = 'https://raw.githubusercontent.com/openstreetmap/iD/master/svg/the-noun-project/' +
-                preset.icon.replace(/^tnp-/, '') + '.svg?sanitize=true';
+            tag.icon_url = 'https://cdn.jsdelivr.net/gh/openstreetmap/iD/svg/the-noun-project/' +
+                preset.icon.replace(/^tnp-/, '') + '.svg';
         }
 
         coalesceTags(taginfo, tag);
@@ -563,6 +592,23 @@ function generateTaginfo(presets, fields) {
     }
 
     return taginfo;
+}
+
+function generateTerritoryLanguages() {
+    var allRawInfo = read('./node_modules/cldr-core/supplemental/territoryInfo.json').supplemental.territoryInfo;
+    var territoryLanguages = {};
+    Object.keys(allRawInfo).forEach(function(territoryCode) {
+        var territoryLangInfo = allRawInfo[territoryCode].languagePopulation;
+        if (!territoryLangInfo) return;
+        var langCodes = Object.keys(territoryLangInfo);
+        territoryLanguages[territoryCode.toLowerCase()] = langCodes.sort(function(langCode1, langCode2) {
+            return parseFloat(territoryLangInfo[langCode2]._populationPercent) -
+                   parseFloat(territoryLangInfo[langCode1]._populationPercent);
+        }).map(function(langCode) {
+            return langCode.replace('_', '-');
+        });
+    });
+    return territoryLanguages;
 }
 
 function validateCategoryPresets(categories, presets) {

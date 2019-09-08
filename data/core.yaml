@@ -398,6 +398,7 @@ en:
     localized_translation_label: Multilingual Name
     localized_translation_language: Choose language
     localized_translation_name: Name
+    language_and_code: "{language} ({code})"
   zoom_in_edit: Zoom in to edit
   login: Log In
   logout: Log Out
@@ -1560,6 +1561,8 @@ en:
         title: Connect this feature
       connect_features:
         title: Connect the features
+      connect_using_ford:
+        title: Connect using a ford
       continue_from_start:
         title: Continue drawing from start
       continue_from_end:
@@ -1622,6 +1625,8 @@ en:
         title: Use a bridge or tunnel
       use_different_layers:
         title: Use different layers
+      use_different_layers_or_levels:
+        title: Use different layers or levels
       use_different_levels:
         title: Use different levels
       use_tunnel:

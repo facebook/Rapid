@@ -49,7 +49,7 @@ describe('iD.Map', function() {
                 d3.timerFlush();
                 expect(map.zoom()).to.be.closeTo(5, 1e-6);
                 done();
-            }, 275);
+            }, 375);
         });
     });
 
@@ -61,7 +61,7 @@ describe('iD.Map', function() {
                 d3.timerFlush();
                 expect(map.zoom()).to.be.closeTo(3, 1e-6);
                 done();
-            }, 275);
+            }, 375);
         });
     });
 

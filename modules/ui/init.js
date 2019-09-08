@@ -199,7 +199,6 @@ export function uiInit(context) {
         issueLinks
             .append('a')
             .attr('target', '_blank')
-            .attr('tabindex', -1)
             .attr('href', 'https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating')
             .call(svgIcon('#iD-icon-translate', 'light'))
             .call(tooltip().title(t('help_translate')).placement('top'));
@@ -228,9 +227,9 @@ export function uiInit(context) {
         ui.onResize();
         map.redrawEnable(true);
 
-        var hash = behaviorHash(context);
-        hash();
-        if (!hash.hadHash) {
+        ui.hash = behaviorHash(context);
+        ui.hash();
+        if (!ui.hash.hadHash) {
             map.centerZoom([0, 0], 2);
         }
 
@@ -299,7 +298,7 @@ export function uiInit(context) {
 
         var osm = context.connection();
         if (!_initCounter++) {
-            if (!hash.startWalkthrough) {
+            if (!ui.hash.startWalkthrough) {
                 if (context.history().lock() && context.history().restorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
@@ -328,8 +327,8 @@ export function uiInit(context) {
 
         _initCounter++;
 
-        if (hash.startWalkthrough) {
-            hash.startWalkthrough = false;
+        if (ui.hash.startWalkthrough) {
+            ui.hash.startWalkthrough = false;
             context.container().call(uiIntro(context));
         }
 

@@ -26,7 +26,7 @@ export function coreContext() {
     var context = utilRebind({}, dispatch, 'on');
     var _deferred = new Set();
 
-    context.version = '2.15.3';
+    context.version = '2.15.5';
 
     // create a special translation that contains the keys in place of the strings
     var tkeys = JSON.parse(JSON.stringify(dataEn));  // clone deep
@@ -570,15 +570,12 @@ export function coreContext() {
             osmSetVertexTags(presets.vertexTags());
         });
     } else {
-        var isVisible;
+        var addablePresetIDs;
         if (presetsParameter) {
             // assume list of allowed preset IDs
-            var visiblePresetIDs = new Set(presetsParameter.split(','));
-            isVisible = function(presetID) {
-                return visiblePresetIDs.has(presetID);
-            };
+            addablePresetIDs = presetsParameter.split(',');
         }
-        presets.init(isVisible);
+        presets.init(addablePresetIDs);
         osmSetAreaKeys(presets.areaKeys());
         osmSetPointTags(presets.pointTags());
         osmSetVertexTags(presets.vertexTags());

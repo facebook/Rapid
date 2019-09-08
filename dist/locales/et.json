@@ -1115,12 +1115,6 @@
                 "horse_riding": {
                     "label": "Ratsutamine"
                 },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
-                },
                 "indoor": {
                     "label": "Siseruum"
                 },
@@ -4044,6 +4038,14 @@
             },
             "tf-landscape": {
                 "name": "Thunderforesti maastikukaart"
+            }
+        },
+        "community": {
+            "cape-coast-youthmappers": {
+                "description": "Jälgi meid Twitteris: {url}"
+            },
+            "osm-gh-twitter": {
+                "description": "Jälgi meid Twitteris: {url}"
             }
         }
     }

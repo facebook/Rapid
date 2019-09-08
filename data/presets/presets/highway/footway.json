@@ -13,7 +13,10 @@
         "dog",
         "lit",
         "maxweight_bridge",
+        "not/name",
         "smoothness",
+        "stroller",
+        "tactile_paving",
         "wheelchair"
     ],
     "geometry": [
