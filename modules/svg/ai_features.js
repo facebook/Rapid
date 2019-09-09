@@ -135,10 +135,20 @@ export function svgAiFeatures(projection, context, dispatch) {
         return d.__fbid__;
     }
 
+    function getChristmasStyle(d) {
+        var rnd = Math.random(); 
+        if (rnd > .50){
+            return "red";
+        } else {
+            return "green";
+        }    
+        return ""; 
+    }
 
     function featureClasses(d) {
         return [
             'data' + d.__fbid__,
+            getChristmasStyle(),
             isBuilding(d) ? 'building' : 'road',
             d.geometry.type,
         ].filter(Boolean).join(' ');

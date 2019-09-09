@@ -13,6 +13,20 @@
     stroke-width: 5;
     fill: none;
 }
+.layer-ai-features path.stroke.green.road {
+    /* stroke: #00ff3e; */
+    stroke-width: 5;
+    /* fill: url(#ai-feature-candycane-green); */
+    fill: #00ff3e;
+    mask: url(#mask-stripe); 
+}
+.layer-ai-features path.stroke.red.road {
+    /* stroke: #ff0012; */
+    stroke-width: 5;
+    /* fill: url(#ai-feature-candycane-red); */
+    fill: #ff0012;
+    mask: url(#mask-stripe); 
+}
 .layer-ai-features path.casing {
     stroke: #f0f;
     stroke-width: 7;
@@ -70,13 +84,34 @@
 
 .layer-ai-features  path.line.building.stroke {
     stroke-width: 5px;
-    stroke: #ff26d4;
-     fill: url(#ai-building);  
+    color:#e11383; 
+    stroke: currentColor;
+    fill: url(#ai-building-pink);  
     fill-opacity: 1; 
+}
+
+.layer-ai-features  path.line.building.stroke.red {
+    color: #ff0012; 
+    fill: url(#ai-feature-candycane-red);     
+}
+
+.low-zoom .layer-ai-features  path.line.building.stroke.red {
+    fill: url(#ai-feature-candycane-red-lowzoom);     
+}
+
+.layer-ai-features  path.line.building.stroke.green {
+    color:#00ff3e; 
+    fill: url(#ai-feature-candycane-green);  
+}
+
+
+.low-zoom .layer-ai-features  path.line.building.stroke.green {
+    fill: url(#ai-feature-candycane-green-lowzoom);  
 }
 
 .layer-ai-features  path.line.building.shadow {
     stroke-width: 12px;
+    fill: white;
 }
 
 .low-zoom .layer-ai-features path.line.building {

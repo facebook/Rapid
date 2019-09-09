@@ -10,7 +10,7 @@ import _debounce from 'lodash-es/debounce';
 import { operationCircularize, operationContinue, operationDelete, operationDisconnect,
     operationDowngrade, operationExtract, operationMerge, operationOrthogonalize,
     operationReverse, operationSplit, operationStraighten } from '../operations';
-import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
+import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc, uiToolFbBannerOne, uiToolFbBannerTwo } from './tools';
 import { uiToolAddAddablePresets } from './tools/quick_presets_addable';
 import { uiToolAddGeneric } from './tools/quick_presets_generic';
 import { uiToolSimpleButton } from './tools/simple_button';
@@ -40,6 +40,8 @@ export function uiTopToolbar(context) {
         straighten = uiToolOperation(context, operationStraighten);
 
     var toolbox = uiToolToolbox(context),
+        bannerOne = uiToolFbBannerOne(context),
+        bannerTwo = uiToolFbBannerTwo(context),
         addAddable = uiToolAddAddablePresets(context),
         addFeature = uiToolAddFeature(context),
         addGeneric = uiToolAddGeneric(context),
@@ -95,6 +97,8 @@ export function uiTopToolbar(context) {
             tools = [
                 toolbox,
                 aiFeaturesToggle,
+                bannerOne,
+                bannerTwo,
                 'spacer',
                 cancelSave
             ];
