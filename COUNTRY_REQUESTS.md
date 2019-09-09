@@ -44,9 +44,9 @@ Moldova - [Issue 25](https://github.com/facebookincubator/RapiD/issues/25)
 
 China - [Issue 27](https://github.com/facebookincubator/RapiD/issues/27)
 
-Romania - [Issue 27](https://github.com/facebookincubator/RapiD/issues/30)
+Romania - [Issue 30](https://github.com/facebookincubator/RapiD/issues/30)
 
-Russia - [Issue 27](https://github.com/facebookincubator/RapiD/issues/31)
+Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
