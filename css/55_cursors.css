@@ -8,7 +8,7 @@
 .map-in-map,
 .main-map {
     cursor: auto; /* Opera */
-    cursor: url(img/cursor-grab.png) 9 9, auto; /* FF */
+    cursor: url(img/santa-hand.svg) 9 9, auto; /* FF */
 }
 
 .ideditor.mode-browse .point,

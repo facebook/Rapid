@@ -3,10 +3,15 @@
 .mode-browse .layer-ai-features .vertex,
 .mode-select .layer-ai-features .vertex {
     cursor: pointer;
-    cursor: url(img/cursor-select-line.png), pointer;
+    /* cursor: url(img/cursor-select-line.png), pointer; */
+    cursor: url(img/tree.svg), pointer;
 }
 
-/* Lines */
+/* Road Lines */
+ .layer-ai-features {
+    cursor: url(img/tree.svg), pointer;
+}
+
 .layer-ai-features path.stroke {
     stroke: currentColor;
     stroke-width: 5;
@@ -18,11 +23,30 @@
     stroke-opacity: 0;
     fill: none;
 }
+
+.layer-ai-features path.casing.red.road {
+    stroke: white;
+    stroke-width: 9;
+ }
+
+ .layer-ai-features path.casing.green.road {
+    stroke-width: 9;
+    stroke: white;
+ }
+
 .layer-ai-features path.shadow {
     pointer-events: stroke;
     stroke: #fff;
     stroke-width: 20;
     stroke-opacity: 0;
+    fill: none;
+}
+
+.layer-ai-features path.shadow.green.road,
+.layer-ai-features path.shadow.red.road
+ {
+    stroke-width: 7;
+    stroke-opacity: 1;
     fill: none;
 }
 
@@ -56,6 +80,23 @@
     stroke-width: 3;
     fill: #fff;
 }
+<<<<<<< HEAD
+=======
+
+
+.layer-ai-features g.vertex.red.road .stroke {
+    stroke: #ff0012;
+    stroke-width: 3;
+    fill: #fff;
+}
+
+.layer-ai-features g.vertex.green.road .stroke {
+    stroke: #00ff3e;
+    stroke-width: 3;
+    fill: #fff;
+}
+
+>>>>>>> d7492e0c8... style roads appropriately as candy-canes. Fix road fill bug.
 .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }

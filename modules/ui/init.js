@@ -29,6 +29,7 @@ import { uiScale } from './scale';
 import { uiShortcuts } from './shortcuts';
 import { uiSidebar } from './sidebar';
 import { uiSourceSwitch } from './source_switch';
+import { uiSnowflakes } from './panes/snowflakes';
 import { uiSpinner } from './spinner';
 import { uiStatus } from './status';
 import { uiTooltip } from './tooltip';
@@ -324,8 +325,11 @@ export function uiInit(context) {
                 .call(pane.renderToggleButton);
 
             panes
-                .call(pane.renderPane);
+                .call(pane.renderPane)
         });
+        //render snowflakes!
+        var snowflakes = uiSnowflakes(context);
+        panes.call(snowflakes.renderPane);
 
         ui.info = uiInfo(context);
 
