@@ -48,5 +48,7 @@ Romania - [Issue 30](https://github.com/facebookincubator/RapiD/issues/30)
 
 Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)
 
+Peru - [Issue 32](https://github.com/facebookincubator/RapiD/issues/32)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
