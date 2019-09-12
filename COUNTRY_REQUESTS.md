@@ -10,7 +10,7 @@ If you would like to get RapiD support for a new country, please [create an issu
 
 Brazil - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
-Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14) [Issue 33](https://github.com/facebookincubator/RapiD/issues/33)
 
 ~~Mozambique - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
@@ -49,6 +49,8 @@ Romania - [Issue 30](https://github.com/facebookincubator/RapiD/issues/30)
 Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)
 
 Peru - [Issue 32](https://github.com/facebookincubator/RapiD/issues/32)
+
+Guatemala - [Issue 34](https://github.com/facebookincubator/RapiD/issues/34)
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
