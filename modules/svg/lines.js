@@ -10,7 +10,7 @@ import { utilArrayFlatten, utilArrayGroupBy } from '../util';
 import { utilDetect } from '../util/detect';
 import _isEqual from 'lodash-es/isEqual';
 import _omit from 'lodash-es/omit';
-
+import { rapid_feature_config } from '../../data/';
 export function svgLines(projection, context) {
     var detected = utilDetect();
 
@@ -110,6 +110,15 @@ export function svgLines(projection, context) {
             return scoreA - scoreB;
         }
 
+<<<<<<< HEAD
+=======
+        var getAIRoadStylingClass =  function(d) {
+            if (!rapid_feature_config.style_fb_ai_roads.enabled) return ''; 
+
+           return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : ''; 
+        }; 
+
+>>>>>>> e45e16185... Make travis tests happy by fixing lint errors.
         // Class for styling currently edited lines
         var tagEditClass = function(d) {
             var result = graph.entities[d.id] && base.entities[d.id] &&  !_isEqual(graph.entities[d.id].tags, base.entities[d.id].tags);

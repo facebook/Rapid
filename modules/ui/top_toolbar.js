@@ -63,7 +63,7 @@ export function uiTopToolbar(context) {
             }
 
             var q = utilStringQs(window.location.hash.substring(1));
-            if (q.support_download_osc === "true") {
+            if (q.support_download_osc === 'true') {
                 tools.push(downloadOsc);
             }
             tools = tools.concat([undoRedo, save]);
