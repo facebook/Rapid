@@ -10,7 +10,7 @@ If you would like to get RapiD support for a new country, please [create an issu
 
 Brazil - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
-Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14) [Issue 33](https://github.com/facebookincubator/RapiD/issues/33)
 
 ~~Mozambique - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
@@ -20,11 +20,11 @@ Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
 Democratic Republic of Congo - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
-Egypt - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Egypt - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
-Vietnam - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Vietnam - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
-Kenya - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
+~~Kenya - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
 ~~Philippines - [From Local Community](https://lists.openstreetmap.org/pipermail/talk/2019-August/083121.html)~~
 
@@ -39,6 +39,18 @@ Greece - [Issue 17](https://github.com/facebookincubator/RapiD/issues/17)
 South Africa - [Issue 18](https://github.com/facebookincubator/RapiD/issues/18)
 
 Uruguay - [Issue 19](https://github.com/facebookincubator/RapiD/issues/19)
+
+Moldova - [Issue 25](https://github.com/facebookincubator/RapiD/issues/25)
+
+China - [Issue 27](https://github.com/facebookincubator/RapiD/issues/27)
+
+Romania - [Issue 30](https://github.com/facebookincubator/RapiD/issues/30)
+
+Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)
+
+Peru - [Issue 32](https://github.com/facebookincubator/RapiD/issues/32)
+
+Guatemala - [Issue 34](https://github.com/facebookincubator/RapiD/issues/34)
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
