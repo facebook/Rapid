@@ -50,15 +50,14 @@ export function uiToolDownloadOsc(context) {
         }
 
         if (button) {
-            button
-                .classed('disabled', isDisabled())
+            button.classed('disabled', isDisabled()); 
         }
     }
 
     function downloadFile(data, fileName) {
       // Create an invisible A element
-      var a = document.createElement("a");
-      a.style.display = "none";
+      var a = document.createElement('a');
+      a.style.display = 'none';
       document.body.appendChild(a);
 
       // Set the HREF to a Blob representation of the data to be downloaded
@@ -67,7 +66,7 @@ export function uiToolDownloadOsc(context) {
       );
 
       // Use download attribute to set set desired file name
-      a.setAttribute("download", fileName);
+      a.setAttribute('download', fileName);
 
       // Trigger the download by simulating click
       a.click();
