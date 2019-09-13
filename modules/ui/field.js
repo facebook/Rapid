@@ -21,10 +21,10 @@ export function uiField(context, presetField, entity, options) {
     }, options);
 
     // Don't show the remove and revert buttons for the "Sources" field on a
-    // ML road with source=digitalglobe
+    // ML road with source=digitalglobe or source=maxar
     // TODO: switch to check on __fbid__
     if (presetField.key === 'source' && entity && entity.id.startsWith('w-') &&
-        entity.tags.source === 'digitalglobe') {
+        (entity.tags.source === 'digitalglobe' || entity.tags.source === 'maxar')) {
         options.remove = false;
         options.revert = false;
     }
