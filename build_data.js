@@ -110,6 +110,7 @@ module.exports = function buildData() {
             ),
             writeEnJson(tstrings),
             writeFaIcons(faIcons),
+            writeRapidConfig(), 
             writeTnpIcons(tnpIcons)
         ];
 
@@ -670,6 +671,17 @@ function translationsToYAML(translations) {
 
     return YAML.safeDump({ en: { presets: translations }}, { sortKeys: commentFirst, lineWidth: -1 })
         .replace(/\'.*#\':/g, '#');
+}
+
+
+function writeRapidConfig() {
+    var readRapidConfig = readFileProm('data/rapid_config.yaml', 'utf8'); 
+
+    return Promise.all([readRapidConfig]).then(function(data) {
+        var config = YAML.load(data[0]); 
+
+        return writeFileProm('data/rapid_config.json', JSON.stringify(config, null, 4)); 
+    }); 
 }
 
 

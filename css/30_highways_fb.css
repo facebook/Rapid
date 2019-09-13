@@ -1,0 +1,6 @@
+/* wide highways */
+path.line.shadow.tag-highway.airoad:not(selected) {
+    stroke-width: 20;
+    stroke: #ff26d488; 
+    stroke-opacity: 1; 
+}

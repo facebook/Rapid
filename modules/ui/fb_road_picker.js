@@ -25,7 +25,7 @@ export function uiFbRoadPicker(context, keybinding) {
         var entities = context.graph().entities;
         for (var eid in entities) {
             var e = entities[eid];
-            if (eid.startsWith('w-') && e && e.tags.source === 'digitalglobe') {
+            if (eid.startsWith('w-') && e && (e.tags.source === 'digitalglobe' || e.tags.source === 'maxar')) {
                 mlRoadsCount += 1;
             }
         }
