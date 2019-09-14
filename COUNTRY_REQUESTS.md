@@ -52,5 +52,9 @@ Peru - [Issue 32](https://github.com/facebookincubator/RapiD/issues/32)
 
 Guatemala - [Issue 34](https://github.com/facebookincubator/RapiD/issues/34)
 
+Chile - [Issue 38](https://github.com/facebookincubator/RapiD/issues/38)
+
+Bolivia - [Issue 39](https://github.com/facebookincubator/RapiD/issues/39)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
