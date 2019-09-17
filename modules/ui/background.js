@@ -6,6 +6,7 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 import { t, textDirection } from '../util/locale';
 import { svgIcon } from '../svg/icon';
 import { uiBackgroundDisplayOptions } from './background_display_options';
+import { uiGridDisplayOptions } from './grid_display_options';
 import { uiBackgroundOffset } from './background_offset';
 import { uiCmd } from './cmd';
 import { uiDisclosure } from './disclosure';
@@ -27,8 +28,10 @@ export function uiBackground(context) {
     var _backgroundList = d3_select(null);
     var _overlayList = d3_select(null);
     var _displayOptionsContainer = d3_select(null);
+    var _gridOptionsContainer = d3_select(null);
     var _offsetContainer = d3_select(null);
 
+    var gridDisplayOptions = uiGridDisplayOptions(context);
     var backgroundDisplayOptions = uiBackgroundDisplayOptions(context);
     var backgroundOffset = uiBackgroundOffset(context);
 
@@ -92,13 +95,6 @@ export function uiBackground(context) {
         _backgroundList.call(updateLayerSelections);
         document.activeElement.blur();
     }
-
-
-    function chooseGrid(d) {
-        d3_event.preventDefault();
-        context.background().numGridSplits(d.numSplit); 
-    }
-
 
     function customChanged(d) {
         if (d && d.template) {
@@ -267,52 +263,6 @@ export function uiBackground(context) {
     }
 
 
-    function renderGridList(selection) {
-        // the grid list
-        var container = selection.selectAll('.layer-grid-list')
-            .data([0]);
-
-        var gridList = container.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-grid-list')
-            .attr('dir', 'auto')
-            .merge(container);
-
-            var gridItems = gridList.selectAll('li')
-                .data(
-                    [{numSplit: 0, name: t('background.grid.no_grid')},
-                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 2})},
-                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 3})},
-                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 4})},
-                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 5})},
-                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 6})}], 
-                    function(d) { return d.name; }
-                );
-
-            var enter = gridItems.enter()
-                .insert('li', '.custom-gridsopt')
-                .attr('class', 'gridsopt'); 
-
-            var label = enter.append('label'); 
-            label.append('input')
-                .attr('type', 'radio')
-                .attr('name', 'grids')
-                .property('checked', function(d){
-                    return (d.numSplit === context.background().numGridSplits());
-                })
-                .on('change', chooseGrid); 
-            
-            label.append('span')
-                .text(function(d) {return d.name}); 
-            
-            gridItems.exit()
-                .remove(); 
-
-            selection.style('display', 'block')
-    }
-
-
-
     function updateBackgroundList() {
         _backgroundList
             .call(drawListItems, 'radio', chooseBackground, function(d) { return !d.isHidden() && !d.overlay; });
@@ -332,6 +282,9 @@ export function uiBackground(context) {
         if (!_pane.select('.disclosure-wrap-overlay_list').classed('hide')) {
             updateOverlayList();
         }
+
+        _gridOptionsContainer
+            .call(gridDisplayOptions);
 
         _displayOptionsContainer
             .call(backgroundDisplayOptions);
@@ -420,17 +373,10 @@ export function uiBackground(context) {
                 .content(renderOverlayList)
             );
 
-        if (context.rapidContext.isTaskRectangular())
-        {
-            // grid list
-            content
+        // grid list
+        _gridOptionsContainer = content
             .append('div')
-            .attr('class', 'grid-overlay-list-container')
-            .call(uiDisclosure(context, 'grid_list', true)
-                .title(t('background.grid.grids'))
-                .content(renderGridList)
-            );
-        }
+            .attr('class', 'grid-overlay-list-container'); 
         
         // display options
         _displayOptionsContainer = content

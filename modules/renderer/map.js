@@ -561,6 +561,9 @@ export function rendererMap(context) {
         gridsSvg.enter()
             .insert('svg', ':first-child')
             .attr('class', 'grids-svg');
+        
+        gridsSvg.exit()
+            .remove();
 
         var gridsData = [];
 
@@ -580,16 +583,16 @@ export function rendererMap(context) {
         var gridsPath = gridsSvg.selectAll('.map-grids')
             .data(gridsData); 
 
+        gridsPath.attr('d', d3Path);
+
         gridsPath.enter()
             .append('path')
             .attr('class', 'map-grids')
             .attr('d', d3Path); 
     
-        gridsPath.attr('d', d3Path);
         gridsPath.exit()
             .remove();
-        gridsSvg.exit()
-            .remove();
+        
     }
 
 
@@ -621,7 +624,7 @@ export function rendererMap(context) {
             .classed('low-zoom', zoom <= lowzoom(lat));
 
         var taskExtent = context.rapidContext().getTaskExtent(); 
-        if (taskExtent && context.rapidContext.isTaskRectangular()) {
+        if (taskExtent && context.rapidContext().isTaskRectangular()) {
             drawMapGrid();
         }
 

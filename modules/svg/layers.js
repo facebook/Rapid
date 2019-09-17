@@ -54,6 +54,10 @@ export function svgLayers(projection, context) {
             .append('defs')
             .attr('class', 'surface-defs');
 
+        defs.enter()
+            .append('svg')
+            .attr('class', 'grids-svg'); 
+            
         var groups = svg.selectAll('.data-layer')
             .data(_layers);
 
