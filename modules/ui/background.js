@@ -14,8 +14,6 @@ import { uiMapInMap } from './map_in_map';
 import { uiSettingsCustomBackground } from './settings/custom_background';
 import { uiTooltipHtml } from './tooltipHtml';
 import { tooltip } from '../util/tooltip';
-import { coreRapidContext } from '../core';
-
 
 export function uiBackground(context) {
     var key = t('background.key');
@@ -374,6 +372,12 @@ export function uiBackground(context) {
         _gridOptionsContainer = content
             .append('div')
             .attr('class', 'grid-overlay-list-container'); 
+        
+        context.rapidContext().on('task_extent_set.background', function() {
+            if (!context.rapidContext().isTaskRectangular()) {
+                _gridOptionsContainer.remove();               
+            }
+        });
         
         // display options
         _displayOptionsContainer = content
