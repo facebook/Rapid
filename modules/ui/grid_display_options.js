@@ -54,16 +54,28 @@ export function uiGridDisplayOptions(context) {
             
             gridItems.exit()
                 .remove(); 
-
-            selection.style('display', 'block')
-    }
+        }
 
 
     function gridDisplayOptions(selection) {
         _selection = selection;
+        
+        context.rapidContext().on('task_extent_set.grid_display_options', function() {
+            if (context.rapidContext().isTaskRectangular()) {
+                selection
+                    .call(uiDisclosure(context, 'grid_display_options', context.rapid)
+                        .title(t('background.grid.grids'))
+                        .content(render)
+                    );                
+            }
+        });
 
+        if (!context.rapidContext().isTaskRectangular()){
+            return; 
+        }
+        
         selection
-            .call(uiDisclosure(context, 'grid_display_options', true)
+            .call(uiDisclosure(context, 'grid_display_options', context.rapid)
                 .title(t('background.grid.grids'))
                 .content(render)
             );
