@@ -138,7 +138,7 @@ export function rendererBackground(context) {
         _numGridSplits = _;
         dispatch.call('change');
         return background;
-    }
+    };
 
     background.updateImagery = function() {
         var b = baseLayer.source();

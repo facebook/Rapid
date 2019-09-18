@@ -1,7 +1,4 @@
-import {
-    event as d3_event,
-    select as d3_select
-} from 'd3-selection';
+import { event as d3_event } from 'd3-selection';
 
 import { t } from '../util/locale';
 import { uiDisclosure } from './disclosure';
@@ -50,16 +47,14 @@ export function uiGridDisplayOptions(context) {
                 .on('change', chooseGrid); 
             
             label.append('span')
-                .text(function(d) {return d.name}); 
+                .text(function(d) {return d.name;}); 
             
             gridItems.exit()
                 .remove(); 
         }
 
 
-    function gridDisplayOptions(selection) {
-        _selection = selection;
-        
+    function gridDisplayOptions(selection) {        
         context.rapidContext().on('task_extent_set.grid_display_options', function() {
             if (context.rapidContext().isTaskRectangular()) {
                 selection
