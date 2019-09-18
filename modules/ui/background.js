@@ -374,8 +374,9 @@ export function uiBackground(context) {
             .attr('class', 'grid-overlay-list-container'); 
         
         context.rapidContext().on('task_extent_set.background', function() {
+            // Show grid options only if the task bbox is rectangular 
             if (!context.rapidContext().isTaskRectangular()) {
-                _gridOptionsContainer.remove();               
+                _gridOptionsContainer.remove();
             }
         });
         
