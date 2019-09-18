@@ -1,10 +1,10 @@
-import { geoExtent, geoExtentFromBounds } from '../geo';
+import { geoExtent } from '../geo';
 
 import toGeoJSON from '@mapbox/togeojson';
 import { dispatch as d3_dispatch } from 'd3-dispatch'; 
-import { utilRebind } from '../util'
+import { utilRebind } from '../util';
 
-export function coreRapidContext(context) {
+export function coreRapidContext() {
     var rapidContext = {};
     rapidContext.version = '1.0.1';
     var _isRect = undefined; 
@@ -34,16 +34,15 @@ export function coreRapidContext(context) {
                 }
     
                 if (f.geometry.type === 'LineString') {
-                    var lngs = f.geometry.coordinates.map(function(f) {return f[0]})
-                    var lats = f.geometry.coordinates.map(function(f) {return f[1]})
+                    var lats = f.geometry.coordinates.map(function(f) {return f[0];});
+                    var lngs = f.geometry.coordinates.map(function(f) {return f[1];});
 
-                    var uniqueLats = lats.filter(distinct); 
-                    var uniqueLngs = lngs.filter(distinct); 
+                    var uniqueLatCount = lats.filter(distinct).length; 
+                    var uniqueLngCount = lngs.filter(distinct).length; 
 
                     //If there are only two unique lngs and two unique lats in the geometry of the 
                     //task area, congrats- we have a rectangle! 
-                    if (uniqueLats.length === 2 && uniqueLngs.length === 2)
-                    {
+                    if (uniqueLatCount === 2 && uniqueLngCount === 2) {
                         _isRect = true; 
                     } else {
                         _isRect = false; 
@@ -67,7 +66,7 @@ export function coreRapidContext(context) {
         }
 
         return _isRect;  
-    }
+    };
 
     return utilRebind(rapidContext, dispatch, 'on');
 }
