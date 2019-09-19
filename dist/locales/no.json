@@ -1517,12 +1517,6 @@
                         "undefined": "Nei"
                     }
                 },
-                "iata": {
-                    "label": "IATA"
-                },
-                "icao": {
-                    "label": "ICAO"
-                },
                 "incline": {
                     "label": "Stigning"
                 },
@@ -3682,9 +3676,6 @@
                 },
                 "office/physician": {
                     "name": "Lege"
-                },
-                "office/political_party": {
-                    "name": "Politisk parti"
                 },
                 "office/travel_agent": {
                     "name": "Reisebyrå"

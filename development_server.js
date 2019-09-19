@@ -35,6 +35,7 @@ if (isDevelopment) {
             '!data/presets/presets.json',
             '!data/presets.yaml',
             '!data/taginfo.json',
+            '!data/territory-languages.json',
             '!dist/locales/en.json'
         ],
         function(err, watcher) {

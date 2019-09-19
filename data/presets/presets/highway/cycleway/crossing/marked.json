@@ -1,10 +1,11 @@
 {
-    "icon": "maki-bicycle",
+    "icon": "fas-biking",
     "fields": [
         "crossing",
         "access",
         "surface",
-        "tactile_paving"
+        "tactile_paving",
+        "crossing/island"
     ],
     "geometry": [
         "line"

@@ -864,9 +864,6 @@
                 "devices": {
                     "placeholder": "1, 2, 3..."
                 },
-                "diaper": {
-                    "label": "換得尿片"
-                },
                 "direction": {
                     "placeholder": "45, 90, 180, 270"
                 },
@@ -1011,12 +1008,6 @@
                 "hoops": {
                     "label": "藍框數",
                     "placeholder": "1, 2, 4..."
-                },
-                "iata": {
-                    "label": "萬國航空運輸協會（IATA）"
-                },
-                "icao": {
-                    "label": "萬國民航組織（ICAO）"
                 },
                 "incline": {
                     "label": "斜"
@@ -2452,10 +2443,6 @@
                 },
                 "office/physician": {
                     "name": "醫生"
-                },
-                "office/political_party": {
-                    "name": "政黨",
-                    "terms": "Political Party,政黨"
                 },
                 "office/research": {
                     "name": "研究所",

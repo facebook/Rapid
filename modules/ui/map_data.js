@@ -568,6 +568,22 @@ export function uiMapData(context) {
             .append('li')
             .attr('class', 'list-item-data');
 
+        var labelEnter = liEnter
+            .append('label')
+            .call(tooltip()
+                .title(t('map_data.layers.custom.tooltip'))
+                .placement('top')
+            );
+
+        labelEnter
+            .append('input')
+            .attr('type', 'checkbox')
+            .on('change', function() { toggleLayer('data'); });
+
+        labelEnter
+            .append('span')
+            .text(t('map_data.layers.custom.title'));
+    
         liEnter
             .append('button')
             .call(tooltip()
@@ -589,22 +605,6 @@ export function uiMapData(context) {
                 dataLayer.fitZoom();
             })
             .call(svgIcon('#iD-icon-search'));
-
-        var labelEnter = liEnter
-            .append('label')
-            .call(tooltip()
-                .title(t('map_data.layers.custom.tooltip'))
-                .placement('top')
-            );
-
-        labelEnter
-            .append('input')
-            .attr('type', 'checkbox')
-            .on('change', function() { toggleLayer('data'); });
-
-        labelEnter
-            .append('span')
-            .text(t('map_data.layers.custom.title'));
 
         // Update
         ul = ul
@@ -851,7 +851,6 @@ export function uiMapData(context) {
 
         _toggleButton = selection
             .append('button')
-            .attr('tabindex', -1)
             .on('click', uiMapData.togglePane)
             .call(svgIcon('#iD-icon-data', 'light'))
             .call(paneTooltip);

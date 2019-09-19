@@ -25,13 +25,18 @@ export function uiCombobox(context, klass) {
     var _cancelFetch = false;
     var _minItems = 2;
     var _tDown = 0;
+    var _mouseEnterHandler, _mouseLeaveHandler;
 
     var _fetcher = function(val, cb) {
         cb(_data.filter(function(d) {
-            return d.value
-                .toString()
-                .toLowerCase()
-                .indexOf(val.toLowerCase()) !== -1;
+            var terms = d.terms || [];
+            terms.push(d.value);
+            return terms.some(function(term) {
+                return term
+                    .toString()
+                    .toLowerCase()
+                    .indexOf(val.toLowerCase()) !== -1;
+            });
         }));
     };
 
@@ -376,6 +381,8 @@ export function uiCombobox(context, klass) {
                 .attr('class', 'combobox-option')
                 .attr('title', function(d) { return d.title; })
                 .text(function(d) { return d.display || d.value; })
+                .on('mouseenter', _mouseEnterHandler)
+                .on('mouseleave', _mouseLeaveHandler)
                 .merge(options)
                 .classed('selected', function(d) { return d.value === _selected; })
                 .on('click.combo-option', accept)
@@ -463,6 +470,17 @@ export function uiCombobox(context, klass) {
         return combobox;
     };
 
+    combobox.itemsMouseEnter = function(val) {
+        if (!arguments.length) return _mouseEnterHandler;
+        _mouseEnterHandler = val;
+        return combobox;
+    };
+
+    combobox.itemsMouseLeave = function(val) {
+        if (!arguments.length) return _mouseLeaveHandler;
+        _mouseLeaveHandler = val;
+        return combobox;
+    };
 
     return utilRebind(combobox, dispatch, 'on');
 }
