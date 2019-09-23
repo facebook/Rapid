@@ -74,7 +74,10 @@ export function behaviorHash(context) {
 
     function hashchange() {
         if (window.location.hash === s0) return;  // ignore spurious hashchange events
-        if (parser(context.map(), (s0 = window.location.hash).substring(1))) {
+
+        s0 = window.location.hash; 
+        var parserResult = parser(context.map(), s0.substring(1));
+        if (parserResult) {
             update(); // replace bogus hash
         }
     }
@@ -94,7 +97,9 @@ export function behaviorHash(context) {
             var q = utilStringQs(window.location.hash.substring(1));
 
             if (q.id) {
-                context.zoomToEntity(q.id.split(',')[0], !q.map);
+                if (!context.history().hasRestorableChanges()) {
+                    context.zoomToEntity(q.id.split(',')[0], true /* ignore `map` parameter */);
+                }
             }
 
             // Store these here instead of updating local storage since local

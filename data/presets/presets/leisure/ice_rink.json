@@ -11,14 +11,15 @@
     "moreFields": [
         "opening_hours",
         "payment_multi",
+        "level",
         "website",
         "phone",
         "email",
         "fax"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "hockey",

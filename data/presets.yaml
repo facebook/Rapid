@@ -229,6 +229,9 @@ en:
       attraction:
         # attraction=*
         label: Type
+      baby_seat:
+        # baby=*
+        label: Baby Seat
       backrest:
         # backrest=*
         label: Backrest
@@ -288,6 +291,9 @@ en:
           whole: whole blood
       board_type:
         # board_type=*
+        label: Type
+      bollard:
+        # bollard=*
         label: Type
       booth:
         # booth=*
@@ -876,9 +882,10 @@ en:
       handrail:
         # handrail=*
         label: Handrail
+        terms: '[translate with synonyms or related terms for ''Handrail'', separated by commas]'
       hashtags:
         # hashtags=*
-        label: Suggested Hashtags
+        label: Hashtags
         # hashtags field placeholder
         placeholder: '#example'
       healthcare:
@@ -993,6 +1000,10 @@ en:
       industrial:
         # industrial=*
         label: Type
+      informal:
+        # informal=*
+        label: Informal
+        terms: '[translate with synonyms or related terms for ''Informal'', separated by commas]'
       information:
         # information=*
         label: Type
@@ -1141,6 +1152,11 @@ en:
         label: Level
         # 'terms: building floor,deck,storey,story'
         terms: '[translate with synonyms or related terms for ''Level'', separated by commas]'
+      level_semi:
+        # level=*
+        label: Levels
+        # 'terms: building floors,decks,stories,storeys,storys'
+        terms: '[translate with synonyms or related terms for ''Levels'', separated by commas]'
       levels:
         # 'building:levels=*'
         label: Levels
@@ -1195,6 +1211,11 @@ en:
         # material=*
         label: Material
         terms: '[translate with synonyms or related terms for ''Material'', separated by commas]'
+      max_age:
+        # max_age=*
+        label: Maximum Age
+        # 'terms: upper age limit'
+        terms: '[translate with synonyms or related terms for ''Maximum Age'', separated by commas]'
       maxheight:
         # maxheight=*
         label: Max Height
@@ -1233,6 +1254,11 @@ en:
         label: Microbrewery
         # 'terms: brewpub,craft beer'
         terms: '[translate with synonyms or related terms for ''Microbrewery'', separated by commas]'
+      min_age:
+        # min_age=*
+        label: Minimum Age
+        # 'terms: lower age limit'
+        terms: '[translate with synonyms or related terms for ''Minimum Age'', separated by commas]'
       minspeed:
         # minspeed=*
         label: Minimum Speed Limit
@@ -1632,15 +1658,6 @@ en:
       playground:
         # playground=*
         label: Type
-      playground/baby:
-        # baby=*
-        label: Baby Seat
-      playground/max_age:
-        # max_age=*
-        label: Maximum Age
-      playground/min_age:
-        # min_age=*
-        label: Minimum Age
       polling_station:
         # polling_station=*
         label: Polling Place
@@ -2107,6 +2124,10 @@ en:
       step_count:
         # step_count=*
         label: Number of Steps
+        terms: '[translate with synonyms or related terms for ''Number of Steps'', separated by commas]'
+      stile:
+        # stile=*
+        label: Type
       stop:
         # stop=*
         label: Stop Type
@@ -2139,6 +2160,7 @@ en:
           tunnel: Tunnel
         # structure field placeholder
         placeholder: Unknown
+        terms: '[translate with synonyms or related terms for ''Structure'', separated by commas]'
       structure_waterway:
         # tunnel=*
         label: Structure
@@ -2167,6 +2189,7 @@ en:
       surface:
         # surface=*
         label: Surface
+        terms: '[translate with synonyms or related terms for ''Surface'', separated by commas]'
       surveillance:
         # surveillance=*
         label: Surveillance Kind
@@ -2445,6 +2468,9 @@ en:
       wall:
         # wall=*
         label: Type
+      waste:
+        # waste=*
+        label: Waste
       water:
         # water=*
         label: Type
@@ -2516,6 +2542,52 @@ en:
           # 'windings:configuration=zigzag'
           zigzag: Zig Zag
         terms: '[translate with synonyms or related terms for ''Windings Configuration'', separated by commas]'
+    groups:
+      toggleable/aerialways:
+        description: 'Chair Lifts, Gondolas, Zip Lines, etc.'
+        name: Aerial Features
+      toggleable/boundaries:
+        description: Administrative Boundaries
+        name: Boundaries
+      toggleable/building_parts:
+        description: 3D Building and Roof Components
+        name: Building Parts
+      toggleable/buildings:
+        description: 'Houses, Shelters, Garages, etc.'
+        name: Buildings
+      toggleable/indoor:
+        description: 'Rooms, Corridors, Stairwells, etc.'
+        name: Indoor Features
+      toggleable/landuse:
+        description: 'Forests, Farmland, Parks, Residential, Commercial, etc.'
+        name: Landuse Features
+      toggleable/past_future:
+        description: 'Proposed, Construction, Abandoned, Demolished, etc.'
+        name: Past/Future Features
+      toggleable/paths:
+        description: 'Sidewalks, Foot Paths, Cycle Paths, etc.'
+        name: Paths
+      toggleable/pistes:
+        description: 'Ski Slopes, Sled Runs, Ice Skating Trails, etc.'
+        name: Pistes
+      toggleable/points:
+        description: Points of Interest
+        name: Points
+      toggleable/power:
+        description: 'Power Lines, Power Plants, Substations, etc.'
+        name: Power Features
+      toggleable/rail:
+        description: 'Rails, Train Signals, etc.'
+        name: Railway Features
+      toggleable/service_roads:
+        description: 'Driveways, Parking Aisles, Tracks, etc.'
+        name: Service Roads
+      toggleable/traffic_roads:
+        description: 'Highways, Streets, etc.'
+        name: Traffic Roads
+      toggleable/water:
+        description: 'Rivers, Lakes, Ponds, Basins, etc.'
+        name: Water Features
     presets:
       addr/interpolation:
         # 'addr:interpolation=*'
@@ -3022,6 +3094,11 @@ en:
         name: Library
         # 'terms: book'
         terms: '<translate with synonyms or related terms for ''Library'', separated by commas>'
+      amenity/loading_dock:
+        # amenity=loading_dock
+        name: Loading Dock
+        # 'terms: door,loading bay,shipping,unloading,warehouse'
+        terms: '<translate with synonyms or related terms for ''Loading Dock'', separated by commas>'
       amenity/love_hotel:
         # amenity=love_hotel
         name: Love Hotel
@@ -3633,6 +3710,11 @@ en:
         # amenity=watering_place
         name: Animal Watering Place
         terms: '<translate with synonyms or related terms for ''Animal Watering Place'', separated by commas>'
+      amenity/weighbridge:
+        # amenity=weighbridge
+        name: Truck Scale
+        # 'terms: weigh station,weighbridge'
+        terms: '<translate with synonyms or related terms for ''Truck Scale'', separated by commas>'
       area:
         # area=yes
         name: Area
@@ -3663,9 +3745,9 @@ en:
         terms: '<translate with synonyms or related terms for ''Big Wheel'', separated by commas>'
       attraction/bumper_car:
         # attraction=bumper_car
-        name: Bumper Car
+        name: Bumper Cars
         # 'terms: theme park,dodgem cars,autoscooter'
-        terms: '<translate with synonyms or related terms for ''Bumper Car'', separated by commas>'
+        terms: '<translate with synonyms or related terms for ''Bumper Cars'', separated by commas>'
       attraction/bungee_jumping:
         # attraction=bungee_jumping
         name: Bungee Jumping
@@ -3733,6 +3815,10 @@ en:
         # barrier=bollard
         name: Bollard
         terms: '<translate with synonyms or related terms for ''Bollard'', separated by commas>'
+      barrier/bollard_line:
+        # barrier=bollard
+        name: Bollard Row
+        terms: '<translate with synonyms or related terms for ''Bollard Row'', separated by commas>'
       barrier/border_control:
         # barrier=border_control
         name: Border Control
@@ -4417,7 +4503,7 @@ en:
         # ford=*
         name: Ford
       golf/bunker:
-        # 'golf=bunker, natural=sand'
+        # golf=bunker
         name: Sand Trap
         # 'terms: hazard,bunker'
         terms: '<translate with synonyms or related terms for ''Sand Trap'', separated by commas>'
@@ -4426,15 +4512,15 @@ en:
         name: Golf Cartpath
         terms: '<translate with synonyms or related terms for ''Golf Cartpath'', separated by commas>'
       golf/driving_range:
-        # 'golf=driving_range, landuse=grass'
+        # golf=driving_range
         name: Driving Range
         terms: '<translate with synonyms or related terms for ''Driving Range'', separated by commas>'
       golf/fairway:
-        # 'golf=fairway, landuse=grass'
+        # golf=fairway
         name: Fairway
         terms: '<translate with synonyms or related terms for ''Fairway'', separated by commas>'
       golf/green:
-        # 'golf=green, landuse=grass, leisure=pitch, sport=golf'
+        # golf=green
         name: Putting Green
         terms: '<translate with synonyms or related terms for ''Putting Green'', separated by commas>'
       golf/hole:
@@ -4442,7 +4528,7 @@ en:
         name: Golf Hole
         terms: '<translate with synonyms or related terms for ''Golf Hole'', separated by commas>'
       golf/lateral_water_hazard:
-        # 'golf=lateral_water_hazard, natural=water'
+        # golf=lateral_water_hazard
         name: Lateral Water Hazard
         terms: '<translate with synonyms or related terms for ''Lateral Water Hazard'', separated by commas>'
       golf/path:
@@ -4450,16 +4536,16 @@ en:
         name: Golf Walking Path
         terms: '<translate with synonyms or related terms for ''Golf Walking Path'', separated by commas>'
       golf/rough:
-        # 'golf=rough, landuse=grass'
+        # golf=rough
         name: Rough
         terms: '<translate with synonyms or related terms for ''Rough'', separated by commas>'
       golf/tee:
-        # 'golf=tee, landuse=grass'
+        # golf=tee
         name: Tee Box
         # 'terms: teeing ground'
         terms: '<translate with synonyms or related terms for ''Tee Box'', separated by commas>'
       golf/water_hazard:
-        # 'golf=water_hazard, natural=water'
+        # golf=water_hazard
         name: Water Hazard
         terms: '<translate with synonyms or related terms for ''Water Hazard'', separated by commas>'
       healthcare:
@@ -4720,6 +4806,11 @@ en:
         name: Path
         # 'terms: hike,hiking,trackway,trail,walk'
         terms: '<translate with synonyms or related terms for ''Path'', separated by commas>'
+      highway/path/informal:
+        # 'highway=path, informal=yes'
+        name: Informal Path
+        # 'terms: bootleg trail,cow path,desire line,desire path,desireline,desirepath,elephant path,game trail,goat track,herd path,pig trail,shortcut,social trail,use trail'
+        terms: '<translate with synonyms or related terms for ''Informal Path'', separated by commas>'
       highway/pedestrian_area:
         # 'highway=pedestrian, area=yes'
         name: Pedestrian Area
@@ -4742,9 +4833,19 @@ en:
         terms: '<translate with synonyms or related terms for ''Primary Link'', separated by commas>'
       highway/raceway:
         # highway=raceway
-        name: Racetrack (Motorsport)
+        name: Motorsport Racetrack
         # 'terms: auto*,formula one,kart,motocross,nascar,race*,track'
-        terms: '<translate with synonyms or related terms for ''Racetrack (Motorsport)'', separated by commas>'
+        terms: '<translate with synonyms or related terms for ''Motorsport Racetrack'', separated by commas>'
+      highway/raceway/karting:
+        # 'highway=raceway, sport=karting'
+        name: Karting Racetrack
+        # 'terms: carting,go carts,go karts,go-karts,gokarts,kart racing,karting track,motorsports,shifter karts,superkarts'
+        terms: '<translate with synonyms or related terms for ''Karting Racetrack'', separated by commas>'
+      highway/raceway/motocross:
+        # 'highway=raceway, sport=motocross'
+        name: Motocross Racetrack
+        # 'terms: off-road racing,offroad moto racing,motocross circuit,motorcycle track,motorsports'
+        terms: '<translate with synonyms or related terms for ''Motocross Racetrack'', separated by commas>'
       highway/residential:
         # highway=residential
         name: Residential Road
@@ -5853,6 +5954,10 @@ en:
         name: Tunnel
         # 'terms: bore,dig,shaft,underground passage,underpass'
         terms: '<translate with synonyms or related terms for ''Tunnel'', separated by commas>'
+      man_made/utility_pole:
+        # man_made=utility_pole
+        name: Utility Pole
+        terms: '<translate with synonyms or related terms for ''Utility Pole'', separated by commas>'
       man_made/wastewater_plant:
         # man_made=wastewater_plant
         name: Wastewater Plant
@@ -6297,6 +6402,7 @@ en:
       office/research:
         # office=research
         name: Research Office
+        # 'terms: R and D,research and development,research lab'
         terms: '<translate with synonyms or related terms for ''Research Office'', separated by commas>'
       office/surveyor:
         # office=surveyor
@@ -7596,6 +7702,7 @@ en:
       shop/travel_agency:
         # shop=travel_agency
         name: Travel Agency
+        # 'terms: cruises,flights,hotels,tickets,travel packages'
         terms: '<translate with synonyms or related terms for ''Travel Agency'', separated by commas>'
       shop/tyres:
         # shop=tyres

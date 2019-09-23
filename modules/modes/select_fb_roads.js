@@ -86,16 +86,12 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
         selectData();
 
-        var sidebar = context.ui().sidebar;
-        sidebar.show(roadPicker.datum(selectedDatum));
-
         if (!_expandedOnce) {
-            // Expand sidebar at least once per session to inform user how to
+            // Expand assistant at least once per session to inform user how to
             // accept and reject proposed roads.
             _expandedOnce = true;
-            // expand the sidebar, avoid obscuring the data if needed
+            // expand the assistant, avoid obscuring the data if needed
             var extent = selectedDatum.extent(roadsGraph);
-            sidebar.expand(sidebar.intersects(extent));
         }
 
         context.map()
@@ -115,9 +111,6 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
         context.map()
             .on('drawn.select-fb-roads', null);
-
-        context.ui().sidebar
-            .hide();
     };
 
 

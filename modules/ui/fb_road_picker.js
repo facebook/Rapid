@@ -148,6 +148,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
 
     function fbRoadPicker(selection) {
+        
         var wrap = selection.selectAll('.fb-road-picker')
             .data([0]);
 
@@ -243,10 +244,9 @@ export function uiFbRoadPicker(context, keybinding) {
         return this;
     };
 
-
-    keybinding
-        .on(t('fb_road_picker.option_accept.key'), onAcceptRoad)
-        .on(t('fb_road_picker.option_reject.key'), onRejectRoad);
+     context.keybinding()
+         .on(t('fb_road_picker.option_accept.key'), onAcceptRoad)
+         .on(t('fb_road_picker.option_reject.key'), onRejectRoad);
 
     return fbRoadPicker;
 }

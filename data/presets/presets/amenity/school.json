@@ -16,13 +16,14 @@
         "fee",
         "internet_access",
         "internet_access/ssid",
+        "level",
         "phone",
         "polling_station",
         "wheelchair"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "academy",

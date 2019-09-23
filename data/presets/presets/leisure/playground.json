@@ -4,13 +4,13 @@
         "name",
         "operator",
         "surface",
-        "playground/max_age",
-        "playground/min_age",
+        "min_age",
+        "max_age",
         "access_simple"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "jungle gym",

@@ -11,16 +11,18 @@ import { geoExtent, geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../ge
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
 import { uiFlash } from '../ui/flash';
-import { utilFastMouse, utilFunctor, utilRebind, utilSetTransform } from '../util';
+import { utilFastMouse, utilFunctor, utilSetTransform, utilEntityAndDeepMemberIDs } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
-
+import { utilRebind } from '../util/rebind';
 
 // constants
 var TILESIZE = 256;
-var kMin = geoZoomToScale(2, TILESIZE);
-var kMax = geoZoomToScale(24, TILESIZE);
+var minZoom = 2;
+var maxZoom = 24;
+var kMin = geoZoomToScale(minZoom, TILESIZE);
+var kMax = geoZoomToScale(maxZoom, TILESIZE);
 
 function clamp(num, min, max) {
     return Math.max(min, Math.min(num, max));
@@ -28,7 +30,7 @@ function clamp(num, min, max) {
 
 
 export function rendererMap(context) {
-    var dispatch = d3_dispatch('move', 'drawn');
+    var dispatch = d3_dispatch('move', 'drawn', 'crossEditableZoom');
     var projection = context.projection;
     var curtainProjection = context.curtainProjection;
     var drawLayers = svgLayers(projection, context);
@@ -54,6 +56,7 @@ export function rendererMap(context) {
     var _minzoom = 0;
     var _getMouseCoords;
     var _mouseEvent;
+    var _lastWithinEditableZoom;
 
     var zoom = d3_zoom()
         .scaleExtent([kMin, kMax])
@@ -165,14 +168,14 @@ export function rendererMap(context) {
                 _mouseEvent = d3_event;
             })
             .on('mouseover.vertices', function() {
-                if (map.editable() && !_isTransformed) {
+                if (map.editableDataEnabled() && !_isTransformed) {
                     var hover = d3_event.target.__data__;
                     surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
                     dispatch.call('drawn', this, { full: false });
                 }
             })
             .on('mouseout.vertices', function() {
-                if (map.editable() && !_isTransformed) {
+                if (map.editableDataEnabled() && !_isTransformed) {
                     var hover = d3_event.relatedTarget && d3_event.relatedTarget.__data__;
                     surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
                     dispatch.call('drawn', this, { full: false });
@@ -180,7 +183,7 @@ export function rendererMap(context) {
             });
 
         context.on('enter.map',  function() {
-            if (map.editable() && !_isTransformed) {
+            if (map.editableDataEnabled(true /* skip zoom check */) && !_isTransformed) {
                 // redraw immediately any objects affected by a change in selectedIDs.
                 var graph = context.graph();
                 var selectedAndParents = {};
@@ -266,7 +269,16 @@ export function rendererMap(context) {
         var set;
         var filter;
 
-        if (difference) {
+        if (map.isInWideSelection()) {
+            data = [];
+            utilEntityAndDeepMemberIDs(mode.selectedIDs(), context.graph()).forEach(function(id) {
+                var entity = context.hasEntity(id);
+                if (entity) data.push(entity);
+            });
+            fullRedraw = true;
+            filter = utilFunctor(true);
+
+        } else if (difference) {
             var complete = difference.complete(map.extent());
             data = Object.values(complete).filter(Boolean);
             set = new Set(Object.keys(complete));
@@ -424,6 +436,7 @@ export function rendererMap(context) {
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * Math.pow(2, -dY / 500);
+                k2 = clamp(k2, kMin, kMax);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -435,6 +448,7 @@ export function rendererMap(context) {
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * source._scale;
+                k2 = clamp(k2, kMin, kMax);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -450,6 +464,7 @@ export function rendererMap(context) {
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * Math.pow(2, -dY / 500);
+                k2 = clamp(k2, kMin, kMax);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -460,6 +475,7 @@ export function rendererMap(context) {
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * Math.pow(2, -dY / 500);
+                k2 = clamp(k2, kMin, kMax);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -472,6 +488,7 @@ export function rendererMap(context) {
                 x2 = p1[0] - dX;
                 y2 = p1[1] - dY;
                 k2 = projection.scale();
+                k2 = clamp(k2, kMin, kMax);
             }
 
             // something changed - replace the event transform
@@ -483,6 +500,15 @@ export function rendererMap(context) {
                 _selection.node().__zoom = eventTransform;
             }
 
+        }
+
+        var withinEditableZoom = map.withinEditableZoom();
+        if (_lastWithinEditableZoom !== withinEditableZoom) {
+            if (_lastWithinEditableZoom !== undefined) {
+                // notify that the map zoomed in or out over the editable zoom threshold
+                dispatch.call('crossEditableZoom', this, map);
+            }
+            _lastWithinEditableZoom = withinEditableZoom;
         }
 
         if (geoScaleToZoom(k, TILESIZE) < _minzoom) {
@@ -528,8 +554,6 @@ export function rendererMap(context) {
     function resetTransform() {
         if (!_isTransformed) return false;
 
-        // deprecation warning - Radial Menu to be removed in iD v3
-        surface.selectAll('.edit-menu, .radial-menu').interrupt().remove();
         utilSetTransform(supersurface, 0, 0);
         _isTransformed = false;
         if (context.inIntro()) {
@@ -573,7 +597,7 @@ export function rendererMap(context) {
         }
 
         // OSM
-        if (map.editable()) {
+        if (map.editableDataEnabled() || map.isInWideSelection()) {
             context.loadTiles(projection);
             drawEditable(difference, extent);
         } else {
@@ -720,10 +744,11 @@ export function rendererMap(context) {
 
     map.zoomIn = function() { zoomIn(1); };
     map.zoomInFurther = function() { zoomIn(4); };
+    map.canZoomIn = function() { return map.zoom() < maxZoom; };
 
     map.zoomOut = function() { zoomOut(1); };
     map.zoomOutFurther = function() { zoomOut(4); };
-
+    map.canZoomOut = function() { return map.zoom() > minZoom; };
 
     map.center = function(loc2) {
         if (!arguments.length) {
@@ -794,7 +819,7 @@ export function rendererMap(context) {
         var extent = entity.extent(context.graph());
         if (!isFinite(extent.area())) return map;
 
-        var z2 = clamp(map.trimmedExtentZoom(extent), context.minEditableZoom(), 20);
+        var z2 = clamp(map.trimmedExtentZoom(extent), 0, 20);
         return map.centerZoom(extent.center(), z2);
     };
 
@@ -827,11 +852,23 @@ export function rendererMap(context) {
     };
 
 
-    map.zoomToEase = function(entity, duration) {
-        var extent = entity.extent(context.graph());
+    map.zoomToEase = function(obj, duration) {
+        var extent;
+        if (Array.isArray(obj)) {
+            obj.forEach(function(entity) {
+                var entityExtent = entity.extent(context.graph());
+                if (!extent) {
+                    extent = entityExtent;
+                } else {
+                    extent = extent.extend(entityExtent);
+                }
+            });
+        } else {
+            extent = obj.extent(context.graph());
+        }
         if (!isFinite(extent.area())) return map;
 
-        var z2 = clamp(map.trimmedExtentZoom(extent), context.minEditableZoom(), 20);
+        var z2 = clamp(map.trimmedExtentZoom(extent), 0, 20);
         return map.centerZoomEase(extent.center(), z2, duration);
     };
 
@@ -907,11 +944,23 @@ export function rendererMap(context) {
     };
 
 
-    map.editable = function() {
+    map.withinEditableZoom = function() {
+        return map.zoom() >= context.minEditableZoom();
+    };
+
+
+    map.isInWideSelection = function() {
+        return !map.withinEditableZoom() && context.mode() && context.mode().id === 'select';
+    };
+
+
+    map.editableDataEnabled = function(skipZoomCheck) {
+        if (context.history().hasRestorableChanges()) return false;
+
         var layer = context.layers().layer('osm');
         if (!layer || !layer.enabled()) return false;
 
-        return map.zoom() >= context.minEditableZoom();
+        return skipZoomCheck || map.withinEditableZoom();
     };
 
 
@@ -919,7 +968,7 @@ export function rendererMap(context) {
         var layer = context.layers().layer('notes');
         if (!layer || !layer.enabled()) return false;
 
-        return map.zoom() >= context.minEditableZoom();
+        return map.withinEditableZoom();
     };
 
 

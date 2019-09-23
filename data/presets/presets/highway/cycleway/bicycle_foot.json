@@ -1,4 +1,7 @@
 {
+    "notCountryCodes": [
+        "fr"
+    ],
     "icon": "fas-biking",
     "geometry": [
         "line"

@@ -10,12 +10,13 @@
     ],
     "moreFields": [
         "address",
+        "level",
         "opening_hours",
         "operator"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "dive",

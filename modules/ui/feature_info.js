@@ -13,7 +13,7 @@ export function uiFeatureInfo(context) {
         var hiddenList = features.hidden().map(function(k) {
             if (stats[k]) {
                 count += stats[k];
-                return String(stats[k]) + ' ' + t('feature.' + k + '.description');
+                return String(stats[k]) + ' ' + features.features()[k].title;
             }
         }).filter(Boolean);
 
@@ -27,13 +27,13 @@ export function uiFeatureInfo(context) {
                     return uiTooltipHtml(hiddenList.join('<br/>'));
                 });
 
-            var warning = selection.append('a')
+            selection.append('a')
                 .attr('href', '#')
                 .attr('tabindex', -1)
                 .html(t('feature_info.hidden_warning', { count: count }))
                 .call(tooltipBehavior)
                 .on('click', function() {
-                    tooltipBehavior.hide(warning);
+                    tooltipBehavior.hide();
                     // open map data panel?
                     d3_event.preventDefault();
                 });
