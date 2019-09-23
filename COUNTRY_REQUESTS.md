@@ -56,7 +56,13 @@ Chile - [Issue 38](https://github.com/facebookincubator/RapiD/issues/38)
 
 Bolivia - [Issue 39](https://github.com/facebookincubator/RapiD/issues/39)
 
-Galapagos - [Issue 40](https://github.com/facebookincubator/RapiD/issues/40)
+Galapagos - [Issue 41](https://github.com/facebookincubator/RapiD/issues/41)
+
+Gambia - [Issue 42](https://github.com/facebookincubator/RapiD/issues/42)
+
+Hungary - [Issue 43](https://github.com/facebookincubator/RapiD/issues/43)
+
+Belarus - [Issue 45](https://github.com/facebookincubator/RapiD/issues/45)
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
