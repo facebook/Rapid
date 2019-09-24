@@ -283,7 +283,7 @@ export function uiAssistant(context) {
 
         if (mode.id === 'select-fb-roads'){
             
-            return panelSelectFbRoads(context);
+            return panelSelectFbRoads(context, mode.selectedDatum());
 
         } else if (mode.id === 'save') {
 
