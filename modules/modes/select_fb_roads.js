@@ -62,7 +62,10 @@ export function modeSelectFbRoads(context, selectedDatum) {
         context.enter(modeBrowse(context));
     }
 
-
+    mode.selectedDatum = function() {
+        return selectedDatum; 
+    }
+    
     mode.selectedIDs = function() {
         return [selectedDatum.id];
     };

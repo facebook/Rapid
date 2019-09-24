@@ -8,13 +8,22 @@ import { tooltip } from '../util/tooltip';
 import { uiFlash } from './flash';
 import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
+import { uiCmd } from './cmd'
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
+var _bound = false; 
 
 export function uiFbRoadPicker(context, keybinding) {
     var _datum;
     var ML_ROADS_LIMIT_NON_TM_MODE = 50;
+    
 
+    if (!_bound) {
+        context.keybinding()
+            .on(uiCmd('⇧' + t('fb_road_picker.option_accept.key')), onAcceptRoad)
+            .on(uiCmd('⇧' + t('fb_road_picker.option_reject.key')), onRejectRoad);
+        _bound = true; 
+    }
 
     function isAddRoadDisabled() {
         // when task GPX is set in URL (TM mode), "add roads" is always enabled
@@ -211,7 +220,7 @@ export function uiFbRoadPicker(context, keybinding) {
                           ))
                         : uiTooltipHtml(
                               t('fb_road_picker.option_accept.tooltip'),
-                              t('fb_road_picker.option_accept.key')
+                              '⇧' +  t('fb_road_picker.option_accept.key')
                           );
                 }),
             onClick: onAcceptRoad,
@@ -227,7 +236,7 @@ export function uiFbRoadPicker(context, keybinding) {
                 .html(true)
                 .title(uiTooltipHtml(
                     t('fb_road_picker.option_reject.tooltip'),
-                    t('fb_road_picker.option_reject.key'))),
+                    '⇧' + t('fb_road_picker.option_reject.key'))),
             onClick: onRejectRoad
         }, 'fb-roads-reject');
 
@@ -242,11 +251,6 @@ export function uiFbRoadPicker(context, keybinding) {
         _datum = val;
         return this;
     };
-
-
-    keybinding
-        .on(t('fb_road_picker.option_accept.key'), onAcceptRoad)
-        .on(t('fb_road_picker.option_reject.key'), onRejectRoad);
 
     return fbRoadPicker;
 }

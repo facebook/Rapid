@@ -284,7 +284,11 @@ export function uiAssistant(context) {
 
         var mode = context.mode();
 
-        if (mode.id === 'save') {
+        if (mode.id === 'select-fb-roads'){
+            
+            return panelSelectFbRoads(context, mode.selectedDatum());
+
+        } else if (mode.id === 'save') {
 
             if (context.connection() && context.connection().authenticated()) {
                 return panelSave(context);
