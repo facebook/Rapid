@@ -64,5 +64,7 @@ Hungary - [Issue 43](https://github.com/facebookincubator/RapiD/issues/43)
 
 Belarus - [Issue 45](https://github.com/facebookincubator/RapiD/issues/45)
 
+Kazakhstan - [Issue 46](https://github.com/facebookincubator/RapiD/issues/46)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
