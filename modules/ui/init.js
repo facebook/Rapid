@@ -305,17 +305,11 @@ export function uiInit(context) {
         var osm = context.connection();
         if (!_initCounter++) {
             if (!ui.hash.startWalkthrough) {
-                if (context.history().lock() && context.history().hasRestorableChanges()) {
-                    context.container()
-                        .call(uiRestore(context));
-                } else if (osm.authenticated()) {
+                if (osm.authenticated()) {
                     context.container()
                         .call(uiSplashRapid(context));
                 }
-            }
-
-            context.container()
-                .call(uiShortcuts(context));
+            }           
         }
 
         var auth = uiLoading(context).message(t('loading_auth')).blocking(true);

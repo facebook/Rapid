@@ -233,7 +233,6 @@ export function uiTopToolbar(context) {
             if (q.support_download_osc === 'true') {
                 tools.push(downloadOsc);
             }
-            tools = tools.concat([undoRedo, save]);
 
             var toolbarItems = bar.selectAll('.toolbar-item')
                 .data(tools, function(d) {

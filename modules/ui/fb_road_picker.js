@@ -11,20 +11,10 @@ import { utilStringQs } from '../util';
 import { uiCmd } from './cmd'
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
-var _bound = false; 
-
 export function uiFbRoadPicker(context, keybinding) {
     var _datum;
     var ML_ROADS_LIMIT_NON_TM_MODE = 50;
     
-
-    if (!_bound) {
-        context.keybinding()
-            .on(uiCmd('⇧' + t('fb_road_picker.option_accept.key')), onAcceptRoad)
-            .on(uiCmd('⇧' + t('fb_road_picker.option_reject.key')), onRejectRoad);
-        _bound = true; 
-    }
-
     function isAddRoadDisabled() {
         // when task GPX is set in URL (TM mode), "add roads" is always enabled
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
@@ -252,6 +242,10 @@ export function uiFbRoadPicker(context, keybinding) {
         _datum = val;
         return this;
     };
+
+    keybinding()
+        .on(uiCmd('⇧' + t('fb_road_picker.option_accept.key')), onAcceptRoad)
+        .on(uiCmd('⇧' + t('fb_road_picker.option_reject.key')), onRejectRoad);
 
     return fbRoadPicker;
 }

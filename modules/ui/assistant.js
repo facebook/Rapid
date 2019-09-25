@@ -8,7 +8,7 @@ import {
 import { svgIcon } from '../svg/icon';
 import { currentLocale, t, textDirection } from '../util/locale';
 import { services } from '../services';
-import { utilDisplayLabel } from '../util';
+import { utilDisplayLabel, utilKeybinding } from '../util';
 import { uiIntro } from './intro';
 import { uiSuccess } from './success';
 import { uiPresetIcon } from './preset_icon';
@@ -781,7 +781,8 @@ export function uiAssistant(context) {
         }
 
         panel.renderBody = function(selection) {
-            var fbPicker = uiFbRoadPicker(context)
+            var keybinding = utilKeybinding('select-fb-roads');
+            var fbPicker = uiFbRoadPicker(context, keybinding)
                 .datum(datum); 
             selection.call(fbPicker); 
         }

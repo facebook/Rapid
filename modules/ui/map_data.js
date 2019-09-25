@@ -961,7 +961,7 @@ export function uiMapData(context) {
                 d3_event.stopPropagation();
                 toggleLayer('fb-roads');
             })
-            .on(t('map_data.highlight_way_edits.key'), toggleHighlightEdited);
+            .on('⇧' + t('map_data.highlight_way_edits.key'), toggleHighlightEdited);
     };
 
     return uiMapData;
