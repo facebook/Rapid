@@ -232,13 +232,11 @@
               "text": "shortcuts.editing.rapid.title"
             },
             {
-              "modifiers": ["⇧"],
               "shortcuts": ["fb_road_picker.option_accept.key"],
               "text": "shortcuts.editing.rapid.accept_feature",
               "rapid": true
             },
             {
-              "modifiers": ["⇧"],
               "shortcuts": ["fb_road_picker.option_reject.key"],
               "text": "shortcuts.editing.rapid.reject_feature",
               "rapid": true

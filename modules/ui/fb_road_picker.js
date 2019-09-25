@@ -8,7 +8,6 @@ import { tooltip } from '../util/tooltip';
 import { uiFlash } from './flash';
 import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
-import { uiCmd } from './cmd'
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
 export function uiFbRoadPicker(context, keybinding) {
@@ -243,8 +242,8 @@ export function uiFbRoadPicker(context, keybinding) {
     };
 
     keybinding()
-        .on(uiCmd('⇧' + t('fb_road_picker.option_accept.key')), onAcceptRoad)
-        .on(uiCmd('⇧' + t('fb_road_picker.option_reject.key')), onRejectRoad);
+        .on(t('fb_road_picker.option_accept.key'), onAcceptRoad)
+        .on(t('fb_road_picker.option_reject.key'), onRejectRoad);
 
     return fbRoadPicker;
 }
