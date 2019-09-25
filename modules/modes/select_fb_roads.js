@@ -14,7 +14,6 @@ import { t } from '../util/locale';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
 import { serviceFbMLRoads } from '../services';
-import { uiFbRoadPicker } from '../ui';
 import { utilKeybinding } from '../util';
 
 var _expandedOnce = false;
@@ -63,7 +62,7 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
     mode.selectedDatum = function() {
         return selectedDatum; 
-    }
+    };
     
     mode.selectedIDs = function() {
         return [selectedDatum.id];

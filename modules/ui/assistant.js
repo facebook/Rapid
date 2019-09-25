@@ -775,17 +775,24 @@ export function uiAssistant(context) {
         var panel = {
             theme: 'dark', 
             modeLabel: t('assistant.mode.inspecting'),
-            headerIcon: 'iD-logo-rapid',
             title: t('map_data.layers.fb-roads.title'),
             collapseCategory: 'inspect'
-        }
+        };
+
+        
+        panel.renderHeaderIcon = function(selection) {
+            selection
+                .append('div')
+                .attr('class', 'icon-col')
+                .call(svgIcon('#iD-logo-rapid', 'icon rapid'))
+        };
 
         panel.renderBody = function(selection) {
             var keybinding = utilKeybinding('select-fb-roads');
             var fbPicker = uiFbRoadPicker(context, keybinding)
                 .datum(datum); 
             selection.call(fbPicker); 
-        }
+        };
 
         return panel;
     }

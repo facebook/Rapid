@@ -288,7 +288,7 @@ export function uiEntityEditor(context) {
             for (var k in changed) {
                 if (!k) continue;
                 // No op for source=digitalglobe or source=maxar on ML roads. TODO: switch to check on __fbid__
-                if (_entityID.startsWith('w-') && k === 'source' && 
+                if (entityID.startsWith('w-') && k === 'source' && 
                      (entity.tags.source === 'digitalglobe' || entity.tags.source === 'maxar')) continue;
                 var v = changed[k];
                 if (v !== undefined || tags.hasOwnProperty(k)) {

@@ -5,7 +5,7 @@ import {
 } from 'd3-selection';
 import { t } from '../util/locale';
 import { utilFunctor} from '../util/util';
-import { utilStringQs } from '../util/'
+import { utilStringQs } from '../util/';
 import { modeBrowse } from '../modes/browse';
 import _debounce from 'lodash-es/debounce';
 
