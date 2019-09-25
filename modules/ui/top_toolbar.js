@@ -231,6 +231,11 @@ export function uiTopToolbar(context) {
                 }
             });
             tools = deduplicatedTools;
+            //TODOv3 -- examine how best to add the downloadOsc button into the mix. 
+            var q = utilStringQs(window.location.hash.substring(1));
+            if (q.support_download_osc === 'true') {
+                tools.push(downloadOsc);
+            }
 
             var toolbarItems = bar.selectAll('.toolbar-item')
                 .data(tools, function(d) {

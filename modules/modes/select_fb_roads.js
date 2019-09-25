@@ -28,7 +28,6 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
     var keybinding = utilKeybinding('select-fb-roads');
     var roadsGraph = serviceFbMLRoads.graph();
-    var roadPicker = uiFbRoadPicker(context, keybinding);
 
     var behaviors = [
         behaviorBreathe(context),
