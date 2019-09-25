@@ -79,9 +79,6 @@ module.exports = function buildData() {
         // all fields searchable under "add field"
         var searchableFieldIDs = {};
 
-        // all fields searchable under "add field"
-        var searchableFieldIDs = {};
-
         // Start clean
         shell.rm('-f', [
             'data/presets/categories.json',
