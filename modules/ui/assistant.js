@@ -22,6 +22,7 @@ import { uiCommit } from './commit';
 import { geoRawMercator } from '../geo/raw_mercator';
 import { utilGetDimensions } from '../util/dimensions';
 import { decimalCoordinatePair, formattedRoundedDuration } from '../util/units';
+import { uiFbRoadPicker } from './fb_road_picker';
 
 function utilTimeOfDayGreeting() {
     return t('assistant.greetings.' + utilTimeframe());
@@ -783,28 +784,31 @@ export function uiAssistant(context) {
         return panel;
     }
 
-<<<<<<< HEAD
-=======
     function panelSelectFbRoads(context, datum) {
         var panel = {
             theme: 'dark', 
             modeLabel: t('assistant.mode.inspecting'),
-            headerIcon: 'iD-logo-rapid',
             title: t('map_data.layers.fb-roads.title'),
             collapseCategory: 'inspect'
-        }
+        };
+
+        panel.renderHeaderIcon = function(selection) {
+            selection
+                .append('div')
+                .attr('class', 'icon-col')
+                .call(svgIcon('#iD-logo-rapid', 'icon rapid')); 
+        }; 
 
         panel.renderBody = function(selection) {
             var keybinding = utilKeybinding('select-fb-roads');
             var fbPicker = uiFbRoadPicker(context, keybinding)
                 .datum(datum); 
             selection.call(fbPicker); 
-        }
+        }; 
 
         return panel;
     }
 
->>>>>>> df10c6cf9... Fix duplicate shortcuts for add/remove fb roads.
     function panelSelectCustomData(context, datum) {
 
         var panel = {

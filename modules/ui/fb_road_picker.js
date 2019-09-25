@@ -105,7 +105,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var presetButton = presetWrap
             .append('button')
-            .attr('class', 'preset-list-button ' + presetButtonClasses)
+            .attr('class', 'picker-list-button ' + presetButtonClasses)
             .on('click', p.onClick);
 
         if (p.disabledFunction) {
@@ -118,8 +118,9 @@ export function uiFbRoadPicker(context, keybinding) {
 
         presetButton
             .append('div')
-            .attr('class', 'preset-icon-container medium')
+            .attr('class', 'picker-icon-container medium')
             .append('svg')
+            .attr('class', 'icon')
             .append('use')
             .attr('xlink:href', p.iconName);
 
@@ -160,7 +161,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var headerEnter = header.enter()
             .append('div')
-            .attr('class', 'header fillL');
+            .attr('class', 'header control-col');
 
         headerEnter
             .append('h3')
@@ -188,7 +189,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var bodyEnter = body.enter()
             .append('div')
-            .attr('class', 'body fillL');
+            .attr('class', 'body control-col');
 
         bodyEnter
             .append('h4')

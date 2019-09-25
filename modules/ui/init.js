@@ -32,7 +32,6 @@ import { uiMapInMap } from './map_in_map';
 import { uiNotice } from './notice';
 import { uiPhotoviewer } from './photoviewer';
 import { uiScale } from './scale';
-import { uiShortcuts } from './shortcuts';
 import { uiSpinner } from './spinner';
 import { uiSplashRapid } from './splash_rapid';
 import { uiStatus } from './status';

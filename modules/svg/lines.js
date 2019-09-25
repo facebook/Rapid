@@ -114,6 +114,11 @@ export function svgLines(projection, context) {
             return scoreA - scoreB;
         }
         
+        var getAIRoadStylingClass =  function(d){
+            if (!rapid_feature_config.style_fb_ai_roads.enabled) return ''; 
+
+           return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : ''; 
+        };
 
         function drawLineGroup(selection, klass, isSelected) {
             // Note: Don't add `.selected` class in draw modes
@@ -142,7 +147,7 @@ export function svgLines(projection, context) {
                     }
 
                     var oldMPClass = oldMultiPolygonOuters[d.id] ? 'old-multipolygon ' : '';
-                    return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + d.id;
+                    return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + getAIRoadStylingClass(d) + d.id;
                 })
                 .classed('added', function(d) {
                     return !base.entities[d.id];

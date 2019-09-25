@@ -134,8 +134,6 @@ export function behaviorSelect(context) {
 
         if (datum && datum.__fbid__) {    // clicked an FB road ..
             context
-                .selectedNoteID(null)
-                .selectedErrorID(null)
                 .enter(modeSelectFbRoads(context, datum));
 
         } else if (datum instanceof osmEntity) {    // clicked an entity..

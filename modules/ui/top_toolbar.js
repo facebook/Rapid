@@ -49,14 +49,15 @@ export function uiTopToolbar(context) {
         notes = uiToolNotes(context),
         undoRedo = uiToolUndoRedo(context),
         save = uiToolSave(context),
-        downloadOsc = uiToolDownloadOsc(context);
+        downloadOsc = uiToolDownloadOsc(context),
         waySegments = uiToolWaySegments(context),
         structure = uiToolStructure(context),
         repeatAdd = uiToolRepeatAdd(context),
         centerZoom = uiToolCenterZoom(context),
         stopDraw = uiToolStopDraw(context),
         addingGeometry = uiToolAddingGeometry(context),
-        powerSupport = uiToolPowerSupport(context),
+        powerSupport = uiToolPowerSupport(context), 
+
         /*
         deselect = uiToolSimpleButton({
             id: 'deselect',
@@ -218,11 +219,6 @@ export function uiTopToolbar(context) {
                 return tool.userToggleable === false || tool.isToggledOn !== false;
             });
 
-            var q = utilStringQs(window.location.hash.substring(1));
-            if (q.support_download_osc === 'true') {
-                tools.push(downloadOsc);
-            }
-            tools = tools.concat([undoRedo, save]);
             var deduplicatedTools = [];
             // remove adjacent duplicates (i.e. spacers)
             tools.forEach(function(tool) {
