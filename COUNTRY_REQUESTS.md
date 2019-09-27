@@ -10,7 +10,7 @@ If you would like to get RapiD support for a new country, please [create an issu
 
 Brazil - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
-Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14) [Issue 33](https://github.com/facebookincubator/RapiD/issues/33)
+~~Turkey - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14) [Issue 33](https://github.com/facebookincubator/RapiD/issues/33)~~
 
 ~~Mozambique - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)~~
 
