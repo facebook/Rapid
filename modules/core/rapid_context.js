@@ -7,7 +7,7 @@ import { utilRebind } from '../util';
 export function coreRapidContext() {
     var rapidContext = {};
     rapidContext.version = '1.0.1';
-    var _isRect = undefined; 
+    var _isTaskBoundsRect = undefined; 
     var dispatch = d3_dispatch('task_extent_set');
 
     function distinct (value, index, self) {
@@ -18,8 +18,11 @@ export function coreRapidContext() {
     rapidContext.setTaskExtentByGpxData = function(gpxData) {
         var dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
         var gj = toGeoJSON.gpx(dom);
-        var uniqueLats = []; 
-        var uniqueLngs = []; 
+
+        var lineStringCount = gj.features.reduce(function (accumulator, currentValue) {
+            return accumulator + (currentValue.geometry.type === 'LineString' ? 1 : 0);
+        }, 0); 
+
         if (gj.type === 'FeatureCollection') {
             var minlat, minlon, maxlat, maxlon;
             // Calculate task extent. 
@@ -33,7 +36,7 @@ export function coreRapidContext() {
                     if (maxlon === undefined || lon > maxlon) maxlon = lon;                    
                 }
     
-                if (f.geometry.type === 'LineString') {
+                if (f.geometry.type === 'LineString' && lineStringCount === 1) {
                     var lats = f.geometry.coordinates.map(function(f) {return f[0];});
                     var lngs = f.geometry.coordinates.map(function(f) {return f[1];});
                     var uniqueLats = lats.filter(distinct); 
@@ -57,9 +60,9 @@ export function coreRapidContext() {
                     //and that each latitude was associated with exactly 2 longitudes, 
                     // 
                     if (uniqueLats.length === 2 && uniqueLngs.length === 2 && eachLatHas2Lngs) { 
-                        _isRect = true; 
+                        _isTaskBoundsRect = true; 
                     } else {
-                        _isRect = false; 
+                        _isTaskBoundsRect = false; 
                     }
                 }
             });
@@ -79,7 +82,7 @@ export function coreRapidContext() {
             return false; 
         }
 
-        return _isRect;  
+        return _isTaskBoundsRect;  
     };
 
     return utilRebind(rapidContext, dispatch, 'on');
