@@ -68,5 +68,7 @@ Kazakhstan - [Issue 46](https://github.com/facebookincubator/RapiD/issues/46)
 
 Somalia - [Issue 47](https://github.com/facebookincubator/RapiD/issues/47)
 
+New Zealand - [Issue 52](https://github.com/facebookincubator/RapiD/issues/52)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
