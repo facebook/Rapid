@@ -5,6 +5,7 @@ import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { event as d3_event, select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { geoPath as d3_geoPath } from 'd3-geo';
 
 import { t } from '../util/locale';
 import { geoExtent, geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
@@ -563,6 +564,59 @@ export function rendererMap(context) {
     }
 
 
+    function drawMapGrid() {
+        // Add bounding box to imported OSM file layer
+        var d3Path = d3_geoPath(projection),
+            mapBoundsExtent = context.rapidContext().getTaskExtent(); 
+        var minlat = mapBoundsExtent[0][1],
+            minlon = mapBoundsExtent[0][0],
+            maxlat = mapBoundsExtent[1][1],
+            maxlon = mapBoundsExtent[1][0],
+            numGridSplits = context.background().numGridSplits();
+
+        var gridsSvg = surface.selectAll('.grids-svg')
+            .data([0]);
+
+        // Since there is no z-order within an svg, 
+        // and we want the grid to appear on top of everything else, 
+        // insert(), not append(), it at the start of the data layer. 
+        gridsSvg.enter()
+            .insert('svg', ':first-child')
+            .attr('class', 'grids-svg');
+        
+        gridsSvg.exit()
+            .remove();
+
+        var gridsData = [];
+
+        for (var i = 1; i < numGridSplits; i++) {
+            var midlon = minlon + (maxlon - minlon) * i / numGridSplits,
+                midlat = minlat + (maxlat - minlat) * i / numGridSplits;
+            gridsData.push({
+                type: 'LineString',
+                coordinates:[[midlon, minlat], [midlon, maxlat]]
+            });
+            gridsData.push({
+                type: 'LineString',
+                coordinates:[[minlon, midlat], [maxlon, midlat]]
+            });
+        }
+
+        var gridsPath = gridsSvg.selectAll('.map-grids')
+            .data(gridsData); 
+
+        gridsPath.attr('d', d3Path);
+
+        gridsPath.enter()
+            .append('path')
+            .attr('class', 'map-grids')
+            .attr('d', d3Path); 
+    
+        gridsPath.exit()
+            .remove();
+    }
+
+
     function redraw(difference, extent) {
         if (surface.empty() || !_redrawEnabled) return;
 
@@ -590,6 +644,9 @@ export function rendererMap(context) {
         surface
             .classed('low-zoom', zoom <= lowzoom(lat));
 
+        if (context.rapidContext().isTaskRectangular()) {
+            drawMapGrid();
+        }
 
         if (!difference) {
             supersurface.call(context.background());
