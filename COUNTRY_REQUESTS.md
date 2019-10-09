@@ -72,5 +72,7 @@ New Zealand - [Issue 52](https://github.com/facebookincubator/RapiD/issues/52)
 
 Republic of Korea - [Issue 53](https://github.com/facebookincubator/RapiD/issues/53)
 
+Portugal - [Issue 54](https://github.com/facebookincubator/RapiD/issues/54)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
