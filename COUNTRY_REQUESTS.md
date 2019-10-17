@@ -76,5 +76,9 @@ Portugal - [Issue 54](https://github.com/facebookincubator/RapiD/issues/54)
 
 Australia - [Issue 57](https://github.com/facebookincubator/RapiD/issues/57)
 
+Croatia - [Issue 56](https://github.com/facebookincubator/RapiD/issues/56)
+
+Haiti - [Issue 55](https://github.com/facebookincubator/RapiD/issues/55)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
