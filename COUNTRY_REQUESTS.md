@@ -84,5 +84,11 @@ Iran - [Issue 58](https://github.com/facebookincubator/RapiD/issues/58)
 
 Kosovo - [Issue 59](https://github.com/facebookincubator/RapiD/issues/59)
 
+India - [Issue 61](https://github.com/facebookincubator/RapiD/issues/61)
+
+Cuba - [Issue 62](https://github.com/facebookincubator/RapiD/issues/62)
+
+Ukraine - [Issue 63](https://github.com/facebookincubator/RapiD/issues/63)
+
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
