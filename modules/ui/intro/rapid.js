@@ -5,6 +5,7 @@ import {
     select as d3_select
 } from 'd3-selection';
 
+import marked from 'marked'; 
 import { t } from '../../util/locale';
 import { modeBrowse} from '../../modes';
 import { utilRebind } from '../../util/rebind';
@@ -85,27 +86,17 @@ export function uiIntroRapid(context, reveal) {
         if (msec) { reveal(null, null, { duration: 0 }); }
         context.map().centerZoomEase(tulipLaneMid, 18.5, msec);
 
-        timeout(function() {
-            reveal(
-                'button.ai-features-toggle',
-                t('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') })
-            );
-
-            var button = d3_select('.ai-features-toggle');
-
-            button.on('click.intro', function() {
-                continueTo(selectRoad);
-            });
-        }, msec + 100);
-
-        function continueTo(nextStep) {
-            context.on('enter.intro', null);
-            nextStep();
-        }
+        reveal(
+            'button.ai-features-toggle',
+            t('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+            { buttonText: t('intro.ok'), buttonCallback: selectRoad });    
     }
 
 
     function selectRoad() {
+        var drawAiFeatures = context.layers().layer('ai-features');
+        drawAiFeatures.enabled(!drawAiFeatures.enabled());
+
         // disallow scrolling
         d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
         reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road'));
@@ -302,7 +293,7 @@ export function uiIntroRapid(context, reveal) {
         if (context.mode().id !== 'browse') return chapter.restart();
         dispatch.call('done');
         reveal('.intro-nav-wrap .chapter-startEditing',
-            t('intro.rapid.done',{ next: t('intro.startediting.title') })
+            marked(t('intro.rapid.done',{ next: t('intro.startediting.title') }))
         );
     }
 
