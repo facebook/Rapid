@@ -92,6 +92,8 @@ Ukraine - [Issue 63](https://github.com/facebookincubator/RapiD/issues/63)
 
 Morocco - [Issue 64](https://github.com/facebookincubator/RapiD/issues/64)
 
+Colombia - [Issue 66](https://github.com/facebookincubator/RapiD/issues/66)
+
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
