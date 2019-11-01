@@ -85,11 +85,6 @@ export function uiIntro(context, skipToRapid) {
         var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
         var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
 
-        // Show sidebar and disable the sidebar resizing button
-        // (this needs to be before `context.inIntro(true)`)
-        context.ui().sidebar.expand();
-        d3_selectAll('button.sidebar-toggle').classed('disabled', true);
-
         // Block saving
         context.inIntro(true);
 

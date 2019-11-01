@@ -94,7 +94,10 @@ export function behaviorHash(context) {
             var q = utilStringQs(window.location.hash.substring(1));
 
             if (q.id) {
-                context.zoomToEntity(q.id.split(',')[0], !q.map);
+                if (!context.history().hasRestorableChanges()) {
+                    // targeting specific features: download, select, and zoom to them
+                    context.zoomToEntities(q.id.split(','));
+                }
             }
 
             // Store these here instead of updating local storage since local

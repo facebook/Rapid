@@ -140,8 +140,6 @@ export function behaviorSelect(context) {
 
         } else if (datum instanceof osmEntity) {    // clicked an entity..
             var selectedIDs = context.selectedIDs();
-            context.selectedNoteID(null);
-            context.selectedErrorID(null);
 
             if (!isMultiselect) {
                 if (selectedIDs.length > 1 && (!_suppressMenu && !isShowAlways)) {
@@ -172,22 +170,17 @@ export function behaviorSelect(context) {
 
         } else if (datum && datum.__featurehash__ && !isMultiselect) {    // clicked Data..
             context
-                .selectedNoteID(null)
                 .enter(modeSelectData(context, datum));
 
         } else if (datum instanceof osmNote && !isMultiselect) {    // clicked a Note..
             context
-                .selectedNoteID(datum.id)
                 .enter(modeSelectNote(context, datum.id));
 
         } else if (datum instanceof qaError & !isMultiselect) {  // clicked an external QA error
             context
-                .selectedErrorID(datum.id)
                 .enter(modeSelectError(context, datum.id, datum.service));
 
         } else {    // clicked nothing..
-            context.selectedNoteID(null);
-            context.selectedErrorID(null);
             if (!isMultiselect && mode.id !== 'browse') {
                 context.enter(modeBrowse(context));
             }

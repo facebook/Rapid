@@ -90,11 +90,20 @@ export function uiPanelHistory(context) {
             .attr('target', '_blank')
             .attr('tabindex', -1)
             .text('OSMCha');
+
+        links
+            .append('a')
+            .attr('class', 'changeset-achavi-link')
+            .attr('href', 'https://overpass-api.de/achavi/?changeset=' + changeset)
+            .attr('target', '_blank')
+            .attr('tabindex', -1)
+            .text('Achavi');
     }
 
 
     function redraw(selection) {
-        var selectedNoteID = context.selectedNoteID();
+        var mode = context.mode();
+        var selectedNoteID = mode.selectedNoteID && mode.selectedNoteID();
         osm = context.connection();
 
         var selected, note, entity;

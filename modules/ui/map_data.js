@@ -18,36 +18,37 @@ export function uiMapData(context) {
     var key = t('map_data.key');
     var fbRoadsDataToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
     var osmDataToggleKey = uiCmd('⌥' + t('area_fill.wireframe.key'));
-    var features = context.features().keys();
+    var features = context.features().featuresArray();
     var layers = context.layers();
     var fills = ['wireframe', 'partial', 'full'];
 
     var settingsCustomData = uiSettingsCustomData(context)
         .on('change', customChanged);
 
-    var _pane = d3_select(null), _toggleButton = d3_select(null);
+    var _pane = d3_select(null);
 
     var _fillSelected = context.storage('area-fill') || 'partial';
     var _dataLayerContainer = d3_select(null);
     var _photoOverlayContainer = d3_select(null);
     var _fillList = d3_select(null);
     var _featureList = d3_select(null);
+    var _visualDiffList = d3_select(null);
     var _QAList = d3_select(null);
 
 
     function showsFeature(d) {
-        return context.features().enabled(d);
+        return context.features().enabled(d.key);
     }
 
 
     function autoHiddenFeature(d) {
         if (d.type === 'kr_error') return context.errors().autoHidden(d);
-        return context.features().autoHidden(d);
+        return context.features().autoHidden(d.key);
     }
 
 
     function clickFeature(d) {
-        context.features().toggle(d);
+        context.features().toggle(d.key);
         update();
     }
 
@@ -91,6 +92,9 @@ export function uiMapData(context) {
         d3_event.preventDefault();
         var surface = context.surface();
         surface.classed('highlight-edited', !surface.classed('highlight-edited'));
+        updateVisualDiffList();
+
+        context.map().pan([0,0]);  // trigger a redraw
     }
 
 
@@ -157,7 +161,7 @@ export function uiMapData(context) {
             .append('li')
             .attr('class', function(d) {
                 var classes = 'list-item-photos list-item-' + d.id;
-                if (d.id === 'mapillary-signs') {
+                if (d.id === 'mapillary-signs' || d.id === 'mapillary-map-features') {
                     classes += ' indented';
                 }
                 return classes;
@@ -170,7 +174,7 @@ export function uiMapData(context) {
                 if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
                 else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
                 else if (d.id === 'openstreetcam') titleID = 'openstreetcam_images.tooltip';
-                else titleID = d.id.replace('-', '_') + '.tooltip';
+                else titleID = d.id.replace(/-/g, '_') + '.tooltip';
                 d3_select(this)
                     .call(tooltip()
                         .title(t(titleID))
@@ -188,8 +192,19 @@ export function uiMapData(context) {
             .text(function(d) {
                 var id = d.id;
                 if (id === 'mapillary-signs') id = 'photo_overlays.traffic_signs';
-                return t(id.replace('-', '_') + '.title');
+                return t(id.replace(/-/g, '_') + '.title');
             });
+
+        labelEnter
+            .filter(function(d) { return d.id === 'mapillary-map-features'; })
+            .append('a')
+            .attr('class', 'request-data-link')
+            .attr('target', '_blank')
+            .attr('tabindex', -1)
+            .call(svgIcon('#iD-icon-out-link', 'inline'))
+            .attr('href', 'https://mapillary.github.io/mapillary_solutions/data-request')
+            .append('span')
+            .text(t('mapillary_map_features.request_data'));
 
 
         // Update
@@ -583,7 +598,6 @@ export function uiMapData(context) {
         labelEnter
             .append('span')
             .text(t('map_data.layers.custom.title'));
-    
         liEnter
             .append('button')
             .call(tooltip()
@@ -652,8 +666,15 @@ export function uiMapData(context) {
             .call(tooltip()
                 .html(true)
                 .title(function(d) {
-                    var tip = t(name + '.' + d + '.tooltip');
+                    var tip;
+                    if (name === 'feature') {
+                        tip = d.description;
+                    } else {
+                        tip = t(name + '.' + d + '.tooltip');
+                    }
                     var key = (d === 'wireframe' ? t('area_fill.wireframe.key') : null);
+                    if (d === 'highlight_edits') key = t('map_data.highlight_edits.key');
+
                     if ((name === 'feature' || name === 'keepRight') && autoHiddenFeature(d)) {
                         var msg = showsLayer('osm') ? t('map_data.autohidden') : t('map_data.osmhidden');
                         tip += '<div>' + msg + '</div>';
@@ -674,7 +695,12 @@ export function uiMapData(context) {
 
         label
             .append('span')
-            .text(function(d) { return t(name + '.' + d + '.description'); });
+            .text(function(d) {
+                if (name === 'feature') {
+                    return d.title;
+                }
+                return t(name + '.' + d + '.description');
+            });
 
         // Update
         items = items
@@ -715,7 +741,7 @@ export function uiMapData(context) {
     }
 
 
-    function renderFillList(selection) {
+    function renderStyleOptions(selection) {
         var container = selection.selectAll('.layer-fill-list')
             .data([0]);
 
@@ -725,6 +751,16 @@ export function uiMapData(context) {
             .merge(container);
 
         updateFillList();
+
+        var container2 = selection.selectAll('.layer-visual-diff-list')
+            .data([0]);
+
+        _visualDiffList = container2.enter()
+            .append('ul')
+            .attr('class', 'layer-list layer-visual-diff-list')
+            .merge(container2);
+
+        updateVisualDiffList();
     }
 
 
@@ -791,6 +827,13 @@ export function uiMapData(context) {
             .call(drawListItems, fills, 'radio', 'area_fill', setFill, showsFill);
     }
 
+    function updateVisualDiffList() {
+        _visualDiffList
+            .call(drawListItems, ['highlight_edits'], 'checkbox', 'visual_diff', toggleHighlightEdited, function() {
+                return context.surface().classed('highlight-edited');
+            });
+    }
+
     function updateFeatureList() {
         _featureList
             .call(drawListItems, features, 'checkbox', 'feature', clickFeature, showsFeature);
@@ -843,13 +886,13 @@ export function uiMapData(context) {
 
     uiMapData.togglePane = function() {
         if (d3_event) d3_event.preventDefault();
-        paneTooltip.hide(_toggleButton);
+        paneTooltip.hide();
         context.ui().togglePanes(!_pane.classed('shown') ? _pane : undefined);
     };
 
     uiMapData.renderToggleButton = function(selection) {
 
-        _toggleButton = selection
+        selection
             .append('button')
             .on('click', uiMapData.togglePane)
             .call(svgIcon('#iD-icon-data', 'light'))
@@ -906,8 +949,8 @@ export function uiMapData(context) {
             .append('div')
             .attr('class', 'map-data-area-fills')
             .call(uiDisclosure(context, 'fill_area', false)
-                .title(t('map_data.fill_area'))
-                .content(renderFillList)
+                .title(t('map_data.style_options'))
+                .content(renderStyleOptions)
             );
 
         // feature filters
@@ -940,7 +983,7 @@ export function uiMapData(context) {
                 d3_event.stopPropagation();
                 toggleLayer('fb-roads');
             })
-            .on(t('map_data.highlight_way_edits.key'), toggleHighlightEdited);
+            .on(t('map_data.highlight_edits.key'), toggleHighlightEdited);
     };
 
     return uiMapData;

@@ -10,11 +10,12 @@
     "moreFields": [
         "access",
         "covered",
-        "indoor"
+        "indoor",
+        "level"
     ],
     "geometry": [
-        "point",
         "line",
+        "point",
         "area"
     ],
     "tags": {

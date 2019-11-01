@@ -26,7 +26,7 @@ export function coreContext() {
     var context = utilRebind({}, dispatch, 'on');
     var _deferred = new Set();
 
-    context.version = '2.15.5';
+    context.version = '2.16.0';
 
     // create a special translation that contains the keys in place of the strings
     var tkeys = JSON.parse(JSON.stringify(dataEn));  // clone deep
@@ -104,32 +104,13 @@ export function coreContext() {
     };
 
 
-    function afterLoad(cid, callback) {
+    function afterLoad(callback) {
         return function(err, result) {
-            if (err) {
-                // 400 Bad Request, 401 Unauthorized, 403 Forbidden..
-                if (err.status === 400 || err.status === 401 || err.status === 403) {
-                    if (connection) {
-                        connection.logout();
-                    }
-                }
-                if (typeof callback === 'function') {
-                    callback(err);
-                }
-                return;
-
-            } else if (connection && connection.getConnectionId() !== cid) {
-                if (typeof callback === 'function') {
-                    callback({ message: 'Connection Switched', status: -1 });
-                }
-                return;
-
-            } else {
+            if (!err && result && result.data) {
                 history.merge(result.data, result.extent);
-                if (typeof callback === 'function') {
-                    callback(err, result);
-                }
-                return;
+            }
+            if (callback) {
+                callback(err, result);
             }
         };
     }
@@ -138,9 +119,8 @@ export function coreContext() {
     context.loadTiles = function(projection, callback) {
         var handle = window.requestIdleCallback(function() {
             _deferred.delete(handle);
-            if (connection && context.editable()) {
-                var cid = connection.getConnectionId();
-                connection.loadTiles(projection, afterLoad(cid, callback));
+            if (connection && context.editableDataEnabled()) {
+                connection.loadTiles(projection, afterLoad(callback));
             }
         });
         _deferred.add(handle);
@@ -149,9 +129,8 @@ export function coreContext() {
     context.loadTileAtLoc = function(loc, callback) {
         var handle = window.requestIdleCallback(function() {
             _deferred.delete(handle);
-            if (connection && context.editable()) {
-                var cid = connection.getConnectionId();
-                connection.loadTileAtLoc(loc, afterLoad(cid, callback));
+            if (connection && context.editableDataEnabled()) {
+                connection.loadTileAtLoc(loc, afterLoad(callback));
             }
         });
         _deferred.add(handle);
@@ -159,8 +138,75 @@ export function coreContext() {
 
     context.loadEntity = function(entityID, callback) {
         if (connection) {
-            var cid = connection.getConnectionId();
-            connection.loadEntity(entityID, afterLoad(cid, callback));
+            connection.loadEntity(entityID, afterLoad(callback));
+        }
+    };
+
+    context.loadEntities = function(entityIDs, callback) {
+        var handle = window.requestIdleCallback(function() {
+            _deferred.delete(handle);
+            if (connection) {
+                connection.loadMultiple(entityIDs, loadedMultiple);
+            }
+        });
+        _deferred.add(handle);
+
+        function loadedMultiple(err, result) {
+            if (err || !result) {
+                afterLoad(callback)(err, result);
+                return;
+            }
+
+            // `loadMultiple` doesn't fetch child nodes, so we have to fetch them
+            // manually before merging ways
+
+            var unloadedNodeIDs = new Set();
+            var okayResults = [];
+            var waitingEntities = [];
+            result.data.forEach(function(entity) {
+                var hasUnloaded = false;
+                if (entity.type === 'way') {
+                    entity.nodes.forEach(function(nodeID) {
+                        if (!context.hasEntity(nodeID)) {
+                            hasUnloaded = true;
+                            // mark that we still need this node
+                            unloadedNodeIDs.add(nodeID);
+                        }
+                    });
+                }
+                if (hasUnloaded) {
+                    // don't merge ways with unloaded nodes
+                    waitingEntities.push(entity);
+                } else {
+                    okayResults.push(entity);
+                }
+            });
+            if (okayResults.length) {
+                // merge valid results right away
+                afterLoad(callback)(err, { data: okayResults });
+            }
+            if (waitingEntities.length) {
+                // run a followup request to fetch missing nodes
+                connection.loadMultiple(Array.from(unloadedNodeIDs), function(err, result) {
+                    if (err || !result) {
+                        afterLoad(callback)(err, result);
+                        return;
+                    }
+
+                    result.data.forEach(function(entity) {
+                        // mark that we successfully received this node
+                        unloadedNodeIDs.delete(entity.id);
+                        // schedule this node to be merged
+                        waitingEntities.push(entity);
+                    });
+
+                    // since `loadMultiple` could send multiple requests, wait until all have completed
+                    if (unloadedNodeIDs.size === 0) {
+                        // merge the ways and their nodes all at once
+                        afterLoad(callback)(err, { data: waitingEntities });
+                    }
+                });
+            }
         }
     };
 
@@ -186,6 +232,30 @@ export function coreContext() {
             if (mode.id !== 'browse') {
                 map.on('drawn.zoomToEntity', null);
                 context.on('enter.zoomToEntity', null);
+            }
+        });
+    };
+
+    context.zoomToEntities = function(entityIDs) {
+        context.loadEntities(entityIDs);
+
+        map.on('drawn.zoomToEntities', function() {
+            if (entityIDs.some(function(entityID) {
+                return !context.hasEntity(entityID);
+            })) return;
+
+            map.on('drawn.zoomToEntities', null);
+            context.on('enter.zoomToEntities', null);
+
+            var mode = modeSelect(context, entityIDs);
+            context.enter(mode);
+            mode.zoomToSelected();
+        });
+
+        context.on('enter.zoomToEntities', function() {
+            if (mode.id !== 'browse') {
+                map.on('drawn.zoomToEntities', null);
+                context.on('enter.zoomToEntities', null);
             }
         });
     };
@@ -262,11 +332,13 @@ export function coreContext() {
     context.enter = function(newMode) {
         if (mode) {
             mode.exit();
+            container.classed('mode-' + mode.id, false);
             dispatch.call('exit', this, mode);
         }
 
         mode = newMode;
         mode.enter();
+        container.classed('mode-' + newMode.id, true);
         dispatch.call('enter', this, mode);
     };
 
@@ -280,20 +352,6 @@ export function coreContext() {
 
     context.activeID = function() {
         return mode && mode.activeID && mode.activeID();
-    };
-
-    var _selectedNoteID;
-    context.selectedNoteID = function(noteID) {
-        if (!arguments.length) return _selectedNoteID;
-        _selectedNoteID = noteID;
-        return context;
-    };
-
-    var _selectedErrorID;
-    context.selectedErrorID = function(errorID) {
-        if (!arguments.length) return _selectedErrorID;
-        _selectedErrorID = errorID;
-        return context;
     };
 
 
@@ -347,7 +405,15 @@ export function coreContext() {
     context.map = function() { return map; };
     context.layers = function() { return map.layers; };
     context.surface = function() { return map.surface; };
-    context.editable = function() { return map.editable(); };
+    context.editableDataEnabled = function() { return map.editableDataEnabled(); };
+    context.editable = function() {
+
+        // don't allow editing during save
+        var mode = context.mode();
+        if (!mode || mode.id === 'save') return false;
+
+        return map.editableDataEnabled();
+    };
     context.surfaceRect = function() {
         return map.surface.node().getBoundingClientRect();
     };
@@ -583,6 +649,7 @@ export function coreContext() {
 
     var rapidContext = coreRapidContext(context);
     context.rapidContext = function() { return rapidContext; };
+    context.isFirstSession = !context.storage('sawSplash');
 
     return context;
 }

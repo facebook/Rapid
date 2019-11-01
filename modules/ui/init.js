@@ -13,6 +13,7 @@ import { svgDefs, svgIcon } from '../svg';
 import { utilGetDimensions } from '../util/dimensions';
 
 import { uiAccount } from './account';
+import { uiAssistant } from './assistant';
 import { uiAttribution } from './attribution';
 import { uiBackground } from './background';
 import { uiContributors } from './contributors';
@@ -24,15 +25,14 @@ import { uiHelp } from './help';
 import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssues } from './issues';
+import { uiIssuesInfo } from './issues_info';
 import { uiLoading } from './loading';
 import { uiMapData } from './map_data';
 import { uiMapInMap } from './map_in_map';
 import { uiNotice } from './notice';
 import { uiPhotoviewer } from './photoviewer';
-import { uiRestore } from './restore';
 import { uiScale } from './scale';
 import { uiShortcuts } from './shortcuts';
-import { uiSidebar } from './sidebar';
 import { uiSpinner } from './spinner';
 import { uiSplashRapid } from './splash_rapid';
 import { uiStatus } from './status';
@@ -64,18 +64,16 @@ export function uiInit(context) {
             .attr('id', 'defs')
             .call(svgDefs(context));
 
-        container
-            .append('div')
-            .attr('id', 'sidebar')
-            .call(ui.sidebar);
 
         var content = container
             .append('div')
             .attr('id', 'content')
-            .attr('class', 'active');
+            .attr('class', context.history().hasRestorableChanges() ? 'inactive' : 'active');
 
         // Top toolbar
         content
+            .append('div')
+            .attr('id', 'bar-wrap')
             .append('div')
             .attr('id', 'bar')
             .attr('class', 'fillD')
@@ -164,11 +162,6 @@ export function uiInit(context) {
             .attr('id', 'footer-wrap')
             .attr('class', 'footer-show');
 
-        footerWrap
-            .append('div')
-            .attr('id', 'scale-block')
-            .call(uiScale(context));
-
         var aboutList = footerWrap
             .append('div')
             .attr('id', 'info-block')
@@ -211,6 +204,12 @@ export function uiInit(context) {
 
         aboutList
             .append('li')
+            .attr('class', 'issues-info')
+            .attr('tabindex', -1)
+            .call(uiIssuesInfo(context));
+
+        aboutList
+            .append('li')
             .attr('class', 'user-list')
             .attr('tabindex', -1)
             .call(uiContributors(context));
@@ -221,6 +220,10 @@ export function uiInit(context) {
             .attr('tabindex', -1)
             .call(uiFBRoadServiceLicense());
 
+        footerWrap
+            .append('div')
+            .attr('id', 'scale-block')
+            .call(uiScale(context));
 
         // Setup map dimensions and move map to initial center/zoom.
         // This should happen after #content and toolbars exist.
@@ -250,11 +253,13 @@ export function uiInit(context) {
             .call(issues.renderPane)
             .call(help.renderPane);
 
+        ui.info = uiInfo(context);
+
         // Add absolutely-positioned elements that sit on top of the map
         // This should happen after the map is ready (center/zoom)
         overMap
             .call(uiMapInMap(context))
-            .call(uiInfo(context))
+            .call(ui.info)
             .call(uiNotice(context));
 
 
@@ -264,6 +269,15 @@ export function uiInit(context) {
             .classed('al', true)       // 'al'=left,  'ar'=right
             .classed('hide', true)
             .call(ui.photoviewer);
+
+        var assistantWrap = overMap
+            .append('div')
+            .attr('class', 'assistant-wrap');
+
+        ui.assistant = uiAssistant(context);
+
+        assistantWrap
+            .call(ui.assistant);
 
 
         // Bind events
@@ -284,7 +298,6 @@ export function uiInit(context) {
         var panPixels = 80;
         context.keybinding()
             .on('⌫', function() { d3_event.preventDefault(); })
-            .on([t('sidebar.key'), '`', '²'], ui.sidebar.toggle)   // #5663 - common QWERTY, AZERTY
             .on('←', pan([panPixels, 0]))
             .on('↑', pan([0, panPixels]))
             .on('→', pan([-panPixels, 0]))
@@ -299,7 +312,7 @@ export function uiInit(context) {
         var osm = context.connection();
         if (!_initCounter++) {
             if (!ui.hash.startWalkthrough) {
-                if (context.history().lock() && context.history().restorableChanges()) {
+                if (context.history().lock() && context.history().hasRestorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
                 } else if (osm.authenticated()) {
@@ -374,19 +387,18 @@ export function uiInit(context) {
         });
     };
 
-
-    ui.sidebar = uiSidebar(context);
+    ui.assistant = null;
 
     ui.photoviewer = uiPhotoviewer(context);
 
     ui.onResize = function(withPan) {
         var map = context.map();
 
-        // Recalc dimensions of map and sidebar.. (`true` = force recalc)
+        // Recalc dimensions of map and assistant.. (`true` = force recalc)
         // This will call `getBoundingClientRect` and trigger reflow,
         //  but the values will be cached for later use.
         var mapDimensions = utilGetDimensions(d3_select('#content'), true);
-        utilGetDimensions(d3_select('#sidebar'), true);
+        utilGetDimensions(d3_select('.assistant'), true);
 
         if (withPan !== undefined) {
             map.redrawEnable(false);
@@ -445,7 +457,7 @@ export function uiInit(context) {
 
         if (showPane) {
             shownPanes
-                .style('display', 'none')
+                .classed('hide', true)
                 .style(side, '-500px');
 
             d3_selectAll('.' + showPane.attr('pane') + '-control button')
@@ -453,10 +465,10 @@ export function uiInit(context) {
 
             showPane
                 .classed('shown', true)
-                .style('display', 'block');
+                .classed('hide', false);
             if (shownPanes.empty()) {
                 showPane
-                    .style('display', 'block')
+                    .classed('hide', false)
                     .style(side, '-500px')
                     .transition()
                     .duration(200)
@@ -467,13 +479,13 @@ export function uiInit(context) {
             }
         } else {
             shownPanes
-                .style('display', 'block')
+                .classed('hide', false)
                 .style(side, '0px')
                 .transition()
                 .duration(200)
                 .style(side, '-500px')
                 .on('end', function() {
-                    d3_select(this).style('display', 'none');
+                    d3_select(this).classed('hide', true);
                 });
         }
     };

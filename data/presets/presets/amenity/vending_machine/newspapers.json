@@ -1,5 +1,5 @@
 {
-    "icon": "far-newspaper",
+    "icon": "temaki-vending_newspaper",
     "fields": [
         "vending",
         "operator",
@@ -9,7 +9,8 @@
         "currency_multi"
     ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
     "terms": [
         "newspaper"

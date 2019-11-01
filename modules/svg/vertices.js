@@ -1,11 +1,9 @@
-import _isEqual from 'lodash-es/isEqual';
-import _omit from 'lodash-es/omit';
+import deepEqual from 'fast-deep-equal';
 import { select as d3_select } from 'd3-selection';
 
 import { geoScaleToZoom } from '../geo';
 import { osmEntity } from '../osm';
 import { svgPassiveVertex, svgPointTransform } from './helpers';
-
 
 export function svgVertices(projection, context) {
     var radiuses = {
@@ -46,6 +44,7 @@ export function svgVertices(projection, context) {
         var zoom = geoScaleToZoom(projection.scale());
         var z = (zoom < 17 ? 0 : zoom < 18 ? 1 : 2);
         var activeID = context.activeID();
+        var base = context.history().base();
 
 
         function getIcon(d) {
@@ -131,8 +130,16 @@ export function svgVertices(projection, context) {
             .classed('sibling', function(d) { return d.id in sets.selected; })
             .classed('shared', function(d) { return graph.isShared(d); })
             .classed('endpoint', function(d) { return d.isEndpoint(graph); })
+            .classed('added', function(d) {
+                return !base.entities[d.id]; // if it doesn't exist in the base graph, it's new
+            })
+            .classed('moved', function(d) {
+                return base.entities[d.id] && !deepEqual(graph.entities[d.id].loc, base.entities[d.id].loc);
+            })
+            .classed('retagged', function(d) {
+                return base.entities[d.id] && !deepEqual(graph.entities[d.id].tags, base.entities[d.id].tags);
+            })
             .call(updateAttributes);
-
 
         // Vertices with icons get a `use`.
         var iconUse = groups
@@ -226,17 +233,6 @@ export function svgVertices(projection, context) {
             }
         });
 
-        // Class for styling currently edited vertices
-        var editClass = function(d) {
-            //If it doesn't exist in the base graph, it's new geometry.
-            if (!base.entities[d.id] || !_isEqual(_omit(graph.entities[d.id], ['tags', 'v']), _omit(base.entities[d.id], ['tags', 'v']))) {
-              return ' graphedited ';
-            } else if (!_isEqual(graph.entities[d.id].tags, base.entities[d.id].tags)) {
-              return ' tagedited ';
-            }
-            return '';
-        };
-
         // Targets allow hover and vertex snapping
         var targets = selection.selectAll('.vertex.target-allowed')
             .filter(function(d) { return filter(d.properties.entity); })
@@ -254,14 +250,13 @@ export function svgVertices(projection, context) {
         targets.enter()
             .append('circle')
             .attr('r', function(d) {
-                return isEditedEnt(d, base, graph) && threeFourths(_radii[d.id])
-                  || _radii[d.id]
+                return _radii[d.id]
                   || radiuses.shadow[3];
             })
             .merge(targets)
             .attr('class', function(d) {
                 return 'node vertex target target-allowed '
-                + targetClass + d.id + editClass(d);
+                + targetClass + d.id;
             })
             .attr('transform', getTransform);
 
@@ -296,9 +291,13 @@ export function svgVertices(projection, context) {
     }
 
 
-    function isEditedEnt(entity, base, head) {
-        return head.entities[entity.id] !== base.entities[entity.id] ||
-            !_isEqual(head.entities[entity.id].tags, base.entities[entity.id].tags);
+    function isEditedNode(node, base, head) {
+        var baseNode = base.entities[node.id];
+        var headNode = head.entities[node.id];
+        return !headNode ||
+            !baseNode ||
+            !deepEqual(headNode.tags, baseNode.tags) ||
+            !deepEqual(headNode.loc, baseNode.loc);
     }
 
 
@@ -351,6 +350,7 @@ export function svgVertices(projection, context) {
 
     function drawVertices(selection, graph, entities, filter, extent, fullRedraw) {
         var wireframe = context.surface().classed('fill-wireframe');
+        var visualDiff = context.surface().classed('highlight-edited');
         var zoom = geoScaleToZoom(projection.scale());
         var mode = context.mode();
         var isMoving = mode && /^(add|draw|drag|move|rotate)/.test(mode.id);
@@ -379,7 +379,7 @@ export function svgVertices(projection, context) {
             // a vertex of some importance..
             } else if (geometry === 'vertex' &&
                 (entity.hasInterestingTags() || entity.isEndpoint(graph) || entity.isConnected(graph)
-                || isEditedEnt(entity, base, graph))) {
+                || (visualDiff && isEditedNode(entity, base, graph)))) {
                 _currPersistent[entity.id] = entity;
                 keep = true;
             }
@@ -431,7 +431,22 @@ export function svgVertices(projection, context) {
         var zoom = geoScaleToZoom(projection.scale());
 
         _prevSelected = _currSelected || {};
-        _currSelected = getSiblingAndChildVertices(context.selectedIDs(), graph, wireframe, zoom);
+        if (context.map().isInWideSelection()) {
+            _currSelected = {};
+            context.selectedIDs().forEach(function(id) {
+                var entity = graph.hasEntity(id);
+                if (!entity) return;
+
+                if (entity.type === 'node') {
+                    if (renderAsVertex(entity, graph, wireframe, zoom)) {
+                        _currSelected[entity.id] = entity;
+                    }
+                }
+            });
+
+        } else {
+            _currSelected = getSiblingAndChildVertices(context.selectedIDs(), graph, wireframe, zoom);
+        }
 
         // note that drawVertices will add `_currSelected` automatically if needed..
         var filter = function(d) { return d.id in _prevSelected; };

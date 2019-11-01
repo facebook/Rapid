@@ -10,14 +10,14 @@
         "charge_fee"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "phone",
+        "website"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "crazy golf",

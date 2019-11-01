@@ -33,6 +33,7 @@ if (isDevelopment) {
             '!data/rapid_config.json', 
             '!data/presets/fields.json',
             '!data/presets/presets.json',
+            '!data/presets/groups.json',
             '!data/presets.yaml',
             '!data/taginfo.json',
             '!data/territory-languages.json',

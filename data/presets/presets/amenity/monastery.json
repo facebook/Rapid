@@ -8,15 +8,15 @@
         "building_area"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
         "fax",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "abbey",
