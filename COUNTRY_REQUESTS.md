@@ -96,6 +96,8 @@ Colombia - [Issue 66](https://github.com/facebookincubator/RapiD/issues/66)
 
 Mauritius - [Issue 70](https://github.com/facebookincubator/RapiD/issues/70)
 
+Cambodia - [Issue 71](https://github.com/facebookincubator/RapiD/issues/71)
+
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
