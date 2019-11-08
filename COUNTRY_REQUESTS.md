@@ -36,7 +36,7 @@ Brazil - [Issue 14](https://github.com/facebookincubator/RapiD/issues/14)
 
 Greece - [Issue 17](https://github.com/facebookincubator/RapiD/issues/17)
 
-South Africa - [Issue 18](https://github.com/facebookincubator/RapiD/issues/18)
+~~South Africa - [Issue 18](https://github.com/facebookincubator/RapiD/issues/18)~~
 
 ~~Uruguay - [Issue 19](https://github.com/facebookincubator/RapiD/issues/19)~~
 
@@ -78,7 +78,7 @@ Australia - [Issue 57](https://github.com/facebookincubator/RapiD/issues/57)
 
 Croatia - [Issue 56](https://github.com/facebookincubator/RapiD/issues/56)
 
-Haiti - [Issue 55](https://github.com/facebookincubator/RapiD/issues/55)
+~~Haiti - [Issue 55](https://github.com/facebookincubator/RapiD/issues/55)~~
 
 Iran - [Issue 58](https://github.com/facebookincubator/RapiD/issues/58)
 
