@@ -94,6 +94,8 @@ Morocco - [Issue 64](https://github.com/facebookincubator/RapiD/issues/64)
 
 Colombia - [Issue 66](https://github.com/facebookincubator/RapiD/issues/66)
 
+Mauritius - [Issue 70](https://github.com/facebookincubator/RapiD/issues/70)
+
 
 ##
 [Check this page](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries) for a full list of rolled-out countries.
