@@ -99,7 +99,7 @@ button.ai-features-toggle.layer-off use {
     font-size: 14px; 
 }
 
-.feature.stack {
+.rapid-feature.stack {
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
@@ -111,8 +111,7 @@ button.ai-features-toggle.layer-off use {
     margin: 16px; 
 }
 
-.rapid-feature-label > 
-svg.icon.logo-rapid {
+.rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
     margin: -5px;
@@ -166,7 +165,7 @@ svg.icon.logo-rapid {
     background: #ccca; 
 }
 
-.checkbox-label {
+.rapid-checkbox-label {
     width: 40px; 
     height: 40px; 
     margin-left: auto;
@@ -174,13 +173,13 @@ svg.icon.logo-rapid {
 
 /* since checkboxes can't be styled, we'll 
 hide this one and style something on top of it.  */
-.checkbox-label input {
+.rapid-checkbox-label input {
     position: absolute; 
     opacity: 0; 
     cursor: pointer; 
 }
 
-.checkbox-label .checkbox-custom {
+.rapid-checkbox-label .checkbox-custom {
     height: 36px; 
     width: 36px; 
     background-color: transparent;
@@ -188,25 +187,18 @@ hide this one and style something on top of it.  */
     border: 2px solid #ffffff; 
 }
 
-
-.checkbox-label input:checked ~ .checkbox-custom {
-    background-color: transparent;
-    border-radius: 5px;
-    transform: rotate(0deg) scale(1); 
-}
-
-.checkbox-label .checkbox-custom::after { 
+.rapid-checkbox-label .checkbox-custom::after { 
     content: ""; 
     height: 0px; 
     width: 0px; 
     border-radius: 5px; 
     border: solid transparent; 
     border-width: 0 6px 6px 0; 
-    transform: rotate(0deg) scale(0); 
+    transform: scale(0); 
     opacity: 1; 
 }
 
-.checkbox-label input:checked ~ .checkbox-custom::after {
+.rapid-checkbox-label input:checked ~ .checkbox-custom::after {
     content: ""; 
     display: block;
     height: 12px; 

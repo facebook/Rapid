@@ -13,8 +13,8 @@ import {
 import { t } from '../util/locale';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
-import { serviceFbMLRoads } from '../services';
-import { uiFbRoadPicker } from '../ui';
+import { serviceFbAIFeatures } from '../services';
+import { uiFbFeaturePicker } from '../ui';
 import { utilKeybinding } from '../util';
 
 var _expandedOnce = false;
@@ -27,8 +27,8 @@ export function modeSelectAiFeatures(context, selectedDatum) {
     };
 
     var keybinding = utilKeybinding('select-ai-features');
-    var roadsGraph = serviceFbMLRoads.graph();
-    var roadPicker = uiFbRoadPicker(context, keybinding);
+    var roadsGraph = serviceFbAIFeatures.graph();
+    var featurePicker = uiFbFeaturePicker(context, keybinding);
 
     var behaviors = [
         behaviorBreathe(context),
@@ -87,7 +87,7 @@ export function modeSelectAiFeatures(context, selectedDatum) {
         selectData();
 
         var sidebar = context.ui().sidebar;
-        sidebar.show(roadPicker.datum(selectedDatum));
+        sidebar.show(featurePicker.datum(selectedDatum));
 
         if (!_expandedOnce) {
             // Expand sidebar at least once per session to inform user how to

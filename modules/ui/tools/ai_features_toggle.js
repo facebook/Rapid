@@ -5,20 +5,10 @@ import { t } from '../../util/locale';
 import { tooltip } from '../../util/tooltip';
 import { uiCmd } from '../cmd';
 import { uiTooltipHtml } from '../tooltipHtml';
-import {uiRapidFeatureToggle} from '../rapid_feature_toggle_dialog'; 
+import {uiRapidFeatureToggleDialog} from '../rapid_feature_toggle_dialog'; 
 
 var aiFeaturesToggleKey;
 var toggleKeyDispatcher; 
-
-
-export function getAIFeaturesToggleKey(context){
-    return aiFeaturesToggleKey; 
-}
-
-
-export function getToggleKeyDispatcher(){
-    return toggleKeyDispatcher; 
-}
 
 
 export function uiToolAiFeaturesToggle(context) {
@@ -33,10 +23,10 @@ export function uiToolAiFeaturesToggle(context) {
 
     context.keybinding()
         .on(aiFeaturesToggleKey, function () {
-        d3_event.preventDefault();
-        d3_event.stopPropagation();
-        toggleFeatures();
-    }); 
+            d3_event.preventDefault();
+            d3_event.stopPropagation();
+            toggleFeatures();
+        }); 
     
 
     function enabled() {
@@ -50,7 +40,7 @@ export function uiToolAiFeaturesToggle(context) {
     }
 
     function showFeatureToggleDialog() {
-        context.container().call(uiRapidFeatureToggle(context)); 
+        context.container().call(uiRapidFeatureToggleDialog(context, aiFeaturesToggleKey, toggleKeyDispatcher )); 
     }
 
 

@@ -231,12 +231,12 @@
               "text": "shortcuts.editing.rapid.title"
             },
             {
-              "shortcuts": ["fb_road_picker.option_accept.key"],
+              "shortcuts": ["fb_feature_picker.option_accept.key"],
               "text": "shortcuts.editing.rapid.accept_feature",
               "rapid": true
             },
             {
-              "shortcuts": ["fb_road_picker.option_reject.key"],
+              "shortcuts": ["fb_feature_picker.option_reject.key"],
               "text": "shortcuts.editing.rapid.reject_feature",
               "rapid": true
             }

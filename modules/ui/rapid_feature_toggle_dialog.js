@@ -6,9 +6,7 @@ import {
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { getAIFeaturesToggleKey, getToggleKeyDispatcher } from './tools/ai_features_toggle';
-export function uiRapidFeatureToggle(context) {
-    var featureToggleKey = getAIFeaturesToggleKey(); 
+export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
 
 
     function toggleSvgBuildings () {
@@ -76,70 +74,72 @@ export function uiRapidFeatureToggle(context) {
             .attr('class', 'modal-splash modal modal-rapid');
 
         var modal = modalSelection.select('.content')
-            .append('div')
-            .attr('class', 'fillL feature stack');
+            .append('form')
+            .attr('class', 'fillL rapid-feature stack')
+            .on('keypress', keyPressFormHandler);
 
 
         var drawAiFeatures = context.layers().layer('ai-features');
 
-        addCheckBox(modal, 
-            'all-toggle',
-            'rapid_feature_toggle.toggle_all', 
-            null,
-            handleToggleAllClick, 
-            drawAiFeatures.showAll(),
-            false
-            ); 
+        addCheckBox({
+            modal: modal, 
+            id: 'all-toggle',
+            label: t('rapid_feature_toggle.toggle_all', {
+                rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
+            }), 
+            description: null,
+            handler: handleToggleAllClick, 
+            enabled: drawAiFeatures.showAll(),
+            greyout: false
+        }); 
     
         modal
             .append('div')
             .attr('class','modal-section rapid-checkbox section-divider');
 
-        addCheckBox(modal,
-            'road-toggle',
-            'rapid_feature_toggle.roads', 
-            'rapid_feature_toggle.roads_provided_by',
-            toggleSvgRoads,
-            drawAiFeatures.showRoads(),
-            !drawAiFeatures.showAll()
-            ); 
+        addCheckBox({
+            modal: modal,
+            id: 'road-toggle',
+            label: t('rapid_feature_toggle.roads'), 
+            description: t('rapid_feature_toggle.roads_provided_by'),
+            handler: toggleSvgRoads,
+            enabled: drawAiFeatures.showRoads(),
+            greyout: !drawAiFeatures.showAll()
+        }); 
 
-        addCheckBox(modal, 
-            'building-toggle',
-            'rapid_feature_toggle.buildings', 
-            'rapid_feature_toggle.buildings_provided_by',
-            toggleSvgBuildings,
-            drawAiFeatures.showBuildings(),
-            !drawAiFeatures.showAll()
-            ); 
+        addCheckBox({
+            modal: modal, 
+            id: 'building-toggle',
+            label: t('rapid_feature_toggle.buildings'), 
+            description: t('rapid_feature_toggle.buildings_provided_by'),
+            handler: toggleSvgBuildings,
+            enabled: drawAiFeatures.showBuildings(),
+            greyout: !drawAiFeatures.showAll()
+        }); 
     
         modalSelection.select('button.close')
             .attr('class','hide');
 
-        getToggleKeyDispatcher().on('ai_feature_toggle', function () { 
+            featureToggleKeyDispatcher.on('ai_feature_toggle', function () { 
             redrawOnToggle(); 
         });  
     };
 
 
-    function addCheckBox(modal, id, label, description, handler, enabled, greyout) {
-        var toggleOption = modal
+    function addCheckBox(options) {
+        var toggleOption = options.modal
         .append('div')
         .attr('class','modal-section rapid-checkbox')
-        .classed('disabled', greyout)
-        .attr('id', 'section-' + id);
+        .classed('disabled', options.greyout)
+        .attr('id', 'section-' + options.id);
 
         var toggleOptionText =  toggleOption.append('div')
         .attr('class', 'rapid-feature-label-container'); 
         toggleOptionText.append('div')
             .attr('class', 'rapid-feature-label')
-            .html(t(label,
-            {
-                //The icon will simply go unused if 'rapidIcon' isn't part of the label string. 
-                rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
-            })); 
+            .html(options.label); 
         
-        if (description) 
+        if (options.description) 
         {
             toggleOptionText
             .append('div')
@@ -148,27 +148,26 @@ export function uiRapidFeatureToggle(context) {
             toggleOptionText
             .append('div')
             .attr('class', 'rapid-feature-description')
-            .text(t(description));  
+            .text(options.description);  
         } else {
             toggleOptionText
             .append('span')
             .attr('class', 'rapid-feature-hotkey')
-            .html('(' + getAIFeaturesToggleKey() + ')');
+            .html('(' + AIFeatureToggleKey + ')');
         }
             
         var customCheckbox = toggleOption
             .append('label')
-            .attr('class', 'checkbox-label'); 
+            .attr('class', 'rapid-checkbox-label'); 
 
         customCheckbox
             .append('input')
             .attr('type', 'checkbox')
-            .attr('id', id)
+            .attr('id', options.id)
             .attr('class', 'rapid-feature-checkbox')
-            .property('checked', enabled)
-            .attr('disabled', greyout ? true : null)
-            .on('click', handler)
-            .on('keypress', keyPressFormHandler); 
+            .property('checked', options.enabled)
+            .attr('disabled', options.greyout ? true : null)
+            .on('click', options.handler); 
             
         customCheckbox
             .append('div')

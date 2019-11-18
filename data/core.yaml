@@ -411,8 +411,8 @@ en:
   feature_info:
     hidden_warning: "{count} hidden features"
     hidden_details: "These features are currently hidden: {details}"
-  fb_road_license: Facebook's Map With AI License
-  fb_road_picker:
+  fb_feature_license: Facebook's Map With AI License
+  fb_feature_picker:
     prompt: How would you like to proceed with this selected feature?
     option_accept:
       label: Use This Feature
