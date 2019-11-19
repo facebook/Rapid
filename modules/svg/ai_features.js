@@ -123,7 +123,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
     function isBuilding(d){
-        if (d.tags.building && d.tags.building === "yes") {
+        if (d.tags.building && d.tags.building === 'yes') {
             return true;   
         } else {
             return false; 
@@ -294,7 +294,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         roadPaths.classed('hide', !_roadsEnabled); 
         showLayer(); 
         dispatch.call('change');
-    }
+    };
     
     
     drawData.toggleBuildings = function() {
@@ -303,19 +303,19 @@ export function svgAiFeatures(projection, context, dispatch) {
         buildingPaths.classed('hide', !_buildingsEnabled); 
         showLayer(); 
         dispatch.call('change');
-    }
+    };
 
     drawData.showRoads = function() {
         return _roadsEnabled; 
-    }
+    };
 
     drawData.showBuildings = function() {
         return _buildingsEnabled;
-    }
+    };
 
     drawData.showAll = function() {
         return _enabled;
-    }
+    };
 
     drawData.enabled = function(val) {
         if (!arguments.length) return _enabled;

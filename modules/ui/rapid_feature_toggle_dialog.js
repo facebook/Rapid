@@ -171,6 +171,6 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             
         customCheckbox
             .append('div')
-            .attr('class', 'checkbox-custom')
+            .attr('class', 'checkbox-custom');
     }
 }
