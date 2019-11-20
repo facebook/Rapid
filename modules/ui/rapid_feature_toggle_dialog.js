@@ -30,7 +30,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     function keyPressFormHandler(){
         if (d3_event.shiftKey && 
-            d3_event.key === 'R'){
+            d3_event.key === t('map_data.layers.ai-features.key')){
             handleToggleAllClick(); 
         }
     }
@@ -41,9 +41,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         // We need check/uncheck the 'all options' boxes, and 
         // disable the other checkboxes so that the user
         // cannot interact with them. 
-        var roadCheckbox = d3_select('#road-toggle');
-        var buildingCheckbox = d3_select('#building-toggle');
-        var allCheckbox = d3_select('#all-toggle');
+        var roadCheckbox = d3_select('#rapid-road-toggle');
+        var buildingCheckbox = d3_select('#rapid-building-toggle');
+        var allCheckbox = d3_select('#rapid-all-toggle');
 
         // We also need to add a class to the whole option so that we 
         // can style it accordingly. 
@@ -75,7 +75,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         var modal = modalSelection.select('.content')
             .append('form')
-            .attr('class', 'fillL rapid-feature stack')
+            .attr('class', 'fillL rapid-feature rapid-stack')
             .on('keypress', keyPressFormHandler);
 
 
@@ -83,7 +83,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         addCheckBox({
             modal: modal, 
-            id: 'all-toggle',
+            id: 'rapid-all-toggle',
             label: t('rapid_feature_toggle.toggle_all', {
                 rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
             }), 
@@ -99,7 +99,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         addCheckBox({
             modal: modal,
-            id: 'road-toggle',
+            id: 'rapid-road-toggle',
             label: t('rapid_feature_toggle.roads'), 
             description: t('rapid_feature_toggle.roads_provided_by'),
             handler: toggleSvgRoads,
@@ -109,7 +109,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         addCheckBox({
             modal: modal, 
-            id: 'building-toggle',
+            id: 'rapid-building-toggle',
             label: t('rapid_feature_toggle.buildings'), 
             description: t('rapid_feature_toggle.buildings_provided_by'),
             handler: toggleSvgBuildings,
@@ -128,32 +128,32 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     function addCheckBox(options) {
         var toggleOption = options.modal
-        .append('div')
-        .attr('class','modal-section rapid-checkbox')
-        .classed('disabled', options.greyout)
-        .attr('id', 'section-' + options.id);
+            .append('div')
+            .attr('class','modal-section rapid-checkbox')
+            .classed('disabled', options.greyout)
+            .attr('id', 'section-' + options.id);
 
         var toggleOptionText =  toggleOption.append('div')
-        .attr('class', 'rapid-feature-label-container'); 
+            .attr('class', 'rapid-feature-label-container'); 
+
         toggleOptionText.append('div')
             .attr('class', 'rapid-feature-label')
             .html(options.label); 
         
-        if (options.description) 
-        {
+        if (options.description) {
             toggleOptionText
-            .append('div')
-            .attr('class', 'rapid-feature-label-divider');
+                .append('div')
+                .attr('class', 'rapid-feature-label-divider');
 
             toggleOptionText
-            .append('div')
-            .attr('class', 'rapid-feature-description')
-            .text(options.description);  
+                .append('div')
+                .attr('class', 'rapid-feature-description')
+                .text(options.description);  
         } else {
             toggleOptionText
-            .append('span')
-            .attr('class', 'rapid-feature-hotkey')
-            .html('(' + AIFeatureToggleKey + ')');
+                .append('span')
+                .attr('class', 'rapid-feature-hotkey')
+                .html('(' + AIFeatureToggleKey + ')');
         }
             
         var customCheckbox = toggleOption
@@ -171,6 +171,6 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             
         customCheckbox
             .append('div')
-            .attr('class', 'checkbox-custom');
+            .attr('class', 'rapid-checkbox-custom');
     }
 }

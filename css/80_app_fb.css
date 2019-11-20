@@ -99,7 +99,7 @@ button.ai-features-toggle.layer-off use {
     font-size: 14px; 
 }
 
-.rapid-feature.stack {
+.rapid-feature.rapid-stack {
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
@@ -179,7 +179,7 @@ hide this one and style something on top of it.  */
     cursor: pointer; 
 }
 
-.rapid-checkbox-label .checkbox-custom {
+.rapid-checkbox-label .rapid-checkbox-custom {
     height: 36px; 
     width: 36px; 
     background-color: transparent;
@@ -187,7 +187,7 @@ hide this one and style something on top of it.  */
     border: 2px solid #ffffff; 
 }
 
-.rapid-checkbox-label .checkbox-custom::after { 
+.rapid-checkbox-label .rapid-checkbox-custom::after { 
     content: ""; 
     height: 0px; 
     width: 0px; 
@@ -198,7 +198,7 @@ hide this one and style something on top of it.  */
     opacity: 1; 
 }
 
-.rapid-checkbox-label input:checked ~ .checkbox-custom::after {
+.rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
     content: ""; 
     display: block;
     height: 12px; 

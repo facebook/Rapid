@@ -92,6 +92,12 @@
               "shortcuts": ["map_data.highlight_way_edits.key"],
               "text": "shortcuts.browsing.display_options.highlight_way_edits",
               "rapid": true
+            },
+            {
+              "modifiers": ["⇧"], 
+              "shortcuts": ["map_data.layers.ai-features.key"],
+              "text": "shortcuts.browsing.display_options.ai_features_data",
+              "rapid": true
             }
           ]
         },

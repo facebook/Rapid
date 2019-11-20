@@ -95,7 +95,7 @@ export function uiIntroRapid(context, reveal) {
 
     function selectRoad() {
         var drawAiFeatures = context.layers().layer('ai-features');
-        drawAiFeatures.enabled(!drawAiFeatures.enabled());
+        drawAiFeatures.enabled(true);
 
         // disallow scrolling
         d3_select('.inspector-wrap').on('wheel.intro', eventCancel);

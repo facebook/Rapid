@@ -123,7 +123,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
     function isBuilding(d){
-        if (d.tags.building && d.tags.building === 'yes') {
+        if (d.tags.building === 'yes') {
             return true;   
         } else {
             return false; 
@@ -131,7 +131,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
     function isRoad(d){
-        return d.tags.highway;
+        return !!d.tags.highway;
     }
 
 
@@ -219,8 +219,6 @@ export function svgAiFeatures(projection, context, dispatch) {
             .append('path')
             .attr('class', function(d) {
                 var linegroup = this.parentNode.__data__;
-//                var typeClasses = isBuilding(d) ? 'way area fill' : 'pathdata line ' + linegroup
-//                return typeClasses + ' ' + featureClasses(d);
                 return 'pathdata line ' + linegroup + ' ' + featureClasses(d);
             })
             .merge(paths)
