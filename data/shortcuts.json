@@ -72,8 +72,8 @@
             },
             {
                 "modifiers": ["⇧"],
-                "shortcuts": ["map_data.layers.fb-roads.key"],
-                "text": "shortcuts.browsing.display_options.fb_roads_data"
+                "shortcuts": ["map_data.layers.ai-features.key"],
+                "text": "shortcuts.browsing.display_options.ai_features_data"
             },
             {
               "shortcuts": ["area_fill.wireframe.key"],

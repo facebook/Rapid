@@ -213,3 +213,9 @@ hide this one and style something on top of it.  */
     transform: rotate(45deg) scale(1); 
     opacity: 1; 
 }
+
+g.layer-ai-features.hide-roads path.road, 
+g.layer-ai-features.hide-roads node.road, 
+g.layer-ai-features.hide-buildings path.building  { 
+    display: none; 
+}

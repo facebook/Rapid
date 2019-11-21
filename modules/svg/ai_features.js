@@ -32,7 +32,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         _initialized = true;
         _actioned = new Set();
         _roadsEnabled = true; 
-        _buildingsEnabled = false; 
+        _buildingsEnabled = true; 
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
@@ -144,9 +144,6 @@ export function svgAiFeatures(projection, context, dispatch) {
         return [
             'data' + d.__fbid__,
             isBuilding(d) ? 'building' : 'road',
-            (isBuilding(d) && !_buildingsEnabled) 
-                || (isRoad(d) && !_roadsEnabled) 
-                ? 'hide' : null,
             d.geometry.type,
         ].filter(Boolean).join(' ');
     }
@@ -288,8 +285,8 @@ export function svgAiFeatures(projection, context, dispatch) {
 
     drawData.toggleRoads = function() {
         _roadsEnabled = !_roadsEnabled; 
-        var roadPaths = d3_selectAll('.road');
-        roadPaths.classed('hide', !_roadsEnabled); 
+        var aiFeatures = d3_select('.layer-ai-features');
+        aiFeatures.classed('hide-rapid-roads', !_roadsEnabled); 
         showLayer(); 
         dispatch.call('change');
     };
@@ -297,8 +294,8 @@ export function svgAiFeatures(projection, context, dispatch) {
     
     drawData.toggleBuildings = function() {
         _buildingsEnabled = !_buildingsEnabled; 
-        var buildingPaths = d3_selectAll('.building');
-        buildingPaths.classed('hide', !_buildingsEnabled); 
+        var aiFeatures = d3_select('.layer-ai-features');
+        aiFeatures.classed('hide-rapid-buildings', !_buildingsEnabled); 
         showLayer(); 
         dispatch.call('change');
     };
