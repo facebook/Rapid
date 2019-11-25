@@ -27,7 +27,7 @@ describe('iD.svgLayers', function () {
         container.call(iD.svgLayers(projection, context));
         var nodes = container.selectAll('svg .data-layer').nodes();
         expect(nodes.length).to.eql(13);
-        expect(d3.select(nodes[0]).classed('fb-roads')).to.be.true;
+        expect(d3.select(nodes[0]).classed('ai-features')).to.be.true;
         expect(d3.select(nodes[1]).classed('osm')).to.be.true;
         expect(d3.select(nodes[2]).classed('notes')).to.be.true;
         expect(d3.select(nodes[3]).classed('data')).to.be.true;

@@ -16,7 +16,7 @@ import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiBackground } from './background';
 import { uiContributors } from './contributors';
-import { uiFBRoadServiceLicense } from './fb_road_service_license';
+import { uiAiFeatureServiceLicense } from './fb_feature_service_license';
 import { uiFeatureInfo } from './feature_info';
 import { uiFullScreen } from './full_screen';
 import { uiGeolocate } from './geolocate';
@@ -219,7 +219,7 @@ export function uiInit(context) {
             .append('li')
             .attr('class', 'fb-road-license')
             .attr('tabindex', -1)
-            .call(uiFBRoadServiceLicense());
+            .call(uiAiFeatureServiceLicense());
 
 
         // Setup map dimensions and move map to initial center/zoom.
