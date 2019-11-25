@@ -214,8 +214,8 @@ hide this one and style something on top of it.  */
     opacity: 1; 
 }
 
-g.layer-ai-features.hide-roads path.road, 
-g.layer-ai-features.hide-roads node.road, 
-g.layer-ai-features.hide-buildings path.building  { 
+g.layer-ai-features.hide-rapid-roads path.road, 
+g.layer-ai-features.hide-rapid-roads node.road, 
+g.layer-ai-features.hide-rapid-buildings path.building  { 
     display: none; 
 }
