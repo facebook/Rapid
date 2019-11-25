@@ -20,11 +20,11 @@ svg.logo-rapid.dark,
 }
 /* Toolbar button */
 
-button.fb-roads-toggle svg.logo-rapid {
+button.ai-features-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-button.fb-roads-toggle.layer-off use {
+button.ai-features-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
@@ -150,4 +150,125 @@ button.fb-roads-toggle.layer-off use {
 
 .modal-rapid p {
     font-size: 14px; 
+}
+
+.rapid-feature.rapid-stack {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+}
+
+.rapid-feature-label {
+    display: flex; 
+    align-items: center; 
+    margin: 16px; 
+}
+
+.rapid-feature-label > svg.icon.logo-rapid {
+    width: 4em;
+    height: 1.3em;
+    margin: -5px;
+}
+
+.rapid-feature-description {
+    font-size: 14px; 
+    margin: 16px; 
+}
+
+.rapid-feature-label-container {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-around; 
+}
+
+.modal-section.rapid-checkbox {
+    font-size: 24px;
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: center; 
+    padding: 5px; 
+    width: 100%; 
+}
+
+.modal-section.rapid-checkbox.disabled {
+    opacity: .5; 
+}
+
+.rapid-feature-checkbox {
+    margin-left: auto; 
+}
+
+.modal-section.rapid-checkbox.section-divider {
+    width: 95%;
+    height: 1px; 
+    background: #ccca;
+    padding: 1px; 
+    align-self: center; 
+}
+
+.rapid-feature-hotkey {
+    margin-left: -5px; 
+    font-size: 14px;
+}
+
+.rapid-feature-label-divider {
+    width: 1px; 
+    height: 20px; 
+    margin-top: 3px; 
+    background: #ccca; 
+}
+
+.rapid-checkbox-label {
+    width: 40px; 
+    height: 40px; 
+    margin-left: auto;
+}
+
+/* since checkboxes can't be styled, we'll 
+hide this one and style something on top of it.  */
+.rapid-checkbox-label input {
+    position: absolute; 
+    opacity: 0; 
+    cursor: pointer; 
+}
+
+.rapid-checkbox-label .rapid-checkbox-custom {
+    height: 36px; 
+    width: 36px; 
+    background-color: transparent;
+    border-radius: 5px; 
+    border: 2px solid #ffffff; 
+}
+
+.rapid-checkbox-label .rapid-checkbox-custom::after { 
+    content: ""; 
+    height: 0px; 
+    width: 0px; 
+    border-radius: 5px; 
+    border: solid transparent; 
+    border-width: 0 6px 6px 0; 
+    transform: scale(0); 
+    opacity: 1; 
+}
+
+.rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
+    content: ""; 
+    display: block;
+    height: 12px; 
+    width: 6px; 
+    padding: 2px;
+    margin-left: 9px; 
+    margin-top: 2px; 
+    border-radius: 0; 
+    border: solid #ff26d4; 
+    background-color: transparent;
+    border-width: 0 4px 4px 0; 
+    transform: rotate(45deg) scale(1); 
+    opacity: 1; 
+}
+
+g.layer-ai-features.hide-roads path.road, 
+g.layer-ai-features.hide-roads node.road, 
+g.layer-ai-features.hide-buildings path.building  { 
+    display: none; 
 }

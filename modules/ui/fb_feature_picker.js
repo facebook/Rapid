@@ -2,7 +2,7 @@ import { t } from '../util/locale';
 
 import { actionNoop, actionStitchFbRoad } from '../actions';
 import { modeBrowse, modeSelect } from '../modes';
-import { serviceFbMLRoads } from '../services';
+import { serviceFbAIFeatures } from '../services';
 import { svgIcon } from '../svg';
 import { tooltip } from '../util/tooltip';
 import { uiFlash } from './flash';
@@ -10,7 +10,8 @@ import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
-export function uiFbRoadPicker(context, keybinding) {
+
+export function uiFbFeaturePicker(context, keybinding) {
     var _datum;
     var ML_ROADS_LIMIT_NON_TM_MODE = 50;
     
@@ -39,7 +40,7 @@ export function uiFbRoadPicker(context, keybinding) {
                     .iconName('#iD-icon-rapid-plus-circle')
                     .iconClass('operation disabled')
                     .text(t(
-                        'fb_road_picker.option_accept.disabled_flash',
+                        'fb_feature_picker.option_accept.disabled_flash',
                         {n: ML_ROADS_LIMIT_NON_TM_MODE}
                     ));
                 flash();
@@ -52,11 +53,11 @@ export function uiFbRoadPicker(context, keybinding) {
             // serialized to JSON while saving undo/redo state in history.save().
             var annotation = {
                 type: 'fb_accept_feature',
-                description: t('fb_road_picker.option_accept.annotation'),
+                description: t('fb_feature_picker.option_accept.annotation'),
                 id: _datum.id,
                 origid: _datum.__origid__,
             };
-            context.perform(actionStitchFbRoad(_datum.id, serviceFbMLRoads.graph()), annotation);
+            context.perform(actionStitchFbRoad(_datum.id, serviceFbAIFeatures.graph()), annotation);
             context.enter(modeSelect(context, [_datum.id]));
 
             if (context.inIntro()) return;
@@ -77,7 +78,7 @@ export function uiFbRoadPicker(context, keybinding) {
         if (_datum) {
             var annotation = {
                 type: 'fb_reject_feature',
-                description: t('fb_road_picker.option_reject.annotation'),
+                description: t('fb_feature_picker.option_reject.annotation'),
                 id: _datum.id,
                 origid: _datum.__origid__,
             };
@@ -146,7 +147,7 @@ export function uiFbRoadPicker(context, keybinding) {
     }
 
 
-    function fbRoadPicker(selection) {
+    function fbFeaturePicker(selection) {
         var wrap = selection.selectAll('.fb-road-picker')
             .data([0]);
 
@@ -193,42 +194,42 @@ export function uiFbRoadPicker(context, keybinding) {
 
         bodyEnter
             .append('h4')
-            .text(t('fb_road_picker.prompt'));
+            .text(t('fb_feature_picker.prompt'));
 
         presetItem(bodyEnter, {
             iconName: '#iD-icon-rapid-plus-circle',
-            label: t('fb_road_picker.option_accept.label'),
-            description: t('fb_road_picker.option_accept.description'),
+            label: t('fb_feature_picker.option_accept.label'),
+            description: t('fb_feature_picker.option_accept.description'),
             tooltip: tooltip()
                 .placement('bottom')
                 .html(true)
                 .title(function() {
                     return isAddRoadDisabled()
                         ? uiTooltipHtml(t(
-                              'fb_road_picker.option_accept.disabled',
+                              'fb_feature_picker.option_accept.disabled',
                               {n: ML_ROADS_LIMIT_NON_TM_MODE}
                           ))
                         : uiTooltipHtml(
-                              t('fb_road_picker.option_accept.tooltip'),
-                              '⇧' +  t('fb_road_picker.option_accept.key')
+                              t('fb_feature_picker.option_accept.tooltip'),
+                              t('fb_feature_picker.option_accept.key')
                           );
                 }),
             onClick: onAcceptRoad,
             disabledFunction: isAddRoadDisabled
-        }, 'fb-roads-accept');
+        }, 'ai-features-accept');
 
         presetItem(bodyEnter, {
             iconName: '#iD-icon-rapid-minus-circle',
-            label: t('fb_road_picker.option_reject.label'),
-            description: t('fb_road_picker.option_reject.description'),
+            label: t('fb_feature_picker.option_reject.label'),
+            description: t('fb_feature_picker.option_reject.description'),
             tooltip: tooltip()
                 .placement('bottom')
                 .html(true)
                 .title(uiTooltipHtml(
-                    t('fb_road_picker.option_reject.tooltip'),
-                    '⇧' + t('fb_road_picker.option_reject.key'))),
+                    t('fb_feature_picker.option_reject.tooltip'),
+                    t('fb_feature_picker.option_reject.key'))),
             onClick: onRejectRoad
-        }, 'fb-roads-reject');
+        }, 'ai-features-reject');
 
         // Update body
         body = body
@@ -236,15 +237,16 @@ export function uiFbRoadPicker(context, keybinding) {
     }
 
 
-    fbRoadPicker.datum = function(val) {
+    fbFeaturePicker.datum = function(val) {
         if (!arguments.length) return _datum;
         _datum = val;
         return this;
     };
 
-    keybinding()
-        .on(t('fb_road_picker.option_accept.key'), onAcceptRoad)
-        .on(t('fb_road_picker.option_reject.key'), onRejectRoad);
 
-    return fbRoadPicker;
+    keybinding
+        .on(t('fb_feature_picker.option_accept.key'), onAcceptRoad)
+        .on(t('fb_feature_picker.option_reject.key'), onRejectRoad);
+
+    return fbFeaturePicker;
 }

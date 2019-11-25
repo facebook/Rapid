@@ -10,7 +10,7 @@ import _debounce from 'lodash-es/debounce';
 import { operationCircularize, operationContinue, operationDelete, operationDisconnect,
     operationDowngrade, operationExtract, operationMerge, operationOrthogonalize,
     operationReverse, operationSplit, operationStraighten } from '../operations';
-import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolFbRoadsToggle, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
+import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
 import { uiToolAddAddablePresets } from './tools/quick_presets_addable';
 import { uiToolAddGeneric } from './tools/quick_presets_generic';
 import { uiToolSimpleButton } from './tools/simple_button';
@@ -45,7 +45,6 @@ export function uiTopToolbar(context) {
         addGeneric = uiToolAddGeneric(context),
         addFavorite = uiToolAddFavorite(context),
         addRecent = uiToolAddRecent(context),
-        fbRoadsToggle = uiToolFbRoadsToggle(context),
         notes = uiToolNotes(context),
         undoRedo = uiToolUndoRedo(context),
         save = uiToolSave(context),
@@ -57,6 +56,7 @@ export function uiTopToolbar(context) {
         stopDraw = uiToolStopDraw(context),
         addingGeometry = uiToolAddingGeometry(context),
         powerSupport = uiToolPowerSupport(context), 
+        aiFeaturesToggle = uiToolAiFeaturesToggle(context),
 
         /*
         deselect = uiToolSimpleButton({
@@ -94,7 +94,7 @@ export function uiTopToolbar(context) {
 
             tools = [
                 toolbox,
-                fbRoadsToggle,
+                aiFeaturesToggle,
                 'spacer',
                 cancelSave
             ];
@@ -107,7 +107,7 @@ export function uiTopToolbar(context) {
 
             tools = [
                 toolbox,
-                fbRoadsToggle,
+                aiFeaturesToggle,
                 'spacer',
                 /*
                 deselect,
@@ -137,7 +137,7 @@ export function uiTopToolbar(context) {
 
             tools = [
                 toolbox,
-                fbRoadsToggle,
+                aiFeaturesToggle,
                 addingGeometry,
                 'spacer',
                 structure,
@@ -154,7 +154,7 @@ export function uiTopToolbar(context) {
 
             tools = [
                 toolbox,
-                fbRoadsToggle,
+                aiFeaturesToggle,
                 'spacer',
                 centerZoom,
                 'spacer',
