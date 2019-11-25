@@ -6,6 +6,8 @@ import {
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
+
+
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
 
 
@@ -120,7 +122,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         modalSelection.select('button.close')
             .attr('class','hide');
 
-            featureToggleKeyDispatcher.on('ai_feature_toggle', function () { 
+        featureToggleKeyDispatcher.on('ai_feature_toggle', function () { 
             redrawOnToggle(); 
         });  
     };

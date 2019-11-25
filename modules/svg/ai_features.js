@@ -1,6 +1,6 @@
 import _throttle from 'lodash-es/throttle';
 
-import { select as d3_select, selectAll as d3_selectAll } from 'd3-selection';
+import { select as d3_select} from 'd3-selection';
 import { geoScaleToZoom } from '../geo';
 import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
@@ -123,11 +123,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
     function isBuilding(d){
-        if (d.tags.building === 'yes') {
-            return true;   
-        } else {
-            return false; 
-        }
+        return d.tags.building === 'yes'; 
     }
 
     function isRoad(d){
