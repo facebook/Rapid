@@ -72,8 +72,8 @@
             },
             {
                 "modifiers": ["⇧"],
-                "shortcuts": ["map_data.layers.fb-roads.key"],
-                "text": "shortcuts.browsing.display_options.fb_roads_data"
+                "shortcuts": ["map_data.layers.ai-features.key"],
+                "text": "shortcuts.browsing.display_options.ai_features_data"
             },
             {
               "shortcuts": ["area_fill.wireframe.key"],
@@ -91,6 +91,12 @@
             {
               "shortcuts": ["map_data.highlight_way_edits.key"],
               "text": "shortcuts.browsing.display_options.highlight_way_edits",
+              "rapid": true
+            },
+            {
+              "modifiers": ["⇧"], 
+              "shortcuts": ["map_data.layers.ai-features.key"],
+              "text": "shortcuts.browsing.display_options.ai_features_data",
               "rapid": true
             }
           ]
@@ -231,12 +237,12 @@
               "text": "shortcuts.editing.rapid.title"
             },
             {
-              "shortcuts": ["fb_road_picker.option_accept.key"],
+              "shortcuts": ["fb_feature_picker.option_accept.key"],
               "text": "shortcuts.editing.rapid.accept_feature",
               "rapid": true
             },
             {
-              "shortcuts": ["fb_road_picker.option_reject.key"],
+              "shortcuts": ["fb_feature_picker.option_reject.key"],
               "text": "shortcuts.editing.rapid.reject_feature",
               "rapid": true
             }

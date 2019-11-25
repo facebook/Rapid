@@ -13,5 +13,5 @@ export { modeSave } from './save';
 export { modeSelect } from './select';
 export { modeSelectData } from './select_data';
 export { modeSelectError} from './select_error';
-export { modeSelectFbRoads } from './select_fb_roads';
+export { modeSelectAiFeatures } from './select_ai_features';
 export { modeSelectNote } from './select_note';
