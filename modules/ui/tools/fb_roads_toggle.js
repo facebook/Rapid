@@ -11,7 +11,9 @@ export function uiToolFbRoadsToggle(context) {
     var fbRoadsDataToggleKey = uiCmd('⇧' + t('map_data.layers.fb-roads.key'));
     var tool = {
         id: 'fb_roads_toggle',
-        label: t('toolbar.fb_roads')
+        label: t('toolbar.fb_roads'),
+        iconName: 'iD-logo-rapid', 
+        iconClass: 'logo-rapid'
     };
 
 

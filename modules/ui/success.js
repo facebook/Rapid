@@ -11,24 +11,9 @@ import { utilRebind } from '../util/rebind';
 
 export function uiSuccess(context) {
     var MAXEVENTS = 2;
-
-    // All else being equal, rank more "social" communities higher
-    // (anything not in this list receives no adjustment)
-    var COMMUNITYRANK = {
-        'meetup': +5,
-        'slack': +4,
-        'facebook': +3,
-        'reddit': +2,
-        'forum': -2,
-        'mailinglist': -3,
-        'irc': -4
-    };
-
     var detected = utilDetect();
     var dispatch = d3_dispatch('cancel');
     var _changeset;
-    var _location;
-
 
     // string-to-date parsing in JavaScript is weird
     function parseEventDate(when) {
@@ -47,60 +32,23 @@ export function uiSuccess(context) {
 
 
     function success(selection) {
-        var header = selection
-            .append('div')
-            .attr('class', 'header fillL');
-
-        header
-            .append('button')
-            .attr('class', 'fr')
-            .on('click', function() { dispatch.call('cancel'); })
-            .call(svgIcon('#iD-icon-close'));
-
-        header
-            .append('h3')
-            .text(t('success.just_edited'));
 
         var body = selection
             .append('div')
-            .attr('class', 'body save-success fillL');
+            .attr('class', 'save-success sep-top');
 
         var summary = body
             .append('div')
-            .attr('class', 'save-summary');
-
-        summary
-            .append('h3')
-            .text(t('success.thank_you' + (_location ? '_location' : ''), { where: _location }));
-
-        summary
-            .append('p')
-            .text(t('success.help_html'))
-            .append('a')
-            .attr('class', 'link-out')
-            .attr('target', '_blank')
-            .attr('tabindex', -1)
-            .attr('href', t('success.help_link_url'))
-            .call(svgIcon('#iD-icon-out-link', 'inline'))
-            .append('span')
-            .text(t('success.help_link_text'));
+            .attr('class', 'save-summary assistant-row');
 
         var osm = context.connection();
         if (!osm) return;
 
         var changesetURL = osm.changesetURL(_changeset.id);
 
-        var table = summary
-            .append('table')
-            .attr('class', 'summary-table');
-
-        var row = table
-            .append('tr')
-            .attr('class', 'summary-row');
-
-        row
-            .append('td')
-            .attr('class', 'cell-icon summary-icon')
+        summary
+            .append('div')
+            .attr('class', 'icon-col summary-icon')
             .append('a')
             .attr('target', '_blank')
             .attr('href', changesetURL)
@@ -109,9 +57,9 @@ export function uiSuccess(context) {
             .append('use')
             .attr('xlink:href', '#iD-logo-osm');
 
-        var summaryDetail = row
-            .append('td')
-            .attr('class', 'cell-detail summary-detail');
+        var summaryDetail = summary
+            .append('div')
+            .attr('class', 'main-col cell-detail summary-detail');
 
         summaryDetail
             .append('a')
@@ -140,8 +88,8 @@ export function uiSuccess(context) {
             matchResources.sort(function(a, b) {
                 var aSize = Infinity;
                 var bSize = Infinity;
-                var aRank = COMMUNITYRANK[a.type] || 0;
-                var bRank = COMMUNITYRANK[b.type] || 0;
+                var aOrder = a.order || 0;
+                var bOrder = b.order || 0;
 
                 if (a.featureId) {
                     aSize = data.community.features[a.featureId].properties.area;
@@ -150,7 +98,7 @@ export function uiSuccess(context) {
                     bSize = data.community.features[b.featureId].properties.area;
                 }
 
-                return aSize < bSize ? -1 : aSize > bSize ? 1 : bRank - aRank;
+                return aSize < bSize ? -1 : aSize > bSize ? 1 : bOrder - aOrder;
             });
 
             body
@@ -162,26 +110,26 @@ export function uiSuccess(context) {
     function showCommunityLinks(selection, matchResources) {
         var communityLinks = selection
             .append('div')
-            .attr('class', 'save-communityLinks');
+            .attr('class', 'save-communityLinks sep-top');
 
         communityLinks
             .append('h3')
             .text(t('success.like_osm'));
 
         var table = communityLinks
-            .append('table')
+            .append('div')
             .attr('class', 'community-table');
 
         var row = table.selectAll('.community-row')
             .data(matchResources);
 
         var rowEnter = row.enter()
-            .append('tr')
-            .attr('class', 'community-row');
+            .append('div')
+            .attr('class', 'assistant-row community-row');
 
         rowEnter
-            .append('td')
-            .attr('class', 'cell-icon community-icon')
+            .append('div')
+            .attr('class', 'icon-col cell-icon community-icon')
             .append('a')
             .attr('target', '_blank')
             .attr('href', function(d) { return d.url; })
@@ -191,8 +139,8 @@ export function uiSuccess(context) {
             .attr('xlink:href', function(d) { return '#community-' + d.type; });
 
         var communityDetail = rowEnter
-            .append('td')
-            .attr('class', 'cell-detail community-detail');
+            .append('div')
+            .attr('class', 'main-col cell-detail community-detail');
 
         communityDetail
             .each(showCommunityDetails);
@@ -384,13 +332,6 @@ export function uiSuccess(context) {
     success.changeset = function(_) {
         if (!arguments.length) return _changeset;
         _changeset = _;
-        return success;
-    };
-
-
-    success.location = function(_) {
-        if (!arguments.length) return _location;
-        _location = _;
         return success;
     };
 

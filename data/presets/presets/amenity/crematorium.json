@@ -9,15 +9,16 @@
     ],
     "moreFields": [
         "address",
-        "website",
-        "phone",
         "email",
         "fax",
+        "level",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [
-        "area",
-        "point"
+        "point",
+        "area"
     ],
     "tags": {
         "amenity": "crematorium"

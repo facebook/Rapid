@@ -1,12 +1,10 @@
 import { event as d3_event } from 'd3-selection';
-import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
 
 import { t } from '../../util/locale';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
 import { actionDiscardTags } from '../../actions';
 import { svgIcon } from '../../svg';
-import { uiCmd } from '../cmd';
 import { uiTooltipHtml } from '../tooltipHtml';
 import { tooltip } from '../../util/tooltip';
 

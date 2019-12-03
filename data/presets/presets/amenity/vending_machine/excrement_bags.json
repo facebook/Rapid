@@ -1,10 +1,11 @@
 {
-    "icon": "temaki-vending_machine",
+    "icon": "temaki-vending_pet_waste",
     "fields": [
         "{amenity/vending_machine}"
     ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
     "terms": [
         "excrement bags",

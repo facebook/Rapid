@@ -14,7 +14,6 @@ import { t } from '../util/locale';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
 import { serviceFbMLRoads } from '../services';
-import { uiFbRoadPicker } from '../ui';
 import { utilKeybinding } from '../util';
 
 var _expandedOnce = false;
@@ -28,7 +27,6 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
     var keybinding = utilKeybinding('select-fb-roads');
     var roadsGraph = serviceFbMLRoads.graph();
-    var roadPicker = uiFbRoadPicker(context, keybinding);
 
     var behaviors = [
         behaviorBreathe(context),
@@ -62,7 +60,10 @@ export function modeSelectFbRoads(context, selectedDatum) {
         context.enter(modeBrowse(context));
     }
 
-
+    mode.selectedDatum = function() {
+        return selectedDatum; 
+    };
+    
     mode.selectedIDs = function() {
         return [selectedDatum.id];
     };
@@ -86,16 +87,12 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
         selectData();
 
-        var sidebar = context.ui().sidebar;
-        sidebar.show(roadPicker.datum(selectedDatum));
-
         if (!_expandedOnce) {
             // Expand sidebar at least once per session to inform user how to
             // accept and reject proposed roads.
             _expandedOnce = true;
             // expand the sidebar, avoid obscuring the data if needed
             var extent = selectedDatum.extent(roadsGraph);
-            sidebar.expand(sidebar.intersects(extent));
         }
 
         context.map()
@@ -116,8 +113,6 @@ export function modeSelectFbRoads(context, selectedDatum) {
         context.map()
             .on('drawn.select-fb-roads', null);
 
-        context.ui().sidebar
-            .hide();
     };
 
 

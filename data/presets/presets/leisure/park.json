@@ -8,15 +8,15 @@
     ],
     "moreFields": [
         "dog",
-        "smoking",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "phone",
+        "smoking",
+        "website"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "esplanade",

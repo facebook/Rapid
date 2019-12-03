@@ -1,8 +1,8 @@
 {
     "icon": "maki-park",
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "fields": [
         "name",
@@ -12,10 +12,10 @@
     ],
     "moreFields": [
         "dog",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "phone",
+        "website"
     ],
     "tags": {
         "leisure": "nature_reserve"
