@@ -16,10 +16,12 @@ import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions';
 export function uiFieldRestrictions(field, context) {
     var dispatch = d3_dispatch('change');
     var breathe = behaviorBreathe(context);
-    var storedViaWay = context.storage('turn-restriction-via-way');
+
+    context.storage('turn-restriction-via-way', null);                 // remove old key
+    var storedViaWay = context.storage('turn-restriction-via-way0');   // use new key #6922
     var storedDistance = context.storage('turn-restriction-distance');
 
-    var _maxViaWay = storedViaWay !== null ? (+storedViaWay) : 1;
+    var _maxViaWay = storedViaWay !== null ? (+storedViaWay) : 0;
     var _maxDistance = storedDistance ? (+storedDistance) : 30;
     var _initialized = false;
     var _parent = d3_select(null);       // the entire field
@@ -185,7 +187,7 @@ export function uiFieldRestrictions(field, context) {
                 var val = d3_select(this).property('value');
                 _maxViaWay = +val;
                 _container.selectAll('.layer-osm .layer-turns *').remove();
-                context.storage('turn-restriction-via-way', _maxViaWay);
+                context.storage('turn-restriction-via-way0', _maxViaWay);
                 _parent.call(restrictions);
             });
 
@@ -203,11 +205,11 @@ export function uiFieldRestrictions(field, context) {
 
         // Reflow warning: `utilGetDimensions` calls `getBoundingClientRect`
         // Instead of asking the restriction-container for its dimensions,
-        //  we can ask the #sidebar, which can have its dimensions cached.
-        // width: calc as sidebar - padding
+        //  we can ask the .assistant, which can have its dimensions cached.
+        // width: calc as .assistant - padding
         // height: hardcoded (from `80_app.css`)
         // var d = utilGetDimensions(selection);
-        var sdims = utilGetDimensions(d3_select('#sidebar'));
+        var sdims = utilGetDimensions(d3_select('.assistant'));
         var d = [ sdims[0] - 50, 370 ];
         var c = geoVecScale(d, 0.5);
         var z = 22;
@@ -405,7 +407,7 @@ export function uiFieldRestrictions(field, context) {
             var xPos = -1;
 
             if (minChange) {
-                xPos = utilGetDimensions(d3_select('#sidebar'))[0];
+                xPos = utilGetDimensions(d3_select('.assistant'))[0];
             }
 
             if (!minChange || (minChange && Math.abs(xPos - _lastXPos) >= minChange)) {

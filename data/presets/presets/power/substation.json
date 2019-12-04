@@ -6,9 +6,12 @@
         "building",
         "ref"
     ],
+    "moreFields": [
+        "gnis/feature_id"
+    ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "tags": {
         "power": "substation"

@@ -56,6 +56,7 @@
                 "defaultCheck",
                 "email",
                 "lanes",
+                "identifier",
                 "localized",
                 "maxspeed",
                 "multiCombo",
@@ -109,8 +110,18 @@
             "type": "string"
         },
         "strings": {
-            "description": "Translatable strings options (combo fields)",
-            "type": "object"
+            "description": "Strings sent to transifex for translation",
+            "type": "object",
+            "properties": {
+                "options": {
+                    "description": "Translatable options (combo fields)",
+                    "type": "object"
+                }
+            },
+            "additionalProperties": {
+                "description": "Specialized fields can request translation of arbitrary strings",
+                "type": "object"
+            }
         },
         "snake_case": {
             "description": "If true, replace spaces with underscores in the tag value (combo fields only)",
@@ -133,23 +144,38 @@
         "prerequisiteTag": {
             "description": "Tagging constraint for showing this field in the editor",
             "type": {
-                "type": "object",
-                "properties": {
-                    "key": {
-                        "description": "The key of the required tag",
-                        "type": "string",
-                        "required": true
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "description": "The key of the required tag",
+                                "type": "string",
+                                "required": true
+                            },
+                            "value": {
+                                "description": "The value that the tag must have. (alternative to 'valueNot')",
+                                "type": "string"
+                            },
+                            "valueNot": {
+                                "description": "The value that the tag cannot have. (alternative to 'value')",
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": false
                     },
-                    "value": {
-                        "description": "The value that the tag must have. (alternative to 'valueNot')",
-                        "type": "string"
-                    },
-                    "valueNot": {
-                        "description": "The value that the tag cannot have. (alternative to 'value')",
-                        "type": "string"
+                    {
+                        "type": "object",
+                        "properties": {
+                            "keyNot": {
+                                "description": "A key that must not be present",
+                                "type": "string",
+                                "required": true
+                            }
+                        },
+                        "additionalProperties": false
                     }
-                },
-                "additionalProperties": false
+                ]
             }
         },
         "terms": {
@@ -158,6 +184,32 @@
             "items": {
                 "type": "string"
             }
+        },
+        "countryCodes":  {
+            "description": "Countries where to allow the field, as lowercase ISO 3166-1 alpha-2 codes (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "pattern": "^[a-z]{2}$"
+            }
+        },
+        "notCountryCodes":  {
+            "description": "Countries where NOT to allow the field, as lowercase ISO 3166-1 alpha-2 codes (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "pattern": "^[a-z]{2}$"
+            }
+        },
+        "urlFormat":  {
+            "description": "Permalink URL for `identifier` fields. Must contain a {value} placeholder",
+            "type": "string"
+        },
+        "pattern":  {
+            "description": "Regular expression that a valid `identifier` value is expected to match",
+            "type": "string"
         }
     },
     "additionalProperties": false

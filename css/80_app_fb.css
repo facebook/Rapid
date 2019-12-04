@@ -1,8 +1,23 @@
-svg.logo-rapid {
+svg.logo-rapid,
+.icon.rapid {
     fill: #333;
     color: #ff26d4;
 }
 
+.assistant.dark svg.logo-rapid,
+svg.logo-rapid.dark,
+.dark .icon.rapid,
+.icon.rapid.dark {
+    fill: #eee;
+    color: #ff26d4;
+}
+
+.assistant .control-col button {
+    background: transparent;
+    color: #808080;
+    height: 100%;
+    width: 40px;
+}
 /* Toolbar button */
 
 button.fb-roads-toggle svg.logo-rapid {
@@ -14,6 +29,9 @@ button.fb-roads-toggle.layer-off use {
     color: rgba(0,0,0,.4);
 }
 
+.fb-road-picker .tooltip .popover-inner {
+    border: 1px solid grey; 
+}
 
 /* Sidebar component */
 
@@ -26,6 +44,37 @@ button.fb-roads-toggle.layer-off use {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.fb-road-picker .picker-icon-container { 
+    flex: 1 0 60px; 
+    padding: 10px; 
+}
+
+.picker-icon-container svg {
+    width:40px;
+    height:40px;
+}
+
+.fb-road-picker .picker-list-button {
+    display: flex; 
+    flex: 1 1 auto;
+    width: unset; 
+}
+
+.fb-road-picker .picker-list-button .label {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    left: 60px;
+    flex-basis: 200px; 
+    color: #e0e0e0; 
+}
+
+.fb-road-picker .tag-reference-button {
+    color: #e0e0e0; 
 }
 
 .fb-road-picker .body {
@@ -56,6 +105,10 @@ button.fb-roads-toggle.layer-off use {
 .fb-road-picker .preset-list-item .tag-reference-body.shown {
     display: block;
 }
+.dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
+    color: #a0a0a0; 
+}
+
 
 .modal-rapid .fillL{
     background: rgba(0, 0, 0, 0.5); 

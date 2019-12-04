@@ -1,7 +1,13 @@
 {
-    "icon": "temaki-vending_machine",
+    "icon": "temaki-vending_cold_drink",
+    "fields": [
+        "vending",
+        "drink_multi",
+        "{amenity/vending_machine}"
+    ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
     "terms": [
         "drink",

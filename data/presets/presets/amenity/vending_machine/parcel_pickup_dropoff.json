@@ -1,5 +1,5 @@
 {
-    "icon": "temaki-vending_machine",
+    "icon": "temaki-vending_lockers",
     "fields": [
         "vending",
         "operator",
@@ -7,10 +7,12 @@
         "currency_multi"
     ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
     "terms": [
         "mail",
+        "packstation",
         "parcel",
         "pickup"
     ],

@@ -3,14 +3,21 @@
     "fields": [
         "name",
         "operator",
+        "playground/theme",
         "surface",
-        "playground/max_age",
-        "playground/min_age",
-        "access_simple"
+        "access_simple",
+        "min_age",
+        "max_age"
+    ],
+    "moreFields": [
+        "blind",
+        "dog",
+        "gnis/feature_id",
+        "wheelchair"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "jungle gym",

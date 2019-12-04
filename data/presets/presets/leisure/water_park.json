@@ -6,16 +6,17 @@
         "address"
     ],
     "moreFields": [
-        "payment_multi",
         "brand",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "payment_multi",
+        "phone",
+        "website"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "swim",

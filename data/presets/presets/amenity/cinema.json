@@ -12,6 +12,9 @@
         "air_conditioning",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
+        "min_age",
         "phone",
         "website",
         "wheelchair"

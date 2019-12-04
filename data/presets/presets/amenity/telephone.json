@@ -11,7 +11,14 @@
     "moreFields": [
         "covered",
         "indoor",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "level",
         "lit",
+        "ref",
+        "sms",
+        "video_calls",
         "wheelchair"
     ],
     "geometry": [
@@ -21,7 +28,7 @@
     "tags": {
         "amenity": "telephone"
     },
-    "terms":  [
+    "terms": [
         "phone"
     ],
     "name": "Telephone"

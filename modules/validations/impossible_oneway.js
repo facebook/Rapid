@@ -1,4 +1,4 @@
-import { t } from '../util/locale';
+import { t, textDirection } from '../util/locale';
 import { modeDrawLine } from '../modes/draw_line';
 import { actionReverse } from '../actions/reverse';
 import { utilDisplayLabel } from '../util';
@@ -144,33 +144,6 @@ export function validationImpossibleOneway() {
                 if (connectedEndpointsOkay) return [];
             }
 
-            var fixes = [];
-
-            if (attachedOneways.length) {
-                fixes.push(new validationIssueFix({
-                    icon: 'iD-operation-reverse',
-                    title: t('issues.fix.reverse_feature.title'),
-                    entityIds: [way.id],
-                    onClick: function(context) {
-                        var id = this.issue.entityIds[0];
-                        context.perform(actionReverse(id), t('operations.reverse.annotation'));
-                    }
-                }));
-            }
-            if (node.tags.noexit !== 'yes') {
-                fixes.push(new validationIssueFix({
-                    icon: 'iD-operation-continue' + (isFirst ? '-left' : ''),
-                    title: t('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
-                    onClick: function(context) {
-                        var entityID = this.issue.entityIds[0];
-                        var vertexID = this.issue.entityIds[1];
-                        var way = context.entity(entityID);
-                        var vertex = context.entity(vertexID);
-                        continueDrawing(way, vertex, context);
-                    }
-                }));
-            }
-
             var placement = isFirst ? 'start' : 'end',
                 messageID = wayType + '.',
                 referenceID = wayType + '.';
@@ -195,7 +168,40 @@ export function validationImpossibleOneway() {
                 },
                 reference: getReference(referenceID),
                 entityIds: [way.id, node.id],
-                fixes: fixes
+                dynamicFixes: function() {
+
+                    var fixes = [];
+
+                    if (attachedOneways.length) {
+                        fixes.push(new validationIssueFix({
+                            icon: 'iD-operation-reverse',
+                            title: t('issues.fix.reverse_feature.title'),
+                            entityIds: [way.id],
+                            onClick: function(context) {
+                                var id = this.issue.entityIds[0];
+                                context.perform(actionReverse(id), t('operations.reverse.annotation'));
+                            }
+                        }));
+                    }
+                    if (node.tags.noexit !== 'yes') {
+                        var useLeftContinue = (isFirst && textDirection === 'ltr') ||
+                            (!isFirst && textDirection === 'rtl');
+                        fixes.push(new validationIssueFix({
+                            icon: 'iD-operation-continue' + (useLeftContinue ? '-left' : ''),
+                            title: t('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
+                            onClick: function(context) {
+                                var entityID = this.issue.entityIds[0];
+                                var vertexID = this.issue.entityIds[1];
+                                var way = context.entity(entityID);
+                                var vertex = context.entity(vertexID);
+                                continueDrawing(way, vertex, context);
+                            }
+                        }));
+                    }
+
+                    return fixes;
+                },
+                loc: node.loc
             })];
 
             function getReference(referenceID) {
@@ -214,12 +220,16 @@ export function validationImpossibleOneway() {
     function continueDrawing(way, vertex, context) {
         // make sure the vertex is actually visible and editable
         var map = context.map();
-        if (!map.editable() || !map.trimmedExtent().contains(vertex.loc)) {
+        if (!context.editable() || !map.trimmedExtent().contains(vertex.loc)) {
             map.zoomToEase(vertex);
         }
-
         context.enter(
-            modeDrawLine(context, way.id, context.graph(), context.graph(), 'line', way.affix(vertex.id), true)
+            modeDrawLine(context, {
+                wayID: way.id,
+                startGraph: context.graph(),
+                baselineGraph: context.graph(),
+                affix: way.affix(vertex.id)
+            })
         );
     }
 

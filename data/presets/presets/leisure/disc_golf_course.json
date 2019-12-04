@@ -14,14 +14,15 @@
         "dog",
         "email",
         "fax",
+        "gnis/feature_id",
         "lit",
         "phone",
         "website",
         "wheelchair"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "tags": {
         "leisure": "disc_golf_course"

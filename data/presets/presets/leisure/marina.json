@@ -10,21 +10,22 @@
         "sanitary_dump_station",
         "power_supply"
     ],
-    "moreFields" : [
+    "moreFields": [
         "address",
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "seamark/type",
-        "website",
         "phone",
-        "email",
-        "fax"
+        "seamark/type",
+        "website"
     ],
     "geometry": [
+        "area",
         "point",
-        "vertex",
-        "area"
+        "vertex"
     ],
     "terms": [
         "boat"

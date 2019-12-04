@@ -11,7 +11,7 @@ import { dataIntroGraph } from '../../../data/intro_graph.json';
 import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services';
+import { services } from '../../services'; 
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
 import { utilArrayDifference, utilArrayUniq } from '../../util';
@@ -84,11 +84,6 @@ export function uiIntro(context, skipToRapid) {
         var countryCode = services.geocoder.countryCode;
         var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
         var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
-
-        // Show sidebar and disable the sidebar resizing button
-        // (this needs to be before `context.inIntro(true)`)
-        context.ui().sidebar.expand();
-        d3_selectAll('button.sidebar-toggle').classed('disabled', true);
 
         // Block saving
         context.inIntro(true);
@@ -193,7 +188,6 @@ export function uiIntro(context, skipToRapid) {
             if (history) { context.history().fromJSON(history, false); }
             context.map().centerZoom(center, zoom);
             window.location.replace(hash);
-            services.geocoder.countryCode = countryCode;
             context.inIntro(false);
         });
 

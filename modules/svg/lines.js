@@ -1,3 +1,4 @@
+import deepEqual from 'fast-deep-equal';
 import { range as d3_range } from 'd3-array';
 
 import {
@@ -8,8 +9,6 @@ import { svgTagClasses } from './tag_classes';
 import { osmEntity, osmOldMultipolygonOuterMember } from '../osm';
 import { utilArrayFlatten, utilArrayGroupBy } from '../util';
 import { utilDetect } from '../util/detect';
-import _isEqual from 'lodash-es/isEqual';
-import _omit from 'lodash-es/omit';
 import { rapid_feature_config } from '../../data/';
 
 export function svgLines(projection, context) {
@@ -57,15 +56,17 @@ export function svgLines(projection, context) {
         targets.exit()
             .remove();
 
-        var graphEditClass = function(d) {
-
+        var segmentWasEdited = function(d) {
+            var wayID = d.properties.entity.id;
+            // if the whole line was edited, don't draw segment changes
+            if (!base.entities[wayID] ||
+                !deepEqual(graph.entities[wayID].nodes, base.entities[wayID].nodes)) {
+                return false;
+            }
             return d.properties.nodes.some(function(n) {
-                if (!base.entities[n.id]) {
-                    return true;
-                }
-                var result = !_isEqual(_omit(graph.entities[n.id], ['tags', 'v']), _omit(base.entities[n.id], ['tags', 'v']));
-                return result;
-            }) ? ' graphedited ': '';
+                return !base.entities[n.id] ||
+                       !deepEqual(graph.entities[n.id].loc, base.entities[n.id].loc);
+            });
         };
 
         // enter/update
@@ -74,8 +75,9 @@ export function svgLines(projection, context) {
             .merge(targets)
             .attr('d', getPath)
             .attr('class', function(d) {
-                return 'way line target target-allowed ' + targetClass + d.id + graphEditClass(d);
-            });
+                return 'way line target target-allowed ' + targetClass + d.id;
+            })
+            .classed('segment-edited', segmentWasEdited);
 
         // NOPE
         var nopeData = data.nopes.filter(getPath);
@@ -93,8 +95,9 @@ export function svgLines(projection, context) {
             .merge(nopes)
             .attr('d', getPath)
             .attr('class', function(d) {
-                return 'way line target target-nope ' + nopeClass + d.id + graphEditClass(d);
-            });
+                return 'way line target target-nope ' + nopeClass + d.id;
+            })
+            .classed('segment-edited', segmentWasEdited);
     }
 
 
@@ -110,30 +113,11 @@ export function svgLines(projection, context) {
             if (b.tags.highway) { scoreB -= highway_stack[b.tags.highway]; }
             return scoreA - scoreB;
         }
-
+        
         var getAIRoadStylingClass =  function(d){
             if (!rapid_feature_config.style_fb_ai_roads.enabled) return ''; 
 
            return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : ''; 
-        };
-
-        // Class for styling currently edited lines
-        var tagEditClass = function(d) {
-            var result = graph.entities[d.id] && base.entities[d.id] &&  !_isEqual(graph.entities[d.id].tags, base.entities[d.id].tags);
-
-            return result ?
-               ' tagedited ' :  '';
-        };
-
-        // Class for styling currently edited lines
-        var graphEditClass = function(d) {
-            if (!base.entities[d.id]) {
-                return ' graphedited ';
-            }
-
-            var result = graph.entities[d.id] && base.entities[d.id] &&  !_isEqual(_omit(graph.entities[d.id], ['tags', 'v']), _omit(base.entities[d.id], ['tags', 'v']));
-
-            return result ? ' graphedited ' :  '';
         };
 
         function drawLineGroup(selection, klass, isSelected) {
@@ -163,7 +147,20 @@ export function svgLines(projection, context) {
                     }
 
                     var oldMPClass = oldMultiPolygonOuters[d.id] ? 'old-multipolygon ' : '';
-                    return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + graphEditClass(d) + tagEditClass(d) + getAIRoadStylingClass(d) + d.id;
+                    return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + getAIRoadStylingClass(d) + d.id;
+                })
+                .classed('added', function(d) {
+                    return !base.entities[d.id];
+                })
+                .classed('geometry-edited', function(d) {
+                    return graph.entities[d.id] &&
+                        base.entities[d.id] &&
+                        !deepEqual(graph.entities[d.id].nodes, base.entities[d.id].nodes);
+                })
+                .classed('retagged', function(d) {
+                    return graph.entities[d.id] &&
+                        base.entities[d.id] &&
+                        !deepEqual(graph.entities[d.id].tags, base.entities[d.id].tags);
                 })
                 .call(svgTagClasses())
                 .merge(lines)

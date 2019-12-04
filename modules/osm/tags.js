@@ -3,6 +3,8 @@ export function osmIsInterestingTag(key) {
         key !== 'created_by' &&
         key !== 'source' &&
         key !== 'odbl' &&
+        key.indexOf('source:') !== 0 &&
+        key.indexOf('source_ref') !== 0 && // purposely exclude colon
         key.indexOf('tiger:') !== 0;
 }
 
@@ -107,6 +109,38 @@ export var osmRightSideIsInsideTags = {
     },
     'waterway': {
         'weir': true
+    }
+};
+
+export var osmTagsAllowingBridges = {
+    highway: {
+        motorway: true, trunk: true, primary: true, secondary: true, tertiary: true, residential: true,
+        motorway_link: true, trunk_link: true, primary_link: true, secondary_link: true, tertiary_link: true,
+        unclassified: true, road: true, service: true, track: true, living_street: true, bus_guideway: true,
+        path: true, footway: true, cycleway: true, bridleway: true, pedestrian: true, corridor: true, steps: true,
+        raceway: true
+    },
+    railway: {
+        rail: true, light_rail: true, tram: true, subway: true,
+        monorail: true, funicular: true, miniature: true, narrow_gauge: true,
+        disused: true, preserved: true, abandoned: true
+    }
+};
+export var osmTagsAllowingTunnels = {
+    highway: {
+        motorway: true, trunk: true, primary: true, secondary: true, tertiary: true, residential: true,
+        motorway_link: true, trunk_link: true, primary_link: true, secondary_link: true, tertiary_link: true,
+        unclassified: true, road: true, service: true, track: true, living_street: true, bus_guideway: true,
+        path: true, footway: true, cycleway: true, bridleway: true, pedestrian: true, corridor: true, steps: true,
+        raceway: true
+    },
+    railway: {
+        rail: true, light_rail: true, tram: true, subway: true,
+        monorail: true, funicular: true, miniature: true, narrow_gauge: true,
+        disused: true, preserved: true, abandoned: true
+    },
+    waterway: {
+        canal: true, ditch: true, drain: true, river: true, stream: true
     }
 };
 

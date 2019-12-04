@@ -1,5 +1,5 @@
 {
-    "icon": "maki-school",
+    "icon": "temaki-school",
     "fields": [
         "name",
         "operator",
@@ -14,15 +14,17 @@
         "email",
         "fax",
         "fee",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/ssid",
+        "level",
         "phone",
         "polling_station",
         "wheelchair"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "academy",

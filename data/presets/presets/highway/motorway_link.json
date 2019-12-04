@@ -24,17 +24,14 @@
         "name",
         "ref_road_number",
         "smoothness",
-        "toll"
+        "toll",
+        "width"
     ],
     "geometry": [
         "line"
     ],
     "tags": {
         "highway": "motorway_link"
-    },
-    "addTags": {
-        "highway": "motorway_link",
-        "oneway": "yes"
     },
     "terms": [
         "exit",

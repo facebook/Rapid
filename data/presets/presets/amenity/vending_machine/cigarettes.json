@@ -1,7 +1,12 @@
 {
-    "icon": "temaki-vending_machine",
+    "icon": "temaki-vending_cigarettes",
+    "moreFields": [
+        "{amenity/vending_machine}",
+        "min_age"
+    ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
     "terms": [
         "cigarette"

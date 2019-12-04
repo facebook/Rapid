@@ -5,15 +5,18 @@
         "address",
         "building_area",
         "outdoor_seating",
+        "min_age",
         "brewery"
     ],
     "moreFields": [
         "air_conditioning",
         "email",
         "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
+        "level",
         "microbrewery",
         "opening_hours",
         "payment_multi",

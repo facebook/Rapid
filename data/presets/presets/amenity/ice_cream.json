@@ -8,18 +8,20 @@
         "outdoor_seating"
     ],
     "moreFields": [
-        "takeaway",
         "delivery",
+        "diet_multi",
         "drive_through",
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "diet_multi",
+        "level",
         "payment_multi",
-        "website",
         "phone",
-        "email",
-        "fax",
+        "takeaway",
+        "website",
         "wheelchair"
     ],
     "geometry": [

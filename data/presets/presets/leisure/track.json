@@ -10,11 +10,13 @@
     "moreFields": [
         "access",
         "covered",
-        "indoor"
+        "gnis/feature_id",
+        "indoor",
+        "level"
     ],
     "geometry": [
-        "point",
         "line",
+        "point",
         "area"
     ],
     "tags": {

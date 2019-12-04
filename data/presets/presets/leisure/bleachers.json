@@ -1,6 +1,6 @@
 {
+    "icon": "temaki-bleachers",
     "geometry": [
-        "point",
         "area"
     ],
     "tags": {

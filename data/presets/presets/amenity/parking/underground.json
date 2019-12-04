@@ -1,13 +1,13 @@
 {
-    "icon": "maki-car",
+    "icon": "temaki-car_structure",
     "fields": [
         "{amenity/parking}",
         "layer"
     ],
     "geometry": [
+        "area",
         "point",
-        "vertex",
-        "area"
+        "vertex"
     ],
     "tags": {
         "amenity": "parking",

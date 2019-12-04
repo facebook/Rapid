@@ -1,5 +1,5 @@
 {
-    "icon": "temaki-pedestrian",
+    "icon": "temaki-pier_floating",
     "geometry": [
         "line",
         "area"
@@ -13,11 +13,6 @@
         "wharf"
     ],
     "tags": {
-        "man_made": "pier",
-        "floating": "yes"
-    },
-    "addTags": {
-        "highway": "footway",
         "man_made": "pier",
         "floating": "yes"
     },

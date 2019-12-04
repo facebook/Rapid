@@ -1,8 +1,8 @@
 {
     "icon": "maki-airport",
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "fields": [
         "name",
@@ -12,6 +12,9 @@
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid"
+    ],
+    "moreFields": [
+        "gnis/feature_id"
     ],
     "terms": [
         "aerodrome",

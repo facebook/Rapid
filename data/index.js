@@ -9,9 +9,6 @@ export { dataPhoneFormats } from './phone-formats.json';
 export { dataShortcuts } from './shortcuts.json';
 export { dataTerritoryLanguages } from './territory-languages.json';
 
-export { default as dataImperial } from './imperial.json';
-export { default as dataMPH } from './mph.json';
-export { default as dataDriveLeft } from './drive-left.json';
 export { en as dataEn } from '../dist/locales/en.json';
 
 import {
@@ -24,6 +21,7 @@ import { dataImagery } from './imagery.json';
 import { presets } from './presets/presets.json';
 import { defaults } from './presets/defaults.json';
 import { categories } from './presets/categories.json';
+import { groups } from './presets/groups.json';
 import { fields } from './presets/fields.json';
 import { geoArea as d3_geoArea } from 'd3-geo';
 import whichPolygon from 'which-polygon';
@@ -56,7 +54,8 @@ export var data = {
         defaults: defaults,
         categories: categories,
         fields: fields
-    }, 
+    },
+    groups: groups
 };
 
 export var rapid_feature_config = rapid_config; 

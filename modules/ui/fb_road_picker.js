@@ -10,12 +10,10 @@ import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
-
 export function uiFbRoadPicker(context, keybinding) {
     var _datum;
     var ML_ROADS_LIMIT_NON_TM_MODE = 50;
-
-
+    
     function isAddRoadDisabled() {
         // when task GPX is set in URL (TM mode), "add roads" is always enabled
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
@@ -107,7 +105,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var presetButton = presetWrap
             .append('button')
-            .attr('class', 'preset-list-button ' + presetButtonClasses)
+            .attr('class', 'picker-list-button ' + presetButtonClasses)
             .on('click', p.onClick);
 
         if (p.disabledFunction) {
@@ -120,8 +118,9 @@ export function uiFbRoadPicker(context, keybinding) {
 
         presetButton
             .append('div')
-            .attr('class', 'preset-icon-container medium')
+            .attr('class', 'picker-icon-container medium')
             .append('svg')
+            .attr('class', 'icon')
             .append('use')
             .attr('xlink:href', p.iconName);
 
@@ -162,7 +161,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var headerEnter = header.enter()
             .append('div')
-            .attr('class', 'header fillL');
+            .attr('class', 'header control-col');
 
         headerEnter
             .append('h3')
@@ -190,7 +189,7 @@ export function uiFbRoadPicker(context, keybinding) {
 
         var bodyEnter = body.enter()
             .append('div')
-            .attr('class', 'body fillL');
+            .attr('class', 'body control-col');
 
         bodyEnter
             .append('h4')
@@ -211,7 +210,7 @@ export function uiFbRoadPicker(context, keybinding) {
                           ))
                         : uiTooltipHtml(
                               t('fb_road_picker.option_accept.tooltip'),
-                              t('fb_road_picker.option_accept.key')
+                              '⇧' +  t('fb_road_picker.option_accept.key')
                           );
                 }),
             onClick: onAcceptRoad,
@@ -227,7 +226,7 @@ export function uiFbRoadPicker(context, keybinding) {
                 .html(true)
                 .title(uiTooltipHtml(
                     t('fb_road_picker.option_reject.tooltip'),
-                    t('fb_road_picker.option_reject.key'))),
+                    '⇧' + t('fb_road_picker.option_reject.key'))),
             onClick: onRejectRoad
         }, 'fb-roads-reject');
 
@@ -243,8 +242,7 @@ export function uiFbRoadPicker(context, keybinding) {
         return this;
     };
 
-
-    keybinding
+    keybinding()
         .on(t('fb_road_picker.option_accept.key'), onAcceptRoad)
         .on(t('fb_road_picker.option_reject.key'), onRejectRoad);
 

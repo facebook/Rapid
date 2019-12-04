@@ -10,12 +10,14 @@
     ],
     "moreFields": [
         "address",
+        "level",
+        "gnis/feature_id",
         "opening_hours",
         "operator"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "dive",

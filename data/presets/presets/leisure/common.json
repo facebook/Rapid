@@ -2,18 +2,15 @@
     "icon": "temaki-pedestrian",
     "fields": [
         "name",
-        "address",
-        "opening_hours"
+        "access_simple"
     ],
     "moreFields": [
+        "gnis/feature_id",
         "website"
     ],
     "geometry": [
-        "point",
-        "area"
-    ],
-    "fields": [
-        "name"
+        "area",
+        "point"
     ],
     "terms": [
         "open space"

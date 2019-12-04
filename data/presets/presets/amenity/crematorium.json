@@ -9,15 +9,17 @@
     ],
     "moreFields": [
         "address",
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [
-        "area",
-        "point"
+        "point",
+        "area"
     ],
     "tags": {
         "amenity": "crematorium"
