@@ -8,8 +8,10 @@
         "opening_hours"
     ],
     "moreFields": [
+        "brand",
         "email",
         "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",

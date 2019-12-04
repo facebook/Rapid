@@ -11,7 +11,7 @@ import { dataIntroGraph } from '../../../data/intro_graph.json';
 import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services';
+import { services } from '../../services'; 
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
 import { utilArrayDifference, utilArrayUniq } from '../../util';
@@ -188,7 +188,6 @@ export function uiIntro(context, skipToRapid) {
             if (history) { context.history().fromJSON(history, false); }
             context.map().centerZoom(center, zoom);
             window.location.replace(hash);
-            services.geocoder.countryCode = countryCode;
             context.inIntro(false);
         });
 

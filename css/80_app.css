@@ -1834,10 +1834,18 @@ a.hide-toggle {
     height: 50px;
     object-fit: contain;
     border-radius: 2px;
+    z-index: 2;
+    visibility: hidden;
 }
 .preset-icon-container.small img.image-icon {
     width: 34px;
     height: 34px;
+}
+.preset-icon-container.showing-img img.image-icon {
+    visibility: visible;
+}
+.preset-icon-container.showing-img *:not(.image-icon) {
+    visibility: hidden;
 }
 
 .preset-icon-point-border path,
@@ -2450,16 +2458,20 @@ button.preset-favorite-button.active .icon {
 .form-field-input-url > input:only-of-type {
     border-radius: 0 0 4px 4px;
 }
-.form-field-input-number > input:only-of-type {
+.form-field-input-number > input:only-of-type,
+.form-field-input-identifier > input:only-of-type {
     border-radius: 0 0 0 4px;
 }
-[dir='rtl'] .form-field-input-number > input:only-of-type {
+[dir='rtl'] .form-field-input-number > input:only-of-type,
+[dir='rtl'] .form-field-input-identifier > input:only-of-type {
     border-radius: 0 0 4px 0;
 }
-.form-field-input-number > button:last-of-type {
+.form-field-input-number > button:last-of-type,
+.form-field-input-identifier > button:last-of-type {
     border-radius: 0 0 4px 0;
 }
-[dir='rtl'] .form-field-input-number > button:last-of-type {
+[dir='rtl'] .form-field-input-number > button:last-of-type,
+[dir='rtl'] .form-field-input-identifier > button:last-of-type {
     border-radius: 0 0 0 4px;
 }
 
@@ -5424,7 +5436,7 @@ img.tile-debug {
 .modal-shortcuts .shortcut-tab {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .modal-shortcuts .shortcut-column {
