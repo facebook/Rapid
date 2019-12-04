@@ -9,10 +9,12 @@
         "animal_breeding"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

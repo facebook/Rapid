@@ -1,5 +1,10 @@
 {
     "icon": "maki-danger",
+    "moreFields": [
+        "{attraction}",
+        "max_age",
+        "min_age"
+    ],
     "geometry": [
         "point"
     ],
@@ -11,5 +16,5 @@
     "tags": {
         "attraction": "pirate_ship"
     },
-    "name": "Pirate Ship"
+    "name": "Pirate Ship Ride"
 }

@@ -33,18 +33,6 @@
               "separator": ","
             },
             {
-              "section": "help",
-              "text": "shortcuts.browsing.help.title"
-            },
-            {
-              "shortcuts": ["help.key"],
-              "text": "shortcuts.browsing.help.help"
-            },
-            {
-              "shortcuts": ["shortcuts.toggle.key", "?"],
-              "text": "shortcuts.browsing.help.keyboard"
-            },
-            {
               "section": "display_options",
               "text": "shortcuts.browsing.display_options.title"
             },
@@ -60,6 +48,10 @@
             {
               "shortcuts": ["map_data.key"],
               "text": "shortcuts.browsing.display_options.map_data"
+            },
+            {
+              "shortcuts": ["issues.key"],
+              "text": "shortcuts.browsing.display_options.issues"
             },
             {
               "modifiers": ["⌃", "⌘"],
@@ -89,9 +81,8 @@
               "text": "shortcuts.browsing.display_options.minimap"
             },
             {
-              "shortcuts": ["map_data.highlight_way_edits.key"],
-              "text": "shortcuts.browsing.display_options.highlight_way_edits",
-              "rapid": true
+              "shortcuts": ["map_data.highlight_edits.key"],
+              "text": "shortcuts.browsing.display_options.highlight_edits"
             },
             {
               "modifiers": ["⇧"], 
@@ -103,6 +94,18 @@
         },
         {
           "rows": [
+            {
+              "section": "help",
+              "text": "shortcuts.browsing.help.title"
+            },
+            {
+              "shortcuts": ["help.key"],
+              "text": "shortcuts.browsing.help.help"
+            },
+            {
+              "shortcuts": ["shortcuts.toggle.key", "?"],
+              "text": "shortcuts.browsing.help.keyboard"
+            },
             {
               "section": "selecting",
               "text": "shortcuts.browsing.selecting.title"

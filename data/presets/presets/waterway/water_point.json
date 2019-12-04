@@ -1,6 +1,12 @@
 {
-     "icon": "maki-drinking-water",
-     "geometry": [
+    "icon": "maki-drinking-water",
+    "fields": [
+        "{amenity/water_point}"
+    ],
+    "moreFields": [
+        "{amenity/water_point}"
+    ],
+    "geometry": [
         "area",
         "vertex",
         "point"
@@ -8,5 +14,12 @@
     "tags": {
         "waterway": "water_point"
     },
+    "terms": [
+        "water faucet",
+        "water point",
+        "water tap",
+        "water source",
+        "water spigot"
+    ],
     "name": "Marine Drinking Water"
 }

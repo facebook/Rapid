@@ -1,5 +1,8 @@
 {
-    "icon": "fas-biking",
+    "notCountryCodes": [
+        "fr", "lt", "pl"
+    ],
+    "icon": "temaki-pedestrian_and_cyclist",
     "geometry": [
         "line"
     ],

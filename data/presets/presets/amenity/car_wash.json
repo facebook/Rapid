@@ -10,10 +10,11 @@
         "self_service"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

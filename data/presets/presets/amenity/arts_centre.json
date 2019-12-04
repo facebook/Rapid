@@ -12,9 +12,11 @@
         "email",
         "fax",
         "fee",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
+        "level",
         "payment_multi",
         "phone",
         "website",
@@ -24,8 +26,7 @@
         "point",
         "area"
     ],
-    "terms": [
-    ],
+    "terms": [],
     "tags": {
         "amenity": "arts_centre"
     },

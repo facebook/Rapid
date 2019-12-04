@@ -9,6 +9,7 @@
         "historic/wreck/visible_at_high_tide"
     ],
     "moreFields": [
+        "{historic}",
         "seamark/type"
     ],
     "geometry": [
@@ -19,7 +20,7 @@
         "historic": "wreck"
     },
     "addTags": {
-    	"historic": "wreck",
+        "historic": "wreck",
         "seamark:type": "wreck"
     },
     "terms": [

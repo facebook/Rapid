@@ -10,9 +10,10 @@
     ],
     "moreFields": [
         "building/levels_building",
-        "height_building",
         "email",
         "fax",
+        "gnis/feature_id",
+        "height_building",
         "internet_access/ssid",
         "phone",
         "website",

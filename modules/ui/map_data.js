@@ -32,6 +32,7 @@ export function uiMapData(context) {
     var _photoOverlayContainer = d3_select(null);
     var _fillList = d3_select(null);
     var _featureList = d3_select(null);
+    var _visualDiffList = d3_select(null);
     var _QAList = d3_select(null);
 
 
@@ -91,6 +92,9 @@ export function uiMapData(context) {
         d3_event.preventDefault();
         var surface = context.surface();
         surface.classed('highlight-edited', !surface.classed('highlight-edited'));
+        updateVisualDiffList();
+
+        context.map().pan([0,0]);  // trigger a redraw
     }
 
 
@@ -157,7 +161,7 @@ export function uiMapData(context) {
             .append('li')
             .attr('class', function(d) {
                 var classes = 'list-item-photos list-item-' + d.id;
-                if (d.id === 'mapillary-signs') {
+                if (d.id === 'mapillary-signs' || d.id === 'mapillary-map-features') {
                     classes += ' indented';
                 }
                 return classes;
@@ -170,7 +174,7 @@ export function uiMapData(context) {
                 if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
                 else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
                 else if (d.id === 'openstreetcam') titleID = 'openstreetcam_images.tooltip';
-                else titleID = d.id.replace('-', '_') + '.tooltip';
+                else titleID = d.id.replace(/-/g, '_') + '.tooltip';
                 d3_select(this)
                     .call(tooltip()
                         .title(t(titleID))
@@ -188,8 +192,19 @@ export function uiMapData(context) {
             .text(function(d) {
                 var id = d.id;
                 if (id === 'mapillary-signs') id = 'photo_overlays.traffic_signs';
-                return t(id.replace('-', '_') + '.title');
+                return t(id.replace(/-/g, '_') + '.title');
             });
+
+        labelEnter
+            .filter(function(d) { return d.id === 'mapillary-map-features'; })
+            .append('a')
+            .attr('class', 'request-data-link')
+            .attr('target', '_blank')
+            .attr('tabindex', -1)
+            .call(svgIcon('#iD-icon-out-link', 'inline'))
+            .attr('href', 'https://mapillary.github.io/mapillary_solutions/data-request')
+            .append('span')
+            .text(t('mapillary_map_features.request_data'));
 
 
         // Update
@@ -583,7 +598,6 @@ export function uiMapData(context) {
         labelEnter
             .append('span')
             .text(t('map_data.layers.custom.title'));
-    
         liEnter
             .append('button')
             .call(tooltip()
@@ -654,6 +668,8 @@ export function uiMapData(context) {
                 .title(function(d) {
                     var tip = t(name + '.' + d + '.tooltip');
                     var key = (d === 'wireframe' ? t('area_fill.wireframe.key') : null);
+                    if (d === 'highlight_edits') key = t('map_data.highlight_edits.key');
+
                     if ((name === 'feature' || name === 'keepRight') && autoHiddenFeature(d)) {
                         var msg = showsLayer('osm') ? t('map_data.autohidden') : t('map_data.osmhidden');
                         tip += '<div>' + msg + '</div>';
@@ -715,7 +731,7 @@ export function uiMapData(context) {
     }
 
 
-    function renderFillList(selection) {
+    function renderStyleOptions(selection) {
         var container = selection.selectAll('.layer-fill-list')
             .data([0]);
 
@@ -725,6 +741,16 @@ export function uiMapData(context) {
             .merge(container);
 
         updateFillList();
+
+        var container2 = selection.selectAll('.layer-visual-diff-list')
+            .data([0]);
+
+        _visualDiffList = container2.enter()
+            .append('ul')
+            .attr('class', 'layer-list layer-visual-diff-list')
+            .merge(container2);
+
+        updateVisualDiffList();
     }
 
 
@@ -789,6 +815,13 @@ export function uiMapData(context) {
     function updateFillList() {
         _fillList
             .call(drawListItems, fills, 'radio', 'area_fill', setFill, showsFill);
+    }
+
+    function updateVisualDiffList() {
+        _visualDiffList
+            .call(drawListItems, ['highlight_edits'], 'checkbox', 'visual_diff', toggleHighlightEdited, function() {
+                return context.surface().classed('highlight-edited');
+            });
     }
 
     function updateFeatureList() {
@@ -906,8 +939,8 @@ export function uiMapData(context) {
             .append('div')
             .attr('class', 'map-data-area-fills')
             .call(uiDisclosure(context, 'fill_area', false)
-                .title(t('map_data.fill_area'))
-                .content(renderFillList)
+                .title(t('map_data.style_options'))
+                .content(renderStyleOptions)
             );
 
         // feature filters
@@ -935,7 +968,7 @@ export function uiMapData(context) {
                 d3_event.stopPropagation();
                 toggleLayer('osm');
             })
-            .on(t('map_data.layers.ai-features.key'), toggleHighlightEdited);
+            .on(t('map_data.highlight_edits.key'), toggleHighlightEdited);
     };
 
     return uiMapData;

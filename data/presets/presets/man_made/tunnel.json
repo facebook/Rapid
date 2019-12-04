@@ -8,6 +8,9 @@
         "length",
         "height"
     ],
+    "moreFields": [
+        "gnis/feature_id"
+    ],
     "geometry": [
         "area"
     ],
@@ -33,5 +36,5 @@
         "underground passage",
         "underpass"
     ],
-    "name": "Tunnel"
+    "name": "Tunnel Area"
 }

@@ -1,3 +1,4 @@
+import deepEqual from 'fast-deep-equal';
 import { range as d3_range } from 'd3-array';
 
 import {
@@ -57,15 +58,17 @@ export function svgLines(projection, context) {
         targets.exit()
             .remove();
 
-        var graphEditClass = function(d) {
-
+        var segmentWasEdited = function(d) {
+            var wayID = d.properties.entity.id;
+            // if the whole line was edited, don't draw segment changes
+            if (!base.entities[wayID] ||
+                !deepEqual(graph.entities[wayID].nodes, base.entities[wayID].nodes)) {
+                return false;
+            }
             return d.properties.nodes.some(function(n) {
-                if (!base.entities[n.id]) {
-                    return true;
-                }
-                var result = !_isEqual(_omit(graph.entities[n.id], ['tags', 'v']), _omit(base.entities[n.id], ['tags', 'v']));
-                return result;
-            }) ? ' graphedited ': '';
+                return !base.entities[n.id] ||
+                       !deepEqual(graph.entities[n.id].loc, base.entities[n.id].loc);
+            });
         };
 
         // enter/update
@@ -74,8 +77,9 @@ export function svgLines(projection, context) {
             .merge(targets)
             .attr('d', getPath)
             .attr('class', function(d) {
-                return 'way line target target-allowed ' + targetClass + d.id + graphEditClass(d);
-            });
+                return 'way line target target-allowed ' + targetClass + d.id;
+            })
+            .classed('segment-edited', segmentWasEdited);
 
         // NOPE
         var nopeData = data.nopes.filter(getPath);
@@ -93,8 +97,9 @@ export function svgLines(projection, context) {
             .merge(nopes)
             .attr('d', getPath)
             .attr('class', function(d) {
-                return 'way line target target-nope ' + nopeClass + d.id + graphEditClass(d);
-            });
+                return 'way line target target-nope ' + nopeClass + d.id;
+            })
+            .classed('segment-edited', segmentWasEdited);
     }
 
 
@@ -164,6 +169,19 @@ export function svgLines(projection, context) {
 
                     var oldMPClass = oldMultiPolygonOuters[d.id] ? 'old-multipolygon ' : '';
                     return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + graphEditClass(d) + tagEditClass(d) + getAIRoadStylingClass(d) + d.id;
+                })
+                .classed('added', function(d) {
+                    return !base.entities[d.id];
+                })
+                .classed('geometry-edited', function(d) {
+                    return graph.entities[d.id] &&
+                        base.entities[d.id] &&
+                        !deepEqual(graph.entities[d.id].nodes, base.entities[d.id].nodes);
+                })
+                .classed('retagged', function(d) {
+                    return graph.entities[d.id] &&
+                        base.entities[d.id] &&
+                        !deepEqual(graph.entities[d.id].tags, base.entities[d.id].tags);
                 })
                 .call(svgTagClasses())
                 .merge(lines)
