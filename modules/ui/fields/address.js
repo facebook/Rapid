@@ -1,16 +1,16 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import * as countryCoder from '@ideditor/country-coder';
 
 import { dataAddressFormats } from '../../../data';
 import { geoExtent, geoChooseEdge, geoSphericalDistance } from '../../geo';
-import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { utilArrayUniqBy, utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { t } from '../../util/locale';
 
 
 export function uiFieldAddress(field, context) {
     var dispatch = d3_dispatch('init', 'change');
-    var nominatim = services.geocoder;
     var wrap = d3_select(null);
     var _isInitialized = false;
     var _entity;
@@ -109,8 +109,7 @@ export function uiFieldAddress(field, context) {
     }
 
 
-    function countryCallback(err, countryCode) {
-        if (err) return;
+    function updateForCountryCode(countryCode) {
         countryCode = countryCode.toLowerCase();
 
         var addressFormat;
@@ -210,9 +209,16 @@ export function uiFieldAddress(field, context) {
             .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
             .merge(wrap);
 
-        if (nominatim && _entity) {
-            var center = _entity.extent(context.graph()).center();
-            nominatim.countryCode(center, countryCallback);
+        if (_entity) {
+            var countryCode;
+            if (context.inIntro()) {
+                // localize the address format for the walkthrough
+                countryCode = t('intro.graph.countrycode');
+            } else {
+                var center = _entity.extent(context.graph()).center();
+                countryCode = countryCoder.iso1A2Code(center);
+            }
+            if (countryCode) updateForCountryCode(countryCode);
         }
     }
 
