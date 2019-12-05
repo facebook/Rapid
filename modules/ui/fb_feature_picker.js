@@ -244,7 +244,7 @@ export function uiFbFeaturePicker(context, keybinding) {
     };
 
 
-    keybinding
+    keybinding()
         .on(t('fb_feature_picker.option_accept.key'), onAcceptRoad)
         .on(t('fb_feature_picker.option_reject.key'), onRejectRoad);
 

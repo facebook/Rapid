@@ -49,8 +49,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         // We also need to add a class to the whole option so that we 
         // can style it accordingly. 
-        var roadOption = d3_select('#section-road-toggle');
-        var buildingOption = d3_select('#section-building-toggle');
+        var roadOption = d3_select('#section-rapid-road-toggle');
+        var buildingOption = d3_select('#section-rapid-building-toggle');
 
         if (drawAiFeatures.showAll()) {
             allCheckbox.property('checked', true); 
