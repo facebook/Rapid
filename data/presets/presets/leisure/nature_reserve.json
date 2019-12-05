@@ -12,10 +12,11 @@
     ],
     "moreFields": [
         "dog",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "phone",
+        "website"
     ],
     "tags": {
         "leisure": "nature_reserve"

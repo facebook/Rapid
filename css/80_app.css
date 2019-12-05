@@ -1193,6 +1193,14 @@ a.hide-toggle {
     height: 50px;
     object-fit: contain;
     border-radius: 2px;
+    z-index: 2;
+    visibility: hidden;
+}
+.preset-icon-container.showing-img img.image-icon {
+    visibility: visible;
+}
+.preset-icon-container.showing-img *:not(.image-icon) {
+    visibility: hidden;
 }
 
 .preset-icon-point-border path {
@@ -1805,16 +1813,20 @@ button.preset-favorite-button.active .icon {
 .form-field-input-url > input:only-of-type {
     border-radius: 0 0 4px 4px;
 }
-.form-field-input-number > input:only-of-type {
+.form-field-input-number > input:only-of-type,
+.form-field-input-identifier > input:only-of-type {
     border-radius: 0 0 0 4px;
 }
-[dir='rtl'] .form-field-input-number > input:only-of-type {
+[dir='rtl'] .form-field-input-number > input:only-of-type,
+[dir='rtl'] .form-field-input-identifier > input:only-of-type {
     border-radius: 0 0 4px 0;
 }
-.form-field-input-number > button:last-of-type {
+.form-field-input-number > button:last-of-type,
+.form-field-input-identifier > button:last-of-type {
     border-radius: 0 0 4px 0;
 }
-[dir='rtl'] .form-field-input-number > button:last-of-type {
+[dir='rtl'] .form-field-input-number > button:last-of-type,
+[dir='rtl'] .form-field-input-identifier > button:last-of-type {
     border-radius: 0 0 0 4px;
 }
 
@@ -2977,14 +2989,18 @@ input.key-trap {
     border-radius: 0;
 }
 
-.map-control > button:hover,
-.map-control > button:focus {
+.map-control > button:not(.disabled):hover,
+.map-control > button:not(.disabled):focus {
     background: rgba(0, 0, 0, .8);
 }
 
 .map-control > button.active,
 .map-control > button.active:hover {
     background: #7092ff;
+}
+
+.map-control > button.disabled .icon {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 
@@ -3214,7 +3230,7 @@ div.full-screen > button:hover {
 }
 [dir='rtl'] .issue-label .issue-info-button {
     border-left: 0;
-    border-right: 1px solid;
+    border-right: 1px solid #ccc;
 }
 .issue-container .issue-label .issue-info-button .icon {
     opacity: 0.5;
@@ -3410,7 +3426,7 @@ button.autofix.action.active {
 }
 
 input.square-degrees-input {
-    padding: 2px;
+    padding: 2px !important; /* important needed for rtl */
     height: unset;
     text-align: center;
     background: rgba(0,0,0,0);
@@ -4524,6 +4540,9 @@ img.tile-debug {
     margin-right: 5px;
     padding: 5px 5px 5px 0;
 }
+#about-list li:empty {
+    display: none;
+}
 
 #about-list li:last-child {
     border-left: 0;
@@ -4534,20 +4553,45 @@ img.tile-debug {
     border-right: none;
 }
 
-.source-switch a {
-    padding: 2px 4px 4px 4px;
+#about-list a.chip {
+    padding: 2px 4px 3px 4px;
     border-radius: 2px;
+    color: #eee;
 }
-.source-switch a.live {
+#about-list a.chip .icon {
+    width: 14px;
+    height: 14px;
+    margin-top: 3px;
+}
+[dir='ltr'] #about-list a.chip .icon,
+[dir='ltr'] #about-list a.chip span {
+    margin-right: 3px;
+}
+[dir='rtl'] #about-list a.chip .icon,
+[dir='rtl'] #about-list a.chip span {
+    margin-left: 3px;
+}
+
+.source-switch a.chip.live {
     background: #d32232;
     color: #fff;
 }
 
-.feature-warning a {
+.feature-warning a.chip {
     background: #1e90ff;
-    padding: 2px 4px 4px 4px;
-    border-radius: 2px;
-    color: #eee;
+}
+
+.issues-info a.chip.resolved-count {
+    background: #15911E;
+}
+.issues-info a.chip.warnings-count {
+    background: #DF8500;
+}
+[dir='ltr'] .issues-info a.chip:not(:last-child) {
+    margin-right: 5px;
+}
+[dir='rtl'] .issues-info a.chip:not(:last-child) {
+    margin-left: 5px;
 }
 
 .user-list a:not(:last-child):after {
@@ -4897,7 +4941,7 @@ img.tile-debug {
 .modal-shortcuts .shortcut-tab {
     display: flex;
     flex-flow: row wrap;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .modal-shortcuts .shortcut-column {
@@ -5696,4 +5740,13 @@ li.hide + li.version .badge .tooltip .tooltip-arrow {
     height: 100px;
     width: 100px;
     color: #7092ff;
+}
+
+
+.list-item-photos.list-item-mapillary-map-features .request-data-link {
+    float: right;
+    margin-top: -20px;
+}
+[dir='rtl'] .list-item-photos.list-item-mapillary-map-features .request-data-link {
+    float: left;
 }

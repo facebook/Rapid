@@ -6,7 +6,7 @@ en:
     undo: undo
     zoom_to: zoom to
     copy: copy
-    open_wikidata: open on wikidata.org
+    view_on: view on {domain}
     favorite: favorite
   toolbar:
     inspect: Inspect
@@ -101,6 +101,7 @@ en:
       too_large: This can't be made circular because not enough of it is currently visible.
       connected_to_hidden: This can't be made circular because it is connected to a hidden feature.
       not_downloaded: This can't be made circular because parts of it have not yet been downloaded.
+      already_circular: This can't be made circular because it's already circular.
     orthogonalize:
       title: Square
       description:
@@ -307,9 +308,19 @@ en:
         multiple: These features can't be rotated because parts of them have not yet been downloaded.
     reverse:
       title: Reverse
-      description: Make this line go in the opposite direction.
+      description:
+        point: Flip the direction of this point.
+        points: Flip the direction of these points.
+        line: Make this line go in the opposite direction.
+        lines: Make these lines go in the opposite direction.
+        features: Flip the directions of these features.
       key: V
-      annotation: Reversed a line.
+      annotation:
+        point: Reversed a point.
+        points: Reversed multiple points.
+        line: Reversed a line.
+        lines: Reversed multiple lines.
+        features: Reversed multiple features.
     split:
       title: Split
       description:
@@ -591,6 +602,7 @@ en:
       no_grid: No Grid
       n_by_n: "{num} by {num} Grid"
     imagery_source_faq: Imagery Info / Report a Problem
+    imagery_problem_faq: Report an Imagery Problem
     reset: reset
     reset_all: Reset All
     display_options: Display Options
@@ -602,6 +614,9 @@ en:
       description: Show Minimap
       tooltip: Show a zoomed out map to help locate the area currently displayed.
       key: '/'
+    panel:
+      description: Show Detail Panel
+      tooltip: Show advanced background information.
     fix_misalignment: Adjust imagery offset
     offset: "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values in meters."
   map_data:
@@ -632,13 +647,16 @@ en:
         title: Map With AI Feature Layer
         key: R
     fill_area: Fill Areas
-    highlight_way_edits:
-      description: Highlight edited nodes and segments attached to those nodes in ways
-      tooltip: Highlight way edits in the current session.
+    style_options: Style Options
+    highlight_edits:
       key: G
     map_features: Map Features
     autohidden: "These features have been automatically hidden because too many would be shown on the screen.  You can zoom in to edit them."
     osmhidden: "These features have been automatically hidden because the OpenStreetMap layer is hidden."
+  visual_diff:
+    highlight_edits:
+      description: Highlight Changes
+      tooltip: Outline edited features
   photo_overlays:
     title: Photo Overlays
     traffic_signs:
@@ -1107,6 +1125,10 @@ en:
     hires: "High resolution"
   mapillary_images:
     tooltip: "Street-level photos from Mapillary"
+  mapillary_map_features:
+    title: "Map Features"
+    tooltip: "Map features from Mapillary"
+    request_data: "Request Data"
   mapillary:
     title: Mapillary
     signs:
@@ -1354,17 +1376,20 @@ en:
       list_title: "Warnings ({count})"
     rules:
       title: Rules
+    user_resolved_issues: Issues resolved by your edits
+    warnings_and_errors: Warnings and errors
     no_issues:
       message:
         everything: Everything looks fine
         everything_in_view: Everything in view looks fine
         edits: Your edits look fine
         edits_in_view: Your edits in view look fine
+        no_edits: You have no edits yet
       hidden_issues:
         none: Detected issues will appear here
         elsewhere: "Issues elsewhere: {count}"
-        other_features: "Issues with other features: {count}"
-        other_features_elsewhere: "Issues elsewhere with other features: {count}"
+        everything_else: "Issues with everything else: {count}"
+        everything_else_elsewhere: "Issues elsewhere with everything else: {count}"
         disabled_rules: "Issues with disabled rules: {count}"
         disabled_rules_elsewhere: "Issues elsewhere with disabled rules: {count}"
         ignored_issues: "Ignored issues: {count}"
@@ -1410,9 +1435,9 @@ en:
       building-building:
         reference: "Buildings should not intersect except on different layers."
       building-highway:
-        reference: "Highways crossing buildings should use bridges, tunnels, coverings, or entrances."
+        reference: "Highways crossing buildings should use bridges, tunnels, or different layers."
       building-railway:
-        reference: "Railways crossing buildings should use bridges or tunnels."
+        reference: "Railways crossing buildings should use bridges, tunnels, or different layers."
       building-waterway:
         reference: "Waterways crossing buildings should use tunnels or different layers."
       highway-highway:
@@ -1449,9 +1474,7 @@ en:
       highway:
         message: "{highway} is disconnected from other roads and paths"
     fixme_tag:
-      title: '"Fix Me" Requests'
       message: '{feature} has a "Fix Me" request'
-      tip: 'Find features with "fixme" tags'
       reference: 'A "fixme" tag indicates that a mapper has requested help with a feature.'
     short_road:
       title: Short road
@@ -1459,10 +1482,12 @@ en:
       tip: "You may want to delete or extend the road."
       reference: "Short roads may need to be extended or deleted."
     generic_name:
-      title: Suspicious Names
       message: '{feature} has the suspicious name "{name}"'
-      tip: "Find features with generic or suspicious names"
+      message_language: '{feature} has the suspicious name "{name}" in {language}'
       reference: "Names should be the actual, on-the-ground names of features."
+    help_request:
+      title: 'Help Requests'
+      tip: 'Find features where others requested assistance'
     incompatible_source:
       title: Suspicious Sources
       tip: "Find features with suspicious source tags"
@@ -1470,17 +1495,19 @@ en:
         feature:
           message: '{feature} lists Google as a data source'
         reference: "Google products are proprietary and must not be used as references."
+    incorrect_name:
+      message: '{feature} has the mistaken name "{name}"'
+      message_language: '{feature} has the mistaken name "{name}" in {language}'
     invalid_format:
       title: Invalid Formatting
       tip: Find tags with unexpected formats
       email:
-        message: '{feature} has an invalid email address.'
-        message_multi: '{feature} has multiple invalid email addresses.'
+        message: '{feature} has an invalid email address'
+        message_multi: '{feature} has multiple invalid email addresses'
         reference: 'Email addresses must look like "user@example.com".'
-      website:
-        message: '{feature} has an invalid website.'
-        message_multi: '{feature} has multiple invalid websites.'
-        reference: 'Websites should start with "http" or "https".'
+    mismatched_geometry:
+      title: Mismatched Geometry
+      tip: "Find features with conflicting tags and geometry"
     missing_role:
       title: Missing Roles
       message: "{member} has no role within {relation}"
@@ -1510,17 +1537,22 @@ en:
         reference: "Some features should have additional tags."
       noncanonical_brand:
         message: "{feature} looks like a brand with nonstandard tags"
+        message_incomplete: "{feature} looks like a brand with incomplete tags"
         reference: "All features of the same brand should be tagged the same way."
+    point_as_vertex:
+      message: '{feature} should be a standalone point based on its tags'
+      reference: "Some features shouldn't be part of lines or areas."
     private_data:
       title: Private Information
       tip: "Find features that may contain private information"
       reference: "Sensitive data like personal phone numbers should not be tagged."
       contact:
         message: '{feature} might be tagged with private contact information'
+    suspicious_name:
+      title: Suspicious Names
+      tip: "Find features with generic or suspicious names"
     tag_suggests_area:
-      title: Lines Tagged as Areas
       message: '{feature} should be a closed area based on the tag "{tag}"'
-      tip: "Find features that are tagged as lines and should possibly be tagged as areas"
       reference: "Areas must have connected endpoints."
     unknown_road:
       message: "{feature} has no classification"
@@ -1553,13 +1585,27 @@ en:
         end:
           message: "{feature} has no outlet"
           reference: "One-way roads must lead to other roads."
+    unclosed_multipolygon_part:
+      message: "{feature} has an unclosed part"
+      reference: "All inner and outer parts of multipolygons should have connected endpoints."
     unsquare_way:
       title: "Unsquare Corners (up to {val}°)"
       message: "{feature} has unsquare corners"
       tip: "Find features with unsquare corners that can be drawn better"
       buildings:
         reference: "Buildings with unsquare corners can often be drawn more accurately."
+    vertex_as_point:
+      message: '{feature} should be part of a line or area based on its tags'
+      reference: "Some features shouldn't be standalone points."
     fix:
+      add_a_bridge:
+        title: Add a bridge
+        annotation: Added a bridge.
+      add_a_tunnel:
+        title: Add a tunnel
+        annotation: Added a tunnel.
+      address_the_concern:
+        title: Address the concern
       connect_almost_junction:
         annotation: Connected very close features.
       connect_crossing_features:
@@ -1579,6 +1625,8 @@ en:
         title: Continue drawing from end
       delete_feature:
         title: Delete this feature
+      extract_point:
+        title: Extract this point
       ignore_issue:
         title: Ignore this issue
       merge_close_vertices:
@@ -1593,8 +1641,9 @@ en:
       remove_from_relation:
         title: Remove from relation
       remove_generic_name:
-        title: Remove the name
         annotation: Removed a generic name.
+      remove_mistaken_name:
+        annotation: Removed a mistaken name.
       remove_private_info:
         annotation: Removed private information.
       remove_proprietary_data:
@@ -1604,6 +1653,8 @@ en:
         annotation: Removed tag.
       remove_tags:
         title: Remove the tags
+      remove_the_name:
+        title: Remove the name
       reposition_features:
         title: Reposition the features
       reverse_feature:
@@ -1631,22 +1682,12 @@ en:
       upgrade_tags:
         title: Upgrade the tags
         annotation: Upgraded old tags.
-      use_bridge_or_tunnel:
-        title: Use a bridge or tunnel
       use_different_layers:
         title: Use different layers
       use_different_layers_or_levels:
         title: Use different layers or levels
       use_different_levels:
         title: Use different levels
-      use_tunnel:
-        title: Use a tunnel
-      merge_nodes:
-        title: Merge these nodes
-      delete_node_around_conn:
-        title: Delete this node to simplify connection
-      move_node_around_conn:
-        title: Move this node to adjust connection shape
   intro:
     done: done
     ok: OK
@@ -1944,9 +1985,10 @@ en:
         keyboard: "Show keyboard shortcuts"
       display_options:
         title: "Display options"
-        background: "Show background options"
+        background: "Toggle background imagery pane"
         background_switch: "Switch back to last background"
-        map_data: "Show map data options"
+        map_data: "Toggle map data pane"
+        issues: "Toggle validation issues pane"
         fullscreen: "Enter full screen mode"
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"
@@ -1954,6 +1996,7 @@ en:
         minimap: "Toggle minimap"
         ai_features_data: "Toggle Map With AI Features"
         highlight_way_edits: "Highlight way edits in current session"
+        highlight_edits: "Highlight unsaved edits"
       selecting:
         title: "Selecting features"
         select_one: "Select a single feature"
@@ -1991,7 +2034,7 @@ en:
         disconnect: "Disconnect features at the selected node"
         extract: "Extract a point from a feature"
         split: "Split a line into two at the selected node"
-        reverse: "Reverse a line"
+        reverse: "Reverse selected features"
         move: "Move selected features"
         rotate: "Rotate selected features"
         orthogonalize: "Square corners of a line or area"

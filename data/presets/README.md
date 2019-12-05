@@ -189,9 +189,13 @@ The default is `1.0`.
 
 ##### `countryCodes`
 
-An array of two-letter, lowercase [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. The preset will only be searchable when the user is editing over the specified countries. The locale and language of iD are not factors, just the position of the map.
+An array of two-letter, lowercase [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. The preset will only be searchable when the user is editing over the specified, whitelisted countries. The locale and language of iD are not factors, just the position of the map.
 
 By default, presets are available everywhere.
+
+##### `notCountryCodes`
+
+An array of two-letter, lowercase [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. Similar to `countryCodes` except a blacklist instead of a whitelist.
 
 ##### `replacement`
 
@@ -203,7 +207,7 @@ When possible, use `deprecated.json` instead to specify upgrade paths for old ta
 
 A key and optionally a value to link to the wiki documentation for this preset. Only necessary if the preset consists of several tags.
 
-For example, 
+For example,
 ```javascript
 "reference": {
     "key": "tower:type",
@@ -256,6 +260,7 @@ A string specifying the UI and behavior of the field. Must be one of the followi
 * `tel` - Text field for entering phone numbers (localized for editing location)
 * `email` - Text field for entering email addresses
 * `url` - Text field for entering URLs
+* `identifier` - Text field for foreign IDs (e.g. `gnis:feature_id`)
 * `textarea` - Multi-line text area (e.g. `description=*`)
 
 ###### Combo/Dropdown fields
@@ -384,14 +389,18 @@ For number fields, the greatest valid value. There is no default.
 
 ##### `prerequisiteTag`
 
-An object defining the tags the feature needs before this field will be displayed. It must have this property:
+An object defining the tags the feature needs before this field will be displayed. It may have this property:
 
 - `key`: The key for the required tag.
 
-And may optionally have one of these properties:
+And may optionally be combined with one of these properties:
 
 - `value`: The value that the key must have.
 - `valueNot`: The value that the key must not have.
+
+Alternatively, the object may contain a single property:
+
+- `keyNot`: The key that must not be present.
 
 For example, this is how we show the Internet Access Fee field only if the feature has an `internet_access` tag not equal to `no`.
 
@@ -401,6 +410,30 @@ For example, this is how we show the Internet Access Fee field only if the featu
     "valueNot": "no"
 }
 ```
+
+If a feature has a value for this field's `key` or `keys`, it will display regardless of the `prerequisiteTag` property.
+
+##### `countryCodes`
+
+An array of two-letter, lowercase [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. The field will only be available for features in the specified, whitelisted countries.
+
+By default, fields are available everywhere.
+
+##### `notCountryCodes`
+
+An array of two-letter, lowercase [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. Similar to `countryCodes` except a blacklist instead of a whitelist.
+
+##### `urlFormat`
+
+For `identifier` fields, the permalink URL of the external record. It must contain a `{value}` placeholder where the tag value will be inserted. For example:
+
+```js
+"urlFormat": "https://geonames.usgs.gov/apex/f?p=gnispq:3:::NO::P3_FID:{value}"
+```
+
+##### `pattern`
+
+For `identifier` fields, the regular expression that valid values are expected to match to be linkable.
 
 
 ## Building

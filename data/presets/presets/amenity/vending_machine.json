@@ -2,22 +2,25 @@
     "icon": "temaki-vending_machine",
     "fields": [
         "vending",
+        "ref",
         "operator",
         "payment_multi",
         "currency_multi"
     ],
     "moreFields": [
+        "blind",
         "brand",
         "covered",
         "height",
         "indoor",
+        "level",
         "manufacturer"
     ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
-    "terms": [
-    ],
+    "terms": [],
     "tags": {
         "amenity": "vending_machine"
     },

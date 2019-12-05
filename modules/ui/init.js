@@ -24,6 +24,7 @@ import { uiHelp } from './help';
 import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssues } from './issues';
+import { uiIssuesInfo } from './issues_info';
 import { uiLoading } from './loading';
 import { uiMapData } from './map_data';
 import { uiMapInMap } from './map_in_map';
@@ -211,6 +212,12 @@ export function uiInit(context) {
 
         aboutList
             .append('li')
+            .attr('class', 'issues-info')
+            .attr('tabindex', -1)
+            .call(uiIssuesInfo(context));
+
+        aboutList
+            .append('li')
             .attr('class', 'user-list')
             .attr('tabindex', -1)
             .call(uiContributors(context));
@@ -250,11 +257,13 @@ export function uiInit(context) {
             .call(issues.renderPane)
             .call(help.renderPane);
 
+        ui.info = uiInfo(context);
+
         // Add absolutely-positioned elements that sit on top of the map
         // This should happen after the map is ready (center/zoom)
         overMap
             .call(uiMapInMap(context))
-            .call(uiInfo(context))
+            .call(ui.info)
             .call(uiNotice(context));
 
 
@@ -284,7 +293,7 @@ export function uiInit(context) {
         var panPixels = 80;
         context.keybinding()
             .on('⌫', function() { d3_event.preventDefault(); })
-            .on([t('sidebar.key'), '`', '²'], ui.sidebar.toggle)   // #5663 - common QWERTY, AZERTY
+            .on([t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
             .on('←', pan([panPixels, 0]))
             .on('↑', pan([0, panPixels]))
             .on('→', pan([-panPixels, 0]))
@@ -373,7 +382,6 @@ export function uiInit(context) {
             }
         });
     };
-
 
     ui.sidebar = uiSidebar(context);
 

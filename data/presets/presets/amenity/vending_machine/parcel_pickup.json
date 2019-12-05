@@ -1,16 +1,18 @@
 {
-    "icon": "temaki-vending_machine",
+    "icon": "temaki-vending_lockers",
     "fields": [
         "vending",
         "operator"
     ],
     "geometry": [
-        "point"
+        "point",
+        "vertex"
     ],
     "terms": [
         "amazon",
         "locker",
         "mail",
+        "packstation",
         "parcel",
         "pickup"
     ],

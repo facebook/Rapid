@@ -8,17 +8,19 @@
         "opening_hours"
     ],
     "moreFields": [
-        "smoking",
-        "outdoor_seating",
         "capacity",
+        "diet_multi",
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "diet_multi",
-        "website",
+        "level",
+        "outdoor_seating",
         "phone",
-        "email",
-        "fax",
+        "smoking",
+        "website",
         "wheelchair"
     ],
     "geometry": [

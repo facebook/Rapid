@@ -4,16 +4,18 @@
         "name",
         "studio",
         "address",
-        "building_area"
+        "building_area",
+        "website"
     ],
     "moreFields": [
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "website",
+        "level",
         "phone",
-        "email",
-        "fax",
         "wheelchair"
     ],
     "geometry": [

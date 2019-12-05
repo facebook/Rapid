@@ -12,9 +12,10 @@
         "internet_access",
         "internet_access/fee"
     ],
-    "moreFields" : [
+    "moreFields": [
         "email",
         "fax",
+        "gnis/feature_id",
         "internet_access/ssid",
         "phone",
         "power_supply",

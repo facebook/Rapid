@@ -10,12 +10,13 @@
         "internet_access/fee"
     ],
     "moreFields": [
-        "religion",
         "denomination",
-        "internet_access/ssid",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "internet_access/ssid",
+        "phone",
+        "religion",
         "wheelchair"
     ],
     "geometry": [

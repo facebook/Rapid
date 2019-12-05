@@ -1,11 +1,12 @@
 {
-    "icon": "maki-music",
+    "icon": "fas-music",
     "fields": [
         "name",
         "building_area",
         "operator"
     ],
     "moreFields": [
+        "gnis/feature_id",
         "website"
     ],
     "geometry": [

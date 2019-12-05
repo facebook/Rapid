@@ -17,6 +17,8 @@
         "air_conditioning",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
         "phone",
         "smoking",
         "wheelchair"

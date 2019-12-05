@@ -1,15 +1,16 @@
 {
-     "icon": "maki-harbor",
-     "fields":[
+    "icon": "maki-harbor",
+    "fields": [
         "name",
         "operator"
     ],
     "moreFields": [
         "address",
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

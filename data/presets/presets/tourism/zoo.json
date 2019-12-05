@@ -9,14 +9,15 @@
         "charge_fee"
     ],
     "moreFields": [
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
         "payment_multi",
-        "website",
         "phone",
-        "email",
-        "fax",
+        "website",
         "wheelchair"
     ],
     "geometry": [
