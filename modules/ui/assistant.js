@@ -22,7 +22,7 @@ import { uiCommit } from './commit';
 import { geoRawMercator } from '../geo/raw_mercator';
 import { utilGetDimensions } from '../util/dimensions';
 import { decimalCoordinatePair, formattedRoundedDuration } from '../util/units';
-import { uiFbRoadPicker } from './fb_road_picker';
+import { uiFbFeaturePicker } from './fb_feature_picker';
 
 function utilTimeOfDayGreeting() {
     return t('assistant.greetings.' + utilTimeframe());
@@ -285,9 +285,9 @@ export function uiAssistant(context) {
 
         var mode = context.mode();
 
-        if (mode.id === 'select-fb-roads'){
+        if (mode.id === 'select-ai-features'){
             
-            return panelSelectFbRoads(context, mode.selectedDatum());
+            return panelSelectAiFeatures(context, mode.selectedDatum());
 
         } else if (mode.id === 'save') {
 
@@ -784,11 +784,11 @@ export function uiAssistant(context) {
         return panel;
     }
 
-    function panelSelectFbRoads(context, datum) {
+    function panelSelectAiFeatures(context, datum) {
         var panel = {
             theme: 'dark', 
             modeLabel: t('assistant.mode.inspecting'),
-            title: t('map_data.layers.fb-roads.title'),
+            title: t('map_data.layers.ai-features.title'),
             collapseCategory: 'inspect'
         };
 
@@ -800,8 +800,8 @@ export function uiAssistant(context) {
         }; 
 
         panel.renderBody = function(selection) {
-            var keybinding = utilKeybinding('select-fb-roads');
-            var fbPicker = uiFbRoadPicker(context, keybinding)
+            var keybinding = utilKeybinding('select-ai-features');
+            var fbPicker = uiFbFeaturePicker(context, keybinding)
                 .datum(datum); 
             selection.call(fbPicker); 
         }; 

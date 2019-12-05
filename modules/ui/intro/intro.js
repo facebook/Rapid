@@ -78,7 +78,7 @@ export function uiIntro(context, skipToRapid) {
         var background = context.background().baseLayerSource();
         var overlays = context.background().overlayLayerSources();
         var opacity = d3_selectAll('#map .layer-background').style('opacity');
-        var fbRoadsOpacity = d3_selectAll('#map .layer-fb-roads').style('opacity');
+        var aiFeaturesOpacity = d3_selectAll('#map .layer-ai-features').style('opacity');
         var caches = osm && osm.caches();
         var baseEntities = context.history().graph().base().entities;
         var countryCode = services.geocoder.countryCode;
@@ -108,12 +108,12 @@ export function uiIntro(context, skipToRapid) {
             context.background().toggleOverlayLayer(d);
         });
 
-        // Setup data layers (only OSM & fb-roads)
+        // Setup data layers (only OSM & ai-features)
         var layers = context.layers();
         layers.all().forEach(function(item) {
             // if the layer has the function `enabled`
             if (typeof item.layer.enabled === 'function') {
-                item.layer.enabled(item.id === 'osm' || item.id === 'fb-roads');
+                item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
             }
         });
 
@@ -129,7 +129,7 @@ export function uiIntro(context, skipToRapid) {
         services.fbMLRoads.checkpoint('initial');
 
         d3_selectAll('#map .layer-background').style('opacity', 1);
-        d3_selectAll('#map .layer-fb-roads').style('opacity', 1);
+        d3_selectAll('#map .layer-ai-features').style('opacity', 1);
 
         var curtain = uiCurtain();
         selection.call(curtain);
@@ -177,7 +177,7 @@ export function uiIntro(context, skipToRapid) {
             curtain.remove();
             navwrap.remove();
             d3_selectAll('#map .layer-background').style('opacity', opacity);
-            d3_selectAll('#map .layer-fb-roads').style('opacity', fbRoadsOpacity);
+            d3_selectAll('#map .layer-ai-features').style('opacity', aiFeaturesOpacity);
             d3_selectAll('button.sidebar-toggle').classed('disabled', false);
             if (osm) { osm.toggle(true).reset().caches(caches); }
             context.history().reset().merge(Object.values(baseEntities));
