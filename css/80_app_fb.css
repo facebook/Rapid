@@ -175,6 +175,14 @@ button.ai-features-toggle.layer-off use {
     margin: 16px; 
 }
 
+.rapid-feature-license {
+    margin: 16px;  
+}
+
+.rapid-feature-license p {
+    font-size: 10px;
+}
+
 .rapid-feature-label-container {
     display: flex; 
     align-items: center; 
