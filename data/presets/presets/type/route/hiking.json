@@ -5,9 +5,10 @@
         "ref_route",
         "operator",
         "network_foot",
+        "network/type",
         "description",
         "distance",
-        "to", 
+        "to",
         "from"
     ],
     "geometry": [

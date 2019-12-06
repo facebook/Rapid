@@ -10,6 +10,8 @@
     ],
     "moreFields": [
         "address",
+        "level",
+        "gnis/feature_id",
         "opening_hours",
         "operator"
     ],

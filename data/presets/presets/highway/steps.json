@@ -2,16 +2,21 @@
     "icon": "iD-highway-steps",
     "fields": [
         "incline_steps",
+        "access_simple",
         "handrail",
         "step_count",
+        "tactile_paving",
         "surface",
-        "lit",
         "width"
     ],
     "moreFields": [
         "covered",
         "dog",
         "indoor",
+        "level_semi",
+        "lit",
+        "name",
+        "ref",
         "stroller",
         "wheelchair"
     ],

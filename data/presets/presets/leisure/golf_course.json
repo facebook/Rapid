@@ -7,11 +7,12 @@
         "opening_hours"
     ],
     "moreFields": [
-        "payment_multi",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "payment_multi",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",

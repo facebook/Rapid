@@ -11,9 +11,10 @@
         "payment_multi_fee",
         "charge_fee"
     ],
-    "moreFields" : [
+    "moreFields": [
         "email",
         "fax",
+        "gnis/feature_id",
         "internet_access/ssid",
         "phone",
         "reservation",

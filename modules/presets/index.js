@@ -114,7 +114,7 @@ export function presetIndex(context) {
     // and the subkeys form the blacklist.
     all.areaKeys = function() {
         var areaKeys = {};
-        var ignore = ['barrier', 'highway', 'footway', 'railway', 'type'];  // probably a line..
+        var ignore = ['barrier', 'highway', 'footway', 'railway', 'junction', 'type'];  // probably a line..
 
         // ignore name-suggestion-index and deprecated presets
         var presets = all.collection.filter(function(p) {
@@ -134,15 +134,14 @@ export function presetIndex(context) {
 
         // blacklist
         presets.forEach(function(d) {
-            for (var key in d.tags) break;
-            if (!key) return;
-            if (ignore.indexOf(key) !== -1) return;
-
-            var value = d.tags[key];
-            if (key in areaKeys &&                      // probably an area...
-                d.geometry.indexOf('line') !== -1 &&    // but sometimes a line
-                value !== '*') {
-                areaKeys[key][value] = true;
+            for (var key in d.addTags) {
+                // examine all addTags to get a better sense of what can be tagged on lines - #6800
+                var value = d.addTags[key];
+                if (key in areaKeys &&                      // probably an area...
+                    d.geometry.indexOf('line') !== -1 &&    // but sometimes a line
+                    value !== '*') {
+                    areaKeys[key][value] = true;
+                }
             }
         });
 

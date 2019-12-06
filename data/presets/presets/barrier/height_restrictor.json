@@ -1,9 +1,11 @@
 {
-    "icon": "temaki-car_wash",
+    "icon": "temaki-height_restrictor",
     "fields": [
         "maxheight"
     ],
-    "geometry": [ "vertex" ],
+    "geometry": [
+        "vertex"
+    ],
     "tags": {
         "barrier": "height_restrictor"
     },

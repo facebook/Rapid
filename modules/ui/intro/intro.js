@@ -11,7 +11,7 @@ import { dataIntroGraph } from '../../../data/intro_graph.json';
 import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services';
+import { services } from '../../services'; 
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
 import { utilArrayDifference, utilArrayUniq } from '../../util';
@@ -81,7 +81,6 @@ export function uiIntro(context, skipToRapid) {
         var aiFeaturesOpacity = d3_selectAll('#map .layer-ai-features').style('opacity');
         var caches = osm && osm.caches();
         var baseEntities = context.history().graph().base().entities;
-        var countryCode = services.geocoder.countryCode;
         var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
         var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
 
@@ -121,11 +120,6 @@ export function uiIntro(context, skipToRapid) {
                 item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
             }
         });
-
-        // Mock geocoder
-        services.geocoder.countryCode = function(location, callback) {
-            callback(null, t('intro.graph.countrycode'));
-        };
 
         if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset();
 
@@ -193,7 +187,6 @@ export function uiIntro(context, skipToRapid) {
             if (history) { context.history().fromJSON(history, false); }
             context.map().centerZoom(center, zoom);
             window.location.replace(hash);
-            services.geocoder.countryCode = countryCode;
             context.inIntro(false);
         });
 

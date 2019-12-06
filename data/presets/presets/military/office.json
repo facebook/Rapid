@@ -4,6 +4,10 @@
         "name",
         "building_area"
     ],
+    "moreFields": [
+        "gnis/feature_id",
+        "level"
+    ],
     "geometry": [
         "point",
         "area"

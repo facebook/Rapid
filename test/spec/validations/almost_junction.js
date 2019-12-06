@@ -148,6 +148,7 @@ describe('iD.validations.almost_junction', function () {
         expect(issues).to.have.lengthOf(1);
         var issue = issues[0];
         expect(issue.type).to.eql('almost_junction');
+        expect(issue.subtype).to.eql('highway-highway');
         expect(issue.entityIds).to.have.lengthOf(3);
         expect(issue.entityIds[0]).to.eql('w-1');
         expect(issue.entityIds[1]).to.eql('n-1');
@@ -165,8 +166,8 @@ describe('iD.validations.almost_junction', function () {
         expect(issue.data.cross_loc[0]).to.eql(22.42356);
         expect(issue.data.cross_loc[1]).to.eql(0);
 
-        expect(issue.fixes).to.have.lengthOf(2);
-        issue.fixes[0].onClick(context);
+        expect(issue.fixes(context)).to.have.lengthOf(3);
+        issue.fixes(context)[0].onClick(context);
         issues = validate();
         expect(issues).to.have.lengthOf(0);
     });
@@ -177,6 +178,7 @@ describe('iD.validations.almost_junction', function () {
         expect(issues).to.have.lengthOf(1);
         var issue = issues[0];
         expect(issue.type).to.eql('almost_junction');
+        expect(issue.subtype).to.eql('highway-highway');
         expect(issue.entityIds).to.have.lengthOf(3);
         expect(issue.entityIds[0]).to.eql('w-1');
         expect(issue.entityIds[1]).to.eql('n-1');
@@ -194,8 +196,8 @@ describe('iD.validations.almost_junction', function () {
         expect(issue.data.cross_loc[0]).to.eql(22.42356);
         expect(issue.data.cross_loc[1]).to.eql(0);
 
-        expect(issue.fixes).to.have.lengthOf(2);
-        issue.fixes[1].onClick(context);
+        expect(issue.fixes(context)).to.have.lengthOf(3);
+        issue.fixes(context)[1].onClick(context);
         issues = validate();
         expect(issues).to.have.lengthOf(0);
     });

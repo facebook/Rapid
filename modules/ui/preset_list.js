@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import * as countryCoder from '@ideditor/country-coder';
 
 import {
     event as d3_event,
@@ -9,7 +10,6 @@ import {
 import { t, textDirection } from '../util/locale';
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
-import { services } from '../services';
 import { svgIcon } from '../svg/index';
 import { tooltip } from '../util/tooltip';
 import { uiPresetIcon } from './preset_icon';
@@ -22,7 +22,6 @@ export function uiPresetList(context) {
     var _entityID;
     var _currentPreset;
     var _autofocus = false;
-    var geocoder = services.geocoder;
 
 
     function presetList(selection) {
@@ -100,34 +99,23 @@ export function uiPresetList(context) {
         function inputevent() {
             var value = search.property('value');
             list.classed('filtered', value.length);
-            if (value.length) {
-                var entity = context.entity(_entityID);
-                if (geocoder && entity) {
-                    var center = entity.extent(context.graph()).center();
-                    geocoder.countryCode(center, function countryCallback(err, countryCode) {
-                        // get the input value again because it may have changed
-                        var currentValue = search.property('value');
+            var entity = context.entity(_entityID);
+            var results, messageText;
+            if (value.length && entity) {
+                var center = entity.extent(context.graph()).center();
+                var countryCode = countryCoder.iso1A2Code(center);
 
-                        if (!currentValue.length) return;
-
-                        var results;
-                        if (!err && countryCode) {
-                            countryCode = countryCode.toLowerCase();
-                            results = presets.search(currentValue, geometry, countryCode);
-                        } else {
-                            results = presets.search(currentValue, geometry);
-                        }
-                        message.text(t('inspector.results', {
-                            n: results.collection.length,
-                            search: currentValue
-                        }));
-                        list.call(drawList, results);
-                    });
-                }
+                results = presets.search(value, geometry, countryCode && countryCode.toLowerCase());
+                messageText = t('inspector.results', {
+                    n: results.collection.length,
+                    search: value
+                });
             } else {
-                list.call(drawList, context.presets().defaults(geometry, 36));
-                message.text(t('inspector.choose'));
+                results = context.presets().defaults(geometry, 36);
+                messageText = t('inspector.choose');
             }
+            list.call(drawList, results);
+            message.text(messageText);
         }
 
         var searchWrap = selection
@@ -444,7 +432,9 @@ export function uiPresetList(context) {
 
         button.each(function(item, index) {
             var hiddenPresetFeaturesId = context.features().isHiddenPreset(item.preset, geometry);
-            var isHiddenPreset = !!hiddenPresetFeaturesId && item.preset !== _currentPreset;
+            var isHiddenPreset = !context.inIntro() &&
+                !!hiddenPresetFeaturesId &&
+                item.preset !== _currentPreset;
 
             d3_select(this)
                 .classed('disabled', isHiddenPreset);

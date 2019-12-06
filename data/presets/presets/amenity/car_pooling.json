@@ -1,5 +1,5 @@
 {
-    "icon": "maki-car",
+    "icon": "temaki-car_pool",
     "fields": [
         "name",
         "operator",
@@ -10,10 +10,10 @@
         "lit"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
         "fax",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

@@ -5,10 +5,11 @@
         "address"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",

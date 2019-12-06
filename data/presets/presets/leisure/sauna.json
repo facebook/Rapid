@@ -11,10 +11,12 @@
         "charge_fee"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "level",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",
