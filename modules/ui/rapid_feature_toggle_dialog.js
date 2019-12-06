@@ -6,6 +6,7 @@ import {
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
+import marked from 'marked'; 
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
@@ -103,6 +104,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             modal: modal,
             id: 'rapid-road-toggle',
             label: t('rapid_feature_toggle.roads'), 
+            license: marked(t('rapid_feature_toggle.roads_license')),
             description: t('rapid_feature_toggle.roads_provided_by'),
             handler: toggleSvgRoads,
             enabled: drawAiFeatures.showRoads(),
@@ -114,6 +116,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             id: 'rapid-building-toggle',
             label: t('rapid_feature_toggle.buildings'), 
             description: t('rapid_feature_toggle.buildings_provided_by'),
+            license: marked(t('rapid_feature_toggle.buildings_license')),
             handler: toggleSvgBuildings,
             enabled: drawAiFeatures.showBuildings(),
             greyout: !drawAiFeatures.showAll()
@@ -158,6 +161,17 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
                 .html('(' + AIFeatureToggleKey + ')');
         }
             
+        if (options.license) {
+            toggleOptionText
+                .append('div')
+                .attr('class', 'rapid-feature-label-divider');
+
+            toggleOptionText
+                .append('div')
+                .attr('class', 'rapid-feature-license')
+                .html(options.license);  
+        }
+
         var customCheckbox = toggleOption
             .append('label')
             .attr('class', 'rapid-checkbox-label'); 
