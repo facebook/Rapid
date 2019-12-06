@@ -1,6 +1,6 @@
 import _throttle from 'lodash-es/throttle';
 
-import { select as d3_select } from 'd3-selection';
+import { select as d3_select} from 'd3-selection';
 import { geoScaleToZoom } from '../geo';
 import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
@@ -16,9 +16,10 @@ var _enabled = false;
 var _initialized = false;
 var _roadsService;
 var _actioned;
+var _roadsEnabled = false; 
+var _buildingsEnabled = false; 
 
-
-export function svgFbRoads(projection, context, dispatch) {
+export function svgAiFeatures(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     var layer = d3_select(null);
     var gpxInUrl = utilStringQs(window.location.hash).gpx;
@@ -30,12 +31,14 @@ export function svgFbRoads(projection, context, dispatch) {
         _enabled = true;
         _initialized = true;
         _actioned = new Set();
+        _roadsEnabled = true; 
+        _buildingsEnabled = true; 
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
-        context.history().on('undone.fbroads', onHistoryUndone);
-        context.history().on('change.fbroads', onHistoryChange);
-        context.history().on('restore.fbroads', onHistoryRestore);
+        context.history().on('undone.aifeatures', onHistoryUndone);
+        context.history().on('change.aifeatures', onHistoryChange);
+        context.history().on('restore.aifeatures', onHistoryRestore);
     }
 
 
@@ -49,7 +52,7 @@ export function svgFbRoads(projection, context, dispatch) {
     }
 
 
-    function isFbRoadsAnnotation(annotation) {
+    function isAiFeaturesAnnotation(annotation) {
         return annotation &&
             (annotation.type === 'fb_accept_feature'
             || annotation.type === 'fb_reject_feature');
@@ -58,7 +61,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
     function onHistoryUndone(currentStack, previousStack) {
         var annotation = previousStack.annotation;
-        if (isFbRoadsAnnotation(annotation)) {
+        if (isAiFeaturesAnnotation(annotation)) {
             _actioned.delete(annotation.id);
             if (drawData.enabled()) { dispatch.call('change'); }  // redraw
         }
@@ -67,7 +70,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
     function onHistoryChange(/* difference */) {
         var annotation = context.history().peekAnnotation();
-        if (isFbRoadsAnnotation(annotation)) {
+        if (isAiFeaturesAnnotation(annotation)) {
             _actioned.add(annotation.id);
             if (drawData.enabled()) { dispatch.call('change'); }  // redraw
         }
@@ -77,7 +80,7 @@ export function svgFbRoads(projection, context, dispatch) {
     function onHistoryRestore() {
         _actioned = new Set();
         context.history().peekAllAnnotations().forEach(function (annotation) {
-            if (isFbRoadsAnnotation(annotation)) {
+            if (isAiFeaturesAnnotation(annotation)) {
                 _actioned.add(annotation.id);
                 // origid (the original entity ID), a.k.a. datum.__origid__,
                 // is a hack used to deal with non-deterministic way-splitting
@@ -109,7 +112,7 @@ export function svgFbRoads(projection, context, dispatch) {
         layerOff();
     }
 
-
+    
     function layerOn() {
         layer.style('display', 'block');
     }
@@ -117,6 +120,14 @@ export function svgFbRoads(projection, context, dispatch) {
 
     function layerOff() {
         layer.style('display', 'none');
+    }
+
+    function isBuilding(d){
+        return d.tags.building === 'yes'; 
+    }
+
+    function isRoad(d){
+        return !!d.tags.highway;
     }
 
 
@@ -128,13 +139,14 @@ export function svgFbRoads(projection, context, dispatch) {
     function featureClasses(d) {
         return [
             'data' + d.__fbid__,
+            isBuilding(d) ? 'building' : 'road',
             d.geometry.type,
         ].filter(Boolean).join(' ');
     }
 
 
     function drawData(selection) {
-        layer = selection.selectAll('.layer-fb-roads')
+        layer = selection.selectAll('.layer-ai-features')
             .data(_enabled ? [0] : []);
 
         layer.exit()
@@ -142,7 +154,7 @@ export function svgFbRoads(projection, context, dispatch) {
 
         layer = layer.enter()
             .append('g')
-            .attr('class', 'layer-fb-roads')
+            .attr('class', 'layer-ai-features')
             .merge(layer);
 
         var surface = context.surface();
@@ -266,6 +278,35 @@ export function svgFbRoads(projection, context, dispatch) {
             });
     }
 
+
+    drawData.toggleRoads = function() {
+        _roadsEnabled = !_roadsEnabled; 
+        var aiFeatures = d3_select('.layer-ai-features');
+        aiFeatures.classed('hide-rapid-roads', !_roadsEnabled); 
+        showLayer(); 
+        dispatch.call('change');
+    };
+    
+    
+    drawData.toggleBuildings = function() {
+        _buildingsEnabled = !_buildingsEnabled; 
+        var aiFeatures = d3_select('.layer-ai-features');
+        aiFeatures.classed('hide-rapid-buildings', !_buildingsEnabled); 
+        showLayer(); 
+        dispatch.call('change');
+    };
+
+    drawData.showRoads = function() {
+        return _roadsEnabled; 
+    };
+
+    drawData.showBuildings = function() {
+        return _buildingsEnabled;
+    };
+
+    drawData.showAll = function() {
+        return _enabled;
+    };
 
     drawData.enabled = function(val) {
         if (!arguments.length) return _enabled;

@@ -13,20 +13,22 @@ import {
 import { t } from '../util/locale';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
-import { serviceFbMLRoads } from '../services';
+import { serviceFbAIFeatures } from '../services';
+import { uiFbFeaturePicker } from '../ui';
 import { utilKeybinding } from '../util';
 
 var _expandedOnce = false;
 
 
-export function modeSelectFbRoads(context, selectedDatum) {
+export function modeSelectAiFeatures(context, selectedDatum) {
     var mode = {
-        id: 'select-fb-roads',
+        id: 'select-ai-features',
         button: 'browse'
     };
 
-    var keybinding = utilKeybinding('select-fb-roads');
-    var roadsGraph = serviceFbMLRoads.graph();
+    var keybinding = utilKeybinding('select-ai-features');
+    var roadsGraph = serviceFbAIFeatures.graph();
+    var featurePicker = uiFbFeaturePicker(context, keybinding);
 
     var behaviors = [
         behaviorBreathe(context),
@@ -40,7 +42,7 @@ export function modeSelectFbRoads(context, selectedDatum) {
 
     // class the data as selected, or return to browse mode if the data is gone
     function selectData(drawn) {
-        var selection = context.surface().selectAll('.layer-fb-roads .data' + selectedDatum.__fbid__);
+        var selection = context.surface().selectAll('.layer-ai-features .data' + selectedDatum.__fbid__);
 
         if (selection.empty()) {
             // Return to browse mode if selected DOM elements have
@@ -96,7 +98,7 @@ export function modeSelectFbRoads(context, selectedDatum) {
         }
 
         context.map()
-            .on('drawn.select-fb-roads', selectData);
+            .on('drawn.select-ai-features', selectData);
     };
 
 
@@ -107,11 +109,11 @@ export function modeSelectFbRoads(context, selectedDatum) {
             .call(keybinding.unbind);
 
         context.surface()
-            .selectAll('.layer-fb-roads .selected')
+            .selectAll('.layer-ai-features .selected')
             .classed('selected hover', false);
 
         context.map()
-            .on('drawn.select-fb-roads', null);
+            .on('drawn.select-ai-features', null);
 
     };
 

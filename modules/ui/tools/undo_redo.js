@@ -56,6 +56,22 @@ export function uiToolUndoRedo(context) {
     var buttons;
 
     tool.render = function(selection) {
+        var tooltipBehavior = tooltip()
+            .placement('bottom')
+            .html(true)
+            .title(function (d) {
+                // Handle string- or object-style annotations. Object-style
+                // should include "type" and "description" keys, where
+                // "description" is used in place of a string-style annotation.
+                // See ui/fb_feature_picker.js for the motivating use case.
+                return uiTooltipHtml(d.annotation() ?
+                    t(d.id + '.tooltip', {
+                        action: d.annotation().description
+                            ? d.annotation().description
+                            : d.annotation(),
+                    }) :
+                    t(d.id + '.nothing'), d.cmd);
+            });
 
         buttons = selection.selectAll('button')
             .data(commands);
