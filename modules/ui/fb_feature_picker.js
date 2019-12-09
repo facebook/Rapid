@@ -21,8 +21,16 @@ export function uiFbFeaturePicker(context, keybinding) {
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
         if (gpxInUrl) return false;
 
-        var numAiFeatures = context.history().countAIFeaturesAdded(); 
-        return numAiFeatures >= AI_FEATURES_LIMIT_NON_TM_MODE;
+        var aiFeatures = context.history().peekAllAnnotations(); 
+
+        var aiFeatureCount = 0; 
+        for (var i = 0; i <= aiFeatures.length; i++) {
+            if (aiFeatures[i] && aiFeatures[i].type === 'fb_accept_feature') {
+                aiFeatureCount++; 
+            }
+        }
+        
+        return aiFeatureCount >= AI_FEATURES_LIMIT_NON_TM_MODE;
     }
 
 
