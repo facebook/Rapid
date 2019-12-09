@@ -125,6 +125,17 @@ export function coreHistory(context) {
         },
 
 
+        countAIFeaturesAdded: function() {
+            var count = 0; 
+            for (var i = 0; i <= _index; i++) {
+                if (_stack[i].annotation && _stack[i].annotation.type === 'fb_accept_feature') {
+                    count++; 
+                }
+            }
+            return count; 
+        },
+
+
         peekAllAnnotations: function() {
             var result = [];
             for (var i = 0; i <= _index; i++) {
