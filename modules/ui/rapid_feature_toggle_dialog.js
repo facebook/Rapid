@@ -169,7 +169,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             toggleOptionText
                 .append('div')
                 .attr('class', 'rapid-feature-license')
-                .html(options.license)
+                .html(options.license);
 
             toggleOptionText.select('p a')
                 .attr('target','_blank');

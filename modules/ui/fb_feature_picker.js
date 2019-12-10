@@ -13,36 +13,30 @@ import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
 export function uiFbFeaturePicker(context, keybinding) {
     var _datum;
-    var ML_ROADS_LIMIT_NON_TM_MODE = 50;
+    var AI_FEATURES_LIMIT_NON_TM_MODE = 50;
 
 
-    function isAddRoadDisabled() {
+    function isAddFeatureDisabled() {
         // when task GPX is set in URL (TM mode), "add roads" is always enabled
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
         if (gpxInUrl) return false;
 
-        var mlRoadsCount = 0;
-        var entities = context.graph().entities;
-        for (var eid in entities) {
-            var e = entities[eid];
-            if (eid.startsWith('w-') && e && (e.tags.source === 'digitalglobe' || e.tags.source === 'maxar')) {
-                mlRoadsCount += 1;
-            }
-        }
-        return mlRoadsCount >= ML_ROADS_LIMIT_NON_TM_MODE;
+        var annotations = context.history().peekAllAnnotations(); 
+        var aiFeatureAccepts = annotations.filter(function (a) { return a.type === 'fb_accept_feature'; });        
+        return aiFeatureAccepts.length >= AI_FEATURES_LIMIT_NON_TM_MODE;
     }
 
 
     function onAcceptRoad() {
         if (_datum) {
-            if (isAddRoadDisabled()) {
+            if (isAddFeatureDisabled()) {
                 var flash = uiFlash()
                     .duration(4000)
                     .iconName('#iD-icon-rapid-plus-circle')
                     .iconClass('operation disabled')
                     .text(t(
                         'fb_feature_picker.option_accept.disabled_flash',
-                        {n: ML_ROADS_LIMIT_NON_TM_MODE}
+                        {n: AI_FEATURES_LIMIT_NON_TM_MODE}
                     ));
                 flash();
                 return;
@@ -204,10 +198,10 @@ export function uiFbFeaturePicker(context, keybinding) {
                 .placement('bottom')
                 .html(true)
                 .title(function() {
-                    return isAddRoadDisabled()
+                    return isAddFeatureDisabled()
                         ? uiTooltipHtml(t(
                               'fb_feature_picker.option_accept.disabled',
-                              {n: ML_ROADS_LIMIT_NON_TM_MODE}
+                              {n: AI_FEATURES_LIMIT_NON_TM_MODE}
                           ))
                         : uiTooltipHtml(
                               t('fb_feature_picker.option_accept.tooltip'),
@@ -215,7 +209,7 @@ export function uiFbFeaturePicker(context, keybinding) {
                           );
                 }),
             onClick: onAcceptRoad,
-            disabledFunction: isAddRoadDisabled
+            disabledFunction: isAddFeatureDisabled
         }, 'ai-features-accept');
 
         presetItem(bodyEnter, {
