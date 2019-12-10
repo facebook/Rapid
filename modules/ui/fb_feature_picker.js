@@ -21,16 +21,9 @@ export function uiFbFeaturePicker(context, keybinding) {
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
         if (gpxInUrl) return false;
 
-        var aiFeatures = context.history().peekAllAnnotations(); 
-
-        var aiFeatureCount = 0; 
-        for (var i = 0; i <= aiFeatures.length; i++) {
-            if (aiFeatures[i] && aiFeatures[i].type === 'fb_accept_feature') {
-                aiFeatureCount++; 
-            }
-        }
-        
-        return aiFeatureCount >= AI_FEATURES_LIMIT_NON_TM_MODE;
+        var annotations = context.history().peekAllAnnotations(); 
+        var aiFeatureAccepts = annotations.filter(function (a) { return a.type === 'fb_accept_feature'; });        
+        return aiFeatureAccepts.length >= AI_FEATURES_LIMIT_NON_TM_MODE;
     }
 
 
