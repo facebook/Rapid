@@ -9,6 +9,7 @@ import { uiFlash } from './flash';
 import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
+import { select as d3_select} from 'd3-selection';
 
 
 export function uiFbFeaturePicker(context, keybinding) {
@@ -22,10 +23,22 @@ export function uiFbFeaturePicker(context, keybinding) {
         if (gpxInUrl) return false;
 
         var annotations = context.history().peekAllAnnotations(); 
-        var aiFeatureAccepts = annotations.filter(function (a) { return a.type === 'fb_accept_feature'; });        
+        var aiFeatureAccepts = annotations.filter(function (a) { return a.type === 'fb_accept_feature'; });   
+        updateSnowflakeDensity(aiFeatureAccepts.length)     
         return aiFeatureAccepts.length >= AI_FEATURES_LIMIT_NON_TM_MODE;
     }
 
+    function updateSnowflakeDensity(aiFeatureCount) {
+
+        var snowflakesSlow = d3_select('#snowflakes-slow'); 
+        var snowflakes = d3_select('#snowflakes'); 
+        var snowflakesFast = d3_select('#snowflakes-fast');
+        
+        snowflakesSlow.classed('hide', aiFeatureCount < 10);  
+        snowflakes.classed('hide', aiFeatureCount < 20);  
+        snowflakesFast.classed('hide', aiFeatureCount < 30);  
+        
+    }
 
     function onAcceptRoad() {
         if (_datum) {
@@ -65,6 +78,8 @@ export function uiFbFeaturePicker(context, keybinding) {
                 context.container()
                     .call(uiRapidFirstEdit(context));
             }
+
+            updateSnowflakeDensity(); 
         }
     }
 
