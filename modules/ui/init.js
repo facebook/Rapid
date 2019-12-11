@@ -32,6 +32,7 @@ import { uiMapInMap } from './map_in_map';
 import { uiNotice } from './notice';
 import { uiPhotoviewer } from './photoviewer';
 import { uiScale } from './scale';
+import { uiSnowflakes } from './snowflakes';
 import { uiSpinner } from './spinner';
 import { uiSplashRapid } from './splash_rapid';
 import { uiStatus } from './status';
@@ -246,11 +247,14 @@ export function uiInit(context) {
             .append('div')
             .attr('class', 'map-panes');
 
+        var snowflakes = uiSnowflakes(context);
+
         panes
             .call(background.renderPane)
             .call(mapData.renderPane)
             .call(issues.renderPane)
-            .call(help.renderPane);
+            .call(help.renderPane)
+            .call(snowflakes.renderPane);
 
         ui.info = uiInfo(context);
 
