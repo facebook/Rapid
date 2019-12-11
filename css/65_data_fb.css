@@ -3,10 +3,14 @@
 .mode-browse .layer-ai-features .vertex,
 .mode-select .layer-ai-features .vertex {
     cursor: pointer;
-    cursor: url(img/cursor-select-line.png), pointer;
+    /* cursor: url(img/cursor-select-line.png), pointer; */
+    cursor: url(img/tree.svg), pointer;
 }
 
 /* Road Lines */
+/* .layer-ai-features { 
+    cursor: url(img/tree.svg), pointer;
+} */
 
 .layer-ai-features path.stroke {
     stroke: #ff26d4;
