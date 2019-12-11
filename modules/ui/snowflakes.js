@@ -41,7 +41,7 @@ export function uiSnowflakes(context) {
             .attr('class', 'snowflake-wrap fillL')
             .attr('pane', 'snowflakes');
 
-        _pane
+        var snowflakeDiv = _pane
             .append('div')
             .attr('id', 'snowflakes')
             .attr('aria-hidden', 'true')
@@ -49,9 +49,24 @@ export function uiSnowflakes(context) {
 
         for (var i=0; i < 12; i++)
         {
-            _pane
+            snowflakeDiv
             .append('div')
             .attr('class', 'snowflake')
+            .text('❅');
+
+        }
+
+        var snowflakeFastDiv = _pane
+            .append('div')
+            .attr('id', 'snowflakes-fast')
+            .attr('aria-hidden', 'true')
+            .attr('class', 'pane-heading');
+
+        for (var i=0; i < 12; i++)
+        {
+            snowflakeFastDiv
+            .append('div')
+            .attr('class', 'snowflake fast')
             .text('❅');
 
         }
