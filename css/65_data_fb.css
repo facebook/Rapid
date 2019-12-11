@@ -19,29 +19,46 @@
 }
 .layer-ai-features path.stroke.green.road {
     /* stroke: #00ff3e; */
-    stroke-width: 5;
+    stroke-width: 7;
     /* fill: url(#ai-feature-candycane-green); */
-    fill: #00ff3e;
-    mask: url(#mask-stripe); 
+    stroke: url(#ai-feature-candycane-green); 
 }
 .layer-ai-features path.stroke.red.road {
-    /* stroke: #ff0012; */
-    stroke-width: 5;
-    /* fill: url(#ai-feature-candycane-red); */
-    fill: #ff0012;
-    mask: url(#mask-stripe); 
+    stroke-width: 7;
+    stroke: url(#ai-feature-candycane-red)
 }
+
 .layer-ai-features path.casing {
     stroke: #f0f;
     stroke-width: 7;
     stroke-opacity: 0;
     fill: none;
 }
+
+
+.layer-ai-features path.casing.red.road {
+    stroke: white;
+    stroke-width: 9;
+ }
+
+ .layer-ai-features path.casing.green.road {
+    stroke-width: 9;
+    stroke: white;
+ }
+
 .layer-ai-features path.shadow {
     pointer-events: stroke;
     stroke: #fff;
     stroke-width: 20;
     stroke-opacity: 0;
+    fill: none;
+}
+
+.layer-ai-features path.shadow.green.road, 
+.layer-ai-features path.shadow.red.road
+ {
+    stroke-width: 7;
+    stroke-opacity: 1;
     fill: none;
 }
 
@@ -74,6 +91,19 @@
 
 .layer-ai-features g.vertex .stroke {
     stroke: #ff26d4;
+    stroke-width: 3;
+    fill: #fff;
+}
+
+
+.layer-ai-features g.vertex.red.road .stroke {
+    stroke: #ff0012;
+    stroke-width: 3;
+    fill: #fff;
+}
+
+.layer-ai-features g.vertex.green.road .stroke {
+    stroke: #00ff3e;
     stroke-width: 3;
     fill: #fff;
 }
