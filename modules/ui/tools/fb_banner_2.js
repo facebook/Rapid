@@ -17,8 +17,8 @@ export function uiToolFbBannerTwo(context) {
         var bannerEnter = banner.enter()
             .append('div')
             .attr('id', 'worldai-holiday-banner-end')
-            .attr('class', 'holiday-banner')
-            .text('from World.AI');
+            .attr('class', 'holiday-banner smaller')
+            .text('from the Rapid team');
 
         banner
             .merge(bannerEnter); 
