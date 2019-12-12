@@ -8,10 +8,22 @@ export function uiToolFbBannerOne(context) {
 
 
     tool.render = function(selection) {
-        selection
-            .append('img')
-            .attr('src', context.imagePath('facebook_maps.png'))
-            .attr('width', '369');
+
+        var banner = selection.selectAll('div#worldai-holiday-banner-start').data([0]);  
+        
+        banner.exit()
+            .remove; 
+        
+        var bannerEnter = banner.enter()
+            .append('div')
+            .attr('id', 'worldai-holiday-banner-start')
+            .attr('class', 'holiday-banner')
+            .text('Mappy Holidays');
+
+            banner
+                .merge(bannerEnter); 
+
     };
+
     return tool;
 }

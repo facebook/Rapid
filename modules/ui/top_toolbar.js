@@ -97,8 +97,6 @@ export function uiTopToolbar(context) {
             tools = [
                 toolbox,
                 aiFeaturesToggle,
-                bannerOne,
-                bannerTwo,
                 'spacer',
                 cancelSave
             ];
@@ -159,6 +157,7 @@ export function uiTopToolbar(context) {
             tools = [
                 toolbox,
                 aiFeaturesToggle,
+                bannerOne,
                 'spacer',
                 centerZoom,
                 'spacer',
@@ -168,6 +167,7 @@ export function uiTopToolbar(context) {
                 addFavorite,
                 addRecent,
                 'spacer',
+                bannerTwo,
                 notes,
                 'spacer',
                 undoRedo,

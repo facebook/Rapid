@@ -9,9 +9,20 @@ export function uiToolFbBannerTwo(context) {
 
 
     tool.render = function(selection) {
-        selection
-            .append('img')
-            .attr('src', context.imagePath('on_worldai.png'));
+        var banner = selection.selectAll('div#worldai-holiday-banner-end').data([0]); 
+        
+        banner.exit()
+            .remove; 
+        
+        var bannerEnter = banner.enter()
+            .append('div')
+            .attr('id', 'worldai-holiday-banner-end')
+            .attr('class', 'holiday-banner')
+            .text('from World.AI');
+
+        banner
+            .merge(bannerEnter); 
     };
+ 
     return tool;
 }

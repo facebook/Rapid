@@ -285,3 +285,16 @@ g.layer-ai-features.hide-rapid-roads node.road,
 g.layer-ai-features.hide-rapid-buildings path.building  { 
     display: none; 
 }
+
+
+div.holiday-banner {
+    color: rgba(252, 251, 233, 0.85);
+    font-family: 'Great Vibes', cursive;
+    font-weight: 400;
+    margin: 0 0 .8em 0;
+    font-size: 3.3em;
+    width: 300px; 
+    text-align: center;
+    margin-top: -15px; 
+    text-shadow: 0 0 80px rgba(223, 221, 170, 0.85),0 0 30px rgba(252, 249, 233, 0.85),0 0 6px DarkRed;
+}
