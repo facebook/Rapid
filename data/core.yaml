@@ -834,7 +834,7 @@ en:
     roads_license: "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
     buildings: Buildings 
     buildings_provided_by: provided by Microsoft
-    buildings_license: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
+    buildings_license: "[license](https://opendatacommons.org/licenses/odbl/index.html)"
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:
