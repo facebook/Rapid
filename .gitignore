@@ -2,10 +2,13 @@
 .esm-cache
 .vscode/
 /data/data.js
+/data/rapid_config.json
 /dist/*.js
 /dist/*.css
 /dist/*.map
 /dist/img/*.svg
+/dist/img/*.png
+/dist/img/*.gif
 /dist/mapillary-js/
 /dist/pannellum-streetside/
 /node_modules/

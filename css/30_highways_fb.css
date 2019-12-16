@@ -1,5 +1,5 @@
-/* wide highways */
-path.line.shadow.tag-highway.airoad:not(selected) {
+/* AI highway halo settings */
+.data-layer.osm.ai-feature-halo path.line.shadow.tag-highway.airoad:not(selected) {
     stroke-width: 20;
     stroke: #ff26d488; 
     stroke-opacity: 1; 

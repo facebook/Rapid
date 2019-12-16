@@ -1,8 +1,18 @@
+import { rapidPowerUserFeaturesStorage } from '../ui/rapid_poweruser_features_storage'; 
+
+
 export function svgOsm(projection, context, dispatch) {
     var enabled = true;
 
 
+    function aiFeatureHalosEnabled() {
+        return rapidPowerUserFeaturesStorage().featureEnabled('aiFeatureHalo'); 
+    }
+
+    
     function drawOsm(selection) {
+        selection.classed('ai-feature-halo', aiFeatureHalosEnabled());
+
         selection.selectAll('.layer-osm')
             .data(['covered', 'areas', 'lines', 'points', 'labels'])
             .enter()
@@ -21,8 +31,10 @@ export function svgOsm(projection, context, dispatch) {
         var layer = context.surface().selectAll('.data-layer.osm');
         layer.interrupt();
 
+
         layer
             .classed('disabled', false)
+            .classed('ai-feature-halo', aiFeatureHalosEnabled())
             .style('opacity', 0)
             .transition()
             .duration(250)

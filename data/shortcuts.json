@@ -63,10 +63,6 @@
               "text": "shortcuts.browsing.display_options.fullscreen"
             },
             {
-              "shortcuts": ["sidebar.key", "`", "²"],
-              "text": "shortcuts.browsing.display_options.sidebar"
-            },
-            {
                 "modifiers": ["⇧"],
                 "shortcuts": ["map_data.layers.ai-features.key"],
                 "text": "shortcuts.browsing.display_options.ai_features_data"
@@ -85,9 +81,8 @@
               "text": "shortcuts.browsing.display_options.minimap"
             },
             {
-              "modifiers": ["⇧"],
-              "shortcuts": ["map_data.highlight_way_edits.key"],
-              "text": "shortcuts.browsing.display_options.highlight_way_edits",
+              "shortcuts": ["map_data.highlight_edits.key"],
+              "text": "shortcuts.browsing.display_options.highlight_edits",
               "rapid": true
             },
             {

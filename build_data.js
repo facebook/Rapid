@@ -26,7 +26,7 @@ const request = require('request').defaults({ maxSockets: 1 });
 let _currBuild = null;
 
 
-function buildData() {
+function buildData(build_type) {
   if (_currBuild) return _currBuild;
 
   const START = '🏗   ' + colors.yellow('Building data...');
@@ -117,6 +117,7 @@ function buildData() {
     writeFileProm('data/presets/groups.json', prettyStringify({ groups: groups }, { maxLength: 1000 })),
     writeFileProm('data/taginfo.json', prettyStringify(taginfo, { maxLength: 9999 }) ),
     writeFileProm('data/territory-languages.json', prettyStringify({ dataTerritoryLanguages: territoryLanguages }, { maxLength: 9999 }) ),
+    writeRapidConfig(build_type), 
     writeEnJson(tstrings),
     writeFaIcons(faIcons),
     writeTnpIcons(tnpIcons)
@@ -771,14 +772,14 @@ function translationsToYAML(translations) {
 }
 
 
-function writeRapidConfig() {
-    var readRapidConfig = readFileProm('data/rapid_config.yaml', 'utf8'); 
+function writeRapidConfig(build_type) {
+  var readRapidConfig = readFileProm('data/rapid_config.yaml', 'utf8'); 
 
-    return Promise.all([readRapidConfig]).then(function(data) {
-        var config = YAML.load(data[0]); 
+  return Promise.all([readRapidConfig]).then(function(data) {
+      var config = YAML.load(data[0]); 
 
-        return writeFileProm('data/rapid_config.json', JSON.stringify(config, null, 4)); 
-    }); 
+      return writeFileProm('data/rapid_config.json', JSON.stringify(config[build_type], null, 4)); 
+  }); 
 }
 
 
