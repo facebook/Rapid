@@ -42,11 +42,11 @@ If you would like to get RapiD support for a new country, please [create an issu
 
 ~~Moldova - [Issue 25](https://github.com/facebookincubator/RapiD/issues/25)~~
 
-China - [Issue 27](https://github.com/facebookincubator/RapiD/issues/27)
+~~China - [Issue 27](https://github.com/facebookincubator/RapiD/issues/27)~~
 
 ~~Romania - [Issue 30](https://github.com/facebookincubator/RapiD/issues/30)~~
 
-Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)
+~~Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)~~
 
 ~~Peru - [Issue 32](https://github.com/facebookincubator/RapiD/issues/32)~~
 
@@ -62,19 +62,19 @@ Russia - [Issue 31](https://github.com/facebookincubator/RapiD/issues/31)
 
 ~~Hungary - [Issue 43](https://github.com/facebookincubator/RapiD/issues/43)~~
 
-Belarus - [Issue 45](https://github.com/facebookincubator/RapiD/issues/45)
+~~Belarus - [Issue 45](https://github.com/facebookincubator/RapiD/issues/45)~~
 
-Kazakhstan - [Issue 46](https://github.com/facebookincubator/RapiD/issues/46)
+~~Kazakhstan - [Issue 46](https://github.com/facebookincubator/RapiD/issues/46)~~
 
 ~~Somalia - [Issue 47](https://github.com/facebookincubator/RapiD/issues/47)~~
 
-New Zealand - [Issue 52](https://github.com/facebookincubator/RapiD/issues/52)
+~~New Zealand - [Issue 52](https://github.com/facebookincubator/RapiD/issues/52)~~
 
 Republic of Korea - [Issue 53](https://github.com/facebookincubator/RapiD/issues/53)
 
-Portugal - [Issue 54](https://github.com/facebookincubator/RapiD/issues/54)
+~~Portugal - [Issue 54](https://github.com/facebookincubator/RapiD/issues/54)~~
 
-Australia - [Issue 57](https://github.com/facebookincubator/RapiD/issues/57)
+~~Australia - [Issue 57](https://github.com/facebookincubator/RapiD/issues/57)~~
 
 ~~Croatia - [Issue 56](https://github.com/facebookincubator/RapiD/issues/56)~~
 
@@ -82,25 +82,25 @@ Australia - [Issue 57](https://github.com/facebookincubator/RapiD/issues/57)
 
 Iran - [Issue 58](https://github.com/facebookincubator/RapiD/issues/58)
 
-Kosovo - [Issue 59](https://github.com/facebookincubator/RapiD/issues/59)
+~~Kosovo - [Issue 59](https://github.com/facebookincubator/RapiD/issues/59)~~
 
 ~~India - [Issue 61](https://github.com/facebookincubator/RapiD/issues/61)~~
 
 ~~Cuba - [Issue 62](https://github.com/facebookincubator/RapiD/issues/62)~~
 
-Ukraine - [Issue 63](https://github.com/facebookincubator/RapiD/issues/63)
+~~Ukraine - [Issue 63](https://github.com/facebookincubator/RapiD/issues/63)~~
 
 ~~Morocco - [Issue 64](https://github.com/facebookincubator/RapiD/issues/64)~~
 
 ~~Colombia - [Issue 66](https://github.com/facebookincubator/RapiD/issues/66)~~
 
-Mauritius - [Issue 70](https://github.com/facebookincubator/RapiD/issues/70)
+~~Mauritius - [Issue 70](https://github.com/facebookincubator/RapiD/issues/70)~~
 
 ~~Cambodia - [Issue 71](https://github.com/facebookincubator/RapiD/issues/71)~~
 
-Mongolia - [Issue 75](https://github.com/facebookincubator/RapiD/issues/75)
+~~Mongolia - [Issue 75](https://github.com/facebookincubator/RapiD/issues/75)~~
 
-Papua New Guinea [Issue 74](https://github.com/facebookincubator/RapiD/issues/74)
+~~Papua New Guinea [Issue 74](https://github.com/facebookincubator/RapiD/issues/74)~~
 
 Greenland [Issue 73](https://github.com/facebookincubator/RapiD/issues/73)
 
