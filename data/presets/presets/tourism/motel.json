@@ -11,6 +11,7 @@
     ],
     "moreFields": [
         "air_conditioning",
+        "brand",
         "building/levels_building",
         "email",
         "fax",
@@ -20,6 +21,7 @@
         "operator",
         "payment_multi",
         "phone",
+        "ref/vatin",
         "reservation",
         "smoking",
         "website",
@@ -32,5 +34,10 @@
     "tags": {
         "tourism": "motel"
     },
+    "terms": [
+        "lodging",
+        "motor hotel",
+        "overnight accommodations"
+    ],
     "name": "Motel"
 }

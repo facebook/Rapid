@@ -7,6 +7,7 @@ import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import marked from 'marked'; 
+import { svgIcon } from '../svg/icon';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
@@ -84,6 +85,13 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         var drawAiFeatures = context.layers().layer('ai-features');
 
+
+        // modal
+        //     .append('button')
+        //     .attr('class', 'rapid-close')
+        //     .on('click', modalSelection.close)
+        //     .call(svgIcon('#iD-icon-close'));
+
         addCheckBox({
             modal: modal, 
             id: 'rapid-all-toggle',
@@ -122,8 +130,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             greyout: !drawAiFeatures.showAll()
         }); 
     
-        modalSelection.select('button.close')
-            .attr('class','hide');
+        // modalSelection.select('button.close')
+        //     .attr('class','hide');
 
         featureToggleKeyDispatcher.on('ai_feature_toggle', function () { 
             redrawOnToggle(); 
