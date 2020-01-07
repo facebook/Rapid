@@ -6,6 +6,8 @@ import {
 import { t } from '../util/locale';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
+import marked from 'marked'; 
+import { svgIcon } from '../svg/icon';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
@@ -83,6 +85,13 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
         var drawAiFeatures = context.layers().layer('ai-features');
 
+
+        // modal
+        //     .append('button')
+        //     .attr('class', 'rapid-close')
+        //     .on('click', modalSelection.close)
+        //     .call(svgIcon('#iD-icon-close'));
+
         addCheckBox({
             modal: modal, 
             id: 'rapid-all-toggle',
@@ -103,6 +112,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             modal: modal,
             id: 'rapid-road-toggle',
             label: t('rapid_feature_toggle.roads'), 
+            license: marked(t('rapid_feature_toggle.roads_license')),
             description: t('rapid_feature_toggle.roads_provided_by'),
             handler: toggleSvgRoads,
             enabled: drawAiFeatures.showRoads(),
@@ -114,13 +124,14 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             id: 'rapid-building-toggle',
             label: t('rapid_feature_toggle.buildings'), 
             description: t('rapid_feature_toggle.buildings_provided_by'),
+            license: marked(t('rapid_feature_toggle.buildings_license')),
             handler: toggleSvgBuildings,
             enabled: drawAiFeatures.showBuildings(),
             greyout: !drawAiFeatures.showAll()
         }); 
     
-        modalSelection.select('button.close')
-            .attr('class','hide');
+        // modalSelection.select('button.close')
+        //     .attr('class','hide');
 
         featureToggleKeyDispatcher.on('ai_feature_toggle', function () { 
             redrawOnToggle(); 
@@ -158,6 +169,20 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
                 .html('(' + AIFeatureToggleKey + ')');
         }
             
+        if (options.license) {
+            toggleOptionText
+                .append('div')
+                .attr('class', 'rapid-feature-label-divider');
+
+            toggleOptionText
+                .append('div')
+                .attr('class', 'rapid-feature-license')
+                .html(options.license);
+
+            toggleOptionText.select('p a')
+                .attr('target','_blank');
+        }
+
         var customCheckbox = toggleOption
             .append('label')
             .attr('class', 'rapid-checkbox-label'); 
