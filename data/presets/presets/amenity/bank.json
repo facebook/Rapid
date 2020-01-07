@@ -10,6 +10,7 @@
     ],
     "moreFields": [
         "air_conditioning",
+        "brand",
         "currency_multi",
         "email",
         "fax",
@@ -20,6 +21,7 @@
         "level",
         "opening_hours",
         "phone",
+        "ref/vatin",
         "website",
         "wheelchair"
     ],

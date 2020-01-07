@@ -35,12 +35,7 @@ export function uiToolUndoRedo(context) {
 
 
     function editable() {
-        var mode = context.mode(); 
-        if (!mode) {
-            return false; 
-        }
-
-        return mode.id !== 'save' && context.map().editableDataEnabled(true /* ignore min zoom */);
+        return context.mode() && context.mode().id !== 'save' && context.map().editableDataEnabled(true /* ignore min zoom */);
     }
 
     var tooltipBehavior = tooltip()
@@ -106,8 +101,8 @@ export function uiToolUndoRedo(context) {
             })
             .each(function() {
                 var selection = d3_select(this);
-                if (selection.property('tooltipVisible')) {
-                    selection.call(tooltipBehavior.show);
+                if (!selection.select('.tooltip.in').empty()) {
+                    selection.call(tooltipBehavior.updateContent);
                 }
             });
     }

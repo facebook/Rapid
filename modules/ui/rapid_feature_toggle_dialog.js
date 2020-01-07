@@ -121,9 +121,6 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             enabled: drawAiFeatures.showBuildings(),
             greyout: !drawAiFeatures.showAll()
         }); 
-    
-        modalSelection.select('button.close')
-            .attr('class','hide');
 
         featureToggleKeyDispatcher.on('ai_feature_toggle', function () { 
             redrawOnToggle(); 

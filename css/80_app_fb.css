@@ -114,6 +114,11 @@ button.ai-features-toggle.layer-off use {
     color: #a0a0a0; 
 }
 
+.modal-splash.modal-rapid {
+    display: flex; 
+    flex-direction: column; 
+    background: black;
+}
 
 .modal-rapid .fillL{
     background: rgba(0, 0, 0, 0.5); 
@@ -155,6 +160,14 @@ button.ai-features-toggle.layer-off use {
 
 .modal-rapid p {
     font-size: 14px; 
+}
+
+.modal-rapid button.close {
+    align-self: flex-end; 
+    background: black;
+    color: #ff26d4; 
+    position: unset; 
+    height: 40px; 
 }
 
 .rapid-feature.rapid-stack {
@@ -281,7 +294,7 @@ hide this one and style something on top of it.  */
 }
 
 g.layer-ai-features.hide-rapid-roads path.road, 
-g.layer-ai-features.hide-rapid-roads node.road, 
+g.layer-ai-features.hide-rapid-roads g.node.road, 
 g.layer-ai-features.hide-rapid-buildings path.building  { 
     display: none; 
 }
