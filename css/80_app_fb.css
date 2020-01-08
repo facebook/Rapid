@@ -61,7 +61,6 @@ button.ai-features-toggle.layer-off use {
     display: flex; 
     flex-direction: column;
     background: rgba(0, 0, 0, 0.5); 
-    color: white; 
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
     border-radius: 15px; 
     top: 80px; 
@@ -69,6 +68,7 @@ button.ai-features-toggle.layer-off use {
 
 .modal-rapid .fillL {
     background: transparent; 
+    color: white; 
 }
 
 .modal-rapid .modal-actions button {
