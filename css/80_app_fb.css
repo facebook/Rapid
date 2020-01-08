@@ -57,9 +57,18 @@ button.ai-features-toggle.layer-off use {
     display: block;
 }
 
-.modal-rapid .fillL{
+.modal-splash.modal-rapid {
+    display: flex; 
+    flex-direction: column;
     background: rgba(0, 0, 0, 0.5); 
-    color: white;
+    color: white; 
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
+    border-radius: 15px; 
+    top: 80px; 
+}
+
+.modal-rapid .fillL {
+    background: transparent; 
 }
 
 .modal-rapid .modal-actions button {
@@ -74,6 +83,10 @@ button.ai-features-toggle.layer-off use {
     font-weight: 500; 
     height: 160px; 
     box-sizing: border-box; 
+}
+
+.modal-rapid .content {
+    box-shadow: unset; 
 }
 
 .modal-rapid .modal-actions button.rapid-login-to-osm {
@@ -99,10 +112,19 @@ button.ai-features-toggle.layer-off use {
     font-size: 14px; 
 }
 
+.modal-rapid > button.close {
+    align-self: flex-end; 
+    color: #ff26d4; 
+    position: unset; 
+    height: 40px; 
+    background: transparent; 
+}
+
 .rapid-feature.rapid-stack {
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
+    color: white; 
 }
 
 .rapid-feature-label {
