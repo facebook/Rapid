@@ -612,10 +612,6 @@
       "replace": {"leisure": "ice_rink", "sport": "ice_skating"}
     },
     {
-      "old": {"leisure": "social_club"},
-      "replace": {"club": "*"}
-    },
-    {
       "old": {"leisure": "video_arcade"},
       "replace": {"leisure": "amusement_arcade"}
     },
@@ -626,6 +622,10 @@
     {
       "old": {"man_made": "cut_line"},
       "replace": {"man_made": "cutline"}
+    },
+    {
+      "old": {"man_made": "gas_well"},
+      "replace": {"man_made": "petroleum_well", "substance": "gas"}
     },
     {
       "old": {"man_made": "jetty"},
@@ -646,6 +646,10 @@
     {
       "old": {"man_made": "oil_tank"},
       "replace": {"man_made": "storage_tank", "content": "oil"}
+    },
+    {
+      "old": {"man_made": "oil_well"},
+      "replace": {"man_made": "petroleum_well", "substance": "oil"}
     },
     {
       "old": {"man_made": "village_pump"},
@@ -800,6 +804,14 @@
     {
       "old": {"public_transport": "station", "aerialway": "yes"},
       "replace": {"public_transport": "station", "aerialway": "station"}
+    },
+    {
+      "old": {"railway": "*", "abandoned": "yes"},
+      "replace": {"abandoned:railway": "yes"}
+    },
+    {
+      "old": {"railway": "*", "disused": "yes"},
+      "replace": {"disused:railway": "yes"}
     },
     {
       "old": {"railway": "station"},

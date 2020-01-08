@@ -1,9 +1,9 @@
 {
     "icon": "temaki-sign_and_car",
     "geometry": [
+        "area",
         "point",
-        "vertex",
-        "area"
+        "vertex"
     ],
     "tags": {
         "amenity": "parking",
@@ -24,5 +24,6 @@
         "public transit parking lot",
         "train parking lot"
     ],
+    "matchScore": 0.95,
     "name": "Park & Ride Lot"
 }

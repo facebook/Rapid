@@ -51,8 +51,7 @@ export function uiToolOldDrawModes(context) {
     }
 
     function osmEditable() {
-        var mode = context.mode();
-        return context.editable() && mode && mode.id !== 'save';
+        return context.editable();
     }
 
     modes.forEach(function(mode) {
@@ -131,6 +130,7 @@ export function uiToolOldDrawModes(context) {
                     .placement('bottom')
                     .html(true)
                     .title(function(d) { return uiTooltipHtml(d.description, d.key); })
+                    .scrollContainer(d3_select('#bar'))
                 );
 
             buttonsEnter

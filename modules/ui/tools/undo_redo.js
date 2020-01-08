@@ -33,8 +33,7 @@ export function uiToolUndoRedo(context) {
 
 
     function editable() {
-        var mode = context.mode();
-        return context.editable() && mode && mode.id !== 'save';
+        return context.mode() && context.mode().id !== 'save' && context.map().editableDataEnabled(true /* ignore min zoom */);
     }
 
 
@@ -54,7 +53,8 @@ export function uiToolUndoRedo(context) {
                             : d.annotation(),
                     }) :
                     t(d.id + '.nothing'), d.cmd);
-            });
+            })
+            .scrollContainer(d3_select('#bar'));
 
         var buttons = selection.selectAll('button')
             .data(commands)
@@ -105,8 +105,8 @@ export function uiToolUndoRedo(context) {
                 })
                 .each(function() {
                     var selection = d3_select(this);
-                    if (selection.property('tooltipVisible')) {
-                        selection.call(tooltipBehavior.show);
+                    if (!selection.select('.tooltip.in').empty()) {
+                        selection.call(tooltipBehavior.updateContent);
                     }
                 });
         }

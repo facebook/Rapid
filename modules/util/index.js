@@ -9,6 +9,7 @@ export { utilArrayUniqBy } from './array';
 
 export { utilAsyncMap } from './util';
 export { utilCleanTags } from './clean_tags';
+export { utilDeepMemberSelector } from './util';
 export { utilDetect } from './detect';
 export { utilDisplayName } from './util';
 export { utilDisplayNameForPath } from './util';
@@ -33,6 +34,7 @@ export { utilPrefixDOMProperty } from './util';
 export { utilPreset } from './util';
 export { utilQsString } from './util';
 export { utilRebind } from './rebind';
+export { utilSafeClassName } from './util';
 export { utilSetTransform } from './util';
 export { utilSessionMutex } from './session_mutex';
 export { utilStringQs } from './util';
