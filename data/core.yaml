@@ -105,20 +105,40 @@ en:
     orthogonalize:
       title: Square
       description:
-        vertex: Square this corner.
-        line: Square the corners of this line.
-        area: Square the corners of this area.
+        corner:
+          single: Square this corner.
+          multiple: Square these corners.
+        feature:
+          single: Square the corners of this feature.
+          multiple: Square the corners of these features.
       key: Q
       annotation:
-        vertex: Squared a single corner.
-        line: Squared the corners of a line.
-        area: Squared the corners of an area.
-      end_vertex: This can't be squared because it is an end node.
-      square_enough: This can't be made more square than it already is.
-      not_squarish: This can't be made square because it is not squarish.
-      too_large: This can't be made square because not enough of it is currently visible.
-      connected_to_hidden: This can't be made square because it is connected to a hidden feature.
-      not_downloaded: This can't be made square because parts of it have not yet been downloaded.
+        corner:
+          single: Squared a corner.
+          multiple: Squared several corners.
+        feature:
+          single: Squared the corners of a feature.
+          multiple: Squared the corners of several features.
+      multiple_blockers:
+        multiple: These can't be squared for multiple reasons.
+      end_vertex:
+        single: This can't be squared because it is an endpoint.
+        multiple: These can't be squared because they are endpoints.
+      square_enough:
+        single: This can't be made more square than it already is.
+        multiple: These can't be made more square than they already are.
+      not_squarish:
+        single: This can't be made square because it is not squarish.
+        multiple: These can't be made square because they are not squarish.
+      too_large:
+        single: This can't be made square because not enough of it is currently visible.
+        multiple: These can't be made square because not enough of them are currently visible.
+      connected_to_hidden:
+        single: This can't be made square because it is connected to a hidden feature.
+        multiple: These can't be made square because some are connected to hidden features.
+      not_downloaded:
+        single: This can't be made square because parts of it have not yet been downloaded.
+        multiple: These can't be made square because parts of them have not yet been downloaded.
     straighten:
       title: Straighten
       description:
@@ -444,6 +464,13 @@ en:
     offline: The API is offline. Please try editing later.
     readonly: The API is read-only. You will need to wait to save your changes.
     rateLimit: The API is limiting anonymous connections.  You can fix this by logging in.
+  osm_api_status:
+    message:
+      error: Unable to reach the OpenStreetMap API. Your edits are safe locally. Check your network connection.
+      offline: The OpenStreetMap API is offline. Your edits are safe locally. Please come back later.
+      readonly: The OpenStreetMap API is currently read-only. You can continue editing, but must wait to save your changes.
+      rateLimit: The OpenStreetMap API is limiting anonymous connections. You can fix this by logging in.
+    retry: Retry
   commit:
     title: Upload to OpenStreetMap
     upload_explanation: "The changes you upload will be visible on all maps that use OpenStreetMap data."
@@ -528,7 +555,6 @@ en:
     note: note
   geocoder:
     search: Search worldwide...
-    no_results_visible: No results in visible map area
     no_results_worldwide: No results found
   geolocate:
     title: Show My Location
@@ -745,6 +771,16 @@ en:
       url:
         instructions: "Enter a data file URL or vector tile URL template. Valid tokens are:\n   {zoom} or {z}, {x}, {y} for Z/X/Y tile scheme"
         placeholder: Enter a url
+  preferences:
+    title: Preferences
+    description: Preferences
+    key: P
+    privacy:
+      title: Privacy
+      privacy_link: View the iD privacy policy
+      third_party_icons:
+        description: Show Third Party Icons
+        tooltip: Uncheck this box to avoid loading icons from third party sites such as Wikimedia Commons, Facebook, or Twitter.
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"
@@ -810,6 +846,8 @@ en:
   splash:
     welcome: Welcome to the iD OpenStreetMap editor
     text: "iD is a friendly but powerful tool for contributing to the world's best free world map. This is version {version}. For more information see {website} and report bugs at {github}."
+    privacy_update: "Our privacy policy has recently been updated."
+    privacy: "{updateMessage} By using this software, you agree to do so in accordance with the iD privacy policy, which can be found {here}."
     walkthrough: "Start the Walkthrough"
     start: "Edit now"
   source_switch:
@@ -1131,6 +1169,39 @@ en:
     title: "Map Features"
     tooltip: "Map features from Mapillary"
     request_data: "Request Data"
+    construction:
+      flat:
+        crosswalk_plain: plain crosswalk
+    marking:
+      discrete:
+        crosswalk_zebra: zebra crosswalk
+    object:
+      banner: banner
+      bench: bench
+      bike_rack: bike rack
+      billboard: billboard
+      catch_basin: catch basin
+      cctv_camera: CCTV camera
+      fire_hydrant: fire hydrant
+      mailbox: mailbox
+      manhole: manhole
+      phone_booth: phone booth
+      sign:
+        advertisement: advertisement
+        information: information sign
+        store: shop sign
+      street_light: street light
+      support:
+        utility_pole: utility pole
+      traffic_cone: traffic cone
+      traffic_light:
+        cyclists: cyclist traffic light
+        general_horizontal: horizontal traffic light
+        general_single: single traffic light
+        general_upright: vertical traffic light
+        other: traffic light
+        pedestrians: pedestrian traffic light
+      trash_can: trash can
   mapillary:
     title: Mapillary
     signs:
@@ -1991,6 +2062,7 @@ en:
         background_switch: "Switch back to last background"
         map_data: "Toggle map data pane"
         issues: "Toggle validation issues pane"
+        preferences: "Toggle user preferences pane"
         fullscreen: "Enter full screen mode"
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"
@@ -2006,9 +2078,9 @@ en:
         lasso: "Draw a selection lasso around features"
         search: "Find features matching search text"
       with_selected:
-        title: "With feature selected"
+        title: "With features selected"
         edit_menu: "Toggle edit menu"
-        zoom_to: "Zoom to selected feature"
+        zoom_to: "Zoom to selected features"
       vertex_selected:
         title: "With node selected"
         previous: "Jump to previous node"
@@ -2020,12 +2092,10 @@ en:
       title: "Editing"
       drawing:
         title: "Drawing"
-        focus_add_feature: "Focus the feature search field"
         add_point: "'Add point' mode"
         add_line: "'Add line' mode"
         add_area: "'Add area' mode"
         add_note: "'Add note' mode"
-        add_favorite: "Add a favorite feature"
         place_point: "Place a point or note"
         disable_snap: "Hold to disable point snapping"
         stop_line: "Finish drawing a line or area"

@@ -1,11 +1,12 @@
 
 import {
+    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
 import _debounce from 'lodash-es/debounce';
 import { utilStringQs } from '../util';
-import { /*uiToolAddFavorite, uiToolAddRecent, uiToolSearchAdd, */ uiToolAiFeaturesToggle, uiToolOldDrawModes, uiToolNotes, uiToolSave, uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
+import { uiToolAiFeaturesToggle, uiToolOldDrawModes, uiToolNotes, uiToolSave, uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
 
 
 export function uiTopToolbar(context) {
@@ -13,9 +14,6 @@ export function uiTopToolbar(context) {
     var sidebarToggle = uiToolSidebarToggle(context),
         aiFeaturesToggle = uiToolAiFeaturesToggle(context),
         modes = uiToolOldDrawModes(context),
-        //searchAdd = uiToolSearchAdd(context),
-        //addFavorite = uiToolAddFavorite(context),
-        //addRecent = uiToolAddRecent(context),
         notes = uiToolNotes(context),
         undoRedo = uiToolUndoRedo(context),
         save = uiToolSave(context),
@@ -28,13 +26,17 @@ export function uiTopToolbar(context) {
 
     function topToolbar(bar) {
 
+        bar.on('wheel.topToolbar', function() {
+            if (!d3_event.deltaX) {
+                // translate vertical scrolling into horizontal scrolling in case
+                // the user doesn't have an input device that can scroll horizontally
+                bar.node().scrollLeft += d3_event.deltaY;
+            }
+        });
+
         var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
         context.layers()
             .on('change.topToolbar', debouncedUpdate);
-
-        context.presets()
-            .on('favoritePreset.topToolbar', update)
-            .on('recentsChange.topToolbar', update);
 
         update();
 
@@ -47,14 +49,6 @@ export function uiTopToolbar(context) {
                 aiFeaturesToggle
             //    searchAdd
             ];
-            /*
-            if (context.presets().getFavorites().length > 0) {
-                tools.push(addFavorite);
-            }
-
-            if (addRecent.shouldShow()) {
-                tools.push(addRecent);
-            }*/
 
             tools.push('spacer');
 

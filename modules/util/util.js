@@ -72,9 +72,17 @@ export function utilEntityOrMemberSelector(ids, graph) {
 //  - entityIDs passed in
 //  - deep descendant entityIDs for any of those entities that are relations
 export function utilEntityOrDeepMemberSelector(ids, graph) {
+    return utilEntitySelector(utilEntityAndDeepMemberIDs(ids, graph));
+}
+
+
+// returns an selector to select entity ids for:
+//  - entityIDs passed in
+//  - deep descendant entityIDs for any of those entities that are relations
+export function utilEntityAndDeepMemberIDs(ids, graph) {
     var seen = new Set();
     ids.forEach(collectDeepDescendants);
-    return utilEntitySelector(Array.from(seen));
+    return Array.from(seen);
 
     function collectDeepDescendants(id) {
         if (seen.has(id)) return;
@@ -83,6 +91,32 @@ export function utilEntityOrDeepMemberSelector(ids, graph) {
         var entity = graph.hasEntity(id);
         if (!entity || entity.type !== 'relation') return;
 
+        entity.members
+            .map(function(member) { return member.id; })
+            .forEach(collectDeepDescendants);   // recurse
+    }
+}
+
+// returns an selector to select entity ids for:
+//  - deep descendant entityIDs for any of those entities that are relations
+export function utilDeepMemberSelector(ids, graph, skipMultipolgonMembers) {
+    var idsSet = new Set(ids);
+    var seen = new Set();
+    var returners = new Set();
+    ids.forEach(collectDeepDescendants);
+    return utilEntitySelector(Array.from(returners));
+
+    function collectDeepDescendants(id) {
+        if (seen.has(id)) return;
+        seen.add(id);
+
+        if (!idsSet.has(id)) {
+            returners.add(id);
+        }
+
+        var entity = graph.hasEntity(id);
+        if (!entity || entity.type !== 'relation') return;
+        if (skipMultipolgonMembers && entity.isMultipolygon()) return;
         entity.members
             .map(function(member) { return member.id; })
             .forEach(collectDeepDescendants);   // recurse
@@ -382,4 +416,10 @@ export function utilHashcode(str) {
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
+}
+
+// returns version of `str` with all runs of special characters replaced by `_`;
+// suitable for HTML ids, classes, selectors, etc.
+export function utilSafeClassName(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, '_');
 }

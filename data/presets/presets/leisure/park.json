@@ -1,5 +1,5 @@
 {
-    "icon": "maki-park",
+    "icon": "temaki-tree_and_bench",
     "fields": [
         "name",
         "operator",
@@ -16,8 +16,8 @@
         "website"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "esplanade",

@@ -42,7 +42,7 @@ export function uiFieldText(field, context) {
 
         input = input.enter()
             .append('input')
-            .attr('type', field.type)
+            .attr('type', field.type === 'identifier' ? 'text' : field.type)
             .attr('id', fieldID)
             .attr('placeholder', field.placeholder() || t('inspector.unknown'))
             .classed(field.type, true)
@@ -105,6 +105,7 @@ export function uiFieldText(field, context) {
                 .attr('tabindex', -1)
                 .call(svgIcon('#iD-icon-out-link'))
                 .attr('class', 'form-field-button foreign-id-permalink')
+                .classed('disabled', !validIdentifierValueForLink())
                 .attr('title', function() {
                     var domainResults = /^https?:\/\/(.{1,}?)\//.exec(field.urlFormat);
                     if (domainResults.length >= 2 && domainResults[1]) {
@@ -118,7 +119,7 @@ export function uiFieldText(field, context) {
 
                     var value = validIdentifierValueForLink();
                     if (value) {
-                        var url = field.urlFormat.replace(/{value}/, value);
+                        var url = field.urlFormat.replace(/{value}/, encodeURIComponent(value));
                         window.open(url, '_blank');
                     }
                 })

@@ -26,7 +26,8 @@ export function coreContext() {
     var context = utilRebind({}, dispatch, 'on');
     var _deferred = new Set();
 
-    context.version = '2.16.0';
+    context.version = '2.17.0';
+    context.privacyVersion = '20191217';
 
     // create a special translation that contains the keys in place of the strings
     var tkeys = JSON.parse(JSON.stringify(dataEn));  // clone deep
@@ -138,7 +139,7 @@ export function coreContext() {
     context.loadTiles = function(projection, callback) {
         var handle = window.requestIdleCallback(function() {
             _deferred.delete(handle);
-            if (connection && context.editable()) {
+            if (connection && context.editableDataEnabled()) {
                 var cid = connection.getConnectionId();
                 connection.loadTiles(projection, afterLoad(cid, callback));
             }
@@ -149,7 +150,7 @@ export function coreContext() {
     context.loadTileAtLoc = function(loc, callback) {
         var handle = window.requestIdleCallback(function() {
             _deferred.delete(handle);
-            if (connection && context.editable()) {
+            if (connection && context.editableDataEnabled()) {
                 var cid = connection.getConnectionId();
                 connection.loadTileAtLoc(loc, afterLoad(cid, callback));
             }
@@ -347,7 +348,15 @@ export function coreContext() {
     context.map = function() { return map; };
     context.layers = function() { return map.layers; };
     context.surface = function() { return map.surface; };
-    context.editable = function() { return map.editable(); };
+    context.editableDataEnabled = function() { return map.editableDataEnabled(); };
+    context.editable = function() {
+
+       // don't allow editing during save
+       var mode = context.mode();
+       if (!mode || mode.id === 'save') return false;
+
+       return map.editableDataEnabled();
+    };
     context.surfaceRect = function() {
         return map.surface.node().getBoundingClientRect();
     };

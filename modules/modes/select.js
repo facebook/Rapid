@@ -22,7 +22,7 @@ import { uiEditMenu } from '../ui/edit_menu';
 import { uiSelectionList } from '../ui/selection_list';
 import { uiCmd } from '../ui/cmd';
 import {
-    utilArrayIntersection, utilEntityOrMemberSelector,
+    utilArrayIntersection, utilDeepMemberSelector, utilEntityOrDeepMemberSelector,
     utilEntitySelector, utilKeybinding
 } from '../util';
 
@@ -40,10 +40,11 @@ export function modeSelect(context, selectedIDs) {
     };
 
     var keybinding = utilKeybinding('select');
+    var breatheBehavior = behaviorBreathe(context);
     var behaviors = [
         behaviorCopy(context),
         behaviorPaste(context),
-        behaviorBreathe(context),
+        breatheBehavior,
         behaviorHover(context),
         behaviorSelect(context),
         behaviorLasso(context),
@@ -68,6 +69,12 @@ export function modeSelect(context, selectedIDs) {
         }
     }
 
+    function selectedEntities() {
+        return selectedIDs.map(function(id) {
+            return context.hasEntity(id);
+        }).filter(Boolean);
+    }
+
 
     function checkSelectedIDs() {
         var ids = [];
@@ -77,12 +84,18 @@ export function modeSelect(context, selectedIDs) {
             });
         }
 
-        if (ids.length) {
-            selectedIDs = ids;
-        } else {
+        if (!ids.length) {
             context.enter(modeBrowse(context));
+            return false;
+        } else if ((selectedIDs.length > 1 && ids.length === 1) ||
+            (selectedIDs.length === 1 && ids.length > 1)) {
+            // switch between single- and multi-select UI
+            context.enter(modeSelect(context, ids));
+            return false;
         }
-        return !!ids.length;
+
+        selectedIDs = ids;
+        return true;
     }
 
 
@@ -165,6 +178,10 @@ export function modeSelect(context, selectedIDs) {
     function showMenu() {
         closeMenu();
         if (editMenu) {
+
+            // disable menu if in wide selection, for example
+            if (!context.map().editableDataEnabled()) return;
+
             context.surface().call(editMenu);
         }
     }
@@ -187,10 +204,7 @@ export function modeSelect(context, selectedIDs) {
 
 
     mode.zoomToSelected = function() {
-        var entity = singular();
-        if (entity) {
-            context.map().zoomToEase(entity);
-        }
+        context.map().zoomToEase(selectedEntities());
     };
 
 
@@ -296,13 +310,21 @@ export function modeSelect(context, selectedIDs) {
             .select(singular() ? singular().id : null, _newFeature);
 
         context.history()
-            .on('change.select', loadOperations)
+            .on('change.select', function() {
+                loadOperations();
+                // reselect after change in case relation members were removed or added
+                selectElements();
+            })
             .on('undone.select', update)
             .on('redone.select', update);
 
         context.map()
             .on('move.select', closeMenu)
-            .on('drawn.select', selectElements);
+            .on('drawn.select', selectElements)
+            .on('crossEditableZoom.select', function() {
+                selectElements();
+                breatheBehavior.restartIfNeeded(context.surface());
+            });
 
         context.surface()
             .on('dblclick.select', dblclick);
@@ -344,6 +366,8 @@ export function modeSelect(context, selectedIDs) {
 
 
         function dblclick() {
+            if (!context.map().withinEditableZoom()) return;
+
             var target = d3_select(d3_event.target);
 
             var datum = target.datum();
@@ -374,7 +398,7 @@ export function modeSelect(context, selectedIDs) {
         }
 
 
-        function selectElements(drawn) {
+        function selectElements() {
             if (!checkSelectedIDs()) return;
 
             var surface = context.surface();
@@ -382,8 +406,13 @@ export function modeSelect(context, selectedIDs) {
 
             if (entity && context.geometry(entity.id) === 'relation') {
                 _suppressMenu = true;
-                return;
             }
+
+            surface.selectAll('.selected-member')
+                .classed('selected-member', false);
+
+            surface.selectAll('.selected')
+                .classed('selected', false);
 
             surface.selectAll('.related')
                 .classed('related', false);
@@ -394,20 +423,17 @@ export function modeSelect(context, selectedIDs) {
                     .classed('related', true);
             }
 
-            var selection = context.surface()
-                .selectAll(utilEntityOrMemberSelector(selectedIDs, context.graph()));
+            if (context.map().withinEditableZoom()) {
+                // Apply selection styling if not in wide selection
 
-            if (selection.empty()) {
-                // Return to browse mode if selected DOM elements have
-                // disappeared because the user moved them out of view..
-                var source = d3_event && d3_event.type === 'zoom' && d3_event.sourceEvent;
-                if (drawn && source && (source.type === 'mousemove' || source.type === 'touchmove')) {
-                    context.enter(modeBrowse(context));
-                }
-            } else {
-                selection
+                surface
+                    .selectAll(utilDeepMemberSelector(selectedIDs, context.graph(), true /* skipMultipolgonMembers */))
+                    .classed('selected-member', true);
+                surface
+                    .selectAll(utilEntityOrDeepMemberSelector(selectedIDs, context.graph()))
                     .classed('selected', true);
             }
+
         }
 
 
@@ -556,6 +582,10 @@ export function modeSelect(context, selectedIDs) {
 
         surface
             .on('dblclick.select', null);
+
+        surface
+            .selectAll('.selected-member')
+            .classed('selected-member', false);
 
         surface
             .selectAll('.selected')
