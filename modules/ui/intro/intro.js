@@ -52,32 +52,25 @@ export function uiIntro(context, skipToRapid) {
 
 
     // create entities for intro graph and localize names
-    
-
-    // create entities for RapiD graph and localize names
-    for (let id in dataIntroRapidGraph) {
-        rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
-    }
-
     function intro(selection) {
         context.data().get('intro_graph')
             .then(dataIntroGraph => {
                 for (let id in dataIntroGraph) {
-                    if (!introGraph[id]){
-                    introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
+                    if (!introGraph[id]) {
+                        introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
+                    }
                 }
-            }
-        }); 
+            }); 
             
         context.data().get('intro_fb_graph')
             .then(dataIntroRapidGraph => {
                 for (let id in dataIntroRapidGraph) {
                     if (!rapidGraph[id]){
                         rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
+                    }
                 }
-            }
-            selection.call(startIntro);
-        }); 
+                selection.call(startIntro);
+            }); 
     }
     
     
