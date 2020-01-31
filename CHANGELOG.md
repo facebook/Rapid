@@ -1,3 +1,9 @@
+# [1.0.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.5)
+##### 2020-Jan-31
+
+#### :trumpet: Updates
+This brings the RapiD code up-to-date with v2.17.1. This also fixes issue #105. 
+
 # [1.0.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.5)
 ##### 2019-Dec-12
 
