@@ -161,7 +161,105 @@ input::-moz-focus-inner {
 .cf:after {
     clear: both;
 }
-/* base styles */
+.highlight-edited g.points > circle.vertex.graphedited {
+    color: rgb(87, 201, 44);
+    stroke: #333;
+    stroke-width: 1;
+    stroke-opacity: .5;
+    fill-opacity: 1;
+}
+
+.highlight-edited g.points > circle.vertex.tagedited {
+    color: rgb(160, 231, 134);
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-opacity: .5;
+    fill-opacity: 1;
+}
+
+/*Make the edited stroke line thin so that the original road color can show around it.*/
+.highlight-edited g.lines > path.line.graphedited {
+    color: rgb(87, 201, 44);
+    stroke-width: 3 !important;
+    stroke-opacity: 1;
+}
+
+/*Make the stroke in whole-road graph edits thin and less apparent. */
+.highlight-edited g.linegroup.line-stroke > path.way.line.stroke.graphedited {
+    stroke: rgb(87, 201, 44);
+    stroke-width: 3 !important;
+    stroke-opacity: 1;
+}
+
+/*Make the casing around tag edits wide enough to be a bit more visible. */
+.highlight-edited g.linegroup.line-casing > path.way.line.casing.tagedited {
+    stroke: rgb(87, 201, 44) !important;
+    stroke-width: 12 !important;
+    stroke-opacity: 1;
+}
+
+.low-zoom.highlight-edited g.linegroup.line-casing > path.way.line.casing.tagedited {
+    stroke-width: 10 !important;
+}
+
+.highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
+    stroke: rgb(160, 231, 134);
+    stroke-width: 10 !important;
+    stroke-dasharray: 25 !important; 
+    stroke-opacity: 1 !important;
+}
+
+/*for low zoom levels, make the wireframe view 'tag edit' dashed line finer.*/
+.low-zoom.highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
+    stroke-dasharray: 7 !important;
+} 
+
+/*In wireframe mode, restrain the stroke width to something barely wider than normal.*/
+.fill-wireframe.highlight-edited g.lines > path.line.graphedited, .fill-wireframe.highlight-edited g.linegroup.line-stroke > path.way.line.stroke.tagedited {
+    stroke-width: 2 !important;
+}
+
+.bbox-svg {
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+}
+
+.map-bbox {
+    fill: none;
+    stroke: rgba(0, 255, 255, 0.70);
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.map-bbox.thick {
+    stroke-width: 5;
+}
+
+.grids-svg {
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    pointer-events: none;
+}
+
+.map-grids {
+    fill: none;
+    stroke: rgba(0, 255, 255, 0.40);
+    stroke-width: 2;
+    shape-rendering: crispEdges;
+    z-index: 1;
+    pointer-events: none;
+}/* base styles */
 .layer-osm path {
     fill: none;
 }
@@ -790,8 +888,8 @@ path.stroke.tag-natural-wetland {
     stroke: rgb(153, 225, 170);
 }
 path.fill.tag-natural-wetland {
-    stroke: rgb(153, 225, 170, 0.3);
-    fill: rgb(153, 225, 170, 0.3);
+    stroke: rgba(153, 225, 170, 0.3);
+    fill: rgba(153, 225, 170, 0.3);
 }
 .preset-icon-fill path.area.fill.tag-natural-wetland {
     fill: rgba(153, 225, 170, 0.2);
@@ -820,8 +918,8 @@ path.fill.tag-landuse-grass.tag-golf-green,
 path.fill.tag-landuse-meadow,
 path.fill.tag-landuse-orchard,
 path.fill.tag-landuse-vineyard {
-    stroke: rgb(191, 232, 63, 0.3);
-    fill: rgb(191, 232, 63, 0.3);
+    stroke: rgba(191, 232, 63, 0.3);
+    fill: rgba(191, 232, 63, 0.3);
 }
 .preset-icon-fill path.area.fill.tag-landuse-cemetery,
 .preset-icon-fill path.area.fill.tag-landuse-farmland,
@@ -920,6 +1018,12 @@ path.fill.tag-natural-glacier {
 .preset-icon-fill path.fill.tag-natural-glacier {
     stroke: rgb(170, 170, 170);
     fill: rgba(170, 170, 170, 0.3);
+}
+/* wide highways */
+path.line.shadow.tag-highway.airoad:not(selected) {
+    stroke-width: 20;
+    stroke: #ff26d488; 
+    stroke-opacity: 1; 
 }
 preset-icon-container/* highways */
 
@@ -2712,7 +2816,94 @@ label.streetside-hires {
     background: rgba(0,0,0,0.85);
     color: #fff;
 }
+.mode-browse .layer-ai-features .line,
+.mode-select .layer-ai-features .line,
+.mode-browse .layer-ai-features .vertex,
+.mode-select .layer-ai-features .vertex {
+    cursor: pointer;
+    cursor: url(img/cursor-select-line.png), pointer;
+}
 
+/* Road Lines */
+
+.layer-ai-features path.stroke {
+    stroke: #ff26d4;
+    stroke-width: 5;
+    fill: none;
+}
+.layer-ai-features path.casing {
+    stroke: #f0f;
+    stroke-width: 7;
+    stroke-opacity: 0;
+    fill: none;
+}
+.layer-ai-features path.shadow {
+    pointer-events: stroke;
+    stroke: #fff;
+    stroke-width: 20;
+    stroke-opacity: 0;
+    fill: none;
+}
+
+.low-zoom .layer-ai-features path.stroke {
+    stroke-width: 3;
+}
+.low-zoom .layer-ai-features path.casing {
+    stroke-width: 5;
+}
+.low-zoom .layer-ai-features path.shadow {
+    stroke-width: 15;
+}
+
+.layer-ai-features path.casing.hover,
+.layer-ai-features path.casing.selected {
+    stroke-opacity: 1;
+}
+.layer-ai-features path.shadow.hover:not(.selected) {
+    stroke-opacity: 0.4;
+}
+.layer-ai-features path.shadow.selected {
+    stroke-opacity: 0.4;
+}
+
+/* Road Vertices */
+
+.layer-ai-features g.vertex .fill {
+    fill: #fff;
+}
+
+.layer-ai-features g.vertex .stroke {
+    stroke: #ff26d4;
+    stroke-width: 3;
+    fill: #fff;
+}
+
+.low-zoom .layer-ai-features g.vertex .stroke {
+    stroke-width: 2;
+}
+
+.layer-ai-features .road.hide, .layer-ai-features .building.hide {
+    display: none;
+}
+
+.layer-ai-features  path.line.building.stroke {
+    stroke-width: 5px;
+    stroke: #ff26d4;
+     fill: url(#ai-building);  
+    fill-opacity: 1; 
+}
+
+.layer-ai-features  path.line.building.shadow {
+    stroke-width: 12px;
+}
+
+.low-zoom .layer-ai-features path.line.building {
+    stroke-width: 3px;
+}
+
+.layer-ai-features .node.vertex.building circle{
+    opacity: 0; 
+}
 /* OSM Notes and KeepRight Layers */
 
 .error-header-icon .qa_error-fill,
@@ -2874,7 +3065,7 @@ label.streetside-hires {
 
 .layer-mapdata path.shadow {
     pointer-events: stroke;
-    stroke: #f6634f;
+    stroke: #0892d0;
     stroke-width: 16;
     stroke-opacity: 0;
     fill: none;
@@ -2882,7 +3073,7 @@ label.streetside-hires {
 .layer-mapdata path.MultiPoint.shadow,
 .layer-mapdata path.Point.shadow {
     pointer-events: fill;
-    fill: #f6634f;
+    fill: #0892d0;
     fill-opacity: 0;
 }
 .layer-mapdata path.shadow.hover:not(.selected) {
@@ -2893,7 +3084,7 @@ label.streetside-hires {
 }
 
 .layer-mapdata path.stroke {
-    stroke: #ff26d4;
+    stroke: #0ff;
     stroke-width: 2;
     fill: none;
 }
@@ -2901,8 +3092,8 @@ label.streetside-hires {
 .layer-mapdata path.fill {
     stroke-width: 0;
     stroke-opacity: 0.3;
-    stroke: #ff26d4;
-    fill: #ff26d4;
+    stroke: #0ff;
+    fill: #0ff;
     fill-opacity: 0.3;
     fill-rule: evenodd;
 }
@@ -2914,11 +3105,11 @@ label.streetside-hires {
     dominant-baseline: middle;
 }
 .layer-mapdata text.label {
-    fill: #ff26d4;
+    fill: #0ff;
 }
 .layer-mapdata text.label.hover,
 .layer-mapdata text.label.selected {
-    fill: #f6634f;
+    fill: #0ff;
 }
 .layer-mapdata text.label-halo {
     opacity: 0.7;
@@ -2978,7 +3169,257 @@ label.streetside-hires {
 .mode-select .fill-partial path.area.fill {
     pointer-events: visibleStroke;
 }
-/* Basics
+svg.logo-rapid {
+    fill: #333;
+    color: #ff26d4;
+}
+
+/* Toolbar button */
+
+button.ai-features-toggle svg.logo-rapid {
+    width: 46px;
+    height: 22px;
+}
+button.ai-features-toggle.layer-off use {
+    fill: rgba(0,0,0,.4);
+    color: rgba(0,0,0,.4);
+}
+
+
+/* Sidebar component */
+
+.fb-road-picker svg.logo-rapid {
+    height: 40px;
+    margin-top: -10px;
+}
+
+.fb-road-picker .header .fb-road-picker-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.fb-road-picker .body {
+    padding: 20px;
+}
+
+.fb-road-picker .body h4 {
+    font-weight: normal;
+    text-align: center;
+}
+
+.fb-road-picker .preset-list-item {
+    margin: 15px 0;
+}
+
+.fb-road-picker .preset-list-item .preset-icon-container svg {
+    height: 34px;
+    width: 34px;
+}
+.fb-road-picker .preset-list-item .preset-icon-container svg use {
+    color: #4c4c4c;
+    fill: none;
+}
+
+.fb-road-picker .preset-list-item .tag-reference-body {
+    padding: 10px;
+}
+.fb-road-picker .preset-list-item .tag-reference-body.shown {
+    display: block;
+}
+
+.modal-splash.modal-rapid {
+    display: flex; 
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.5); 
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
+    border-radius: 15px; 
+    top: 80px; 
+}
+
+.modal-rapid .fillL {
+    background: transparent; 
+    color: white; 
+}
+
+.modal-rapid .modal-actions button {
+    text-align: center;
+    background: black; 
+    color: white;
+    border: 1px solid white;
+    width: 100%;
+    margin: 20px;
+    border-radius: 5px; 
+    font-size: 14px; 
+    font-weight: 500; 
+    height: 160px; 
+    box-sizing: border-box; 
+}
+
+.modal-rapid .content {
+    box-shadow: unset; 
+}
+
+.modal-rapid .modal-actions button.rapid-login-to-osm {
+    background: white; 
+    color: black; 
+    border: black;
+    height: 3rem;  
+}
+
+.modal-rapid .modal-actions button.rapid-explore {
+    height: 3rem;  
+}
+
+.modal-rapid .modal-section {
+    border: 0px; 
+}
+
+.modal-rapid .modal-section .logo-rapid {
+    fill: white;
+}
+
+.modal-rapid p {
+    font-size: 14px; 
+}
+
+.modal-rapid > button.close {
+    align-self: flex-end; 
+    color: #ff26d4; 
+    position: unset; 
+    height: 40px; 
+    background: transparent; 
+}
+
+.rapid-feature.rapid-stack {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+    color: white; 
+}
+
+.rapid-feature-label {
+    display: flex; 
+    align-items: center; 
+    margin: 16px; 
+}
+
+.rapid-feature-label > svg.icon.logo-rapid {
+    width: 4em;
+    height: 1.3em;
+    margin: -5px;
+}
+
+.rapid-feature-description {
+    font-size: 14px; 
+    margin: 16px; 
+}
+
+.rapid-feature-license {
+    margin: 16px;  
+}
+
+.rapid-feature-license p {
+    font-size: 10px;
+}
+
+.rapid-feature-label-container {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-around; 
+}
+
+.modal-section.rapid-checkbox {
+    font-size: 24px;
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: center; 
+    padding: 5px; 
+    width: 100%; 
+}
+
+.modal-section.rapid-checkbox.disabled {
+    opacity: .5; 
+}
+
+.rapid-feature-checkbox {
+    margin-left: auto; 
+}
+
+.modal-section.rapid-checkbox.section-divider {
+    width: 95%;
+    height: 1px; 
+    background: #ccca;
+    padding: 1px; 
+    align-self: center; 
+}
+
+.rapid-feature-hotkey {
+    margin-left: -5px; 
+    font-size: 14px;
+}
+
+.rapid-feature-label-divider {
+    width: 1px; 
+    height: 20px; 
+    margin-top: 3px; 
+    background: #ccca; 
+}
+
+.rapid-checkbox-label {
+    width: 40px; 
+    height: 40px; 
+    margin-left: auto;
+}
+
+/* since checkboxes can't be styled, we'll 
+hide this one and style something on top of it.  */
+.rapid-checkbox-label input {
+    position: absolute; 
+    opacity: 0; 
+    cursor: pointer; 
+}
+
+.rapid-checkbox-label .rapid-checkbox-custom {
+    height: 36px; 
+    width: 36px; 
+    background-color: transparent;
+    border-radius: 5px; 
+    border: 2px solid #ffffff; 
+}
+
+.rapid-checkbox-label .rapid-checkbox-custom::after { 
+    content: ""; 
+    height: 0px; 
+    width: 0px; 
+    border-radius: 5px; 
+    border: solid transparent; 
+    border-width: 0 6px 6px 0; 
+    transform: scale(0); 
+    opacity: 1; 
+}
+
+.rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
+    content: ""; 
+    display: block;
+    height: 12px; 
+    width: 6px; 
+    padding: 2px;
+    margin-left: 9px; 
+    margin-top: 2px; 
+    border-radius: 0; 
+    border: solid #ff26d4; 
+    background-color: transparent;
+    border-width: 0 4px 4px 0; 
+    transform: rotate(45deg) scale(1); 
+    opacity: 1; 
+}
+
+g.layer-ai-features.hide-rapid-roads path.road, 
+g.layer-ai-features.hide-rapid-roads node.road, 
+g.layer-ai-features.hide-rapid-buildings path.building  { 
+    display: none; 
+}/* Basics
 ------------------------------------------------------- */
 /*
   Opera misbehaves when the window is resized vertically unless 100% width + height are
@@ -4137,6 +4578,9 @@ a.hide-toggle {
     text-overflow: ellipsis;
     overflow: hidden;
 }
+.preset-list-button .label-inner .namepart:nth-child(2) {
+    font-weight: normal;
+}
 
 .preset-list-button:hover .label,
 .preset-list-button:focus .label,
@@ -4534,20 +4978,28 @@ a.hide-toggle {
     margin-left: 6px;
 }
 
-.form-field-input-multicombo li.chips {
+.form-field-input-multicombo li.chip {
     background-color: #eff2f7;
     border: 1px solid #ccd5e3;
     line-height: 25px;
     max-width: 100%;
 }
-[dir='ltr'] .form-field-input-multicombo li.chips {
+[dir='ltr'] .form-field-input-multicombo li.chip {
     padding: 2px 0px 2px 5px;
 }
-[dir='rtl'] .form-field-input-multicombo li.chips {
+[dir='rtl'] .form-field-input-multicombo li.chip {
     padding: 2px 5px 2px 0px;
 }
+.form-field-input-multicombo li.chip.draggable {
+    cursor: grab;
+}
+.form-field-input-multicombo li.chip.dragging {
+    opacity: 0.75;
+    z-index: 3000;
+    cursor: grabbing;
+}
 
-.form-field-input-multicombo li.chips span {
+.form-field-input-multicombo li.chip span {
     display: block;
     flex: 1 1 auto;
     overflow: hidden;
@@ -4581,7 +5033,7 @@ a.hide-toggle {
     border-radius: 4px !important;
 }
 
-.form-field-input-multicombo .full-line-chips li.chips {
+.form-field-input-multicombo .full-line-chips li.chip {
     width: 100%;
 }
 .form-field-input-multicombo .full-line-chips .input-wrap {
@@ -5771,7 +6223,7 @@ input.key-trap {
     right: 0;
     top: 141px;
     width: 40px;
-    position: fixed;
+    position: absolute;
     z-index: 100;
 }
 [dir='rtl'] .map-controls {
@@ -6672,13 +7124,13 @@ li.issue-fix-item:not(.actionable) .fix-icon {
 }
 
 .inspector-hover a,
-.inspector-hover .form-field-input-multicombo .chips,
+.inspector-hover .form-field-input-multicombo .chip,
 .inspector-hover .form-field-input-check span,
 .inspector-hover .entity-issues .issue .icon {
     color: #666;
 }
 
-.inspector-hover .form-field-input-multicombo .chips {
+.inspector-hover .form-field-input-multicombo .chip {
     background: #eee;
     border: 1px solid #ccc;
 }
@@ -6708,7 +7160,7 @@ li.issue-fix-item:not(.actionable) .fix-icon {
 .inspector-hover .combobox-caret,
 .inspector-hover .header button,
 .inspector-hover .quick-links,
-.inspector-hover .form-field-input-multicombo .chips .remove,
+.inspector-hover .form-field-input-multicombo .chip .remove,
 .inspector-hover .hide-toggle:before,
 .inspector-hover .more-fields,
 .inspector-hover .field-label button,
@@ -7416,6 +7868,11 @@ img.tile-debug {
     color: inherit;
 }
 
+.fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
+
 /* Notification Badges
 ------------------------------------------------------- */
 /* For an icon (e.g. new version) */
@@ -7500,7 +7957,7 @@ img.tile-debug {
 .shaded:before {
     content:'';
     background: rgba(0,0,0,0.5);
-    position: fixed;
+    position: absolute;
     left: 0px; right: 0px; top: 0px; bottom: 0px;
 }
 
@@ -7576,7 +8033,8 @@ img.tile-debug {
     margin: auto;
 }
 
-.modal-actions > :first-child {
+.modal-actions > :first-child,
+.modal-actions > :nth-child(2) {
     border-right: 1px solid #ccc;
 }
 

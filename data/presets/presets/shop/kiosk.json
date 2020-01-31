@@ -1,9 +1,5 @@
 {
-    "icon": "maki-shop",
-    "fields": [
-        "{shop}",
-        "levels"
-    ],
+    "icon": "fas-store",
     "geometry": [
         "point",
         "area"

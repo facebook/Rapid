@@ -241,6 +241,10 @@
       "replace": {"tourism": "camp_pitch"}
     },
     {
+      "old": {"shop": "clothes", "clothes": "second_hand"},
+      "replace": {"shop": "clothes", "second_hand": "yes"}
+    },
+    {
       "old": {"color": "*"},
       "replace": {"colour": "$1"}
     },
@@ -377,6 +381,26 @@
       "replace": {"embankment": "yes"}
     },
     {
+      "old": {"entrance": "emergency_exit"},
+      "replace": {"entrance": "emergency"}
+    },
+    {
+      "old": {"entrance": "fire_exit"},
+      "replace": {"entrance": "emergency"}
+    },
+    {
+      "old": {"entrance": "loading_dock"},
+      "replace": {"amenity": "loading_dock"}
+    },
+    {
+      "old": {"entrance": "main_entrance"},
+      "replace": {"entrance": "main"}
+    },
+    {
+      "old": {"entrance": "private"},
+      "replace": {"entrance": "yes", "access": "private"}
+    },
+    {
       "old": {"escalator": "*"},
       "replace": {"highway": "steps", "conveying": "$1"}
     },
@@ -443,6 +467,18 @@
     {
       "old": {"footway": "separate"},
       "replace": {"sidewalk": "separate"}
+    },
+    {
+      "old": {"amenity": "gambling", "gambling": "casino"},
+      "replace": {"amenity": "casino"}
+    },
+    {
+      "old": {"leisure": "amusement_arcade", "gambling": "*"},
+      "replace": {"leisure": "adult_gaming_centre", "gambling": "$1"}
+    },
+    {
+      "old": {"gambling": "slot_machine"},
+      "replace": {"gambling": "slot_machines"}
     },
     {
       "old": {"generator:source": "photovoltaic"},
@@ -596,8 +632,16 @@
       "replace": {"natural": "beach"}
     },
     {
+      "old": {"leisure": "bingo"},
+      "replace": {"amenity": "gambling", "gambling": "bingo"}
+    },
+    {
       "old": {"leisure": "club"},
       "replace": {"club": "*"}
+    },
+    {
+      "old": {"leisure": "gambling"},
+      "replace": {"amenity": "gambling"}
     },
     {
       "old": {"leisure": "golf_pin"},
@@ -612,12 +656,32 @@
       "replace": {"leisure": "ice_rink", "sport": "ice_skating"}
     },
     {
+      "old": {"leisure": "recreation_ground"},
+      "replace": {"landuse": "recreation_ground"}
+    },
+    {
       "old": {"leisure": "video_arcade"},
       "replace": {"leisure": "amusement_arcade"}
     },
     {
-      "old": {"leisure": "recreation_ground"},
-      "replace": {"landuse": "recreation_ground"}
+      "old": {"Level": "*"},
+      "replace": {"level": "$1"}
+    },
+    {
+      "old": {"LEVEL": "*"},
+      "replace": {"level": "$1"}
+    },
+    {
+      "old": {"levels": "*"},
+      "replace": {"building:levels": "$1"}
+    },
+    {
+      "old": {"LEVELS": "*"},
+      "replace": {"building:levels": "$1"}
+    },
+    {
+      "old": {"levels_count": "*"},
+      "replace": {"building:levels": "$1"}
     },
     {
       "old": {"man_made": "cut_line"},
@@ -629,7 +693,7 @@
     },
     {
       "old": {"man_made": "jetty"},
-      "replace": {"highway": "footway", "man_made": "pier"}
+      "replace": {"man_made": "pier"}
     },
     {
       "old": {"man_made": "mdf"},
@@ -704,12 +768,28 @@
       "replace": {"memorial": "plaque"}
     },
     {
+      "old": {"men": "*"},
+      "replace": {"male": "$1"}
+    },
+    {
       "old": {"minage": "*"},
       "replace": {"min_age": "$1"}
     },
     {
       "old": {"mining_resource": "*"},
       "replace": {"resource": "$1"}
+    },
+    {
+      "old": {"museum_type": "history"},
+      "replace": {"museum": "history"}
+    },
+    {
+      "old": {"museum_type": "private"},
+      "replace": {"operator:type": "private"}
+    },
+    {
+      "old": {"museum_type": "public"},
+      "replace": {"operator:type": "public"}
     },
     {
       "old": {"natural": "marsh"},
@@ -756,6 +836,29 @@
     },
     {
       "old": {"oneway": "unknown"}
+    },
+    {
+      "old": {"operator:type": "goverment"},
+      "replace": {"operator:type": "government"}
+    },
+    {
+      "old": {"operator:type": "Privado"},
+      "replace": {"operator:type": "private"}
+    },
+    {
+      "old": {"operator:type": "Private"},
+      "replace": {"operator:type": "private"}
+    },
+    {
+      "old": {"operator:type": "Public"},
+      "replace": {"operator:type": "public"}
+    },
+    {
+      "old": {"operator:type": "Publico"},
+      "replace": {"operator:type": "public"}
+    },
+    {
+      "old": {"operator:type": "unknown"}
     },
     {
       "old": {"place_name": "*"},
@@ -806,16 +909,40 @@
       "replace": {"public_transport": "station", "aerialway": "station"}
     },
     {
+      "old": {"pump": "hand_pump"},
+      "replace": {"pump": "manual"}
+    },
+    {
+      "old": {"pump": "electrical_pump"},
+      "replace": {"pump": "powered"}
+    },
+    {
+      "old": {"pump": "no_pump"},
+      "replace": {"pump": "no"}
+    },
+    {
+      "old": {"pump": "power"},
+      "replace": {"pump": "powered"}
+    },
+    {
       "old": {"railway": "*", "abandoned": "yes"},
-      "replace": {"abandoned:railway": "yes"}
+      "replace": {"abandoned:railway": "$1"}
     },
     {
       "old": {"railway": "*", "disused": "yes"},
-      "replace": {"disused:railway": "yes"}
+      "replace": {"disused:railway": "$1"}
+    },
+    {
+      "old": {"railway": "platform"},
+      "replace": {"railway": "platform", "public_transport": "platform"}
     },
     {
       "old": {"railway": "station"},
       "replace": {"railway": "station", "public_transport": "station"}
+    },
+    {
+      "old": {"railway": "tram_stop"},
+      "replace": {"railway": "tram_stop", "public_transport": "stop_position", "tram": "yes"}
     },
     {
       "old": {"recommended_speed": "*"},
@@ -848,6 +975,10 @@
     {
       "old": {"route": "ncn"},
       "replace": {"route": "bicycle", "network": "ncn"}
+    },
+    {
+      "old": {"rwn_expected_route_relations": "*"},
+      "replace": {"expected_rwn_route_relations": "$1"}
     },
     {
       "old": {"shop": "adult"},
@@ -968,6 +1099,10 @@
     {
       "old": {"shop": "winery"},
       "replace": {"craft": "winery"}
+    },
+    {
+      "old": {"showers": "*"},
+      "replace": {"shower": "$1"}
     },
     {
       "old": {"sloped_curb": "0"},
@@ -1200,6 +1335,10 @@
     {
       "old": {"wifi": "free"},
       "replace": {"internet_access": "wlan", "internet_access:fee": "no"}
+    },
+    {
+      "old": {"women": "*"},
+      "replace": {"female": "$1"}
     },
     {
       "old": {"wood": "coniferous"},
