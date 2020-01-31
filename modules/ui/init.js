@@ -318,7 +318,7 @@ export function uiInit(context) {
         var osm = context.connection();
         if (!_initCounter++) {
             if (!ui.hash.startWalkthrough) {
-                if (context.history().lock() && context.history().restorableChanges()) {
+                if (context.history().lock() && context.history().hasRestorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
                 } else if (osm.authenticated()) {
