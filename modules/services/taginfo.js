@@ -113,11 +113,15 @@ function valKey(d) {
 
 
 function valKeyDescription(d) {
-    return {
+    var obj = {
         value: d.value,
         title: d.description || d.value,
         count: d.count
     };
+    if (d.count) {
+        obj.count = d.count;
+    }
+    return obj;
 }
 
 

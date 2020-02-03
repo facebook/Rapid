@@ -33,6 +33,10 @@ button.ai-features-toggle.layer-off use {
     border: 1px solid grey; 
 }
 
+.fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
 /* Sidebar component */
 
 .fb-road-picker svg.logo-rapid {
