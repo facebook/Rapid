@@ -9,7 +9,6 @@ import { svgTagClasses } from './tag_classes';
 import { osmEntity, osmOldMultipolygonOuterMember } from '../osm';
 import { utilArrayFlatten, utilArrayGroupBy } from '../util';
 import { utilDetect } from '../util/detect';
-import { rapid_feature_config } from '../../data/';
 
 export function svgLines(projection, context) {
     var detected = utilDetect();
@@ -115,8 +114,6 @@ export function svgLines(projection, context) {
         }
         
         var getAIRoadStylingClass =  function(d){
-            if (!rapid_feature_config.style_fb_ai_roads.enabled) return ''; 
-
            return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : ''; 
         };
 

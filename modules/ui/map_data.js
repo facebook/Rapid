@@ -978,7 +978,7 @@ export function uiMapData(context) {
                 d3_event.stopPropagation();
                 toggleLayer('osm');
             })
-            .on(t('map_data.layers.ai-features.key'), toggleHighlightEdited);
+            .on(t('map_data.highlight_edits.key'), toggleHighlightEdited);
     };
 
     return uiMapData;

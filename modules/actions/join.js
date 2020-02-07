@@ -4,7 +4,7 @@ import { osmIsInterestingTag } from '../osm/tags';
 import { osmJoinWays } from '../osm/multipolygon';
 import { geoPathIntersections } from '../geo';
 import { utilArrayGroupBy, utilArrayIntersection } from '../util';
-
+import { rapidPowerUserFeaturesStorage } from '../ui/rapid_poweruser_features_storage'; 
 
 // Join ways at the end node they share.
 //
@@ -71,6 +71,13 @@ export function actionJoin(ids) {
             graph = actionDeleteWay(way.id)(graph);
         });
 
+        if (rapidPowerUserFeaturesStorage().featureEnabled('tagnosticRoadCombine')){
+            var newTags = Object.assign({}, survivor.tags); 
+            newTags.highway = ways[0].tags.highway; 
+            survivor = survivor.update({tags:newTags}); 
+            graph = graph.replace(survivor);     
+        }
+        
         // Finds if the join created a single-member multipolygon,
         // and if so turns it into a basic area instead
         function checkForSimpleMultipolygon() {
@@ -161,7 +168,10 @@ export function actionJoin(ids) {
                 if (!(k in tags)) {
                     tags[k] = way.tags[k];
                 } else if (tags[k] && osmIsInterestingTag(k) && tags[k] !== way.tags[k]) {
-                    conflicting = true;
+                    conflicting = true; 
+                    if (k === 'highway' && rapidPowerUserFeaturesStorage().featureEnabled('tagnosticRoadCombine')){
+                        conflicting = false; 
+                    }
                 }
             }
         });

@@ -10,7 +10,8 @@ import _debounce from 'lodash-es/debounce';
 import { operationCircularize, operationContinue, operationDelete, operationDisconnect,
     operationDowngrade, operationExtract, operationMerge, operationOrthogonalize,
     operationReverse, operationSplit, operationStraighten } from '../operations';
-import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
+import { rapid_feature_config } from '../../data/';
+import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolRapidPowerUserFeatures, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
 import { uiToolAddAddablePresets } from './tools/quick_presets_addable';
 import { uiToolAddGeneric } from './tools/quick_presets_generic';
 import { uiToolSimpleButton } from './tools/simple_button';
@@ -57,6 +58,7 @@ export function uiTopToolbar(context) {
         addingGeometry = uiToolAddingGeometry(context),
         powerSupport = uiToolPowerSupport(context), 
         aiFeaturesToggle = uiToolAiFeaturesToggle(context),
+        internalFeatures = rapid_feature_config.poweruser_features_dialog.enabled ? uiToolRapidPowerUserFeatures(context) : null,
 
         /*
         deselect = uiToolSimpleButton({
@@ -174,7 +176,12 @@ export function uiTopToolbar(context) {
         tools = tools.filter(function(tool) {
             return !tool.allowed || tool.allowed();
         });
-
+ 
+        //If the internal feature dialog is enabled, always show it immediately
+        // after the ai features toggle. 
+        if (internalFeatures) {
+            tools.splice(tools.indexOf(aiFeaturesToggle) + 1, 0, internalFeatures); 
+        }
         return tools;
     }
 

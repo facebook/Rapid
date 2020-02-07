@@ -12,10 +12,13 @@ buildAll();
 function buildAll() {
   if (_currBuild) return _currBuild;
 
+  var build_type = process.env.BUILD_TYPE || 'public'; // eslint-disable-line no-process-env
+
   return _currBuild =
+
     Promise.resolve()
     .then(() => buildCSS())
-    .then(() => buildData())
+    .then(() => buildData(build_type))
     .then(() => buildSrc())
     .then(() => _currBuild = null)
     .catch((err) => {
