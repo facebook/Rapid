@@ -27,6 +27,7 @@
             "favorites": "Favorites",
             "add_feature": "Add Feature",
             "ai_features": "AI Assist",
+            "rapid_poweruser_features": "Power User Features",
             "finish": "Finish",
             "generic": {
                 "title": "Geometries"
@@ -950,10 +951,6 @@
                 }
             },
             "fill_area": "Fill Areas",
-            "highlight_way_edits": {
-                "description": "Highlight edited nodes and segments attached to those nodes in ways",
-                "tooltip": "Highlight way edits in the current session."
-            },
             "style_options": "Style Options",
             "highlight_edits": {
                 "key": "G"
@@ -1131,6 +1128,16 @@
             "buildings": "Buildings",
             "buildings_provided_by": "provided by Microsoft",
             "buildings_license": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
+        },
+        "rapid_poweruser_features": {
+            "top_label": "{icon} Power User Features",
+            "top_label_desc": "for RapiD Insiders",
+            "ai_feature_halo": "AI Feature Halo",
+            "ai_feature_halo_desc": "Enable a halo around AI features in the map",
+            "tagnostic_road_combine": "Tag-agnostic road combine",
+            "tagnostic_road_combine_desc": "Allow the Combine operation for roads whose highway tagging differs",
+            "tag_sources": "Tag highways as DG",
+            "tag_sources_desc": "Add the tag 'source=digitalglobe' to all highways"
         },
         "version": {
             "whats_new": "What's new in RapiD {version}"
@@ -2583,7 +2590,8 @@
                     "osm_data": "Toggle OpenStreetMap data",
                     "minimap": "Toggle minimap",
                     "ai_features_data": "Toggle Map With AI Features",
-                    "highlight_edits": "Highlight unsaved edits"
+                    "highlight_edits": "Highlight unsaved edits",
+                    "rapid_poweruser_features": "Power user mapper settings dialog features."
                 },
                 "selecting": {
                     "title": "Selecting features",
