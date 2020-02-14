@@ -1,4 +1,11 @@
-# [1.0.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.5)
+# [1.0.7](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.7)
+##### 2020-Feb-18
+
+#### :trumpet: Updates
+This brings the RapiD code up-to-date with v2.17.2, which re-introduces Maxar Imagery. 
+
+
+# [1.0.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.6)
 ##### 2020-Jan-31
 
 #### :trumpet: Updates
