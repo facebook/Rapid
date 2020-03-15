@@ -1,0 +1,25 @@
+.mode-browse .layer-covid-19 .vertex,
+.mode-select .layer-covid-19 .vertex {
+    cursor: pointer;
+    cursor: url(img/cursor-select-line.png), pointer;
+}
+
+/* GPS Data point Vertices */
+.layer-covid-19 g.vertex .fill {
+    fill: #fff;
+}
+
+.layer-covid-19 g.vertex .stroke {
+    stroke: #ff26d4;
+    stroke-width: 20;
+    fill: #fff;
+    opacity: .1; 
+}
+
+.low-zoom .layer-covid-19 g.vertex .stroke {
+    stroke-width: 50;
+}
+
+.layer-covid-19 .hide {
+    display: none;
+}
