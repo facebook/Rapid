@@ -20,6 +20,11 @@ svg.logo-rapid.dark,
 }
 
 /* Toolbar button */
+button.covid-19-tracker svg.covid-19-icon {
+    width: 42px;
+    height: 42px;
+}
+/* Toolbar button */
 button.rapid-poweruser-features svg.logo-mapwithai {
     width: 22px;
     height: 22px;

@@ -6,11 +6,15 @@
 #Internal builds: for our own mappers and/or partners. 
 internal:
   rapid_config: 
+    covid_19_tracker:
+      enabled: true
     # This setting enables the 'poweruser features' dialog, which contains a number of 
     #time-savers for our mappers. 
     poweruser_features_dialog:
       enabled: true
 public:
   rapid_config: 
+    covid_19_tracker:
+      enabled: true
     poweruser_features_dialog:
       enabled: false 
