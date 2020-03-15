@@ -48,6 +48,7 @@ export { uiPreferences } from './preferences';
 export { uiPresetEditor } from './preset_editor';
 export { uiPresetIcon } from './preset_icon';
 export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog';
+export { uiRapidCovid19TrackerDialog } from './rapid_covid_19_tracker_dialog';
 export { uiRawMemberEditor } from './raw_member_editor';
 export { uiRawMembershipEditor } from './raw_membership_editor';
 export { uiRawTagEditor } from './raw_tag_editor';

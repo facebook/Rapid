@@ -11,7 +11,7 @@ import { operationCircularize, operationContinue, operationDelete, operationDisc
     operationDowngrade, operationExtract, operationMerge, operationOrthogonalize,
     operationReverse, operationSplit, operationStraighten } from '../operations';
 import { rapid_feature_config } from '../../data/';
-import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolRapidPowerUserFeatures, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
+import { uiToolAddFavorite, uiToolAddFeature, uiToolAddRecent, uiToolAiFeaturesToggle, uiToolRapidPowerUserFeatures, uiToolRapidCovid19Tracker, uiToolNotes, uiToolOperation, uiToolSave, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
 import { uiToolAddAddablePresets } from './tools/quick_presets_addable';
 import { uiToolAddGeneric } from './tools/quick_presets_generic';
 import { uiToolSimpleButton } from './tools/simple_button';
@@ -59,6 +59,7 @@ export function uiTopToolbar(context) {
         powerSupport = uiToolPowerSupport(context), 
         aiFeaturesToggle = uiToolAiFeaturesToggle(context),
         internalFeatures = rapid_feature_config.poweruser_features_dialog.enabled ? uiToolRapidPowerUserFeatures(context) : null,
+        covidTracker = rapid_feature_config.covid_19_tracker.enabled ? uiToolRapidCovid19Tracker(context) : null,
 
         /*
         deselect = uiToolSimpleButton({
@@ -110,6 +111,7 @@ export function uiTopToolbar(context) {
             tools = [
                 toolbox,
                 aiFeaturesToggle,
+                covidTracker,
                 'spacer',
                 /*
                 deselect,
@@ -140,6 +142,7 @@ export function uiTopToolbar(context) {
             tools = [
                 toolbox,
                 aiFeaturesToggle,
+                covidTracker,
                 addingGeometry,
                 'spacer',
                 structure,
@@ -157,6 +160,7 @@ export function uiTopToolbar(context) {
             tools = [
                 toolbox,
                 aiFeaturesToggle,
+                covidTracker,
                 'spacer',
                 centerZoom,
                 'spacer',

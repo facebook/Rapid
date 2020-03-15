@@ -24,6 +24,7 @@ en:
     add_feature: Add Feature
     ai_features: AI Assist
     rapid_poweruser_features: Power User Features
+    covid_19_tracker: Covid-19 Tracker
     finish: Finish
     generic:
       title: Geometries
@@ -2114,6 +2115,7 @@ en:
         ai_features_data: "Toggle Map With AI Features"
         highlight_edits: "Highlight unsaved edits"
         rapid_poweruser_features: "Power user mapper settings dialog features."
+        covid_19_tracker: "Import, edit, and export COVID-19 gps data."
       selecting:
         title: "Selecting features"
         select_one: "Select a single feature"
