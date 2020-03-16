@@ -316,20 +316,20 @@ export function svgData(projection, context, dispatch) {
 
     //  [ { “time”: 12345, “lat”: 1.2345, “lon”: 34.432 } … ]
     function spJsonToGeoJSON(spJson) {
-        gj = {
+        var gj = {
             type: 'FeatureCollection',
             features: []
         };
         for (var i = 0; i < spJson.length; i++) {
             var point = spJson[i];
             gj.features = gj.features.concat({
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [point["lon"], point["lat"]]
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [point.lon, point.lat]
                 },
-                "properties": {
-                    "time": point["time"]
+                'properties': {
+                    'time': point.time
                 }
             });
         }
@@ -355,7 +355,7 @@ export function svgData(projection, context, dispatch) {
                 gj = JSON.parse(data);
                 break;
             case '.spjson':
-                gj = spJsonToGeoJSON(JSON.parse(data))
+                gj = spJsonToGeoJSON(JSON.parse(data));
                 break;
         }
 
