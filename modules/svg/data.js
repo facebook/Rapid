@@ -356,6 +356,7 @@ export function svgData(projection, context, dispatch) {
                 break;
             case '.spjson':
                 gj = spJsonToGeoJSON(JSON.parse(data))
+                break;
         }
 
         gj = gj || {};
