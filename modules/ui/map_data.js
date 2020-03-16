@@ -25,6 +25,7 @@ export function uiMapData(context) {
     var settingsCustomData = uiSettingsCustomData(context)
         .on('change', customChanged);
 
+    
     var _pane = d3_select(null);
 
     var _fillSelected = context.storage('area-fill') || 'partial';
@@ -650,6 +651,7 @@ export function uiMapData(context) {
             dataLayer.fileList(d.fileList);
         }
     }
+
 
 
     function drawListItems(selection, data, type, name, change, active) {

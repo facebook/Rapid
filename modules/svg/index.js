@@ -3,6 +3,7 @@ export { svgData } from './data.js';
 export { svgDebug } from './debug.js';
 export { svgDefs } from './defs.js';
 export { svgAiFeatures } from './ai_features.js';
+export { svgCovid19Data } from './covid-19.js'; 
 export { svgKeepRight } from './keepRight';
 export { svgIcon } from './icon.js';
 export { svgGeolocate } from './geolocate';
