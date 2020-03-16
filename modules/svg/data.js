@@ -304,7 +304,7 @@ export function svgData(projection, context, dispatch) {
     function getExtension(fileName) {
         if (!fileName) return;
 
-        var re = /\.(gpx|kml|(geo)?json)$/i;
+        var re = /\.(gpx|kml|spjson|(geo)?json)$/i;
         var match = fileName.toLowerCase().match(re);
         return match && match.length && match[0];
     }
@@ -314,6 +314,28 @@ export function svgData(projection, context, dispatch) {
         return (new DOMParser()).parseFromString(textdata, 'text/xml');
     }
 
+    
+    //  [ { “time”: 12345, “lat”: 1.2345, “lon”: 34.432 } … ]
+    function spJsonToGeoJSON(spJson) {
+        var gj = {
+            type: 'FeatureCollection',
+            features: []
+        };
+        for (var i = 0; i < spJson.length; i++) {
+            var point = spJson[i];
+            gj.features = gj.features.concat({
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [point.lon, point.lat]
+                },
+                'properties': {
+                    'time': point.time
+                }
+            });
+        }
+        return gj;
+    }
 
     drawData.setFile = function(extension, data) {
         _template = null;
@@ -332,6 +354,9 @@ export function svgData(projection, context, dispatch) {
             case '.geojson':
             case '.json':
                 gj = JSON.parse(data);
+                break;
+            case '.spjson':
+                gj = spJsonToGeoJSON(JSON.parse(data));
                 break;
         }
 
