@@ -12,6 +12,7 @@ import { svgMapillaryImages } from './mapillary_images';
 import { svgMapillarySigns } from './mapillary_signs';
 import { svgMapillaryMapFeatures } from './mapillary_map_features';
 import { svgOpenstreetcamImages } from './openstreetcam_images';
+import { svgCovid19Data } from './covid-19';
 import { svgOsm } from './osm';
 import { svgNotes } from './notes';
 import { svgTouch } from './touch';
@@ -23,6 +24,7 @@ export function svgLayers(projection, context) {
     var dispatch = d3_dispatch('change');
     var svg = d3_select(null);
     var _layers = [
+        { id: 'covid-19', layer: svgCovid19Data(projection, context, dispatch) },
         { id: 'ai-features', layer: svgAiFeatures(projection, context, dispatch) },
         { id: 'osm', layer: svgOsm(projection, context, dispatch) },
         { id: 'notes', layer: svgNotes(projection, context, dispatch) },

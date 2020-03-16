@@ -5,20 +5,34 @@ import { uiTooltipHtml } from '../tooltipHtml';
 import {uiRapidCovid19TrackerDialog} from '../rapid_covid_19_tracker_dialog';
 
 
-export function uiToolRapidCovid19Tracker(context) {
 
+export function uiToolRapidCovid19Tracker(context) {
+    
+    
     var tool = {
         id: 'covid-19-tracker',
         label: t('toolbar.covid_19_tracker')
     };
-
-
+    var layers = context.layers();
+    
+    var covid19DataDialog = uiRapidCovid19TrackerDialog(context)
+        .on('change', covid19Changed);
+    
+        
+    function covid19Changed(d) {
+        var dataLayer = layers.layer('covid-19');
+        
+        if (d && d.fileList) {
+            dataLayer.fileList(d.fileList);
+        }
+    }
+    
     function enabled() {
         return context.layers().layer('covid-19').enabled();
     }
 
     function showDialog() {
-        context.container().call(uiRapidCovid19TrackerDialog(context));
+        context.container().call(covid19DataDialog);
     }
 
 
