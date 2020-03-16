@@ -314,6 +314,7 @@ export function svgData(projection, context, dispatch) {
         return (new DOMParser()).parseFromString(textdata, 'text/xml');
     }
 
+    
     //  [ { “time”: 12345, “lat”: 1.2345, “lon”: 34.432 } … ]
     function spJsonToGeoJSON(spJson) {
         var gj = {
