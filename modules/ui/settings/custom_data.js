@@ -95,7 +95,7 @@ export function uiSettingsCustomData(context) {
         }
 
 
-        // restore the original urlt
+        // restore the original url
         function clickCancel() {
             textSection.select('.field-url').property('value', _origSettings.url);
             context.storage('settings-custom-data-url', _origSettings.url);
