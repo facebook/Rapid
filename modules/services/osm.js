@@ -44,7 +44,7 @@ var _noteZoom = 12;
 var _rateLimitError;
 var _userChangesets;
 var _userDetails;
-var _off;
+var _off = true;
 
 
 function authLoading() {
