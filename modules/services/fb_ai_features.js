@@ -19,7 +19,7 @@ var _tileCache;
 var _tree;
 var _deferredAiFeaturesParsing = new Set();
 
-var _off;
+var _off = true;
 
 function abortRequest(i) {
     i.abort();

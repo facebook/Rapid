@@ -3,7 +3,11 @@ import { t } from '../../util/locale';
 import { tooltip } from '../../util/tooltip';
 import { uiTooltipHtml } from '../tooltipHtml';
 import {uiRapidCovid19TrackerDialog} from '../rapid_covid_19_tracker_dialog';
-
+import {
+    osmEntity,
+    osmNode
+} from '../../osm';
+import { geoBounds } from 'd3';
 
 
 export function uiToolRapidCovid19Tracker(context) {
@@ -17,14 +21,70 @@ export function uiToolRapidCovid19Tracker(context) {
     
     var covid19DataDialog = uiRapidCovid19TrackerDialog(context)
         .on('change', covid19Changed);
-    
-        
+
+
+    function stretchBounds(bounds) {
+        var lonSpan = bounds.maxlon - bounds.minlon;
+        bounds.maxlon = bounds.maxlon + (lonSpan * 0.2);
+        bounds.minlon = bounds.minlon - (lonSpan * 0.2);
+        var latSpan = bounds.maxlat - bounds.minlat;
+        bounds.maxlat = bounds.maxlat + (latSpan * 0.2);
+        bounds.minlat = bounds.minlat - (latSpan * 0.2);
+        return bounds;
+    }
+
+
+    function loadSafePlacesPointsFromFile(spFile) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var spJson = JSON.parse(e.target.result);
+            var bounds = {
+                minlon: 180,
+                minlat: 90,
+                maxlon: -180,
+                maxlat: -90
+            };
+            var entities = [];
+            for (var i = 0; i < spJson.length; i++) {
+                var point = spJson[i];
+                if (bounds.minlon > point.lon) {
+                    bounds.minlon = point.lon;
+                }
+                if (bounds.maxlon < point.lon) {
+                    bounds.maxlon = point.lon;
+                }
+                if (bounds.minlat > point.lat) {
+                    bounds.minlat = point.lat;
+                }
+                if (bounds.maxlat < point.lat) {
+                    bounds.maxlat = point.lat;
+                }
+                var nodeEntity = new osmNode({
+                    id: osmEntity.id('node'),
+                    version: 1,
+                    loc: [point.lon, point.lat],
+                    tags: {
+                        'time': '' + point.time,
+                        'kind': 'covid19-location'
+                    }
+                });
+                entities.push(nodeEntity);
+            }
+            window.alert('loaded ' + entities.length + ' SafePlaces points');
+
+            context.loadSpEntities(entities, stretchBounds(bounds));
+        };
+        reader.readAsText(spFile);
+    }
+
+
     function covid19Changed(d) {
-        var dataLayer = layers.layer('covid-19');
+        loadSafePlacesPointsFromFile(d.fileList[0]);
+        // var dataLayer = layers.layer('covid-19');
         
-        if (d && d.fileList) {
-            dataLayer.fileList(d.fileList);
-        }
+        // if (d && d.fileList) {
+        //     dataLayer.fileList(d.fileList);
+        // }
     }
     
     function enabled() {

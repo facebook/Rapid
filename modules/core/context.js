@@ -19,6 +19,7 @@ import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilDetect } from '../util/detect';
 import { utilKeybinding, utilRebind, utilStringQs } from '../util';
+import { geoExtent, geoPointInPolygon } from '../geo';
 
 
 export function coreContext() {
@@ -102,6 +103,21 @@ export function coreContext() {
             connection.switch(options);
         }
         return context;
+    };
+
+
+    function geoExtentFromBounds(mapBounds) {
+        return geoExtent([
+            [mapBounds.minlon, mapBounds.minlat],
+            [mapBounds.maxlon, mapBounds.maxlat]
+        ]);
+    };
+
+
+    context.loadSpEntities = function(entities, bounds) {
+        var extent = geoExtentFromBounds(bounds);
+        history.merge(entities, extent);
+        context.map().extent(extent);
     };
 
 
@@ -261,7 +277,7 @@ export function coreContext() {
         });
     };
 
-    var minEditableZoom = 16;
+    var minEditableZoom = 1;
     context.minEditableZoom = function(val) {
         if (!arguments.length) return minEditableZoom;
         minEditableZoom = val;
