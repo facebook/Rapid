@@ -23,6 +23,7 @@ import { uiToolStopDraw } from './tools/stop_draw';
 import { uiToolToolbox } from './tools/toolbox';
 import { uiToolAddingGeometry } from './tools/adding_geometry';
 import { uiToolPowerSupport } from './tools/power_support';
+import { uiToolExportSafePlacesData } from './tools/export_safe_places_data'; 
 
 export function uiTopToolbar(context) {
 
@@ -61,7 +62,7 @@ export function uiTopToolbar(context) {
         aiFeaturesToggle = uiToolAiFeaturesToggle(context),
         internalFeatures = rapid_feature_config.poweruser_features_dialog.enabled ? uiToolRapidPowerUserFeatures(context) : null,
         covidTracker = rapid_feature_config.covid_19_tracker.enabled ? uiToolRapidCovid19Tracker(context) : null,
-
+        exportSafePlaces = uiToolExportSafePlacesData(context); 
         /*
         deselect = uiToolSimpleButton({
             id: 'deselect',
@@ -134,6 +135,7 @@ export function uiTopToolbar(context) {
                 deleteTool,
                 'spacer',
                 undoRedo,
+                exportSafePlaces,
 //                save
             ];
 
@@ -174,6 +176,7 @@ export function uiTopToolbar(context) {
                 notes,
                 'spacer',
                 undoRedo,
+                exportSafePlaces,
 //                save
             ];
         }
