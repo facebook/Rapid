@@ -1,4 +1,3 @@
-import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
 import { event as d3_event, select as d3_select } from 'd3-selection';
 import { t } from '../../util/locale';
 import { modeSave } from '../../modes';
@@ -6,9 +5,9 @@ import { svgIcon } from '../../svg';
 import { uiCmd } from '../cmd';
 import { uiTooltipHtml } from '../tooltipHtml';
 import { tooltip } from '../../util/tooltip';
+import { uiExportSafePlacesData} from '../export_safe_places_data'; 
 
-
-export function uiToolExportSafePlacesData(context) {
+export function uiToolExportSafePlaces(context) {
 
     var tool = {
         id: 'safeplaces_export',
@@ -37,13 +36,7 @@ export function uiToolExportSafePlacesData(context) {
 
     function safeplaces() {
         d3_event.preventDefault();
-        
-        // TODO: Need a new UI context here?
-        // TODO: fill in export logic here. 
-        // TODO: Display message to user if the data was saved.  
-        // if (!context.inIntro() && !isSaving() && history.hasChanges()) {
-        //     context.enter(modesafeplaces(context));
-        // }
+        uiExportSafePlacesData(context)(); 
     }
 
     function updateCount() {
@@ -138,3 +131,4 @@ export function uiToolExportSafePlacesData(context) {
 
     return tool;
 }
+    

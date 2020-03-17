@@ -26,7 +26,7 @@ export function coreContext() {
     var dispatch = d3_dispatch('enter', 'exit', 'change');
     var context = utilRebind({}, dispatch, 'on');
     var _deferred = new Set();
-
+    
     context.version = '2.17.1';
     context.privacyVersion = '20191217';
 
