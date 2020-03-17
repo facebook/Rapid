@@ -3,7 +3,10 @@ import { t } from '../../util/locale';
 import { tooltip } from '../../util/tooltip';
 import { uiTooltipHtml } from '../tooltipHtml';
 import {uiRapidCovid19TrackerDialog} from '../rapid_covid_19_tracker_dialog';
-
+import {
+    osmEntity,
+    osmNode
+} from '../../osm';
 
 
 export function uiToolRapidCovid19Tracker(context) {
@@ -18,8 +21,39 @@ export function uiToolRapidCovid19Tracker(context) {
     var covid19DataDialog = uiRapidCovid19TrackerDialog(context)
         .on('change', covid19Changed);
     
-        
+
+    function loadSafePlacesPointsFromFile(spFile) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var spJson = JSON.parse(e.target.result);
+            var bounds = {
+                minlon: 180,
+                minlat: 90,
+                maxlon: -180,
+                maxlat: -90
+            };
+            var entities = [];
+            for (var i = 0; i < spJson.length; i++) {
+                var point = spJson[i];
+                var nodeEntity = new osmNode({
+                    id: osmEntity.id('node'),
+                    version: 1,
+                    loc: [point.lon, point.lat],
+                    tags: {
+                        'time': point.time,
+                        'kind': 'covid19-location'
+                    }
+                });
+                entities.push(nodeEntity);
+            }
+            window.alert('loaded ' + entities.length + ' SP entities');
+            // TODO-VGP - context.spEntitiesLoaded(entities)
+        };
+        reader.readAsText(spFile);
+    }
+
     function covid19Changed(d) {
+        loadSafePlacesPointsFromFile(d.fileList[0]);
         var dataLayer = layers.layer('covid-19');
         
         if (d && d.fileList) {
