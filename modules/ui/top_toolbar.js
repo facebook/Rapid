@@ -48,7 +48,8 @@ export function uiTopToolbar(context) {
         addRecent = uiToolAddRecent(context),
         notes = uiToolNotes(context),
         undoRedo = uiToolUndoRedo(context),
-        save = uiToolSave(context),
+        // Disable the save button. We don't want it! 
+        //save = uiToolSave(context),
         downloadOsc = uiToolDownloadOsc(context),
         waySegments = uiToolWaySegments(context),
         structure = uiToolStructure(context),
@@ -133,7 +134,7 @@ export function uiTopToolbar(context) {
                 deleteTool,
                 'spacer',
                 undoRedo,
-                save
+//                save
             ];
 
         } else if (mode.id === 'add-point' || mode.id === 'add-line' || mode.id === 'add-area' ||
@@ -173,7 +174,7 @@ export function uiTopToolbar(context) {
                 notes,
                 'spacer',
                 undoRedo,
-                save
+//                save
             ];
         }
 
