@@ -827,6 +827,10 @@ en:
       third_party_icons:
         description: Show Third Party Icons
         tooltip: Uncheck this box to avoid loading icons from third party sites such as Wikimedia Commons, Facebook, or Twitter.
+  safeplaces_export: 
+    title: Export GPS
+    no_changes: No GPS data is loaded
+    help: "Save your changes to your local hard drive."
   save:
     title: Save
     help: "Review your changes and upload them to OpenStreetMap, making them visible to other users."
