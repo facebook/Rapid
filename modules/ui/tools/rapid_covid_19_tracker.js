@@ -47,22 +47,24 @@ export function uiToolRapidCovid19Tracker(context) {
             var entities = [];
             for (var i = 0; i < spJson.length; i++) {
                 var point = spJson[i];
-                if (bounds.minlon > point.lon) {
-                    bounds.minlon = point.lon;
+                pointLon = point.hasOwnProperty('lon') ? Number(point.lon) : Number(point.longitude);
+                pointLat = point.hasOwnProperty('lat') ? Number(point.lat) : Number(point.latitude);
+                if (bounds.minlon > pointLon) {
+                    bounds.minlon = pointLon;
                 }
-                if (bounds.maxlon < point.lon) {
-                    bounds.maxlon = point.lon;
+                if (bounds.maxlon < pointLon) {
+                    bounds.maxlon = pointLon;
                 }
-                if (bounds.minlat > point.lat) {
-                    bounds.minlat = point.lat;
+                if (bounds.minlat > pointLat) {
+                    bounds.minlat = pointLat;
                 }
-                if (bounds.maxlat < point.lat) {
-                    bounds.maxlat = point.lat;
+                if (bounds.maxlat < pointLat) {
+                    bounds.maxlat = pointLat;
                 }
                 var nodeEntity = new osmNode({
                     id: osmEntity.id('node'),
                     version: 1,
-                    loc: [point.lon, point.lat],
+                    loc: [pointLon, pointLat],
                     tags: {
                         'time': '' + point.time,
                         'kind': 'covid19-location'
