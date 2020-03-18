@@ -494,7 +494,7 @@ button[disabled].action:hover {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 0;
+    /* padding: 0; */
     overflow-x: auto;
     overflow-y: hidden;
     height: 100%;

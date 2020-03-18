@@ -86,8 +86,7 @@ en:
       first_time_tutorial: "If this is your first time here, consider taking the <a>quick-start tutorial</a>."
       thanks_have_fun: Thanks for contributing. Have fun!
       generic_welcome:
-        0: Ready to make the map even better?
-        1: What a great day for mapping.
+        0: ↑ Click here to begin
       welcome_back_user: "Welcome back, {displayName}."
       changesets: "You've contributed {changesets} changesets to OpenStreetMap so far."
       changesets_date: "You've contributed {changesets} changesets to OpenStreetMap since {joinDate}."
@@ -1293,14 +1292,14 @@ en:
     key: H
     help:
       title: Help
-      welcome: "Welcome to the RapiD editor for [OpenStreetMap](https://www.openstreetmap.org/). RapiD is an enhanced version of the [iD editor](https://github.com/openstreetmap/iD). With this editor you can update OpenStreetMap right from your web browser."
+      welcome: "Welcome to the Safe Places editor. With this editor you can update Safe Paths data points to help protect our users' privacy by redacting points that show sensitive places, such as their daily commute, place of work, and residence. Part of the [Safe Paths](http://safepaths.mit.edu/) initiative, Safe Places is an reduced-functionality version of the [RapiD editor](https://github.com/openstreetmap/iD), which is based off of the [iD editor](https://github.com/openstreetmap/iD)."
       open_data_h: "Open Data"
-      open_data: "Edits that you make on this map will be visible to everyone who uses OpenStreetMap. Your edits can be based on personal knowledge, on-the-ground surveying, or imagery collected from aerial or street level photos. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright)."
+      open_data: "Edits that you make on this map will be visible/saveable only by you, and will not be uploaded to any third parties."
       before_start_h: "Before you start"
-      before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. RapiD contains a walkthrough to teach you the basics of editing OpenStreetMap. Click \"Start the Walkthrough\" on this screen to take the tutorial - it takes only about 15 minutes."
+      before_start: "Click the Tracker in the upper right to start, pick the data you want to view/edit, and then remove any points that might need to be redacted. Shift-left-click to lasso a group of points, and hit 'delete' to remove them. When done, click the 'Export' button in the upper right of the screen, which will automatically save the data to a file in your downloads folder."
       open_source_h: "Open Source"
-      open_source: "The RapiD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD)."
-      open_source_help: "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
+      open_source: "The Safe Places editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD)."
+      open_source_help: "You can help Safe Places (and RapiD/iD) by [translating](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
     overview:
       title: Overview
       navigation_h: "Navigation"
@@ -1319,15 +1318,10 @@ en:
       multiselect_lasso: "Another way to select multiple features is to hold down the `{shift}` key, then press and hold down the {leftclick} left mouse button and drag the mouse to draw a selection lasso. All of the points inside the lasso area will be selected."
       undo_redo_h: "Undo & Redo"
       undo_redo: "Your edits are stored locally in your browser until you choose to save them to the OpenStreetMap server. You can undo edits by clicking the {undo} **Undo** button, and redo them by clicking the {redo} **Redo** button."
-      save_h: "Save"
-      save: "Click {save} **Save** to finish your edits and send them to OpenStreetMap. You should remember to save your work frequently!"
-      save_validation: "On the save screen, you'll have a chance to review what you've done. RapiD will also perform some basic checks for missing data and may offer helpful suggestions and warnings if something doesn't seem right."
-      upload_h: "Upload"
-      upload: "Before uploading your changes you must enter a [changeset comment](https://wiki.openstreetmap.org/wiki/Good_changeset_comments). Then click **Upload** to send your changes to OpenStreetMap, where they will be merged into the map and publicly visible to everyone."
-      backups_h: "Automatic Backups"
-      backups: "If you can't finish your edits in one sitting, for example if your computer crashes or you close the browser tab, your edits are still saved in your browser's storage. You can come back later (on the same browser and computer), and RapiD will offer to restore your work."
+      export_h: "Exporting (saving)"
+      export: "Click {Export} **Export** to finish your edits and save them to a local file."
       keyboard_h: "Keyboard Shortcuts"
-      keyboard: "You can view a list of keyboard shortcuts by pressing the `?` key."
+      keyboard: "You can view a list of keyboard shortcuts by pressing the `?` key. (Note: These contain many shortcuts that are disabled in Safe Places."
     feature_editor:
       title: Feature Editor
       intro: "The *feature editor* appears alongside the map, and allows you to see and edit all of the information for the selected feature."
