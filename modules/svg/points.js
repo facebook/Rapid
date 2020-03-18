@@ -97,7 +97,14 @@ export function svgPoints(projection, context) {
 
         var enter = groups.enter()
             .append('g')
-            .attr('class', function(d) { return 'node point ' + d.id; })
+            // If we have a time associated with the data, then we've loaded this as gsjson. 
+            .attr('class', function(d) {
+                    var classes = 'node point ' + d.id;
+                        if (d.tags.time) {
+                            classes += ' safeplaces'; 
+                        }
+                    return classes;
+                })
             .order();
 
         enter
