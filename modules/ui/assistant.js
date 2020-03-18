@@ -495,10 +495,10 @@ export function uiAssistant(context) {
 
             var osm = context.connection();
 
-            if (context.isFirstSession) {
-                renderFirstSessionHeader(selection, bodyTextArea);
-                return;
-            }
+            // if (context.isFirstSession) {
+            //     renderFirstSessionHeader(selection, bodyTextArea);
+            //     return;
+            // }
 
             var genericWelcomesCount = 1;
             bodyTextArea.html(t('assistant.launch.generic_welcome.' + Math.floor(Math.random() * genericWelcomesCount)));
@@ -637,7 +637,7 @@ export function uiAssistant(context) {
 
         var panel = {
             headerIcon: 'fas-map-marked-alt',
-            modeLabel: t('assistant.mode.mapping'),
+            modeLabel: t('assistant.mode.viewing'),
             title: currLocation,
             titleClass: 'map-center-location',
             collapseCategory: 'browse'
