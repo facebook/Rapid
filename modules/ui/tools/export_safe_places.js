@@ -1,3 +1,4 @@
+import { geoExtent } from '../../geo';
 import { event as d3_event, select as d3_select } from 'd3-selection';
 import { t } from '../../util/locale';
 import { modeSave } from '../../modes';
@@ -21,7 +22,6 @@ export function uiToolExportSafePlaces(context) {
         .html(true)
         .title(uiTooltipHtml(t('safeplaces_export.no_changes'), key))
         .scrollContainer(d3_select('#bar'));
-    var history = context.history();
     var key = uiCmd('⌘S');
     var _numChanges;
 
@@ -40,14 +40,17 @@ export function uiToolExportSafePlaces(context) {
     }
 
     function updateCount() {
-        var val = history.difference().summary().length;
-        if (val === _numChanges) return;
-        _numChanges = val;
+        var extent = geoExtent([
+            [-180, -90],
+            [180, 90]
+          ]);
+        var all = context.intersects(extent);
+        _numChanges = all.length;
 
         if (tooltipBehavior) {
             tooltipBehavior
                 .title(uiTooltipHtml(
-                    t(val > 0 ? 'safeplaces_export.help' : 'safeplaces_export.no_changes'), key)
+                    t(_numChanges > 0 ? 'safeplaces_export.help' : 'safeplaces_export.no_changes'), key)
                 );
         }
 
@@ -56,7 +59,7 @@ export function uiToolExportSafePlaces(context) {
                 .classed('disabled', isDisabled());
 
             button.select('span.count')
-                .text(val);
+                .text(_numChanges);
         }
     }
 
