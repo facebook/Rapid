@@ -52,8 +52,8 @@ export function uiExportSafePlacesData(context) {
             var exportJson = [];
             for (var i = 0; i < nodesForExport.length; i++) {
               var entry = {
-                lon: nodesForExport[i].loc[0],
-                lat: nodesForExport[i].loc[1],
+                longitude: nodesForExport[i].loc[0],
+                latitude: nodesForExport[i].loc[1],
                 time: Number(nodesForExport[i].tags.time)
               };
               exportJson.push(entry);
