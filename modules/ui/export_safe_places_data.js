@@ -1,3 +1,4 @@
+import { geoExtent } from '../geo';
 import { event as d3_event } from 'd3-selection';
 import { t } from '../util/locale';
 import { uiCmd } from './cmd';
@@ -31,16 +32,34 @@ export function uiExportSafePlacesData(context) {
         // Cleanup
         window.URL.revokeObjectURL(a.href);
         document.body.removeChild(a);
-      }
+    }
 
 
-      return function save() {
+    return function save() {
         d3_event.preventDefault();
         if (!context.inIntro() && history.hasChanges()) {
-            var _changeset = new osmChangeset();
-            var changes = history.changes(actionDiscardTags(history.difference()));
-            var osc = JXON.stringify(_changeset.osmChangeJXON(changes));
-            downloadFile(osc,'safeplace_gps_data.jxon');
+            var extent = geoExtent([
+              [-180, -90],
+              [180, 90]
+            ]);
+            var all = context.intersects(extent);
+            window.alert('all has ' + all.length + ' points');
+
+            function renderAsPoint(entity) {
+              return entity.geometry(context.graph()) === 'point';
+            }
+            var nodesForExport = all.filter(renderAsPoint);
+
+            var exportJson = [];
+            for (var i = 0; i < nodesForExport.length; i++) {
+              var entry = {
+                lon: nodesForExport[i].loc[0],
+                lat: nodesForExport[i].loc[1],
+                time: Number(nodesForExport[i].tags.time)
+              };
+              exportJson.push(entry);
+            }
+            downloadFile(JSON.stringify(exportJson, null, 2), 'safeplace_gps_data.json');
         }
-    }; 
-    }
+    };
+}
