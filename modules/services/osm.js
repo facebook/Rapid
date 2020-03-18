@@ -1020,8 +1020,11 @@ export default {
         }
     },
 
-
+    // Short Circuiting this because we're disabling the OSM Loading for this app use case. 
     isDataLoaded: function(loc) {
+        if (_off) {
+            return true;             
+        }
         var bbox = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1] };
         return _tileCache.rtree.collides(bbox);
     },
