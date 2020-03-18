@@ -23,3 +23,11 @@
 .layer-covid-19 .hide {
     display: none;
 }
+
+
+
+g.point.safeplaces .stroke {
+    stroke: #444;
+    stroke-width: 1;
+    fill: #ff26d4;
+}
