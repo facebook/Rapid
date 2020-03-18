@@ -317,14 +317,14 @@ export function uiInit(context) {
         context.enter(modeBrowse(context));
 
         var osm = context.connection();
-        if (!_initCounter++) {
-            if (!ui.hash.startWalkthrough) {
-                if (osm.authenticated()) {
-                    context.container()
-                        .call(uiSplashRapid(context));
-                }
-            }           
-        }
+        // if (!_initCounter++) {
+        //     if (!ui.hash.startWalkthrough) {
+        //         if (osm.authenticated()) {
+        //             context.container()
+        //                 .call(uiSplashRapid(context));
+        //         }
+        //     }           
+        // }
 
         var auth = uiLoading(context).message(t('loading_auth')).blocking(true);
 

@@ -500,7 +500,7 @@ export function uiAssistant(context) {
                 return;
             }
 
-            var genericWelcomesCount = 2;
+            var genericWelcomesCount = 1;
             bodyTextArea.html(t('assistant.launch.generic_welcome.' + Math.floor(Math.random() * genericWelcomesCount)));
 
             if (!osm.authenticated()) return;

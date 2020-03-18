@@ -6,3 +6,20 @@
 .modal-rapid .fillL.rapid-stack > .modal-section > input.field-file {
     margin-top: 15px;
 } 
+
+#bar {
+    padding-left: 40px; 
+}
+
+div.background-pane .background-display-options,
+div.background-pane .background-offset { 
+    display:none; 
+} 
+
+ div.map-controls > div.map-control.map-data-control,
+ div.map-controls > div.map-control.map-issues-control,
+ div.map-controls > div.map-control.preferences-control,
+ div.map-controls > div.map-control.geolocate-control  {
+     display:none; 
+ }
+ 

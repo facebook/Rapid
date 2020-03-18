@@ -111,8 +111,8 @@ export function uiTopToolbar(context) {
             })) {
 
             tools = [
-                toolbox,
-                aiFeaturesToggle,
+                // toolbox,
+                // aiFeaturesToggle,
                 covidTracker,
                 'spacer',
                 /*
@@ -121,37 +121,37 @@ export function uiTopToolbar(context) {
                 */
                 centerZoom,
                 'spacer',
-                straighten,
-                orthogonalize,
-                circularize,
-                reverse,
-                split,
-                disconnect,
-                extract,
-                merge,
-                continueTool,
+                // straighten,
+                // orthogonalize,
+                // circularize,
+                // reverse,
+                // split,
+                // disconnect,
+                // extract,
+                // merge,
+                // continueTool,
                 'spacer',
-                downgrade,
+                // downgrade,
                 deleteTool,
                 'spacer',
                 undoRedo,
                 exportSafePlaces,
-//                save
+                // save
             ];
 
         } else if (mode.id === 'add-point' || mode.id === 'add-line' || mode.id === 'add-area' ||
             mode.id === 'draw-line' || mode.id === 'draw-area') {
 
             tools = [
-                toolbox,
-                aiFeaturesToggle,
+                // toolbox,
+                // aiFeaturesToggle,
                 covidTracker,
-                addingGeometry,
+                 addingGeometry,
                 'spacer',
-                structure,
-                powerSupport,
-                'spacer',
-                waySegments,
+                // structure,
+                // powerSupport,
+                // 'spacer',
+                // waySegments,
                 'spacer',
                 repeatAdd,
                 undoRedo,
@@ -161,23 +161,23 @@ export function uiTopToolbar(context) {
         } else {
 
             tools = [
-                toolbox,
-                aiFeaturesToggle,
+                // toolbox,
+                // aiFeaturesToggle,
                 covidTracker,
                 'spacer',
                 centerZoom,
                 'spacer',
                 addFeature,
-                addAddable,
-                addGeneric,
+                // addAddable,
+                // addGeneric,
                 addFavorite,
                 addRecent,
                 'spacer',
-                notes,
-                'spacer',
+                // notes,
+                // 'spacer',
                 undoRedo,
                 exportSafePlaces,
-//                save
+                // save
             ];
         }
 
