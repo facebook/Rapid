@@ -37,13 +37,12 @@ export function uiExportSafePlacesData(context) {
 
     return function save() {
         d3_event.preventDefault();
-        if (!context.inIntro() && history.hasChanges()) {
+        if (!context.inIntro()) {
             var extent = geoExtent([
               [-180, -90],
               [180, 90]
             ]);
             var all = context.intersects(extent);
-            window.alert('all has ' + all.length + ' points');
 
             function renderAsPoint(entity) {
               return entity.geometry(context.graph()) === 'point';
