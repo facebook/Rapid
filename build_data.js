@@ -25,6 +25,13 @@ const request = require('request').defaults({ maxSockets: 1 });
 
 let _currBuild = null;
 
+// if called directly, do the thing.
+if (process.argv[1].indexOf('build_data.js') > -1) {
+  buildData();
+} else {
+  module.exports = buildData;
+}
+
 
 function buildData(build_type) {
   if (_currBuild) return _currBuild;
@@ -777,7 +784,9 @@ function writeRapidConfig(build_type) {
 
   return Promise.all([readRapidConfig]).then(function(data) {
       var config = YAML.load(data[0]); 
-
+      
+      if (build_type === undefined) {build_type = 'public';}
+      
       return writeFileProm('data/rapid_config.json', JSON.stringify(config[build_type], null, 4)); 
   }); 
 }
