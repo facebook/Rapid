@@ -7,6 +7,7 @@ import { select as d3_select } from 'd3-selection';
 import { t, currentLocale, addTranslation, setLocale } from '../util/locale';
 
 import { coreRapidContext } from './rapid_context';
+import { coreData } from './data'; 
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { dataLocales, dataEn } from '../../data';
@@ -91,11 +92,12 @@ export function coreContext() {
 
 
     /* Straight accessors. Avoid using these if you can. */
-    var connection, history, validator;
+    var connection, history, validator, data;
     context.connection = function() { return connection; };
     context.history = function() { return history; };
     context.validator = function() { return validator; };
-
+    context.data = function() { return data; }; 
+    
     /* Connection */
     context.preauth = function(options) {
         if (connection) {
@@ -556,6 +558,7 @@ export function coreContext() {
         locale = locale.split('-')[0];
     }
 
+    data = coreData(context);
     history = coreHistory(context);
     validator = coreValidator(context);
 

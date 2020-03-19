@@ -1,14 +1,9 @@
-import {
-    select as d3_select,
-    selectAll as d3_selectAll
-} from 'd3-selection';
+import { select as d3_select, selectAll as d3_selectAll } from 'd3-selection';
 
 import { t, textDirection } from '../../util/locale';
 import { localize } from './helper';
 
 import { coreGraph } from '../../core/graph';
-import { dataIntroGraph } from '../../../data/intro_graph.json';
-import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services'; 
@@ -26,64 +21,83 @@ import { uiIntroStartEditing } from './start_editing';
 import { uiIntroRapid } from './rapid';
 
 
-var chapterUi = {
-    welcome: uiIntroWelcome,
-    navigation: uiIntroNavigation,
-    point: uiIntroPoint,
-    area: uiIntroArea,
-    line: uiIntroLine,
-    building: uiIntroBuilding,
-    rapid: uiIntroRapid,
-    startEditing: uiIntroStartEditing
+const chapterUi = {
+  welcome: uiIntroWelcome,
+  navigation: uiIntroNavigation,
+  point: uiIntroPoint,
+  area: uiIntroArea,
+  line: uiIntroLine,
+  building: uiIntroBuilding,
+  rapid: uiIntroRapid,
+  startEditing: uiIntroStartEditing
 };
 
-var chapterFlow = [
-    'welcome',
-    'navigation',
-    'point',
-    'area',
-    'line',
-    'building',
-    'rapid',
-    'startEditing'
+const chapterFlow = [
+  'welcome',
+  'navigation',
+  'point',
+  'area',
+  'line',
+  'building',
+  'rapid',
+  'startEditing'
 ];
 
 
 export function uiIntro(context, skipToRapid) {
-    var INTRO_IMAGERY = 'EsriWorldImageryClarity';
-    var introGraph = {};
-    var rapidGraph = {};
-    var _currChapter;
+    const INTRO_IMAGERY = 'EsriWorldImageryClarity';
+    let introGraph = {};
+    let rapidGraph = {};
+    let _currChapter;
+
 
     // create entities for intro graph and localize names
-    for (var id in dataIntroGraph) {
-        introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
-    }
+    
 
     // create entities for RapiD graph and localize names
-    for (id in dataIntroRapidGraph) {
+    for (let id in dataIntroRapidGraph) {
         rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
     }
 
-
     function intro(selection) {
+        context.data().get('intro_graph')
+            .then(dataIntroGraph => {
+                for (let id in dataIntroGraph) {
+                    if (!introGraph[id]){
+                    introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
+                }
+            }
+        }); 
+            
+        context.data().get('intro_fb_graph')
+            .then(dataIntroRapidGraph => {
+                for (let id in dataIntroRapidGraph) {
+                    if (!rapidGraph[id]){
+                        rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
+                }
+            }
+            selection.call(startIntro);
+        }); 
+    }
+    
+    
+    function startIntro(selection){        
         context.enter(modeBrowse(context));
 
         // Save current map state
-        var osm = context.connection();
-        var history = context.history().toJSON();
-        var hash = window.location.hash;
-        var center = context.map().center();
-        var zoom = context.map().zoom();
-        var background = context.background().baseLayerSource();
-        var overlays = context.background().overlayLayerSources();
-        var opacity = d3_selectAll('#map .layer-background').style('opacity');
-        var aiFeaturesOpacity = d3_selectAll('#map .layer-ai-features').style('opacity');
-        var caches = osm && osm.caches();
-        var baseEntities = context.history().graph().base().entities;
-        var countryCode = services.geocoder.countryCode;
-        var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
-        var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
+        let osm = context.connection();
+        let history = context.history().toJSON();
+        let hash = window.location.hash;
+        let center = context.map().center();
+        let zoom = context.map().zoom();
+        let background = context.background().baseLayerSource();
+        let overlays = context.background().overlayLayerSources();
+        let opacity = d3_selectAll('#map .layer-background').style('opacity');
+        let aiFeaturesOpacity = d3_selectAll('#map .layer-ai-features').style('opacity');
+        let caches = osm && osm.caches();
+        let baseEntities = context.history().graph().base().entities;
+        let fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
+        let fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
 
         // Block saving
         context.inIntro(true);
@@ -92,13 +106,13 @@ export function uiIntro(context, skipToRapid) {
         if (osm) { osm.toggle(false).reset(); }
         context.history().reset();
 
-        var loadedGraph = coreGraph().load(introGraph);
-        var graphEntities = Object.values(loadedGraph.entities);
+        let loadedGraph = coreGraph().load(introGraph);
+        let graphEntities = Object.values(loadedGraph.entities);
         context.history().merge(graphEntities);
         context.history().checkpoint('initial');
 
         // Setup imagery
-        var imagery = context.background().findSource(INTRO_IMAGERY);
+        let imagery = context.background().findSource(INTRO_IMAGERY);
         if (imagery) {
             context.background().baseLayerSource(imagery);
         } else {
@@ -109,7 +123,7 @@ export function uiIntro(context, skipToRapid) {
         });
 
         // Setup data layers (only OSM & ai-features)
-        var layers = context.layers();
+        let layers = context.layers();
         layers.all().forEach(function(item) {
             // if the layer has the function `enabled`
             if (typeof item.layer.enabled === 'function') {
@@ -124,25 +138,25 @@ export function uiIntro(context, skipToRapid) {
 
         if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset();
 
-        var coreGraphEntities = coreGraph().load(rapidGraph).entities;
+        let coreGraphEntities = coreGraph().load(rapidGraph).entities;
         services.fbMLRoads.merge(Object.values(coreGraphEntities));
         services.fbMLRoads.checkpoint('initial');
 
         d3_selectAll('#map .layer-background').style('opacity', 1);
         d3_selectAll('#map .layer-ai-features').style('opacity', 1);
 
-        var curtain = uiCurtain();
+        let curtain = uiCurtain();
         selection.call(curtain);
 
         // Store that the user started the walkthrough..
         context.storage('walkthrough_started', 'yes');
 
         // Restore previous walkthrough progress..
-        var storedProgress = context.storage('walkthrough_progress') || '';
-        var progress = storedProgress.split(';').filter(Boolean);
+        let storedProgress = context.storage('walkthrough_progress') || '';
+        let progress = storedProgress.split(';').filter(Boolean);
 
-        var chapters = chapterFlow.map(function(chapter, i) {
-            var s = chapterUi[chapter](context, curtain.reveal)
+        let chapters = chapterFlow.map(function(chapter, i) {
+            let s = chapterUi[chapter](context, curtain.reveal)
                 .on('done', function() {
                     context.presets().init();  // clear away "recent" presets
 
@@ -151,7 +165,7 @@ export function uiIntro(context, skipToRapid) {
                     }).classed('finished', true);
 
                     if (i < chapterFlow.length - 1) {
-                        var next = chapterFlow[i + 1];
+                        let next = chapterFlow[i + 1];
                         d3_select('button.chapter-' + next)
                             .classed('next', true);
                     }
@@ -169,7 +183,7 @@ export function uiIntro(context, skipToRapid) {
             context.storage('walkthrough_progress', utilArrayUniq(progress).join(';'));
 
             // Store if walkthrough is completed..
-            var incomplete = utilArrayDifference(chapterFlow, progress);
+            let incomplete = utilArrayDifference(chapterFlow, progress);
             if (!incomplete.length) {
                 context.storage('walkthrough_completed', 'yes');
             }
@@ -191,7 +205,7 @@ export function uiIntro(context, skipToRapid) {
             context.inIntro(false);
         });
 
-        var navwrap = selection
+        let navwrap = selection
             .append('div')
             .attr('class', 'intro-nav-wrap fillD');
 
@@ -201,12 +215,12 @@ export function uiIntro(context, skipToRapid) {
             .append('use')
             .attr('xlink:href', '#iD-logo-walkthrough');
 
-        var buttonwrap = navwrap
+        let buttonwrap = navwrap
             .append('div')
             .attr('class', 'joined')
             .selectAll('button.chapter');
 
-        var buttons = buttonwrap
+        let buttons = buttonwrap
             .data(chapters)
             .enter()
             .append('button')
