@@ -11,9 +11,6 @@ gaze(['css/**/*.css'], (err, watcher) => {
 });
 
 const server = new StaticServer({ rootPath: __dirname, port: 8080, followSymlink: true });
-  .then(() => startServer());	server.start(() => {
-
+server.start(() => {
   console.log(colors.yellow('Listening on ' + server.port));
-
 });
-function startServer() {	
