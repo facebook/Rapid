@@ -47,8 +47,8 @@ export function uiToolRapidCovid19Tracker(context) {
             var entities = [];
             for (var i = 0; i < spJson.length; i++) {
                 var point = spJson[i];
-                pointLon = point.hasOwnProperty('lon') ? Number(point.lon) : Number(point.longitude);
-                pointLat = point.hasOwnProperty('lat') ? Number(point.lat) : Number(point.latitude);
+                var pointLon = point.hasOwnProperty('lon') ? Number(point.lon) : Number(point.longitude);
+                var pointLat = point.hasOwnProperty('lat') ? Number(point.lat) : Number(point.latitude);
                 if (bounds.minlon > pointLon) {
                     bounds.minlon = pointLon;
                 }
@@ -72,7 +72,14 @@ export function uiToolRapidCovid19Tracker(context) {
                 });
                 entities.push(nodeEntity);
             }
-            window.alert('loaded ' + entities.length + ' SafePlaces points');
+            
+            var flash = uiFlash()
+                .duration(4000)
+                .iconName('#iD-icon-note')
+                .iconClass('operation')
+                .text(t('safeplaces_import.tooltip', { num: entities.length}));
+
+            flash();
 
             context.loadSpEntities(entities, stretchBounds(bounds));
         };
