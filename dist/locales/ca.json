@@ -5395,12 +5395,6 @@
             }
         },
         "community": {
-<<<<<<< HEAD
-            "LATAM-Twitter": {
-                "description": "Segueix-nos a Twitter a {url}"
-            },
-=======
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
             "OSM-AR-telegram": {
                 "name": "Telegram d'OpenStreetMap Argentina",
                 "description": "Uneix-te a la comunitat argentina d'OpenStreetMap a Telegram"

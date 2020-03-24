@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { osmEntity } from '../osm';
 import { utilRebind } from '../util/rebind';
-import { groupManager } from '../entities/group_manager';
 import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '../util';
 import { t } from '../util/locale';
 
@@ -62,11 +61,6 @@ export function rendererFeatures(context) {
             autoHidden: function() { return this.hidden() && this.currentMax > 0; }
         };
         _rulesArray.push(_rules[k]);
-    }
-
-    for (var id in groupManager.toggleableGroups) {
-        var group = groupManager.toggleableGroups[id];
-        defineRule(group.basicID(), group.matchesTags, group.localizedName(), group.localizedDescription(), group.toggleableMax());
     }
 
     // Lines or areas that don't match another feature filter.

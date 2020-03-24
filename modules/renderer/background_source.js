@@ -40,9 +40,9 @@ export function rendererBackgroundSource(data) {
     source.zoomExtent = data.zoomExtent || [0, 22];
     source.overzoom = data.overzoom !== false;
 
-    source.offset = function(_) {
+    source.offset = function(val) {
         if (!arguments.length) return offset;
-        offset = _;
+        offset = val;
         return source;
     };
 

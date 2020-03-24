@@ -16,8 +16,7 @@ import {
   resources as ociResources
 } from 'osm-community-index';
 
-import { rapid_config } from './rapid_config.json'
-import { dataImagery } from './imagery.json';
+import { rapid_config } from './rapid_config.json';
 import { presets } from './presets/presets.json';
 import { defaults } from './presets/defaults.json';
 import { categories } from './presets/categories.json';
@@ -50,7 +49,6 @@ export let data = {
     resources: ociResources,
     query: whichPolygon({ type: 'FeatureCollection', features: Object.values(ociFeatures) })
   },
-  imagery: dataImagery,  //legacy
   presets: {
     presets: presets,
     defaults: defaults,

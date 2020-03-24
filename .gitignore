@@ -13,6 +13,7 @@ transifex.auth
 /dist/*.js
 /dist/*.css
 /dist/*.map
+/dist/data/
 /dist/img/*.svg
 /dist/img/*.png
 /dist/img/*.gif

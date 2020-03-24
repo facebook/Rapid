@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
 
-import { data } from '../../data';
 import { svgPath } from './helpers';
 
 
@@ -71,35 +70,25 @@ export function svgDebug(projection, context) {
             .attr('class', 'layer-debug')
             .merge(layer);
 
-
-        // imagery
-        var extent = context.map().extent();
-        var matchImagery = (showsImagery && data.imagery.query.bbox(extent.rectangle(), true)) || [];
-        var features = matchImagery.map(function(d) { return data.imagery.features[d.id]; });
-
-        var imagery = layer.selectAll('path.debug-imagery')
-            .data(features);
-
-        imagery.exit()
-            .remove();
-
-        imagery.enter()
-            .append('path')
-            .attr('class', 'debug-imagery debug orange');
-
-
-        // community index
-        var community = layer.selectAll('path.debug-community')
-            .data(showsCommunity ? Object.values(data.community.features) : []);
-
-        community.exit()
-            .remove();
-
-        community.enter()
-            .append('path')
-            .attr('class', 'debug-community debug blue');
-
-
+            const extent = context.map().extent(); 
+            context.data().get('imagery')
+            .then(d => {
+              const hits = (showsImagery && d.query.bbox(extent.rectangle(), true)) || [];
+              const features = hits.map(d => d.features[d.id]);
+      
+              let imagery = layer.selectAll('path.debug-imagery')
+                .data(features);
+      
+              imagery.exit()
+                .remove();
+      
+              imagery.enter()
+                .append('path')
+                .attr('class', 'debug-imagery debug orange');
+            })
+            .catch(() => { /* ignore */ });
+            
+            
         // downloaded
         var osm = context.connection();
         var dataDownloaded = [];

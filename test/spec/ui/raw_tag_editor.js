@@ -4,7 +4,7 @@ describe('iD.uiRawTagEditor', function() {
     function render(tags) {
 
         entity = iD.osmNode({ id: 'n12345', tags: tags });
-        context = iD.coreContext();
+        context = iD.coreContext().init();
         context.history().merge([entity]);
 
         taglist = iD.uiRawTagEditor(context)

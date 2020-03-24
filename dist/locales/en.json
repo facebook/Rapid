@@ -10324,7 +10324,7 @@
             },
             "MAPNIK": {
                 "attribution": {
-                    "text": "© OpenStreetMap contributors, CC-BY-SA 2.0"
+                    "text": "© OpenStreetMap contributors, CC-BY-SA"
                 },
                 "description": "The default OpenStreetMap layer.",
                 "name": "OpenStreetMap (Standard)"
@@ -10335,6 +10335,20 @@
                 },
                 "description": "Satellite and aerial imagery.",
                 "name": "Mapbox Satellite"
+            },
+            "Maxar-Premium": {
+                "attribution": {
+                    "text": "Terms & Feedback"
+                },
+                "description": "Maxar Premium is a mosaic composed of Maxar basemap with select regions filled with +Vivid or custom area of interest imagery, 50cm resolution or better, and refreshed more frequently with ongoing updates.",
+                "name": "Maxar Premium Imagery (Beta)"
+            },
+            "Maxar-Standard": {
+                "attribution": {
+                    "text": "Terms & Feedback"
+                },
+                "description": "Maxar Standard is a curated set of imagery covering 86% of the earth’s landmass, with 30-60cm resolution where available, backfilled by Landsat. Average age is 2.31 years, with some areas updated 2x per year.",
+                "name": "Maxar Standard Imagery (Beta)"
             },
             "OSM_Inspector-Addresses": {
                 "attribution": {
@@ -10396,10 +10410,6 @@
                 "description": "Yellow = Public domain map data from the US Census. Red = Data not found in OpenStreetMap",
                 "name": "TIGER Roads 2018"
             },
-            "US-TIGER-Roads-2019": {
-                "description": "Yellow = Public domain map data from the US Census. Red = Data not found in OpenStreetMap",
-                "name": "TIGER Roads 2019"
-            },
             "USDA-NAIP": {
                 "description": "The most recent year of DOQQs from the National Agriculture Imagery Program (NAIP) for each state in the contiguous United States.",
                 "name": "National Agriculture Imagery Program"
@@ -10425,12 +10435,6 @@
                     "text": "Realized by means of Brussels UrbIS®© - Distribution & Copyright CIRB"
                 },
                 "name": "UrbIS-Ortho 2018"
-            },
-            "UrbISOrtho2019": {
-                "attribution": {
-                    "text": "Realized by means of Brussels UrbIS®© - Distribution & Copyright CIRB"
-                },
-                "name": "UrbIS-Ortho 2019"
             },
             "UrbisAdmFR": {
                 "attribution": {
@@ -10495,6 +10499,20 @@
                 "description": "Annotation overlay provided by basemap.at.",
                 "name": "basemap.at Overlay"
             },
+            "basemap.at-surface": {
+                "attribution": {
+                    "text": "basemap.at"
+                },
+                "description": "Surface layer provided by basemap.at.",
+                "name": "basemap.at Surface"
+            },
+            "basemap.at-terrain": {
+                "attribution": {
+                    "text": "basemap.at"
+                },
+                "description": "Terrain layer provided by basemap.at.",
+                "name": "basemap.at Terrain"
+            },
             "eufar-balaton": {
                 "attribution": {
                     "text": "EUFAR Balaton ortofotó 2010"
@@ -10509,12 +10527,12 @@
                 "description": "GSI Kiban 2500 via finds.jp. Good for tracing, but a bit older.",
                 "name": "Japan GSI KIBAN 2500"
             },
-            "gothenburg-citymap": {
+            "gsi.go.jp": {
                 "attribution": {
-                    "text": "© Gothenburg municipality, CC0"
+                    "text": "GSI Japan"
                 },
-                "description": "The city map is an overview map that describes Gothenburg. It contains general information about land, communications, hydrography, buildings, address numbers and street names, administrative division and other orientation text.",
-                "name": "Gothenburg City map"
+                "description": "Japan GSI ortho Imagery. Usually better than bing, but a bit older.",
+                "name": "Japan GSI ortho Imagery"
             },
             "gsi.go.jp_airphoto": {
                 "attribution": {

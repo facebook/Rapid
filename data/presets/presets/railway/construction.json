@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-    "icon": "iD-railway-rail",
-=======
     "icon": "temaki-railway_track_unfinished",
->>>>>>> aadbddba2... Update to temaki 3.14.0 (close #7299, re: #7255)
     "fields": [
         "name",
         "opening_date",

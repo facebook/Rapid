@@ -11,6 +11,21 @@ cutoffDate.setFullYear(cutoffDate.getFullYear() - 20);
 
 const keep = [
   // Add custom sources here if needed.
+  {
+    'id': 'Maxar-FB',
+    'name': 'Facebook\'s Map With AI - Maxar Imagery',
+    'type': 'tms',
+    'template': 'https://mapwith.ai/maps/ml_roads?theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A&result_type=satellite_raster_tile&materialize=true&x={x}&y={y}&z={zoom}',
+    'zoomExtent': [
+      11,
+      18
+    ],
+    'terms_url': 'https: //wiki.openstreetmap.org/wiki/DigitalGlobe',
+    'terms_text': 'Terms',
+    'default': true,
+    'description': 'Maxar Imagery used by Facebook\'s Map With AI.',
+    'startDate': '2019-03-01T00: 00: 00.000Z'
+  }
 ];
 
 const discard = {
@@ -128,6 +143,9 @@ sources.concat(keep).forEach(source => {
     ];
   }
 
+  if (source.zoomExtent) {
+    im.zoomExtent = source.zoomExtent;
+  }
   if (extent.polygon) {
     im.polygon = extent.polygon;
   } else if (extent.bbox) {
@@ -161,6 +179,14 @@ sources.concat(keep).forEach(source => {
     }
   });
 
+  if (source.id === 'Maxar-FB') {
+    im.template = source.template; 
+    im.terms_url = source.terms_url; 
+    im.terms_text = source.terms_text; 
+    im.startDate = source.startDate; 
+    im.zoomExtent = source.zoomExtent; 
+  }
+  
   imagery.push(im);
 });
 
