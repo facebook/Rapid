@@ -7,7 +7,7 @@ export function operationCycleHighwayTag(selectedIDs, context) {
     var _entityID = selectedIDs[0];
     var _entity = context.entity(_entityID);
     var _prevSelectedIDs; 
-    var ROAD_TYPES = ['residential', 'service', 'track', 'unclassified', 'tertiary'];
+    var ROAD_TYPES = ['residential', 'service', 'track', 'unclassified', 'tertiary', 'path'];
 
 
     var updateHighwayTag = function (tags) {
