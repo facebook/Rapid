@@ -11,7 +11,7 @@ import { dataIntroGraph } from '../../../data/intro_graph.json';
 import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services'; 
+import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
 import { utilArrayDifference, utilArrayUniq } from '../../util';
@@ -122,6 +122,7 @@ export function uiIntro(context, skipToRapid) {
             callback(null, t('intro.graph.countrycode'));
         };
 
+        if (services.esriData) services.esriData.toggle(false);
         if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset();
 
         var coreGraphEntities = coreGraph().load(rapidGraph).entities;
@@ -181,7 +182,8 @@ export function uiIntro(context, skipToRapid) {
             d3_selectAll('button.sidebar-toggle').classed('disabled', false);
             if (osm) { osm.toggle(true).reset().caches(caches); }
             context.history().reset().merge(Object.values(baseEntities));
-            if (services.fbMLRoads) {services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache);}
+            if (services.esriData) { services.esriData.toggle(true) }
+            if (services.fbMLRoads) { services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache); }
             services.fbMLRoads.reset().merge(Object.values(fbMLRoadsEntities));
             context.background().baseLayerSource(background);
             overlays.forEach(function(d) { context.background().toggleOverlayLayer(d); });
