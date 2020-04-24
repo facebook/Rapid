@@ -16,8 +16,9 @@ var _enabled = false;
 var _initialized = false;
 var _roadsService;
 var _actioned;
-var _roadsEnabled = false;
-var _buildingsEnabled = false;
+// var _roadsEnabled = false;
+// var _buildingsEnabled = false;
+
 
 export function svgAiFeatures(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
@@ -31,8 +32,8 @@ export function svgAiFeatures(projection, context, dispatch) {
         _enabled = true;
         _initialized = true;
         _actioned = new Set();
-        _roadsEnabled = true;
-        _buildingsEnabled = true;
+        // _roadsEnabled = true;
+        // _buildingsEnabled = true;
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
@@ -63,7 +64,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         var annotation = previousStack.annotation;
         if (isAiFeaturesAnnotation(annotation)) {
             _actioned.delete(annotation.id);
-            if (drawData.enabled()) { dispatch.call('change'); }  // redraw
+            if (_enabled) { dispatch.call('change'); }  // redraw
         }
     }
 
@@ -72,7 +73,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         var annotation = context.history().peekAnnotation();
         if (isAiFeaturesAnnotation(annotation)) {
             _actioned.add(annotation.id);
-            if (drawData.enabled()) { dispatch.call('change'); }  // redraw
+            if (_enabled) { dispatch.call('change'); }  // redraw
         }
     }
 
@@ -95,7 +96,7 @@ export function svgAiFeatures(projection, context, dispatch) {
                 }
             }
         });
-        if (_actioned.size && drawData.enabled()) {
+        if (_actioned.size && _enabled) {
             dispatch.call('change');  // redraw
         }
     }
@@ -279,30 +280,22 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
 
-    drawData.toggleRoads = function() {
-        _roadsEnabled = !_roadsEnabled;
-        var aiFeatures = d3_select('.layer-ai-features');
-        aiFeatures.classed('hide-rapid-roads', !_roadsEnabled);
-        showLayer();
-        dispatch.call('change');
-    };
+    // drawData.toggleRoads = function() {
+    //     _roadsEnabled = !_roadsEnabled;
+    //     var aiFeatures = d3_select('.layer-ai-features');
+    //     aiFeatures.classed('hide-rapid-roads', !_roadsEnabled);
+    //     showLayer();
+    //     dispatch.call('change');
+    // };
 
 
-    drawData.toggleBuildings = function() {
-        _buildingsEnabled = !_buildingsEnabled;
-        var aiFeatures = d3_select('.layer-ai-features');
-        aiFeatures.classed('hide-rapid-buildings', !_buildingsEnabled);
-        showLayer();
-        dispatch.call('change');
-    };
-
-    drawData.showRoads = function() {
-        return _roadsEnabled;
-    };
-
-    drawData.showBuildings = function() {
-        return _buildingsEnabled;
-    };
+    // drawData.toggleBuildings = function() {
+    //     _buildingsEnabled = !_buildingsEnabled;
+    //     var aiFeatures = d3_select('.layer-ai-features');
+    //     aiFeatures.classed('hide-rapid-buildings', !_buildingsEnabled);
+    //     showLayer();
+    //     dispatch.call('change');
+    // };
 
     drawData.showAll = function() {
         return _enabled;

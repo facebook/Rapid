@@ -7,7 +7,7 @@ export function coreRapidContext(context) {
     var rapidContext = {};
     rapidContext.version = '1.0.1';
 
-    var taskExtent;
+    var _taskExtent;
     rapidContext.setTaskExtentByGpxData = function(gpxData) {
         var dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
         var gj = toGeoJSON.gpx(dom);
@@ -23,11 +23,21 @@ export function coreRapidContext(context) {
                     if (maxlon === undefined || lon > maxlon) maxlon = lon;
                 }
             });
-            taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
+            _taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
         }
     };
+
     rapidContext.getTaskExtent = function() {
-        return taskExtent;
+        return _taskExtent;
+    };
+
+
+    var _datasets = {
+        'fbRoads': true,
+        'msBuildings': true
+    };
+    rapidContext.datasets = function() {
+        return _datasets;
     };
 
     return rapidContext;

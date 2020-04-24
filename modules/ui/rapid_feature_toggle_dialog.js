@@ -15,15 +15,26 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
 
 
-    function toggleSvgBuildings () {
-        var drawAiFeatures = context.layers().layer('ai-features');
-        drawAiFeatures.toggleBuildings();
+    function buildingsEnabled() {
+        return !!context.rapidContext().datasets().msBuildings;
+    }
+    function toggleBuildings() {
+        var datasets = context.rapidContext().datasets();
+        datasets.msBuildings = !datasets.msBuildings;
+
+        var aiFeatures = d3_select('.layer-ai-features');
+        aiFeatures.classed('hide-rapid-buildings', !datasets.msBuildings);   // toggles with CSS for now..
     }
 
+    function roadsEnabled() {
+        return !!context.rapidContext().datasets().fbRoads;
+    }
+    function toggleRoads() {
+        var datasets = context.rapidContext().datasets();
+        datasets.fbRoads = !datasets.fbRoads;
 
-    function toggleSvgRoads() {
-        var drawAiFeatures = context.layers().layer('ai-features');
-        drawAiFeatures.toggleRoads();
+        var aiFeatures = d3_select('.layer-ai-features');
+        aiFeatures.classed('hide-rapid-roads', !datasets.fbRoads);   // toggles with CSS for now..
     }
 
 
@@ -109,8 +120,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             label: t('rapid_feature_toggle.roads'),
             license: marked(t('rapid_feature_toggle.roads_license')),
             description: t('rapid_feature_toggle.roads_provided_by'),
-            handler: toggleSvgRoads,
-            enabled: drawAiFeatures.showRoads(),
+            handler: toggleRoads,
+            enabled: roadsEnabled(),
             greyout: !drawAiFeatures.showAll()
         });
 
@@ -120,8 +131,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
             label: t('rapid_feature_toggle.buildings'),
             description: t('rapid_feature_toggle.buildings_provided_by'),
             license: marked(t('rapid_feature_toggle.buildings_license')),
-            handler: toggleSvgBuildings,
-            enabled: drawAiFeatures.showBuildings(),
+            handler: toggleBuildings,
+            enabled: buildingsEnabled(),
             greyout: !drawAiFeatures.showAll()
         });
 
