@@ -904,14 +904,15 @@ en:
     roads: Roads
     roads_provided_by: provided by Facebook
     roads_license: "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
-    buildings: Buildings 
+    buildings: Buildings
     buildings_provided_by: provided by Microsoft
     buildings_license: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
-  rapid_poweruser_features: 
+    view_manage_datasets: "View/Manage Datasets"
+  rapid_poweruser_features:
     top_label: "{icon} Power User Features"
     top_label_desc: for RapiD Insiders
     ai_feature_halo: AI Feature Halo
-    ai_feature_halo_desc: Enable a halo around AI features in the map 
+    ai_feature_halo_desc: Enable a halo around AI features in the map
     tagnostic_road_combine: Tag-agnostic road combine
     tagnostic_road_combine_desc: Allow the Combine operation for roads whose highway tagging differs
     tag_sources: Tag highways as DG

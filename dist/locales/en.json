@@ -1127,7 +1127,8 @@
             "roads_license": "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)",
             "buildings": "Buildings",
             "buildings_provided_by": "provided by Microsoft",
-            "buildings_license": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
+            "buildings_license": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)",
+            "view_manage_datasets": "View/Manage Datasets"
         },
         "rapid_poweruser_features": {
             "top_label": "{icon} Power User Features",
@@ -10516,6 +10517,13 @@
                 "description": "The city map is an overview map that describes Gothenburg. It contains general information about land, communications, hydrography, buildings, address numbers and street names, administrative division and other orientation text.",
                 "name": "Gothenburg City map"
             },
+            "gothenburg-ortho": {
+                "attribution": {
+                    "text": "© Gothenburg municipality, CC0"
+                },
+                "description": "Orthophoto for Gothenburg municipality",
+                "name": "Gothenburg Orthophoto"
+            },
             "gsi.go.jp_airphoto": {
                 "attribution": {
                     "text": "GSI Japan"
@@ -10683,6 +10691,12 @@
                 },
                 "name": "Thunderforest Landscape"
             },
+            "tf-outdoors": {
+                "attribution": {
+                    "text": "Maps © Thunderforest, Data © OpenStreetMap contributors"
+                },
+                "name": "Thunderforest Outdoors"
+            },
             "trafikverket-baninfo": {
                 "attribution": {
                     "text": "© Trafikverket, CC0"
@@ -10724,6 +10738,12 @@
                 },
                 "description": "Swedish NVDB road network with several options for map layers",
                 "name": "Trafikverket Road Network options"
+            },
+            "wroclaw-orto2018": {
+                "attribution": {
+                    "text": "Urząd Miasta Wrocław"
+                },
+                "name": "Wrocław: Orthophotomap 2018 (aerial image)"
             }
         },
         "community": {

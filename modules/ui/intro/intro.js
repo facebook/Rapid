@@ -182,7 +182,7 @@ export function uiIntro(context, skipToRapid) {
             d3_selectAll('button.sidebar-toggle').classed('disabled', false);
             if (osm) { osm.toggle(true).reset().caches(caches); }
             context.history().reset().merge(Object.values(baseEntities));
-            if (services.esriData) { services.esriData.toggle(true) }
+            if (services.esriData) { services.esriData.toggle(true); }
             if (services.fbMLRoads) { services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache); }
             services.fbMLRoads.reset().merge(Object.values(fbMLRoadsEntities));
             context.background().baseLayerSource(background);
