@@ -3,11 +3,13 @@ import {
     select as d3_select
 } from 'd3-selection';
 
+import marked from 'marked';
+
 import { t, textDirection } from '../util/locale';
 import { icon } from './intro/helper';
 import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
-import marked from 'marked';
+import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
@@ -130,8 +132,10 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         var manageDatasets = modal
             .append('div')
             .attr('class','modal-section rapid-checkbox')
-            .attr('id', 'section-manage-datasets');
-            // .on('click', ?);
+            .attr('id', 'section-manage-datasets')
+            .on('click', function() {
+                context.container().call(uiRapidViewManageDatasets(context, modalSelection));
+            });
 
         manageDatasets
             .append('div')
