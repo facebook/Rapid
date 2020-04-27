@@ -438,14 +438,8 @@ hide this one and style something on top of it.  */
     opacity: 1;
 }
 
-g.layer-ai-features.hide-rapid-roads path.road,
-g.layer-ai-features.hide-rapid-roads g.node.road,
-g.layer-ai-features.hide-rapid-buildings path.building  {
-    display: none;
-}
 
 /* Rapid power user features */
-
 .rapid-feature-animation.poweruser {
     background-size: 100% 100%;
     width: 130px;

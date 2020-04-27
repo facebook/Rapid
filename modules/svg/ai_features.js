@@ -14,7 +14,8 @@ const radii = {
 };
 let _enabled = false;
 let _initialized = false;
-let _roadsService;
+let _FbMlService;
+let _EsriService;
 let _actioned;
 
 
@@ -39,13 +40,22 @@ export function svgAiFeatures(projection, context, dispatch) {
   }
 
 
-  function getService() {
-    if (services.fbMLRoads && !_roadsService) {
-      _roadsService = services.fbMLRoads;
-      _roadsService.event.on('loadedData', throttledRedraw);
+  // Services are loosly coupled in iD, so we use these functions
+  // to gain access to them, and bind the event handlers a single time.
+  function getFbMlService() {
+    if (services.fbMLRoads && !_FbMlService) {
+      _FbMlService = services.fbMLRoads;
+      _FbMlService.event.on('loadedData', throttledRedraw);
     }
+    return _FbMlService;
+  }
 
-    return _roadsService;
+  function getEsriService() {
+    if (services.esriData && !_EsriService) {
+      _EsriService = services.esriData;
+      _EsriService.event.on('loadedData', throttledRedraw);
+    }
+    return _EsriService;
   }
 
 
@@ -86,7 +96,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         // particular case, restoring from history on page reload, we
         // prevent new splits (possibly different from before the page
         // reload) from being displayed by storing the origid and
-        // checking against it in drawData().
+        // checking against it in render().
         if (annotation.origid) {
           _actioned.add(annotation.origid);
         }
@@ -144,7 +154,10 @@ export function svgAiFeatures(projection, context, dispatch) {
   }
 
 
-  function drawData(selection) {
+  function render(selection) {
+    const rapidContext = context.rapidContext();
+
+    // Ensure Rapid layer exists
     layer = selection.selectAll('.layer-ai-features')
       .data(_enabled ? [0] : []);
 
@@ -157,20 +170,42 @@ export function svgAiFeatures(projection, context, dispatch) {
       .merge(layer);
 
     const surface = context.surface();
-    const waitingForTaskExtent = gpxInUrl && !context.rapidContext().getTaskExtent();
+    const waitingForTaskExtent = gpxInUrl && !rapidContext.getTaskExtent();
     if (!surface || surface.empty() || waitingForTaskExtent) return;  // not ready to draw yet, starting up
 
-    const roadsService = getService();
-    const roadsGraph = roadsService && roadsService.graph();
-    const getPath = svgPath(projection, roadsGraph);
-    const getTransform = svgPointTransform(projection);
 
+    // Gather available datasets
+    const rapidDatasets = rapidContext.datasets();
+    const datasets = Object.values(rapidDatasets)
+      .filter(dataset => dataset.enabled);
+
+    let dsGroups = layer.selectAll('.layer-rapid-dataset')
+      .data(datasets, d => d.key);
+
+    dsGroups.exit()
+      .remove();
+
+    dsGroups.enter()
+      .append('g')
+      .attr('class', d => `layer-rapid-dataset layer-rapid-dataset-${d.key}`)
+      .merge(dsGroups)
+      .each(eachDataset);
+  }
+
+
+  function eachDataset(dataset, i, nodes) {
+    const rapidContext = context.rapidContext();
+    const selection = d3_select(nodes[i]);
+    const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
+    const graph = service && service.graph();
+    const getPath = svgPath(projection, graph);
+    const getTransform = svgPointTransform(projection);
 
     // Gather data
     let geoData = [];
-    if (roadsService && context.map().zoom() >= context.minEditableZoom()) {
-      roadsService.loadTiles(projection, context.rapidContext().getTaskExtent());
-      geoData = roadsService
+    if (service && context.map().zoom() >= context.minEditableZoom()) {
+      service.loadTiles(projection, rapidContext.getTaskExtent());
+      geoData = service
         .intersects(context.extent())
         .filter(d => {
           return d.type === 'way'
@@ -178,11 +213,19 @@ export function svgAiFeatures(projection, context, dispatch) {
             && !_actioned.has(d.__origid__);  // see onHistoryRestore()
         })
         .filter(getPath);
+
+      // fb_ai service gives us roads and buildings together,
+      // so filter further according to which dataset we're drawing
+      if (dataset.key === 'fbRoads') {
+        geoData = geoData.filter(isRoad);
+      } else if (dataset.key === 'msBuildings') {
+        geoData = geoData.filter(isBuilding);
+      }
     }
 
 
     // Draw shadow, casing, stroke layers
-    let linegroups = layer
+    let linegroups = selection
       .selectAll('g.linegroup')
       .data(['shadow', 'casing', 'stroke']);
 
@@ -219,7 +262,7 @@ export function svgAiFeatures(projection, context, dispatch) {
 
 
     // Draw first, last vertex layers
-    let vertexgroups = layer
+    let vertexgroups = selection
       .selectAll('g.vertexgroup')
       .data(['first', 'last']);
 
@@ -228,22 +271,22 @@ export function svgAiFeatures(projection, context, dispatch) {
       .attr('class', d => `vertexgroup vertexgroup-${d}`)
       .merge(vertexgroups);
 
-    // Draw groups
+    // Draw vertices
     let vertexData = {
       first: geoData,
       last: geoData
     };
 
-    let groups = vertexgroups
+    let vertices = vertexgroups
       .selectAll('g.vertex')
       .data(layer => vertexData[layer], featureKey);
 
     // exit
-    groups.exit()
+    vertices.exit()
       .remove();
 
     // enter
-    let enter = groups.enter()
+    let enter = vertices.enter()
       .append('g')
       .attr('class', (d, i, nodes) => {
         const currNode = nodes[i];
@@ -262,13 +305,13 @@ export function svgAiFeatures(projection, context, dispatch) {
     // update
     const zoom = geoScaleToZoom(projection.scale());
     const radiusIdx = (zoom < 17 ? 0 : zoom < 18 ? 1 : 2);
-    groups = groups
+    vertices = vertices
       .merge(enter)
       .attr('transform', (d, i, nodes) => {
         const currNode = nodes[i];
         const vertexgroup = currNode.parentNode.__data__;
         const nodeIdx = vertexgroup === 'first' ? 0 : d.nodes.length - 1;
-        return getTransform(roadsGraph.entities[d.nodes[nodeIdx]]);
+        return getTransform(graph.entities[d.nodes[nodeIdx]]);
       })
       .call(selection => {
         ['stroke', 'fill'].forEach(klass => {
@@ -279,12 +322,12 @@ export function svgAiFeatures(projection, context, dispatch) {
   }
 
 
-  drawData.showAll = function() {
+  render.showAll = function() {
     return _enabled;
   };
 
 
-  drawData.enabled = function(val) {
+  render.enabled = function(val) {
     if (!arguments.length) return _enabled;
 
     _enabled = val;
@@ -295,10 +338,10 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
     dispatch.call('change');
-    return drawData;
+    return render;
   };
 
 
   init();
-  return drawData;
+  return render;
 }

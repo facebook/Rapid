@@ -33,8 +33,16 @@ export function coreRapidContext(context) {
 
   /* Available datasets */
   let _datasets = {
-    'fbRoads': true,
-    'msBuildings': true
+    'fbRoads': {
+      key: 'fbRoads',
+      enabled: true,
+      service: 'fbml'
+    },
+    'msBuildings': {
+      key: 'msBuildings',
+      enabled: true,
+      service: 'fbml'
+    }
   };
   _rapidContext.datasets = () => _datasets;
 

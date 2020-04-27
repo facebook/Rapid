@@ -14,27 +14,28 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
 
-
     function buildingsEnabled() {
-        return !!context.rapidContext().datasets().msBuildings;
+        var msBuildings = context.rapidContext().datasets().msBuildings;
+        return msBuildings && msBuildings.enabled;
     }
     function toggleBuildings() {
-        var datasets = context.rapidContext().datasets();
-        datasets.msBuildings = !datasets.msBuildings;
-
-        var aiFeatures = d3_select('.layer-ai-features');
-        aiFeatures.classed('hide-rapid-buildings', !datasets.msBuildings);   // toggles with CSS for now..
+        var msBuildings = context.rapidContext().datasets().msBuildings;
+        if (msBuildings) {
+            msBuildings.enabled = !msBuildings.enabled;
+            context.map().pan([0,0]);   // trigger a redraw
+        }
     }
 
     function roadsEnabled() {
-        return !!context.rapidContext().datasets().fbRoads;
+        var fbRoads = context.rapidContext().datasets().fbRoads;
+        return fbRoads && fbRoads.enabled;
     }
     function toggleRoads() {
-        var datasets = context.rapidContext().datasets();
-        datasets.fbRoads = !datasets.fbRoads;
-
-        var aiFeatures = d3_select('.layer-ai-features');
-        aiFeatures.classed('hide-rapid-roads', !datasets.fbRoads);   // toggles with CSS for now..
+        var fbRoads = context.rapidContext().datasets().fbRoads;
+        if (fbRoads) {
+            fbRoads.enabled = !fbRoads.enabled;
+            context.map().pan([0,0]);   // trigger a redraw
+        }
     }
 
 
