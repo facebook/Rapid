@@ -4,41 +4,39 @@ import toGeoJSON from '@mapbox/togeojson';
 
 
 export function coreRapidContext(context) {
-    var rapidContext = {};
-    rapidContext.version = '1.0.1';
+  let _rapidContext = {};
+  _rapidContext.version = '1.0.1';
 
-    var _taskExtent;
-    rapidContext.setTaskExtentByGpxData = function(gpxData) {
-        var dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
-        var gj = toGeoJSON.gpx(dom);
-        if (gj.type === 'FeatureCollection') {
-            var minlat, minlon, maxlat, maxlon;
-            gj.features.forEach(function(f) {
-                if (f.geometry.type === 'Point') {
-                    var lon = f.geometry.coordinates[0];
-                    var lat = f.geometry.coordinates[1];
-                    if (minlat === undefined || lat < minlat) minlat = lat;
-                    if (minlon === undefined || lon < minlon) minlon = lon;
-                    if (maxlat === undefined || lat > maxlat) maxlat = lat;
-                    if (maxlon === undefined || lon > maxlon) maxlon = lon;
-                }
-            });
-            _taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
+  /* Task extents */
+  let _taskExtent;
+  _rapidContext.setTaskExtentByGpxData = function(gpxData) {
+    const dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
+    const gj = toGeoJSON.gpx(dom);
+    if (gj.type === 'FeatureCollection') {
+      let minlat, minlon, maxlat, maxlon;
+      gj.features.forEach(f => {
+        if (f.geometry.type === 'Point') {
+          const lon = f.geometry.coordinates[0];
+          const lat = f.geometry.coordinates[1];
+          if (minlat === undefined || lat < minlat) minlat = lat;
+          if (minlon === undefined || lon < minlon) minlon = lon;
+          if (maxlat === undefined || lat > maxlat) maxlat = lat;
+          if (maxlon === undefined || lon > maxlon) maxlon = lon;
         }
-    };
+      });
+      _taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
+    }
+  };
 
-    rapidContext.getTaskExtent = function() {
-        return _taskExtent;
-    };
+  _rapidContext.getTaskExtent = () => _taskExtent;
 
 
-    var _datasets = {
-        'fbRoads': true,
-        'msBuildings': true
-    };
-    rapidContext.datasets = function() {
-        return _datasets;
-    };
+  /* Available datasets */
+  let _datasets = {
+    'fbRoads': true,
+    'msBuildings': true
+  };
+  _rapidContext.datasets = () => _datasets;
 
-    return rapidContext;
+  return _rapidContext;
 }
