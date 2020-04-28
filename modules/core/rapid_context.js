@@ -3,7 +3,7 @@ import { geoExtent } from '../geo';
 import toGeoJSON from '@mapbox/togeojson';
 
 
-export function coreRapidContext(context) {
+export function coreRapidContext() {
   let _rapidContext = {};
   _rapidContext.version = '1.0.1';
 
@@ -36,12 +36,14 @@ export function coreRapidContext(context) {
     'fbRoads': {
       key: 'fbRoads',
       enabled: true,
-      service: 'fbml'
+      service: 'fbml',
+      color: '#ff26d4'
     },
     'msBuildings': {
       key: 'msBuildings',
       enabled: true,
-      service: 'fbml'
+      service: 'fbml',
+      color: '#ff26d4'
     }
   };
   _rapidContext.datasets = () => _datasets;

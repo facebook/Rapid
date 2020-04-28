@@ -9,7 +9,7 @@
 /* Road Lines */
 
 .layer-ai-features path.stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 5;
     fill: none;
 }
@@ -55,7 +55,7 @@
 }
 
 .layer-ai-features g.vertex .stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 3;
     fill: #fff;
 }
@@ -64,15 +64,10 @@
     stroke-width: 2;
 }
 
-.layer-ai-features .road.hide, .layer-ai-features .building.hide {
-    display: none;
-}
-
 .layer-ai-features  path.line.building.stroke {
     stroke-width: 5px;
-    stroke: #ff26d4;
-     fill: url(#ai-building);  
-    fill-opacity: 1; 
+    stroke: currentColor;
+    fill-opacity: 1;
 }
 
 .layer-ai-features  path.line.building.shadow {
@@ -83,6 +78,6 @@
     stroke-width: 3px;
 }
 
-.layer-ai-features .node.vertex.building circle{
-    opacity: 0; 
+.layer-ai-features .node.vertex.building circle {
+    opacity: 0;
 }

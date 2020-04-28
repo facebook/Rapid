@@ -20,9 +20,9 @@ let _actioned;
 
 
 export function svgAiFeatures(projection, context, dispatch) {
-  let throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
-  let layer = d3_select(null);
-  let gpxInUrl = utilStringQs(window.location.hash).gpx;
+  const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
+  const gpxInUrl = utilStringQs(window.location.hash).gpx;
+  let _layer = d3_select(null);
 
 
   function init() {
@@ -121,21 +121,21 @@ export function svgAiFeatures(projection, context, dispatch) {
 
 
   function layerOn() {
-    layer.style('display', 'block');
+    _layer.style('display', 'block');
   }
 
 
   function layerOff() {
-    layer.style('display', 'none');
+    _layer.style('display', 'none');
   }
 
 
-  function isBuilding(d){
+  function isBuilding(d) {
     return d.tags.building === 'yes';
   }
 
 
-  function isRoad(d){
+  function isRoad(d) {
     return !!d.tags.highway;
   }
 
@@ -157,38 +157,80 @@ export function svgAiFeatures(projection, context, dispatch) {
   function render(selection) {
     const rapidContext = context.rapidContext();
 
-    // Ensure Rapid layer exists
-    layer = selection.selectAll('.layer-ai-features')
+    // Ensure Rapid layer and <defs> exists
+    _layer = selection.selectAll('.layer-ai-features')
       .data(_enabled ? [0] : []);
 
-    layer.exit()
+    _layer.exit()
       .remove();
 
-    layer = layer.enter()
+    let layerEnter = _layer.enter()
       .append('g')
-      .attr('class', 'layer-ai-features')
-      .merge(layer);
+      .attr('class', 'layer-ai-features');
+
+    layerEnter
+      .append('defs')
+      .attr('class', 'rapid-defs');
+
+    _layer = layerEnter
+      .merge(_layer);
 
     const surface = context.surface();
     const waitingForTaskExtent = gpxInUrl && !rapidContext.getTaskExtent();
     if (!surface || surface.empty() || waitingForTaskExtent) return;  // not ready to draw yet, starting up
 
 
-    // Gather available datasets
+    // Gather available datasets, generate a unique fill pattern
+    // and a layer group for each dataset. Fill pattern styling is complicated.
+    // Style needs to apply in the def, not where the pattern is used.
     const rapidDatasets = rapidContext.datasets();
     const datasets = Object.values(rapidDatasets)
       .filter(dataset => dataset.enabled);
 
-    let dsGroups = layer.selectAll('.layer-rapid-dataset')
+    let defs = _layer.selectAll('.rapid-defs');
+    let dsPatterns = defs.selectAll('.rapid-fill-pattern')
       .data(datasets, d => d.key);
 
+    // exit
+    dsPatterns.exit()
+      .remove();
+
+    // enter
+    let dsPatternsEnter = dsPatterns.enter()
+      .append('pattern')
+      .attr('id', d => `fill-${d.key}`)
+      .attr('class', 'rapid-fill-pattern')
+      .attr('width', 4)
+      .attr('height', 15)
+      .attr('patternUnits', 'userSpaceOnUse')
+      .attr('patternTransform', 'rotate(45 50 50)');
+
+    dsPatternsEnter
+      .append('line')
+      .attr('class', 'ai-building-line')
+      .attr('stroke', 'currentColor')
+      .attr('stroke-width', '2px')
+      .attr('y2', '15');
+
+    // update
+    dsPatterns = dsPatternsEnter
+      .merge(dsPatterns)
+      .style('color', d => d.color || '#ff26d4');
+
+
+    let dsGroups = _layer.selectAll('.layer-rapid-dataset')
+      .data(datasets, d => d.key);
+
+    // exit
     dsGroups.exit()
       .remove();
 
-    dsGroups.enter()
+    // enter/update
+    dsGroups = dsGroups.enter()
       .append('g')
       .attr('class', d => `layer-rapid-dataset layer-rapid-dataset-${d.key}`)
       .merge(dsGroups)
+      .style('color', d => d.color || '#ff26d4')
       .each(eachDataset);
   }
 
@@ -243,7 +285,7 @@ export function svgAiFeatures(projection, context, dispatch) {
 
     let paths = linegroups
       .selectAll('path')
-      .data(layer => pathData[layer], featureKey);
+      .data(d => pathData[d], featureKey);
 
     // exit
     paths.exit()
@@ -252,6 +294,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter/update
     paths = paths.enter()
       .append('path')
+      .attr('style', d => isBuilding(d) ? `fill: url(#fill-${dataset.key})` : null)
       .attr('class', (d, i, nodes) => {
         const currNode = nodes[i];
         const linegroup = currNode.parentNode.__data__;
@@ -279,7 +322,7 @@ export function svgAiFeatures(projection, context, dispatch) {
 
     let vertices = vertexgroups
       .selectAll('g.vertex')
-      .data(layer => vertexData[layer], featureKey);
+      .data(d => vertexData[d], featureKey);
 
     // exit
     vertices.exit()

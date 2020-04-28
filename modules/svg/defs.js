@@ -13,18 +13,6 @@ export function svgDefs(context) {
     function drawDefs(selection) {
         var defs = selection.append('defs');
 
-        // add pattern for AI buildings
-        defs.append('pattern')
-            .attr('id', 'ai-building')    
-            .attr('width', 4)
-            .attr('height', 15)
-            .attr('patternUnits', 'userSpaceOnUse')
-            .attr('patternTransform', 'rotate(45 50 50)')
-            .append('line')
-            .attr('stroke', '#ff26d4')
-            .attr('stroke-width', '2px')
-            .attr('y2', '15'); 
-    
         // add markers
         defs
             .append('marker')
