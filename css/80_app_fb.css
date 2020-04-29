@@ -261,6 +261,13 @@ form.rapid-feature .description.poweruser {
     padding: 5px;
 }
 
+.modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 2px solid #ccca;
+}
+.modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 2px solid #ccca;
+}
+
 .modal-section.rapid-checkbox {
     font-size: 24px;
     display: flex;

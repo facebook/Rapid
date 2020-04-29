@@ -1,5 +1,5 @@
 import { geoExtent } from '../geo';
-
+import { t } from '../util/locale';
 import toGeoJSON from '@mapbox/togeojson';
 
 
@@ -37,13 +37,19 @@ export function coreRapidContext() {
       key: 'fbRoads',
       enabled: true,
       service: 'fbml',
-      color: '#ff26d4'
+      color: '#ff26d4',
+      label: t('rapid_feature_toggle.fbRoads.label'),
+      description: t('rapid_feature_toggle.fbRoads.description'),
+      license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
     },
     'msBuildings': {
       key: 'msBuildings',
       enabled: true,
       service: 'fbml',
-      color: '#ff26d4'
+      color: '#ff26d4',
+      label: t('rapid_feature_toggle.msBuildings.label'),
+      description: t('rapid_feature_toggle.msBuildings.description'),
+      license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
     }
   };
   _rapidContext.datasets = () => _datasets;
