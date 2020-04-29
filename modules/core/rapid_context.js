@@ -4,6 +4,8 @@ import toGeoJSON from '@mapbox/togeojson';
 
 
 export function coreRapidContext() {
+  const RAPID_MAGENTA = '#ff26d4';
+
   let _rapidContext = {};
   _rapidContext.version = '1.0.1';
 
@@ -37,7 +39,7 @@ export function coreRapidContext() {
       key: 'fbRoads',
       enabled: true,
       service: 'fbml',
-      color: '#ff26d4',
+      color: RAPID_MAGENTA,
       label: t('rapid_feature_toggle.fbRoads.label'),
       description: t('rapid_feature_toggle.fbRoads.description'),
       license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
@@ -46,7 +48,7 @@ export function coreRapidContext() {
       key: 'msBuildings',
       enabled: true,
       service: 'fbml',
-      color: '#ff26d4',
+      color: RAPID_MAGENTA,
       label: t('rapid_feature_toggle.msBuildings.label'),
       description: t('rapid_feature_toggle.msBuildings.description'),
       license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')

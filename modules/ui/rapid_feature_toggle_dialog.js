@@ -9,6 +9,7 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
+  const RAPID_MAGENTA = '#ff26d4';
   const rapidContext = context.rapidContext();
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -23,6 +24,15 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const dataset = rapidContext.datasets()[d.key];
     if (dataset) {
       dataset.enabled = !dataset.enabled;
+      context.map().pan([0,0]);   // trigger a map redraw
+    }
+  }
+
+  function changeColor(d, i, nodes) {
+    const input = nodes[i];
+    const dataset = rapidContext.datasets()[d.key];
+    if (dataset) {
+      dataset.color = input.value || RAPID_MAGENTA;
       context.map().pan([0,0]);   // trigger a map redraw
     }
   }
@@ -84,6 +94,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .html('(' + AIFeatureToggleKey + ')');
 
     let toggleAllCheckboxEnter = toggleAllEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-inputs')
       .append('label')
       .attr('class', 'rapid-checkbox-label');
 
@@ -122,8 +134,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .text(t('rapid_feature_toggle.view_manage_datasets'));
 
     manageDatasetsEnter
-      .append('label')
-      .attr('class', 'rapid-checkbox-label')
+      .append('div')
+      .attr('class', 'rapid-checkbox-inputs')
       .append('div')
       .call(svgIcon(textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'));
   }
@@ -181,17 +193,33 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         }
       });
 
+    let inputsEnter = rowsEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-inputs');
 
-    let checkBoxEnter = rowsEnter
+
+    let colorPickerEnter = inputsEnter
+      .append('label')
+      .attr('class', 'rapid-colorpicker-label');
+
+    colorPickerEnter
+      .append('input')
+      .attr('type', 'text')
+      .attr('class', 'rapid-feature-colorpicker')
+      .on('change', changeColor);
+
+
+    let checkboxEnter = inputsEnter
       .append('label')
       .attr('class', 'rapid-checkbox-label');
 
-    checkBoxEnter
+    checkboxEnter
       .append('input')
       .attr('type', 'checkbox')
-      .attr('class', 'rapid-feature-checkbox');
+      .attr('class', 'rapid-feature-checkbox')
+      .on('click', toggleDataset);
 
-    checkBoxEnter
+    checkboxEnter
       .append('div')
       .attr('class', 'rapid-checkbox-custom');
 
@@ -201,9 +229,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .merge(rowsEnter)
       .classed('disabled', !rapidLayer.showAll());
 
+    rows.selectAll('.rapid-feature-colorpicker')
+      .property('value', d => d.color || RAPID_MAGENTA);
+
     rows.selectAll('.rapid-feature-checkbox')
       .property('checked', datasetEnabled)
-      .attr('disabled', rapidLayer.showAll() ? null : true)
-      .on('click', toggleDataset);
+      .attr('disabled', rapidLayer.showAll() ? null : true);
   }
 }

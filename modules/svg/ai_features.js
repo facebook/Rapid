@@ -20,6 +20,7 @@ let _actioned;
 
 
 export function svgAiFeatures(projection, context, dispatch) {
+  const RAPID_MAGENTA = '#ff26d4';
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
   const gpxInUrl = utilStringQs(window.location.hash).gpx;
   let _layer = d3_select(null);
@@ -215,7 +216,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     // update
     dsPatterns = dsPatternsEnter
       .merge(dsPatterns)
-      .style('color', d => d.color || '#ff26d4');
+      .style('color', d => d.color || RAPID_MAGENTA);
 
 
     let dsGroups = _layer.selectAll('.layer-rapid-dataset')
@@ -230,7 +231,7 @@ export function svgAiFeatures(projection, context, dispatch) {
       .append('g')
       .attr('class', d => `layer-rapid-dataset layer-rapid-dataset-${d.key}`)
       .merge(dsGroups)
-      .style('color', d => d.color || '#ff26d4')
+      .style('color', d => d.color || RAPID_MAGENTA)
       .each(eachDataset);
   }
 
