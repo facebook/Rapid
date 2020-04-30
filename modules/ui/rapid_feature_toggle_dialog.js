@@ -137,7 +137,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('div')
       .attr('class', 'rapid-checkbox-inputs')
       .append('div')
-      .call(svgIcon(textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'));
+      .attr('class', 'rapid-checkbox-label')
+      .call(svgIcon(textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward', 'icon-30'));
   }
 
 

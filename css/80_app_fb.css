@@ -266,9 +266,14 @@ form.rapid-feature .description.poweruser {
 }
 .modal-section.rapid-checkbox.rapid-manage-datasets {
     border-top: 2px solid #ccca;
+    cursor: pointer;
+}
+.modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
 }
 
 .rapid-checkbox .rapid-colorpicker-label {
+    display: flex;
     padding: 0 15px;
 }
 .rapid-checkbox .rapid-feature-colorpicker {
@@ -404,11 +409,13 @@ form.rapid-feature .description.poweruser {
     display: flex;
     flex: 1 1 auto;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .rapid-checkbox-label {
     width: 40px;
     height: 40px;
+    cursor: pointer;
 }
 
 .rapid-checkbox-label.poweruser {
