@@ -6,15 +6,14 @@
     cursor: url(img/cursor-select-line.png), pointer;
 }
 
-/* Road Lines */
-
+/* Lines */
 .layer-ai-features path.stroke {
     stroke: currentColor;
     stroke-width: 5;
     fill: none;
 }
 .layer-ai-features path.casing {
-    stroke: #f0f;
+    stroke: #111;
     stroke-width: 7;
     stroke-opacity: 0;
     fill: none;
@@ -48,36 +47,42 @@
     stroke-opacity: 0.4;
 }
 
-/* Road Vertices */
-
+/* Vertices */
 .layer-ai-features g.vertex .fill {
     fill: #fff;
 }
-
 .layer-ai-features g.vertex .stroke {
     stroke: currentColor;
     stroke-width: 3;
     fill: #fff;
 }
-
 .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }
 
+
+/* Polygons */
 .layer-ai-features  path.line.building.stroke {
-    stroke-width: 5px;
-    stroke: currentColor;
+    stroke-width: 3;
     fill-opacity: 1;
 }
-
+.layer-ai-features  path.line.building.casing {
+    stroke-width: 5;
+    fill-opacity: 1;
+}
 .layer-ai-features  path.line.building.shadow {
-    stroke-width: 12px;
+    stroke-width: 15;
 }
 
-.low-zoom .layer-ai-features path.line.building {
-    stroke-width: 3px;
+.low-zoom .layer-ai-features path.line.building.stroke {
+    stroke-width: 2;
 }
-
+.low-zoom .layer-ai-features path.line.building.casing {
+    stroke-width: 4;
+}
+.low-zoom .layer-ai-features path.line.building.shadow {
+    stroke-width: 10;
+}
 .layer-ai-features .node.vertex.building circle {
     opacity: 0;
 }
