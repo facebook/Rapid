@@ -415,6 +415,8 @@ form.rapid-feature .description.poweruser {
 .rapid-checkbox-label {
     width: 40px;
     height: 40px;
+}
+.rapid-checkbox-label:not(.disabled) {
     cursor: pointer;
 }
 

@@ -231,7 +231,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .classed('disabled', !rapidLayer.showAll());
 
     rows.selectAll('.rapid-feature-colorpicker')
+      .attr('disabled', rapidLayer.showAll() ? null : true)
       .property('value', d => d.color || RAPID_MAGENTA);
+
+    rows.selectAll('.rapid-checkbox-label')
+      .classed('disabled', !rapidLayer.showAll());
 
     rows.selectAll('.rapid-feature-checkbox')
       .property('checked', datasetEnabled)
