@@ -78,8 +78,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const rapidLayer = context.layers().layer('ai-features');
 
     /* Toggle All */
-    let toggleAllEnter = selection.selectAll('.rapid-toggle-all')
-      .data([0])
+    let toggleAll = selection.selectAll('.rapid-toggle-all')
+      .data([0]);
+
+    // enter
+    let toggleAllEnter = toggleAll
       .enter()
       .append('div')
       .attr('class', 'modal-section rapid-checkbox rapid-toggle-all');
@@ -108,12 +111,18 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('input')
       .attr('type', 'checkbox')
       .attr('class', 'rapid-feature-checkbox')
-      .property('checked', rapidLayer.showAll())
       .on('click', toggleAll);
 
     toggleAllCheckboxEnter
       .append('div')
       .attr('class', 'rapid-checkbox-custom');
+
+    // update
+    toggleAll = toggleAll
+      .merge(toggleAllEnter);
+
+    toggleAll.selectAll('.rapid-feature-checkbox')
+      .property('checked', rapidLayer.showAll());
 
 
     /* Dataset List */
