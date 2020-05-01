@@ -11,8 +11,10 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const RAPID_MAGENTA = '#ff26d4';
   const rapidContext = context.rapidContext();
+
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
+  let _viewManageModal;
 
 
   function datasetEnabled(d) {
@@ -66,6 +68,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     featureToggleKeyDispatcher
       .on('ai_feature_toggle', () => _content.call(renderModalContent) );
+
+    _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
+      .on('done', () => _content.call(renderModalContent));
   };
 
 
@@ -112,7 +117,15 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
     /* Dataset List */
-    selection
+    let datasets = selection.selectAll('.rapid-datasets-container')
+      .data([0]);
+
+    let datasetsEnter = datasets.enter()
+      .append('div')
+      .attr('class', 'rapid-datasets-container');
+
+    datasets
+      .merge(datasetsEnter)
       .call(renderDatasets);
 
 
@@ -122,9 +135,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .enter()
       .append('div')
       .attr('class', 'modal-section rapid-checkbox rapid-manage-datasets')
-      .on('click', () => {
-        context.container().call(uiRapidViewManageDatasets(context, _modalSelection));
-      });
+      .on('click', () => context.container().call(_viewManageModal));
 
     manageDatasetsEnter
       .append('div')

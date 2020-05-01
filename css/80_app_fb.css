@@ -139,17 +139,6 @@ button.ai-features-toggle.layer-off use {
     color: white;
 }
 
-.modal-rapid .fillL.rapid-stack > .modal-section.rapid-checkbox {
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-.modal-rapid .fillL.rapid-stack > .modal-section.rapid-checkbox:first-of-type {
-    margin-top: -10px;
-    padding-bottom: 0px;
-    padding-top: 5px;
-}
-
 .modal-rapid .modal-actions button {
     text-align: center;
     background: black;
@@ -255,6 +244,30 @@ form.rapid-feature .description.poweruser {
     padding: 5px;
 }
 
+
+/* Toggle Features modal */
+.modal-rapid .modal-section.rapid-checkbox {
+    font-size: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 10px;
+    width: 100%;
+    margin-right: 5px;
+}
+.modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:first-of-type {
+    padding-top: 5px;
+}
+.modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 5px;
+}
+
+.modal-rapid .fillL.rapid-stack .rapid-datasets-container {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
 .modal-section.rapid-checkbox.rapid-toggle-all {
     border-bottom: 2px solid #ccca;
 }
@@ -275,15 +288,6 @@ form.rapid-feature .description.poweruser {
     font-size: 12px;
 }
 
-.modal-section.rapid-checkbox {
-    font-size: 24px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 10px;
-    width: 100%;
-    margin-right: 5px;
-}
 
 .modal-section.rapid-checkbox.poweruser {
     font-size:16px;
@@ -559,4 +563,20 @@ hide this one and style something on top of it.  */
 .modal-view-manage img.rapid-view-manage-dataset-thumbnail {
     border-radius: 10px;
     width: 200px;
+}
+
+.modal-view-manage button.rapid-view-manage-dataset-action {
+    background: #ff26d4;
+    color: #eee;
+    font-size: 12px;
+    display: inline-block;
+    height: 28px;
+    border-radius: 14px;
+    margin: 10px 0;
+    padding: 0 15px;
+}
+
+.modal-view-manage button.rapid-view-manage-dataset-action:focus,
+.modal-view-manage button.rapid-view-manage-dataset-action:hover {
+    background-color: #f4e;
 }

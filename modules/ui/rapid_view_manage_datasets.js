@@ -1,18 +1,24 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { json as d3_json } from 'd3-fetch';
 
 import { t, textDirection } from '../util/locale';
 
 import { svgIcon } from '../svg/icon';
-import { utilKeybinding } from '../util';
+import { utilKeybinding, utilRebind } from '../util';
 
 let _datasetInfo;
 
+
 export function uiRapidViewManageDatasets(context, parentModal) {
+  const RAPID_MAGENTA = '#ff26d4';
+  const rapidContext = context.rapidContext();
+  const dispatch = d3_dispatch('done');
+
   let _content = d3_select(null);
 
 
-  return function render() {
+  function render() {
     // Unfortunately `uiModal` is written in a way that there can be only one at a time.
     // So we have to roll our own modal here instead of just creating a second `uiModal`.
     let shaded = context.container().selectAll('.shaded');  // container for the existing modal
@@ -34,6 +40,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       let keybinding = utilKeybinding('modal');
       keybinding.on(['⌫', '⎋'], origClose);
       d3_select(document).call(keybinding);
+      dispatch.call('done');
     };
 
     let keybinding = utilKeybinding('modal');
@@ -61,7 +68,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     myModal
       .transition()
       .style('opacity', 1);
-  };
+  }
 
 
   function renderModalContent(selection) {
@@ -116,30 +123,42 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .data(_datasetInfo, d => d.id);
 
     // enter
-    let datasetEnter = datasets.enter()
+    let datasetsEnter = datasets.enter()
       .append('div')
       .attr('class', 'rapid-view-manage-dataset');
 
-    let labelEnter = datasetEnter
+    let labelsEnter = datasetsEnter
       .append('div')
       .attr('class', 'rapid-view-manage-dataset-label');
 
-    labelEnter
+    labelsEnter
       .append('strong')
       .text(d => d.title);
 
-    labelEnter
+    labelsEnter
       .append('div')
       .text(d => d.snippet);
 
-    let thumbEnter = datasetEnter
+    labelsEnter
+      .append('button')
+      .attr('class', 'rapid-view-manage-dataset-action')
+      .on('click', toggleDataset);
+
+    let thumbsEnter = datasetsEnter
       .append('div')
       .attr('class', 'rapid-view-manage-dataset-thumb');
 
-    thumbEnter
+    thumbsEnter
       .append('img')
       .attr('class', 'rapid-view-manage-dataset-thumbnail')
       .attr('src', d => `https://openstreetmap.maps.arcgis.com/sharing/rest/content/items/${d.id}/info/${d.thumbnail}?w=400`);
+
+    // update
+    datasets = datasets
+      .merge(datasetsEnter);
+
+    datasets.selectAll('.rapid-view-manage-dataset-action')
+      .text(d => datasetAdded(d) ? 'Remove' : 'Add to Map');
   }
 
 
@@ -151,6 +170,32 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     return d3_json(url)
       .then(json => _datasetInfo = json.results)
       .catch(() => _datasetInfo = []);
-    }
+  }
 
+
+  function toggleDataset(d) {
+    const datasets = rapidContext.datasets();
+    if (datasets[d.id]) {
+      delete datasets[d.id];
+    } else {
+      datasets[d.id] = {
+        key: d.id,
+        enabled: true,
+        service: 'esri',
+        color: RAPID_MAGENTA,
+        label: d.title
+        // description:       make it fit?
+        // license_markdown:  linkify?
+      };
+    }
+    _content.call(renderModalContent);
+  }
+
+
+  function datasetAdded(d) {
+    return !!rapidContext.datasets()[d.id];
+  }
+
+
+  return utilRebind(render, dispatch, 'on');
 }
