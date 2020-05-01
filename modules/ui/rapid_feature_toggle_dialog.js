@@ -60,7 +60,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     _content = _modalSelection.select('.content')
       .append('form')
-      .attr('class', 'fillL rapid-feature rapid-stack')
+      .attr('class', 'fillL rapid-stack')
       .on('keypress', keyPressFormHandler);
 
     _content
@@ -180,38 +180,66 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     rowsEnter
       .append('div')
-      .attr('class', 'rapid-feature-label-container')
+      .attr('class', 'rapid-feature')
       .each((d, i, nodes) => {
         let selection = d3_select(nodes[i]);
-        selection
+
+        // line1: name and details
+        let labelEnter = selection
+          .append('div')
+          .attr('class', 'rapid-feature-label-container');
+
+        labelEnter
           .append('div')
           .attr('class', 'rapid-feature-label')
           .text(d.label || d.key);   // fallback to key
 
         if (d.description) {
-          selection
+          labelEnter
             .append('div')
             .attr('class', 'rapid-feature-label-divider');
 
-          selection
+          labelEnter
             .append('div')
             .attr('class', 'rapid-feature-description')
             .text(d.description);
         }
 
         if (d.license_markdown) {
-          selection
+          labelEnter
             .append('div')
             .attr('class', 'rapid-feature-label-divider');
 
-          selection
+          labelEnter
             .append('div')
             .attr('class', 'rapid-feature-license')
             .html(marked(d.license_markdown));
 
-          selection.select('p a')
+          labelEnter.select('p a')
             .attr('target', '_blank');
         }
+
+        // line2: dataset extent
+        selection
+          .append('div')
+          .attr('class', 'rapid-feature-extent-container')
+          .each((d, i, nodes) => {
+            let selection = d3_select(nodes[i]);
+
+            if (d.extent) {
+              selection
+                .append('a')
+                .attr('href', '#')
+                .text('Center map here')
+                .on('click', () => {
+                  d3_event.preventDefault();
+                  context.map().extent(d.extent);
+                });
+            } else {
+              selection
+                .text('Worldwide');
+            }
+          });
       });
 
     let inputsEnter = rowsEnter

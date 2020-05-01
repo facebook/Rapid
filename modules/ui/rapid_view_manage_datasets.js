@@ -60,7 +60,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     _content = myModal
       .append('div')
-      .attr('class', 'content rapid-feature rapid-stack fillL');
+      .attr('class', 'content rapid-stack fillL');
 
     _content
       .call(renderModalContent);

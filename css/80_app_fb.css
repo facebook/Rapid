@@ -188,7 +188,7 @@ button.ai-features-toggle.layer-off use {
     height: 40px;
 }
 
-.rapid-feature.rapid-stack {
+.rapid-stack {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -198,10 +198,10 @@ button.ai-features-toggle.layer-off use {
 .rapid-feature-label {
     display: flex;
     align-items: center;
-    margin: 8px 16px 8px 16px;
+    margin: 0 10px;
 }
 
-form.rapid-feature .heading.poweruser {
+form.rapid-stack .heading.poweruser {
     display: flex;
     align-items: center;
     font-size: 18px;
@@ -216,7 +216,7 @@ form.rapid-feature .heading.poweruser {
     margin: -5px;
 }
 
-form.rapid-feature .description.poweruser {
+form.rapid-stack .description.poweruser {
     font-size: 14px;
     text-align: left;
 }
@@ -232,7 +232,13 @@ form.rapid-feature .description.poweruser {
 .rapid-feature-label-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+}
+
+.rapid-feature-extent-container {
+    font-size: 14px;
+    font-style: italic;
+    margin: -8px 10px 5px 10px;
+    color: #aaa;
 }
 
 .rapid-feature-label-container.poweruser {
@@ -251,15 +257,11 @@ form.rapid-feature .description.poweruser {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 0 10px;
+    padding: 5px 10px;
     width: 100%;
-    margin-right: 5px;
-}
-.modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:first-of-type {
-    padding-top: 5px;
 }
 .modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
-    padding-bottom: 5px;
+    padding-bottom: 15px;
 }
 
 .modal-rapid .fillL.rapid-stack .rapid-datasets-container {
@@ -270,14 +272,23 @@ form.rapid-feature .description.poweruser {
 
 .modal-section.rapid-checkbox.rapid-toggle-all {
     border-bottom: 2px solid #ccca;
+    padding-bottom: 10px;
 }
 .modal-section.rapid-checkbox.rapid-manage-datasets {
     border-top: 2px solid #ccca;
+    padding: 10px;
     cursor: pointer;
 }
 .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
     color: #ddd;
 }
+
+
+.modal-rapid .fillL.rapid-stack .rapid-feature {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
 
 .rapid-checkbox .rapid-colorpicker-label {
     display: flex;
