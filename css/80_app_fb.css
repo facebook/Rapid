@@ -150,12 +150,6 @@ button.ai-features-toggle.layer-off use {
     padding-top: 5px;
 }
 
-.modal-rapid.modal-view-manage {
-    background: rgba(25, 25, 25, 1);
-    z-index: 51;  /* above existing modal */
-}
-
-
 .modal-rapid .modal-actions button {
     text-align: center;
     background: black;
@@ -500,4 +494,57 @@ hide this one and style something on top of it.  */
 
 .modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
     background-image: url('img/tag-sources.gif');
+}
+
+
+/* View/Manage Datasets modal */
+
+.modal-rapid.modal-view-manage {
+    background: rgba(25, 25, 25, 1);
+    z-index: 51;  /* above existing modal */
+    width: 80%;
+    min-width: 600px;
+    max-width: 1000px;
+}
+
+.modal-view-manage .modal-section {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+.modal-view-manage .modal-section.rapid-view-manage-header {
+    padding: 0 20px 5px 20px;
+}
+.modal-view-manage .modal-section.rapid-view-manage-datasets {
+    padding: 5px 20px;
+}
+
+.rapid-view-manage-header-icon {
+    flex: 0 0 40px;
+}
+.rapid-view-manage-header-text {
+    flex: 1 1 auto;
+    font-size: 28px;
+    padding: 0 5px;
+}
+.rapid-view-manage-header-inputs {
+    flex: 0 1 auto;
+}
+
+.modal-view-manage .rapid-view-manage-datasets {
+    border-top: 2px solid #ccca;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+.modal-view-manage .rapid-view-manage-dataset {
+    flex: 1 1 auto;
+/*    border: 1px solid #ccc;
+    border-radius: 6px;*/
+    padding: 10px;
+    margin: 10px 0;
+    color: #eee;
 }
