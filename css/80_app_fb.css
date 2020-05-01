@@ -541,10 +541,22 @@ hide this one and style something on top of it.  */
     align-items: flex-start;
 }
 .modal-view-manage .rapid-view-manage-dataset {
-    flex: 1 1 auto;
-/*    border: 1px solid #ccc;
-    border-radius: 6px;*/
-    padding: 10px;
+    flex: 1 1;
+    padding: 20px;
     margin: 10px 0;
     color: #eee;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.modal-view-manage .rapid-view-manage-dataset-label {
+    flex: 1;
+    padding: 0 8px;
+}
+.modal-view-manage .rapid-view-manage-dataset-thumb {
+    flex: 0;
+}
+.modal-view-manage img.rapid-view-manage-dataset-thumbnail {
+    border-radius: 10px;
+    width: 200px;
 }

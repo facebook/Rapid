@@ -95,8 +95,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     // enter
     let dsSectionEnter = dsSection.enter()
       .append('div')
-      .attr('class', 'modal-section rapid-view-manage-datasets')
-      .text('loading datasets...');
+      .attr('class', 'modal-section rapid-view-manage-datasets');
 
     // update
     dsSection
@@ -107,12 +106,9 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
   function renderDatasets(selection) {
     if (!_datasetInfo) {
+      selection.text('loading datasets...');
       fetchDatasets()
-        .then(() => {
-          selection
-            .text('')    // remove loading message
-            .call(renderDatasets);
-        });
+        .then(() => selection.text('').call(renderDatasets));
       return;
     }
 
@@ -120,22 +116,30 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .data(_datasetInfo, d => d.id);
 
     // enter
-    let datasetsEnter = datasets.enter()
+    let datasetEnter = datasets.enter()
       .append('div')
       .attr('class', 'rapid-view-manage-dataset');
 
-    datasetsEnter
+    let labelEnter = datasetEnter
       .append('div')
+      .attr('class', 'rapid-view-manage-dataset-label');
+
+    labelEnter
       .append('strong')
       .text(d => d.title);
 
-    datasetsEnter
+    labelEnter
       .append('div')
       .text(d => d.snippet);
 
-    datasetsEnter
+    let thumbEnter = datasetEnter
       .append('div')
-      .text(d => d.thumbnail);
+      .attr('class', 'rapid-view-manage-dataset-thumb');
+
+    thumbEnter
+      .append('img')
+      .attr('class', 'rapid-view-manage-dataset-thumbnail')
+      .attr('src', d => `https://openstreetmap.maps.arcgis.com/sharing/rest/content/items/${d.id}/info/${d.thumbnail}?w=400`);
   }
 
 
