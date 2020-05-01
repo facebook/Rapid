@@ -566,10 +566,10 @@ hide this one and style something on top of it.  */
 }
 
 .modal-view-manage button.rapid-view-manage-dataset-action {
-    background: #ff26d4;
+    border: 0;
+    background: #c2d;
     color: #eee;
     font-size: 12px;
-    display: inline-block;
     height: 28px;
     border-radius: 14px;
     margin: 10px 0;
@@ -578,5 +578,16 @@ hide this one and style something on top of it.  */
 
 .modal-view-manage button.rapid-view-manage-dataset-action:focus,
 .modal-view-manage button.rapid-view-manage-dataset-action:hover {
-    background-color: #f4e;
+    background-color: #c9d;
+}
+
+.modal-view-manage button.rapid-view-manage-dataset-action.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+.modal-view-manage button.rapid-view-manage-dataset-action.secondary:focus,
+.modal-view-manage button.rapid-view-manage-dataset-action.secondary:hover {
+    background-color: #888;
 }

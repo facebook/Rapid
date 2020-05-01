@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { json as d3_json } from 'd3-fetch';
 
 import { t, textDirection } from '../util/locale';
-
+import { geoExtent } from '../geo';
 import { svgIcon } from '../svg/icon';
 import { utilKeybinding, utilRebind } from '../util';
 
@@ -158,6 +158,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .merge(datasetsEnter);
 
     datasets.selectAll('.rapid-view-manage-dataset-action')
+      .classed('secondary', d => datasetAdded(d))
       .text(d => datasetAdded(d) ? 'Remove' : 'Add to Map');
   }
 
@@ -173,12 +174,14 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   }
 
 
-  function toggleDataset(d) {
+  function toggleDataset(d, i, nodes) {
     const datasets = rapidContext.datasets();
+
     if (datasets[d.id]) {
       delete datasets[d.id];
+
     } else {
-      datasets[d.id] = {
+      let dataset = {
         key: d.id,
         enabled: true,
         service: 'esri',
@@ -187,7 +190,14 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         // description:       make it fit?
         // license_markdown:  linkify?
       };
+
+      if (d.extent) {
+        dataset.extent = geoExtent(d.extent);
+      }
+
+      datasets[d.id] = dataset;
     }
+    nodes[i].blur();
     _content.call(renderModalContent);
   }
 
