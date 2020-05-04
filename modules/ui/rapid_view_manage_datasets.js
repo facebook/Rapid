@@ -1,13 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { json as d3_json } from 'd3-fetch';
 
 import { t, textDirection } from '../util/locale';
 import { geoExtent } from '../geo';
+import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { utilKeybinding, utilRebind } from '../util';
-
-let _datasetInfo;
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
@@ -16,6 +14,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   const dispatch = d3_dispatch('done');
 
   let _content = d3_select(null);
+  let _datasetInfo;
 
 
   function render() {
@@ -112,9 +111,16 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function renderDatasets(selection) {
+    const service = services.esriData;
+    if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
+      selection.text('No datasets available.');
+      return;
+    }
+
     if (!_datasetInfo) {
-      selection.text('loading datasets...');
-      fetchDatasets()
+      selection.text('Fetching available datasets...');
+      service.loadDatasets()
+        .then(result => _datasetInfo = result)
         .then(() => selection.text('').call(renderDatasets));
       return;
     }
@@ -160,17 +166,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
       .text(d => datasetAdded(d) ? 'Remove' : 'Add to Map');
-  }
-
-
-  function fetchDatasets() {
-    const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
-    const APIROOT = 'https://openstreetmap.maps.arcgis.com/sharing/rest/content';
-    const url = `${APIROOT}/groups/${GROUPID}/search?num=20&start=1&sortField=title&sortOrder=asc&f=json`;
-
-    return d3_json(url)
-      .then(json => _datasetInfo = json.results)
-      .catch(() => _datasetInfo = []);
   }
 
 

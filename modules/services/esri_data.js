@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { xml as d3_xml } from 'd3-fetch';
+import { xml as d3_xml, json as d3_json } from 'd3-fetch';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
@@ -13,6 +13,7 @@ const tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loadedData');
 
 let _checkpoints = {};
+let _datasets;
 let _graph;
 let _tree;
 let _deferredWork = new Set();
@@ -34,50 +35,50 @@ function cloneDeep(source) {
 
 // API
 function searchURL() {
-    return `${APIROOT}/groups/${GROUPID}/search?num=20&start=1&sortField=title&sortOrder=asc&f=json`;
-    // use to get
-    // .results[]
-    //   .extent
-    //   .id
-    //   .thumbnail
-    //   .title
-    //   .snippet
-    //   .url (featureServer)
+  return `${APIROOT}/groups/${GROUPID}/search?num=20&start=1&sortField=title&sortOrder=asc&f=json`;
+  // use to get
+  // .results[]
+  //   .extent
+  //   .id
+  //   .thumbnail
+  //   .title
+  //   .snippet
+  //   .url (featureServer)
 }
 function itemURL(itemID) {
-    return `${APIROOT}/items/${itemID}?f=json`;
-    // use to get
-    // .extent
-    // .id
-    // .thumbnail
-    // .title
-    // .snippet
-    // .url  (featureServer)
+  return `${APIROOT}/items/${itemID}?f=json`;
+  // use to get
+  // .extent
+  // .id
+  // .thumbnail
+  // .title
+  // .snippet
+  // .url  (featureServer)
 }
 function layerURL(featureServerURL) {
-    return `${featureServerURL}/layers?f=json`;
-    // should return single layer(?)
-    // .layers[0]
-    //   .copyrightText
-    //   .fields
-    //   .geometryType   "esriGeometryPoint" or "esriGeometryPolygon" ?
+  return `${featureServerURL}/layers?f=json`;
+  // should return single layer(?)
+  // .layers[0]
+  //   .copyrightText
+  //   .fields
+  //   .geometryType   "esriGeometryPoint" or "esriGeometryPolygon" ?
 }
 
 function tileURL(extent, taskExtent) {
-    // const hash = utilStringQs(window.location.hash);
+  // const hash = utilStringQs(window.location.hash);
 
-    // // fb_ml_road_url: if set, get road data from this url
-    // const fb_ml_road_url = hash.fb_ml_road_url;
-    // let result = (fb_ml_road_url ? fb_ml_road_url : APIROOT) + '&bbox=' + extent.toParam();
-    // if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
+  // // fb_ml_road_url: if set, get road data from this url
+  // const fb_ml_road_url = hash.fb_ml_road_url;
+  // let result = (fb_ml_road_url ? fb_ml_road_url : APIROOT) + '&bbox=' + extent.toParam();
+  // if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
 
-    // const custom_ml_road_tags = hash.fb_ml_road_tags;
-    // if (custom_ml_road_tags) {
-    //   custom_ml_road_tags.split(',').forEach(function (tag) {
-    //     result += '&allow_tags[]=' + tag;
-    //   });
-    // }
-    // return result;
+  // const custom_ml_road_tags = hash.fb_ml_road_tags;
+  // if (custom_ml_road_tags) {
+  //   custom_ml_road_tags.split(',').forEach(function (tag) {
+  //     result += '&allow_tags[]=' + tag;
+  //   });
+  // }
+  // return result;
 }
 
 
@@ -300,5 +301,14 @@ export default {
 
       cache.inflight[tile.id] = controller;
     });
+  },
+
+
+  loadDatasets: () => {
+    if (_datasets) return Promise.resolve(_datasets);
+    return d3_json(searchURL())
+      .then(json => _datasets = json.results)
+      .catch(() => _datasets = []);
   }
+
 };
