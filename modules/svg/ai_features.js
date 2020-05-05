@@ -202,16 +202,20 @@ export function svgAiFeatures(projection, context, dispatch) {
       .append('pattern')
       .attr('id', d => `fill-${d.key}`)
       .attr('class', 'rapid-fill-pattern')
-      .attr('width', 4)
+      .attr('width', 5)
       .attr('height', 15)
       .attr('patternUnits', 'userSpaceOnUse')
-      .attr('patternTransform', 'rotate(45 50 50)');
+      .attr('patternTransform', (d, i) => {
+        const r = (45 + (67 * i)) % 180;   // generate something different for each layer
+        return `rotate(${r})`;
+      });
 
     dsPatternsEnter
       .append('line')
       .attr('class', 'ai-building-line')
       .attr('stroke', 'currentColor')
       .attr('stroke-width', '2px')
+      .attr('stroke-opacity', 0.6)
       .attr('y2', '15');
 
     // update
