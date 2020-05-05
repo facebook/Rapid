@@ -132,7 +132,8 @@ export function svgAiFeatures(projection, context, dispatch) {
 
 
   function isBuilding(d) {
-    return d.tags.building === 'yes';
+    return d.isArea();
+    // return d.tags.building === 'yes';
   }
 
 
@@ -247,25 +248,37 @@ export function svgAiFeatures(projection, context, dispatch) {
     // Gather data
     let geoData = [];
     if (service && context.map().zoom() >= context.minEditableZoom()) {
-      service.loadTiles(projection, rapidContext.getTaskExtent());
-      geoData = service
-        .intersects(context.extent())
-        .filter(d => {
-          return d.type === 'way'
-            && !_actioned.has(d.id)
-            && !_actioned.has(d.__origid__);  // see onHistoryRestore()
-        })
-        .filter(getPath);
+      if (dataset.service === 'fbml') {
+        service.loadTiles(projection, rapidContext.getTaskExtent());
+        geoData = service
+          .intersects(context.extent())
+          .filter(d => {
+            return d.type === 'way'
+              && !_actioned.has(d.id)
+              && !_actioned.has(d.__origid__);  // see onHistoryRestore()
+          })
+          .filter(getPath);
 
-      // fb_ai service gives us roads and buildings together,
-      // so filter further according to which dataset we're drawing
-      if (dataset.key === 'fbRoads') {
-        geoData = geoData.filter(isRoad);
-      } else if (dataset.key === 'msBuildings') {
-        geoData = geoData.filter(isBuilding);
+        // fb_ai service gives us roads and buildings together,
+        // so filter further according to which dataset we're drawing
+        if (dataset.key === 'fbRoads') {
+          geoData = geoData.filter(isRoad);
+        } else if (dataset.key === 'msBuildings') {
+          geoData = geoData.filter(isBuilding);
+        }
+
+      } else if (dataset.service === 'esri') {
+        service.loadTiles(dataset.key, projection);
+        geoData = service
+          .intersects(context.extent())
+          .filter(d => {
+            return d.type === 'way'
+              && !_actioned.has(d.id)
+              && !_actioned.has(d.__origid__);  // see onHistoryRestore()
+          })
+          .filter(getPath);
       }
     }
-
 
     // Draw shadow, casing, stroke layers
     let linegroups = selection

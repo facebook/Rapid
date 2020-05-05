@@ -1,8 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { xml as d3_xml, json as d3_json } from 'd3-fetch';
+import { json as d3_json } from 'd3-fetch';
 
 import { coreGraph, coreTree } from '../core';
-import { osmEntity, osmNode, osmWay } from '../osm';
+import { osmEntity, osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind, utilStringQs, utilTiler } from '../util';
 
 
@@ -13,23 +13,15 @@ const tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loadedData');
 
 let _checkpoints = {};
-let _datasets;
+let _datasets = {};
+let _caches = {};
 let _graph;
 let _tree;
-let _deferredWork = new Set();
 let _off;
-
-// For now _caches will contain a single structure like the fb_ai_features service has.
-// But we will need each esri layer to have its own cache inside here eventually.
-let _caches;
 
 
 function abortRequest(controller) {
   controller.abort();
-}
-
-function cloneDeep(source) {
-  return JSON.parse(JSON.stringify(source));
 }
 
 
@@ -45,16 +37,7 @@ function searchURL() {
   //   .snippet
   //   .url (featureServer)
 }
-function itemURL(itemID) {
-  return `${APIROOT}/items/${itemID}?f=json`;
-  // use to get
-  // .extent
-  // .id
-  // .thumbnail
-  // .title
-  // .snippet
-  // .url  (featureServer)
-}
+
 function layerURL(featureServerURL) {
   return `${featureServerURL}/layers?f=json`;
   // should return single layer(?)
@@ -64,128 +47,181 @@ function layerURL(featureServerURL) {
   //   .geometryType   "esriGeometryPoint" or "esriGeometryPolygon" ?
 }
 
-function tileURL(extent, taskExtent) {
-  // const hash = utilStringQs(window.location.hash);
-
-  // // fb_ml_road_url: if set, get road data from this url
-  // const fb_ml_road_url = hash.fb_ml_road_url;
-  // let result = (fb_ml_road_url ? fb_ml_road_url : APIROOT) + '&bbox=' + extent.toParam();
-  // if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
-
-  // const custom_ml_road_tags = hash.fb_ml_road_tags;
-  // if (custom_ml_road_tags) {
-  //   custom_ml_road_tags.split(',').forEach(function (tag) {
-  //     result += '&allow_tags[]=' + tag;
-  //   });
-  // }
-  // return result;
+function tileURL(dataset, extent) {
+  return `${dataset.url}/0/query?f=geojson&outfields=*&outSR=4326&geometryType=esriGeometryEnvelope&geometry=` + extent.toParam();
+  // note: for now, layer is always 0
 }
 
 
-function getLoc(attrs) {
-  const lon = attrs.lon && attrs.lon.value;
-  const lat = attrs.lat && attrs.lat.value;
-  return [parseFloat(lon), parseFloat(lat)];
-}
+// function getLoc(attrs) {
+//   const lon = attrs.lon && attrs.lon.value;
+//   const lat = attrs.lat && attrs.lat.value;
+//   return [parseFloat(lon), parseFloat(lat)];
+// }
 
 
-function getNodes(obj) {
-  const elems = obj.getElementsByTagName('nd');
-  let nodes = new Array(elems.length);
-  for (let i = 0, l = elems.length; i < l; i++) {
-    nodes[i] = 'n' + elems[i].attributes.ref.value;
-  }
-  return nodes;
-}
+// function getNodes(obj) {
+//   const elems = obj.getElementsByTagName('nd');
+//   let nodes = new Array(elems.length);
+//   for (let i = 0, l = elems.length; i < l; i++) {
+//     nodes[i] = 'n' + elems[i].attributes.ref.value;
+//   }
+//   return nodes;
+// }
 
 
-function getTags(obj) {
-  const elems = obj.getElementsByTagName('tag');
-  let tags = {};
-  for (let i = 0, l = elems.length; i < l; i++) {
-    const attrs = elems[i].attributes;
-    tags[attrs.k.value] = attrs.v.value;
-  }
+// function getTags(obj) {
+//   const elems = obj.getElementsByTagName('tag');
+//   let tags = {};
+//   for (let i = 0, l = elems.length; i < l; i++) {
+//     const attrs = elems[i].attributes;
+//     tags[attrs.k.value] = attrs.v.value;
+//   }
 
-  return tags;
-}
-
-
-function getVisible(attrs) {
-  return (!attrs.visible || attrs.visible.value !== 'false');
-}
+//   return tags;
+// }
 
 
-const parsers = {
-  node: function nodeData(obj, uid) {
-    const attrs = obj.attributes;
-    return new osmNode({
-      id: uid,
-      visible: getVisible(attrs),
-      loc: getLoc(attrs),
-      tags: getTags(obj)
-    });
-  },
+// const parsers = {
+//   node: function nodeData(obj, uid) {
+//     const attrs = obj.attributes;
+//     return new osmNode({
+//       id: uid,
+//       visible: true,
+//       loc: getLoc(attrs),
+//       tags: getTags(obj)
+//     });
+//   },
 
-  way: function wayData(obj, uid) {
-    const attrs = obj.attributes;
-    return new osmWay({
-      id: uid,
-      visible: getVisible(attrs),
-      tags: getTags(obj),
-      nodes: getNodes(obj),
-    });
-  }
-};
+//   way: function wayData(obj, uid) {
+//     const attrs = obj.attributes;
+//     return new osmWay({
+//       id: uid,
+//       visible: true,
+//       tags: getTags(obj),
+//       nodes: getNodes(obj),
+//     });
+//   }
+// };
 
 
 // we can request the data in JSON, GeoJSON, or PBF, so this will be different (not XML)
-function parseXML(xml, cache, tile, callback, options) {
-  options = Object.assign({ skipSeen: true }, options);
-  if (!xml || !xml.childNodes) {
-    return callback({ message: 'No XML', status: -1 });
+function parseTile(dataset, tile, geojson, callback, options) {
+  if (!geojson) {
+    return callback({ message: 'No GeoJSON', status: -1 });
   }
 
-  const root = xml.childNodes[0];
-  const children = root.childNodes;
-  const handle = window.requestIdleCallback(() => {
-    _deferredWork.delete(handle);
-    let results = [];
-    for (let i = 0; i < children.length; i++) {
-      const result = parseChild(children[i]);
-      if (result) results.push(result);
-    }
-    callback(null, results);
+// console.log(`${tile.id}: features ` + geojson.features.length);
+  let results = [];
+  (geojson.features || []).forEach(f => {
+    let entities = parseFeature(f);
+    if (entities) results.push.apply(results, entities);
   });
-  _deferredWork.add(handle);
+
+  callback(null, results);
 
 
-  function parseChild(child) {
-    const parser = parsers[child.nodeName];
-    if (!parser) return null;
-
-    const uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
-    if (options.skipSeen) {
-      if (cache.seen[uid]) return null;  // avoid reparsing a "seen" entity
-      if (cache.origIdTile[uid]) return null;  // avoid double-parsing a split way
-      cache.seen[uid] = true;
-    }
-
-    // Handle non-deterministic way splitting from Roads Service. Splits
-    // are consistent within a single request.
-    let origUid;
-    if (child.attributes.orig_id) {
-      origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
-      if (_graph.entities[origUid] || (cache.origIdTile[origUid] && cache.origIdTile[origUid] !== tile.id)) {
-        return null;
+  function parseTags(props) {
+    let tags = {};
+    Object.keys(props).forEach(key => {
+      const k = dataset.layer.tagmap[key];
+      const v = props[key];
+      if (k && v) {
+        tags[k] = v;
       }
-      cache.origIdTile[origUid] = tile.id;
+    });
+    return tags;
+  }
+
+  function parseFeature(feature) {
+    const geom = feature.geometry;
+    const props = feature.properties;
+    if (!geom || !props) return null;
+
+    let entities = [];
+    let nodemap = new Map();
+
+    // Point:  make a node
+    if (geom.type === 'Point') {
+      return [ new osmNode({ loc: geom.coordinates, tags: parseTags(props) }) ];
+
+    // LineString:  make nodes + a way
+    } else if (geom.type === 'LineString') {
+      // make nodes
+      let nodelist = [];
+      geom.coordinates.forEach(coord => {
+        const key = coord.toString();
+        let n = nodemap.get(key);
+        if (!n) {
+          n = new osmNode({ loc: coord });
+          entities.push(n);
+          nodemap.set(key, n);
+        }
+        nodelist.push(n.id);
+      });
+      // make a way
+      const w = new osmWay({ nodes: nodelist, tags: parseTags(props) });
+      entities.push(w);
+      return entities;
+
+    // Polygon:  make nodes, way(s), possibly a relation
+    } else if (geom.type === 'Polygon') {
+      let ways = [];
+      geom.coordinates.forEach(ring => {
+        // make nodes
+        let nodelist = [];
+        ring.forEach(coord => {
+          const key = coord.toString();
+          let n = nodemap.get(key);
+          if (!n) {
+            n = new osmNode({ loc: coord });
+            entities.push(n);
+            nodemap.set(key, n);
+          }
+          nodelist.push(n.id);
+        });
+        // make a way
+        const w = new osmWay({ nodes: nodelist, tags: parseTags(props) });
+        ways.push(w);
+      });
+
+      if (ways.length === 1) {  // single ring, set tags and return
+        entities.push(ways[0].update({ tags: parseTags(props) }));
+
+      } else {  // multiple rings, make a multipolygon relation with inner/outer members
+        const members = ways.map((w, i) => {
+          entities.push(w);
+          return { id: w.id, role: (i === 0 ? 'outer' : 'inner'), type: 'way' };
+        });
+        const tags = Object.assign(parseTags(props), { type: 'multipolygon' });
+        const r = new osmRelation({ members: members, tags: tags });
+        entities.push(r);
+      }
+
+      return entities;
     }
 
-    const entity = parser(child, uid);
-    entity.__fbid__ = child.attributes.id.value;
-    entity.__origid__ = origUid;
-    return entity;
+    // no Multitypes for now (maybe not needed)
+
+    // const uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
+
+// not sure whether we need this code from fb_ai_features
+    // // Handle non-deterministic way splitting from Roads Service. Splits
+    // // are consistent within a single request.
+    // let origUid;
+    // let cache = _caches[dataset.id];
+    // if (child.attributes.orig_id) {
+    //   origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
+    //   if (_graph.entities[origUid] || (cache.origIdTile[origUid] && cache.origIdTile[origUid] !== tile.id)) {
+    //     return null;
+    //   }
+    //   cache.origIdTile[origUid] = tile.id;
+    // }
+
+    // const entity = parser(child, uid);
+    // entity.__fbid__ = child.attributes.id.value;
+    // entity.__origid__ = origUid;
+    // return entity;
   }
 }
 
@@ -193,8 +229,28 @@ function parseXML(xml, cache, tile, callback, options) {
 export default {
 
   init: function () {
-    if (!_caches) this.reset();
+    _graph = coreGraph();
+    _tree = coreTree(_graph);
     this.event = utilRebind(this, dispatch, 'on');
+  },
+
+
+  reset: function (key) {
+    Object.values(_caches).forEach(cache => {
+      if (cache.inflight) {
+        Object.values(cache.inflight).forEach(abortRequest);
+      }
+      cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+    });
+
+    if (key !== undefined && _checkpoints.hasOwnProperty(key)) {
+      _graph = _checkpoints[key].graph;
+    } else {
+      _graph = coreGraph();
+      _tree = coreTree(_graph);
+    }
+
+    return this;
   },
 
 
@@ -205,35 +261,13 @@ export default {
   },
 
 
-  reset: function (key) {
-    Array.from(_deferredWork).forEach(handle => {
-      window.cancelIdleCallback(handle);
-      _deferredWork.delete(handle);
-    });
-
-    if (_caches && _caches.inflight) {
-      Object.values(_caches.inflight).forEach(abortRequest);
-    }
-
-    if (key !== undefined && _checkpoints.hasOwnProperty(key)) {
-      _graph = _checkpoints[key].graph;
-    } else {
-      _graph = coreGraph();
-      _tree = coreTree(_graph);
-      _caches = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-    }
-
-    return this;
-  },
-
-
   graph: function ()  {
     return _graph;
   },
 
 
   intersects: function (extent) {
-    if (!_caches) return [];
+    if (!_tree || !_graph) return [];
     return _tree.intersects(extent, _graph);
   },
 
@@ -244,31 +278,20 @@ export default {
   },
 
 
-  cache: function (obj) {
-    if (!arguments.length) {
-      return { tile: cloneDeep(_caches) };
-    }
-
-    // access cache directly for testing
-    if (obj === 'get') {
-      return _caches;
-    }
-
-    _caches = obj;
-  },
-
-
   toggle: function (val) {
     _off = !val;
     return this;
   },
 
 
-  loadTiles: function (projection, taskExtent) {
+  loadTiles: function (datasetID, projection) {
     if (_off) return;
 
+    const dataset = _datasets[datasetID];
+    if (!dataset || !dataset.layer) return;
+
     const tiles = tiler.getTiles(projection);
-    const cache = _caches;
+    let cache = _caches[datasetID];
 
     // abort inflight requests that are no longer needed
     Object.keys(cache.inflight).forEach(k => {
@@ -283,13 +306,13 @@ export default {
       if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
       const controller = new AbortController();
-      const url = tileURL(tile.extent, taskExtent);
+      const url = tileURL(dataset, tile.extent);
 
-      d3_xml(url, { signal: controller.signal })
-        .then(xml => {
+      d3_json(url, { signal: controller.signal })
+        .then(geojson => {
           delete cache.inflight[tile.id];
-          if (!xml) throw new Error('no xml');
-          parseXML(xml, cache, tile, (err, results) => {
+          if (!geojson) throw new Error('no geojson');
+          parseTile(dataset, tile, geojson, (err, results) => {
             if (err) throw new Error(err);
             _graph.rebase(results, [_graph], true);
             _tree.rebase(results, true);
@@ -304,11 +327,53 @@ export default {
   },
 
 
-  loadDatasets: () => {
-    if (_datasets) return Promise.resolve(_datasets);
-    return d3_json(searchURL())
-      .then(json => _datasets = json.results)
-      .catch(() => _datasets = []);
-  }
+  loadDatasets: function () {    // eventually pass search params?
+    if (Object.keys(_datasets).length) {   // for now, if we have fetched datasets, return them
+      return Promise.resolve(_datasets);
+    }
 
+    const that = this;
+    return d3_json(searchURL())
+      .then(json => {
+        (json.results || []).forEach(ds => {   // add each one to _datasets and _caches
+          if (_datasets[ds.id]) return;        // unless we've seen it already
+          _datasets[ds.id] = ds;
+          _caches[ds.id] = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+          // preload the layer info (or we could wait do this once the user actually clicks 'add to map')
+          that.loadLayer(ds.id);
+        });
+        return _datasets;
+      })
+      .catch(() => _datasets = {});
+  },
+
+
+  loadLayer: function (datasetID) {
+    let dataset = _datasets[datasetID];
+    if (!dataset || !dataset.url) {
+      return Promise.reject(`Unknown datasetID: ${datasetID}`);
+    } else if (dataset.layer) {
+      return Promise.resolve(dataset.layer);
+    }
+
+    return d3_json(layerURL(dataset.url))
+      .then(json => {
+        if (!json.layers || !json.layers.length) {
+          throw new Error(`Missing layer info for datasetID: ${datasetID}`);
+        }
+
+        dataset.layer = json.layers[0];  // should return a single layer
+
+        // Use the field metadata to map to OSM tags
+        let tagmap = {};
+        dataset.layer.fields.forEach(f => {
+          if (!f.editable) return;   // 1. keep "editable" fields only
+          tagmap[f.name] = f.alias;  // 2. field `name` -> OSM tag (stored in `alias`)
+        });
+        dataset.layer.tagmap = tagmap;
+
+        return dataset.layer;
+      })
+      .catch(() => { /* ignore? */ });
+  }
 };

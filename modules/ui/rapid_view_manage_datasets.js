@@ -120,7 +120,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     if (!_datasetInfo) {
       selection.text('Fetching available datasets...');
       service.loadDatasets()
-        .then(result => _datasetInfo = result)
+        .then(results => _datasetInfo = Object.values(results))
         .then(() => selection.text('').call(renderDatasets));
       return;
     }
