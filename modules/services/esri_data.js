@@ -138,12 +138,14 @@ function parseTile(dataset, tile, geojson, callback, options) {
     const props = feature.properties;
     if (!geom || !props) return null;
 
+    const fbid = `${dataset.id}-${props.OBJECTID}`;
+    const meta = { __fbid__: fbid, __origid__: fbid, __service__: 'esri' };
     let entities = [];
     let nodemap = new Map();
 
     // Point:  make a node
     if (geom.type === 'Point') {
-      return [ new osmNode({ loc: geom.coordinates, tags: parseTags(props) }) ];
+      return [ new osmNode({ loc: geom.coordinates, tags: parseTags(props) }, meta) ];
 
     // LineString:  make nodes + a way
     } else if (geom.type === 'LineString') {
@@ -160,7 +162,7 @@ function parseTile(dataset, tile, geojson, callback, options) {
         nodelist.push(n.id);
       });
       // make a way
-      const w = new osmWay({ nodes: nodelist, tags: parseTags(props) });
+      const w = new osmWay({ nodes: nodelist, tags: parseTags(props) }, meta);
       entities.push(w);
       return entities;
 
@@ -181,12 +183,14 @@ function parseTile(dataset, tile, geojson, callback, options) {
           nodelist.push(n.id);
         });
         // make a way
-        const w = new osmWay({ nodes: nodelist, tags: parseTags(props) });
+        const w = new osmWay({ nodes: nodelist });
         ways.push(w);
       });
 
       if (ways.length === 1) {  // single ring, set tags and return
-        entities.push(ways[0].update({ tags: parseTags(props) }));
+        entities.push(
+          ways[0].update( Object.assign({ tags: parseTags(props) }, meta) )
+        );
 
       } else {  // multiple rings, make a multipolygon relation with inner/outer members
         const members = ways.map((w, i) => {
@@ -194,7 +198,7 @@ function parseTile(dataset, tile, geojson, callback, options) {
           return { id: w.id, role: (i === 0 ? 'outer' : 'inner'), type: 'way' };
         });
         const tags = Object.assign(parseTags(props), { type: 'multipolygon' });
-        const r = new osmRelation({ members: members, tags: tags });
+        const r = new osmRelation({ members: members, tags: tags }, meta);
         entities.push(r);
       }
 
