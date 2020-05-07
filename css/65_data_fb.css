@@ -86,6 +86,21 @@
 
 
 /* Nodes */
+.layer-ai-features g.node.point .shadow {
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-opacity: 0;
+    fill: none;
+}
+.layer-ai-features g.node.point.hover:not(.selected) .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+.layer-ai-features g.node.point.selected .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+
 .layer-ai-features g.node.point .fill {
     fill: currentColor;
 }
@@ -97,3 +112,4 @@
 .low-zoom .layer-ai-features g.node.point .stroke {
     stroke-width: 1px;
 }
+

@@ -325,7 +325,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         const currNode = nodes[i];
         const linegroup = currNode.parentNode.__data__;
         const klass = isArea(d) ? 'building' : 'road';
-        return `line ${linegroup} ${klass} data-${d.__fbid__}`;
+        return `line ${linegroup} ${klass} data${d.__fbid__}`;
       })
       .merge(paths)
       .attr('d', getPath);
@@ -367,13 +367,11 @@ export function svgAiFeatures(projection, context, dispatch) {
 
     enter
       .append('circle')
-      .attr('class', 'stroke')
-      .attr('style', 'color: #000');
+      .attr('class', 'stroke');
 
     enter
       .append('circle')
-      .attr('class', 'fill')
-      .attr('style', 'color: currentColor');
+      .attr('class', 'fill');
 
     // update
     const zoom = geoScaleToZoom(projection.scale());
@@ -393,8 +391,9 @@ export function svgAiFeatures(projection, context, dispatch) {
   function drawPoints(selection, pointData, getTransform) {
     const pointRadii = {
       //       z16-, z17,  z18+
-      stroke: [4.5,   7,    8],
-      fill:   [2.5,   4,    5]
+      shadow: [4.5,   7,   8],
+      stroke: [4.5,   7,   8],
+      fill:   [2.5,   4,   5]
     };
 
     let pointGroup = selection
@@ -420,7 +419,11 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter
     let enter = points.enter()
       .append('g')
-      .attr('class', d => `node point data-${d.__fbid__}`);
+      .attr('class', d => `node point data${d.__fbid__}`);
+
+    enter
+      .append('circle')
+      .attr('class', 'shadow');
 
     enter
       .append('circle')
@@ -437,7 +440,7 @@ export function svgAiFeatures(projection, context, dispatch) {
       .merge(enter)
       .attr('transform', getTransform)
       .call(selection => {
-        ['stroke', 'fill'].forEach(klass => {
+        ['shadow', 'stroke', 'fill'].forEach(klass => {
           selection.selectAll('.' + klass)
             .attr('r', pointRadii[klass][radiusIdx]);
         });
