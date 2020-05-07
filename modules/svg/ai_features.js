@@ -7,10 +7,11 @@ import { svgPath, svgPointTransform } from './index';
 import { utilStringQs } from '../util';
 
 
-const radii = {
-    //       z16-, z17,  z18+
-    stroke: [3.5,  4,    4.5],
-    fill:   [2,    2,    2.5]
+
+const pointRadii = {
+  //       z16-, z17,  z18+
+  stroke: [3.5,  4,    4.5],
+  fill:   [2,    2,    2.5]
 };
 let _enabled = false;
 let _initialized = false;
@@ -131,28 +132,13 @@ export function svgAiFeatures(projection, context, dispatch) {
   }
 
 
-  function isBuilding(d) {
-    return d.isArea();
-    // return d.tags.building === 'yes';
-  }
-
-
-  function isRoad(d) {
-    return !!d.tags.highway;
+  function isArea(d) {
+    return (d.type === 'relation' || (d.type === 'way' && d.isArea()));
   }
 
 
   function featureKey(d) {
     return d.__fbid__;
-  }
-
-
-  function featureClasses(d) {
-    return [
-      'data' + d.__fbid__,
-      isBuilding(d) ? 'building' : 'road',
-      d.geometry.type,
-    ].filter(Boolean).join(' ');
   }
 
 
@@ -250,40 +236,68 @@ export function svgAiFeatures(projection, context, dispatch) {
     const getTransform = svgPointTransform(projection);
 
     // Gather data
-    let geoData = [];
+    let geoData = {
+      paths: [],
+      vertices: [],
+      points: []
+    };
+
     if (service && context.map().zoom() >= context.minEditableZoom()) {
+      /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
         service.loadTiles(projection, rapidContext.getTaskExtent());
-        geoData = service
-          .intersects(context.extent())
-          .filter(d => {
-            return d.type === 'way'
-              && !_actioned.has(d.id)
-              && !_actioned.has(d.__origid__);  // see onHistoryRestore()
-          })
+        let pathData = service.intersects(context.extent())
+          .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
           .filter(getPath);
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing
         if (dataset.key === 'fbRoads') {
-          geoData = geoData.filter(isRoad);
+          geoData.paths = pathData.filter(d => !!d.tags.highway);
+
+          let seen = {};
+          geoData.paths.forEach(d => {
+            const first = d.first();
+            const last = d.last();
+            if (!seen[first]) {
+              seen[first] = true;
+              geoData.vertices.push(graph.entity(first));
+            }
+            if (!seen[last]) {
+              seen[last] = true;
+              geoData.vertices.push(graph.entity(last));
+            }
+          });
+
         } else if (dataset.key === 'msBuildings') {
-          geoData = geoData.filter(isBuilding);
+          geoData.paths = pathData.filter(isArea);
+          // no vertices
         }
 
+      /* ESRI ArcGIS */
       } else if (dataset.service === 'esri') {
         service.loadTiles(dataset.key, projection);
-        geoData = service
+        let visibleData = service
           .intersects(context.extent())
-          .filter(d => {
-            return d.type === 'way'
-              && !_actioned.has(d.id)
-              && !_actioned.has(d.__origid__);  // see onHistoryRestore()
-          })
+          .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
+
+        geoData.points = visibleData
+          .filter(d => d.type === 'node' && !!d.__fbid__);  // standalone only (not vertices/childnodes)
+
+        geoData.paths = visibleData
+          .filter(d => d.type === 'way' || d.type === 'relation')
           .filter(getPath);
       }
     }
 
+    selection
+      .call(drawPaths, geoData.paths, dataset, getPath)
+      .call(drawVertices, geoData.vertices, getTransform)
+      .call(drawPoints, geoData.points, getTransform);
+  }
+
+
+  function drawPaths(selection, pathData, dataset, getPath) {
     // Draw shadow, casing, stroke layers
     let linegroups = selection
       .selectAll('g.linegroup')
@@ -295,15 +309,9 @@ export function svgAiFeatures(projection, context, dispatch) {
       .merge(linegroups);
 
     // Draw paths
-    let pathData = {
-      shadow: geoData,
-      casing: geoData,
-      stroke: geoData
-    };
-
     let paths = linegroups
       .selectAll('path')
-      .data(d => pathData[d], featureKey);
+      .data(pathData, featureKey);
 
     // exit
     paths.exit()
@@ -312,35 +320,41 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter/update
     paths = paths.enter()
       .append('path')
-      .attr('style', d => isBuilding(d) ? `fill: url(#fill-${dataset.key})` : null)
+      .attr('style', d => isArea(d) ? `fill: url(#fill-${dataset.key})` : null)
       .attr('class', (d, i, nodes) => {
         const currNode = nodes[i];
         const linegroup = currNode.parentNode.__data__;
-        return 'pathdata line ' + linegroup + ' ' + featureClasses(d);
+        const klass = isArea(d) ? 'building' : 'road';
+        return `line ${linegroup} ${klass} data-${d.__fbid__}`;
       })
       .merge(paths)
       .attr('d', getPath);
+  }
 
 
-    // Draw first, last vertex layers
-    let vertexgroups = selection
-      .selectAll('g.vertexgroup')
-      .data(['first', 'last']);
-
-    vertexgroups = vertexgroups.enter()
-      .append('g')
-      .attr('class', d => `vertexgroup vertexgroup-${d}`)
-      .merge(vertexgroups);
-
-    // Draw vertices
-    let vertexData = {
-      first: geoData,
-      last: geoData
+  function drawVertices(selection, vertexData, getTransform) {
+    const vertRadii = {
+      //       z16-, z17,  z18+
+      stroke: [3.5,  4,    4.5],
+      fill:   [2,    2,    2.5]
     };
 
-    let vertices = vertexgroups
+    let vertexGroup = selection
+      .selectAll('g.vertexgroup')
+      .data(vertexData.length ? [0] : []);
+
+    vertexGroup.exit()
+      .remove();
+
+    vertexGroup = vertexGroup.enter()
+      .append('g')
+      .attr('class', 'vertexgroup')
+      .merge(vertexGroup);
+
+
+    let vertices = vertexGroup
       .selectAll('g.vertex')
-      .data(d => vertexData[d], featureKey);
+      .data(vertexData, d => d.id);
 
     // exit
     vertices.exit()
@@ -349,11 +363,64 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter
     let enter = vertices.enter()
       .append('g')
-      .attr('class', (d, i, nodes) => {
-        const currNode = nodes[i];
-        const vertexgroup = currNode.parentNode.__data__;
-        return 'node vertex ' + vertexgroup + ' ' + featureClasses(d);
+      .attr('class', d => `node vertex ${d.id}`);
+
+    enter
+      .append('circle')
+      .attr('class', 'stroke')
+      .attr('style', 'color: #000');
+
+    enter
+      .append('circle')
+      .attr('class', 'fill')
+      .attr('style', 'color: currentColor');
+
+    // update
+    const zoom = geoScaleToZoom(projection.scale());
+    const radiusIdx = (zoom < 17 ? 0 : zoom < 18 ? 1 : 2);
+    vertices = vertices
+      .merge(enter)
+      .attr('transform', getTransform)
+      .call(selection => {
+        ['stroke', 'fill'].forEach(klass => {
+          selection.selectAll('.' + klass)
+            .attr('r', vertRadii[klass][radiusIdx]);
+        });
       });
+  }
+
+
+  function drawPoints(selection, pointData, getTransform) {
+    const pointRadii = {
+      //       z16-, z17,  z18+
+      stroke: [4.5,   7,    8],
+      fill:   [2.5,   4,    5]
+    };
+
+    let pointGroup = selection
+      .selectAll('g.pointgroup')
+      .data(pointData.length ? [0] : []);
+
+    pointGroup.exit()
+      .remove();
+
+    pointGroup = pointGroup.enter()
+      .append('g')
+      .attr('class', 'pointgroup')
+      .merge(pointGroup);
+
+    let points = pointGroup
+      .selectAll('g.point')
+      .data(pointData, featureKey);
+
+    // exit
+    points.exit()
+      .remove();
+
+    // enter
+    let enter = points.enter()
+      .append('g')
+      .attr('class', d => `node point data-${d.__fbid__}`);
 
     enter
       .append('circle')
@@ -366,18 +433,13 @@ export function svgAiFeatures(projection, context, dispatch) {
     // update
     const zoom = geoScaleToZoom(projection.scale());
     const radiusIdx = (zoom < 17 ? 0 : zoom < 18 ? 1 : 2);
-    vertices = vertices
+    points = points
       .merge(enter)
-      .attr('transform', (d, i, nodes) => {
-        const currNode = nodes[i];
-        const vertexgroup = currNode.parentNode.__data__;
-        const nodeIdx = vertexgroup === 'first' ? 0 : d.nodes.length - 1;
-        return getTransform(graph.entities[d.nodes[nodeIdx]]);
-      })
+      .attr('transform', getTransform)
       .call(selection => {
         ['stroke', 'fill'].forEach(klass => {
           selection.selectAll('.' + klass)
-            .attr('r', radii[klass][radiusIdx]);
+            .attr('r', pointRadii[klass][radiusIdx]);
         });
       });
   }

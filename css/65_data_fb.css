@@ -83,6 +83,17 @@
 .low-zoom .layer-ai-features path.line.building.shadow {
     stroke-width: 10;
 }
-.layer-ai-features .node.vertex.building circle {
-    opacity: 0;
+
+
+/* Nodes */
+.layer-ai-features g.node.point .fill {
+    fill: currentColor;
+}
+.layer-ai-features g.node.point .stroke {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #333;
+}
+.low-zoom .layer-ai-features g.node.point .stroke {
+    stroke-width: 1px;
 }
