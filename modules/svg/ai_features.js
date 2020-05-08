@@ -6,13 +6,6 @@ import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
 import { utilStringQs } from '../util';
 
-
-
-const pointRadii = {
-  //       z16-, z17,  z18+
-  stroke: [3.5,  4,    4.5],
-  fill:   [2,    2,    2.5]
-};
 let _enabled = false;
 let _initialized = false;
 let _FbMlService;
@@ -231,7 +224,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     const rapidContext = context.rapidContext();
     const selection = d3_select(nodes[i]);
     const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
-    const graph = service && service.graph();
+    const graph = service && service.graph(dataset.key);
     const getPath = svgPath(projection, graph);
     const getTransform = svgPointTransform(projection);
 
@@ -242,7 +235,7 @@ export function svgAiFeatures(projection, context, dispatch) {
       points: []
     };
 
-    if (service && context.map().zoom() >= context.minEditableZoom()) {
+    if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
         service.loadTiles(projection, rapidContext.getTaskExtent());
@@ -278,7 +271,7 @@ export function svgAiFeatures(projection, context, dispatch) {
       } else if (dataset.service === 'esri') {
         service.loadTiles(dataset.key, projection);
         let visibleData = service
-          .intersects(context.extent())
+          .intersects(dataset.key, context.extent())
           .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
 
         geoData.points = visibleData
