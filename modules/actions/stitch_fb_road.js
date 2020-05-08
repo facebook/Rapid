@@ -1,5 +1,5 @@
 import { geoVecInterp } from '../geo/vector';
-import { osmEntity, osmNode } from '../osm';
+import { osmNode, osmRelation, osmWay } from '../osm';
 
 
 function findConnectionPoint(graph, newNode, targetWay, nodeA, nodeB) {
@@ -58,57 +58,123 @@ function locationChanged(loc1, loc2) {
 }
 
 
-export function actionStitchFbRoad(wayId, fbGraph) {
+function removeMetadata (entity) {
+    delete entity.__fbid__;
+    delete entity.__origid__;
+    delete entity.__service__;
+    delete entity.__datasetid__;
+    delete entity.tags.conn;
+    delete entity.tags.dupe;
+}
+
+
+export function actionStitchFbRoad(entityID, extGraph) {
     return function(graph) {
-        // copy way before modifying
-        var fbWay = osmEntity(fbGraph.entity(wayId));
-        fbWay.nodes = fbWay.nodes.slice();
+        var seenRelations = {};    // keep track of seen relations to avoid infinite recursion
+        var extEntity = extGraph.entity(entityID);
 
-        delete fbWay.__fbid__;
+        if (extEntity.type === 'node') {
+            acceptNode(extEntity);
+        } else if (extEntity.type === 'way') {
+            acceptWay(extEntity);
+        } else if (extEntity.type === 'relation') {
+            acceptRelation(extEntity);
+        }
 
-        fbWay.nodes.forEach(function(nodeId, idx) {
+        return graph;
+
+
+        // These functions each accept the external entities, returning the replacement
+        // NOTE - these functions will update `graph` closure variable
+
+        function acceptNode(extNode) {
             // copy node before modifying
-            var fbNode = osmEntity(fbGraph.entity(nodeId));
-            fbNode.tags = Object.assign({}, fbNode.tags);
+            var node = osmNode(extNode);
+            node.tags = Object.assign({}, node.tags);
+            removeMetadata(node);
 
-            var conn = fbNode.tags.conn && fbNode.tags.conn.split(',');
-            var dupeId = fbNode.tags.dupe;
+            graph = graph.replace(node);
+            return node;
+        }
 
-            delete fbNode.__fbid__;
-            delete fbNode.__origid__;
-            delete fbNode.tags.conn;
-            delete fbNode.tags.dupe;
 
-            var node = fbNode;
-            if (dupeId
-                && graph.hasEntity(dupeId)
-                && !locationChanged(graph.entity(dupeId).loc, node.loc)) {
-                node = graph.entity(dupeId);
-            } else if (
-                graph.hasEntity(node.id)
-                && locationChanged(graph.entity(node.id).loc, node.loc)) {
-                node = osmNode({ loc: node.loc });
-            }
+        function acceptWay(extWay) {
+            // copy way before modifying
+            var way = osmWay(extWay);
+            way.nodes = extWay.nodes.slice();
+            way.tags = Object.assign({}, way.tags);
+            removeMetadata(way);
 
-            if (conn && graph.hasEntity(conn[0])) {
-                //conn=w316746574,n3229071295,n3229071273
-                var targetWay = graph.entities[conn[0]];
-                var nodeA = graph.entities[conn[1]];
-                var nodeB = graph.entities[conn[2]];
+            var nodes = way.nodes.map(function(nodeId) {
+                // copy node before modifying
+                var node = osmNode(extGraph.entity(nodeId));
+                node.tags = Object.assign({}, node.tags);
 
-                if (targetWay && nodeA && nodeB) {
-                    var result = findConnectionPoint(graph, node, targetWay, nodeA, nodeB);
-                    if (result && !locationChanged(result.interpLoc, node.loc)) {
-                        node.loc = result.interpLoc;
-                        graph = graph.replace(targetWay.addNode(node.id, result.insertIdx));
+                var conn = node.tags.conn && node.tags.conn.split(',');
+                var dupeId = node.tags.dupe;
+                removeMetadata(node);
+
+                if (dupeId && graph.hasEntity(dupeId) && !locationChanged(graph.entity(dupeId).loc, node.loc)) {
+                    node = graph.entity(dupeId);           // keep original node with dupeId
+                } else if (graph.hasEntity(node.id) && locationChanged(graph.entity(node.id).loc, node.loc)) {
+                    node = osmNode({ loc: node.loc });     // replace (unnecessary copy of node?)
+                }
+
+                if (conn && graph.hasEntity(conn[0])) {
+                    //conn=w316746574,n3229071295,n3229071273
+                    var targetWay = graph.entities[conn[0]];
+                    var nodeA = graph.entities[conn[1]];
+                    var nodeB = graph.entities[conn[2]];
+
+                    if (targetWay && nodeA && nodeB) {
+                        var result = findConnectionPoint(graph, node, targetWay, nodeA, nodeB);
+                        if (result && !locationChanged(result.interpLoc, node.loc)) {
+                            node.loc = result.interpLoc;
+                            graph = graph.replace(targetWay.addNode(node.id, result.insertIdx));
+                        }
                     }
                 }
-            }
 
-            fbWay.nodes[idx] = node.id;
-            graph = graph.replace(node);
-        });
-        graph = graph.replace(fbWay);
-        return graph;
+                graph = graph.replace(node);
+                return node.id;
+            });
+
+            way = way.update({ nodes: nodes });
+            graph = graph.replace(way);
+            return way;
+        }
+
+
+        function acceptRelation(extRelation) {
+            var seen = seenRelations[extRelation.id];
+            if (seen) return seen;
+
+            // copy relation before modifying
+            var relation = osmRelation(extRelation);
+            relation.members = extRelation.members.slice();
+            relation.tags = Object.assign({}, extRelation.tags);
+            removeMetadata(relation);
+
+            var members = relation.members.map(function(member) {
+                var extEntity = extGraph.entity(member.id);
+                var replacement;
+
+                if (extEntity.type === 'node') {
+                    replacement = acceptNode(extEntity);
+                } else if (extEntity.type === 'way') {
+                    replacement = acceptWay(extEntity);
+                } else if (extEntity.type === 'relation') {
+                    replacement = acceptRelation(extEntity);
+                }
+
+                return Object.assign(member, { id: replacement.id });
+            });
+
+            relation = relation.update({ members: members });
+            graph = graph.replace(relation);
+            seenRelations[extRelation.id] = relation;
+            return relation;
+        }
+
     };
 }
