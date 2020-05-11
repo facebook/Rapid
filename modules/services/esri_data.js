@@ -68,6 +68,10 @@ function parseFeature(feature, dataset) {
   const props = feature.properties;
   if (!geom || !props) return null;
 
+  // skip if we've seen this feature already on another tile
+  if (dataset.cache.seen[props.OBJECTID]) return null;
+  dataset.cache.seen[props.OBJECTID] = true;
+
   const id = `${dataset.id}-${props.OBJECTID}`;
   const meta = { __fbid__: id, __origid__: id, __service__: 'esri', __datasetid__: dataset.id };
   let entities = [];
