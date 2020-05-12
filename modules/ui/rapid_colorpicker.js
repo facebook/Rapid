@@ -1,15 +1,40 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
+import { textDirection } from '../util/locale';
 import { utilKeybinding, utilRebind } from '../util';
 
 
 export function uiRapidColorpicker(context, parentModal) {
-  const RAPID_MAGENTA = '#ff26d4';
+  const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('change', 'done');
 
-  let _content = d3_select(null);
+  const COLORS = [
+    '#ff0000',  // red
+    '#ffa500',  // orange
+    '#ffd700',  // gold
+    '#00ff00',  // lime
+    '#00ffff',  // cyan
+    '#1e90ff',  // dodgerblue
+    '#ff26d4',  // rapid magenta
+    '#ffc0cb',  // pink
+    '#d3d3d3',  // lightgray
+    '#faf0e6'   // linen
+  ];
+
   let _close = () => {};
+
+
+  function togglePopup(d, i, nodes) {
+    const shaded = context.container().selectAll('.shaded');  // container for the existing modal
+    if (shaded.empty()) return;
+
+    if (shaded.selectAll('.colorpicker-popup').size()) {
+      _close();
+    } else {
+      renderPopup(shaded, nodes[i]);
+    }
+  }
 
 
   function render(selection) {
@@ -33,26 +58,23 @@ export function uiRapidColorpicker(context, parentModal) {
   }
 
 
-  function togglePopup(d) {
-    console.log('click ' + d.label);
+  function renderPopup(selection, forNode) {
+    const dataset = forNode.__data__;
+    const rect = forNode.getBoundingClientRect();
+    const popWidth = 180;
+    const popTop = rect.bottom + 15;
+    const popLeft = textDirection === 'rtl'
+      ? rect.right - (0.3333 * popWidth)
+      : rect.left - (0.6666 * popWidth);
+    const arrowLeft = textDirection === 'rtl'
+      ? (0.3333 * popWidth) - rect.width + 5
+      : (0.6666 * popWidth) + 5;
 
-    const shaded = context.container().selectAll('.shaded');  // container for the existing modal
-    if (shaded.empty()) return;
-
-    if (shaded.selectAll('.colorpicker-popup').size()) {
-      _close();
-    } else {
-      renderPopup(shaded);
-    }
-  }
-
-
-  function renderPopup(selection) {
     const origClose = parentModal.close;
     parentModal.close = () => { /* ignore */ };
 
     _close = () => {
-      myModal
+      popup
         .transition()
         .duration(200)
         .style('opacity', 0)
@@ -71,26 +93,56 @@ export function uiRapidColorpicker(context, parentModal) {
     keybinding.on(['⌫', '⎋'], _close);
     d3_select(document).call(keybinding);
 
-    let myModal = selection
+    let popup = selection
       .append('div')
       .attr('class', 'colorpicker-popup')
-      .style('opacity', 0);
+      .style('opacity', 0)
+      .style('width', popWidth + 'px')
+      .style('top', popTop + 'px')
+      .style('left', popLeft + 'px');
 
-    // myModal
-    //   .append('button')
-    //   .attr('class', 'close')
-    //   .on('click', myClose);
-    //   .call(svgIcon('#iD-icon-close'));
-
-    _content = myModal
+    popup
       .append('div')
-      .attr('class', 'content rapid-stack fillL');
+      .attr('class', 'colorpicker-arrow')
+      .style('left', arrowLeft + 'px');
 
-    _content
-      .text('hi there');
-    //   .call(renderModalContent);
+    let content = popup
+      .append('div')
+      .attr('class', 'colorpicker-content');
 
-    myModal
+    let colorlist = content.selectAll('.colorpicker-colors')
+      .data([0]);
+
+    colorlist = colorlist.enter()
+      .append('div')
+      .attr('class', 'colorpicker-colors')
+      .merge(colorlist);
+
+    let colorItems = colorlist.selectAll('.colorpicker-option')
+      .data(COLORS);
+
+    // enter
+    let colorItemsEnter = colorItems.enter()
+      .append('div')
+      .attr('class', 'colorpicker-option')
+      .style('color', d => d)
+      .on('click', selectedColor => {
+        dispatch.call('change', this, dataset.key, selectedColor);
+        colorItems.classed('selected', d => d === selectedColor);
+      });
+
+    colorItemsEnter
+      .append('div')
+      .attr('class', 'colorpicker-option-fill');
+
+    // update
+    colorItems = colorItems
+      .merge(colorItemsEnter);
+
+    colorItems
+      .classed('selected', d => d === dataset.color);
+
+    popup
       .transition()
       .style('opacity', 1);
   }

@@ -422,6 +422,9 @@ form.rapid-stack .description.poweruser {
 .rapid-checkbox-label:not(.disabled) {
     cursor: pointer;
 }
+.rapid-colorpicker-label.disabled {
+    opacity: 0.5;
+}
 
 .rapid-colorpicker {
     padding: 3px;
@@ -609,4 +612,50 @@ hide this one and style something on top of it.  */
 .modal-view-manage button.rapid-view-manage-dataset-action.secondary:focus,
 .modal-view-manage button.rapid-view-manage-dataset-action.secondary:hover {
     background-color: #888;
+}
+
+
+/* Colorpicker popup */
+
+.colorpicker-popup {
+    position: absolute;
+    padding: 10px;
+    z-index: 100;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    border-radius: 6px;
+    box-shadow: 0 0 2em black;
+}
+.colorpicker-arrow {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.colorpicker-colors {
+    display: flex;
+    flex-flow: row wrap;
+}
+.colorpicker-option {
+    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 6px;
+}
+.colorpicker-option:hover {
+    border: 2px solid #ddd;
+}
+.colorpicker-option.selected {
+    border: 2px solid #444;
+}
+.colorpicker-option-fill {
+    background-color: currentColor;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    border-radius: 5px;
 }

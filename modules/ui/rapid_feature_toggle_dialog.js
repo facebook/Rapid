@@ -32,12 +32,12 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     }
   }
 
-  function changeColor(d, i, nodes) {
-    const input = nodes[i];
-    const dataset = rapidContext.datasets()[d.key];
+  function changeColor(dKey, color) {
+    const dataset = rapidContext.datasets()[dKey];
     if (dataset) {
-      dataset.color = input.value || RAPID_MAGENTA;
+      dataset.color = color;
       context.map().pan([0,0]);   // trigger a map redraw
+      _content.call(renderModalContent);
     }
   }
 
@@ -254,8 +254,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     let colorPickerEnter = inputsEnter
       .append('label')
-      .attr('class', 'rapid-colorpicker-label')
-      .call(_colorpicker);
+      .attr('class', 'rapid-colorpicker-label');
 
     let checkboxEnter = inputsEnter
       .append('label')
@@ -277,9 +276,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .merge(rowsEnter)
       .classed('disabled', !rapidLayer.showAll());
 
-    rows.selectAll('.rapid-feature-colorpicker')
+    rows.selectAll('.rapid-colorpicker-label')
       .attr('disabled', rapidLayer.showAll() ? null : true)
-      .property('value', d => d.color || RAPID_MAGENTA);
+      .call(_colorpicker);
 
     rows.selectAll('.rapid-checkbox-label')
       .classed('disabled', !rapidLayer.showAll());
