@@ -289,17 +289,6 @@ form.rapid-stack .description.poweruser {
     flex-flow: column nowrap;
 }
 
-
-.rapid-checkbox .rapid-colorpicker-label {
-    display: flex;
-    padding: 0 15px;
-}
-.rapid-checkbox .rapid-feature-colorpicker {
-    width: 80px;
-    font-size: 12px;
-}
-
-
 .modal-section.rapid-checkbox.poweruser {
     font-size:16px;
     flex-wrap: wrap;
@@ -421,12 +410,31 @@ form.rapid-stack .description.poweruser {
     align-items: center;
 }
 
-.rapid-checkbox-label {
+.rapid-colorpicker-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
+    margin: 0 15px;
 }
+.rapid-colorpicker-label:not(.disabled),
 .rapid-checkbox-label:not(.disabled) {
     cursor: pointer;
+}
+
+.rapid-colorpicker {
+    padding: 3px;
+    border: none;
+    background: #fff;
+    border-radius: 6px;
+}
+.rapid-colorpicker-fill {
+    border: none;
+    background: currentColor;
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
 }
 
 .rapid-checkbox-label.poweruser {

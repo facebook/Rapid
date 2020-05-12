@@ -47,6 +47,7 @@ export { uiNoteReport } from './note_report';
 export { uiPreferences } from './preferences';
 export { uiPresetEditor } from './preset_editor';
 export { uiPresetIcon } from './preset_icon';
+export { uiRapidColorpicker } from './rapid_colorpicker';
 export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog';
 export { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 export { uiRawMemberEditor } from './raw_member_editor';

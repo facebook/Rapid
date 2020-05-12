@@ -5,6 +5,7 @@ import { t, textDirection } from '../util/locale';
 import { icon } from './intro/helper';
 import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
+import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
@@ -15,6 +16,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
   let _viewManageModal;
+  let _colorpicker;
 
 
   function datasetEnabled(d) {
@@ -55,6 +57,13 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   return function render(selection) {
     _modalSelection = uiModal(selection);
 
+    _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
+      .on('done', () => _content.call(renderModalContent));
+
+    _colorpicker = uiRapidColorpicker(context, _modalSelection)
+      .on('change', changeColor);
+
+
     _modalSelection.select('.modal')
       .attr('class', 'modal-splash modal modal-rapid');
 
@@ -68,9 +77,6 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
     featureToggleKeyDispatcher
       .on('ai_feature_toggle', () => _content.call(renderModalContent) );
-
-    _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
-      .on('done', () => _content.call(renderModalContent));
   };
 
 
@@ -246,17 +252,10 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('div')
       .attr('class', 'rapid-checkbox-inputs');
 
-
     let colorPickerEnter = inputsEnter
       .append('label')
-      .attr('class', 'rapid-colorpicker-label');
-
-    colorPickerEnter
-      .append('input')
-      .attr('type', 'text')
-      .attr('class', 'rapid-feature-colorpicker')
-      .on('change', changeColor);
-
+      .attr('class', 'rapid-colorpicker-label')
+      .call(_colorpicker);
 
     let checkboxEnter = inputsEnter
       .append('label')
