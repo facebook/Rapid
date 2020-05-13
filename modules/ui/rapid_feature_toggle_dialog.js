@@ -10,7 +10,6 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
-  const RAPID_MAGENTA = '#ff26d4';
   const rapidContext = context.rapidContext();
 
   let _modalSelection = d3_select(null);
@@ -252,7 +251,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('div')
       .attr('class', 'rapid-checkbox-inputs');
 
-    let colorPickerEnter = inputsEnter
+    inputsEnter
       .append('label')
       .attr('class', 'rapid-colorpicker-label');
 

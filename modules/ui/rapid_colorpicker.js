@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select } from 'd3-selection';
+import { select as d3_select, event as d3_event } from 'd3-selection';
 
 import { textDirection } from '../util/locale';
 import { utilKeybinding, utilRebind } from '../util';
@@ -33,6 +33,18 @@ export function uiRapidColorpicker(context, parentModal) {
       _close();
     } else {
       renderPopup(shaded, nodes[i]);
+    }
+  }
+
+
+  // if user clicks outside the colorpicker, dismiss
+  function handleClick() {
+    const target = d3_event.target;
+    const className = (target && target.className) || '';
+    if (!/colorpicker/i.test(className)) {
+      d3_event.stopPropagation();
+      d3_event.preventDefault();
+      _close();
     }
   }
 
@@ -85,6 +97,7 @@ export function uiRapidColorpicker(context, parentModal) {
       let keybinding = utilKeybinding('modal');
       keybinding.on(['⌫', '⎋'], origClose);
       d3_select(document).call(keybinding);
+      d3_select(document).on('click.colorpicker', null);
       _close = () => {};
       dispatch.call('done');
     };
@@ -92,6 +105,7 @@ export function uiRapidColorpicker(context, parentModal) {
     let keybinding = utilKeybinding('modal');
     keybinding.on(['⌫', '⎋'], _close);
     d3_select(document).call(keybinding);
+    d3_select(document).on('click.colorpicker', handleClick);
 
     let popup = selection
       .append('div')
