@@ -7,6 +7,28 @@
     <link rel='stylesheet' href='../node_modules/mocha/mocha.css'>
     <link rel='stylesheet' href='../dist/iD.css'>
     <!-- <script src='../node_modules/d3/build/d3.js'></script> -->
+
+    <script>
+    // Code to avoid "This browser lacks typed array (Uint8Array) support.."
+    // PhantomJS actually *does* have typed array support, but it doesn't have `setPrototypeOf`
+    // This needs to be added before `mocha.js`
+    // https://github.com/plotly/plotly.js/issues/4556
+    Object.setPrototypeOf = Object.setPrototypeOf || ({ __proto__: [] } instanceof Array ? setProtoOf : mixinProperties)
+
+    function setProtoOf (obj, proto) {
+      obj.__proto__ = proto
+      return obj
+    }
+
+    function mixinProperties (obj, proto) {
+      for (var prop in proto) {
+        if (!Object.prototype.hasOwnProperty.call(obj, prop)) {
+          obj[prop] = proto[prop]
+        }
+      }
+      return obj
+    }
+    </script>
 </head>
 
 <body style="overflow:scroll">
