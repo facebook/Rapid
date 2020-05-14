@@ -224,7 +224,9 @@ export function svgAiFeatures(projection, context, dispatch) {
     const rapidContext = context.rapidContext();
     const selection = d3_select(nodes[i]);
     const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
-    const graph = service && service.graph(dataset.key);
+    if (!service) return;
+
+    const graph = service.graph(dataset.key);
     const getPath = svgPath(projection, graph);
     const getTransform = svgPointTransform(projection);
 
