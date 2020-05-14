@@ -8,7 +8,7 @@ import { utilRebind, utilTiler } from '../util';
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
 const APIROOT = 'https://openstreetmap.maps.arcgis.com/sharing/rest/content';
-const TILEZOOM = 16;
+const TILEZOOM = 14;
 const tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loadedData');
 
