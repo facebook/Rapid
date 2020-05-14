@@ -11,16 +11,16 @@ describe('iD.svgLayers', function () {
     });
 
 
-    it('creates a surface', function () {
+    it('creates a single svg surface', function () {
         container.call(iD.svgLayers(projection, context));
-        expect(container.selectAll('svg').classed('surface')).to.be.true;
+        var nodes = container.selectAll('svg.surface').nodes();
+        expect(nodes.length).to.eql(1);
     });
 
-    it('creates surface defs', function () {
+    it('creates a single defs', function () {
         container.call(iD.svgLayers(projection, context));
-        var nodes = container.selectAll('svg defs').nodes();
+        var nodes = container.selectAll('svg.surface > defs.surface-defs').nodes();
         expect(nodes.length).to.eql(1);
-        expect(d3.select(nodes[0]).classed('surface-defs')).to.be.true;
     });
 
     it('creates default data layers', function () {
