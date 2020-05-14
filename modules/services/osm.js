@@ -506,6 +506,13 @@ export default {
         Object.values(_noteCache.inflightPost).forEach(abortRequest);
         if (_changeset.inflight) abortRequest(_changeset.inflight);
 
+        if (this.throttledReloadApiStatus) {
+            this.throttledReloadApiStatus.cancel();
+        }
+        if (this.throttledLoadUsers) {
+            this.throttledLoadUsers.cancel();
+        }
+
         _tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
         _noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
         _userCache = { toLoad: {}, user: {} };
@@ -955,7 +962,7 @@ export default {
                         dispatch.call('apiStatusChange', that, err, status);
                     }
                 });
-            }, 500);
+            }, 1000);
         }
         this.throttledReloadApiStatus();
     },
@@ -1056,11 +1063,15 @@ export default {
 
         var that = this;
         var path = '/api/0.6/notes?limit=' + noteOptions.limit + '&closed=' + noteOptions.closed + '&bbox=';
-        var throttleLoadUsers = _throttle(function() {
-            var uids = Object.keys(_userCache.toLoad);
-            if (!uids.length) return;
-            that.loadUsers(uids, function() {});  // eagerly load user details
-        }, 750);
+
+        // throttle to avoid unncessary API calls
+        if (!this.throttledLoadUsers) {
+            this.throttledLoadUsers = _throttle(function() {
+                var uids = Object.keys(_userCache.toLoad);
+                if (!uids.length) return;
+                that.loadUsers(uids, function() {});  // eagerly load user details
+            }, 1000);
+        }
 
         // determine the needed tiles to cover the view
         var tiles = tiler.zoomExtent([_noteZoom, _noteZoom]).getTiles(projection);
@@ -1080,7 +1091,7 @@ export default {
                     if (!err) {
                         _noteCache.loaded[tile.id] = true;
                     }
-                    throttleLoadUsers();
+                    that.throttledLoadUsers();
                     dispatch.call('loadedNotes');
                 },
                 options

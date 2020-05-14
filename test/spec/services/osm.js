@@ -18,6 +18,7 @@ describe('iD.serviceOsm', function () {
 
     before(function() {
         iD.services.osm = iD.serviceOsm;
+        iD.services.osm.reloadApiStatus = function() {};
     });
 
     after(function() {
