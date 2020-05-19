@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 const buble = require('@rollup/plugin-buble');
 const colors = require('colors/safe');
-const commonjs = require('rollup-plugin-commonjs');
+const commonjs = require('@rollup/plugin-commonjs');
 const includePaths = require('rollup-plugin-includepaths');
-const json = require('rollup-plugin-json');
-const nodeResolve = require('rollup-plugin-node-resolve');
+const json = require('@rollup/plugin-json');
+const nodeResolve = require('@rollup/plugin-node-resolve');
 const rollup = require('rollup');
 const shell = require('shelljs');
 // const visualizer = require('rollup-plugin-visualizer');
