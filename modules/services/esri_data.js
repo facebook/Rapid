@@ -44,8 +44,9 @@ function layerURL(featureServerURL) {
 }
 
 function tileURL(dataset, extent) {
-  return `${dataset.url}/0/query?f=geojson&outfields=*&outSR=4326&geometryType=esriGeometryEnvelope&geometry=` + extent.toParam();
-  // note: for now, layer is always 0
+  const layerId = dataset.layer.id;
+  const bbox = extent.toParam();
+  return `${dataset.url}/${layerId}/query?f=geojson&outfields=*&outSR=4326&geometryType=esriGeometryEnvelope&geometry=${bbox}`;
 }
 
 
@@ -195,6 +196,8 @@ export default {
   loadTiles: function (datasetID, projection) {
     if (_off) return;
 
+    // `loadDatasets` and `loadLayer` are asynchronous,
+    // so ensure both have completed before we start requesting tiles.
     const ds = _datasets[datasetID];
     if (!ds || !ds.layer) return;
 
