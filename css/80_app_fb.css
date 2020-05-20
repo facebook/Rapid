@@ -499,27 +499,27 @@ hide this one and style something on top of it.  */
 }
 
 .modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
-    background-image: url('img/ai-feature-halo-still.png');
+    background-image: url('rapid/ai-feature-halo-still.png');
 }
 
 .modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
-    background-image: url('img/ai-feature-halo.gif');
+    background-image: url('rapid/ai-feature-halo.gif');
 }
 
 .modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
-    background-image: url('img/tagnostic-road-join-still.png');
+    background-image: url('rapid/tagnostic-road-join-still.png');
 }
 
 .modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
-    background-image: url('img/tagnostic-road-join.gif');
+    background-image: url('rapid/tagnostic-road-join.gif');
 }
 
 .modal-section.rapid-checkbox.poweruser div#tag-sources {
-    background-image: url('img/tag-sources-still.png');
+    background-image: url('rapid/tag-sources-still.png');
 }
 
 .modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
-    background-image: url('img/tag-sources.gif');
+    background-image: url('rapid/tag-sources.gif');
 }
 
 
