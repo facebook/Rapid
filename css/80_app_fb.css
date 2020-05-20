@@ -201,24 +201,10 @@ button.ai-features-toggle.layer-off use {
     margin: 0 10px;
 }
 
-form.rapid-stack .heading.poweruser {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 0.0625em;
-    color: white;
-}
-
 .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
     margin: -5px;
-}
-
-form.rapid-stack .description.poweruser {
-    font-size: 14px;
-    text-align: left;
 }
 
 .rapid-feature-license {
@@ -239,15 +225,6 @@ form.rapid-stack .description.poweruser {
     font-style: italic;
     margin: -8px 10px 5px 10px;
     color: #aaa;
-}
-
-.rapid-feature-label-container.poweruser {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    justify-content: space-around;
-    width: 100%;
-    padding: 5px;
 }
 
 
@@ -283,90 +260,14 @@ form.rapid-stack .description.poweruser {
     color: #ddd;
 }
 
-
 .modal-rapid .fillL.rapid-stack .rapid-feature {
     display: flex;
     flex-flow: column nowrap;
 }
 
-.modal-section.rapid-checkbox.poweruser {
-    font-size:16px;
-    flex-wrap: wrap;
-    border-radius:10px;
-    padding: 3px 10px;
-    margin: 3px 0px 3px 0px;
-}
-
-.modal-section.rapid-checkbox.poweruser:hover {
-    background: linear-gradient(45deg, #888888aa 1%, #88888844 15%,#ffffff22 95%, transparent);
-}
-
 .rapid-feature-description {
     font-size: 14px;
     margin: 4px;
-}
-
-.rapid-feature-description.poweruser {
-    color: #ccc;
-}
-
-.modal-heading.rapid {
-    font-size: 36px;
-    margin: -20px 0px 0px 20px;
-}
-
-.modal-heading-desc.rapid {
-    font-size: 18px;
-    text-align: center;
-    width: 100%;
-    font-style: italic;
-    color: #cccccc
-}
-
-.modal-heading svg {
-    width: 32px;
-    height: 32px;
-    margin-top:10px;
-}
-
-.modal-section.rapid-checkbox.poweruser {
-    font-size:16px;
-    flex-wrap: wrap;
-    border-radius:10px;
-    padding: 3px 10px;
-    margin: 3px 0px 3px 0px;
-}
-
-.modal-section.rapid-checkbox.poweruser:hover {
-    background: linear-gradient(45deg, #888888aa 1%, #88888844 15%,#ffffff22 95%, transparent);
-}
-
-.rapid-feature-description {
-    font-size: 14px;
-    margin: 4px;
-}
-
-.rapid-feature-description.poweruser {
-    color: #ccc;
-}
-
-.modal-heading.rapid {
-    font-size: 36px;
-    margin: 20px 0px 0px 20px;
-}
-
-.modal-heading-desc.rapid {
-    font-size: 18px;
-    text-align: center;
-    width: 100%;
-    font-style: italic;
-    color: #cccccc
-}
-
-.modal-heading svg {
-    width: 32px;
-    height: 32px;
-    margin-top:10px;
 }
 
 .modal-section.rapid-checkbox.disabled {
@@ -440,10 +341,6 @@ form.rapid-stack .description.poweruser {
     height: 22px;
 }
 
-.rapid-checkbox-label.poweruser {
-    align-self: center;
-}
-
 /* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
 .rapid-checkbox-label input {
@@ -488,7 +385,47 @@ hide this one and style something on top of it.  */
 }
 
 
-/* Rapid power user features */
+/* Rapid Power User features */
+
+.rapid-stack.poweruser .modal-heading {
+    font-size: 28px;
+    font-weight: bold;
+    padding: 0px 15px;
+    margin-top: -20px;
+}
+.rapid-stack.poweruser .modal-heading svg {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+.rapid-stack.poweruser .modal-heading-desc {
+    font-size: 18px;
+    font-style: italic;
+    color: #ccc;
+    margin: -20px 80px 10px 80px;
+}
+
+.rapid-feature-description.poweruser {
+    flex: 1;
+    margin: 15px;
+}
+.rapid-feature-description.poweruser > .heading {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.0625em;
+    color: white;
+}
+.rapid-feature-description.poweruser > .description {
+    font-size: 14px;
+    text-align: left;
+}
+
+.rapid-checkbox.poweruser:hover {
+    background: linear-gradient(45deg, #888888aa 1%, #88888844 15%,#ffffff22 95%, transparent);
+}
+
 .rapid-feature-animation.poweruser {
     background-size: 100% 100%;
     width: 130px;
@@ -501,23 +438,18 @@ hide this one and style something on top of it.  */
 .modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
     background-image: url('rapid/ai-feature-halo-still.png');
 }
-
 .modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
     background-image: url('rapid/ai-feature-halo.gif');
 }
-
 .modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
     background-image: url('rapid/tagnostic-road-join-still.png');
 }
-
 .modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
     background-image: url('rapid/tagnostic-road-join.gif');
 }
-
 .modal-section.rapid-checkbox.poweruser div#tag-sources {
     background-image: url('rapid/tag-sources-still.png');
 }
-
 .modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
     background-image: url('rapid/tag-sources.gif');
 }
