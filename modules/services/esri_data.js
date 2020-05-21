@@ -69,11 +69,14 @@ function parseFeature(feature, dataset) {
   const props = feature.properties;
   if (!geom || !props) return null;
 
-  // skip if we've seen this feature already on another tile
-  if (dataset.cache.seen[props.OBJECTID]) return null;
-  dataset.cache.seen[props.OBJECTID] = true;
+  const featureID = props.OBJECTID || props.FID || props.id;
+  if (!featureID) return null;
 
-  const id = `${dataset.id}-${props.OBJECTID}`;
+  // skip if we've seen this feature already on another tile
+  if (dataset.cache.seen[featureID]) return null;
+  dataset.cache.seen[featureID] = true;
+
+  const id = `${dataset.id}-${featureID}`;
   const meta = { __fbid__: id, __origid__: id, __service__: 'esri', __datasetid__: dataset.id };
   let entities = [];
   let nodemap = new Map();
