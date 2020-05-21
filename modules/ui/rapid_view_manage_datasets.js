@@ -13,8 +13,33 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
 
+  const PERPAGE = 4;
   let _content = d3_select(null);
   let _datasetInfo;
+  let _datasetStart = 0;
+
+
+  function clamp(num, min, max) {
+    return Math.max(min, Math.min(num, max));
+  }
+
+
+  function clickPage(d) {
+    if (!Array.isArray(_datasetInfo)) return;
+
+    const total = _datasetInfo.length;
+    const maxPage = Math.ceil(total / PERPAGE) - 1;
+    const currPage = Math.floor(_datasetStart / PERPAGE);
+
+    if (d > 0) {  // forward
+      _datasetStart = clamp(currPage + 1, 0, maxPage) * PERPAGE;
+    } else {      // backward
+      _datasetStart = clamp(currPage - 1, 0, maxPage) * PERPAGE;
+    }
+
+    _content
+      .call(renderModalContent);
+  }
 
 
   function render() {
@@ -94,18 +119,49 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .text('Home / Search');
 
 
+    /* Pages section */
+    let pagesSection = selection.selectAll('.rapid-view-manage-pages')
+      .data([0]);
+
+    let pagesSectionEnter = pagesSection.enter()
+      .append('div')
+      .attr('class', 'modal-section rapid-view-manage-pages');
+
+    pagesSection = pagesSection
+      .merge(pagesSectionEnter)
+      .call(renderPages);
+
+
     /* Dataset section */
-    let dsSection = selection.selectAll('.rapid-view-manage-datasets')
+    let dsSection = selection.selectAll('.rapid-view-manage-datasets-section')
       .data([0]);
 
     // enter
     let dsSectionEnter = dsSection.enter()
       .append('div')
-      .attr('class', 'modal-section rapid-view-manage-datasets');
+      .attr('class', 'modal-section rapid-view-manage-datasets-section');
+
+    dsSectionEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-pageleft')
+      .call(svgIcon('#iD-icon-backward'))
+      .on('click', () => clickPage(textDirection === 'rtl' ? 1 : -1) );
+
+    dsSectionEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-datasets');
+
+    dsSectionEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-pageright')
+      .call(svgIcon('#iD-icon-forward'))
+      .on('click', () => clickPage(textDirection === 'rtl' ? -1 : 1) );
 
     // update
-    dsSection
-      .merge(dsSectionEnter)
+    dsSection = dsSection
+      .merge(dsSectionEnter);
+
+    dsSection.selectAll('.rapid-view-manage-datasets')
       .call(renderDatasets);
   }
 
@@ -121,12 +177,19 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       selection.text('Fetching available datasets...');
       service.loadDatasets()
         .then(results => _datasetInfo = Object.values(results))
-        .then(() => selection.text('').call(renderDatasets));
+        .then(() => _content.call(renderModalContent));
       return;
     }
 
+    selection.text('');
+
+    let page = _datasetInfo.slice(_datasetStart, _datasetStart + PERPAGE);
     let datasets = selection.selectAll('.rapid-view-manage-dataset')
-      .data(_datasetInfo, d => d.id);
+      .data(page, d => d.id);
+
+    // exit
+    datasets.exit()
+      .remove();
 
     // enter
     let datasetsEnter = datasets.enter()
@@ -166,6 +229,31 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
       .text(d => datasetAdded(d) ? 'Remove' : 'Add to Map');
+  }
+
+
+  function renderPages(selection) {
+    if (!_datasetInfo) return;
+
+    const total = _datasetInfo.length;
+    const numPages = Math.ceil(total / PERPAGE);
+    const currPage = Math.floor(_datasetStart / PERPAGE);
+    const pages = Array.from(Array(numPages).keys());
+
+    let dots = selection.selectAll('.rapid-view-manage-page')
+      .data(pages);
+
+    // exit
+    dots.exit()
+      .remove();
+
+    // enter/update
+    dots.enter()
+      .append('span')
+      .attr('class', 'rapid-view-manage-page')
+      .html('&middot;')
+      .merge(dots)
+      .classed('current', d => d === currPage);
   }
 
 
