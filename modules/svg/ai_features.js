@@ -240,8 +240,9 @@ export function svgAiFeatures(projection, context, dispatch) {
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
-        service.loadTiles(projection, rapidContext.getTaskExtent());
-        let pathData = service.intersects(context.extent())
+        service.loadTiles(dataset.key, projection, rapidContext.getTaskExtent());
+        let pathData = service
+          .intersects(dataset.key, context.extent())
           .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
           .filter(getPath);
 
@@ -267,6 +268,10 @@ export function svgAiFeatures(projection, context, dispatch) {
         } else if (dataset.key === 'msBuildings') {
           geoData.paths = pathData.filter(isArea);
           // no vertices
+
+        } else {
+          // esri data via fb service
+          geoData.paths = pathData.filter(isArea);
         }
 
       /* ESRI ArcGIS */

@@ -264,6 +264,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       delete datasets[d.id];
 
     } else {
+
+
       let dataset = {
         key: d.id,
         enabled: true,
@@ -278,6 +280,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dataset.extent = geoExtent(d.extent);
       }
 
+// TODO: test running Flagstaff Buildings only through conflation service
+if (d.id === '2117f9d46f914fb29aa9c9ac584249e8') {
+  dataset.service = 'fbml';
+}
       datasets[d.id] = dataset;
     }
     nodes[i].blur();
