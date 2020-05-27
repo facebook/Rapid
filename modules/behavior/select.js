@@ -130,9 +130,8 @@ export function behaviorSelect(context) {
 
         if (datum && datum.type === 'midpoint') {
             datum = datum.parents[0];
-        }
 
-        if (datum && datum.__fbid__) {    // clicked an FB road ..
+        } else if (datum && datum.__fbid__) {    // clicked an AI Feature..
             context
                 .enter(modeSelectAiFeatures(context, datum));
 

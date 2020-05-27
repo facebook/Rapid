@@ -31,15 +31,20 @@ function tileURL(dataset, extent, taskExtent) {
         theme: 'ml_road_vector',
         collaborator: 'fbid',
         token: 'ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C',
-        hash: 'ASYM8LPNy8k1XoJiI7A',
-        result_type: 'road_building_vector_xml'
+        hash: 'ASYM8LPNy8k1XoJiI7A'
     };
 
-    if (dataset.key === 'fbRoads' || dataset.key === 'msBuildings') {
-        // qs.building_source = 'microsoft';
+    if (dataset.id === 'fbRoads') {
+        qs.result_type = 'road_vector_xml';
+
+    } else if (dataset.id === 'msBuildings') {
+        qs.result_type = 'road_building_vector_xml';
+        qs.building_source = 'microsoft';
+
     } else {
+        qs.result_type = 'road_building_vector_xml';
         qs.building_source = 'esri';
-        qs.esri_id = dataset.key;
+        qs.esri_id = dataset.id;
     }
 
     // fb_ml_road_url: if set, get road data from this url
@@ -181,9 +186,13 @@ function parseXML(dataset, xml, tile, callback, options) {
         }
 
         var entity = parser(child, uid);
-        entity.__fbid__ = child.attributes.id.value;
-        entity.__origid__ = origUid;
-        return entity;
+        var meta = {
+            __fbid__: child.attributes.id.value,
+            __origid__: origUid,
+            __service__: 'fbml',
+            __datasetid__: dataset.id
+        };
+        return Object.assign(entity, meta);
     }
 }
 
@@ -291,7 +300,7 @@ export default {
             graph = coreGraph();
             tree = coreTree(graph);
             cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-            ds = { graph: graph, tree: tree, cache: cache };
+            ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
             _datasets[datasetID] = ds;
         }
 

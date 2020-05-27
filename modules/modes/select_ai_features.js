@@ -13,7 +13,7 @@ import {
 import { t } from '../util/locale';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
-import { serviceFbAIFeatures } from '../services';
+// import { serviceFbAIFeatures } from '../services';
 import { uiFbFeaturePicker } from '../ui';
 import { utilKeybinding } from '../util';
 
@@ -27,7 +27,8 @@ export function modeSelectAiFeatures(context, selectedDatum) {
     };
 
     var keybinding = utilKeybinding('select-ai-features');
-    var roadsGraph = serviceFbAIFeatures.graph();
+//todo: remove?
+    // var roadsGraph = serviceFbAIFeatures.graph();
     var featurePicker = uiFbFeaturePicker(context, keybinding);
 
     var behaviors = [
@@ -63,17 +64,19 @@ export function modeSelectAiFeatures(context, selectedDatum) {
     }
 
     mode.selectedDatum = function() {
-        return selectedDatum; 
+        return selectedDatum;
     };
-    
+
     mode.selectedIDs = function() {
         return [selectedDatum.id];
     };
 
 
     mode.zoomToSelected = function() {
-        var extent = selectedDatum.extent(roadsGraph);
-        context.map().centerZoomEase(extent.center(), context.map().trimmedExtentZoom(extent));
+//todo remove?
+//this seems to be code leftover from "sidebar" UI, which doesn't apply to "assistant" UI
+        // var extent = selectedDatum.extent(roadsGraph);
+        // context.map().centerZoomEase(extent.center(), context.map().trimmedExtentZoom(extent));
     };
 
 
@@ -89,13 +92,14 @@ export function modeSelectAiFeatures(context, selectedDatum) {
 
         selectData();
 
-        if (!_expandedOnce) {
-            // Expand sidebar at least once per session to inform user how to
-            // accept and reject proposed roads.
-            _expandedOnce = true;
-            // expand the sidebar, avoid obscuring the data if needed
-            var extent = selectedDatum.extent(roadsGraph);
-        }
+//todo: remove?
+        // if (!_expandedOnce) {
+        //     // Expand sidebar at least once per session to inform user how to
+        //     // accept and reject proposed roads.
+        //     _expandedOnce = true;
+        //     // expand the sidebar, avoid obscuring the data if needed
+        //     var extent = selectedDatum.extent(roadsGraph);
+        // }
 
         context.map()
             .on('drawn.select-ai-features', selectData);

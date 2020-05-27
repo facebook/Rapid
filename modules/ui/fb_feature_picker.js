@@ -54,14 +54,8 @@ export function uiFbFeaturePicker(context, keybinding) {
       origid: _datum.__origid__,
     };
 
-    let service, graph;
-    if (_datum.__service__ === 'esri') {
-      service = services.esriData;
-      graph = service.graph(_datum.__datasetid__);
-    } else {
-      service = services.fbMLRoads;
-      graph = service.graph();
-    }
+    const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+    const graph = service.graph(_datum.__datasetid__);
     context.perform(actionStitchFbRoad(_datum.id, graph), annotation);
     context.enter(modeSelect(context, [_datum.id]));
 
