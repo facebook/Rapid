@@ -279,7 +279,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       }
 
       // Test running building layers only through conflation service
-      if (d.tags.some(d => d === 'buildings')) {
+      if (d.groupCategories.some(d => d === '/Categories/Buildings')) {
         dataset.service = 'fbml';
       }
 
