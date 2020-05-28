@@ -265,7 +265,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     } else {
       let dataset = {
-        key: d.id,
+        id: d.id,
         enabled: true,
         service: 'esri',
         color: RAPID_MAGENTA,

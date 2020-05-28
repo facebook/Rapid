@@ -170,7 +170,7 @@ export function svgAiFeatures(projection, context, dispatch) {
 
     let defs = _layer.selectAll('.rapid-defs');
     let dsPatterns = defs.selectAll('.rapid-fill-pattern')
-      .data(datasets, d => d.key);
+      .data(datasets, d => d.id);
 
     // exit
     dsPatterns.exit()
@@ -179,7 +179,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter
     let dsPatternsEnter = dsPatterns.enter()
       .append('pattern')
-      .attr('id', d => `fill-${d.key}`)
+      .attr('id', d => `fill-${d.id}`)
       .attr('class', 'rapid-fill-pattern')
       .attr('width', 5)
       .attr('height', 15)
@@ -204,7 +204,7 @@ export function svgAiFeatures(projection, context, dispatch) {
 
 
     let dsGroups = _layer.selectAll('.layer-rapid-dataset')
-      .data(datasets, d => d.key);
+      .data(datasets, d => d.id);
 
     // exit
     dsGroups.exit()
@@ -213,7 +213,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter/update
     dsGroups = dsGroups.enter()
       .append('g')
-      .attr('class', d => `layer-rapid-dataset layer-rapid-dataset-${d.key}`)
+      .attr('class', d => `layer-rapid-dataset layer-rapid-dataset-${d.id}`)
       .merge(dsGroups)
       .style('color', d => d.color || RAPID_MAGENTA)
       .each(eachDataset);
@@ -226,7 +226,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
     if (!service) return;
 
-    const graph = service.graph(dataset.key);
+    const graph = service.graph(dataset.id);
     const getPath = svgPath(projection, graph);
     const getTransform = svgPointTransform(projection);
 
@@ -240,15 +240,15 @@ export function svgAiFeatures(projection, context, dispatch) {
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
-        service.loadTiles(dataset.key, projection, rapidContext.getTaskExtent());
+        service.loadTiles(dataset.id, projection, rapidContext.getTaskExtent());
         let pathData = service
-          .intersects(dataset.key, context.extent())
+          .intersects(dataset.id, context.extent())
           .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
           .filter(getPath);
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing
-        if (dataset.key === 'fbRoads') {
+        if (dataset.id === 'fbRoads') {
           geoData.paths = pathData.filter(d => !!d.tags.highway);
 
           let seen = {};
@@ -265,7 +265,7 @@ export function svgAiFeatures(projection, context, dispatch) {
             }
           });
 
-        } else if (dataset.key === 'msBuildings') {
+        } else if (dataset.id === 'msBuildings') {
           geoData.paths = pathData.filter(isArea);
           // no vertices
 
@@ -276,9 +276,9 @@ export function svgAiFeatures(projection, context, dispatch) {
 
       /* ESRI ArcGIS */
       } else if (dataset.service === 'esri') {
-        service.loadTiles(dataset.key, projection);
+        service.loadTiles(dataset.id, projection);
         let visibleData = service
-          .intersects(dataset.key, context.extent())
+          .intersects(dataset.id, context.extent())
           .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
 
         geoData.points = visibleData
@@ -320,7 +320,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     // enter/update
     paths = paths.enter()
       .append('path')
-      .attr('style', d => isArea(d) ? `fill: url(#fill-${dataset.key})` : null)
+      .attr('style', d => isArea(d) ? `fill: url(#fill-${dataset.id})` : null)
       .attr('class', (d, i, nodes) => {
         const currNode = nodes[i];
         const linegroup = currNode.parentNode.__data__;

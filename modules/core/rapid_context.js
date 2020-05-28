@@ -36,7 +36,7 @@ export function coreRapidContext() {
   /* Available datasets */
   let _datasets = {
     'fbRoads': {
-      key: 'fbRoads',
+      id: 'fbRoads',
       enabled: true,
       service: 'fbml',
       color: RAPID_MAGENTA,
@@ -45,7 +45,7 @@ export function coreRapidContext() {
       license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
     },
     'msBuildings': {
-      key: 'msBuildings',
+      id: 'msBuildings',
       enabled: true,
       service: 'fbml',
       color: RAPID_MAGENTA,

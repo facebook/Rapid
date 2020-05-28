@@ -19,20 +19,20 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function datasetEnabled(d) {
-    const dataset = rapidContext.datasets()[d.key];
+    const dataset = rapidContext.datasets()[d.id];
     return dataset && dataset.enabled;
   }
 
   function toggleDataset(d) {
-    const dataset = rapidContext.datasets()[d.key];
+    const dataset = rapidContext.datasets()[d.id];
     if (dataset) {
       dataset.enabled = !dataset.enabled;
       context.map().pan([0,0]);   // trigger a map redraw
     }
   }
 
-  function changeColor(dKey, color) {
-    const dataset = rapidContext.datasets()[dKey];
+  function changeColor(datasetID, color) {
+    const dataset = rapidContext.datasets()[datasetID];
     if (dataset) {
       dataset.color = color;
       context.map().pan([0,0]);   // trigger a map redraw
@@ -172,7 +172,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const rapidLayer = context.layers().layer('ai-features');
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
-      .data(datasets, d => d.key);
+      .data(datasets, d => d.id);
 
     // exit
     rows.exit()
@@ -197,7 +197,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         labelEnter
           .append('div')
           .attr('class', 'rapid-feature-label')
-          .text(d.label || d.key);   // fallback to key
+          .text(d.label || d.id);   // fallback to dataset ID
 
         if (d.description) {
           labelEnter

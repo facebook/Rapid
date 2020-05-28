@@ -51,7 +51,7 @@ export function uiRapidColorpicker(context, parentModal) {
 
   function render(selection) {
     let colorpicker = selection.selectAll('.rapid-colorpicker')
-      .data(d => [d], d => d.key);   // retain data from parent
+      .data(d => [d], d => d.id);   // retain data from parent
 
     // enter
     let colorpickerEnter = colorpicker.enter()
@@ -141,7 +141,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .attr('class', 'colorpicker-option')
       .style('color', d => d)
       .on('click', selectedColor => {
-        dispatch.call('change', this, dataset.key, selectedColor);
+        dispatch.call('change', this, dataset.id, selectedColor);
         colorItems.classed('selected', d => d === selectedColor);
       });
 
