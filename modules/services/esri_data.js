@@ -69,7 +69,7 @@ function parseFeature(feature, dataset) {
   const props = feature.properties;
   if (!geom || !props) return null;
 
-  const featureID = props.OBJECTID || props.FID || props.id;
+  const featureID = props[dataset.layer.idfield] || props.OBJECTID || props.FID || props.id;
   if (!featureID) return null;
 
   // skip if we've seen this feature already on another tile
@@ -285,6 +285,9 @@ export default {
         // Use the field metadata to map to OSM tags
         let tagmap = {};
         ds.layer.fields.forEach(f => {
+          if (f.type === 'esriFieldTypeOID') {  // this is an id field, remember it
+            ds.layer.idfield = f.name;
+          }
           if (!f.editable) return;   // 1. keep "editable" fields only
           tagmap[f.name] = f.alias;  // 2. field `name` -> OSM tag (stored in `alias`)
         });
