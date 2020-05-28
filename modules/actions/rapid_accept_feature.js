@@ -58,7 +58,7 @@ function locationChanged(loc1, loc2) {
 }
 
 
-function removeMetadata (entity) {
+function removeMetadata(entity) {
     delete entity.__fbid__;
     delete entity.__origid__;
     delete entity.__service__;
@@ -68,7 +68,7 @@ function removeMetadata (entity) {
 }
 
 
-export function actionStitchFbRoad(entityID, extGraph) {
+export function actionRapidAcceptFeature(entityID, extGraph) {
     return function(graph) {
         var seenRelations = {};    // keep track of seen relations to avoid infinite recursion
         var extEntity = extGraph.entity(entityID);

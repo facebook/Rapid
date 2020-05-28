@@ -1,6 +1,6 @@
 import { t } from '../util/locale';
 
-import { actionNoop, actionStitchFbRoad } from '../actions';
+import { actionNoop, actionRapidAcceptFeature } from '../actions';
 import { modeBrowse, modeSelect } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg';
@@ -56,7 +56,7 @@ export function uiFbFeaturePicker(context, keybinding) {
 
     const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
     const graph = service.graph(_datum.__datasetid__);
-    context.perform(actionStitchFbRoad(_datum.id, graph), annotation);
+    context.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
     context.enter(modeSelect(context, [_datum.id]));
 
     if (context.inIntro()) return;

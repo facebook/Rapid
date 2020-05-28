@@ -31,7 +31,7 @@ export { actionReverse } from './reverse';
 export { actionRevert } from './revert';
 export { actionRotate } from './rotate';
 export { actionSplit } from './split';
-export { actionStitchFbRoad } from './stitch_fb_road';
+export { actionRapidAcceptFeature } from './rapid_accept_feature';
 export { actionStraightenNodes } from './straighten_nodes';
 export { actionStraightenWay } from './straighten_way';
 export { actionUnrestrictTurn } from './unrestrict_turn';
