@@ -38,6 +38,7 @@ export function coreRapidContext() {
     'fbRoads': {
       id: 'fbRoads',
       enabled: true,
+      conflated: true,
       service: 'fbml',
       color: RAPID_MAGENTA,
       label: t('rapid_feature_toggle.fbRoads.label'),
@@ -47,6 +48,7 @@ export function coreRapidContext() {
     'msBuildings': {
       id: 'msBuildings',
       enabled: true,
+      conflated: true,
       service: 'fbml',
       color: RAPID_MAGENTA,
       label: t('rapid_feature_toggle.msBuildings.label'),

@@ -9,7 +9,6 @@ import { utilRebind, utilStringQs, utilTiler } from '../util';
 
 // constants
 var APIROOT = 'https://mapwith.ai/maps/ml_roads';
-// var API_URL = 'https://mapwith.ai/maps/ml_roads?conflate_with_osm=true&theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A&result_type=road_building_vector_xml';
 var TILEZOOM = 16;
 var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
@@ -19,38 +18,43 @@ var _checkpoints = {};
 var _deferredAiFeaturesParsing = new Set();
 var _off;
 
+
 function abortRequest(i) {
     i.abort();
 }
 
 
-
 function tileURL(dataset, extent, taskExtent) {
+    // Conflated datasets have a different ID, so they get stored in their own graph/tree
+    var isConflated = /-conflated$/.test(dataset.id);
+    var datasetID = dataset.id.replace('-conflated', '');
+
     var qs = {
-        conflate_with_osm: 'true',
+        conflate_with_osm: isConflated,
         theme: 'ml_road_vector',
         collaborator: 'fbid',
         token: 'ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C',
         hash: 'ASYM8LPNy8k1XoJiI7A'
     };
 
-    if (dataset.id === 'fbRoads') {
+    if (datasetID === 'fbRoads') {
         qs.result_type = 'road_vector_xml';
 
-    } else if (dataset.id === 'msBuildings') {
+    } else if (datasetID === 'msBuildings') {
         qs.result_type = 'road_building_vector_xml';
         qs.building_source = 'microsoft';
 
     } else {
         qs.result_type = 'road_building_vector_xml';
         qs.building_source = 'esri';
-        qs.esri_id = dataset.id;
+        qs.esri_id = datasetID;
     }
 
     // fb_ml_road_url: if set, get road data from this url
     // var fb_ml_road_url = utilStringQs(window.location.hash).fb_ml_road_url;
 
     qs.bbox = extent.toParam();
+
     // var result = (fb_ml_road_url ? fb_ml_road_url : API_URL) + '&bbox=' + ;
     if (taskExtent) qs.crop_bbox = taskExtent.toParam();
 

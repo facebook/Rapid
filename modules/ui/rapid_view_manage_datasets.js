@@ -267,6 +267,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       let dataset = {
         id: d.id,
         enabled: true,
+        conflated: false,
         service: 'esri',
         color: RAPID_MAGENTA,
         label: d.title
@@ -280,11 +281,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
       // Test running building layers only through conflation service
       if (d.groupCategories.some(d => d === '/Categories/Buildings')) {
+        dataset.conflated = true;
         dataset.service = 'fbml';
       }
 
       datasets[d.id] = dataset;
     }
+
     nodes[i].blur();
     _content.call(renderModalContent);
   }

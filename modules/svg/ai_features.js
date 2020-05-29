@@ -226,7 +226,9 @@ export function svgAiFeatures(projection, context, dispatch) {
     const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
     if (!service) return;
 
-    const graph = service.graph(dataset.id);
+    // Adjust the dataset id for whether we want the data conflated or not.
+    const internalID = dataset.id + (dataset.conflated ? '-conflated' : '');
+    const graph = service.graph(internalID);
     const getPath = svgPath(projection, graph);
     const getTransform = svgPointTransform(projection);
 
@@ -240,9 +242,10 @@ export function svgAiFeatures(projection, context, dispatch) {
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
-        service.loadTiles(dataset.id, projection, rapidContext.getTaskExtent());
+
+        service.loadTiles(internalID, projection, rapidContext.getTaskExtent());
         let pathData = service
-          .intersects(dataset.id, context.extent())
+          .intersects(internalID, context.extent())
           .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
           .filter(getPath);
 
@@ -276,9 +279,9 @@ export function svgAiFeatures(projection, context, dispatch) {
 
       /* ESRI ArcGIS */
       } else if (dataset.service === 'esri') {
-        service.loadTiles(dataset.id, projection);
+        service.loadTiles(internalID, projection);
         let visibleData = service
-          .intersects(dataset.id, context.extent())
+          .intersects(internalID, context.extent())
           .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
 
         geoData.points = visibleData
