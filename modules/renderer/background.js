@@ -24,7 +24,7 @@ export function rendererBackground(context) {
     var _contrast = 1;
     var _saturation = 1;
     var _sharpness = 1;
-    var _numGridSplits = 0; // No grid by default.  
+    var _numGridSplits = 0; // No grid by default.
 
 
     function background(selection) {
@@ -470,7 +470,7 @@ export function rendererBackground(context) {
                 background.findSource(requested) ||
                 best ||
                 background.findSource(context.storage('background-last-used')) ||
-                background.findSource('Maxar-FB') ||
+                background.findSource('Maxar-Premium') ||
                 background.findSource('Bing') ||
                 first ||
                 background.findSource('none')
