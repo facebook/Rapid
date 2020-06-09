@@ -2,7 +2,7 @@
 # [1.0.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.9)
 #### 2020-Jun-09th
 #### :trumpet: Updates
-This removes the FB-Maxar imagery layer. We recommend using the the DigitalGlobe Premium (Beta) layer instead.
+This removes the FB-Maxar imagery layer. We recommend using the the Maxar Premium (Beta) layer instead.
 
 # [1.0.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.8)
 #### 2020-Mar-30th
