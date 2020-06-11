@@ -145,13 +145,17 @@ function parseFeature(feature, dataset) {
   function parseTags(props) {
     let tags = {};
     Object.keys(props).forEach(prop => {
-      const k = dataset.layer.tagmap[prop];
-      const v = props[prop];
+      const k = clean(dataset.layer.tagmap[prop]);
+      const v = clean(props[prop]);
       if (k && v) {
         tags[k] = v;
       }
     });
     return tags;
+  }
+
+  function clean(val) {
+    return val ? val.toString().trim() : null;
   }
 }
 
