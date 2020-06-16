@@ -258,6 +258,7 @@ button.ai-features-toggle.layer-off use {
 }
 .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
     color: #ddd;
+    background: #8885;
 }
 
 .modal-rapid .fillL.rapid-stack .rapid-feature {
@@ -494,8 +495,16 @@ hide this one and style something on top of it.  */
     justify-content: center;
 }
 .rapid-view-manage-page {
-    font-size: 60px;
-    line-height: 30px;
+    font-size: 80px;
+    line-height: 20px;
+    padding-bottom: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.rapid-view-manage-page:hover {
+    color: #ddd;
+    background: #8885;
 }
 .rapid-view-manage-page.current {
     color: #c2d;
@@ -507,6 +516,11 @@ hide this one and style something on top of it.  */
     flex-flow: row nowrap;
     align-items: stretch;
 }
+.rapid-view-manage-pageleft,
+.rapid-view-manage-pageright {
+    border-radius: 5px;
+    cursor: pointer;
+}
 .rapid-view-manage-pageleft svg,
 .rapid-view-manage-pageright svg {
     height: 100%;
@@ -514,7 +528,7 @@ hide this one and style something on top of it.  */
 .rapid-view-manage-pageleft:hover,
 .rapid-view-manage-pageright:hover {
     color: #ddd;
-    background: linear-gradient(45deg, #888888aa 1%, #88888844 15%,#ffffff22 95%, transparent);
+    background: #8885;
 }
 
 .rapid-view-manage-datasets {
@@ -522,6 +536,7 @@ hide this one and style something on top of it.  */
     flex-flow: row wrap;
     justify-content: flex-start;
     align-items: flex-start;
+    width: 100%;
 }
 .rapid-view-manage-dataset {
     flex: 0 1 50%;

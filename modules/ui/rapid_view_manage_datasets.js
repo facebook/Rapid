@@ -29,11 +29,24 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     const total = _datasetInfo.length;
     const maxPage = Math.ceil(total / PERPAGE) - 1;
+
+    _datasetStart = clamp(d, 0, maxPage) * PERPAGE;
+
+    _content
+      .call(renderModalContent);
+  }
+
+
+  function nextPreviousPage(d) {
+    if (!Array.isArray(_datasetInfo)) return;
+
+    const total = _datasetInfo.length;
+    const maxPage = Math.ceil(total / PERPAGE) - 1;
     const currPage = Math.floor(_datasetStart / PERPAGE);
 
-    if (d > 0) {  // forward
+    if (d > 0) {  // next
       _datasetStart = clamp(currPage + 1, 0, maxPage) * PERPAGE;
-    } else {      // backward
+    } else {      // previous
       _datasetStart = clamp(currPage - 1, 0, maxPage) * PERPAGE;
     }
 
@@ -145,7 +158,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('div')
       .attr('class', 'rapid-view-manage-pageleft')
       .call(svgIcon('#iD-icon-backward'))
-      .on('click', () => clickPage(textDirection === 'rtl' ? 1 : -1) );
+      .on('click', () => nextPreviousPage(textDirection === 'rtl' ? 1 : -1) );
 
     dsSectionEnter
       .append('div')
@@ -155,7 +168,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('div')
       .attr('class', 'rapid-view-manage-pageright')
       .call(svgIcon('#iD-icon-forward'))
-      .on('click', () => clickPage(textDirection === 'rtl' ? -1 : 1) );
+      .on('click', () => nextPreviousPage(textDirection === 'rtl' ? -1 : 1) );
 
     // update
     dsSection = dsSection
@@ -252,6 +265,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('span')
       .attr('class', 'rapid-view-manage-page')
       .html('&middot;')
+      .on('click', clickPage)
       .merge(dots)
       .classed('current', d => d === currPage);
   }
