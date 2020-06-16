@@ -56,24 +56,24 @@ export function uiCommit(context) {
         if (commentDate > currDate || currDate - commentDate > cutoff) {
             context.storage('comment', null);
             context.storage('hashtags', null);
-            context.storage('source', null);
+            // context.storage('source', null);
         }
 
+        var hash = context.ui().hash;
         var tags;
+
         // Initialize changeset if one does not exist yet.
         // Also pull values from local storage.
         if (!_changeset) {
-
             // load in the URL hash values, if any
-            var hash = context.ui().hash;
             if (hash.comment) {
                 context.storage('comment', hash.comment);
                 context.storage('commentDate', Date.now());
             }
-            if (hash.source) {
-                context.storage('source', hash.source);
-                context.storage('commentDate', Date.now());
-            }
+            // if (hash.source) {
+            //     context.storage('source', hash.source);
+            //     context.storage('commentDate', Date.now());
+            // }
             if (hash.hashtags) {
                 context.storage('hashtags', hash.hashtags);
             }
@@ -86,6 +86,26 @@ export function uiCommit(context) {
                 locale: detected.locale.substr(0, 255)
             };
 
+            // compute and assign the source tag..
+
+            // sources from RapiD data
+            var sources = new Set(context.rapidContext().sources);
+            // source from url hash
+            if (hash.source) {
+                sources.add(hash.source);
+            }
+            // sources from photo overlays
+            var photoOverlaysUsed = context.history().photoOverlaysUsed();
+            if (photoOverlaysUsed.length) {
+                // include this tag for any photo layer
+                sources.add('streetlevel imagery');
+                // add the photo overlays used during editing as sources
+                photoOverlaysUsed.forEach(function(photoOverlay) {
+                    sources.add(photoOverlay);
+                });
+            }
+            tags.source = Array.from(sources).join(';').substr(0, 255);
+
             // call findHashtags initially - this will remove stored
             // hashtags if any hashtags are found in the comment - #4304
             findHashtags(tags, true);
@@ -95,35 +115,13 @@ export function uiCommit(context) {
                 tags.hashtags = hashtags;
             }
 
-            var source = context.storage('source');
-            if (source) {
-                tags.source = source;
-            }
-            var photoOverlaysUsed = context.history().photoOverlaysUsed();
-            if (photoOverlaysUsed.length) {
-                var sources = (tags.source || '').split(';');
-
-                // include this tag for any photo layer
-                if (sources.indexOf('streetlevel imagery') === -1) {
-                    sources.push('streetlevel imagery');
-                }
-
-                // add the photo overlays used during editing as sources
-                photoOverlaysUsed.forEach(function(photoOverlay) {
-                    if (sources.indexOf(photoOverlay) === -1) {
-                        sources.push(photoOverlay);
-                    }
-                });
-
-                tags.source = sources.join(';').substr(0, 255);
-            }
-
             _changeset = new osmChangeset({ tags: tags });
         }
 
         tags = Object.assign({}, _changeset.tags);   // shallow copy
 
-        // assign tags for imagery used
+
+        // compute and assign the imagery_used tag..
         var imageryUsed = context.history().imageryUsed().join(';').substr(0, 255);
         tags.imagery_used = imageryUsed || 'None';
 
@@ -177,6 +175,7 @@ export function uiCommit(context) {
         var resolvedIssues = context.validator().getResolvedIssues();
         addIssueCounts(resolvedIssues, 'resolved');
 
+        // assign the computed tags back to the changeset..
         _changeset = _changeset.update({ tags: tags });
 
         var body = selection.selectAll('.inspector-body')
@@ -434,14 +433,14 @@ export function uiCommit(context) {
                 context.storage('commentDate', Date.now());
             }
         }
-        if (changed.hasOwnProperty('source')) {
-            if (changed.source === undefined) {
-                context.storage('source', null);
-            } else if (!onInput) {
-                context.storage('source', changed.source);
-                context.storage('commentDate', Date.now());
-            }
-        }
+        // if (changed.hasOwnProperty('source')) {
+        //     if (changed.source === undefined) {
+        //         context.storage('source', null);
+        //     } else if (!onInput) {
+        //         context.storage('source', changed.source);
+        //         context.storage('commentDate', Date.now());
+        //     }
+        // }
 
         updateChangeset(changed, onInput);
 

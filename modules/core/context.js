@@ -541,9 +541,15 @@ export function coreContext() {
         validator.reset();
         features.reset();
         history.reset();
+        _rapidContext.reset();
 
         return context;
     };
+
+
+    /* RapiD context */
+    var _rapidContext = coreRapidContext(context);
+    context.rapidContext = function() { return _rapidContext; };
 
 
     /* Init */
@@ -648,8 +654,6 @@ export function coreContext() {
         osmSetVertexTags(presets.vertexTags());
     }
 
-    var rapidContext = coreRapidContext(context);
-    context.rapidContext = function() { return rapidContext; };
     context.isFirstSession = !context.storage('sawSplash');
 
     return context;

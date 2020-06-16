@@ -33,6 +33,10 @@ export function coreRapidContext() {
   _rapidContext.getTaskExtent = () => _taskExtent;
 
 
+  /* Sources */
+  _rapidContext.sources = new Set();
+
+
   /* Available datasets */
   let _datasets = {
     'fbRoads': {
@@ -57,6 +61,12 @@ export function coreRapidContext() {
     }
   };
   _rapidContext.datasets = () => _datasets;
+
+
+  /* reset any state here */
+  _rapidContext.reset = () => {
+    _rapidContext.sources = new Set();
+  };
 
   return _rapidContext;
 }

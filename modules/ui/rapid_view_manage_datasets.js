@@ -294,10 +294,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       }
 
       // Test running building layers only through conflation service
-      if (d.groupCategories.some(d => d === '/Categories/Buildings')) {
-        dataset.conflated = true;
-        dataset.service = 'fbml';
-      }
+      // if (d.groupCategories.some(d => d === '/Categories/Buildings')) {
+      //   dataset.conflated = true;
+      //   dataset.service = 'fbml';
+      // }
 
       datasets[d.id] = dataset;
     }

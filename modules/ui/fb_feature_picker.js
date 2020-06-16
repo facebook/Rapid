@@ -61,10 +61,17 @@ export function uiFbFeaturePicker(context, keybinding) {
 
     if (context.inIntro()) return;
 
+    // remember sources for later when we prepare the changeset
+    const rapidContext = context.rapidContext();
+    const source = _datum.tags && _datum.tags.source;
+    if (source) {
+      rapidContext.sources.add(source);
+    }
+
     if (sessionStorage.getItem('acknowledgedLogin') === 'true') return;
     sessionStorage.setItem('acknowledgedLogin', 'true');
-    const osm = context.connection();
 
+    const osm = context.connection();
     if (!osm.authenticated()) {
       context.container()
         .call(uiRapidFirstEdit(context));
