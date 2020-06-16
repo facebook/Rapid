@@ -40,7 +40,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     }
   }
 
-  function toggleAll() {
+  function toggleRapid() {
     const rapidLayer = context.layers().layer('ai-features');
     rapidLayer.enabled(!rapidLayer.enabled());   // toggling the layer will trigger a map redraw
     _content.call(renderModalContent);
@@ -48,7 +48,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
   function keyPressFormHandler() {
     if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
-      toggleAll();
+      toggleRapid();
     }
   }
 
@@ -116,7 +116,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('input')
       .attr('type', 'checkbox')
       .attr('class', 'rapid-feature-checkbox')
-      .on('click', toggleAll);
+      .on('click', toggleRapid);
 
     toggleAllCheckboxEnter
       .append('div')
