@@ -115,8 +115,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     headerEnter
       .append('div')
-      .attr('class', 'rapid-view-manage-header-inputs')
-      .text('Home / Search');
+      .attr('class', 'rapid-view-manage-header-inputs');
+      // .text('Home / Search');
 
 
     /* Pages section */
