@@ -151,6 +151,8 @@ function parseFeature(feature, dataset) {
         tags[k] = v;
       }
     });
+
+    tags.source = `esri/${dataset.name}`;
     return tags;
   }
 
