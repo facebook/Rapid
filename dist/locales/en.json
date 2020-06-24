@@ -1969,9 +1969,12 @@
             },
             "duplicate_address": {
                 "title": "Duplicate Addresses",
-                "message": "{entity1} and {entity2} contain similar address elements.",
+                "message": "{entity1} and {entity2} contain similar addresses",
                 "tip": "Find potentially duplicate addresses.",
-                "reference": "Addresses should not share the same housenumber, unless they differ in other attributes like floor or unit"
+                "reference": {
+                    "text": "Addresses should not share the same housenumber unless they differ in other attributes like floor or unit. Consider merging these addresses or adding additional attributes to make them unique.",
+                    "tags": "The duplicate address tags are listed below:"
+                }
             },
             "fixme_tag": {
                 "message": "{feature} has a \"Fix Me\" request",
@@ -10522,6 +10525,13 @@
                 "description": "The city map is an overview map that describes Gothenburg. It contains general information about land, communications, hydrography, buildings, address numbers and street names, administrative division and other orientation text.",
                 "name": "Gothenburg City map"
             },
+            "gothenburg-ortho": {
+                "attribution": {
+                    "text": "© Gothenburg municipality, CC0"
+                },
+                "description": "Orthophoto for Gothenburg municipality",
+                "name": "Gothenburg Orthophoto"
+            },
             "gsi.go.jp_airphoto": {
                 "attribution": {
                     "text": "GSI Japan"
@@ -10619,6 +10629,27 @@
                 },
                 "name": "OpenPT Map (overlay)"
             },
+            "openrailwaymap": {
+                "attribution": {
+                    "text": "Rendering: OpenRailwayMap, © Map data OpenStreetMap contributors"
+                },
+                "description": "Overlay imagery showing railway infrastructure based on OpenStreetMap data",
+                "name": "OpenRailwayMap"
+            },
+            "openrailwaymap-maxspeeds": {
+                "attribution": {
+                    "text": "Rendering: OpenRailwayMap, © Map data OpenStreetMap contributors"
+                },
+                "description": "Overlay imagery showing railway speed limits based on OpenStreetMap data",
+                "name": "OpenRailwayMap Maxspeeds"
+            },
+            "openrailwaymap-signalling": {
+                "attribution": {
+                    "text": "Rendering: OpenRailwayMap, © Map data OpenStreetMap contributors"
+                },
+                "description": "Overlay imagery showing railway signals based on OpenStreetMap data",
+                "name": "OpenRailwayMap Signalling"
+            },
             "osm-gps": {
                 "attribution": {
                     "text": "© OpenStreetMap contributors"
@@ -10689,6 +10720,12 @@
                 },
                 "name": "Thunderforest Landscape"
             },
+            "tf-outdoors": {
+                "attribution": {
+                    "text": "Maps © Thunderforest, Data © OpenStreetMap contributors"
+                },
+                "name": "Thunderforest Outdoors"
+            },
             "trafikverket-baninfo": {
                 "attribution": {
                     "text": "© Trafikverket, CC0"
@@ -10730,6 +10767,12 @@
                 },
                 "description": "Swedish NVDB road network with several options for map layers",
                 "name": "Trafikverket Road Network options"
+            },
+            "wroclaw-orto2018": {
+                "attribution": {
+                    "text": "Urząd Miasta Wrocław"
+                },
+                "name": "Wrocław: Orthophotomap 2018 (aerial image)"
             }
         },
         "community": {

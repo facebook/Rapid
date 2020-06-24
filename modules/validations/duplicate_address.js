@@ -98,7 +98,12 @@ export function validationDuplicateAddress(context) {
           enter
             .append('div')
             .attr('class', 'issue-reference')
-            .text(t('issues.duplicate_address.reference'));
+            .text(t('issues.duplicate_address.reference.text'));
+
+          enter
+            .append('div')
+            .attr('class', 'issue-reference')
+            .text(t('issues.duplicate_address.reference.tags'));
 
           let rowsEnter = enter
             .append('table')
