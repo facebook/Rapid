@@ -37,8 +37,8 @@ export function coreRapidContext() {
                 }
 
                 if (f.geometry.type === 'LineString' && lineStringCount === 1) {
-                    var lats = f.geometry.coordinates.map((f) => {return f[0];});
-                    var lngs = f.geometry.coordinates.map((f) => {return f[1];});
+                    var lats = f.geometry.coordinates.map((f) => f[0]);
+                    var lngs = f.geometry.coordinates.map((f) => f[1]);
                     var uniqueLats = lats.filter(distinct);
                     var uniqueLngs = lngs.filter(distinct);
 
@@ -46,9 +46,9 @@ export function coreRapidContext() {
                     uniqueLats.forEach( (lat) => {
                         var lngsForThisLat = f.geometry.coordinates
                             // Filter the coords to the ones with this lat
-                            .filter(function(coord){ return coord[0] === lat; })
+                            .filter(coord => coord[0] === lat)
                             // Make an array of lngs that associate with that lat
-                            .map(function(coord){ return coord[1]; })
+                            .map(coord => coord[1])
                             // Finally, filter for uniqueness
                             .filter(distinct);
 
