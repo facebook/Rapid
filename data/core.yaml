@@ -904,14 +904,14 @@ en:
     roads: Roads
     roads_provided_by: provided by Facebook
     roads_license: "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
-    buildings: Buildings 
+    buildings: Buildings
     buildings_provided_by: provided by Microsoft
     buildings_license: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
-  rapid_poweruser_features: 
+  rapid_poweruser_features:
     top_label: "{icon} Power User Features"
     top_label_desc: for RapiD Insiders
     ai_feature_halo: AI Feature Halo
-    ai_feature_halo_desc: Enable a halo around AI features in the map 
+    ai_feature_halo_desc: Enable a halo around AI features in the map
     tagnostic_road_combine: Tag-agnostic road combine
     tagnostic_road_combine_desc: Allow the Combine operation for roads whose highway tagging differs
     tag_sources: Tag highways as DG
@@ -1589,6 +1589,13 @@ en:
         reference: "All roads, paths, and ferry routes should connect to form a single routing network."
       highway:
         message: "{highway} is disconnected from other roads and paths"
+    duplicate_address:
+      title: "Duplicate Addresses"
+      message: "{entity1} and {entity2} contain similar addresses"
+      tip: "Find potentially duplicate addresses."
+      reference:
+        text: "Addresses should not share the same housenumber unless they differ in other attributes like floor or unit. Consider merging these addresses or adding additional attributes to make them unique."
+        tags: "The duplicate address tags are listed below:"
     fixme_tag:
       message: '{feature} has a "Fix Me" request'
       reference: 'A "fixme" tag indicates that a mapper has requested help with a feature.'
