@@ -118,11 +118,14 @@ export function uiBackground(context) {
         document.activeElement.blur();
     }
 
+    function sortSources(a, b) {
+        return a.best() && !b.best() ? -1
+            : b.best() && !a.best() ? 1
+            : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
+    }
 
     function drawListItems(layerList, type, change, filter) {
-        var sources = context.background()
-            .sources(context.map().extent(), context.map().zoom(), true)
-            .filter(filter);
+        var sources = getBackgrounds(filter);
 
         var layerLinks = layerList.selectAll('li')
             .data(sources, function(d) { return d.name(); });
@@ -176,11 +179,6 @@ export function uiBackground(context) {
             .call(updateLayerSelections);
 
 
-        function sortSources(a, b) {
-            return a.best() && !b.best() ? -1
-                : b.best() && !a.best() ? 1
-                : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
-        }
     }
 
 
@@ -318,6 +316,39 @@ export function uiBackground(context) {
         }
     }
 
+    function getBackgrounds(filter) {
+        return context.background()
+            .sources(context.map().extent(), context.map().zoom(), true)
+            .filter(filter);
+    }
+
+    function chooseBackgroundAtOffset(offset) {
+        const backgrounds = getBackgrounds(function(d) { return !d.isHidden() && !d.overlay; });
+        backgrounds.sort(sortSources);
+        const currentBackground = context.background().baseLayerSource();
+        const foundIndex = backgrounds.indexOf(currentBackground);
+        if (foundIndex === -1) {
+            // Can't find the current background, so just do nothing
+            return;
+        }
+
+        let nextBackgroundIndex = (foundIndex + offset + backgrounds.length) % backgrounds.length;
+        let nextBackground = backgrounds[nextBackgroundIndex];
+        if (nextBackground.id === 'custom' && !nextBackground.template()) {
+            nextBackgroundIndex = (nextBackgroundIndex + offset + backgrounds.length) % backgrounds.length;
+            nextBackground = backgrounds[nextBackgroundIndex];
+        }
+        chooseBackground(nextBackground);
+    }
+
+    function nextBackground() {
+        chooseBackgroundAtOffset(1);
+    }
+
+    function previousBackground() {
+        chooseBackgroundAtOffset(-1);
+    }
+
     var paneTooltip = tooltip()
         .placement((textDirection === 'rtl') ? 'right' : 'left')
         .html(true)
@@ -412,7 +443,9 @@ export function uiBackground(context) {
 
         context.keybinding()
             .on(key, uiBackground.togglePane)
-            .on(uiCmd('⌘' + key), quickSwitch);
+            .on(uiCmd('⌘' + key), quickSwitch)
+            .on(t('background.next_background.key'), nextBackground)
+            .on(t('background.previous_background.key'), previousBackground);
     };
 
     return uiBackground;
