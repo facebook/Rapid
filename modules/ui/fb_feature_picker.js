@@ -93,10 +93,10 @@ export function uiFbFeaturePicker(context, keybinding) {
   }
 
 
-  function presetItem(selection, p, presetButtonClasses) {
+  function presetItem(selection, p, presetButtonClasses, reject) {
     let presetItem = selection
       .append('div')
-      .attr('class', 'preset-list-item');
+      .attr('class',  reject ? 'preset-list-item reject' : 'preset-list-item');
 
     let presetWrap = presetItem
       .append('div')
@@ -157,8 +157,7 @@ export function uiFbFeaturePicker(context, keybinding) {
       .append('div');
 
     tagPreview
-      .attr('class', 'tag-preview')
-      .text(t('fb_feature_picker.tags.title'));
+      .attr('class', 'tag-preview'); 
 
     var tagEntries= [];
     Object.keys(tagsObj).forEach(k => { tagEntries.push({'key':k, 'value':tagsObj[k]});});
@@ -166,6 +165,11 @@ export function uiFbFeaturePicker(context, keybinding) {
     var tagBag = tagPreview
       .append('div')
       .attr('class', 'tag-bag');
+
+    tagBag
+      .append('div')
+      .attr('class', 'tag-heading')
+      .text(t('fb_feature_picker.tags.title'));
 
 
     tagEntries.forEach(e => {
@@ -266,7 +270,9 @@ export function uiFbFeaturePicker(context, keybinding) {
         }),
       onClick: onAcceptFeature,
       disabledFunction: isAddFeatureDisabled
-    }, 'ai-features-accept');
+    }, 'ai-features-accept', false);
+
+    previewTags(bodyEnter, _datum.tags);
 
     presetItem(bodyEnter, {
       iconName: '#iD-icon-rapid-minus-circle',
@@ -280,9 +286,8 @@ export function uiFbFeaturePicker(context, keybinding) {
           t('fb_feature_picker.option_reject.key')
         )),
       onClick: onRejectFeature
-    }, 'ai-features-reject');
+    }, 'ai-features-reject', true);
 
-    previewTags(bodyEnter, _datum.tags);
 
     // Update body
     body = body
