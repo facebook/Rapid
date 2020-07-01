@@ -124,6 +124,23 @@ button.ai-features-toggle.layer-off use {
     color: #a0a0a0;
 }
 
+.fb-road-picker .tag-bag {
+    display: flex;
+}
+
+.fb-road-picker .tag-bag .tag-entry {
+    flex: 0 1 auto;
+    display: flex;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.fb-road-picker .tag-key,
+.fb-road-picker .tag-value {
+    flex: 0 1 auto;
+    padding: 0px 3px 0px 3px;
+}
+
 .modal-splash.modal-rapid {
     display: flex;
     flex-direction: column;
@@ -631,3 +648,4 @@ button.rapid-view-manage-dataset-action.secondary:hover {
     margin: 4px;
     border-radius: 5px;
 }
+

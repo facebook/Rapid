@@ -9,7 +9,7 @@ import { uiFlash } from './flash';
 import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
-
+import { select as d3_select, selectAll as d3_selectAll } from 'd3-selection';
 
 export function uiFbFeaturePicker(context, keybinding) {
   const AI_FEATURES_LIMIT_NON_TM_MODE = 50;
@@ -149,6 +149,56 @@ export function uiFbFeaturePicker(context, keybinding) {
   }
 
 
+  function previewTags(selection, tagsObj) {
+
+    if (!tagsObj) return;
+
+    let tagPreview = selection
+      .append('div');
+
+    tagPreview
+      .attr('class', 'tag-preview')
+      .text(t('fb_feature_picker.tags.title'));
+
+    var tagEntries= [];
+    Object.keys(tagsObj).forEach(k => { tagEntries.push({'key':k, 'value':tagsObj[k]});});
+
+    var tagBag = tagPreview
+      .append('div')
+      .attr('class', 'tag-bag');
+
+
+    tagEntries.forEach(e => {
+
+      let entryDiv = tagBag.append('div')
+        .attr('class', 'tag-entry');
+
+      entryDiv.append('div').attr('class', 'tag-key').text(e.key);
+      entryDiv.append('div').attr('class', 'tag-value').text(e.value);
+    });
+
+
+
+
+    // var listContainer = tagBag
+    //   .data(tagEntries)
+    //   .enter();
+
+    // var entry  = listContainer.append('div')
+    //   .attr('class', 'tag-entry');
+
+    // entry
+    //   .append('div')
+    //   .attr('class', 'tag-key')
+    //   .text(d => d.key);
+
+    // entry
+    //   .append('div')
+    //   .attr('class', 'tag-value')
+    //   .text(d => d.value);
+  }
+
+
   function fbFeaturePicker(selection) {
     let wrap = selection.selectAll('.fb-road-picker')
       .data([0]);
@@ -231,6 +281,8 @@ export function uiFbFeaturePicker(context, keybinding) {
         )),
       onClick: onRejectFeature
     }, 'ai-features-reject');
+
+    previewTags(bodyEnter, _datum.tags);
 
     // Update body
     body = body
