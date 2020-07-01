@@ -126,9 +126,10 @@ button.ai-features-toggle.layer-off use {
 
 .fb-road-picker .tag-bag {
     display: flex;
+    flex-wrap: wrap;
 }
 
-.fb-road-picker .tag-bag .tag-entry {
+.fb-road-picker .tag-preview .tag-entry {
     flex: 0 1 auto;
     display: flex;
     border: 1px solid white;
