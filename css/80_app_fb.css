@@ -58,12 +58,13 @@ button.ai-features-toggle.layer-off use {
 
 .fb-road-picker .picker-icon-container {
     flex: 1 0 60px;
-    padding: 10px;
+    padding: 3px;
+    height:100%;
 }
 
 .picker-icon-container svg {
     width:40px;
-    height:40px;
+    height:100%;
 }
 
 .fb-road-picker .picker-list-button {
@@ -82,10 +83,11 @@ button.ai-features-toggle.layer-off use {
     flex-flow: row wrap;
     align-items: center;
     justify-content: center;
-    padding: 20px 10px;
+    padding: 5px 5px;
     left: 60px;
     flex-basis: 200px;
     color: #e0e0e0;
+    height: 100%;
 }
 
 .fb-road-picker .tag-reference-button {
@@ -102,7 +104,7 @@ button.ai-features-toggle.layer-off use {
 }
 
 .fb-road-picker .preset-list-item {
-    margin: 15px 0;
+    margin-top: 15px;
 }
 
 .fb-road-picker .preset-list-item .preset-icon-container svg {
@@ -123,6 +125,53 @@ button.ai-features-toggle.layer-off use {
 .dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
     color: #a0a0a0;
 }
+
+.reject .preset-list-button-wrap {
+    height: 32px;
+}
+
+.reject .label {
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+.fb-road-picker .tag-bag {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2px 0px 2px; 
+}
+.fb-road-picker .tag-preview {
+    margin: 5px 5px 0px 5px;
+    background: #444;
+    border-radius: 5px;
+    border: 1px transparent;
+}
+
+.fb-road-picker .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
+}
+
+.fb-road-picker .tag-preview .tag-entry {
+    flex: 0 1 auto;
+    display: flex;
+    border: 1px solid #888;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+}
+
+.fb-road-picker .tag-key,
+.fb-road-picker .tag-value {
+    flex: 0 1 auto;
+    padding: 0px 3px 0px 3px;
+}
+
+.fb-road-picker .tag-key {
+    font-weight: bold;
+    font-size: unset;
+}
+
 
 .modal-splash.modal-rapid {
     display: flex;
@@ -631,3 +680,4 @@ button.rapid-view-manage-dataset-action.secondary:hover {
     margin: 4px;
     border-radius: 5px;
 }
+
