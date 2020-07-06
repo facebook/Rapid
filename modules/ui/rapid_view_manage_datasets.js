@@ -6,14 +6,16 @@ import { geoExtent } from '../geo';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { utilKeybinding, utilRebind } from '../util';
+import { rapid_feature_config } from '../../data/';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
   const RAPID_MAGENTA = '#ff26d4';
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
-
+  const showBeta = rapid_feature_config.poweruser_features_dialog.enabled;
   const PERPAGE = 4;
+
   let _content = d3_select(null);
   let _datasetInfo;
   let _datasetStart = 0;
@@ -189,7 +191,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     if (!_datasetInfo) {
       selection.text('Fetching available datasets...');
       service.loadDatasets()
-        .then(results => _datasetInfo = Object.values(results))
+        .then(results => {
+          return _datasetInfo = Object.values(results)
+            .filter(d => showBeta || !d.groupCategories.some(category => category === '/Categories/Preview'));
+        })
         .then(() => _content.call(renderModalContent));
       return;
     }
