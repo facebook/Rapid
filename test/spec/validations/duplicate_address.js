@@ -9,7 +9,7 @@ describe('iD.validations.duplicate_address', function () {
         loc1 = loc1 || [0, 0];
         loc2 = loc2 || [0.000001, 0.000001];
 
-        entities = [
+        var entities = [
             iD.osmNode({ tags: tags1, loc: loc1 }),
             iD.osmNode({ tags: tags2, loc: loc2 })
         ];
@@ -56,7 +56,7 @@ describe('iD.validations.duplicate_address', function () {
     it('raises no issues if identical addresses, but far apart', function() {
         var entities = createPair(
             { 'name': 'Foo', 'addr:housenumber': '1' },
-            { 'name': 'Bar', 'addr:housenumber': '2' }
+            { 'name': 'Bar', 'addr:housenumber': '2' },
             [0, 0],
             [0.01, 0.01]
         );
@@ -137,6 +137,40 @@ describe('iD.validations.duplicate_address', function () {
                 expect(issue.severity).to.eql('warning');
                 expect(issue.entityIds).to.have.lengthOf(2);
             });
+        });
+    });
+
+    describe('compares addr:street and addr:place interchangeably (both must be present)', function() {
+        it('raises no issues if different', function() {
+            var t1 = { 'name': 'Foo', 'addr:housenumber': '1', 'addr:street': 'Abbey Road' };
+            var t2 = { 'name': 'Bar', 'addr:housenumber': '1', 'addr:place': 'Penny Lane' };
+            var entities = createPair(t1, t2);
+            var issues = validate(entities);
+            expect(issues).to.have.lengthOf(0);
+        });
+
+        it('raises issue if identical street/place value with both present', function() {
+            var t1 = { 'name': 'Foo', 'addr:housenumber': '1', 'addr:street': 'Abbey Road' };
+            var t2 = { 'name': 'Bar', 'addr:housenumber': '1', 'addr:place': 'Abbey Road' };
+            var entities = createPair(t1, t2);
+            var issues = validate(entities);
+            expect(issues).to.have.lengthOf(2);
+            var issue = issues[0];
+            expect(issue.type).to.eql('duplicate_address');
+            expect(issue.severity).to.eql('warning');
+            expect(issue.entityIds).to.have.lengthOf(2);
+        });
+
+        it('raises issue if case-dissimilar street/place value with both present', function() {
+            var t1 = { 'name': 'Foo', 'addr:housenumber': '1', 'addr:street': 'Abbey Road' };
+            var t2 = { 'name': 'Bar', 'addr:housenumber': '1', 'addr:place': 'abbey road' };
+            var entities = createPair(t1, t2);
+            var issues = validate(entities);
+            expect(issues).to.have.lengthOf(2);
+            var issue = issues[0];
+            expect(issue.type).to.eql('duplicate_address');
+            expect(issue.severity).to.eql('warning');
+            expect(issue.entityIds).to.have.lengthOf(2);
         });
     });
 
