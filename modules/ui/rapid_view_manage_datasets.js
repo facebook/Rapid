@@ -217,6 +217,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('strong')
       .text(d => d.title);
 
+    labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
+      .data(d => d.groupCategories.filter(d => d === '/Categories/Preview'))
+      .enter()
+      .append('div')
+      .attr('class', 'rapid-view-manage-dataset-beta beta')
+      .attr('title', t('rapid_poweruser_features.beta'));
+
     labelsEnter
       .append('div')
       .text(d => d.snippet);
@@ -278,8 +285,12 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       delete datasets[d.id];
 
     } else {
+      const isBeta = d.groupCategories.some(d => d === '/Categories/Preview');
+      const isBuildings = d.groupCategories.some(d => d === '/Categories/Buildings');
+
       let dataset = {
         id: d.id,
+        beta: isBeta,
         enabled: true,
         conflated: false,
         service: 'esri',
@@ -294,10 +305,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       }
 
       // Test running building layers only through conflation service
-      // if (d.groupCategories.some(d => d === '/Categories/Buildings')) {
-      //   dataset.conflated = true;
-      //   dataset.service = 'fbml';
-      // }
+      if (isBuildings) {
+        dataset.conflated = true;
+        dataset.service = 'fbml';
+      }
 
       datasets[d.id] = dataset;
     }

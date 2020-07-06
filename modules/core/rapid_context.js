@@ -41,6 +41,7 @@ export function coreRapidContext() {
   let _datasets = {
     'fbRoads': {
       id: 'fbRoads',
+      beta: false,
       enabled: true,
       conflated: true,
       service: 'fbml',
@@ -51,6 +52,7 @@ export function coreRapidContext() {
     },
     'msBuildings': {
       id: 'msBuildings',
+      beta: false,
       enabled: true,
       conflated: true,
       service: 'fbml',

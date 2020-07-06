@@ -689,6 +689,9 @@
         "fb_feature_license": "Facebook's Map With AI License",
         "fb_feature_picker": {
             "prompt": "How would you like to proceed with this selected feature?",
+            "tags": {
+                "title": "Tags:"
+            },
             "option_accept": {
                 "label": "Use This Feature",
                 "description": "Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍",
@@ -1135,6 +1138,7 @@
             }
         },
         "rapid_poweruser_features": {
+            "beta": "Beta Feature",
             "top_label": "{icon} Power User Features",
             "top_label_desc": "for RapiD Insiders",
             "ai_feature_halo": "AI Feature Halo",

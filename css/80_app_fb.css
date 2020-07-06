@@ -138,7 +138,7 @@ button.ai-features-toggle.layer-off use {
 .fb-road-picker .tag-bag {
     display: flex;
     flex-wrap: wrap;
-    padding: 2px 0px 2px; 
+    padding: 2px 0px 2px;
 }
 .fb-road-picker .tag-preview {
     margin: 5px 5px 0px 5px;
@@ -635,6 +635,22 @@ button.rapid-view-manage-dataset-action.secondary:hover {
     background-color: #888;
 }
 
+.beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.7em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.beta:before {
+    content: '\03b2';  /* β */
+}
 
 /* Colorpicker popup */
 

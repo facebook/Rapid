@@ -913,6 +913,7 @@ en:
       description: provided by Microsoft
       license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
   rapid_poweruser_features:
+    beta: Beta Feature
     top_label: "{icon} Power User Features"
     top_label_desc: for RapiD Insiders
     ai_feature_halo: AI Feature Halo
