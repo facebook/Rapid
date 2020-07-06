@@ -458,12 +458,6 @@
             "hidden_warning": "{count} skrytých prvků",
             "hidden_details": "Tyto prvky jsou právě skryté: {details}"
         },
-<<<<<<< HEAD
-=======
-        "osm_api_status": {
-            "retry": "Opakovat"
-        },
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
         "commit": {
             "title": "Odeslat na OpenStreetMap",
             "upload_explanation": "Vámi provedené změny budou viditelné na všech mapách postavených na datech z OpenStreetMap.",
@@ -8043,7 +8037,6 @@
             "Bay-Area-OpenStreetMappers": {
                 "name": "Bay Area OpenStreetMappers",
                 "description": "Vylepšete OpenStreetMap v Bay Area"
-<<<<<<< HEAD
             },
             "Central-Pennsylvania-OSM": {
                 "name": "OSM Střední Pensylvánie"
@@ -8056,17 +8049,6 @@
             },
             "LATAM-Twitter": {
                 "description": "Sledujte nás na Twitteru na {url}"
-=======
-            },
-            "Central-Pennsylvania-OSM": {
-                "name": "OSM Střední Pensylvánie"
-            },
-            "Dallas-Fort-Worth-OSM": {
-                "name": "Dallas-Fort Worth OSM"
-            },
-            "GeoPhilly": {
-                "name": "GeoPhilly"
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
             },
             "Mapping-DC-meetup": {
                 "name": "Mapování DC",
@@ -8117,7 +8099,6 @@
             },
             "OSM-IRC": {
                 "name": "OpenStreetMap IRC"
-<<<<<<< HEAD
             },
             "OSM-India-facebook": {
                 "description": "Vylepšete OpenStreetMap v Indii",
@@ -8128,18 +8109,6 @@
                 "description": "Vylepšete OpenStreetMap v Myanmaru",
                 "extendedDescription": "Mapujete v Myanmaru? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {Url}. Všichni jsou vítáni!"
             },
-=======
-            },
-            "OSM-India-facebook": {
-                "description": "Vylepšete OpenStreetMap v Indii",
-                "extendedDescription": "Mapujete v Indii? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {url}. Všichni jsou vítáni!"
-            },
-            "OSM-MMR-facebook": {
-                "name": "OpenStreetMap Myanmar",
-                "description": "Vylepšete OpenStreetMap v Myanmaru",
-                "extendedDescription": "Mapujete v Myanmaru? Máte otázky, chcete se zde spojit s komunitou? Připojte se k nám na adrese {Url}. Všichni jsou vítáni!"
-            },
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
             "OSM-MNG-facebook": {
                 "name": "OpenStreetMap Mongolsko",
                 "description": "Vylepšete OpenStreetMap v Mongolsku",
@@ -8163,29 +8132,9 @@
             },
             "OSM-PE": {
                 "name": "OpenStreetMap Peru"
-<<<<<<< HEAD
             },
             "OSM-PE-twitter": {
                 "description": "Sledujte nás na Twitteru na {url}"
-=======
-            },
-            "OSM-PE-twitter": {
-                "description": "Sledujte nás na Twitteru na {url}"
-            },
-            "OSM-Portland": {
-                "name": "OpenStreetMap Portland",
-                "description": "Mapovači a uživatelé OpenStreetMap na území Portlandu"
-            },
-            "OSM-Reddit": {
-                "name": "OpenStreetMap na Redditu",
-                "description": "/r/openstreetmap/ je vynikající místo, kde lze zjistit více o OpenStreetMap. Zeptejte se nás na cokoliv!"
-            },
-            "OSM-Rome-meetup": {
-                "description": "Vylepšete OpenStreetMap na území Říma"
-            },
-            "OSM-Seattle": {
-                "description": "Mapovači a uživatelé OpenStreetMap na území Seattlu"
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
             },
             "OSM-Portland": {
                 "name": "OpenStreetMap Portland",
@@ -8378,7 +8327,6 @@
             },
             "osm-india-forum": {
                 "name": "OpenStreetMap India forum"
-<<<<<<< HEAD
             },
             "osm-india-github": {
                 "name": "OpenStreetMap India GitHub"
@@ -8404,30 +8352,6 @@
             },
             "osm-latam": {
                 "name": "OpenStreetMap Latam"
-=======
-            },
-            "osm-india-github": {
-                "name": "OpenStreetMap India GitHub"
-            },
-            "osm-india-telegram": {
-                "name": "OpenStreetMap India Telegram"
-            },
-            "osm-india-website": {
-                "name": "OpenStreetMap India"
-            },
-            "osm-india-wiki": {
-                "name": "OpenStreetMap Wikiproject India",
-                "description": "Vše, co potřebujete vědět o mapování v Indii: {url}"
-            },
-            "osm-india-youtube": {
-                "name": "OpenStreetMap India Youtube"
-            },
-            "osm-iran-forum": {
-                "description": "OpenStreetMap Iran web forum"
-            },
-            "osm-iran-telegram": {
-                "name": "OpenStreetMap Iran Telegram"
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
             },
             "osm-mg-facebook": {
                 "name": "Facebooková skupina OpenStreetMap Madagaskar"
