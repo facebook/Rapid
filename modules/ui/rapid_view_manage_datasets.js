@@ -10,7 +10,6 @@ import { rapid_feature_config } from '../../data/';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
-  const RAPID_MAGENTA = '#ff26d4';
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
   const showBeta = rapid_feature_config.poweruser_features_dialog.enabled;
@@ -294,13 +293,17 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       const isBeta = d.groupCategories.some(d => d === '/Categories/Preview');
       const isBuildings = d.groupCategories.some(d => d === '/Categories/Buildings');
 
+      // pick a new color
+      const colors = rapidContext.colors();
+      const colorIndex = Object.keys(datasets).length % colors.length;
+
       let dataset = {
         id: d.id,
         beta: isBeta,
         enabled: true,
         conflated: false,
         service: 'esri',
-        color: RAPID_MAGENTA,
+        color: colors[colorIndex],
         label: d.title
         // description:       make it fit?
         // license_markdown:  linkify?

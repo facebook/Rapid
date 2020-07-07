@@ -9,19 +9,6 @@ export function uiRapidColorpicker(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('change', 'done');
 
-  const COLORS = [
-    '#ff0000',  // red
-    '#ffa500',  // orange
-    '#ffd700',  // gold
-    '#00ff00',  // lime
-    '#00ffff',  // cyan
-    '#1e90ff',  // dodgerblue
-    '#ff26d4',  // rapid magenta
-    '#ffc0cb',  // pink
-    '#d3d3d3',  // lightgray
-    '#faf0e6'   // linen
-  ];
-
   let _close = () => {};
 
 
@@ -133,7 +120,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .merge(colorlist);
 
     let colorItems = colorlist.selectAll('.colorpicker-option')
-      .data(COLORS);
+      .data(rapidContext.colors());
 
     // enter
     let colorItemsEnter = colorItems.enter()

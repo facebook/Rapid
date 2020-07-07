@@ -4,8 +4,6 @@ import toGeoJSON from '@mapbox/togeojson';
 
 
 export function coreRapidContext() {
-  const RAPID_MAGENTA = '#ff26d4';
-
   let _rapidContext = {};
   _rapidContext.version = '1.0.1';
 
@@ -35,6 +33,23 @@ export function coreRapidContext() {
 
   /* Sources */
   _rapidContext.sources = new Set();
+
+
+  /* Colors */
+  const RAPID_MAGENTA = '#ff26d4';
+  const COLORS = [
+    '#ff0000',  // red
+    '#ffa500',  // orange
+    '#ffd700',  // gold
+    '#00ff00',  // lime
+    '#00ffff',  // cyan
+    '#1e90ff',  // dodgerblue
+    '#ff26d4',  // rapid magenta
+    '#ffc0cb',  // pink
+    '#d3d3d3',  // lightgray
+    '#faf0e6'   // linen
+  ];
+  _rapidContext.colors = () => COLORS;
 
 
   /* Available datasets */
