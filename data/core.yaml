@@ -721,6 +721,10 @@ en:
     custom: Custom
     overlays: Overlays
     imagery_problem_faq: Report an Imagery Problem
+    grid:
+      grids: Grids
+      no_grid: No Grid
+      n_by_n: "{num} by {num} Grid"
     reset: reset
     reset_all: Reset All
     display_options: Display Options

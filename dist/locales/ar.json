@@ -7,10 +7,6 @@
             "undo": "تراجع",
             "zoom_to": "تكبير إلى",
             "copy": "نسخ",
-<<<<<<< HEAD
-=======
-            "view_on": "إظهار على {domain}",
->>>>>>> b1a7bdcab0e097b61edd0d2036fd6550fbd9cbf0
             "favorite": "المفضلة"
         },
         "toolbar": {

@@ -6,6 +6,7 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 import { t, textDirection } from '../util/locale';
 import { svgIcon } from '../svg/icon';
 import { uiBackgroundDisplayOptions } from './background_display_options';
+import { uiGridDisplayOptions } from './grid_display_options';
 import { uiBackgroundOffset } from './background_offset';
 import { uiCmd } from './cmd';
 import { uiDisclosure } from './disclosure';
@@ -13,7 +14,6 @@ import { uiMapInMap } from './map_in_map';
 import { uiSettingsCustomBackground } from './settings/custom_background';
 import { uiTooltipHtml } from './tooltipHtml';
 import { tooltip } from '../util/tooltip';
-
 
 export function uiBackground(context) {
     var key = t('background.key');
@@ -26,8 +26,10 @@ export function uiBackground(context) {
     var _backgroundList = d3_select(null);
     var _overlayList = d3_select(null);
     var _displayOptionsContainer = d3_select(null);
+    var _gridOptionsContainer = d3_select(null);
     var _offsetContainer = d3_select(null);
 
+    var gridDisplayOptions = uiGridDisplayOptions(context);
     var backgroundDisplayOptions = uiBackgroundDisplayOptions(context);
     var backgroundOffset = uiBackgroundOffset(context);
 
@@ -91,7 +93,6 @@ export function uiBackground(context) {
         _backgroundList.call(updateLayerSelections);
         document.activeElement.blur();
     }
-
 
     function customChanged(d) {
         if (d && d.template) {
@@ -280,6 +281,7 @@ export function uiBackground(context) {
         updateOverlayList();
     }
 
+
     function updateBackgroundList() {
         _backgroundList
             .call(drawListItems, 'radio', chooseBackground, function(d) { return !d.isHidden() && !d.overlay; });
@@ -299,6 +301,9 @@ export function uiBackground(context) {
         if (!_pane.select('.disclosure-wrap-overlay_list').classed('hide')) {
             updateOverlayList();
         }
+
+        _gridOptionsContainer
+            .call(gridDisplayOptions);
 
         _displayOptionsContainer
             .call(backgroundDisplayOptions);
@@ -386,6 +391,18 @@ export function uiBackground(context) {
                 .content(renderOverlayList)
             );
 
+        // grid list
+        _gridOptionsContainer = content
+            .append('div')
+            .attr('class', 'grid-overlay-list-container'); 
+        
+        context.rapidContext().on('task_extent_set.background', function() {
+            // Show grid options only if the task bbox is rectangular 
+            if (!context.rapidContext().isTaskRectangular()) {
+                _gridOptionsContainer.remove();
+            }
+        });
+        
         // display options
         _displayOptionsContainer = content
             .append('div')

@@ -1,19 +1,34 @@
 import { geoExtent } from '../geo';
 import { t } from '../util/locale';
 import toGeoJSON from '@mapbox/togeojson';
+import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilRebind } from '../util';
 
 
 export function coreRapidContext() {
+  const dispatch = d3_dispatch('task_extent_set');
   let _rapidContext = {};
   _rapidContext.version = '1.0.1';
 
+  function distinct(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+
   /* Task extents */
   let _taskExtent;
+  let _isTaskBoundsRect = undefined;
+
   _rapidContext.setTaskExtentByGpxData = function(gpxData) {
     const dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
     const gj = toGeoJSON.gpx(dom);
+    const lineStringCount = gj.features.reduce((accumulator, currentValue) =>  {
+      return accumulator + (currentValue.geometry.type === 'LineString' ? 1 : 0);
+    }, 0);
+
     if (gj.type === 'FeatureCollection') {
       let minlat, minlon, maxlat, maxlon;
+
       gj.features.forEach(f => {
         if (f.geometry.type === 'Point') {
           const lon = f.geometry.coordinates[0];
@@ -22,13 +37,42 @@ export function coreRapidContext() {
           if (minlon === undefined || lon < minlon) minlon = lon;
           if (maxlat === undefined || lat > maxlat) maxlat = lat;
           if (maxlon === undefined || lon > maxlon) maxlon = lon;
+
+        } else if (f.geometry.type === 'LineString' && lineStringCount === 1) {
+          const lats = f.geometry.coordinates.map(f => f[0]);
+          const lngs = f.geometry.coordinates.map(f => f[1]);
+          const uniqueLats = lats.filter(distinct);
+          const uniqueLngs = lngs.filter(distinct);
+          let eachLatHas2Lngs = true;
+
+          uniqueLats.forEach(lat => {
+            const lngsForThisLat = f.geometry.coordinates
+              .filter(coord => coord[0] === lat)   // Filter the coords to the ones with this lat
+              .map(coord => coord[1])              // Make an array of lngs that associate with that lat
+              .filter(distinct);                   // Finally, filter for uniqueness
+
+            if (lngsForThisLat.length !== 2) {
+              eachLatHas2Lngs = false;
+            }
+          });
+          // Check for exactly two unique latitudes, two unique longitudes,
+          // and that each latitude was associated with exactly 2 longitudes,
+          if (uniqueLats.length === 2 && uniqueLngs.length === 2 && eachLatHas2Lngs) {
+            _isTaskBoundsRect = true;
+          } else {
+            _isTaskBoundsRect = false;
+          }
         }
       });
+
       _taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
+      dispatch.call('task_extent_set');
     }
   };
 
   _rapidContext.getTaskExtent = () => _taskExtent;
+
+  _rapidContext.isTaskRectangular = () => (!!_taskExtent && _isTaskBoundsRect);
 
 
   /* Sources */
@@ -85,5 +129,6 @@ export function coreRapidContext() {
     _rapidContext.sources = new Set();
   };
 
-  return _rapidContext;
+
+  return utilRebind(_rapidContext, dispatch, 'on');
 }
