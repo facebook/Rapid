@@ -250,6 +250,11 @@ button.ai-features-toggle.layer-off use {
     margin: 0 10px;
 }
 
+.rapid-feature-label-beta {
+    font-size: 14px;
+    margin: 0px 4px;
+}
+
 .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;

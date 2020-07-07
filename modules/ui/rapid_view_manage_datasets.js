@@ -192,6 +192,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       selection.text('Fetching available datasets...');
       service.loadDatasets()
         .then(results => {
+          // exclude beta sources unless this is an internal build
           return _datasetInfo = Object.values(results)
             .filter(d => showBeta || !d.groupCategories.some(category => category === '/Categories/Preview'));
         })

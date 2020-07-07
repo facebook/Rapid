@@ -7,10 +7,12 @@ import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
+import { rapid_feature_config } from '../../data/';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
+  const showBeta = rapid_feature_config.poweruser_features_dialog.enabled;
 
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -168,7 +170,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderDatasets(selection) {
-    const datasets = Object.values(rapidContext.datasets());
+    const datasets = Object.values(rapidContext.datasets())
+      .filter(d => showBeta || !d.beta);    // exclude beta sources unless this is an internal build
+
     const rapidLayer = context.layers().layer('ai-features');
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
@@ -198,6 +202,13 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
           .append('div')
           .attr('class', 'rapid-feature-label')
           .text(d.label || d.id);   // fallback to dataset ID
+
+        if (d.beta) {
+          labelEnter
+            .append('div')
+            .attr('class', 'rapid-feature-label-beta beta')
+            .attr('title', t('rapid_poweruser_features.beta'));
+        }
 
         if (d.description) {
           labelEnter
