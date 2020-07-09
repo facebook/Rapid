@@ -1313,7 +1313,7 @@ a.hide-toggle {
     max-height: 100%;
     position: relative;
 
-    background: rgba(45, 41, 41, 0.90);
+    background: rgba(25, 25, 25, 0.90);
     color: #fff;
 
     -webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.5);
@@ -1508,7 +1508,7 @@ a.hide-toggle {
     border-width: 0;
     text-indent: 25px;
     font-size: 12px;
-    background: rgba(18, 18, 18, 0.97);
+    background: rgba(80, 80, 80, 1);
     color: #fff;
     min-width: 225px;
 }

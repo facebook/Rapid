@@ -43,8 +43,8 @@ button.ai-features-toggle.layer-off use {
     padding: 2px 4px 4px 4px;
     border-radius: 2px;
 }
-/* Sidebar component */
 
+/* Sidebar component */
 .fb-road-picker svg.logo-rapid {
     height: 40px;
     margin-top: -10px;
@@ -54,6 +54,12 @@ button.ai-features-toggle.layer-off use {
     position: absolute;
     top: 0;
     right: 0;
+    background: transparent;
+    color: #ff26d4;
+    border-radius: 5px;
+}
+.fb-road-picker .header .fb-road-picker-close:hover {
+    background: #8885;
 }
 
 .fb-road-picker .picker-icon-container {
@@ -172,15 +178,16 @@ button.ai-features-toggle.layer-off use {
     font-size: unset;
 }
 
-
 .modal-splash.modal-rapid {
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(25, 25, 25, 0.9);
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     border: 1px solid darkgrey;
     top: 80px
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
 }
 
 .modal-rapid .fillL {
@@ -235,6 +242,10 @@ button.ai-features-toggle.layer-off use {
     color: #ff26d4;
     position: unset;
     height: 40px;
+    border-radius: 5px;
+}
+.modal-rapid button.close:hover {
+    background: #8885;
 }
 
 .rapid-stack {
@@ -478,7 +489,8 @@ hide this one and style something on top of it.  */
 }
 
 .rapid-checkbox.poweruser:hover {
-    background: linear-gradient(45deg, #888888aa 1%, #88888844 15%,#ffffff22 95%, transparent);
+    color: #ddd;
+    background: #8885;
 }
 
 .rapid-feature-animation.poweruser {
