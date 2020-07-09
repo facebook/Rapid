@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
+import { select as d3_select } from 'd3-selection';
 
 import { coreGraph, coreTree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
@@ -8,6 +9,7 @@ import { utilRebind, utilTiler } from '../util';
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
 const APIROOT = 'https://openstreetmap.maps.arcgis.com/sharing/rest/content';
+const HOMEROOT = 'https://openstreetmap.maps.arcgis.com/home';
 const TILEZOOM = 14;
 const tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loadedData');
@@ -41,6 +43,10 @@ function layerURL(featureServerURL) {
   //   .copyrightText
   //   .fields
   //   .geometryType   "esriGeometryPoint" or "esriGeometryPolygon" ?
+}
+
+function itemURL(itemID) {
+  return `${HOMEROOT}/item.html?id=${itemID}`;
 }
 
 function tileURL(dataset, extent) {
@@ -263,6 +269,18 @@ export default {
           ds.graph = coreGraph();
           ds.tree = coreTree(ds.graph);
           ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+
+          // cleanup the `licenseInfo` field by removing styles  (not used currently)
+          let license = d3_select(document.createElement('div'));
+          license.html(ds.licenseInfo);       // set innerHtml
+          license.selectAll('*')
+            .attr('style', null)
+            .attr('size', null);
+          ds.license_html = license.html();   // get innerHtml
+
+          // generate public link to this item
+          ds.itemURL = itemURL(ds.id);
+
           // preload the layer info (or we could wait do this once the user actually clicks 'add to map')
           that.loadLayer(ds.id);
         });

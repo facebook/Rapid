@@ -125,7 +125,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     headerEnter
       .append('div')
       .attr('class', 'rapid-view-manage-header-text')
-      .text('ArcGIS Datasets');
+      .text(t('rapid_feature_toggle.esri.title'));
 
     headerEnter
       .append('div')
@@ -183,12 +183,12 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   function renderDatasets(selection) {
     const service = services.esriData;
     if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
-      selection.text('No datasets available.');
+      selection.text(t('rapid_feature_toggle.esri.no_datasets'));
       return;
     }
 
     if (!_datasetInfo) {
-      selection.text('Fetching available datasets...');
+      selection.text(t('rapid_feature_toggle.esri.fetching_datasets'));
       service.loadDatasets()
         .then(results => {
           // exclude beta sources unless this is an internal build
@@ -231,6 +231,16 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     labelsEnter
       .append('div')
+      .attr('class', 'rapid-view-manage-dataset-license')
+      .append('a')
+      .attr('class', 'rapid-view-manage-dataset-link')
+      .attr('target', '_blank')
+      .attr('href', d => d.itemURL)
+      .text(t('rapid_feature_toggle.esri.more_info'))
+      .call(svgIcon('#iD-icon-out-link', 'inline'));
+
+    labelsEnter
+      .append('div')
       .text(d => d.snippet);
 
     labelsEnter
@@ -253,7 +263,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
-      .text(d => datasetAdded(d) ? 'Remove' : 'Add to Map');
+      .text(d => datasetAdded(d) ? t('rapid_feature_toggle.esri.remove') : t('rapid_feature_toggle.esri.add_to_map'));
   }
 
 
@@ -304,9 +314,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         conflated: false,
         service: 'esri',
         color: colors[colorIndex],
-        label: d.title
-        // description:       make it fit?
-        // license_markdown:  linkify?
+        label: d.title,
+        license_markdown: t('rapid_feature_toggle.esri.license_markdown')
       };
 
       if (d.extent) {
