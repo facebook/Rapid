@@ -7,6 +7,8 @@ import { uiModal } from './modal';
 export function uiSplashRapid(context) {
 
     return function(selection) {
+        return;  // bhousel 2020-07-09 - walkthrough broken, disable for now
+
         if (context.storage('sawRapidSplash'))
             return;
 

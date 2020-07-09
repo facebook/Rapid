@@ -4469,7 +4469,7 @@ li.issue-fix-item:not(.actionable) .fix-icon {
     border-radius: 4px 4px 0 0;
 }
 
-.help-wrap .toc li:nth-last-child(3) a {
+.help-wrap .toc li:nth-last-child(2) a {
     border-bottom: 1px solid #ccc;
     border-radius: 0 0 4px 4px
 }

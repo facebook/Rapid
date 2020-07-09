@@ -286,7 +286,7 @@ export function uiAssistant(context) {
         var mode = context.mode();
 
         if (mode.id === 'select-ai-features'){
-            
+
             return panelSelectAiFeatures(context, mode.selectedDatum());
 
         } else if (mode.id === 'save') {
@@ -416,7 +416,8 @@ export function uiAssistant(context) {
 
         function renderFirstSessionHeader(selection, bodyTextArea) {
             var firstTimeInfo = t('assistant.launch.osm_info') + '<br/>' +
-                                t('assistant.launch.first_time_tutorial') + '<br/>' +
+                                 // bhousel 2020-07-09 - walkthrough broken, disable for now
+                                // t('assistant.launch.first_time_tutorial') + '<br/>' +
                                 t('assistant.launch.thanks_have_fun');
             bodyTextArea.html(firstTimeInfo);
             bodyTextArea.selectAll('a')
@@ -786,7 +787,7 @@ export function uiAssistant(context) {
 
     function panelSelectAiFeatures(context, datum) {
         var panel = {
-            theme: 'dark', 
+            theme: 'dark',
             modeLabel: t('assistant.mode.inspecting'),
             title: t('map_data.layers.ai-features.title'),
             collapseCategory: 'inspect'
@@ -796,15 +797,15 @@ export function uiAssistant(context) {
             selection
                 .append('div')
                 .attr('class', 'icon-col')
-                .call(svgIcon('#iD-logo-rapid', 'icon rapid')); 
-        }; 
+                .call(svgIcon('#iD-logo-rapid', 'icon rapid'));
+        };
 
         panel.renderBody = function(selection) {
             var keybinding = utilKeybinding('select-ai-features');
             var fbPicker = uiFbFeaturePicker(context, keybinding)
-                .datum(datum); 
-            selection.call(fbPicker); 
-        }; 
+                .datum(datum);
+            selection.call(fbPicker);
+        };
 
         return panel;
     }
