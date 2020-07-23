@@ -1,14 +1,12 @@
 {
-    "icon": "maki-bus",
+    "icon": "temaki-transit",
     "fields": [
         "name",
         "ref_stop_position",
         "network",
         "operator"
     ],
-    "moreFields": [
-        "level"
-    ],
+    "moreFields": [],
     "geometry": [
         "vertex"
     ],

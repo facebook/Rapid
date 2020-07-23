@@ -4,7 +4,7 @@ import {
 } from 'd3-selection';
 
 import { svgIcon } from '../svg/icon';
-import { t, textDirection } from '../util/locale';
+import { t, textDirection } from '../core/localizer';
 import { tooltip } from '../util/tooltip';
 import { geoExtent } from '../geo';
 import { modeBrowse } from '../modes/browse';

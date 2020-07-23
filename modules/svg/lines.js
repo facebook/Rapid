@@ -11,7 +11,7 @@ import { utilArrayFlatten, utilArrayGroupBy } from '../util';
 import { utilDetect } from '../util/detect';
 import _isEqual from 'lodash-es/isEqual';
 import _omit from 'lodash-es/omit';
-import { rapid_feature_config } from '../../data/';
+import { rapid_config } from '../../data/rapid_config.json';
 
 export function svgLines(projection, context) {
     var detected = utilDetect();
@@ -117,9 +117,9 @@ export function svgLines(projection, context) {
         }
 
         var getAIRoadStylingClass =  function(d){
-            if (!rapid_feature_config.style_fb_ai_roads.enabled) return ''; 
+            if (!rapid_config.style_fb_ai_roads.enabled) return '';
 
-           return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : ''; 
+           return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : '';
         };
 
         // Class for styling currently edited lines
@@ -332,11 +332,11 @@ export function svgLines(projection, context) {
             layergroup.selectAll('g.line-stroke-highlighted')
                 .call(drawLineGroup, 'stroke', true);
 
-            addMarkers(layergroup, 'oneway', 'onewaygroup', onewaydata, 'url(#oneway-marker)');
+            addMarkers(layergroup, 'oneway', 'onewaygroup', onewaydata, 'url(#ideditor-oneway-marker)');
             addMarkers(layergroup, 'sided', 'sidedgroup', sideddata,
                 function marker(d) {
                     var category = graph.entity(d.id).sidednessIdentifier();
-                    return 'url(#sided-marker-' + category + ')';
+                    return 'url(#ideditor-sided-marker-' + category + ')';
                 }
             );
         });

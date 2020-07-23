@@ -1,23 +1,23 @@
 import _throttle from 'lodash-es/throttle';
 
-import { drag as d3_drag } from 'd3-drag';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
-
 import {
-    select as d3_select,
     event as d3_event,
-    selectAll as d3_selectAll
+    select as d3_select
 } from 'd3-selection';
 
-import { osmEntity, osmNote, qaError } from '../osm';
+import { utilArrayIdentical } from '../util/array';
+import { utilFastMouse } from '../util';
+import { osmEntity, osmNote, QAItem } from '../osm';
 import { services } from '../services';
 import { uiDataEditor } from './data_editor';
 import { uiFeatureList } from './feature_list';
 import { uiInspector } from './inspector';
 import { uiImproveOsmEditor } from './improveOSM_editor';
 import { uiKeepRightEditor } from './keepRight_editor';
+import { uiOsmoseEditor } from './osmose_editor';
 import { uiNoteEditor } from './note_editor';
-import { textDirection } from '../util/locale';
+import { localizer } from '../core/localizer';
 
 
 export function uiSidebar(context) {
@@ -26,22 +26,22 @@ export function uiSidebar(context) {
     var noteEditor = uiNoteEditor(context);
     var improveOsmEditor = uiImproveOsmEditor(context);
     var keepRightEditor = uiKeepRightEditor(context);
+    var osmoseEditor = uiOsmoseEditor(context);
     var _current;
     var _wasData = false;
     var _wasNote = false;
-    var _wasQAError = false;
+    var _wasQaItem = false;
+
+    // use pointer events on supported platforms; fallback to mouse events
+    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
 
     function sidebar(selection) {
-        var container = d3_select('#id-container');
-        var minWidth = 280;
+        var container = context.container();
+        var minWidth = 240;
         var sidebarWidth;
         var containerWidth;
         var dragOffset;
-
-        var resizer = selection
-            .append('div')
-            .attr('id', 'sidebar-resizer');
 
         // Set the initial width constraints
         selection
@@ -49,60 +49,102 @@ export function uiSidebar(context) {
             .style('max-width', '400px')
             .style('width', '33.3333%');
 
-        resizer.call(d3_drag()
-            .container(container.node())
-            .on('start', function() {
-                // offset from edge of sidebar-resizer
-                dragOffset = d3_event.sourceEvent.offsetX - 1;
+        var resizer = selection
+            .append('div')
+            .attr('class', 'sidebar-resizer')
+            .on(_pointerPrefix + 'down.sidebar-resizer', pointerdown);
 
-                sidebarWidth = selection.node().getBoundingClientRect().width;
-                containerWidth = container.node().getBoundingClientRect().width;
+        var downPointerId, lastClientX, containerLocGetter;
+
+        function pointerdown() {
+            if (downPointerId) return;
+
+            if ('button' in d3_event && d3_event.button !== 0) return;
+
+            downPointerId = d3_event.pointerId || 'mouse';
+
+            lastClientX = d3_event.clientX;
+
+            containerLocGetter = utilFastMouse(container.node());
+
+            // offset from edge of sidebar-resizer
+            dragOffset = utilFastMouse(resizer.node())(d3_event)[0] - 1;
+
+            sidebarWidth = selection.node().getBoundingClientRect().width;
+            containerWidth = container.node().getBoundingClientRect().width;
+            var widthPct = (sidebarWidth / containerWidth) * 100;
+            selection
+                .style('width', widthPct + '%')    // lock in current width
+                .style('max-width', '85%');        // but allow larger widths
+
+            resizer.classed('dragging', true);
+
+            d3_select(window)
+                .on('touchmove.sidebar-resizer', function() {
+                    // disable page scrolling while resizing on touch input
+                    d3_event.preventDefault();
+                }, { passive: false })
+                .on(_pointerPrefix + 'move.sidebar-resizer', pointermove)
+                .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', pointerup);
+        }
+
+        function pointermove() {
+
+            if (downPointerId !== (d3_event.pointerId || 'mouse')) return;
+
+            d3_event.preventDefault();
+
+            var dx = d3_event.clientX - lastClientX;
+
+            lastClientX = d3_event.clientX;
+
+            var isRTL = (localizer.textDirection() === 'rtl');
+            var scaleX = isRTL ? 0 : 1;
+            var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
+
+            var x = containerLocGetter(d3_event)[0] - dragOffset;
+            sidebarWidth = isRTL ? containerWidth - x : x;
+
+            var isCollapsed = selection.classed('collapsed');
+            var shouldCollapse = sidebarWidth < minWidth;
+
+            selection.classed('collapsed', shouldCollapse);
+
+            if (shouldCollapse) {
+                if (!isCollapsed) {
+                    selection
+                        .style(xMarginProperty, '-400px')
+                        .style('width', '400px');
+
+                    context.ui().onResize([(sidebarWidth - dx) * scaleX, 0]);
+                }
+
+            } else {
                 var widthPct = (sidebarWidth / containerWidth) * 100;
                 selection
-                    .style('width', widthPct + '%')    // lock in current width
-                    .style('max-width', '85%');        // but allow larger widths
+                    .style(xMarginProperty, null)
+                    .style('width', widthPct + '%');
 
-                resizer.classed('dragging', true);
-            })
-            .on('drag', function() {
-                var isRTL = (textDirection === 'rtl');
-                var scaleX = isRTL ? 0 : 1;
-                var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
-
-                var x = d3_event.x - dragOffset;
-                sidebarWidth = isRTL ? containerWidth - x : x;
-
-                var isCollapsed = selection.classed('collapsed');
-                var shouldCollapse = sidebarWidth < minWidth;
-
-                selection.classed('collapsed', shouldCollapse);
-
-                if (shouldCollapse) {
-                    if (!isCollapsed) {
-                        selection
-                            .style(xMarginProperty, '-400px')
-                            .style('width', '400px');
-
-                        context.ui().onResize([(sidebarWidth - d3_event.dx) * scaleX, 0]);
-                    }
-
+                if (isCollapsed) {
+                    context.ui().onResize([-sidebarWidth * scaleX, 0]);
                 } else {
-                    var widthPct = (sidebarWidth / containerWidth) * 100;
-                    selection
-                        .style(xMarginProperty, null)
-                        .style('width', widthPct + '%');
-
-                    if (isCollapsed) {
-                        context.ui().onResize([-sidebarWidth * scaleX, 0]);
-                    } else {
-                        context.ui().onResize([-d3_event.dx * scaleX, 0]);
-                    }
+                    context.ui().onResize([-dx * scaleX, 0]);
                 }
-            })
-            .on('end', function() {
-                resizer.classed('dragging', false);
-            })
-        );
+            }
+        }
+
+        function pointerup() {
+            if (downPointerId !== (d3_event.pointerId || 'mouse')) return;
+
+            downPointerId = null;
+
+            resizer.classed('dragging', false);
+
+            d3_select(window)
+                .on('touchmove.sidebar-resizer', null)
+                .on(_pointerPrefix + 'move.sidebar-resizer', null)
+                .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', null);
+        }
 
         var featureListWrap = selection
             .append('div')
@@ -111,10 +153,29 @@ export function uiSidebar(context) {
 
         var inspectorWrap = selection
             .append('div')
-            .attr('class', 'inspector-hidden inspector-wrap fr');
+            .attr('class', 'inspector-hidden inspector-wrap');
 
+        var hoverModeSelect = function(targets) {
+            context.container().selectAll('.feature-list-item').classed('hover', false);
 
-        function hover(datum) {
+            if (context.selectedIDs().length > 1 &&
+                targets && targets.length) {
+
+                var elements = context.container().selectAll('.feature-list-item')
+                    .filter(function (node) {
+                        return targets.indexOf(node) !== -1;
+                    });
+
+                if (!elements.empty()) {
+                    elements.classed('hover', true);
+                }
+            }
+        };
+
+        sidebar.hoverModeSelect = _throttle(hoverModeSelect, 200);
+
+        function hover(targets) {
+            var datum = targets && targets.length && targets[0];
             if (datum && datum.__featurehash__) {   // hovering on data
                 _wasData = true;
                 sidebar
@@ -141,8 +202,8 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
-            } else if (datum instanceof qaError) {
-                _wasQAError = true;
+            } else if (datum instanceof QAItem) {
+                _wasQaItem = true;
 
                 var errService = services[datum.service];
                 if (errService) {
@@ -150,10 +211,17 @@ export function uiSidebar(context) {
                     datum = errService.getError(datum.id);
                 }
 
-                // Temporary solution while only two services
-                var errEditor = (datum.service === 'keepRight') ? keepRightEditor : improveOsmEditor;
+                // Currently only three possible services
+                var errEditor;
+                if (datum.service === 'keepRight') {
+                    errEditor = keepRightEditor;
+                } else if (datum.service === 'osmose') {
+                    errEditor = osmoseEditor;
+                } else {
+                    errEditor = improveOsmEditor;
+                }
 
-                d3_selectAll('.qa_error.' + datum.service)
+                context.container().selectAll('.qaItem.' + datum.service)
                     .classed('hover', function(d) { return d.id === datum.id; });
 
                 sidebar
@@ -170,10 +238,11 @@ export function uiSidebar(context) {
                     .classed('inspector-hidden', false)
                     .classed('inspector-hover', true);
 
-                if (inspector.entityID() !== datum.id || inspector.state() !== 'hover') {
+                if (!inspector.entityIDs() || !utilArrayIdentical(inspector.entityIDs(), [datum.id]) || inspector.state() !== 'hover') {
                     inspector
                         .state('hover')
-                        .entityID(datum.id);
+                        .entityIDs([datum.id])
+                        .newFeature(false);
 
                     inspectorWrap
                         .call(inspector);
@@ -187,12 +256,12 @@ export function uiSidebar(context) {
                 inspector
                     .state('hide');
 
-            } else if (_wasData || _wasNote || _wasQAError) {
+            } else if (_wasData || _wasNote || _wasQaItem) {
                 _wasNote = false;
                 _wasData = false;
-                _wasQAError = false;
-                d3_selectAll('.note').classed('hover', false);
-                d3_selectAll('.qa_error').classed('hover', false);
+                _wasQaItem = false;
+                context.container().selectAll('.note').classed('hover', false);
+                context.container().selectAll('.qaItem').classed('hover', false);
                 sidebar.hide();
             }
         }
@@ -209,17 +278,16 @@ export function uiSidebar(context) {
         };
 
 
-        sidebar.select = function(id, newFeature) {
+        sidebar.select = function(ids, newFeature) {
             sidebar.hide();
 
-            if (id) {
-                var entity = context.entity(id);
-                // uncollapse the sidebar
-                if (selection.classed('collapsed')) {
-                    if (newFeature) {
-                        var extent = entity.extent(context.graph());
-                        sidebar.expand(sidebar.intersects(extent));
-                    }
+            if (ids && ids.length) {
+
+                var entity = ids.length === 1 && context.entity(ids[0]);
+                if (entity && newFeature && selection.classed('collapsed')) {
+                    // uncollapse the sidebar
+                    var extent = entity.extent(context.graph());
+                    sidebar.expand(sidebar.intersects(extent));
                 }
 
                 featureListWrap
@@ -229,24 +297,25 @@ export function uiSidebar(context) {
                     .classed('inspector-hidden', false)
                     .classed('inspector-hover', false);
 
-                if (inspector.entityID() !== id || inspector.state() !== 'select') {
+                if (!inspector.entityIDs() || !utilArrayIdentical(inspector.entityIDs(), ids) || inspector.state() !== 'select') {
                     inspector
                         .state('select')
-                        .entityID(id)
+                        .entityIDs(ids)
                         .newFeature(newFeature);
 
                     inspectorWrap
-                        .call(inspector, newFeature);
+                        .call(inspector);
                 }
-
-                sidebar.showPresetList = function() {
-                    inspector.showList(context.presets().match(entity, context.graph()));
-                };
 
             } else {
                 inspector
                     .state('hide');
             }
+        };
+
+
+        sidebar.showPresetList = function() {
+            inspector.showList();
         };
 
 
@@ -302,7 +371,7 @@ export function uiSidebar(context) {
 
             var isCollapsed = selection.classed('collapsed');
             var isCollapsing = !isCollapsed;
-            var isRTL = (textDirection === 'rtl');
+            var isRTL = (localizer.textDirection() === 'rtl');
             var scaleX = isRTL ? 0 : 1;
             var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
@@ -346,6 +415,13 @@ export function uiSidebar(context) {
 
         // toggle the sidebar collapse when double-clicking the resizer
         resizer.on('dblclick', sidebar.toggle);
+
+        // ensure hover sidebar is closed when zooming out beyond editable zoom
+        context.map().on('crossEditableZoom.sidebar', function(within) {
+            if (!within && !selection.select('.inspector-hover').empty()) {
+                hover([]);
+            }
+        });
     }
 
     sidebar.showPresetList = function() {};

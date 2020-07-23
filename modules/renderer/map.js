@@ -7,16 +7,17 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { geoPath as d3_geoPath } from 'd3-geo';
 
-import { t } from '../util/locale';
+import { prefs } from '../core/preferences';
 import { geoExtent, geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
-import { uiFlash } from '../ui/flash';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilEntityAndDeepMemberIDs } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util/rebind';
+import { utilZoomPan } from '../util/zoom_pan';
+import { utilDoubleUp } from '../util/double_up';
 
 // constants
 var TILESIZE = 256;
@@ -31,16 +32,20 @@ function clamp(num, min, max) {
 
 
 export function rendererMap(context) {
-    var dispatch = d3_dispatch('move', 'drawn', 'crossEditableZoom');
+    var dispatch = d3_dispatch(
+        'move', 'drawn',
+        'crossEditableZoom', 'hitMinZoom',
+        'changeHighlighting', 'changeAreaFill'
+    );
     var projection = context.projection;
     var curtainProjection = context.curtainProjection;
-    var drawLayers = svgLayers(projection, context);
-    var drawPoints = svgPoints(projection, context);
-    var drawVertices = svgVertices(projection, context);
-    var drawLines = svgLines(projection, context);
-    var drawAreas = svgAreas(projection, context);
-    var drawMidpoints = svgMidpoints(projection, context);
-    var drawLabels = svgLabels(projection, context);
+    var drawLayers;
+    var drawPoints;
+    var drawVertices;
+    var drawLines;
+    var drawAreas;
+    var drawMidpoints;
+    var drawLabels;
 
     var _selection = d3_select(null);
     var supersurface = d3_select(null);
@@ -48,7 +53,7 @@ export function rendererMap(context) {
     var surface = d3_select(null);
 
     var _dimensions = [1, 1];
-    var _dblClickEnabled = true;
+    var _dblClickZoomEnabled = true;
     var _redrawEnabled = true;
     var _gestureTransformStart;
     var _transformStart = projection.transform();
@@ -56,14 +61,30 @@ export function rendererMap(context) {
     var _isTransformed = false;
     var _minzoom = 0;
     var _getMouseCoords;
-    var _mouseEvent;
+    var _lastPointerEvent;
     var _lastWithinEditableZoom;
 
-    var zoom = d3_zoom()
+    // whether a pointerdown event started the zoom
+    var _pointerDown = false;
+
+    // use pointer events on supported platforms; fallback to mouse events
+    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
+
+    // use pointer event interaction if supported; fallback to touch/mouse events in d3-zoom
+    var _zoomerPannerFunction = 'PointerEvent' in window ? utilZoomPan : d3_zoom;
+
+    var _zoomerPanner = _zoomerPannerFunction()
         .scaleExtent([kMin, kMax])
         .interpolate(d3_interpolate)
         .filter(zoomEventFilter)
-        .on('zoom', zoomPan);
+        .on('zoom.map', zoomPan)
+        .on('start.map', function() {
+            _pointerDown = d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown';
+        })
+        .on('end.map', function() {
+            _pointerDown = false;
+        });
+    var _doubleUpHandler = utilDoubleUp();
 
     var scheduleRedraw = _throttle(redraw, 750);
     // var isRedrawScheduled = false;
@@ -130,12 +151,16 @@ export function rendererMap(context) {
             });
 
         selection
-            .on('dblclick.map', dblClick)
-            .call(zoom)
-            .call(zoom.transform, projection.transform());
+            .on('wheel.map mousewheel.map', function() {
+                // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+                d3_event.preventDefault();
+            })
+            .call(_zoomerPanner)
+            .call(_zoomerPanner.transform, projection.transform())
+            .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 
-        supersurface = selection.append('div')
-            .attr('id', 'supersurface')
+        map.supersurface = supersurface = selection.append('div')
+            .attr('class', 'supersurface')
             .call(utilSetTransform, 0, 0);
 
         // Need a wrapper div because Opera can't cope with an absolutely positioned
@@ -146,36 +171,34 @@ export function rendererMap(context) {
 
         map.surface = surface = wrapper
             .call(drawLayers)
-            .selectAll('.surface')
-            .attr('id', 'surface');
+            .selectAll('.surface');
 
         surface
             .call(drawLabels.observe)
-            .on('gesturestart.surface', function() {
-                _gestureTransformStart = projection.transform();
-            })
-            .on('gesturechange.surface', gestureChange)
-            .on('mousedown.zoom', function() {
+            .call(_doubleUpHandler)
+            .on(_pointerPrefix + 'down.zoom', function() {
+                _lastPointerEvent = d3_event;
                 if (d3_event.button === 2) {
                     d3_event.stopPropagation();
                 }
             }, true)
-            .on('mouseup.zoom', function() {
+            .on(_pointerPrefix + 'up.zoom', function() {
+                _lastPointerEvent = d3_event;
                 if (resetTransform()) {
                     immediateRedraw();
                 }
             })
-            .on('mousemove.map', function() {
-                _mouseEvent = d3_event;
+            .on(_pointerPrefix + 'move.map', function() {
+                _lastPointerEvent = d3_event;
             })
-            .on('mouseover.vertices', function() {
+            .on(_pointerPrefix + 'over.vertices', function() {
                 if (map.editableDataEnabled() && !_isTransformed) {
                     var hover = d3_event.target.__data__;
                     surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
                     dispatch.call('drawn', this, { full: false });
                 }
             })
-            .on('mouseout.vertices', function() {
+            .on(_pointerPrefix + 'out.vertices', function() {
                 if (map.editableDataEnabled() && !_isTransformed) {
                     var hover = d3_event.relatedTarget && d3_event.relatedTarget.__data__;
                     surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
@@ -183,38 +206,81 @@ export function rendererMap(context) {
                 }
             });
 
+        var detected = utilDetect();
+
+        // only WebKit supports gesture events
+        if ('GestureEvent' in window &&
+            // Listening for gesture events on iOS 13.4+ breaks double-tapping,
+            // but we only need to do this on desktop Safari anyway. – #7694
+            !detected.isMobileWebKit) {
+
+            // Desktop Safari sends gesture events for multitouch trackpad pinches.
+            // We can listen for these and translate them into map zooms.
+            surface
+                .on('gesturestart.surface', function() {
+                    d3_event.preventDefault();
+                    _gestureTransformStart = projection.transform();
+                })
+                .on('gesturechange.surface', gestureChange);
+        }
+
+        // must call after surface init
+        updateAreaFill();
+
+        _doubleUpHandler.on('doubleUp.map', function(p0) {
+            if (!_dblClickZoomEnabled) return;
+
+            // don't zoom if targeting something other than the map itself
+            if (typeof d3_event.target.__data__ === 'object' &&
+                // or area fills
+                !d3_select(d3_event.target).classed('fill')) return;
+
+            var zoomOut = d3_event.shiftKey;
+
+            var t = projection.transform();
+
+            var p1 = t.invert(p0);
+
+            t = t.scale(zoomOut ? 0.5 : 2);
+
+            t.x = p0[0] - p1[0] * t.k;
+            t.y = p0[1] - p1[1] * t.k;
+
+            map.transformEase(t);
+        });
+
         context.on('enter.map',  function() {
-            if (map.editableDataEnabled(true /* skip zoom check */) && !_isTransformed) {
-                // redraw immediately any objects affected by a change in selectedIDs.
-                var graph = context.graph();
-                var selectedAndParents = {};
-                context.selectedIDs().forEach(function(id) {
-                    var entity = graph.hasEntity(id);
-                    if (entity) {
-                        selectedAndParents[entity.id] = entity;
-                        if (entity.type === 'node') {
-                            graph.parentWays(entity).forEach(function(parent) {
-                                selectedAndParents[parent.id] = parent;
-                            });
-                        }
+            if (!map.editableDataEnabled(true /* skip zoom check */)) return;
+
+            // redraw immediately any objects affected by a change in selectedIDs.
+            var graph = context.graph();
+            var selectedAndParents = {};
+            context.selectedIDs().forEach(function(id) {
+                var entity = graph.hasEntity(id);
+                if (entity) {
+                    selectedAndParents[entity.id] = entity;
+                    if (entity.type === 'node') {
+                        graph.parentWays(entity).forEach(function(parent) {
+                            selectedAndParents[parent.id] = parent;
+                        });
                     }
-                });
-                var data = Object.values(selectedAndParents);
-                var filter = function(d) { return d.id in selectedAndParents; };
+                }
+            });
+            var data = Object.values(selectedAndParents);
+            var filter = function(d) { return d.id in selectedAndParents; };
 
-                data = context.features().filter(data, graph);
+            data = context.features().filter(data, graph);
 
-                surface
-                    .call(drawVertices.drawSelected, graph, map.extent())
-                    .call(drawLines, graph, data, filter)
-                    .call(drawAreas, graph, data, filter)
-                    .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
+            surface
+                .call(drawVertices.drawSelected, graph, map.extent())
+                .call(drawLines, graph, data, filter)
+                .call(drawAreas, graph, data, filter)
+                .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
 
-                dispatch.call('drawn', this, { full: false });
+            dispatch.call('drawn', this, { full: false });
 
-                // redraw everything else later
-                scheduleRedraw();
-            }
+            // redraw everything else later
+            scheduleRedraw();
         });
 
         map.dimensions(utilGetDimensions(selection));
@@ -264,11 +330,12 @@ export function rendererMap(context) {
         var mode = context.mode();
         var graph = context.graph();
         var features = context.features();
-        var all = context.intersects(map.extent());
+        var all = context.history().intersects(map.extent());
         var fullRedraw = false;
         var data;
         var set;
         var filter;
+        var applyFeatureLayerFilters = true;
 
         if (map.isInWideSelection()) {
             data = [];
@@ -278,6 +345,8 @@ export function rendererMap(context) {
             });
             fullRedraw = true;
             filter = utilFunctor(true);
+            // selected features should always be visible, so we can skip filtering
+            applyFeatureLayerFilters = false;
 
         } else if (difference) {
             var complete = difference.complete(map.extent());
@@ -294,7 +363,7 @@ export function rendererMap(context) {
             }
 
             if (extent) {
-                data = context.intersects(map.extent().intersection(extent));
+                data = context.history().intersects(map.extent().intersection(extent));
                 set = new Set(data.map(function(entity) { return entity.id; }));
                 filter = function(d) { return set.has(d.id); };
 
@@ -305,7 +374,11 @@ export function rendererMap(context) {
             }
         }
 
-        data = features.filter(data, graph);
+        if (applyFeatureLayerFilters) {
+            data = features.filter(data, graph);
+        } else {
+            context.features().resetStats();
+        }
 
         if (mode && mode.id === 'select') {
             // update selected vertices - the user might have just double-clicked a way,
@@ -324,6 +397,15 @@ export function rendererMap(context) {
         dispatch.call('drawn', this, {full: true});
     }
 
+    map.init = function() {
+        drawLayers = svgLayers(projection, context);
+        drawPoints = svgPoints(projection, context);
+        drawVertices = svgVertices(projection, context);
+        drawLines = svgLines(projection, context);
+        drawAreas = svgAreas(projection, context);
+        drawMidpoints = svgMidpoints(projection, context);
+        drawLabels = svgLabels(projection, context);
+    };
 
     function editOff() {
         context.features().resetStats();
@@ -347,12 +429,7 @@ export function rendererMap(context) {
     }
 
 
-    function dblClick() {
-        if (!_dblClickEnabled) {
-            d3_event.preventDefault();
-            d3_event.stopImmediatePropagation();
-        }
-    }
+
 
 
     function gestureChange() {
@@ -389,16 +466,14 @@ export function rendererMap(context) {
         var y = eventTransform.y;
         var k = eventTransform.k;
 
-        if (_transformStart.x === x &&
-            _transformStart.y === y &&
-            _transformStart.k === k) {
-            return;  // no change
-        }
-
         // Special handling of 'wheel' events:
         // They might be triggered by the user scrolling the mouse wheel,
         // or 2-finger pinch/zoom gestures, the transform may need adjustment.
         if (source && source.type === 'wheel') {
+
+            // assume that the gesture is already handled by pointer events
+            if (_pointerDown) return;
+
             var detected = utilDetect();
             var dX = source.deltaX;
             var dY = source.deltaY;
@@ -498,23 +573,35 @@ export function rendererMap(context) {
                 y = y2;
                 k = k2;
                 eventTransform = d3_zoomIdentity.translate(x2, y2).scale(k2);
-                _selection.node().__zoom = eventTransform;
+                if (_zoomerPanner._transform) {
+                    // utilZoomPan interface
+                    _zoomerPanner._transform(eventTransform);
+                } else {
+                    // d3_zoom interface
+                    _selection.node().__zoom = eventTransform;
+                }
             }
 
+        }
+
+        if (_transformStart.x === x &&
+            _transformStart.y === y &&
+            _transformStart.k === k) {
+            return;  // no change
         }
 
         var withinEditableZoom = map.withinEditableZoom();
         if (_lastWithinEditableZoom !== withinEditableZoom) {
             if (_lastWithinEditableZoom !== undefined) {
                 // notify that the map zoomed in or out over the editable zoom threshold
-                dispatch.call('crossEditableZoom', this, map);
+                dispatch.call('crossEditableZoom', this, withinEditableZoom);
             }
             _lastWithinEditableZoom = withinEditableZoom;
         }
 
         if (geoScaleToZoom(k, TILESIZE) < _minzoom) {
             surface.interrupt();
-            uiFlash().text(t('cannot_zoom'))();
+            dispatch.call('hitMinZoom', this, map);
             setCenterZoom(map.center(), context.minEditableZoom(), 0, true);
             scheduleRedraw();
             dispatch.call('move', this, map);
@@ -536,7 +623,7 @@ export function rendererMap(context) {
         }
 
         if (source) {
-            _mouseEvent = event;
+            _lastPointerEvent = event;
         }
         _isTransformed = true;
         _transformLast = eventTransform;
@@ -555,8 +642,6 @@ export function rendererMap(context) {
     function resetTransform() {
         if (!_isTransformed) return false;
 
-        // deprecation warning - Radial Menu to be removed in iD v3
-        surface.selectAll('.edit-menu, .radial-menu').interrupt().remove();
         utilSetTransform(supersurface, 0, 0);
         _isTransformed = false;
         if (context.inIntro()) {
@@ -676,8 +761,13 @@ export function rendererMap(context) {
     };
 
 
+    map.lastPointerEvent = function() {
+        return _lastPointerEvent;
+    };
+
+
     map.mouse = function() {
-        var event = _mouseEvent || d3_event;
+        var event = _lastPointerEvent || d3_event;
         if (event) {
             var s;
             while ((s = event.sourceEvent)) { event = s; }
@@ -694,9 +784,9 @@ export function rendererMap(context) {
     };
 
 
-    map.dblclickEnable = function(val) {
-        if (!arguments.length) return _dblClickEnabled;
-        _dblClickEnabled = val;
+    map.dblclickZoomEnable = function(val) {
+        if (!arguments.length) return _dblClickZoomEnabled;
+        _dblClickZoomEnabled = val;
         return map;
     };
 
@@ -722,11 +812,11 @@ export function rendererMap(context) {
                 .transition()
                 .duration(duration)
                 .on('start', function() { map.startEase(); })
-                .call(zoom.transform, d3_zoomIdentity.translate(t2.x, t2.y).scale(t2.k));
+                .call(_zoomerPanner.transform, d3_zoomIdentity.translate(t2.x, t2.y).scale(t2.k));
         } else {
             projection.transform(t2);
             _transformStart = t2;
-            _selection.call(zoom.transform, _transformStart);
+            _selection.call(_zoomerPanner.transform, _transformStart);
         }
 
         return true;
@@ -766,11 +856,11 @@ export function rendererMap(context) {
                 .transition()
                 .duration(duration)
                 .on('start', function() { map.startEase(); })
-                .call(zoom.transform, d3_zoomIdentity.translate(t[0], t[1]).scale(k));
+                .call(_zoomerPanner.transform, d3_zoomIdentity.translate(t[0], t[1]).scale(k));
         } else {
             projection.translate(t);
             _transformStart = projection.transform();
-            _selection.call(zoom.transform, _transformStart);
+            _selection.call(_zoomerPanner.transform, _transformStart);
             dispatch.call('move', this, map);
             immediateRedraw();
         }
@@ -837,7 +927,7 @@ export function rendererMap(context) {
     };
 
     map.unobscuredOffsetPx = function() {
-        var openPane = d3_select('.map-panes .map-pane.shown');
+        var openPane = context.container().select('.map-panes .map-pane.shown');
         if (!openPane.empty()) {
             return [openPane.node().offsetWidth/2, 0];
         }
@@ -851,7 +941,7 @@ export function rendererMap(context) {
 
         if (z2 < _minzoom) {
             surface.interrupt();
-            uiFlash().text(t('cannot_zoom'))();
+            dispatch.call('hitMinZoom', this, map);
             z2 = context.minEditableZoom();
         }
 
@@ -906,7 +996,7 @@ export function rendererMap(context) {
 
     map.transformEase = function(t2, duration) {
         duration = duration || 250;
-        setTransform(t2, duration, false);
+        setTransform(t2, duration, false /* don't force */);
         return map;
     };
 
@@ -933,7 +1023,7 @@ export function rendererMap(context) {
 
 
     map.startEase = function() {
-        utilBindOnce(surface, 'mousedown.ease', function() {
+        utilBindOnce(surface, _pointerPrefix + 'down.ease', function() {
             map.cancelEase();
         });
         return map;
@@ -961,7 +1051,7 @@ export function rendererMap(context) {
 
     map.trimmedExtent = function(val) {
         if (!arguments.length) {
-            var headerY = 60;
+            var headerY = 71;
             var footerY = 30;
             var pad = 10;
             return new geoExtent(
@@ -1009,7 +1099,7 @@ export function rendererMap(context) {
 
 
     map.isInWideSelection = function() {
-        return !map.withinEditableZoom() && context.mode() && context.mode().id === 'select';
+        return !map.withinEditableZoom() && context.selectedIDs().length;
     };
 
 
@@ -1037,7 +1127,55 @@ export function rendererMap(context) {
     };
 
 
-    map.layers = drawLayers;
+    map.toggleHighlightEdited = function() {
+        surface.classed('highlight-edited', !surface.classed('highlight-edited'));
+        map.pan([0,0]);  // trigger a redraw
+        dispatch.call('changeHighlighting', this);
+    };
+
+
+    map.areaFillOptions = ['wireframe', 'partial', 'full'];
+
+    map.activeAreaFill = function(val) {
+        if (!arguments.length) return prefs('area-fill') || 'partial';
+
+        prefs('area-fill', val);
+        if (val !== 'wireframe') {
+            prefs('area-fill-toggle', val);
+        }
+        updateAreaFill();
+        map.pan([0,0]);  // trigger a redraw
+        dispatch.call('changeAreaFill', this);
+        return map;
+    };
+
+    map.toggleWireframe = function() {
+
+        var activeFill = map.activeAreaFill();
+
+        if (activeFill === 'wireframe') {
+            activeFill = prefs('area-fill-toggle') || 'partial';
+        } else {
+            activeFill = 'wireframe';
+        }
+
+        map.activeAreaFill(activeFill);
+    };
+
+    function updateAreaFill() {
+        var activeFill = map.activeAreaFill();
+        map.areaFillOptions.forEach(function(opt) {
+            surface.classed('fill-' + opt, Boolean(opt === activeFill));
+        });
+    }
+
+
+    map.layers = () => drawLayers;
+
+
+    map.doubleUpHandler = function() {
+        return _doubleUpHandler;
+    };
 
 
     return utilRebind(map, dispatch, 'on');

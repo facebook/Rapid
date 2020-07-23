@@ -3,7 +3,8 @@ import {
     select as d3_select
 } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { presetManager } from '../presets';
+import { t } from '../core/localizer';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
@@ -25,7 +26,6 @@ import {
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
-import { uiFlash } from '../ui/flash';
 import { utilArrayIntersection, utilKeybinding } from '../util';
 
 
@@ -51,7 +51,7 @@ export function modeDragNode(context) {
     function startNudge(entity, nudge) {
         if (_nudgeInterval) window.clearInterval(_nudgeInterval);
         _nudgeInterval = window.setInterval(function() {
-            context.pan(nudge);
+            context.map().pan(nudge);
             doMove(entity, nudge);
         }, 50);
     }
@@ -93,7 +93,7 @@ export function modeDragNode(context) {
     function shouldSnapToNode(target) {
         if (!_activeEntity) return false;
         return _activeEntity.geometry(context.graph()) !== 'vertex' ||
-            (target.geometry(context.graph()) === 'vertex' || context.presets().allowsVertex(target, context.graph()));
+            (target.geometry(context.graph()) === 'vertex' || presetManager.allowsVertex(target, context.graph()));
     }
 
 
@@ -136,7 +136,7 @@ export function modeDragNode(context) {
 
         if (_isCancelled) {
             if (hasHidden) {
-                uiFlash()
+                context.ui().flash
                     .duration(4000)
                     .text(t('modes.drag_node.connected_to_hidden'))();
             }
@@ -192,7 +192,7 @@ export function modeDragNode(context) {
 
         if (!_nudgeInterval) {   // If not nudging at the edge of the viewport, try to snap..
             // related code
-            // - `mode/drag_node.js`     `doMode()`
+            // - `mode/drag_node.js`     `doMove()`
             // - `behavior/draw.js`      `click()`
             // - `behavior/draw_way.js`  `move()`
             var d = datum();
@@ -207,7 +207,7 @@ export function modeDragNode(context) {
                 }
 
             } else if (targetNodes) {   // snap to way - a line target with `.nodes`
-                edge = geoChooseEdge(targetNodes, context.mouse(), context.projection, end.id);
+                edge = geoChooseEdge(targetNodes, context.map().mouse(), context.projection, end.id);
                 if (edge) {
                     loc = edge.loc;
                 }
@@ -235,15 +235,20 @@ export function modeDragNode(context) {
         var nope = context.surface().classed('nope');
         if (isInvalid === 'relation' || isInvalid === 'restriction') {
             if (!nope) {   // about to nope - show hint
-                uiFlash()
+                context.ui().flash
                     .duration(4000)
                     .text(t('operations.connect.' + isInvalid,
-                        { relation: context.presets().item('type/restriction').name() }
+                        { relation: presetManager.item('type/restriction').name() }
                     ))();
             }
+        } else if (isInvalid) {
+            var errorID = isInvalid === 'line' ? 'lines' : 'areas';
+            context.ui().flash
+                .duration(3000)
+                .text(t('self_intersection.error.' + errorID))();
         } else {
             if (nope) {   // about to un-nope, remove hint
-                uiFlash()
+                context.ui().flash
                     .duration(1)
                     .text('')();
             }
@@ -309,7 +314,7 @@ export function modeDragNode(context) {
                     if (nodes.find(function(n) { return n.id === entity.id; })) {
                         activeIndex = k;
                         if (geoHasSelfIntersections(nodes, entity.id)) {
-                            return true;
+                            return 'multipolygonMember';
                         }
                     }
                     rings[k].coords = nodes.map(function(n) { return n.loc; });
@@ -321,7 +326,7 @@ export function modeDragNode(context) {
 
                     // make sure active ring doesnt cross passive rings
                     if (geoHasLineIntersections(rings[activeIndex].nodes, rings[k].nodes, entity.id)) {
-                        return true;
+                        return 'multipolygonRing';
                     }
                 }
             }
@@ -332,7 +337,7 @@ export function modeDragNode(context) {
             if (activeIndex === null) {
                 nodes = parent.nodes.map(function(nodeID) { return graph.entity(nodeID); });
                 if (nodes.length && geoHasSelfIntersections(nodes, entity.id)) {
-                    return true;
+                    return parent.geometry(graph);
                 }
             }
 
@@ -374,7 +379,7 @@ export function modeDragNode(context) {
             );
 
         } else if (target && target.type === 'way') {
-            var choice = geoChooseEdge(context.childNodes(target), context.mouse(), context.projection, entity.id);
+            var choice = geoChooseEdge(context.graph().childNodes(target), context.map().mouse(), context.projection, entity.id);
             context.replace(
                 actionAddMidpoint({
                     loc: choice.loc,
@@ -440,7 +445,7 @@ export function modeDragNode(context) {
 
     var drag = behaviorDrag()
         .selector('.layer-touch.points .target')
-        .surface(d3_select('#map').node())
+        .surface(context.container().select('.main-map').node())
         .origin(origin)
         .on('start', start)
         .on('move', move)
@@ -452,8 +457,8 @@ export function modeDragNode(context) {
         context.install(edit);
 
         d3_select(window)
-            .on('keydown.drawWay', keydown)
-            .on('keyup.drawWay', keyup);
+            .on('keydown.dragNode', keydown)
+            .on('keyup.dragNode', keyup);
 
         context.history()
             .on('undone.drag-node', cancel);
@@ -466,8 +471,8 @@ export function modeDragNode(context) {
         context.uninstall(edit);
 
         d3_select(window)
-            .on('keydown.hover', null)
-            .on('keyup.hover', null);
+            .on('keydown.dragNode', null)
+            .on('keyup.dragNode', null);
 
         context.history()
             .on('undone.drag-node', null);

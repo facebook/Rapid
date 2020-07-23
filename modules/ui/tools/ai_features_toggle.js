@@ -1,19 +1,18 @@
 import _debounce from 'lodash-es/debounce';
-import {dispatch as d3_dispatch} from 'd3-dispatch'; 
-import {event as d3_event} from 'd3-selection'; 
-import { t } from '../../util/locale';
-import { tooltip } from '../../util/tooltip';
+import {dispatch as d3_dispatch} from 'd3-dispatch';
+import {event as d3_event} from 'd3-selection';
+import { t } from '../../core/localizer';
+import { uiTooltip } from '../tooltip';
 import { uiCmd } from '../cmd';
-import { uiTooltipHtml } from '../tooltipHtml';
-import {uiRapidFeatureToggleDialog} from '../rapid_feature_toggle_dialog'; 
+import {uiRapidFeatureToggleDialog} from '../rapid_feature_toggle_dialog';
 
 var aiFeaturesToggleKey;
-var toggleKeyDispatcher; 
+var toggleKeyDispatcher;
 
 
 export function uiToolAiFeaturesToggle(context) {
 
-    toggleKeyDispatcher = d3_dispatch('ai_feature_toggle'); 
+    toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
     aiFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.ai-features.key'));
 
     var tool = {
@@ -26,8 +25,8 @@ export function uiToolAiFeaturesToggle(context) {
             d3_event.preventDefault();
             d3_event.stopPropagation();
             toggleFeatures();
-        }); 
-    
+        });
+
 
     function enabled() {
         return context.layers().layer('ai-features').enabled();
@@ -40,7 +39,7 @@ export function uiToolAiFeaturesToggle(context) {
     }
 
     function showFeatureToggleDialog() {
-        context.container().call(uiRapidFeatureToggleDialog(context, aiFeaturesToggleKey, toggleKeyDispatcher )); 
+        context.container().call(uiRapidFeatureToggleDialog(context, aiFeaturesToggleKey, toggleKeyDispatcher ));
     }
 
 
@@ -71,13 +70,10 @@ export function uiToolAiFeaturesToggle(context) {
                 .attr('class', 'bar-button ai-features-toggle')
                 .attr('tabindex', -1)
                 .on('click', showFeatureToggleDialog)
-                .call(tooltip()
+                .call(uiTooltip()
                     .placement('bottom')
-                    .html(true)
-                    .title(uiTooltipHtml(
-                        t('shortcuts.browsing.display_options.ai_features_data'),
-                        aiFeaturesToggleKey))
-                )
+                    .title(t('shortcuts.browsing.display_options.ai_features_data'))
+                    .keys(aiFeaturesToggleKey))
                 .append('svg')
                 .attr('class', 'logo-rapid')
                 .append('use')

@@ -1,7 +1,7 @@
 import _debounce from 'lodash-es/debounce';
 
 import { decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { t } from '../../util/locale';
+import { t } from '../../core/localizer';
 import { services } from '../../services';
 
 
@@ -57,14 +57,14 @@ export function uiPanelLocation(context) {
         selection.call(redraw);
 
         context.surface()
-            .on('mousemove.info-location', function() {
+            .on(('PointerEvent' in window ? 'pointer' : 'mouse') + 'move.info-location', function() {
                 selection.call(redraw);
             });
     };
 
     panel.off = function() {
         context.surface()
-            .on('mousemove.info-location', null);
+            .on('.info-location', null);
     };
 
     panel.id = 'location';

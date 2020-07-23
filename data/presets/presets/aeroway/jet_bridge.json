@@ -1,8 +1,5 @@
 {
     "icon": "temaki-pedestrian_walled",
-    "geometry": [
-        "line"
-    ],
     "fields": [
         "ref_aeroway_gate",
         "width",
@@ -12,19 +9,8 @@
     "moreFields": [
         "manufacturer"
     ],
-    "terms": [
-        "aerobridge",
-        "air jetty",
-        "airbridge",
-        "finger",
-        "gangway",
-        "jet way",
-        "jetway",
-        "passenger boarding bridge",
-        "PBB",
-        "portal",
-        "skybridge",
-        "terminal gate connector"
+    "geometry": [
+        "line"
     ],
     "tags": {
         "aeroway": "jet_bridge"
@@ -33,6 +19,23 @@
         "aeroway": "jet_bridge",
         "highway": "corridor"
     },
+    "terms": [
+        "aerobridge",
+        "air jetty",
+        "airbridge",
+        "airtube",
+        "finger",
+        "gangway",
+        "jet bridge",
+        "jetbridge",
+        "jet way",
+        "jetway",
+        "passenger boarding bridge",
+        "PBB",
+        "portal",
+        "skybridge",
+        "terminal gate connector"
+    ],
     "matchScore": 1.05,
-    "name": "Jet Bridge"
+    "name": "Jetway"
 }

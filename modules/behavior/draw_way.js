@@ -1,9 +1,12 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
+
 import {
     event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { presetManager } from '../presets';
+import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
@@ -12,36 +15,63 @@ import { geoChooseEdge, geoHasSelfIntersections } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
+import { utilRebind } from '../util/rebind';
 import { utilKeybinding } from '../util';
 
-export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselineGraph) {
+export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
-    var origWay = context.entity(wayID);
-
-    var annotation = t((origWay.isDegenerate() ?
-        'operations.start.annotation.' :
-        'operations.continue.annotation.') + context.geometry(wayID)
-    );
+    var dispatch = d3_dispatch('rejectedSelfIntersection');
 
     var behavior = behaviorDraw(context);
-    behavior.hover().initialNodeID(index ? origWay.nodes[index] :
-        (origWay.isClosed() ? origWay.nodes[origWay.nodes.length - 2] : origWay.nodes[origWay.nodes.length - 1]));
 
-    var _tempEdits = 0;
+    // Must be set by `drawWay.nodeIndex` before each install of this behavior.
+    var _nodeIndex;
 
-    var end = osmNode({ loc: context.map().mouseCoordinates() });
+    var _origWay;
+    var _wayGeometry;
+    var _headNodeID;
+    var _annotation;
 
-    // Push an annotated state for undo to return back to.
-    // We must make sure to remove this edit later.
-    context.pauseChangeDispatch();
-    context.perform(actionNoop(), annotation);
-    _tempEdits++;
+    var _pointerHasMoved = false;
 
-    // Add the drawing node to the graph.
-    // We must make sure to remove this edit later.
-    context.perform(_actionAddDrawNode());
-    _tempEdits++;
-    context.resumeChangeDispatch();
+    // The osmNode to be placed.
+    // This is temporary and just follows the mouse cursor until an "add" event occurs.
+    var _drawNode;
+
+    var _didResolveTempEdit = false;
+
+    function createDrawNode(loc) {
+        // don't make the draw node until we actually need it
+        _drawNode = osmNode({ loc: loc });
+
+        context.pauseChangeDispatch();
+        context.replace(function actionAddDrawNode(graph) {
+            // add the draw node to the graph and insert it into the way
+            var way = graph.entity(wayID);
+            return graph
+                .replace(_drawNode)
+                .replace(way.addNode(_drawNode.id, _nodeIndex));
+        }, _annotation);
+        context.resumeChangeDispatch();
+
+        setActiveElements();
+    }
+
+    function removeDrawNode() {
+
+        context.pauseChangeDispatch();
+        context.replace(
+            function actionDeleteDrawNode(graph) {
+               var way = graph.entity(wayID);
+               return graph
+                   .replace(way.removeNode(_drawNode.id))
+                   .remove(_drawNode);
+           },
+            _annotation
+        );
+        _drawNode = undefined;
+        context.resumeChangeDispatch();
+    }
 
 
     function keydown() {
@@ -71,43 +101,48 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
 
 
     function allowsVertex(d) {
-        return d.geometry(context.graph()) === 'vertex' || context.presets().allowsVertex(d, context.graph());
+        return d.geometry(context.graph()) === 'vertex' || presetManager.allowsVertex(d, context.graph());
     }
 
 
     // related code
-    // - `mode/drag_node.js`     `doMode()`
+    // - `mode/drag_node.js`     `doMove()`
     // - `behavior/draw.js`      `click()`
     // - `behavior/draw_way.js`  `move()`
     function move(datum) {
+
+        var loc = context.map().mouseCoordinates();
+
+        if (!_drawNode) createDrawNode(loc);
+
         context.surface().classed('nope-disabled', d3_event.altKey);
 
-        var targetLoc = datum && datum.properties && datum.properties.entity && allowsVertex(datum.properties.entity) && datum.properties.entity.loc;
+        var targetLoc = datum && datum.properties && datum.properties.entity &&
+            allowsVertex(datum.properties.entity) && datum.properties.entity.loc;
         var targetNodes = datum && datum.properties && datum.properties.nodes;
-        var loc = context.map().mouseCoordinates();
 
         if (targetLoc) {   // snap to node/vertex - a point target with `.loc`
             loc = targetLoc;
 
         } else if (targetNodes) {   // snap to way - a line target with `.nodes`
-            var choice = geoChooseEdge(targetNodes, context.mouse(), context.projection, end.id);
+            var choice = geoChooseEdge(targetNodes, context.map().mouse(), context.projection, _drawNode.id);
             if (choice) {
                 loc = choice.loc;
             }
         }
 
-        context.replace(actionMoveNode(end.id, loc));
-        end = context.entity(end.id);
-        checkGeometry(false);
+        context.replace(actionMoveNode(_drawNode.id, loc), _annotation);
+        _drawNode = context.entity(_drawNode.id);
+        checkGeometry(true /* includeDrawNode */);
     }
 
 
     // Check whether this edit causes the geometry to break.
     // If so, class the surface with a nope cursor.
-    // `finishDraw` - Only checks the relevant line segments if finishing drawing
-    function checkGeometry(finishDraw) {
+    // `includeDrawNode` - Only check the relevant line segments if finishing drawing
+    function checkGeometry(includeDrawNode) {
         var nopeDisabled = context.surface().classed('nope-disabled');
-        var isInvalid = isInvalidGeometry(end, context.graph(), finishDraw);
+        var isInvalid = isInvalidGeometry(includeDrawNode);
 
         if (nopeDisabled) {
             context.surface()
@@ -121,58 +156,74 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
     }
 
 
-    function isInvalidGeometry(entity, graph, finishDraw) {
-        var parents = graph.parentWays(entity);
+    function isInvalidGeometry(includeDrawNode) {
 
-        for (var i = 0; i < parents.length; i++) {
-            var parent = parents[i];
-            var nodes = graph.childNodes(parent).slice();  // shallow copy
+        var testNode = _drawNode;
 
-            if (origWay.isClosed()) { // Check if Area
-                if (finishDraw) {
-                    if (nodes.length < 3) return false;
-                    nodes.splice(-2, 1);
-                    entity = nodes[nodes.length-2];
-                } else {
-                    nodes.pop();
-                }
-            } else { // Line
-                if (finishDraw) {
-                    nodes.pop();
-                }
+        // we only need to test the single way we're drawing
+        var parentWay = context.graph().entity(wayID);
+        var nodes = context.graph().childNodes(parentWay).slice();  // shallow copy
+
+        if (includeDrawNode) {
+            if (parentWay.isClosed()) {
+                // don't test the last segment for closed ways - #4655
+                // (still test the first segement)
+                nodes.pop();
             }
+        } else { // discount the draw node
 
-            if (geoHasSelfIntersections(nodes, entity.id)) {
-                return true;
+            if (parentWay.isClosed()) {
+                if (nodes.length < 3) return false;
+                if (_drawNode) nodes.splice(-2, 1);
+                testNode = nodes[nodes.length - 2];
+            } else {
+                // there's nothing we need to test if we ignore the draw node on open ways
+                return false;
             }
         }
 
-        return false;
+        return testNode && geoHasSelfIntersections(nodes, testNode.id);
     }
 
 
     function undone() {
-        context.pauseChangeDispatch();
-        // Undo popped the history back to the initial annotated no-op edit.
-        _tempEdits = 0;     // We will deal with the temp edits here
-        context.pop(1);     // Remove initial no-op edit
 
-        if (context.graph() === baselineGraph) {    // We've undone back to the beginning
-            // baselineGraph may be behind startGraph if this way was added rather than continued
-            resetToStartGraph();
-            context.resumeChangeDispatch();
-            context.enter(modeSelect(context, [wayID]));
+        // undoing removed the temp edit
+        _didResolveTempEdit = true;
+
+        context.pauseChangeDispatch();
+
+        var nextMode;
+
+        if (context.graph() === startGraph) { // we've undone back to the beginning
+            nextMode = modeSelect(context, [wayID]);
         } else {
-            // Remove whatever segment was drawn previously and continue drawing
-            context.pop(1);
-            context.resumeChangeDispatch();
-            context.enter(mode);
+            context.history()
+                .on('undone.draw', null);
+            // remove whatever segment was drawn previously
+            context.undo();
+
+            if (context.graph() === startGraph) { // we've undone back to the beginning
+                nextMode = modeSelect(context, [wayID]);
+            } else {
+                // continue drawing
+                nextMode = mode;
+            }
         }
+
+        // clear the redo stack by adding and removing an edit
+        context.perform(actionNoop());
+        context.pop(1);
+
+        context.resumeChangeDispatch();
+        context.enter(nextMode);
     }
 
 
     function setActiveElements() {
-        context.surface().selectAll('.' + end.id)
+        if (!_drawNode) return;
+
+        context.surface().selectAll('.' + _drawNode.id)
             .classed('active', true);
     }
 
@@ -185,8 +236,38 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
 
 
     var drawWay = function(surface) {
+        _drawNode = undefined;
+        _didResolveTempEdit = false;
+        _origWay = context.entity(wayID);
+        _headNodeID = typeof _nodeIndex === 'number' ? _origWay.nodes[_nodeIndex] :
+            (_origWay.isClosed() ? _origWay.nodes[_origWay.nodes.length - 2] : _origWay.nodes[_origWay.nodes.length - 1]);
+        _wayGeometry = _origWay.geometry(context.graph());
+        _annotation = t((_origWay.isDegenerate() ?
+            'operations.start.annotation.' :
+            'operations.continue.annotation.') + _wayGeometry
+        );
+        _pointerHasMoved = false;
+
+        // Push an annotated state for undo to return back to.
+        // We must make sure to replace or remove it later.
+        context.pauseChangeDispatch();
+        context.perform(actionNoop(), _annotation);
+        context.resumeChangeDispatch();
+
+        behavior.hover()
+            .initialNodeID(_headNodeID);
+
         behavior
-            .on('move', move)
+            .on('move', function() {
+                _pointerHasMoved = true;
+                move.apply(this, arguments);
+            })
+            .on('down', function() {
+                move.apply(this, arguments);
+            })
+            .on('downcancel', function() {
+                if (_drawNode) removeDrawNode();
+            })
             .on('click', drawWay.add)
             .on('clickWay', drawWay.addWay)
             .on('clickNode', drawWay.addNode)
@@ -199,7 +280,7 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
             .on('keyup.drawWay', keyup);
 
         context.map()
-            .dblclickEnable(false)
+            .dblclickZoomEnable(false)
             .on('drawn.draw', setActiveElements);
 
         setActiveElements();
@@ -212,15 +293,19 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
 
 
     drawWay.off = function(surface) {
-        // Drawing was interrupted unexpectedly.
-        // This can happen if the user changes modes,
-        // clicks geolocate button, a hashchange event occurs, etc.
-        if (_tempEdits) {
+
+        if (!_didResolveTempEdit) {
+            // Drawing was interrupted unexpectedly.
+            // This can happen if the user changes modes,
+            // clicks geolocate button, a hashchange event occurs, etc.
+
             context.pauseChangeDispatch();
-            context.pop(_tempEdits);
             resetToStartGraph();
             context.resumeChangeDispatch();
         }
+
+        _drawNode = undefined;
+        _nodeIndex = undefined;
 
         context.map()
             .on('drawn.draw', null);
@@ -235,108 +320,108 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
             .classed('nope-disabled', false);
 
         d3_select(window)
-            .on('keydown.hover', null)
-            .on('keyup.hover', null);
+            .on('keydown.drawWay', null)
+            .on('keyup.drawWay', null);
 
         context.history()
             .on('undone.draw', null);
     };
 
 
-    function _actionAddDrawNode() {
-        return function(graph) {
-            return graph
-                .replace(end)
-                .replace(origWay.addNode(end.id, index));
-        };
+    function attemptAdd(d, loc, doAdd) {
+
+        if (_drawNode) {
+            // move the node to the final loc in case move wasn't called
+            // consistently (e.g. on touch devices)
+            context.replace(actionMoveNode(_drawNode.id, loc), _annotation);
+            _drawNode = context.entity(_drawNode.id);
+        } else {
+            createDrawNode(loc);
+        }
+
+        checkGeometry(true /* includeDrawNode */);
+        if ((d && d.properties && d.properties.nope) || context.surface().classed('nope')) {
+            if (!_pointerHasMoved) {
+                // prevent the temporary draw node from appearing on touch devices
+                removeDrawNode();
+            }
+            dispatch.call('rejectedSelfIntersection', this);
+            return;   // can't click here
+        }
+
+        context.pauseChangeDispatch();
+        doAdd();
+        // we just replaced the temporary edit with the real one
+        _didResolveTempEdit = true;
+        context.resumeChangeDispatch();
+
+        context.enter(mode);
     }
 
 
-    function _actionReplaceDrawNode(newNode) {
-        return function(graph) {
-            return graph
-                .replace(origWay.addNode(newNode.id, index))
-                .remove(end);
-        };
-    }
-
-
-    // Accept the current position of the drawing node and continue drawing.
+    // Accept the current position of the drawing node
     drawWay.add = function(loc, d) {
-        if ((d && d.properties && d.properties.nope) || context.surface().classed('nope')) {
-            return;   // can't click here
-        }
-
-        context.pauseChangeDispatch();
-        context.pop(_tempEdits);
-        _tempEdits = 0;
-
-        context.perform(
-            _actionAddDrawNode(),
-            annotation
-        );
-
-        context.resumeChangeDispatch();
-        checkGeometry(false);   // finishDraw = false
-        context.enter(mode);
+        attemptAdd(d, loc, function() {
+            // don't need to do anything extra
+        });
     };
 
 
-    // Connect the way to an existing way.
+    // Connect the way to an existing way
     drawWay.addWay = function(loc, edge, d) {
-        if ((d && d.properties && d.properties.nope) || context.surface().classed('nope')) {
-            return;   // can't click here
-        }
-
-        context.pauseChangeDispatch();
-        context.pop(_tempEdits);
-        _tempEdits = 0;
-
-        context.perform(
-            _actionAddDrawNode(),
-            actionAddMidpoint({ loc: loc, edge: edge }, end),
-            annotation
-        );
-
-        context.resumeChangeDispatch();
-        checkGeometry(false);   // finishDraw = false
-        context.enter(mode);
+        attemptAdd(d, loc, function() {
+            context.replace(
+                actionAddMidpoint({ loc: loc, edge: edge }, _drawNode),
+                _annotation
+            );
+        });
     };
 
 
-    // Connect the way to an existing node and continue drawing.
+    // Connect the way to an existing node
     drawWay.addNode = function(node, d) {
-        if ((d && d.properties && d.properties.nope) || context.surface().classed('nope')) {
-            return;   // can't click here
+
+        // finish drawing if the mapper targets the prior node
+        if (node.id === _headNodeID ||
+            // or the first node when drawing an area
+            (_origWay.isClosed() && node.id === _origWay.first())) {
+            drawWay.finish();
+            return;
         }
 
-        context.pauseChangeDispatch();
-        context.pop(_tempEdits);
-        _tempEdits = 0;
+        attemptAdd(d, node.loc, function() {
+            context.replace(
+                function actionReplaceDrawNode(graph) {
+                    // remove the temporary draw node and insert the existing node
+                    // at the same index
 
-        context.perform(
-            _actionReplaceDrawNode(node),
-            annotation
-        );
-
-        context.resumeChangeDispatch();
-        checkGeometry(false);   // finishDraw = false
-        context.enter(mode);
+                    graph = graph
+                        .replace(graph.entity(wayID).removeNode(_drawNode.id))
+                        .remove(_drawNode);
+                    return graph
+                        .replace(graph.entity(wayID).addNode(node.id, _nodeIndex));
+                },
+                _annotation
+            );
+        });
     };
 
 
-    // Finish the draw operation, removing the temporary edits.
+    // Finish the draw operation, removing the temporary edit.
     // If the way has enough nodes to be valid, it's selected.
     // Otherwise, delete everything and return to browse mode.
     drawWay.finish = function() {
-        checkGeometry(true);   // finishDraw = true
+        checkGeometry(false /* includeDrawNode */);
         if (context.surface().classed('nope')) {
+            dispatch.call('rejectedSelfIntersection', this);
             return;   // can't click here
         }
 
         context.pauseChangeDispatch();
-        context.pop(_tempEdits);
-        _tempEdits = 0;
+        // remove the temporary edit
+        context.pop(1);
+        _didResolveTempEdit = true;
+        context.resumeChangeDispatch();
 
         var way = context.hasEntity(wayID);
         if (!way || way.isDegenerate()) {
@@ -344,10 +429,8 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
             return;
         }
 
-        context.resumeChangeDispatch();
-
         window.setTimeout(function() {
-            context.map().dblclickEnable(true);
+            context.map().dblclickZoomEnable(true);
         }, 1000);
 
         var isNewFeature = !mode.isContinuing;
@@ -358,14 +441,11 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
     // Cancel the draw operation, delete everything, and return to browse mode.
     drawWay.cancel = function() {
         context.pauseChangeDispatch();
-        context.pop(_tempEdits);
-        _tempEdits = 0;
-
         resetToStartGraph();
         context.resumeChangeDispatch();
 
         window.setTimeout(function() {
-            context.map().dblclickEnable(true);
+            context.map().dblclickZoomEnable(true);
         }, 1000);
 
         context.surface()
@@ -377,18 +457,19 @@ export function behaviorDrawWay(context, wayID, index, mode, startGraph, baselin
     };
 
 
+    drawWay.nodeIndex = function(val) {
+        if (!arguments.length) return _nodeIndex;
+        _nodeIndex = val;
+        return drawWay;
+    };
+
+
     drawWay.activeID = function() {
-        if (!arguments.length) return end.id;
+        if (!arguments.length) return _drawNode && _drawNode.id;
         // no assign
         return drawWay;
     };
 
 
-    drawWay.tail = function(text) {
-        behavior.tail(text);
-        return drawWay;
-    };
-
-
-    return drawWay;
+    return utilRebind(drawWay, dispatch, 'on');
 }

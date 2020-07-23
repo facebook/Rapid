@@ -1,19 +1,21 @@
 {
-    "icon": "iD-railway-rail",
+    "icon": "temaki-train",
     "fields": [
         "name",
         "ref_route",
         "operator",
         "network",
-        "network/type",
-        "to",
-        "from"
+        "from",
+        "to"
     ],
     "moreFields": [
         "colour",
+        "distance",
         "duration",
         "interval",
         "opening_hours",
+        "opening_hours/covid19",
+        "roundtrip",
         "wheelchair"
     ],
     "geometry": [

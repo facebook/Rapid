@@ -8,7 +8,7 @@ import {
     polygonCentroid as d3_polygonCentroid
 } from 'd3-polygon';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
 import { behaviorEdit } from '../behavior/edit';
@@ -34,15 +34,15 @@ export function modeRotate(context, entityIDs) {
     var keybinding = utilKeybinding('rotate');
     var behaviors = [
         behaviorEdit(context),
-        operationCircularize(entityIDs, context).behavior,
-        operationDelete(entityIDs, context).behavior,
-        operationMove(entityIDs, context).behavior,
-        operationOrthogonalize(entityIDs, context).behavior,
-        operationReflectLong(entityIDs, context).behavior,
-        operationReflectShort(entityIDs, context).behavior
+        operationCircularize(context, entityIDs).behavior,
+        operationDelete(context, entityIDs).behavior,
+        operationMove(context, entityIDs).behavior,
+        operationOrthogonalize(context, entityIDs).behavior,
+        operationReflectLong(context, entityIDs).behavior,
+        operationReflectShort(context, entityIDs).behavior
     ];
     var annotation = entityIDs.length === 1 ?
-        t('operations.rotate.annotation.' + context.geometry(entityIDs[0])) :
+        t('operations.rotate.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.rotate.annotation.multiple');
 
     var _prevGraph;
@@ -74,7 +74,7 @@ export function modeRotate(context, entityIDs) {
         }
 
 
-        var currMouse = context.mouse();
+        var currMouse = context.map().mouse();
         var currAngle = Math.atan2(currMouse[1] - _pivot[1], currMouse[0] - _pivot[0]);
 
         if (typeof _prevAngle === 'undefined') _prevAngle = currAngle;

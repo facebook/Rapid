@@ -1,11 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import {
-    select as d3_select,
-    selectAll as d3_selectAll
+    select as d3_select
 } from 'd3-selection';
 
-import { t } from '../../util/locale';
-import { icon } from './helper';
+import { t } from '../../core/localizer';
+import { helpString } from './helper';
 import { uiModal } from '../modal';
 import { utilRebind } from '../../util/rebind';
 
@@ -21,7 +20,7 @@ export function uiIntroStartEditing(context, reveal) {
 
     function showHelp() {
         reveal('.map-control.help-control',
-            t('intro.startediting.help', { button: icon('#iD-icon-help', 'pre-text'), key: t('help.key') }), {
+            helpString('intro.startediting.help'), {
                 buttonText: t('intro.ok'),
                 buttonCallback: function() { shortcuts(); }
             }
@@ -30,7 +29,7 @@ export function uiIntroStartEditing(context, reveal) {
 
     function shortcuts() {
         reveal('.map-control.help-control',
-            t('intro.startediting.shortcuts', { key: t('shortcuts.toggle.key') }), {
+            helpString('intro.startediting.shortcuts'), {
                 buttonText: t('intro.ok'),
                 buttonCallback: function() { showSave(); }
             }
@@ -38,9 +37,9 @@ export function uiIntroStartEditing(context, reveal) {
     }
 
     function showSave() {
-        d3_selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
-        reveal('#bar button.save',
-            t('intro.startediting.save'), {
+        context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+        reveal('.top-toolbar button.save',
+            helpString('intro.startediting.save'), {
                 buttonText: t('intro.ok'),
                 buttonCallback: function() { showStart(); }
             }
@@ -48,12 +47,12 @@ export function uiIntroStartEditing(context, reveal) {
     }
 
     function showStart() {
-        d3_selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+        context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
 
         modalSelection = uiModal(context.container());
 
         modalSelection.select('.modal')
-            .attr('class', 'modal-splash modal col6');
+            .attr('class', 'modal-splash modal');
 
         modalSelection.selectAll('.close').remove();
 
@@ -86,7 +85,7 @@ export function uiIntroStartEditing(context, reveal) {
 
     chapter.exit = function() {
         modalSelection.remove();
-        d3_selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+        context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
     };
 
 

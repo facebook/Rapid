@@ -2,17 +2,17 @@ import * as countryCoder from '@ideditor/country-coder';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { event as d3_event, select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
-import { textDirection } from '../util/locale';
+import { t, localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
-import { tooltip } from '../util/tooltip';
+import { uiTooltip } from './tooltip';
+import { geoExtent } from '../geo/extent';
 import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
-import { utilRebind } from '../util';
+import { utilRebind, utilUniqueDomId } from '../util';
 
 
-export function uiField(context, presetField, entity, options) {
+export function uiField(context, presetField, entityIDs, options) {
     options = Object.assign({
         show: true,
         wrap: true,
@@ -21,23 +21,27 @@ export function uiField(context, presetField, entity, options) {
         info: true
     }, options);
 
-    // Don't show the remove and revert buttons for the "Sources" field on a
-    // ML road with source=digitalglobe or source=maxar
-    // TODO: switch to check on __fbid__
-    if (presetField.key === 'source' && entity && entity.id.startsWith('w-') &&
-        (entity.tags.source === 'digitalglobe' || entity.tags.source === 'maxar')) {
+    // Don't show the remove and revert buttons if any of the entity IDs are FB features
+    // with source=digitalglobe or source=maxar
+    var someFbRoadsSelected = entityIDs.some(function(entity) {
+            return entity.__fbid__ && (entity.tags.source === 'maxar' || entity.tags.source === 'digitalglobe');
+        });
+
+
+    if ( someFbRoadsSelected ) {
         options.remove = false;
         options.revert = false;
     }
 
     var dispatch = d3_dispatch('change');
     var field = Object.assign({}, presetField);   // shallow copy
+    field.domId = utilUniqueDomId('form-field-' + field.safeid);
     var _show = options.show;
     var _state = '';
     var _tags = {};
 
     var _locked = false;
-    var _lockedTip = tooltip()
+    var _lockedTip = uiTooltip()
         .title(t('inspector.lock.suggestion', { label: field.label }))
         .placement('bottom');
 
@@ -57,21 +61,24 @@ export function uiField(context, presetField, entity, options) {
                 dispatch.call('change', field, t, onInput);
             });
 
-        if (entity) {
-            field.entityID = entity.id;
-            // if this field cares about the entity, pass it along
-            if (field.impl.entity) {
-                field.impl.entity(entity);
+        if (entityIDs) {
+            field.entityIDs = entityIDs;
+            // if this field cares about the entities, pass them along
+            if (field.impl.entityIDs) {
+                field.impl.entityIDs(entityIDs);
             }
         }
     }
 
 
     function isModified() {
-        if (!entity) return false;
-        var original = context.graph().base().entities[entity.id];
-        return field.keys.some(function(key) {
-            return original ? _tags[key] !== original.tags[key] : _tags[key];
+        if (!entityIDs || !entityIDs.length) return false;
+        return entityIDs.some(function(entityID) {
+            var original = context.graph().base().entities[entityID];
+            var latest = context.graph().entity(entityID);
+            return field.keys.some(function(key) {
+                return original ? latest.tags[key] !== original.tags[key] : latest.tags[key];
+            });
         });
     }
 
@@ -94,15 +101,9 @@ export function uiField(context, presetField, entity, options) {
     function revert(d) {
         d3_event.stopPropagation();
         d3_event.preventDefault();
-        if (!entity || _locked) return;
+        if (!entityIDs || _locked) return;
 
-        var original = context.graph().base().entities[entity.id];
-        var t = {};
-        d.keys.forEach(function(key) {
-            t[key] = original ? original.tags[key] : undefined;
-        });
-
-        dispatch.call('change', d, t);
+        dispatch.call('revert', d, d.keys);
     }
 
 
@@ -134,7 +135,7 @@ export function uiField(context, presetField, entity, options) {
             var labelEnter = enter
                 .append('label')
                 .attr('class', 'field-label')
-                .attr('for', function(d) { return 'preset-input-' + d.safeid; });
+                .attr('for', function(d) { return d.domId; });
 
             var textEnter = labelEnter
                 .append('span')
@@ -164,7 +165,7 @@ export function uiField(context, presetField, entity, options) {
                     .attr('class', 'modified-icon')
                     .attr('title', t('icons.undo'))
                     .attr('tabindex', -1)
-                    .call(svgIcon((textDirection === 'rtl') ? '#iD-icon-redo' : '#iD-icon-undo'));
+                    .call(svgIcon((localizer.textDirection() === 'rtl') ? '#iD-icon-redo' : '#iD-icon-undo'));
             }
         }
 
@@ -306,11 +307,19 @@ export function uiField(context, presetField, entity, options) {
     // A non-allowed field is hidden from the user altogether
     field.isAllowed = function() {
 
-        var latest = entity && context.hasEntity(entity.id);   // check the most current copy of the entity
-        if (!latest) return true;
+        if (entityIDs &&
+            entityIDs.length > 1 &&
+            uiFields[field.type].supportsMultiselection === false) return false;
+
+        if (field.geometry && !entityIDs.every(function(entityID) {
+            return field.matchGeometry(context.graph().geometry(entityID));
+        })) return false;
 
         if (field.countryCodes || field.notCountryCodes) {
-            var center = latest.extent(context.graph()).center();
+            var extent = combinedEntityExtent();
+            if (!extent) return true;
+
+            var center = extent.center();
             var countryCode = countryCoder.iso1A2Code(center);
 
             if (!countryCode) return false;
@@ -327,21 +336,27 @@ export function uiField(context, presetField, entity, options) {
 
         var prerequisiteTag = field.prerequisiteTag;
 
-        if (!tagsContainFieldKey() && // ignore tagging prerequisites if a value is already present
+        if (entityIDs &&
+            !tagsContainFieldKey() && // ignore tagging prerequisites if a value is already present
             prerequisiteTag) {
-            if (prerequisiteTag.key) {
-                var value = latest.tags[prerequisiteTag.key];
-                if (!value) return false;
 
-                if (prerequisiteTag.valueNot) {
-                    return prerequisiteTag.valueNot !== value;
+            if (!entityIDs.every(function(entityID) {
+                var entity = context.graph().entity(entityID);
+                if (prerequisiteTag.key) {
+                    var value = entity.tags[prerequisiteTag.key];
+                    if (!value) return false;
+
+                    if (prerequisiteTag.valueNot) {
+                        return prerequisiteTag.valueNot !== value;
+                    }
+                    if (prerequisiteTag.value) {
+                        return prerequisiteTag.value === value;
+                    }
+                } else if (prerequisiteTag.keyNot) {
+                    if (entity.tags[prerequisiteTag.keyNot]) return false;
                 }
-                if (prerequisiteTag.value) {
-                    return prerequisiteTag.value === value;
-                }
-            } else if (prerequisiteTag.keyNot) {
-                if (latest.tags[prerequisiteTag.keyNot]) return false;
-            }
+                return true;
+            })) return false;
         }
 
         return true;
@@ -353,6 +368,14 @@ export function uiField(context, presetField, entity, options) {
             field.impl.focus();
         }
     };
+
+
+    function combinedEntityExtent() {
+        return entityIDs && entityIDs.length && entityIDs.reduce(function(extent, entityID) {
+            var entity = context.graph().entity(entityID);
+            return extent.extend(entity.extent(context.graph()));
+        }, geoExtent());
+    }
 
 
     return utilRebind(field, dispatch, 'on');

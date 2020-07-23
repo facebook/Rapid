@@ -1,5 +1,5 @@
 {
-    "icon": "temaki-storage_tank",
+    "icon": "temaki-camper_trailer_dump",
     "fields": [
         "operator",
         "access_simple",
@@ -9,7 +9,8 @@
         "water_point"
     ],
     "moreFields": [
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "geometry": [
         "point",

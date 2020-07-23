@@ -1,17 +1,12 @@
-import {
-    select as d3_select,
-    selectAll as d3_selectAll
-} from 'd3-selection';
-
-import { t, textDirection } from '../../util/locale';
+import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
 
+import { prefs } from '../../core/preferences';
+import { fileFetcher } from '../../core/file_fetcher';
 import { coreGraph } from '../../core/graph';
-import { dataIntroGraph } from '../../../data/intro_graph.json';
-import { dataIntroRapidGraph } from '../../../data/intro_fb_graph.json';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
-import { services } from '../../services'; 
+import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
 import { utilArrayDifference, utilArrayUniq } from '../../util';
@@ -25,95 +20,105 @@ import { uiIntroBuilding } from './building';
 import { uiIntroStartEditing } from './start_editing';
 import { uiIntroRapid } from './rapid';
 
-
-var chapterUi = {
-    welcome: uiIntroWelcome,
-    navigation: uiIntroNavigation,
-    point: uiIntroPoint,
-    area: uiIntroArea,
-    line: uiIntroLine,
-    building: uiIntroBuilding,
-    rapid: uiIntroRapid,
-    startEditing: uiIntroStartEditing
+const chapterUi = {
+  welcome: uiIntroWelcome,
+  navigation: uiIntroNavigation,
+  point: uiIntroPoint,
+  area: uiIntroArea,
+  line: uiIntroLine,
+  building: uiIntroBuilding,
+  rapid: uiIntroRapid,
+  startEditing: uiIntroStartEditing
 };
 
-var chapterFlow = [
-    'welcome',
-    'navigation',
-    'point',
-    'area',
-    'line',
-    'building',
-    'rapid',
-    'startEditing'
+const chapterFlow = [
+  'welcome',
+  'navigation',
+  'point',
+  'area',
+  'line',
+  'building',
+  'rapid',
+  'startEditing'
 ];
 
 
 export function uiIntro(context, skipToRapid) {
-    var INTRO_IMAGERY = 'EsriWorldImageryClarity';
-    var introGraph = {};
-    var rapidGraph = {};
-    var _currChapter;
-
-    // create entities for intro graph and localize names
-    for (var id in dataIntroGraph) {
-        introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
-    }
-
-    // create entities for RapiD graph and localize names
-    for (id in dataIntroRapidGraph) {
-        rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
-    }
+  const INTRO_IMAGERY = 'EsriWorldImageryClarity';
+  let _introGraph = {};
+  let _rapidGraph = {};
+  let _currChapter;
 
 
-    function intro(selection) {
-        context.enter(modeBrowse(context));
-
-        // Save current map state
-        var osm = context.connection();
-        var history = context.history().toJSON();
-        var hash = window.location.hash;
-        var center = context.map().center();
-        var zoom = context.map().zoom();
-        var background = context.background().baseLayerSource();
-        var overlays = context.background().overlayLayerSources();
-        var opacity = d3_selectAll('#map .layer-background').style('opacity');
-        var aiFeaturesOpacity = d3_selectAll('#map .layer-ai-features').style('opacity');
-        var caches = osm && osm.caches();
-        var baseEntities = context.history().graph().base().entities;
-        var fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
-        var fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
-
-        // Show sidebar and disable the sidebar resizing button
-        // (this needs to be before `context.inIntro(true)`)
-        context.ui().sidebar.expand();
-        d3_selectAll('button.sidebar-toggle').classed('disabled', true);
-
-        // Block saving
-        context.inIntro(true);
-
-        // Load semi-real data used in intro
-        if (osm) { osm.toggle(false).reset(); }
-        context.history().reset();
-
-        var loadedGraph = coreGraph().load(introGraph);
-        var graphEntities = Object.values(loadedGraph.entities);
-        context.history().merge(graphEntities);
-        context.history().checkpoint('initial');
-
-        // Setup imagery
-        var imagery = context.background().findSource(INTRO_IMAGERY);
-        if (imagery) {
-            context.background().baseLayerSource(imagery);
-        } else {
-            context.background().bing();
+  function intro(selection) {
+    fileFetcher.get('intro_graph')
+      .then(dataIntroGraph => {
+        // create entities for intro graph and localize names
+        for (let id in dataIntroGraph) {
+          if (!_introGraph[id]) {
+            _introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
+          }
         }
-        overlays.forEach(function(d) {
-            context.background().toggleOverlayLayer(d);
-        });
+        selection.call(startIntro);
+      })
+      .catch(function() { /* ignore */ });
+      fileFetcher.get('intro_fb_graph')
+      .then(dataIntroRapidGraph => {
+        // create entities for intro graph and localize names
+        for (let id in dataIntroRapidGraph) {
+          if (!_introGraph[id]) {
+            _introGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
+          }
+        }
+        selection.call(startIntro);
+      })
+      .catch(function() { /* ignore */ });
+  }
+
+
+  function startIntro(selection) {
+    context.enter(modeBrowse(context));
+
+    // Save current map state
+    let osm = context.connection();
+    let history = context.history().toJSON();
+    let hash = window.location.hash;
+    let center = context.map().center();
+    let zoom = context.map().zoom();
+    let background = context.background().baseLayerSource();
+    let overlays = context.background().overlayLayerSources();
+    let opacity = context.container().selectAll('.main-map .layer-background').style('opacity');
+    let aiFeaturesOpacity = context.container().selectAll('.main-map .layer-ai-features').style('opacity');
+    let caches = osm && osm.caches();
+    let baseEntities = context.history().graph().base().entities;
+    let fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
+    let fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
+
+    // Show sidebar and disable the sidebar resizing button
+    // (this needs to be before `context.inIntro(true)`)
+    context.ui().sidebar.expand();
+    context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
+
+    // Block saving
+    context.inIntro(true);
+
+    // Load semi-real data used in intro
+    if (osm) { osm.toggle(false).reset(); }
+    context.history().reset();
+    context.history().merge(Object.values(coreGraph().load(_introGraph).entities));
+    context.history().checkpoint('initial');
+
+    // Setup imagery
+    let imagery = context.background().findSource(INTRO_IMAGERY);
+    if (imagery) {
+      context.background().baseLayerSource(imagery);
+    } else {
+      context.background().bing();
+    }
+    overlays.forEach(d => context.background().toggleOverlayLayer(d));
 
         // Setup data layers (only OSM & ai-features)
-        var layers = context.layers();
+        let layers = context.layers();
         layers.all().forEach(function(item) {
             // if the layer has the function `enabled`
             if (typeof item.layer.enabled === 'function') {
@@ -123,121 +128,119 @@ export function uiIntro(context, skipToRapid) {
 
         if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset();
 
-        var coreGraphEntities = coreGraph().load(rapidGraph).entities;
+        var coreGraphEntities = coreGraph().load(_rapidGraph).entities;
         services.fbMLRoads.merge(Object.values(coreGraphEntities));
         services.fbMLRoads.checkpoint('initial');
 
-        d3_selectAll('#map .layer-background').style('opacity', 1);
-        d3_selectAll('#map .layer-ai-features').style('opacity', 1);
+    context.container().selectAll('.main-map .layer-background').style('opacity', 1);
+    context.container().selectAll('.main-map .layer-ai-features').style('opacity', 1);
 
-        var curtain = uiCurtain();
-        selection.call(curtain);
+    let curtain = uiCurtain(context.container().node());
+    selection.call(curtain);
 
-        // Store that the user started the walkthrough..
-        context.storage('walkthrough_started', 'yes');
+    // Store that the user started the walkthrough..
+    prefs('walkthrough_started', 'yes');
 
-        // Restore previous walkthrough progress..
-        var storedProgress = context.storage('walkthrough_progress') || '';
-        var progress = storedProgress.split(';').filter(Boolean);
+    // Restore previous walkthrough progress..
+    let storedProgress = prefs('walkthrough_progress') || '';
+    let progress = storedProgress.split(';').filter(Boolean);
 
-        var chapters = chapterFlow.map(function(chapter, i) {
-            var s = chapterUi[chapter](context, curtain.reveal)
-                .on('done', function() {
-                    context.presets().init();  // clear away "recent" presets
+    let chapters = chapterFlow.map((chapter, i) => {
+      let s = chapterUi[chapter](context, curtain.reveal)
+        .on('done', () => {
 
-                    buttons.filter(function(d) {
-                        return d.title === s.title;
-                    }).classed('finished', true);
+          buttons
+            .filter(d => d.title === s.title)
+            .classed('finished', true);
 
-                    if (i < chapterFlow.length - 1) {
-                        var next = chapterFlow[i + 1];
-                        d3_select('button.chapter-' + next)
-                            .classed('next', true);
-                    }
+          if (i < chapterFlow.length - 1) {
+            const next = chapterFlow[i + 1];
+            context.container().select(`button.chapter-${next}`)
+              .classed('next', true);
+          }
 
-                    // Store walkthrough progress..
-                    progress.push(chapter);
-                    context.storage('walkthrough_progress', utilArrayUniq(progress).join(';'));
-                });
-            return s;
+          // Store walkthrough progress..
+          progress.push(chapter);
+          prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
         });
+      return s;
+    });
 
-        chapters[chapters.length - 1].on('startEditing', function() {
-            // Store walkthrough progress..
-            progress.push('startEditing');
-            context.storage('walkthrough_progress', utilArrayUniq(progress).join(';'));
+    chapters[chapters.length - 1].on('startEditing', () => {
+      // Store walkthrough progress..
+      progress.push('startEditing');
+      prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
 
-            // Store if walkthrough is completed..
-            var incomplete = utilArrayDifference(chapterFlow, progress);
-            if (!incomplete.length) {
-                context.storage('walkthrough_completed', 'yes');
-            }
+      // Store if walkthrough is completed..
+      let incomplete = utilArrayDifference(chapterFlow, progress);
+      if (!incomplete.length) {
+        prefs('walkthrough_completed', 'yes');
+      }
 
-            curtain.remove();
-            navwrap.remove();
-            d3_selectAll('#map .layer-background').style('opacity', opacity);
-            d3_selectAll('#map .layer-ai-features').style('opacity', aiFeaturesOpacity);
-            d3_selectAll('button.sidebar-toggle').classed('disabled', false);
-            if (osm) { osm.toggle(true).reset().caches(caches); }
-            context.history().reset().merge(Object.values(baseEntities));
-            if (services.fbMLRoads) {services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache);}
-            services.fbMLRoads.reset().merge(Object.values(fbMLRoadsEntities));
-            context.background().baseLayerSource(background);
-            overlays.forEach(function(d) { context.background().toggleOverlayLayer(d); });
-            if (history) { context.history().fromJSON(history, false); }
-            context.map().centerZoom(center, zoom);
-            window.location.replace(hash);
-            context.inIntro(false);
-        });
+      curtain.remove();
+      navwrap.remove();
+      context.container().selectAll('.main-map .layer-background').style('opacity', opacity);
+      context.container().selectAll('.main-map .layer-ai-features').style('opacity', aiFeaturesOpacity);
+      context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
+      if (osm) { osm.toggle(true).reset().caches(caches); }
+      context.history().reset().merge(Object.values(baseEntities));
+      if (services.fbMLRoads) {services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache);}
+      services.fbMLRoads.reset().merge(Object.values(fbMLRoadsEntities));
+      context.background().baseLayerSource(background);
+      overlays.forEach(d => context.background().toggleOverlayLayer(d));
+      if (history) { context.history().fromJSON(history, false); }
+      context.map().centerZoom(center, zoom);
+      window.location.replace(hash);
+      context.inIntro(false);
+    });
 
-        var navwrap = selection
-            .append('div')
-            .attr('class', 'intro-nav-wrap fillD');
+    let navwrap = selection
+      .append('div')
+      .attr('class', 'intro-nav-wrap fillD');
 
-        navwrap
-            .append('svg')
-            .attr('class', 'intro-nav-wrap-logo')
-            .append('use')
-            .attr('xlink:href', '#iD-logo-walkthrough');
+    navwrap
+      .append('svg')
+      .attr('class', 'intro-nav-wrap-logo')
+      .append('use')
+      .attr('xlink:href', '#iD-logo-walkthrough');
 
-        var buttonwrap = navwrap
-            .append('div')
-            .attr('class', 'joined')
-            .selectAll('button.chapter');
+    let buttonwrap = navwrap
+      .append('div')
+      .attr('class', 'joined')
+      .selectAll('button.chapter');
 
-        var buttons = buttonwrap
-            .data(chapters)
-            .enter()
-            .append('button')
-            .attr('class', function(d, i) { return 'chapter chapter-' + chapterFlow[i]; })
-            .on('click', enterChapter);
+    let buttons = buttonwrap
+      .data(chapters)
+      .enter()
+      .append('button')
+      .attr('class', (d, i) => `chapter chapter-${chapterFlow[i]}`)
+      .on('click', enterChapter);
 
-        buttons
-            .append('span')
-            .text(function(d) { return t(d.title); });
+    buttons
+      .append('span')
+      .text(d => t(d.title));
 
-        buttons
-            .append('span')
-            .attr('class', 'status')
-            .call(svgIcon((textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
+    buttons
+      .append('span')
+      .attr('class', 'status')
+      .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-        enterChapter(chapters[skipToRapid ? 6 : 0]);
+    enterChapter(chapters[0]);
 
-        function enterChapter(newChapter) {
-            if (_currChapter) { _currChapter.exit(); }
-            context.enter(modeBrowse(context));
 
-            _currChapter = newChapter;
-            _currChapter.enter();
+    function enterChapter(newChapter) {
+      if (_currChapter) { _currChapter.exit(); }
+      context.enter(modeBrowse(context));
 
-            buttons
-                .classed('next', false)
-                .classed('active', function(d) {
-                    return d.title === _currChapter.title;
-                });
-        }
+      _currChapter = newChapter;
+      _currChapter.enter();
+
+      buttons
+        .classed('next', false)
+        .classed('active', d => d.title === _currChapter.title);
     }
+  }
 
 
-    return intro;
+  return intro;
 }

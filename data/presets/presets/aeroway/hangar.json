@@ -1,11 +1,11 @@
 {
-    "icon": "fas-warehouse",
-    "geometry": [
-        "area"
-    ],
+    "icon": "temaki-hangar",
     "fields": [
         "name",
         "building_area"
+    ],
+    "geometry": [
+        "area"
     ],
     "tags": {
         "aeroway": "hangar"

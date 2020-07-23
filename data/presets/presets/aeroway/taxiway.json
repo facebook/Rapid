@@ -1,11 +1,11 @@
 {
-    "icon": "fas-plane",
-    "geometry": [
-        "line"
-    ],
+    "icon": "temaki-plane_taxiing",
     "fields": [
         "ref_taxiway",
         "surface"
+    ],
+    "geometry": [
+        "line"
     ],
     "tags": {
         "aeroway": "taxiway"

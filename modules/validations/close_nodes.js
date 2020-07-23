@@ -1,6 +1,6 @@
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { utilDisplayLabel } from '../util';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { osmPathHighwayTagValues } from '../osm/tags';
 import { geoMetersToLat, geoMetersToLon, geoSphericalDistance } from '../geo/geo';
@@ -11,12 +11,6 @@ export function validationCloseNodes(context) {
 
     var pointThresholdMeters = 0.2;
 
-    var defaultWayThresholdMeters = 2;
-    // expect some features to be mapped with higher levels of detail
-    var indoorThresholdMeters = 0.01;
-    var buildingThresholdMeters = 0.05;
-    var pathThresholdMeters = 0.1;
-
     var validation = function(entity, graph) {
         if (entity.type === 'node') {
             return getIssuesForNode(entity);
@@ -25,7 +19,16 @@ export function validationCloseNodes(context) {
         }
         return [];
 
-        function featureTypeForWay(way) {
+        function getIssuesForNode(node) {
+            var parentWays = graph.parentWays(node);
+            if (parentWays.length) {
+                return getIssuesForVertex(node, parentWays);
+            } else {
+                return getIssuesForDetachedPoint(node);
+            }
+        }
+
+        function wayTypeFor(way) {
 
             if (way.tags.boundary && way.tags.boundary !== 'no') return 'boundary';
             if (way.tags.indoor && way.tags.indoor !== 'no') return 'indoor';
@@ -54,10 +57,6 @@ export function validationCloseNodes(context) {
             // don't flag issues where merging would create degenerate ways
             if (way.nodes.length <= 2 ||
                 (way.isClosed() && way.nodes.length <= 4)) return false;
-
-            var featureType = featureTypeForWay(way);
-            // don't flag boundaries since they might be highly detailed and can't be easily verified
-            if (featureType === 'boundary') return false;
 
             var bbox = way.extent(graph).bbox();
             var hypotenuseMeters = geoSphericalDistance([bbox.minX, bbox.minY], [bbox.maxX, bbox.maxY]);
@@ -112,6 +111,20 @@ export function validationCloseNodes(context) {
             return issues;
         }
 
+        function thresholdMetersForWay(way) {
+            if (!shouldCheckWay(way)) return 0;
+
+            var wayType = wayTypeFor(way);
+
+            // don't flag boundaries since they might be highly detailed and can't be easily verified
+            if (wayType === 'boundary') return 0;
+            // expect some features to be mapped with higher levels of detail
+            if (wayType === 'indoor') return 0.01;
+            if (wayType === 'building') return 0.05;
+            if (wayType === 'path') return 0.1;
+            return 0.2;
+        }
+
         function getIssuesForDetachedPoint(node) {
 
             var issues = [];
@@ -156,8 +169,8 @@ export function validationCloseNodes(context) {
                             var entity = context.hasEntity(this.entityIds[0]),
                                 entity2 = context.hasEntity(this.entityIds[1]);
                             return (entity && entity2) ? t('issues.close_nodes.detached.message', {
-                                feature: utilDisplayLabel(entity, context),
-                                feature2: utilDisplayLabel(entity2, context)
+                                feature: utilDisplayLabel(entity, context.graph()),
+                                feature2: utilDisplayLabel(entity2, context.graph())
                             }) : '';
                         },
                         reference: showReference,
@@ -191,15 +204,6 @@ export function validationCloseNodes(context) {
             }
         }
 
-        function getIssuesForNode(node) {
-            var parentWays = graph.parentWays(node);
-            if (parentWays.length) {
-                return getIssuesForVertex(node, parentWays);
-            } else {
-                return getIssuesForDetachedPoint(node);
-            }
-        }
-
         function getWayIssueIfAny(node1, node2, way) {
             if (node1.id === node2.id ||
                 (node1.hasInterestingTags() && node2.hasInterestingTags())) {
@@ -207,13 +211,18 @@ export function validationCloseNodes(context) {
             }
 
             if (node1.loc !== node2.loc) {
+                var parentWays1 = graph.parentWays(node1);
+                var parentWays2 = new Set(graph.parentWays(node2));
 
-                var featureType = featureTypeForWay(way, graph);
-                var threshold = defaultWayThresholdMeters;
-                if (featureType === 'indoor') threshold = indoorThresholdMeters;
-                else if (featureType === 'building') threshold = buildingThresholdMeters;
-                else if (featureType === 'path') threshold = pathThresholdMeters;
+                var sharedWays = parentWays1.filter(function(parentWay) {
+                    return parentWays2.has(parentWay);
+                });
 
+                var thresholds = sharedWays.map(function(parentWay) {
+                    return thresholdMetersForWay(parentWay);
+                });
+
+                var threshold = Math.min(...thresholds);
                 var distance = geoSphericalDistance(node1.loc, node2.loc);
                 if (distance > threshold) return null;
             }
@@ -224,7 +233,7 @@ export function validationCloseNodes(context) {
                 severity: 'warning',
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t('issues.close_nodes.message', { way: utilDisplayLabel(entity, context) }) : '';
+                    return entity ? t('issues.close_nodes.message', { way: utilDisplayLabel(entity, context.graph()) }) : '';
                 },
                 reference: showReference,
                 entityIds: [way.id, node1.id, node2.id],

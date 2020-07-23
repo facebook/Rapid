@@ -42,7 +42,7 @@ export function svgData(projection, context, dispatch) {
             d3_event.dataTransfer.dropEffect = 'copy';
         }
 
-        d3_select('body')
+        context.container()
             .attr('dropzone', 'copy')
             .on('drop.svgData', function() {
                 d3_event.stopPropagation();
@@ -150,7 +150,7 @@ export function svgData(projection, context, dispatch) {
 
 
     function clipPathID(d) {
-        return 'data-' + d.__featurehash__ + '-clippath';
+        return 'ideditor-data-' + d.__featurehash__ + '-clippath';
     }
 
 
@@ -503,10 +503,13 @@ export function svgData(projection, context, dispatch) {
         var map = context.map();
         var viewport = map.trimmedExtent().polygon();
         var coords = features.reduce(function(coords, feature) {
-            var c = feature.geometry.coordinates;
+            var geom = feature.geometry;
+            if (!geom) return coords;
+
+            var c = geom.coordinates;
 
             /* eslint-disable no-fallthrough */
-            switch (feature.geometry.type) {
+            switch (geom.type) {
                 case 'Point':
                     c = [c];
                 case 'MultiPoint':

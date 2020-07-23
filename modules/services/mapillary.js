@@ -1,6 +1,6 @@
 /* global Mapillary:false */
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select, selectAll as d3_selectAll } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import RBush from 'rbush';
 
@@ -14,7 +14,6 @@ var viewercss = 'mapillary-js/mapillary.min.css';
 var viewerjs = 'mapillary-js/mapillary.min.js';
 var clientId = 'NzNRM2otQkR2SHJzaXJmNmdQWVQ0dzo1ZWYyMmYwNjdmNDdlNmVi';
 var mapFeatureConfig = {
-    organizationKey: 'FI3NAFfzQQgdF081TRdgTy',
     values: [
         'construction--flat--crosswalk-plain',
         'marking--discrete--crosswalk-zebra',
@@ -372,37 +371,38 @@ export default {
     loadMapFeatures: function(projection) {
         // if we are looking at signs, we'll actually need to fetch images too
         loadTiles('images', apibase + 'images?sort_by=key', projection);
-        loadTiles('points', apibase + 'map_features?layers=points&min_nbr_image_detections=2&sort_by=key&shapes_by_organization_keys=' + mapFeatureConfig.organizationKey + '&' + 'values=' + mapFeatureConfig.values + '&', projection);
-        loadTiles('image_detections', apibase + 'image_detections?layers=points&sort_by=key&shapes_by_organization_keys=' + mapFeatureConfig.organizationKey + '&' + 'values=' + mapFeatureConfig.values + '&', projection);
+        loadTiles('points', apibase + 'map_features?layers=points&min_nbr_image_detections=2&sort_by=key&values=' + mapFeatureConfig.values + '&', projection);
+        loadTiles('image_detections', apibase + 'image_detections?layers=points&sort_by=key&values=' + mapFeatureConfig.values + '&', projection);
     },
 
 
     loadViewer: function(context) {
         // add mly-wrapper
-        var wrap = d3_select('#photoviewer').selectAll('.mly-wrapper')
+        var wrap = context.container().select('.photoviewer')
+            .selectAll('.mly-wrapper')
             .data([0]);
 
         wrap.enter()
             .append('div')
-            .attr('id', 'mly')
+            .attr('id', 'ideditor-mly')
             .attr('class', 'photo-wrapper mly-wrapper')
             .classed('hide', true);
 
         // load mapillary-viewercss
-        d3_select('head').selectAll('#mapillary-viewercss')
+        d3_select('head').selectAll('#ideditor-mapillary-viewercss')
             .data([0])
             .enter()
             .append('link')
-            .attr('id', 'mapillary-viewercss')
+            .attr('id', 'ideditor-mapillary-viewercss')
             .attr('rel', 'stylesheet')
             .attr('href', context.asset(viewercss));
 
         // load mapillary-viewerjs
-        d3_select('head').selectAll('#mapillary-viewerjs')
+        d3_select('head').selectAll('#ideditor-mapillary-viewerjs')
             .data([0])
             .enter()
             .append('script')
-            .attr('id', 'mapillary-viewerjs')
+            .attr('id', 'ideditor-mapillary-viewerjs')
             .attr('src', context.asset(viewerjs));
 
         // load mapillary signs sprite
@@ -418,8 +418,8 @@ export default {
     },
 
 
-    showViewer: function() {
-        var wrap = d3_select('#photoviewer')
+    showViewer: function(context) {
+        var wrap = context.container().select('.photoviewer')
             .classed('hide', false);
 
         var isHidden = wrap.selectAll('.photo-wrapper.mly-wrapper.hide').size();
@@ -440,14 +440,14 @@ export default {
     },
 
 
-    hideViewer: function() {
+    hideViewer: function(context) {
         _mlySelectedImageKey = null;
 
         if (!_mlyFallback && _mlyViewer) {
             _mlyViewer.getComponent('sequence').stop();
         }
 
-        var viewer = d3_select('#photoviewer');
+        var viewer = context.container().select('.photoviewer');
         if (!viewer.empty()) viewer.datum(null);
 
         viewer
@@ -455,21 +455,21 @@ export default {
             .selectAll('.photo-wrapper')
             .classed('hide', true);
 
-        d3_selectAll('.viewfield-group, .sequence, .icon-detected')
+        context.container().selectAll('.viewfield-group, .sequence, .icon-detected')
             .classed('currentView', false);
 
-        return this.setStyles(null, true);
+        return this.setStyles(context, null, true);
     },
 
 
     parsePagination: parsePagination,
 
 
-    updateViewer: function(imageKey, context) {
+    updateViewer: function(context, imageKey) {
         if (!imageKey) return this;
 
         if (!_mlyViewer) {
-            this.initViewer(imageKey, context);
+            this.initViewer(context, imageKey);
         } else {
             _mlyViewer.moveToKey(imageKey)
                 .catch(function(e) { console.error('mly3', e); });  // eslint-disable-line no-console
@@ -479,7 +479,7 @@ export default {
     },
 
 
-    initViewer: function(imageKey, context) {
+    initViewer: function(context, imageKey) {
         var that = this;
         if (window.Mapillary && imageKey) {
             var opts = {
@@ -507,7 +507,7 @@ export default {
                 };
             }
 
-            _mlyViewer = new Mapillary.Viewer('mly', clientId, null, opts);
+            _mlyViewer = new Mapillary.Viewer('ideditor-mly', clientId, null, opts);
             _mlyViewer.on('nodechanged', nodeChanged);
             _mlyViewer.on('bearingchanged', bearingChanged);
             _mlyViewer.moveToKey(imageKey)
@@ -536,12 +536,12 @@ export default {
                 // If `node.key` matches the current _mlySelectedImageKey, call `selectImage()`
                 // one more time to update the detections and attribution..
                 if (node.key === selectedKey) {
-                    that.selectImage(_mlySelectedImageKey, true);
+                    that.selectImage(context, _mlySelectedImageKey, true);
                 }
             } else {             // `nodechanged` initiated from the Mapillary viewer controls..
                 var loc = node.computedLatLon ? [node.computedLatLon.lon, node.computedLatLon.lat] : [node.latLon.lon, node.latLon.lat];
                 context.map().centerEase(loc);
-                that.selectImage(node.key, true);
+                that.selectImage(context, node.key, true);
             }
         }
 
@@ -554,7 +554,7 @@ export default {
     // Pass in the image key string as `imageKey`.
     // This allows images to be selected from places that dont have access
     // to the full image datum (like the street signs layer or the js viewer)
-    selectImage: function(imageKey, fromViewer) {
+    selectImage: function(context, imageKey, fromViewer) {
 
         _mlySelectedImageKey = imageKey;
 
@@ -562,7 +562,7 @@ export default {
         // There just might be a delay before user sees detections, captured_at, etc.
         var d = _mlyCache.images.forImageKey[imageKey];
 
-        var viewer = d3_select('#photoviewer');
+        var viewer = context.container().select('.photoviewer');
         if (!viewer.empty()) viewer.datum(d);
 
         imageKey = (d && d.key) || imageKey;
@@ -570,10 +570,10 @@ export default {
             _mlyClicks.push(imageKey);
         }
 
-        this.setStyles(null, true);
+        this.setStyles(context, null, true);
 
         // if signs signs are shown, highlight the ones that appear in this image
-        d3_selectAll('.layer-mapillary-signs .icon-detected')
+        context.container().selectAll('.layer-mapillary-signs .icon-detected')
             .classed('currentView', function(d) {
                 return d.detections.some(function(detection) {
                     return detection.image_key === imageKey;
@@ -601,14 +601,14 @@ export default {
     // Updates the currently highlighted sequence and selected bubble.
     // Reset is only necessary when interacting with the viewport because
     // this implicitly changes the currently selected bubble/sequence
-    setStyles: function(hovered, reset) {
+    setStyles: function(context, hovered, reset) {
         if (reset) {  // reset all layers
-            d3_selectAll('.viewfield-group')
+            context.container().selectAll('.viewfield-group')
                 .classed('highlighted', false)
                 .classed('hovered', false)
                 .classed('currentView', false);
 
-            d3_selectAll('.sequence')
+            context.container().selectAll('.sequence')
                 .classed('highlighted', false)
                 .classed('currentView', false);
         }
@@ -626,17 +626,17 @@ export default {
         // highlight sibling viewfields on either the selected or the hovered sequences
         var highlightedImageKeys = utilArrayUnion(hoveredImageKeys, selectedImageKeys);
 
-        d3_selectAll('.layer-mapillary .viewfield-group')
+        context.container().selectAll('.layer-mapillary .viewfield-group')
             .classed('highlighted', function(d) { return highlightedImageKeys.indexOf(d.key) !== -1; })
             .classed('hovered', function(d) { return d.key === hoveredImageKey; })
             .classed('currentView', function(d) { return d.key === selectedImageKey; });
 
-        d3_selectAll('.layer-mapillary .sequence')
+        context.container().selectAll('.layer-mapillary .sequence')
             .classed('highlighted', function(d) { return d.properties.key === hoveredSequenceKey; })
             .classed('currentView', function(d) { return d.properties.key === selectedSequenceKey; });
 
         // update viewfields if needed
-        d3_selectAll('.viewfield-group .viewfield')
+        context.container().selectAll('.viewfield-group .viewfield')
             .attr('d', viewfieldPath);
 
         function viewfieldPath() {

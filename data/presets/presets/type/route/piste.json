@@ -3,11 +3,17 @@
     "fields": [
         "name",
         "piste/type",
-        "colour",
         "ref_route",
         "operator",
-        "to",
-        "from"
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
+        "distance",
+        "roundtrip"
     ],
     "geometry": [
         "relation"

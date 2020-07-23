@@ -3,12 +3,11 @@ import { timer as d3_timer } from 'd3-timer';
 
 import {
   event as d3_event,
-  select as d3_select,
-  selectAll as d3_selectAll
+  select as d3_select
 } from 'd3-selection';
 
 import RBush from 'rbush';
-import { t } from '../util/locale';
+import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 
 import {
@@ -16,8 +15,7 @@ import {
   geoRotate, geoScaleToZoom, geoVecLength
 } from '../geo';
 
-import { utilDetect } from '../util/detect';
-import { utilArrayUnion, utilQsString, utilRebind, utilTiler } from '../util';
+import { utilArrayUnion, utilQsString, utilRebind, utilTiler, utilUniqueDomId } from '../util';
 
 
 const bubbleApi = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';
@@ -55,11 +53,10 @@ function abortRequest(i) {
  */
 function localeTimestamp(s) {
   if (!s) return null;
-  const detected = utilDetect();
   const options = { day: 'numeric', month: 'short', year: 'numeric' };
   const d = new Date(s);
   if (isNaN(d.getTime())) return null;
-  return d.toLocaleString(detected.locale, options);
+  return d.toLocaleString(localizer.localeCode(), options);
 }
 
 
@@ -252,7 +249,7 @@ function loadImage(imgInfo) {
   return new Promise(resolve => {
     let img = new Image();
     img.onload = () => {
-      let canvas = document.getElementById('canvas' + imgInfo.face);
+      let canvas = document.getElementById('ideditor-canvas' + imgInfo.face);
       let ctx = canvas.getContext('2d');
       ctx.drawImage(img, imgInfo.x, imgInfo.y);
       resolve({ imgInfo: imgInfo, status: 'ok' });
@@ -272,7 +269,7 @@ function loadImage(imgInfo) {
 function loadCanvas(imageGroup) {
   return Promise.all(imageGroup.map(loadImage))
     .then((data) => {
-      let canvas = document.getElementById('canvas' + data[0].imgInfo.face);
+      let canvas = document.getElementById('ideditor-canvas' + data[0].imgInfo.face);
       const which = { '01': 0, '02': 1, '03': 2, '10': 3, '11': 4, '12': 5 };
       let face = data[0].imgInfo.face;
       _dataUrlArray[which[face]] = canvas.toDataURL('image/jpeg', 1.0);
@@ -292,23 +289,23 @@ function loadFaces(faceGroup) {
 
 function setupCanvas(selection, reset) {
   if (reset) {
-    selection.selectAll('#divForCanvasWork')
+    selection.selectAll('#ideditor-stitcher-canvases')
       .remove();
   }
 
   // Add the Streetside working canvases. These are used for 'stitching', or combining,
   // multiple images for each of the six faces, before passing to the Pannellum control as DataUrls
-  selection.selectAll('#divForCanvasWork')
+  selection.selectAll('#ideditor-stitcher-canvases')
     .data([0])
     .enter()
     .append('div')
-    .attr('id', 'divForCanvasWork')
+    .attr('id', 'ideditor-stitcher-canvases')
     .attr('display', 'none')
     .selectAll('canvas')
     .data(['canvas01', 'canvas02', 'canvas03', 'canvas10', 'canvas11', 'canvas12'])
     .enter()
     .append('canvas')
-    .attr('id', d => d)
+    .attr('id', d => 'ideditor-' + d)
     .attr('width', _resolution)
     .attr('height', _resolution);
 }
@@ -471,25 +468,7 @@ export default {
     };
     options.scenes[sceneID] = _sceneOptions;
 
-    _pannellumViewer = window.pannellum.viewer('viewer-streetside', options);
-
-    _pannellumViewer
-      .on('mousedown', () => {
-        d3_select(window)
-          .on('mousemove.pannellum', () => { dispatch.call('viewerChanged'); });
-      })
-      .on('mouseup', () => {
-        d3_select(window)
-          .on('mousemove.pannellum', null);
-
-        // continue dispatching events for a few seconds, in case viewer has inertia.
-        let t = d3_timer(elapsed => {
-          dispatch.call('viewerChanged');
-          if (elapsed > 2000) {
-            t.stop();
-          }
-        });
-      });
+    _pannellumViewer = window.pannellum.viewer('ideditor-viewer-streetside', options);
   },
 
 
@@ -499,22 +478,41 @@ export default {
   loadViewer: function(context) {
     let that = this;
 
+    let pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
+
     // create ms-wrapper, a photo wrapper class
-    let wrap = d3_select('#photoviewer').selectAll('.ms-wrapper')
+    let wrap = context.container().select('.photoviewer').selectAll('.ms-wrapper')
       .data([0]);
 
     // inject ms-wrapper into the photoviewer div
     // (used by all to house each custom photo viewer)
     let wrapEnter = wrap.enter()
       .append('div')
-      .attr('id', 'ms')
       .attr('class', 'photo-wrapper ms-wrapper')
       .classed('hide', true);
 
     // inject div to support streetside viewer (pannellum) and attribution line
     wrapEnter
       .append('div')
-      .attr('id', 'viewer-streetside')
+      .attr('id', 'ideditor-viewer-streetside')
+      .on(pointerPrefix + 'down.streetside', () => {
+        d3_select(window)
+          .on(pointerPrefix + 'move.streetside', () => {
+            dispatch.call('viewerChanged');
+          }, true);
+      })
+      .on(pointerPrefix + 'up.streetside pointercancel.streetside', () => {
+        d3_select(window)
+          .on(pointerPrefix + 'move.streetside', null);
+
+        // continue dispatching events for a few seconds, in case viewer has inertia.
+        let t = d3_timer(elapsed => {
+          dispatch.call('viewerChanged');
+          if (elapsed > 2000) {
+            t.stop();
+          }
+        });
+      })
       .append('div')
       .attr('class', 'photo-attribution fillD');
 
@@ -541,20 +539,20 @@ export default {
       .call(setupCanvas, true);
 
     // load streetside pannellum viewer css
-    d3_select('head').selectAll('#streetside-viewercss')
+    d3_select('head').selectAll('#ideditor-streetside-viewercss')
       .data([0])
       .enter()
       .append('link')
-      .attr('id', 'streetside-viewercss')
+      .attr('id', 'ideditor-streetside-viewercss')
       .attr('rel', 'stylesheet')
       .attr('href', context.asset(pannellumViewerCSS));
 
     // load streetside pannellum viewer js
-    d3_select('head').selectAll('#streetside-viewerjs')
+    d3_select('head').selectAll('#ideditor-streetside-viewerjs')
       .data([0])
       .enter()
       .append('script')
-      .attr('id', 'streetside-viewerjs')
+      .attr('id', 'ideditor-streetside-viewerjs')
       .attr('src', context.asset(pannellumViewerJS));
 
 
@@ -568,7 +566,7 @@ export default {
 
     function step(stepBy) {
       return () => {
-        let viewer = d3_select('#photoviewer');
+        let viewer = context.container().select('.photoviewer');
         let selected = viewer.empty() ? undefined : viewer.datum();
         if (!selected) return;
 
@@ -631,11 +629,11 @@ export default {
 
         context.map().centerEase(nextBubble.loc);
 
-        that.selectImage(nextBubble)
+        that.selectImage(context, nextBubble)
           .then(response => {
             if (response.status === 'ok') {
               _sceneOptions.yaw = yaw;
-              that.showViewer();
+              that.showViewer(context);
             }
           });
       };
@@ -646,7 +644,7 @@ export default {
   /**
    * showViewer()
    */
-  showViewer: function(yaw) {
+  showViewer: function(context, yaw) {
     if (!_sceneOptions) return;
 
     if (yaw !== undefined) {
@@ -670,7 +668,7 @@ export default {
       }
     }
 
-    let wrap = d3_select('#photoviewer')
+    let wrap = context.container().select('.photoviewer')
       .classed('hide', false);
 
     let isHidden = wrap.selectAll('.photo-wrapper.ms-wrapper.hide').size();
@@ -692,8 +690,8 @@ export default {
   /**
    * hideViewer()
    */
-  hideViewer: function () {
-    let viewer = d3_select('#photoviewer');
+  hideViewer: function (context) {
+    let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
 
     viewer
@@ -701,24 +699,24 @@ export default {
       .selectAll('.photo-wrapper')
       .classed('hide', true);
 
-    d3_selectAll('.viewfield-group, .sequence, .icon-sign')
+    context.container().selectAll('.viewfield-group, .sequence, .icon-sign')
       .classed('currentView', false);
 
-    return this.setStyles(null, true);
+    return this.setStyles(context, null, true);
   },
 
 
   /**
    * selectImage().
    */
-  selectImage: function (d) {
+  selectImage: function (context, d) {
     let that = this;
-    let viewer = d3_select('#photoviewer');
+    let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(d);
 
-    this.setStyles(null, true);
+    this.setStyles(context, null, true);
 
-    let wrap = d3_select('#photoviewer .ms-wrapper');
+    let wrap = context.container().select('.photoviewer .ms-wrapper');
     let attribution = wrap.selectAll('.photo-attribution').html('');
 
     wrap.selectAll('.pnlm-load-box')   // display "loading.."
@@ -732,15 +730,18 @@ export default {
       .append('div')
       .attr('class', 'attribution-row');
 
+    const hiresDomId = utilUniqueDomId('streetside-hires');
+
     // Add hires checkbox
     let label = line1
       .append('label')
+      .attr('for', hiresDomId)
       .attr('class', 'streetside-hires');
 
     label
       .append('input')
       .attr('type', 'checkbox')
-      .attr('id', 'streetside-hires-input')
+      .attr('id', hiresDomId)
       .property('checked', _hires)
       .on('click', () => {
         d3_event.stopPropagation();
@@ -755,11 +756,11 @@ export default {
           hfov: _pannellumViewer.getHfov()
         };
 
-        that.selectImage(d)
+        that.selectImage(context, d)
           .then(response => {
             if (response.status === 'ok') {
               _sceneOptions = Object.assign(_sceneOptions, viewstate);
-              that.showViewer();
+              that.showViewer(context);
             }
           });
       });
@@ -877,14 +878,14 @@ export default {
   // Updates the currently highlighted sequence and selected bubble.
   // Reset is only necessary when interacting with the viewport because
   // this implicitly changes the currently selected bubble/sequence
-  setStyles: function (hovered, reset) {
+  setStyles: function (context, hovered, reset) {
     if (reset) {  // reset all layers
-      d3_selectAll('.viewfield-group')
+      context.container().selectAll('.viewfield-group')
         .classed('highlighted', false)
         .classed('hovered', false)
         .classed('currentView', false);
 
-      d3_selectAll('.sequence')
+      context.container().selectAll('.sequence')
         .classed('highlighted', false)
         .classed('currentView', false);
     }
@@ -894,7 +895,7 @@ export default {
     let hoveredSequence = hoveredSequenceKey && _ssCache.sequences[hoveredSequenceKey];
     let hoveredBubbleKeys =  (hoveredSequence && hoveredSequence.bubbles.map(d => d.key)) || [];
 
-    let viewer = d3_select('#photoviewer');
+    let viewer = context.container().select('.photoviewer');
     let selected = viewer.empty() ? undefined : viewer.datum();
     let selectedBubbleKey = selected && selected.key;
     let selectedSequenceKey = this.getSequenceKeyForBubble(selected);
@@ -904,17 +905,17 @@ export default {
     // highlight sibling viewfields on either the selected or the hovered sequences
     let highlightedBubbleKeys = utilArrayUnion(hoveredBubbleKeys, selectedBubbleKeys);
 
-    d3_selectAll('.layer-streetside-images .viewfield-group')
+    context.container().selectAll('.layer-streetside-images .viewfield-group')
       .classed('highlighted', d => highlightedBubbleKeys.indexOf(d.key) !== -1)
       .classed('hovered',     d => d.key === hoveredBubbleKey)
       .classed('currentView', d => d.key === selectedBubbleKey);
 
-    d3_selectAll('.layer-streetside-images .sequence')
+    context.container().selectAll('.layer-streetside-images .sequence')
       .classed('highlighted', d => d.properties.key === hoveredSequenceKey)
       .classed('currentView', d => d.properties.key === selectedSequenceKey);
 
     // update viewfields if needed
-    d3_selectAll('.viewfield-group .viewfield')
+    context.container().selectAll('.viewfield-group .viewfield')
       .attr('d', viewfieldPath);
 
     function viewfieldPath() {

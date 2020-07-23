@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { svgIcon } from '../svg/index';
 
 
@@ -18,7 +18,7 @@ export function uiContributors(context) {
         if (!osm) return;
 
         var users = {},
-            entities = context.intersects(context.map().extent());
+            entities = context.history().intersects(context.map().extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;

@@ -1,12 +1,12 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { actionChangeTags } from '../actions/index';
 import { behaviorOperation } from '../behavior/index';
 
 
-export function operationCycleHighwayTag(selectedIDs, context) {
+export function operationCycleHighwayTag(context, selectedIDs) {
     var _entityID = selectedIDs[0];
     var _entity = context.entity(_entityID);
-    var _prevSelectedIDs; 
+    var _prevSelectedIDs;
     var ROAD_TYPES = ['residential', 'service', 'track', 'unclassified', 'tertiary'];
 
 
@@ -15,28 +15,28 @@ export function operationCycleHighwayTag(selectedIDs, context) {
         tags.highway = ROAD_TYPES[(idx + 1) % ROAD_TYPES.length];
 
         if (tags.highway === 'track') {
-            tags.surface = 'unpaved'; 
+            tags.surface = 'unpaved';
         }
-        else { 
-            delete tags.surface; 
+        else {
+            delete tags.surface;
         }
-    }; 
+    };
 
 
     var operation = function() {
-        _entity = context.entity(_entityID); 
-        // Calculate whether the changes since the last time this action ran 
-        // are only to highway tags. 
+        _entity = context.entity(_entityID);
+        // Calculate whether the changes since the last time this action ran
+        // are only to highway tags.
         if (_prevSelectedIDs) {
-            var sameSelection = _prevSelectedIDs ? _prevSelectedIDs[0] === selectedIDs[0] : false;             
+            var sameSelection = _prevSelectedIDs ? _prevSelectedIDs[0] === selectedIDs[0] : false;
         }
 
         var tags = Object.assign({}, _entity.tags);
-        updateHighwayTag(tags); 
-        
-        _prevSelectedIDs = selectedIDs; 
+        updateHighwayTag(tags);
 
-        // context peeking tells us the last operation performed. Was it cycle road tags?  
+        _prevSelectedIDs = selectedIDs;
+
+        // context peeking tells us the last operation performed. Was it cycle road tags?
         if (sameSelection && context.history().peekAnnotation() === operation.annotation()) {
             // Coalesce the update of Highway type tags into the previous tag change
             context.replace(actionChangeTags(_entityID, tags), operation.annotation());
@@ -55,7 +55,7 @@ export function operationCycleHighwayTag(selectedIDs, context) {
 
     operation.disabled = function() {
        if ( Object.keys(_entity.tags).length > 0 && !_entity.tags.highway) {
-            return 'restriction'; 
+            return 'restriction';
        }
     };
 

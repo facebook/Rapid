@@ -5,12 +5,12 @@ import {
     select as d3_select
 } from 'd3-selection';
 
-import { textDirection } from '../util/locale';
+import { localizer } from '../core/localizer';
 import { uiToggle } from './toggle';
 
 
 // Tooltips and svg mask used to highlight certain features
-export function uiCurtain() {
+export function uiCurtain(containerNode) {
 
     var surface = d3_select(null),
         tooltip = d3_select(null),
@@ -19,10 +19,7 @@ export function uiCurtain() {
     function curtain(selection) {
         surface = selection
             .append('svg')
-            .attr('id', 'curtain')
-            .style('z-index', 1000)
-            .style('pointer-events', 'none')
-            .style('position', 'absolute')
+            .attr('class', 'curtain')
             .style('top', 0)
             .style('left', 0);
 
@@ -34,8 +31,7 @@ export function uiCurtain() {
         d3_select(window).on('resize.curtain', resize);
 
         tooltip = selection.append('div')
-            .attr('class', 'tooltip')
-            .style('z-index', 1002);
+            .attr('class', 'tooltip');
 
         tooltip
             .append('div')
@@ -50,8 +46,8 @@ export function uiCurtain() {
 
         function resize() {
             surface
-                .attr('width', window.innerWidth)
-                .attr('height', window.innerHeight);
+                .attr('width', containerNode.clientWidth)
+                .attr('height', containerNode.clientHeight);
             curtain.cut(darkness.datum());
         }
     }
@@ -68,17 +64,29 @@ export function uiCurtain() {
      * @param  {integer}   [options.duration]        transition time in milliseconds
      * @param  {string}    [options.buttonText]      if set, create a button with this text label
      * @param  {function}  [options.buttonCallback]  if set, the callback for the button
+     * @param  {function}  [options.padding]         extra margin in px to put around bbox
      * @param  {String|ClientRect} [options.tooltipBox]  box for tooltip position, if different from box for the curtain
      */
     curtain.reveal = function(box, text, options) {
+        options = options || {};
+
         if (typeof box === 'string') {
             box = d3_select(box).node();
         }
         if (box && box.getBoundingClientRect) {
             box = copyBox(box.getBoundingClientRect());
+            var containerRect = containerNode.getBoundingClientRect();
+            box.top -= containerRect.top;
+            box.left -= containerRect.left;
         }
-
-        options = options || {};
+        if (box && options.padding) {
+            box.top -= options.padding;
+            box.left -= options.padding;
+            box.bottom += options.padding;
+            box.right += options.padding;
+            box.height += options.padding * 2;
+            box.width += options.padding * 2;
+        }
 
         var tooltipBox;
         if (options.tooltipBox) {
@@ -125,8 +133,8 @@ export function uiCurtain() {
             }
 
             var tip = copyBox(tooltip.node().getBoundingClientRect()),
-                w = window.innerWidth,
-                h = window.innerHeight,
+                w = containerNode.clientWidth,
+                h = containerNode.clientHeight,
                 tooltipWidth = 200,
                 tooltipArrow = 5,
                 side, pos;
@@ -138,7 +146,7 @@ export function uiCurtain() {
                 tip.height += 80;
             }
 
-            // trim box dimensions to just the portion that fits in the window..
+            // trim box dimensions to just the portion that fits in the container..
             if (tooltipBox.top + tooltipBox.height > h) {
                 tooltipBox.height -= (tooltipBox.top + tooltipBox.height - h);
             }
@@ -168,7 +176,7 @@ export function uiCurtain() {
                 // tooltip to the side of the tooltipBox..
                 var tipY = tooltipBox.top + tooltipBox.height / 2 - tip.height / 2;
 
-                if (textDirection === 'rtl') {
+                if (localizer.textDirection() === 'rtl') {
                     if (tooltipBox.left - tooltipWidth - tooltipArrow < 70) {
                         side = 'right';
                         pos = [tooltipBox.left + tooltipBox.width + tooltipArrow, tipY];
@@ -242,9 +250,11 @@ export function uiCurtain() {
 
         selection
             .attr('d', function(d) {
-                var string = 'M 0,0 L 0,' + window.innerHeight + ' L ' +
-                    window.innerWidth + ',' + window.innerHeight + 'L' +
-                    window.innerWidth + ',0 Z';
+                var containerWidth = containerNode.clientWidth;
+                var containerHeight = containerNode.clientHeight;
+                var string = 'M 0,0 L 0,' + containerHeight + ' L ' +
+                    containerWidth + ',' + containerHeight + 'L' +
+                    containerWidth + ',0 Z';
 
                 if (!d) return string;
                 return string + 'M' +

@@ -3,11 +3,12 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 import { drag as d3_drag } from 'd3-drag';
 import * as countryCoder from '@ideditor/country-coder';
 
+import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
-import { t } from '../../util/locale';
+import { t } from '../../core/localizer';
 import { services } from '../../services';
 import { uiCombobox } from '../combobox';
-import { utilArrayUniq, utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { utilArrayUniq, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent, utilUnicodeCharsCount } from '../../util';
 
 export {
     uiFieldCombo as uiFieldMultiCombo,
@@ -35,8 +36,17 @@ export function uiFieldCombo(field, context) {
     var input = d3_select(null);
     var _comboData = [];
     var _multiData = [];
-    var _entity;
+    var _entityIDs = [];
+    var _tags;
     var _countryCode;
+    var _staticPlaceholder;
+
+    // initialize deprecated tags array
+    var _dataDeprecated = [];
+    fileFetcher.get('deprecated')
+        .then(function(d) { _dataDeprecated = d; })
+        .catch(function() { /* ignore */ });
+
 
     // ensure multiCombo field.key ends with a ':'
     if (isMulti && /[^:]$/.test(field.key)) {
@@ -110,7 +120,9 @@ export function uiFieldCombo(field, context) {
     //
     function objectDifference(a, b) {
         return a.filter(function(d1) {
-            return !b.some(function(d2) { return d1.value === d2.value; });
+            return !b.some(function(d2) {
+                return !d2.isMixed && d1.value === d2.value;
+            });
         });
     }
 
@@ -175,8 +187,8 @@ export function uiFieldCombo(field, context) {
             query: query
         };
 
-        if (_entity) {
-            params.geometry = context.geometry(_entity.id);
+        if (_entityIDs.length) {
+            params.geometry = context.graph().geometry(_entityIDs[0]);
         }
 
         taginfo[fn](params, function(err, data) {
@@ -193,7 +205,7 @@ export function uiFieldCombo(field, context) {
                 return !d.count || d.count > 10;
             });
 
-            var deprecatedValues = osmEntity.deprecatedTagValuesByKey()[field.key];
+            var deprecatedValues = osmEntity.deprecatedTagValuesByKey(_dataDeprecated)[field.key];
             if (deprecatedValues) {
                 // don't suggest deprecated tag values
                 data = data.filter(function(d) {
@@ -228,21 +240,27 @@ export function uiFieldCombo(field, context) {
 
 
     function setPlaceholder(values) {
-        var ph;
 
         if (isMulti || isSemi) {
-            ph = field.placeholder() || t('inspector.add');
+            _staticPlaceholder = field.placeholder() || t('inspector.add');
         } else {
             var vals = values
                 .map(function(d) { return d.value; })
                 .filter(function(s) { return s.length < 20; });
 
             var placeholders = vals.length > 1 ? vals : values.map(function(d) { return d.key; });
-            ph = field.placeholder() || placeholders.slice(0, 3).join(', ');
+            _staticPlaceholder = field.placeholder() || placeholders.slice(0, 3).join(', ');
         }
 
-        if (!/(…|\.\.\.)$/.test(ph)) {
-            ph += '…';
+        if (!/(…|\.\.\.)$/.test(_staticPlaceholder)) {
+            _staticPlaceholder += '…';
+        }
+
+        var ph;
+        if (!isMulti && !isSemi && _tags && Array.isArray(_tags[field.key])) {
+            ph = t('inspector.multiple_values');
+        } else {
+            ph =  _staticPlaceholder;
         }
 
         container.selectAll('input')
@@ -265,12 +283,13 @@ export function uiFieldCombo(field, context) {
             if (isMulti) {
                 utilArrayUniq(vals).forEach(function(v) {
                     var key = field.key + v;
-                    if (_entity) {
+                    if (_tags) {
                         // don't set a multicombo value to 'yes' if it already has a non-'no' value
                         // e.g. `language:de=main`
-                        var old = _entity.tags[key] || '';
-                        if (old && old.toLowerCase() !== 'no') return;
+                        var old = _tags[key];
+                        if (typeof old === 'string' && old.toLowerCase() !== 'no') return;
                     }
+                    key = context.cleanTagKey(key);
                     field.keys.push(key);
                     t[key] = 'yes';
                 });
@@ -278,14 +297,19 @@ export function uiFieldCombo(field, context) {
             } else if (isSemi) {
                 var arr = _multiData.map(function(d) { return d.key; });
                 arr = arr.concat(vals);
-                t[field.key] = utilArrayUniq(arr).filter(Boolean).join(';');
+                t[field.key] = context.cleanTagValue(utilArrayUniq(arr).filter(Boolean).join(';'));
             }
 
             window.setTimeout(function() { input.node().focus(); }, 10);
 
         } else {
-            val = tagValue(utilGetSetValue(input));
-            t[field.key] = val;
+            var rawValue = utilGetSetValue(input);
+
+            // don't override multiple values with blank string
+            if (!rawValue && Array.isArray(_tags[field.key])) return;
+
+            val = context.cleanTagValue(tagValue(rawValue));
+            t[field.key] = val || undefined;
         }
 
         dispatch.call('change', this, t);
@@ -297,7 +321,7 @@ export function uiFieldCombo(field, context) {
 
         // don't move source=digitalglobe or source=maxar on ML road
         // TODO: switch to check on __fbid__
-        if (field.key === 'source' && _entity && _entity.id.startsWith('w-') && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
+        if (field.key === 'source' && _entityIDs[0] && _entityIDs[0].id.startsWith('w-') && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
         var t = {};
         if (isMulti) {
             t[d.key] = undefined;
@@ -331,7 +355,7 @@ export function uiFieldCombo(field, context) {
 
             // Use a separate line for each value in the Destinations field
             // to mimic highway exit signs
-            if (field.id === 'destination_oneway') {
+            if (field.key === 'destination') {
                 listClass += ' full-line-chips';
             }
 
@@ -362,14 +386,14 @@ export function uiFieldCombo(field, context) {
         input = input.enter()
             .append('input')
             .attr('type', 'text')
-            .attr('id', 'preset-input-' + field.safeid)
+            .attr('id', field.domId)
             .call(utilNoAuto)
             .call(initCombo, selection)
             .merge(input);
 
-        if (isNetwork && _entity) {
-            var center = _entity.extent(context.graph()).center();
-            var countryCode = countryCoder.iso1A2Code(center);
+        if (isNetwork) {
+            var extent = combinedEntityExtent();
+            var countryCode = extent && countryCoder.iso1A2Code(extent.center());
             _countryCode = countryCode && countryCode.toLowerCase();
         }
 
@@ -401,44 +425,90 @@ export function uiFieldCombo(field, context) {
 
 
     combo.tags = function(tags) {
+        _tags = tags;
+
         if (isMulti || isSemi) {
             _multiData = [];
+
+            var maxLength;
 
             if (isMulti) {
                 // Build _multiData array containing keys already set..
                 for (var k in tags) {
                     if (k.indexOf(field.key) !== 0) continue;
-                    var v = (tags[k] || '').toLowerCase();
-                    if (v === '' || v === 'no') continue;
+                    var v = tags[k];
+                    if (!v || (typeof v === 'string' && v.toLowerCase() === 'no')) continue;
 
                     var suffix = k.substring(field.key.length);
                     _multiData.push({
                         key: k,
-                        value: displayValue(suffix)
+                        value: displayValue(suffix),
+                        isMixed: Array.isArray(v)
                     });
                 }
 
                 // Set keys for form-field modified (needed for undo and reset buttons)..
                 field.keys = _multiData.map(function(d) { return d.key; });
 
+                // limit the input length so it fits after prepending the key prefix
+                maxLength = context.maxCharsForTagKey() - utilUnicodeCharsCount(field.key);
+
             } else if (isSemi) {
-                var arr = utilArrayUniq((tags[field.key] || '').split(';')).filter(Boolean);
-                _multiData = arr.map(function(k) {
+
+                var allValues = [];
+                var commonValues;
+                if (Array.isArray(tags[field.key])) {
+
+                    tags[field.key].forEach(function(tagVal) {
+                        var thisVals = utilArrayUniq((tagVal || '').split(';')).filter(Boolean);
+                        allValues = allValues.concat(thisVals);
+                        if (!commonValues) {
+                            commonValues = thisVals;
+                        } else {
+                            commonValues = commonValues.filter(value => thisVals.includes(value));
+                        }
+                    });
+                    allValues = utilArrayUniq(allValues).filter(Boolean);
+
+                } else {
+                    allValues =  utilArrayUniq((tags[field.key] || '').split(';')).filter(Boolean);
+                    commonValues = allValues;
+                }
+
+                _multiData = allValues.map(function(v) {
                     return {
-                        key: k,
-                        value: displayValue(k)
+                        key: v,
+                        value: displayValue(v),
+                        isMixed: !commonValues.includes(v)
                     };
                 });
+
+                var currLength = utilUnicodeCharsCount(commonValues.join(';'));
+
+                // limit the input length to the remaining available characters
+                maxLength = context.maxCharsForTagValue() - currLength;
+
+                if (currLength > 0) {
+                    // account for the separator if a new value will be appended to existing
+                    maxLength -= 1;
+                }
             }
+            // a negative maxlength doesn't make sense
+            maxLength = Math.max(0, maxLength);
+
+            var allowDragAndDrop = isSemi // only semiCombo values are ordered
+                && !Array.isArray(tags[field.key]);
 
             // Exclude existing multikeys from combo options..
             var available = objectDifference(_comboData, _multiData);
             combobox.data(available);
 
             // Hide 'Add' button if this field uses fixed set of
-            // translateable optstrings and they're all currently used..
-            container.selectAll('.combobox-input, .combobox-caret')
-                .classed('hide', optstrings && !available.length);
+            // translateable optstrings and they're all currently used,
+            // or if the field is already at its character limit
+            var hideAdd = (optstrings && !available.length) || maxLength <= 0;
+            container.selectAll('.chiplist .input-wrap')
+                .style('display', hideAdd ? 'none' : null);
 
 
             // Render chips
@@ -450,16 +520,22 @@ export function uiFieldCombo(field, context) {
 
             var enter = chips.enter()
                 .insert('li', '.input-wrap')
-                .attr('class', 'chip')
-                .classed('draggable', isSemi);
+                .attr('class', 'chip');
 
             enter.append('span');
             enter.append('a');
 
             chips = chips.merge(enter)
-                .order();
+                .order()
+                .classed('draggable', allowDragAndDrop)
+                .classed('mixed', function(d) {
+                    return d.isMixed;
+                })
+                .attr('title', function(d) {
+                    return d.isMixed ? t('inspector.unshared_value_tooltip') : null;
+                });
 
-            if (isSemi) { // only semiCombo values are ordered
+            if (allowDragAndDrop) {
                 registerDragAndDrop(chips);
             }
 
@@ -472,11 +548,20 @@ export function uiFieldCombo(field, context) {
                 .text(function(d) {
                     // don't show 'x' on the digitalglobe/maxar label on ML road
                     // TODO: switch to check on __fbid__
-                    return _entity && _entity.id.startsWith('w-') && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
+                    return _entityIDs[0] && _entityIDs[0].id.startsWith('w-') && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
                 });
 
         } else {
-            utilGetSetValue(input, displayValue(tags[field.key]));
+            var isMixed = Array.isArray(tags[field.key]);
+
+            var mixedValues = isMixed && tags[field.key].map(function(val) {
+                return displayValue(val);
+            }).filter(Boolean);
+
+            utilGetSetValue(input, !isMixed ? displayValue(tags[field.key]) : '')
+                .attr('title', isMixed ? mixedValues.join('\n') : undefined)
+                .attr('placeholder', isMixed ? t('inspector.multiple_values') : _staticPlaceholder || '')
+                .classed('mixed', isMixed);
         }
     };
 
@@ -507,7 +592,7 @@ export function uiFieldCombo(field, context) {
                 var targetIndexOffsetTop = null;
                 var draggedTagWidth = d3_select(this).node().offsetWidth;
 
-                if (field.id === 'destination_oneway') { // meaning tags are full width
+                if (field.key === 'destination') { // meaning tags are full width
                     container.selectAll('.chip')
                         .style('transform', function(d2, index2) {
                             var node = d3_select(this).node();
@@ -605,11 +690,16 @@ export function uiFieldCombo(field, context) {
     };
 
 
-    combo.entity = function(val) {
-        if (!arguments.length) return _entity;
-        _entity = val;
+    combo.entityIDs = function(val) {
+        if (!arguments.length) return _entityIDs;
+        _entityIDs = val;
         return combo;
     };
+
+
+    function combinedEntityExtent() {
+        return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
+    }
 
 
     return utilRebind(combo, dispatch, 'on');

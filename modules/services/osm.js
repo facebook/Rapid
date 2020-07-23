@@ -46,6 +46,9 @@ var _userChangesets;
 var _userDetails;
 var _off;
 
+// set a default but also load this from the API status
+var _maxWayNodes = 2000;
+
 
 function authLoading() {
     dispatch.call('authLoading');
@@ -199,7 +202,7 @@ var jsonparsers = {
     node: function nodeData(obj, uid) {
         return new osmNode({
             id:  uid,
-            visible: true,
+            visible: typeof obj.visible === 'boolean' ? obj.visible : true,
             version: obj.version.toString(),
             changeset: obj.changeset.toString(),
             timestamp: obj.timestamp,
@@ -213,7 +216,7 @@ var jsonparsers = {
     way: function wayData(obj, uid) {
         return new osmWay({
             id:  uid,
-            visible: true,
+            visible: typeof obj.visible === 'boolean' ? obj.visible : true,
             version: obj.version.toString(),
             changeset: obj.changeset.toString(),
             timestamp: obj.timestamp,
@@ -227,7 +230,7 @@ var jsonparsers = {
     relation: function relationData(obj, uid) {
         return new osmRelation({
             id:  uid,
-            visible: true,
+            visible: typeof obj.visible === 'boolean' ? obj.visible : true,
             version: obj.version.toString(),
             changeset: obj.changeset.toString(),
             timestamp: obj.timestamp,
@@ -603,7 +606,11 @@ export default {
                     if (err) {
                         return callback(err);
                     } else {
-                        return parseXML(payload, callback, options);
+                        if (path.indexOf('.json') !== -1) {
+                            return parseJSON(payload, callback, options);
+                        } else {
+                            return parseXML(payload, callback, options);
+                        }
                     }
                 }
             }
@@ -614,7 +621,7 @@ export default {
         } else {
             var url = urlroot + path;
             var controller = new AbortController();
-            d3_xml(url, { signal: controller.signal, credentials: credentialsMode })
+            d3_json(url, { signal: controller.signal })
                 .then(function(data) {
                     done(null, data);
                 })
@@ -644,7 +651,7 @@ export default {
         var options = { skipSeen: false };
 
         this.loadFromAPI(
-            '/api/0.6/' + type + '/' + osmID + (type !== 'node' ? '/full' : ''),
+            '/api/0.6/' + type + '/' + osmID + (type !== 'node' ? '/full' : '') + '.json',
             function(err, entities) {
                 if (callback) callback(err, { data: entities });
             },
@@ -661,7 +668,7 @@ export default {
         var options = { skipSeen: false };
 
         this.loadFromAPI(
-            '/api/0.6/' + type + '/' + osmID + '/' + version,
+            '/api/0.6/' + type + '/' + osmID + '/' + version + '.json',
             function(err, entities) {
                 if (callback) callback(err, { data: entities });
             },
@@ -685,7 +692,7 @@ export default {
 
             utilArrayChunk(osmIDs, 150).forEach(function(arr) {
                 that.loadFromAPI(
-                    '/api/0.6/' + type + '?' + type + '=' + arr.join(),
+                    '/api/0.6/' + type + '.json?' + type + '=' + arr.join(),
                     function(err, entities) {
                         if (callback) callback(err, { data: entities });
                     },
@@ -934,6 +941,10 @@ export default {
             if (_rateLimitError) {
                 return callback(_rateLimitError, 'rateLimited');
             } else {
+                var waynodes = xml.getElementsByTagName('waynodes');
+                var maxWayNodes = waynodes.length && parseInt(waynodes[0].getAttribute('maximum'), 10);
+                if (maxWayNodes && isFinite(maxWayNodes)) _maxWayNodes = maxWayNodes;
+
                 var apiStatus = xml.getElementsByTagName('status');
                 var val = apiStatus[0].getAttribute('api');
                 return callback(undefined, val);
@@ -957,6 +968,12 @@ export default {
             }, 500);
         }
         this.throttledReloadApiStatus();
+    },
+
+
+    // Returns the maximum number of nodes a single way can have
+    maxWayNodes: function() {
+        return _maxWayNodes;
     },
 
 
@@ -992,7 +1009,7 @@ export default {
             dispatch.call('loading');   // start the spinner
         }
 
-        var path = '/api/0.6/map?bbox=';
+        var path = '/api/0.6/map.json?bbox=';
         var options = { skipSeen: true };
 
         _tileCache.inflight[tile.id] = this.loadFromAPI(

@@ -1,4 +1,4 @@
-import { t, textDirection } from '../util/locale';
+import { t, localizer } from '../core/localizer';
 import { modeDrawLine } from '../modes/draw_line';
 import { operationDelete } from '../operations/delete';
 import { utilDisplayLabel } from '../util';
@@ -26,7 +26,7 @@ export function validationDisconnectedWay() {
             message: function(context) {
                 if (this.entityIds.length === 1) {
                     var entity = context.hasEntity(this.entityIds[0]);
-                    return entity ? t('issues.disconnected_way.highway.message', { highway: utilDisplayLabel(entity, context) }) : '';
+                    return entity ? t('issues.disconnected_way.highway.message', { highway: utilDisplayLabel(entity, context.graph()) }) : '';
                 }
                 return t('issues.disconnected_way.routable.message.multiple', { count: this.entityIds.length.toString() });
             },
@@ -46,10 +46,12 @@ export function validationDisconnectedWay() {
 
                 if (singleEntity.type === 'way' && !singleEntity.isClosed()) {
 
-                    var startFix = makeContinueDrawingFixIfAllowed(singleEntity.first(), 'start');
+                    var textDirection = localizer.textDirection();
+
+                    var startFix = makeContinueDrawingFixIfAllowed(textDirection, singleEntity.first(), 'start');
                     if (startFix) fixes.push(startFix);
 
-                    var endFix = makeContinueDrawingFixIfAllowed(singleEntity.last(), 'end');
+                    var endFix = makeContinueDrawingFixIfAllowed(textDirection, singleEntity.last(), 'end');
                     if (endFix) fixes.push(endFix);
                 }
                 if (!fixes.length) {
@@ -64,7 +66,7 @@ export function validationDisconnectedWay() {
                     entityIds: [singleEntity.id],
                     onClick: function(context) {
                         var id = this.issue.entityIds[0];
-                        var operation = operationDelete([id], context);
+                        var operation = operationDelete(context, [id]);
                         if (!operation.disabled()) {
                             operation();
                         }
@@ -174,7 +176,7 @@ export function validationDisconnectedWay() {
             });
         }
 
-        function makeContinueDrawingFixIfAllowed(vertexID, whichEnd) {
+        function makeContinueDrawingFixIfAllowed(textDirection, vertexID, whichEnd) {
             var vertex = graph.hasEntity(vertexID);
             if (!vertex || vertex.tags.noexit === 'yes') return null;
 
@@ -200,7 +202,7 @@ export function validationDisconnectedWay() {
                     }
 
                     context.enter(
-                        modeDrawLine(context, wayId, context.graph(), context.graph(), 'line', way.affix(vertexId), true)
+                        modeDrawLine(context, wayId, context.graph(), 'line', way.affix(vertexId), true)
                     );
                 }
             });

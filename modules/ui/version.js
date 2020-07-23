@@ -1,6 +1,7 @@
-import { t } from '../util/locale';
+import { prefs } from '../core/preferences';
+import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
-import { tooltip } from '../util/tooltip';
+import { uiTooltip } from './tooltip';
 
 
 // these are module variables so they are preserved through a ui.restart()
@@ -15,9 +16,14 @@ export function uiVersion(context) {
     var matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
 
     if (sawVersion === null && matchedVersion !== null) {
-        isNewVersion = (context.storage('sawVersion') !== currVersion);
-        isNewUser = !context.storage('sawSplash');
-        context.storage('sawVersion', currVersion);
+        if (prefs('sawVersion')) {
+            isNewUser = false;
+            isNewVersion = prefs('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
+        } else {
+            isNewUser = true;
+            isNewVersion = true;
+        }
+        prefs('sawVersion', currVersion);
         sawVersion = currVersion;
     }
 
@@ -39,7 +45,7 @@ export function uiVersion(context) {
                 .attr('tabindex', -1)
                 .attr('href', 'https://github.com/facebookincubator/RapiD/blob/master/CHANGELOG.md')
                 .call(svgIcon('#maki-gift-11'))
-                .call(tooltip()
+                .call(uiTooltip()
                     .title(t('version.whats_new', { version: currVersion }))
                     .placement('top')
                 );

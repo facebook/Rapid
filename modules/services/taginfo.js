@@ -3,7 +3,7 @@ import _debounce from 'lodash-es/debounce';
 import { json as d3_json } from 'd3-fetch';
 
 import { utilObjectOmit, utilQsString } from '../util';
-import { currentLocale } from '../util/locale';
+import { localizer } from '../core/localizer';
 
 
 var apibase = 'https://taginfo.openstreetmap.org/api/4/';
@@ -195,7 +195,17 @@ export default {
         _inflight = {};
         _taginfoCache = {};
         _popularKeys = {
-            postal_code: true   // #5377
+            // manually exclude some keys – #5377, #7485
+            postal_code: true,
+            full_name: true,
+            loc_name: true,
+            reg_name: true,
+            short_name: true,
+            sorting_name: true,
+            artist_name: true,
+            nat_name: true,
+            long_name: true,
+            'bridge:name': true
         };
 
         // Fetch popular keys.  We'll exclude these from `values`
@@ -207,7 +217,7 @@ export default {
             sortorder: 'desc',
             page: 1,
             debounce: false,
-            lang: currentLocale
+            lang: localizer.languageCode()
         };
         this.keys(params, function(err, data) {
             if (err) return;
@@ -233,7 +243,7 @@ export default {
             sortname: 'count_all',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var url = apibase + 'keys/all?' + utilQsString(params);
@@ -258,7 +268,7 @@ export default {
             sortname: 'count_all',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var prefix = params.query;
@@ -291,7 +301,7 @@ export default {
             sortname: 'count_all',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var url = apibase + 'key/values?' + utilQsString(params);
@@ -324,7 +334,7 @@ export default {
             sortname: 'count_all_members',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var url = apibase + 'relation/roles?' + utilQsString(params);

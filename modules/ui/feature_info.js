@@ -1,8 +1,7 @@
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { event as d3_event } from 'd3-selection';
 
-import { t } from '../util/locale';
-import { uiTooltipHtml } from './tooltipHtml';
-import { tooltip } from '../util/tooltip';
+import { t } from '../core/localizer';
+import { uiTooltip } from './tooltip';
 
 
 export function uiFeatureInfo(context) {
@@ -20,11 +19,10 @@ export function uiFeatureInfo(context) {
         selection.html('');
 
         if (hiddenList.length) {
-            var tooltipBehavior = tooltip()
+            var tooltipBehavior = uiTooltip()
                 .placement('top')
-                .html(true)
                 .title(function() {
-                    return uiTooltipHtml(hiddenList.join('<br/>'));
+                    return hiddenList.join('<br/>');
                 });
 
             selection.append('a')
@@ -37,7 +35,7 @@ export function uiFeatureInfo(context) {
                     tooltipBehavior.hide();
                     d3_event.preventDefault();
                     // open the Map Data pane
-                    context.ui().togglePanes(d3_select('.map-panes .map-data-pane'));
+                    context.ui().togglePanes(context.container().select('.map-panes .map-data-pane'));
                 });
         }
 

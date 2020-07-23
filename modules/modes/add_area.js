@@ -1,4 +1,3 @@
-import { t } from '../util/locale';
 import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
@@ -12,7 +11,6 @@ export function modeAddArea(context, mode) {
     mode.id = 'add-area';
 
     var behavior = behaviorAddWay(context)
-        .tail(t('modes.add_area.tail'))
         .on('start', start)
         .on('startFromWay', startFromWay)
         .on('startFromNode', startFromNode);
@@ -40,7 +38,7 @@ export function modeAddArea(context, mode) {
             actionClose(way.id)
         );
 
-        context.enter(modeDrawArea(context, way.id, startGraph, context.graph(), mode.button));
+        context.enter(modeDrawArea(context, way.id, startGraph, mode.button));
     }
 
 
@@ -57,7 +55,7 @@ export function modeAddArea(context, mode) {
             actionAddMidpoint({ loc: loc, edge: edge }, node)
         );
 
-        context.enter(modeDrawArea(context, way.id, startGraph, context.graph(), mode.button));
+        context.enter(modeDrawArea(context, way.id, startGraph, mode.button));
     }
 
 
@@ -71,7 +69,7 @@ export function modeAddArea(context, mode) {
             actionClose(way.id)
         );
 
-        context.enter(modeDrawArea(context, way.id, startGraph, context.graph(), mode.button));
+        context.enter(modeDrawArea(context, way.id, startGraph, mode.button));
     }
 
 

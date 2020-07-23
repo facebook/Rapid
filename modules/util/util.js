@@ -1,9 +1,11 @@
 import { remove as removeDiacritics } from 'diacritics';
 import { fixRTLTextForSvg, rtlRegex } from './svg_paths_rtl_fix';
 
-import { t, textDirection } from './locale';
+import { presetManager } from '../presets';
+import { t, localizer } from '../core/localizer';
 import { utilArrayUnion } from './array';
 import { utilDetect } from './detect';
+import { geoExtent } from '../geo/extent';
 
 
 export function utilTagText(entity) {
@@ -14,6 +16,20 @@ export function utilTagText(entity) {
 }
 
 
+export function utilTotalExtent(array, graph) {
+    var extent = geoExtent();
+    var val, entity;
+    for (var i = 0; i < array.length; i++) {
+        val = array[i];
+        entity = typeof val === 'string' ? graph.hasEntity(val) : val;
+        if (entity) {
+            extent._extend(entity.extent(graph));
+        }
+    }
+    return extent;
+}
+
+
 export function utilTagDiff(oldTags, newTags) {
     var tagDiff = [];
     var keys = utilArrayUnion(Object.keys(oldTags), Object.keys(newTags)).sort();
@@ -21,7 +37,7 @@ export function utilTagDiff(oldTags, newTags) {
         var oldVal = oldTags[k];
         var newVal = newTags[k];
 
-        if (oldVal && (!newVal || newVal !== oldVal)) {
+        if ((oldVal || oldVal === '') && (newVal === undefined || newVal !== oldVal)) {
             tagDiff.push({
                 type: '-',
                 key: k,
@@ -30,7 +46,7 @@ export function utilTagDiff(oldTags, newTags) {
                 display: '- ' + k + '=' + oldVal
             });
         }
-        if (newVal && (!oldVal || newVal !== oldVal)) {
+        if ((newVal || newVal === '') && (oldVal === undefined || newVal !== oldVal)) {
             tagDiff.push({
                 type: '+',
                 key: k,
@@ -164,7 +180,7 @@ export function utilGetAllNodes(ids, graph) {
 
 
 export function utilDisplayName(entity) {
-    var localizedNameKey = 'name:' + utilDetect().locale.toLowerCase().split('-')[0];
+    var localizedNameKey = 'name:' + localizer.languageCode().toLowerCase();
     var name = entity.tags[localizedNameKey] || entity.tags.name || '';
     var network = entity.tags.cycle_network || entity.tags.network;
 
@@ -200,24 +216,19 @@ export function utilDisplayType(id) {
 }
 
 
-export function utilDisplayLabel(entity, context) {
+export function utilDisplayLabel(entity, graph) {
     var displayName = utilDisplayName(entity);
     if (displayName) {
         // use the display name if there is one
         return displayName;
     }
-    var preset = utilPreset(entity, context);
+    var preset = presetManager.match(entity, graph);
     if (preset && preset.name()) {
         // use the preset name if there is a match
         return preset.name();
     }
     // fallback to the display type (node/way/relation)
     return utilDisplayType(entity.id);
-}
-
-
-export function utilPreset(entity, context) {
-    return context.presets().match(entity, context.graph());
 }
 
 
@@ -230,7 +241,98 @@ export function utilEntityRoot(entityType) {
 }
 
 
+// Returns a single object containing the tags of all the given entities.
+// Example:
+// {
+//   highway: 'service',
+//   service: 'parking_aisle'
+// }
+//           +
+// {
+//   highway: 'service',
+//   service: 'driveway',
+//   width: '3'
+// }
+//           =
+// {
+//   highway: 'service',
+//   service: [ 'driveway', 'parking_aisle' ],
+//   width: [ '3', undefined ]
+// }
+export function utilCombinedTags(entityIDs, graph) {
+
+    var tags = {};
+    var tagCounts = {};
+    var allKeys = new Set();
+
+    var entities = entityIDs.map(function(entityID) {
+        return graph.hasEntity(entityID);
+    }).filter(Boolean);
+
+    // gather the aggregate keys
+    entities.forEach(function(entity) {
+        var keys = Object.keys(entity.tags).filter(Boolean);
+        keys.forEach(function(key) {
+            allKeys.add(key);
+        });
+    });
+
+    entities.forEach(function(entity) {
+
+        allKeys.forEach(function(key) {
+
+            var value = entity.tags[key]; // purposely allow `undefined`
+
+            if (!tags.hasOwnProperty(key)) {
+                // first value, set as raw
+                tags[key] = value;
+            } else {
+                if (!Array.isArray(tags[key])) {
+                    if (tags[key] !== value) {
+                        // first alternate value, replace single value with array
+                        tags[key] = [tags[key], value];
+                    }
+                } else { // type is array
+                    if (tags[key].indexOf(value) === -1) {
+                        // subsequent alternate value, add to array
+                        tags[key].push(value);
+                    }
+                }
+            }
+
+            var tagHash = key + '=' + value;
+            if (!tagCounts[tagHash]) tagCounts[tagHash] = 0;
+            tagCounts[tagHash] += 1;
+        });
+    });
+
+    for (var key in tags) {
+        if (!Array.isArray(tags[key])) continue;
+
+        // sort values by frequency then alphabetically
+        tags[key] = tags[key].sort(function(val1, val2) {
+            var key = key; // capture
+            var count2 = tagCounts[key + '=' + val2];
+            var count1 = tagCounts[key + '=' + val1];
+            if (count2 !== count1) {
+                return count2 - count1;
+            }
+            if (val2 && val1) {
+                return val1.localeCompare(val2);
+            }
+            return val1 ? 1 : -1;
+        });
+    }
+
+    return tags;
+}
+
+
 export function utilStringQs(str) {
+    var i = 0;  // advance past any leading '?' or '#' characters
+    while (i < str.length && (str[i] === '?' || str[i] === '#')) i++;
+    str = str.slice(i);
+
     return str.split('&').reduce(function(obj, pair){
         var parts = pair.split('=');
         if (parts.length === 2) {
@@ -340,10 +442,6 @@ export function utilFastMouse(container) {
     var rectTop = rect.top;
     var clientLeft = +container.clientLeft;
     var clientTop = +container.clientTop;
-
-    if (textDirection === 'rtl') {
-        rectLeft = 0;
-    }
     return function(e) {
         return [
             e.clientX - rectLeft - clientLeft,
@@ -418,8 +516,29 @@ export function utilHashcode(str) {
     return hash;
 }
 
-// returns version of `str` with all runs of special characters replaced by `_`;
+// Returns version of `str` with all runs of special characters replaced by `_`;
 // suitable for HTML ids, classes, selectors, etc.
 export function utilSafeClassName(str) {
     return str.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+}
+
+// Returns string based on `val` that is highly unlikely to collide with an id
+// used previously or that's present elsewhere in the document. Useful for preventing
+// browser-provided autofills or when embedding iD on pages with unknown elements.
+export function utilUniqueDomId(val) {
+    return 'ideditor-' + utilSafeClassName(val.toString()) + '-' + new Date().getTime().toString();
+}
+
+// Returns the length of `str` in unicode characters. This can be less than
+// `String.length()` since a single unicode character can be composed of multiple
+// JavaScript UTF-16 code units.
+export function utilUnicodeCharsCount(str) {
+    // Native ES2015 implementations of `Array.from` split strings into unicode characters
+    return Array.from(str).length;
+}
+
+// Returns a new string representing `str` cut from its start to `limit` length
+// in unicode characters. Note that this runs the risk of splitting graphemes.
+export function utilUnicodeCharsTruncated(str, limit) {
+    return Array.from(str).slice(0, limit).join('');
 }

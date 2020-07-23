@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
+import { prefs } from '../core/preferences';
 import { osmEntity } from '../osm';
 import { utilRebind } from '../util/rebind';
 import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '../util';
@@ -38,8 +39,7 @@ export function rendererFeatures(context) {
         'cycleway': true,
         'bridleway': true,
         'steps': true,
-        'pedestrian': true,
-        'corridor': true
+        'pedestrian': true
     };
 
     var past_futures = {
@@ -64,15 +64,15 @@ export function rendererFeatures(context) {
 
     function update() {
         if (!window.mocha) {
-            var q = utilStringQs(window.location.hash.substring(1));
+            var hash = utilStringQs(window.location.hash);
             var disabled = features.disabled();
             if (disabled.length) {
-                q.disable_features = disabled.join(',');
+                hash.disable_features = disabled.join(',');
             } else {
-                delete q.disable_features;
+                delete hash.disable_features;
             }
-            window.location.replace('#' + utilQsString(q, true));
-            context.storage('disabled-features', disabled.join(','));
+            window.location.replace('#' + utilQsString(hash, true));
+            prefs('disabled-features', disabled.join(','));
         }
         _hidden = features.hidden();
         dispatch.call('change');
@@ -93,8 +93,7 @@ export function rendererFeatures(context) {
             enable: function() { this.enabled = true; this.currentMax = this.defaultMax; },
             disable: function() { this.enabled = false; this.currentMax = 0; },
             hidden: function() {
-                return !context.editableDataEnabled() ||
-                    (this.count === 0 && !this.enabled) ||
+                return (this.count === 0 && !this.enabled) ||
                     this.count > this.currentMax * _cullFactor;
             },
             autoHidden: function() { return this.hidden() && this.currentMax > 0; }
@@ -573,15 +572,15 @@ export function rendererFeatures(context) {
 
 
     features.init = function() {
-        var storage = context.storage('disabled-features');
+        var storage = prefs('disabled-features');
         if (storage) {
             var storageDisabled = storage.replace(/;/g, ',').split(',');
             storageDisabled.forEach(features.disable);
         }
 
-        var q = utilStringQs(window.location.hash.substring(1));
-        if (q.disable_features) {
-            var hashDisabled = q.disable_features.replace(/;/g, ',').split(',');
+        var hash = utilStringQs(window.location.hash);
+        if (hash.disable_features) {
+            var hashDisabled = hash.disable_features.replace(/;/g, ',').split(',');
             hashDisabled.forEach(features.disable);
         }
     };

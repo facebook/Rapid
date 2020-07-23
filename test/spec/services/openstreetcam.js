@@ -11,7 +11,7 @@ describe('iD.serviceOpenstreetcam', function() {
     });
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/');
+        context = iD.coreContext().assetPath('../dist/').init();
         context.projection
             .scale(iD.geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0
@@ -42,7 +42,7 @@ describe('iD.serviceOpenstreetcam', function() {
     describe('#reset', function() {
         it('resets cache and image', function() {
             openstreetcam.cache().foo = 'bar';
-            openstreetcam.selectImage({key: 'baz'});
+            openstreetcam.selectImage(context, {key: 'baz'});
 
             openstreetcam.reset();
             expect(openstreetcam.cache()).to.not.have.property('foo');
@@ -260,7 +260,7 @@ describe('iD.serviceOpenstreetcam', function() {
 
     describe('#selectedImage', function() {
         it('sets and gets selected image', function() {
-            openstreetcam.selectImage('foo');
+            openstreetcam.selectImage(context, 'foo');
             expect(openstreetcam.getSelectedImage()).to.eql('foo');
         });
     });

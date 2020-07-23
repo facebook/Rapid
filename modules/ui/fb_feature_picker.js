@@ -1,12 +1,11 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 
 import { actionNoop, actionStitchFbRoad } from '../actions';
 import { modeBrowse, modeSelect } from '../modes';
 import { serviceFbAIFeatures } from '../services';
 import { svgIcon } from '../svg';
-import { tooltip } from '../util/tooltip';
+import { uiTooltip } from './tooltip';
 import { uiFlash } from './flash';
-import { uiTooltipHtml } from './tooltipHtml';
 import { utilStringQs } from '../util';
 import { uiRapidFirstEdit } from './rapid_first_edit_dialog';
 
@@ -21,8 +20,8 @@ export function uiFbFeaturePicker(context, keybinding) {
         var gpxInUrl = utilStringQs(window.location.hash).gpx;
         if (gpxInUrl) return false;
 
-        var annotations = context.history().peekAllAnnotations(); 
-        var aiFeatureAccepts = annotations.filter(function (a) { return a.type === 'fb_accept_feature'; });        
+        var annotations = context.history().peekAllAnnotations();
+        var aiFeatureAccepts = annotations.filter(function (a) { return a.type === 'fb_accept_feature'; });
         return aiFeatureAccepts.length >= AI_FEATURES_LIMIT_NON_TM_MODE;
     }
 
@@ -194,20 +193,18 @@ export function uiFbFeaturePicker(context, keybinding) {
             iconName: '#iD-icon-rapid-plus-circle',
             label: t('fb_feature_picker.option_accept.label'),
             description: t('fb_feature_picker.option_accept.description'),
-            tooltip: tooltip()
+            tooltip: uiTooltip()
                 .placement('bottom')
-                .html(true)
                 .title(function() {
                     return isAddFeatureDisabled()
-                        ? uiTooltipHtml(t(
+                        ? t(
                               'fb_feature_picker.option_accept.disabled',
                               {n: AI_FEATURES_LIMIT_NON_TM_MODE}
-                          ))
-                        : uiTooltipHtml(
-                              t('fb_feature_picker.option_accept.tooltip'),
-                              t('fb_feature_picker.option_accept.key')
-                          );
-                }),
+                          )
+                        :
+                              t('fb_feature_picker.option_accept.tooltip');
+                })
+                .keys([t('fb_feature_picker.option_accept.key')]),
             onClick: onAcceptRoad,
             disabledFunction: isAddFeatureDisabled
         }, 'ai-features-accept');
@@ -216,12 +213,10 @@ export function uiFbFeaturePicker(context, keybinding) {
             iconName: '#iD-icon-rapid-minus-circle',
             label: t('fb_feature_picker.option_reject.label'),
             description: t('fb_feature_picker.option_reject.description'),
-            tooltip: tooltip()
+            tooltip: uiTooltip()
                 .placement('bottom')
-                .html(true)
-                .title(uiTooltipHtml(
-                    t('fb_feature_picker.option_reject.tooltip'),
-                    t('fb_feature_picker.option_reject.key'))),
+                .title(t('fb_feature_picker.option_reject.tooltip'))
+                .keys(t('fb_feature_picker.option_reject.key')),
             onClick: onRejectRoad
         }, 'ai-features-reject');
 

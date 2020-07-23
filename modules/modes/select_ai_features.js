@@ -10,7 +10,7 @@ import {
     behaviorSelect
 } from '../behavior';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
 import { serviceFbAIFeatures } from '../services';

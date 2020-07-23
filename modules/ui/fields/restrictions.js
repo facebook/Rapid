@@ -1,7 +1,9 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select, event as d3_event } from 'd3-selection';
 
-import { t } from '../../util/locale';
+import { presetManager } from '../../presets';
+import { prefs } from '../../core/preferences';
+import { t, localizer } from '../../core/localizer';
 import { actionRestrictTurn } from '../../actions/restrict_turn';
 import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 import { behaviorBreathe } from '../../behavior/breathe';
@@ -9,7 +11,6 @@ import { geoExtent, geoRawMercator, geoVecScale, geoVecSubtract, geoZoomToScale 
 import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
 import { utilDisplayName, utilDisplayType, utilEntitySelector, utilFunctor, utilRebind } from '../../util';
-import { utilDetect } from '../../util/detect';
 import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions';
 
 
@@ -17,9 +18,9 @@ export function uiFieldRestrictions(field, context) {
     var dispatch = d3_dispatch('change');
     var breathe = behaviorBreathe(context);
 
-    context.storage('turn-restriction-via-way', null);                 // remove old key
-    var storedViaWay = context.storage('turn-restriction-via-way0');   // use new key #6922
-    var storedDistance = context.storage('turn-restriction-distance');
+    prefs('turn-restriction-via-way', null);                 // remove old key
+    var storedViaWay = prefs('turn-restriction-via-way0');   // use new key #6922
+    var storedDistance = prefs('turn-restriction-distance');
 
     var _maxViaWay = storedViaWay !== null ? (+storedViaWay) : 0;
     var _maxDistance = storedDistance ? (+storedDistance) : 30;
@@ -62,7 +63,7 @@ export function uiFieldRestrictions(field, context) {
 
         // if form field is hidden or has detached from dom, clean up.
         if (!isOK ||
-            !d3_select('.inspector-wrap.inspector-hidden').empty() ||
+            !context.container().select('.inspector-wrap.inspector-hidden').empty() ||
             !selection.node().parentNode ||
             !selection.node().parentNode.parentNode) {
             selection.call(restrictions.off);
@@ -145,7 +146,7 @@ export function uiFieldRestrictions(field, context) {
                 _maxDistance = +val;
                 _intersection = null;
                 _container.selectAll('.layer-osm .layer-turns *').remove();
-                context.storage('turn-restriction-distance', _maxDistance);
+                prefs('turn-restriction-distance', _maxDistance);
                 _parent.call(restrictions);
             });
 
@@ -187,7 +188,7 @@ export function uiFieldRestrictions(field, context) {
                 var val = d3_select(this).property('value');
                 _maxViaWay = +val;
                 _container.selectAll('.layer-osm .layer-turns *').remove();
-                context.storage('turn-restriction-via-way0', _maxViaWay);
+                prefs('turn-restriction-via-way0', _maxViaWay);
                 _parent.call(restrictions);
             });
 
@@ -205,11 +206,11 @@ export function uiFieldRestrictions(field, context) {
 
         // Reflow warning: `utilGetDimensions` calls `getBoundingClientRect`
         // Instead of asking the restriction-container for its dimensions,
-        //  we can ask the #sidebar, which can have its dimensions cached.
+        //  we can ask the .sidebar, which can have its dimensions cached.
         // width: calc as sidebar - padding
         // height: hardcoded (from `80_app.css`)
         // var d = utilGetDimensions(selection);
-        var sdims = utilGetDimensions(d3_select('#sidebar'));
+        var sdims = utilGetDimensions(context.container().select('.sidebar'));
         var d = [ sdims[0] - 50, 370 ];
         var c = geoVecScale(d, 0.5);
         var z = 22;
@@ -407,7 +408,7 @@ export function uiFieldRestrictions(field, context) {
             var xPos = -1;
 
             if (minChange) {
-                xPos = utilGetDimensions(d3_select('#sidebar'))[0];
+                xPos = utilGetDimensions(context.container().select('.sidebar'))[0];
             }
 
             if (!minChange || (minChange && Math.abs(xPos - _lastXPos) >= minChange)) {
@@ -583,7 +584,7 @@ export function uiFieldRestrictions(field, context) {
 
 
     function displayMaxDistance(maxDist) {
-        var isImperial = (utilDetect().locale.toLowerCase() === 'en-us');
+        var isImperial = !localizer.usesMetric();
         var opts;
 
         if (isImperial) {
@@ -609,17 +610,17 @@ export function uiFieldRestrictions(field, context) {
     function displayName(entityID, graph) {
         var entity = graph.entity(entityID);
         var name = utilDisplayName(entity) || '';
-        var matched = context.presets().match(entity, graph);
+        var matched = presetManager.match(entity, graph);
         var type = (matched && matched.name()) || utilDisplayType(entity.id);
         return name || type;
     }
 
 
-    restrictions.entity = function(val) {
+    restrictions.entityIDs = function(val) {
         _intersection = null;
         _fromWayID = null;
         _oldTurns = null;
-        _vertexID = val.id;
+        _vertexID = val[0];
     };
 
 
@@ -642,3 +643,5 @@ export function uiFieldRestrictions(field, context) {
 
     return utilRebind(restrictions, dispatch, 'on');
 }
+
+uiFieldRestrictions.supportsMultiselection = false;

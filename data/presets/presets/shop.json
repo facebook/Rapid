@@ -7,6 +7,7 @@
         "address",
         "building_area",
         "opening_hours",
+        "opening_hours/covid19",
         "payment_multi"
     ],
     "moreFields": [
@@ -14,6 +15,7 @@
         "brand",
         "building/levels_building",
         "currency_multi",
+        "ele",
         "email",
         "fax",
         "gnis/feature_id",

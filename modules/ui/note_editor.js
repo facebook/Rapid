@@ -4,7 +4,7 @@ import {
     select as d3_select
 } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { services } from '../services';
 import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
@@ -15,8 +15,6 @@ import { svgIcon } from '../svg/icon';
 import { uiNoteComments } from './note_comments';
 import { uiNoteHeader } from './note_header';
 import { uiNoteReport } from './note_report';
-import { uiQuickLinks } from './quick_links';
-import { uiTooltipHtml } from './tooltipHtml';
 import { uiViewOnOSM } from './view_on_osm';
 
 import {
@@ -27,29 +25,17 @@ import {
 
 export function uiNoteEditor(context) {
     var dispatch = d3_dispatch('change');
-    var quickLinks = uiQuickLinks();
     var noteComments = uiNoteComments(context);
     var noteHeader = uiNoteHeader();
 
     // var formFields = uiFormFields(context);
 
     var _note;
+    var _newNote;
     // var _fieldsArr;
 
 
     function noteEditor(selection) {
-        // quick links
-        var choices = [{
-            id: 'zoom_to',
-            label: 'inspector.zoom_to.title',
-            tooltip: function() {
-                return uiTooltipHtml(t('inspector.zoom_to.tooltip_note'), t('inspector.zoom_to.key'));
-            },
-            click: function zoomTo() {
-                context.mode().zoomToSelected();
-            }
-        }];
-
 
         var header = selection.selectAll('.header')
             .data([0]);
@@ -60,7 +46,7 @@ export function uiNoteEditor(context) {
 
         headerEnter
             .append('button')
-            .attr('class', 'fr note-editor-close')
+            .attr('class', 'close')
             .on('click', function() {
                 context.enter(modeBrowse(context));
             })
@@ -87,10 +73,8 @@ export function uiNoteEditor(context) {
             .attr('class', 'modal-section note-editor')
             .merge(editor)
             .call(noteHeader.note(_note))
-            .call(quickLinks.choices(choices))
             .call(noteComments.note(_note))
             .call(noteSaveSection);
-
 
         var footer = selection.selectAll('.footer')
             .data([0]);
@@ -129,7 +113,7 @@ export function uiNoteEditor(context) {
 
         // // if new note, show categories to pick from
         // if (_note.isNew()) {
-        //     var presets = context.presets();
+        //     var presets = presetManager;
 
         //     // NOTE: this key isn't a age and therefore there is no documentation (yet)
         //     _fieldsArr = [
@@ -149,7 +133,7 @@ export function uiNoteEditor(context) {
 
         // function changeCategory() {
         //     // NOTE: perhaps there is a better way to get value
-        //     var val = d3_select('input[name=\'category\']:checked').property('__data__') || undefined;
+        //     var val = context.container().select('input[name=\'category\']:checked').property('__data__') || undefined;
 
         //     // store the unsaved category with the note itself
         //     _note = _note.update({ newCategory: val });
@@ -168,7 +152,7 @@ export function uiNoteEditor(context) {
                 return _note.isNew() ? t('note.newDescription') : t('note.newComment');
             });
 
-        noteSaveEnter
+        var commentTextarea = noteSaveEnter
             .append('textarea')
             .attr('class', 'new-comment-input')
             .attr('placeholder', t('note.inputPlaceholder'))
@@ -178,6 +162,11 @@ export function uiNoteEditor(context) {
             .on('keydown.note-input', keydown)
             .on('input.note-input', changeInput)
             .on('blur.note-input', changeInput);
+
+        if (_newNote) {
+            // autofocus the comment field for new notes
+            commentTextarea.node().focus();
+        }
 
         // update
         noteSave = noteSaveEnter
@@ -443,6 +432,12 @@ export function uiNoteEditor(context) {
     noteEditor.note = function(val) {
         if (!arguments.length) return _note;
         _note = val;
+        return noteEditor;
+    };
+
+    noteEditor.newNote = function(val) {
+        if (!arguments.length) return _newNote;
+        _newNote = val;
         return noteEditor;
     };
 

@@ -1,5 +1,5 @@
 {
-    "icon": "maki-town-hall",
+    "icon": "temaki-capitol",
     "geometry": [
         "point",
         "area"
@@ -14,6 +14,10 @@
     "tags": {
         "amenity": "townhall",
         "townhall:type": "city"
+    },
+    "reference": {
+        "key": "townhall:type",
+        "value": "city"
     },
     "name": "City Hall"
 }

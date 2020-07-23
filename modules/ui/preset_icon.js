@@ -1,10 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
+import { presetManager } from '../presets';
+import { prefs } from '../core/preferences';
 import { svgIcon, svgTagClasses } from '../svg';
 import { utilFunctor } from '../util';
 
 
-export function uiPresetIcon(context) {
+export function uiPresetIcon() {
   let _preset;
   let _geometry;
   let _sizeClass = 'medium';
@@ -207,6 +209,7 @@ export function uiPresetIcon(context) {
   const routeSegments = {
     bicycle: ['highway/cycleway', 'highway/cycleway', 'highway/cycleway'],
     bus: ['highway/unclassified', 'highway/secondary', 'highway/primary'],
+    trolleybus: ['highway/unclassified', 'highway/secondary', 'highway/primary'],
     detour: ['highway/tertiary', 'highway/residential', 'highway/unclassified'],
     ferry: ['route/ferry', 'route/ferry', 'route/ferry'],
     foot: ['highway/footway', 'highway/footway', 'highway/footway'],
@@ -232,7 +235,7 @@ export function uiPresetIcon(context) {
       geom = 'route';
     }
 
-    const showThirdPartyIcons = context.storage('preferences.privacy.thirdpartyicons') || 'true';
+    const showThirdPartyIcons = prefs('preferences.privacy.thirdpartyicons') || 'true';
     const isFallback = isSmall() && p.isFallback && p.isFallback();
     const imageURL = (showThirdPartyIcons === 'true') && p.imageURL;
     const picon = getIcon(p, geom);
@@ -340,7 +343,7 @@ export function uiPresetIcon(context) {
       let routeType = p.tags.type === 'waterway' ? 'waterway' : p.tags.route;
       const segmentPresetIDs = routeSegments[routeType];
       for (let i in segmentPresetIDs) {
-        const segmentPreset = context.presets().item(segmentPresetIDs[i]);
+        const segmentPreset = presetManager.item(segmentPresetIDs[i]);
         const segmentTagClasses = svgTagClasses().getClassesString(segmentPreset.tags, '');
         route.selectAll(`path.stroke.segment${i}`)
           .attr('class', `segment${i} line stroke ${segmentTagClasses}`);
@@ -391,21 +394,21 @@ export function uiPresetIcon(context) {
   }
 
 
-  presetIcon.preset = (val) => {
+  presetIcon.preset = function(val) {
     if (!arguments.length) return _preset;
     _preset = utilFunctor(val);
     return presetIcon;
   };
 
 
-  presetIcon.geometry = (val) => {
+  presetIcon.geometry = function(val) {
     if (!arguments.length) return _geometry;
     _geometry = utilFunctor(val);
     return presetIcon;
   };
 
 
-  presetIcon.sizeClass = (val) => {
+  presetIcon.sizeClass = function(val) {
     if (!arguments.length) return _sizeClass;
     _sizeClass = val;
     return presetIcon;

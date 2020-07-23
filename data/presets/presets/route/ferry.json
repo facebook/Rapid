@@ -1,5 +1,5 @@
 {
-    "icon": "maki-ferry",
+    "icon": "temaki-ferry",
     "geometry": [
         "line"
     ],
@@ -9,19 +9,21 @@
         "duration",
         "access",
         "toll",
-        "to",
-        "from"
+        "from",
+        "to"
     ],
     "moreFields": [
         "charge_toll",
+        "distance",
         "dog",
         "interval",
         "maxheight",
         "maxweight",
         "network",
-        "network/type",
         "opening_hours",
+        "opening_hours/covid19",
         "ref_route",
+        "roundtrip",
         "wheelchair"
     ],
     "tags": {
