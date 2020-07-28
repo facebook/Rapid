@@ -1,10 +1,16 @@
 import { event as d3_event } from 'd3-selection';
 
-import { t } from '../core/localizer';
-import { uiDisclosure } from './disclosure';
+import { t } from '../../core/localizer';
+import { uiDisclosure } from '../disclosure';
+import { uiSection } from '../section';
+
+export function uiSectionGridDisplayOptions(context) {
 
 
-export function uiGridDisplayOptions(context) {
+    var section = uiSection('grid-display-options', context)
+        .title(t('background.grid.grids'))
+        .disclosureContent(gridDisplayOptions);
+
     function chooseGrid(d) {
         d3_event.preventDefault();
         context.background().numGridSplits(d.numSplit);
@@ -57,11 +63,7 @@ export function uiGridDisplayOptions(context) {
     function gridDisplayOptions(selection) {
         context.rapidContext().on('task_extent_set.grid_display_options', function() {
             if (context.rapidContext().isTaskRectangular()) {
-                selection
-                    .call(uiDisclosure(context, 'grid_display_options', context.rapid)
-                        .title(t('background.grid.grids'))
-                        .content(render)
-                    );
+                selection.call(render);
             }
         });
 
@@ -69,13 +71,13 @@ export function uiGridDisplayOptions(context) {
             return;
         }
 
-        selection
-            .call(uiDisclosure(context, 'grid_display_options', context.rapid)
-                .title(t('background.grid.grids'))
-                .content(render)
-            );
+        // selection
+        //     .call(uiDisclosure(context, 'grid_display_options', context.rapid)
+        //         .title(t('background.grid.grids'))
+        //         .content(render)
+        //     );
     }
 
 
-    return gridDisplayOptions;
+    return section;
 }
