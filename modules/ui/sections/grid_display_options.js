@@ -1,7 +1,7 @@
 import { event as d3_event } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
-import { uiDisclosure } from '../disclosure';
 import { uiSection } from '../section';
 
 export function uiSectionGridDisplayOptions(context) {
@@ -10,6 +10,7 @@ export function uiSectionGridDisplayOptions(context) {
     var section = uiSection('grid-display-options', context)
         .title(t('background.grid.grids'))
         .disclosureContent(gridDisplayOptions);
+
 
     function chooseGrid(d) {
         d3_event.preventDefault();
@@ -61,21 +62,19 @@ export function uiSectionGridDisplayOptions(context) {
 
 
     function gridDisplayOptions(selection) {
+        var gridOptionsSection = d3_select('.section-grid-display-options')
+
         context.rapidContext().on('task_extent_set.grid_display_options', function() {
             if (context.rapidContext().isTaskRectangular()) {
+                gridOptionsSection.classed('hide', false);
                 selection.call(render);
             }
         });
 
         if (!context.rapidContext().isTaskRectangular()){
+            gridOptionsSection.classed('hide', true);
             return;
         }
-
-        // selection
-        //     .call(uiDisclosure(context, 'grid_display_options', context.rapid)
-        //         .title(t('background.grid.grids'))
-        //         .content(render)
-        //     );
     }
 
 
