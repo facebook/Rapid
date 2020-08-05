@@ -33,7 +33,7 @@ export function uiField(context, presetField, entityIDs, options) {
         options.revert = false;
     }
 
-    var dispatch = d3_dispatch('change');
+    var dispatch = d3_dispatch('change', 'revert');
     var field = Object.assign({}, presetField);   // shallow copy
     field.domId = utilUniqueDomId('form-field-' + field.safeid);
     var _show = options.show;
