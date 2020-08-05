@@ -2,12 +2,12 @@ import { t } from '../core/localizer';
 import { uiIntro } from './intro';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-
+import { prefs } from '../core/preferences';
 
 export function uiSplashRapid(context) {
 
     return function(selection) {
-        if (context.storage('sawRapidSplash'))
+        if (prefs('sawRapidSplash'))
             return;
 
         context.storage('sawRapidSplash', true);
