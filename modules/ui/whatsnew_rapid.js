@@ -48,7 +48,7 @@ export function uiWhatsNewRapid(context) {
         body
             .append('img')
             .attr('class', 'whatsnew-image')
-            .attr('src', 'dist/img/rapid-esri-splash.jpg');
+            .attr('src', context.asset('img/rapid-esri-splash.jpg'));
 
         body.select('p a')
             .attr('target', '_blank');
