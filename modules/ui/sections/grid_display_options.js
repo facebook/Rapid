@@ -62,7 +62,7 @@ export function uiSectionGridDisplayOptions(context) {
 
 
     function gridDisplayOptions(selection) {
-        var gridOptionsSection = d3_select('.section-grid-display-options')
+        var gridOptionsSection = d3_select('.section-grid-display-options');
 
         context.rapidContext().on('task_extent_set.grid_display_options', function() {
             if (context.rapidContext().isTaskRectangular()) {

@@ -10,7 +10,7 @@ export function uiSplashRapid(context) {
         if (prefs('sawRapidSplash'))
             return;
 
-        context.storage('sawRapidSplash', true);
+        prefs('sawRapidSplash', true);
 
         var modalSelection = uiModal(selection);
 
@@ -95,6 +95,5 @@ export function uiSplashRapid(context) {
 
         modalSelection.select('button.close')
             .attr('class','hide');
-
     };
 }

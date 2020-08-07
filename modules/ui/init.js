@@ -35,6 +35,7 @@ import { uiSidebar } from './sidebar';
 import { uiSourceSwitch } from './source_switch';
 import { uiSpinner } from './spinner';
 import { uiSplashRapid } from './splash_rapid';
+import { uiWhatsNewRapid } from './whatsnew_rapid';
 import { uiStatus } from './status';
 import { uiTooltip } from './tooltip';
 import { uiTopToolbar } from './top_toolbar';
@@ -421,12 +422,23 @@ export function uiInit(context) {
         context.enter(modeBrowse(context));
 
         var osm = context.connection();
+        var displayedSplash = false;
+
+
+
         if (!_initCounter++) {
             if (!ui.hash.startWalkthrough) {
                 if (context.history().lock() && context.history().hasRestorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
-                } else if (osm.authenticated()) {
+                }
+                // If users have already seen the 'welcome to RapiD' splash screen, don't also
+                // show them the what's new screen
+                else if (prefs('sawRapidSplash')) {
+                    context.container()
+                        .call(uiWhatsNewRapid(context));
+                }
+                else if (osm.authenticated()) {
                     context.container()
                         .call(uiSplashRapid(context));
                 }
