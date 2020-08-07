@@ -1204,6 +1204,13 @@
             "skip_to_rapid": "Learn about RapiD!",
             "start": "No thanks, just start mapping"
         },
+        "rapid_whats_new": {
+            "welcome": "What's New- Esri Datasets in {rapidicon}",
+            "text": "Come check out our latest experimental feature - Esri datasets that are useable from within {rapidicon}!\nLearn more about it [here](https://tech.fb.com/osm-ready-data-sets/).",
+            "ok": "Okay, let's go",
+            "nope": "No thanks, just take me to RapiD",
+            "dontshowagain": "Don't show this again"
+        },
         "rapid_first_edit": {
             "nice": "You just added your first {rapidicon} AI-Assisted feature, nice.",
             "text": "You'll need an OpenStreetMap account to save your work. Would you like to log in with OSM now or keep exploring?",

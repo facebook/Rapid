@@ -6,14 +6,16 @@ import marked from 'marked';
 
 export function uiWhatsNewRapid(context) {
 
+    var dontShowAgain = false;
+
+    function handleDontshowClick(){
+        dontShowAgain = !dontShowAgain;
+    }
+
     return function(selection) {
-        if (!prefs('sawRapidSplash'))
-            return;
-            
-        if (prefs('sawWhatsNew'))
+        if (prefs('sawWhatsNew') === 'true')
             return;
 
-        prefs('sawWhatsNew', true);
 
         var modalSelection = uiModal(selection);
 
@@ -51,17 +53,40 @@ export function uiWhatsNewRapid(context) {
         body.select('p a')
             .attr('target', '_blank');
 
+
+        var checkboxContainer = whatsNewModal
+            .append('div')
+            .attr('class', 'modal-section rapid-checkbox dontshow')
+            .attr('id', 'dontshowagain');
+
+        var checkbox = checkboxContainer
+            .append('label')
+            .attr('class', 'rapid-checkbox-label dontshow')
+            .html(t('rapid_whats_new.dontshowagain'));
+
+        checkbox
+            .append('input')
+            .attr('type', 'checkbox')
+            .attr('class', 'rapid-feature-checkbox')
+            .property('checked', false)
+            .on('click', handleDontshowClick);
+
+        checkbox
+            .append('div')
+            .attr('class', 'rapid-checkbox-custom');
+
         var buttonWrap = whatsNewModal
         .append('div')
         .attr('class', 'modal-actions');
 
-        var exploring = buttonWrap
+        var nothanks = buttonWrap
             .append('button')
             .on('click', function() {
+                prefs('sawWhatsNew', dontShowAgain);
                 modalSelection.close();
             });
 
-        exploring
+        nothanks
             .append('div')
             .text(t('rapid_whats_new.nope'));
 
@@ -73,6 +98,7 @@ export function uiWhatsNewRapid(context) {
             .append('div')
             .text(t('rapid_whats_new.ok'))
             .on('click', function() {
+                prefs('sawWhatsNew', dontShowAgain);
                 modalSelection.close();
                 window.open('https://mapwith.ai/rapid-esri', '_blank');
             });
