@@ -2,7 +2,7 @@
 # [1.0.10](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.10)
 #### 2020-Aug-07th
 #### :trumpet: Updates
-This brings the RapiD code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff. Also add a one-time dialog for the rapid-esri collaboration.
+This brings the RapiD code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff. Also add a one-time dialog for the rapid-esri collaboration. Finally, fix issue #144.
 
 # [1.0.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.9)
 #### 2020-Jun-09th
