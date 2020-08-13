@@ -1,20 +1,54 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t, languageName } from '../util/locale';
-import { data } from '../../data';
+import LocationConflation from '@ideditor/location-conflation';
+import whichPolygon from 'which-polygon';
+
+import { fileFetcher } from '../core/file_fetcher';
+import { t, localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { uiDisclosure } from '../ui/disclosure';
-import { utilDetect } from '../util/detect';
 import { utilRebind } from '../util/rebind';
 
 
+let _oci = null;
+
 export function uiSuccess(context) {
   const MAXEVENTS = 2;
-  const detected = utilDetect();
   const dispatch = d3_dispatch('cancel');
   let _changeset;
   let _location;
+  ensureOSMCommunityIndex();   // start fetching the data
+
+
+  function ensureOSMCommunityIndex() {
+    const data = fileFetcher;
+    return Promise.all([ data.get('oci_resources'), data.get('oci_features') ])
+      .then(vals => {
+        if (_oci) return _oci;
+
+        const ociResources = vals[0].resources;
+        const loco = new LocationConflation(vals[1]);
+        let ociFeatures = {};
+
+        Object.values(ociResources).forEach(resource => {
+          const feature = loco.resolveLocationSet(resource.locationSet);
+          let ociFeature = ociFeatures[feature.id];
+          if (!ociFeature) {
+            ociFeature = JSON.parse(JSON.stringify(feature));  // deep clone
+            ociFeature.properties.resourceIDs = new Set();
+            ociFeatures[feature.id] = ociFeature;
+          }
+          ociFeature.properties.resourceIDs.add(resource.id);
+        });
+
+        return _oci = {
+          features: ociFeatures,
+          resources: ociResources,
+          query: whichPolygon({ type: 'FeatureCollection', features: Object.values(ociFeatures) })
+        };
+      });
+  }
 
 
   // string-to-date parsing in JavaScript is weird
@@ -39,14 +73,14 @@ export function uiSuccess(context) {
       .attr('class', 'header fillL');
 
     header
-      .append('button')
-      .attr('class', 'fr')
-      .on('click', () => dispatch.call('cancel'))
-      .call(svgIcon('#iD-icon-close'));
-
-    header
       .append('h3')
       .text(t('success.just_edited'));
+
+    header
+      .append('button')
+      .attr('class', 'close')
+      .on('click', () => dispatch.call('cancel'))
+      .call(svgIcon('#iD-icon-close'));
 
     let body = selection
       .append('div')
@@ -114,28 +148,31 @@ export function uiSuccess(context) {
       }));
 
 
-    // Get community index features intersecting the map..
-    let communities = [];
-    const properties = data.community.query(context.map().center(), true) || [];
+    // Get OSM community index features intersecting the map..
+    ensureOSMCommunityIndex()
+      .then(oci => {
+        let communities = [];
+        const properties = oci.query(context.map().center(), true) || [];
 
-    // Gather the communities from the result
-    properties.forEach(props => {
-      const resourceIDs = Array.from(props.resourceIDs);
-      resourceIDs.forEach(resourceID => {
-        const resource = data.community.resources[resourceID];
-        communities.push({
-          area: props.area || Infinity,
-          order: resource.order || 0,
-          resource: resource
+        // Gather the communities from the result
+        properties.forEach(props => {
+          const resourceIDs = Array.from(props.resourceIDs);
+          resourceIDs.forEach(resourceID => {
+            const resource = oci.resources[resourceID];
+            communities.push({
+              area: props.area || Infinity,
+              order: resource.order || 0,
+              resource: resource
+            });
+          });
         });
+
+        // sort communities by feature area ascending, community order descending
+        communities.sort((a, b) => a.area - b.area || b.order - a.order);
+
+        body
+          .call(showCommunityLinks, communities.map(c => c.resource));
       });
-    });
-
-    // sort communities by feature area ascending, community order descending
-    communities.sort((a, b) => a.area - b.area || b.order - a.order);
-
-    body
-      .call(showCommunityLinks, communities.map(c => c.resource));
   }
 
 
@@ -279,7 +316,7 @@ export function uiSuccess(context) {
 
       if (d.languageCodes && d.languageCodes.length) {
         const languageList = d.languageCodes
-          .map(code => languageName(code))
+          .map(code => localizer.languageName(code))
           .join(', ');
 
         moreEnter
@@ -325,7 +362,7 @@ export function uiSuccess(context) {
             options.hour = 'numeric';
             options.minute = 'numeric';
           }
-          return d.date.toLocaleString(detected.locale, options);
+          return d.date.toLocaleString(localizer.localeCode(), options);
         });
 
       itemEnter
@@ -359,14 +396,14 @@ export function uiSuccess(context) {
   }
 
 
-  success.changeset = (val) => {
+  success.changeset = function(val) {
     if (!arguments.length) return _changeset;
     _changeset = val;
     return success;
   };
 
 
-  success.location = (val) => {
+  success.location = function(val) {
     if (!arguments.length) return _location;
     _location = val;
     return success;

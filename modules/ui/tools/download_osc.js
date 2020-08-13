@@ -1,14 +1,10 @@
 import { event as d3_event } from 'd3-selection';
-import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
-
-import { t } from '../../util/locale';
+import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
 import { actionDiscardTags } from '../../actions';
 import { svgIcon } from '../../svg';
-import { uiCmd } from '../cmd';
-import { uiTooltipHtml } from '../tooltipHtml';
-import { tooltip } from '../../util/tooltip';
+import { uiTooltip } from '../tooltip';
 
 
 export function uiToolDownloadOsc(context) {
@@ -44,13 +40,13 @@ export function uiToolDownloadOsc(context) {
 
         if (tooltipBehavior) {
             tooltipBehavior
-                .title(uiTooltipHtml(
-                    t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes'))
+                .title(
+                    t(_numChanges > 0 ? 'download_osc.help' : 'download_osc.no_changes')
                 );
         }
 
         if (button) {
-            button.classed('disabled', isDisabled()); 
+            button.classed('disabled', isDisabled());
         }
     }
 
@@ -79,10 +75,9 @@ export function uiToolDownloadOsc(context) {
 
     tool.render = function(selection) {
 
-        tooltipBehavior = tooltip()
+        tooltipBehavior = uiTooltip()
             .placement('bottom')
-            .html(true)
-            .title(uiTooltipHtml(t('download_osc.no_changes')));
+            .title(t('download_osc.no_changes'));
 
         button = selection
             .append('button')

@@ -1,4 +1,5 @@
-import { t } from '../util/locale';
+import { prefs } from '../core/preferences';
+import { t } from '../core/localizer';
 //import { actionChangeTags } from '../actions/change_tags';
 import { actionOrthogonalize } from '../actions/orthogonalize';
 import { geoOrthoCanOrthogonalize } from '../geo/ortho';
@@ -54,7 +55,7 @@ export function validationUnsquareWay(context) {
 
 
         // user-configurable square threshold
-        var storedDegreeThreshold = context.storage('validate-square-degrees');
+        var storedDegreeThreshold = prefs('validate-square-degrees');
         var degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 
         var points = nodes.map(function(node) { return context.projection(node.loc); });
@@ -75,7 +76,7 @@ export function validationUnsquareWay(context) {
             severity: 'warning',
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
-                return entity ? t('issues.unsquare_way.message', { feature: utilDisplayLabel(entity, context) }) : '';
+                return entity ? t('issues.unsquare_way.message', { feature: utilDisplayLabel(entity, context.graph()) }) : '';
             },
             reference: showReference,
             entityIds: [entity.id],

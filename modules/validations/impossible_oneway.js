@@ -1,4 +1,5 @@
-import { t, textDirection } from '../util/locale';
+import { localizer } from '../core/localizer';
+import { t } from '../core/localizer';
 import { modeDrawLine } from '../modes/draw_line';
 import { actionReverse } from '../actions/reverse';
 import { utilDisplayLabel } from '../util';
@@ -163,7 +164,7 @@ export function validationImpossibleOneway() {
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
                     return entity ? t('issues.impossible_oneway.' + messageID + '.message', {
-                        feature: utilDisplayLabel(entity, context)
+                        feature: utilDisplayLabel(entity, context.graph())
                     }) : '';
                 },
                 reference: getReference(referenceID),
@@ -184,6 +185,7 @@ export function validationImpossibleOneway() {
                         }));
                     }
                     if (node.tags.noexit !== 'yes') {
+                        var textDirection = localizer.textDirection();
                         var useLeftContinue = (isFirst && textDirection === 'ltr') ||
                             (!isFirst && textDirection === 'rtl');
                         fixes.push(new validationIssueFix({
@@ -225,7 +227,7 @@ export function validationImpossibleOneway() {
         }
 
         context.enter(
-            modeDrawLine(context, way.id, context.graph(), context.graph(), 'line', way.affix(vertex.id), true)
+            modeDrawLine(context, way.id, context.graph(), 'line', way.affix(vertex.id), true)
         );
     }
 

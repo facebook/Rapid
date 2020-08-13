@@ -1,4 +1,4 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
@@ -7,7 +7,7 @@ export function validationIncompatibleSource() {
     var type = 'incompatible_source';
     var invalidSources = [
         {
-            id:'google', regex:'google', exceptRegex: 'books.google|Google Books'
+            id:'google', regex:'google', exceptRegex: 'books.google|Google Books|drive.google|googledrive|Google Drive'
         }
     ];
 
@@ -35,7 +35,7 @@ export function validationIncompatibleSource() {
                 message: function(context) {
                     var entity = context.hasEntity(this.entityIds[0]);
                     return entity ? t('issues.incompatible_source.' + invalidSource.id + '.feature.message', {
-                        feature: utilDisplayLabel(entity, context)
+                        feature: utilDisplayLabel(entity, context.graph())
                     }) : '';
                 },
                 reference: getReference(invalidSource.id),

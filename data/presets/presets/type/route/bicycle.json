@@ -6,8 +6,15 @@
         "network_bicycle",
         "cycle_network",
         "network/type",
-        "to",
-        "from"
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
+        "distance",
+        "roundtrip"
     ],
     "geometry": [
         "relation"

@@ -6,10 +6,15 @@
         "operator",
         "network_foot",
         "network/type",
-        "description",
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
         "distance",
-        "to",
-        "from"
+        "roundtrip"
     ],
     "geometry": [
         "relation"

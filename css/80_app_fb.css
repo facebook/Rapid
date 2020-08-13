@@ -57,51 +57,65 @@ button.ai-features-toggle.layer-off use {
     display: block;
 }
 
-.modal-splash.modal-rapid {
-    display: flex; 
+.modal-whatsnew .modal-section.body{
+    display: flex;
+    align-items: center;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.5); 
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
-    border-radius: 15px; 
-    top: 80px; 
+}
+
+.modal-whatsnew .body img{
+    width: 80%;
+    padding-top:10px;
+}
+
+.modal-whatsnew.modal-rapid,
+.modal-splash.modal-rapid {
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    top: 80px;
 }
 
 .modal-rapid .fillL {
-    background: transparent; 
-    color: white; 
+    background: transparent;
+    color: white;
 }
 
 .modal-rapid .modal-actions button {
     text-align: center;
-    background: black; 
+    background: black;
     color: white;
     border: 1px solid white;
     width: 100%;
     margin: 20px;
-    border-radius: 5px; 
-    font-size: 14px; 
-    font-weight: 500; 
-    height: 160px; 
-    box-sizing: border-box; 
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 160px;
+    box-sizing: border-box;
 }
 
 .modal-rapid .content {
-    box-shadow: unset; 
+    box-shadow: unset;
+    border-radius: 15px;
+    border: 2px solid #fffa;
 }
 
+.modal-whatsnew .modal-actions button {
+    height: 3rem;
+}
+
+.modal-rapid .modal-actions button.whats-new-okay,
 .modal-rapid .modal-actions button.rapid-login-to-osm {
-    background: white; 
-    color: black; 
+    background: white;
+    color: black;
     border: black;
-    height: 3rem;  
-}
-
-.modal-rapid .modal-actions button.rapid-explore {
-    height: 3rem;  
 }
 
 .modal-rapid .modal-section {
-    border: 0px; 
+    border: 0px;
 }
 
 .modal-rapid .modal-section .logo-rapid {
@@ -109,43 +123,43 @@ button.ai-features-toggle.layer-off use {
 }
 
 .modal-rapid p {
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 .modal-rapid > button.close {
-    align-self: flex-end; 
-    color: #ff26d4; 
-    position: unset; 
-    height: 40px; 
-    background: transparent; 
+    align-self: flex-end;
+    color: #ff26d4;
+    position: unset;
+    height: 40px;
+    background: transparent;
 }
 
 .rapid-feature.rapid-stack {
     display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    color: white; 
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
 }
 
 .rapid-feature-label {
-    display: flex; 
-    align-items: center; 
-    margin: 16px; 
+    display: flex;
+    align-items: center;
+    margin: 16px;
 }
-
+.modal-whatsnew svg.icon.logo-rapid,
 .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
-    margin: -5px;
+    margin: 0em -.5em;
 }
 
 .rapid-feature-description {
-    font-size: 14px; 
-    margin: 16px; 
+    font-size: 14px;
+    margin: 16px;
 }
 
 .rapid-feature-license {
-    margin: 16px;  
+    margin: 16px;
 }
 
 .rapid-feature-license p {
@@ -153,99 +167,135 @@ button.ai-features-toggle.layer-off use {
 }
 
 .rapid-feature-label-container {
-    display: flex; 
-    align-items: center; 
-    justify-content: space-around; 
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .modal-section.rapid-checkbox {
     font-size: 24px;
-    display: flex; 
-    justify-content: flex-start; 
-    align-items: center; 
-    padding: 5px; 
-    width: 100%; 
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+
+.modal-section.rapid-checkbox.dontshow {
+    font-size: 12px;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0px 5px;
+    width: 80%;
+    align-items: unset;
+    width: unset;
 }
 
 .modal-section.rapid-checkbox.disabled {
-    opacity: .5; 
+    opacity: .5;
 }
 
 .rapid-feature-checkbox {
-    margin-left: auto; 
+    margin-left: auto;
 }
 
 .modal-section.rapid-checkbox.section-divider {
     width: 95%;
-    height: 1px; 
+    height: 1px;
     background: #ccca;
-    padding: 1px; 
-    align-self: center; 
+    padding: 1px;
+    align-self: center;
 }
 
 .rapid-feature-hotkey {
-    margin-left: -5px; 
+    margin-left: -5px;
     font-size: 14px;
 }
 
 .rapid-feature-label-divider {
-    width: 1px; 
-    height: 20px; 
-    margin-top: 3px; 
-    background: #ccca; 
+    width: 1px;
+    height: 20px;
+    margin-top: 3px;
+    background: #ccca;
 }
 
 .rapid-checkbox-label {
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     margin-left: auto;
 }
 
-/* since checkboxes can't be styled, we'll 
+
+.rapid-checkbox-label.dontshow {
+    width: 30%;
+    margin:20px 20px 0px;
+    height: 20px;
+    display: flex;
+}
+
+
+/* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
 .rapid-checkbox-label input {
-    position: absolute; 
-    opacity: 0; 
-    cursor: pointer; 
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
 .rapid-checkbox-label .rapid-checkbox-custom {
-    height: 36px; 
-    width: 36px; 
+    height: 36px;
+    width: 36px;
     background-color: transparent;
-    border-radius: 5px; 
-    border: 2px solid #ffffff; 
+    border-radius: 5px;
+    border: 2px solid #ffffff;
 }
 
-.rapid-checkbox-label .rapid-checkbox-custom::after { 
-    content: ""; 
-    height: 0px; 
-    width: 0px; 
-    border-radius: 5px; 
-    border: solid transparent; 
-    border-width: 0 6px 6px 0; 
-    transform: scale(0); 
-    opacity: 1; 
+
+.rapid-checkbox-label.dontshow .rapid-checkbox-custom {
+    height: 24px;
+    width: 24px;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+
+.rapid-checkbox-label .rapid-checkbox-custom::after {
+    content: "";
+    height: 0px;
+    width: 0px;
+    border-radius: 5px;
+    border: solid transparent;
+    border-width: 0 6px 6px 0;
+    transform: scale(0);
+    opacity: 1;
 }
 
 .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
-    content: ""; 
+    content: "";
     display: block;
-    height: 12px; 
-    width: 6px; 
+    height: 12px;
+    width: 6px;
     padding: 2px;
-    margin-left: 9px; 
-    margin-top: 2px; 
-    border-radius: 0; 
-    border: solid #ff26d4; 
+    margin-left: 9px;
+    margin-top: 2px;
+    border-radius: 0;
+    border: solid #ff26d4;
     background-color: transparent;
-    border-width: 0 4px 4px 0; 
-    transform: rotate(45deg) scale(1); 
-    opacity: 1; 
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
 }
 
-g.layer-ai-features.hide-rapid-roads path.road, 
-g.layer-ai-features.hide-rapid-roads node.road, 
-g.layer-ai-features.hide-rapid-buildings path.building  { 
-    display: none; 
+.rapid-checkbox-label.dontshow input:checked ~ .rapid-checkbox-custom::after {
+    height: 7px;
+    width: 3px;
+    padding: 2px;
+    margin-left: 5px;
+    margin-top: 2px;
+    border-width: 0 2px 2px 0;
+}
+g.layer-ai-features.hide-rapid-roads path.road,
+g.layer-ai-features.hide-rapid-roads g.node.road,
+g.layer-ai-features.hide-rapid-buildings path.building  {
+    display: none;
 }

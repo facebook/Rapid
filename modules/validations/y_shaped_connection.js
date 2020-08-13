@@ -1,6 +1,6 @@
 import { geoAngle, geoSphericalDistance } from '../geo';
 import { operationDelete } from '../operations/index';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 

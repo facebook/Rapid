@@ -1,4 +1,4 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
@@ -25,7 +25,7 @@ export function validationHelpRequest(context) {
             severity: 'warning',
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
-                return entity ? t('issues.fixme_tag.message', { feature: utilDisplayLabel(entity, context) }) : '';
+                return entity ? t('issues.fixme_tag.message', { feature: utilDisplayLabel(entity, context.graph()) }) : '';
             },
             dynamicFixes: function() {
                 return [

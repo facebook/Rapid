@@ -28,7 +28,7 @@ export function svgDefs(context) {
         // add markers
         defs
             .append('marker')
-            .attr('id', 'oneway-marker')
+            .attr('id', 'ideditor-oneway-marker')
             .attr('viewBox', '0 0 10 5')
             .attr('refX', 2.5)
             .attr('refY', 2.5)
@@ -51,7 +51,7 @@ export function svgDefs(context) {
         function addSidedMarker(name, color, offset) {
             defs
                 .append('marker')
-                .attr('id', 'sided-marker-' + name)
+                .attr('id', 'ideditor-sided-marker-' + name)
                 .attr('viewBox', '0 0 2 2')
                 .attr('refX', 1)
                 .attr('refY', -offset)
@@ -78,7 +78,7 @@ export function svgDefs(context) {
 
         defs
             .append('marker')
-            .attr('id', 'viewfield-marker')
+            .attr('id', 'ideditor-viewfield-marker')
             .attr('viewBox', '0 0 16 16')
             .attr('refX', 8)
             .attr('refY', 16)
@@ -97,7 +97,7 @@ export function svgDefs(context) {
 
         defs
             .append('marker')
-            .attr('id', 'viewfield-marker-wireframe')
+            .attr('id', 'ideditor-viewfield-marker-wireframe')
             .attr('viewBox', '0 0 16 16')
             .attr('refX', 8)
             .attr('refY', 16)
@@ -149,7 +149,7 @@ export function svgDefs(context) {
             ])
             .enter()
             .append('pattern')
-            .attr('id', function (d) { return 'pattern-' + d[0]; })
+            .attr('id', function (d) { return 'ideditor-pattern-' + d[0]; })
             .attr('width', 32)
             .attr('height', 32)
             .attr('patternUnits', 'userSpaceOnUse');
@@ -177,7 +177,7 @@ export function svgDefs(context) {
             .data([12, 18, 20, 32, 45])
             .enter()
             .append('clipPath')
-            .attr('id', function (d) { return 'clip-square-' + d; })
+            .attr('id', function (d) { return 'ideditor-clip-square-' + d; })
             .append('rect')
             .attr('x', 0)
             .attr('y', 0)
@@ -209,7 +209,7 @@ export function svgDefs(context) {
                 d3_svg(url)
                     .then(function(svg) {
                         node.appendChild(
-                            d3_select(svg.documentElement).attr('id', d).node()
+                            d3_select(svg.documentElement).attr('id', 'ideditor-' + d).node()
                         );
                         if (overrideColors && d !== 'iD-sprite') {   // allow icon colors to be overridden..
                             d3_select(node).selectAll('path')

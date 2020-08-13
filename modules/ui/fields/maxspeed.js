@@ -3,14 +3,16 @@ import { select as d3_select } from 'd3-selection';
 import * as countryCoder from '@ideditor/country-coder';
 
 import { uiCombobox } from '../combobox';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { t } from '../../core/localizer';
+import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
 
 
 export function uiFieldMaxspeed(field, context) {
     var dispatch = d3_dispatch('change');
     var unitInput = d3_select(null);
     var input = d3_select(null);
-    var _entity;
+    var _entityIDs = [];
+    var _tags;
     var _isImperial;
 
     var speedCombo = uiCombobox(context, 'maxspeed');
@@ -32,14 +34,14 @@ export function uiFieldMaxspeed(field, context) {
             .merge(wrap);
 
 
-        input = wrap.selectAll('#preset-input-' + field.safeid)
+        input = wrap.selectAll('input.maxspeed-number')
             .data([0]);
 
         input = input.enter()
             .append('input')
             .attr('type', 'text')
-            .attr('id', 'preset-input-' + field.safeid)
-            .attr('placeholder', field.placeholder())
+            .attr('class', 'maxspeed-number')
+            .attr('id', field.domId)
             .call(utilNoAuto)
             .call(speedCombo)
             .merge(input);
@@ -48,8 +50,7 @@ export function uiFieldMaxspeed(field, context) {
             .on('change', change)
             .on('blur', change);
 
-        var loc = _entity.extent(context.graph()).center();
-
+        var loc = combinedEntityExtent().center();
         _isImperial = countryCoder.roadSpeedUnit(loc) === 'mph';
 
         unitInput = wrap.selectAll('input.maxspeed-unit')
@@ -70,13 +71,13 @@ export function uiFieldMaxspeed(field, context) {
         function changeUnits() {
             _isImperial = utilGetSetValue(unitInput) === 'mph';
             utilGetSetValue(unitInput, _isImperial ? 'mph' : 'km/h');
-            setSuggestions();
+            setUnitSuggestions();
             change();
         }
     }
 
 
-    function setSuggestions() {
+    function setUnitSuggestions() {
         speedCombo.data((_isImperial ? imperialValues : metricValues).map(comboValues));
         utilGetSetValue(unitInput, _isImperial ? 'mph' : 'km/h');
     }
@@ -92,14 +93,17 @@ export function uiFieldMaxspeed(field, context) {
 
     function change() {
         var tag = {};
-        var value = utilGetSetValue(input);
+        var value = utilGetSetValue(input).trim();
+
+        // don't override multiple values with blank string
+        if (!value && Array.isArray(_tags[field.key])) return;
 
         if (!value) {
             tag[field.key] = undefined;
         } else if (isNaN(value) || !_isImperial) {
-            tag[field.key] = value;
+            tag[field.key] = context.cleanTagValue(value);
         } else {
-            tag[field.key] = value + ' mph';
+            tag[field.key] = context.cleanTagValue(value + ' mph');
         }
 
         dispatch.call('change', this, tag);
@@ -107,17 +111,26 @@ export function uiFieldMaxspeed(field, context) {
 
 
     maxspeed.tags = function(tags) {
-        var value = tags[field.key];
+        _tags = tags;
 
-        if (value && value.indexOf('mph') >= 0) {
-            value = parseInt(value, 10);
-            _isImperial = true;
-        } else if (value) {
-            _isImperial = false;
+        var value = tags[field.key];
+        var isMixed = Array.isArray(value);
+
+        if (!isMixed) {
+            if (value && value.indexOf('mph') >= 0) {
+                value = parseInt(value, 10).toString();
+                _isImperial = true;
+            } else if (value) {
+                _isImperial = false;
+            }
         }
 
-        setSuggestions();
-        utilGetSetValue(input, value || '');
+        setUnitSuggestions();
+
+        utilGetSetValue(input, typeof value === 'string' ? value : '')
+            .attr('title', isMixed ? value.filter(Boolean).join('\n') : null)
+            .attr('placeholder', isMixed ? t('inspector.multiple_values') : field.placeholder())
+            .classed('mixed', isMixed);
     };
 
 
@@ -126,9 +139,14 @@ export function uiFieldMaxspeed(field, context) {
     };
 
 
-    maxspeed.entity = function(val) {
-        _entity = val;
+    maxspeed.entityIDs = function(val) {
+        _entityIDs = val;
     };
+
+
+    function combinedEntityExtent() {
+        return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
+    }
 
 
     return utilRebind(maxspeed, dispatch, 'on');

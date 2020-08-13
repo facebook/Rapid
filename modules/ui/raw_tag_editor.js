@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { event as d3_event, select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { uiCombobox } from './combobox';
@@ -283,7 +283,7 @@ export function uiRawTagEditor(context) {
 
         function isReadOnly(d) {
             // Read-only for source=digitalglobe on ML roads. TODO: switch to check on __fbid__
-            if (_entityID && _entityID.indexOf('w-') === 0 && d.key === 'source' 
+            if (_entityID && _entityID.indexOf('w-') === 0 && d.key === 'source'
                 && (d.value === 'digitalglobe' || d.value === 'maxar')) {
                 return true;
             }

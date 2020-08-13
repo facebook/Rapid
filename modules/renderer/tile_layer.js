@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 
 import { geoScaleToZoom, geoVecLength } from '../geo';
 import { utilPrefixCSSProperty, utilTiler } from '../util';
@@ -198,6 +198,7 @@ export function rendererTileLayer(context) {
         image.enter()
           .append('img')
             .attr('class', 'tile')
+            .attr('draggable', 'false')
             .style('width', _tileSize + 'px')
             .style('height', _tileSize + 'px')
             .attr('src', function(d) { return d[3]; })

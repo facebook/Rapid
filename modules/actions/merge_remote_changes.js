@@ -1,14 +1,14 @@
 import deepEqual from 'fast-deep-equal';
 import { diff3Merge } from 'node-diff3';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { actionDeleteMultiple } from './delete_multiple';
 import { osmEntity } from '../osm';
-import { dataDiscarded } from '../../data';
 import { utilArrayUnion, utilArrayUniq } from '../util';
 
 
-export function actionMergeRemoteChanges(id, localGraph, remoteGraph, formatUser) {
+export function actionMergeRemoteChanges(id, localGraph, remoteGraph, discardTags, formatUser) {
+    discardTags = discardTags || {};
     var _option = 'safe';  // 'safe', 'force_local', 'force_remote'
     var _conflicts = [];
 
@@ -49,7 +49,7 @@ export function actionMergeRemoteChanges(id, localGraph, remoteGraph, formatUser
         var a = target.nodes || [];
         var b = remote.nodes || [];
         var nodes = [];
-        var hunks = diff3Merge(a, o, b, true);
+        var hunks = diff3Merge(a, o, b, { excludeFalseConflicts: true });
 
         for (var i = 0; i < hunks.length; i++) {
             var hunk = hunks[i];
@@ -167,7 +167,7 @@ export function actionMergeRemoteChanges(id, localGraph, remoteGraph, formatUser
         var a = target.tags || {};
         var b = remote.tags || {};
         var keys = utilArrayUnion(utilArrayUnion(Object.keys(o), Object.keys(a)), Object.keys(b))
-            .filter(function(k) { return !dataDiscarded[k]; });
+            .filter(function(k) { return !discardTags[k]; });
         var tags = Object.assign({}, a);   // shallow copy
         var changed = false;
 

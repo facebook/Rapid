@@ -1,24 +1,24 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import {
-    event as d3_event,
-    select as d3_select
+    event as d3_event
 } from 'd3-selection';
 
-import { t, textDirection } from '../../util/locale';
+import { presetManager } from '../../presets';
+import { t } from '../../core/localizer';
 import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilArrayUniq, utilRebind } from '../../util';
-import { icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
+import { helpString, icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, reveal) {
     var dispatch = d3_dispatch('done');
     var house = [-85.62815, 41.95638];
     var tank = [-85.62732, 41.95347];
-    var buildingCatetory = context.presets().item('category-building');
-    var housePreset = context.presets().item('building/house');
-    var tankPreset = context.presets().item('man_made/storage_tank');
+    var buildingCatetory = presetManager.item('category-building');
+    var housePreset = presetManager.item('building/house');
+    var tankPreset = presetManager.item('man_made/storage_tank');
     var timeouts = [];
     var _houseID = null;
     var _tankID = null;
@@ -54,24 +54,6 @@ export function uiIntroBuilding(context, reveal) {
     }
 
 
-    function revealEditMenu(loc, text, options) {
-        var rect = context.surfaceRect();
-        var point = context.curtainProjection(loc);
-        var pad = 40;
-        var width = 250 + (2 * pad);
-        var height = 350;
-        var startX = rect.left + point[0];
-        var left = (textDirection === 'rtl') ? (startX - width + pad) : (startX - pad);
-        var box = {
-            left: left,
-            top: point[1] + rect.top - 60,
-            width: width,
-            height: height
-        };
-        reveal(box, text, options);
-    }
-
-
     function addHouse() {
         context.enter(modeBrowse(context));
         context.history().reset('initial');
@@ -83,7 +65,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             var tooltip = reveal('button.add-area',
-                t('intro.buildings.add_building', { button: icon('#iD-icon-area', 'pre-text') }));
+                helpString('intro.buildings.add_building'));
 
             tooltip.selectAll('.popover-inner')
                 .insert('svg', 'span')
@@ -113,10 +95,12 @@ export function uiIntroBuilding(context, reveal) {
         context.map().zoomEase(20, 500);
 
         timeout(function() {
-            revealHouse(house, t('intro.buildings.start_building'));
+            var startString = helpString('intro.buildings.start_building') +
+                helpString('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+            revealHouse(house, startString);
 
             context.map().on('move.intro drawn.intro', function() {
-                revealHouse(house, t('intro.buildings.start_building'), { duration: 0 });
+                revealHouse(house, startString, { duration: 0 });
             });
 
             context.on('enter.intro', function(mode) {
@@ -141,10 +125,14 @@ export function uiIntroBuilding(context, reveal) {
 
         _houseID = null;
 
-        revealHouse(house, t('intro.buildings.continue_building'));
+        var continueString = helpString('intro.buildings.continue_building') + '{br}' +
+            helpString('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+            helpString('intro.buildings.finish_building');
+
+        revealHouse(house, continueString);
 
         context.map().on('move.intro drawn.intro', function() {
-            revealHouse(house, t('intro.buildings.continue_building'), { duration: 0 });
+            revealHouse(house, continueString, { duration: 0 });
         });
 
         context.on('enter.intro', function(mode) {
@@ -180,12 +168,12 @@ export function uiIntroBuilding(context, reveal) {
     function retryHouse() {
         var onClick = function() { continueTo(addHouse); };
 
-        revealHouse(house, t('intro.buildings.retry_building'),
+        revealHouse(house, helpString('intro.buildings.retry_building'),
             { buttonText: t('intro.ok'), buttonCallback: onClick }
         );
 
         context.map().on('move.intro drawn.intro', function() {
-            revealHouse(house, t('intro.buildings.retry_building'),
+            revealHouse(house, helpString('intro.buildings.retry_building'),
                 { duration: 0, buttonText: t('intro.ok'), buttonCallback: onClick }
             );
         });
@@ -207,16 +195,16 @@ export function uiIntroBuilding(context, reveal) {
         }
 
         // disallow scrolling
-        d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
+        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
         timeout(function() {
             // reset pane, in case user somehow happened to change it..
-            d3_select('.inspector-wrap .panewrap').style('right', '-100%');
+            context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
-            var button = d3_select('.preset-category-building .preset-list-button');
+            var button = context.container().select('.preset-category-building .preset-list-button');
 
             reveal(button.node(),
-                t('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
+                helpString('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
             );
 
             button.on('click.intro', function() {
@@ -238,8 +226,8 @@ export function uiIntroBuilding(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            d3_select('.inspector-wrap').on('wheel.intro', null);
-            d3_select('.preset-list-button').on('click.intro', null);
+            context.container().select('.inspector-wrap').on('wheel.intro', null);
+            context.container().select('.preset-list-button').on('click.intro', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -256,16 +244,16 @@ export function uiIntroBuilding(context, reveal) {
         }
 
         // disallow scrolling
-        d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
+        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
         timeout(function() {
             // reset pane, in case user somehow happened to change it..
-            d3_select('.inspector-wrap .panewrap').style('right', '-100%');
+            context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
-            var button = d3_select('.preset-building-house .preset-list-button');
+            var button = context.container().select('.preset-building-house .preset-list-button');
 
             reveal(button.node(),
-                t('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
+                helpString('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
                 { duration: 300 }
             );
 
@@ -287,8 +275,8 @@ export function uiIntroBuilding(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            d3_select('.inspector-wrap').on('wheel.intro', null);
-            d3_select('.preset-list-button').on('click.intro', null);
+            context.container().select('.inspector-wrap').on('wheel.intro', null);
+            context.container().select('.preset-list-button').on('click.intro', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -312,7 +300,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             reveal('.entity-editor-pane',
-                t('intro.buildings.close', { button: icon('#iD-icon-apply', 'pre-text') })
+                helpString('intro.buildings.close', { button: icon('#iD-icon-close', 'pre-text') })
             );
         }, 500);
 
@@ -340,14 +328,15 @@ export function uiIntroBuilding(context, reveal) {
             if (ids.length !== 1 || ids[0] !== _houseID) return;
 
             timeout(function() {
-                var node = selectMenuItem('orthogonalize').node();
+                var node = selectMenuItem(context, 'orthogonalize').node();
                 if (!node) return;
                 continueTo(clickSquare);
-            }, 300);  // after menu visible
+            }, 50);  // after menu visible
         });
 
         context.map().on('move.intro drawn.intro', function() {
-            revealHouse(house, t('intro.buildings.rightclick_building'), { duration: 0 });
+            var rightclickString = helpString('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_building' : 'edit_menu_building_touch'));
+            revealHouse(house, rightclickString, { duration: 0 });
         });
 
         context.history().on('change.intro', function() {
@@ -368,14 +357,14 @@ export function uiIntroBuilding(context, reveal) {
         var entity = context.hasEntity(_houseID);
         if (!entity) return continueTo(rightClickHouse);
 
-        var node = selectMenuItem('orthogonalize').node();
+        var node = selectMenuItem(context, 'orthogonalize').node();
         if (!node) { return continueTo(rightClickHouse); }
 
         var wasChanged = false;
-        var menuCoords = context.map().mouseCoordinates();
 
-        revealEditMenu(menuCoords,
-            t('intro.buildings.square_building', { button: icon('#iD-operation-orthogonalize', 'pre-text') })
+        reveal('.edit-menu',
+            helpString('intro.buildings.square_building'),
+            { padding: 50 }
         );
 
         context.on('enter.intro', function(mode) {
@@ -386,13 +375,13 @@ export function uiIntroBuilding(context, reveal) {
             }
         });
 
-        context.map().on('move.intro drawn.intro', function() {
-            var node = selectMenuItem('orthogonalize').node();
+        context.map().on('move.intro', function() {
+            var node = selectMenuItem(context, 'orthogonalize').node();
             if (!wasChanged && !node) { return continueTo(rightClickHouse); }
 
-            revealEditMenu(menuCoords,
-                t('intro.buildings.square_building', { button: icon('#iD-operation-orthogonalize', 'pre-text') }),
-                { duration: 0 }
+            reveal('.edit-menu',
+                helpString('intro.buildings.square_building'),
+                { duration: 0, padding: 50 }
             );
         });
 
@@ -412,7 +401,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move.intro drawn.intro', null);
+            context.map().on('move.intro', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -422,7 +411,7 @@ export function uiIntroBuilding(context, reveal) {
     function retryClickSquare() {
         context.enter(modeBrowse(context));
 
-        revealHouse(house, t('intro.buildings.retry_square'), {
+        revealHouse(house, helpString('intro.buildings.retry_square'), {
             buttonText: t('intro.ok'),
             buttonCallback: function() { continueTo(rightClickHouse); }
         });
@@ -436,7 +425,7 @@ export function uiIntroBuilding(context, reveal) {
     function doneSquare() {
         context.history().checkpoint('doneSquare');
 
-        revealHouse(house, t('intro.buildings.done_square'), {
+        revealHouse(house, helpString('intro.buildings.done_square'), {
             buttonText: t('intro.ok'),
             buttonCallback: function() { continueTo(addTank); }
         });
@@ -458,7 +447,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             reveal('button.add-area',
-                t('intro.buildings.add_tank', { button: icon('#iD-icon-area', 'pre-text') })
+                helpString('intro.buildings.add_tank')
             );
 
             context.on('enter.intro', function(mode) {
@@ -482,10 +471,12 @@ export function uiIntroBuilding(context, reveal) {
         _tankID = null;
 
         timeout(function() {
-            revealTank(tank, t('intro.buildings.start_tank'));
+            var startString = helpString('intro.buildings.start_tank') +
+                helpString('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+            revealTank(tank, startString);
 
             context.map().on('move.intro drawn.intro', function() {
-                revealTank(tank, t('intro.buildings.start_tank'), { duration: 0 });
+                revealTank(tank, startString, { duration: 0 });
             });
 
             context.on('enter.intro', function(mode) {
@@ -510,10 +501,14 @@ export function uiIntroBuilding(context, reveal) {
 
         _tankID = null;
 
-        revealTank(tank, t('intro.buildings.continue_tank'));
+        var continueString = helpString('intro.buildings.continue_tank') + '{br}' +
+            helpString('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+            helpString('intro.buildings.finish_tank');
+
+        revealTank(tank, continueString);
 
         context.map().on('move.intro drawn.intro', function() {
-            revealTank(tank, t('intro.buildings.continue_tank'), { duration: 0 });
+            revealTank(tank, continueString, { duration: 0 });
         });
 
         context.on('enter.intro', function(mode) {
@@ -545,18 +540,18 @@ export function uiIntroBuilding(context, reveal) {
         }
 
         // disallow scrolling
-        d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
+        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
         timeout(function() {
             // reset pane, in case user somehow happened to change it..
-            d3_select('.inspector-wrap .panewrap').style('right', '-100%');
+            context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
-            d3_select('.preset-search-input')
+            context.container().select('.preset-search-input')
                 .on('keydown.intro', null)
                 .on('keyup.intro', checkPresetSearch);
 
             reveal('.preset-search-input',
-                t('intro.buildings.search_tank', { preset: tankPreset.name() })
+                helpString('intro.buildings.search_tank', { preset: tankPreset.name() })
             );
         }, 400);  // after preset list pane visible..
 
@@ -571,16 +566,16 @@ export function uiIntroBuilding(context, reveal) {
                 context.enter(modeSelect(context, [_tankID]));
 
                 // reset pane, in case user somehow happened to change it..
-                d3_select('.inspector-wrap .panewrap').style('right', '-100%');
+                context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
                 // disallow scrolling
-                d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
+                context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
-                d3_select('.preset-search-input')
+                context.container().select('.preset-search-input')
                     .on('keydown.intro', null)
                     .on('keyup.intro', checkPresetSearch);
 
                 reveal('.preset-search-input',
-                    t('intro.buildings.search_tank', { preset: tankPreset.name() })
+                    helpString('intro.buildings.search_tank', { preset: tankPreset.name() })
                 );
 
                 context.history().on('change.intro', null);
@@ -588,15 +583,15 @@ export function uiIntroBuilding(context, reveal) {
         });
 
         function checkPresetSearch() {
-            var first = d3_select('.preset-list-item:first-child');
+            var first = context.container().select('.preset-list-item:first-child');
 
             if (first.classed('preset-man_made-storage_tank')) {
                 reveal(first.select('.preset-list-button').node(),
-                    t('intro.buildings.choose_tank', { preset: tankPreset.name() }),
+                    helpString('intro.buildings.choose_tank', { preset: tankPreset.name() }),
                     { duration: 300 }
                 );
 
-                d3_select('.preset-search-input')
+                context.container().select('.preset-search-input')
                     .on('keydown.intro', eventCancel, true)
                     .on('keyup.intro', null);
 
@@ -607,10 +602,10 @@ export function uiIntroBuilding(context, reveal) {
         }
 
         function continueTo(nextStep) {
-            d3_select('.inspector-wrap').on('wheel.intro', null);
+            context.container().select('.inspector-wrap').on('wheel.intro', null);
             context.on('enter.intro', null);
             context.history().on('change.intro', null);
-            d3_select('.preset-search-input').on('keydown.intro keyup.intro', null);
+            context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);
             nextStep();
         }
     }
@@ -633,7 +628,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             reveal('.entity-editor-pane',
-                t('intro.buildings.close', { button: icon('#iD-icon-apply', 'pre-text') })
+                helpString('intro.buildings.close', { button: icon('#iD-icon-close', 'pre-text') })
             );
         }, 500);
 
@@ -658,16 +653,18 @@ export function uiIntroBuilding(context, reveal) {
                 if (ids.length !== 1 || ids[0] !== _tankID) return;
 
                 timeout(function() {
-                    var node = selectMenuItem('circularize').node();
+                    var node = selectMenuItem(context, 'circularize').node();
                     if (!node) return;
                     continueTo(clickCircle);
-                }, 300);  // after menu visible
+                }, 50);  // after menu visible
             });
 
-            revealTank(tank, t('intro.buildings.rightclick_tank'));
+            var rightclickString = helpString('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_tank' : 'edit_menu_tank_touch'));
+
+            revealTank(tank, rightclickString);
 
             context.map().on('move.intro drawn.intro', function() {
-                revealTank(tank, t('intro.buildings.rightclick_tank'), { duration: 0 });
+                revealTank(tank, rightclickString, { duration: 0 });
             });
 
             context.history().on('change.intro', function() {
@@ -690,14 +687,14 @@ export function uiIntroBuilding(context, reveal) {
         var entity = context.hasEntity(_tankID);
         if (!entity) return continueTo(rightClickTank);
 
-        var node = selectMenuItem('circularize').node();
+        var node = selectMenuItem(context, 'circularize').node();
         if (!node) { return continueTo(rightClickTank); }
 
         var wasChanged = false;
-        var menuCoords = context.map().mouseCoordinates();
 
-        revealEditMenu(menuCoords,
-            t('intro.buildings.circle_tank', { button: icon('#iD-operation-circularize', 'pre-text') })
+        reveal('.edit-menu',
+            helpString('intro.buildings.circle_tank'),
+            { padding: 50 }
         );
 
         context.on('enter.intro', function(mode) {
@@ -708,13 +705,13 @@ export function uiIntroBuilding(context, reveal) {
             }
         });
 
-        context.map().on('move.intro drawn.intro', function() {
-            var node = selectMenuItem('circularize').node();
+        context.map().on('move.intro', function() {
+            var node = selectMenuItem(context, 'circularize').node();
             if (!wasChanged && !node) { return continueTo(rightClickTank); }
 
-            revealEditMenu(menuCoords,
-                t('intro.buildings.circle_tank', { button: icon('#iD-operation-circularize', 'pre-text') }),
-                { duration: 0 }
+            reveal('.edit-menu',
+                helpString('intro.buildings.circle_tank'),
+                { duration: 0, padding: 50 }
             );
         });
 
@@ -724,7 +721,7 @@ export function uiIntroBuilding(context, reveal) {
 
             // Something changed.  Wait for transition to complete and check undo annotation.
             timeout(function() {
-                if (context.history().undoAnnotation() === t('operations.circularize.annotation.area')) {
+                if (context.history().undoAnnotation() === t('operations.circularize.annotation.single')) {
                     continueTo(play);
                 } else {
                     continueTo(retryClickCircle);
@@ -734,7 +731,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move.intro drawn.intro', null);
+            context.map().on('move.intro', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -744,7 +741,7 @@ export function uiIntroBuilding(context, reveal) {
     function retryClickCircle() {
         context.enter(modeBrowse(context));
 
-        revealTank(tank, t('intro.buildings.retry_circle'), {
+        revealTank(tank, helpString('intro.buildings.retry_circle'), {
             buttonText: t('intro.ok'),
             buttonCallback: function() { continueTo(rightClickTank); }
         });
@@ -761,7 +758,7 @@ export function uiIntroBuilding(context, reveal) {
             t('intro.buildings.play', { next: t('intro.rapid.title') }), {
                 tooltipBox: '.intro-nav-wrap .chapter-rapid',
                 buttonText: t('intro.ok'),
-                buttonCallback: function() { reveal('#id-container'); }
+                buttonCallback: function() { reveal('.ideditor'); }
             }
         );
     }
@@ -777,9 +774,9 @@ export function uiIntroBuilding(context, reveal) {
         context.on('enter.intro exit.intro', null);
         context.map().on('move.intro drawn.intro', null);
         context.history().on('change.intro', null);
-        d3_select('.inspector-wrap').on('wheel.intro', null);
-        d3_select('.preset-search-input').on('keydown.intro keyup.intro', null);
-        d3_select('.more-fields .combobox-input').on('click.intro', null);
+        context.container().select('.inspector-wrap').on('wheel.intro', null);
+        context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);
+        context.container().select('.more-fields .combobox-input').on('click.intro', null);
     };
 
 

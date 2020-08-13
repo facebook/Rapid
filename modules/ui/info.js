@@ -3,7 +3,7 @@ import {
     select as d3_select
 } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { uiCmd } from './cmd';
 import { uiInfoPanels } from './panels';
@@ -94,7 +94,7 @@ export function uiInfo(context) {
                     wasActive = [which];
                 }
 
-                d3_select('.' + which + '-panel-toggle-item')
+                context.container().select('.' + which + '-panel-toggle-item')
                     .classed('active', active[which])
                     .select('input')
                     .property('checked', active[which]);

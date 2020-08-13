@@ -3,7 +3,7 @@ import { geoArea as d3_geoArea } from 'd3-geo';
 import { geoExtent, geoVecCross } from '../geo';
 import { osmEntity } from './entity';
 import { osmLanes } from './lanes';
-import { osmAreaKeys, osmOneWayTags, osmRightSideIsInsideTags } from './tags';
+import { osmTagSuggestingArea, osmOneWayTags, osmRightSideIsInsideTags } from './tags';
 import { utilArrayUniq } from '../util';
 
 
@@ -228,37 +228,7 @@ Object.assign(osmWay.prototype, {
 
     // returns an object with the tag that implies this is an area, if any
     tagSuggestingArea: function() {
-        if (this.tags.area === 'yes') return { area: 'yes' };
-        if (this.tags.area === 'no') return null;
-
-        // `highway` and `railway` are typically linear features, but there
-        // are a few exceptions that should be treated as areas, even in the
-        // absence of a proper `area=yes` or `areaKeys` tag.. see #4194
-        var lineKeys = {
-            highway: {
-                rest_area: true,
-                services: true
-            },
-            railway: {
-                roundhouse: true,
-                station: true,
-                traverser: true,
-                turntable: true,
-                wash: true
-            }
-        };
-        var returnTags = {};
-        for (var key in this.tags) {
-            if (key in osmAreaKeys && !(this.tags[key] in osmAreaKeys[key])) {
-                returnTags[key] = this.tags[key];
-                return returnTags;
-            }
-            if (key in lineKeys && this.tags[key] in lineKeys[key]) {
-                returnTags[key] = this.tags[key];
-                return returnTags;
-            }
-        }
-        return null;
+        return osmTagSuggestingArea(this.tags);
     },
 
     isArea: function() {
@@ -289,6 +259,40 @@ Object.assign(osmWay.prototype, {
     geometry: function(graph) {
         return graph.transient(this, 'geometry', function() {
             return this.isArea() ? 'area' : 'line';
+        });
+    },
+
+
+    // returns an array of objects representing the segments between the nodes in this way
+    segments: function(graph) {
+
+        function segmentExtent(graph) {
+            var n1 = graph.hasEntity(this.nodes[0]);
+            var n2 = graph.hasEntity(this.nodes[1]);
+            return n1 && n2 && geoExtent([
+                [
+                    Math.min(n1.loc[0], n2.loc[0]),
+                    Math.min(n1.loc[1], n2.loc[1])
+                ],
+                [
+                    Math.max(n1.loc[0], n2.loc[0]),
+                    Math.max(n1.loc[1], n2.loc[1])
+                ]
+            ]);
+        }
+
+        return graph.transient(this, 'segments', function() {
+            var segments = [];
+            for (var i = 0; i < this.nodes.length - 1; i++) {
+                segments.push({
+                    id: this.id + '-' + i,
+                    wayId: this.id,
+                    index: i,
+                    nodes: [this.nodes[i], this.nodes[i + 1]],
+                    extent: segmentExtent
+                });
+            }
+            return segments;
         });
     },
 

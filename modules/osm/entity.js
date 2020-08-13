@@ -1,7 +1,7 @@
 import { debug } from '../index';
 import { osmIsInterestingTag } from './tags';
-import { dataDeprecated } from '../../data/index';
-import { utilArrayUnion } from '../util';
+import { utilArrayUnion } from '../util/array';
+import { utilUnicodeCharsTruncated } from '../util/util';
 
 
 export function osmEntity(attrs) {
@@ -52,7 +52,7 @@ osmEntity.key = function(entity) {
 
 var _deprecatedTagValuesByKey;
 
-osmEntity.deprecatedTagValuesByKey = function() {
+osmEntity.deprecatedTagValuesByKey = function(dataDeprecated) {
     if (!_deprecatedTagValuesByKey) {
         _deprecatedTagValuesByKey = {};
         dataDeprecated.forEach(function(d) {
@@ -150,7 +150,10 @@ osmEntity.prototype = {
                 merged[k] = t2;
             } else if (t1 !== t2) {
                 changed = true;
-                merged[k] = utilArrayUnion(t1.split(/;\s*/), t2.split(/;\s*/)).join(';');
+                merged[k] = utilUnicodeCharsTruncated(
+                    utilArrayUnion(t1.split(/;\s*/), t2.split(/;\s*/)).join(';'),
+                    255 // avoid exceeding character limit; see also services/osm.js -> maxCharsForTagValue()
+                );
             }
         }
         return changed ? this.update({ tags: merged }) : this;
@@ -186,7 +189,7 @@ osmEntity.prototype = {
         return true;
     },
 
-    deprecatedTags: function() {
+    deprecatedTags: function(dataDeprecated) {
         var tags = this.tags;
 
         // if there are no tags, none can be deprecated

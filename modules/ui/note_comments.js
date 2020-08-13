@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { prefs } from '../core/preferences';
+import { t, localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { services } from '../services';
-import { utilDetect } from '../util/detect';
 
 
-export function uiNoteComments(context) {
+export function uiNoteComments() {
     var _note;
 
 
@@ -76,7 +76,7 @@ export function uiNoteComments(context) {
 
 
     function replaceAvatars(selection) {
-        var showThirdPartyIcons = context.storage('preferences.privacy.thirdpartyicons') || 'true';
+        var showThirdPartyIcons = prefs('preferences.privacy.thirdpartyicons') || 'true';
         var osm = services.osm;
         if (showThirdPartyIcons !== 'true' || !osm) return;
 
@@ -102,12 +102,11 @@ export function uiNoteComments(context) {
 
     function localeDateString(s) {
         if (!s) return null;
-        var detected = utilDetect();
         var options = { day: 'numeric', month: 'short', year: 'numeric' };
         s = s.replace(/-/g, '/'); // fix browser-specific Date() issues
         var d = new Date(s);
         if (isNaN(d.getTime())) return null;
-        return d.toLocaleDateString(detected.locale, options);
+        return d.toLocaleDateString(localizer.localeCode(), options);
     }
 
 

@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../../util/locale';
+import { t } from '../../core/localizer';
 import {
     utilGetSetValue,
     utilNoAuto,
@@ -9,9 +9,10 @@ import {
 } from '../../util';
 
 
-export function uiFieldTextarea(field) {
+export function uiFieldTextarea(field, context) {
     var dispatch = d3_dispatch('change');
     var input = d3_select(null);
+    var _tags;
 
 
     function textarea(selection) {
@@ -28,9 +29,7 @@ export function uiFieldTextarea(field) {
 
         input = input.enter()
             .append('textarea')
-            .attr('id', 'preset-input-' + field.safeid)
-            .attr('placeholder', field.placeholder() || t('inspector.unknown'))
-            .attr('maxlength', 255)
+            .attr('id', field.domId)
             .call(utilNoAuto)
             .on('input', change(true))
             .on('blur', change())
@@ -41,15 +40,29 @@ export function uiFieldTextarea(field) {
 
     function change(onInput) {
         return function() {
+
+            var val = utilGetSetValue(input);
+            if (!onInput) val = context.cleanTagValue(val);
+
+            // don't override multiple values with blank string
+            if (!val && Array.isArray(_tags[field.key])) return;
+
             var t = {};
-            t[field.key] = utilGetSetValue(input) || undefined;
+            t[field.key] = val || undefined;
             dispatch.call('change', this, t, onInput);
         };
     }
 
 
     textarea.tags = function(tags) {
-        utilGetSetValue(input, tags[field.key] || '');
+        _tags = tags;
+
+        var isMixed = Array.isArray(tags[field.key]);
+
+        utilGetSetValue(input, !isMixed && tags[field.key] ? tags[field.key] : '')
+            .attr('title', isMixed ? tags[field.key].filter(Boolean).join('\n') : undefined)
+            .attr('placeholder', isMixed ? t('inspector.multiple_values') : (field.placeholder() || t('inspector.unknown')))
+            .classed('mixed', isMixed);
     };
 
 

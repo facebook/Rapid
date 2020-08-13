@@ -1,7 +1,7 @@
 import { operationDelete } from '../operations/delete';
 import { osmIsInterestingTag } from '../osm/tags';
 import { osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
@@ -85,7 +85,7 @@ export function validationMissingTag(context) {
             message: function(context) {
                 var entity = context.hasEntity(this.entityIds[0]);
                 return entity ? t('issues.' + messageID + '.message', {
-                    feature: utilDisplayLabel(entity, context)
+                    feature: utilDisplayLabel(entity, context.graph())
                 }) : '';
             },
             reference: showReference,
@@ -107,12 +107,12 @@ export function validationMissingTag(context) {
                 var deleteOnClick;
 
                 var id = this.entityIds[0];
-                var operation = operationDelete([id], context);
+                var operation = operationDelete(context, [id]);
                 var disabledReasonID = operation.disabled();
                 if (!disabledReasonID) {
                     deleteOnClick = function(context) {
                         var id = this.issue.entityIds[0];
-                        var operation = operationDelete([id], context);
+                        var operation = operationDelete(context, [id]);
                         if (!operation.disabled()) {
                             operation();
                         }

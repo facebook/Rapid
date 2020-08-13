@@ -16,8 +16,8 @@ var _enabled = false;
 var _initialized = false;
 var _roadsService;
 var _actioned;
-var _roadsEnabled = false; 
-var _buildingsEnabled = false; 
+var _roadsEnabled = false;
+var _buildingsEnabled = false;
 
 export function svgAiFeatures(projection, context, dispatch) {
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
@@ -31,8 +31,8 @@ export function svgAiFeatures(projection, context, dispatch) {
         _enabled = true;
         _initialized = true;
         _actioned = new Set();
-        _roadsEnabled = true; 
-        _buildingsEnabled = true; 
+        _roadsEnabled = true;
+        _buildingsEnabled = true;
 
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
@@ -112,7 +112,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         layerOff();
     }
 
-    
+
     function layerOn() {
         layer.style('display', 'block');
     }
@@ -123,7 +123,7 @@ export function svgAiFeatures(projection, context, dispatch) {
     }
 
     function isBuilding(d){
-        return d.tags.building === 'yes'; 
+        return d.tags.building === 'yes';
     }
 
     function isRoad(d){
@@ -172,7 +172,7 @@ export function svgAiFeatures(projection, context, dispatch) {
         if (roadsService && context.map().zoom() >= context.minEditableZoom()) {
             roadsService.loadTiles(projection, context.rapidContext().getTaskExtent());
             geoData = roadsService
-                .intersects(context.extent())
+                .intersects(context.map().extent())
                 .filter(function(d) {
                     return d.type === 'way'
                         && !_actioned.has(d.id)
@@ -280,24 +280,24 @@ export function svgAiFeatures(projection, context, dispatch) {
 
 
     drawData.toggleRoads = function() {
-        _roadsEnabled = !_roadsEnabled; 
+        _roadsEnabled = !_roadsEnabled;
         var aiFeatures = d3_select('.layer-ai-features');
-        aiFeatures.classed('hide-rapid-roads', !_roadsEnabled); 
-        showLayer(); 
+        aiFeatures.classed('hide-rapid-roads', !_roadsEnabled);
+        showLayer();
         dispatch.call('change');
     };
-    
-    
+
+
     drawData.toggleBuildings = function() {
-        _buildingsEnabled = !_buildingsEnabled; 
+        _buildingsEnabled = !_buildingsEnabled;
         var aiFeatures = d3_select('.layer-ai-features');
-        aiFeatures.classed('hide-rapid-buildings', !_buildingsEnabled); 
-        showLayer(); 
+        aiFeatures.classed('hide-rapid-buildings', !_buildingsEnabled);
+        showLayer();
         dispatch.call('change');
     };
 
     drawData.showRoads = function() {
-        return _roadsEnabled; 
+        return _roadsEnabled;
     };
 
     drawData.showBuildings = function() {

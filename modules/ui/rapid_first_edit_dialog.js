@@ -1,4 +1,4 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import { uiSplashRapid } from './splash_rapid';

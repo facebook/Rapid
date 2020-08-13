@@ -1,9 +1,5 @@
 {
-    "icon": "fas-wind",
-    "geometry": [
-        "point",
-        "vertex"
-    ],
+    "icon": "temaki-windsock",
     "fields": [
         "ref",
         "lit",
@@ -11,6 +7,10 @@
     ],
     "moreFields": [
         "manufacturer"
+    ],
+    "geometry": [
+        "point",
+        "vertex"
     ],
     "tags": {
         "aeroway": "windsock"

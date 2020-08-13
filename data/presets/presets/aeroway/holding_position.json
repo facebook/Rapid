@@ -1,10 +1,10 @@
 {
-    "icon": "maki-airport",
-    "geometry": [
-        "vertex"
-    ],
+    "icon": "temaki-plane_taxiing",
     "fields": [
         "ref"
+    ],
+    "geometry": [
+        "vertex"
     ],
     "tags": {
         "aeroway": "holding_position"

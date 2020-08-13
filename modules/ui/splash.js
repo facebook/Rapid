@@ -1,4 +1,6 @@
-import { t } from '../util/locale';
+import { prefs } from '../core/preferences';
+import { fileFetcher } from '../core/file_fetcher';
+import { t } from '../core/localizer';
 import { uiIntro } from './intro';
 import { uiModal } from './modal';
 
@@ -12,16 +14,20 @@ export function uiSplash(context) {
 
     // If user has not seen this version of the privacy policy, show the splash again.
     let updateMessage = '';
-    const sawPrivacyVersion = context.storage('sawPrivacyVersion');
+    const sawPrivacyVersion = prefs('sawPrivacyVersion');
+    let showSplash = !prefs('sawSplash');
     if (sawPrivacyVersion !== context.privacyVersion) {
       updateMessage = t('splash.privacy_update');
-      context.storage('sawSplash', null);
+      showSplash = true;
     }
 
-    if (context.storage('sawSplash')) return;
+    if (!showSplash) return;
 
-    context.storage('sawSplash', true);
-    context.storage('sawPrivacyVersion', context.privacyVersion);
+    prefs('sawSplash', true);
+    prefs('sawPrivacyVersion', context.privacyVersion);
+
+    // fetch intro graph data now, while user is looking at the splash screen
+    fileFetcher.get('intro_graph');
 
     let modalSelection = uiModal(selection);
 
@@ -54,7 +60,7 @@ export function uiSplash(context) {
       .append('p')
       .html(t('splash.privacy', {
         updateMessage: updateMessage,
-        privacyLink: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/master/PRIVACY.md">' +
+        privacyLink: '<a target="_blank" href="https://github.com/openstreetmap/iD/blob/release/PRIVACY.md">' +
           t('splash.privacy_policy') + '</a>'
       }));
 

@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { uiCombobox } from './combobox';
 import { utilGetSetValue, utilNoAuto } from '../util';
 
@@ -28,7 +28,7 @@ export function uiFormFields(context) {
 
 
         var fields = container.selectAll('.wrap-form-field')
-            .data(shown, function(d) { return d.id + (d.entityID || ''); });
+            .data(shown, function(d) { return d.id + (d.entityIDs ? d.entityIDs.join() : ''); });
 
         fields.exit()
             .remove();
@@ -54,7 +54,7 @@ export function uiFormFields(context) {
         var moreFields = notShown.map(function(field) {
             var label = field.label();
             titles.push(label);
-            
+
             var terms = field.terms();
             if (field.key) terms.push(field.key);
             if (field.keys) terms = terms.concat(field.keys);
@@ -76,11 +76,16 @@ export function uiFormFields(context) {
         more.exit()
             .remove();
 
-        more = more.enter()
+        var moreEnter = more.enter()
             .append('div')
             .attr('class', 'more-fields')
-            .append('label')
-            .text(t('inspector.add_fields'))
+            .append('label');
+
+        moreEnter
+            .append('span')
+            .text(t('inspector.add_fields'));
+
+        more = moreEnter
             .merge(more);
 
 

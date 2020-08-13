@@ -4,7 +4,7 @@ import {
 } from 'd3-selection';
 
 import marked from 'marked';
-import { t, textDirection } from '../util/locale';
+import { t, localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { icon } from './intro/helper';
 
@@ -181,7 +181,7 @@ export function uiFieldHelp(context, fieldName) {
         if (_wrap.empty()) return;
 
         // absolute position relative to the inspector, so it "floats" above the fields
-        _inspector = d3_select('#sidebar .entity-editor-pane .inspector-body');
+        _inspector = context.container().select('.sidebar .entity-editor-pane .inspector-body');
         if (_inspector.empty()) return;
 
         _body = _inspector.selectAll('.field-help-body')
@@ -197,7 +197,7 @@ export function uiFieldHelp(context, fieldName) {
 
         titleEnter
             .append('h2')
-            .attr('class', ((textDirection === 'rtl') ? 'fr' : 'fl'))
+            .attr('class', ((localizer.textDirection() === 'rtl') ? 'fr' : 'fl'))
             .text(t('help.field.' + fieldName + '.title'));
 
         titleEnter

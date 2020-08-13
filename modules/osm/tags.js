@@ -13,6 +13,41 @@ export function osmSetAreaKeys(value) {
     osmAreaKeys = value;
 }
 
+// returns an object with the tag from `tags` that implies an area geometry, if any
+export function osmTagSuggestingArea(tags) {
+    if (tags.area === 'yes') return { area: 'yes' };
+    if (tags.area === 'no') return null;
+
+    // `highway` and `railway` are typically linear features, but there
+    // are a few exceptions that should be treated as areas, even in the
+    // absence of a proper `area=yes` or `areaKeys` tag.. see #4194
+    var lineKeys = {
+        highway: {
+            rest_area: true,
+            services: true
+        },
+        railway: {
+            roundhouse: true,
+            station: true,
+            traverser: true,
+            turntable: true,
+            wash: true
+        }
+    };
+    var returnTags = {};
+    for (var key in tags) {
+        if (key in osmAreaKeys && !(tags[key] in osmAreaKeys[key])) {
+            returnTags[key] = tags[key];
+            return returnTags;
+        }
+        if (key in lineKeys && tags[key] in lineKeys[key]) {
+            returnTags[key] = tags[key];
+            return returnTags;
+        }
+    }
+    return null;
+}
+
 // Tags that indicate a node can be a standalone point
 // e.g. { amenity: { bar: true, parking: true, ... } ... }
 export var osmPointTags = {};
@@ -63,6 +98,7 @@ export var osmOneWayTags = {
         'roundabout': true
     },
     'man_made': {
+        'goods_conveyor': true,
         'piste:halfpipe': true
     },
     'piste:type': {
@@ -81,7 +117,7 @@ export var osmOneWayTags = {
     }
 };
 
-
+// solid and smooth surfaces akin to the assumed default road surface in OSM
 export var osmPavedTags = {
     'surface': {
         'paved': true,
@@ -92,6 +128,19 @@ export var osmPavedTags = {
     },
     'tracktype': {
         'grade1': true
+    }
+};
+
+// solid, if somewhat uncommon surfaces with a high range of smoothness
+export var osmSemipavedTags = {
+    'surface': {
+        'cobblestone': true,
+        'cobblestone:flattened': true,
+        'unhewn_cobblestone': true,
+        'sett': true,
+        'paving_stones': true,
+        'metal': true,
+        'wood': true
     }
 };
 

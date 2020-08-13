@@ -5,6 +5,7 @@
         "address",
         "building_area",
         "opening_hours",
+        "opening_hours/covid19",
         "smoking",
         "brewery"
     ],
@@ -25,6 +26,7 @@
         "payment_multi",
         "phone",
         "ref/vatin",
+        "real_fire",
         "website",
         "wheelchair"
     ],

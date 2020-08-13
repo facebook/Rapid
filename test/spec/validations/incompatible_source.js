@@ -2,7 +2,7 @@ describe('iD.validations.incompatible_source', function () {
     var context;
 
     beforeEach(function() {
-        context = iD.coreContext();
+        context = iD.coreContext().init();
     });
 
     function createWay(tags) {
@@ -43,6 +43,12 @@ describe('iD.validations.incompatible_source', function () {
 
     it('ignores way with okay source tag', function() {
         createWay({ amenity: 'cafe', building: 'yes', name: 'Key Largo Café', source: 'survey'});
+        var issues = validate();
+        expect(issues).to.have.lengthOf(0);
+    });
+
+    it('ignores way with excepted source tag', function() {
+        createWay({ amenity: 'cafe', building: 'yes', name: 'Key Largo Café', source: 'Google drive'});
         var issues = validate();
         expect(issues).to.have.lengthOf(0);
     });

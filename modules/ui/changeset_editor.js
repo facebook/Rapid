@@ -1,6 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { t } from '../util/locale';
+import { presetManager } from '../presets';
+import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { uiCombobox} from './combobox';
 import { uiField } from './field';
@@ -27,7 +28,7 @@ export function uiChangesetEditor(context) {
 
         if (!_fieldsArr) {
             initial = true;
-            var presets = context.presets();
+            var presets = presetManager;
 
             _fieldsArr = [
                 uiField(context, presets.field('comment'), null, { show: true, revert: false }),
@@ -38,7 +39,7 @@ export function uiChangesetEditor(context) {
             _fieldsArr.forEach(function(field) {
                 field
                     .on('change', function(t, onInput) {
-                        dispatch.call('change', field, t, onInput);
+                        dispatch.call('change', field, undefined, t, onInput);
                     });
             });
         }
@@ -54,7 +55,7 @@ export function uiChangesetEditor(context) {
 
 
         if (initial) {
-            var commentField = selection.select('#preset-input-comment');
+            var commentField = selection.select('.form-field-comment textarea');
             var commentNode = commentField.node();
 
             if (commentNode) {

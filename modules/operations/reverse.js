@@ -1,9 +1,9 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { actionReverse } from '../actions/reverse';
 import { behaviorOperation } from '../behavior/operation';
 
 
-export function operationReverse(selectedIDs, context) {
+export function operationReverse(context, selectedIDs) {
 
     var operation = function() {
         context.perform(function combinedReverseAction(graph) {

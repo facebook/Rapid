@@ -1,6 +1,6 @@
 import { filters } from 'name-suggestion-index';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { utilPreset } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { actionChangeTags } from '../actions/change_tags';

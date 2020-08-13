@@ -1,17 +1,22 @@
 {
-    "icon": "maki-airport",
-    "geometry": [
-        "area"
-    ],
-    "terms": [
-        "ramp"
-    ],
+    "icon": "temaki-planes",
     "fields": [
         "ref",
         "surface"
     ],
+    "geometry": [
+        "area"
+    ],
     "tags": {
         "aeroway": "apron"
     },
-    "name": "Apron"
+    "terms": [
+        "aircraft parking",
+        "flight line",
+        "hardstand",
+        "ramp",
+        "tarmac",
+        "taxiway"
+    ],
+    "name": "Airport Apron"
 }

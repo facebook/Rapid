@@ -1,11 +1,11 @@
 import { actionChangeTags } from '../actions/change_tags';
 import { behaviorOperation } from '../behavior/operation';
 import { modeSelect } from '../modes/select';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
+import { presetManager } from '../presets';
 
-
-export function operationDowngrade(selectedIDs, context) {
+export function operationDowngrade(context, selectedIDs) {
     var affectedFeatureCount = 0;
     var downgradeType;
 
@@ -31,9 +31,9 @@ export function operationDowngrade(selectedIDs, context) {
     function downgradeTypeForEntityID(entityID) {
         var graph = context.graph();
         var entity = graph.entity(entityID);
-        var preset = context.presets().match(entity, graph);
+        var preset = presetManager.match(entity, graph);
 
-        if (preset.isFallback()) return null;
+        if (!preset || preset.isFallback()) return null;
 
         if (entity.type === 'node' &&
             preset.id !== 'address' &&

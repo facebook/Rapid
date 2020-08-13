@@ -1,10 +1,10 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { modeDrawLine } from '../modes/draw_line';
 import { behaviorOperation } from '../behavior/operation';
 import { utilArrayGroupBy } from '../util';
 
 
-export function operationContinue(selectedIDs, context) {
+export function operationContinue(context, selectedIDs) {
     var graph = context.graph();
     var entities = selectedIDs.map(function(id) { return graph.entity(id); });
     var geometries = Object.assign(
@@ -27,7 +27,7 @@ export function operationContinue(selectedIDs, context) {
     var operation = function() {
         var candidate = candidateWays()[0];
         context.enter(
-            modeDrawLine(context, candidate.id, context.graph(), context.graph(), 'line', candidate.affix(vertex.id), true)
+            modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(vertex.id), true)
         );
     };
 

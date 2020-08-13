@@ -1,6 +1,7 @@
 import deepEqual from 'fast-deep-equal';
 import { select as d3_select } from 'd3-selection';
 
+import { presetManager } from '../presets';
 import { geoScaleToZoom } from '../geo';
 import { osmEntity } from '../osm';
 import { svgPassiveVertex, svgPointTransform } from './helpers';
@@ -54,7 +55,7 @@ export function svgVertices(projection, context) {
 
             icons[entity.id] =
                 entity.hasInterestingTags() &&
-                context.presets().match(entity, graph).icon;
+                presetManager.match(entity, graph).icon;
 
             return icons[entity.id];
         }
@@ -192,7 +193,7 @@ export function svgVertices(projection, context) {
             .attr('class', 'viewfield')
             .attr('d', 'M0,0H0')
             .merge(viewfields)
-            .attr('marker-start', 'url(#viewfield-marker' + (wireframe ? '-wireframe' : '') + ')')
+            .attr('marker-start', 'url(#ideditor-viewfield-marker' + (wireframe ? '-wireframe' : '') + ')')
             .attr('transform', function(d) { return 'rotate(' + d + ')'; });
     }
 
@@ -304,7 +305,14 @@ export function svgVertices(projection, context) {
     function getSiblingAndChildVertices(ids, graph, wireframe, zoom) {
         var results = {};
 
+        var seenIds = {};
+
         function addChildVertices(entity) {
+
+            // avoid redunant work and infinite recursion of circular relations
+            if (seenIds[entity.id]) return;
+            seenIds[entity.id] = true;
+
             var geometry = entity.geometry(graph);
             if (!context.features().isHiddenFeature(entity, graph, geometry)) {
                 var i;

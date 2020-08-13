@@ -1,4 +1,3 @@
-import { t } from '../util/locale';
 import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
@@ -12,7 +11,6 @@ export function modeAddLine(context, mode) {
     mode.id = 'add-line';
 
     var behavior = behaviorAddWay(context)
-        .tail(t('modes.add_line.tail'))
         .on('start', start)
         .on('startFromWay', startFromWay)
         .on('startFromNode', startFromNode);
@@ -32,7 +30,7 @@ export function modeAddLine(context, mode) {
             actionAddVertex(way.id, node.id)
         );
 
-        context.enter(modeDrawLine(context, way.id, startGraph, context.graph(), mode.button));
+        context.enter(modeDrawLine(context, way.id, startGraph, mode.button));
     }
 
 
@@ -48,7 +46,7 @@ export function modeAddLine(context, mode) {
             actionAddMidpoint({ loc: loc, edge: edge }, node)
         );
 
-        context.enter(modeDrawLine(context, way.id, startGraph, context.graph(), mode.button));
+        context.enter(modeDrawLine(context, way.id, startGraph, mode.button));
     }
 
 
@@ -61,7 +59,7 @@ export function modeAddLine(context, mode) {
             actionAddVertex(way.id, node.id)
         );
 
-        context.enter(modeDrawLine(context, way.id, startGraph, context.graph(), mode.button));
+        context.enter(modeDrawLine(context, way.id, startGraph, mode.button));
     }
 
 

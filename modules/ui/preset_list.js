@@ -3,37 +3,32 @@ import * as countryCoder from '@ideditor/country-coder';
 
 import {
     event as d3_event,
-    select as d3_select,
-    selectAll as d3_selectAll
+    select as d3_select
 } from 'd3-selection';
 
-import { t, textDirection } from '../util/locale';
+import { presetManager } from '../presets';
+import { t, localizer } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
 import { svgIcon } from '../svg/index';
-import { tooltip } from '../util/tooltip';
+import { uiTooltip } from './tooltip';
+import { geoExtent } from '../geo/extent';
 import { uiPresetIcon } from './preset_icon';
 import { uiTagReference } from './tag_reference';
 import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
 
 export function uiPresetList(context) {
-    var dispatch = d3_dispatch('choose');
-    var _entityID;
-    var _currentPreset;
+    var dispatch = d3_dispatch('cancel', 'choose');
+    var _entityIDs;
+    var _currentPresets;
     var _autofocus = false;
 
 
     function presetList(selection) {
-        var entity = context.entity(_entityID);
-        var geometry = context.geometry(_entityID);
+        if (!_entityIDs) return;
 
-        // Treat entities on addr:interpolation lines as points, not vertices (#3241)
-        if (geometry === 'vertex' && entity.isOnAddressLine(context.graph())) {
-            geometry = 'point';
-        }
-
-        var presets = context.presets().matchGeometry(geometry);
+        var presets = presetManager.matchAllGeometry(entityGeometries());
 
         selection.html('');
 
@@ -48,8 +43,8 @@ export function uiPresetList(context) {
         messagewrap
             .append('button')
             .attr('class', 'preset-choose')
-            .on('click', function() { dispatch.call('choose', this, _currentPreset); })
-            .call(svgIcon((textDirection === 'rtl') ? '#iD-icon-backward' : '#iD-icon-forward'));
+            .on('click', function() { dispatch.call('cancel', this); })
+            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#iD-icon-backward' : '#iD-icon-forward'));
 
         function initialKeydown() {
             // hack to let delete shortcut work when search is autofocused
@@ -58,7 +53,7 @@ export function uiPresetList(context) {
                  d3_event.keyCode === utilKeybinding.keyCodes['⌦'])) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
-                operationDelete([_entityID], context)();
+                operationDelete(context, _entityIDs)();
 
             // hack to let undo work when search is autofocused
             } else if (search.property('value').length === 0 &&
@@ -99,19 +94,19 @@ export function uiPresetList(context) {
         function inputevent() {
             var value = search.property('value');
             list.classed('filtered', value.length);
-            var entity = context.entity(_entityID);
+            var extent = combinedEntityExtent();
             var results, messageText;
-            if (value.length && entity) {
-                var center = entity.extent(context.graph()).center();
+            if (value.length && extent) {
+                var center = extent.center();
                 var countryCode = countryCoder.iso1A2Code(center);
 
-                results = presets.search(value, geometry, countryCode && countryCode.toLowerCase());
+                results = presets.search(value, entityGeometries()[0], countryCode && countryCode.toLowerCase());
                 messageText = t('inspector.results', {
                     n: results.collection.length,
                     search: value
                 });
             } else {
-                results = context.presets().defaults(geometry, 36);
+                results = presetManager.defaults(entityGeometries()[0], 36, !context.inIntro());
                 messageText = t('inspector.choose');
             }
             list.call(drawList, results);
@@ -145,15 +140,18 @@ export function uiPresetList(context) {
 
         var list = listWrap
             .append('div')
-            .attr('class', 'preset-list fillL cf')
-            .call(drawList, context.presets().defaults(geometry, 36));
+            .attr('class', 'preset-list')
+            .call(drawList, presetManager.defaults(entityGeometries()[0], 36, !context.inIntro()));
 
         context.features().on('change.preset-list', updateForFeatureHiddenState);
     }
 
 
     function drawList(list, presets) {
+        presets = presets.matchAllGeometry(entityGeometries());
         var collection = presets.collection.reduce(function(collection, preset) {
+            if (!preset) return collection;
+
             if (preset.members) {
                 if (preset.members.collection.filter(function(preset) {
                     return preset.addable();
@@ -177,7 +175,7 @@ export function uiPresetList(context) {
         items.enter()
             .append('div')
             .attr('class', function(item) { return 'preset-list-item preset-' + item.preset.id.replace('/', '-'); })
-            .classed('current', function(item) { return item.preset === _currentPreset; })
+            .classed('current', function(item) { return _currentPresets.indexOf(item.preset) !== -1; })
             .each(function(item) { d3_select(this).call(item); })
             .style('opacity', 0)
             .transition()
@@ -245,7 +243,7 @@ export function uiPresetList(context) {
             }
 
         // arrow left, move focus to the parent item if there is one
-        } else if (d3_event.keyCode === utilKeybinding.keyCodes[(textDirection === 'rtl') ? '→' : '←']) {
+        } else if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '→' : '←']) {
             d3_event.preventDefault();
             d3_event.stopPropagation();
             // if there is a parent item, focus on the parent item
@@ -254,7 +252,7 @@ export function uiPresetList(context) {
             }
 
         // arrow right, choose this item
-        } else if (d3_event.keyCode === utilKeybinding.keyCodes[(textDirection === 'rtl') ? '←' : '→']) {
+        } else if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '←' : '→']) {
             d3_event.preventDefault();
             d3_event.stopPropagation();
             item.datum().choose.call(d3_select(this).node());
@@ -272,7 +270,7 @@ export function uiPresetList(context) {
             function click() {
                 var isExpanded = d3_select(this).classed('expanded');
                 var iconName = isExpanded ?
-                    (textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward') : '#iD-icon-down';
+                    (localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward') : '#iD-icon-down';
                 d3_select(this)
                     .classed('expanded', !isExpanded);
                 d3_select(this).selectAll('div.label-inner svg.icon use')
@@ -280,17 +278,19 @@ export function uiPresetList(context) {
                 item.choose();
             }
 
+            var geometries = entityGeometries();
+
             var button = wrap
                 .append('button')
                 .attr('class', 'preset-list-button')
                 .classed('expanded', false)
-                .call(uiPresetIcon(context)
-                    .geometry(context.geometry(_entityID))
+                .call(uiPresetIcon()
+                    .geometry(geometries.length === 1 && geometries[0])
                     .preset(preset))
                 .on('click', click)
                 .on('keydown', function() {
                     // right arrow, expand the focused item
-                    if (d3_event.keyCode === utilKeybinding.keyCodes[(textDirection === 'rtl') ? '←' : '→']) {
+                    if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '←' : '→']) {
                         d3_event.preventDefault();
                         d3_event.stopPropagation();
                         // if the item isn't expanded
@@ -299,7 +299,7 @@ export function uiPresetList(context) {
                             click.call(this);
                         }
                     // left arrow, collapse the focused item
-                    } else if (d3_event.keyCode === utilKeybinding.keyCodes[(textDirection === 'rtl') ? '→' : '←']) {
+                    } else if (d3_event.keyCode === utilKeybinding.keyCodes[(localizer.textDirection() === 'rtl') ? '→' : '←']) {
                         d3_event.preventDefault();
                         d3_event.stopPropagation();
                         // if the item is expanded
@@ -321,7 +321,7 @@ export function uiPresetList(context) {
             label
                 .append('div')
                 .attr('class', 'namepart')
-                .call(svgIcon((textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'))
+                .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'))
                 .append('span')
                 .html(function() { return preset.name() + '&hellip;'; });
 
@@ -350,7 +350,7 @@ export function uiPresetList(context) {
                     .style('padding-bottom', '0px');
             } else {
                 shown = true;
-                var members = preset.members.matchGeometry(context.geometry(_entityID));
+                var members = preset.members.matchAllGeometry(entityGeometries());
                 sublist.call(drawList, members);
                 box.transition()
                     .duration(200)
@@ -370,10 +370,12 @@ export function uiPresetList(context) {
             var wrap = selection.append('div')
                 .attr('class', 'preset-list-button-wrap');
 
+            var geometries = entityGeometries();
+
             var button = wrap.append('button')
                 .attr('class', 'preset-list-button')
-                .call(uiPresetIcon(context)
-                    .geometry(context.geometry(_entityID))
+                .call(uiPresetIcon()
+                    .geometry(geometries.length === 1 && geometries[0])
                     .preset(preset))
                 .on('click', item.choose)
                 .on('keydown', itemKeydown);
@@ -398,10 +400,18 @@ export function uiPresetList(context) {
 
         item.choose = function() {
             if (d3_select(this).classed('disabled')) return;
-
-            context.presets().setMostRecent(preset, context.geometry(_entityID));
+            if (!context.inIntro()) {
+                presetManager.setMostRecent(preset, entityGeometries()[0]);
+            }
             context.perform(
-                actionChangePreset(_entityID, _currentPreset, preset),
+                function(graph) {
+                    for (var i in _entityIDs) {
+                        var entityID = _entityIDs[i];
+                        var oldPreset = presetManager.match(graph.entity(entityID), graph);
+                        graph = actionChangePreset(entityID, oldPreset, preset)(graph);
+                    }
+                    return graph;
+                },
                 t('operations.change_tags.annotation')
             );
 
@@ -415,26 +425,30 @@ export function uiPresetList(context) {
         };
 
         item.preset = preset;
-        item.reference = uiTagReference(preset.reference(context.geometry(_entityID)), context);
+        item.reference = uiTagReference(preset.reference(entityGeometries()[0]), context);
 
         return item;
     }
 
 
     function updateForFeatureHiddenState() {
-        if (!context.hasEntity(_entityID)) return;
+        if (!_entityIDs.every(context.hasEntity)) return;
 
-        var geometry = context.geometry(_entityID);
-        var button = d3_selectAll('.preset-list .preset-list-button');
+        var geometries = entityGeometries();
+        var button = context.container().selectAll('.preset-list .preset-list-button');
 
         // remove existing tooltips
-        button.call(tooltip().destroyAny);
+        button.call(uiTooltip().destroyAny);
 
         button.each(function(item, index) {
-            var hiddenPresetFeaturesId = context.features().isHiddenPreset(item.preset, geometry);
+            var hiddenPresetFeaturesId;
+            for (var i in geometries) {
+                hiddenPresetFeaturesId = context.features().isHiddenPreset(item.preset, geometries[i]);
+                if (hiddenPresetFeaturesId) break;
+            }
             var isHiddenPreset = !context.inIntro() &&
                 !!hiddenPresetFeaturesId &&
-                item.preset !== _currentPreset;
+                (_currentPresets.length !== 1 || item.preset !== _currentPresets[0]);
 
             d3_select(this)
                 .classed('disabled', isHiddenPreset);
@@ -443,7 +457,7 @@ export function uiPresetList(context) {
                 var isAutoHidden = context.features().autoHidden(hiddenPresetFeaturesId);
                 var tooltipIdSuffix = isAutoHidden ? 'zoom' : 'manual';
                 var tooltipObj = { features: t('feature.' + hiddenPresetFeaturesId + '.description') };
-                d3_select(this).call(tooltip()
+                d3_select(this).call(uiTooltip()
                     .title(t('inspector.hidden_preset.' + tooltipIdSuffix, tooltipObj))
                     .placement(index < 2 ? 'bottom' : 'top')
                 );
@@ -457,21 +471,53 @@ export function uiPresetList(context) {
         return presetList;
     };
 
-
-    presetList.entityID = function(val) {
-        if (!arguments.length) return _entityID;
-        _entityID = val;
-        presetList.preset(context.presets().match(context.entity(_entityID), context.graph()));
+    presetList.entityIDs = function(val) {
+        if (!arguments.length) return _entityIDs;
+        _entityIDs = val;
+        if (_entityIDs && _entityIDs.length) {
+            var presets = _entityIDs.map(function(entityID) {
+                return presetManager.match(context.entity(entityID), context.graph());
+            });
+            presetList.presets(presets);
+        }
         return presetList;
     };
 
-
-    presetList.preset = function(val) {
-        if (!arguments.length) return _currentPreset;
-        _currentPreset = val;
+    presetList.presets = function(val) {
+        if (!arguments.length) return _currentPresets;
+        _currentPresets = val;
         return presetList;
     };
 
+    function entityGeometries() {
+
+        var counts = {};
+
+        for (var i in _entityIDs) {
+            var entityID = _entityIDs[i];
+            var entity = context.entity(entityID);
+            var geometry = entity.geometry(context.graph());
+
+            // Treat entities on addr:interpolation lines as points, not vertices (#3241)
+            if (geometry === 'vertex' && entity.isOnAddressLine(context.graph())) {
+                geometry = 'point';
+            }
+
+            if (!counts[geometry]) counts[geometry] = 0;
+            counts[geometry] += 1;
+        }
+
+        return Object.keys(counts).sort(function(geom1, geom2) {
+            return counts[geom2] - counts[geom1];
+        });
+    }
+
+    function combinedEntityExtent() {
+        return _entityIDs.reduce(function(extent, entityID) {
+            var entity = context.graph().entity(entityID);
+            return extent.extend(entity.extent(context.graph()));
+        }, geoExtent());
+    }
 
     return utilRebind(presetList, dispatch, 'on');
 }

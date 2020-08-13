@@ -30,8 +30,8 @@ export function svgStreetside(projection, context, dispatch) {
         if (services.streetside && !_streetside) {
             _streetside = services.streetside;
             _streetside.event
-                .on('viewerChanged', viewerChanged)
-                .on('loadedBubbles', throttledRedraw);
+                .on('viewerChanged.svgStreetside', viewerChanged)
+                .on('loadedBubbles.svgStreetside', throttledRedraw);
         } else if (!services.streetside && _streetside) {
             _streetside = null;
         }
@@ -98,10 +98,10 @@ export function svgStreetside(projection, context, dispatch) {
         _selectedSequence = d.sequenceKey;
 
         service
-            .selectImage(d)
+            .selectImage(context, d)
             .then(response => {
                 if (response.status === 'ok'){
-                    service.showViewer(_viewerYaw);
+                    service.showViewer(context, _viewerYaw);
                 }
             });
 
@@ -114,7 +114,7 @@ export function svgStreetside(projection, context, dispatch) {
      */
     function mouseover(d) {
         var service = getService();
-        if (service) service.setStyles(d);
+        if (service) service.setStyles(context, d);
     }
 
     /**
@@ -122,7 +122,7 @@ export function svgStreetside(projection, context, dispatch) {
      */
     function mouseout() {
         var service = getService();
-        if (service) service.setStyles(null);
+        if (service) service.setStyles(context, null);
     }
 
     /**
@@ -163,7 +163,7 @@ export function svgStreetside(projection, context, dispatch) {
      * update().
      */
     function update() {
-        var viewer = d3_select('#photoviewer');
+        var viewer = context.container().select('.photoviewer');
         var selected = viewer.empty() ? undefined : viewer.datum();
         var z = ~~context.map().zoom();
         var showMarkers = (z >= minMarkerZoom);

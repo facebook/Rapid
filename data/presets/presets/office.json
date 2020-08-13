@@ -5,12 +5,14 @@
         "office",
         "address",
         "building_area",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
         "air_conditioning",
         "baby_feeding",
         "building/levels_building",
+        "ele",
         "email",
         "fax",
         "gnis/feature_id",
