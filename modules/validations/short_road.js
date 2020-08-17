@@ -74,7 +74,7 @@ export function validationShortRoad(context) {
                 }
             }));
         }
-        if (!operationDelete([entity.id], context).disabled()) {
+        if (!operationDelete(context, [entity.id]).disabled()) {
             fixes.push(new validationIssueFix({
                 icon: 'iD-operation-delete',
                 title: t('issues.fix.delete_feature.title'),
