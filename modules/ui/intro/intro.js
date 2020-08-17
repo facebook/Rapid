@@ -51,6 +51,17 @@ export function uiIntro(context, skipToRapid) {
 
 
   function intro(selection) {
+    fileFetcher.get('intro_rapid_graph')
+      .then(dataIntroRapidGraph => {
+        // create entities for intro graph and localize names
+        for (let id in dataIntroRapidGraph) {
+          if (!_rapidGraph[id]) {
+            _rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
+          }
+        }
+      })
+      .catch(function() { /* ignore */ });
+
     fileFetcher.get('intro_graph')
       .then(dataIntroGraph => {
         // create entities for intro graph and localize names
@@ -62,18 +73,7 @@ export function uiIntro(context, skipToRapid) {
         selection.call(startIntro);
       })
       .catch(function() { /* ignore */ });
-    fileFetcher.get('intro_rapid_graph')
-      .then(dataIntroRapidGraph => {
-        // create entities for intro graph and localize names
-        for (let id in dataIntroRapidGraph) {
-          if (!_rapidGraph[id]) {
-            _rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
-          }
-        }
-        selection.call(startIntro);
-      })
-      .catch(function() { /* ignore */ });
-  }
+    }
 
 
   function startIntro(selection) {
