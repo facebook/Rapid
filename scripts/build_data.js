@@ -126,6 +126,7 @@ function buildData() {
     minifyJSON('data/discarded.json', 'dist/data/discarded.min.json'),
     minifyJSON('data/imagery.json', 'dist/data/imagery.min.json'),
     minifyJSON('data/intro_graph.json', 'dist/data/intro_graph.min.json'),
+    minifyJSON('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json'),
     minifyJSON('data/keepRight.json', 'dist/data/keepRight.min.json'),
     minifyJSON('data/languages.json', 'dist/data/languages.min.json'),
     minifyJSON('data/locales.json', 'dist/data/locales.min.json'),

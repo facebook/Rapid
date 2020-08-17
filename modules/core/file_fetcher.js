@@ -16,6 +16,7 @@ export function coreFileFetcher() {
     'discarded': 'data/discarded.min.json',
     'imagery': 'data/imagery.min.json',
     'intro_graph': 'data/intro_graph.min.json',
+    'intro_rapid_graph': 'data/intro_rapid_graph.min.json',
     'keepRight': 'data/keepRight.min.json',
     'languages': 'data/languages.min.json',
     'locales': 'data/locales.min.json',

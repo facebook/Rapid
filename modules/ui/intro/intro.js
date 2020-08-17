@@ -62,12 +62,12 @@ export function uiIntro(context, skipToRapid) {
         selection.call(startIntro);
       })
       .catch(function() { /* ignore */ });
-      fileFetcher.get('intro_fb_graph')
+    fileFetcher.get('intro_rapid_graph')
       .then(dataIntroRapidGraph => {
         // create entities for intro graph and localize names
         for (let id in dataIntroRapidGraph) {
-          if (!_introGraph[id]) {
-            _introGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
+          if (!_rapidGraph[id]) {
+            _rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
           }
         }
         selection.call(startIntro);
