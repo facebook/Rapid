@@ -314,6 +314,8 @@ export function uiFieldCombo(field, context) {
 
         dispatch.call('change', this, t);
     }
+
+
     function isFbRoadId (entity) {
         if (entity.id) {
             return entity.id.startswith('w-');
@@ -322,6 +324,7 @@ export function uiFieldCombo(field, context) {
        }
     }
 
+    
     function removeMultikey(d) {
         d3_event.stopPropagation();
 

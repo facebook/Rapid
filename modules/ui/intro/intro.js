@@ -73,7 +73,7 @@ export function uiIntro(context, skipToRapid) {
         selection.call(startIntro);
       })
       .catch(function() { /* ignore */ });
-    }
+  }
 
 
   function startIntro(selection) {
@@ -225,8 +225,7 @@ export function uiIntro(context, skipToRapid) {
       .attr('class', 'status')
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-    enterChapter(chapters[0]);
-
+    enterChapter(chapters[skipToRapid ? 6 : 0]);
 
     function enterChapter(newChapter) {
       if (_currChapter) { _currChapter.exit(); }
