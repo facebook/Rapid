@@ -201,10 +201,10 @@ export function uiIntroRapid(context, reveal) {
 
         timeout(function() {
 
-            var button = d3_select('#bar button.undo-button');
+            var button = d3_select('.top-toolbar button.undo-button');
 
             var iconName = '#iD-icon-undo';
-            reveal('#bar button.undo-button',
+            reveal('.top-toolbar button.undo-button',
                 t('intro.rapid.undo_fix_lint', { button: icon(iconName, 'pre-text') })
             );
 
@@ -224,10 +224,10 @@ export function uiIntroRapid(context, reveal) {
 
         timeout(function() {
 
-            var button = d3_select('#bar button.undo-button');
+            var button = d3_select('.top-toolbar button.undo-button');
 
             var iconName = '#iD-icon-undo';
-            reveal('#bar button.undo-button',
+            reveal('.top-toolbar button.undo-button',
                 t('intro.rapid.undo_road_add', { button: icon(iconName, 'pre-text') })
             );
 

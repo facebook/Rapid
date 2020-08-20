@@ -51,23 +51,23 @@ export function uiIntro(context, skipToRapid) {
 
 
   function intro(selection) {
+    fileFetcher.get('intro_rapid_graph')
+      .then(dataIntroRapidGraph => {
+        // create entities for intro graph and localize names
+        for (let id in dataIntroRapidGraph) {
+          if (!_rapidGraph[id]) {
+            _rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
+          }
+        }
+      })
+      .catch(function() { /* ignore */ });
+
     fileFetcher.get('intro_graph')
       .then(dataIntroGraph => {
         // create entities for intro graph and localize names
         for (let id in dataIntroGraph) {
           if (!_introGraph[id]) {
             _introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
-          }
-        }
-        selection.call(startIntro);
-      })
-      .catch(function() { /* ignore */ });
-      fileFetcher.get('intro_fb_graph')
-      .then(dataIntroRapidGraph => {
-        // create entities for intro graph and localize names
-        for (let id in dataIntroRapidGraph) {
-          if (!_introGraph[id]) {
-            _introGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
           }
         }
         selection.call(startIntro);
@@ -225,8 +225,7 @@ export function uiIntro(context, skipToRapid) {
       .attr('class', 'status')
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-    enterChapter(chapters[0]);
-
+    enterChapter(chapters[skipToRapid ? 6 : 0]);
 
     function enterChapter(newChapter) {
       if (_currChapter) { _currChapter.exit(); }

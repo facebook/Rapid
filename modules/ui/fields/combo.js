@@ -316,12 +316,21 @@ export function uiFieldCombo(field, context) {
     }
 
 
+    function isFbRoadId (entity) {
+        if (entity.id) {
+            return entity.id.startswith('w-');
+        } else {
+            return false;
+       }
+    }
+
+    
     function removeMultikey(d) {
         d3_event.stopPropagation();
 
         // don't move source=digitalglobe or source=maxar on ML road
         // TODO: switch to check on __fbid__
-        if (field.key === 'source' && _entityIDs[0] && _entityIDs[0].id.startsWith('w-') && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
+        if (field.key === 'source' && _entityIDs[0] && isFbRoadId(_entityIDs[0]) && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
         var t = {};
         if (isMulti) {
             t[d.key] = undefined;
@@ -548,7 +557,7 @@ export function uiFieldCombo(field, context) {
                 .text(function(d) {
                     // don't show 'x' on the digitalglobe/maxar label on ML road
                     // TODO: switch to check on __fbid__
-                    return _entityIDs[0] && _entityIDs[0].id.startsWith('w-') && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
+                    return _entityIDs[0] && isFbRoadId(_entityIDs[0]) && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
                 });
 
         } else {
