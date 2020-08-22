@@ -23,9 +23,9 @@ export function uiField(context, presetField, entityIDs, options) {
 
     // Don't show the remove and revert buttons if any of the entity IDs are FB features
     // with source=digitalglobe or source=maxar
-    var someFbRoadsSelected = entityIDs.some(function(entity) {
+    var someFbRoadsSelected = entityIDs ? entityIDs.some(function(entity) {
             return entity.__fbid__ && (entity.tags.source === 'maxar' || entity.tags.source === 'digitalglobe');
-        });
+        }) : false;
 
 
     if ( someFbRoadsSelected ) {
