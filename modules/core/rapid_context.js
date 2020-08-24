@@ -6,7 +6,7 @@ import { utilRebind } from '../util';
 
 export function coreRapidContext() {
     var rapidContext = {};
-    rapidContext.version = '1.0.10';
+    rapidContext.version = '1.0.11';
     var _isTaskBoundsRect = undefined;
     var dispatch = d3_dispatch('task_extent_set');
 
