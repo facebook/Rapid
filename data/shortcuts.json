@@ -1,5 +1,4 @@
-{
-  "dataShortcuts": [
+[
     {
       "tab": "browsing",
       "text": "shortcuts.browsing.title",
@@ -89,7 +88,7 @@
               "text": "shortcuts.browsing.display_options.highlight_edits"
             },
             {
-              "modifiers": ["⇧"], 
+              "modifiers": ["⇧"],
               "shortcuts": ["map_data.layers.ai-features.key"],
               "text": "shortcuts.browsing.display_options.ai_features_data",
               "rapid": true
@@ -370,4 +369,3 @@
       ]
     }
   ]
-}
