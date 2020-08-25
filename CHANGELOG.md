@@ -2,7 +2,7 @@
 # [1.0.11](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.11)
 #### 2020-Aug-24th
 #### :trumpet: Updates
-This release fixes issue #158, which prevented saves from occurring.
+This release fixes issue #158, which prevented saves from occurring. Other fixes: #163 and #164.
 
 # [1.0.10](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.10)
 #### 2020-Aug-07th
