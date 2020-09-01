@@ -4,7 +4,7 @@ import {
     event as d3_event,
     select as d3_select
 } from 'd3-selection';
-
+import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
@@ -26,6 +26,9 @@ export function uiSectionBackgroundList(context) {
     var section = uiSection('background-list', context)
         .title(t('background.backgrounds'))
         .disclosureContent(renderDisclosureContent);
+
+    const favoriteBackgroundsJSON = prefs('background-favorites');
+    const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
 
     function previousBackgroundID() {
         return prefs('background-last-used-toggle');
@@ -162,8 +165,9 @@ export function uiSectionBackgroundList(context) {
     }
 
     function sortSources(a, b) {
-        return a.best() && !b.best() ? -1
-            : b.best() && !a.best() ? 1
+        return _favoriteBackgrounds[a.id] && !_favoriteBackgrounds[b.id] ? -1
+            : _favoriteBackgrounds[b.id] && !_favoriteBackgrounds[a.id] ? 1
+            : a.best() && !b.best() ? -1 : b.best() && !a.best() ? 1
             : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
     }
 
@@ -173,17 +177,17 @@ export function uiSectionBackgroundList(context) {
             .filter(filter);
 
         var layerLinks = layerList.selectAll('li')
-            .data(sources, function(d) { return d.name(); });
+            .data(sources, function(d) { return d.id; });
 
         layerLinks.exit()
             .remove();
 
-        var enter = layerLinks.enter()
+        var layerLinksEnter = layerLinks.enter()
             .append('li')
             .classed('layer-custom', function(d) { return d.id === 'custom'; })
             .classed('best', function(d) { return d.best(); });
 
-        var label = enter
+        var label = layerLinksEnter
             .append('label');
 
         label
@@ -196,7 +200,40 @@ export function uiSectionBackgroundList(context) {
             .append('span')
             .text(function(d) { return d.name(); });
 
-        enter.filter(function(d) { return d.id === 'custom'; })
+        layerLinksEnter
+            .append('button')
+            .attr('class', 'background-favorite-button')
+            .classed('active', function(d) { return !!_favoriteBackgrounds[d.id]; })
+            .attr('tabindex', -1)
+            .call(svgIcon('#iD-icon-favorite'))
+            .on('click', function(d) {
+                if (_favoriteBackgrounds[d.id]) {
+                    d3_select(this).classed('active', false);
+                    delete _favoriteBackgrounds[d.id];
+                } else {
+                    d3_select(this).classed('active', true);
+                    _favoriteBackgrounds[d.id] = true;
+                }
+                prefs('background-favorites', JSON.stringify(_favoriteBackgrounds));
+
+                d3_select(this.parentElement)
+                    .transition()
+                    .duration(300)
+                    .ease(d3_easeCubicInOut)
+                    .style('background-color', 'orange')
+                        .transition()
+                        .duration(300)
+                        .ease(d3_easeCubicInOut)
+                        .style('background-color', null);
+
+                layerList.selectAll('li')
+                    .sort(sortSources);
+                layerList
+                    .call(updateLayerSelections);
+                this.blur(); // Stop old de-stars from having grey background
+            });
+
+        layerLinksEnter.filter(function(d) { return d.id === 'custom'; })
             .append('button')
             .attr('class', 'layer-browse')
             .call(uiTooltip()
@@ -206,16 +243,15 @@ export function uiSectionBackgroundList(context) {
             .on('click', editCustom)
             .call(svgIcon('#iD-icon-more'));
 
-        enter.filter(function(d) { return d.best(); })
-            .append('div')
+        layerLinksEnter.filter(function(d) { return d.best(); })
+            .selectAll('label')
+            .append('span')
             .attr('class', 'best')
             .call(uiTooltip()
                 .title(t('background.best_imagery'))
                 .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
             )
-            .append('span')
-            .html('&#9733;');
-
+            .call(svgIcon('#iD-icon-best-background'));
 
         layerList.selectAll('li')
             .sort(sortSources);
