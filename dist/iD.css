@@ -3303,61 +3303,85 @@ display: none;
     display: block;
 }
 
+.ideditor .modal-whatsnew .modal-section.body{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+
+.ideditor .modal-whatsnew .body img{
+    width: 80%;
+    padding-top:10px;
+}
+
+.ideditor .modal-whatsnew.modal-rapid,
 .ideditor .modal-splash.modal-rapid {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display: flex; 
-    -webkit-box-orient: vertical; 
-    -webkit-box-direction: normal; 
-    -webkit-flex-direction: column; 
-        -ms-flex-direction: column; 
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
             flex-direction: column;
-    background: rgba(0, 0, 0, 0.5); 
-    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
-            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
-    border-radius: 15px; 
-    top: 80px; 
+    background: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    top: 80px;
 }
 
 .ideditor .modal-rapid .fillL {
-    background: transparent; 
-    color: white; 
+    background: transparent;
+    color: white;
 }
 
 .ideditor .modal-rapid .modal-actions button {
     text-align: center;
-    background: black; 
+    background: black;
     color: white;
     border: 1px solid white;
     width: 100%;
     margin: 20px;
-    border-radius: 5px; 
-    font-size: 14px; 
-    font-weight: 500; 
-    height: 160px; 
-    -webkit-box-sizing: border-box; 
-            box-sizing: border-box; 
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 160px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .ideditor .modal-rapid .content {
     -webkit-box-shadow: unset;
-            box-shadow: unset; 
+            box-shadow: unset;
+    border-radius: 15px;
+    border: 2px solid #fffa;
 }
 
+.ideditor .modal-whatsnew .modal-actions button {
+    height: 3rem;
+}
+
+.ideditor .modal-rapid .modal-actions button.whats-new-okay,
 .ideditor .modal-rapid .modal-actions button.rapid-login-to-osm {
-    background: white; 
-    color: black; 
+    background: white;
+    color: black;
     border: black;
-    height: 3rem;  
-}
-
-.ideditor .modal-rapid .modal-actions button.rapid-explore {
-    height: 3rem;  
 }
 
 .ideditor .modal-rapid .modal-section {
-    border: 0px; 
+    border: 0px;
 }
 
 .ideditor .modal-rapid .modal-section .logo-rapid {
@@ -3365,17 +3389,17 @@ display: none;
 }
 
 .ideditor .modal-rapid p {
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 .ideditor .modal-rapid > button.close {
     -webkit-align-self: flex-end;
         -ms-flex-item-align: end;
-            align-self: flex-end; 
-    color: #ff26d4; 
-    position: unset; 
-    height: 40px; 
-    background: transparent; 
+            align-self: flex-end;
+    color: #ff26d4;
+    position: unset;
+    height: 40px;
+    background: transparent;
 }
 
 .ideditor .rapid-feature.rapid-stack {
@@ -3387,39 +3411,39 @@ display: none;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
-            flex-direction: column; 
-    -webkit-box-align: start; 
-    -webkit-align-items: flex-start; 
-        -ms-flex-align: start; 
-            align-items: flex-start; 
-    color: white; 
+            flex-direction: column;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    color: white;
 }
 
 .ideditor .rapid-feature-label {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display: flex; 
-    -webkit-box-align: center; 
-    -webkit-align-items: center; 
-        -ms-flex-align: center; 
-            align-items: center; 
-    margin: 16px; 
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    margin: 16px;
 }
-
+.ideditor .modal-whatsnew svg.icon.logo-rapid,
 .ideditor .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
-    margin: -5px;
+    margin: 0em -.5em;
 }
 
 .ideditor .rapid-feature-description {
-    font-size: 14px; 
-    margin: 16px; 
+    font-size: 14px;
+    margin: 16px;
 }
 
 .ideditor .rapid-feature-license {
-    margin: 16px;  
+    margin: 16px;
 }
 
 .ideditor .rapid-feature-license p {
@@ -3430,14 +3454,14 @@ display: none;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display: flex; 
-    -webkit-box-align: center; 
-    -webkit-align-items: center; 
-        -ms-flex-align: center; 
-            align-items: center; 
-    -webkit-justify-content: space-around; 
-        -ms-flex-pack: distribute; 
-            justify-content: space-around; 
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
 }
 
 .ideditor .modal-section.rapid-checkbox {
@@ -3445,106 +3469,154 @@ display: none;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display: flex; 
-    -webkit-box-pack: start; 
-    -webkit-justify-content: flex-start; 
-        -ms-flex-pack: start; 
-            justify-content: flex-start; 
-    -webkit-box-align: center; 
-    -webkit-align-items: center; 
-        -ms-flex-align: center; 
-            align-items: center; 
-    padding: 5px; 
-    width: 100%; 
+    display: flex;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+
+.ideditor .modal-section.rapid-checkbox.dontshow {
+    font-size: 12px;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0px 5px;
+    width: 80%;
+    -webkit-box-align: unset;
+    -webkit-align-items: unset;
+        -ms-flex-align: unset;
+            align-items: unset;
+    width: unset;
 }
 
 .ideditor .modal-section.rapid-checkbox.disabled {
-    opacity: .5; 
+    opacity: .5;
 }
 
 .ideditor .rapid-feature-checkbox {
-    margin-left: auto; 
+    margin-left: auto;
 }
 
 .ideditor .modal-section.rapid-checkbox.section-divider {
     width: 95%;
-    height: 1px; 
+    height: 1px;
     background: #ccca;
-    padding: 1px; 
-    -webkit-align-self: center; 
-        -ms-flex-item-align: center; 
-            align-self: center; 
+    padding: 1px;
+    -webkit-align-self: center;
+        -ms-flex-item-align: center;
+            align-self: center;
 }
 
 .ideditor .rapid-feature-hotkey {
-    margin-left: -5px; 
+    margin-left: -5px;
     font-size: 14px;
 }
 
 .ideditor .rapid-feature-label-divider {
-    width: 1px; 
-    height: 20px; 
-    margin-top: 3px; 
-    background: #ccca; 
+    width: 1px;
+    height: 20px;
+    margin-top: 3px;
+    background: #ccca;
 }
 
 .ideditor .rapid-checkbox-label {
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     margin-left: auto;
 }
 
-/* since checkboxes can't be styled, we'll 
+
+.ideditor .rapid-checkbox-label.dontshow {
+    width: 30%;
+    margin:20px 20px 0px;
+    height: 20px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+
+/* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
 .ideditor .rapid-checkbox-label input {
-    position: absolute; 
-    opacity: 0; 
-    cursor: pointer; 
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
 .ideditor .rapid-checkbox-label .rapid-checkbox-custom {
-    height: 36px; 
-    width: 36px; 
+    height: 36px;
+    width: 36px;
     background-color: transparent;
-    border-radius: 5px; 
-    border: 2px solid #ffffff; 
+    border-radius: 5px;
+    border: 2px solid #ffffff;
 }
 
-.ideditor .rapid-checkbox-label .rapid-checkbox-custom::after { 
-    content: ""; 
-    height: 0px; 
-    width: 0px; 
-    border-radius: 5px; 
-    border: solid transparent; 
-    border-width: 0 6px 6px 0; 
-    -webkit-transform: scale(0); 
-        -ms-transform: scale(0); 
-            transform: scale(0); 
-    opacity: 1; 
+
+.ideditor .rapid-checkbox-label.dontshow .rapid-checkbox-custom {
+    height: 24px;
+    width: 24px;
+    border-radius: 3px;
+    margin-left: 10px;
+}
+
+
+.ideditor .rapid-checkbox-label .rapid-checkbox-custom::after {
+    content: "";
+    height: 0px;
+    width: 0px;
+    border-radius: 5px;
+    border: solid transparent;
+    border-width: 0 6px 6px 0;
+    -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+            transform: scale(0);
+    opacity: 1;
 }
 
 .ideditor .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
-    content: ""; 
+    content: "";
     display: block;
-    height: 12px; 
-    width: 6px; 
+    height: 12px;
+    width: 6px;
     padding: 2px;
-    margin-left: 9px; 
-    margin-top: 2px; 
-    border-radius: 0; 
-    border: solid #ff26d4; 
+    margin-left: 9px;
+    margin-top: 2px;
+    border-radius: 0;
+    border: solid #ff26d4;
     background-color: transparent;
-    border-width: 0 4px 4px 0; 
-    -webkit-transform: rotate(45deg) scale(1); 
-        -ms-transform: rotate(45deg) scale(1); 
-            transform: rotate(45deg) scale(1); 
-    opacity: 1; 
+    border-width: 0 4px 4px 0;
+    -webkit-transform: rotate(45deg) scale(1);
+        -ms-transform: rotate(45deg) scale(1);
+            transform: rotate(45deg) scale(1);
+    opacity: 1;
 }
 
-.ideditor g.layer-ai-features.hide-rapid-roads path.road, 
-.ideditor g.layer-ai-features.hide-rapid-roads node.road, 
-.ideditor g.layer-ai-features.hide-rapid-buildings path.building  { 
-    display: none; 
+.ideditor .rapid-checkbox-label.dontshow input:checked ~ .rapid-checkbox-custom::after {
+    height: 7px;
+    width: 3px;
+    padding: 2px;
+    margin-left: 5px;
+    margin-top: 2px;
+    border-width: 0 2px 2px 0;
+}
+.ideditor g.layer-ai-features.hide-rapid-roads path.road,
+.ideditor g.layer-ai-features.hide-rapid-roads g.node.road,
+.ideditor g.layer-ai-features.hide-rapid-buildings path.building  {
+    display: none;
 }/* Basics
 ------------------------------------------------------- */
 /* the root element of iD */
