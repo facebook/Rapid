@@ -81,7 +81,7 @@ export function validationShortRoad(context) {
                 entityIds: [entity.id],
                 onClick: function() {
                     var id = this.issue.entityIds[0];
-                    var operation = operationDelete([id], context);
+                    var operation = operationDelete(context, [id]);
                     if (!operation.disabled()) {
                         operation();
                     }

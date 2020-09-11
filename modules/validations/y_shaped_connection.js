@@ -51,7 +51,7 @@ export function validationYShapedConnection(context) {
     }
 
     function createIssueAndFixForNode(node, context) {
-        var deletable = !operationDelete([node.id], context).disabled();
+        var deletable = !operationDelete(context, [node.id]).disabled();
         var fix = undefined;
         if (deletable) {
             fix = new validationIssueFix({
@@ -60,7 +60,7 @@ export function validationYShapedConnection(context) {
                 entityIds: [node.id],
                 onClick: function() {
                     var id = this.entityIds[0];
-                    var operation = operationDelete([id], context);
+                    var operation = operationDelete(context, [id]);
                     if (!operation.disabled()) {
                         operation();
                     }
