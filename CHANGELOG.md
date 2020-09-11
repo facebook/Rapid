@@ -1,4 +1,9 @@
 
+# [1.0.12](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.12)
+#### 2020-Sept-11th
+#### :trumpet: Updates
+This release fixes issue #168, which prevented users from editing certain types of ways.
+
 # [1.0.11](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.11)
 #### 2020-Aug-24th
 #### :trumpet: Updates
