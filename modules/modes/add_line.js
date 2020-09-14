@@ -8,7 +8,7 @@ import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { modeDrawLine } from './draw_line';
 import { osmNode, osmWay } from '../osm';
-import { rapidPowerUserFeaturesStorage } from '../ui/rapid_poweruser_features_storage'; 
+import { rapidPowerUserFeaturesStorage } from '../ui/rapid_poweruser_features_storage';
 
 export function modeAddLine(context, mode) {
     mode.id = 'add-line';
@@ -53,7 +53,7 @@ export function modeAddLine(context, mode) {
 
         if (rapidPowerUserFeaturesStorage().featureEnabled('tagSources')) {
             if (mode.defaultTags.highway){
-                mode.defaultTags.source = 'digitalglobe'; 
+                mode.defaultTags.source = 'maxar';
             }
         }
 

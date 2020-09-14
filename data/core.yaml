@@ -918,8 +918,8 @@ en:
     ai_feature_halo_desc: Enable a halo around AI features in the map
     tagnostic_road_combine: Tag-agnostic road combine
     tagnostic_road_combine_desc: Allow the Combine operation for roads whose highway tagging differs
-    tag_sources: Tag highways as DG
-    tag_sources_desc: Add the tag 'source=digitalglobe' to all highways
+    tag_sources: Tag highways as Maxar
+    tag_sources_desc: Add the tag 'source=maxar' to all highways
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:
