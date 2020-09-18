@@ -8,7 +8,7 @@ import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { modeDrawLine } from './draw_line';
 import { osmNode, osmWay } from '../osm';
-import { rapidPowerUserFeaturesStorage } from '../ui/rapid_poweruser_features_storage';
+
 
 export function modeAddLine(context, mode) {
     mode.id = 'add-line';
@@ -50,13 +50,6 @@ export function modeAddLine(context, mode) {
     function start(loc) {
         var startGraph = context.graph();
         var node = osmNode({ loc: loc, tags: mode.defaultNodeTags || {} });
-
-        if (rapidPowerUserFeaturesStorage().featureEnabled('tagSources')) {
-            if (mode.defaultTags.highway){
-                mode.defaultTags.source = 'maxar';
-            }
-        }
-
         var way = osmWay({ tags: mode.defaultTags });
 
         context.perform(
