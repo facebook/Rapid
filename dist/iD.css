@@ -2477,9 +2477,8 @@ display: none;
 /* photo viewer div */
 .ideditor .photoviewer {
     position: relative;
-    -webkit-flex-shrink: 0;
-        -ms-flex-negative: 0;
-            flex-shrink: 0;
+    -ms-flex-negative: 0;
+        flex-shrink: 0;
     margin-bottom: 10px;
     width: 330px;
     height: 250px;
@@ -2732,20 +2731,16 @@ display: none;
 }
 .ideditor .ms-wrapper .photo-attribution .attribution-row {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     padding: 0 5px;
@@ -3021,15 +3016,12 @@ display: none;
 }
 .ideditor .qa-header-icon {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
 }
@@ -3305,16 +3297,13 @@ display: none;
 
 .ideditor .modal-whatsnew .modal-section.body{
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
 }
@@ -3327,12 +3316,10 @@ display: none;
 .ideditor .modal-whatsnew.modal-rapid,
 .ideditor .modal-splash.modal-rapid {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
     background: rgba(0, 0, 0, 0.5);
@@ -3393,9 +3380,8 @@ display: none;
 }
 
 .ideditor .modal-rapid > button.close {
-    -webkit-align-self: flex-end;
-        -ms-flex-item-align: end;
-            align-self: flex-end;
+    -ms-flex-item-align: end;
+        align-self: flex-end;
     color: #ff26d4;
     position: unset;
     height: 40px;
@@ -3404,16 +3390,13 @@ display: none;
 
 .ideditor .rapid-feature.rapid-stack {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-align: start;
-    -webkit-align-items: flex-start;
         -ms-flex-align: start;
             align-items: flex-start;
     color: white;
@@ -3421,11 +3404,9 @@ display: none;
 
 .ideditor .rapid-feature-label {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     margin: 16px;
@@ -3452,30 +3433,24 @@ display: none;
 
 .ideditor .rapid-feature-label-container {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
-    -webkit-justify-content: space-around;
-        -ms-flex-pack: distribute;
-            justify-content: space-around;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
 }
 
 .ideditor .modal-section.rapid-checkbox {
     font-size: 24px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
             justify-content: flex-start;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     padding: 5px;
@@ -3485,17 +3460,14 @@ display: none;
 .ideditor .modal-section.rapid-checkbox.dontshow {
     font-size: 12px;
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     padding: 0px 5px;
     width: 80%;
     -webkit-box-align: unset;
-    -webkit-align-items: unset;
         -ms-flex-align: unset;
             align-items: unset;
     width: unset;
@@ -3514,9 +3486,8 @@ display: none;
     height: 1px;
     background: #ccca;
     padding: 1px;
-    -webkit-align-self: center;
-        -ms-flex-item-align: center;
-            align-self: center;
+    -ms-flex-item-align: center;
+        align-self: center;
 }
 
 .ideditor .rapid-feature-hotkey {
@@ -3543,7 +3514,6 @@ display: none;
     margin:20px 20px 0px;
     height: 20px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
@@ -4148,16 +4118,13 @@ hide this one and style something on top of it.  */
 }
 .ideditor .top-toolbar {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     padding: 10px 0 0 0;
@@ -4175,39 +4142,31 @@ hide this one and style something on top of it.  */
 }
 .ideditor .top-toolbar .toolbar-item {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: column wrap;
         -ms-flex-flow: column wrap;
             flex-flow: column wrap;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
 }
 .ideditor .top-toolbar .toolbar-item .item-content {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     height: 40px;
@@ -4239,19 +4198,16 @@ hide this one and style something on top of it.  */
 .ideditor .top-toolbar .toolbar-item.spacer {
     width: 100%;
     -webkit-box-flex: 2;
-    -webkit-flex-grow: 2;
         -ms-flex-positive: 2;
             flex-grow: 2;
 }
 .ideditor .top-toolbar .toolbar-item:first-child {
     -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
         -ms-flex-pack: start;
             justify-content: flex-start;
 }
 .ideditor .top-toolbar .toolbar-item:last-child {
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
 }
@@ -4260,35 +4216,29 @@ hide this one and style something on top of it.  */
 }
 .ideditor button.bar-button {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     padding: 0 10px;
     min-width: 30px;
     white-space: nowrap;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
 .ideditor button.bar-button .icon {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 20px;
         -ms-flex: 0 0 20px;
             flex: 0 0 20px;
 }
 .ideditor button.bar-button .label {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     padding: 0 5px;
@@ -4378,15 +4328,12 @@ hide this one and style something on top of it.  */
     height: 60px;
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
 }
@@ -4465,49 +4412,40 @@ hide this one and style something on top of it.  */
     width: 100%;
     height: 30px;
     z-index: 1;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     list-style: none;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
 
 .ideditor .footer > a {
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
 }
 
 .ideditor .header-container {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
 }
 
 .ideditor .header-block {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
 }
@@ -4517,11 +4455,9 @@ hide this one and style something on top of it.  */
 
 .ideditor .header-block-close {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     height: 100%;
@@ -4740,7 +4676,6 @@ hide this one and style something on top of it.  */
     height: 40px;
     line-height: 20px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
@@ -4766,7 +4701,6 @@ hide this one and style something on top of it.  */
        text-overflow: ellipsis;
     overflow: hidden;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -4829,7 +4763,6 @@ hide this one and style something on top of it.  */
 .ideditor .preset-list-button-wrap {
     height: 62px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     border: 1px solid #ccc;
@@ -4841,7 +4774,6 @@ hide this one and style something on top of it.  */
     height: 100%;
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
@@ -4856,19 +4788,15 @@ hide this one and style something on top of it.  */
     height: 60px;
     text-align: center;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
 }
@@ -4876,7 +4804,6 @@ hide this one and style something on top of it.  */
     width: 40px;
     height: 40px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
 }
@@ -5017,16 +4944,13 @@ hide this one and style something on top of it.  */
 
 .ideditor .preset-list-button .label {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     background-color: #f6f6f6;
@@ -5034,12 +4958,10 @@ hide this one and style something on top of it.  */
     padding: 5px 10px;
     border-left: 1px solid rgba(0, 0, 0, .1);
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
-    -webkit-align-self: stretch;
-        -ms-flex-item-align: stretch;
-            align-self: stretch;
+    -ms-flex-item-align: stretch;
+        align-self: stretch;
 }
 .ideditor[dir='rtl'] .preset-list-button .label {
     text-align: right;
@@ -5093,7 +5015,6 @@ hide this one and style something on top of it.  */
     height: 100%;
     width: 32px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     background: #f6f6f6;
@@ -5170,16 +5091,13 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .quick-links {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     padding: 5px 0 0 0;
@@ -5224,12 +5142,10 @@ hide this one and style something on top of it.  */
 
 .ideditor .form-field {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     margin-bottom: 10px;
@@ -5247,16 +5163,13 @@ hide this one and style something on top of it.  */
 /* A `label` element that wraps the top section */
 .ideditor .field-label {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     height: 30px;
@@ -5273,7 +5186,6 @@ hide this one and style something on top of it.  */
     -o-text-overflow: ellipsis;
        text-overflow: ellipsis;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     padding: 5px 0 5px 10px;
@@ -5296,7 +5208,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .field-label button {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 32px;
         -ms-flex: 0 0 32px;
             flex: 0 0 32px;
     border-left: 1px solid #ccc;
@@ -5335,17 +5246,14 @@ hide this one and style something on top of it.  */
 /* A `div` element that wraps the bottom section */
 .ideditor .form-field-input-wrap {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     width: 100%;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     min-height: 30px;
@@ -5362,7 +5270,6 @@ hide this one and style something on top of it.  */
 .ideditor .form-field-input-wrap > textarea,
 .ideditor .form-field-input-wrap > ul.chiplist {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     min-height: 30px;
@@ -5381,7 +5288,6 @@ hide this one and style something on top of it.  */
 /* Buttons inside fields */
 .ideditor .form-field-button {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     height: 30px;
@@ -5426,16 +5332,13 @@ hide this one and style something on top of it.  */
 .ideditor .form-field-input-access,
 .ideditor .form-field-input-cycleway {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
 }
@@ -5444,7 +5347,6 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .form-field ul.rows {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     border: 1px solid #ccc;
@@ -5461,19 +5363,16 @@ hide this one and style something on top of it.  */
 }
 .ideditor .form-field ul.rows li {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
 }
 .ideditor .form-field ul.rows li.labeled-input > span,
 .ideditor .form-field ul.rows li.labeled-input > div {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     width: 100%;
@@ -5538,16 +5437,13 @@ hide this one and style something on top of it.  */
 
 .ideditor .form-field-input-multicombo li {
     display: -webkit-inline-box;
-    display: -webkit-inline-flex;
     display: -ms-inline-flexbox;
     display: inline-flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     margin-bottom: 3px;
@@ -5592,7 +5488,6 @@ hide this one and style something on top of it.  */
 .ideditor .form-field-input-multicombo li.chip span {
     display: block;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     overflow: hidden;
@@ -5609,7 +5504,6 @@ hide this one and style something on top of it.  */
     display: block;
     text-align: center;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
 }
@@ -5694,11 +5588,9 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .form-field-input-check {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     background: #fff;
@@ -5710,7 +5602,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .form-field-input-check > input[type="checkbox"] {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     min-height: 20px;
@@ -5719,7 +5610,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .form-field-input-check > span {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -5728,7 +5618,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .form-field-input-check > .reverser.button {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     background-color: #eff2f7;
@@ -5765,31 +5654,25 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .form-field-input-radio {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
 }
 .ideditor .form-field-input-radio > label {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     width: 100%;
@@ -5821,14 +5704,12 @@ hide this one and style something on top of it.  */
 }
 .ideditor .form-field-input-radio > label > input[type="radio"] {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     width: 20px;
 }
 .ideditor .form-field-input-radio > label > span {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     overflow: hidden;
@@ -5852,13 +5733,11 @@ hide this one and style something on top of it.  */
 /* Field - Maxspeed
 ------------------------------------------------------- */
 .ideditor .form-field-input-maxspeed input.maxspeed-number {
-    -webkit-flex-basis: 0;
-        -ms-flex-preferred-size: 0;
-            flex-basis: 0;
+    -ms-flex-preferred-size: 0;
+        flex-basis: 0;
 }
 .ideditor .form-field-input-maxspeed input.maxspeed-unit {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     width: 80px;
@@ -5906,9 +5785,8 @@ hide this one and style something on top of it.  */
 /* nested subfields for name in different languages */
 .ideditor .localized-multilingual {
     padding: 0 10px;
-    -webkit-flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
-            flex-basis: 100%;
+    -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
 }
 .ideditor .localized-multilingual .entry {
     position: relative;
@@ -5945,16 +5823,13 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .form-field-input-address {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     border: 1px solid #ccc;
@@ -5963,11 +5838,9 @@ hide this one and style something on top of it.  */
 
 .ideditor .addr-row {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     width: 100%;
@@ -5976,7 +5849,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .addr-row > input {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     border-radius: 0;
@@ -6015,16 +5887,13 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .form-field-input-wikipedia {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -6032,16 +5901,13 @@ hide this one and style something on top of it.  */
 .ideditor .wiki-lang-container,
 .ideditor .wiki-title-container {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     width: 100%;
@@ -6050,7 +5916,6 @@ hide this one and style something on top of it.  */
 .ideditor .wiki-lang-container > input.wiki-lang,
 .ideditor .wiki-title-container > input.wiki-title {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     border-top: 0;
@@ -6370,20 +6235,16 @@ hide this one and style something on top of it.  */
 
 .ideditor .more-fields label {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
 }
@@ -6391,7 +6252,6 @@ hide this one and style something on top of it.  */
 .ideditor .more-fields input {
     margin-left: 10px;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -6411,22 +6271,18 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .raw-tag-options {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse;
     margin-top: -25px;
 }
 .ideditor button.raw-tag-option {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 20px;
         -ms-flex: 0 0 20px;
             flex: 0 0 20px;
     height: 20px;
@@ -6483,12 +6339,10 @@ hide this one and style something on top of it.  */
 }
 .ideditor .tag-row .inner-wrap {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     width: 100%;
@@ -6497,7 +6351,6 @@ hide this one and style something on top of it.  */
 .ideditor .tag-row .key-wrap,
 .ideditor .tag-row .value-wrap {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 50%;
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
 }
@@ -6552,7 +6405,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .tag-row button {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 32px;
         -ms-flex: 0 0 32px;
             flex: 0 0 32px;
     height: 31px;
@@ -6616,7 +6468,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .tag-reference-body {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     width: 100%;
@@ -6702,7 +6553,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .member-row-new .member-entity-input {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     border-radius: 4px 4px 0 0;
@@ -6729,13 +6579,11 @@ hide this one and style something on top of it.  */
 /* add tag, add relation buttons */
 .ideditor .add-row {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     width: 100%;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
 }
@@ -6743,13 +6591,11 @@ hide this one and style something on top of it.  */
 .ideditor .add-row .add-relation,
 .ideditor .add-row .space-value {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 50%;
         -ms-flex: 1 1 50%;
             flex: 1 1 50%;
 }
 .ideditor .add-row .space-buttons {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 62px;
         -ms-flex: 0 0 62px;
             flex: 0 0 62px;
 }
@@ -6784,16 +6630,13 @@ hide this one and style something on top of it.  */
     border-radius: 5px;
     border: 1px solid #ccc;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
 }
@@ -6803,7 +6646,6 @@ hide this one and style something on top of it.  */
     background-color: #fff;
     padding: 10px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 62px;
         -ms-flex: 0 0 62px;
             flex: 0 0 62px;
     position: relative;
@@ -6840,7 +6682,6 @@ hide this one and style something on top of it.  */
     background-color: #f6f6f6;
     padding: 0 15px;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     font-size: 14px;
@@ -6869,19 +6710,16 @@ hide this one and style something on top of it.  */
     border: 1px solid #ccc;
     margin: 10px auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
 }
 .ideditor .comment-avatar {
     padding: 10px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 62px;
         -ms-flex: 0 0 62px;
             flex: 0 0 62px;
 }
@@ -6896,12 +6734,10 @@ hide this one and style something on top of it.  */
 .ideditor .comment-main {
     padding: 10px 10px 10px 0;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: column nowrap;
         -ms-flex-flow: column nowrap;
             flex-flow: column nowrap;
     overflow: hidden;
@@ -6914,11 +6750,9 @@ hide this one and style something on top of it.  */
 .ideditor .comment-metadata {
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
 }
@@ -6951,12 +6785,10 @@ hide this one and style something on top of it.  */
     border-radius: 4px;
     border: 1px solid #ccc;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
 }
@@ -7001,16 +6833,13 @@ hide this one and style something on top of it.  */
     border-radius: 5px;
     border: 1px solid #ccc;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
 }
@@ -7019,7 +6848,6 @@ hide this one and style something on top of it.  */
     background-color: #fff;
     padding: 10px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 62px;
         -ms-flex: 0 0 62px;
             flex: 0 0 62px;
     position: relative;
@@ -7043,7 +6871,6 @@ hide this one and style something on top of it.  */
     background-color: #f6f6f6;
     padding: 0 15px;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     font-size: 14px;
@@ -7072,16 +6899,13 @@ hide this one and style something on top of it.  */
     bottom: 30px;
     pointer-events: none;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
         -ms-flex-direction: row-reverse;
             flex-direction: row-reverse;
     -webkit-box-align: end;
-    -webkit-align-items: flex-end;
         -ms-flex-align: end;
             align-items: flex-end;
 }
@@ -7099,12 +6923,10 @@ hide this one and style something on top of it.  */
     z-index: 100;
     bottom: 0;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
     padding: 5px 0;
@@ -7118,7 +6940,6 @@ hide this one and style something on top of it.  */
     height: 100%;
     max-height: 70px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
 }
@@ -7255,7 +7076,6 @@ hide this one and style something on top of it.  */
     color: #7092ff;
     position: relative;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
@@ -7295,7 +7115,6 @@ hide this one and style something on top of it.  */
 .ideditor .layer-list li.best > div.best {
     padding: 5px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
 }
@@ -7315,11 +7134,9 @@ hide this one and style something on top of it.  */
     padding: 5px 10px;
     cursor: pointer;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     overflow: hidden;
@@ -7339,7 +7156,6 @@ hide this one and style something on top of it.  */
     -o-text-overflow: ellipsis;
        text-overflow: ellipsis;
     -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
         -ms-flex-positive: 1;
             flex-grow: 1;
 }
@@ -7389,12 +7205,10 @@ hide this one and style something on top of it.  */
 .ideditor .issue-label .issue-text {
     width: 100%;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     cursor: pointer;
@@ -7402,21 +7216,18 @@ hide this one and style something on top of it.  */
 
 .ideditor .issue-text .issue-icon {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     padding: 5px 7px;
 }
 .ideditor .issue-text .issue-message {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     padding: 5px 0;
 }
 .ideditor .issue-label .issue-autofix {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     padding: 5px 8px;
@@ -7425,7 +7236,6 @@ hide this one and style something on top of it.  */
     height: unset;
     width: 32px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     border-left: 1px solid #ccc;
@@ -7450,7 +7260,6 @@ hide this one and style something on top of it.  */
 
 .ideditor button.autofix.action {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 20px;
         -ms-flex: 0 0 20px;
             flex: 0 0 20px;
     height: 20px;
@@ -7472,17 +7281,14 @@ hide this one and style something on top of it.  */
 /* fix all */
 .ideditor .autofix-all {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse;
     margin-top: -25px;
     padding-bottom: 5px;
 }
@@ -7629,17 +7435,14 @@ hide this one and style something on top of it.  */
 }
 .ideditor .section-footer {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
-    -webkit-flex-direction: row-reverse;
-        -ms-flex-direction: row-reverse;
-            flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
+        flex-direction: row-reverse;
     height: 30px;
 }
 .ideditor .section-footer a {
@@ -7652,7 +7455,6 @@ hide this one and style something on top of it.  */
     background: #c6ffca;
     padding: 5px !important;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
@@ -7747,7 +7549,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .issue-info {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     width: 100%;
@@ -7838,15 +7639,12 @@ hide this one and style something on top of it.  */
     padding: 20px 0;
     width: 70%;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     margin: 0 auto;
@@ -7968,7 +7766,6 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .map-panes {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 1 auto;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     position: relative;
@@ -7992,16 +7789,13 @@ hide this one and style something on top of it.  */
 
 .ideditor .pane-heading {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     border-bottom: 1px solid #ccc;
@@ -8485,12 +8279,10 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .info-panels {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: reverse;
-    -webkit-flex-flow: row-reverse wrap-reverse;
         -ms-flex-flow: row-reverse wrap-reverse;
             flex-flow: row-reverse wrap-reverse;
     width: 100%;
@@ -8517,7 +8309,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .panel-container {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     margin: 0 2px 2px 0;
@@ -8613,12 +8404,10 @@ hide this one and style something on top of it.  */
     border-radius: 0;
     pointer-events: none;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
     -ms-user-select: element;
@@ -8633,20 +8422,16 @@ hide this one and style something on top of it.  */
 .ideditor .main-footer-wrap,
 .ideditor .flash-wrap {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 100%;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
     max-height: 30px;
@@ -8727,20 +8512,16 @@ hide this one and style something on top of it.  */
 ------------------------------------------------------- */
 .ideditor .flash-content {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
             flex: 1 0 auto;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row nowrap;
         -ms-flex-flow: row nowrap;
             flex-flow: row nowrap;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     padding: 2px;
@@ -8749,7 +8530,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .flash-icon {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     width: 20px;
@@ -8776,7 +8556,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .flash-text {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -8788,7 +8567,6 @@ hide this one and style something on top of it.  */
     width: 250px;
     max-height: 30px;
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 250px;
         -ms-flex: 0 0 250px;
             flex: 0 0 250px;
     -webkit-user-select: none;
@@ -8832,7 +8610,6 @@ hide this one and style something on top of it.  */
 .ideditor .map-footer-bar .info-block {
     max-height: 30px;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -8927,7 +8704,6 @@ hide this one and style something on top of it.  */
     padding: 1px 10px;
     color: #eee;
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
 }
@@ -9022,12 +8798,10 @@ hide this one and style something on top of it.  */
     min-width: 200px;
     max-width: 550px;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
 }
@@ -9087,15 +8861,12 @@ hide this one and style something on top of it.  */
 
 .ideditor .save-section .buttons {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-    -webkit-justify-content: space-around;
-        -ms-flex-pack: distribute;
-            justify-content: space-around;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
 }
 
 .ideditor .save-section .buttons .action,
@@ -9111,7 +8882,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .modal-actions {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
 }
@@ -9301,17 +9071,14 @@ hide this one and style something on top of it.  */
 
 .ideditor .modal-shortcuts .shortcut-tab {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-flow: row wrap;
         -ms-flex-flow: row wrap;
             flex-flow: row wrap;
-    -webkit-justify-content: space-around;
-        -ms-flex-pack: distribute;
-            justify-content: space-around;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
 }
 
 .ideditor .modal-shortcuts .shortcut-column {
@@ -9320,7 +9087,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .modal-shortcuts .shortcut-tab-tools .shortcut-column {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     width: 100%;
@@ -9785,12 +9551,10 @@ hide this one and style something on top of it.  */
 .ideditor .edit-menu {
     position: absolute;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
     background: #fff;
@@ -9804,11 +9568,9 @@ hide this one and style something on top of it.  */
 
 .ideditor .edit-menu-item {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
     border-radius: 0;
@@ -9892,12 +9654,10 @@ hide this one and style something on top of it.  */
 
 .ideditor .intro-nav-wrap {
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
     position: absolute;
@@ -9910,7 +9670,6 @@ hide this one and style something on top of it.  */
 
 .ideditor .intro-nav-wrap .intro-nav-wrap-logo {
     -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     height: 40px;
@@ -9922,23 +9681,19 @@ hide this one and style something on top of it.  */
 
 .ideditor .intro-nav-wrap .joined {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
 }
 
 .ideditor .intro-nav-wrap button.chapter {
     -webkit-box-flex: 1;
-    -webkit-flex: 1 1 100%;
         -ms-flex: 1 1 100%;
             flex: 1 1 100%;
     padding: 0px 5px;
