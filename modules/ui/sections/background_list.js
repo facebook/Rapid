@@ -161,6 +161,12 @@ export function uiSectionBackgroundList(context) {
         });
     }
 
+    function sortSources(a, b) {
+        return a.best() && !b.best() ? -1
+            : b.best() && !a.best() ? 1
+            : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
+    }
+
     function drawListItems(layerList, type, change, filter) {
         var sources = context.background()
             .sources(context.map().extent(), context.map().zoom(), true)
@@ -217,12 +223,6 @@ export function uiSectionBackgroundList(context) {
         layerList
             .call(updateLayerSelections);
 
-
-        function sortSources(a, b) {
-            return a.best() && !b.best() ? -1
-                : b.best() && !a.best() ? 1
-                : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
-        }
     }
 
     function updateLayerSelections(selection) {
@@ -283,6 +283,43 @@ export function uiSectionBackgroundList(context) {
                 window.requestIdleCallback(section.reRender);
             }, 1000)
         );
+
+    function getBackgrounds(filter) {
+        return context.background()
+            .sources(context.map().extent(), context.map().zoom(), true)
+            .filter(filter);
+    }
+
+    function chooseBackgroundAtOffset(offset) {
+        var backgrounds = getBackgrounds(function(d) { return !d.isHidden() && !d.overlay; });
+        backgrounds.sort(sortSources);
+        var currentBackground = context.background().baseLayerSource();
+        var foundIndex = backgrounds.indexOf(currentBackground);
+        if (foundIndex === -1) {
+            // Can't find the current background, so just do nothing
+            return;
+        }
+
+        var nextBackgroundIndex = (foundIndex + offset + backgrounds.length) % backgrounds.length;
+        var nextBackground = backgrounds[nextBackgroundIndex];
+        if (nextBackground.id === 'custom' && !nextBackground.template()) {
+            nextBackgroundIndex = (nextBackgroundIndex + offset + backgrounds.length) % backgrounds.length;
+            nextBackground = backgrounds[nextBackgroundIndex];
+        }
+        chooseBackground(nextBackground);
+    }
+
+    function nextBackground() {
+        chooseBackgroundAtOffset(1);
+    }
+
+    function previousBackground() {
+        chooseBackgroundAtOffset(-1);
+    }
+
+    context.keybinding()
+        .on(t('background.next_background.key'), nextBackground)
+        .on(t('background.previous_background.key'), previousBackground);
 
     return section;
 }
