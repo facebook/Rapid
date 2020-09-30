@@ -301,7 +301,7 @@ form.rapid-feature .description.poweruser {
 }
 
 .modal-heading svg {
-    width: 32px; 
+    width: 32px;
     height: 32px; 
     margin-top:10px; 
 }
@@ -472,4 +472,31 @@ g.layer-ai-features.hide-rapid-buildings path.building  {
 
 .modal-section.rapid-checkbox.poweruser:hover div#tag-sources { 
     background-image: url('img/tag-sources.gif'); 
+}
+
+ul.layer-list.layer-background-list li button.background-favorite-button{
+    background-color: inherit;
+}
+
+button.background-favorite-button .icon{
+    fill-opacity: 0;
+    stroke-width: 1;
+}
+
+button.background-favorite-button.active .icon{
+    fill-opacity: inherit;
+}
+
+.background-pane .layer-list button.background-favorite-button{
+    border: 0;
+}
+
+li.best > label > span.best > svg{
+    color: #E98733;
+    height: 19px;
+    padding-left: 2px;
+}
+
+.layer-list label {
+    display: flex;
 }
