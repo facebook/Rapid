@@ -45,9 +45,8 @@ function tileURL(dataset, extent, taskExtent) {
         qs.building_source = 'microsoft';
 
     } else {
-        qs.result_type = 'road_building_vector_xml';
-        qs.building_source = 'esri';
-        qs.esri_id = datasetID;
+        qs.result_type = 'osm_xml';
+        qs.sources = 'esri_building.' + datasetID;
     }
 
     // fb_ml_road_url: if set, get road data from this url
