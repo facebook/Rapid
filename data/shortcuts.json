@@ -46,6 +46,16 @@
               "text": "shortcuts.browsing.display_options.background_switch"
             },
             {
+              "shortcuts": ["background.previous_background.key"],
+              "text": "shortcuts.browsing.display_options.background_previous",
+              "rapid": true
+            },
+            {
+              "shortcuts": ["background.next_background.key"],
+              "text": "shortcuts.browsing.display_options.background_next",
+              "rapid": true
+            },
+            {
               "shortcuts": ["map_data.key"],
               "text": "shortcuts.browsing.display_options.map_data"
             },
