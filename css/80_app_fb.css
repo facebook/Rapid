@@ -474,24 +474,24 @@ g.layer-ai-features.hide-rapid-buildings path.building  {
     background-image: url('img/tag-sources.gif'); 
 }
 
-ul.layer-list.layer-background-list li button.background-favorite-button{
+ul.layer-list.layer-background-list li button.background-favorite-button {
     background-color: inherit;
 }
 
-button.background-favorite-button .icon{
+button.background-favorite-button .icon {
     fill-opacity: 0;
     stroke-width: 1;
 }
 
-button.background-favorite-button.active .icon{
+button.background-favorite-button.active .icon {
     fill-opacity: inherit;
 }
 
-.background-pane .layer-list button.background-favorite-button{
+.background-pane .layer-list button.background-favorite-button {
     border: 0;
 }
 
-li.best > label > span.best > svg{
+li.best > label > span.best > svg {
     color: #E98733;
     height: 19px;
     padding-left: 2px;

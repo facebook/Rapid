@@ -40,6 +40,7 @@ export function uiBackground(context) {
     const favoriteBackgroundsJSON = context.storage('background-favorites');
     const _favoriteBackgrounds = favoriteBackgroundsJSON ? JSON.parse(favoriteBackgroundsJSON) : {};
 
+
     function setTooltips(selection) {
         selection.each(function(d, i, nodes) {
             var item = d3_select(this).select('label');
@@ -97,6 +98,7 @@ export function uiBackground(context) {
         document.activeElement.blur();
     }
 
+
     function customChanged(d) {
         if (d && d.template) {
             _customSource.template(d.template);
@@ -122,6 +124,7 @@ export function uiBackground(context) {
         document.activeElement.blur();
     }
 
+
     function sortSources(a, b) {
         return _favoriteBackgrounds[a.id] && !_favoriteBackgrounds[b.id] ? -1
             : _favoriteBackgrounds[b.id] && !_favoriteBackgrounds[a.id] ? 1
@@ -129,6 +132,7 @@ export function uiBackground(context) {
             : b.best() && !a.best() ? 1
             : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
     }
+
 
     function drawListItems(layerList, type, change, filter) {
         var sources = getBackgrounds(filter);
@@ -323,6 +327,7 @@ export function uiBackground(context) {
             .call(drawListItems, 'radio', chooseBackground, function(d) { return !d.isHidden() && !d.overlay; });
     }
 
+
     function updateOverlayList() {
         _overlayList
             .call(drawListItems, 'checkbox', chooseOverlay, function(d) { return !d.isHidden() && d.overlay; });
@@ -359,11 +364,13 @@ export function uiBackground(context) {
         }
     }
 
+
     function getBackgrounds(filter) {
         return context.background()
             .sources(context.map().extent(), context.map().zoom(), true)
             .filter(filter);
     }
+
 
     function chooseBackgroundAtOffset(offset) {
         const backgrounds = getBackgrounds(function(d) { return !d.isHidden() && !d.overlay; });
@@ -384,13 +391,16 @@ export function uiBackground(context) {
         chooseBackground(nextBackground);
     }
 
+
     function nextBackground() {
         chooseBackgroundAtOffset(1);
     }
 
+
     function previousBackground() {
         chooseBackgroundAtOffset(-1);
     }
+
 
     var paneTooltip = tooltip()
         .placement((textDirection === 'rtl') ? 'right' : 'left')
@@ -403,9 +413,11 @@ export function uiBackground(context) {
         context.ui().togglePanes(!_pane.classed('shown') ? _pane : undefined);
     };
 
+
     function hidePane() {
         context.ui().togglePanes();
     }
+
 
     uiBackground.renderToggleButton = function(selection) {
 
@@ -415,6 +427,7 @@ export function uiBackground(context) {
             .call(svgIcon('#iD-icon-layers', 'light'))
             .call(paneTooltip);
     };
+
 
     uiBackground.renderPane = function(selection) {
 
