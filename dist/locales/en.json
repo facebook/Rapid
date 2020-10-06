@@ -1203,7 +1203,7 @@
             "lose_changes": "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?",
             "dev": "dev"
         },
-        "rapidsplash": {
+        "rapid_splash": {
             "welcome": "Introducing AI-assisted mapping!",
             "text": "Select the {rapidicon} option to start the RapiD walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu.",
             "walkthrough": "Start the whole walkthrough",
@@ -1225,12 +1225,37 @@
         },
         "rapid_feature_toggle": {
             "toggle_all": "Toggle all {rapidicon} features",
-            "roads": "Roads",
-            "roads_provided_by": "provided by Facebook",
-            "roads_license": "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)",
-            "buildings": "Buildings",
-            "buildings_provided_by": "provided by Microsoft",
-            "buildings_license": "[license](https://opendatacommons.org/licenses/odbl/index.html)"
+            "view_manage_datasets": "View/Manage Datasets",
+            "fbRoads": {
+                "label": "Roads",
+                "description": "provided by Facebook",
+                "license_markdown": "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
+            },
+            "msBuildings": {
+                "label": "Buildings",
+                "description": "provided by Microsoft",
+                "license_markdown": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
+            },
+            "esri": {
+                "title": "ArcGIS Datasets",
+                "fetching_datasets": "Fetching available datasets...",
+                "no_datasets": "No datasets available.",
+                "remove": "Remove",
+                "add_to_map": "Add To Map",
+                "more_info": "More Info",
+                "license_markdown": "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
+            }
+        },
+        "rapid_poweruser_features": {
+            "beta": "Beta Feature",
+            "top_label": "{icon} Power User Features",
+            "top_label_desc": "for RapiD Insiders",
+            "ai_feature_halo": "AI Feature Halo",
+            "ai_feature_halo_desc": "Enable a halo around AI features in the map",
+            "tagnostic_road_combine": "Tag-agnostic road combine",
+            "tagnostic_road_combine_desc": "Allow the Combine operation for roads whose highway tagging differs",
+            "tag_sources": "Tag highways as Maxar",
+            "tag_sources_desc": "Add the tag 'source=maxar' to all highways"
         },
         "version": {
             "whats_new": "What's new in RapiD {version}"
@@ -10839,7 +10864,7 @@
                 "attribution": {
                     "text": "GSI KIBAN 2500"
                 },
-                "description": "GSI Kiban 2500 via finds.jp. Good for tracing, but a bit older.",
+                "description": "GSI Kiban 2500 via aginfo.cgk.affrc.go.jp. Good for tracing, but a bit older.",
                 "name": "Japan GSI KIBAN 2500"
             },
             "gothenburg-citymap": {

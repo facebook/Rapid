@@ -15,7 +15,6 @@ import { utilGetDimensions } from '../util/dimensions';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
-import { uiAiFeatureServiceLicense } from './fb_feature_service_license';
 import { uiEditMenu } from './edit_menu';
 import { uiFeatureInfo } from './feature_info';
 import { uiFlash } from './flash';
@@ -34,8 +33,6 @@ import { uiShortcuts } from './shortcuts';
 import { uiSidebar } from './sidebar';
 import { uiSourceSwitch } from './source_switch';
 import { uiSpinner } from './spinner';
-import { uiSplashRapid } from './splash_rapid';
-import { uiWhatsNewRapid } from './whatsnew_rapid';
 import { uiStatus } from './status';
 import { uiTooltip } from './tooltip';
 import { uiTopToolbar } from './top_toolbar';
@@ -49,6 +46,10 @@ import { uiPaneHelp } from './panes/help';
 import { uiPaneIssues } from './panes/issues';
 import { uiPaneMapData } from './panes/map_data';
 import { uiPanePreferences } from './panes/preferences';
+
+import { uiRapidServiceLicense } from './rapid_service_license';
+import { uiRapidWhatsNew } from './rapid_whatsnew';
+import { uiRapidSplash } from './rapid_splash';
 
 export function uiInit(context) {
     var _initCounter = 0;
@@ -265,7 +266,7 @@ export function uiInit(context) {
             .append('li')
             .attr('class', 'fb-road-license')
             .attr('tabindex', -1)
-            .call(uiAiFeatureServiceLicense());
+            .call(uiRapidServiceLicense());
 
 
         // Setup map dimensions and move map to initial center/zoom.
@@ -431,16 +432,15 @@ export function uiInit(context) {
                 if (context.history().lock() && context.history().hasRestorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
-                }
-                // If users have already seen the 'welcome to RapiD' splash screen, don't also
-                // show them the what's new screen
-                else if (prefs('sawRapidSplash')) {
+
+//                // If users have already seen the 'welcome to RapiD' splash screen, don't also
+//                // show them the what's new screen
+//               } else if (prefs('sawRapidSplash')) {
+//                    context.container()
+//                        .call(uiRapidWhatsNew(context));
+                } else if (osm.authenticated()) {
                     context.container()
-                        .call(uiWhatsNewRapid(context));
-                }
-                else if (osm.authenticated()) {
-                    context.container()
-                        .call(uiSplashRapid(context));
+                        .call(uiRapidSplash(context));
                 }
             }
 

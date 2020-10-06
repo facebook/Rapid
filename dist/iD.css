@@ -186,14 +186,14 @@ display: none;
 .ideditor .highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke: rgb(160, 231, 134);
     stroke-width: 10 !important;
-    stroke-dasharray: 25 !important; 
+    stroke-dasharray: 25 !important;
     stroke-opacity: 1 !important;
 }
 
 /*for low zoom levels, make the wireframe view 'tag edit' dashed line finer.*/
 .ideditor .low-zoom.highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke-dasharray: 7 !important;
-} 
+}
 
 /*In wireframe mode, restrain the stroke width to something barely wider than normal.*/
 .ideditor .fill-wireframe.highlight-edited g.lines > path.line.graphedited, .ideditor .fill-wireframe.highlight-edited g.linegroup.line-stroke > path.way.line.stroke.tagedited {
@@ -1014,8 +1014,8 @@ display: none;
 /* wide highways */
 .ideditor path.line.shadow.tag-highway.airoad:not(selected) {
     stroke-width: 20;
-    stroke: #ff26d488; 
-    stroke-opacity: 1; 
+    stroke: #ff26d488;
+    stroke-opacity: 1;
 }
 .ideditor preset-icon-container
 
@@ -2885,15 +2885,14 @@ display: none;
     cursor: url(img/cursor-select-line.png), pointer;
 }
 
-/* Road Lines */
-
+/* Lines */
 .ideditor .layer-ai-features path.stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 5;
     fill: none;
 }
 .ideditor .layer-ai-features path.casing {
-    stroke: #f0f;
+    stroke: #111;
     stroke-width: 7;
     stroke-opacity: 0;
     fill: none;
@@ -2927,44 +2926,73 @@ display: none;
     stroke-opacity: 0.4;
 }
 
-/* Road Vertices */
-
+/* Vertices */
 .ideditor .layer-ai-features g.vertex .fill {
     fill: #fff;
 }
-
 .ideditor .layer-ai-features g.vertex .stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 3;
     fill: #fff;
 }
-
 .ideditor .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }
 
-.ideditor .layer-ai-features .road.hide, .ideditor .layer-ai-features .building.hide {
-    display: none;
-}
 
+/* Polygons */
 .ideditor .layer-ai-features  path.line.building.stroke {
-    stroke-width: 5px;
-    stroke: #ff26d4;
-     fill: url(#ai-building);  
-    fill-opacity: 1; 
+    stroke-width: 3;
+    fill-opacity: 1;
 }
-
+.ideditor .layer-ai-features  path.line.building.casing {
+    stroke-width: 5;
+    fill-opacity: 1;
+}
 .ideditor .layer-ai-features  path.line.building.shadow {
-    stroke-width: 12px;
+    stroke-width: 15;
 }
 
-.ideditor .low-zoom .layer-ai-features path.line.building {
-    stroke-width: 3px;
+.ideditor .low-zoom .layer-ai-features path.line.building.stroke {
+    stroke-width: 2;
+}
+.ideditor .low-zoom .layer-ai-features path.line.building.casing {
+    stroke-width: 4;
+}
+.ideditor .low-zoom .layer-ai-features path.line.building.shadow {
+    stroke-width: 10;
 }
 
-.ideditor .layer-ai-features .node.vertex.building circle{
-    opacity: 0; 
+
+/* Nodes */
+.ideditor .layer-ai-features g.node.point .shadow {
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-opacity: 0;
+    fill: none;
 }
+.ideditor .layer-ai-features g.node.point.hover:not(.selected) .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+.ideditor .layer-ai-features g.node.point.selected .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+
+.ideditor .layer-ai-features g.node.point .fill {
+    fill: currentColor;
+}
+.ideditor .layer-ai-features g.node.point .stroke {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #333;
+}
+.ideditor .low-zoom .layer-ai-features g.node.point .stroke {
+    stroke-width: 1px;
+}
+
+
 /* OSM Notes and QA Layers */
 
 .ideditor .qa-header-icon .qaItem-fill,
@@ -3236,25 +3264,53 @@ display: none;
 .ideditor.mode-select-note .fill-partial path.area.fill {
     pointer-events: visibleStroke;
 }
-.ideditor svg.logo-rapid {
+.ideditor svg.logo-rapid,
+.ideditor .icon.rapid {
     fill: #333;
     color: #ff26d4;
 }
 
+.ideditor .assistant.dark svg.logo-rapid,
+.ideditor svg.logo-rapid.dark,
+.ideditor .dark .icon.rapid,
+.ideditor .icon.rapid.dark {
+    fill: #eee;
+    color: #ff26d4;
+}
+
+.ideditor .assistant .control-col button {
+    background: transparent;
+    color: #808080;
+    height: 100%;
+    width: 40px;
+}
+
 /* Toolbar button */
+.ideditor button.rapid-poweruser-features svg.logo-mapwithai {
+    width: 22px;
+    height: 22px;
+}
 
 .ideditor button.ai-features-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
+
 .ideditor button.ai-features-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
 
+.ideditor .fb-road-picker .tooltip .popover-inner {
+    border: 1px solid grey;
+}
+
+.ideditor .fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
 
 /* Sidebar component */
-
 .ideditor .fb-road-picker svg.logo-rapid {
     height: 40px;
     margin-top: -10px;
@@ -3264,6 +3320,66 @@ display: none;
     position: absolute;
     top: 0;
     right: 0;
+    background: transparent;
+    color: #ff26d4;
+    border-radius: 5px;
+}
+.ideditor .fb-road-picker .header .fb-road-picker-close:hover {
+    background: #8885;
+}
+
+.ideditor .fb-road-picker .picker-icon-container {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 0 60px;
+            flex: 1 0 60px;
+    padding: 3px;
+    height:100%;
+}
+
+.ideditor .picker-icon-container svg {
+    width:40px;
+    height:100%;
+}
+
+.ideditor .fb-road-picker .picker-list-button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    width: unset;
+}
+
+.ideditor .fb-road-picker .picker-list-button.disabled .picker-icon-container,
+.ideditor .fb-road-picker .picker-list-button.disabled .label{
+    opacity: .4;
+}
+
+.ideditor .fb-road-picker .picker-list-button .label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 5px 5px;
+    left: 60px;
+    -ms-flex-preferred-size: 200px;
+        flex-basis: 200px;
+    color: #e0e0e0;
+    height: 100%;
+}
+
+.ideditor .fb-road-picker .tag-reference-button {
+    color: #e0e0e0;
 }
 
 .ideditor .fb-road-picker .body {
@@ -3276,7 +3392,7 @@ display: none;
 }
 
 .ideditor .fb-road-picker .preset-list-item {
-    margin: 15px 0;
+    margin-top: 15px;
 }
 
 .ideditor .fb-road-picker .preset-list-item .preset-icon-container svg {
@@ -3294,26 +3410,68 @@ display: none;
 .ideditor .fb-road-picker .preset-list-item .tag-reference-body.shown {
     display: block;
 }
+.ideditor .dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
+    color: #a0a0a0;
+}
 
-.ideditor .modal-whatsnew .modal-section.body{
+.ideditor .reject .preset-list-button-wrap {
+    height: 32px;
+}
+
+.ideditor .reject .label {
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+.ideditor .fb-road-picker .tag-bag {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    padding: 2px 0px 2px;
+}
+.ideditor .fb-road-picker .tag-preview {
+    margin: 5px 5px 0px 5px;
+    background: #444;
+    border-radius: 5px;
+    border: 1px transparent;
 }
 
-.ideditor .modal-whatsnew .body img{
-    width: 80%;
-    padding-top:10px;
+.ideditor .fb-road-picker .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
 }
 
-.ideditor .modal-whatsnew.modal-rapid,
+.ideditor .fb-road-picker .tag-preview .tag-entry {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border: 1px solid #888;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+}
+
+.ideditor .fb-road-picker .tag-key,
+.ideditor .fb-road-picker .tag-value {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    padding: 0px 3px 0px 3px;
+}
+
+.ideditor .fb-road-picker .tag-key {
+    font-weight: bold;
+    font-size: unset;
+}
+
+
+/* RapiD modal dialogs */
+
 .ideditor .modal-splash.modal-rapid {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3322,11 +3480,16 @@ display: none;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(25, 25, 25, 0.9);
     -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
             box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
+    border: 1px solid darkgrey;
     top: 80px;
+    min-width: 650px;
+    max-width: 650px;
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
 }
 
 .ideditor .modal-rapid .fillL {
@@ -3352,19 +3515,17 @@ display: none;
 .ideditor .modal-rapid .content {
     -webkit-box-shadow: unset;
             box-shadow: unset;
-    border-radius: 15px;
-    border: 2px solid #fffa;
 }
 
-.ideditor .modal-whatsnew .modal-actions button {
-    height: 3rem;
-}
-
-.ideditor .modal-rapid .modal-actions button.whats-new-okay,
 .ideditor .modal-rapid .modal-actions button.rapid-login-to-osm {
     background: white;
     color: black;
     border: black;
+    height: 3rem;
+}
+
+.ideditor .modal-rapid .modal-actions button.rapid-explore {
+    height: 3rem;
 }
 
 .ideditor .modal-rapid .modal-section {
@@ -3379,16 +3540,20 @@ display: none;
     font-size: 14px;
 }
 
-.ideditor .modal-rapid > button.close {
+.ideditor .modal-rapid button.close {
     -ms-flex-item-align: end;
         align-self: flex-end;
+    background: transparent;
     color: #ff26d4;
     position: unset;
     height: 40px;
-    background: transparent;
+    border-radius: 5px;
+}
+.ideditor .modal-rapid button.close:hover {
+    background: #8885;
 }
 
-.ideditor .rapid-feature.rapid-stack {
+.ideditor .rapid-stack {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3409,18 +3574,18 @@ display: none;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    margin: 16px;
+    margin: 0 10px;
 }
-.ideditor .modal-whatsnew svg.icon.logo-rapid,
+
+.ideditor .rapid-feature-label-beta {
+    font-size: 14px;
+    margin: 0px 4px;
+}
+
 .ideditor .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
-    margin: 0em -.5em;
-}
-
-.ideditor .rapid-feature-description {
-    font-size: 14px;
-    margin: 16px;
+    margin: -5px;
 }
 
 .ideditor .rapid-feature-license {
@@ -3438,11 +3603,23 @@ display: none;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
 }
 
-.ideditor .modal-section.rapid-checkbox {
+.ideditor .rapid-feature-extent-container {
+    font-size: 14px;
+    font-style: italic;
+    margin: -8px 10px 5px 10px;
+    color: #aaa;
+}
+
+/* Whats New */
+.ideditor .modal-rapid img.whatsnew-image {
+    width: 100%;
+}
+
+
+/* Toggle Features modal */
+.ideditor .modal-rapid .modal-section.rapid-checkbox {
     font-size: 24px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3453,24 +3630,51 @@ display: none;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 5px;
+    padding: 5px 10px;
+    width: 100%;
+}
+.ideditor .modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.ideditor .modal-rapid .fillL.rapid-stack .rapid-datasets-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
     width: 100%;
 }
 
-.ideditor .modal-section.rapid-checkbox.dontshow {
-    font-size: 12px;
-    -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    padding: 0px 5px;
-    width: 80%;
-    -webkit-box-align: unset;
-        -ms-flex-align: unset;
-            align-items: unset;
-    width: unset;
+.ideditor .modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 2px solid #ccca;
+    padding-bottom: 10px;
+}
+.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 2px solid #ccca;
+    padding: 10px;
+    cursor: pointer;
+}
+.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.ideditor .modal-rapid .fillL.rapid-stack .rapid-feature {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+}
+
+.ideditor .rapid-feature-description {
+    font-size: 14px;
+    margin: 4px;
 }
 
 .ideditor .modal-section.rapid-checkbox.disabled {
@@ -3482,12 +3686,18 @@ display: none;
 }
 
 .ideditor .modal-section.rapid-checkbox.section-divider {
-    width: 95%;
+    width: 100%;
     height: 1px;
     background: #ccca;
     padding: 1px;
     -ms-flex-item-align: center;
         align-self: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.ideditor .modal-section.rapid-checkbox.section-divider.strong {
+    background: #ffffffaa;
 }
 
 .ideditor .rapid-feature-hotkey {
@@ -3502,22 +3712,56 @@ display: none;
     background: #ccca;
 }
 
-.ideditor .rapid-checkbox-label {
-    width: 40px;
-    height: 40px;
-    margin-left: auto;
-}
-
-
-.ideditor .rapid-checkbox-label.dontshow {
-    width: 30%;
-    margin:20px 20px 0px;
-    height: 20px;
+.ideditor .rapid-checkbox-inputs {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
+.ideditor .rapid-colorpicker-label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 15px;
+}
+.ideditor .rapid-colorpicker-label:not(.disabled),
+.ideditor .rapid-checkbox-label:not(.disabled) {
+    cursor: pointer;
+}
+.ideditor .rapid-colorpicker-label.disabled {
+    opacity: 0.5;
+}
+
+.ideditor .rapid-colorpicker {
+    padding: 3px;
+    border: none;
+    background: #fff;
+    border-radius: 6px;
+}
+.ideditor .rapid-colorpicker-fill {
+    border: none;
+    background: currentColor;
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+}
 
 /* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
@@ -3534,15 +3778,6 @@ hide this one and style something on top of it.  */
     border-radius: 5px;
     border: 2px solid #ffffff;
 }
-
-
-.ideditor .rapid-checkbox-label.dontshow .rapid-checkbox-custom {
-    height: 24px;
-    width: 24px;
-    border-radius: 3px;
-    margin-left: 10px;
-}
-
 
 .ideditor .rapid-checkbox-label .rapid-checkbox-custom::after {
     content: "";
@@ -3575,41 +3810,328 @@ hide this one and style something on top of it.  */
     opacity: 1;
 }
 
-.ideditor .rapid-checkbox-label.dontshow input:checked ~ .rapid-checkbox-custom::after {
-    height: 7px;
-    width: 3px;
-    padding: 2px;
-    margin-left: 5px;
-    margin-top: 2px;
-    border-width: 0 2px 2px 0;
+
+/* Rapid Power User features */
+
+.ideditor .rapid-stack.poweruser .modal-heading {
+    font-size: 28px;
+    font-weight: bold;
+    padding: 0px 15px;
+    margin-top: -20px;
 }
-.ideditor g.layer-ai-features.hide-rapid-roads path.road,
-.ideditor g.layer-ai-features.hide-rapid-roads g.node.road,
-.ideditor g.layer-ai-features.hide-rapid-buildings path.building  {
-    display: none;
+.ideditor .rapid-stack.poweruser .modal-heading svg {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+.ideditor .rapid-stack.poweruser .modal-heading-desc {
+    font-size: 18px;
+    font-style: italic;
+    color: #ccc;
+    margin: -20px 80px 10px 80px;
 }
 
-.ideditor ul.layer-list.layer-background-list li button.background-favorite-button{
-    background-color: inherit;
+.ideditor .rapid-feature-description.poweruser {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    margin: 15px;
+}
+.ideditor .rapid-feature-description.poweruser > .heading {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.0625em;
+    color: white;
+}
+.ideditor .rapid-feature-description.poweruser > .description {
+    font-size: 14px;
+    text-align: left;
 }
 
-.ideditor button.background-favorite-button .icon{
-    fill-opacity: 0;
-    stroke-width: 1;
+.ideditor .rapid-checkbox.poweruser:hover {
+    color: #ddd;
+    background: #8885;
 }
 
-.ideditor button.background-favorite-button.active .icon{
-    fill-opacity: inherit;
+.ideditor .rapid-feature-animation.poweruser {
+    background-size: 100% 100%;
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    margin: 5px;
+    border: 1px solid darkgrey;
 }
 
-.ideditor .background-pane .layer-list button.background-favorite-button{
+.ideditor .modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
+    background-image: url('rapid/ai-feature-halo-still.png');
+}
+.ideditor .modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
+    background-image: url('rapid/ai-feature-halo.gif');
+}
+.ideditor .modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
+    background-image: url('rapid/tagnostic-road-join-still.png');
+}
+.ideditor .modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
+    background-image: url('rapid/tagnostic-road-join.gif');
+}
+.ideditor .modal-section.rapid-checkbox.poweruser div#tag-sources {
+    background-image: url('rapid/tag-sources-still.png');
+}
+.ideditor .modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
+    background-image: url('rapid/tag-sources.gif');
+}
+
+
+/* View/Manage Datasets modal */
+
+.ideditor .modal-rapid.modal-view-manage {
+    background: rgba(25, 25, 25, 1);
+    z-index: 51;  /* above existing modal */
+    width: 80%;
+    min-width: 600px;
+    max-width: 1000px;
+}
+
+.ideditor .modal-view-manage .modal-section {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-header {
+    padding: 0 20px 5px 20px;
+    border-bottom: 2px solid #ccca;
+}
+.ideditor .rapid-view-manage-header-icon {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 40px;
+            flex: 0 0 40px;
+}
+.ideditor .rapid-view-manage-header-text {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    font-size: 28px;
+    padding: 0 5px;
+}
+.ideditor .rapid-view-manage-header-inputs {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+}
+
+
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-pages {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+.ideditor .rapid-view-manage-page {
+    font-size: 80px;
+    line-height: 20px;
+    padding-bottom: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.ideditor .rapid-view-manage-page:hover {
+    color: #ddd;
+    background: #8885;
+}
+.ideditor .rapid-view-manage-page.current {
+    color: #c2d;
+}
+
+
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-datasets-section {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+}
+.ideditor .rapid-view-manage-pageleft,
+.ideditor .rapid-view-manage-pageright {
+    border-radius: 5px;
+    cursor: pointer;
+}
+.ideditor .rapid-view-manage-pageleft svg,
+.ideditor .rapid-view-manage-pageright svg {
+    height: 100%;
+}
+.ideditor .rapid-view-manage-pageleft:hover,
+.ideditor .rapid-view-manage-pageright:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.ideditor .rapid-view-manage-datasets {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    width: 100%;
+}
+.ideditor .rapid-view-manage-dataset {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 50%;
+            flex: 0 1 50%;
+    padding: 20px;
+    margin: 10px 0;
+    color: #eee;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+}
+
+.ideditor .rapid-view-manage-dataset-label {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    padding: 0 8px;
+}
+.ideditor .rapid-view-manage-dataset-thumb {
+    -webkit-box-flex: 0;
+        -ms-flex: 0;
+            flex: 0;
+}
+.ideditor img.rapid-view-manage-dataset-thumbnail {
+    border-radius: 10px;
+    width: 200px;
+}
+
+.ideditor button.rapid-view-manage-dataset-action {
     border: 0;
+    background: #c2d;
+    color: #eee;
+    font-size: 12px;
+    height: 28px;
+    border-radius: 14px;
+    margin: 10px 0;
+    padding: 0 15px;
 }
 
-.ideditor li.best > label > span.best > svg{
-    color: #E98733;
-    height: 19px;
+.ideditor button.rapid-view-manage-dataset-action:focus,
+.ideditor button.rapid-view-manage-dataset-action:hover {
+    background-color: #c9d;
 }
+
+.ideditor button.rapid-view-manage-dataset-action.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+.ideditor button.rapid-view-manage-dataset-action.secondary:focus,
+.ideditor button.rapid-view-manage-dataset-action.secondary:hover {
+    background-color: #888;
+}
+
+.ideditor .beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.7em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(6%, rgba(108,1,167,1)), color-stop(50%, rgba(203,16,237,1)), color-stop(90%, rgb(229, 140, 253)), to(rgb(201, 42, 251)));
+    background: -o-linear-gradient(bottom, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.ideditor .beta:before {
+    content: '\03b2';  /* β */
+}
+
+/* Colorpicker popup */
+
+.ideditor .colorpicker-popup {
+    position: absolute;
+    padding: 10px;
+    z-index: 100;
+    background-color: #fff;
+    border: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 0 2em black;
+            box-shadow: 0 0 2em black;
+}
+.ideditor .colorpicker-arrow {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.ideditor .colorpicker-colors {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+}
+.ideditor .colorpicker-option {
+    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 6px;
+}
+.ideditor .colorpicker-option:hover {
+    border: 2px solid #ddd;
+}
+.ideditor .colorpicker-option.selected {
+    border: 2px solid #444;
+}
+.ideditor .colorpicker-option-fill {
+    background-color: currentColor;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    border-radius: 5px;
+}
+
 /* Basics
 ------------------------------------------------------- */
 /* the root element of iD */

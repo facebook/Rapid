@@ -14,7 +14,7 @@ import { t } from '../core/localizer';
 
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
 import { serviceFbAIFeatures } from '../services';
-import { uiFbFeaturePicker } from '../ui';
+import { uiRapidFeatureInspector } from '../ui';
 import { utilKeybinding } from '../util';
 
 var _expandedOnce = false;
@@ -28,7 +28,7 @@ export function modeSelectAiFeatures(context, selectedDatum) {
 
     var keybinding = utilKeybinding('select-ai-features');
     var roadsGraph = serviceFbAIFeatures.graph();
-    var featurePicker = uiFbFeaturePicker(context, keybinding);
+    var featurePicker = uiRapidFeatureInspector(context, keybinding);
 
     var behaviors = [
         behaviorBreathe(context),

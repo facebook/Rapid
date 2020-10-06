@@ -1,22 +1,50 @@
-svg.logo-rapid {
+svg.logo-rapid,
+.icon.rapid {
     fill: #333;
     color: #ff26d4;
 }
 
+.assistant.dark svg.logo-rapid,
+svg.logo-rapid.dark,
+.dark .icon.rapid,
+.icon.rapid.dark {
+    fill: #eee;
+    color: #ff26d4;
+}
+
+.assistant .control-col button {
+    background: transparent;
+    color: #808080;
+    height: 100%;
+    width: 40px;
+}
+
 /* Toolbar button */
+button.rapid-poweruser-features svg.logo-mapwithai {
+    width: 22px;
+    height: 22px;
+}
 
 button.ai-features-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
+
 button.ai-features-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
 
+.fb-road-picker .tooltip .popover-inner {
+    border: 1px solid grey;
+}
+
+.fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
 
 /* Sidebar component */
-
 .fb-road-picker svg.logo-rapid {
     height: 40px;
     margin-top: -10px;
@@ -26,6 +54,50 @@ button.ai-features-toggle.layer-off use {
     position: absolute;
     top: 0;
     right: 0;
+    background: transparent;
+    color: #ff26d4;
+    border-radius: 5px;
+}
+.fb-road-picker .header .fb-road-picker-close:hover {
+    background: #8885;
+}
+
+.fb-road-picker .picker-icon-container {
+    flex: 1 0 60px;
+    padding: 3px;
+    height:100%;
+}
+
+.picker-icon-container svg {
+    width:40px;
+    height:100%;
+}
+
+.fb-road-picker .picker-list-button {
+    display: flex;
+    flex: 1 1 auto;
+    width: unset;
+}
+
+.fb-road-picker .picker-list-button.disabled .picker-icon-container,
+.fb-road-picker .picker-list-button.disabled .label{
+    opacity: .4;
+}
+
+.fb-road-picker .picker-list-button .label {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 5px;
+    left: 60px;
+    flex-basis: 200px;
+    color: #e0e0e0;
+    height: 100%;
+}
+
+.fb-road-picker .tag-reference-button {
+    color: #e0e0e0;
 }
 
 .fb-road-picker .body {
@@ -38,7 +110,7 @@ button.ai-features-toggle.layer-off use {
 }
 
 .fb-road-picker .preset-list-item {
-    margin: 15px 0;
+    margin-top: 15px;
 }
 
 .fb-road-picker .preset-list-item .preset-icon-container svg {
@@ -56,26 +128,71 @@ button.ai-features-toggle.layer-off use {
 .fb-road-picker .preset-list-item .tag-reference-body.shown {
     display: block;
 }
+.dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
+    color: #a0a0a0;
+}
 
-.modal-whatsnew .modal-section.body{
+.reject .preset-list-button-wrap {
+    height: 32px;
+}
+
+.reject .label {
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+.fb-road-picker .tag-bag {
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 2px 0px 2px;
+}
+.fb-road-picker .tag-preview {
+    margin: 5px 5px 0px 5px;
+    background: #444;
+    border-radius: 5px;
+    border: 1px transparent;
 }
 
-.modal-whatsnew .body img{
-    width: 80%;
-    padding-top:10px;
+.fb-road-picker .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
 }
 
-.modal-whatsnew.modal-rapid,
+.fb-road-picker .tag-preview .tag-entry {
+    flex: 0 1 auto;
+    display: flex;
+    border: 1px solid #888;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+}
+
+.fb-road-picker .tag-key,
+.fb-road-picker .tag-value {
+    flex: 0 1 auto;
+    padding: 0px 3px 0px 3px;
+}
+
+.fb-road-picker .tag-key {
+    font-weight: bold;
+    font-size: unset;
+}
+
+
+/* RapiD modal dialogs */
+
 .modal-splash.modal-rapid {
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(25, 25, 25, 0.9);
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
+    border: 1px solid darkgrey;
     top: 80px;
+    min-width: 650px;
+    max-width: 650px;
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
 }
 
 .modal-rapid .fillL {
@@ -99,19 +216,17 @@ button.ai-features-toggle.layer-off use {
 
 .modal-rapid .content {
     box-shadow: unset;
-    border-radius: 15px;
-    border: 2px solid #fffa;
 }
 
-.modal-whatsnew .modal-actions button {
-    height: 3rem;
-}
-
-.modal-rapid .modal-actions button.whats-new-okay,
 .modal-rapid .modal-actions button.rapid-login-to-osm {
     background: white;
     color: black;
     border: black;
+    height: 3rem;
+}
+
+.modal-rapid .modal-actions button.rapid-explore {
+    height: 3rem;
 }
 
 .modal-rapid .modal-section {
@@ -126,15 +241,19 @@ button.ai-features-toggle.layer-off use {
     font-size: 14px;
 }
 
-.modal-rapid > button.close {
+.modal-rapid button.close {
     align-self: flex-end;
+    background: transparent;
     color: #ff26d4;
     position: unset;
     height: 40px;
-    background: transparent;
+    border-radius: 5px;
+}
+.modal-rapid button.close:hover {
+    background: #8885;
 }
 
-.rapid-feature.rapid-stack {
+.rapid-stack {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -144,18 +263,18 @@ button.ai-features-toggle.layer-off use {
 .rapid-feature-label {
     display: flex;
     align-items: center;
-    margin: 16px;
+    margin: 0 10px;
 }
-.modal-whatsnew svg.icon.logo-rapid,
+
+.rapid-feature-label-beta {
+    font-size: 14px;
+    margin: 0px 4px;
+}
+
 .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
-    margin: 0em -.5em;
-}
-
-.rapid-feature-description {
-    font-size: 14px;
-    margin: 16px;
+    margin: -5px;
 }
 
 .rapid-feature-license {
@@ -169,26 +288,62 @@ button.ai-features-toggle.layer-off use {
 .rapid-feature-label-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
 }
 
-.modal-section.rapid-checkbox {
+.rapid-feature-extent-container {
+    font-size: 14px;
+    font-style: italic;
+    margin: -8px 10px 5px 10px;
+    color: #aaa;
+}
+
+/* Whats New */
+.modal-rapid img.whatsnew-image {
+    width: 100%;
+}
+
+
+/* Toggle Features modal */
+.modal-rapid .modal-section.rapid-checkbox {
     font-size: 24px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 5px;
+    padding: 5px 10px;
+    width: 100%;
+}
+.modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.modal-rapid .fillL.rapid-stack .rapid-datasets-container {
+    display: flex;
+    flex-flow: column;
     width: 100%;
 }
 
-.modal-section.rapid-checkbox.dontshow {
-    font-size: 12px;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0px 5px;
-    width: 80%;
-    align-items: unset;
-    width: unset;
+.modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 2px solid #ccca;
+    padding-bottom: 10px;
+}
+.modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 2px solid #ccca;
+    padding: 10px;
+    cursor: pointer;
+}
+.modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.modal-rapid .fillL.rapid-stack .rapid-feature {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.rapid-feature-description {
+    font-size: 14px;
+    margin: 4px;
 }
 
 .modal-section.rapid-checkbox.disabled {
@@ -200,11 +355,17 @@ button.ai-features-toggle.layer-off use {
 }
 
 .modal-section.rapid-checkbox.section-divider {
-    width: 95%;
+    width: 100%;
     height: 1px;
     background: #ccca;
     padding: 1px;
     align-self: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.modal-section.rapid-checkbox.section-divider.strong {
+    background: #ffffffaa;
 }
 
 .rapid-feature-hotkey {
@@ -219,20 +380,42 @@ button.ai-features-toggle.layer-off use {
     background: #ccca;
 }
 
-.rapid-checkbox-label {
+.rapid-checkbox-inputs {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.rapid-colorpicker-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
-    margin-left: auto;
+    margin: 0 15px;
+}
+.rapid-colorpicker-label:not(.disabled),
+.rapid-checkbox-label:not(.disabled) {
+    cursor: pointer;
+}
+.rapid-colorpicker-label.disabled {
+    opacity: 0.5;
 }
 
-
-.rapid-checkbox-label.dontshow {
-    width: 30%;
-    margin:20px 20px 0px;
-    height: 20px;
-    display: flex;
+.rapid-colorpicker {
+    padding: 3px;
+    border: none;
+    background: #fff;
+    border-radius: 6px;
 }
-
+.rapid-colorpicker-fill {
+    border: none;
+    background: currentColor;
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+}
 
 /* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
@@ -249,15 +432,6 @@ hide this one and style something on top of it.  */
     border-radius: 5px;
     border: 2px solid #ffffff;
 }
-
-
-.rapid-checkbox-label.dontshow .rapid-checkbox-custom {
-    height: 24px;
-    width: 24px;
-    border-radius: 3px;
-    margin-left: 10px;
-}
-
 
 .rapid-checkbox-label .rapid-checkbox-custom::after {
     content: "";
@@ -286,38 +460,267 @@ hide this one and style something on top of it.  */
     opacity: 1;
 }
 
-.rapid-checkbox-label.dontshow input:checked ~ .rapid-checkbox-custom::after {
-    height: 7px;
-    width: 3px;
-    padding: 2px;
-    margin-left: 5px;
-    margin-top: 2px;
-    border-width: 0 2px 2px 0;
+
+/* Rapid Power User features */
+
+.rapid-stack.poweruser .modal-heading {
+    font-size: 28px;
+    font-weight: bold;
+    padding: 0px 15px;
+    margin-top: -20px;
 }
-g.layer-ai-features.hide-rapid-roads path.road,
-g.layer-ai-features.hide-rapid-roads g.node.road,
-g.layer-ai-features.hide-rapid-buildings path.building  {
-    display: none;
+.rapid-stack.poweruser .modal-heading svg {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+.rapid-stack.poweruser .modal-heading-desc {
+    font-size: 18px;
+    font-style: italic;
+    color: #ccc;
+    margin: -20px 80px 10px 80px;
 }
 
-ul.layer-list.layer-background-list li button.background-favorite-button{
-    background-color: inherit;
+.rapid-feature-description.poweruser {
+    flex: 1;
+    margin: 15px;
+}
+.rapid-feature-description.poweruser > .heading {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.0625em;
+    color: white;
+}
+.rapid-feature-description.poweruser > .description {
+    font-size: 14px;
+    text-align: left;
 }
 
-button.background-favorite-button .icon{
-    fill-opacity: 0;
-    stroke-width: 1;
+.rapid-checkbox.poweruser:hover {
+    color: #ddd;
+    background: #8885;
 }
 
-button.background-favorite-button.active .icon{
-    fill-opacity: inherit;
+.rapid-feature-animation.poweruser {
+    background-size: 100% 100%;
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    margin: 5px;
+    border: 1px solid darkgrey;
 }
 
-.background-pane .layer-list button.background-favorite-button{
+.modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
+    background-image: url('rapid/ai-feature-halo-still.png');
+}
+.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
+    background-image: url('rapid/ai-feature-halo.gif');
+}
+.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
+    background-image: url('rapid/tagnostic-road-join-still.png');
+}
+.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
+    background-image: url('rapid/tagnostic-road-join.gif');
+}
+.modal-section.rapid-checkbox.poweruser div#tag-sources {
+    background-image: url('rapid/tag-sources-still.png');
+}
+.modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
+    background-image: url('rapid/tag-sources.gif');
+}
+
+
+/* View/Manage Datasets modal */
+
+.modal-rapid.modal-view-manage {
+    background: rgba(25, 25, 25, 1);
+    z-index: 51;  /* above existing modal */
+    width: 80%;
+    min-width: 600px;
+    max-width: 1000px;
+}
+
+.modal-view-manage .modal-section {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.modal-view-manage .modal-section.rapid-view-manage-header {
+    padding: 0 20px 5px 20px;
+    border-bottom: 2px solid #ccca;
+}
+.rapid-view-manage-header-icon {
+    flex: 0 0 40px;
+}
+.rapid-view-manage-header-text {
+    flex: 1 1 auto;
+    font-size: 28px;
+    padding: 0 5px;
+}
+.rapid-view-manage-header-inputs {
+    flex: 0 1 auto;
+}
+
+
+.modal-view-manage .modal-section.rapid-view-manage-pages {
+    justify-content: center;
+}
+.rapid-view-manage-page {
+    font-size: 80px;
+    line-height: 20px;
+    padding-bottom: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.rapid-view-manage-page:hover {
+    color: #ddd;
+    background: #8885;
+}
+.rapid-view-manage-page.current {
+    color: #c2d;
+}
+
+
+.modal-view-manage .modal-section.rapid-view-manage-datasets-section {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+.rapid-view-manage-pageleft,
+.rapid-view-manage-pageright {
+    border-radius: 5px;
+    cursor: pointer;
+}
+.rapid-view-manage-pageleft svg,
+.rapid-view-manage-pageright svg {
+    height: 100%;
+}
+.rapid-view-manage-pageleft:hover,
+.rapid-view-manage-pageright:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.rapid-view-manage-datasets {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+.rapid-view-manage-dataset {
+    flex: 0 1 50%;
+    padding: 20px;
+    margin: 10px 0;
+    color: #eee;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.rapid-view-manage-dataset-label {
+    flex: 1;
+    padding: 0 8px;
+}
+.rapid-view-manage-dataset-thumb {
+    flex: 0;
+}
+img.rapid-view-manage-dataset-thumbnail {
+    border-radius: 10px;
+    width: 200px;
+}
+
+button.rapid-view-manage-dataset-action {
     border: 0;
+    background: #c2d;
+    color: #eee;
+    font-size: 12px;
+    height: 28px;
+    border-radius: 14px;
+    margin: 10px 0;
+    padding: 0 15px;
 }
 
-li.best > label > span.best > svg{
-    color: #E98733;
-    height: 19px;
+button.rapid-view-manage-dataset-action:focus,
+button.rapid-view-manage-dataset-action:hover {
+    background-color: #c9d;
 }
+
+button.rapid-view-manage-dataset-action.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+button.rapid-view-manage-dataset-action.secondary:focus,
+button.rapid-view-manage-dataset-action.secondary:hover {
+    background-color: #888;
+}
+
+.beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.7em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.beta:before {
+    content: '\03b2';  /* β */
+}
+
+/* Colorpicker popup */
+
+.colorpicker-popup {
+    position: absolute;
+    padding: 10px;
+    z-index: 100;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    border-radius: 6px;
+    box-shadow: 0 0 2em black;
+}
+.colorpicker-arrow {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.colorpicker-colors {
+    display: flex;
+    flex-flow: row wrap;
+}
+.colorpicker-option {
+    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 6px;
+}
+.colorpicker-option:hover {
+    border: 2px solid #ddd;
+}
+.colorpicker-option.selected {
+    border: 2px solid #444;
+}
+.colorpicker-option-fill {
+    background-color: currentColor;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    border-radius: 5px;
+}
+
