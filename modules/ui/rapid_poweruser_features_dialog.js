@@ -8,7 +8,6 @@ import { rapidPowerUserFeaturesStorage } from './rapid_poweruser_features_storag
 export function uiRapidPowerUserFeaturesDialog() {
   const storage = rapidPowerUserFeaturesStorage();
 
-
   function toggleAiFeatureHalo () {
     const osmLayer = d3_select('.data-layer.osm');
     const enabled = storage.featureEnabled('aiFeatureHalo');
@@ -33,11 +32,11 @@ export function uiRapidPowerUserFeaturesDialog() {
     let modalSelection = uiModal(selection);
 
     modalSelection.select('.modal')
-      .attr('class', 'modal-splash modal modal-rapid');
+      .attr('class', 'modal rapid-modal');   // RapiD styling
 
     let modal = modalSelection.select('.content')
-      .append('form')
-      .attr('class', 'fillL poweruser rapid-stack');
+      .append('div')
+      .attr('class', 'rapid-stack poweruser');
 
     modal
       .append('div')

@@ -3264,13 +3264,18 @@ display: none;
 .ideditor.mode-select-note .fill-partial path.area.fill {
     pointer-events: visibleStroke;
 }
+/* possibly existed before and was removed? */
+.ideditor svg.icon.icon-30 {
+    width: 30px;
+    height: 30px;
+}
+
 .ideditor svg.logo-rapid,
 .ideditor .icon.rapid {
     fill: #333;
     color: #ff26d4;
 }
 
-.ideditor .assistant.dark svg.logo-rapid,
 .ideditor svg.logo-rapid.dark,
 .ideditor .dark .icon.rapid,
 .ideditor .icon.rapid.dark {
@@ -3278,29 +3283,21 @@ display: none;
     color: #ff26d4;
 }
 
-.ideditor .assistant .control-col button {
-    background: transparent;
-    color: #808080;
-    height: 100%;
-    width: 40px;
-}
-
 /* Toolbar button */
 .ideditor button.rapid-poweruser-features svg.logo-mapwithai {
     width: 22px;
     height: 22px;
 }
-
 .ideditor button.ai-features-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-
 .ideditor button.ai-features-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
 
+/* Rapid Inspector */
 .ideditor .fb-road-picker .tooltip .popover-inner {
     border: 1px solid grey;
 }
@@ -3470,9 +3467,8 @@ display: none;
 }
 
 
-/* RapiD modal dialogs */
-
-.ideditor .modal-splash.modal-rapid {
+/* For things that should stack in rows */
+.ideditor .rapid-stack {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3480,24 +3476,27 @@ display: none;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    background: rgba(25, 25, 25, 0.9);
-    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
-            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    border: 1px solid darkgrey;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+}
+
+/* RapiD modal dialogs */
+.ideditor .modal.rapid-modal {
     top: 80px;
     min-width: 650px;
     max-width: 650px;
+    background: rgba(25, 25, 25, 0.9);
     -webkit-backdrop-filter: blur(2.5px);
     backdrop-filter: blur(2.5px);
-}
-
-.ideditor .modal-rapid .fillL {
-    background: transparent;
     color: white;
+    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: 1px solid #ccca;
 }
 
-.ideditor .modal-rapid .modal-actions button {
+.ideditor .modal.rapid-modal .modal-actions button {
     text-align: center;
     background: black;
     color: white;
@@ -3512,35 +3511,21 @@ display: none;
             box-sizing: border-box;
 }
 
-.ideditor .modal-rapid .content {
+.ideditor .modal.rapid-modal .content {
     -webkit-box-shadow: unset;
             box-shadow: unset;
 }
-
-.ideditor .modal-rapid .modal-actions button.rapid-login-to-osm {
-    background: white;
-    color: black;
-    border: black;
-    height: 3rem;
-}
-
-.ideditor .modal-rapid .modal-actions button.rapid-explore {
-    height: 3rem;
-}
-
-.ideditor .modal-rapid .modal-section {
+.ideditor .modal.rapid-modal .modal-section {
     border: 0px;
 }
-
-.ideditor .modal-rapid .modal-section .logo-rapid {
+.ideditor .modal.rapid-modal .modal-section .logo-rapid {
     fill: white;
 }
-
-.ideditor .modal-rapid p {
+.ideditor .modal.rapid-modal p {
     font-size: 14px;
 }
 
-.ideditor .modal-rapid button.close {
+.ideditor .modal.rapid-modal button.close {
     -ms-flex-item-align: end;
         align-self: flex-end;
     background: transparent;
@@ -3549,22 +3534,79 @@ display: none;
     height: 40px;
     border-radius: 5px;
 }
-.ideditor .modal-rapid button.close:hover {
+.ideditor .modal.rapid-modal button.close:hover {
     background: #8885;
 }
 
-.ideditor .rapid-stack {
+/* Login to OSM */
+.ideditor .modal.rapid-modal .modal-actions button.rapid-login-to-osm {
+    background: white;
+    color: black;
+    border: black;
+    height: 3rem;
+}
+
+/* Splash / Whats New */
+.ideditor .modal.rapid-modal .modal-actions button.rapid-explore {
+    height: 3rem;
+}
+.ideditor .modal.rapid-modal img.whatsnew-image {
+    width: 100%;
+}
+
+
+/* Toggle Features */
+.ideditor .modal.rapid-modal .modal-section.rapid-checkbox {
+    font-size: 24px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 5px 10px;
+    width: 100%;
+}
+.ideditor .modal.rapid-modal .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.ideditor .modal.rapid-modal .rapid-stack .rapid-datasets-container {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: start;
-        -ms-flex-align: start;
-            align-items: flex-start;
-    color: white;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    width: 100%;
+}
+
+.ideditor .modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 1px solid #ccca;
+    padding-bottom: 10px;
+}
+.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 1px solid #ccca;
+    padding: 10px;
+    cursor: pointer;
+}
+.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.ideditor .modal.rapid-modal .rapid-stack .rapid-feature {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
 }
 
 .ideditor .rapid-feature-label {
@@ -3591,11 +3633,9 @@ display: none;
 .ideditor .rapid-feature-license {
     margin: 16px;
 }
-
 .ideditor .rapid-feature-license p {
     font-size: 10px;
 }
-
 .ideditor .rapid-feature-label-container {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3604,7 +3644,6 @@ display: none;
         -ms-flex-align: center;
             align-items: center;
 }
-
 .ideditor .rapid-feature-extent-container {
     font-size: 14px;
     font-style: italic;
@@ -3612,75 +3651,13 @@ display: none;
     color: #aaa;
 }
 
-/* Whats New */
-.ideditor .modal-rapid img.whatsnew-image {
-    width: 100%;
-}
-
-
-/* Toggle Features modal */
-.ideditor .modal-rapid .modal-section.rapid-checkbox {
-    font-size: 24px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
-            justify-content: flex-start;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    padding: 5px 10px;
-    width: 100%;
-}
-.ideditor .modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
-    padding-bottom: 15px;
-}
-
-.ideditor .modal-rapid .fillL.rapid-stack .rapid-datasets-container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: column;
-            flex-flow: column;
-    width: 100%;
-}
-
-.ideditor .modal-section.rapid-checkbox.rapid-toggle-all {
-    border-bottom: 2px solid #ccca;
-    padding-bottom: 10px;
-}
-.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets {
-    border-top: 2px solid #ccca;
-    padding: 10px;
-    cursor: pointer;
-}
-.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
-    color: #ddd;
-    background: #8885;
-}
-
-.ideditor .modal-rapid .fillL.rapid-stack .rapid-feature {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: column nowrap;
-            flex-flow: column nowrap;
-}
-
 .ideditor .rapid-feature-description {
     font-size: 14px;
     margin: 4px;
 }
-
 .ideditor .modal-section.rapid-checkbox.disabled {
     opacity: .5;
 }
-
 .ideditor .rapid-feature-checkbox {
     margin-left: auto;
 }
@@ -3889,10 +3866,20 @@ hide this one and style something on top of it.  */
 
 
 /* View/Manage Datasets modal */
-
-.ideditor .modal-rapid.modal-view-manage {
-    background: rgba(25, 25, 25, 1);
-    z-index: 51;  /* above existing modal */
+/* view-manage-wrap is an absolutely positioned div to create a new stacking context,
+   so we can put a modal on top of the other modal.
+   (it functions like .shaded for layout but without adding any shading)
+*/
+.ideditor .view-manage-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 51;   /* above existing modal */
+}
+.ideditor .modal.rapid-modal.modal-view-manage {
     width: 80%;
     min-width: 600px;
     max-width: 1000px;
@@ -3915,7 +3902,7 @@ hide this one and style something on top of it.  */
 
 .ideditor .modal-view-manage .modal-section.rapid-view-manage-header {
     padding: 0 20px 5px 20px;
-    border-bottom: 2px solid #ccca;
+    border-bottom: 1px solid #ccca;
 }
 .ideditor .rapid-view-manage-header-icon {
     -webkit-box-flex: 0;
@@ -4031,6 +4018,8 @@ hide this one and style something on top of it.  */
 .ideditor img.rapid-view-manage-dataset-thumbnail {
     border-radius: 10px;
     width: 200px;
+    -webkit-filter: invert(1)brightness(2)contrast(0.75);
+            filter: invert(1)brightness(2)contrast(0.75);
 }
 
 .ideditor button.rapid-view-manage-dataset-action {

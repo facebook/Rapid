@@ -17,13 +17,10 @@ export function uiRapidWhatsNew(context) {
 
     const modalSelection = uiModal(selection);
 
-
     modalSelection.select('.modal')
-      .attr('class', 'modal modal-splash modal-rapid modal-whatsnew');
+      .attr('class', 'modal rapid-modal modal-splash modal-whatsnew');   // RapiD styling
 
-    let whatsNewModal = modalSelection.select('.content')
-      .append('div')
-      .attr('class', 'fillL');
+    let whatsNewModal = modalSelection.select('.content');
 
     whatsNewModal
       .append('div')

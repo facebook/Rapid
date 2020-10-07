@@ -48,7 +48,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     _content.call(renderModalContent);
   }
 
-  function keyPressFormHandler() {
+  function keyPressHandler() {
     if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
       toggleRapid();
     }
@@ -58,20 +58,19 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   return function render(selection) {
     _modalSelection = uiModal(selection);
 
+    _modalSelection.select('.modal')
+      .attr('class', 'modal rapid-modal');   // RapiD styling
+
     _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
       .on('done', () => _content.call(renderModalContent));
 
     _colorpicker = uiRapidColorpicker(context, _modalSelection)
       .on('change', changeColor);
 
-
-    _modalSelection.select('.modal')
-      .attr('class', 'modal modal-splash modal-rapid');
-
     _content = _modalSelection.select('.content')
-      .append('form')
-      .attr('class', 'fillL rapid-stack')
-      .on('keypress', keyPressFormHandler);
+      .append('div')
+      .attr('class', 'rapid-stack')
+      .on('keypress', keyPressHandler);
 
     _content
       .call(renderModalContent);

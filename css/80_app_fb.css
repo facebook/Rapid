@@ -1,10 +1,15 @@
+/* possibly existed before and was removed? */
+svg.icon.icon-30 {
+    width: 30px;
+    height: 30px;
+}
+
 svg.logo-rapid,
 .icon.rapid {
     fill: #333;
     color: #ff26d4;
 }
 
-.assistant.dark svg.logo-rapid,
 svg.logo-rapid.dark,
 .dark .icon.rapid,
 .icon.rapid.dark {
@@ -12,29 +17,21 @@ svg.logo-rapid.dark,
     color: #ff26d4;
 }
 
-.assistant .control-col button {
-    background: transparent;
-    color: #808080;
-    height: 100%;
-    width: 40px;
-}
-
 /* Toolbar button */
 button.rapid-poweruser-features svg.logo-mapwithai {
     width: 22px;
     height: 22px;
 }
-
 button.ai-features-toggle svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-
 button.ai-features-toggle.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
 
+/* Rapid Inspector */
 .fb-road-picker .tooltip .popover-inner {
     border: 1px solid grey;
 }
@@ -179,28 +176,28 @@ button.ai-features-toggle.layer-off use {
 }
 
 
-/* RapiD modal dialogs */
-
-.modal-splash.modal-rapid {
+/* For things that should stack in rows */
+.rapid-stack {
     display: flex;
     flex-direction: column;
-    background: rgba(25, 25, 25, 0.9);
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    border: 1px solid darkgrey;
+    align-items: flex-start;
+}
+
+/* RapiD modal dialogs */
+.modal.rapid-modal {
     top: 80px;
     min-width: 650px;
     max-width: 650px;
+    background: rgba(25, 25, 25, 0.9);
     -webkit-backdrop-filter: blur(2.5px);
     backdrop-filter: blur(2.5px);
-}
-
-.modal-rapid .fillL {
-    background: transparent;
     color: white;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: 1px solid #ccca;
 }
 
-.modal-rapid .modal-actions button {
+.modal.rapid-modal .modal-actions button {
     text-align: center;
     background: black;
     color: white;
@@ -214,34 +211,20 @@ button.ai-features-toggle.layer-off use {
     box-sizing: border-box;
 }
 
-.modal-rapid .content {
+.modal.rapid-modal .content {
     box-shadow: unset;
 }
-
-.modal-rapid .modal-actions button.rapid-login-to-osm {
-    background: white;
-    color: black;
-    border: black;
-    height: 3rem;
-}
-
-.modal-rapid .modal-actions button.rapid-explore {
-    height: 3rem;
-}
-
-.modal-rapid .modal-section {
+.modal.rapid-modal .modal-section {
     border: 0px;
 }
-
-.modal-rapid .modal-section .logo-rapid {
+.modal.rapid-modal .modal-section .logo-rapid {
     fill: white;
 }
-
-.modal-rapid p {
+.modal.rapid-modal p {
     font-size: 14px;
 }
 
-.modal-rapid button.close {
+.modal.rapid-modal button.close {
     align-self: flex-end;
     background: transparent;
     color: #ff26d4;
@@ -249,15 +232,63 @@ button.ai-features-toggle.layer-off use {
     height: 40px;
     border-radius: 5px;
 }
-.modal-rapid button.close:hover {
+.modal.rapid-modal button.close:hover {
     background: #8885;
 }
 
-.rapid-stack {
+/* Login to OSM */
+.modal.rapid-modal .modal-actions button.rapid-login-to-osm {
+    background: white;
+    color: black;
+    border: black;
+    height: 3rem;
+}
+
+/* Splash / Whats New */
+.modal.rapid-modal .modal-actions button.rapid-explore {
+    height: 3rem;
+}
+.modal.rapid-modal img.whatsnew-image {
+    width: 100%;
+}
+
+
+/* Toggle Features */
+.modal.rapid-modal .modal-section.rapid-checkbox {
+    font-size: 24px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: white;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 10px;
+    width: 100%;
+}
+.modal.rapid-modal .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.modal.rapid-modal .rapid-stack .rapid-datasets-container {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
+.modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 1px solid #ccca;
+    padding-bottom: 10px;
+}
+.modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 1px solid #ccca;
+    padding: 10px;
+    cursor: pointer;
+}
+.modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.modal.rapid-modal .rapid-stack .rapid-feature {
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 .rapid-feature-label {
@@ -280,16 +311,13 @@ button.ai-features-toggle.layer-off use {
 .rapid-feature-license {
     margin: 16px;
 }
-
 .rapid-feature-license p {
     font-size: 10px;
 }
-
 .rapid-feature-label-container {
     display: flex;
     align-items: center;
 }
-
 .rapid-feature-extent-container {
     font-size: 14px;
     font-style: italic;
@@ -297,59 +325,13 @@ button.ai-features-toggle.layer-off use {
     color: #aaa;
 }
 
-/* Whats New */
-.modal-rapid img.whatsnew-image {
-    width: 100%;
-}
-
-
-/* Toggle Features modal */
-.modal-rapid .modal-section.rapid-checkbox {
-    font-size: 24px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 5px 10px;
-    width: 100%;
-}
-.modal-rapid .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
-    padding-bottom: 15px;
-}
-
-.modal-rapid .fillL.rapid-stack .rapid-datasets-container {
-    display: flex;
-    flex-flow: column;
-    width: 100%;
-}
-
-.modal-section.rapid-checkbox.rapid-toggle-all {
-    border-bottom: 2px solid #ccca;
-    padding-bottom: 10px;
-}
-.modal-section.rapid-checkbox.rapid-manage-datasets {
-    border-top: 2px solid #ccca;
-    padding: 10px;
-    cursor: pointer;
-}
-.modal-section.rapid-checkbox.rapid-manage-datasets:hover {
-    color: #ddd;
-    background: #8885;
-}
-
-.modal-rapid .fillL.rapid-stack .rapid-feature {
-    display: flex;
-    flex-flow: column nowrap;
-}
-
 .rapid-feature-description {
     font-size: 14px;
     margin: 4px;
 }
-
 .modal-section.rapid-checkbox.disabled {
     opacity: .5;
 }
-
 .rapid-feature-checkbox {
     margin-left: auto;
 }
@@ -533,10 +515,20 @@ hide this one and style something on top of it.  */
 
 
 /* View/Manage Datasets modal */
-
-.modal-rapid.modal-view-manage {
-    background: rgba(25, 25, 25, 1);
-    z-index: 51;  /* above existing modal */
+/* view-manage-wrap is an absolutely positioned div to create a new stacking context,
+   so we can put a modal on top of the other modal.
+   (it functions like .shaded for layout but without adding any shading)
+*/
+.view-manage-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 51;   /* above existing modal */
+}
+.modal.rapid-modal.modal-view-manage {
     width: 80%;
     min-width: 600px;
     max-width: 1000px;
@@ -552,7 +544,7 @@ hide this one and style something on top of it.  */
 
 .modal-view-manage .modal-section.rapid-view-manage-header {
     padding: 0 20px 5px 20px;
-    border-bottom: 2px solid #ccca;
+    border-bottom: 1px solid #ccca;
 }
 .rapid-view-manage-header-icon {
     flex: 0 0 40px;
@@ -633,6 +625,7 @@ hide this one and style something on top of it.  */
 img.rapid-view-manage-dataset-thumbnail {
     border-radius: 10px;
     width: 200px;
+    filter: invert(1)brightness(2)contrast(0.75);
 }
 
 button.rapid-view-manage-dataset-action {

@@ -70,8 +70,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       myModal
         .transition()
         .duration(200)
-        .style('top','0px')
-        .remove();
+        .style('top', '0px')
+        .on('end', () => myShaded.remove());
 
       parentModal.close = origClose;  // restore close handler
 
@@ -85,9 +85,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     keybinding.on(['⌫', '⎋'], myClose);
     d3_select(document).call(keybinding);
 
-    let myModal = shaded
+    let myShaded = shaded
       .append('div')
-      .attr('class', 'modal modal-splash modal-rapid modal-view-manage fillL')
+      .attr('class', 'view-manage-wrap');  // need absolutely positioned div here for new stacking context
+
+    let myModal = myShaded
+      .append('div')
+      .attr('class', 'modal rapid-modal modal-view-manage')  // RapiD styling
       .style('opacity', 0);
 
     myModal
@@ -98,7 +102,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     _content = myModal
       .append('div')
-      .attr('class', 'content rapid-stack fillL');
+      .attr('class', 'rapid-stack content');
 
     _content
       .call(renderModalContent);
