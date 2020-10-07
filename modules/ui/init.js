@@ -23,6 +23,7 @@ import { uiFullScreen } from './full_screen';
 import { uiGeolocate } from './geolocate';
 import { uiHelp } from './help';
 import { uiInfo } from './info';
+import { uiImageryLabel } from './imagery_label';
 import { uiIntro } from './intro';
 import { uiIssues } from './issues';
 import { uiIssuesInfo } from './issues_info';
@@ -152,7 +153,6 @@ export function uiInit(context) {
             .attr('class', 'api-status')
             .call(uiStatus(context));
 
-
         var footer = about
             .append('div')
             .attr('id', 'footer')
@@ -173,6 +173,7 @@ export function uiInit(context) {
             .attr('id', 'info-block')
             .append('ul')
             .attr('id', 'about-list');
+
 
         if (!context.embed()) {
             aboutList
@@ -213,6 +214,11 @@ export function uiInit(context) {
             .attr('class', 'issues-info')
             .attr('tabindex', -1)
             .call(uiIssuesInfo(context));
+
+        aboutList
+            .append('li')
+            .attr('id', 'imagery-label')
+            .call(uiImageryLabel(context));
 
         aboutList
             .append('li')
@@ -323,7 +329,7 @@ export function uiInit(context) {
                     context.container()
                         .call(uiSplashRapid(context));
                 }
-            }           
+            }
         }
 
         var auth = uiLoading(context).message(t('loading_auth')).blocking(true);
