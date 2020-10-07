@@ -3496,7 +3496,42 @@ display: none;
     border: 1px solid #ccca;
 }
 
-.ideditor .modal.rapid-modal .modal-actions button {
+.ideditor .modal.rapid-modal .modal-section.buttons {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    padding: 20px;
+    border-top: 1px solid #ccca;
+    width: 100%;
+}
+
+.ideditor .modal.rapid-modal .modal-section.buttons button {
+    border: 0;
+    background: #c2d;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.ideditor .modal.rapid-modal .modal-section.buttons button:focus,
+.ideditor .modal.rapid-modal .modal-section.buttons button:hover {
+    background-color: #c6d;
+}
+
+.ideditor .modal.rapid-modal .modal-section.buttons button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+.ideditor .modal.rapid-modal .modal-section.buttons button.secondary:focus,
+.ideditor .modal.rapid-modal .modal-section.buttons button.secondary:hover {
+    background-color: #888;
+}
+
+/* old? */
+/*.modal.rapid-modal .modal-actions button {
     text-align: center;
     background: black;
     color: white;
@@ -3507,10 +3542,9 @@ display: none;
     font-size: 14px;
     font-weight: 500;
     height: 160px;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+    box-sizing: border-box;
 }
-
+*/
 .ideditor .modal.rapid-modal .content {
     -webkit-box-shadow: unset;
             box-shadow: unset;
@@ -3585,16 +3619,16 @@ display: none;
     width: 100%;
 }
 
-.ideditor .modal-section.rapid-checkbox.rapid-toggle-all {
+.ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
     border-bottom: 1px solid #ccca;
     padding-bottom: 10px;
 }
-.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets {
+.ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
     border-top: 1px solid #ccca;
     padding: 10px;
     cursor: pointer;
 }
-.ideditor .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+.ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
     color: #ddd;
     background: #8885;
 }
@@ -4035,7 +4069,7 @@ hide this one and style something on top of it.  */
 
 .ideditor button.rapid-view-manage-dataset-action:focus,
 .ideditor button.rapid-view-manage-dataset-action:hover {
-    background-color: #c9d;
+    background-color: #c6d;
 }
 
 .ideditor button.rapid-view-manage-dataset-action.secondary {

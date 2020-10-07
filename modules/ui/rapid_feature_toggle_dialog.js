@@ -75,6 +75,10 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     _content
       .call(renderModalContent);
 
+    _content.selectAll('.ok-button')
+      .node()
+      .focus();
+
     featureToggleKeyDispatcher
       .on('ai_feature_toggle', () => _content.call(renderModalContent) );
   };
@@ -165,6 +169,20 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .append('div')
       .attr('class', 'rapid-checkbox-label')
       .call(svgIcon(localizer.textDirection === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward', 'icon-30'));
+
+
+    /* OK Button */
+    let buttonsEnter = selection.selectAll('.modal-section.buttons')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'modal-section buttons');
+
+    buttonsEnter
+      .append('button')
+      .attr('class', 'button ok-button action')
+      .on('click', () => _modalSelection.remove())
+      .text(t('confirm.okay'));
   }
 
 

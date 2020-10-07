@@ -18,6 +18,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   let _content = d3_select(null);
   let _datasetInfo;
   let _datasetStart = 0;
+  let _myClose = () => true;   // custom close handler
 
 
   function clamp(num, min, max) {
@@ -66,7 +67,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     const origClose = parentModal.close;
     parentModal.close = () => { /* ignore */ };
 
-    let myClose = () => {
+    // override the close handler
+    _myClose = () => {
       myModal
         .transition()
         .duration(200)
@@ -81,8 +83,9 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       dispatch.call('done');
     };
 
+
     let keybinding = utilKeybinding('modal');
-    keybinding.on(['⌫', '⎋'], myClose);
+    keybinding.on(['⌫', '⎋'], _myClose);
     d3_select(document).call(keybinding);
 
     let myShaded = shaded
@@ -97,7 +100,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     myModal
       .append('button')
       .attr('class', 'close')
-      .on('click', myClose)
+      .on('click', _myClose)
       .call(svgIcon('#iD-icon-close'));
 
     _content = myModal
@@ -106,6 +109,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     _content
       .call(renderModalContent);
+
+    _content.selectAll('.ok-button')
+      .node()
+      .focus();
 
     myModal
       .transition()
@@ -181,6 +188,20 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     dsSection.selectAll('.rapid-view-manage-datasets')
       .call(renderDatasets);
+
+
+    /* OK Button */
+    let buttonsEnter = selection.selectAll('.modal-section.buttons')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'modal-section buttons');
+
+    buttonsEnter
+      .append('button')
+      .attr('class', 'button ok-button action')
+      .on('click', _myClose)
+      .text(t('confirm.okay'));
   }
 
 

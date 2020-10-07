@@ -197,7 +197,39 @@ button.ai-features-toggle.layer-off use {
     border: 1px solid #ccca;
 }
 
-.modal.rapid-modal .modal-actions button {
+.modal.rapid-modal .modal-section.buttons {
+    flex-flow: column;
+    padding: 20px;
+    border-top: 1px solid #ccca;
+    width: 100%;
+}
+
+.modal.rapid-modal .modal-section.buttons button {
+    border: 0;
+    background: #c2d;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.modal.rapid-modal .modal-section.buttons button:focus,
+.modal.rapid-modal .modal-section.buttons button:hover {
+    background-color: #c6d;
+}
+
+.modal.rapid-modal .modal-section.buttons button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+.modal.rapid-modal .modal-section.buttons button.secondary:focus,
+.modal.rapid-modal .modal-section.buttons button.secondary:hover {
+    background-color: #888;
+}
+
+/* old? */
+/*.modal.rapid-modal .modal-actions button {
     text-align: center;
     background: black;
     color: white;
@@ -210,7 +242,7 @@ button.ai-features-toggle.layer-off use {
     height: 160px;
     box-sizing: border-box;
 }
-
+*/
 .modal.rapid-modal .content {
     box-shadow: unset;
 }
@@ -272,16 +304,16 @@ button.ai-features-toggle.layer-off use {
     width: 100%;
 }
 
-.modal-section.rapid-checkbox.rapid-toggle-all {
+.rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
     border-bottom: 1px solid #ccca;
     padding-bottom: 10px;
 }
-.modal-section.rapid-checkbox.rapid-manage-datasets {
+.rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
     border-top: 1px solid #ccca;
     padding: 10px;
     cursor: pointer;
 }
-.modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+.rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
     color: #ddd;
     background: #8885;
 }
@@ -641,7 +673,7 @@ button.rapid-view-manage-dataset-action {
 
 button.rapid-view-manage-dataset-action:focus,
 button.rapid-view-manage-dataset-action:hover {
-    background-color: #c9d;
+    background-color: #c6d;
 }
 
 button.rapid-view-manage-dataset-action.secondary {
