@@ -35,7 +35,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
         .iconName('#iD-icon-rapid-plus-circle')
         .iconClass('operation disabled')
         .text(t(
-          'fb_feature_picker.option_accept.disabled_flash',
+          'rapid_feature_inspector.option_accept.disabled_flash',
           { n: AI_FEATURES_LIMIT_NON_TM_MODE }
         ));
       flash();
@@ -47,8 +47,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
     // and there may be additional properties. Note that this will be
     // serialized to JSON while saving undo/redo state in history.save().
     const annotation = {
-      type: 'fb_accept_feature',
-      description: t('fb_feature_picker.option_accept.annotation'),
+      type: 'rapid_accept_feature',
+      description: t('rapid_feature_inspector.option_accept.annotation'),
       id: _datum.id,
       origid: _datum.__origid__,
     };
@@ -82,8 +82,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (!_datum) return;
 
     const annotation = {
-      type: 'fb_reject_feature',
-      description: t('fb_feature_picker.option_reject.annotation'),
+      type: 'rapid_ignore_feature',
+      description: t('rapid_feature_inspector.option_reject.annotation'),
       id: _datum.id,
       origid: _datum.__origid__
     };
@@ -168,7 +168,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     tagBag
       .append('div')
       .attr('class', 'tag-heading')
-      .text(t('fb_feature_picker.tags.title'));
+      .text(t('rapid_feature_inspector.tags.title'));
 
 
     tagEntries.forEach(e => {
@@ -202,13 +202,13 @@ export function uiRapidFeatureInspector(context, keybinding) {
   }
 
 
-  function fbFeaturePicker(selection) {
-    let wrap = selection.selectAll('.fb-road-picker')
+  function rapidInspector(selection) {
+    let wrap = selection.selectAll('.rapid-inspector')
       .data([0]);
 
     wrap = wrap.enter()
       .append('div')
-      .attr('class', 'fb-road-picker')
+      .attr('class', 'rapid-inspector')
       .merge(wrap);
 
     // Header
@@ -228,7 +228,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     headerEnter
       .append('button')
-      .attr('class', 'fr fb-road-picker-close')
+      .attr('class', 'fr rapid-inspector-close')
       .on('click', () => context.enter(modeBrowse(context)) )
       .call(svgIcon('#iD-icon-close'));
 
@@ -247,22 +247,21 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     bodyEnter
       .append('h4')
-      .text(t('fb_feature_picker.prompt'));
+      .text(t('rapid_feature_inspector.prompt'));
 
     presetItem(bodyEnter, {
       iconName: '#iD-icon-rapid-plus-circle',
-      label: t('fb_feature_picker.option_accept.label'),
-      description: t('fb_feature_picker.option_accept.description'),
+      label: t('rapid_feature_inspector.option_accept.label'),
+      description: t('rapid_feature_inspector.option_accept.description'),
       tooltip: uiTooltip()
         .placement('bottom')
-        .html(true)
         .title(() => {
           return isAddFeatureDisabled()
             ? uiTooltip()
-                .title(t('fb_feature_picker.option_accept.disabled', { n: AI_FEATURES_LIMIT_NON_TM_MODE } ))
+                .title(t('rapid_feature_inspector.option_accept.disabled', { n: AI_FEATURES_LIMIT_NON_TM_MODE } ))
             : uiTooltip()
-                .title(t('fb_feature_picker.option_accept.tooltip'))
-                .keys([t('fb_feature_picker.option_accept.key')]);
+                .title(t('rapid_feature_inspector.option_accept.tooltip'))
+                .keys([t('rapid_feature_inspector.option_accept.key')]);
         }),
       onClick: onAcceptFeature,
       disabledFunction: isAddFeatureDisabled
@@ -272,13 +271,12 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     presetItem(bodyEnter, {
       iconName: '#iD-icon-rapid-minus-circle',
-      label: t('fb_feature_picker.option_reject.label'),
-      description: t('fb_feature_picker.option_reject.description'),
+      label: t('rapid_feature_inspector.option_reject.label'),
+      description: t('rapid_feature_inspector.option_reject.description'),
       tooltip: uiTooltip()
         .placement('bottom')
-        .html(true)
-        .title(t('fb_feature_picker.option_reject.tooltip'))
-        .keys([t('fb_feature_picker.option_reject.key')]),
+        .title(t('rapid_feature_inspector.option_reject.tooltip'))
+        .keys([t('rapid_feature_inspector.option_reject.key')]),
       onClick: onRejectFeature
     }, 'ai-features-reject', true);
 
@@ -289,7 +287,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
   }
 
 
-  fbFeaturePicker.datum = function(val) {
+  rapidInspector.datum = function(val) {
     if (!arguments.length) return _datum;
     _datum = val;
     return this;
@@ -297,8 +295,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
 
   keybinding()
-    .on(t('fb_feature_picker.option_accept.key'), onAcceptFeature)
-    .on(t('fb_feature_picker.option_reject.key'), onRejectFeature);
+    .on(t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
+    .on(t('rapid_feature_inspector.option_reject.key'), onRejectFeature);
 
-  return fbFeaturePicker;
+  return rapidInspector;
 }

@@ -54,35 +54,33 @@ export function svgRapidFeatures(projection, context, dispatch) {
   }
 
 
-  function isAiFeaturesAnnotation(annotation) {
-    return annotation &&
-      (annotation.type === 'fb_accept_feature'
-      || annotation.type === 'fb_reject_feature');
+  function wasRapidEdit(annotation) {
+    return annotation && annotation.type && /^rapid/.test(annotation.type);
   }
 
 
   function onHistoryUndone(currentStack, previousStack) {
     const annotation = previousStack.annotation;
-    if (isAiFeaturesAnnotation(annotation)) {
-      _actioned.delete(annotation.id);
-      if (_enabled) { dispatch.call('change'); }  // redraw
-    }
+    if (!wasRapidEdit(annotation)) return;
+
+    _actioned.delete(annotation.id);
+    if (_enabled) { dispatch.call('change'); }  // redraw
   }
 
 
   function onHistoryChange(/* difference */) {
     const annotation = context.history().peekAnnotation();
-    if (isAiFeaturesAnnotation(annotation)) {
-      _actioned.add(annotation.id);
-      if (_enabled) { dispatch.call('change'); }  // redraw
-    }
+    if (!wasRapidEdit(annotation)) return;
+
+    _actioned.add(annotation.id);
+    if (_enabled) { dispatch.call('change'); }  // redraw
   }
 
 
   function onHistoryRestore() {
     _actioned = new Set();
     context.history().peekAllAnnotations().forEach(annotation => {
-      if (isAiFeaturesAnnotation(annotation)) {
+      if (wasRapidEdit(annotation)) {
         _actioned.add(annotation.id);
         // origid (the original entity ID), a.k.a. datum.__origid__,
         // is a hack used to deal with non-deterministic way-splitting

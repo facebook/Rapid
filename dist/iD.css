@@ -3298,7 +3298,7 @@ display: none;
 }
 
 /* Rapid Inspector */
-.ideditor .fb-road-picker .tooltip .popover-inner {
+.ideditor .rapid-inspector .tooltip .popover-inner {
     border: 1px solid grey;
 }
 
@@ -3308,12 +3308,12 @@ display: none;
 }
 
 /* Sidebar component */
-.ideditor .fb-road-picker svg.logo-rapid {
+.ideditor .rapid-inspector svg.logo-rapid {
     height: 40px;
     margin-top: -10px;
 }
 
-.ideditor .fb-road-picker .header .fb-road-picker-close {
+.ideditor .rapid-inspector .header .rapid-inspector-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -3321,11 +3321,11 @@ display: none;
     color: #ff26d4;
     border-radius: 5px;
 }
-.ideditor .fb-road-picker .header .fb-road-picker-close:hover {
+.ideditor .rapid-inspector .header .rapid-inspector-close:hover {
     background: #8885;
 }
 
-.ideditor .fb-road-picker .picker-icon-container {
+.ideditor .rapid-inspector .picker-icon-container {
     -webkit-box-flex: 1;
         -ms-flex: 1 0 60px;
             flex: 1 0 60px;
@@ -3338,7 +3338,7 @@ display: none;
     height:100%;
 }
 
-.ideditor .fb-road-picker .picker-list-button {
+.ideditor .rapid-inspector .picker-list-button {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3348,12 +3348,12 @@ display: none;
     width: unset;
 }
 
-.ideditor .fb-road-picker .picker-list-button.disabled .picker-icon-container,
-.ideditor .fb-road-picker .picker-list-button.disabled .label{
+.ideditor .rapid-inspector .picker-list-button.disabled .picker-icon-container,
+.ideditor .rapid-inspector .picker-list-button.disabled .label{
     opacity: .4;
 }
 
-.ideditor .fb-road-picker .picker-list-button .label {
+.ideditor .rapid-inspector .picker-list-button .label {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3375,39 +3375,39 @@ display: none;
     height: 100%;
 }
 
-.ideditor .fb-road-picker .tag-reference-button {
+.ideditor .rapid-inspector .tag-reference-button {
     color: #e0e0e0;
 }
 
-.ideditor .fb-road-picker .body {
+.ideditor .rapid-inspector .body {
     padding: 20px;
 }
 
-.ideditor .fb-road-picker .body h4 {
+.ideditor .rapid-inspector .body h4 {
     font-weight: normal;
     text-align: center;
 }
 
-.ideditor .fb-road-picker .preset-list-item {
+.ideditor .rapid-inspector .preset-list-item {
     margin-top: 15px;
 }
 
-.ideditor .fb-road-picker .preset-list-item .preset-icon-container svg {
+.ideditor .rapid-inspector .preset-list-item .preset-icon-container svg {
     height: 34px;
     width: 34px;
 }
-.ideditor .fb-road-picker .preset-list-item .preset-icon-container svg use {
+.ideditor .rapid-inspector .preset-list-item .preset-icon-container svg use {
     color: #4c4c4c;
     fill: none;
 }
 
-.ideditor .fb-road-picker .preset-list-item .tag-reference-body {
+.ideditor .rapid-inspector .preset-list-item .tag-reference-body {
     padding: 10px;
 }
-.ideditor .fb-road-picker .preset-list-item .tag-reference-body.shown {
+.ideditor .rapid-inspector .preset-list-item .tag-reference-body.shown {
     display: block;
 }
-.ideditor .dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
+.ideditor .dark .rapid-inspector .preset-list-item .tag-reference-body.shown {
     color: #a0a0a0;
 }
 
@@ -3420,7 +3420,7 @@ display: none;
     font-size: smaller;
 }
 
-.ideditor .fb-road-picker .tag-bag {
+.ideditor .rapid-inspector .tag-bag {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3428,19 +3428,19 @@ display: none;
         flex-wrap: wrap;
     padding: 2px 0px 2px;
 }
-.ideditor .fb-road-picker .tag-preview {
+.ideditor .rapid-inspector .tag-preview {
     margin: 5px 5px 0px 5px;
     background: #444;
     border-radius: 5px;
     border: 1px transparent;
 }
 
-.ideditor .fb-road-picker .tag-heading {
+.ideditor .rapid-inspector .tag-heading {
     margin-right: 5px;
     padding-left: 3px;
 }
 
-.ideditor .fb-road-picker .tag-preview .tag-entry {
+.ideditor .rapid-inspector .tag-preview .tag-entry {
     -webkit-box-flex: 0;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
@@ -3453,15 +3453,15 @@ display: none;
     font-weight: 300;
 }
 
-.ideditor .fb-road-picker .tag-key,
-.ideditor .fb-road-picker .tag-value {
+.ideditor .rapid-inspector .tag-key,
+.ideditor .rapid-inspector .tag-value {
     -webkit-box-flex: 0;
         -ms-flex: 0 1 auto;
             flex: 0 1 auto;
     padding: 0px 3px 0px 3px;
 }
 
-.ideditor .fb-road-picker .tag-key {
+.ideditor .rapid-inspector .tag-key {
     font-weight: bold;
     font-size: unset;
 }

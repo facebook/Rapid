@@ -509,23 +509,6 @@ en:
   feature_info:
     hidden_warning: "{count} hidden features"
     hidden_details: "These features are currently hidden: {details}"
-  fb_feature_license: Facebook's Map With AI License
-  fb_feature_picker:
-    prompt: How would you like to proceed with this selected feature?
-    option_accept:
-      label: Use This Feature
-      description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
-      annotation: Added a Map With AI feature.
-      tooltip: Add this feature to the map to begin editing.
-      disabled: To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.
-      disabled_flash: To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.
-      key: A
-    option_reject:
-      label: Remove This Feature
-      description: Removing this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
-      annotation: Removed a Map With AI feature.
-      tooltip: Remove this feature from the map.
-      key: D
   status:
     error: Unable to connect to API.
     offline: The API is offline. Please try editing later.
@@ -978,6 +961,25 @@ en:
     text: You'll need an OpenStreetMap account to save your work. Would you like to log in with OSM now or keep exploring?
     exploring: "I'm just exploring"
     login_with_osm: "Log in with OSM"
+  rapid_feature_inspector:
+    prompt: How would you like to proceed with this selected feature?
+    tags:
+      title: Tags
+    option_accept:
+      label: Use This Feature
+      description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
+      annotation: Added a Map With AI feature.
+      tooltip: Add this feature to the map to begin editing.
+      disabled: To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.
+      disabled_flash: To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.
+      key: A
+    option_reject:
+      label: Remove This Feature
+      description: Removing this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
+      annotation: Removed a Map With AI feature.
+      tooltip: Remove this feature from the map.
+      key: D
+  rapid_feature_license: Facebook's Map With AI License
   rapid_feature_toggle:
     toggle_all: Toggle all {rapidicon} features
     view_manage_datasets: "View/Manage Datasets"

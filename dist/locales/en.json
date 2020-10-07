@@ -659,8 +659,7 @@
             "hidden_warning": "{count} hidden features",
             "hidden_details": "These features are currently hidden: {details}"
         },
-        "fb_feature_license": "Facebook's Map With AI License",
-        "fb_feature_picker": {
+        "rapid_feature_inspector": {
             "prompt": "How would you like to proceed with this selected feature?",
             "option_accept": {
                 "label": "Use This Feature",
@@ -1223,6 +1222,7 @@
             "exploring": "I'm just exploring",
             "login_with_osm": "Log in with OSM"
         },
+        "rapid_feature_license": "Facebook's Map With AI License",
         "rapid_feature_toggle": {
             "toggle_all": "Toggle all {rapidicon} features",
             "view_manage_datasets": "View/Manage Datasets",

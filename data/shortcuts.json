@@ -255,12 +255,12 @@
               "text": "shortcuts.editing.rapid.title"
             },
             {
-              "shortcuts": ["fb_feature_picker.option_accept.key"],
+              "shortcuts": ["rapid_feature_inspector.option_accept.key"],
               "text": "shortcuts.editing.rapid.accept_feature",
               "rapid": true
             },
             {
-              "shortcuts": ["fb_feature_picker.option_reject.key"],
+              "shortcuts": ["rapid_feature_inspector.option_reject.key"],
               "text": "shortcuts.editing.rapid.reject_feature",
               "rapid": true
             }

@@ -32,7 +32,7 @@ button.ai-features-toggle.layer-off use {
 }
 
 /* Rapid Inspector */
-.fb-road-picker .tooltip .popover-inner {
+.rapid-inspector .tooltip .popover-inner {
     border: 1px solid grey;
 }
 
@@ -42,12 +42,12 @@ button.ai-features-toggle.layer-off use {
 }
 
 /* Sidebar component */
-.fb-road-picker svg.logo-rapid {
+.rapid-inspector svg.logo-rapid {
     height: 40px;
     margin-top: -10px;
 }
 
-.fb-road-picker .header .fb-road-picker-close {
+.rapid-inspector .header .rapid-inspector-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -55,11 +55,11 @@ button.ai-features-toggle.layer-off use {
     color: #ff26d4;
     border-radius: 5px;
 }
-.fb-road-picker .header .fb-road-picker-close:hover {
+.rapid-inspector .header .rapid-inspector-close:hover {
     background: #8885;
 }
 
-.fb-road-picker .picker-icon-container {
+.rapid-inspector .picker-icon-container {
     flex: 1 0 60px;
     padding: 3px;
     height:100%;
@@ -70,18 +70,18 @@ button.ai-features-toggle.layer-off use {
     height:100%;
 }
 
-.fb-road-picker .picker-list-button {
+.rapid-inspector .picker-list-button {
     display: flex;
     flex: 1 1 auto;
     width: unset;
 }
 
-.fb-road-picker .picker-list-button.disabled .picker-icon-container,
-.fb-road-picker .picker-list-button.disabled .label{
+.rapid-inspector .picker-list-button.disabled .picker-icon-container,
+.rapid-inspector .picker-list-button.disabled .label{
     opacity: .4;
 }
 
-.fb-road-picker .picker-list-button .label {
+.rapid-inspector .picker-list-button .label {
     display: flex;
     flex-flow: row wrap;
     align-items: center;
@@ -93,39 +93,39 @@ button.ai-features-toggle.layer-off use {
     height: 100%;
 }
 
-.fb-road-picker .tag-reference-button {
+.rapid-inspector .tag-reference-button {
     color: #e0e0e0;
 }
 
-.fb-road-picker .body {
+.rapid-inspector .body {
     padding: 20px;
 }
 
-.fb-road-picker .body h4 {
+.rapid-inspector .body h4 {
     font-weight: normal;
     text-align: center;
 }
 
-.fb-road-picker .preset-list-item {
+.rapid-inspector .preset-list-item {
     margin-top: 15px;
 }
 
-.fb-road-picker .preset-list-item .preset-icon-container svg {
+.rapid-inspector .preset-list-item .preset-icon-container svg {
     height: 34px;
     width: 34px;
 }
-.fb-road-picker .preset-list-item .preset-icon-container svg use {
+.rapid-inspector .preset-list-item .preset-icon-container svg use {
     color: #4c4c4c;
     fill: none;
 }
 
-.fb-road-picker .preset-list-item .tag-reference-body {
+.rapid-inspector .preset-list-item .tag-reference-body {
     padding: 10px;
 }
-.fb-road-picker .preset-list-item .tag-reference-body.shown {
+.rapid-inspector .preset-list-item .tag-reference-body.shown {
     display: block;
 }
-.dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
+.dark .rapid-inspector .preset-list-item .tag-reference-body.shown {
     color: #a0a0a0;
 }
 
@@ -138,24 +138,24 @@ button.ai-features-toggle.layer-off use {
     font-size: smaller;
 }
 
-.fb-road-picker .tag-bag {
+.rapid-inspector .tag-bag {
     display: flex;
     flex-wrap: wrap;
     padding: 2px 0px 2px;
 }
-.fb-road-picker .tag-preview {
+.rapid-inspector .tag-preview {
     margin: 5px 5px 0px 5px;
     background: #444;
     border-radius: 5px;
     border: 1px transparent;
 }
 
-.fb-road-picker .tag-heading {
+.rapid-inspector .tag-heading {
     margin-right: 5px;
     padding-left: 3px;
 }
 
-.fb-road-picker .tag-preview .tag-entry {
+.rapid-inspector .tag-preview .tag-entry {
     flex: 0 1 auto;
     display: flex;
     border: 1px solid #888;
@@ -164,13 +164,13 @@ button.ai-features-toggle.layer-off use {
     font-weight: 300;
 }
 
-.fb-road-picker .tag-key,
-.fb-road-picker .tag-value {
+.rapid-inspector .tag-key,
+.rapid-inspector .tag-value {
     flex: 0 1 auto;
     padding: 0px 3px 0px 3px;
 }
 
-.fb-road-picker .tag-key {
+.rapid-inspector .tag-key {
     font-weight: bold;
     font-size: unset;
 }

@@ -6,6 +6,6 @@ export function uiRapidServiceLicense() {
     selection.append('a')
       .attr('href', 'https://mapwith.ai/doc/license/MapWithAILicense.pdf')
       .attr('target', '_blank')
-      .text(t('fb_feature_license'));
+      .text(t('rapid_feature_license'));
   };
 }
