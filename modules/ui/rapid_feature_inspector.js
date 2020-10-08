@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
@@ -21,7 +22,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (gpxInUrl) return false;
 
     const annotations = context.history().peekAllAnnotations();
-    const aiFeatureAccepts = annotations.filter(a => a.type === 'fb_accept_feature');
+    const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
     return aiFeatureAccepts.length >= AI_FEATURES_LIMIT_NON_TM_MODE;
   }
 
@@ -30,10 +31,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (!_datum) return;
 
     if (isAddFeatureDisabled()) {
-      const flash = uiFlash()
-        .duration(4000)
-        .iconName('#iD-icon-rapid-plus-circle')
-        .iconClass('operation disabled')
+      const flash = uiFlash(context)
+        .duration(5000)
         .text(t(
           'rapid_feature_inspector.option_accept.disabled_flash',
           { n: AI_FEATURES_LIMIT_NON_TM_MODE }
@@ -92,168 +91,132 @@ export function uiRapidFeatureInspector(context, keybinding) {
   }
 
 
-  function presetItem(selection, p, presetButtonClasses, reject) {
-    let presetItem = selection
-      .append('div')
-      .attr('class',  reject ? 'preset-list-item reject' : 'preset-list-item');
-
-    let presetWrap = presetItem
-      .append('div')
-      .attr('class', 'preset-list-button-wrap');
-
-    let presetReference = presetItem
-      .append('div')
-      .attr('class', 'tag-reference-body');
-
-    presetReference
-      .text(p.description);
-
-    let presetButton = presetWrap
-      .append('button')
-      .attr('class', 'picker-list-button ' + presetButtonClasses)
-      .on('click', p.onClick);
-
-    if (p.disabledFunction) {
-      presetButton = presetButton.classed('disabled', p.disabledFunction);
-    }
-
-    if (p.tooltip) {
-      presetButton = presetButton.call(p.tooltip);
-    }
-
-    presetButton
-      .append('div')
-      .attr('class', 'picker-icon-container medium')
-      .append('svg')
-      .attr('class', 'icon')
-      .append('use')
-      .attr('xlink:href', p.iconName);
-
-    presetButton
-      .append('div')
-      .attr('class', 'label')
-      .append('div')
-      .attr('class', 'label-inner')
-      .append('div')
-      .attr('class', 'namepart')
-      .text(p.label);
-
-    presetWrap
-      .append('button')
-      .attr('class', 'tag-reference-button')
-      .attr('title', 'info')
-      .attr('tabindex', '-1')
-      .on('click', () => presetReference.classed('shown', !presetReference.classed('shown')) )
-      .call(svgIcon('#iD-icon-inspect'));
-  }
-
-
-  function previewTags(selection, tagsObj) {
-
-    if (!tagsObj) return;
+  function previewTags(selection) {
+    const tags = _datum && _datum.tags;
+    if (!tags) return;
 
     let tagPreview = selection
-      .append('div');
-
-    tagPreview
+      .append('div')
       .attr('class', 'tag-preview');
 
-    var tagEntries= [];
-    Object.keys(tagsObj).forEach(k => { tagEntries.push({'key':k, 'value':tagsObj[k]});});
-
-    var tagBag = tagPreview
+    let tagBag = tagPreview
       .append('div')
       .attr('class', 'tag-bag');
 
     tagBag
       .append('div')
       .attr('class', 'tag-heading')
-      .text(t('rapid_feature_inspector.tags.title'));
+      .text(t('rapid_feature_inspector.tags'));
 
+    const tagEntries = Object.keys(tags).map(k => ({ key: k, value: tags[k] }) );
 
     tagEntries.forEach(e => {
-
       let entryDiv = tagBag.append('div')
         .attr('class', 'tag-entry');
 
       entryDiv.append('div').attr('class', 'tag-key').text(e.key);
       entryDiv.append('div').attr('class', 'tag-value').text(e.value);
     });
-
-
-
-
-    // var listContainer = tagBag
-    //   .data(tagEntries)
-    //   .enter();
-
-    // var entry  = listContainer.append('div')
-    //   .attr('class', 'tag-entry');
-
-    // entry
-    //   .append('div')
-    //   .attr('class', 'tag-key')
-    //   .text(d => d.key);
-
-    // entry
-    //   .append('div')
-    //   .attr('class', 'tag-value')
-    //   .text(d => d.value);
   }
 
 
   function rapidInspector(selection) {
-    let wrap = selection.selectAll('.rapid-inspector')
-      .data([0]);
-
-    wrap = wrap.enter()
+    let inspectorEnter = selection.selectAll('.rapid-inspector')
+      .data([0])
+      .enter()
       .append('div')
-      .attr('class', 'rapid-inspector')
-      .merge(wrap);
+      .attr('class', 'rapid-inspector');
 
     // Header
-    let header = wrap.selectAll('.header')
-      .data([0]);
-
-    let headerEnter = header.enter()
+    let headerEnter = inspectorEnter
       .append('div')
-      .attr('class', 'header control-col');
+      .attr('class', 'header');
 
     headerEnter
       .append('h3')
       .append('svg')
-      .attr('class', 'logo-rapid')
+      .attr('class', 'logo-rapid dark')
       .append('use')
       .attr('xlink:href', '#iD-logo-rapid');
 
     headerEnter
       .append('button')
       .attr('class', 'fr rapid-inspector-close')
-      .on('click', () => context.enter(modeBrowse(context)) )
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        context.enter(modeBrowse(context));
+      })
       .call(svgIcon('#iD-icon-close'));
-
-    // Update header
-    header = header
-      .merge(headerEnter);
 
 
     // Body
-    let body = wrap.selectAll('.body')
-      .data([0]);
-
-    let bodyEnter = body.enter()
+    let bodyEnter = inspectorEnter
       .append('div')
-      .attr('class', 'body control-col');
+      .attr('class', 'body');
 
     bodyEnter
-      .append('h4')
+      .call(previewTags);
+
+    bodyEnter
+      .append('p')
       .text(t('rapid_feature_inspector.prompt'));
 
-    presetItem(bodyEnter, {
-      iconName: '#iD-icon-rapid-plus-circle',
-      label: t('rapid_feature_inspector.option_accept.label'),
-      description: t('rapid_feature_inspector.option_accept.description'),
-      tooltip: uiTooltip()
+    const choices = [
+      {
+        key: 'accept',
+        iconName: '#iD-icon-rapid-plus-circle',
+        label: t('rapid_feature_inspector.option_accept.label'),
+        description: t('rapid_feature_inspector.option_accept.description'),
+        onClick: onAcceptFeature
+      }, {
+        key: 'ignore',
+        iconName: '#iD-icon-rapid-minus-circle',
+        label: t('rapid_feature_inspector.option_reject.label'),
+        description: t('rapid_feature_inspector.option_reject.description'),
+        onClick: onRejectFeature
+      }
+    ];
+
+    let choicesEnter = bodyEnter
+      .append('div')
+      .attr('class', 'rapid-inspector-choices');
+
+    let choiceEnter = choicesEnter.selectAll('.rapid-inspector-choice')
+      .data(choices, d => d.key)
+      .enter()
+      .append('div')
+      .attr('class', d => `rapid-inspector-choice rapid-inspector-choice-${d.key}`)
+      .each(showChoice);
+  }
+
+
+  function showChoice(d, i, nodes) {
+    let selection = d3_select(nodes[i]);
+    const disableClass = (d.key === 'accept' && isAddFeatureDisabled()) ? 'secondary disabled': '';
+
+    let choiceWrap = selection
+      .append('div')
+      .attr('class', `choice-wrap choice-wrap-${d.key}`);
+
+    let choiceReference = selection
+      .append('div')
+      .attr('class', 'tag-reference-body');
+
+    choiceReference
+      .text(d.description);
+
+    const onClick = d.onClick;
+    let choiceButton = choiceWrap
+      .append('button')
+      .attr('class', `choice-button choice-button-${d.key} ${disableClass}`)
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        onClick();
+      });
+
+    let tooltip;
+    if (d.key === 'accept') {
+      tooltip = uiTooltip()
         .placement('bottom')
         .title(() => {
           return isAddFeatureDisabled()
@@ -262,28 +225,40 @@ export function uiRapidFeatureInspector(context, keybinding) {
             : uiTooltip()
                 .title(t('rapid_feature_inspector.option_accept.tooltip'))
                 .keys([t('rapid_feature_inspector.option_accept.key')]);
-        }),
-      onClick: onAcceptFeature,
-      disabledFunction: isAddFeatureDisabled
-    }, 'ai-features-accept', false);
-
-    previewTags(bodyEnter, _datum.tags);
-
-    presetItem(bodyEnter, {
-      iconName: '#iD-icon-rapid-minus-circle',
-      label: t('rapid_feature_inspector.option_reject.label'),
-      description: t('rapid_feature_inspector.option_reject.description'),
-      tooltip: uiTooltip()
+        });
+    } else if (d.key === 'ignore') {
+      tooltip = uiTooltip()
         .placement('bottom')
         .title(t('rapid_feature_inspector.option_reject.tooltip'))
-        .keys([t('rapid_feature_inspector.option_reject.key')]),
-      onClick: onRejectFeature
-    }, 'ai-features-reject', true);
+        .keys([t('rapid_feature_inspector.option_reject.key')]);
+    }
 
+// something off about the tooltips
+    // if (tooltip) {
+      // choiceButton = choiceButton.call(tooltip);
+    // }
 
-    // Update body
-    body = body
-      .merge(bodyEnter);
+    choiceButton
+      .append('svg')
+      .attr('class', 'choice-icon icon')
+      .append('use')
+      .attr('xlink:href', d.iconName);
+
+    choiceButton
+      .append('div')
+      .attr('class', 'choice-label')
+      .text(d.label);
+
+    choiceWrap
+      .append('button')
+      .attr('class', `tag-reference-button ${disableClass}`)
+      .attr('title', 'info')
+      .attr('tabindex', '-1')
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        choiceReference.classed('expanded', !choiceReference.classed('expanded'));
+      })
+      .call(svgIcon('#iD-icon-inspect'));
   }
 
 

@@ -3273,14 +3273,14 @@ display: none;
 .ideditor svg.logo-rapid,
 .ideditor .icon.rapid {
     fill: #333;
-    color: #ff26d4;
+    color: #da26d3;
 }
 
 .ideditor svg.logo-rapid.dark,
 .ideditor .dark .icon.rapid,
 .ideditor .icon.rapid.dark {
     fill: #eee;
-    color: #ff26d4;
+    color: #da26d3;
 }
 
 /* Toolbar button */
@@ -3297,20 +3297,86 @@ display: none;
     color: rgba(0,0,0,.4);
 }
 
-/* Rapid Inspector */
-.ideditor .rapid-inspector .tooltip .popover-inner {
-    border: 1px solid grey;
-}
-
 .ideditor .fb-road-license a {
     padding: 2px 4px 4px 4px;
     border-radius: 2px;
 }
 
-/* Sidebar component */
+
+/* UI Buttons */
+.ideditor .rapid-inspector button,
+.ideditor .modal.rapid-modal button {
+    border: 0;
+    background: #da26d3;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.ideditor .rapid-inspector button:focus,
+.ideditor .rapid-inspector button:hover,
+.ideditor .modal.rapid-modal button:focus,
+.ideditor .modal.rapid-modal button:hover {
+    background: #c6d;
+}
+
+.ideditor .rapid-inspector button.secondary,
+.ideditor .modal.rapid-modal button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+.ideditor .rapid-inspector button.secondary:focus,
+.ideditor .rapid-inspector button.secondary:hover,
+.ideditor .modal.rapid-modal button.secondary:focus,
+.ideditor .modal.rapid-modal button.secondary:hover {
+    background: #888;
+}
+
+.ideditor .rapid-inspector button .icon,
+.ideditor .modal.rapid-modal button .icon {
+    color: #eee;
+    fill: #da26d3;
+}
+.ideditor .rapid-inspector button:focus .icon,
+.ideditor .rapid-inspector button:hover .icon,
+.ideditor .modal.rapid-modal button:focus .icon,
+.ideditor .modal.rapid-modal button:hover .icon {
+    fill: #c6d;
+}
+
+.ideditor .rapid-inspector button.secondary .icon,
+.ideditor .modal.rapid-modal button.secondary .icon {
+    color: #eee;
+    fill: #666;
+}
+.ideditor .rapid-inspector button.secondary:focus .icon,
+.ideditor .rapid-inspector button.secondary:hover .icon,
+.ideditor .modal.rapid-modal button.secondary:focus .icon,
+.ideditor .modal.rapid-modal button.secondary:hover .icon {
+    fill: #888;
+}
+
+.ideditor .rapid-inspector button.disabled,
+.ideditor .modal.rapid-modal button.disabled {
+    opacity: 0.5;
+}
+
+
+
+/* Sidebar - Rapid Inspector */
+.ideditor .rapid-inspector > div {
+    background: rgb(25, 25, 25);
+    color: #eee;
+}
+
 .ideditor .rapid-inspector svg.logo-rapid {
-    height: 40px;
-    margin-top: -10px;
+    height: 35px;
+}
+
+.ideditor .rapid-inspector .header {
+    border-bottom: 1px solid #aaaa;
 }
 
 .ideditor .rapid-inspector .header .rapid-inspector-close {
@@ -3318,106 +3384,78 @@ display: none;
     top: 0;
     right: 0;
     background: transparent;
-    color: #ff26d4;
-    border-radius: 5px;
+    color: #da26d3;
 }
 .ideditor .rapid-inspector .header .rapid-inspector-close:hover {
     background: #8885;
 }
 
-.ideditor .rapid-inspector .picker-icon-container {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 0 60px;
-            flex: 1 0 60px;
-    padding: 3px;
-    height:100%;
-}
-
-.ideditor .picker-icon-container svg {
-    width:40px;
-    height:100%;
-}
-
-.ideditor .rapid-inspector .picker-list-button {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
-            flex: 1 1 auto;
-    width: unset;
-}
-
-.ideditor .rapid-inspector .picker-list-button.disabled .picker-icon-container,
-.ideditor .rapid-inspector .picker-list-button.disabled .label{
-    opacity: .4;
-}
-
-.ideditor .rapid-inspector .picker-list-button .label {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-flow: row wrap;
-            flex-flow: row wrap;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    padding: 5px 5px;
-    left: 60px;
-    -ms-flex-preferred-size: 200px;
-        flex-basis: 200px;
-    color: #e0e0e0;
-    height: 100%;
-}
-
-.ideditor .rapid-inspector .tag-reference-button {
-    color: #e0e0e0;
+.ideditor .rapid-inspector .tooltip .popover-inner {
+    border: 1px solid #aaaa;
 }
 
 .ideditor .rapid-inspector .body {
     padding: 20px;
 }
-
-.ideditor .rapid-inspector .body h4 {
-    font-weight: normal;
-    text-align: center;
+.ideditor .rapid-inspector .body p {
+    padding: 20px 0;
 }
 
-.ideditor .rapid-inspector .preset-list-item {
-    margin-top: 15px;
+.ideditor .rapid-inspector-choices {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
 }
 
-.ideditor .rapid-inspector .preset-list-item .preset-icon-container svg {
-    height: 34px;
-    width: 34px;
-}
-.ideditor .rapid-inspector .preset-list-item .preset-icon-container svg use {
-    color: #4c4c4c;
-    fill: none;
-}
-
-.ideditor .rapid-inspector .preset-list-item .tag-reference-body {
-    padding: 10px;
-}
-.ideditor .rapid-inspector .preset-list-item .tag-reference-body.shown {
-    display: block;
-}
-.ideditor .dark .rapid-inspector .preset-list-item .tag-reference-body.shown {
-    color: #a0a0a0;
+.ideditor .rapid-inspector-choice .choice-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    margin: 10px;
+    height: 50px;
 }
 
-.ideditor .reject .preset-list-button-wrap {
-    height: 32px;
+.ideditor .rapid-inspector-choice .choice-wrap > button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    border: 0;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    height: 100%;
+}
+.ideditor .rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: 1px solid #333a;
+    border-radius: 25px 0 0 25px;
+}
+.ideditor .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 40px;
+            flex: 0 0 40px;
+    border-radius: 0 25px 25px 0;
 }
 
-.ideditor .reject .label {
-    font-weight: lighter;
-    font-size: smaller;
+.ideditor .rapid-inspector-choice .choice-button .choice-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 15px;
+}
+.ideditor .rapid-inspector-choice .tag-reference-button .icon {
+    margin: 0 5px;
 }
 
 .ideditor .rapid-inspector .tag-bag {
@@ -3426,10 +3464,9 @@ display: none;
     display: flex;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
-    padding: 2px 0px 2px;
 }
 .ideditor .rapid-inspector .tag-preview {
-    margin: 5px 5px 0px 5px;
+    padding: 7px;
     background: #444;
     border-radius: 5px;
     border: 1px transparent;
@@ -3447,10 +3484,11 @@ display: none;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    border: 1px solid #888;
+    border: 1px solid #aaaa;
     border-radius: 5px;
     font-size: smaller;
     font-weight: 300;
+    margin: 0 3px;
 }
 
 .ideditor .rapid-inspector .tag-key,
@@ -3493,7 +3531,7 @@ display: none;
     -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
             box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
-    border: 1px solid #ccca;
+    border: 1px solid #888a;
 }
 
 .ideditor .modal.rapid-modal .modal-section.buttons {
@@ -3502,32 +3540,8 @@ display: none;
         -ms-flex-flow: column;
             flex-flow: column;
     padding: 20px;
-    border-top: 1px solid #ccca;
+    border-top: 1px solid #888a;
     width: 100%;
-}
-
-.ideditor .modal.rapid-modal .modal-section.buttons button {
-    border: 0;
-    background: #c2d;
-    color: #eee;
-    font-size: 16px;
-    border-radius: 20px;
-}
-
-.ideditor .modal.rapid-modal .modal-section.buttons button:focus,
-.ideditor .modal.rapid-modal .modal-section.buttons button:hover {
-    background-color: #c6d;
-}
-
-.ideditor .modal.rapid-modal .modal-section.buttons button.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
-}
-
-.ideditor .modal.rapid-modal .modal-section.buttons button.secondary:focus,
-.ideditor .modal.rapid-modal .modal-section.buttons button.secondary:hover {
-    background-color: #888;
 }
 
 /* old? */
@@ -3563,7 +3577,7 @@ display: none;
     -ms-flex-item-align: end;
         align-self: flex-end;
     background: transparent;
-    color: #ff26d4;
+    color: #da26d3;
     position: unset;
     height: 40px;
     border-radius: 5px;
@@ -3620,11 +3634,11 @@ display: none;
 }
 
 .ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
-    border-bottom: 1px solid #ccca;
+    border-bottom: 1px solid #888a;
     padding-bottom: 10px;
 }
 .ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
-    border-top: 1px solid #ccca;
+    border-top: 1px solid #888a;
     padding: 10px;
     cursor: pointer;
 }
@@ -3699,7 +3713,7 @@ display: none;
 .ideditor .modal-section.rapid-checkbox.section-divider {
     width: 100%;
     height: 1px;
-    background: #ccca;
+    background: #888a;
     padding: 1px;
     -ms-flex-item-align: center;
         align-self: center;
@@ -3720,7 +3734,7 @@ display: none;
     width: 1px;
     height: 20px;
     margin-top: 3px;
-    background: #ccca;
+    background: #888a;
 }
 
 .ideditor .rapid-checkbox-inputs {
@@ -3812,7 +3826,7 @@ hide this one and style something on top of it.  */
     margin-left: 9px;
     margin-top: 2px;
     border-radius: 0;
-    border: solid #ff26d4;
+    border: solid #da26d3;
     background-color: transparent;
     border-width: 0 4px 4px 0;
     -webkit-transform: rotate(45deg) scale(1);
@@ -3936,7 +3950,7 @@ hide this one and style something on top of it.  */
 
 .ideditor .modal-view-manage .modal-section.rapid-view-manage-header {
     padding: 0 20px 5px 20px;
-    border-bottom: 1px solid #ccca;
+    border-bottom: 1px solid #888a;
 }
 .ideditor .rapid-view-manage-header-icon {
     -webkit-box-flex: 0;
@@ -3975,7 +3989,7 @@ hide this one and style something on top of it.  */
     background: #8885;
 }
 .ideditor .rapid-view-manage-page.current {
-    color: #c2d;
+    color: #da26d3;
 }
 
 
@@ -4056,31 +4070,12 @@ hide this one and style something on top of it.  */
             filter: invert(1)brightness(2)contrast(0.75);
 }
 
-.ideditor button.rapid-view-manage-dataset-action {
-    border: 0;
-    background: #c2d;
-    color: #eee;
+.ideditor .rapid-view-manage-dataset button.rapid-view-manage-dataset-action {
     font-size: 12px;
     height: 28px;
     border-radius: 14px;
     margin: 10px 0;
     padding: 0 15px;
-}
-
-.ideditor button.rapid-view-manage-dataset-action:focus,
-.ideditor button.rapid-view-manage-dataset-action:hover {
-    background-color: #c6d;
-}
-
-.ideditor button.rapid-view-manage-dataset-action.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
-}
-
-.ideditor button.rapid-view-manage-dataset-action.secondary:focus,
-.ideditor button.rapid-view-manage-dataset-action.secondary:hover {
-    background-color: #888;
 }
 
 .ideditor .beta {

@@ -7,14 +7,14 @@ svg.icon.icon-30 {
 svg.logo-rapid,
 .icon.rapid {
     fill: #333;
-    color: #ff26d4;
+    color: #da26d3;
 }
 
 svg.logo-rapid.dark,
 .dark .icon.rapid,
 .icon.rapid.dark {
     fill: #eee;
-    color: #ff26d4;
+    color: #da26d3;
 }
 
 /* Toolbar button */
@@ -31,20 +31,86 @@ button.ai-features-toggle.layer-off use {
     color: rgba(0,0,0,.4);
 }
 
-/* Rapid Inspector */
-.rapid-inspector .tooltip .popover-inner {
-    border: 1px solid grey;
-}
-
 .fb-road-license a {
     padding: 2px 4px 4px 4px;
     border-radius: 2px;
 }
 
-/* Sidebar component */
+
+/* UI Buttons */
+.rapid-inspector button,
+.modal.rapid-modal button {
+    border: 0;
+    background: #da26d3;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.rapid-inspector button:focus,
+.rapid-inspector button:hover,
+.modal.rapid-modal button:focus,
+.modal.rapid-modal button:hover {
+    background: #c6d;
+}
+
+.rapid-inspector button.secondary,
+.modal.rapid-modal button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+
+.rapid-inspector button.secondary:focus,
+.rapid-inspector button.secondary:hover,
+.modal.rapid-modal button.secondary:focus,
+.modal.rapid-modal button.secondary:hover {
+    background: #888;
+}
+
+.rapid-inspector button .icon,
+.modal.rapid-modal button .icon {
+    color: #eee;
+    fill: #da26d3;
+}
+.rapid-inspector button:focus .icon,
+.rapid-inspector button:hover .icon,
+.modal.rapid-modal button:focus .icon,
+.modal.rapid-modal button:hover .icon {
+    fill: #c6d;
+}
+
+.rapid-inspector button.secondary .icon,
+.modal.rapid-modal button.secondary .icon {
+    color: #eee;
+    fill: #666;
+}
+.rapid-inspector button.secondary:focus .icon,
+.rapid-inspector button.secondary:hover .icon,
+.modal.rapid-modal button.secondary:focus .icon,
+.modal.rapid-modal button.secondary:hover .icon {
+    fill: #888;
+}
+
+.rapid-inspector button.disabled,
+.modal.rapid-modal button.disabled {
+    opacity: 0.5;
+}
+
+
+
+/* Sidebar - Rapid Inspector */
+.rapid-inspector > div {
+    background: rgb(25, 25, 25);
+    color: #eee;
+}
+
 .rapid-inspector svg.logo-rapid {
-    height: 40px;
-    margin-top: -10px;
+    height: 35px;
+}
+
+.rapid-inspector .header {
+    border-bottom: 1px solid #aaaa;
 }
 
 .rapid-inspector .header .rapid-inspector-close {
@@ -52,99 +118,67 @@ button.ai-features-toggle.layer-off use {
     top: 0;
     right: 0;
     background: transparent;
-    color: #ff26d4;
-    border-radius: 5px;
+    color: #da26d3;
 }
 .rapid-inspector .header .rapid-inspector-close:hover {
     background: #8885;
 }
 
-.rapid-inspector .picker-icon-container {
-    flex: 1 0 60px;
-    padding: 3px;
-    height:100%;
-}
-
-.picker-icon-container svg {
-    width:40px;
-    height:100%;
-}
-
-.rapid-inspector .picker-list-button {
-    display: flex;
-    flex: 1 1 auto;
-    width: unset;
-}
-
-.rapid-inspector .picker-list-button.disabled .picker-icon-container,
-.rapid-inspector .picker-list-button.disabled .label{
-    opacity: .4;
-}
-
-.rapid-inspector .picker-list-button .label {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 5px;
-    left: 60px;
-    flex-basis: 200px;
-    color: #e0e0e0;
-    height: 100%;
-}
-
-.rapid-inspector .tag-reference-button {
-    color: #e0e0e0;
+.rapid-inspector .tooltip .popover-inner {
+    border: 1px solid #aaaa;
 }
 
 .rapid-inspector .body {
     padding: 20px;
 }
-
-.rapid-inspector .body h4 {
-    font-weight: normal;
-    text-align: center;
+.rapid-inspector .body p {
+    padding: 20px 0;
 }
 
-.rapid-inspector .preset-list-item {
-    margin-top: 15px;
+.rapid-inspector-choices {
+    display: flex;
+    flex-flow: column nowrap;
 }
 
-.rapid-inspector .preset-list-item .preset-icon-container svg {
-    height: 34px;
-    width: 34px;
-}
-.rapid-inspector .preset-list-item .preset-icon-container svg use {
-    color: #4c4c4c;
-    fill: none;
+.rapid-inspector-choice .choice-wrap {
+    display: flex;
+    flex: 1;
+    margin: 10px;
+    height: 50px;
 }
 
-.rapid-inspector .preset-list-item .tag-reference-body {
-    padding: 10px;
+.rapid-inspector-choice .choice-wrap > button {
+    display: flex;
+    flex: 1;
+    border: 0;
+    align-items: center;
+    height: 100%;
 }
-.rapid-inspector .preset-list-item .tag-reference-body.shown {
-    display: block;
+.rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: 1px solid #333a;
+    border-radius: 25px 0 0 25px;
 }
-.dark .rapid-inspector .preset-list-item .tag-reference-body.shown {
-    color: #a0a0a0;
+.rapid-inspector-choice .choice-wrap > button.tag-reference-button {
+    display: flex;
+    flex: 0 0 40px;
+    border-radius: 0 25px 25px 0;
 }
 
-.reject .preset-list-button-wrap {
-    height: 32px;
+.rapid-inspector-choice .choice-button .choice-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 15px;
 }
-
-.reject .label {
-    font-weight: lighter;
-    font-size: smaller;
+.rapid-inspector-choice .tag-reference-button .icon {
+    margin: 0 5px;
 }
 
 .rapid-inspector .tag-bag {
     display: flex;
     flex-wrap: wrap;
-    padding: 2px 0px 2px;
 }
 .rapid-inspector .tag-preview {
-    margin: 5px 5px 0px 5px;
+    padding: 7px;
     background: #444;
     border-radius: 5px;
     border: 1px transparent;
@@ -158,10 +192,11 @@ button.ai-features-toggle.layer-off use {
 .rapid-inspector .tag-preview .tag-entry {
     flex: 0 1 auto;
     display: flex;
-    border: 1px solid #888;
+    border: 1px solid #aaaa;
     border-radius: 5px;
     font-size: smaller;
     font-weight: 300;
+    margin: 0 3px;
 }
 
 .rapid-inspector .tag-key,
@@ -194,38 +229,14 @@ button.ai-features-toggle.layer-off use {
     color: white;
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
-    border: 1px solid #ccca;
+    border: 1px solid #888a;
 }
 
 .modal.rapid-modal .modal-section.buttons {
     flex-flow: column;
     padding: 20px;
-    border-top: 1px solid #ccca;
+    border-top: 1px solid #888a;
     width: 100%;
-}
-
-.modal.rapid-modal .modal-section.buttons button {
-    border: 0;
-    background: #c2d;
-    color: #eee;
-    font-size: 16px;
-    border-radius: 20px;
-}
-
-.modal.rapid-modal .modal-section.buttons button:focus,
-.modal.rapid-modal .modal-section.buttons button:hover {
-    background-color: #c6d;
-}
-
-.modal.rapid-modal .modal-section.buttons button.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
-}
-
-.modal.rapid-modal .modal-section.buttons button.secondary:focus,
-.modal.rapid-modal .modal-section.buttons button.secondary:hover {
-    background-color: #888;
 }
 
 /* old? */
@@ -259,7 +270,7 @@ button.ai-features-toggle.layer-off use {
 .modal.rapid-modal button.close {
     align-self: flex-end;
     background: transparent;
-    color: #ff26d4;
+    color: #da26d3;
     position: unset;
     height: 40px;
     border-radius: 5px;
@@ -305,11 +316,11 @@ button.ai-features-toggle.layer-off use {
 }
 
 .rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
-    border-bottom: 1px solid #ccca;
+    border-bottom: 1px solid #888a;
     padding-bottom: 10px;
 }
 .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
-    border-top: 1px solid #ccca;
+    border-top: 1px solid #888a;
     padding: 10px;
     cursor: pointer;
 }
@@ -371,7 +382,7 @@ button.ai-features-toggle.layer-off use {
 .modal-section.rapid-checkbox.section-divider {
     width: 100%;
     height: 1px;
-    background: #ccca;
+    background: #888a;
     padding: 1px;
     align-self: center;
     margin-top: 3px;
@@ -391,7 +402,7 @@ button.ai-features-toggle.layer-off use {
     width: 1px;
     height: 20px;
     margin-top: 3px;
-    background: #ccca;
+    background: #888a;
 }
 
 .rapid-checkbox-inputs {
@@ -467,7 +478,7 @@ hide this one and style something on top of it.  */
     margin-left: 9px;
     margin-top: 2px;
     border-radius: 0;
-    border: solid #ff26d4;
+    border: solid #da26d3;
     background-color: transparent;
     border-width: 0 4px 4px 0;
     transform: rotate(45deg) scale(1);
@@ -576,7 +587,7 @@ hide this one and style something on top of it.  */
 
 .modal-view-manage .modal-section.rapid-view-manage-header {
     padding: 0 20px 5px 20px;
-    border-bottom: 1px solid #ccca;
+    border-bottom: 1px solid #888a;
 }
 .rapid-view-manage-header-icon {
     flex: 0 0 40px;
@@ -607,7 +618,7 @@ hide this one and style something on top of it.  */
     background: #8885;
 }
 .rapid-view-manage-page.current {
-    color: #c2d;
+    color: #da26d3;
 }
 
 
@@ -660,31 +671,12 @@ img.rapid-view-manage-dataset-thumbnail {
     filter: invert(1)brightness(2)contrast(0.75);
 }
 
-button.rapid-view-manage-dataset-action {
-    border: 0;
-    background: #c2d;
-    color: #eee;
+.rapid-view-manage-dataset button.rapid-view-manage-dataset-action {
     font-size: 12px;
     height: 28px;
     border-radius: 14px;
     margin: 10px 0;
     padding: 0 15px;
-}
-
-button.rapid-view-manage-dataset-action:focus,
-button.rapid-view-manage-dataset-action:hover {
-    background-color: #c6d;
-}
-
-button.rapid-view-manage-dataset-action.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
-}
-
-button.rapid-view-manage-dataset-action.secondary:focus,
-button.rapid-view-manage-dataset-action.secondary:hover {
-    background-color: #888;
 }
 
 .beta {

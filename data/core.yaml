@@ -963,8 +963,7 @@ en:
     login_with_osm: "Log in with OSM"
   rapid_feature_inspector:
     prompt: How would you like to proceed with this selected feature?
-    tags:
-      title: Tags
+    tags: Tags
     option_accept:
       label: Use This Feature
       description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
