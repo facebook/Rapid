@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 import { uiIntro } from './intro';
 import { icon } from './intro/helper';
@@ -40,7 +41,8 @@ export function uiRapidSplash(context) {
     let walkthrough = buttonWrap
       .append('button')
       .attr('class', 'walkthrough')
-      .on('click', () => {
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
         context.container().call(uiIntro(context, false));
         modalSelection.close();
       });
@@ -58,7 +60,8 @@ export function uiRapidSplash(context) {
     let rapidWalkthrough = buttonWrap
       .append('button')
       .attr('class', 'rapid-walkthrough')
-      .on('click', () => {
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
         context.container().call(uiIntro(context, true));
         modalSelection.close();
       });
@@ -67,8 +70,7 @@ export function uiRapidSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-rapid')
       .append('use')
-      .attr('xlink:href', '#iD-logo-rapid')
-      .attr('fill', 'white');
+      .attr('xlink:href', '#iD-logo-rapid');
 
     rapidWalkthrough
       .append('div')
@@ -77,7 +79,10 @@ export function uiRapidSplash(context) {
     let startEditing = buttonWrap
       .append('button')
       .attr('class', 'start-editing')
-      .on('click', modalSelection.close);
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        modalSelection.close();
+      });
 
     startEditing
       .append('svg')
@@ -90,6 +95,6 @@ export function uiRapidSplash(context) {
       .text(t('rapid_splash.start'));
 
     modalSelection.select('button.close')
-      .attr('class','hide');
+      .attr('class', 'hide');
   };
 }

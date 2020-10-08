@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
@@ -33,7 +34,10 @@ export function uiRapidFirstEditDialog(context) {
     let exploring = buttonWrap
       .append('button')
       .attr('class', 'rapid-explore')
-      .on('click', () => modalSelection.close() );
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        modalSelection.close();
+      });
 
     exploring
       .append('div')
@@ -42,7 +46,8 @@ export function uiRapidFirstEditDialog(context) {
     let loginToOsm = buttonWrap
       .append('button')
       .attr('class', 'rapid-login-to-osm')
-      .on('click', () => {
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
         modalSelection.close();
         const osm = context.connection();
         if (!osm) return;

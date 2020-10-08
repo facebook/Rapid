@@ -3310,7 +3310,8 @@ display: none;
     background: #da26d3;
     color: #eee;
     font-size: 16px;
-    border-radius: 20px;
+    border-radius: 30px;
+    height: 3rem;
 }
 
 .ideditor .rapid-inspector button:focus,
@@ -3334,28 +3335,35 @@ display: none;
     background: #888;
 }
 
-.ideditor .rapid-inspector button .icon,
-.ideditor .modal.rapid-modal button .icon {
+.ideditor .rapid-inspector button svg,
+.ideditor .modal.rapid-modal button svg {
     color: #eee;
     fill: #da26d3;
 }
-.ideditor .rapid-inspector button:focus .icon,
-.ideditor .rapid-inspector button:hover .icon,
-.ideditor .modal.rapid-modal button:focus .icon,
-.ideditor .modal.rapid-modal button:hover .icon {
+.ideditor .rapid-inspector button:focus svg,
+.ideditor .rapid-inspector button:hover svg,
+.ideditor .modal.rapid-modal button:focus svg,
+.ideditor .modal.rapid-modal button:hover svg {
     fill: #c6d;
 }
 
-.ideditor .rapid-inspector button.secondary .icon,
-.ideditor .modal.rapid-modal button.secondary .icon {
+.ideditor .rapid-inspector button.secondary svg,
+.ideditor .modal.rapid-modal button.secondary svg {
     color: #eee;
     fill: #666;
 }
-.ideditor .rapid-inspector button.secondary:focus .icon,
-.ideditor .rapid-inspector button.secondary:hover .icon,
-.ideditor .modal.rapid-modal button.secondary:focus .icon,
-.ideditor .modal.rapid-modal button.secondary:hover .icon {
+.ideditor .rapid-inspector button.secondary:focus svg,
+.ideditor .rapid-inspector button.secondary:hover svg,
+.ideditor .modal.rapid-modal button.secondary:focus svg,
+.ideditor .modal.rapid-modal button.secondary:hover svg {
     fill: #888;
+}
+
+.ideditor .modal.rapid-modal button svg.logo-rapid,
+.ideditor .modal.rapid-modal button svg.logo-rapid:focus,
+.ideditor .modal.rapid-modal button svg.logo-rapid:hover {
+    color: #eee;
+    fill: #eee;
 }
 
 .ideditor .rapid-inspector button.disabled,
@@ -3364,11 +3372,10 @@ display: none;
 }
 
 
-
 /* Sidebar - Rapid Inspector */
 .ideditor .rapid-inspector > div {
     background: rgb(25, 25, 25);
-    color: #eee;
+    color: #ddd;
 }
 
 .ideditor .rapid-inspector svg.logo-rapid {
@@ -3376,17 +3383,20 @@ display: none;
 }
 
 .ideditor .rapid-inspector .header {
+    color: #fff;
     border-bottom: 1px solid #aaaa;
 }
 
-.ideditor .rapid-inspector .header .rapid-inspector-close {
+.ideditor .rapid-inspector .header button.rapid-inspector-close {
     position: absolute;
     top: 0;
     right: 0;
     background: transparent;
+}
+.ideditor .rapid-inspector .header button.rapid-inspector-close svg {
     color: #da26d3;
 }
-.ideditor .rapid-inspector .header .rapid-inspector-close:hover {
+.ideditor .rapid-inspector .header button.rapid-inspector-close:hover {
     background: #8885;
 }
 
@@ -3527,11 +3537,15 @@ display: none;
     background: rgba(25, 25, 25, 0.9);
     -webkit-backdrop-filter: blur(2.5px);
     backdrop-filter: blur(2.5px);
-    color: white;
+    color: #ddd;
     -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
             box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     border: 1px solid #888a;
+}
+
+.ideditor .modal.rapid-modal h3 {
+    color: #fff;
 }
 
 .ideditor .modal.rapid-modal .modal-section.buttons {
@@ -3544,21 +3558,6 @@ display: none;
     width: 100%;
 }
 
-/* old? */
-/*.modal.rapid-modal .modal-actions button {
-    text-align: center;
-    background: black;
-    color: white;
-    border: 1px solid white;
-    width: 100%;
-    margin: 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 500;
-    height: 160px;
-    box-sizing: border-box;
-}
-*/
 .ideditor .modal.rapid-modal .content {
     -webkit-box-shadow: unset;
             box-shadow: unset;
@@ -3572,34 +3571,88 @@ display: none;
 .ideditor .modal.rapid-modal p {
     font-size: 14px;
 }
-
 .ideditor .modal.rapid-modal button.close {
     -ms-flex-item-align: end;
         align-self: flex-end;
     background: transparent;
-    color: #da26d3;
     position: unset;
     height: 40px;
     border-radius: 5px;
+}
+.ideditor .modal.rapid-modal button.close svg {
+    color: #da26d3;
 }
 .ideditor .modal.rapid-modal button.close:hover {
     background: #8885;
 }
 
-/* Login to OSM */
-.ideditor .modal.rapid-modal .modal-actions button.rapid-login-to-osm {
-    background: white;
-    color: black;
-    border: black;
-    height: 3rem;
+/* Splash, Whats New, Login to OSM */
+.ideditor .modal.rapid-modal .modal-section p .icon {
+    height: 25px;
+    width: 30px;
+    color: #fff;
+}
+.ideditor .modal.rapid-modal .modal-section h3 .icon.logo-rapid,
+.ideditor .modal.rapid-modal .modal-section p .icon.logo-rapid {
+    height: 25px;
+    width: 55px;
+    margin-top: -2px;
+    color: #da26d3;
+}
+.ideditor .modal.rapid-modal .modal-actions > button {
+    width: 100%;
+    margin: 20px;
+}
+.ideditor .modal.rapid-modal.modal-splash .modal-actions > button {
+    height: unset;  /* big buttons */
+    padding: 10px;
+}
+.ideditor .modal.rapid-modal .modal-actions > button.whats-new-nothanks,
+.ideditor .modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
+    background: #eee;
+    color: #111;
+}
+.ideditor .modal.rapid-modal .modal-actions > button.whats-new-nothanks:hover,
+.ideditor .modal.rapid-modal .modal-actions > button.rapid-login-to-osm:hover {
+    background: #ccc;
 }
 
-/* Splash / Whats New */
-.ideditor .modal.rapid-modal .modal-actions button.rapid-explore {
-    height: 3rem;
-}
-.ideditor .modal.rapid-modal img.whatsnew-image {
+.ideditor .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
     width: 100%;
+    margin-top: 20px;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
+    font-size: 16px;
+    padding: 0 30px;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .rapid-checkbox-label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .rapid-checkbox-text {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    margin: 0px 20px;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .rapid-checkbox-custom {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 36px;
+            flex: 0 0 36px;
 }
 
 

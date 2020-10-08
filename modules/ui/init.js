@@ -1,7 +1,4 @@
-import {
-    event as d3_event,
-    select as d3_select
-} from 'd3-selection';
+import { event as d3_event, select as d3_select } from 'd3-selection';
 
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
@@ -48,8 +45,9 @@ import { uiPaneMapData } from './panes/map_data';
 import { uiPanePreferences } from './panes/preferences';
 
 import { uiRapidServiceLicense } from './rapid_service_license';
-import { uiRapidWhatsNew } from './rapid_whatsnew';
+// import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
+
 
 export function uiInit(context) {
     var _initCounter = 0;
@@ -423,9 +421,6 @@ export function uiInit(context) {
         context.enter(modeBrowse(context));
 
         var osm = context.connection();
-        var displayedSplash = false;
-
-
 
         if (!_initCounter++) {
             if (!ui.hash.startWalkthrough) {

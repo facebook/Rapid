@@ -66,8 +66,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
       rapidContext.sources.add(source);
     }
 
-    if (sessionStorage.getItem('acknowledgedLogin') === 'true') return;
-    sessionStorage.setItem('acknowledgedLogin', 'true');
+    if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
+    window.sessionStorage.setItem('acknowledgedLogin', 'true');
 
     const osm = context.connection();
     if (!osm.authenticated()) {
@@ -181,7 +181,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .append('div')
       .attr('class', 'rapid-inspector-choices');
 
-    let choiceEnter = choicesEnter.selectAll('.rapid-inspector-choice')
+    choicesEnter.selectAll('.rapid-inspector-choice')
       .data(choices, d => d.key)
       .enter()
       .append('div')

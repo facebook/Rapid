@@ -44,7 +44,8 @@ button.ai-features-toggle.layer-off use {
     background: #da26d3;
     color: #eee;
     font-size: 16px;
-    border-radius: 20px;
+    border-radius: 30px;
+    height: 3rem;
 }
 
 .rapid-inspector button:focus,
@@ -68,28 +69,35 @@ button.ai-features-toggle.layer-off use {
     background: #888;
 }
 
-.rapid-inspector button .icon,
-.modal.rapid-modal button .icon {
+.rapid-inspector button svg,
+.modal.rapid-modal button svg {
     color: #eee;
     fill: #da26d3;
 }
-.rapid-inspector button:focus .icon,
-.rapid-inspector button:hover .icon,
-.modal.rapid-modal button:focus .icon,
-.modal.rapid-modal button:hover .icon {
+.rapid-inspector button:focus svg,
+.rapid-inspector button:hover svg,
+.modal.rapid-modal button:focus svg,
+.modal.rapid-modal button:hover svg {
     fill: #c6d;
 }
 
-.rapid-inspector button.secondary .icon,
-.modal.rapid-modal button.secondary .icon {
+.rapid-inspector button.secondary svg,
+.modal.rapid-modal button.secondary svg {
     color: #eee;
     fill: #666;
 }
-.rapid-inspector button.secondary:focus .icon,
-.rapid-inspector button.secondary:hover .icon,
-.modal.rapid-modal button.secondary:focus .icon,
-.modal.rapid-modal button.secondary:hover .icon {
+.rapid-inspector button.secondary:focus svg,
+.rapid-inspector button.secondary:hover svg,
+.modal.rapid-modal button.secondary:focus svg,
+.modal.rapid-modal button.secondary:hover svg {
     fill: #888;
+}
+
+.modal.rapid-modal button svg.logo-rapid,
+.modal.rapid-modal button svg.logo-rapid:focus,
+.modal.rapid-modal button svg.logo-rapid:hover {
+    color: #eee;
+    fill: #eee;
 }
 
 .rapid-inspector button.disabled,
@@ -98,11 +106,10 @@ button.ai-features-toggle.layer-off use {
 }
 
 
-
 /* Sidebar - Rapid Inspector */
 .rapid-inspector > div {
     background: rgb(25, 25, 25);
-    color: #eee;
+    color: #ddd;
 }
 
 .rapid-inspector svg.logo-rapid {
@@ -110,17 +117,20 @@ button.ai-features-toggle.layer-off use {
 }
 
 .rapid-inspector .header {
+    color: #fff;
     border-bottom: 1px solid #aaaa;
 }
 
-.rapid-inspector .header .rapid-inspector-close {
+.rapid-inspector .header button.rapid-inspector-close {
     position: absolute;
     top: 0;
     right: 0;
     background: transparent;
+}
+.rapid-inspector .header button.rapid-inspector-close svg {
     color: #da26d3;
 }
-.rapid-inspector .header .rapid-inspector-close:hover {
+.rapid-inspector .header button.rapid-inspector-close:hover {
     background: #8885;
 }
 
@@ -226,10 +236,14 @@ button.ai-features-toggle.layer-off use {
     background: rgba(25, 25, 25, 0.9);
     -webkit-backdrop-filter: blur(2.5px);
     backdrop-filter: blur(2.5px);
-    color: white;
+    color: #ddd;
     box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     border: 1px solid #888a;
+}
+
+.modal.rapid-modal h3 {
+    color: #fff;
 }
 
 .modal.rapid-modal .modal-section.buttons {
@@ -239,21 +253,6 @@ button.ai-features-toggle.layer-off use {
     width: 100%;
 }
 
-/* old? */
-/*.modal.rapid-modal .modal-actions button {
-    text-align: center;
-    background: black;
-    color: white;
-    border: 1px solid white;
-    width: 100%;
-    margin: 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 500;
-    height: 160px;
-    box-sizing: border-box;
-}
-*/
 .modal.rapid-modal .content {
     box-shadow: unset;
 }
@@ -266,33 +265,73 @@ button.ai-features-toggle.layer-off use {
 .modal.rapid-modal p {
     font-size: 14px;
 }
-
 .modal.rapid-modal button.close {
     align-self: flex-end;
     background: transparent;
-    color: #da26d3;
     position: unset;
     height: 40px;
     border-radius: 5px;
+}
+.modal.rapid-modal button.close svg {
+    color: #da26d3;
 }
 .modal.rapid-modal button.close:hover {
     background: #8885;
 }
 
-/* Login to OSM */
-.modal.rapid-modal .modal-actions button.rapid-login-to-osm {
-    background: white;
-    color: black;
-    border: black;
-    height: 3rem;
+/* Splash, Whats New, Login to OSM */
+.modal.rapid-modal .modal-section p .icon {
+    height: 25px;
+    width: 30px;
+    color: #fff;
+}
+.modal.rapid-modal .modal-section h3 .icon.logo-rapid,
+.modal.rapid-modal .modal-section p .icon.logo-rapid {
+    height: 25px;
+    width: 55px;
+    margin-top: -2px;
+    color: #da26d3;
+}
+.modal.rapid-modal .modal-actions > button {
+    width: 100%;
+    margin: 20px;
+}
+.modal.rapid-modal.modal-splash .modal-actions > button {
+    height: unset;  /* big buttons */
+    padding: 10px;
+}
+.modal.rapid-modal .modal-actions > button.whats-new-nothanks,
+.modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
+    background: #eee;
+    color: #111;
+}
+.modal.rapid-modal .modal-actions > button.whats-new-nothanks:hover,
+.modal.rapid-modal .modal-actions > button.rapid-login-to-osm:hover {
+    background: #ccc;
 }
 
-/* Splash / Whats New */
-.modal.rapid-modal .modal-actions button.rapid-explore {
-    height: 3rem;
-}
-.modal.rapid-modal img.whatsnew-image {
+.modal.rapid-modal.modal-whatsnew img.whatsnew-image {
     width: 100%;
+    margin-top: 20px;
+}
+.modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
+    font-size: 16px;
+    padding: 0 30px;
+}
+.modal.rapid-modal.modal-whatsnew .rapid-checkbox-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.modal.rapid-modal.modal-whatsnew .rapid-checkbox-text {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0px 20px;
+}
+.modal.rapid-modal.modal-whatsnew .rapid-checkbox-custom {
+    display: flex;
+    flex: 0 0 36px;
 }
 
 

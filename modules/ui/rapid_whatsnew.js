@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
@@ -8,9 +9,6 @@ import marked from 'marked';
 export function uiRapidWhatsNew(context) {
   let _dontShowAgain = false;
 
-  function handleClick() {
-    _dontShowAgain = !_dontShowAgain;
-  }
 
   return function(selection) {
     if (prefs('sawWhatsNew') === 'true') return;
@@ -51,15 +49,22 @@ export function uiRapidWhatsNew(context) {
 
     let checkbox = checkboxContainer
       .append('label')
-      .attr('class', 'rapid-checkbox-label dontshow')
-      .html(t('rapid_whats_new.dontshowagain'));
+      .attr('class', 'rapid-checkbox-label dontshow');
+
+    checkbox
+      .append('span')
+      .attr('class', 'rapid-checkbox-text')
+      .text(t('rapid_whats_new.dontshowagain'));
 
     checkbox
       .append('input')
       .attr('type', 'checkbox')
       .attr('class', 'rapid-feature-checkbox')
       .property('checked', false)
-      .on('click', handleClick);
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        _dontShowAgain = !_dontShowAgain;
+      });
 
     checkbox
       .append('div')
@@ -71,7 +76,9 @@ export function uiRapidWhatsNew(context) {
 
     let nothanks = buttonWrap
       .append('button')
-      .on('click', () => {
+      .attr('class', 'whats-new-nothanks')
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
         prefs('sawWhatsNew', _dontShowAgain);
         modalSelection.close();
       });
@@ -87,7 +94,8 @@ export function uiRapidWhatsNew(context) {
     okayButton
       .append('div')
       .text(t('rapid_whats_new.ok'))
-      .on('click', () => {
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
         prefs('sawWhatsNew', _dontShowAgain);
         modalSelection.close();
         window.open('https://mapwith.ai/rapid-esri', '_blank');
