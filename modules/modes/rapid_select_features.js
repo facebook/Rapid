@@ -3,7 +3,7 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 import { behaviorBreathe, behaviorHover, behaviorLasso, behaviorSelect } from '../behavior';
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
-import { serviceFbAIFeatures } from '../services';
+import { services } from '../services';
 import { uiRapidFeatureInspector } from '../ui';
 import { utilKeybinding } from '../util';
 
@@ -17,8 +17,9 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
   };
 
   const keybinding = utilKeybinding('select-ai-features');
-  const featureInspector = uiRapidFeatureInspector(context, keybinding);
-  const roadsGraph = serviceFbAIFeatures.graph();
+  const rapidInspector = uiRapidFeatureInspector(context, keybinding);
+  const service = selectedDatum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+  const rapidGraph = service.graph(selectedDatum.__datasetid__);
 
   let behaviors = [
     behaviorBreathe(context),
@@ -59,7 +60,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
 
   mode.zoomToSelected = function() {
-    const extent = selectedDatum.extent(roadsGraph);
+    const extent = selectedDatum.extent(rapidGraph);
     context.map().centerZoomEase(extent.center(), context.map().trimmedExtentZoom(extent));
   };
 
@@ -77,14 +78,14 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
     selectData();
 
     const sidebar = context.ui().sidebar;
-    sidebar.show(featureInspector.datum(selectedDatum));
+    sidebar.show(rapidInspector.datum(selectedDatum));
 
     if (!_expandedOnce) {
       // Expand sidebar at least once per session to inform user how to
       // accept and reject proposed roads.
       _expandedOnce = true;
       // expand the sidebar, avoid obscuring the data if needed
-      const extent = selectedDatum.extent(roadsGraph);
+      const extent = selectedDatum.extent(rapidGraph);
       sidebar.expand(sidebar.intersects(extent));
     }
 

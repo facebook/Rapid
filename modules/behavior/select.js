@@ -284,7 +284,7 @@ export function behaviorSelect(context) {
         }
 
         var newMode;
-        if (datum && datum.__fbid__) {    // clicked an FB road ..
+        if (datum && datum.__fbid__) {    // clicked a RapiD feature ..
             context
                 .selectedNoteID(null)
                 .selectedErrorID(null)
