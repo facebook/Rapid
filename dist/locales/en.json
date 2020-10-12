@@ -919,7 +919,7 @@
                 },
                 "ai-features": {
                     "tooltip": "Features from Facebook's Map With AI",
-                    "title": "Map With AI Feature Layer",
+                    "title": "RapiD Feature Layer",
                     "key": "R"
                 }
             },
@@ -1209,7 +1209,7 @@
             "option_accept": {
                 "label": "Use This Feature",
                 "description": "Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍",
-                "annotation": "Added a Map With AI feature.",
+                "annotation": "Added a RapiD feature.",
                 "tooltip": "Add this feature to the map to begin editing.",
                 "disabled": "To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.",
                 "disabled_flash": "To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.",
@@ -1218,7 +1218,7 @@
             "option_reject": {
                 "label": "Remove This Feature",
                 "description": "Removing this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍",
-                "annotation": "Removed a Map With AI feature.",
+                "annotation": "Removed a RapiD feature.",
                 "tooltip": "Remove this feature from the map.",
                 "key": "D"
             }
@@ -2767,7 +2767,7 @@
                     "wireframe": "Toggle wireframe mode",
                     "osm_data": "Toggle OpenStreetMap data",
                     "minimap": "Toggle minimap",
-                    "ai_features_data": "Toggle Map With AI Features",
+                    "ai_features_data": "Toggle RapiD Features",
                     "highlight_way_edits": "Highlight way edits in current session",
                     "highlight_edits": "Highlight unsaved edits"
                 },

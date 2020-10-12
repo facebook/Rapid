@@ -270,7 +270,7 @@ button.ai-features-toggle.layer-off use {
     background: transparent;
     position: unset;
     height: 40px;
-    border-radius: 5px;
+    border-radius: 0;
 }
 .modal.rapid-modal button.close svg {
     color: #da26d3;
@@ -668,7 +668,6 @@ hide this one and style something on top of it.  */
 }
 .rapid-view-manage-pageleft,
 .rapid-view-manage-pageright {
-    border-radius: 5px;
     cursor: pointer;
 }
 .rapid-view-manage-pageleft svg,

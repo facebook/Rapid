@@ -3577,7 +3577,7 @@ display: none;
     background: transparent;
     position: unset;
     height: 40px;
-    border-radius: 5px;
+    border-radius: 0;
 }
 .ideditor .modal.rapid-modal button.close svg {
     color: #da26d3;
@@ -4060,7 +4060,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .rapid-view-manage-pageleft,
 .ideditor .rapid-view-manage-pageright {
-    border-radius: 5px;
     cursor: pointer;
 }
 .ideditor .rapid-view-manage-pageleft svg,
