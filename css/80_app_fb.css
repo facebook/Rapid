@@ -17,16 +17,16 @@ svg.logo-rapid.dark,
     color: #da26d3;
 }
 
-/* Toolbar button */
-button.rapid-poweruser-features svg.logo-mapwithai {
-    width: 22px;
-    height: 22px;
-}
-button.ai-features-toggle svg.logo-rapid {
+/* Toolbar buttons */
+button.rapid-features svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-button.ai-features-toggle.layer-off use {
+button.rapid-poweruser-features .beta {
+    font-size: 1.2em;
+    margin: 0;
+}
+button.rapid-features.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
@@ -535,41 +535,37 @@ hide this one and style something on top of it.  */
 
 /* Rapid Power User features */
 
-.rapid-stack.poweruser .modal-heading {
-    font-size: 28px;
-    font-weight: bold;
-    padding: 0px 15px;
-    margin-top: -20px;
+.rapid-stack.poweruser .modal-section-heading {
+    display: flex;
+    flex-flow: column;
+    padding: 0 20px 20px 20px;
+    width: 100%;
 }
-.rapid-stack.poweruser .modal-heading svg {
-    width: 40px;
-    height: 40px;
-    padding: 10px;
+
+.rapid-stack.poweruser .modal-section-heading h3 {
+    font-size: 24px
 }
 .rapid-stack.poweruser .modal-heading-desc {
-    font-size: 18px;
+    font-size: 16px;
     font-style: italic;
-    color: #ccc;
-    margin: -20px 80px 10px 80px;
 }
 
-.rapid-feature-description.poweruser {
-    flex: 1;
-    margin: 15px;
+.rapid-stack.poweruser .rapid-features-container {
+    width: 100%;
+    border-top: 1px solid #888a;
 }
-.rapid-feature-description.poweruser > .heading {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 0.0625em;
-    color: white;
+.rapid-stack.poweruser .rapid-features-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
 }
-.rapid-feature-description.poweruser > .description {
+
+.rapid-stack.poweruser .rapid-features-container .rapid-feature-description {
     font-size: 14px;
-    text-align: left;
+    font-style: italic;
+    margin: -8px 10px 5px 10px;
+    color: #aaa;
 }
 
+/*
 .rapid-checkbox.poweruser:hover {
     color: #ddd;
     background: #8885;
@@ -583,7 +579,8 @@ hide this one and style something on top of it.  */
     margin: 5px;
     border: 1px solid darkgrey;
 }
-
+*/
+/*
 .modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
     background-image: url('rapid/ai-feature-halo-still.png');
 }
@@ -602,7 +599,7 @@ hide this one and style something on top of it.  */
 .modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
     background-image: url('rapid/tag-sources.gif');
 }
-
+*/
 
 /* View/Manage Datasets modal */
 /* view-manage-wrap is an absolutely positioned div to create a new stacking context,

@@ -1,153 +1,193 @@
+import { select as d3_select } from 'd3-selection';
+
 import { t } from '../core/localizer';
+import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { select as d3_select } from 'd3-selection';
-import { rapidPowerUserFeaturesStorage } from './rapid_poweruser_features_storage';
 
 
 export function uiRapidPowerUserFeaturesDialog() {
-  const storage = rapidPowerUserFeaturesStorage();
+  const featureFlags = [
+    'tagnosticRoadCombine',
+    'tagSources'
+  ];
+  let _modalSelection = d3_select(null);
+  let _content = d3_select(null);
 
-  function toggleAiFeatureHalo () {
-    const osmLayer = d3_select('.data-layer.osm');
-    const enabled = storage.featureEnabled('aiFeatureHalo');
-    osmLayer.classed('ai-feature-halo', !enabled);
-    storage.featureEnabled('aiFeatureHalo', !enabled);
+
+  function isEnabled(featureFlag) {
+    return prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+  }
+
+  function toggleFeature(featureFlag) {
+    const enabled = prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+    prefs(`rapid-internal-feature.${featureFlag}`, !enabled);
   }
 
 
-  function toggleTagnosticRoadCombine() {
-    const enabled = storage.featureEnabled('tagnosticRoadCombine');
-    storage.featureEnabled('tagnosticRoadCombine', !enabled);
-  }
+  return (selection) => {
+    _modalSelection = uiModal(selection);
 
-
-  function toggleTagSources() {
-    const enabled = storage.featureEnabled('tagSources');
-    storage.featureEnabled('tagSources', !enabled);
-  }
-
-
-  return function(selection) {
-    let modalSelection = uiModal(selection);
-
-    modalSelection.select('.modal')
+    _modalSelection.select('.modal')
       .attr('class', 'modal rapid-modal');   // RapiD styling
 
-    let modal = modalSelection.select('.content')
+    _content = _modalSelection.select('.content')
       .append('div')
       .attr('class', 'rapid-stack poweruser');
 
-    modal
-      .append('div')
-      .attr('class', 'modal-heading rapid')
-      .html(t('rapid_poweruser_features.top_label', { icon: icon('#iD-mapwithailogo', 'logo-rapid') }));
+    _content
+      .call(renderModalContent);
 
-    modal
-      .append('div')
-      .attr('class', 'modal-heading-desc rapid')
-      .html(t('rapid_poweruser_features.top_label_desc'));
-
-    modal
-      .append('div')
-      .attr('class', 'modal-section rapid-checkbox section-divider strong');
-
-
-    addCheckBox({
-      modal: modal,
-      id: 'rapid-poweruser-features-ai-halo',
-      label: t('rapid_poweruser_features.ai_feature_halo'),
-      description: t('rapid_poweruser_features.ai_feature_halo_desc'),
-      handler: toggleAiFeatureHalo,
-      enabled: storage.featureEnabled('aiFeatureHalo'),
-      greyout: false,
-      imgid: 'ai-feature-halo',
-    });
-
-    modal
-      .append('div')
-      .attr('class','modal-section rapid-checkbox section-divider');
-
-    addCheckBox({
-      modal: modal,
-      id: 'rapid-poweruser-features-tagnostic-combine',
-      label: t('rapid_poweruser_features.tagnostic_road_combine'),
-      description: t('rapid_poweruser_features.tagnostic_road_combine_desc'),
-      handler: toggleTagnosticRoadCombine,
-      enabled: storage.featureEnabled('tagnosticRoadCombine'),
-      greyout: false,
-      imgid: 'tagnostic-road-combine',
-    });
-
-    modal
-      .append('div')
-      .attr('class','modal-section rapid-checkbox section-divider');
-
-    addCheckBox({
-      modal: modal,
-      id: 'rapid-poweruser-features-tag-sources',
-      label: t('rapid_poweruser_features.tag_sources'),
-      description: t('rapid_poweruser_features.tag_sources_desc'),
-      handler: toggleTagSources,
-      enabled: storage.featureEnabled('tagSources'),
-      greyout: false,
-      imgid: 'tag-sources',
-    });
+    _content.selectAll('.ok-button')
+      .node()
+      .focus();
   };
 
 
-  function addCheckBox(options) {
-    let toggleOption = options.modal
+  function renderModalContent(selection) {
+    /* Header */
+    let headerEnter = selection.selectAll('.modal-section-heading')
+      .data([0])
+      .enter()
       .append('div')
-      .attr('class','modal-section rapid-checkbox poweruser')
-      .classed('disabled', options.greyout)
-      .attr('id', `section-${options.id}`);
+      .attr('class', 'modal-section-heading');
 
-    let toggleOptionContainer = toggleOption
+    headerEnter
+      .append('h3')
+      .attr('class', 'modal-heading')
+      .html(t('rapid_poweruser_features.heading.label'));
+
+    headerEnter
       .append('div')
-      .attr('class', 'rapid-feature-label-container poweruser');
+      .attr('class', 'modal-heading-desc')
+      .html(t('rapid_poweruser_features.heading.description'));
 
-    toggleOptionContainer
+
+    /* Features */
+    let features = selection.selectAll('.rapid-features-container')
+      .data([0]);
+
+    let featuresEnter = features.enter()
       .append('div')
-      .attr('id', options.imgid)
-      .attr('class', 'rapid-feature-animation poweruser');
-      // background-image is blank, to be filled in by .css depending on hover state
+      .attr('class', 'rapid-features-container');
 
-    if (options.description) {
-      let description = toggleOptionContainer
-        .append('div')
-        .attr('class', 'rapid-feature-description poweruser');
+    features
+      .merge(featuresEnter)
+      .call(renderFeatures);
 
-      description
-        .append('div')
-        .attr('class', 'heading')
-        .html(options.label);
 
-      description
-        .append('div')
-        .attr('class', 'description')
-        .text(options.description);
-    }
+    /* OK Button */
+    let buttonsEnter = selection.selectAll('.modal-section.buttons')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'modal-section buttons');
 
-    let inputs = toggleOption
+    buttonsEnter
+      .append('button')
+      .attr('class', 'button ok-button action')
+      .on('click', () => _modalSelection.remove())
+      .text(t('confirm.okay'));
+  }
+
+
+  function renderFeatures(selection) {
+    let rows = selection.selectAll('.rapid-checkbox-feature')
+      .data(featureFlags, d => d);
+
+    // enter
+    let rowsEnter = rows.enter()
+      .append('div')
+      .attr('class', 'modal-section rapid-checkbox rapid-checkbox-feature');
+
+    rowsEnter
+      .append('div')
+      .attr('class', 'rapid-feature')
+      .each((d, i, nodes) => {
+        let selection = d3_select(nodes[i]);
+
+        // line1: Label
+        selection
+          .append('div')
+          .attr('class', 'rapid-feature-label')
+          .text(d => t(`rapid_poweruser_features.${d}.label`));
+
+        // line2: description
+        selection
+          .append('div')
+          .attr('class', 'rapid-feature-description')
+          .text(d => t(`rapid_poweruser_features.${d}.description`));
+      });
+
+    let inputsEnter = rowsEnter
       .append('div')
       .attr('class', 'rapid-checkbox-inputs');
 
-    let checkbox = inputs
-      .append('div')
+    let checkboxEnter = inputsEnter
+      .append('label')
       .attr('class', 'rapid-checkbox-label');
 
-    checkbox
+    checkboxEnter
       .append('input')
       .attr('type', 'checkbox')
-      .attr('id', options.id)
       .attr('class', 'rapid-feature-checkbox')
-      .property('checked', options.enabled)
-      .attr('disabled', options.greyout ? true : null);
+      .on('click', toggleFeature);
 
-    checkbox
+    checkboxEnter
       .append('div')
-      .attr('class', 'rapid-checkbox-custom')
-      .on('click', options.handler);
+      .attr('class', 'rapid-checkbox-custom');
+
+
+    // update
+    rows = rows
+      .merge(rowsEnter);
+
+    rows.selectAll('.rapid-feature-checkbox')
+      .property('checked', isEnabled);
   }
+
+
+
+  //   addCheckBox({
+  //     modal: modal,
+  //     id: 'rapid-poweruser-features-ai-halo',
+  //     label: t('rapid_poweruser_features.ai_feature_halo'),
+  //     description: t('rapid_poweruser_features.ai_feature_halo_desc'),
+  //     handler: toggleAiFeatureHalo,
+  //     enabled: storage.featureEnabled('aiFeatureHalo'),
+  //     greyout: false,
+  //     imgid: 'ai-feature-halo',
+  //   });
+
+  //   modal
+  //     .append('div')
+  //     .attr('class','modal-section rapid-checkbox section-divider');
+
+  //   addCheckBox({
+  //     modal: modal,
+  //     id: 'rapid-poweruser-features-tagnostic-combine',
+  //     label: t('rapid_poweruser_features.tagnostic_road_combine'),
+  //     description: t('rapid_poweruser_features.tagnostic_road_combine_desc'),
+  //     handler: toggleTagnosticRoadCombine,
+  //     enabled: storage.featureEnabled('tagnosticRoadCombine'),
+  //     greyout: false,
+  //     imgid: 'tagnostic-road-combine',
+  //   });
+
+  //   modal
+  //     .append('div')
+  //     .attr('class','modal-section rapid-checkbox section-divider');
+
+  //   addCheckBox({
+  //     modal: modal,
+  //     id: 'rapid-poweruser-features-tag-sources',
+  //     label: t('rapid_poweruser_features.tag_sources'),
+  //     description: t('rapid_poweruser_features.tag_sources_desc'),
+  //     handler: toggleTagSources,
+  //     enabled: storage.featureEnabled('tagSources'),
+  //     greyout: false,
+  //     imgid: 'tag-sources',
+  //   });
+  // };
+
 }

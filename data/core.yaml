@@ -1000,14 +1000,15 @@ en:
       license_markdown: "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
   rapid_poweruser_features:
     beta: Beta Feature
-    top_label: "{icon} Power User Features"
-    top_label_desc: for RapiD Insiders
-    ai_feature_halo: AI Feature Halo
-    ai_feature_halo_desc: Enable a halo around AI features in the map
-    tagnostic_road_combine: Tag-agnostic road combine
-    tagnostic_road_combine_desc: Allow the Combine operation for roads whose highway tagging differs
-    tag_sources: Tag highways as Maxar
-    tag_sources_desc: Add the tag 'source=maxar' to all highways
+    heading:
+      label: RapiD Power User Features
+      description: for RapiD Insiders
+    tagnosticRoadCombine:
+      label: Tag-agnostic road combine
+      description: Allow the Combine operation for roads whose highway tagging differs
+    tagSources:
+      label: Tag highways as Maxar
+      description: Add the tag 'source=maxar' to all highways
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:
@@ -2258,7 +2259,7 @@ en:
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
         minimap: "Toggle minimap"
-        ai_features_data: "Toggle RapiD Features"
+        rapid_features_data: "Toggle RapiD Features"
         highlight_way_edits: "Highlight way edits in current session"
         highlight_edits: "Highlight unsaved edits"
       selecting:

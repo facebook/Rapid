@@ -3283,16 +3283,16 @@ display: none;
     color: #da26d3;
 }
 
-/* Toolbar button */
-.ideditor button.rapid-poweruser-features svg.logo-mapwithai {
-    width: 22px;
-    height: 22px;
-}
-.ideditor button.ai-features-toggle svg.logo-rapid {
+/* Toolbar buttons */
+.ideditor button.rapid-features svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-.ideditor button.ai-features-toggle.layer-off use {
+.ideditor button.rapid-poweruser-features .beta {
+    font-size: 1.2em;
+    margin: 0;
+}
+.ideditor button.rapid-features.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
@@ -3901,53 +3901,48 @@ hide this one and style something on top of it.  */
 
 /* Rapid Power User features */
 
-.ideditor .rapid-stack.poweruser .modal-heading {
-    font-size: 28px;
-    font-weight: bold;
-    padding: 0px 15px;
-    margin-top: -20px;
-}
-.ideditor .rapid-stack.poweruser .modal-heading svg {
-    width: 40px;
-    height: 40px;
-    padding: 10px;
-}
-.ideditor .rapid-stack.poweruser .modal-heading-desc {
-    font-size: 18px;
-    font-style: italic;
-    color: #ccc;
-    margin: -20px 80px 10px 80px;
-}
-
-.ideditor .rapid-feature-description.poweruser {
-    -webkit-box-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
-    margin: 15px;
-}
-.ideditor .rapid-feature-description.poweruser > .heading {
+.ideditor .rapid-stack.poweruser .modal-section-heading {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 0.0625em;
-    color: white;
-}
-.ideditor .rapid-feature-description.poweruser > .description {
-    font-size: 14px;
-    text-align: left;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    padding: 0 20px 20px 20px;
+    width: 100%;
 }
 
-.ideditor .rapid-checkbox.poweruser:hover {
+.ideditor .rapid-stack.poweruser .modal-section-heading h3 {
+    font-size: 24px
+}
+.ideditor .rapid-stack.poweruser .modal-heading-desc {
+    font-size: 16px;
+    font-style: italic;
+}
+
+.ideditor .rapid-stack.poweruser .rapid-features-container {
+    width: 100%;
+    border-top: 1px solid #888a;
+}
+.ideditor .rapid-stack.poweruser .rapid-features-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.ideditor .rapid-stack.poweruser .rapid-features-container .rapid-feature-description {
+    font-size: 14px;
+    font-style: italic;
+    margin: -8px 10px 5px 10px;
+    color: #aaa;
+}
+
+/*
+.rapid-checkbox.poweruser:hover {
     color: #ddd;
     background: #8885;
 }
 
-.ideditor .rapid-feature-animation.poweruser {
+.rapid-feature-animation.poweruser {
     background-size: 100% 100%;
     width: 130px;
     height: 130px;
@@ -3955,26 +3950,27 @@ hide this one and style something on top of it.  */
     margin: 5px;
     border: 1px solid darkgrey;
 }
-
-.ideditor .modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
+*/
+/*
+.modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
     background-image: url('rapid/ai-feature-halo-still.png');
 }
-.ideditor .modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
+.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
     background-image: url('rapid/ai-feature-halo.gif');
 }
-.ideditor .modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
+.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
     background-image: url('rapid/tagnostic-road-join-still.png');
 }
-.ideditor .modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
+.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
     background-image: url('rapid/tagnostic-road-join.gif');
 }
-.ideditor .modal-section.rapid-checkbox.poweruser div#tag-sources {
+.modal-section.rapid-checkbox.poweruser div#tag-sources {
     background-image: url('rapid/tag-sources-still.png');
 }
-.ideditor .modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
+.modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
     background-image: url('rapid/tag-sources.gif');
 }
-
+*/
 
 /* View/Manage Datasets modal */
 /* view-manage-wrap is an absolutely positioned div to create a new stacking context,

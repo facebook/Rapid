@@ -66,7 +66,6 @@ export { uiRapidFeatureInspector } from './rapid_feature_inspector';
 export { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 export { uiRapidFeatureToggleDialog } from './rapid_feature_toggle_dialog';
 export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog';
-// export { uiRapidPowerUserFeaturesStorage } from './rapid_poweruser_features_storage';
 export { uiRapidServiceLicense } from './rapid_service_license';
 export { uiRapidSplash } from './rapid_splash';
 export { uiRapidWhatsNew } from './rapid_whatsnew';
