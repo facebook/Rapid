@@ -160,8 +160,10 @@ export function behaviorHover(context) {
                 var datum = targets[i];
 
                 // What are we hovering over?
-                if (datum.__featurehash__) {
-                    // hovering custom data
+                if (datum.__fbid__) {    // hovering a RapiD feature
+                    selector += ', .data' + datum.__fbid__;
+
+                } else if (datum.__featurehash__) {  // hovering custom data
                     selector += ', .data' + datum.__featurehash__;
 
                 } else if (datum instanceof QAItem) {

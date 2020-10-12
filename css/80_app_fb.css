@@ -120,6 +120,9 @@ button.ai-features-toggle.layer-off use {
     color: #fff;
     border-bottom: 1px solid #aaaa;
 }
+.rapid-inspector .header h3 {
+    display: flex;
+}
 
 .rapid-inspector .header button.rapid-inspector-close {
     position: absolute;
@@ -143,6 +146,43 @@ button.ai-features-toggle.layer-off use {
 }
 .rapid-inspector .body p {
     padding: 20px 0;
+}
+
+.rapid-inspector .tag-bag {
+    display: flex;
+    flex-wrap: wrap;
+}
+.rapid-inspector .tag-preview {
+    padding: 7px;
+    background: #444;
+    border-radius: 5px;
+    border: 1px transparent;
+}
+
+.rapid-inspector .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
+}
+
+.rapid-inspector .tag-preview .tag-entry {
+    flex: 0 1 auto;
+    display: flex;
+    border: 1px solid #aaaa;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+    margin: 0 3px;
+}
+
+.rapid-inspector .tag-key,
+.rapid-inspector .tag-value {
+    flex: 0 1 auto;
+    padding: 0px 3px 0px 3px;
+}
+
+.rapid-inspector .tag-key {
+    font-weight: bold;
+    font-size: unset;
 }
 
 .rapid-inspector-choices {
@@ -183,41 +223,9 @@ button.ai-features-toggle.layer-off use {
     margin: 0 5px;
 }
 
-.rapid-inspector .tag-bag {
-    display: flex;
-    flex-wrap: wrap;
-}
-.rapid-inspector .tag-preview {
-    padding: 7px;
-    background: #444;
-    border-radius: 5px;
-    border: 1px transparent;
-}
-
-.rapid-inspector .tag-heading {
-    margin-right: 5px;
-    padding-left: 3px;
-}
-
-.rapid-inspector .tag-preview .tag-entry {
-    flex: 0 1 auto;
-    display: flex;
-    border: 1px solid #aaaa;
-    border-radius: 5px;
-    font-size: smaller;
-    font-weight: 300;
-    margin: 0 3px;
-}
-
-.rapid-inspector .tag-key,
-.rapid-inspector .tag-value {
-    flex: 0 1 auto;
-    padding: 0px 3px 0px 3px;
-}
-
-.rapid-inspector .tag-key {
-    font-weight: bold;
-    font-size: unset;
+/* when hovering, hide the choices */
+.inspector-hover .rapid-inspector-choices {
+    display: none;
 }
 
 

@@ -3386,6 +3386,11 @@ display: none;
     color: #fff;
     border-bottom: 1px solid #aaaa;
 }
+.ideditor .rapid-inspector .header h3 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
 
 .ideditor .rapid-inspector .header button.rapid-inspector-close {
     position: absolute;
@@ -3409,6 +3414,52 @@ display: none;
 }
 .ideditor .rapid-inspector .body p {
     padding: 20px 0;
+}
+
+.ideditor .rapid-inspector .tag-bag {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+.ideditor .rapid-inspector .tag-preview {
+    padding: 7px;
+    background: #444;
+    border-radius: 5px;
+    border: 1px transparent;
+}
+
+.ideditor .rapid-inspector .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
+}
+
+.ideditor .rapid-inspector .tag-preview .tag-entry {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border: 1px solid #aaaa;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+    margin: 0 3px;
+}
+
+.ideditor .rapid-inspector .tag-key,
+.ideditor .rapid-inspector .tag-value {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    padding: 0px 3px 0px 3px;
+}
+
+.ideditor .rapid-inspector .tag-key {
+    font-weight: bold;
+    font-size: unset;
 }
 
 .ideditor .rapid-inspector-choices {
@@ -3468,50 +3519,9 @@ display: none;
     margin: 0 5px;
 }
 
-.ideditor .rapid-inspector .tag-bag {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-        flex-wrap: wrap;
-}
-.ideditor .rapid-inspector .tag-preview {
-    padding: 7px;
-    background: #444;
-    border-radius: 5px;
-    border: 1px transparent;
-}
-
-.ideditor .rapid-inspector .tag-heading {
-    margin-right: 5px;
-    padding-left: 3px;
-}
-
-.ideditor .rapid-inspector .tag-preview .tag-entry {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 1 auto;
-            flex: 0 1 auto;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    border: 1px solid #aaaa;
-    border-radius: 5px;
-    font-size: smaller;
-    font-weight: 300;
-    margin: 0 3px;
-}
-
-.ideditor .rapid-inspector .tag-key,
-.ideditor .rapid-inspector .tag-value {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 1 auto;
-            flex: 0 1 auto;
-    padding: 0px 3px 0px 3px;
-}
-
-.ideditor .rapid-inspector .tag-key {
-    font-weight: bold;
-    font-size: unset;
+/* when hovering, hide the choices */
+.ideditor .inspector-hover .rapid-inspector-choices {
+    display: none;
 }
 
 

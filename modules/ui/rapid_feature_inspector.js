@@ -157,10 +157,6 @@ export function uiRapidFeatureInspector(context, keybinding) {
     bodyEnter
       .call(previewTags);
 
-    bodyEnter
-      .append('p')
-      .text(t('rapid_feature_inspector.prompt'));
-
     const choices = [
       {
         key: 'accept',
@@ -180,6 +176,10 @@ export function uiRapidFeatureInspector(context, keybinding) {
     let choicesEnter = bodyEnter
       .append('div')
       .attr('class', 'rapid-inspector-choices');
+
+    choicesEnter
+      .append('p')
+      .text(t('rapid_feature_inspector.prompt'));
 
     choicesEnter.selectAll('.rapid-inspector-choice')
       .data(choices, d => d.key)
@@ -268,10 +268,11 @@ export function uiRapidFeatureInspector(context, keybinding) {
     return this;
   };
 
-
-  keybinding()
-    .on(t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
-    .on(t('rapid_feature_inspector.option_reject.key'), onRejectFeature);
+  if (keybinding) {
+    keybinding()
+      .on(t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
+      .on(t('rapid_feature_inspector.option_reject.key'), onRejectFeature);
+  }
 
   return rapidInspector;
 }
