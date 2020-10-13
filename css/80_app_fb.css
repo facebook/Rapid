@@ -36,7 +36,7 @@ button.ai-features-toggle.layer-off use {
 }
 
 .fb-road-picker .tooltip .popover-inner {
-    border: 1px solid grey; 
+    border: 1px solid grey;
 }
 
 .fb-road-license a {
@@ -56,9 +56,9 @@ button.ai-features-toggle.layer-off use {
     right: 0;
 }
 
-.fb-road-picker .picker-icon-container { 
-    flex: 1 0 60px; 
-    padding: 10px; 
+.fb-road-picker .picker-icon-container {
+    flex: 1 0 60px;
+    padding: 10px;
 }
 
 .picker-icon-container svg {
@@ -67,14 +67,14 @@ button.ai-features-toggle.layer-off use {
 }
 
 .fb-road-picker .picker-list-button {
-    display: flex; 
+    display: flex;
     flex: 1 1 auto;
-    width: unset; 
+    width: unset;
 }
 
-.fb-road-picker .picker-list-button.disabled .picker-icon-container, 
+.fb-road-picker .picker-list-button.disabled .picker-icon-container,
 .fb-road-picker .picker-list-button.disabled .label{
-    opacity: .4; 
+    opacity: .4;
 }
 
 .fb-road-picker .picker-list-button .label {
@@ -84,12 +84,12 @@ button.ai-features-toggle.layer-off use {
     justify-content: center;
     padding: 20px 10px;
     left: 60px;
-    flex-basis: 200px; 
-    color: #e0e0e0; 
+    flex-basis: 200px;
+    color: #e0e0e0;
 }
 
 .fb-road-picker .tag-reference-button {
-    color: #e0e0e0; 
+    color: #e0e0e0;
 }
 
 .fb-road-picker .body {
@@ -121,67 +121,67 @@ button.ai-features-toggle.layer-off use {
     display: block;
 }
 .dark .fb-road-picker .preset-list-item .tag-reference-body.shown {
-    color: #a0a0a0; 
+    color: #a0a0a0;
 }
 
 .modal-splash.modal-rapid {
-    display: flex; 
-    flex-direction: column; 
+    display: flex;
+    flex-direction: column;
     background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25); 
-    border-radius: 15px; 
-    border: 1px solid darkgrey; 
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: 1px solid darkgrey;
     top: 80px
 }
 
 .modal-rapid .fillL {
-    background: transparent; 
+    background: transparent;
     color: white;
 }
 
 .modal-rapid .fillL.rapid-stack > .modal-section.rapid-checkbox {
     padding-top: 2px;
-    padding-bottom: 2px; 
-} 
+    padding-bottom: 2px;
+}
 
 .modal-rapid .fillL.rapid-stack > .modal-section.rapid-checkbox:first-of-type {
-    margin-top: -10px; 
-    padding-bottom: 0px; 
-    padding-top: 5px; 
-} 
+    margin-top: -10px;
+    padding-bottom: 0px;
+    padding-top: 5px;
+}
 
 
 .modal-rapid .modal-actions button {
     text-align: center;
-    background: black; 
+    background: black;
     color: white;
     border: 1px solid white;
     width: 100%;
     margin: 20px;
-    border-radius: 5px; 
-    font-size: 14px; 
-    font-weight: 500; 
-    height: 160px; 
-    box-sizing: border-box; 
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    height: 160px;
+    box-sizing: border-box;
 }
 
 .modal-rapid .content {
-    box-shadow: unset; 
+    box-shadow: unset;
 }
 
 .modal-rapid .modal-actions button.rapid-login-to-osm {
-    background: white; 
-    color: black; 
+    background: white;
+    color: black;
     border: black;
-    height: 3rem;  
+    height: 3rem;
 }
 
 .modal-rapid .modal-actions button.rapid-explore {
-    height: 3rem;  
+    height: 3rem;
 }
 
 .modal-rapid .modal-section {
-    border: 0px; 
+    border: 0px;
 }
 
 .modal-rapid .modal-section .logo-rapid {
@@ -189,37 +189,37 @@ button.ai-features-toggle.layer-off use {
 }
 
 .modal-rapid p {
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 .modal-rapid button.close {
-    align-self: flex-end; 
+    align-self: flex-end;
     background: transparent;
-    color: #ff26d4; 
-    position: unset; 
-    height: 40px; 
+    color: #ff26d4;
+    position: unset;
+    height: 40px;
 }
 
 .rapid-feature.rapid-stack {
     display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    color: white; 
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
 }
 
 .rapid-feature-label {
-    display: flex; 
-    align-items: center; 
-    margin: 8px 16px 8px 16px; 
+    display: flex;
+    align-items: center;
+    margin: 8px 16px 8px 16px;
 }
 
 form.rapid-feature .heading.poweruser {
-    display: flex; 
-    align-items: center; 
-    font-size: 18px; 
-    font-weight: bold; 
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
     letter-spacing: 0.0625em;
-    color: white; 
+    color: white;
 }
 
 .rapid-feature-label > svg.icon.logo-rapid {
@@ -229,12 +229,12 @@ form.rapid-feature .heading.poweruser {
 }
 
 form.rapid-feature .description.poweruser {
-    font-size: 14px; 
-    text-align: left; 
+    font-size: 14px;
+    text-align: left;
 }
 
 .rapid-feature-license {
-    margin: 16px;  
+    margin: 16px;
 }
 
 .rapid-feature-license p {
@@ -242,36 +242,36 @@ form.rapid-feature .description.poweruser {
 }
 
 .rapid-feature-label-container {
-    display: flex; 
-    align-items: center; 
-    justify-content: space-around; 
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .rapid-feature-label-container.poweruser {
-    display: flex; 
-    flex-wrap: nowrap; 
-    align-items: flex-start; 
-    justify-content: space-around; 
-    width: 100%; 
-    padding: 5px; 
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: space-around;
+    width: 100%;
+    padding: 5px;
 }
 
 .modal-section.rapid-checkbox {
     font-size: 24px;
-    display: flex; 
-    justify-content: flex-start; 
-    align-items: center; 
-    padding: 10px; 
-    width: 100%; 
-    margin-right: 5px; 
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    margin-right: 5px;
 }
 
 .modal-section.rapid-checkbox.poweruser {
-    font-size:16px; 
-    flex-wrap: wrap; 
-    border-radius:10px; 
-    padding: 3px 10px; 
-    margin: 3px 0px 3px 0px; 
+    font-size:16px;
+    flex-wrap: wrap;
+    border-radius:10px;
+    padding: 3px 10px;
+    margin: 3px 0px 3px 0px;
 }
 
 .modal-section.rapid-checkbox.poweruser:hover {
@@ -279,21 +279,21 @@ form.rapid-feature .description.poweruser {
 }
 
 .rapid-feature-description {
-    font-size: 14px; 
-    margin: 4px; 
+    font-size: 14px;
+    margin: 4px;
 }
 
 .rapid-feature-description.poweruser {
-    color: #ccc; 
+    color: #ccc;
 }
 
 .modal-heading.rapid {
-    font-size: 36px; 
-    margin: -20px 0px 0px 20px;  
+    font-size: 36px;
+    margin: -20px 0px 0px 20px;
 }
 
 .modal-heading-desc.rapid {
-    font-size: 18px; 
+    font-size: 18px;
     text-align: center;
     width: 100%;
     font-style: italic;
@@ -302,16 +302,16 @@ form.rapid-feature .description.poweruser {
 
 .modal-heading svg {
     width: 32px;
-    height: 32px; 
-    margin-top:10px; 
+    height: 32px;
+    margin-top:10px;
 }
 
 .modal-section.rapid-checkbox.poweruser {
-    font-size:16px; 
-    flex-wrap: wrap; 
-    border-radius:10px; 
-    padding: 3px 10px; 
-    margin: 3px 0px 3px 0px; 
+    font-size:16px;
+    flex-wrap: wrap;
+    border-radius:10px;
+    padding: 3px 10px;
+    margin: 3px 0px 3px 0px;
 }
 
 .modal-section.rapid-checkbox.poweruser:hover {
@@ -319,21 +319,21 @@ form.rapid-feature .description.poweruser {
 }
 
 .rapid-feature-description {
-    font-size: 14px; 
-    margin: 4px; 
+    font-size: 14px;
+    margin: 4px;
 }
 
 .rapid-feature-description.poweruser {
-    color: #ccc; 
+    color: #ccc;
 }
 
 .modal-heading.rapid {
-    font-size: 36px; 
-    margin: 20px 0px 0px 20px;  
+    font-size: 36px;
+    margin: 20px 0px 0px 20px;
 }
 
 .modal-heading-desc.rapid {
-    font-size: 18px; 
+    font-size: 18px;
     text-align: center;
     width: 100%;
     font-style: italic;
@@ -341,27 +341,27 @@ form.rapid-feature .description.poweruser {
 }
 
 .modal-heading svg {
-    width: 32px; 
-    height: 32px; 
-    margin-top:10px; 
+    width: 32px;
+    height: 32px;
+    margin-top:10px;
 }
 
 .modal-section.rapid-checkbox.disabled {
-    opacity: .5; 
+    opacity: .5;
 }
 
 .rapid-feature-checkbox {
-    margin-left: auto; 
+    margin-left: auto;
 }
 
 .modal-section.rapid-checkbox.section-divider {
     width: 100%;
-    height: 1px; 
+    height: 1px;
     background: #ccca;
-    padding: 1px; 
-    align-self: center; 
-    margin-top: 3px; 
-    margin-bottom: 3px; 
+    padding: 1px;
+    align-self: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .modal-section.rapid-checkbox.section-divider.strong {
@@ -369,109 +369,109 @@ form.rapid-feature .description.poweruser {
 }
 
 .rapid-feature-hotkey {
-    margin-left: -5px; 
+    margin-left: -5px;
     font-size: 14px;
 }
 
 .rapid-feature-label-divider {
-    width: 1px; 
-    height: 20px; 
-    margin-top: 3px; 
-    background: #ccca; 
+    width: 1px;
+    height: 20px;
+    margin-top: 3px;
+    background: #ccca;
 }
 
 .rapid-checkbox-label {
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     margin-left: auto;
 }
 
 .rapid-checkbox-label.poweruser {
-    align-self: center; 
+    align-self: center;
 }
 
-/* since checkboxes can't be styled, we'll 
+/* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
 .rapid-checkbox-label input {
-    position: absolute; 
-    opacity: 0; 
-    cursor: pointer; 
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
 
 .rapid-checkbox-label .rapid-checkbox-custom {
-    height: 36px; 
-    width: 36px; 
+    height: 36px;
+    width: 36px;
     background-color: transparent;
-    border-radius: 5px; 
-    border: 2px solid #ffffff; 
+    border-radius: 5px;
+    border: 2px solid #ffffff;
 }
 
-.rapid-checkbox-label .rapid-checkbox-custom::after { 
-    content: ""; 
-    height: 0px; 
-    width: 0px; 
-    border-radius: 5px; 
-    border: solid transparent; 
-    border-width: 0 6px 6px 0; 
-    transform: scale(0); 
-    opacity: 1; 
+.rapid-checkbox-label .rapid-checkbox-custom::after {
+    content: "";
+    height: 0px;
+    width: 0px;
+    border-radius: 5px;
+    border: solid transparent;
+    border-width: 0 6px 6px 0;
+    transform: scale(0);
+    opacity: 1;
 }
 
 .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
-    content: ""; 
+    content: "";
     display: block;
-    height: 12px; 
-    width: 6px; 
+    height: 12px;
+    width: 6px;
     padding: 2px;
-    margin-left: 9px; 
-    margin-top: 2px; 
-    border-radius: 0; 
-    border: solid #ff26d4; 
+    margin-left: 9px;
+    margin-top: 2px;
+    border-radius: 0;
+    border: solid #ff26d4;
     background-color: transparent;
-    border-width: 0 4px 4px 0; 
-    transform: rotate(45deg) scale(1); 
-    opacity: 1; 
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
 }
 
-g.layer-ai-features.hide-rapid-roads path.road, 
-g.layer-ai-features.hide-rapid-roads g.node.road, 
-g.layer-ai-features.hide-rapid-buildings path.building  { 
-    display: none; 
+g.layer-ai-features.hide-rapid-roads path.road,
+g.layer-ai-features.hide-rapid-roads g.node.road,
+g.layer-ai-features.hide-rapid-buildings path.building  {
+    display: none;
 }
 
-/* Rapid power user features */ 
+/* Rapid power user features */
 
 .rapid-feature-animation.poweruser {
     background-size: 100% 100%;
-    width: 130px; 
+    width: 130px;
     height: 130px;
-    border-radius: 10px; 
-    margin: 5px; 
-    border: 1px solid darkgrey; 
+    border-radius: 10px;
+    margin: 5px;
+    border: 1px solid darkgrey;
 }
 
-.modal-section.rapid-checkbox.poweruser div#ai-feature-halo { 
-    background-image: url('img/ai-feature-halo-still.png'); 
+.modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
+    background-image: url('img/ai-feature-halo-still.png');
 }
 
-.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo { 
-    background-image: url('img/ai-feature-halo.gif'); 
+.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
+    background-image: url('img/ai-feature-halo.gif');
 }
 
-.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine { 
-    background-image: url('img/tagnostic-road-join-still.png'); 
+.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
+    background-image: url('img/tagnostic-road-join-still.png');
 }
 
-.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine { 
-    background-image: url('img/tagnostic-road-join.gif'); 
+.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
+    background-image: url('img/tagnostic-road-join.gif');
 }
 
-.modal-section.rapid-checkbox.poweruser div#tag-sources { 
-    background-image: url('img/tag-sources-still.png'); 
+.modal-section.rapid-checkbox.poweruser div#tag-sources {
+    background-image: url('img/tag-sources-still.png');
 }
 
-.modal-section.rapid-checkbox.poweruser:hover div#tag-sources { 
-    background-image: url('img/tag-sources.gif'); 
+.modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
+    background-image: url('img/tag-sources.gif');
 }
 
 ul.layer-list.layer-background-list li button.background-favorite-button {
@@ -499,4 +499,21 @@ li.best > label > span.best > svg {
 
 .layer-list label {
     display: flex;
+}
+
+#imagery-label {
+    height: 20px;
+    justify-content: center;
+    margin-bottom: 5px;
+    display: inherit;
+    color: #ff26d4;
+    font-weight: bolder;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #ff26d4;
+    -webkit-text-fill-color: pink;
+}
+
+@keyframes label-bounce {
+    from { transform: scale(1.25) }
+    to { transform: scale(1) }
 }
