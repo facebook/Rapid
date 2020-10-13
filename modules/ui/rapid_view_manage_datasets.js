@@ -2,17 +2,17 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
+import { prefs } from '../core/preferences';
 import { geoExtent } from '../geo';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { utilKeybinding, utilRebind } from '../util';
-import { rapid_feature_config } from '../../data/';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
-  const showBeta = rapid_feature_config.poweruser_features_dialog.enabled;
+  const showPreview = prefs('rapid-internal-feature.esriPreview') === 'true';
   const PERPAGE = 4;
 
   let _content = d3_select(null);
@@ -218,7 +218,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         .then(results => {
           // exclude beta sources unless this is an internal build
           return _datasetInfo = Object.values(results)
-            .filter(d => showBeta || !d.groupCategories.some(category => category === '/Categories/Preview'));
+            .filter(d => showPreview || !d.groupCategories.some(category => category === '/Categories/Preview'));
         })
         .then(() => _content.call(renderModalContent));
       return;

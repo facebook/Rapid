@@ -17,7 +17,7 @@ en:
     recent: Recent
     favorites: Favorites
     add_feature: Add Feature
-    ai_features: Assist
+    rapid_features: Assist
   title:
     format:
       context: "{base} – {context}"
@@ -1002,7 +1002,10 @@ en:
     beta: Beta Feature
     heading:
       label: RapiD Power User Features
-      description: for RapiD Insiders
+      description: "for RapiD Insiders"
+    esriPreview:
+      label: Show Preview Esri Datasets
+      description: Preview datasets are still in review and not available for all users
     tagnosticRoadCombine:
       label: Tag-agnostic road combine
       description: Allow the Combine operation for roads whose highway tagging differs

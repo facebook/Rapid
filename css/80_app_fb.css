@@ -549,7 +549,10 @@ hide this one and style something on top of it.  */
     font-size: 16px;
     font-style: italic;
 }
-
+.rapid-stack.poweruser .modal-heading-desc .smile {
+    font-style: normal;
+    margin: 0 10px;
+}
 .rapid-stack.poweruser .rapid-features-container {
     width: 100%;
     border-top: 1px solid #888a;

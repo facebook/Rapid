@@ -6,13 +6,30 @@ import { icon } from './intro/helper';
 import { uiModal } from './modal';
 
 
-export function uiRapidPowerUserFeaturesDialog() {
-  const featureFlags = [
-    'tagnosticRoadCombine',
-    'tagSources'
-  ];
+export function uiRapidPowerUserFeaturesDialog(context) {
+  const featureFlags = ['esriPreview', 'tagnosticRoadCombine', 'tagSources'];
+  const showPowerUser = context.rapidContext().showPowerUser;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
+
+  // if we are not currently showing poweruser features, move all the feature flags to a different keyspace
+  if (!showPowerUser) {
+    featureFlags.forEach(featureFlag => {
+      const val = prefs(`rapid-internal-feature.${featureFlag}`);
+      if (val) {
+        prefs(`rapid-internal-feature.was.${featureFlag}`, val);
+        prefs(`rapid-internal-feature.${featureFlag}`, null);
+      }
+    });
+  } else {
+    featureFlags.forEach(featureFlag => {
+      const val = prefs(`rapid-internal-feature.was.${featureFlag}`);
+      if (val) {
+        prefs(`rapid-internal-feature.${featureFlag}`, val);
+        prefs(`rapid-internal-feature.was.${featureFlag}`, null);
+      }
+    });
+  }
 
 
   function isEnabled(featureFlag) {
@@ -60,7 +77,10 @@ export function uiRapidPowerUserFeaturesDialog() {
     headerEnter
       .append('div')
       .attr('class', 'modal-heading-desc')
-      .html(t('rapid_poweruser_features.heading.description'));
+      .text(t('rapid_poweruser_features.heading.description'))
+      .append('span')
+      .attr('class', 'smile')
+      .text('😎');
 
 
     /* Features */

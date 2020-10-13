@@ -12,11 +12,13 @@ import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dial
 export function uiToolRapidFeatures(context) {
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
   const rapidFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.ai-features.key'));
-  const showPowerUser = true;
+  const datasetDialog = uiRapidFeatureToggleDialog(context, rapidFeaturesToggleKey, toggleKeyDispatcher);
+  const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
+  const showPowerUser = context.rapidContext().showPowerUser;
 
   let tool = {
     id: 'rapid_features',
-    label: t('toolbar.ai_features')
+    label: t('toolbar.rapid_features')
   };
 
   context.keybinding()
@@ -41,12 +43,12 @@ export function uiToolRapidFeatures(context) {
 
   function showFeatureToggleDialog(d, i, nodes) {
     d3_select(nodes[i]).node().blur();
-    context.container().call(uiRapidFeatureToggleDialog(context, rapidFeaturesToggleKey, toggleKeyDispatcher));
+    context.container().call(datasetDialog);
   }
 
   function showPowerUserFeaturesDialog(d, i, nodes) {
     d3_select(nodes[i]).node().blur();
-    context.container().call(uiRapidPowerUserFeaturesDialog(context));
+    context.container().call(powerUserDialog);
   }
 
 
@@ -107,8 +109,7 @@ export function uiToolRapidFeatures(context) {
           .title(t('rapid_poweruser_features.heading.label'))
         )
         .append('div')
-        .attr('class', 'beta')
-        .attr('title', t('rapid_poweruser_features.beta'));
+        .attr('class', 'beta');
     }
   };
 

@@ -3920,7 +3920,10 @@ hide this one and style something on top of it.  */
     font-size: 16px;
     font-style: italic;
 }
-
+.ideditor .rapid-stack.poweruser .modal-heading-desc .smile {
+    font-style: normal;
+    margin: 0 10px;
+}
 .ideditor .rapid-stack.poweruser .rapid-features-container {
     width: 100%;
     border-top: 1px solid #888a;
