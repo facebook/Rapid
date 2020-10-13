@@ -260,8 +260,8 @@
               "rapid": true
             },
             {
-              "shortcuts": ["rapid_feature_inspector.option_reject.key"],
-              "text": "shortcuts.editing.rapid.reject_feature",
+              "shortcuts": ["rapid_feature_inspector.option_ignore.key"],
+              "text": "shortcuts.editing.rapid.ignore_feature",
               "rapid": true
             }
           ]

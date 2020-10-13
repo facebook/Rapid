@@ -1215,11 +1215,11 @@
                 "disabled_flash": "To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.",
                 "key": "A"
             },
-            "option_reject": {
-                "label": "Remove This Feature",
-                "description": "Removing this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍",
-                "annotation": "Removed a RapiD feature.",
-                "tooltip": "Remove this feature from the map.",
+            "option_ignore": {
+                "label": "Ignore This Feature",
+                "description": "Ignoring this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍",
+                "annotation": "Ignored a RapiD feature.",
+                "tooltip": "Ignore this feature.",
                 "key": "D"
             }
         },
@@ -2704,7 +2704,7 @@
                 "undo_road_add": "The issue about the crossed roads is back. Now let's undo again to return things back the way they were. **Press on the {button} button to undo the road addition and return the map to its original state.**",
                 "undo_road_add_aftermath": "The road is removed from your local changes, and has returned to the magenta layer as before!",
                 "select_road_again": "Let's try deleting this same road. **Select the AI-assisted road again with a left-click.**",
-                "delete_road": "This time, press the 'Remove this Feature' button to remove the road from the working map. This helps our AI learning algorithms get better over time.",
+                "delete_road": "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map. This helps our AI learning algorithms get better over time.",
                 "help": "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new RapiD-specific shortcuts that speed up your mapping.",
                 "done": "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/master/data/rapid_releases.geojson). **Click '{next}' to continue.**"
             },
@@ -2843,7 +2843,7 @@
                 "rapid": {
                     "title": "RapiD AI-Assist",
                     "accept_feature": "Add the selected feature",
-                    "reject_feature": "Remove the selected feature"
+                    "ignore_feature": "Ignore the selected feature"
                 }
             },
             "tools": {

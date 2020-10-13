@@ -77,12 +77,12 @@ export function uiRapidFeatureInspector(context, keybinding) {
   }
 
 
-  function onRejectFeature() {
+  function onIgnoreFeature() {
     if (!_datum) return;
 
     const annotation = {
       type: 'rapid_ignore_feature',
-      description: t('rapid_feature_inspector.option_reject.annotation'),
+      description: t('rapid_feature_inspector.option_ignore.annotation'),
       id: _datum.id,
       origid: _datum.__origid__
     };
@@ -167,9 +167,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
       }, {
         key: 'ignore',
         iconName: '#iD-icon-rapid-minus-circle',
-        label: t('rapid_feature_inspector.option_reject.label'),
-        description: t('rapid_feature_inspector.option_reject.description'),
-        onClick: onRejectFeature
+        label: t('rapid_feature_inspector.option_ignore.label'),
+        description: t('rapid_feature_inspector.option_ignore.description'),
+        onClick: onIgnoreFeature
       }
     ];
 
@@ -229,8 +229,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
     } else if (d.key === 'ignore') {
       tooltip = uiTooltip()
         .placement('bottom')
-        .title(t('rapid_feature_inspector.option_reject.tooltip'))
-        .keys([t('rapid_feature_inspector.option_reject.key')]);
+        .title(t('rapid_feature_inspector.option_ignore.tooltip'))
+        .keys([t('rapid_feature_inspector.option_ignore.key')]);
     }
 
 // something off about the tooltips
@@ -271,7 +271,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
   if (keybinding) {
     keybinding()
       .on(t('rapid_feature_inspector.option_accept.key'), onAcceptFeature)
-      .on(t('rapid_feature_inspector.option_reject.key'), onRejectFeature);
+      .on(t('rapid_feature_inspector.option_ignore.key'), onIgnoreFeature);
   }
 
   return rapidInspector;
