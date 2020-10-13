@@ -8,7 +8,7 @@ import { utilRebind } from '../util';
 export function coreRapidContext() {
   const dispatch = d3_dispatch('task_extent_set');
   let _rapidContext = {};
-  _rapidContext.version = '1.1.0-pre.2';
+  _rapidContext.version = '1.1.0-pre.3';
   _rapidContext.showPowerUser = true;
 
   function distinct(value, index, self) {
