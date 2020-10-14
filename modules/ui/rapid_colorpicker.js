@@ -2,6 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select, event as d3_event } from 'd3-selection';
 
 import { localizer } from '../core/localizer';
+import { svgIcon } from '../svg/icon';
 import { utilKeybinding, utilRebind } from '../util';
 
 
@@ -35,6 +36,17 @@ export function uiRapidColorpicker(context, parentModal) {
     }
   }
 
+  // https://www.w3.org/TR/AERT#color-contrast
+  // https://trendct.org/2016/01/22/how-to-choose-a-label-color-to-contrast-with-background/
+  // pass color as a hexstring like '#rgb', '#rgba', '#rrggbb', '#rrggbbaa'  (alpha values are ignored)
+  function getBrightness(color) {
+    const short = (color.length < 6);
+    const r = parseInt(short ? color[1] + color[1] : color[1] + color[2], 16);
+    const g = parseInt(short ? color[2] + color[2] : color[3] + color[4], 16);
+    const b = parseInt(short ? color[3] + color[3] : color[5] + color[6], 16);
+    return ((r * 299) + (g * 587) + (b * 114)) / 1000;
+  }
+
 
   function render(selection) {
     let colorpicker = selection.selectAll('.rapid-colorpicker')
@@ -48,12 +60,16 @@ export function uiRapidColorpicker(context, parentModal) {
 
     colorpickerEnter
       .append('div')
-      .attr('class', 'rapid-colorpicker-fill');
+      .attr('class', 'rapid-colorpicker-fill')
+      .call(svgIcon('#fas-palette'));
 
     // update
     colorpicker
       .merge(colorpickerEnter)
-      .style('color', d => d.color);
+      .selectAll('.rapid-colorpicker-fill')
+      .style('background', d => d.color)
+      .select('.icon')  // propagate bound data
+      .style('color', d => getBrightness(d.color) > 140.5 ? '#333' : '#fff');
   }
 
 

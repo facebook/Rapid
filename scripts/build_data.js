@@ -68,6 +68,7 @@ function buildData() {
   let faIcons = {
     'fas-i-cursor': {},
     'fas-lock': {},
+    'fas-palette': {},
     'fas-th-list': {},
     'fas-user-cog': {}
   };

@@ -476,17 +476,28 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-colorpicker {
-    padding: 3px;
+    padding: 2px;
     border: none;
     background: #fff;
     border-radius: 6px;
+    width: 36px;
+    height: 36px;
 }
+.rapid-colorpicker-label:not(.disabled):hover {
+    opacity: 0.9;
+}
+
 .rapid-colorpicker-fill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    background: currentColor;
     border-radius: 4px;
-    width: 22px;
-    height: 22px;
+    width: 32px;
+    height: 32px;
+}
+.rapid-colorpicker-fill .icon {
+    pointer-events: none;
 }
 
 /* since checkboxes can't be styled, we'll

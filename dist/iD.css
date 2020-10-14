@@ -3838,17 +3838,34 @@ display: none;
 }
 
 .ideditor .rapid-colorpicker {
-    padding: 3px;
+    padding: 2px;
     border: none;
     background: #fff;
     border-radius: 6px;
+    width: 36px;
+    height: 36px;
 }
+.ideditor .rapid-colorpicker-label:not(.disabled):hover {
+    opacity: 0.9;
+}
+
 .ideditor .rapid-colorpicker-fill {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     border: none;
-    background: currentColor;
     border-radius: 4px;
-    width: 22px;
-    height: 22px;
+    width: 32px;
+    height: 32px;
+}
+.ideditor .rapid-colorpicker-fill .icon {
+    pointer-events: none;
 }
 
 /* since checkboxes can't be styled, we'll
