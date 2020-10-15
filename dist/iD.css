@@ -4228,6 +4228,25 @@ hide this one and style something on top of it.  */
     border-radius: 5px;
 }
 
+
+/* Background layer list customizations */
+.ideditor ul.layer-list.layer-background-list li button.background-favorite-button {
+    background-color: inherit;
+}
+.ideditor button.background-favorite-button .icon {
+    fill-opacity: 0;
+    stroke-width: 1;
+}
+.ideditor button.background-favorite-button.active .icon {
+    fill-opacity: inherit;
+}
+.ideditor .background-pane .layer-list button.background-favorite-button {
+    border: 0;
+}
+.ideditor li.best > label > span.best > svg {
+    color: #e98733;
+    height: 19px;
+}
 /* Basics
 ------------------------------------------------------- */
 /* the root element of iD */

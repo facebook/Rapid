@@ -249,7 +249,7 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'best')
       .call(uiTooltip()
         .title(t('background.best_imagery'))
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+        .placement('bottom')
       )
       .call(svgIcon('#iD-icon-best-background'));
 
