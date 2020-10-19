@@ -107,7 +107,11 @@ function getTags(obj) {
     var tags = {};
     for (var i = 0, l = elems.length; i < l; i++) {
         var attrs = elems[i].attributes;
-        tags[attrs.k.value] = attrs.v.value;
+        var k = (attrs.k.value || '').trim();
+        var v = (attrs.v.value || '').trim();
+        if (k && v) {
+            tags[k] = v;
+        }
     }
 
     return tags;
