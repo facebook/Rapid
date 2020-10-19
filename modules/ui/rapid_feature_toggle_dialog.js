@@ -2,17 +2,17 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 
 import marked from 'marked';
 import { t, localizer } from '../core/localizer';
+import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
 import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
-import { rapid_feature_config } from '../../data/';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
-  const showBeta = rapid_feature_config.poweruser_features_dialog.enabled;
+  const showPreview = prefs('rapid-internal-feature.esriPreview') === 'true';
 
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -188,7 +188,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
   function renderDatasets(selection) {
     const datasets = Object.values(rapidContext.datasets())
-      .filter(d => showBeta || !d.beta);    // exclude beta sources unless this is an internal build
+      .filter(d => showPreview || !d.beta);    // exclude beta sources unless this is an internal build
 
     const rapidLayer = context.layers().layer('ai-features');
 
