@@ -1227,6 +1227,8 @@
         "rapid_feature_toggle": {
             "toggle_all": "Toggle all {rapidicon} features",
             "view_manage_datasets": "View/Manage Datasets",
+            "center_map": "Center map here",
+            "worldwide": "Worldwide",
             "fbRoads": {
                 "label": "Facebook Roads",
                 "description": "provided by Facebook",

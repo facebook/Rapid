@@ -3427,7 +3427,7 @@ display: none;
 .ideditor .rapid-inspector .tag-info {
     padding: 7px;
     background: #444;
-    border-radius: 5px;
+    border-radius: 0 0 5px 5px;
     border: 1px transparent;
 }
 .ideditor .rapid-inspector .tag-bag {

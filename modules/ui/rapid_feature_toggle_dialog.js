@@ -264,18 +264,19 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
           .each((d, i, nodes) => {
             let selection = d3_select(nodes[i]);
 
-            if (d.extent) {
+            // if the data spans more than 100°*100°, it might as well be worldwide
+            if (d.extent && d.extent.area() < 10000) {
               selection
                 .append('a')
                 .attr('href', '#')
-                .text('Center map here')
+                .text(t('rapid_feature_toggle.center_map'))
                 .on('click', () => {
                   d3_event.preventDefault();
                   context.map().extent(d.extent);
                 });
             } else {
               selection
-                .text('Worldwide');
+                .text(t('rapid_feature_toggle.worldwide'));
             }
           });
       });
