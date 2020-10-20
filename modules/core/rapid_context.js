@@ -81,7 +81,7 @@ export function coreRapidContext() {
 
 
   /* Colors */
-  const RAPID_MAGENTA = '#ff26d4';
+  const RAPID_MAGENTA = '#da26d3';
   const COLORS = [
     '#ff0000',  // red
     '#ffa500',  // orange
@@ -89,7 +89,7 @@ export function coreRapidContext() {
     '#00ff00',  // lime
     '#00ffff',  // cyan
     '#1e90ff',  // dodgerblue
-    '#ff26d4',  // rapid magenta
+    '#da26d3',  // rapid magenta
     '#ffc0cb',  // pink
     '#d3d3d3',  // lightgray
     '#faf0e6'   // linen

@@ -14,7 +14,7 @@ let _actioned;
 
 
 export function svgRapidFeatures(projection, context, dispatch) {
-  const RAPID_MAGENTA = '#ff26d4';
+  const RAPID_MAGENTA = '#da26d3';
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
   const gpxInUrl = utilStringQs(window.location.hash).gpx;
   let _layer = d3_select(null);
