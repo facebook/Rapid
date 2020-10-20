@@ -148,23 +148,29 @@ button.rapid-features.layer-off use {
     padding: 20px 0;
 }
 
-.rapid-inspector .tag-bag {
-    display: flex;
-    flex-wrap: wrap;
+.rapid-inspector .feature-info {
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #333;
 }
-.rapid-inspector .tag-preview {
+
+.rapid-inspector .tag-info {
     padding: 7px;
     background: #444;
     border-radius: 5px;
     border: 1px transparent;
 }
-
+.rapid-inspector .tag-bag {
+    display: flex;
+    flex-wrap: wrap;
+}
 .rapid-inspector .tag-heading {
     margin-right: 5px;
     padding-left: 3px;
 }
-
-.rapid-inspector .tag-preview .tag-entry {
+.rapid-inspector .tag-info .tag-entry {
     flex: 0 1 auto;
     display: flex;
     border: 1px solid #aaaa;
@@ -173,13 +179,11 @@ button.rapid-features.layer-off use {
     font-weight: 300;
     margin: 0 3px;
 }
-
 .rapid-inspector .tag-key,
 .rapid-inspector .tag-value {
     flex: 0 1 auto;
     padding: 0px 3px 0px 3px;
 }
-
 .rapid-inspector .tag-key {
     font-weight: bold;
     font-size: unset;
@@ -381,43 +385,44 @@ button.rapid-features.layer-off use {
     flex-flow: column nowrap;
 }
 
+.rapid-feature-label-container {
+    display: flex;
+    align-items: center;
+}
+.rapid-feature-label-container > div {
+    margin: 0 5px;
+}
+.rapid-feature-extent-container {
+    font-size: 14px;
+    font-style: italic;
+    margin: -5px 5px 5px 5px;
+    color: #aaa;
+}
+
 .rapid-feature-label {
     display: flex;
     align-items: center;
-    margin: 0 10px;
 }
-
-.rapid-feature-label-beta {
+.rapid-feature-label-container .rapid-feature-label-beta {
     font-size: 14px;
-    margin: 0px 4px;
 }
-
 .rapid-feature-label > svg.icon.logo-rapid {
     width: 4em;
     height: 1.3em;
     margin: -5px;
 }
-
-.rapid-feature-license {
-    margin: 16px;
-}
-.rapid-feature-license p {
-    font-size: 10px;
-}
-.rapid-feature-label-container {
-    display: flex;
-    align-items: center;
-}
-.rapid-feature-extent-container {
-    font-size: 14px;
-    font-style: italic;
-    margin: -8px 10px 5px 10px;
-    color: #aaa;
+.rapid-feature-label-divider {
+    width: 1px;
+    height: 20px;
+    background: #888a;
 }
 
 .rapid-feature-description {
     font-size: 14px;
     margin: 4px;
+}
+.rapid-feature-license p {
+    font-size: 10px;
 }
 .modal-section.rapid-checkbox.disabled {
     opacity: .5;
@@ -437,19 +442,12 @@ button.rapid-features.layer-off use {
 }
 
 .modal-section.rapid-checkbox.section-divider.strong {
-    background: #ffffffaa;
+    background: #fffa;
 }
 
 .rapid-feature-hotkey {
     margin-left: -5px;
     font-size: 14px;
-}
-
-.rapid-feature-label-divider {
-    width: 1px;
-    height: 20px;
-    margin-top: 3px;
-    background: #888a;
 }
 
 .rapid-checkbox-inputs {

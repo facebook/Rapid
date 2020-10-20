@@ -91,19 +91,55 @@ export function uiRapidFeatureInspector(context, keybinding) {
   }
 
 
-  function previewTags(selection) {
+  // https://www.w3.org/TR/AERT#color-contrast
+  // https://trendct.org/2016/01/22/how-to-choose-a-label-color-to-contrast-with-background/
+  // pass color as a hexstring like '#rgb', '#rgba', '#rrggbb', '#rrggbbaa'  (alpha values are ignored)
+  function getBrightness(color) {
+    const short = (color.length < 6);
+    const r = parseInt(short ? color[1] + color[1] : color[1] + color[2], 16);
+    const g = parseInt(short ? color[2] + color[2] : color[3] + color[4], 16);
+    const b = parseInt(short ? color[3] + color[3] : color[5] + color[6], 16);
+    return ((r * 299) + (g * 587) + (b * 114)) / 1000;
+  }
+
+
+  function featureInfo(selection) {
+    if (!_datum) return;
+
+    const datasetID = _datum.__datasetid__.replace('-conflated', '');
+    const rapidContext = context.rapidContext();
+    const dataset = rapidContext.datasets()[datasetID];
+    const color = dataset.color;
+
+    let featureInfo = selection.selectAll('.feature-info')
+      .data([color]);
+
+    featureInfo
+      .enter()
+      .append('div')
+      .attr('class', 'feature-info')
+      .text(dataset.label || dataset.id)   // fallback to dataset ID
+      .merge(featureInfo)
+      .style('background', d => d)
+      .style('color', d => getBrightness(d) > 140.5 ? '#333' : '#fff')
+  }
+
+
+  function tagInfo(selection) {
     const tags = _datum && _datum.tags;
     if (!tags) return;
 
-    let tagPreview = selection
+    let tagInfoEnter = selection.selectAll('.tag-info')
+      .data([0])
+      .enter()
       .append('div')
-      .attr('class', 'tag-preview');
+      .attr('class', 'tag-info');
 
-    let tagBag = tagPreview
+    let tagBagEnter = tagInfoEnter
       .append('div')
       .attr('class', 'tag-bag');
 
-    tagBag
+    tagBagEnter
       .append('div')
       .attr('class', 'tag-heading')
       .text(t('rapid_feature_inspector.tags'));
@@ -111,7 +147,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const tagEntries = Object.keys(tags).map(k => ({ key: k, value: tags[k] }) );
 
     tagEntries.forEach(e => {
-      let entryDiv = tagBag.append('div')
+      let entryDiv = tagBagEnter.append('div')
         .attr('class', 'tag-entry');
 
       entryDiv.append('div').attr('class', 'tag-key').text(e.key);
@@ -121,14 +157,22 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
 
   function rapidInspector(selection) {
-    let inspectorEnter = selection.selectAll('.rapid-inspector')
-      .data([0])
+    let inspector = selection.selectAll('.rapid-inspector')
+      .data([0]);
+
+    let inspectorEnter = inspector
       .enter()
       .append('div')
       .attr('class', 'rapid-inspector');
 
+    inspector = inspector
+      .merge(inspectorEnter);
+
+
     // Header
-    let headerEnter = inspectorEnter
+    let headerEnter = inspector.selectAll('.header')
+      .data([0])
+      .enter()
       .append('div')
       .attr('class', 'header');
 
@@ -150,14 +194,22 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
 
     // Body
-    let bodyEnter = inspectorEnter
+    let body = inspector.selectAll('.body')
+      .data([0]);
+
+    let bodyEnter = body
+      .enter()
       .append('div')
       .attr('class', 'body');
 
-    bodyEnter
-      .call(previewTags);
+    body = body
+      .merge(bodyEnter)
+      .call(featureInfo)
+      .call(tagInfo);
 
-    const choices = [
+
+    // Choices
+    const choiceData = [
       {
         key: 'accept',
         iconName: '#iD-icon-rapid-plus-circle',
@@ -173,7 +225,11 @@ export function uiRapidFeatureInspector(context, keybinding) {
       }
     ];
 
-    let choicesEnter = bodyEnter
+    let choices = body.selectAll('.rapid-inspector-choices')
+      .data([0]);
+
+    let choicesEnter = choices
+      .enter()
       .append('div')
       .attr('class', 'rapid-inspector-choices');
 
@@ -182,7 +238,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .text(t('rapid_feature_inspector.prompt'));
 
     choicesEnter.selectAll('.rapid-inspector-choice')
-      .data(choices, d => d.key)
+      .data(choiceData, d => d.key)
       .enter()
       .append('div')
       .attr('class', d => `rapid-inspector-choice rapid-inspector-choice-${d.key}`)

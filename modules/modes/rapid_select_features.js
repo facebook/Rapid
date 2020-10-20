@@ -59,6 +59,11 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
   };
 
 
+  mode.selectedDatum = function() {
+    return selectedDatum;
+  };
+
+
   mode.zoomToSelected = function() {
     const extent = selectedDatum.extent(rapidGraph);
     context.map().centerZoomEase(extent.center(), context.map().trimmedExtentZoom(extent));

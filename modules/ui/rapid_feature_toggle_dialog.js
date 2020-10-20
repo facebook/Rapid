@@ -9,7 +9,6 @@ import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
-
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
   const showPreview = prefs('rapid-internal-feature.esriPreview') === 'true';
@@ -39,6 +38,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.color = color;
       context.map().pan([0,0]);   // trigger a map redraw
       _content.call(renderModalContent);
+
+      // if a RapiD feature is selected, reselect it to update sidebar too
+      const mode = context.mode();
+      if (mode && mode.id === 'select-ai-features')
+      context.enter(mode, mode.selectedDatum());
     }
   }
 
@@ -47,6 +51,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     rapidLayer.enabled(!rapidLayer.enabled());   // toggling the layer will trigger a map redraw
     _content.call(renderModalContent);
   }
+
 
   function keyPressHandler() {
     if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
