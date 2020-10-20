@@ -3304,6 +3304,8 @@ display: none;
 
 
 /* UI Buttons */
+/* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
+/* We can not just add an `opacity: 0.5` .disabled rule because that affects children too including tooltips */
 .ideditor .rapid-inspector button,
 .ideditor .modal.rapid-modal button {
     border: 0;
@@ -3313,32 +3315,16 @@ display: none;
     border-radius: 30px;
     height: 3rem;
 }
-
+.ideditor .rapid-inspector button svg,
+.ideditor .modal.rapid-modal button svg {
+    color: #eee;
+    fill: #da26d3;
+}
 .ideditor .rapid-inspector button:focus,
 .ideditor .rapid-inspector button:hover,
 .ideditor .modal.rapid-modal button:focus,
 .ideditor .modal.rapid-modal button:hover {
     background: #c6d;
-}
-
-.ideditor .rapid-inspector button.secondary,
-.ideditor .modal.rapid-modal button.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
-}
-
-.ideditor .rapid-inspector button.secondary:focus,
-.ideditor .rapid-inspector button.secondary:hover,
-.ideditor .modal.rapid-modal button.secondary:focus,
-.ideditor .modal.rapid-modal button.secondary:hover {
-    background: #888;
-}
-
-.ideditor .rapid-inspector button svg,
-.ideditor .modal.rapid-modal button svg {
-    color: #eee;
-    fill: #da26d3;
 }
 .ideditor .rapid-inspector button:focus svg,
 .ideditor .rapid-inspector button:hover svg,
@@ -3347,10 +3333,46 @@ display: none;
     fill: #c6d;
 }
 
+.ideditor .rapid-inspector button.disabled,
+.ideditor .modal.rapid-modal button.disabled {
+    background: #da26d388;
+    color: #eee8;
+}
+.ideditor .rapid-inspector button.disabled svg,
+.ideditor .modal.rapid-modal button.disabled svg {
+    color: #eee8;
+    fill: #da26d388;
+}
+.ideditor .rapid-inspector button.disabled:focus,
+.ideditor .rapid-inspector button.disabled:hover,
+.ideditor .modal.rapid-modal button.disabled:focus,
+.ideditor .modal.rapid-modal button.disabled:hover {
+    background: #c6d8;
+}
+.ideditor .rapid-inspector button.disabled:focus svg,
+.ideditor .rapid-inspector button.disabled:hover svg,
+.ideditor .modal.rapid-modal button.disabled:focus svg,
+.ideditor .modal.rapid-modal button.disabled:hover svg {
+    fill: #c6d8;
+}
+
+
+.ideditor .rapid-inspector button.secondary,
+.ideditor .modal.rapid-modal button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
 .ideditor .rapid-inspector button.secondary svg,
 .ideditor .modal.rapid-modal button.secondary svg {
     color: #eee;
     fill: #666;
+}
+.ideditor .rapid-inspector button.secondary:focus,
+.ideditor .rapid-inspector button.secondary:hover,
+.ideditor .modal.rapid-modal button.secondary:focus,
+.ideditor .modal.rapid-modal button.secondary:hover {
+    background: #888;
 }
 .ideditor .rapid-inspector button.secondary:focus svg,
 .ideditor .rapid-inspector button.secondary:hover svg,
@@ -3359,16 +3381,41 @@ display: none;
     fill: #888;
 }
 
+.ideditor .rapid-inspector button.secondary.disabled,
+.ideditor .modal.rapid-modal button.secondary.disabled {
+    background: #6668;
+    color: #eee8;
+}
+.ideditor .rapid-inspector button.secondary.disabled svg,
+.ideditor .modal.rapid-modal button.secondary.disabled svg {
+    color: #eee8;
+    fill: #6668;
+}
+.ideditor .rapid-inspector button.secondary.disabled:focus,
+.ideditor .rapid-inspector button.secondary.disabled:hover,
+.ideditor .modal.rapid-modal button.secondary.disabled:focus,
+.ideditor .modal.rapid-modal button.secondary.disabled:hover {
+    background: #8888;
+}
+.ideditor .rapid-inspector button.secondary.disabled:focus svg,
+.ideditor .rapid-inspector button.secondary.disabled:hover svg,
+.ideditor .modal.rapid-modal button.secondary.disabled:focus svg,
+.ideditor .modal.rapid-modal button.secondary.disabled:hover svg {
+    fill: #8888;
+}
+
+
 .ideditor .modal.rapid-modal button svg.logo-rapid,
 .ideditor .modal.rapid-modal button svg.logo-rapid:focus,
 .ideditor .modal.rapid-modal button svg.logo-rapid:hover {
     color: #eee;
     fill: #eee;
 }
-
-.ideditor .rapid-inspector button.disabled,
-.ideditor .modal.rapid-modal button.disabled {
-    opacity: 0.5;
+.ideditor .modal.rapid-modal button.disabled svg.logo-rapid,
+.ideditor .modal.rapid-modal button.disabled svg.logo-rapid:focus,
+.ideditor .modal.rapid-modal button.disabled svg.logo-rapid:hover {
+    color: #eee8;
+    fill: #eee8;
 }
 
 

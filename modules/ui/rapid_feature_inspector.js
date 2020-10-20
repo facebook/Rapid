@@ -136,7 +136,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     featureInfo = featureInfo
       .merge(featureInfoEnter)
       .style('background', d => d)
-      .style('color', d => getBrightness(d) > 140.5 ? '#333' : '#fff')
+      .style('color', d => getBrightness(d) > 140.5 ? '#333' : '#fff');
   }
 
 
@@ -285,29 +285,25 @@ export function uiRapidFeatureInspector(context, keybinding) {
         onClick();
       });
 
-    let tooltip;
+    // build tooltips
+    let title, keys;
     if (d.key === 'accept') {
-      tooltip = uiTooltip()
-        .placement('bottom')
-        .title(() => {
-          return isAddFeatureDisabled()
-            ? uiTooltip()
-                .title(t('rapid_feature_inspector.option_accept.disabled', { n: AI_FEATURES_LIMIT_NON_TM_MODE } ))
-            : uiTooltip()
-                .title(t('rapid_feature_inspector.option_accept.tooltip'))
-                .keys([t('rapid_feature_inspector.option_accept.key')]);
-        });
+      if (isAddFeatureDisabled()) {
+        title = t('rapid_feature_inspector.option_accept.disabled', { n: AI_FEATURES_LIMIT_NON_TM_MODE } );
+        keys = [];
+      } else {
+        title = t('rapid_feature_inspector.option_accept.tooltip');
+        keys = [t('rapid_feature_inspector.option_accept.key')];
+      }
     } else if (d.key === 'ignore') {
-      tooltip = uiTooltip()
-        .placement('bottom')
-        .title(t('rapid_feature_inspector.option_ignore.tooltip'))
-        .keys([t('rapid_feature_inspector.option_ignore.key')]);
+      title = t('rapid_feature_inspector.option_ignore.tooltip');
+      keys = [t('rapid_feature_inspector.option_ignore.key')];
     }
 
-// something off about the tooltips
-    // if (tooltip) {
-      // choiceButton = choiceButton.call(tooltip);
-    // }
+    if (title && keys) {
+      choiceButton = choiceButton
+        .call(uiTooltip().placement('bottom').title(title).keys(keys));
+    }
 
     choiceButton
       .append('svg')

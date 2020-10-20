@@ -38,6 +38,8 @@ button.rapid-features.layer-off use {
 
 
 /* UI Buttons */
+/* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
+/* We can not just add an `opacity: 0.5` .disabled rule because that affects children too including tooltips */
 .rapid-inspector button,
 .modal.rapid-modal button {
     border: 0;
@@ -47,32 +49,16 @@ button.rapid-features.layer-off use {
     border-radius: 30px;
     height: 3rem;
 }
-
+.rapid-inspector button svg,
+.modal.rapid-modal button svg {
+    color: #eee;
+    fill: #da26d3;
+}
 .rapid-inspector button:focus,
 .rapid-inspector button:hover,
 .modal.rapid-modal button:focus,
 .modal.rapid-modal button:hover {
     background: #c6d;
-}
-
-.rapid-inspector button.secondary,
-.modal.rapid-modal button.secondary {
-    border: 0;
-    background: #666;
-    color: #eee;
-}
-
-.rapid-inspector button.secondary:focus,
-.rapid-inspector button.secondary:hover,
-.modal.rapid-modal button.secondary:focus,
-.modal.rapid-modal button.secondary:hover {
-    background: #888;
-}
-
-.rapid-inspector button svg,
-.modal.rapid-modal button svg {
-    color: #eee;
-    fill: #da26d3;
 }
 .rapid-inspector button:focus svg,
 .rapid-inspector button:hover svg,
@@ -81,10 +67,46 @@ button.rapid-features.layer-off use {
     fill: #c6d;
 }
 
+.rapid-inspector button.disabled,
+.modal.rapid-modal button.disabled {
+    background: #da26d388;
+    color: #eee8;
+}
+.rapid-inspector button.disabled svg,
+.modal.rapid-modal button.disabled svg {
+    color: #eee8;
+    fill: #da26d388;
+}
+.rapid-inspector button.disabled:focus,
+.rapid-inspector button.disabled:hover,
+.modal.rapid-modal button.disabled:focus,
+.modal.rapid-modal button.disabled:hover {
+    background: #c6d8;
+}
+.rapid-inspector button.disabled:focus svg,
+.rapid-inspector button.disabled:hover svg,
+.modal.rapid-modal button.disabled:focus svg,
+.modal.rapid-modal button.disabled:hover svg {
+    fill: #c6d8;
+}
+
+
+.rapid-inspector button.secondary,
+.modal.rapid-modal button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
 .rapid-inspector button.secondary svg,
 .modal.rapid-modal button.secondary svg {
     color: #eee;
     fill: #666;
+}
+.rapid-inspector button.secondary:focus,
+.rapid-inspector button.secondary:hover,
+.modal.rapid-modal button.secondary:focus,
+.modal.rapid-modal button.secondary:hover {
+    background: #888;
 }
 .rapid-inspector button.secondary:focus svg,
 .rapid-inspector button.secondary:hover svg,
@@ -93,16 +115,41 @@ button.rapid-features.layer-off use {
     fill: #888;
 }
 
+.rapid-inspector button.secondary.disabled,
+.modal.rapid-modal button.secondary.disabled {
+    background: #6668;
+    color: #eee8;
+}
+.rapid-inspector button.secondary.disabled svg,
+.modal.rapid-modal button.secondary.disabled svg {
+    color: #eee8;
+    fill: #6668;
+}
+.rapid-inspector button.secondary.disabled:focus,
+.rapid-inspector button.secondary.disabled:hover,
+.modal.rapid-modal button.secondary.disabled:focus,
+.modal.rapid-modal button.secondary.disabled:hover {
+    background: #8888;
+}
+.rapid-inspector button.secondary.disabled:focus svg,
+.rapid-inspector button.secondary.disabled:hover svg,
+.modal.rapid-modal button.secondary.disabled:focus svg,
+.modal.rapid-modal button.secondary.disabled:hover svg {
+    fill: #8888;
+}
+
+
 .modal.rapid-modal button svg.logo-rapid,
 .modal.rapid-modal button svg.logo-rapid:focus,
 .modal.rapid-modal button svg.logo-rapid:hover {
     color: #eee;
     fill: #eee;
 }
-
-.rapid-inspector button.disabled,
-.modal.rapid-modal button.disabled {
-    opacity: 0.5;
+.modal.rapid-modal button.disabled svg.logo-rapid,
+.modal.rapid-modal button.disabled svg.logo-rapid:focus,
+.modal.rapid-modal button.disabled svg.logo-rapid:hover {
+    color: #eee8;
+    fill: #eee8;
 }
 
 
