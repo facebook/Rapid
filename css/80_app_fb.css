@@ -130,6 +130,10 @@ button.rapid-features.layer-off use {
     right: 0;
     background: transparent;
 }
+.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
+    right: unset;
+    left: 0;
+}
 .rapid-inspector .header button.rapid-inspector-close svg {
     color: #da26d3;
 }
@@ -189,7 +193,7 @@ button.rapid-features.layer-off use {
 .rapid-inspector .tag-key,
 .rapid-inspector .tag-value {
     flex: 0 1 auto;
-    padding: 0px 3px 0px 3px;
+    padding: 0px 3px;
 }
 .rapid-inspector .tag-key {
     font-weight: bold;
@@ -219,10 +223,18 @@ button.rapid-features.layer-off use {
     border-right: 1px solid #333a;
     border-radius: 25px 0 0 25px;
 }
+.ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: unset;
+    border-left: 1px solid #333a;
+    border-radius: 0 25px 25px 0;
+}
 .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
     display: flex;
     flex: 0 0 40px;
     border-radius: 0 25px 25px 0;
+}
+.ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
+    border-radius: 25px 0 0 25px;
 }
 
 .rapid-inspector-choice .choice-button .choice-icon {
@@ -453,7 +465,7 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-feature-hotkey {
-    margin-left: -5px;
+    margin: 0 5px;
     font-size: 14px;
 }
 
@@ -518,34 +530,33 @@ hide this one and style something on top of it.  */
     width: 36px;
     background-color: transparent;
     border-radius: 5px;
-    border: 2px solid #ffffff;
+    border: 2px solid #fff;
 }
 
 .rapid-checkbox-label .rapid-checkbox-custom::after {
     content: "";
     height: 0px;
     width: 0px;
-    border-radius: 5px;
-    border: solid transparent;
-    border-width: 0 6px 6px 0;
-    transform: scale(0);
-    opacity: 1;
 }
 
 .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
     content: "";
     display: block;
-    height: 12px;
-    width: 6px;
     padding: 2px;
-    margin-left: 9px;
-    margin-top: 2px;
     border-radius: 0;
     border: solid #da26d3;
     background-color: transparent;
     border-width: 0 4px 4px 0;
-    transform: rotate(45deg) scale(1);
+    transform: rotate(45deg);
     opacity: 1;
+    margin: 3px 9px;
+    height: 12px;
+    width: 6px;
+}
+.ideditor[dir='rtl'] .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
+    margin: 6px 6px;
+    height: 6px;
+    width: 12px;
 }
 
 
@@ -576,11 +587,14 @@ hide this one and style something on top of it.  */
 .rapid-stack.poweruser .rapid-features-container > .modal-section.rapid-checkbox:last-of-type {
     padding-bottom: 15px;
 }
+.rapid-stack.poweruser .rapid-features-container .rapid-feature-label {
+    margin: 0 5px;
+}
 
 .rapid-stack.poweruser .rapid-features-container .rapid-feature-description {
     font-size: 14px;
     font-style: italic;
-    margin: -8px 10px 5px 10px;
+    margin: -5px 5px 5px 5px;
     color: #aaa;
 }
 

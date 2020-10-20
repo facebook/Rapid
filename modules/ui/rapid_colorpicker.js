@@ -78,12 +78,12 @@ export function uiRapidColorpicker(context, parentModal) {
     const rect = forNode.getBoundingClientRect();
     const popWidth = 180;
     const popTop = rect.bottom + 15;
-    const popLeft = localizer.textDirection === 'rtl'
+    const popLeft = localizer.textDirection() === 'rtl'
       ? rect.right - (0.3333 * popWidth)
       : rect.left - (0.6666 * popWidth);
-    const arrowLeft = localizer.textDirection === 'rtl'
-      ? (0.3333 * popWidth) - rect.width + 5
-      : (0.6666 * popWidth) + 5;
+    const arrowLeft = localizer.textDirection() === 'rtl'
+      ? (0.3333 * popWidth) - rect.width + 10
+      : (0.6666 * popWidth) + 10;
 
     const origClose = parentModal.close;
     parentModal.close = () => { /* ignore */ };

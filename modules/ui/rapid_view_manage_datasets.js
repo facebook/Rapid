@@ -121,6 +121,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function renderModalContent(selection) {
+    const isRTL = localizer.textDirection() === 'rtl';
+
     /* Header section */
     let headerEnter = selection.selectAll('.rapid-view-manage-header')
       .data([0])
@@ -169,8 +171,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     dsSectionEnter
       .append('div')
       .attr('class', 'rapid-view-manage-pageleft')
-      .call(svgIcon('#iD-icon-backward'))
-      .on('click', () => nextPreviousPage(localizer.textDirection === 'rtl' ? 1 : -1) );
+      .call(svgIcon(isRTL ? '#iD-icon-forward' : '#iD-icon-backward'))
+      .on('click', () => nextPreviousPage(isRTL ? 1 : -1) );
 
     dsSectionEnter
       .append('div')
@@ -179,8 +181,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     dsSectionEnter
       .append('div')
       .attr('class', 'rapid-view-manage-pageright')
-      .call(svgIcon('#iD-icon-forward'))
-      .on('click', () => nextPreviousPage(localizer.textDirection === 'rtl' ? -1 : 1) );
+      .call(svgIcon(isRTL ? '#iD-icon-backward' : '#iD-icon-forward'))
+      .on('click', () => nextPreviousPage(isRTL ? -1 : 1) );
 
     // update
     dsSection = dsSection
