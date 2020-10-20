@@ -114,12 +114,27 @@ export function uiRapidFeatureInspector(context, keybinding) {
     let featureInfo = selection.selectAll('.feature-info')
       .data([color]);
 
-    featureInfo
+    // enter
+    let featureInfoEnter = featureInfo
       .enter()
       .append('div')
-      .attr('class', 'feature-info')
-      .text(dataset.label || dataset.id)   // fallback to dataset ID
-      .merge(featureInfo)
+      .attr('class', 'feature-info');
+
+    featureInfoEnter
+      .append('div')
+      .attr('class', 'dataset-label')
+      .text(dataset.label || dataset.id);   // fallback to dataset ID
+
+    if (dataset.beta) {
+      featureInfoEnter
+        .append('div')
+        .attr('class', 'dataset-beta beta')
+        .attr('title', t('rapid_poweruser_features.beta'));
+    }
+
+    // update
+    featureInfo = featureInfo
+      .merge(featureInfoEnter)
       .style('background', d => d)
       .style('color', d => getBrightness(d) > 140.5 ? '#333' : '#fff')
   }

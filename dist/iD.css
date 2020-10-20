@@ -3417,11 +3417,22 @@ display: none;
 }
 
 .ideditor .rapid-inspector .feature-info {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     padding: 5px 10px;
-    font-size: 14px;
-    font-weight: bold;
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #333;
+}
+.ideditor .rapid-inspector .feature-info .dataset-label {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    font-size: 14px;
+    font-weight: bold;
+}
+.ideditor .rapid-inspector .feature-info .dataset-beta {
+    font-size: 13px;
 }
 
 .ideditor .rapid-inspector .tag-info {
@@ -4161,6 +4172,7 @@ hide this one and style something on top of it.  */
     color: #eee;
     margin: 0 10px;
     width: 1.7em;
+    height: 1.7em;
     border: 1px solid #909;
     border-radius: 5px;
     background: rgb(203,16,237);

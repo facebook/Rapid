@@ -149,11 +149,18 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-inspector .feature-info {
+    display: flex;
     padding: 5px 10px;
-    font-size: 14px;
-    font-weight: bold;
     border-radius: 5px 5px 0 0;
     border-bottom: 1px solid #333;
+}
+.rapid-inspector .feature-info .dataset-label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: bold;
+}
+.rapid-inspector .feature-info .dataset-beta {
+    font-size: 13px;
 }
 
 .rapid-inspector .tag-info {
@@ -741,6 +748,7 @@ img.rapid-view-manage-dataset-thumbnail {
     color: #eee;
     margin: 0 10px;
     width: 1.7em;
+    height: 1.7em;
     border: 1px solid #909;
     border-radius: 5px;
     background: rgb(203,16,237);
