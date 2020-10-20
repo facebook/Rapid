@@ -3606,7 +3606,19 @@ hide this one and style something on top of it.  */
     border: 0;
 }
 
-.ideditor li.best > label > span.best > svg{
+.ideditor li.best > label > span.background-name {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+}
+
+.ideditor li.best > label > span.best {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+}
+
+.ideditor li.best > label > span.best > svg {
     color: #E98733;
     height: 19px;
 }

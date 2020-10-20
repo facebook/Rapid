@@ -198,6 +198,7 @@ export function uiSectionBackgroundList(context) {
 
     label
       .append('span')
+      .attr('class', 'background-name')
       .text((d) => { return d.name(); });
 
     layerLinksEnter
@@ -247,10 +248,7 @@ export function uiSectionBackgroundList(context) {
       .selectAll('label')
       .append('span')
       .attr('class', 'best')
-      .call(uiTooltip()
-        .title(t('background.best_imagery'))
-        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-      )
+      .attr('title', t('background.best_imagery'))
       .call(svgIcon('#iD-icon-best-background'));
 
     layerList.selectAll('li')
