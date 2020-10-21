@@ -491,10 +491,18 @@ button.background-favorite-button.active .icon {
     border: 0;
 }
 
+li.best > label > span.background-name {
+    flex: 1 1 auto;
+}
+
+li.best > label > span.best {
+    flex: 0 0 auto;
+}
+
+
 li.best > label > span.best > svg {
     color: #E98733;
     height: 19px;
-    padding-left: 2px;
 }
 
 .layer-list label {
