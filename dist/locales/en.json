@@ -2531,6 +2531,7 @@
                     "three-rivers-post-office": "Three Rivers Post Office",
                     "three-rivers-public-library": "Three Rivers Public Library",
                     "three-rivers": "Three Rivers",
+                    "tulip-lane": "Tulip Lane",
                     "unique-jewelry": "Unique Jewelry",
                     "walnut-street": "Walnut Street",
                     "washington-street": "Washington Street",
@@ -2692,7 +2693,7 @@
                 "play": "Great Job! Practice tracing a few more buildings, and try some of the other commands on the edit menu. **When you are ready to continue to the next chapter, press '{next}'.**"
             },
             "rapid": {
-                "title": "AI-Assisted Features",
+                "title": "RapiD Features",
                 "start": "{rapid} AI-assisted features are generated from satellite imagery processing with machine-learning algorithms. This section of the walkthrough will teach you how to use these AI-assisted features.",
                 "ai_roads": "AI-assisted features are presented in a magenta-colored overlay. Press 'OK' to enable the AI features layer (In the future, these feature layers can be controlled with the {rapid} button up above).",
                 "add_road_h": "Adding AI-assisted features",
@@ -2705,8 +2706,8 @@
                 "undo_fix_lint": "If you have second thoughts about using an AI-assisted road, you can always undo it like any other change. **Press on the {button} button to undo the connection you just made.**",
                 "undo_road_add": "The issue about the crossed roads is back. Now let's undo again to return things back the way they were. **Press on the {button} button to undo the road addition and return the map to its original state.**",
                 "undo_road_add_aftermath": "The road is removed from your local changes, and has returned to the magenta layer as before!",
-                "select_road_again": "Let's try deleting this same road. **Select the AI-assisted road again with a left-click.**",
-                "delete_road": "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map. This helps our AI learning algorithms get better over time.",
+                "select_road_again": "Next, we'll learn how to ignore roads that you don't want to add. **Select the AI-assisted road again with a left-click.**",
+                "ignore_road": "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map. This helps our AI learning algorithms get better over time.",
                 "help": "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new RapiD-specific shortcuts that speed up your mapping.",
                 "done": "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/master/data/rapid_releases.geojson). **Click '{next}' to continue.**"
             },

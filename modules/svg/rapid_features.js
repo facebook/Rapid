@@ -249,7 +249,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing
-        if (dataset.id === 'fbRoads') {
+        if (dataset.id === 'fbRoads' || dataset.id === 'rapid_intro_graph') {
           geoData.paths = pathData.filter(d => !!d.tags.highway);
 
           let seen = {};

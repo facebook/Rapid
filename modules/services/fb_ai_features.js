@@ -46,7 +46,7 @@ function tileURL(dataset, extent, taskExtent) {
 
     } else {
         qs.result_type = 'osm_xml';
-        qs.sources = 'esri_building.' + datasetID;
+        qs.sources = `esri_building.${datasetID}`;
     }
 
     // fb_ml_road_url: if set, get road data from this url
@@ -208,6 +208,14 @@ export default {
 
     init: function() {
         this.event = utilRebind(this, dispatch, 'on');
+
+        // allocate a special dataset for the rapid intro graph.
+        var datasetID = 'rapid_intro_graph';
+        var graph = coreGraph();
+        var tree = coreTree(graph);
+        var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+        _datasets[datasetID] = ds;
     },
 
     // save the current history state
