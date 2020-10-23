@@ -159,6 +159,7 @@ export function uiBackground(context) {
 
         label
             .append('span')
+            .attr('class', 'background-name')
             .text(function(d) { return d.name(); });
 
         layerLinksEnter
@@ -208,10 +209,7 @@ export function uiBackground(context) {
             .selectAll('label')
             .append('span')
             .attr('class', 'best')
-            .call(tooltip()
-                .title(t('background.best_imagery'))
-                .placement((textDirection === 'rtl') ? 'right' : 'left')
-            )
+            .attr('title', t('background.best_imagery'))
             .call(svgIcon('#iD-icon-best-background'));
 
 
