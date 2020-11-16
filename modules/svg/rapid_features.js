@@ -164,7 +164,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
     // Style needs to apply in the def, not where the pattern is used.
     const rapidDatasets = rapidContext.datasets();
     const datasets = Object.values(rapidDatasets)
-      .filter(dataset => dataset.enabled);
+      .filter(dataset => dataset.added && dataset.enabled);
 
     let defs = _layer.selectAll('.rapid-defs');
     let dsPatterns = defs.selectAll('.rapid-fill-pattern')

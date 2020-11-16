@@ -130,6 +130,7 @@ export function uiIntro(context, skipToRapid) {
     rapidDatasets.rapid_intro_graph = {
       id: 'rapid_intro_graph',
       beta: false,
+      added: true,
       enabled: true,
       conflated: false,
       service: 'fbml',

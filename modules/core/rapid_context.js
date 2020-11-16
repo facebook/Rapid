@@ -109,7 +109,8 @@ export function coreRapidContext() {
           'fbRoads': {
             id: 'fbRoads',
             beta: false,
-            enabled: true,
+            added: true,         // whether it should appear in the list
+            enabled: true,       // whether the user has checked it on
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,
@@ -120,7 +121,8 @@ export function coreRapidContext() {
           'msBuildings': {
             id: 'msBuildings',
             beta: false,
-            enabled: true,
+            added: true,         // whether it should appear in the list
+            enabled: true,       // whether the user has checked it on
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,

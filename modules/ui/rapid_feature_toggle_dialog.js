@@ -4,6 +4,7 @@ import marked from 'marked';
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
+import { modeBrowse } from '../modes';
 import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
@@ -28,7 +29,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const dataset = rapidContext.datasets()[d.id];
     if (dataset) {
       dataset.enabled = !dataset.enabled;
-      context.map().pan([0,0]);   // trigger a map redraw
+      context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+      context.map().pan([0,0]);             // trigger a map redraw
     }
   }
 
@@ -193,7 +195,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
   function renderDatasets(selection) {
     const datasets = Object.values(rapidContext.datasets())
-      .filter(d => showPreview || !d.beta);    // exclude beta sources unless this is an internal build
+      .filter(d => d.added && (showPreview || !d.beta));    // exclude beta sources unless this is an internal build
 
     const rapidLayer = context.layers().layer('ai-features');
 

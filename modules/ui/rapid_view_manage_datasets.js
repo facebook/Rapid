@@ -4,6 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { geoExtent } from '../geo';
+import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { utilKeybinding, utilRebind } from '../util';
@@ -322,11 +323,12 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
   function toggleDataset(d, i, nodes) {
     const datasets = rapidContext.datasets();
+    const ds = datasets[d.id];
 
-    if (datasets[d.id]) {
-      delete datasets[d.id];
+    if (ds) {
+      ds.added = !ds.added;
 
-    } else {
+    } else {  // hasn't been added yet
       const isBeta = d.groupCategories.some(d => d === '/Categories/Preview');
       const isBuildings = d.groupCategories.some(d => d === '/Categories/Buildings');
 
@@ -337,7 +339,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       let dataset = {
         id: d.id,
         beta: isBeta,
-        enabled: true,
+        added: true,         // whether it should appear in the list
+        enabled: true,       // whether the user has checked it on
         conflated: false,
         service: 'esri',
         color: colors[colorIndex],
@@ -360,11 +363,15 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     nodes[i].blur();
     _content.call(renderModalContent);
+
+    context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+    context.map().pan([0,0]);             // trigger a map redraw
   }
 
 
   function datasetAdded(d) {
-    return !!rapidContext.datasets()[d.id];
+    const datasets = rapidContext.datasets();
+    return datasets[d.id] && datasets[d.id].added;
   }
 
 
