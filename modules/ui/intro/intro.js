@@ -122,9 +122,9 @@ export function uiIntro(context, skipToRapid) {
       }
     });
 
-    // Setup RapiD
+    // Setup RapiD Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();
-    const rapidDatasetsCopy = Object.assign({}, rapidDatasets);  // shallow copy
+    const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
     Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
 
     rapidDatasets.rapid_intro_graph = {
@@ -139,10 +139,9 @@ export function uiIntro(context, skipToRapid) {
     };
 
     if (services.fbMLRoads) {
-      services.fbMLRoads.toggle(false).reset();    // disable network
+      services.fbMLRoads.toggle(false);    // disable network
       const entities = Object.values(coreGraph().load(_rapidGraph).entities);
       services.fbMLRoads.merge('rapid_intro_graph', entities);
-      // services.fbMLRoads.checkpoint('initial');
     }
 
     context.container().selectAll('.main-map .layer-background').style('opacity', 1);
@@ -189,10 +188,14 @@ export function uiIntro(context, skipToRapid) {
         prefs('walkthrough_completed', 'yes');
       }
 
-      // Restore RapiD datasets
+      // Restore RapiD datasets and service
       let rapidDatasets = context.rapidContext().datasets();
       delete rapidDatasets.rapid_intro_graph;
+      Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);
       Object.assign(rapidDatasets, rapidDatasetsCopy);
+      if (services.fbMLRoads) {
+        services.fbMLRoads.toggle(true);
+      }
 
       curtain.remove();
       navwrap.remove();

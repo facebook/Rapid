@@ -218,16 +218,7 @@ export default {
         _datasets[datasetID] = ds;
     },
 
-    // save the current history state
-    checkpoint: function(key) {
-//todo: fix
-        // _checkpoints[key] = {
-        //     graph: _graph,
-        // };
-        return this;
-    },
-
-    reset: function(key) {
+    reset: function() {
         Array.from(_deferredAiFeaturesParsing).forEach(function(handle) {
             window.cancelIdleCallback(handle);
             _deferredAiFeaturesParsing.delete(handle);
@@ -241,11 +232,6 @@ export default {
             ds.tree = coreTree(ds.graph);
             ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         });
-
-//todo: fix
-        // if (key !== undefined && _checkpoints.hasOwnProperty(key)) {
-        //     _graph = _checkpoints[key].graph;
-        // }
 
         return this;
     },

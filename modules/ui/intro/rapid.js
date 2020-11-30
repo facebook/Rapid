@@ -6,7 +6,6 @@ import { t } from '../../core/localizer';
 import { modeBrowse} from '../../modes';
 import { utilRebind } from '../../util/rebind';
 import { icon, pad, transitionTime } from './helper';
-import { services } from '../../services';
 
 
 export function uiIntroRapid(context, reveal) {
@@ -51,7 +50,6 @@ export function uiIntroRapid(context, reveal) {
     context.layers().layer('ai-features').enabled(true);
     context.enter(modeBrowse(context));
     context.history().reset('initial');
-    // services.fbMLRoads.reset('initial');
     reveal('.intro-nav-wrap .chapter-rapid',
       t('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
       { buttonText: t('intro.ok'), buttonCallback: showHideRoads }
