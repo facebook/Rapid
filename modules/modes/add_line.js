@@ -6,6 +6,9 @@ import { behaviorAddWay } from '../behavior/add_way';
 import { modeDrawLine } from './draw_line';
 import { osmNode, osmWay } from '../osm';
 
+// RapiD
+import { prefs } from '../core/preferences';
+
 
 export function modeAddLine(context, mode) {
     mode.id = 'add-line';
@@ -17,6 +20,12 @@ export function modeAddLine(context, mode) {
 
     var defaultTags = {};
     if (mode.preset) defaultTags = mode.preset.setTags(defaultTags, 'line');
+
+    // RapiD tagSources
+    var tagSources = prefs('rapid-internal-feature.tagSources') === 'true';
+    if (tagSources && defaultTags.highway) {
+        defaultTags.source = 'maxar';
+    }
 
 
     function start(loc) {

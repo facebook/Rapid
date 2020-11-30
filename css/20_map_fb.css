@@ -42,14 +42,14 @@
 .highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke: rgb(160, 231, 134);
     stroke-width: 10 !important;
-    stroke-dasharray: 25 !important; 
+    stroke-dasharray: 25 !important;
     stroke-opacity: 1 !important;
 }
 
 /*for low zoom levels, make the wireframe view 'tag edit' dashed line finer.*/
 .low-zoom.highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke-dasharray: 7 !important;
-} 
+}
 
 /*In wireframe mode, restrain the stroke width to something barely wider than normal.*/
 .fill-wireframe.highlight-edited g.lines > path.line.graphedited, .fill-wireframe.highlight-edited g.linegroup.line-stroke > path.way.line.stroke.tagedited {

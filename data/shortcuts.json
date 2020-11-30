@@ -76,11 +76,6 @@
               "text": "shortcuts.browsing.display_options.sidebar"
             },
             {
-                "modifiers": ["⇧"],
-                "shortcuts": ["map_data.layers.ai-features.key"],
-                "text": "shortcuts.browsing.display_options.ai_features_data"
-            },
-            {
               "shortcuts": ["area_fill.wireframe.key"],
               "text": "shortcuts.browsing.display_options.wireframe"
             },
@@ -100,7 +95,7 @@
             {
               "modifiers": ["⇧"],
               "shortcuts": ["map_data.layers.ai-features.key"],
-              "text": "shortcuts.browsing.display_options.ai_features_data",
+              "text": "shortcuts.browsing.display_options.rapid_features_data",
               "rapid": true
             }
           ]
@@ -255,13 +250,13 @@
               "text": "shortcuts.editing.rapid.title"
             },
             {
-              "shortcuts": ["fb_feature_picker.option_accept.key"],
+              "shortcuts": ["rapid_feature_inspector.option_accept.key"],
               "text": "shortcuts.editing.rapid.accept_feature",
               "rapid": true
             },
             {
-              "shortcuts": ["fb_feature_picker.option_reject.key"],
-              "text": "shortcuts.editing.rapid.reject_feature",
+              "shortcuts": ["rapid_feature_inspector.option_ignore.key"],
+              "text": "shortcuts.editing.rapid.ignore_feature",
               "rapid": true
             }
           ]

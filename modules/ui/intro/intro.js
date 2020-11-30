@@ -51,28 +51,27 @@ export function uiIntro(context, skipToRapid) {
 
 
   function intro(selection) {
-    fileFetcher.get('intro_rapid_graph')
-      .then(dataIntroRapidGraph => {
-        // create entities for intro graph and localize names
-        for (let id in dataIntroRapidGraph) {
-          if (!_rapidGraph[id]) {
-            _rapidGraph[id] = osmEntity(localize(dataIntroRapidGraph[id]));
-          }
-        }
-      })
-      .catch(function() { /* ignore */ });
+    Promise.all([
+      fileFetcher.get('intro_rapid_graph'),
+      fileFetcher.get('intro_graph')
+    ])
+    .then(values => {
+      const rapidData = values[0];
+      const introData = values[1];
 
-    fileFetcher.get('intro_graph')
-      .then(dataIntroGraph => {
-        // create entities for intro graph and localize names
-        for (let id in dataIntroGraph) {
-          if (!_introGraph[id]) {
-            _introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
-          }
+      for (const id in rapidData) {
+        if (!_rapidGraph[id]) {
+          _rapidGraph[id] = osmEntity(localize(rapidData[id]));
         }
-        selection.call(startIntro);
-      })
-      .catch(function() { /* ignore */ });
+      }
+      for (const id in introData) {
+        if (!_introGraph[id]) {
+          _introGraph[id] = osmEntity(localize(introData[id]));
+        }
+      }
+
+      selection.call(startIntro);
+    });
   }
 
 
@@ -88,11 +87,8 @@ export function uiIntro(context, skipToRapid) {
     let background = context.background().baseLayerSource();
     let overlays = context.background().overlayLayerSources();
     let opacity = context.container().selectAll('.main-map .layer-background').style('opacity');
-    let aiFeaturesOpacity = context.container().selectAll('.main-map .layer-ai-features').style('opacity');
     let caches = osm && osm.caches();
     let baseEntities = context.history().graph().base().entities;
-    let fbMLRoadsEntities = services.fbMLRoads && services.fbMLRoads.graph().entities;
-    let fbMLRoadsCache = services.fbMLRoads && services.fbMLRoads.cache();
 
     // Show sidebar and disable the sidebar resizing button
     // (this needs to be before `context.inIntro(true)`)
@@ -117,23 +113,38 @@ export function uiIntro(context, skipToRapid) {
     }
     overlays.forEach(d => context.background().toggleOverlayLayer(d));
 
-        // Setup data layers (only OSM & ai-features)
-        let layers = context.layers();
-        layers.all().forEach(function(item) {
-            // if the layer has the function `enabled`
-            if (typeof item.layer.enabled === 'function') {
-                item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
-            }
-        });
+    // Setup data layers (only OSM & ai-features)
+    let layers = context.layers();
+    layers.all().forEach(item => {
+      // if the layer has the function `enabled`
+      if (typeof item.layer.enabled === 'function') {
+        item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
+      }
+    });
 
-        if (services.fbMLRoads) services.fbMLRoads.toggle(false).reset();
+    // Setup RapiD Walkthrough dataset and disable service
+    let rapidDatasets = context.rapidContext().datasets();
+    const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
+    Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
 
-        var coreGraphEntities = coreGraph().load(_rapidGraph).entities;
-        services.fbMLRoads.merge(Object.values(coreGraphEntities));
-        services.fbMLRoads.checkpoint('initial');
+    rapidDatasets.rapid_intro_graph = {
+      id: 'rapid_intro_graph',
+      beta: false,
+      added: true,
+      enabled: true,
+      conflated: false,
+      service: 'fbml',
+      color: '#da26d3',
+      label: 'RapiD Walkthrough'
+    };
+
+    if (services.fbMLRoads) {
+      services.fbMLRoads.toggle(false);    // disable network
+      const entities = Object.values(coreGraph().load(_rapidGraph).entities);
+      services.fbMLRoads.merge('rapid_intro_graph', entities);
+    }
 
     context.container().selectAll('.main-map .layer-background').style('opacity', 1);
-    context.container().selectAll('.main-map .layer-ai-features').style('opacity', 1);
 
     let curtain = uiCurtain(context.container().node());
     selection.call(curtain);
@@ -177,15 +188,21 @@ export function uiIntro(context, skipToRapid) {
         prefs('walkthrough_completed', 'yes');
       }
 
+      // Restore RapiD datasets and service
+      let rapidDatasets = context.rapidContext().datasets();
+      delete rapidDatasets.rapid_intro_graph;
+      Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);
+      Object.assign(rapidDatasets, rapidDatasetsCopy);
+      if (services.fbMLRoads) {
+        services.fbMLRoads.toggle(true);
+      }
+
       curtain.remove();
       navwrap.remove();
       context.container().selectAll('.main-map .layer-background').style('opacity', opacity);
-      context.container().selectAll('.main-map .layer-ai-features').style('opacity', aiFeaturesOpacity);
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
       if (osm) { osm.toggle(true).reset().caches(caches); }
       context.history().reset().merge(Object.values(baseEntities));
-      if (services.fbMLRoads) {services.fbMLRoads.toggle(true).reset().cache(fbMLRoadsCache);}
-      services.fbMLRoads.reset().merge(Object.values(fbMLRoadsEntities));
       context.background().baseLayerSource(background);
       overlays.forEach(d => context.background().toggleOverlayLayer(d));
       if (history) { context.history().fromJSON(history, false); }

@@ -1,69 +1,64 @@
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
-import { uiSplashRapid } from './splash_rapid';
+import { uiRapidSplash } from './rapid_splash';
 
 
-export function uiRapidFirstEdit(context) {
+export function uiRapidFirstEditDialog(context) {
 
-    return function(selection) {
-        var modalSelection = uiModal(selection);
+  return function(selection) {
+    let modalSelection = uiModal(selection);
 
-        modalSelection.select('.modal')
-            .attr('class', 'modal-splash modal modal-rapid');
+    modalSelection.select('.modal')
+      .attr('class', 'modal rapid-modal');   // RapiD styling
 
-        var firstEditModal = modalSelection.select('.content')
-            .append('div')
-            .attr('class', 'fillL');
+    let firstEditModal = modalSelection.select('.content');
 
-        firstEditModal
-            .append('div')
-            .attr('class','modal-section')
-            .append('h3')
-            .html(t('rapid_first_edit.nice',
-            {
-                rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
-            }));
+    firstEditModal
+      .append('div')
+      .attr('class', 'modal-section')
+      .append('h3')
+      .html(t('rapid_first_edit.nice', { rapidicon: icon('#iD-logo-rapid', 'logo-rapid') }));
 
-        firstEditModal
-            .append('div')
-            .attr('class','modal-section')
-            .append('p')
-            .text(t('rapid_first_edit.text'));
+    firstEditModal
+      .append('div')
+      .attr('class', 'modal-section')
+      .append('p')
+      .text(t('rapid_first_edit.text'));
 
-        var buttonWrap = firstEditModal
-            .append('div')
-            .attr('class', 'modal-actions');
+    let buttonWrap = firstEditModal
+      .append('div')
+      .attr('class', 'modal-actions');
 
-        var exploring = buttonWrap
-            .append('button')
-            .attr('class', 'rapid-explore')
-            .on('click', function() {
-                modalSelection.close();
-            });
+    let exploring = buttonWrap
+      .append('button')
+      .attr('class', 'rapid-explore')
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        modalSelection.close();
+      });
 
-        exploring
-            .append('div')
-            .text(t('rapid_first_edit.exploring'));
+    exploring
+      .append('div')
+      .text(t('rapid_first_edit.exploring'));
 
-        var loginToOsm = buttonWrap
-            .append('button')
-            .attr('class', 'rapid-login-to-osm')
-            .on('click', function() {
-                modalSelection.close();
+    let loginToOsm = buttonWrap
+      .append('button')
+      .attr('class', 'rapid-login-to-osm')
+      .on('click', (d, i, nodes) => {
+        d3_select(nodes[i]).node().blur();
+        modalSelection.close();
+        const osm = context.connection();
+        if (!osm) return;
+        osm.authenticate(() => context.container().call(uiRapidSplash(context)) );
+      });
 
-                var osm = context.connection();
-                osm.authenticate(function() {
-                    context.container().call(uiSplashRapid(context));
-                });
-            });
+    loginToOsm
+      .append('div')
+      .text(t('rapid_first_edit.login_with_osm'));
 
-        loginToOsm
-            .append('div')
-            .text(t('rapid_first_edit.login_with_osm'));
-
-        modalSelection.select('button.close')
-            .attr('class','hide');
-
-    };
+    modalSelection.select('button.close')
+      .attr('class', 'hide');
+  };
 }

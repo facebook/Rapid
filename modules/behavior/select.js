@@ -3,12 +3,13 @@ import { event as d3_event, select as d3_select } from 'd3-selection';
 import { geoVecLength } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
-import { modeSelectAiFeatures } from '../modes/select_ai_features';
 import { modeSelectData } from '../modes/select_data';
 import { modeSelectNote } from '../modes/select_note';
 import { modeSelectError } from '../modes/select_error';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { utilFastMouse } from '../util/util';
+
+import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
 
 export function behaviorSelect(context) {
@@ -283,11 +284,11 @@ export function behaviorSelect(context) {
         }
 
         var newMode;
-        if (datum && datum.__fbid__) {    // clicked an FB road ..
+        if (datum && datum.__fbid__) {    // clicked a RapiD feature ..
             context
                 .selectedNoteID(null)
                 .selectedErrorID(null)
-                .enter(modeSelectAiFeatures(context, datum));
+                .enter(modeRapidSelectFeatures(context, datum));
 
         } else if (datum instanceof osmEntity) {    // clicked an entity..
             var selectedIDs = context.selectedIDs();

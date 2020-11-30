@@ -248,7 +248,10 @@ export function uiSectionBackgroundList(context) {
       .selectAll('label')
       .append('span')
       .attr('class', 'best')
-      .attr('title', t('background.best_imagery'))
+      .call(uiTooltip()
+        .title(t('background.best_imagery'))
+        .placement('bottom')
+      )
       .call(svgIcon('#iD-icon-best-background'));
 
     layerList.selectAll('li')

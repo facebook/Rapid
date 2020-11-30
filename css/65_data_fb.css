@@ -6,15 +6,14 @@
     cursor: url(img/cursor-select-line.png), pointer;
 }
 
-/* Road Lines */
-
+/* Lines */
 .layer-ai-features path.stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 5;
     fill: none;
 }
 .layer-ai-features path.casing {
-    stroke: #f0f;
+    stroke: #111;
     stroke-width: 7;
     stroke-opacity: 0;
     fill: none;
@@ -48,41 +47,69 @@
     stroke-opacity: 0.4;
 }
 
-/* Road Vertices */
-
+/* Vertices */
 .layer-ai-features g.vertex .fill {
     fill: #fff;
 }
-
 .layer-ai-features g.vertex .stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 3;
     fill: #fff;
 }
-
 .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }
 
-.layer-ai-features .road.hide, .layer-ai-features .building.hide {
-    display: none;
-}
 
+/* Polygons */
 .layer-ai-features  path.line.building.stroke {
-    stroke-width: 5px;
-    stroke: #ff26d4;
-     fill: url(#ai-building);  
-    fill-opacity: 1; 
+    stroke-width: 3;
+    fill-opacity: 1;
 }
-
+.layer-ai-features  path.line.building.casing {
+    stroke-width: 5;
+    fill-opacity: 1;
+}
 .layer-ai-features  path.line.building.shadow {
-    stroke-width: 12px;
+    stroke-width: 15;
 }
 
-.low-zoom .layer-ai-features path.line.building {
-    stroke-width: 3px;
+.low-zoom .layer-ai-features path.line.building.stroke {
+    stroke-width: 2;
+}
+.low-zoom .layer-ai-features path.line.building.casing {
+    stroke-width: 4;
+}
+.low-zoom .layer-ai-features path.line.building.shadow {
+    stroke-width: 10;
 }
 
-.layer-ai-features .node.vertex.building circle{
-    opacity: 0; 
+
+/* Nodes */
+.layer-ai-features g.node.point .shadow {
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-opacity: 0;
+    fill: none;
 }
+.layer-ai-features g.node.point.hover:not(.selected) .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+.layer-ai-features g.node.point.selected .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+
+.layer-ai-features g.node.point .fill {
+    fill: currentColor;
+}
+.layer-ai-features g.node.point .stroke {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #333;
+}
+.low-zoom .layer-ai-features g.node.point .stroke {
+    stroke-width: 1px;
+}
+

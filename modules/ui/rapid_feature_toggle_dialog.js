@@ -1,192 +1,325 @@
-import {
-    event as d3_event,
-    select as d3_select
-} from 'd3-selection';
+import { event as d3_event, select as d3_select } from 'd3-selection';
 
-import { t } from '../core/localizer';
-import { icon } from './intro/helper';
-import { uiModal } from './modal';
 import marked from 'marked';
-
+import { t, localizer } from '../core/localizer';
+import { prefs } from '../core/preferences';
+import { icon } from './intro/helper';
+import { modeBrowse } from '../modes';
+import { svgIcon } from '../svg/icon';
+import { uiModal } from './modal';
+import { uiRapidColorpicker } from './rapid_colorpicker';
+import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
+  const rapidContext = context.rapidContext();
+  const showPreview = prefs('rapid-internal-feature.esriPreview') === 'true';
+
+  let _modalSelection = d3_select(null);
+  let _content = d3_select(null);
+  let _viewManageModal;
+  let _colorpicker;
 
 
-    function toggleSvgBuildings () {
-        var drawAiFeatures = context.layers().layer('ai-features');
-        drawAiFeatures.toggleBuildings();
+  function datasetEnabled(d) {
+    const dataset = rapidContext.datasets()[d.id];
+    return dataset && dataset.enabled;
+  }
+
+  function toggleDataset(d) {
+    const dataset = rapidContext.datasets()[d.id];
+    if (dataset) {
+      dataset.enabled = !dataset.enabled;
+      context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+      context.map().pan([0,0]);             // trigger a map redraw
     }
+  }
 
+  function changeColor(datasetID, color) {
+    const dataset = rapidContext.datasets()[datasetID];
+    if (dataset) {
+      dataset.color = color;
+      context.map().pan([0,0]);   // trigger a map redraw
+      _content.call(renderModalContent);
 
-    function toggleSvgRoads() {
-        var drawAiFeatures = context.layers().layer('ai-features');
-        drawAiFeatures.toggleRoads();
+      // if a RapiD feature is selected, reselect it to update sidebar too
+      const mode = context.mode();
+      if (mode && mode.id === 'select-ai-features')
+      context.enter(mode, mode.selectedDatum());
     }
+  }
+
+  function toggleRapid() {
+    const rapidLayer = context.layers().layer('ai-features');
+    rapidLayer.enabled(!rapidLayer.enabled());   // toggling the layer will trigger a map redraw
+    _content.call(renderModalContent);
+  }
 
 
-    function handleToggleAllClick(){
-        var drawAiFeatures = context.layers().layer('ai-features');
-        drawAiFeatures.enabled(!drawAiFeatures.enabled());
-        redrawOnToggle();
+  function keyPressHandler() {
+    if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
+      toggleRapid();
     }
+  }
 
 
-    function keyPressFormHandler(){
-        if (d3_event.shiftKey &&
-            d3_event.key === t('map_data.layers.ai-features.key')){
-            handleToggleAllClick();
-        }
-    }
+  return function render(selection) {
+    _modalSelection = uiModal(selection);
+
+    _modalSelection.select('.modal')
+      .attr('class', 'modal rapid-modal');   // RapiD styling
+
+    _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
+      .on('done', () => _content.call(renderModalContent));
+
+    _colorpicker = uiRapidColorpicker(context, _modalSelection)
+      .on('change', changeColor);
+
+    _content = _modalSelection.select('.content')
+      .append('div')
+      .attr('class', 'rapid-stack')
+      .on('keypress', keyPressHandler);
+
+    _content
+      .call(renderModalContent);
+
+    _content.selectAll('.ok-button')
+      .node()
+      .focus();
+
+    featureToggleKeyDispatcher
+      .on('ai_feature_toggle', () => _content.call(renderModalContent) );
+  };
 
 
-    function redrawOnToggle() {
-        var drawAiFeatures = context.layers().layer('ai-features');
-        // We need check/uncheck the 'all options' boxes, and
-        // disable the other checkboxes so that the user
-        // cannot interact with them.
-        var roadCheckbox = d3_select('#rapid-road-toggle');
-        var buildingCheckbox = d3_select('#rapid-building-toggle');
-        var allCheckbox = d3_select('#rapid-all-toggle');
+  function renderModalContent(selection) {
+    const rapidLayer = context.layers().layer('ai-features');
 
-        // We also need to add a class to the whole option so that we
-        // can style it accordingly.
-        var roadOption = d3_select('#section-rapid-road-toggle');
-        var buildingOption = d3_select('#section-rapid-building-toggle');
+    /* Toggle All */
+    let toggleAll = selection.selectAll('.rapid-toggle-all')
+      .data([0]);
 
-        if (drawAiFeatures.showAll()) {
-            allCheckbox.property('checked', true);
-            roadCheckbox.attr('disabled', null);
-            buildingCheckbox.attr('disabled', null);
-            roadOption.classed('disabled', false);
-            buildingOption.classed('disabled', false);
+    // enter
+    let toggleAllEnter = toggleAll
+      .enter()
+      .append('div')
+      .attr('class', 'modal-section rapid-checkbox rapid-toggle-all');
 
-        } else {
-            allCheckbox.property('checked', false);
-            roadCheckbox.attr('disabled', true);
-            buildingCheckbox.attr('disabled', true);
-            roadOption.classed('disabled', true);
-            buildingOption.classed('disabled', true);
-        }
-    }
+    let toggleAllTextEnter = toggleAllEnter
+      .append('div')
+      .attr('class', 'rapid-feature-label-container');
+
+    toggleAllTextEnter
+      .append('div')
+      .attr('class', 'rapid-feature-label')
+      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#iD-logo-rapid', 'logo-rapid') }));
+
+    toggleAllTextEnter
+      .append('span')
+      .attr('class', 'rapid-feature-hotkey')
+      .html('(' + AIFeatureToggleKey + ')');
+
+    let toggleAllCheckboxEnter = toggleAllEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-inputs')
+      .append('label')
+      .attr('class', 'rapid-checkbox-label');
+
+    toggleAllCheckboxEnter
+      .append('input')
+      .attr('type', 'checkbox')
+      .attr('class', 'rapid-feature-checkbox')
+      .on('click', toggleRapid);
+
+    toggleAllCheckboxEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-custom');
+
+    // update
+    toggleAll = toggleAll
+      .merge(toggleAllEnter);
+
+    toggleAll.selectAll('.rapid-feature-checkbox')
+      .property('checked', rapidLayer.showAll());
 
 
-    return function(selection) {
-        var modalSelection = uiModal(selection);
+    /* Dataset List */
+    let datasets = selection.selectAll('.rapid-datasets-container')
+      .data([0]);
 
-        modalSelection.select('.modal')
-            .attr('class', 'modal-splash modal modal-rapid');
+    let datasetsEnter = datasets.enter()
+      .append('div')
+      .attr('class', 'rapid-datasets-container');
 
-        var modal = modalSelection.select('.content')
-            .append('form')
-            .attr('class', 'fillL rapid-feature rapid-stack')
-            .on('keypress', keyPressFormHandler);
+    datasets
+      .merge(datasetsEnter)
+      .call(renderDatasets);
 
 
-        var drawAiFeatures = context.layers().layer('ai-features');
+    /* View/Manage Datasets */
+    let manageDatasetsEnter = selection.selectAll('.rapid-manage-datasets')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'modal-section rapid-checkbox rapid-manage-datasets')
+      .on('click', () => context.container().call(_viewManageModal));
 
-        addCheckBox({
-            modal: modal,
-            id: 'rapid-all-toggle',
-            label: t('rapid_feature_toggle.toggle_all', {
-                rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
-            }),
-            description: null,
-            handler: handleToggleAllClick,
-            enabled: drawAiFeatures.showAll(),
-            greyout: false
-        });
+    manageDatasetsEnter
+      .append('div')
+      .attr('class', 'rapid-feature-label-container')
+      .append('div')
+      .attr('class', 'rapid-feature-label')
+      .text(t('rapid_feature_toggle.view_manage_datasets'));
 
-        modal
+    manageDatasetsEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-inputs')
+      .append('div')
+      .attr('class', 'rapid-checkbox-label')
+      .call(svgIcon(localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward', 'icon-30'));
+
+
+    /* OK Button */
+    let buttonsEnter = selection.selectAll('.modal-section.buttons')
+      .data([0])
+      .enter()
+      .append('div')
+      .attr('class', 'modal-section buttons');
+
+    buttonsEnter
+      .append('button')
+      .attr('class', 'button ok-button action')
+      .on('click', () => _modalSelection.remove())
+      .text(t('confirm.okay'));
+  }
+
+
+  function renderDatasets(selection) {
+    const datasets = Object.values(rapidContext.datasets())
+      .filter(d => d.added && (showPreview || !d.beta));    // exclude beta sources unless this is an internal build
+
+    const rapidLayer = context.layers().layer('ai-features');
+
+    let rows = selection.selectAll('.rapid-checkbox-dataset')
+      .data(datasets, d => d.id);
+
+    // exit
+    rows.exit()
+      .remove();
+
+    // enter
+    let rowsEnter = rows.enter()
+      .append('div')
+      .attr('class', 'modal-section rapid-checkbox rapid-checkbox-dataset');
+
+    rowsEnter
+      .append('div')
+      .attr('class', 'rapid-feature')
+      .each((d, i, nodes) => {
+        let selection = d3_select(nodes[i]);
+
+        // line1: name and details
+        let labelEnter = selection
+          .append('div')
+          .attr('class', 'rapid-feature-label-container');
+
+        labelEnter
+          .append('div')
+          .attr('class', 'rapid-feature-label')
+          .text(d.label || d.id);   // fallback to dataset ID
+
+        if (d.beta) {
+          labelEnter
             .append('div')
-            .attr('class','modal-section rapid-checkbox section-divider');
-
-        addCheckBox({
-            modal: modal,
-            id: 'rapid-road-toggle',
-            label: t('rapid_feature_toggle.roads'),
-            license: marked(t('rapid_feature_toggle.roads_license')),
-            description: t('rapid_feature_toggle.roads_provided_by'),
-            handler: toggleSvgRoads,
-            enabled: drawAiFeatures.showRoads(),
-            greyout: !drawAiFeatures.showAll()
-        });
-
-        addCheckBox({
-            modal: modal,
-            id: 'rapid-building-toggle',
-            label: t('rapid_feature_toggle.buildings'),
-            description: t('rapid_feature_toggle.buildings_provided_by'),
-            license: marked(t('rapid_feature_toggle.buildings_license')),
-            handler: toggleSvgBuildings,
-            enabled: drawAiFeatures.showBuildings(),
-            greyout: !drawAiFeatures.showAll()
-        });
-
-        featureToggleKeyDispatcher.on('ai_feature_toggle', function () {
-            redrawOnToggle();
-        });
-    };
-
-
-    function addCheckBox(options) {
-        var toggleOption = options.modal
-            .append('div')
-            .attr('class','modal-section rapid-checkbox')
-            .classed('disabled', options.greyout)
-            .attr('id', 'section-' + options.id);
-
-        var toggleOptionText =  toggleOption.append('div')
-            .attr('class', 'rapid-feature-label-container');
-
-        toggleOptionText.append('div')
-            .attr('class', 'rapid-feature-label')
-            .html(options.label);
-
-        if (options.description) {
-            toggleOptionText
-                .append('div')
-                .attr('class', 'rapid-feature-label-divider');
-
-            toggleOptionText
-                .append('div')
-                .attr('class', 'rapid-feature-description')
-                .text(options.description);
-        } else {
-            toggleOptionText
-                .append('span')
-                .attr('class', 'rapid-feature-hotkey')
-                .html('(' + AIFeatureToggleKey + ')');
+            .attr('class', 'rapid-feature-label-beta beta')
+            .attr('title', t('rapid_poweruser_features.beta'));
         }
 
-        if (options.license) {
-            toggleOptionText
-                .append('div')
-                .attr('class', 'rapid-feature-label-divider');
+        if (d.description) {
+          labelEnter
+            .append('div')
+            .attr('class', 'rapid-feature-label-divider');
 
-            toggleOptionText
-                .append('div')
-                .attr('class', 'rapid-feature-license')
-                .html(options.license);
-
-            toggleOptionText.select('p a')
-                .attr('target','_blank');
+          labelEnter
+            .append('div')
+            .attr('class', 'rapid-feature-description')
+            .text(d.description);
         }
 
-        var customCheckbox = toggleOption
-            .append('label')
-            .attr('class', 'rapid-checkbox-label');
-
-        customCheckbox
-            .append('input')
-            .attr('type', 'checkbox')
-            .attr('id', options.id)
-            .attr('class', 'rapid-feature-checkbox')
-            .property('checked', options.enabled)
-            .attr('disabled', options.greyout ? true : null)
-            .on('click', options.handler);
-
-        customCheckbox
+        if (d.license_markdown) {
+          labelEnter
             .append('div')
-            .attr('class', 'rapid-checkbox-custom');
-    }
+            .attr('class', 'rapid-feature-label-divider');
+
+          labelEnter
+            .append('div')
+            .attr('class', 'rapid-feature-license')
+            .html(marked(d.license_markdown));
+
+          labelEnter.select('p a')
+            .attr('target', '_blank');
+        }
+
+        // line2: dataset extent
+        selection
+          .append('div')
+          .attr('class', 'rapid-feature-extent-container')
+          .each((d, i, nodes) => {
+            let selection = d3_select(nodes[i]);
+
+            // if the data spans more than 100°*100°, it might as well be worldwide
+            if (d.extent && d.extent.area() < 10000) {
+              selection
+                .append('a')
+                .attr('href', '#')
+                .text(t('rapid_feature_toggle.center_map'))
+                .on('click', () => {
+                  d3_event.preventDefault();
+                  context.map().extent(d.extent);
+                });
+            } else {
+              selection
+                .text(t('rapid_feature_toggle.worldwide'));
+            }
+          });
+      });
+
+    let inputsEnter = rowsEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-inputs');
+
+    inputsEnter
+      .append('label')
+      .attr('class', 'rapid-colorpicker-label');
+
+    let checkboxEnter = inputsEnter
+      .append('label')
+      .attr('class', 'rapid-checkbox-label');
+
+    checkboxEnter
+      .append('input')
+      .attr('type', 'checkbox')
+      .attr('class', 'rapid-feature-checkbox')
+      .on('click', toggleDataset);
+
+    checkboxEnter
+      .append('div')
+      .attr('class', 'rapid-checkbox-custom');
+
+
+    // update
+    rows = rows
+      .merge(rowsEnter)
+      .classed('disabled', !rapidLayer.showAll());
+
+    rows.selectAll('.rapid-colorpicker-label')
+      .attr('disabled', rapidLayer.showAll() ? null : true)
+      .call(_colorpicker);
+
+    rows.selectAll('.rapid-checkbox-label')
+      .classed('disabled', !rapidLayer.showAll());
+
+    rows.selectAll('.rapid-feature-checkbox')
+      .property('checked', datasetEnabled)
+      .attr('disabled', rapidLayer.showAll() ? null : true);
+  }
 }

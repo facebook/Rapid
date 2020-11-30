@@ -1,3 +1,4 @@
+import serviceEsriData from './esri_data';
 import serviceFbAIFeatures from './fb_ai_features';
 import serviceKeepRight from './keepRight';
 import serviceImproveOSM from './improveOSM';
@@ -16,6 +17,7 @@ import serviceWikipedia from './wikipedia';
 
 
 export var services = {
+    esriData: serviceEsriData,
     fbMLRoads: serviceFbAIFeatures,
     geocoder: serviceNominatim,
     keepRight: serviceKeepRight,
@@ -34,6 +36,7 @@ export var services = {
 };
 
 export {
+    serviceEsriData,
     serviceFbAIFeatures,
     serviceKeepRight,
     serviceImproveOSM,

@@ -186,14 +186,14 @@ display: none;
 .ideditor .highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke: rgb(160, 231, 134);
     stroke-width: 10 !important;
-    stroke-dasharray: 25 !important; 
+    stroke-dasharray: 25 !important;
     stroke-opacity: 1 !important;
 }
 
 /*for low zoom levels, make the wireframe view 'tag edit' dashed line finer.*/
 .ideditor .low-zoom.highlight-edited.fill-wireframe g.linegroup.line-stroke > path.way.line.stroke.tagedited {
     stroke-dasharray: 7 !important;
-} 
+}
 
 /*In wireframe mode, restrain the stroke width to something barely wider than normal.*/
 .ideditor .fill-wireframe.highlight-edited g.lines > path.line.graphedited, .ideditor .fill-wireframe.highlight-edited g.linegroup.line-stroke > path.way.line.stroke.tagedited {
@@ -1014,8 +1014,8 @@ display: none;
 /* wide highways */
 .ideditor path.line.shadow.tag-highway.airoad:not(selected) {
     stroke-width: 20;
-    stroke: #ff26d488; 
-    stroke-opacity: 1; 
+    stroke: #da26d388;
+    stroke-opacity: 1;
 }
 .ideditor preset-icon-container
 
@@ -2885,15 +2885,14 @@ display: none;
     cursor: url(img/cursor-select-line.png), pointer;
 }
 
-/* Road Lines */
-
+/* Lines */
 .ideditor .layer-ai-features path.stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 5;
     fill: none;
 }
 .ideditor .layer-ai-features path.casing {
-    stroke: #f0f;
+    stroke: #111;
     stroke-width: 7;
     stroke-opacity: 0;
     fill: none;
@@ -2927,44 +2926,73 @@ display: none;
     stroke-opacity: 0.4;
 }
 
-/* Road Vertices */
-
+/* Vertices */
 .ideditor .layer-ai-features g.vertex .fill {
     fill: #fff;
 }
-
 .ideditor .layer-ai-features g.vertex .stroke {
-    stroke: #ff26d4;
+    stroke: currentColor;
     stroke-width: 3;
     fill: #fff;
 }
-
 .ideditor .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }
 
-.ideditor .layer-ai-features .road.hide, .ideditor .layer-ai-features .building.hide {
-    display: none;
-}
 
+/* Polygons */
 .ideditor .layer-ai-features  path.line.building.stroke {
-    stroke-width: 5px;
-    stroke: #ff26d4;
-     fill: url(#ai-building);  
-    fill-opacity: 1; 
+    stroke-width: 3;
+    fill-opacity: 1;
 }
-
+.ideditor .layer-ai-features  path.line.building.casing {
+    stroke-width: 5;
+    fill-opacity: 1;
+}
 .ideditor .layer-ai-features  path.line.building.shadow {
-    stroke-width: 12px;
+    stroke-width: 15;
 }
 
-.ideditor .low-zoom .layer-ai-features path.line.building {
-    stroke-width: 3px;
+.ideditor .low-zoom .layer-ai-features path.line.building.stroke {
+    stroke-width: 2;
+}
+.ideditor .low-zoom .layer-ai-features path.line.building.casing {
+    stroke-width: 4;
+}
+.ideditor .low-zoom .layer-ai-features path.line.building.shadow {
+    stroke-width: 10;
 }
 
-.ideditor .layer-ai-features .node.vertex.building circle{
-    opacity: 0; 
+
+/* Nodes */
+.ideditor .layer-ai-features g.node.point .shadow {
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-opacity: 0;
+    fill: none;
 }
+.ideditor .layer-ai-features g.node.point.hover:not(.selected) .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+.ideditor .layer-ai-features g.node.point.selected .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+
+.ideditor .layer-ai-features g.node.point .fill {
+    fill: currentColor;
+}
+.ideditor .layer-ai-features g.node.point .stroke {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #333;
+}
+.ideditor .low-zoom .layer-ai-features g.node.point .stroke {
+    stroke-width: 1px;
+}
+
+
 /* OSM Notes and QA Layers */
 
 .ideditor .qa-header-icon .qaItem-fill,
@@ -3236,159 +3264,343 @@ display: none;
 .ideditor.mode-select-note .fill-partial path.area.fill {
     pointer-events: visibleStroke;
 }
-.ideditor svg.logo-rapid {
-    fill: #333;
-    color: #ff26d4;
+/* possibly existed before and was removed? */
+.ideditor svg.icon.icon-30 {
+    width: 30px;
+    height: 30px;
 }
 
-/* Toolbar button */
+.ideditor svg.logo-rapid,
+.ideditor .icon.rapid {
+    fill: #333;
+    color: #da26d3;
+}
 
-.ideditor button.ai-features-toggle svg.logo-rapid {
+.ideditor svg.logo-rapid.dark,
+.ideditor .dark .icon.rapid,
+.ideditor .icon.rapid.dark {
+    fill: #eee;
+    color: #da26d3;
+}
+
+/* Toolbar buttons */
+.ideditor button.rapid-features svg.logo-rapid {
     width: 46px;
     height: 22px;
 }
-.ideditor button.ai-features-toggle.layer-off use {
+.ideditor button.rapid-poweruser-features .beta {
+    font-size: 1.2em;
+    margin: 0;
+}
+.ideditor button.rapid-features.layer-off use {
     fill: rgba(0,0,0,.4);
     color: rgba(0,0,0,.4);
 }
 
-
-/* Sidebar component */
-
-.ideditor .fb-road-picker svg.logo-rapid {
-    height: 40px;
-    margin-top: -10px;
+.ideditor .fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
 }
 
-.ideditor .fb-road-picker .header .fb-road-picker-close {
+
+/* UI Buttons */
+/* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
+/* We can not just add an `opacity: 0.5` .disabled rule because that affects children too including tooltips */
+.ideditor .rapid-inspector button,
+.ideditor .modal.rapid-modal button {
+    border: 0;
+    background: #da26d3;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 30px;
+    height: 3rem;
+}
+.ideditor .rapid-inspector button svg,
+.ideditor .modal.rapid-modal button svg {
+    color: #eee;
+    fill: #da26d3;
+}
+.ideditor .rapid-inspector button:focus,
+.ideditor .rapid-inspector button:hover,
+.ideditor .modal.rapid-modal button:focus,
+.ideditor .modal.rapid-modal button:hover {
+    background: #c6d;
+}
+.ideditor .rapid-inspector button:focus svg,
+.ideditor .rapid-inspector button:hover svg,
+.ideditor .modal.rapid-modal button:focus svg,
+.ideditor .modal.rapid-modal button:hover svg {
+    fill: #c6d;
+}
+
+.ideditor .rapid-inspector button.disabled,
+.ideditor .modal.rapid-modal button.disabled {
+    background: #da26d388;
+    color: #eee8;
+}
+.ideditor .rapid-inspector button.disabled svg,
+.ideditor .modal.rapid-modal button.disabled svg {
+    color: #eee8;
+    fill: #da26d388;
+}
+.ideditor .rapid-inspector button.disabled:focus,
+.ideditor .rapid-inspector button.disabled:hover,
+.ideditor .modal.rapid-modal button.disabled:focus,
+.ideditor .modal.rapid-modal button.disabled:hover {
+    background: #c6d8;
+}
+.ideditor .rapid-inspector button.disabled:focus svg,
+.ideditor .rapid-inspector button.disabled:hover svg,
+.ideditor .modal.rapid-modal button.disabled:focus svg,
+.ideditor .modal.rapid-modal button.disabled:hover svg {
+    fill: #c6d8;
+}
+
+
+.ideditor .rapid-inspector button.secondary,
+.ideditor .modal.rapid-modal button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+.ideditor .rapid-inspector button.secondary svg,
+.ideditor .modal.rapid-modal button.secondary svg {
+    color: #eee;
+    fill: #666;
+}
+.ideditor .rapid-inspector button.secondary:focus,
+.ideditor .rapid-inspector button.secondary:hover,
+.ideditor .modal.rapid-modal button.secondary:focus,
+.ideditor .modal.rapid-modal button.secondary:hover {
+    background: #888;
+}
+.ideditor .rapid-inspector button.secondary:focus svg,
+.ideditor .rapid-inspector button.secondary:hover svg,
+.ideditor .modal.rapid-modal button.secondary:focus svg,
+.ideditor .modal.rapid-modal button.secondary:hover svg {
+    fill: #888;
+}
+
+.ideditor .rapid-inspector button.secondary.disabled,
+.ideditor .modal.rapid-modal button.secondary.disabled {
+    background: #6668;
+    color: #eee8;
+}
+.ideditor .rapid-inspector button.secondary.disabled svg,
+.ideditor .modal.rapid-modal button.secondary.disabled svg {
+    color: #eee8;
+    fill: #6668;
+}
+.ideditor .rapid-inspector button.secondary.disabled:focus,
+.ideditor .rapid-inspector button.secondary.disabled:hover,
+.ideditor .modal.rapid-modal button.secondary.disabled:focus,
+.ideditor .modal.rapid-modal button.secondary.disabled:hover {
+    background: #8888;
+}
+.ideditor .rapid-inspector button.secondary.disabled:focus svg,
+.ideditor .rapid-inspector button.secondary.disabled:hover svg,
+.ideditor .modal.rapid-modal button.secondary.disabled:focus svg,
+.ideditor .modal.rapid-modal button.secondary.disabled:hover svg {
+    fill: #8888;
+}
+
+
+.ideditor .modal.rapid-modal button svg.logo-rapid,
+.ideditor .modal.rapid-modal button svg.logo-rapid:focus,
+.ideditor .modal.rapid-modal button svg.logo-rapid:hover {
+    color: #eee;
+    fill: #eee;
+}
+.ideditor .modal.rapid-modal button.disabled svg.logo-rapid,
+.ideditor .modal.rapid-modal button.disabled svg.logo-rapid:focus,
+.ideditor .modal.rapid-modal button.disabled svg.logo-rapid:hover {
+    color: #eee8;
+    fill: #eee8;
+}
+
+
+/* Sidebar - Rapid Inspector */
+.ideditor .rapid-inspector > div {
+    background: rgb(25, 25, 25);
+    color: #ddd;
+}
+
+.ideditor .rapid-inspector svg.logo-rapid {
+    height: 35px;
+}
+
+.ideditor .rapid-inspector .header {
+    color: #fff;
+    border-bottom: 1px solid #aaaa;
+}
+.ideditor .rapid-inspector .header h3 {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.ideditor .rapid-inspector .header button.rapid-inspector-close {
     position: absolute;
     top: 0;
     right: 0;
+    background: transparent;
+}
+.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
+    right: unset;
+    left: 0;
+}
+.ideditor .rapid-inspector .header button.rapid-inspector-close svg {
+    color: #da26d3;
+}
+.ideditor .rapid-inspector .header button.rapid-inspector-close:hover {
+    background: #8885;
 }
 
-.ideditor .fb-road-picker .body {
+.ideditor .rapid-inspector .tooltip .popover-inner {
+    border: 1px solid #aaaa;
+}
+
+.ideditor .rapid-inspector .body {
     padding: 20px;
 }
-
-.ideditor .fb-road-picker .body h4 {
-    font-weight: normal;
-    text-align: center;
+.ideditor .rapid-inspector .body p {
+    padding: 20px 0;
 }
 
-.ideditor .fb-road-picker .preset-list-item {
-    margin: 15px 0;
-}
-
-.ideditor .fb-road-picker .preset-list-item .preset-icon-container svg {
-    height: 34px;
-    width: 34px;
-}
-.ideditor .fb-road-picker .preset-list-item .preset-icon-container svg use {
-    color: #4c4c4c;
-    fill: none;
-}
-
-.ideditor .fb-road-picker .preset-list-item .tag-reference-body {
-    padding: 10px;
-}
-.ideditor .fb-road-picker .preset-list-item .tag-reference-body.shown {
-    display: block;
-}
-
-.ideditor .modal-whatsnew .modal-section.body{
+.ideditor .rapid-inspector .feature-info {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    padding: 5px 10px;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #333;
+}
+.ideditor .rapid-inspector .feature-info .dataset-label {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    font-size: 14px;
+    font-weight: bold;
+}
+.ideditor .rapid-inspector .feature-info .dataset-beta {
+    font-size: 13px;
+}
+
+.ideditor .rapid-inspector .tag-info {
+    padding: 7px;
+    background: #444;
+    border-radius: 0 0 5px 5px;
+    border: 1px transparent;
+}
+.ideditor .rapid-inspector .tag-bag {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+.ideditor .rapid-inspector .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
+}
+.ideditor .rapid-inspector .tag-info .tag-entry {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border: 1px solid #aaaa;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+    margin: 0 3px;
+}
+.ideditor .rapid-inspector .tag-key,
+.ideditor .rapid-inspector .tag-value {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+    padding: 0px 3px;
+}
+.ideditor .rapid-inspector .tag-key {
+    font-weight: bold;
+    font-size: unset;
+}
+
+.ideditor .rapid-inspector-choices {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+}
+
+.ideditor .rapid-inspector-choice .choice-wrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    margin: 10px;
+    height: 50px;
+}
+
+.ideditor .rapid-inspector-choice .choice-wrap > button {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    border: 0;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    height: 100%;
 }
-
-.ideditor .modal-whatsnew .body img{
-    width: 80%;
-    padding-top:10px;
+.ideditor .rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: 1px solid #333a;
+    border-radius: 25px 0 0 25px;
 }
-
-.ideditor .modal-whatsnew.modal-rapid,
-.ideditor .modal-splash.modal-rapid {
+.ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: unset;
+    border-left: 1px solid #333a;
+    border-radius: 0 25px 25px 0;
+}
+.ideditor .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    background: rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
-            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    top: 80px;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 40px;
+            flex: 0 0 40px;
+    border-radius: 0 25px 25px 0;
+}
+.ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
+    border-radius: 25px 0 0 25px;
 }
 
-.ideditor .modal-rapid .fillL {
-    background: transparent;
-    color: white;
+.ideditor .rapid-inspector-choice .choice-button .choice-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 15px;
+}
+.ideditor .rapid-inspector-choice .tag-reference-button .icon {
+    margin: 0 5px;
 }
 
-.ideditor .modal-rapid .modal-actions button {
-    text-align: center;
-    background: black;
-    color: white;
-    border: 1px solid white;
-    width: 100%;
-    margin: 20px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 500;
-    height: 160px;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+/* when hovering, hide the choices */
+.ideditor .inspector-hover .rapid-inspector-choices {
+    display: none;
 }
 
-.ideditor .modal-rapid .content {
-    -webkit-box-shadow: unset;
-            box-shadow: unset;
-    border-radius: 15px;
-    border: 2px solid #fffa;
-}
 
-.ideditor .modal-whatsnew .modal-actions button {
-    height: 3rem;
-}
-
-.ideditor .modal-rapid .modal-actions button.whats-new-okay,
-.ideditor .modal-rapid .modal-actions button.rapid-login-to-osm {
-    background: white;
-    color: black;
-    border: black;
-}
-
-.ideditor .modal-rapid .modal-section {
-    border: 0px;
-}
-
-.ideditor .modal-rapid .modal-section .logo-rapid {
-    fill: white;
-}
-
-.ideditor .modal-rapid p {
-    font-size: 14px;
-}
-
-.ideditor .modal-rapid > button.close {
-    -ms-flex-item-align: end;
-        align-self: flex-end;
-    color: #ff26d4;
-    position: unset;
-    height: 40px;
-    background: transparent;
-}
-
-.ideditor .rapid-feature.rapid-stack {
+/* For things that should stack in rows */
+.ideditor .rapid-stack {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3399,50 +3611,137 @@ display: none;
     -webkit-box-align: start;
         -ms-flex-align: start;
             align-items: flex-start;
-    color: white;
 }
 
-.ideditor .rapid-feature-label {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    margin: 16px;
-}
-.ideditor .modal-whatsnew svg.icon.logo-rapid,
-.ideditor .rapid-feature-label > svg.icon.logo-rapid {
-    width: 4em;
-    height: 1.3em;
-    margin: 0em -.5em;
+/* RapiD modal dialogs */
+.ideditor .modal.rapid-modal {
+    top: 80px;
+    min-width: 650px;
+    max-width: 650px;
+    background: rgba(25, 25, 25, 0.9);
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
+    color: #ddd;
+    -webkit-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+            box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: 1px solid #888a;
 }
 
-.ideditor .rapid-feature-description {
+.ideditor .modal.rapid-modal h3 {
+    color: #fff;
+}
+
+.ideditor .modal.rapid-modal .modal-section.buttons {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    padding: 20px;
+    border-top: 1px solid #888a;
+    width: 100%;
+}
+
+.ideditor .modal.rapid-modal .content {
+    -webkit-box-shadow: unset;
+            box-shadow: unset;
+}
+.ideditor .modal.rapid-modal .modal-section {
+    border: 0px;
+}
+.ideditor .modal.rapid-modal .modal-section .logo-rapid {
+    fill: white;
+}
+.ideditor .modal.rapid-modal p {
     font-size: 14px;
-    margin: 16px;
+}
+.ideditor .modal.rapid-modal button.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    height: 40px;
+    border-radius: 0;
+}
+.ideditor .modal.rapid-modal button.close svg {
+    color: #da26d3;
+}
+.ideditor .modal.rapid-modal button.close:hover {
+    background: #8885;
 }
 
-.ideditor .rapid-feature-license {
-    margin: 16px;
+/* Splash, Whats New, Login to OSM */
+.ideditor .modal.rapid-modal .modal-section p .icon {
+    height: 25px;
+    width: 30px;
+    color: #fff;
+}
+.ideditor .modal.rapid-modal .modal-section h3 .icon.logo-rapid,
+.ideditor .modal.rapid-modal .modal-section p .icon.logo-rapid {
+    height: 25px;
+    width: 55px;
+    margin-top: -2px;
+    color: #da26d3;
+}
+.ideditor .modal.rapid-modal .modal-actions > button {
+    width: 100%;
+    margin: 20px;
+}
+.ideditor .modal.rapid-modal.modal-splash .modal-actions > button {
+    height: unset;  /* big buttons */
+    padding: 10px;
+}
+.ideditor .modal.rapid-modal .modal-actions > button.whats-new-nothanks,
+.ideditor .modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
+    background: #eee;
+    color: #111;
+}
+.ideditor .modal.rapid-modal .modal-actions > button.whats-new-nothanks:hover,
+.ideditor .modal.rapid-modal .modal-actions > button.rapid-login-to-osm:hover {
+    background: #ccc;
 }
 
-.ideditor .rapid-feature-license p {
-    font-size: 10px;
+.ideditor .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
+    width: 100%;
+    margin-top: 20px;
 }
-
-.ideditor .rapid-feature-label-container {
+.ideditor .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
+    font-size: 16px;
+    padding: 0 30px;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .rapid-checkbox-label {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    -ms-flex-pack: distribute;
-        justify-content: space-around;
+    width: 100%;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .rapid-checkbox-text {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    margin: 0px 20px;
+}
+.ideditor .modal.rapid-modal.modal-whatsnew .rapid-checkbox-custom {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 36px;
+            flex: 0 0 36px;
 }
 
-.ideditor .modal-section.rapid-checkbox {
+
+/* Toggle Features */
+.ideditor .modal.rapid-modal .modal-section.rapid-checkbox {
     font-size: 24px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3453,71 +3752,189 @@ display: none;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 5px;
+    padding: 5px 10px;
+    width: 100%;
+}
+.ideditor .modal.rapid-modal .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.ideditor .modal.rapid-modal .rapid-stack .rapid-datasets-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
     width: 100%;
 }
 
-.ideditor .modal-section.rapid-checkbox.dontshow {
-    font-size: 12px;
+.ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 1px solid #888a;
+    padding: 45px 10px 10px 10px;
+}
+.ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 1px solid #888a;
+    padding: 10px;
+    cursor: pointer;
+}
+.ideditor .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.ideditor .modal.rapid-modal .rapid-stack .rapid-feature {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+}
+
+.ideditor .rapid-feature-label-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.ideditor .rapid-feature-label-container > div {
+    margin: 0 5px;
+}
+.ideditor .rapid-feature-extent-container {
+    font-size: 14px;
+    font-style: italic;
+    margin: -5px 5px 5px 5px;
+    color: #aaa;
+}
+
+.ideditor .rapid-feature-label {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+.ideditor .rapid-feature-label-container .rapid-feature-label-beta {
+    font-size: 14px;
+}
+.ideditor .rapid-feature-label > svg.icon.logo-rapid {
+    width: 4em;
+    height: 1.3em;
+    margin: -5px;
+}
+.ideditor .rapid-feature-label-divider {
+    width: 1px;
+    height: 20px;
+    background: #888a;
+}
+
+.ideditor .rapid-feature-description {
+    font-size: 14px;
+    margin: 4px;
+}
+.ideditor .rapid-feature-license p {
+    font-size: 10px;
+}
+.ideditor .modal-section.rapid-checkbox.disabled {
+    opacity: .5;
+}
+.ideditor .rapid-feature-checkbox {
+    margin-left: auto;
+}
+
+.ideditor .modal-section.rapid-checkbox.section-divider {
+    width: 100%;
+    height: 1px;
+    background: #888a;
+    padding: 1px;
+    -ms-flex-item-align: center;
+        align-self: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.ideditor .modal-section.rapid-checkbox.section-divider.strong {
+    background: #fffa;
+}
+
+.ideditor .rapid-feature-hotkey {
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.ideditor .rapid-checkbox-inputs {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 0px 5px;
-    width: 80%;
-    -webkit-box-align: unset;
-        -ms-flex-align: unset;
-            align-items: unset;
-    width: unset;
 }
 
-.ideditor .modal-section.rapid-checkbox.disabled {
-    opacity: .5;
-}
-
-.ideditor .rapid-feature-checkbox {
-    margin-left: auto;
-}
-
-.ideditor .modal-section.rapid-checkbox.section-divider {
-    width: 95%;
-    height: 1px;
-    background: #ccca;
-    padding: 1px;
-    -ms-flex-item-align: center;
-        align-self: center;
-}
-
-.ideditor .rapid-feature-hotkey {
-    margin-left: -5px;
-    font-size: 14px;
-}
-
-.ideditor .rapid-feature-label-divider {
-    width: 1px;
-    height: 20px;
-    margin-top: 3px;
-    background: #ccca;
-}
-
-.ideditor .rapid-checkbox-label {
-    width: 40px;
-    height: 40px;
-    margin-left: auto;
-}
-
-
-.ideditor .rapid-checkbox-label.dontshow {
-    width: 30%;
-    margin:20px 20px 0px;
-    height: 20px;
+.ideditor .rapid-colorpicker-label {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 15px;
+}
+.ideditor .rapid-colorpicker-label:not(.disabled),
+.ideditor .rapid-checkbox-label:not(.disabled) {
+    cursor: pointer;
+}
+.ideditor .rapid-colorpicker-label.disabled {
+    opacity: 0.5;
 }
 
+.ideditor .rapid-colorpicker {
+    padding: 2px;
+    border: none;
+    background: #fff;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+}
+.ideditor .rapid-colorpicker-label:not(.disabled):hover {
+    opacity: 0.9;
+}
+
+.ideditor .rapid-colorpicker-fill {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+}
+.ideditor .rapid-colorpicker-fill .icon {
+    pointer-events: none;
+}
 
 /* since checkboxes can't be styled, we'll
 hide this one and style something on top of it.  */
@@ -3532,77 +3949,390 @@ hide this one and style something on top of it.  */
     width: 36px;
     background-color: transparent;
     border-radius: 5px;
-    border: 2px solid #ffffff;
+    border: 2px solid #fff;
 }
-
-
-.ideditor .rapid-checkbox-label.dontshow .rapid-checkbox-custom {
-    height: 24px;
-    width: 24px;
-    border-radius: 3px;
-    margin-left: 10px;
-}
-
 
 .ideditor .rapid-checkbox-label .rapid-checkbox-custom::after {
     content: "";
     height: 0px;
     width: 0px;
-    border-radius: 5px;
-    border: solid transparent;
-    border-width: 0 6px 6px 0;
-    -webkit-transform: scale(0);
-        -ms-transform: scale(0);
-            transform: scale(0);
-    opacity: 1;
 }
 
 .ideditor .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
     content: "";
     display: block;
-    height: 12px;
-    width: 6px;
     padding: 2px;
-    margin-left: 9px;
-    margin-top: 2px;
     border-radius: 0;
-    border: solid #ff26d4;
+    border: solid #da26d3;
     background-color: transparent;
     border-width: 0 4px 4px 0;
-    -webkit-transform: rotate(45deg) scale(1);
-        -ms-transform: rotate(45deg) scale(1);
-            transform: rotate(45deg) scale(1);
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
     opacity: 1;
+    margin: 3px 9px;
+    height: 12px;
+    width: 6px;
+}
+.ideditor[dir='rtl'] .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
+    margin: 6px 6px;
+    height: 6px;
+    width: 12px;
 }
 
-.ideditor .rapid-checkbox-label.dontshow input:checked ~ .rapid-checkbox-custom::after {
-    height: 7px;
-    width: 3px;
-    padding: 2px;
-    margin-left: 5px;
-    margin-top: 2px;
-    border-width: 0 2px 2px 0;
-}
-.ideditor g.layer-ai-features.hide-rapid-roads path.road,
-.ideditor g.layer-ai-features.hide-rapid-roads g.node.road,
-.ideditor g.layer-ai-features.hide-rapid-buildings path.building  {
-    display: none;
+
+/* Rapid Power User features */
+
+.ideditor .rapid-stack.poweruser .modal-section-heading {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+            flex-flow: column;
+    padding: 0 20px 20px 20px;
+    width: 100%;
 }
 
-.ideditor ul.layer-list.layer-background-list li button.background-favorite-button{
+.ideditor .rapid-stack.poweruser .modal-section-heading h3 {
+    font-size: 24px
+}
+.ideditor .rapid-stack.poweruser .modal-heading-desc {
+    font-size: 16px;
+    font-style: italic;
+}
+.ideditor .rapid-stack.poweruser .modal-heading-desc .smile {
+    font-style: normal;
+    margin: 0 10px;
+}
+.ideditor .rapid-stack.poweruser .rapid-features-container {
+    width: 100%;
+    border-top: 1px solid #888a;
+}
+.ideditor .rapid-stack.poweruser .rapid-features-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+.ideditor .rapid-stack.poweruser .rapid-features-container .rapid-feature-label {
+    margin: 0 5px;
+}
+
+.ideditor .rapid-stack.poweruser .rapid-features-container .rapid-feature-description {
+    font-size: 14px;
+    font-style: italic;
+    margin: -5px 5px 5px 5px;
+    color: #aaa;
+}
+
+/*
+.rapid-checkbox.poweruser:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.rapid-feature-animation.poweruser {
+    background-size: 100% 100%;
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    margin: 5px;
+    border: 1px solid darkgrey;
+}
+*/
+/*
+.modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
+    background-image: url('rapid/ai-feature-halo-still.png');
+}
+.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
+    background-image: url('rapid/ai-feature-halo.gif');
+}
+.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
+    background-image: url('rapid/tagnostic-road-join-still.png');
+}
+.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
+    background-image: url('rapid/tagnostic-road-join.gif');
+}
+.modal-section.rapid-checkbox.poweruser div#tag-sources {
+    background-image: url('rapid/tag-sources-still.png');
+}
+.modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
+    background-image: url('rapid/tag-sources.gif');
+}
+*/
+
+/* View/Manage Datasets modal */
+/* view-manage-wrap is an absolutely positioned div to create a new stacking context,
+   so we can put a modal on top of the other modal.
+   (it functions like .shaded for layout but without adding any shading)
+*/
+.ideditor .view-manage-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 51;   /* above existing modal */
+}
+.ideditor .modal.rapid-modal.modal-view-manage {
+    width: 80%;
+    min-width: 600px;
+    max-width: 1000px;
+}
+
+.ideditor .modal-view-manage .modal-section {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+            flex-flow: column nowrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid #aaaa;
+    color: #fff;
+}
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-header > div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    width: 100%;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.ideditor .rapid-view-manage-header-icon {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 40px;
+            flex: 0 0 40px;
+}
+.ideditor .rapid-view-manage-header-text {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    font-size: 28px;
+    padding: 0 5px;
+}
+.ideditor .rapid-view-manage-header-inputs {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
+}
+.ideditor .rapid-view-manage-header-about {
+    color: #ddd;
+}
+
+
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-pages {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+}
+.ideditor .rapid-view-manage-page {
+    font-size: 9px;
+    padding: 10px 4px 13px 4px;
+    margin: 5px 2px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.ideditor .rapid-view-manage-page:hover {
+    color: #ddd;
+    background: #8885;
+}
+.ideditor .rapid-view-manage-page.current {
+    color: #da26d3;
+}
+
+
+.ideditor .modal-view-manage .modal-section.rapid-view-manage-datasets-section {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+}
+.ideditor .rapid-view-manage-pageleft,
+.ideditor .rapid-view-manage-pageright {
+    cursor: pointer;
+}
+.ideditor .rapid-view-manage-pageleft svg,
+.ideditor .rapid-view-manage-pageright svg {
+    height: 100%;
+}
+.ideditor .rapid-view-manage-pageleft:hover,
+.ideditor .rapid-view-manage-pageright:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.ideditor .rapid-view-manage-datasets {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    width: 100%;
+}
+.ideditor .rapid-view-manage-dataset {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 50%;
+            flex: 0 1 50%;
+    padding: 20px;
+    margin-bottom: 10px;
+    color: #eee;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+}
+
+.ideditor .rapid-view-manage-dataset-label {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    padding: 0 8px;
+}
+.ideditor .rapid-view-manage-dataset-thumb {
+    -webkit-box-flex: 0;
+        -ms-flex: 0;
+            flex: 0;
+}
+.ideditor img.rapid-view-manage-dataset-thumbnail {
+    border-radius: 10px;
+    width: 200px;
+    -webkit-filter: invert(1)brightness(2)contrast(0.75);
+            filter: invert(1)brightness(2)contrast(0.75);
+}
+
+.ideditor .rapid-view-manage-dataset button.rapid-view-manage-dataset-action {
+    font-size: 12px;
+    height: 28px;
+    border-radius: 14px;
+    margin: 10px 0;
+    padding: 0 15px;
+}
+
+.ideditor .beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(6%, rgba(108,1,167,1)), color-stop(50%, rgba(203,16,237,1)), color-stop(90%, rgb(229, 140, 253)), to(rgb(201, 42, 251)));
+    background: -o-linear-gradient(bottom, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.ideditor .beta:before {
+    content: '\03b2';  /* β */
+}
+
+/* Colorpicker popup */
+
+.ideditor .colorpicker-popup {
+    position: absolute;
+    padding: 10px;
+    z-index: 100;
+    background-color: #fff;
+    border: none;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 0 2em black;
+            box-shadow: 0 0 2em black;
+}
+.ideditor .colorpicker-arrow {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.ideditor .colorpicker-colors {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+}
+.ideditor .colorpicker-option {
+    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 6px;
+}
+.ideditor .colorpicker-option:hover {
+    border: 2px solid #ddd;
+}
+.ideditor .colorpicker-option.selected {
+    border: 2px solid #444;
+}
+.ideditor .colorpicker-option-fill {
+    background-color: currentColor;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    border-radius: 5px;
+}
+
+
+/* Background layer list customizations */
+.ideditor ul.layer-list.layer-background-list li button.background-favorite-button {
     background-color: inherit;
 }
-
-.ideditor button.background-favorite-button .icon{
+.ideditor button.background-favorite-button .icon {
     fill-opacity: 0;
     stroke-width: 1;
 }
-
-.ideditor button.background-favorite-button.active .icon{
+.ideditor button.background-favorite-button.active .icon {
     fill-opacity: inherit;
 }
-
-.ideditor .background-pane .layer-list button.background-favorite-button{
+.ideditor .background-pane .layer-list button.background-favorite-button {
     border: 0;
 }
 
@@ -3619,10 +4349,9 @@ hide this one and style something on top of it.  */
 }
 
 .ideditor li.best > label > span.best > svg {
-    color: #E98733;
+    color: #e98733;
     height: 19px;
-}
-/* Basics
+}/* Basics
 ------------------------------------------------------- */
 /* the root element of iD */
 .ideditor {

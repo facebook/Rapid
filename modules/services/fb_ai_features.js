@@ -8,37 +8,80 @@ import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind, utilStringQs, utilTiler } from '../util';
 
 // constants
-var API_URL = 'https://mapwith.ai/maps/ml_roads?conflate_with_osm=true&theme=ml_road_vector&collaborator=fbid&token=ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C&hash=ASYM8LPNy8k1XoJiI7A&result_type=road_building_vector_xml';
+var APIROOT = 'https://mapwith.ai/maps/ml_roads';
 var TILEZOOM = 16;
 var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
 
-var _checkpoints = {};
-var _graph;
-var _tileCache;
-var _tree;
+var _datasets = {};
 var _deferredAiFeaturesParsing = new Set();
-
 var _off;
+
 
 function abortRequest(i) {
     i.abort();
 }
 
 
-function apiURL(extent, taskExtent) {
-    // fb_ml_road_url: if set, get road data from this url
-    var fb_ml_road_url = utilStringQs(window.location.hash).fb_ml_road_url;
-    var result = (fb_ml_road_url ? fb_ml_road_url : API_URL) + '&bbox=' + extent.toParam();
-    if (taskExtent) result += '&crop_bbox=' + taskExtent.toParam();
+function tileURL(dataset, extent, taskExtent) {
+    // Conflated datasets have a different ID, so they get stored in their own graph/tree
+    var isConflated = /-conflated$/.test(dataset.id);
+    var datasetID = dataset.id.replace('-conflated', '');
 
-    var custom_ml_road_tags = utilStringQs(window.location.hash).fb_ml_road_tags;
-    if (custom_ml_road_tags) {
-      custom_ml_road_tags.split(',').forEach(function (tag) {
-        result += '&allow_tags[]=' + tag;
+    var qs = {
+        conflate_with_osm: isConflated,
+        theme: 'ml_road_vector',
+        collaborator: 'fbid',
+        token: 'ASZUVdYpCkd3M6ZrzjXdQzHulqRMnxdlkeBJWEKOeTUoY_Gwm9fuEd2YObLrClgDB_xfavizBsh0oDfTWTF7Zb4C',
+        hash: 'ASYM8LPNy8k1XoJiI7A'
+    };
+
+    if (datasetID === 'fbRoads') {
+        qs.result_type = 'road_vector_xml';
+
+    } else if (datasetID === 'msBuildings') {
+        qs.result_type = 'road_building_vector_xml';
+        qs.building_source = 'microsoft';
+
+    } else {
+        qs.result_type = 'osm_xml';
+        qs.sources = `esri_building.${datasetID}`;
+    }
+
+    qs.bbox = extent.toParam();
+
+    if (taskExtent) qs.crop_bbox = taskExtent.toParam();
+
+    // Note: we are not sure whether the `fb_ml_road_url` and `fb_ml_road_tags` query params are used anymore.
+    var customUrlRoot = utilStringQs(window.location.hash).fb_ml_road_url;
+    var customRoadTags = utilStringQs(window.location.hash).fb_ml_road_tags;
+
+    var urlRoot = customUrlRoot || APIROOT;
+    var url = urlRoot + '?' + utilQsString(qs, true);  // true = noencode
+
+    if (customRoadTags) {
+      customRoadTags.split(',').forEach(function (tag) {
+        url += '&allow_tags[]=' + tag;
       });
     }
-    return result;
+
+    return url;
+
+
+    // This utilQsString does not sort the keys, because the fbml service needs them to be ordered a certain way.
+    function utilQsString(obj, noencode) {
+        // encode everything except special characters used in certain hash parameters:
+        // "/" in map states, ":", ",", {" and "}" in background
+        function softEncode(s) {
+            return encodeURIComponent(s).replace(/(%2F|%3A|%2C|%7B|%7D)/g, decodeURIComponent);
+        }
+
+        return Object.keys(obj).map(function(key) {  // NO SORT
+            return encodeURIComponent(key) + '=' + (
+                noencode ? softEncode(obj[key]) : encodeURIComponent(obj[key]));
+        }).join('&');
+    }
+
 }
 
 
@@ -64,7 +107,11 @@ function getTags(obj) {
     var tags = {};
     for (var i = 0, l = elems.length; i < l; i++) {
         var attrs = elems[i].attributes;
-        tags[attrs.k.value] = attrs.v.value;
+        var k = (attrs.k.value || '').trim();
+        var v = (attrs.v.value || '').trim();
+        if (k && v) {
+            tags[k] = v;
+        }
     }
 
     return tags;
@@ -99,11 +146,14 @@ var parsers = {
 };
 
 
-function parseXML(xml, tile, callback, options) {
+function parseXML(dataset, xml, tile, callback, options) {
     options = Object.assign({ skipSeen: true }, options);
     if (!xml || !xml.childNodes) {
         return callback({ message: 'No XML', status: -1 });
     }
+
+    var graph = dataset.graph;
+    var cache = dataset.cache;
 
     var root = xml.childNodes[0];
     var children = root.childNodes;
@@ -125,9 +175,9 @@ function parseXML(xml, tile, callback, options) {
 
         var uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
         if (options.skipSeen) {
-            if (_tileCache.seen[uid]) return null;  // avoid reparsing a "seen" entity
-            if (_tileCache.origIdTile[uid]) return null;  // avoid double-parsing a split way
-            _tileCache.seen[uid] = true;
+            if (cache.seen[uid]) return null;  // avoid reparsing a "seen" entity
+            if (cache.origIdTile[uid]) return null;  // avoid double-parsing a split way
+            cache.seen[uid] = true;
         }
 
         // Handle non-deterministic way splitting from Roads Service. Splits
@@ -135,17 +185,21 @@ function parseXML(xml, tile, callback, options) {
         var origUid;
         if (child.attributes.orig_id) {
             origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
-            if (_graph.entities[origUid] ||
-                (_tileCache.origIdTile[origUid] && _tileCache.origIdTile[origUid] !== tile.id)) {
+            if (graph.entities[origUid] ||
+                (cache.origIdTile[origUid] && cache.origIdTile[origUid] !== tile.id)) {
                 return null;
             }
-            _tileCache.origIdTile[origUid] = tile.id;
+            cache.origIdTile[origUid] = tile.id;
         }
 
         var entity = parser(child, uid);
-        entity.__fbid__ = child.attributes.id.value;
-        entity.__origid__ = origUid;
-        return entity;
+        var meta = {
+            __fbid__: child.attributes.id.value,
+            __origid__: origUid,
+            __service__: 'fbml',
+            __datasetid__: dataset.id
+        };
+        return Object.assign(entity, meta);
     }
 }
 
@@ -153,76 +207,77 @@ function parseXML(xml, tile, callback, options) {
 export default {
 
     init: function() {
-        if (!_tileCache) {
-            this.reset();
-        }
-
         this.event = utilRebind(this, dispatch, 'on');
+
+        // allocate a special dataset for the rapid intro graph.
+        var datasetID = 'rapid_intro_graph';
+        var graph = coreGraph();
+        var tree = coreTree(graph);
+        var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+        _datasets[datasetID] = ds;
     },
 
-    // save the current history state
-    checkpoint: function(key) {
-        _checkpoints[key] = {
-            graph: _graph,
-        };
-        return this;
-    },
-
-    reset: function(key) {
+    reset: function() {
         Array.from(_deferredAiFeaturesParsing).forEach(function(handle) {
             window.cancelIdleCallback(handle);
             _deferredAiFeaturesParsing.delete(handle);
         });
-        if (_tileCache && _tileCache.inflight) {
-            _forEach(_tileCache.inflight, abortRequest);
-        }
-        if (key !== undefined && _checkpoints.hasOwnProperty(key)) {
-            _graph = _checkpoints[key].graph;
-        }
-        else {
-            _graph = coreGraph();
-            _tree = coreTree(_graph);
-            _tileCache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-        }
+
+        Object.values(_datasets).forEach(function(ds) {
+            if (ds.cache.inflight) {
+                Object.values(ds.cache.inflight).forEach(abortRequest);
+            }
+            ds.graph = coreGraph();
+            ds.tree = coreTree(ds.graph);
+            ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        });
 
         return this;
     },
 
 
-    graph: function() {
-        return _graph;
+    graph: function (datasetID) {
+        var ds = _datasets[datasetID];
+        return ds && ds.graph;
     },
 
 
-    intersects: function(extent) {
-        if (!_tileCache) return [];
-        return _tree.intersects(extent, _graph);
+    intersects: function (datasetID, extent) {
+        var ds = _datasets[datasetID];
+        if (!ds || !ds.tree || !ds.graph) return [];
+        return ds.tree.intersects(extent, ds.graph);
     },
 
 
-    merge: function(entities) {
-        _graph.rebase(entities, [_graph], false);
-        _tree.rebase(entities, false);
+    merge: function(datasetID, entities) {
+        var ds = _datasets[datasetID];
+        if (!ds || !ds.tree || !ds.graph) return;
+        ds.graph.rebase(entities, [ds.graph], false);
+        ds.tree.rebase(entities, false);
     },
 
 
-    cache: function (obj) {
+    cache: function (datasetID, obj) {
+        var ds = _datasets[datasetID];
+        if (!ds || !ds.cache) return;
+
         function cloneDeep(source) {
             return JSON.parse(JSON.stringify(source));
         }
 
         if (!arguments.length) {
             return {
-                tile: cloneDeep(_tileCache)
+                tile: cloneDeep(ds.cache)
             };
         }
 
         // access cache directly for testing
         if (obj === 'get') {
-            return _tileCache;
+            return ds.cache;
         }
 
-        _tileCache = obj;
+        ds.cache = obj;
     },
 
 
@@ -232,38 +287,55 @@ export default {
     },
 
 
-    loadTiles: function(projection, taskExtent) {
+    loadTiles: function(datasetID, projection, taskExtent) {
         if (_off) return;
+
+        var ds = _datasets[datasetID];
+        var graph, tree, cache;
+        if (ds) {
+            graph = ds.graph;
+            tree = ds.tree;
+            cache = ds.cache;
+        } else {
+            // as tile requests arrive, setup the resources needed to hold the results
+            graph = coreGraph();
+            tree = coreTree(graph);
+            cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+            ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+            _datasets[datasetID] = ds;
+        }
+
 
         var tiles = tiler.getTiles(projection);
 
         // abort inflight requests that are no longer needed
-        _forEach(_tileCache.inflight, function(v, k) {
+        _forEach(cache.inflight, function(v, k) {
             var wanted = tiles.find(function(tile) { return k === tile.id; });
             if (!wanted) {
                 abortRequest(v);
-                delete _tileCache.inflight[k];
+                delete cache.inflight[k];
             }
         });
 
         tiles.forEach(function(tile) {
-            if (_tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
+            if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
             var controller = new AbortController();
-            d3_xml(apiURL(tile.extent, taskExtent), {signal: controller.signal})
+            d3_xml(tileURL(ds, tile.extent, taskExtent), { signal: controller.signal })
                 .then(function (dom) {
-                    delete _tileCache.inflight[tile.id];
+                    delete cache.inflight[tile.id];
                     if (!dom) return;
-                    parseXML(dom, tile, function(err, results) {
+                    parseXML(ds, dom, tile, function(err, results) {
                         if (err) return;
-                        _graph.rebase(results, [_graph], true);
-                        _tree.rebase(results, true);
-                        _tileCache.loaded[tile.id] = true;
+                        graph.rebase(results, [graph], true);
+                        tree.rebase(results, true);
+                        cache.loaded[tile.id] = true;
                         dispatch.call('loadedData');
                     });
                 })
                 .catch(function() {});
-            _tileCache.inflight[tile.id] = controller;
+
+            cache.inflight[tile.id] = controller;
         });
     }
 };

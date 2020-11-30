@@ -35,7 +35,6 @@ export function coreContext() {
 
   context.isFirstSession = !prefs('sawSplash') && !prefs('sawPrivacyVersion');
 
-
   /* Changeset */
   // An osmChangeset object. Not loaded until needed.
   context.changeset = null;
@@ -497,6 +496,10 @@ export function coreContext() {
   context.projection = geoRawMercator();
   context.curtainProjection = geoRawMercator();
 
+  /* RapiD */
+  let _rapidContext;
+  context.rapidContext = () => _rapidContext;
+
 
   /* Init */
   context.init = () => {
@@ -523,6 +526,7 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
+      _rapidContext = coreRapidContext(context);
       _validator = coreValidator(context);
       _uploader = coreUploader(context);
 
@@ -561,6 +565,7 @@ export function coreContext() {
       _validator.init();
       _features.init();
       _photos.init();
+      _rapidContext.init();
 
       if (services.maprules && context.initialHashParams.maprules) {
         d3_json(context.initialHashParams.maprules)
@@ -576,8 +581,6 @@ export function coreContext() {
     }
   };
 
-    var rapidContext = coreRapidContext(context);
-    context.rapidContext = function() { return rapidContext; };
 
-    return context;
+  return context;
 }
