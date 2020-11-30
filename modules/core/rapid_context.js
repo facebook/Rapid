@@ -5,11 +5,11 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilRebind } from '../util';
 
 
-export function coreRapidContext() {
+export function coreRapidContext(context) {
   const dispatch = d3_dispatch('task_extent_set');
   let _rapidContext = {};
   _rapidContext.version = '1.1.0';
-  _rapidContext.showPowerUser = false;
+  _rapidContext.showPowerUser = context.initialHashParams.poweruser === 'true';
 
   function distinct(value, index, self) {
     return self.indexOf(value) === index;
