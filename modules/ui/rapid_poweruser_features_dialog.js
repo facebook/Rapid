@@ -165,48 +165,4 @@ export function uiRapidPowerUserFeaturesDialog(context) {
       .property('checked', isEnabled);
   }
 
-
-
-  //   addCheckBox({
-  //     modal: modal,
-  //     id: 'rapid-poweruser-features-ai-halo',
-  //     label: t('rapid_poweruser_features.ai_feature_halo'),
-  //     description: t('rapid_poweruser_features.ai_feature_halo_desc'),
-  //     handler: toggleAiFeatureHalo,
-  //     enabled: storage.featureEnabled('aiFeatureHalo'),
-  //     greyout: false,
-  //     imgid: 'ai-feature-halo',
-  //   });
-
-  //   modal
-  //     .append('div')
-  //     .attr('class','modal-section rapid-checkbox section-divider');
-
-  //   addCheckBox({
-  //     modal: modal,
-  //     id: 'rapid-poweruser-features-tagnostic-combine',
-  //     label: t('rapid_poweruser_features.tagnostic_road_combine'),
-  //     description: t('rapid_poweruser_features.tagnostic_road_combine_desc'),
-  //     handler: toggleTagnosticRoadCombine,
-  //     enabled: storage.featureEnabled('tagnosticRoadCombine'),
-  //     greyout: false,
-  //     imgid: 'tagnostic-road-combine',
-  //   });
-
-  //   modal
-  //     .append('div')
-  //     .attr('class','modal-section rapid-checkbox section-divider');
-
-  //   addCheckBox({
-  //     modal: modal,
-  //     id: 'rapid-poweruser-features-tag-sources',
-  //     label: t('rapid_poweruser_features.tag_sources'),
-  //     description: t('rapid_poweruser_features.tag_sources_desc'),
-  //     handler: toggleTagSources,
-  //     enabled: storage.featureEnabled('tagSources'),
-  //     greyout: false,
-  //     imgid: 'tag-sources',
-  //   });
-  // };
-
 }
