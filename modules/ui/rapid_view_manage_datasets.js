@@ -7,7 +7,7 @@ import { geoExtent } from '../geo';
 import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
-import { utilKeybinding, utilRebind } from '../util';
+import { utilKeybinding, utilRebind, utilWrap } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
@@ -30,10 +30,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   function clickPage(d) {
     if (!Array.isArray(_datasetInfo)) return;
 
-    const total = _datasetInfo.length;
-    const maxPage = Math.ceil(total / PERPAGE) - 1;
-
-    _datasetStart = clamp(d, 0, maxPage) * PERPAGE;
+    const pages = Math.ceil(_datasetInfo.length / PERPAGE);
+    _datasetStart = clamp(d, 0, pages - 1) * PERPAGE;
 
     _content
       .call(renderModalContent);
@@ -43,15 +41,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   function nextPreviousPage(d) {
     if (!Array.isArray(_datasetInfo)) return;
 
-    const total = _datasetInfo.length;
-    const maxPage = Math.ceil(total / PERPAGE) - 1;
+    const pages = Math.ceil(_datasetInfo.length / PERPAGE);
     const currPage = Math.floor(_datasetStart / PERPAGE);
-
-    if (d > 0) {  // next
-      _datasetStart = clamp(currPage + 1, 0, maxPage) * PERPAGE;
-    } else {      // previous
-      _datasetStart = clamp(currPage - 1, 0, maxPage) * PERPAGE;
-    }
+    const nextPage = utilWrap(currPage + d, pages);
+    _datasetStart = nextPage * PERPAGE;
 
     _content
       .call(renderModalContent);
