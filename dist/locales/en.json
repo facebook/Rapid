@@ -1254,8 +1254,8 @@
                 "label": "RapiD Power User Features",
                 "description": "for RapiD Insiders"
             },
-            "esriPreview": {
-                "label": "Show Preview Esri Datasets",
+            "previewDatasets": {
+                "label": "Show preview datasets",
                 "description": "Preview datasets are still in review and not available for all users"
             },
             "tagnosticRoadCombine": {

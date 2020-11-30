@@ -3991,7 +3991,7 @@ hide this one and style something on top of it.  */
     -webkit-box-direction: normal;
         -ms-flex-flow: column;
             flex-flow: column;
-    padding: 0 20px 20px 20px;
+    padding: 10px 20px;
     width: 100%;
 }
 

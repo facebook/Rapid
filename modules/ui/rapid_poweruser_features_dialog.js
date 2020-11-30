@@ -6,7 +6,7 @@ import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
-  const featureFlags = ['esriPreview', 'tagnosticRoadCombine', 'tagSources'];
+  const featureFlags = ['previewDatasets', 'tagnosticRoadCombine', 'tagSources'];
   const showPowerUser = context.rapidContext().showPowerUser;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);

@@ -14,7 +14,7 @@ import { utilKeybinding, utilRebind, utilWrap } from '../util';
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
-  const showPreview = prefs('rapid-internal-feature.esriPreview') === 'true';
+  const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
   const PERPAGE = 4;
 
   let _content = d3_select(null);

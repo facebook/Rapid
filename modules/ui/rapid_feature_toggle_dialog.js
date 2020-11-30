@@ -12,7 +12,7 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
-  const showPreview = prefs('rapid-internal-feature.esriPreview') === 'true';
+  const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
 
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
