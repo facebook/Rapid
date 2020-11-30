@@ -14,7 +14,6 @@ var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
 
 var _datasets = {};
-var _checkpoints = {};
 var _deferredAiFeaturesParsing = new Set();
 var _off;
 
@@ -49,23 +48,24 @@ function tileURL(dataset, extent, taskExtent) {
         qs.sources = `esri_building.${datasetID}`;
     }
 
-    // fb_ml_road_url: if set, get road data from this url
-    // var fb_ml_road_url = utilStringQs(window.location.hash).fb_ml_road_url;
-
     qs.bbox = extent.toParam();
 
-    // var result = (fb_ml_road_url ? fb_ml_road_url : API_URL) + '&bbox=' + ;
     if (taskExtent) qs.crop_bbox = taskExtent.toParam();
 
-    // TODO: FIX
-    // var custom_ml_road_tags = utilStringQs(window.location.hash).fb_ml_road_tags;
-    // if (custom_ml_road_tags) {
-    //   custom_ml_road_tags.split(',').forEach(function (tag) {
-    //     result += '&allow_tags[]=' + tag;
-    //   });
-    // }
+    // Note: we are not sure whether the `fb_ml_road_url` and `fb_ml_road_tags` query params are used anymore.
+    var customUrlRoot = utilStringQs(window.location.hash).fb_ml_road_url;
+    var customRoadTags = utilStringQs(window.location.hash).fb_ml_road_tags;
 
-    return APIROOT + '?' + utilQsString(qs, true);  // true = noencode
+    var urlRoot = customUrlRoot || APIROOT;
+    var url = urlRoot + '?' + utilQsString(qs, true);  // true = noencode
+
+    if (customRoadTags) {
+      customRoadTags.split(',').forEach(function (tag) {
+        url += '&allow_tags[]=' + tag;
+      });
+    }
+
+    return url;
 
 
     // This utilQsString does not sort the keys, because the fbml service needs them to be ordered a certain way.
