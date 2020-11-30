@@ -1231,16 +1231,15 @@
             "worldwide": "Worldwide",
             "fbRoads": {
                 "label": "Facebook Roads",
-                "description": "provided by Facebook",
                 "license_markdown": "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
             },
             "msBuildings": {
                 "label": "Microsoft Buildings",
-                "description": "provided by Microsoft",
                 "license_markdown": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
             },
             "esri": {
                 "title": "ArcGIS Datasets",
+                "about": "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap. You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets).",
                 "fetching_datasets": "Fetching available datasets...",
                 "no_datasets": "No datasets available.",
                 "remove": "Remove",

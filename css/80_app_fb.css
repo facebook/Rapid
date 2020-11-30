@@ -344,9 +344,10 @@ button.rapid-features.layer-off use {
     font-size: 14px;
 }
 .modal.rapid-modal button.close {
-    align-self: flex-end;
+    position: absolute;
+    right: 0;
+    top: 0;
     background: transparent;
-    position: unset;
     height: 40px;
     border-radius: 0;
 }
@@ -434,7 +435,7 @@ button.rapid-features.layer-off use {
 
 .rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
     border-bottom: 1px solid #888a;
-    padding-bottom: 10px;
+    padding: 45px 10px 10px 10px;
 }
 .rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
     border-top: 1px solid #888a;
@@ -710,9 +711,19 @@ hide this one and style something on top of it.  */
 }
 
 .modal-view-manage .modal-section.rapid-view-manage-header {
-    padding: 0 20px 5px 20px;
-    border-bottom: 1px solid #888a;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid #aaaa;
+    color: #fff;
 }
+.modal-view-manage .modal-section.rapid-view-manage-header > div {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    align-items: center;
+}
+
 .rapid-view-manage-header-icon {
     flex: 0 0 40px;
 }
@@ -724,16 +735,18 @@ hide this one and style something on top of it.  */
 .rapid-view-manage-header-inputs {
     flex: 0 1 auto;
 }
+.rapid-view-manage-header-about {
+    color: #ddd;
+}
 
 
 .modal-view-manage .modal-section.rapid-view-manage-pages {
     justify-content: center;
 }
 .rapid-view-manage-page {
-    font-size: 80px;
-    line-height: 20px;
-    padding-bottom: 20px;
-    margin-top: 10px;
+    font-size: 9px;
+    padding: 10px 4px 13px 4px;
+    margin: 5px 2px;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -775,7 +788,7 @@ hide this one and style something on top of it.  */
 .rapid-view-manage-dataset {
     flex: 0 1 50%;
     padding: 20px;
-    margin: 10px 0;
+    margin-bottom: 10px;
     color: #eee;
     display: flex;
     flex-flow: row nowrap;

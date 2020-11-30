@@ -115,7 +115,6 @@ export function coreRapidContext() {
             service: 'fbml',
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.fbRoads.label'),
-            // description: t('rapid_feature_toggle.fbRoads.description'),
             license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
           },
           'msBuildings': {
@@ -127,7 +126,6 @@ export function coreRapidContext() {
             service: 'fbml',
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.msBuildings.label'),
-            // description: t('rapid_feature_toggle.msBuildings.description'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
           }
         };

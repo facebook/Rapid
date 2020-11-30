@@ -1,6 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
+import marked from 'marked';
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { geoExtent } from '../geo';
@@ -124,20 +125,34 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('div')
       .attr('class', 'modal-section rapid-view-manage-header');
 
-    headerEnter
+    let line1 = headerEnter
+      .append('div');
+
+    line1
       .append('div')
       .attr('class', 'rapid-view-manage-header-icon')
       .call(svgIcon('#iD-icon-data', 'icon-30'));
 
-    headerEnter
+    line1
       .append('div')
       .attr('class', 'rapid-view-manage-header-text')
       .text(t('rapid_feature_toggle.esri.title'));
 
-    headerEnter
+    line1
       .append('div')
       .attr('class', 'rapid-view-manage-header-inputs');
       // .text('Home / Search');
+
+    let line2 = headerEnter
+      .append('div');
+
+    line2
+      .append('div')
+      .attr('class', 'rapid-view-manage-header-about')
+      .html(marked(t('rapid_feature_toggle.esri.about')));
+
+    line2.selectAll('a')
+      .attr('target', '_blank');
 
 
     /* Pages section */
@@ -307,7 +322,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     dots.enter()
       .append('span')
       .attr('class', 'rapid-view-manage-page')
-      .html('&middot;')
+      .html('&#11044;')
       .on('click', clickPage)
       .merge(dots)
       .classed('current', d => d === currPage);
