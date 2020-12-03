@@ -1753,10 +1753,10 @@
                 "open_data_h": "Open Data",
                 "open_data": "Edits that you make on this map will be visible to everyone who uses OpenStreetMap. Your edits can be based on personal knowledge, on-the-ground surveying, or imagery collected from aerial or street level photos. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright).",
                 "before_start_h": "Before you start",
-                "before_start": "You should be familiar with OpenStreetMap and this editor before you start editing. iD contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes.",
+                "before_start": "You should be familiar with OpenStreetMap and this editor before you start editing. RapiD contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes.",
                 "open_source_h": "Open Source",
-                "open_source": "The iD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/openstreetmap/iD).",
-                "open_source_help": "You can help iD by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/openstreetmap/iD/issues)."
+                "open_source": "The RapiD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD).",
+                "open_source_help": "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
             },
             "overview": {
                 "title": "Overview",
