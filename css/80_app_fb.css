@@ -17,6 +17,26 @@ svg.logo-rapid.dark,
     color: #da26d3;
 }
 
+/* beta badge */
+.beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.beta:before {
+    content: '\03b2';  /* β */
+}
+
+
 /* Toolbar buttons */
 button.rapid-features svg.logo-rapid {
     width: 46px;
@@ -701,6 +721,9 @@ hide this one and style something on top of it.  */
     min-width: 600px;
     max-width: 1000px;
 }
+.modal.rapid-modal.modal-view-manage p {
+    font-size: 12px;
+}
 
 .modal-view-manage .modal-section {
     display: flex;
@@ -729,13 +752,16 @@ hide this one and style something on top of it.  */
 }
 .rapid-view-manage-header-text {
     flex: 1 1 auto;
-    font-size: 28px;
+    font-size: 24px;
     padding: 0 5px;
 }
 .rapid-view-manage-header-inputs {
     flex: 0 1 auto;
 }
 .rapid-view-manage-header-about {
+    color: #ddd;
+}
+.rapid-view-manage-header-about  {
     color: #ddd;
 }
 
@@ -787,7 +813,7 @@ hide this one and style something on top of it.  */
 }
 .rapid-view-manage-dataset {
     flex: 0 1 50%;
-    padding: 20px;
+    padding: 10px 20px;
     margin-bottom: 10px;
     color: #eee;
     display: flex;
@@ -803,7 +829,7 @@ hide this one and style something on top of it.  */
 }
 img.rapid-view-manage-dataset-thumbnail {
     border-radius: 10px;
-    width: 200px;
+    width: 180px;
     filter: invert(1)brightness(2)contrast(0.75);
 }
 
@@ -814,23 +840,14 @@ img.rapid-view-manage-dataset-thumbnail {
     margin: 10px 0;
     padding: 0 15px;
 }
-
-.beta {
-    display: inline-block;
-    text-align: center;
+.rapid-view-manage-dataset-name {
     font-weight: bold;
-    color: #eee;
-    margin: 0 10px;
-    width: 1.7em;
-    height: 1.7em;
-    border: 1px solid #909;
-    border-radius: 5px;
-    background: rgb(203,16,237);
-    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
-    cursor: default;
 }
-.beta:before {
-    content: '\03b2';  /* β */
+.rapid-view-manage-dataset-license {
+    display: inline-block;
+}
+.rapid-view-manage-dataset-beta {
+    font-size: 10px;
 }
 
 /* Colorpicker popup */

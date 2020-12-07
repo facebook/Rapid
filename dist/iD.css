@@ -3288,6 +3288,28 @@ display: none;
     color: #da26d3;
 }
 
+/* beta badge */
+.ideditor .beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(6%, rgba(108,1,167,1)), color-stop(50%, rgba(203,16,237,1)), color-stop(90%, rgb(229, 140, 253)), to(rgb(201, 42, 251)));
+    background: -o-linear-gradient(bottom, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.ideditor .beta:before {
+    content: '\03b2';  /* β */
+}
+
+
 /* Toolbar buttons */
 .ideditor button.rapid-features svg.logo-rapid {
     width: 46px;
@@ -4084,6 +4106,9 @@ hide this one and style something on top of it.  */
     min-width: 600px;
     max-width: 1000px;
 }
+.ideditor .modal.rapid-modal.modal-view-manage p {
+    font-size: 12px;
+}
 
 .ideditor .modal-view-manage .modal-section {
     display: -webkit-box;
@@ -4134,7 +4159,7 @@ hide this one and style something on top of it.  */
     -webkit-box-flex: 1;
         -ms-flex: 1 1 auto;
             flex: 1 1 auto;
-    font-size: 28px;
+    font-size: 24px;
     padding: 0 5px;
 }
 .ideditor .rapid-view-manage-header-inputs {
@@ -4143,6 +4168,9 @@ hide this one and style something on top of it.  */
             flex: 0 1 auto;
 }
 .ideditor .rapid-view-manage-header-about {
+    color: #ddd;
+}
+.ideditor .rapid-view-manage-header-about  {
     color: #ddd;
 }
 
@@ -4214,7 +4242,7 @@ hide this one and style something on top of it.  */
     -webkit-box-flex: 0;
         -ms-flex: 0 1 50%;
             flex: 0 1 50%;
-    padding: 20px;
+    padding: 10px 20px;
     margin-bottom: 10px;
     color: #eee;
     display: -webkit-box;
@@ -4239,7 +4267,7 @@ hide this one and style something on top of it.  */
 }
 .ideditor img.rapid-view-manage-dataset-thumbnail {
     border-radius: 10px;
-    width: 200px;
+    width: 180px;
     -webkit-filter: invert(1)brightness(2)contrast(0.75);
             filter: invert(1)brightness(2)contrast(0.75);
 }
@@ -4251,25 +4279,14 @@ hide this one and style something on top of it.  */
     margin: 10px 0;
     padding: 0 15px;
 }
-
-.ideditor .beta {
-    display: inline-block;
-    text-align: center;
+.ideditor .rapid-view-manage-dataset-name {
     font-weight: bold;
-    color: #eee;
-    margin: 0 10px;
-    width: 1.7em;
-    height: 1.7em;
-    border: 1px solid #909;
-    border-radius: 5px;
-    background: rgb(203,16,237);
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(6%, rgba(108,1,167,1)), color-stop(50%, rgba(203,16,237,1)), color-stop(90%, rgb(229, 140, 253)), to(rgb(201, 42, 251)));
-    background: -o-linear-gradient(bottom, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
-    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
-    cursor: default;
 }
-.ideditor .beta:before {
-    content: '\03b2';  /* β */
+.ideditor .rapid-view-manage-dataset-license {
+    display: inline-block;
+}
+.ideditor .rapid-view-manage-dataset-beta {
+    font-size: 10px;
 }
 
 /* Colorpicker popup */

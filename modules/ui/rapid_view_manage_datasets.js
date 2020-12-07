@@ -255,15 +255,9 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-dataset-label');
 
     labelsEnter
-      .append('strong')
-      .text(d => d.title);
-
-    labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
-      .data(d => d.groupCategories.filter(d => d === '/Categories/Preview'))
-      .enter()
       .append('div')
-      .attr('class', 'rapid-view-manage-dataset-beta beta')
-      .attr('title', t('rapid_poweruser_features.beta'));
+      .attr('class', 'rapid-view-manage-dataset-name')
+      .text(d => d.title);
 
     labelsEnter
       .append('div')
@@ -274,6 +268,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('href', d => d.itemURL)
       .text(t('rapid_feature_toggle.esri.more_info'))
       .call(svgIcon('#iD-icon-out-link', 'inline'));
+
+    labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
+      .data(d => d.groupCategories.filter(d => d === '/Categories/Preview'))
+      .enter()
+      .append('div')
+      .attr('class', 'rapid-view-manage-dataset-beta beta')
+      .attr('title', t('rapid_poweruser_features.beta'));
 
     labelsEnter
       .append('div')
