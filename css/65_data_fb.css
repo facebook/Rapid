@@ -113,3 +113,8 @@
     stroke-width: 1px;
 }
 
+.ideditor .fill-wireframe  .layer-ai-features .point {
+    display : inline !important;
+}
+
+
