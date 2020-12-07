@@ -14,7 +14,6 @@ import { utilKeybinding, utilRebind, utilWrap } from '../util';
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
-  const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
   const PERPAGE = 4;
 
   let _content = d3_select(null);
@@ -217,6 +216,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function renderDatasets(selection) {
+    const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const service = services.esriData;
     if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
       selection.text(t('rapid_feature_toggle.esri.no_datasets'));
@@ -227,7 +227,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       selection.text(t('rapid_feature_toggle.esri.fetching_datasets'));
       service.loadDatasets()
         .then(results => {
-          // exclude beta sources unless this is an internal build
+          // exclude preview datasets unless user has opted into them
           return _datasetInfo = Object.values(results)
             .filter(d => showPreview || !d.groupCategories.some(category => category === '/Categories/Preview'));
         })

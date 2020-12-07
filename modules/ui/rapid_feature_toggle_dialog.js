@@ -12,7 +12,6 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
-  const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
 
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -194,8 +193,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderDatasets(selection) {
+    const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
-      .filter(d => d.added && (showPreview || !d.beta));    // exclude beta sources unless this is an internal build
+      .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
 
     const rapidLayer = context.layers().layer('ai-features');
 

@@ -2,12 +2,14 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
+import { modeBrowse } from '../modes';
 import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
   const featureFlags = ['previewDatasets', 'tagnosticRoadCombine', 'tagSources'];
-  const showPowerUser = context.rapidContext().showPowerUser;
+  const rapidContext = context.rapidContext();
+  const showPowerUser = rapidContext.showPowerUser;
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
 
@@ -36,8 +38,22 @@ export function uiRapidPowerUserFeaturesDialog(context) {
   }
 
   function toggleFeature(featureFlag) {
-    const enabled = prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
-    prefs(`rapid-internal-feature.${featureFlag}`, !enabled);
+    let enabled = prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
+    enabled = !enabled;
+    prefs(`rapid-internal-feature.${featureFlag}`, enabled);
+
+    // custom on-toggle behaviors can go here
+    if (featureFlag === 'previewDatasets' && !enabled) {   // user unchecked previewDatasets feature
+      const datasets = rapidContext.datasets();
+      Object.values(datasets).forEach(ds => {
+        if (ds.beta) {
+          ds.added = false;
+          ds.enabled = false;
+        }
+      });
+      context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+      context.map().pan([0,0]);             // trigger a map redraw
+    }
   }
 
 
