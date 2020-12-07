@@ -1,4 +1,15 @@
 
+# [1.1.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.0)
+#### 2020-Dec-7th
+#### :trumpet: New Features!
+This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to RapiD!
+
+Read the [FAQ] (https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) and our engineering [blog post] (https://tech.fb.com/osm-ready-data-sets/).
+
+This release is based off of iD version 2.18.3.
+#### :trumpet: Updates
+This release fixes issue #168, which prevented users from editing certain types of ways.
+
 # [1.0.12](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.12)
 #### 2020-Sept-11th
 #### :trumpet: Updates
