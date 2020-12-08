@@ -422,6 +422,7 @@ export function validationCrossingWays(context) {
                 // ensure the correct connection tags are added in the fix
                 JSON.stringify(connectionTags),
             loc: crossing.crossPoint,
+            autoArgs: connectionTags && connectWaysAutoArgs(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function(context) {
                 var mode = context.mode();
                 if (!mode || mode.id !== 'select' || mode.selectedIDs().length !== 1) return [];
@@ -687,6 +688,36 @@ export function validationCrossingWays(context) {
             }
         });
     }
+
+    function connectWaysAutoArgs(loc, edges, connectionTags) {
+        var fn = function actionConnectCrossingWays(graph) {
+            // create the new node for the points
+            var node = osmNode({ loc: loc, tags: connectionTags });
+            graph = graph.replace(node);
+
+            var nodesToMerge = [node.id];
+            var mergeThresholdInMeters = 0.75;
+
+            edges.forEach(function(edge) {
+                var edgeNodes = [graph.entity(edge[0]), graph.entity(edge[1])];
+                var closestNodeInfo = geoSphericalClosestNode(edgeNodes, loc);
+                if (closestNodeInfo.distance < mergeThresholdInMeters) {
+                    nodesToMerge.push(closestNodeInfo.node.id);   // use an existing nearby point
+                } else {
+                    graph = actionAddMidpoint({loc: loc, edge: edge}, node)(graph);
+                }
+            });
+
+            if (nodesToMerge.length > 1) {   // if we're using nearby nodes, merge them with the new node
+                graph = actionMergeNodes(nodesToMerge, loc)(graph);
+            }
+
+            return graph;
+        };
+
+        return [fn, t('issues.fix.connect_crossing_features.annotation')];
+    }
+
 
     function makeConnectWaysFix(connectionTags) {
 

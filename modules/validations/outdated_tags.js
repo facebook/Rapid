@@ -165,8 +165,7 @@ export function validationOutdatedTags() {
       prefix = 'incomplete.';
     }
 
-    // don't allow autofixing brand tags
-    let autoArgs = subtype !== 'noncanonical_brand' ? [doUpgrade, t('issues.fix.upgrade_tags.annotation')] : null;
+    let autoArgs = [doUpgrade, t('issues.fix.upgrade_tags.annotation')];
 
     return [new validationIssue({
       type: type,
@@ -176,10 +175,11 @@ export function validationOutdatedTags() {
       reference: showReference,
       entityIds: [entity.id],
       hash: JSON.stringify(tagDiff),
+      autoArgs: autoArgs,
       dynamicFixes: () => {
         return [
           new validationIssueFix({
-            autoArgs: autoArgs,
+//            autoArgs: autoArgs,
             title: t('issues.fix.upgrade_tags.title'),
             onClick: (context) => {
               context.perform(doUpgrade, t('issues.fix.upgrade_tags.annotation'));
@@ -272,10 +272,11 @@ export function validationOutdatedTags() {
       message: showMessage,
       reference: showReference,
       entityIds: [outerWay.id, multipolygon.id],
+      autoArgs: [doUpgrade, t('issues.fix.move_tags.annotation')],
       dynamicFixes: () => {
         return [
           new validationIssueFix({
-            autoArgs: [doUpgrade, t('issues.fix.move_tags.annotation')],
+            // autoArgs: [doUpgrade, t('issues.fix.move_tags.annotation')],
             title: t('issues.fix.move_tags.title'),
             onClick: (context) => {
               context.perform(doUpgrade, t('issues.fix.move_tags.annotation'));

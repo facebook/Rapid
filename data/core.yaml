@@ -1013,6 +1013,9 @@ en:
     tagSources:
       label: Tag highways as Maxar
       description: Add the tag 'source=maxar' to all highways
+    showAutoFix:
+      label: Enable fix buttons on Issue Pane
+      description: Enable the autofix buttons on Issue pane for fixing simple issues
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:
