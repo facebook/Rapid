@@ -12,7 +12,9 @@ import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 
 
 export function uiRapidFeatureInspector(context, keybinding) {
-  const AI_FEATURES_LIMIT_NON_TM_MODE = 50;
+  const rapidContext = context.rapidContext();
+  const showPowerUser = rapidContext.showPowerUser;
+  const ACCEPT_FEATURES_LIMIT = showPowerUser ? Infinity : 50;
   let _datum;
 
 
@@ -23,7 +25,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     const annotations = context.history().peekAllAnnotations();
     const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
-    return aiFeatureAccepts.length >= AI_FEATURES_LIMIT_NON_TM_MODE;
+    return aiFeatureAccepts.length >= ACCEPT_FEATURES_LIMIT;
   }
 
 
@@ -35,7 +37,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
         .duration(5000)
         .text(t(
           'rapid_feature_inspector.option_accept.disabled_flash',
-          { n: AI_FEATURES_LIMIT_NON_TM_MODE }
+          { n: ACCEPT_FEATURES_LIMIT }
         ));
       flash();
       return;
@@ -60,7 +62,6 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (context.inIntro()) return;
 
     // remember sources for later when we prepare the changeset
-    const rapidContext = context.rapidContext();
     const source = _datum.tags && _datum.tags.source;
     if (source) {
       rapidContext.sources.add(source);
@@ -107,7 +108,6 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (!_datum) return;
 
     const datasetID = _datum.__datasetid__.replace('-conflated', '');
-    const rapidContext = context.rapidContext();
     const dataset = rapidContext.datasets()[datasetID];
     const color = dataset.color;
 
@@ -289,7 +289,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     let title, keys;
     if (d.key === 'accept') {
       if (isAddFeatureDisabled()) {
-        title = t('rapid_feature_inspector.option_accept.disabled', { n: AI_FEATURES_LIMIT_NON_TM_MODE } );
+        title = t('rapid_feature_inspector.option_accept.disabled', { n: ACCEPT_FEATURES_LIMIT } );
         keys = [];
       } else {
         title = t('rapid_feature_inspector.option_accept.tooltip');
