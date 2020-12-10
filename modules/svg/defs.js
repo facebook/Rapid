@@ -74,7 +74,7 @@ export function svgDefs(context) {
             .append('line')
             .attr('stroke', 'white')
             .attr('stroke-width', '2px')
-            .attr('y2', '');
+            .attr('y2', '25');
 
         // add markers
         defs

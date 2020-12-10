@@ -80,23 +80,6 @@
     stroke-width: 3;
     fill: #fff;
 }
-<<<<<<< HEAD
-=======
-
-
-.layer-ai-features g.vertex.red.road .stroke {
-    stroke: #ff0012;
-    stroke-width: 3;
-    fill: #fff;
-}
-
-.layer-ai-features g.vertex.green.road .stroke {
-    stroke: #00ff3e;
-    stroke-width: 3;
-    fill: #fff;
-}
-
->>>>>>> d7492e0c8... style roads appropriately as candy-canes. Fix road fill bug.
 .low-zoom .layer-ai-features g.vertex .stroke {
     stroke-width: 2;
 }

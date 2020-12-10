@@ -1,4 +1,4 @@
-export function uiSnowflakes(context) {
+export function uiSnowflakes() {
 
     uiSnowflakes.renderPane = function(selection) {
 
@@ -13,7 +13,7 @@ export function uiSnowflakes(context) {
       .attr('aria-hidden', 'true')
       .attr('class', 'pane-heading hide');
 
-    for (var i = 0; i < 18; i++) {
+    for (let i = 0; i < 18; i++) {
         snowflakeSlowDiv
             .append('div')
             .attr('class', 'snowflake slow ')
@@ -26,7 +26,7 @@ export function uiSnowflakes(context) {
             .attr('aria-hidden', 'true')
             .attr('class', 'pane-heading');
 
-        for (var i=0; i < 12; i++)
+        for (let i=0; i < 12; i++)
         {
             snowflakeDiv
             .append('div')
@@ -41,7 +41,7 @@ export function uiSnowflakes(context) {
           .attr('aria-hidden', 'true')
           .attr('class', 'pane-heading');
 
-        for (var j = 0; j < 12; j++) {
+        for (let i = 0; i < 12; i++) {
           snowflakeFastDiv
             .append('div')
             .attr('class', 'snowflake fast')

@@ -1,7 +1,4 @@
-import _debounce from 'lodash-es/debounce';
-
-
-export function uiToolFbBannerTwo(context) {
+export function uiToolFbBannerTwo() {
 
     var tool = {
         id: 'fb_banner_2'
@@ -10,9 +7,6 @@ export function uiToolFbBannerTwo(context) {
 
     tool.render = function(selection) {
         var banner = selection.selectAll('div#worldai-holiday-banner-end').data([0]);
-
-        banner.exit()
-            .remove;
 
         var bannerEnter = banner.enter()
             .append('div')
