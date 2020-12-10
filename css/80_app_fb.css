@@ -947,33 +947,45 @@ div.holiday-banner {
 div.holiday-banner.smaller {
     margin: 0 0 .8em 0;
     font-size: 2.5em;
-    width: 300px; 
-    font-weight: 300; 
-    margin-top: -5px; 
+    width: 300px;
+    font-weight: 300;
+    margin-top: -5px;
 }
 
+.bar-button::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -7px;
+    left: -3px;
+    right: 0;
+    height: 23px;
+    background: url('img/snowcover1.png') no-repeat 0 0,
+    url('img/snowcover2.png') no-repeat 50% 0,
+    url('img/snowcover3.png') no-repeat 100% 0;
+}
 
 .bar-button:nth-child(odd) {
     box-shadow: 0px 0px 10px 3px #f00;
-    background: #f00; 
-    animation: red-light-glow 3s ease-in-out alternate infinite; 
+    background: #f00;
+    animation: red-light-glow 3s ease-in-out alternate infinite;
 }
 
-.bar-button:nth-child(even), 
+.bar-button:nth-child(even),
 .bar-button.ai-features-toggle {
     box-shadow: 0px 0px 10px 3px #0f08;
-    background: #0f08; 
-    animation: green-light-glow 3s 1.5s ease-in-out alternate infinite; 
+    background: #0f08;
+    animation: green-light-glow 3s 1.5s ease-in-out alternate infinite;
 }
 
 
 @keyframes red-light-glow {
     0% {
-        box-shadow: 0px 0px 10px 6px #f00; 
-        background: #f00; 
+        box-shadow: 0px 0px 10px 6px #f00;
+        background: #f00;
     }
     100% {
-        box-shadow: 0px 0px 6px 3px #f008; 
+        box-shadow: 0px 0px 6px 3px #f008;
         background: #f008;
     }
 }
@@ -981,11 +993,11 @@ div.holiday-banner.smaller {
 
 @keyframes green-light-glow {
     0% {
-        box-shadow: 0px 0px 6px 3px #0f08; 
+        box-shadow: 0px 0px 6px 3px #0f08;
         background: #0f08;
     }
     100% {
-        box-shadow: 0px 0px 10px 6px #0f0; 
-        background: #0f0; 
+        box-shadow: 0px 0px 10px 6px #0f0;
+        background: #0f0;
     }
 }
