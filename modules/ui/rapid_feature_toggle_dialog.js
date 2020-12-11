@@ -1,4 +1,4 @@
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import marked from 'marked';
 import { t, localizer } from '../core/localizer';
@@ -54,7 +54,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
 
-  function keyPressHandler() {
+  function keyPressHandler(d3_event) {
     if (d3_event.shiftKey && d3_event.key === t('map_data.layers.ai-features.key')) {
       toggleRapid();
     }
@@ -272,7 +272,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
                 .append('a')
                 .attr('href', '#')
                 .text(t('rapid_feature_toggle.center_map'))
-                .on('click', () => {
+                .on('click', (d3_event) => {
                   d3_event.preventDefault();
                   context.map().extent(d.extent);
                 });

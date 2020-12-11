@@ -1,8 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import {
-    select as d3_select,
-    event as d3_event
+    select as d3_select
 } from 'd3-selection';
 
 import { uiCombobox } from '../combobox';
@@ -84,8 +83,10 @@ export function uiFieldWikidata(field, context) {
             .call(combobox.fetcher(fetchWikidataItems));
 
         combobox.on('accept', function(d) {
-            _qid = d.id;
-            change();
+            if (d) {
+                _qid = d.id;
+                change();
+            }
         }).on('cancel', function() {
             setLabelForEntity();
         });
@@ -94,9 +95,8 @@ export function uiFieldWikidata(field, context) {
             .append('button')
             .attr('class', 'form-field-button wiki-link')
             .attr('title', t('icons.view_on', { domain: 'wikidata.org' }))
-            .attr('tabindex', -1)
             .call(svgIcon('#iD-icon-out-link'))
-            .on('click', function() {
+            .on('click', function(d3_event) {
                 d3_event.preventDefault();
                 if (_wikiURL) window.open(_wikiURL, '_blank');
             });
@@ -118,7 +118,7 @@ export function uiFieldWikidata(field, context) {
         enter
             .append('span')
             .attr('class', 'label')
-            .text(function(d) { return t('wikidata.' + d); });
+            .html(function(d) { return t.html('wikidata.' + d); });
 
         enter
             .append('input')
@@ -131,9 +131,8 @@ export function uiFieldWikidata(field, context) {
             .append('button')
             .attr('class', 'form-field-button')
             .attr('title', t('icons.copy'))
-            .attr('tabindex', -1)
             .call(svgIcon('#iD-operation-copy'))
-            .on('click', function() {
+            .on('click', function(d3_event) {
                 d3_event.preventDefault();
                 d3_select(this.parentNode)
                     .select('input')
@@ -243,11 +242,11 @@ export function uiFieldWikidata(field, context) {
 
             var actions = initEntityIDs.map(function(entityID) {
                 var entity = context.hasEntity(entityID);
-                if (!entity) return;
+                if (!entity) return null;
 
                 var currTags = Object.assign({}, entity.tags);  // shallow copy
                 if (newWikipediaValue === null) {
-                    if (!currTags[_wikipediaKey]) return;
+                    if (!currTags[_wikipediaKey]) return null;
 
                     delete currTags[_wikipediaKey];
                 } else {

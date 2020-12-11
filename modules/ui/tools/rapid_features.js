@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select, event as d3_event } from 'd3-selection';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiCmd } from '../cmd';
@@ -22,7 +21,7 @@ export function uiToolRapidFeatures(context) {
   };
 
   context.keybinding()
-    .on(rapidFeaturesToggleKey, () => {
+    .on(rapidFeaturesToggleKey, (d3_event) => {
       d3_event.preventDefault();
       d3_event.stopPropagation();
       toggleFeatures();
@@ -41,13 +40,11 @@ export function uiToolRapidFeatures(context) {
   }
 
 
-  function showFeatureToggleDialog(d, i, nodes) {
-    d3_select(nodes[i]).node().blur();
+  function showFeatureToggleDialog() {
     context.container().call(datasetDialog);
   }
 
-  function showPowerUserFeaturesDialog(d, i, nodes) {
-    d3_select(nodes[i]).node().blur();
+  function showPowerUserFeaturesDialog() {
     context.container().call(powerUserDialog);
   }
 

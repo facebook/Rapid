@@ -7,7 +7,7 @@ export function uiSectionMapFeatures(context) {
     var _features = context.features().keys();
 
     var section = uiSection('map-features', context)
-        .title(t('map_data.map_features'))
+        .label(t.html('map_data.map_features'))
         .disclosureContent(renderDisclosureContent)
         .expandedByDefault(false);
 
@@ -32,18 +32,20 @@ export function uiSectionMapFeatures(context) {
             .append('a')
             .attr('class', 'feature-list-link')
             .attr('href', '#')
-            .text(t('issues.enable_all'))
-            .on('click', function() {
-                context.features().enableAll();
+            .html(t.html('issues.disable_all'))
+            .on('click', function(d3_event) {
+                d3_event.preventDefault();
+                context.features().disableAll();
             });
 
         footer
             .append('a')
             .attr('class', 'feature-list-link')
             .attr('href', '#')
-            .text(t('issues.disable_all'))
-            .on('click', function() {
-                context.features().disableAll();
+            .html(t.html('issues.enable_all'))
+            .on('click', function(d3_event) {
+                d3_event.preventDefault();
+                context.features().enableAll();
             });
 
         // Update
@@ -67,9 +69,9 @@ export function uiSectionMapFeatures(context) {
             .append('li')
             .call(uiTooltip()
                 .title(function(d) {
-                    var tip = t(name + '.' + d + '.tooltip');
+                    var tip = t.html(name + '.' + d + '.tooltip');
                     if (autoHiddenFeature(d)) {
-                        var msg = showsLayer('osm') ? t('map_data.autohidden') : t('map_data.osmhidden');
+                        var msg = showsLayer('osm') ? t.html('map_data.autohidden') : t.html('map_data.osmhidden');
                         tip += '<div>' + msg + '</div>';
                     }
                     return tip;
@@ -88,7 +90,7 @@ export function uiSectionMapFeatures(context) {
 
         label
             .append('span')
-            .text(function(d) { return t(name + '.' + d + '.description'); });
+            .html(function(d) { return t.html(name + '.' + d + '.description'); });
 
         // Update
         items = items
@@ -109,7 +111,7 @@ export function uiSectionMapFeatures(context) {
         return context.features().enabled(d);
     }
 
-    function clickFeature(d) {
+    function clickFeature(d3_event, d) {
         context.features().toggle(d);
     }
 

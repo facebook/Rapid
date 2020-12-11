@@ -38,16 +38,16 @@ export function uiVersion(context) {
         // only show new version indicator to users that have used iD before
         if (isNewVersion && !isNewUser) {
             selection
-                .append('div')
-                .attr('class', 'badge')
                 .append('a')
+                .attr('class', 'badge')
                 .attr('target', '_blank')
                 .attr('tabindex', -1)
                 .attr('href', 'https://github.com/facebookincubator/RapiD/blob/master/CHANGELOG.md')
                 .call(svgIcon('#maki-gift-11'))
                 .call(uiTooltip()
-                    .title(t('version.whats_new', { version: currVersion }))
+                    .title(t.html('version.whats_new', { version: currVersion }))
                     .placement('top')
+                    .scrollContainer(context.container().select('.main-footer-wrap'))
                 );
         }
     };

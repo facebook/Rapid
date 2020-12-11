@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select, event as d3_event } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
@@ -26,7 +26,7 @@ export function uiRapidColorpicker(context, parentModal) {
 
 
   // if user clicks outside the colorpicker, dismiss
-  function handleClick() {
+  function handleClick(d3_event) {
     const target = d3_event.target;
     const className = (target && target.className) || '';
     if (!/colorpicker/i.test(className)) {

@@ -1,5 +1,4 @@
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 import * as sexagesimal from '@mapbox/sexagesimal';
@@ -31,15 +30,18 @@ export function uiFeatureList(context) {
     function featureList(selection) {
         var header = selection
             .append('div')
-            .attr('class', 'header fillL cf');
+            .attr('class', 'header fillL');
 
         header
             .append('h3')
-            .text(t('inspector.feature_list'));
+            .html(t.html('inspector.feature_list'));
 
         var searchWrap = selection
             .append('div')
             .attr('class', 'search-header');
+
+        searchWrap
+            .call(svgIcon('#iD-icon-search', 'pre-text'));
 
         var search = searchWrap
             .append('input')
@@ -50,16 +52,13 @@ export function uiFeatureList(context) {
             .on('keydown', keydown)
             .on('input', inputevent);
 
-        searchWrap
-            .call(svgIcon('#iD-icon-search', 'pre-text'));
-
         var listWrap = selection
             .append('div')
             .attr('class', 'inspector-body');
 
         var list = listWrap
             .append('div')
-            .attr('class', 'feature-list cf');
+            .attr('class', 'feature-list');
 
         context
             .on('exit.feature-list', clearSearch);
@@ -70,7 +69,7 @@ export function uiFeatureList(context) {
             .on(uiCmd('⌘F'), focusSearch);
 
 
-        function focusSearch() {
+        function focusSearch(d3_event) {
             var mode = context.mode() && context.mode().id;
             if (mode !== 'browse') return;
 
@@ -79,17 +78,19 @@ export function uiFeatureList(context) {
         }
 
 
-        function keydown() {
+        function keydown(d3_event) {
             if (d3_event.keyCode === 27) {  // escape
                 search.node().blur();
             }
         }
 
 
-        function keypress() {
+        function keypress(d3_event) {
             var q = search.property('value'),
                 items = list.selectAll('.feature-list-item');
-            if (d3_event.keyCode === 13 && q.length && items.size()) {  // return
+            if (d3_event.keyCode === 13 && // ↩ Return
+                q.length &&
+                items.size()) {
                 click(items.datum());
             }
         }
@@ -122,19 +123,6 @@ export function uiFeatureList(context) {
 
             if (!q) return result;
 
-            var idMatch = q.match(/(?:^|\W)(node|way|relation|[nwr])\W?0*([1-9]\d*)(?:\W|$)/i);
-
-            if (idMatch) {
-                var elemType = idMatch[1].charAt(0);
-                var elemId = idMatch[2];
-                result.push({
-                    id: elemType + elemId,
-                    geometry: elemType === 'n' ? 'point' : elemType === 'w' ? 'line' : 'relation',
-                    type: elemType === 'n' ? t('inspector.node') : elemType === 'w' ? t('inspector.way') : t('inspector.relation'),
-                    name: elemId
-                });
-            }
-
             var locationMatch = sexagesimal.pair(q.toUpperCase()) || q.match(/^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)$/);
 
             if (locationMatch) {
@@ -145,6 +133,20 @@ export function uiFeatureList(context) {
                     type: t('inspector.location'),
                     name: dmsCoordinatePair([loc[1], loc[0]]),
                     location: loc
+                });
+            }
+
+            // A location search takes priority over an ID search
+            var idMatch = !locationMatch && q.match(/(?:^|\W)(node|way|relation|[nwr])\W?0*([1-9]\d*)(?:\W|$)/i);
+
+            if (idMatch) {
+                var elemType = idMatch[1].charAt(0);
+                var elemId = idMatch[2];
+                result.push({
+                    id: elemType + elemId,
+                    geometry: elemType === 'n' ? 'point' : elemType === 'w' ? 'line' : 'relation',
+                    type: elemType === 'n' ? t('inspector.node') : elemType === 'w' ? t('inspector.way') : t('inspector.relation'),
+                    name: elemId
                 });
             }
 
@@ -253,20 +255,20 @@ export function uiFeatureList(context) {
                 .attr('class', 'entity-name');
 
             list.selectAll('.no-results-item .entity-name')
-                .text(t('geocoder.no_results_worldwide'));
+                .html(t.html('geocoder.no_results_worldwide'));
 
             if (services.geocoder) {
               list.selectAll('.geocode-item')
                   .data([0])
                   .enter()
                   .append('button')
-                  .attr('class', 'geocode-item')
+                  .attr('class', 'geocode-item secondary-action')
                   .on('click', geocoderSearch)
                   .append('div')
                   .attr('class', 'label')
                   .append('span')
                   .attr('class', 'entity-name')
-                  .text(t('geocoder.search'));
+                  .html(t.html('geocoder.search'));
             }
 
             list.selectAll('.no-results-item')
@@ -302,12 +304,12 @@ export function uiFeatureList(context) {
             label
                 .append('span')
                 .attr('class', 'entity-type')
-                .text(function(d) { return d.type; });
+                .html(function(d) { return d.type; });
 
             label
                 .append('span')
                 .attr('class', 'entity-name')
-                .text(function(d) { return d.name; });
+                .html(function(d) { return d.name; });
 
             enter
                 .style('opacity', 0)
@@ -321,21 +323,21 @@ export function uiFeatureList(context) {
         }
 
 
-        function mouseover(d) {
+        function mouseover(d3_event, d) {
             if (d.id === -1) return;
 
             utilHighlightEntities([d.id], true, context);
         }
 
 
-        function mouseout(d) {
+        function mouseout(d3_event, d) {
             if (d.id === -1) return;
 
             utilHighlightEntities([d.id], false, context);
         }
 
 
-        function click(d) {
+        function click(d3_event, d) {
             d3_event.preventDefault();
 
             if (d.location) {

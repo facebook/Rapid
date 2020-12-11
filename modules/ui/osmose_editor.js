@@ -35,7 +35,7 @@ export function uiOsmoseEditor(context) {
 
     headerEnter
       .append('h3')
-        .text(t('QA.osmose.title'));
+        .html(t.html('QA.osmose.title'));
 
     let body = selection.selectAll('.body')
       .data([0]);
@@ -117,8 +117,8 @@ export function uiOsmoseEditor(context) {
       .merge(buttonEnter);
 
     buttonSection.select('.close-button')
-      .text(() => t('QA.keepRight.close'))
-      .on('click.close', function(d) {
+      .html(t.html('QA.keepRight.close'))
+      .on('click.close', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
         const qaService = services.osmose;
         if (qaService) {
@@ -128,8 +128,8 @@ export function uiOsmoseEditor(context) {
       });
 
     buttonSection.select('.ignore-button')
-      .text(() => t('QA.keepRight.ignore'))
-      .on('click.ignore', function(d) {
+      .html(t.html('QA.keepRight.ignore'))
+      .on('click.ignore', function(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
         const qaService = services.osmose;
         if (qaService) {

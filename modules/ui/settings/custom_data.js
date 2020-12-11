@@ -1,5 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { event as d3_event } from 'd3-selection';
 
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
@@ -31,7 +30,7 @@ export function uiSettingsCustomData(context) {
 
         modal.select('.modal-section.header')
             .append('h3')
-            .text(t('settings.custom_data.header'));
+            .html(t.html('settings.custom_data.header'));
 
 
         var textSection = modal.select('.modal-section.message-text');
@@ -39,14 +38,14 @@ export function uiSettingsCustomData(context) {
         textSection
             .append('pre')
             .attr('class', 'instructions-file')
-            .text(t('settings.custom_data.file.instructions'));
+            .html(t.html('settings.custom_data.file.instructions'));
 
         textSection
             .append('input')
             .attr('class', 'field-file')
             .attr('type', 'file')
             .property('files', _currSettings.fileList)  // works for all except IE11
-            .on('change', function() {
+            .on('change', function(d3_event) {
                 var files = d3_event.target.files;
                 if (files && files.length) {
                     _currSettings.url = '';
@@ -59,12 +58,12 @@ export function uiSettingsCustomData(context) {
 
         textSection
             .append('h4')
-            .text(t('settings.custom_data.or'));
+            .html(t.html('settings.custom_data.or'));
 
         textSection
             .append('pre')
             .attr('class', 'instructions-url')
-            .text(t('settings.custom_data.url.instructions'));
+            .html(t.html('settings.custom_data.url.instructions'));
 
         textSection
             .append('textarea')
@@ -80,7 +79,7 @@ export function uiSettingsCustomData(context) {
         buttonSection
             .insert('button', '.ok-button')
             .attr('class', 'button cancel-button secondary-action')
-            .text(t('confirm.cancel'));
+            .html(t.html('confirm.cancel'));
 
 
         buttonSection.select('.cancel-button')

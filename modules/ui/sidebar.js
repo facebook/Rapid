@@ -2,7 +2,6 @@ import _throttle from 'lodash-es/throttle';
 
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -60,7 +59,7 @@ export function uiSidebar(context) {
 
         var downPointerId, lastClientX, containerLocGetter;
 
-        function pointerdown() {
+        function pointerdown(d3_event) {
             if (downPointerId) return;
 
             if ('button' in d3_event && d3_event.button !== 0) return;
@@ -84,7 +83,7 @@ export function uiSidebar(context) {
             resizer.classed('dragging', true);
 
             d3_select(window)
-                .on('touchmove.sidebar-resizer', function() {
+                .on('touchmove.sidebar-resizer', function(d3_event) {
                     // disable page scrolling while resizing on touch input
                     d3_event.preventDefault();
                 }, { passive: false })
@@ -92,7 +91,7 @@ export function uiSidebar(context) {
                 .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', pointerup);
         }
 
-        function pointermove() {
+        function pointermove(d3_event) {
 
             if (downPointerId !== (d3_event.pointerId || 'mouse')) return;
 
@@ -137,7 +136,7 @@ export function uiSidebar(context) {
             }
         }
 
-        function pointerup() {
+        function pointerup(d3_event) {
             if (downPointerId !== (d3_event.pointerId || 'mouse')) return;
 
             downPointerId = null;
@@ -160,12 +159,12 @@ export function uiSidebar(context) {
             .attr('class', 'inspector-hidden inspector-wrap');
 
         var hoverModeSelect = function(targets) {
-            context.container().selectAll('.feature-list-item').classed('hover', false);
+            context.container().selectAll('.feature-list-item button').classed('hover', false);
 
             if (context.selectedIDs().length > 1 &&
                 targets && targets.length) {
 
-                var elements = context.container().selectAll('.feature-list-item')
+                var elements = context.container().selectAll('.feature-list-item button')
                     .filter(function (node) {
                         return targets.indexOf(node) !== -1;
                     });
@@ -308,15 +307,15 @@ export function uiSidebar(context) {
                     .classed('inspector-hidden', false)
                     .classed('inspector-hover', false);
 
-                if (!inspector.entityIDs() || !utilArrayIdentical(inspector.entityIDs(), ids) || inspector.state() !== 'select') {
-                    inspector
-                        .state('select')
-                        .entityIDs(ids)
-                        .newFeature(newFeature);
+                // reload the UI even if the ids are the same since the entities
+                // themselves may have changed
+                inspector
+                    .state('select')
+                    .entityIDs(ids)
+                    .newFeature(newFeature);
 
-                    inspectorWrap
-                        .call(inspector);
-                }
+                inspectorWrap
+                    .call(inspector);
 
             } else {
                 inspector
@@ -370,12 +369,6 @@ export function uiSidebar(context) {
 
 
         sidebar.toggle = function(moveMap) {
-            var e = d3_event;
-            if (e && e.sourceEvent) {
-                e.sourceEvent.preventDefault();
-            } else if (e) {
-                e.preventDefault();
-            }
 
             // Don't allow sidebar to toggle when the user is in the walkthrough.
             if (context.inIntro()) return;
@@ -400,7 +393,13 @@ export function uiSidebar(context) {
                 endMargin = 0;
             }
 
-            selection.transition()
+            if (!isCollapsing) {
+                // unhide the sidebar's content before it transitions onscreen
+                selection.classed('collapsed', isCollapsing);
+            }
+
+            selection
+                .transition()
                 .style(xMarginProperty, endMargin + 'px')
                 .tween('panner', function() {
                     var i = d3_interpolateNumber(startMargin, endMargin);
@@ -411,7 +410,10 @@ export function uiSidebar(context) {
                     };
                 })
                 .on('end', function() {
-                    selection.classed('collapsed', isCollapsing);
+                    if (isCollapsing) {
+                        // hide the sidebar's content after it transitions offscreen
+                        selection.classed('collapsed', isCollapsing);
+                    }
 
                     // switch back from px to %
                     if (!isCollapsing) {
@@ -425,7 +427,13 @@ export function uiSidebar(context) {
         };
 
         // toggle the sidebar collapse when double-clicking the resizer
-        resizer.on('dblclick', sidebar.toggle);
+        resizer.on('dblclick', function(d3_event) {
+            d3_event.preventDefault();
+            if (d3_event.sourceEvent) {
+                d3_event.sourceEvent.preventDefault();
+            }
+            sidebar.toggle();
+        });
 
         // ensure hover sidebar is closed when zooming out beyond editable zoom
         context.map().on('crossEditableZoom.sidebar', function(within) {

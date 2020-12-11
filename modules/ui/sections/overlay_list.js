@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -12,7 +11,7 @@ import { uiSection } from '../section';
 export function uiSectionOverlayList(context) {
 
     var section = uiSection('overlay-list', context)
-        .title(t('background.overlays'))
+        .label(t.html('background.overlays'))
         .disclosureContent(renderDisclosureContent);
 
     var _overlayList = d3_select(null);
@@ -49,7 +48,7 @@ export function uiSectionOverlayList(context) {
     }
 
 
-    function chooseOverlay(d) {
+    function chooseOverlay(d3_event, d) {
         d3_event.preventDefault();
         context.background().toggleOverlayLayer(d);
         _overlayList.call(updateLayerSelections);
@@ -81,7 +80,7 @@ export function uiSectionOverlayList(context) {
 
         label
             .append('span')
-            .text(function(d) { return d.name(); });
+            .html(function(d) { return d.label(); });
 
 
         layerList.selectAll('li')

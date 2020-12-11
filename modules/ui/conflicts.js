@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -66,7 +65,7 @@ export function uiConflicts(context) {
 
         headerEnter
             .append('h3')
-            .text(t('save.conflict.header'));
+            .html(t.html('save.conflict.header'));
 
         var bodyEnter = selection.selectAll('.body')
             .data([0])
@@ -77,7 +76,7 @@ export function uiConflicts(context) {
         var conflictsHelpEnter = bodyEnter
             .append('div')
             .attr('class', 'conflicts-help')
-            .text(t('save.conflict.help'));
+            .html(t.html('save.conflict.help'));
 
 
         // Download changes link
@@ -110,7 +109,7 @@ export function uiConflicts(context) {
         linkEnter
             .call(svgIcon('#iD-icon-load', 'inline'))
             .append('span')
-            .text(t('save.conflict.download_changes'));
+            .html(t.html('save.conflict.download_changes'));
 
 
         bodyEnter
@@ -123,7 +122,7 @@ export function uiConflicts(context) {
             .attr('class', 'conflicts-done')
             .attr('opacity', 0)
             .style('display', 'none')
-            .text(t('save.conflict.done'));
+            .html(t.html('save.conflict.done'));
 
         var buttonsEnter = bodyEnter
             .append('div')
@@ -133,13 +132,13 @@ export function uiConflicts(context) {
             .append('button')
             .attr('disabled', _conflictList.length > 1)
             .attr('class', 'action conflicts-button col6')
-            .text(t('save.title'))
+            .html(t.html('save.title'))
             .on('click.try_again', tryAgain);
 
         buttonsEnter
             .append('button')
             .attr('class', 'secondary-action conflicts-button col6')
-            .text(t('confirm.cancel'))
+            .html(t.html('confirm.cancel'))
             .on('click.cancel', cancel);
     }
 
@@ -177,14 +176,14 @@ export function uiConflicts(context) {
         conflictEnter
             .append('h4')
             .attr('class', 'conflict-count')
-            .text(t('save.conflict.count', { num: index + 1, total: _conflictList.length }));
+            .html(t.html('save.conflict.count', { num: index + 1, total: _conflictList.length }));
 
         conflictEnter
             .append('a')
             .attr('class', 'conflict-description')
             .attr('href', '#')
-            .text(function(d) { return d.name; })
-            .on('click', function(d) {
+            .html(function(d) { return d.name; })
+            .on('click', function(d3_event, d) {
                 d3_event.preventDefault();
                 zoomToEntity(d.id);
             });
@@ -215,17 +214,17 @@ export function uiConflicts(context) {
             .data(['previous', 'next'])
             .enter()
             .append('button')
-            .text(function(d) { return t('save.conflict.' + d); })
+            .html(function(d) { return t.html('save.conflict.' + d); })
             .attr('class', 'conflict-nav-button action col6')
             .attr('disabled', function(d, i) {
                 return (i === 0 && index === 0) ||
                     (i === 1 && index === _conflictList.length - 1) || null;
             })
-            .on('click', function(d, i) {
+            .on('click', function(d3_event, d) {
                 d3_event.preventDefault();
 
                 var container = parent.selectAll('.conflict-container');
-                var sign = (i === 0 ? -1 : 1);
+                var sign = (d === 'previous' ? -1 : 1);
 
                 container
                     .selectAll('.conflict')
@@ -257,29 +256,29 @@ export function uiConflicts(context) {
             .append('input')
             .attr('type', 'radio')
             .attr('name', function(d) { return d.id; })
-            .on('change', function(d, i) {
+            .on('change', function(d3_event, d) {
                 var ul = this.parentNode.parentNode.parentNode;
-                ul.__data__.chosen = i;
-                choose(ul, d);
+                ul.__data__.chosen = d.id;
+                choose(d3_event, ul, d);
             });
 
         labelEnter
             .append('span')
-            .text(function(d) { return d.text; });
+            .html(function(d) { return d.text; });
 
         // update
         choicesEnter
             .merge(choices)
-            .each(function(d, i) {
+            .each(function(d) {
                 var ul = this.parentNode;
-                if (ul.__data__.chosen === i) {
-                    choose(ul, d);
+                if (ul.__data__.chosen === d.id) {
+                    choose(null, ul, d);
                 }
             });
     }
 
 
-    function choose(ul, datum) {
+    function choose(d3_event, ul, datum) {
         if (d3_event) d3_event.preventDefault();
 
         d3_select(ul)

@@ -1,10 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import {
-    event as d3_event
-} from 'd3-selection';
-
-import {
     interpolateNumber as d3_interpolateNumber
 } from 'd3-interpolate';
 
@@ -13,7 +9,7 @@ import { t } from '../../core/localizer';
 import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { helpString, icon, pad, transitionTime } from './helper';
+import { helpHtml, icon, pad, transitionTime } from './helper';
 
 
 export function uiIntroArea(context, reveal) {
@@ -36,7 +32,7 @@ export function uiIntroArea(context, reveal) {
     }
 
 
-    function eventCancel() {
+    function eventCancel(d3_event) {
         d3_event.stopPropagation();
         d3_event.preventDefault();
     }
@@ -60,7 +56,7 @@ export function uiIntroArea(context, reveal) {
 
         timeout(function() {
             var tooltip = reveal('button.add-area',
-                helpString('intro.areas.add_playground'));
+                helpHtml('intro.areas.add_playground'));
 
             tooltip.selectAll('.popover-inner')
                 .insert('svg', 'span')
@@ -91,7 +87,7 @@ export function uiIntroArea(context, reveal) {
 
         timeout(function() {
             var textId = context.lastPointerType() === 'mouse' ? 'starting_node_click' : 'starting_node_tap';
-            var startDrawString = helpString('intro.areas.start_playground') + helpString('intro.areas.' + textId);
+            var startDrawString = helpHtml('intro.areas.start_playground') + helpHtml('intro.areas.' + textId);
             revealPlayground(playground,
                 startDrawString, { duration: 250 }
             );
@@ -125,14 +121,14 @@ export function uiIntroArea(context, reveal) {
 
         _areaID = null;
         revealPlayground(playground,
-            helpString('intro.areas.continue_playground'),
+            helpHtml('intro.areas.continue_playground'),
             { duration: 250 }
         );
 
         timeout(function() {
             context.map().on('move.intro drawn.intro', function() {
                 revealPlayground(playground,
-                    helpString('intro.areas.continue_playground'),
+                    helpHtml('intro.areas.continue_playground'),
                     { duration: 0 }
                 );
             });
@@ -169,8 +165,8 @@ export function uiIntroArea(context, reveal) {
 
         _areaID = null;
 
-        var finishString = helpString('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-            helpString('intro.areas.finish_playground');
+        var finishString = helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+            helpHtml('intro.areas.finish_playground');
         revealPlayground(playground,
             finishString, { duration: 250 }
         );
@@ -223,7 +219,7 @@ export function uiIntroArea(context, reveal) {
                 .on('keyup.intro', checkPresetSearch);
 
             reveal('.preset-search-input',
-                helpString('intro.areas.search_playground', { preset: playgroundPreset.name() })
+                helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
             );
         }, 400);  // after preset list pane visible..
 
@@ -247,7 +243,7 @@ export function uiIntroArea(context, reveal) {
                     .on('keyup.intro', checkPresetSearch);
 
                 reveal('.preset-search-input',
-                    helpString('intro.areas.search_playground', { preset: playgroundPreset.name() })
+                    helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
                 );
 
                 context.history().on('change.intro', null);
@@ -259,7 +255,7 @@ export function uiIntroArea(context, reveal) {
 
             if (first.classed('preset-leisure-playground')) {
                 reveal(first.select('.preset-list-button').node(),
-                    helpString('intro.areas.choose_playground', { preset: playgroundPreset.name() }),
+                    helpHtml('intro.areas.choose_playground', { preset: playgroundPreset.name() }),
                     { duration: 300 }
                 );
 
@@ -331,7 +327,7 @@ export function uiIntroArea(context, reveal) {
 
             timeout(function() {
                 reveal('.more-fields .combobox-input',
-                    helpString('intro.areas.add_field', {
+                    helpHtml('intro.areas.add_field', {
                         name: nameField.label(),
                         description: descriptionField.label()
                     }),
@@ -399,7 +395,7 @@ export function uiIntroArea(context, reveal) {
         }, 300);
 
         reveal('div.combobox',
-            helpString('intro.areas.choose_field', { field: descriptionField.label() }),
+            helpHtml('intro.areas.choose_field', { field: descriptionField.label() }),
             { duration: 300 }
         );
 
@@ -436,7 +432,7 @@ export function uiIntroArea(context, reveal) {
         });
 
         reveal('.entity-editor-pane',
-            helpString('intro.areas.describe_playground', { button: icon('#iD-icon-close', 'pre-text') }),
+            helpHtml('intro.areas.describe_playground', { button: icon('#iD-icon-close', 'inline') }),
             { duration: 300 }
         );
 
@@ -460,8 +456,8 @@ export function uiIntroArea(context, reveal) {
         context.container().select('.inspector-wrap .panewrap').style('right', '0%');
 
         reveal('.entity-editor-pane',
-            helpString('intro.areas.retry_add_field', { field: descriptionField.label() }), {
-            buttonText: t('intro.ok'),
+            helpHtml('intro.areas.retry_add_field', { field: descriptionField.label() }), {
+            buttonText: t.html('intro.ok'),
             buttonCallback: function() { continueTo(clickAddField); }
         });
 
@@ -479,9 +475,9 @@ export function uiIntroArea(context, reveal) {
     function play() {
         dispatch.call('done');
         reveal('.ideditor',
-            helpString('intro.areas.play', { next: t('intro.lines.title') }), {
+            helpHtml('intro.areas.play', { next: t('intro.lines.title') }), {
                 tooltipBox: '.intro-nav-wrap .chapter-line',
-                buttonText: t('intro.ok'),
+                buttonText: t.html('intro.ok'),
                 buttonCallback: function() { reveal('.ideditor'); }
             }
         );

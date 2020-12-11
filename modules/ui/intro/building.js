@@ -1,15 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import {
-    event as d3_event
-} from 'd3-selection';
-
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilArrayUniq, utilRebind } from '../../util';
-import { helpString, icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
+import { helpHtml, icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, reveal) {
@@ -34,7 +30,7 @@ export function uiIntroBuilding(context, reveal) {
     }
 
 
-    function eventCancel() {
+    function eventCancel(d3_event) {
         d3_event.stopPropagation();
         d3_event.preventDefault();
     }
@@ -65,7 +61,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             var tooltip = reveal('button.add-area',
-                helpString('intro.buildings.add_building'));
+                helpHtml('intro.buildings.add_building'));
 
             tooltip.selectAll('.popover-inner')
                 .insert('svg', 'span')
@@ -95,8 +91,8 @@ export function uiIntroBuilding(context, reveal) {
         context.map().zoomEase(20, 500);
 
         timeout(function() {
-            var startString = helpString('intro.buildings.start_building') +
-                helpString('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+            var startString = helpHtml('intro.buildings.start_building') +
+                helpHtml('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
             revealHouse(house, startString);
 
             context.map().on('move.intro drawn.intro', function() {
@@ -125,9 +121,9 @@ export function uiIntroBuilding(context, reveal) {
 
         _houseID = null;
 
-        var continueString = helpString('intro.buildings.continue_building') + '{br}' +
-            helpString('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-            helpString('intro.buildings.finish_building');
+        var continueString = helpHtml('intro.buildings.continue_building') + '{br}' +
+            helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+            helpHtml('intro.buildings.finish_building');
 
         revealHouse(house, continueString);
 
@@ -168,13 +164,13 @@ export function uiIntroBuilding(context, reveal) {
     function retryHouse() {
         var onClick = function() { continueTo(addHouse); };
 
-        revealHouse(house, helpString('intro.buildings.retry_building'),
-            { buttonText: t('intro.ok'), buttonCallback: onClick }
+        revealHouse(house, helpHtml('intro.buildings.retry_building'),
+            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
         );
 
         context.map().on('move.intro drawn.intro', function() {
-            revealHouse(house, helpString('intro.buildings.retry_building'),
-                { duration: 0, buttonText: t('intro.ok'), buttonCallback: onClick }
+            revealHouse(house, helpHtml('intro.buildings.retry_building'),
+                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
             );
         });
 
@@ -204,7 +200,7 @@ export function uiIntroBuilding(context, reveal) {
             var button = context.container().select('.preset-category-building .preset-list-button');
 
             reveal(button.node(),
-                helpString('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
+                helpHtml('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
             );
 
             button.on('click.intro', function() {
@@ -253,7 +249,7 @@ export function uiIntroBuilding(context, reveal) {
             var button = context.container().select('.preset-building-house .preset-list-button');
 
             reveal(button.node(),
-                helpString('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
+                helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
                 { duration: 300 }
             );
 
@@ -300,7 +296,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             reveal('.entity-editor-pane',
-                helpString('intro.buildings.close', { button: icon('#iD-icon-close', 'pre-text') })
+                helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
             );
         }, 500);
 
@@ -335,7 +331,7 @@ export function uiIntroBuilding(context, reveal) {
         });
 
         context.map().on('move.intro drawn.intro', function() {
-            var rightclickString = helpString('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_building' : 'edit_menu_building_touch'));
+            var rightclickString = helpHtml('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_building' : 'edit_menu_building_touch'));
             revealHouse(house, rightclickString, { duration: 0 });
         });
 
@@ -363,7 +359,7 @@ export function uiIntroBuilding(context, reveal) {
         var wasChanged = false;
 
         reveal('.edit-menu',
-            helpString('intro.buildings.square_building'),
+            helpHtml('intro.buildings.square_building'),
             { padding: 50 }
         );
 
@@ -380,7 +376,7 @@ export function uiIntroBuilding(context, reveal) {
             if (!wasChanged && !node) { return continueTo(rightClickHouse); }
 
             reveal('.edit-menu',
-                helpString('intro.buildings.square_building'),
+                helpHtml('intro.buildings.square_building'),
                 { duration: 0, padding: 50 }
             );
         });
@@ -391,7 +387,7 @@ export function uiIntroBuilding(context, reveal) {
 
             // Something changed.  Wait for transition to complete and check undo annotation.
             timeout(function() {
-                if (context.history().undoAnnotation() === t('operations.orthogonalize.annotation.feature.single')) {
+                if (context.history().undoAnnotation() === t('operations.orthogonalize.annotation.feature', { n: 1 })) {
                     continueTo(doneSquare);
                 } else {
                     continueTo(retryClickSquare);
@@ -411,8 +407,8 @@ export function uiIntroBuilding(context, reveal) {
     function retryClickSquare() {
         context.enter(modeBrowse(context));
 
-        revealHouse(house, helpString('intro.buildings.retry_square'), {
-            buttonText: t('intro.ok'),
+        revealHouse(house, helpHtml('intro.buildings.retry_square'), {
+            buttonText: t.html('intro.ok'),
             buttonCallback: function() { continueTo(rightClickHouse); }
         });
 
@@ -425,8 +421,8 @@ export function uiIntroBuilding(context, reveal) {
     function doneSquare() {
         context.history().checkpoint('doneSquare');
 
-        revealHouse(house, helpString('intro.buildings.done_square'), {
-            buttonText: t('intro.ok'),
+        revealHouse(house, helpHtml('intro.buildings.done_square'), {
+            buttonText: t.html('intro.ok'),
             buttonCallback: function() { continueTo(addTank); }
         });
 
@@ -447,7 +443,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             reveal('button.add-area',
-                helpString('intro.buildings.add_tank')
+                helpHtml('intro.buildings.add_tank')
             );
 
             context.on('enter.intro', function(mode) {
@@ -471,8 +467,8 @@ export function uiIntroBuilding(context, reveal) {
         _tankID = null;
 
         timeout(function() {
-            var startString = helpString('intro.buildings.start_tank') +
-                helpString('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+            var startString = helpHtml('intro.buildings.start_tank') +
+                helpHtml('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
             revealTank(tank, startString);
 
             context.map().on('move.intro drawn.intro', function() {
@@ -501,9 +497,9 @@ export function uiIntroBuilding(context, reveal) {
 
         _tankID = null;
 
-        var continueString = helpString('intro.buildings.continue_tank') + '{br}' +
-            helpString('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-            helpString('intro.buildings.finish_tank');
+        var continueString = helpHtml('intro.buildings.continue_tank') + '{br}' +
+            helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+            helpHtml('intro.buildings.finish_tank');
 
         revealTank(tank, continueString);
 
@@ -551,7 +547,7 @@ export function uiIntroBuilding(context, reveal) {
                 .on('keyup.intro', checkPresetSearch);
 
             reveal('.preset-search-input',
-                helpString('intro.buildings.search_tank', { preset: tankPreset.name() })
+                helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
             );
         }, 400);  // after preset list pane visible..
 
@@ -575,7 +571,7 @@ export function uiIntroBuilding(context, reveal) {
                     .on('keyup.intro', checkPresetSearch);
 
                 reveal('.preset-search-input',
-                    helpString('intro.buildings.search_tank', { preset: tankPreset.name() })
+                    helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
                 );
 
                 context.history().on('change.intro', null);
@@ -587,7 +583,7 @@ export function uiIntroBuilding(context, reveal) {
 
             if (first.classed('preset-man_made-storage_tank')) {
                 reveal(first.select('.preset-list-button').node(),
-                    helpString('intro.buildings.choose_tank', { preset: tankPreset.name() }),
+                    helpHtml('intro.buildings.choose_tank', { preset: tankPreset.name() }),
                     { duration: 300 }
                 );
 
@@ -628,7 +624,7 @@ export function uiIntroBuilding(context, reveal) {
 
         timeout(function() {
             reveal('.entity-editor-pane',
-                helpString('intro.buildings.close', { button: icon('#iD-icon-close', 'pre-text') })
+                helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
             );
         }, 500);
 
@@ -659,7 +655,7 @@ export function uiIntroBuilding(context, reveal) {
                 }, 50);  // after menu visible
             });
 
-            var rightclickString = helpString('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_tank' : 'edit_menu_tank_touch'));
+            var rightclickString = helpHtml('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_tank' : 'edit_menu_tank_touch'));
 
             revealTank(tank, rightclickString);
 
@@ -693,7 +689,7 @@ export function uiIntroBuilding(context, reveal) {
         var wasChanged = false;
 
         reveal('.edit-menu',
-            helpString('intro.buildings.circle_tank'),
+            helpHtml('intro.buildings.circle_tank'),
             { padding: 50 }
         );
 
@@ -710,7 +706,7 @@ export function uiIntroBuilding(context, reveal) {
             if (!wasChanged && !node) { return continueTo(rightClickTank); }
 
             reveal('.edit-menu',
-                helpString('intro.buildings.circle_tank'),
+                helpHtml('intro.buildings.circle_tank'),
                 { duration: 0, padding: 50 }
             );
         });
@@ -721,7 +717,7 @@ export function uiIntroBuilding(context, reveal) {
 
             // Something changed.  Wait for transition to complete and check undo annotation.
             timeout(function() {
-                if (context.history().undoAnnotation() === t('operations.circularize.annotation.single')) {
+                if (context.history().undoAnnotation() === t('operations.circularize.annotation.feature', { n: 1 })) {
                     continueTo(play);
                 } else {
                     continueTo(retryClickCircle);
@@ -741,8 +737,8 @@ export function uiIntroBuilding(context, reveal) {
     function retryClickCircle() {
         context.enter(modeBrowse(context));
 
-        revealTank(tank, helpString('intro.buildings.retry_circle'), {
-            buttonText: t('intro.ok'),
+        revealTank(tank, helpHtml('intro.buildings.retry_circle'), {
+            buttonText: t.html('intro.ok'),
             buttonCallback: function() { continueTo(rightClickTank); }
         });
 

@@ -1,7 +1,3 @@
-import {
-    event as d3_event
-} from 'd3-selection';
-
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
@@ -11,7 +7,7 @@ import { uiSection } from '../section';
 export function uiSectionPrivacy(context) {
 
     let section = uiSection('preferences-third-party', context)
-      .title(t('preferences.privacy.title'))
+      .label(t.html('preferences.privacy.title'))
       .disclosureContent(renderDisclosureContent);
 
     let _showThirdPartyIcons = prefs('preferences.privacy.thirdpartyicons') || 'true';
@@ -29,14 +25,14 @@ export function uiSectionPrivacy(context) {
         .attr('class', 'privacy-third-party-icons-item')
         .append('label')
         .call(uiTooltip()
-          .title(t('preferences.privacy.third_party_icons.tooltip'))
+          .title(t.html('preferences.privacy.third_party_icons.tooltip'))
           .placement('bottom')
         );
 
       thirdPartyIconsEnter
         .append('input')
         .attr('type', 'checkbox')
-        .on('change', () => {
+        .on('change', (d3_event) => {
           d3_event.preventDefault();
           _showThirdPartyIcons = (_showThirdPartyIcons === 'true') ? 'false' : 'true';
           prefs('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
@@ -45,7 +41,7 @@ export function uiSectionPrivacy(context) {
 
       thirdPartyIconsEnter
         .append('span')
-        .text(t('preferences.privacy.third_party_icons.description'));
+        .html(t.html('preferences.privacy.third_party_icons.description'));
 
 
       // Privacy Policy link
@@ -59,7 +55,7 @@ export function uiSectionPrivacy(context) {
         .call(svgIcon('#iD-icon-out-link', 'inline'))
         .attr('href', 'https://github.com/openstreetmap/iD/blob/release/PRIVACY.md')
         .append('span')
-        .text(t('preferences.privacy.privacy_link'));
+        .html(t.html('preferences.privacy.privacy_link'));
 
       update();
 

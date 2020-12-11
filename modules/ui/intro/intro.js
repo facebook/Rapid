@@ -235,7 +235,7 @@ export function uiIntro(context, skipToRapid) {
 
     buttons
       .append('span')
-      .text(d => t(d.title));
+      .html(d => t.html(d.title));
 
     buttons
       .append('span')
@@ -244,7 +244,7 @@ export function uiIntro(context, skipToRapid) {
 
     enterChapter(chapters[skipToRapid ? 6 : 0]);
 
-    function enterChapter(newChapter) {
+    function enterChapter(d3_event, newChapter) {
       if (_currChapter) { _currChapter.exit(); }
       context.enter(modeBrowse(context));
 

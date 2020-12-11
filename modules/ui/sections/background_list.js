@@ -1,9 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
-import {
-  event as d3_event,
-  select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
@@ -24,7 +21,7 @@ export function uiSectionBackgroundList(context) {
     .on('change', customChanged);
 
   const section = uiSection('background-list', context)
-    .title(t('background.backgrounds'))
+    .label(t('background.backgrounds'))
     .disclosureContent(renderDisclosureContent);
 
   const favoriteBackgroundsJSON = prefs('background-favorites');
@@ -67,7 +64,7 @@ export function uiSectionBackgroundList(context) {
     minimapLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', () => {
+      .on('change', (d3_event) => {
         d3_event.preventDefault();
         uiMapInMap.toggle();
       });
@@ -90,7 +87,7 @@ export function uiSectionBackgroundList(context) {
     panelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', () => {
+      .on('change', (d3_event) => {
         d3_event.preventDefault();
         context.ui().info.toggle('background');
       });
@@ -112,7 +109,7 @@ export function uiSectionBackgroundList(context) {
     locPanelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', () => {
+      .on('change', (d3_event) => {
         d3_event.preventDefault();
         context.ui().info.toggle('location');
       });
@@ -185,7 +182,7 @@ export function uiSectionBackgroundList(context) {
     const layerLinksEnter = layerLinks.enter()
       .append('li')
       .classed('layer-custom', (d) => { return d.id === 'custom'; })
-      .classed('best', (d) =>{ return d.best(); });
+      .classed('best', (d) => { return d.best(); });
 
     const label = layerLinksEnter
       .append('label');
@@ -276,7 +273,7 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function chooseBackground(d) {
+  function chooseBackground(d3_event, d) {
     if (d.id === 'custom' && !d.template()) {
       return editCustom();
     }
@@ -301,7 +298,7 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function editCustom() {
+  function editCustom(d3_event) {
     d3_event.preventDefault();
     context.container()
       .call(_settingsCustomBackground);

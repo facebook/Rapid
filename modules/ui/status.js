@@ -1,5 +1,4 @@
 import _throttle from 'lodash-es/throttle';
-import { event as d3_event } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
@@ -23,14 +22,15 @@ export function uiStatus(context) {
 
                 } else if (apiStatus === 'rateLimited') {
                     selection
-                        .text(t('osm_api_status.message.rateLimit'))
+                        .html(t.html('osm_api_status.message.rateLimit'))
                         .append('a')
+                        .attr('href', '#')
                         .attr('class', 'api-status-login')
                         .attr('target', '_blank')
                         .call(svgIcon('#iD-icon-out-link', 'inline'))
                         .append('span')
-                        .text(t('login'))
-                        .on('click.login', function() {
+                        .html(t.html('login'))
+                        .on('click.login', function(d3_event) {
                             d3_event.preventDefault();
                             osm.authenticate();
                         });
@@ -47,20 +47,21 @@ export function uiStatus(context) {
                     // eslint-disable-next-line no-warning-comments
                     // TODO: nice messages for different error types
                     selection
-                        .text(t('osm_api_status.message.error') + ' ')
+                        .html(t.html('osm_api_status.message.error') + ' ')
                         .append('a')
+                        .attr('href', '#')
                         // let the user manually retry their connection directly
-                        .text(t('osm_api_status.retry'))
-                        .on('click.retry', function() {
+                        .html(t.html('osm_api_status.retry'))
+                        .on('click.retry', function(d3_event) {
                             d3_event.preventDefault();
                             throttledRetry();
                         });
                 }
 
             } else if (apiStatus === 'readonly') {
-                selection.text(t('osm_api_status.message.readonly'));
+                selection.html(t.html('osm_api_status.message.readonly'));
             } else if (apiStatus === 'offline') {
-                selection.text(t('osm_api_status.message.offline'));
+                selection.html(t.html('osm_api_status.message.offline'));
             }
 
             selection.attr('class', 'api-status ' + (err ? 'error' : apiStatus));

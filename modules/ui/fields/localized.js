@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select, event as d3_event } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import * as countryCoder from '@ideditor/country-coder';
 
 import { presetManager } from '../../presets';
@@ -52,7 +52,7 @@ export function uiFieldLocalized(field, context) {
     var _selection = d3_select(null);
     var _multilingual = [];
     var _buttonTip = uiTooltip()
-        .title(t('translate.translate'))
+        .title(t.html('translate.translate'))
         .placement('left');
     var _wikiTitles;
     var _entityIDs = [];
@@ -125,7 +125,7 @@ export function uiFieldLocalized(field, context) {
         var existingLangs = new Set(existingLangsOrdered.filter(Boolean));
 
         for (var k in tags) {
-            var m = k.match(/^(.*):([a-zA-Z_-]+)$/);
+            var m = k.match(/^(.*):(.+)$/);
             if (m && m[1] === field.key && m[2]) {
                 var item = { lang: m[2], value: tags[k] };
                 if (existingLangs.has(item.lang)) {
@@ -219,7 +219,6 @@ export function uiFieldLocalized(field, context) {
         translateButton = translateButton.enter()
             .append('button')
             .attr('class', 'localized-add form-field-button')
-            .attr('tabindex', -1)
             .call(svgIcon('#iD-icon-plus'))
             .merge(translateButton);
 
@@ -260,7 +259,6 @@ export function uiFieldLocalized(field, context) {
             var preset = presetManager.match(latest, context.graph());
             if (preset && preset.suggestion) return;   // already accepted
 
-            // note: here we are testing against "decorated" names, i.e. 'Starbucks – Cafe'
             var name = utilGetSetValue(input).trim();
             var matched = allSuggestions.filter(function(s) { return name === s.name(); });
 
@@ -293,25 +291,10 @@ export function uiFieldLocalized(field, context) {
         }
 
 
-        // user hit escape, clean whatever preset name appears after the last ' – '
+        // user hit escape
         function cancelBrand() {
             var name = utilGetSetValue(input);
-            var clean = cleanName(name);
-            if (clean !== name) {
-                utilGetSetValue(input, clean);
-                dispatch.call('change', this, { name: clean });
-            }
-        }
-
-        // Remove whatever is after the last ' – '
-        // NOTE: split/join on en-dash, not a hypen (to avoid conflict with fr - nl names in Brussels etc)
-        function cleanName(name) {
-            var parts = name.split(' – ');
-            if (parts.length > 1) {
-                parts.pop();
-                name = parts.join(' – ');
-            }
-            return name;
+            dispatch.call('change', this, { name: name });
         }
 
 
@@ -333,14 +316,17 @@ export function uiFieldLocalized(field, context) {
                         var sTag = s.id.split('/', 2);
                         var sKey = sTag[0];
                         var sValue = sTag[1];
+                        var subtitle = s.subtitle();
                         var name = s.name();
+                        if (subtitle) name += ' – ' + subtitle;
                         var dist = utilEditDistance(value, name.substring(0, value.length));
                         var matchesPreset = (pKey === sKey && (!pValue || pValue === sValue));
 
                         if (dist < 1 || (matchesPreset && dist < 3)) {
                             var obj = {
+                                value: s.name(),
                                 title: name,
-                                value: name,
+                                display: s.nameLabel() + (subtitle ? ' – ' + s.subtitleLabel() : ''),
                                 suggestion: s,
                                 dist: dist + (matchesPreset ? 0 : 1)  // penalize if not matched preset
                             };
@@ -355,7 +341,7 @@ export function uiFieldLocalized(field, context) {
         }
 
 
-        function addNew() {
+        function addNew(d3_event) {
             d3_event.preventDefault();
             if (field.locked()) return;
 
@@ -378,7 +364,7 @@ export function uiFieldLocalized(field, context) {
 
 
         function change(onInput) {
-            return function() {
+            return function(d3_event) {
                 if (field.locked()) {
                     d3_event.preventDefault();
                     return;
@@ -404,7 +390,7 @@ export function uiFieldLocalized(field, context) {
     }
 
 
-    function changeLang(d) {
+    function changeLang(d3_event, d) {
         var tags = {};
 
         // make sure unrecognized suffixes are lowercase - #7156
@@ -436,7 +422,7 @@ export function uiFieldLocalized(field, context) {
     }
 
 
-    function changeValue(d) {
+    function changeValue(d3_event, d) {
         if (!d.lang) return;
         var value = context.cleanTagValue(utilGetSetValue(d3_select(this))) || undefined;
 
@@ -513,7 +499,7 @@ export function uiFieldLocalized(field, context) {
                 text
                     .append('span')
                     .attr('class', 'label-textvalue')
-                    .text(t('translate.localized_translation_label'));
+                    .html(t.html('translate.localized_translation_label'));
 
                 text
                     .append('span')
@@ -522,7 +508,7 @@ export function uiFieldLocalized(field, context) {
                 label
                     .append('button')
                     .attr('class', 'remove-icon-multilingual')
-                    .on('click', function(d, index) {
+                    .on('click', function(d3_event, d) {
                         if (field.locked()) return;
                         d3_event.preventDefault();
 
@@ -581,7 +567,11 @@ export function uiFieldLocalized(field, context) {
         });
 
         utilGetSetValue(entries.select('.localized-lang'), function(d) {
-            return localizer.languageName(d.lang);
+            var langItem = _languagesArray.find(function(item) {
+                return item.code === d.lang;
+            });
+            if (langItem) return langItem.label;
+            return d.lang;
         });
 
         utilGetSetValue(entries.select('.localized-value'), function(d) {

@@ -179,8 +179,8 @@ export function validationOutdatedTags() {
       dynamicFixes: () => {
         return [
           new validationIssueFix({
-//            autoArgs: autoArgs,
-            title: t('issues.fix.upgrade_tags.title'),
+            autoArgs: autoArgs,
+            title: t.html('issues.fix.upgrade_tags.title'),
             onClick: (context) => {
               context.perform(doUpgrade, t('issues.fix.upgrade_tags.annotation'));
             }
@@ -215,7 +215,7 @@ export function validationOutdatedTags() {
       if (subtype === 'noncanonical_brand' && isOnlyAddingTags) {
         messageID += '_incomplete';
       }
-      return t(messageID, { feature: utilDisplayLabel(currEntity, context.graph()) });
+      return t.html(messageID, { feature: utilDisplayLabel(currEntity, context.graph()) });
     }
 
 
@@ -227,11 +227,11 @@ export function validationOutdatedTags() {
       enter
         .append('div')
         .attr('class', 'issue-reference')
-        .text(t(`issues.outdated_tags.${prefix}reference`));
+        .html(t.html(`issues.outdated_tags.${prefix}reference`));
 
       enter
         .append('strong')
-        .text(t('issues.suggested'));
+        .html(t.html('issues.suggested'));
 
       enter
         .append('table')
@@ -246,7 +246,7 @@ export function validationOutdatedTags() {
           let klass = d.type === '+' ? 'add' : 'remove';
           return `tagDiff-cell tagDiff-cell-${klass}`;
         })
-        .text(d => d.display);
+        .html(d => d.display);
     }
   }
 
@@ -302,7 +302,7 @@ export function validationOutdatedTags() {
       let currMultipolygon = context.hasEntity(multipolygon.id);
       if (!currMultipolygon) return '';
 
-      return t('issues.old_multipolygon.message',
+      return t.html('issues.old_multipolygon.message',
           { multipolygon: utilDisplayLabel(currMultipolygon, context.graph()) }
       );
     }
@@ -314,7 +314,7 @@ export function validationOutdatedTags() {
         .enter()
         .append('div')
         .attr('class', 'issue-reference')
-        .text(t('issues.old_multipolygon.reference'));
+        .html(t.html('issues.old_multipolygon.reference'));
     }
   }
 

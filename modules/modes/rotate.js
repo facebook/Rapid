@@ -1,5 +1,4 @@
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -43,7 +42,7 @@ export function modeRotate(context, entityIDs) {
     ];
     var annotation = entityIDs.length === 1 ?
         t('operations.rotate.annotation.' + context.graph().geometry(entityIDs[0])) :
-        t('operations.rotate.annotation.multiple');
+        t('operations.rotate.annotation.feature', { n: entityIDs.length });
 
     var _prevGraph;
     var _prevAngle;
@@ -105,7 +104,7 @@ export function modeRotate(context, entityIDs) {
     }
 
 
-    function finish() {
+    function finish(d3_event) {
         d3_event.stopPropagation();
         context.replace(actionNoop(), annotation);
         context.enter(modeSelect(context, entityIDs));

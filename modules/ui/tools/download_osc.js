@@ -1,4 +1,3 @@
-import { event as d3_event } from 'd3-selection';
 import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
@@ -23,7 +22,7 @@ export function uiToolDownloadOsc(context) {
         return _numChanges === 0;
     }
 
-    function downloadOsc() {
+    function downloadOsc(d3_event) {
         d3_event.preventDefault();
         if (!context.inIntro() && history.hasChanges()) {
             var _changeset = new osmChangeset();

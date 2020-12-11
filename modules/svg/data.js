@@ -2,7 +2,7 @@ import _throttle from 'lodash-es/throttle';
 
 import { geoBounds as d3_geoBounds, geoPath as d3_geoPath } from 'd3-geo';
 import { text as d3_text } from 'd3-fetch';
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import stringify from 'fast-json-stable-stringify';
 import toGeoJSON from '@mapbox/togeojson';
@@ -36,7 +36,7 @@ export function svgData(projection, context, dispatch) {
         _geojson = {};
         _enabled = true;
 
-        function over() {
+        function over(d3_event) {
             d3_event.stopPropagation();
             d3_event.preventDefault();
             d3_event.dataTransfer.dropEffect = 'copy';
@@ -44,7 +44,7 @@ export function svgData(projection, context, dispatch) {
 
         context.container()
             .attr('dropzone', 'copy')
-            .on('drop.svgData', function() {
+            .on('drop.svgData', function(d3_event) {
                 d3_event.stopPropagation();
                 d3_event.preventDefault();
                 if (!detected.filedrop) return;
@@ -379,28 +379,24 @@ export function svgData(projection, context, dispatch) {
     drawData.template = function(val, src) {
         if (!arguments.length) return _template;
 
-        // test source against OSM imagery blacklists..
+        // test source against OSM imagery blocklists..
         var osm = context.connection();
         if (osm) {
-            var blacklists = osm.imageryBlacklists();
+            var blocklists = osm.imageryBlocklists();
             var fail = false;
             var tested = 0;
             var regex;
 
-            for (var i = 0; i < blacklists.length; i++) {
-                try {
-                    regex = new RegExp(blacklists[i]);
-                    fail = regex.test(val);
-                    tested++;
-                    if (fail) break;
-                } catch (e) {
-                    /* noop */
-                }
+            for (var i = 0; i < blocklists.length; i++) {
+                regex = blocklists[i];
+                fail = regex.test(val);
+                tested++;
+                if (fail) break;
             }
 
             // ensure at least one test was run.
             if (!tested) {
-                regex = new RegExp('.*\.google(apis)?\..*/(vt|kh)[\?/].*([xyz]=.*){3}.*');
+                regex = /.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/;
                 fail = regex.test(val);
             }
         }

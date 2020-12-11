@@ -10,6 +10,8 @@ const prettyStringify = require('json-stringify-pretty-compact');
 const shell = require('shelljs');
 const YAML = require('js-yaml');
 
+const languageNames = require('./language_names.js');
+
 const fieldSchema = require('../data/presets/schema/field.json');
 const presetSchema = require('../data/presets/schema/preset.json');
 const deprecated = require('../data/deprecated.json');
@@ -20,8 +22,6 @@ const fas = require('@fortawesome/free-solid-svg-icons').fas;
 const far = require('@fortawesome/free-regular-svg-icons').far;
 const fab = require('@fortawesome/free-brands-svg-icons').fab;
 fontawesome.library.add(fas, far, fab);
-
-const request = require('request').defaults({ maxSockets: 1 });
 
 let _currBuild = null;
 
@@ -73,9 +73,6 @@ function buildData() {
     'fas-user-cog': {}
   };
 
-  // The Noun Project icons used
-  let tnpIcons = {};
-
   // all fields searchable under "add field"
   let searchableFieldIDs = {};
 
@@ -92,10 +89,10 @@ function buildData() {
     'svg/fontawesome/*.svg',
   ]);
 
-  readQAIssueIcons(faIcons, tnpIcons);
-  let categories = generateCategories(tstrings, faIcons, tnpIcons);
-  let fields = generateFields(tstrings, faIcons, tnpIcons, searchableFieldIDs);
-  let presets = generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs);
+  readQAIssueIcons(faIcons);
+  let categories = generateCategories(tstrings, faIcons);
+  let fields = generateFields(tstrings, faIcons, searchableFieldIDs);
+  let presets = generatePresets(tstrings, faIcons, searchableFieldIDs);
   let defaults = read('data/presets/defaults.json');
   let translations = generateTranslations(fields, presets, tstrings, searchableFieldIDs);
   let taginfo = generateTaginfo(presets, fields);
@@ -114,7 +111,10 @@ function buildData() {
   fs.writeFileSync('data/territory_languages.json', prettyStringify(territoryLanguages, { maxLength: 9999 }) );
   writeEnJson(tstrings);
   writeFaIcons(faIcons);
-  writeTnpIcons(tnpIcons);
+
+  const languageInfo = languageNames.langNamesInNativeLang;
+  fs.writeFileSync('data/languages.json', prettyStringify(languageInfo, { maxLength: 200 }));
+  fs.writeFileSync('dist/data/languages.min.json', JSON.stringify(languageInfo));
 
   // Save individual data files
   let tasks = [
@@ -178,7 +178,7 @@ function validate(file, instance, schema) {
 }
 
 
-function readQAIssueIcons(faIcons, tnpIcons) {
+function readQAIssueIcons(faIcons) {
   const qa = read('data/qa_data.json');
 
   for (const service in qa) {
@@ -189,16 +189,12 @@ function readQAIssueIcons(faIcons, tnpIcons) {
       if (/^fa[srb]-/.test(icon)) {
         faIcons[icon] = {};
       }
-      // noun project icon, remember for later
-      if (/^tnp-/.test(icon)) {
-        tnpIcons[icon] = {};
-      }
     }
   }
 }
 
 
-function generateCategories(tstrings, faIcons, tnpIcons) {
+function generateCategories(tstrings, faIcons) {
   let categories = {};
 
   glob.sync('data/presets/categories/*.json').forEach(file => {
@@ -211,17 +207,13 @@ function generateCategories(tstrings, faIcons, tnpIcons) {
     if (/^fa[srb]-/.test(category.icon)) {
       faIcons[category.icon] = {};
     }
-    // noun project icon, remember for later
-    if (/^tnp-/.test(category.icon)) {
-      tnpIcons[category.icon] = {};
-    }
   });
 
   return categories;
 }
 
 
-function generateFields(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
+function generateFields(tstrings, faIcons, searchableFieldIDs) {
   let fields = {};
 
   glob.sync('data/presets/fields/**/*.json').forEach(file => {
@@ -254,10 +246,6 @@ function generateFields(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
     // fontawesome icon, remember for later
     if (/^fa[srb]-/.test(field.icon)) {
       faIcons[field.icon] = {};
-    }
-    // noun project icon, remember for later
-    if (/^tnp-/.test(field.icon)) {
-      tnpIcons[field.icon] = {};
     }
   });
 
@@ -374,7 +362,7 @@ function stripLeadingUnderscores(str) {
 }
 
 
-function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
+function generatePresets(tstrings, faIcons, searchableFieldIDs) {
   let presets = {};
 
   glob.sync('data/presets/presets/**/*.json').forEach(file => {
@@ -397,10 +385,6 @@ function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
     // fontawesome icon, remember for later
     if (/^fa[srb]-/.test(preset.icon)) {
       faIcons[preset.icon] = {};
-    }
-    // noun project icon, remember for later
-    if (/^tnp-/.test(preset.icon)) {
-      tnpIcons[preset.icon] = {};
     }
   });
 
@@ -526,9 +510,6 @@ function generateTaginfo(presets, fields) {
     } else if (/^iD-/.test(preset.icon)) {
       tag.icon_url = 'https://cdn.jsdelivr.net/gh/openstreetmap/iD@develop/svg/iD-sprite/presets/' +
         preset.icon.replace(/^iD-/, '') + '.svg';
-    } else if (/^tnp-/.test(preset.icon)) {
-      tag.icon_url = 'https://cdn.jsdelivr.net/gh/openstreetmap/iD@develop/svg/the-noun-project/' +
-        preset.icon.replace(/^tnp-/, '') + '.svg';
     }
 
     coalesceTags(taginfo, tag);
@@ -540,11 +521,16 @@ function generateTaginfo(presets, fields) {
     const isRadio = (field.type === 'radio' || field.type === 'structureRadio');
 
     keys.forEach(key => {
-      if (field.strings && field.strings.options && !isRadio) {
+      if (field.strings && field.strings.options && !isRadio && field.type !== 'manyCombo') {
         let values = Object.keys(field.strings.options);
         values.forEach(value => {
           if (value === 'undefined' || value === '*' || value === '') return;
-          let tag = { key: key, value: value };
+          let tag;
+          if (field.type === 'multiCombo') {
+            tag = { key: key + value };
+          } else {
+            tag = { key: key, value: value };
+          }
           if (field.label) {
             tag.description = [ `🄵 ${field.label}` ];
           }
@@ -678,8 +664,9 @@ function validateCategoryPresets(categories, presets) {
 
 function validatePresetFields(presets, fields) {
   const betweenBracketsRegex = /([^{]*?)(?=\})/;
-  const maxFieldsBeforeError = 12;
-  const maxFieldsBeforeWarning = 8;
+  const maxFieldsBeforeError = 10;
+
+  let usedFieldIDs = new Set();
 
   for (let presetID in presets) {
     let preset = presets[presetID];
@@ -706,22 +693,38 @@ function validatePresetFields(presets, fields) {
       if (!preset[fieldsKey]) continue; // no fields are referenced, okay
 
       for (let fieldIndex in preset[fieldsKey]) {
-        let field = preset[fieldsKey][fieldIndex];
-        if (fields[field] !== undefined) continue; // field found, okay
+        let fieldID = preset[fieldsKey][fieldIndex];
+        usedFieldIDs.add(fieldID);
+        let field = fields[fieldID];
+        if (field) {
+          if (field.geometry) {
+            let sharedGeometry = field.geometry.filter(value => preset.geometry.includes(value));
+            if (!sharedGeometry.length) {
+              console.error('The preset "' + presetID + '" (' + preset.name + ') will never display the field "' + fieldID + '" since they don\'t share geometry types.');
+              console.log('');
+              process.exit(1);
+            }
+          }
 
-        let regexResult = betweenBracketsRegex.exec(field);
-        if (regexResult) {
-          let foreignPresetID = regexResult[0];
-          if (presets[foreignPresetID] === undefined) {
-            console.error('Unknown preset "' + foreignPresetID + '" referenced in "' + fieldsKey + '" array of preset "' + presetID + '" (' + preset.name + ')');
+        } else {
+          // no field found with this ID...
+
+          let regexResult = betweenBracketsRegex.exec(fieldID);
+          if (regexResult) {
+            let foreignPresetID = regexResult[0];
+            if (presets[foreignPresetID] === undefined) {
+              console.error('Unknown preset "' + foreignPresetID + '" referenced in "' + fieldsKey + '" array of preset "' + presetID + '" (' + preset.name + ')');
+              console.log('');
+              process.exit(1);
+            }
+          } else {
+            console.error('Unknown preset field "' + fieldID + '" in "' + fieldsKey + '" array of preset "' + presetID + '" (' + preset.name + ')');
             console.log('');
             process.exit(1);
           }
-        } else {
-          console.error('Unknown preset field "' + field + '" in "' + fieldsKey + '" array of preset "' + presetID + '" (' + preset.name + ')');
-          console.log('');
-          process.exit(1);
         }
+
+
       }
     }
 
@@ -729,25 +732,31 @@ function validatePresetFields(presets, fields) {
       // since `moreFields` is available, check that `fields` doesn't get too cluttered
       let fieldCount = preset.fields.length;
 
-      if (fieldCount > maxFieldsBeforeWarning) {
-        // Fields with `prerequisiteTag` probably won't show up initially,
+      if (fieldCount > maxFieldsBeforeError) {
+        // Fields with `prerequisiteTag` or `geometry` may not always be shown,
         // so don't count them against the limits.
-        const fieldsWithoutPrerequisites = preset.fields.filter(fieldID => {
-          if (fields[fieldID] && fields[fieldID].prerequisiteTag) return false;
+        const alwaysShownFields = preset.fields.filter(fieldID => {
+          if (fields[fieldID] && fields[fieldID].prerequisiteTag || fields[fieldID].geometry) return false;
           return true;
         });
-        fieldCount = fieldsWithoutPrerequisites.length;
+        fieldCount = alwaysShownFields.length;
       }
       if (fieldCount > maxFieldsBeforeError) {
         console.error(fieldCount + ' values in "fields" of "' + preset.name + '" (' + presetID + '). Limit: ' + maxFieldsBeforeError + '. Please move lower-priority fields to "moreFields".');
         console.log('');
         process.exit(1);
       }
-      else if (fieldCount > maxFieldsBeforeWarning) {
-        console.log('Warning: ' + fieldCount + ' values in "fields" of "' + preset.name + '" (' + presetID + '). Recommended: ' + maxFieldsBeforeWarning + ' or fewer. Consider moving lower-priority fields to "moreFields".');
-      }
     }
   }
+
+  for (var fieldID in fields) {
+    if (!usedFieldIDs.has(fieldID) &&
+        fields[fieldID].universal !== true &&
+        (fields[fieldID].usage || 'preset') === 'preset') {
+      console.log('Field "' + fields[fieldID].label + '" (' + fieldID + ') isn\'t used by any presets.');
+    }
+  }
+
 }
 
 function validateDefaults(defaults, categories, presets) {
@@ -817,9 +826,18 @@ function writeEnJson(tstrings) {
       }
 
       let enjson = core;
+      ['presets', 'imagery', 'community', 'languageNames', 'scriptNames'].forEach(function(prop) {
+        if (enjson.en[prop]) {
+          console.error(`Error: Reserved property '${prop}' already exists in core strings`);
+          process.exit(1);
+        }
+      });
+
       enjson.en.presets = tstrings;
       enjson.en.imagery = imagery.en.imagery;
       enjson.en.community = community.en;
+      enjson.en.languageNames = languageNames.languageNamesInLanguageOf('en');
+      enjson.en.scriptNames = languageNames.scriptNamesInLanguageOf('en');
 
       return fs.writeFileSync('dist/locales/en.json', JSON.stringify(enjson, null, 4));
     });
@@ -839,89 +857,6 @@ function writeFaIcons(faIcons) {
     }
   }
 }
-
-
-function writeTnpIcons(tnpIcons) {
-  /*
-   * The Noun Project doesn't allow anonymous API access. New "tnp-" icons will
-   * not be downloaded without a "the_noun_project.auth" file with a json object:
-   *  {
-   *    "consumer_key": "xxxxxx",
-   *    "consumer_secret": "xxxxxx"
-   *  }
-   */
-  let nounAuth;
-  if (fs.existsSync('the_noun_project.auth')) {
-    nounAuth = JSON.parse(fs.readFileSync('the_noun_project.auth', 'utf8'));
-  }
-  const baseURL = 'http://api.thenounproject.com/icon/';
-
-  let unusedSvgFiles = fs.readdirSync('svg/the-noun-project', 'utf8')
-    .reduce((obj, name) => {
-      if (name.endsWith('.svg')) {
-        obj[name] = true;
-      }
-      return obj;
-    }, {});
-
-  for (const key in tnpIcons) {
-    const id = key.substring(4);
-    const fileName = `${id}.svg`;
-
-    if (unusedSvgFiles[fileName]) {
-      delete unusedSvgFiles[fileName];
-    }
-
-    const localPath = `svg/the-noun-project/${fileName}`;
-
-    // don't redownload existing icons
-    if (fs.existsSync(localPath)) continue;
-
-    if (!nounAuth) {
-      console.error(`No authentication file for The Noun Project. Cannot download icon: ${key}`);
-      continue;
-    }
-
-    const url = baseURL + id;
-    request.get(url, { oauth : nounAuth }, handleTheNounProjectResponse);
-  }
-
-  // remove icons that are not needed
-  for (const unusedFileName in unusedSvgFiles) {
-    shell.rm('-f', [`svg/the-noun-project/${unusedFileName}`]);
-  }
-}
-
-
-function handleTheNounProjectResponse(err, resp, body) {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  let icon = JSON.parse(body).icon;
-  if (icon.license_description !== 'public-domain') {
-    console.error('The icon "' + icon.term + '" (tnp-' + icon.id + ') from The Noun Project cannot be used in iD because it is not in the public domain.');
-    return;
-  }
-  let iconURL = icon.icon_url;
-  if (!iconURL) {
-    console.error('The Noun Project has not provided a URL to download the icon "' + icon.term + '" (tnp-' + icon.id + ').');
-    return;
-  }
-  request.get(iconURL, (err2, resp2, svg) => {
-    if (err2) {
-      console.error(err2);
-      return;
-    }
-    try {
-      fs.writeFileSync(`svg/the-noun-project/${icon.id}.svg`, svg);
-    } catch (error) {
-      console.error(error);
-      throw (error);
-    }
-  });
-}
-
 
 function minifyJSON(inPath, outPath) {
   return new Promise((resolve, reject) => {

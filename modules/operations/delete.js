@@ -132,14 +132,14 @@ export function operationDelete(context, selectedIDs) {
         var disable = operation.disabled();
         return disable ?
             t('operations.delete.' + disable + '.' + multi) :
-            t('operations.delete.description' + '.' + multi);
+            t('operations.delete.description.' + multi);
     };
 
 
     operation.annotation = function() {
         return selectedIDs.length === 1 ?
             t('operations.delete.annotation.' + context.graph().geometry(selectedIDs[0])) :
-            t('operations.delete.annotation.multiple', { n: selectedIDs.length });
+            t('operations.delete.annotation.feature', { n: selectedIDs.length });
     };
 
 
