@@ -34,8 +34,7 @@ export function uiRapidFirstEditDialog(context) {
     let exploring = buttonWrap
       .append('button')
       .attr('class', 'rapid-explore')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         modalSelection.close();
       });
 
