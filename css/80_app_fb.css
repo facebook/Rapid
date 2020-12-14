@@ -403,6 +403,7 @@ button.rapid-features.layer-off use {
 .modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
     background: #eee;
     color: #111;
+    height: 160px;
 }
 .modal.rapid-modal .modal-actions > button.whats-new-nothanks:hover,
 .modal.rapid-modal .modal-actions > button.rapid-login-to-osm:hover {
