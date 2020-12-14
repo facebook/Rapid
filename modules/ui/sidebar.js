@@ -194,7 +194,9 @@ export function uiSidebar(context) {
                     .show(rapidInspector.datum(datum));
 
                 selection.selectAll('.sidebar-component')
-                    .classed('inspector-hover', true);
+                    .classed('inspector-hover', true)
+                    .classed('rapid-inspector-fadein', true);
+
 
             } else if (datum instanceof osmNote) {
                 if (context.mode().id === 'drag-note') return;
