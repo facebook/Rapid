@@ -7,8 +7,10 @@ import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay, osmRelation } from '../osm';
 import { utilRebind, utilStringQs, utilTiler } from '../util';
 
+// TODO: extract common logic shared with fb_ai_features.js into util files.
+
 // constants
-var APIROOT = 'https://www.gaoxm.sb.facebook.com/maps/ml_roads';
+var APIROOT = 'https://www.mapwith.ai/maps/ml_roads';
 var TILEZOOM = 16;
 var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
