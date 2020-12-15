@@ -1237,6 +1237,10 @@
                 "label": "Microsoft Buildings",
                 "license_markdown": "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
             },
+            "fbSidewalks": {
+                "label": "Facebook Sidewalk Suggestions",
+                "license_markdown": "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
+            },
             "esri": {
                 "title": "ArcGIS Datasets",
                 "about": "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets).",
@@ -10879,7 +10883,7 @@
                 "attribution": {
                     "text": "GSI KIBAN 2500"
                 },
-                "description": "GSI Kiban 2500 via aginfo.cgk.affrc.go.jp. Good for tracing, but a bit older.",
+                "description": "GSI Kiban 2500 via finds.jp. Good for tracing, but a bit older.",
                 "name": "Japan GSI KIBAN 2500"
             },
             "gothenburg-citymap": {
@@ -11071,13 +11075,6 @@
                 },
                 "description": "Orthophotos from the municipality of Stockholm 2016, CC0 license",
                 "name": "Stockholm Orthophoto"
-            },
-            "susono_shizuoka_jp_orthophoto": {
-                "attribution": {
-                    "text": "Susono city orthophoto"
-                },
-                "description": "The aerial photos released by Susono City as open data.",
-                "name": "Susono city orthophoto"
             },
             "tf-cycle": {
                 "attribution": {
