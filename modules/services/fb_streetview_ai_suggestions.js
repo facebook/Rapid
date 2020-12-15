@@ -167,7 +167,7 @@ var parsers = {
 
 
 // parse <osm-road> element inside <sidewalk-suggestion>
-function praseOsmRoadMeta(xmlEle) {
+function parseOsmRoadMeta(xmlEle) {
     var osmRoadMeta = {};
     osmRoadMeta.wid = osmEntity.id.fromOSM("way", xmlEle.getAttribute("way-id"));
     osmRoadMeta.version = xmlEle.getAttribute("version");
@@ -190,7 +190,7 @@ function praseOsmRoadMeta(xmlEle) {
 
 
 // parse <steet-view-image-set> element inside <sidewalk-suggestion>
-function praseStreetViewImageSet(xmlEle) {
+function parseStreetViewImageSet(xmlEle) {
     var streetViewImageSet = {};
     streetViewImageSet.id = xmlEle.getAttribute("id");
     streetViewImageSet.cameraPointingDirection = xmlEle.getAttribute("camera-pointing-direction");
@@ -214,8 +214,9 @@ function praseStreetViewImageSet(xmlEle) {
 
 
 // parse <sidewalk-suggestion>
-function praseSidewalkSuggestion(xmlEle, cubitorContext) {
+function parseSidewalkSuggestion(xmlEle, cubitorContext) {
     var id = xmlEle.getAttribute("id");
+    // TODO: respect new data in both <create> entities and <cubitor-context> later.
     if (cubitorContext[id]) return;
 
     var suggestion = {id: id};
@@ -228,9 +229,9 @@ function praseSidewalkSuggestion(xmlEle, cubitorContext) {
 
     xmlEle.childNodes.forEach(function (ele) {
         if (ele.nodeName === "osm-road") {
-            suggestion.osmRoadMeta = praseOsmRoadMeta(ele);
+            suggestion.osmRoadMeta = parseOsmRoadMeta(ele);
         } else if (ele.nodeName === "street-view-image-set") {
-            suggestion.streetViewImageSet = praseStreetViewImageSet(ele);
+            suggestion.streetViewImageSet = parseStreetViewImageSet(ele);
         }
     });
     cubitorContext[suggestion.id] = suggestion;
@@ -238,7 +239,7 @@ function praseSidewalkSuggestion(xmlEle, cubitorContext) {
 
 
 var cubitorParsers = {
-    "sidewalk-suggestion": praseSidewalkSuggestion
+    "sidewalk-suggestion": parseSidewalkSuggestion
 };
 
 
@@ -287,7 +288,7 @@ var cubitorParsers = {
 </osmChange>
 
 See a full XML example at
-https://www.facebook.com/maps/ml_roads?bbox=100.437011719%2C13.9086914062%2C100.458984375%2C13.9306640625
+https://www.mapwith.ai/maps/ml_roads?bbox=100.437011719%2C13.9086914062%2C100.458984375%2C13.9306640625
 &result_type=extended_osc&sources=fb_sidewalk&theme=streetview_ai_suggestion&collaborator=rapid
 &token=ASbYX8wITNCWnU1XMF1V-d2_iRiBMKmW2nT85IhjS4TOQXie-YJMCOGppe-DiCxUSfQ4hG4MDxyfXIprF5YO3QNR&ext=1918681607
 &hash=ASaPD6M5i29Nf8jGGb0
