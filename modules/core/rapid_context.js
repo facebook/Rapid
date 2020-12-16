@@ -114,7 +114,7 @@ export function coreRapidContext(context) {
             id: 'fbRoads',
             beta: false,
             added: true,         // whether it should appear in the list
-            enabled: false,      // whether the user has checked it on
+            enabled: false,       // whether the user has checked it on
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,
@@ -125,12 +125,23 @@ export function coreRapidContext(context) {
             id: 'msBuildings',
             beta: false,
             added: true,         // whether it should appear in the list
-            enabled: false,      // whether the user has checked it on
+            enabled: false,       // whether the user has checked it on
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.msBuildings.label'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
+          },
+          'fbSidewalks': {
+            id: 'fbSidewalks',
+            beta: true,
+            added: true,         // whether it should appear in the list
+            enabled: true,       // whether the user has checked it on
+            conflated: true,
+            service: 'fbml_streetview',
+            color: RAPID_MAGENTA,
+            label: t('rapid_feature_toggle.fbSidewalks.label'),
+            license_markdown: t('rapid_feature_toggle.fbSidewalks.license_markdown')
           }
         };
 
