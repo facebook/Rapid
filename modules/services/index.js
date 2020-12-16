@@ -1,5 +1,6 @@
 import serviceEsriData from './esri_data';
 import serviceFbAIFeatures from './fb_ai_features';
+import serviceFbStreetviewSuggestions from './fb_streetview_ai_suggestions';
 import serviceKeepRight from './keepRight';
 import serviceImproveOSM from './improveOSM';
 import serviceOsmose from './osmose';

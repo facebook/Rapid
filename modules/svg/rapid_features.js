@@ -9,6 +9,7 @@ import { utilStringQs } from '../util';
 let _enabled = false;
 let _initialized = false;
 let _FbMlService;
+let _FbStreetviewSuggestionsService;
 let _EsriService;
 let _actioned;
 
@@ -44,6 +45,16 @@ export function svgRapidFeatures(projection, context, dispatch) {
     }
     return _FbMlService;
   }
+
+
+  function getFbStreetviewSuggestionsService() {
+    if (services.fbStreetviewSuggestions && !_FbStreetviewSuggestionsService) {
+      _FbStreetviewSuggestionsService = services.fbStreetviewSuggestions;
+      _FbStreetviewSuggestionsService.event.on('loadedData', throttledRedraw);
+    }
+    return _FbStreetviewSuggestionsService;
+  }
+
 
   function getEsriService() {
     if (services.esriData && !_EsriService) {
@@ -218,10 +229,22 @@ export function svgRapidFeatures(projection, context, dispatch) {
   }
 
 
+  function getServiceByDataset(ds) {
+    switch (ds.service) {
+      case 'fbml':
+        return getFbMlService();
+      case 'fbml_streetview':
+        return getFbStreetviewSuggestionsService();
+      default:
+        return getEsriService();
+    }
+  }
+
+
   function eachDataset(dataset, i, nodes) {
     const rapidContext = context.rapidContext();
     const selection = d3_select(nodes[i]);
-    const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
+    const service = getServiceByDataset(dataset);
     if (!service) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.
@@ -239,7 +262,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
-      if (dataset.service === 'fbml') {
+      if (dataset.service === 'fbml' || dataset.service === 'fbml_streetview') {
 
         service.loadTiles(internalID, projection, rapidContext.getTaskExtent());
         let pathData = service
@@ -249,7 +272,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing
-        if (dataset.id === 'fbRoads' || dataset.id === 'rapid_intro_graph') {
+        if (dataset.id === 'fbRoads' || dataset.id === 'rapid_intro_graph' || dataset.id === 'fbSidewalks') {
           geoData.paths = pathData.filter(d => !!d.tags.highway);
 
           let seen = {};
