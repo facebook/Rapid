@@ -13,14 +13,14 @@ export function uiRapidColorpicker(context, parentModal) {
   let _close = () => {};
 
 
-  function togglePopup(d, i, nodes) {
+  function togglePopup(event) {
     const shaded = context.container().selectAll('.shaded');  // container for the existing modal
     if (shaded.empty()) return;
 
     if (shaded.selectAll('.colorpicker-popup').size()) {
       _close();
     } else {
-      renderPopup(shaded, nodes[i]);
+      renderPopup(shaded, event.currentTarget);
     }
   }
 

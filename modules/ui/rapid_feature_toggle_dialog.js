@@ -24,7 +24,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     return dataset && dataset.enabled;
   }
 
-  function toggleDataset(d) {
+  function toggleDataset(event, d) {
     const dataset = rapidContext.datasets()[d.id];
     if (dataset) {
       dataset.enabled = !dataset.enabled;
