@@ -175,8 +175,8 @@ button.rapid-features.layer-off use {
 
 /* Sidebar - Rapid Inspector */
 .rapid-inspector > div {
-    background: rgb(25, 25, 25);
-    color: #ddd;
+    /* background: #222; */
+    /* color: #ddd; */
 }
 
 .rapid-inspector svg.logo-rapid {
@@ -184,7 +184,10 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-inspector .header {
-    color: #fff;
+    /* background: #222; */
+    /* color: #fff; */
+    background: #f6f6f6;
+    color: #333;
     border-bottom: 1px solid #aaaa;
 }
 .rapid-inspector .header h3 {
@@ -213,6 +216,10 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-inspector .body {
+    /* background: #222; */
+    /* color: #ddd; */
+    background: #f6f6f6;
+    color: #333;
     padding: 20px;
 }
 .rapid-inspector .body p {
@@ -237,6 +244,7 @@ button.rapid-features.layer-off use {
 .rapid-inspector .tag-info {
     padding: 7px;
     background: #444;
+    color: #ddd;
     border-radius: 0 0 5px 5px;
     border: 1px transparent;
 }

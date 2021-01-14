@@ -194,7 +194,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
     headerEnter
       .append('h3')
       .append('svg')
-      .attr('class', 'logo-rapid dark')
+      // .attr('class', 'logo-rapid dark')
+      .attr('class', 'logo-rapid')
       .append('use')
       .attr('xlink:href', '#iD-logo-rapid');
 
