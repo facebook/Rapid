@@ -215,13 +215,25 @@ button.rapid-features.layer-off use {
     border: 1px solid #aaaa;
 }
 
+.rapid-inspector-fadein .rapid-inspector .body {
+    animation: fadein 0s .25s forwards;
+}
+
 .rapid-inspector .body {
     /* background: #222; */
     /* color: #ddd; */
     background: #f6f6f6;
     color: #333;
     padding: 20px;
+    opacity: 1;
 }
+
+@keyframes fadein {
+    from  { opacity: 0 }
+    to    { opacity: 1 }
+}
+
+
 .rapid-inspector .body p {
     padding: 20px 0;
 }
@@ -230,8 +242,9 @@ button.rapid-features.layer-off use {
     display: flex;
     padding: 5px 10px;
     border-radius: 5px 5px 0 0;
-    border-bottom: 1px solid #333;
+    border: 1px solid #333;
 }
+
 .rapid-inspector .feature-info .dataset-label {
     flex: 1;
     font-size: 14px;
@@ -278,6 +291,9 @@ button.rapid-features.layer-off use {
 .rapid-inspector-choices {
     display: flex;
     flex-flow: column nowrap;
+    text-align: center;
+    background: linear-gradient(to top left, #ccc, #eee 90%);
+    border-radius: 5px;
 }
 
 .rapid-inspector-choice .choice-wrap {
@@ -325,7 +341,6 @@ button.rapid-features.layer-off use {
 .inspector-hover .rapid-inspector-choices {
     display: none;
 }
-
 
 /* For things that should stack in rows */
 .rapid-stack {
