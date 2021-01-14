@@ -25,7 +25,7 @@ function abortRequest(controller) {
 
 // API
 function searchURL() {
-  return `${APIROOT}/groups/${GROUPID}/search?num=20&start=1&sortField=title&sortOrder=asc&f=json`;
+  return `${APIROOT}/groups/${GROUPID}/search?num=100&start=1&sortField=title&sortOrder=asc&f=json`;
   // use to get
   // .results[]
   //   .extent

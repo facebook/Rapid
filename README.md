@@ -1,3 +1,5 @@
+[![build](https://github.com/facebookincubator/RapiD/workflows/build/badge.svg)](https://github.com/facebookincubator/RapiD/actions?query=workflow%3A%22build%22)
+
 # RapiD - an enhanced version of iD for mapping with AI.
 
 RapiD is an extension of the [iD editor](https://github.com/openstreetmap/iD) for mapping on [OpenStreetMap](https://www.openstreetmap.org/). It is enhanced with AI-generated roads from the Facebook Map With AI service to make adding and editing roads quick and simple for anyone to use. It also includes data integrity checks to ensure that new map edits are consistent and accurate. To learn about all the enhanced features RapiD provides, please check out our [Change Log](CHANGELOG.md) and [training document](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki#editing-in-rapid).
