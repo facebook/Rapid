@@ -272,12 +272,11 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function chooseBackground(d3_event, d) {
+  function chooseBackground(d) {
     if (d.id === 'custom' && !d.template()) {
       return editCustom();
     }
 
-    d3_event.preventDefault();
     const previousBackground = context.background().baseLayerSource();
     prefs('background-last-used-toggle', previousBackground.id);
     prefs('background-last-used', d.id);

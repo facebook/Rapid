@@ -202,7 +202,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     headerEnter
       .append('button')
       .attr('class', 'fr rapid-inspector-close')
-      .on('click', (d3_event, d) => {
+      .on('click', () => {
         context.enter(modeBrowse(context));
       })
       .call(svgIcon('#iD-icon-close'));

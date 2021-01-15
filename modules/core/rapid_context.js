@@ -18,7 +18,7 @@ export function coreRapidContext(context) {
 
   /* Task extents */
   let _taskExtent;
-  let _isTaskBoundsRect = undefined;
+  let _isTaskBoundsRect;
 
   _rapidContext.setTaskExtentByGpxData = function(gpxData) {
     const dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
