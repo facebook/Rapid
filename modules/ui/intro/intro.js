@@ -70,7 +70,7 @@ export function uiIntro(context, skipToRapid) {
         }
       }
 
-      selection.call(startIntro);
+      selection.call(startIntro, skipToRapid);
     });
   }
 
