@@ -35,7 +35,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (isAddFeatureDisabled()) {
       const flash = uiFlash(context)
         .duration(5000)
-        .text(t(
+        .label(t(
           'rapid_feature_inspector.option_accept.disabled_flash',
           { n: ACCEPT_FEATURES_LIMIT }
         ));
