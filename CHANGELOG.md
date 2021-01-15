@@ -1,3 +1,9 @@
+# [1.1.1](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.1)
+#### 2021-Jan-15th
+#### :bug: Bugfixes:
+#195, #196, and #197.
+#### :trumpet:
+This is a 'refresh' release, based off iD version 2.19.5.
 
 # [1.1.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.0)
 #### 2020-Dec-7th
