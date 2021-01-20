@@ -2013,6 +2013,10 @@ en:
         title: Use different layers or levels
       use_different_levels:
         title: Use different levels
+      delete_node_around_conn:
+        title: Delete this node to simplify connection
+      move_node_around_conn:
+        title: Move this node to adjust connection shape
   intro:
     done: done
     ok: OK

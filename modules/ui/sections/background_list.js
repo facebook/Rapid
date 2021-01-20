@@ -272,7 +272,7 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function chooseBackground(d) {
+  function chooseBackground(_, d) {
     if (d.id === 'custom' && !d.template()) {
       return editCustom();
     }
