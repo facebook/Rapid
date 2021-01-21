@@ -143,7 +143,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .append('div')
       .attr('class', 'colorpicker-option')
       .style('color', d => d)
-      .on('click', selectedColor => {
+      .on('click', (_, selectedColor) => {
         dispatch.call('change', this, dataset.id, selectedColor);
         colorItems.classed('selected', d => d === selectedColor);
       });
