@@ -27,7 +27,7 @@ export function coreContext() {
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
-  context.version = '2.18.3';
+  context.version = '2.19.5';
   context.privacyVersion = '20200407';
 
   // iD will alter the hash so cache the parameters intended to setup the session
@@ -185,15 +185,17 @@ export function coreContext() {
   };
 
   context.zoomToEntity = (entityID, zoomTo) => {
-    if (zoomTo !== false) {
-      context.loadEntity(entityID, (err, result) => {
-        if (err) return;
-        const entity = result.data.find(e => e.id === entityID);
-        if (entity) {
-          _map.zoomTo(entity);
-        }
-      });
-    }
+
+    // be sure to load the entity even if we're not going to zoom to it
+    context.loadEntity(entityID, (err, result) => {
+      if (err) return;
+      if (zoomTo !== false) {
+          const entity = result.data.find(e => e.id === entityID);
+          if (entity) {
+            _map.zoomTo(entity);
+          }
+      }
+    });
 
     _map.on('drawn.zoomToEntity', () => {
       if (!context.hasEntity(entityID)) return;
@@ -577,7 +579,11 @@ export function coreContext() {
       }
 
       // if the container isn't available, e.g. when testing, don't load the UI
-      if (!context.container().empty()) _ui.ensureLoaded();
+      if (!context.container().empty()) {
+        _ui.ensureLoaded().then(function() {
+          _photos.init();
+        });
+      }
     }
   };
 

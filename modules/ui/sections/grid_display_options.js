@@ -1,4 +1,3 @@
-import { event as d3_event } from 'd3-selection';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
@@ -8,11 +7,11 @@ export function uiSectionGridDisplayOptions(context) {
 
 
     var section = uiSection('grid-display-options', context)
-        .title(t('background.grid.grids'))
+        .label(t('background.grid.grids'))
         .disclosureContent(gridDisplayOptions);
 
 
-    function chooseGrid(d) {
+    function chooseGrid(d3_event, d) {
         d3_event.preventDefault();
         context.background().numGridSplits(d.numSplit);
     }

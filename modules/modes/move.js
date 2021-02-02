@@ -1,5 +1,4 @@
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -39,7 +38,7 @@ export function modeMove(context, entityIDs, baseGraph) {
     ];
     var annotation = entityIDs.length === 1 ?
         t('operations.move.annotation.' + context.graph().geometry(entityIDs[0])) :
-        t('operations.move.annotation.multiple');
+        t('operations.move.annotation.feature', { n: entityIDs.length });
 
     var _prevGraph;
     var _cache;
@@ -96,7 +95,7 @@ export function modeMove(context, entityIDs, baseGraph) {
     }
 
 
-    function finish() {
+    function finish(d3_event) {
         d3_event.stopPropagation();
         context.replace(actionNoop(), annotation);
         context.enter(modeSelect(context, entityIDs));

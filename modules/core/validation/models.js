@@ -59,7 +59,7 @@ export function validationIssue(attrs) {
         if (issue.severity === 'warning') {
             // allow ignoring any issue that's not an error
             fixes.push(new validationIssueFix({
-                title: t('issues.fix.ignore_issue.title'),
+                title: t.html('issues.fix.ignore_issue.title'),
                 icon: 'iD-icon-close',
                 onClick: function() {
                     context.validator().ignoreIssue(this.issue.id);
@@ -68,6 +68,7 @@ export function validationIssue(attrs) {
         }
 
         fixes.forEach(function(fix) {
+            // the id doesn't matter as long as it's unique to this issue/fix
             fix.id = fix.title;
             // add a reference to the issue for use in actions
             fix.issue = issue;

@@ -1,5 +1,7 @@
 
 import { geoCentroid as d3_geoCentroid } from 'd3-geo';
+import geojsonRewind from '@mapbox/geojson-rewind';
+
 import { osmNode } from '../osm/node';
 
 export function actionExtract(entityID) {
@@ -45,12 +47,24 @@ export function actionExtract(entityID) {
         var keysToRetain = ['area'];
         var buildingKeysToRetain = ['architect', 'building', 'height', 'layer'];
 
-        var extractedLoc = d3_geoCentroid(entity.asGeoJSON(graph));
+        // d3_geoCentroid is wrong for counterclockwise-wound polygons, so wind them clockwise
+        var extractedLoc = d3_geoCentroid(geojsonRewind(Object.assign({}, entity.asGeoJSON(graph)), true));
         if (!extractedLoc  || !isFinite(extractedLoc[0]) || !isFinite(extractedLoc[1])) {
             extractedLoc = entity.extent(graph).center();
         }
 
-        var isBuilding = entity.tags.building && entity.tags.building !== 'no';
+        var indoorAreaValues = {
+            area: true,
+            corridor: true,
+            elevator: true,
+            level: true,
+            room: true
+        };
+
+        var isBuilding = (entity.tags.building && entity.tags.building !== 'no') ||
+            (entity.tags['building:part'] && entity.tags['building:part'] !== 'no');
+
+        var isIndoorArea = fromGeometry === 'area' && entity.tags.indoor && indoorAreaValues[entity.tags.indoor];
 
         var entityTags = Object.assign({}, entity.tags);  // shallow copy
         var pointTags = {};
@@ -71,6 +85,10 @@ export function actionExtract(entityID) {
                     key.match(/^building:.{1,}/) ||
                     key.match(/^roof:.{1,}/)) continue;
             }
+            // leave `indoor` tag on the area
+            if (isIndoorArea && key === 'indoor') {
+                continue;
+            }
 
             // copy the tag from the entity to the point
             pointTags[key] = entityTags[key];
@@ -79,13 +97,16 @@ export function actionExtract(entityID) {
             if (keysToCopyAndRetain.indexOf(key) !== -1 ||
                 key.match(/^addr:.{1,}/)) {
                 continue;
+            } else if (isIndoorArea && key === 'level') {
+                // leave `level` on both features
+                continue;
             }
 
             // remove the tag from the entity
             delete entityTags[key];
         }
 
-        if (!isBuilding && fromGeometry === 'area') {
+        if (!isBuilding && !isIndoorArea && fromGeometry === 'area') {
             // ensure that areas keep area geometry
             entityTags.area = 'yes';
         }

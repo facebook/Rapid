@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select, event as d3_event } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
@@ -13,20 +13,20 @@ export function uiRapidColorpicker(context, parentModal) {
   let _close = () => {};
 
 
-  function togglePopup(d, i, nodes) {
+  function togglePopup(event) {
     const shaded = context.container().selectAll('.shaded');  // container for the existing modal
     if (shaded.empty()) return;
 
     if (shaded.selectAll('.colorpicker-popup').size()) {
       _close();
     } else {
-      renderPopup(shaded, nodes[i]);
+      renderPopup(shaded, event.currentTarget);
     }
   }
 
 
   // if user clicks outside the colorpicker, dismiss
-  function handleClick() {
+  function handleClick(d3_event) {
     const target = d3_event.target;
     const className = (target && target.className) || '';
     if (!/colorpicker/i.test(className)) {
@@ -143,7 +143,7 @@ export function uiRapidColorpicker(context, parentModal) {
       .append('div')
       .attr('class', 'colorpicker-option')
       .style('color', d => d)
-      .on('click', selectedColor => {
+      .on('click', (_, selectedColor) => {
         dispatch.call('change', this, dataset.id, selectedColor);
         colorItems.classed('selected', d => d === selectedColor);
       });

@@ -216,13 +216,15 @@ export function utilDisplayType(id) {
 }
 
 
-export function utilDisplayLabel(entity, graph) {
+export function utilDisplayLabel(entity, graphOrGeometry) {
     var displayName = utilDisplayName(entity);
     if (displayName) {
         // use the display name if there is one
         return displayName;
     }
-    var preset = presetManager.match(entity, graph);
+    var preset = typeof graphOrGeometry === 'string' ?
+        presetManager.matchTags(entity.tags, graphOrGeometry) :
+        presetManager.match(entity, graphOrGeometry);
     if (preset && preset.name()) {
         // use the preset name if there is a match
         return preset.name();
@@ -416,8 +418,9 @@ export function utilEditDistance(a, b) {
     if (a.length === 0) return b.length;
     if (b.length === 0) return a.length;
     var matrix = [];
-    for (var i = 0; i <= b.length; i++) { matrix[i] = [i]; }
-    for (var j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+    var i, j;
+    for (i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+    for (j = 0; j <= a.length; j++) { matrix[0][j] = j; }
     for (i = 1; i <= b.length; i++) {
         for (j = 1; j <= a.length; j++) {
             if (b.charAt(i-1) === a.charAt(j-1)) {

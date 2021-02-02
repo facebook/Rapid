@@ -35,7 +35,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if (isAddFeatureDisabled()) {
       const flash = uiFlash(context)
         .duration(5000)
-        .text(t(
+        .label(t(
           'rapid_feature_inspector.option_accept.disabled_flash',
           { n: ACCEPT_FEATURES_LIMIT }
         ));
@@ -202,8 +202,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     headerEnter
       .append('button')
       .attr('class', 'fr rapid-inspector-close')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         context.enter(modeBrowse(context));
       })
       .call(svgIcon('#iD-icon-close'));
@@ -281,10 +280,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
     let choiceButton = choiceWrap
       .append('button')
       .attr('class', `choice-button choice-button-${d.key} ${disableClass}`)
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
-        onClick();
-      });
+      .on('click', onClick);
 
     // build tooltips
     let title, keys;
@@ -322,8 +318,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .attr('class', `tag-reference-button ${disableClass}`)
       .attr('title', 'info')
       .attr('tabindex', '-1')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         choiceReference.classed('expanded', !choiceReference.classed('expanded'));
       })
       .call(svgIcon('#iD-icon-inspect'));

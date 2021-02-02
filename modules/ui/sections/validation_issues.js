@@ -1,5 +1,5 @@
 import _debounce from 'lodash-es/debounce';
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { actionNoop } from '../../actions/noop';
 import { geoSphericalDistance } from '../../geo';
@@ -14,10 +14,10 @@ export function uiSectionValidationIssues(id, severity, context) {
     var _issues = [];
 
     var section = uiSection(id, context)
-        .title(function() {
+        .label(function() {
             if (!_issues) return '';
             var issueCountText = _issues.length > 1000 ? '1000+' : String(_issues.length);
-            return t('issues.' + severity + 's.list_title', { count: issueCountText });
+            return t('inspector.title_count', { title: t.html('issues.' + severity + 's.list_title'), count: issueCountText });
         })
         .disclosureContent(renderDisclosureContent)
         .shouldDisplay(function() {
@@ -82,21 +82,20 @@ export function uiSectionValidationIssues(id, severity, context) {
         // Enter
         var itemsEnter = items.enter()
             .append('li')
-            .attr('class', function (d) { return 'issue severity-' + d.severity; })
-            .on('click', function(d) {
-                context.validator().focusIssue(d);
-            })
-            .on('mouseover', function(d) {
-                utilHighlightEntities(d.entityIds, true, context);
-            })
-            .on('mouseout', function(d) {
-                utilHighlightEntities(d.entityIds, false, context);
-            });
-
+            .attr('class', function (d) { return 'issue severity-' + d.severity; });
 
         var labelsEnter = itemsEnter
-            .append('div')
-            .attr('class', 'issue-label');
+            .append('button')
+            .attr('class', 'issue-label')
+            .on('click', function(d3_event, d) {
+                context.validator().focusIssue(d);
+            })
+            .on('mouseover', function(d3_event, d) {
+                utilHighlightEntities(d.entityIds, true, context);
+            })
+            .on('mouseout', function(d3_event, d) {
+                utilHighlightEntities(d.entityIds, false, context);
+            });
 
         var textEnter = labelsEnter
             .append('span')
@@ -127,7 +126,7 @@ export function uiSectionValidationIssues(id, severity, context) {
                         .attr('title', t('issues.fix_one.title'))
                         .datum(d)  // set button datum to the issue
                         .attr('class', 'autofix action')
-                        .on('click', function(d) {
+                        .on('click', function(d3_event, d) {
                             d3_event.preventDefault();
                             d3_event.stopPropagation();
 
@@ -145,7 +144,7 @@ export function uiSectionValidationIssues(id, severity, context) {
             .order();
 
         items.selectAll('.issue-message')
-            .text(function(d) {
+            .html(function(d) {
                 return d.message(context);
             });
 
@@ -170,7 +169,7 @@ export function uiSectionValidationIssues(id, severity, context) {
         linkEnter
             .append('span')
             .attr('class', 'autofix-all-link-text')
-            .text(t('issues.fix_all.title'));
+            .html(t.html('issues.fix_all.title'));
 
         linkEnter
             .append('span')

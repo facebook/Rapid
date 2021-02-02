@@ -1,6 +1,4 @@
-
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -26,7 +24,7 @@ export function uiTopToolbar(context) {
 
     function topToolbar(bar) {
 
-        bar.on('wheel.topToolbar', function() {
+        bar.on('wheel.topToolbar', function(d3_event) {
             if (!d3_event.deltaX) {
                 // translate vertical scrolling into horizontal scrolling in case
                 // the user doesn't have an input device that can scroll horizontally
@@ -96,7 +94,7 @@ export function uiTopToolbar(context) {
             actionableItems
                 .append('div')
                 .attr('class', 'item-label')
-                .text(function(d) {
+                .html(function(d) {
                     return d.label;
                 });
         }

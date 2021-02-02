@@ -27,8 +27,9 @@ export function operationCycleHighwayTag(context, selectedIDs) {
         _entity = context.entity(_entityID);
         // Calculate whether the changes since the last time this action ran
         // are only to highway tags.
+        var sameSelection;
         if (_prevSelectedIDs) {
-            var sameSelection = _prevSelectedIDs ? _prevSelectedIDs[0] === selectedIDs[0] : false;
+             sameSelection = _prevSelectedIDs ? _prevSelectedIDs[0] === selectedIDs[0] : false;
         }
 
         var tags = Object.assign({}, _entity.tags);

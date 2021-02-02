@@ -1,5 +1,4 @@
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -12,24 +11,18 @@ import { uiSection } from '../section';
 export function uiSectionBackgroundOffset(context) {
 
     var section = uiSection('background-offset', context)
-        .title(t('background.fix_misalignment'))
+        .label(t.html('background.fix_misalignment'))
         .disclosureContent(renderDisclosureContent)
         .expandedByDefault(false);
 
     var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
     var _directions = [
-        ['right', [0.5, 0]],
         ['top', [0, -0.5]],
         ['left', [-0.5, 0]],
+        ['right', [0.5, 0]],
         ['bottom', [0, 0.5]]
     ];
-
-
-    function cancelEvent() {
-        d3_event.stopPropagation();
-        d3_event.preventDefault();
-    }
 
 
     function updateValue() {
@@ -61,28 +54,6 @@ export function uiSectionBackgroundOffset(context) {
     }
 
 
-    function pointerdownNudgeButton(d) {
-        var interval;
-        var timeout = window.setTimeout(function() {
-                interval = window.setInterval(nudge.bind(null, d), 100);
-            }, 500);
-
-        function doneNudge() {
-            window.clearTimeout(timeout);
-            window.clearInterval(interval);
-            d3_select(window)
-                .on(_pointerPrefix + 'up.buttonoffset', null, true)
-                .on(_pointerPrefix + 'down.buttonoffset', null, true);
-        }
-
-        d3_select(window)
-            .on(_pointerPrefix + 'up.buttonoffset', doneNudge, true)
-            .on(_pointerPrefix + 'down.buttonoffset', doneNudge, true);
-
-        nudge(d);
-    }
-
-
     function inputOffset() {
         var input = d3_select(this);
         var d = input.node().value;
@@ -104,7 +75,7 @@ export function uiSectionBackgroundOffset(context) {
     }
 
 
-    function dragOffset() {
+    function dragOffset(d3_event) {
         if (d3_event.button !== 0) return;
 
         var origin = [d3_event.clientX, d3_event.clientY];
@@ -124,7 +95,7 @@ export function uiSectionBackgroundOffset(context) {
                 .on('pointercancel.drag-bg-offset', pointerup);
         }
 
-        function pointermove() {
+        function pointermove(d3_event) {
             if (pointerId !== (d3_event.pointerId || 'mouse')) return;
 
             var latest = [d3_event.clientX, d3_event.clientY];
@@ -137,7 +108,7 @@ export function uiSectionBackgroundOffset(context) {
             nudge(d);
         }
 
-        function pointerup() {
+        function pointerup(d3_event) {
             if (pointerId !== (d3_event.pointerId || 'mouse')) return;
             if (d3_event.button !== 0) return;
 
@@ -156,14 +127,18 @@ export function uiSectionBackgroundOffset(context) {
 
         var containerEnter = container.enter()
             .append('div')
-            .attr('class', 'nudge-container cf');
+            .attr('class', 'nudge-container');
 
         containerEnter
             .append('div')
             .attr('class', 'nudge-instructions')
-            .text(t('background.offset'));
+            .html(t.html('background.offset'));
 
-        var nudgeEnter = containerEnter
+        var nudgeWrapEnter = containerEnter
+            .append('div')
+            .attr('class', 'nudge-controls-wrap');
+
+        var nudgeEnter = nudgeWrapEnter
             .append('div')
             .attr('class', 'nudge-outer-rect')
             .on(_pointerPrefix + 'down', dragOffset);
@@ -172,28 +147,25 @@ export function uiSectionBackgroundOffset(context) {
             .append('div')
             .attr('class', 'nudge-inner-rect')
             .append('input')
+            .attr('type', 'text')
             .on('change', inputOffset);
 
-        containerEnter
+        nudgeWrapEnter
             .append('div')
             .selectAll('button')
             .data(_directions).enter()
             .append('button')
             .attr('class', function(d) { return d[0] + ' nudge'; })
-            .on('contextmenu', cancelEvent)
-            .on(_pointerPrefix + 'down', function(d) {
-                if (d3_event.button !== 0) return;
-                pointerdownNudgeButton(d[1]);
+            .on('click', function(d3_event, d) {
+                nudge(d[1]);
             });
 
-        containerEnter
+        nudgeWrapEnter
             .append('button')
             .attr('title', t('background.reset'))
             .attr('class', 'nudge-reset disabled')
-            .on('contextmenu', cancelEvent)
-            .on('click', function() {
+            .on('click', function(d3_event) {
                 d3_event.preventDefault();
-                if (d3_event.button !== 0) return;
                 resetOffset();
             })
             .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));

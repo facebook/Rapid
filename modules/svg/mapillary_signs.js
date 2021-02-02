@@ -33,6 +33,7 @@ export function svgMapillarySigns(projection, context, dispatch) {
         var service = getService();
         if (!service) return;
 
+        service.loadSignResources(context);
         editOn();
     }
 
@@ -54,7 +55,7 @@ export function svgMapillarySigns(projection, context, dispatch) {
     }
 
 
-    function click(d) {
+    function click(d3_event, d) {
         var service = getService();
         if (!service) return;
 
@@ -62,25 +63,70 @@ export function svgMapillarySigns(projection, context, dispatch) {
 
         var selectedImageKey = service.getSelectedImageKey();
         var imageKey;
-
+        var highlightedDetection;
         // Pick one of the images the sign was detected in,
         // preference given to an image already selected.
         d.detections.forEach(function(detection) {
             if (!imageKey || selectedImageKey === detection.image_key) {
                 imageKey = detection.image_key;
+                highlightedDetection = detection;
             }
         });
 
-        service
-            .selectImage(context, imageKey)
-            .updateViewer(context, imageKey)
-            .showViewer(context);
+        if (imageKey === selectedImageKey) {
+            service
+                .highlightDetection(highlightedDetection)
+                .selectImage(context, imageKey);
+        } else {
+            service.ensureViewerLoaded(context)
+                .then(function() {
+                    service
+                        .highlightDetection(highlightedDetection)
+                        .selectImage(context, imageKey)
+                        .showViewer(context);
+                });
+
+        }
+    }
+
+
+    function filterData(detectedFeatures) {
+        var service = getService();
+
+        var fromDate = context.photos().fromDate();
+        var toDate = context.photos().toDate();
+        var usernames = context.photos().usernames();
+
+        if (fromDate) {
+            var fromTimestamp = new Date(fromDate).getTime();
+            detectedFeatures = detectedFeatures.filter(function(feature) {
+                return new Date(feature.last_seen_at).getTime() >= fromTimestamp;
+            });
+        }
+        if (toDate) {
+            var toTimestamp = new Date(toDate).getTime();
+            detectedFeatures = detectedFeatures.filter(function(feature) {
+                return new Date(feature.first_seen_at).getTime() <= toTimestamp;
+            });
+        }
+        if (usernames && service) {
+            detectedFeatures = detectedFeatures.filter(function(feature) {
+                return feature.detections.some(function(detection) {
+                    var imageKey = detection.image_key;
+                    var image = service.cachedImage(imageKey);
+                    return image && usernames.indexOf(image.captured_by) !== -1;
+                });
+            });
+        }
+        return detectedFeatures;
     }
 
 
     function update() {
         var service = getService();
         var data = (service ? service.signs(projection) : []);
+        data = filterData(data);
+
         var selectedImageKey = service.getSelectedImageKey();
         var transform = svgPointTransform(projection);
 
@@ -159,9 +205,12 @@ export function svgMapillarySigns(projection, context, dispatch) {
                 editOn();
                 update();
                 service.loadSigns(projection);
+                service.showSignDetections(true);
             } else {
                 editOff();
             }
+        } else if (service) {
+            service.showSignDetections(false);
         }
     }
 
@@ -171,8 +220,10 @@ export function svgMapillarySigns(projection, context, dispatch) {
         svgMapillarySigns.enabled = _;
         if (svgMapillarySigns.enabled) {
             showLayer();
+            context.photos().on('change.mapillary_signs', update);
         } else {
             hideLayer();
+            context.photos().on('change.mapillary_signs', null);
         }
         dispatch.call('change');
         return this;

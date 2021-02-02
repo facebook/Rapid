@@ -49,7 +49,7 @@ export function uiFieldCycleway(field, context) {
             .append('span')
             .attr('class', 'label preset-label-cycleway')
             .attr('for', function(d) { return 'preset-input-cycleway-' + stripcolon(d); })
-            .text(function(d) { return field.t('types.' + d); });
+            .html(function(d) { return field.t.html('types.' + d); });
 
         enter
             .append('div')
@@ -74,7 +74,7 @@ export function uiFieldCycleway(field, context) {
     }
 
 
-    function change(key) {
+    function change(d3_event, key) {
 
         var newValue = context.cleanTagValue(utilGetSetValue(d3_select(this)));
 

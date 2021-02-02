@@ -1,5 +1,4 @@
 import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
-import { event as d3_event } from 'd3-selection';
 
 import { t } from '../../core/localizer';
 import { modeSave } from '../../modes';
@@ -12,7 +11,7 @@ export function uiToolSave(context) {
 
     var tool = {
         id: 'save',
-        label: t('save.title')
+        label: t.html('save.title')
     };
 
     var button = null;
@@ -30,7 +29,7 @@ export function uiToolSave(context) {
         return _numChanges === 0 || isSaving();
     }
 
-    function save() {
+    function save(d3_event) {
         d3_event.preventDefault();
         if (!context.inIntro() && !isSaving() && history.hasChanges()) {
             context.enter(modeSave(context));
@@ -58,7 +57,7 @@ export function uiToolSave(context) {
 
         if (tooltipBehavior) {
             tooltipBehavior
-                .title(t(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
+                .title(t.html(_numChanges > 0 ? 'save.help' : 'save.no_changes'))
                 .keys([key]);
         }
 
@@ -68,7 +67,7 @@ export function uiToolSave(context) {
                 .style('background', bgColor(_numChanges));
 
             button.select('span.count')
-                .text(_numChanges);
+                .html(_numChanges);
         }
     }
 
@@ -76,7 +75,7 @@ export function uiToolSave(context) {
     tool.render = function(selection) {
         tooltipBehavior = uiTooltip()
             .placement('bottom')
-            .title(t('save.no_changes'))
+            .title(t.html('save.no_changes'))
             .keys([key])
             .scrollContainer(context.container().select('.top-toolbar'));
 
@@ -85,13 +84,11 @@ export function uiToolSave(context) {
         button = selection
             .append('button')
             .attr('class', 'save disabled bar-button')
-            .on('pointerup', function() {
+            .on('pointerup', function(d3_event) {
                 lastPointerUpType = d3_event.pointerType;
             })
-            .on('click', function() {
-                d3_event.preventDefault();
-
-                save();
+            .on('click', function(d3_event) {
+                save(d3_event);
 
                 if (_numChanges === 0 && (
                     lastPointerUpType === 'touch' ||
@@ -102,7 +99,7 @@ export function uiToolSave(context) {
                         .duration(2000)
                         .iconName('#iD-icon-save')
                         .iconClass('disabled')
-                        .text(t('save.no_changes'))();
+                        .label(t.html('save.no_changes'))();
                 }
                 lastPointerUpType = null;
             })
@@ -115,7 +112,7 @@ export function uiToolSave(context) {
             .append('span')
             .attr('class', 'count')
             .attr('aria-hidden', 'true')
-            .text('0');
+            .html('0');
 
         updateCount();
 

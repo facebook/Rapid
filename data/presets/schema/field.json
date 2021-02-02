@@ -58,6 +58,7 @@
                 "lanes",
                 "identifier",
                 "localized",
+                "manyCombo",
                 "maxspeed",
                 "multiCombo",
                 "networkCombo",
@@ -147,6 +148,11 @@
             "description": "Maximum field value (number fields only)",
             "type": "integer"
         },
+        "increment": {
+            "description": "The amount the stepper control should add or subtract (number fields only)",
+            "minimum": 1,
+            "type": "integer"
+        },
         "prerequisiteTag": {
             "description": "Tagging constraint for showing this field in the editor",
             "type": {
@@ -216,6 +222,11 @@
         "pattern":  {
             "description": "Regular expression that a valid `identifier` value is expected to match",
             "type": "string"
+        },
+        "usage": {
+            "description": "The manner and context in which the field is used",
+            "type": "string",
+            "enum": ["preset", "changeset", "manual", "group"]
         }
     },
     "additionalProperties": false

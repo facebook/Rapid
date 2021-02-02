@@ -1,8 +1,7 @@
 import _throttle from 'lodash-es/throttle';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { xml as d3_xml } from 'd3-fetch';
-import { json as d3_json } from 'd3-fetch';
+import { json as d3_json, xml as d3_xml } from 'd3-fetch';
 
 import osmAuth from 'osm-auth';
 import RBush from 'rbush';
@@ -29,8 +28,8 @@ var oauth = osmAuth({
     loading: authLoading,
     done: authDone
 });
-
-var _blacklists = ['.*\.google(apis)?\..*/(vt|kh)[\?/].*([xyz]=.*){3}.*'];
+// hardcode default block of Google Maps
+var _imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
 var _tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
 var _noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
 var _userCache = { toLoad: {}, user: {} };
@@ -925,17 +924,22 @@ export default {
                 return callback(err, null);
             }
 
-            // update blacklists
+            // update blocklists
             var elements = xml.getElementsByTagName('blacklist');
             var regexes = [];
             for (var i = 0; i < elements.length; i++) {
-                var regex = elements[i].getAttribute('regex');  // needs unencode?
-                if (regex) {
-                    regexes.push(regex);
+                var regexString = elements[i].getAttribute('regex');  // needs unencode?
+                if (regexString) {
+                    try {
+                        var regex = new RegExp(regexString);
+                        regexes.push(regex);
+                    } catch (e) {
+                        /* noop */
+                    }
                 }
             }
             if (regexes.length) {
-                _blacklists = regexes;
+                _imageryBlocklists = regexes;
             }
 
             if (_rateLimitError) {
@@ -955,7 +959,7 @@ export default {
     // Calls `status` and dispatches an `apiStatusChange` event if the returned
     // status differs from the cached status.
     reloadApiStatus: function() {
-        // throttle to avoid unncessary API calls
+        // throttle to avoid unnecessary API calls
         if (!this.throttledReloadApiStatus) {
             var that = this;
             this.throttledReloadApiStatus = _throttle(function() {
@@ -1327,8 +1331,8 @@ export default {
     },
 
 
-    imageryBlacklists: function() {
-        return _blacklists;
+    imageryBlocklists: function() {
+        return _imageryBlocklists;
     },
 
 

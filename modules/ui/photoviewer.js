@@ -1,5 +1,4 @@
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -27,7 +26,7 @@ export function uiPhotoviewer(context) {
             .append('div')
             .call(svgIcon('#iD-icon-close'));
 
-        function preventDefault() {
+        function preventDefault(d3_event) {
             d3_event.preventDefault();
         }
 
@@ -58,10 +57,6 @@ export function uiPhotoviewer(context) {
                 buildResizeListener(selection, 'resize', dispatch, { resizeOnY: true })
             );
 
-        services.streetside.loadViewer(context);
-        services.mapillary.loadViewer(context);
-        services.openstreetcam.loadViewer(context);
-
         function buildResizeListener(target, eventName, dispatch, options) {
 
             var resizeOnX = !!options.resizeOnX;
@@ -74,7 +69,7 @@ export function uiPhotoviewer(context) {
             var startWidth;
             var startHeight;
 
-            function startResize() {
+            function startResize(d3_event) {
                 if (pointerId !== (d3_event.pointerId || 'mouse')) return;
 
                 d3_event.preventDefault();
@@ -101,7 +96,7 @@ export function uiPhotoviewer(context) {
                 return Math.max(min, Math.min(num, max));
             }
 
-            function stopResize() {
+            function stopResize(d3_event) {
                 if (pointerId !== (d3_event.pointerId || 'mouse')) return;
 
                 d3_event.preventDefault();
@@ -112,7 +107,7 @@ export function uiPhotoviewer(context) {
                     .on('.' + eventName, null);
             }
 
-            return function initResize() {
+            return function initResize(d3_event) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
 

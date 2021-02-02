@@ -1,5 +1,4 @@
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -17,7 +16,7 @@ export function uiSectionValidationRules(context) {
 
     var section = uiSection('issues-rules', context)
         .disclosureContent(renderDisclosureContent)
-        .title(t('issues.rules.title'));
+        .label(t.html('issues.rules.title'));
 
     var _ruleKeys = context.validator().getRuleKeys()
         .filter(function(key) { return key !== 'maprules'; })
@@ -46,18 +45,20 @@ export function uiSectionValidationRules(context) {
             .append('a')
             .attr('class', 'issue-rules-link')
             .attr('href', '#')
-            .text(t('issues.enable_all'))
-            .on('click', function() {
-                context.validator().disableRules([]);
+            .html(t.html('issues.disable_all'))
+            .on('click', function(d3_event) {
+                d3_event.preventDefault();
+                context.validator().disableRules(_ruleKeys);
             });
 
         ruleLinks
             .append('a')
             .attr('class', 'issue-rules-link')
             .attr('href', '#')
-            .text(t('issues.disable_all'))
-            .on('click', function() {
-                context.validator().disableRules(_ruleKeys);
+            .html(t.html('issues.enable_all'))
+            .on('click', function(d3_event) {
+                d3_event.preventDefault();
+                context.validator().disableRules([]);
             });
 
 
@@ -84,7 +85,7 @@ export function uiSectionValidationRules(context) {
         if (name === 'rule') {
             enter
                 .call(uiTooltip()
-                    .title(function(d) { return t('issues.' + d + '.tip'); })
+                    .title(function(d) { return t.html('issues.' + d + '.tip'); })
                     .placement('top')
                 );
         }
@@ -105,7 +106,7 @@ export function uiSectionValidationRules(context) {
                 if (d === 'unsquare_way') {
                     params.val = '<span class="square-degrees"></span>';
                 }
-                return t('issues.' + d + '.title', params);
+                return t.html('issues.' + d + '.title', params);
             });
 
         // Update
@@ -122,7 +123,7 @@ export function uiSectionValidationRules(context) {
         // user-configurable square threshold
         var degStr = prefs('validate-square-degrees');
         if (degStr === null) {
-            degStr = '' + DEFAULTSQUARE;
+            degStr = DEFAULTSQUARE.toString();
         }
 
         var span = items.selectAll('.square-degrees');
@@ -133,18 +134,18 @@ export function uiSectionValidationRules(context) {
         input.enter()
             .append('input')
             .attr('type', 'number')
-            .attr('min', '' + MINSQUARE)
-            .attr('max', '' + MAXSQUARE)
+            .attr('min', MINSQUARE.toString())
+            .attr('max', MAXSQUARE.toString())
             .attr('step', '0.5')
             .attr('class', 'square-degrees-input')
             .call(utilNoAuto)
-            .on('click', function () {
+            .on('click', function (d3_event) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
                 this.select();
             })
-            .on('keyup', function () {
-                if (d3_event.keyCode === 13) { // enter
+            .on('keyup', function (d3_event) {
+                if (d3_event.keyCode === 13) { // ↩ Return
                     this.blur();
                     this.select();
                 }
@@ -168,7 +169,7 @@ export function uiSectionValidationRules(context) {
         }
 
         degNum = Math.round(degNum * 10 ) / 10;   // round to 1 decimal
-        degStr = '' + degNum;
+        degStr = degNum.toString();
 
         input
             .property('value', degStr);
@@ -181,7 +182,7 @@ export function uiSectionValidationRules(context) {
         return context.validator().isRuleEnabled(d);
     }
 
-    function toggleRule(d) {
+    function toggleRule(d3_event, d) {
         context.validator().toggleRule(d);
     }
 

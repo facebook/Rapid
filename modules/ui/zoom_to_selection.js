@@ -1,5 +1,3 @@
-import { event as d3_event } from 'd3-selection';
-
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { svgIcon } from '../svg/icon';
@@ -13,11 +11,11 @@ export function uiZoomToSelection(context) {
 
     var _lastPointerUpType;
 
-    function pointerup() {
+    function pointerup(d3_event) {
         _lastPointerUpType = d3_event.pointerType;
     }
 
-    function click() {
+    function click(d3_event) {
         d3_event.preventDefault();
 
         if (isDisabled()) {
@@ -26,7 +24,7 @@ export function uiZoomToSelection(context) {
                     .duration(2000)
                     .iconName('#iD-icon-framed-dot')
                     .iconClass('disabled')
-                    .text(t('inspector.zoom_to.no_selection'))();
+                    .label(t.html('inspector.zoom_to.no_selection'))();
             }
         } else {
             var mode = context.mode();
@@ -44,9 +42,9 @@ export function uiZoomToSelection(context) {
             .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
             .title(function() {
                 if (isDisabled()) {
-                    return t('inspector.zoom_to.no_selection');
+                    return t.html('inspector.zoom_to.no_selection');
                 }
-                return t('inspector.zoom_to.title');
+                return t.html('inspector.zoom_to.title');
             })
             .keys([t('inspector.zoom_to.key')]);
 

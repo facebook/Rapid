@@ -27,7 +27,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   }
 
 
-  function clickPage(d) {
+  function clickPage(_, d) {
     if (!Array.isArray(_datasetInfo)) return;
 
     const pages = Math.ceil(_datasetInfo.length / PERPAGE);
@@ -330,7 +330,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   }
 
 
-  function toggleDataset(d, i, nodes) {
+  function toggleDataset(d3_event, d) {
     const datasets = rapidContext.datasets();
     const ds = datasets[d.id];
 
@@ -370,7 +370,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       datasets[d.id] = dataset;
     }
 
-    nodes[i].blur();
     _content.call(renderModalContent);
 
     context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)

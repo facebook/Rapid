@@ -41,8 +41,7 @@ export function uiRapidSplash(context) {
     let walkthrough = buttonWrap
       .append('button')
       .attr('class', 'walkthrough')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         context.container().call(uiIntro(context, false));
         modalSelection.close();
       });
@@ -60,8 +59,7 @@ export function uiRapidSplash(context) {
     let rapidWalkthrough = buttonWrap
       .append('button')
       .attr('class', 'rapid-walkthrough')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         context.container().call(uiIntro(context, true));
         modalSelection.close();
       });
@@ -79,8 +77,7 @@ export function uiRapidSplash(context) {
     let startEditing = buttonWrap
       .append('button')
       .attr('class', 'start-editing')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         modalSelection.close();
       });
 

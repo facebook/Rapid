@@ -1,10 +1,11 @@
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { geoVecAdd } from '../geo';
 import { localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { utilRebind } from '../util/rebind';
+import { utilHighlightEntities } from '../util/util';
 import { svgIcon } from '../svg/icon';
 
 
@@ -86,9 +87,19 @@ export function uiEditMenu(context) {
             .on('click', click)
             // don't listen for `mouseup` because we only care about non-mouse pointer types
             .on('pointerup', pointerup)
-            .on('pointerdown mousedown', function pointerdown() {
+            .on('pointerdown mousedown', function pointerdown(d3_event) {
                 // don't let button presses also act as map input - #1869
                 d3_event.stopPropagation();
+            })
+            .on('mouseenter.highlight', function(d3_event, d) {
+                if (!d.relatedEntityIds || d3_select(this).classed('disabled')) return;
+
+                utilHighlightEntities(d.relatedEntityIds(), true, context);
+            })
+            .on('mouseleave.highlight', function(d3_event, d) {
+                if (!d.relatedEntityIds) return;
+
+                utilHighlightEntities(d.relatedEntityIds(), false, context);
             });
 
         buttonsEnter.each(function(d) {
@@ -109,13 +120,13 @@ export function uiEditMenu(context) {
         if (showLabels) {
             buttonsEnter.append('span')
                 .attr('class', 'label')
-                .text(function(d) {
+                .html(function(d) {
                     return d.title;
                 });
         }
 
         // update
-        buttons = buttonsEnter
+        buttonsEnter
             .merge(buttons)
             .classed('disabled', function(d) { return d.disabled(); });
 
@@ -134,12 +145,17 @@ export function uiEditMenu(context) {
 
         var lastPointerUpType;
         // `pointerup` is always called before `click`
-        function pointerup() {
+        function pointerup(d3_event) {
             lastPointerUpType = d3_event.pointerType;
         }
 
-        function click(operation) {
+        function click(d3_event, operation) {
             d3_event.stopPropagation();
+
+            if (operation.relatedEntityIds) {
+                utilHighlightEntities(operation.relatedEntityIds(), false, context);
+            }
+
             if (operation.disabled()) {
                 if (lastPointerUpType === 'touch' ||
                     lastPointerUpType === 'pen') {
@@ -148,7 +164,7 @@ export function uiEditMenu(context) {
                         .duration(4000)
                         .iconName('#iD-operation-' + operation.id)
                         .iconClass('operation disabled')
-                        .text(operation.tooltip)();
+                        .label(operation.tooltip)();
                 }
             } else {
                 if (lastPointerUpType === 'touch' ||
@@ -157,7 +173,7 @@ export function uiEditMenu(context) {
                         .duration(2000)
                         .iconName('#iD-operation-' + operation.id)
                         .iconClass('operation')
-                        .text(operation.annotation() || operation.title)();
+                        .label(operation.annotation() || operation.title)();
                 }
 
                 operation();

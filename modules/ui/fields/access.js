@@ -40,7 +40,7 @@ export function uiFieldAccess(field, context) {
             .append('span')
             .attr('class', 'label preset-label-access')
             .attr('for', function(d) { return 'preset-input-access-' + d; })
-            .text(function(d) { return field.t('types.' + d); });
+            .html(function(d) { return field.t.html('types.' + d); });
 
         enter
             .append('div')
@@ -66,7 +66,7 @@ export function uiFieldAccess(field, context) {
     }
 
 
-    function change(d) {
+    function change(d3_event, d) {
         var tag = {};
         var value = context.cleanTagValue(utilGetSetValue(d3_select(this)));
 

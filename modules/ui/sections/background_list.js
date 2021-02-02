@@ -1,9 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
-import {
-  event as d3_event,
-  select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
 import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
@@ -24,7 +21,7 @@ export function uiSectionBackgroundList(context) {
     .on('change', customChanged);
 
   const section = uiSection('background-list', context)
-    .title(t('background.backgrounds'))
+    .label(t('background.backgrounds'))
     .disclosureContent(renderDisclosureContent);
 
   const favoriteBackgroundsJSON = prefs('background-favorites');
@@ -67,7 +64,7 @@ export function uiSectionBackgroundList(context) {
     minimapLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', () => {
+      .on('change', (d3_event) => {
         d3_event.preventDefault();
         uiMapInMap.toggle();
       });
@@ -90,7 +87,7 @@ export function uiSectionBackgroundList(context) {
     panelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', () => {
+      .on('change', (d3_event) => {
         d3_event.preventDefault();
         context.ui().info.toggle('background');
       });
@@ -112,7 +109,7 @@ export function uiSectionBackgroundList(context) {
     locPanelLabelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', () => {
+      .on('change', (d3_event) => {
         d3_event.preventDefault();
         context.ui().info.toggle('location');
       });
@@ -185,7 +182,7 @@ export function uiSectionBackgroundList(context) {
     const layerLinksEnter = layerLinks.enter()
       .append('li')
       .classed('layer-custom', (d) => { return d.id === 'custom'; })
-      .classed('best', (d) =>{ return d.best(); });
+      .classed('best', (d) => { return d.best(); });
 
     const label = layerLinksEnter
       .append('label');
@@ -207,17 +204,17 @@ export function uiSectionBackgroundList(context) {
       .classed('active', (d) => { return !!_favoriteBackgrounds[d.id]; })
       .attr('tabindex', -1)
       .call(svgIcon('#iD-icon-favorite'))
-      .on('click', (d, i, nodes) => {
+      .on('click', (d3_event, d) => {
         if (_favoriteBackgrounds[d.id]) {
-          d3_select(nodes[i]).classed('active', false);
+          d3_select(d3_event.currentTarget).classed('active', false);
           delete _favoriteBackgrounds[d.id];
         } else {
-          d3_select(nodes[i]).classed('active', true);
+          d3_select(d3_event.currentTarget).classed('active', true);
           _favoriteBackgrounds[d.id] = true;
         }
         prefs('background-favorites', JSON.stringify(_favoriteBackgrounds));
 
-        d3_select(nodes[i].parentElement)
+        d3_select(d3_event.currentTarget.parentElement)
           .transition()
           .duration(300)
           .ease(d3_easeCubicInOut)
@@ -231,7 +228,6 @@ export function uiSectionBackgroundList(context) {
           .sort(sortSources);
         layerList
           .call(updateLayerSelections);
-        nodes[i].blur(); // Stop old de-stars from having grey background
       });
 
     layerLinksEnter.filter((d) => { return d.id === 'custom'; })
@@ -276,12 +272,11 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function chooseBackground(d) {
+  function chooseBackground(_, d) {
     if (d.id === 'custom' && !d.template()) {
       return editCustom();
     }
 
-    d3_event.preventDefault();
     const previousBackground = context.background().baseLayerSource();
     prefs('background-last-used-toggle', previousBackground.id);
     prefs('background-last-used', d.id);
@@ -301,7 +296,7 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function editCustom() {
+  function editCustom(d3_event) {
     d3_event.preventDefault();
     context.container()
       .call(_settingsCustomBackground);

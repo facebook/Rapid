@@ -1,4 +1,4 @@
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { behaviorBreathe, behaviorHover, behaviorLasso, behaviorSelect } from '../behavior';
@@ -32,7 +32,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
 
   // class the data as selected, or return to browse mode if the data is gone
-  function selectData(drawn) {
+  function selectData(d3_event, drawn) {
     let selection = context.surface().selectAll('.layer-ai-features .data' + selectedDatum.__fbid__);
 
     if (selection.empty()) {

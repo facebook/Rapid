@@ -1,4 +1,6 @@
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import {
+    select as d3_select
+} from 'd3-selection';
 
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
@@ -59,7 +61,7 @@ export function uiInit(context) {
     function render(container) {
 
         container
-            .on('click.ui', function() {
+            .on('click.ui', function(d3_event) {
                 // we're only concerned with the primary mouse button
                 if (d3_event.button !== 0) return;
 
@@ -93,7 +95,7 @@ export function uiInit(context) {
             // On iOS we disable pinch-to-zoom of the UI via the `touch-action`
             // CSS property, but on desktop Safari we need to manually cancel the
             // default gesture events.
-            container.on('gesturestart.ui gesturechange.ui gestureend.ui', function() {
+            container.on('gesturestart.ui gesturechange.ui gestureend.ui', function(d3_event) {
                 // disable pinch-to-zoom of the UI via multitouch trackpads on macOS Safari
                 d3_event.preventDefault();
             });
@@ -101,7 +103,7 @@ export function uiInit(context) {
 
         if ('PointerEvent' in window) {
             d3_select(window)
-                .on('pointerdown.ui pointerup.ui', function() {
+                .on('pointerdown.ui pointerup.ui', function(d3_event) {
                     var pointerType = d3_event.pointerType || 'mouse';
                     if (_lastPointerType !== pointerType) {
                         _lastPointerType = pointerType;
@@ -116,6 +118,7 @@ export function uiInit(context) {
         }
 
         container
+            .attr('lang', localizer.localeCode())
             .attr('dir', localizer.textDirection());
 
         // setup fullscreen keybindings (no button shown at this time)
@@ -127,13 +130,15 @@ export function uiInit(context) {
 
         map
             .on('hitMinZoom.ui', function() {
-                ui.flash.text(t('cannot_zoom'))();
+                ui.flash
+                    .iconName('#iD-icon-no')
+                    .label(t.html('cannot_zoom'))();
             });
 
         container
             .append('svg')
             .attr('id', 'ideditor-defs')
-            .call(svgDefs(context));
+            .call(ui.svgDefs);
 
         container
             .append('div')
@@ -158,130 +163,27 @@ export function uiInit(context) {
             .attr('dir', 'ltr')
             .call(map);
 
-        content
-            .append('div')
-            .attr('class', 'spinner')
-            .call(uiSpinner(context));
-
-        // Add attribution and footer
-        var about = content
-            .append('div')
-            .attr('class', 'map-footer');
-
-        about
-            .append('div')
-            .attr('class', 'attribution-wrap')
-            .attr('dir', 'ltr')
-            .call(uiAttribution(context));
-
-        about
-            .append('div')
-            .attr('class', 'api-status')
-            .call(uiStatus(context));
-
-
-        var footer = about
-            .append('div')
-            .attr('class', 'map-footer-bar fillD');
-
-        footer
-            .append('div')
-            .attr('class', 'flash-wrap footer-hide');
-
-        var footerWrap = footer
-            .append('div')
-            .attr('class', 'main-footer-wrap footer-show');
-
-        footerWrap
-            .append('div')
-            .attr('class', 'scale-block')
-            .call(uiScale(context));
-
-        var aboutList = footerWrap
-            .append('div')
-            .attr('class', 'info-block')
-            .append('ul')
-            .attr('class', 'map-footer-list');
-
-        if (!context.embed()) {
-            aboutList
-                .call(uiAccount(context));
-        }
-
-        aboutList
-            .append('li')
-            .attr('class', 'version')
-            .call(uiVersion(context));
-
-        var issueLinks = aboutList
-            .append('li');
-
-        issueLinks
-            .append('a')
-            .attr('target', '_blank')
-            .attr('tabindex', -1)
-            .attr('href', 'https://github.com/facebookincubator/RapiD/issues')
-            .call(svgIcon('#iD-icon-bug', 'light'))
-            .call(uiTooltip().title(t('report_a_bug')).placement('top'));
-
-        issueLinks
-            .append('a')
-            .attr('target', '_blank')
-            .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
-            .call(svgIcon('#iD-icon-translate', 'light'))
-            .call(uiTooltip().title(t('help_translate')).placement('top'));
-
-        aboutList
-            .append('li')
-            .attr('class', 'feature-warning')
-            .attr('tabindex', -1)
-            .call(uiFeatureInfo(context));
-
-        aboutList
-            .append('li')
-            .attr('class', 'issues-info')
-            .attr('tabindex', -1)
-            .call(uiIssuesInfo(context));
-
-        var apiConnections = context.apiConnections();
-        if (apiConnections && apiConnections.length > 1) {
-            aboutList
-                .append('li')
-                .attr('class', 'source-switch')
-                .attr('tabindex', -1)
-                .call(uiSourceSwitch(context)
-                    .keys(apiConnections)
-                );
-        }
-
-        aboutList
-            .append('li')
-            .attr('class', 'user-list')
-            .attr('tabindex', -1)
-            .call(uiContributors(context));
-
-        aboutList
-            .append('li')
-            .attr('class', 'fb-road-license')
-            .attr('tabindex', -1)
-            .call(uiRapidServiceLicense());
-
-
-        // Setup map dimensions and move map to initial center/zoom.
-        // This should happen after .main-content and toolbars exist.
-        ui.onResize();
-        map.redrawEnable(true);
-
-        ui.hash = behaviorHash(context);
-        ui.hash();
-        if (!ui.hash.hadHash) {
-            map.centerZoom([0, 0], 2);
-        }
-
-
         var overMap = content
             .append('div')
             .attr('class', 'over-map');
+
+        // HACK: Mobile Safari 14 likes to select anything selectable when long-
+        // pressing, even if it's not targeted. This conflicts with long-pressing
+        // to show the edit menu. We add a selectable offscreen element as the first
+        // child to trick Safari into not showing the selection UI.
+        overMap
+            .append('div')
+            .attr('class', 'select-trap')
+            .text('t');
+
+        overMap
+            .call(uiMapInMap(context))
+            .call(uiNotice(context));
+
+        overMap
+            .append('div')
+            .attr('class', 'spinner')
+            .call(uiSpinner(context));
 
         // Map controls
         var controls = overMap
@@ -329,13 +231,8 @@ export function uiInit(context) {
 
         ui.info = uiInfo(context);
 
-        // Add absolutely-positioned elements that sit on top of the map
-        // This should happen after the map is ready (center/zoom)
         overMap
-            .call(uiMapInMap(context))
-            .call(ui.info)
-            .call(uiNotice(context));
-
+            .call(ui.info);
 
         overMap
             .append('div')
@@ -344,6 +241,123 @@ export function uiInit(context) {
             .classed('hide', true)
             .call(ui.photoviewer);
 
+        overMap
+            .append('div')
+            .attr('class', 'attribution-wrap')
+            .attr('dir', 'ltr')
+            .call(uiAttribution(context));
+
+
+        // Add footer
+        var about = content
+            .append('div')
+            .attr('class', 'map-footer');
+
+        about
+            .append('div')
+            .attr('class', 'api-status')
+            .call(uiStatus(context));
+
+
+        var footer = about
+            .append('div')
+            .attr('class', 'map-footer-bar fillD');
+
+        footer
+            .append('div')
+            .attr('class', 'flash-wrap footer-hide');
+
+        var footerWrap = footer
+            .append('div')
+            .attr('class', 'main-footer-wrap footer-show');
+
+        footerWrap
+            .append('div')
+            .attr('class', 'scale-block')
+            .call(uiScale(context));
+
+        var aboutList = footerWrap
+            .append('div')
+            .attr('class', 'info-block')
+            .append('ul')
+            .attr('class', 'map-footer-list');
+
+        aboutList
+            .append('li')
+            .attr('class', 'user-list')
+            .call(uiContributors(context));
+
+        var apiConnections = context.apiConnections();
+        if (apiConnections && apiConnections.length > 1) {
+            aboutList
+                .append('li')
+                .attr('class', 'source-switch')
+                .call(uiSourceSwitch(context)
+                    .keys(apiConnections)
+                );
+        }
+
+        aboutList
+            .append('li')
+            .attr('class', 'issues-info')
+            .call(uiIssuesInfo(context));
+
+        aboutList
+            .append('li')
+            .attr('class', 'feature-warning')
+            .call(uiFeatureInfo(context));
+
+        var issueLinks = aboutList
+            .append('li');
+
+        issueLinks
+            .append('a')
+            .attr('target', '_blank')
+            .attr('tabindex', -1)
+            .attr('href', 'https://github.com/facebookincubator/RapiD/issues')
+            .call(svgIcon('#iD-icon-bug', 'light'))
+            .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
+
+        issueLinks
+            .append('a')
+            .attr('target', '_blank')
+            .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
+            .call(svgIcon('#iD-icon-translate', 'light'))
+            .call(uiTooltip().title(t.html('help_translate')).placement('top'));
+
+        aboutList
+            .append('li')
+            .attr('class', 'version')
+            .call(uiVersion(context));
+
+        if (!context.embed()) {
+            aboutList
+                .call(uiAccount(context));
+        }
+
+        aboutList
+            .append('li')
+            .attr('class', 'user-list')
+            .attr('tabindex', -1)
+            .call(uiContributors(context));
+
+        aboutList
+            .append('li')
+            .attr('class', 'fb-road-license')
+            .attr('tabindex', -1)
+            .call(uiRapidServiceLicense());
+
+
+        // Setup map dimensions and move map to initial center/zoom.
+        // This should happen after .main-content and toolbars exist.
+        ui.onResize();
+        map.redrawEnable(true);
+
+        ui.hash = behaviorHash(context);
+        ui.hash();
+        if (!ui.hash.hadHash) {
+            map.centerZoom([0, 0], 2);
+        }
 
         // Bind events
         window.onbeforeunload = function() {
@@ -354,22 +368,24 @@ export function uiInit(context) {
         };
 
         d3_select(window)
-            .on('resize.editor', ui.onResize);
+            .on('resize.editor', function() {
+                ui.onResize();
+            });
 
 
         var panPixels = 80;
         context.keybinding()
-            .on('⌫', function() { d3_event.preventDefault(); })
+            .on('⌫', function(d3_event) { d3_event.preventDefault(); })
             .on([t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
             .on('←', pan([panPixels, 0]))
             .on('↑', pan([0, panPixels]))
             .on('→', pan([-panPixels, 0]))
             .on('↓', pan([0, -panPixels]))
-            .on(uiCmd('⌘←'), pan([map.dimensions()[0], 0]))
-            .on(uiCmd('⌘↑'), pan([0, map.dimensions()[1]]))
-            .on(uiCmd('⌘→'), pan([-map.dimensions()[0], 0]))
-            .on(uiCmd('⌘↓'), pan([0, -map.dimensions()[1]]))
-            .on(uiCmd('⌘' + t('background.key')), function quickSwitch() {
+            .on(uiCmd('⌥←'), pan([map.dimensions()[0], 0]))
+            .on(uiCmd('⌥↑'), pan([0, map.dimensions()[1]]))
+            .on(uiCmd('⌥→'), pan([-map.dimensions()[0], 0]))
+            .on(uiCmd('⌥↓'), pan([0, -map.dimensions()[1]]))
+            .on(uiCmd('⌘' + t('background.key')), function quickSwitch(d3_event) {
                 if (d3_event) {
                     d3_event.stopImmediatePropagation();
                     d3_event.preventDefault();
@@ -382,12 +398,12 @@ export function uiInit(context) {
                     context.background().baseLayerSource(previousBackground);
                 }
             })
-            .on(t('area_fill.wireframe.key'), function toggleWireframe() {
+            .on(t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
                 context.map().toggleWireframe();
             })
-            .on(uiCmd('⌥' + t('area_fill.wireframe.key')), function toggleOsmData() {
+            .on(uiCmd('⌥' + t('area_fill.wireframe.key')), function toggleOsmData(d3_event) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
 
@@ -403,7 +419,7 @@ export function uiInit(context) {
                     }
                 }
             })
-            .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited() {
+            .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
                 d3_event.preventDefault();
                 context.map().toggleHighlightEdited();
             });
@@ -440,10 +456,10 @@ export function uiInit(context) {
             }
 
             context.container()
-                .call(uiShortcuts(context));
+                .call(ui.shortcuts);
         }
 
-        var auth = uiLoading(context).message(t('loading_auth')).blocking(true);
+        var auth = uiLoading(context).message(t.html('loading_auth')).blocking(true);
 
         if (osm && auth) {
             osm
@@ -465,7 +481,7 @@ export function uiInit(context) {
 
 
         function pan(d) {
-            return function() {
+            return function(d3_event) {
                 if (d3_event.shiftKey) return;
                 if (context.container().select('.combobox').size()) return;
                 d3_event.preventDefault();
@@ -512,11 +528,15 @@ export function uiInit(context) {
         return _lastPointerType;
     };
 
+    ui.svgDefs = svgDefs(context);
+
     ui.flash = uiFlash(context);
 
     ui.sidebar = uiSidebar(context);
 
     ui.photoviewer = uiPhotoviewer(context);
+
+    ui.shortcuts = uiShortcuts(context);
 
     ui.onResize = function(withPan) {
         var map = context.map();
@@ -555,36 +575,40 @@ export function uiInit(context) {
             delete _needWidth[selector];
         }
 
-        var element = d3_select(selector);
-        var scrollWidth = element.property('scrollWidth');
-        var clientWidth = element.property('clientWidth');
+        var selection = context.container().select(selector);
+        if (selection.empty()) return;
+
+        var scrollWidth = selection.property('scrollWidth');
+        var clientWidth = selection.property('clientWidth');
         var needed = _needWidth[selector] || scrollWidth;
 
         if (scrollWidth > clientWidth) {    // overflow happening
-            element.classed('narrow', true);
+            selection.classed('narrow', true);
             if (!_needWidth[selector]) {
                 _needWidth[selector] = scrollWidth;
             }
 
         } else if (scrollWidth >= needed) {
-            element.classed('narrow', false);
+            selection.classed('narrow', false);
         }
     };
 
     ui.togglePanes = function(showPane) {
-        var shownPanes = context.container().selectAll('.map-pane.shown');
+        var hidePanes = context.container().selectAll('.map-pane.shown');
 
         var side = localizer.textDirection() === 'ltr' ? 'right' : 'left';
 
-        shownPanes
-            .classed('shown', false);
+        hidePanes
+            .classed('shown', false)
+            .classed('hide', true);
 
         context.container().selectAll('.map-pane-control button')
             .classed('active', false);
 
         if (showPane) {
-            shownPanes
-                .style('display', 'none')
+            hidePanes
+                .classed('shown', false)
+                .classed('hide', true)
                 .style(side, '-500px');
 
             context.container().selectAll('.' + showPane.attr('pane') + '-control button')
@@ -592,10 +616,9 @@ export function uiInit(context) {
 
             showPane
                 .classed('shown', true)
-                .style('display', 'block');
-            if (shownPanes.empty()) {
+                .classed('hide', false);
+            if (hidePanes.empty()) {
                 showPane
-                    .style('display', 'block')
                     .style(side, '-500px')
                     .transition()
                     .duration(200)
@@ -605,14 +628,17 @@ export function uiInit(context) {
                     .style(side, '0px');
             }
         } else {
-            shownPanes
-                .style('display', 'block')
+            hidePanes
+                .classed('shown', true)
+                .classed('hide', false)
                 .style(side, '0px')
                 .transition()
                 .duration(200)
                 .style(side, '-500px')
                 .on('end', function() {
-                    d3_select(this).style('display', 'none');
+                    d3_select(this)
+                        .classed('shown', false)
+                        .classed('hide', true);
                 });
         }
     };
@@ -666,7 +692,7 @@ export function uiInit(context) {
     context.uploader()
         .on('saveStarted.ui', function() {
             _saveLoading = uiLoading(context)
-                .message(t('save.uploading'))
+                .message(t.html('save.uploading'))
                 .blocking(true);
             context.container().call(_saveLoading);  // block input during upload
         })

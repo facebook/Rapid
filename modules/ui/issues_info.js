@@ -1,4 +1,4 @@
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { prefs } from '../core/preferences';
 import { svgIcon } from '../svg/icon';
@@ -56,18 +56,17 @@ export function uiIssuesInfo(context) {
                 return 'chip ' + d.id + '-count';
             })
             .attr('href', '#')
-            .attr('tabindex', -1)
             .each(function(d) {
 
                 var chipSelection = d3_select(this);
 
                 var tooltipBehavior = uiTooltip()
                     .placement('top')
-                    .title(t(d.descriptionID));
+                    .title(t.html(d.descriptionID));
 
                 chipSelection
                     .call(tooltipBehavior)
-                    .on('click', function() {
+                    .on('click', function(d3_event) {
                         d3_event.preventDefault();
 
                         tooltipBehavior.hide(d3_select(this));
@@ -84,7 +83,7 @@ export function uiIssuesInfo(context) {
 
         enter.merge(chips)
             .selectAll('span.count')
-            .text(function(d) {
+            .html(function(d) {
                 return d.count.toString();
             });
     }

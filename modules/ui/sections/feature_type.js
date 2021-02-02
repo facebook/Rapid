@@ -1,7 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import {
-    event as d3_event
-} from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { utilArrayIdentical } from '../../util/array';
@@ -23,7 +20,7 @@ export function uiSectionFeatureType(context) {
     var _tagReference;
 
     var section = uiSection('feature-type', context)
-        .title(t('inspector.feature_type'))
+        .label(t.html('inspector.feature_type'))
         .disclosureContent(renderDisclosureContent);
 
     function renderDisclosureContent(selection) {
@@ -42,7 +39,7 @@ export function uiSectionFeatureType(context) {
             .append('button')
             .attr('class', 'preset-list-button preset-reset')
             .call(uiTooltip()
-                .title(t('inspector.back_tooltip'))
+                .title(t.html('inspector.back_tooltip'))
                 .placement('bottom')
             );
 
@@ -83,7 +80,7 @@ export function uiSectionFeatureType(context) {
             .on('click', function() {
                  dispatch.call('choose', this, _presets);
             })
-            .on('pointerdown pointerup mousedown mouseup', function() {
+            .on('pointerdown pointerup mousedown mouseup', function(d3_event) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
             });
@@ -95,8 +92,10 @@ export function uiSectionFeatureType(context) {
                 .preset(_presets.length === 1 ? _presets[0] : presetManager.item('point'))
             );
 
-        // NOTE: split on en-dash, not a hypen (to avoid conflict with hyphenated names)
-        var names = _presets.length === 1 ? _presets[0].name().split(' – ') : [t('inspector.multiple_types')];
+        var names = _presets.length === 1 ? [
+            _presets[0].nameLabel(),
+            _presets[0].subtitleLabel()
+        ].filter(Boolean) : [t('inspector.multiple_types')];
 
         var label = selection.select('.label-inner');
         var nameparts = label.selectAll('.namepart')
@@ -109,7 +108,7 @@ export function uiSectionFeatureType(context) {
             .enter()
             .append('div')
             .attr('class', 'namepart')
-            .text(function(d) { return d; });
+            .html(function(d) { return d; });
     }
 
     section.entityIDs = function(val) {
@@ -125,9 +124,8 @@ export function uiSectionFeatureType(context) {
         if (!utilArrayIdentical(val, _presets)) {
             _presets = val;
 
-            var geometries = entityGeometries();
-            if (_presets.length === 1 && geometries.length) {
-                _tagReference = uiTagReference(_presets[0].reference(geometries[0]), context)
+            if (_presets.length === 1) {
+                _tagReference = uiTagReference(_presets[0].reference(), context)
                     .showing(false);
             }
         }

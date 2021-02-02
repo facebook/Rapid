@@ -1,5 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { event as d3_event } from 'd3-selection';
 
 import { prefs } from '../core/preferences';
 import { svgIcon } from '../svg/icon';
@@ -12,7 +11,7 @@ import { localizer } from '../core/localizer';
 export function uiDisclosure(context, key, expandedDefault) {
     var dispatch = d3_dispatch('toggled');
     var _expanded;
-    var _title = utilFunctor('');
+    var _label = utilFunctor('');
     var _updatePreference = true;
     var _content = function () {};
 
@@ -49,7 +48,7 @@ export function uiDisclosure(context, key, expandedDefault) {
             .classed('expanded', _expanded);
 
         hideToggle.selectAll('.hide-toggle-text')
-            .text(_title());
+            .html(_label());
 
         hideToggle.selectAll('.hide-toggle-icon')
             .attr('xlink:href', _expanded ? '#iD-icon-down'
@@ -73,7 +72,7 @@ export function uiDisclosure(context, key, expandedDefault) {
         }
 
 
-        function toggle() {
+        function toggle(d3_event) {
             d3_event.preventDefault();
 
             _expanded = !_expanded;
@@ -103,9 +102,9 @@ export function uiDisclosure(context, key, expandedDefault) {
     };
 
 
-    disclosure.title = function(val) {
-        if (!arguments.length) return _title;
-        _title = utilFunctor(val);
+    disclosure.label = function(val) {
+        if (!arguments.length) return _label;
+        _label = utilFunctor(val);
         return disclosure;
     };
 

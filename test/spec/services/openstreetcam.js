@@ -253,15 +253,21 @@ describe('iD.serviceOpenstreetcam', function() {
             expect(res).to.deep.eql([{
                 type: 'LineString',
                 coordinates: [[10,0], [10,0], [10,1]],
-                properties: { key: '100' }
+                properties: {
+                    captured_at: undefined,
+                    captured_by: undefined,
+                    key: '100'
+                }
             }]);
         });
     });
 
     describe('#selectedImage', function() {
         it('sets and gets selected image', function() {
+            var d = { key: 'foo' };
+            openstreetcam.cache().images = { forImageKey: { foo: d }};
             openstreetcam.selectImage(context, 'foo');
-            expect(openstreetcam.getSelectedImage()).to.eql('foo');
+            expect(openstreetcam.getSelectedImage()).to.eql(d);
         });
     });
 

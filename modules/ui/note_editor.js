@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import {
-    event as d3_event,
     select as d3_select
 } from 'd3-selection';
 
@@ -54,7 +53,7 @@ export function uiNoteEditor(context) {
 
         headerEnter
             .append('h3')
-            .text(t('note.title'));
+            .html(t.html('note.title'));
 
 
         var body = selection.selectAll('.body')
@@ -148,7 +147,7 @@ export function uiNoteEditor(context) {
         noteSaveEnter
             .append('h4')
             .attr('class', '.note-save-header')
-            .text(function() {
+            .html(function() {
                 return _note.isNew() ? t('note.newDescription') : t('note.newComment');
             });
 
@@ -163,7 +162,7 @@ export function uiNoteEditor(context) {
             .on('input.note-input', changeInput)
             .on('blur.note-input', changeInput);
 
-        if (_newNote) {
+        if (!commentTextarea.empty() && _newNote) {
             // autofocus the comment field for new notes
             commentTextarea.node().focus();
         }
@@ -176,8 +175,9 @@ export function uiNoteEditor(context) {
 
 
         // fast submit if user presses cmd+enter
-        function keydown() {
-            if (!(d3_event.keyCode === 13 && d3_event.metaKey)) return;
+        function keydown(d3_event) {
+            if (!(d3_event.keyCode === 13 && // ↩ Return
+                d3_event.metaKey)) return;
 
             var osm = services.osm;
             if (!osm) return;
@@ -256,15 +256,15 @@ export function uiNoteEditor(context) {
 
         authEnter
             .append('span')
-            .text(t('note.login'));
+            .html(t.html('note.login'));
 
         authEnter
             .append('a')
             .attr('target', '_blank')
             .call(svgIcon('#iD-icon-out-link', 'inline'))
             .append('span')
-            .text(t('login'))
-            .on('click.note-login', function() {
+            .html(t.html('login'))
+            .on('click.note-login', function(d3_event) {
                 d3_event.preventDefault();
                 osm.authenticate();
             });
@@ -284,7 +284,7 @@ export function uiNoteEditor(context) {
         prose = prose.enter()
             .append('p')
             .attr('class', 'note-save-prose')
-            .text(t('note.upload_explanation'))
+            .html(t.html('note.upload_explanation'))
             .merge(prose);
 
         osm.userDetails(function(err, user) {
@@ -302,13 +302,12 @@ export function uiNoteEditor(context) {
             userLink
                 .append('a')
                 .attr('class', 'user-info')
-                .text(user.display_name)
+                .html(user.display_name)
                 .attr('href', osm.userURL(user.display_name))
-                .attr('tabindex', -1)
                 .attr('target', '_blank');
 
             prose
-                .html(t('note.upload_explanation_with_user', { user: userLink.html() }));
+                .html(t.html('note.upload_explanation_with_user', { user: userLink.html() }));
         });
     }
 
@@ -334,12 +333,12 @@ export function uiNoteEditor(context) {
             buttonEnter
                 .append('button')
                 .attr('class', 'button cancel-button secondary-action')
-                .text(t('confirm.cancel'));
+                .html(t.html('confirm.cancel'));
 
             buttonEnter
                 .append('button')
                 .attr('class', 'button save-button action')
-                .text(t('note.save'));
+                .html(t.html('note.save'));
 
         } else {
             buttonEnter
@@ -349,7 +348,7 @@ export function uiNoteEditor(context) {
             buttonEnter
                 .append('button')
                 .attr('class', 'button comment-button action')
-                .text(t('note.comment'));
+                .html(t.html('note.comment'));
         }
 
 
@@ -366,7 +365,7 @@ export function uiNoteEditor(context) {
 
         buttonSection.select('.status-button')   // select and propagate data
             .attr('disabled', (hasAuth ? null : true))
-            .text(function(d) {
+            .html(function(d) {
                 var action = (d.status === 'open' ? 'close' : 'open');
                 var andComment = (d.newComment ? '_comment' : '');
                 return t('note.' + action + andComment);
@@ -385,7 +384,7 @@ export function uiNoteEditor(context) {
 
 
 
-    function clickCancel(d) {
+    function clickCancel(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
         var osm = services.osm;
         if (osm) {
@@ -396,7 +395,7 @@ export function uiNoteEditor(context) {
     }
 
 
-    function clickSave(d) {
+    function clickSave(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
         var osm = services.osm;
         if (osm) {
@@ -407,7 +406,7 @@ export function uiNoteEditor(context) {
     }
 
 
-    function clickStatus(d) {
+    function clickStatus(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
         var osm = services.osm;
         if (osm) {
@@ -418,7 +417,7 @@ export function uiNoteEditor(context) {
         }
     }
 
-    function clickComment(d) {
+    function clickComment(d3_event, d) {
         this.blur();    // avoid keeping focus on the button - #4641
         var osm = services.osm;
         if (osm) {

@@ -1,13 +1,15 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { event as d3_event, select as d3_select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import { utilGetSetValue, utilRebind, utilTriggerEvent } from '../util';
 
 
 // This code assumes that the combobox values will not have duplicate entries.
 // It is keyed on the `value` of the entry. Data should be an array of objects like:
 //   [{
-//       value:  'display text',  // required
-//       title:  'hover text'     // optional
+//       value:   'string value',  // required
+//       display: 'label html'     // optional
+//       title:   'hover text'     // optional
+//       terms:   ['search terms'] // optional
 //   }, ...]
 
 var _comboHideTimerID;
@@ -61,19 +63,19 @@ export function uiCombobox(context, klass) {
                     .enter()
                     .insert('div', function() { return sibling; })
                     .attr('class', 'combobox-caret')
-                    .on('mousedown.combo-caret', function() {
+                    .on('mousedown.combo-caret', function(d3_event) {
                         d3_event.preventDefault(); // don't steal focus from input
                         input.node().focus(); // focus the input as if it was clicked
-                        mousedown();
+                        mousedown(d3_event);
                     })
-                    .on('mouseup.combo-caret', function() {
+                    .on('mouseup.combo-caret', function(d3_event) {
                         d3_event.preventDefault(); // don't steal focus from input
-                        mouseup();
+                        mouseup(d3_event);
                     });
             });
 
 
-        function mousedown() {
+        function mousedown(d3_event) {
             if (d3_event.button !== 0) return;    // left click only
             _tDown = +new Date();
 
@@ -90,7 +92,7 @@ export function uiCombobox(context, klass) {
         }
 
 
-        function mouseup() {
+        function mouseup(d3_event) {
             input.on('mouseup.combo-input', null);
             if (d3_event.button !== 0) return;    // left click only
             if (input.node() !== document.activeElement) return;   // exit if this input is not focused
@@ -137,7 +139,7 @@ export function uiCombobox(context, klass) {
                 .style('position', 'absolute')
                 .style('display', 'block')
                 .style('left', '0px')
-                .on('mousedown.combo-container', function () {
+                .on('mousedown.combo-container', function (d3_event) {
                     // prevent moving focus out of the input field
                     d3_event.preventDefault();
                 });
@@ -161,7 +163,7 @@ export function uiCombobox(context, klass) {
         }
 
 
-        function keydown() {
+        function keydown(d3_event) {
             var shown = !container.selectAll('.combobox').empty();
             var tagName = input.node() ? input.node().tagName.toLowerCase() : '';
 
@@ -179,7 +181,7 @@ export function uiCombobox(context, klass) {
                     break;
 
                 case 9:   // ⇥ Tab
-                    accept();
+                    accept(d3_event);
                     break;
 
                 case 13:  // ↩ Return
@@ -208,14 +210,14 @@ export function uiCombobox(context, klass) {
         }
 
 
-        function keyup() {
+        function keyup(d3_event) {
             switch (d3_event.keyCode) {
                 case 27:  // ⎋ Escape
                     cancel();
                     break;
 
                 case 13:  // ↩ Return
-                    accept();
+                    accept(d3_event);
                     break;
             }
         }
@@ -380,7 +382,7 @@ export function uiCombobox(context, klass) {
                 .append('a')
                 .attr('class', 'combobox-option')
                 .attr('title', function(d) { return d.title; })
-                .text(function(d) { return d.display || d.value; })
+                .html(function(d) { return d.display || d.value; })
                 .on('mouseenter', _mouseEnterHandler)
                 .on('mouseleave', _mouseLeaveHandler)
                 .merge(options)
@@ -401,7 +403,7 @@ export function uiCombobox(context, klass) {
 
         // Dispatches an 'accept' event
         // Then hides the combobox.
-        function accept(d) {
+        function accept(d3_event, d) {
             _cancelFetch = true;
             var thiz = input.node();
 

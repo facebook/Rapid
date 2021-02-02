@@ -61,8 +61,7 @@ export function uiRapidWhatsNew(context) {
       .attr('type', 'checkbox')
       .attr('class', 'rapid-feature-checkbox')
       .property('checked', false)
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         _dontShowAgain = !_dontShowAgain;
       });
 
@@ -77,8 +76,7 @@ export function uiRapidWhatsNew(context) {
     let nothanks = buttonWrap
       .append('button')
       .attr('class', 'whats-new-nothanks')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         prefs('sawWhatsNew', _dontShowAgain);
         modalSelection.close();
       });
@@ -94,8 +92,7 @@ export function uiRapidWhatsNew(context) {
     okayButton
       .append('div')
       .text(t('rapid_whats_new.ok'))
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         prefs('sawWhatsNew', _dontShowAgain);
         modalSelection.close();
         window.open('https://mapwith.ai/rapid-esri', '_blank');
