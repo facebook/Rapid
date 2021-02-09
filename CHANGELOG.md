@@ -67,7 +67,7 @@ This brings the RapiD code up-to-date with v2.17. This fixes issue #92.
 Fixed issue #84: https://github.com/facebookincubator/RapiD/issues/84 - With this fix, no more than 50 AI roads or buildings can be added to the map in a single save.
 
 #### :tada: New Features
-Merged with [iD v2.16](https://github.com/openstreetmap/iD/blob/master/CHANGELOG.md#2160) including support for objects detected in Mapillary images & a visual diff hotkey!
+Merged with [iD v2.16](https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#2160) including support for objects detected in Mapillary images & a visual diff hotkey!
 
 
 # [1.0.3](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.3)
@@ -77,7 +77,7 @@ Merged with [iD v2.16](https://github.com/openstreetmap/iD/blob/master/CHANGELOG
 This release includes the buildings layer from Microsoft as an enabled feature layer! Read more about it here:
 https://blogs.bing.com/maps/2019-09/microsoft-releases-18M-building-footprints-in-uganda-and-tanzania-to-enable-ai-assisted-mapping
 
-For up-to-date availability of roads and buildings, check our continually-updated GeoJSON link here: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/master/data/rapid_releases.geojson
+For up-to-date availability of roads and buildings, check our continually-updated GeoJSON link here: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/develop/data/rapid_releases.geojson
 
 
 #### :sparkles: Usability
@@ -87,7 +87,7 @@ The RapiD button is no longer an AI-roads toggle- instead, a dialog opens allowi
 ##### 2019-Oct-14
 
 #### :tada: New Features
-* Merged with [iD v2.15.5](https://github.com/openstreetmap/iD/blob/master/CHANGELOG.md#2155).
+* Merged with [iD v2.15.5](https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#2155).
 * Added a framework for enabling custom features on RapiD.
 * Added a custom feature for a halo effect on AI roads that have been added to the map during editing time.
 

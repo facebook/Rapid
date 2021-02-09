@@ -3,12 +3,13 @@ We want to make contributing to this project as easy and transparent as possible
 
 First of all, a big shoutout to the **iD developers** for building an awesome foundation that RapiD is extended from.
 
-If your fix or feature is generally applicable to all iD users, consider [contributing to iD](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md) directly. RapiD will be constantly merged with latest releases of iD.
+If your fix or feature is generally applicable to all iD users, consider [contributing to iD](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md) directly.
+
 
 ## Pull Requests
 We actively welcome your pull requests.
 
-1. Fork the repo and create your branch from `master`.
+1. Fork the repo and create your branch from `main`.
 2. If you've added code that should be tested, add tests.
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes.

@@ -1478,7 +1478,7 @@ en:
       before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. RapiD contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
       open_source_h: "Open Source"
       open_source: "The RapiD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD)."
-      open_source_help: "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
+      open_source_help: "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
     overview:
       title: Overview
       navigation_h: "Navigation"
@@ -2303,7 +2303,7 @@ en:
       select_road_again: "Next, we'll learn how to ignore roads that you don't want to add. **Select the AI-assisted road again with a left-click.**"
       ignore_road: "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map. This helps our AI learning algorithms get better over time."
       help: "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new RapiD-specific shortcuts that speed up your mapping."
-      done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/master/data/rapid_releases.geojson). **Click '{next}' to continue.**"
+      done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). **Click '{next}' to continue.**"
     startediting:
       title: "Start Editing"
       help: "You're now ready to edit OpenStreetMap!{br}You can replay this walkthrough anytime or view more documentation by pressing the {help_icon} {help} button or the `{help_key}` key."

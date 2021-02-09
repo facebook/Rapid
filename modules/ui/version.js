@@ -42,7 +42,7 @@ export function uiVersion(context) {
                 .attr('class', 'badge')
                 .attr('target', '_blank')
                 .attr('tabindex', -1)
-                .attr('href', 'https://github.com/facebookincubator/RapiD/blob/master/CHANGELOG.md')
+                .attr('href', 'https://github.com/facebookincubator/RapiD/blob/main/CHANGELOG.md')
                 .call(svgIcon('#maki-gift-11'))
                 .call(uiTooltip()
                     .title(t.html('version.whats_new', { version: currVersion }))
