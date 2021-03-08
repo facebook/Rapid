@@ -87836,46 +87836,25 @@
           .map(function(n) { return n.loc; });
 
 
-      // TODO: not needed
       function getFilteredIdsToCopy() {
-          return selectedIDs.filter(function(selectedID) {
+          return selectedIDs.filter(selectedID => {
               var entity = context.graph().hasEntity(selectedID);
-              // don't copy untagged vertices separately from ways
-              return entity.hasInterestingTags() || entity.geometry(context.graph()) !== 'vertex';
+              return entity.type === 'way';
           });
       }
 
-      // TODO: might not be needed later
-      function groupEntities(ids, graph) {
-          var entities = ids.map(function (id) { return graph.entity(id); });
-          return Object.assign(
-              { relation: [], way: [], node: [] },
-              utilArrayGroupBy(entities, 'type')
-          );
-      }
+      function setTags(entity) {
+          const preset = _mainPresetIndex.item('highway/footway/sidewalk');
+          var entityID = entity.id;
+          var geometry = entity.geometry(context.graph());
 
-      function getDescendants(id, graph, descendants) {
-          var entity = graph.entity(id);
-          var children;
-
-          descendants = descendants || {};
-
-          if (entity.type === 'relation') {
-              children = entity.members.map(function(m) { return m.id; });
-          } else if (entity.type === 'way') {
-              children = entity.nodes;
-          } else {
-              children = [];
+          var oldPreset = _mainPresetIndex.match(context.graph().entity(entityID), context.graph());
+          var tags = {};
+          if (oldPreset) tags = oldPreset.unsetTags(tags, geometry);
+          if(entity.type === 'way' && preset) {
+              tags = preset.setTags({name: entity.tags.name}, geometry, false);
           }
-
-          for (var i = 0; i < children.length; i++) {
-              if (!descendants[children[i]]) {
-                  descendants[children[i]] = true;
-                  descendants = getDescendants(children[i], graph, descendants);
-              }
-          }
-
-          return descendants;
+          context.perform(actionChangeTags(entityID, tags));
       }
 
       function getAction(entityID) {
@@ -87899,37 +87878,7 @@
 
           // 1st copy the points
           var graph = context.graph();
-          var selected = groupEntities(getFilteredIdsToCopy(), graph);
-          var canCopy = [];
-          var skip = {};
-          var entity;
-          var i;
-
-          for (i = 0; i < selected.relation.length; i++) {
-              console.log('THERE IS A RELATION!');
-              entity = selected.relation[i];
-              if (!skip[entity.id] && entity.isComplete(graph)) {
-                  canCopy.push(entity.id);
-                  skip = getDescendants(entity.id, graph, skip);
-              }
-          }
-          for (i = 0; i < selected.way.length; i++) {
-              entity = selected.way[i];
-              if (!skip[entity.id]) {
-                  canCopy.push(entity.id);
-                  skip = getDescendants(entity.id, graph, skip);
-              }
-          }
-          for (i = 0; i < selected.node.length; i++) {
-              entity = selected.node[i];
-              if (!skip[entity.id]) {
-                  canCopy.push(entity.id);
-              }
-          }
-
-
-          // Now paster the selected as side walk
-          var oldIDs = canCopy;
+          var oldIDs = getFilteredIdsToCopy();
           if (!oldIDs.length) return;
 
           var projection = context.projection;
@@ -87937,7 +87886,6 @@
           var oldGraph = context.graph();
           var newIDs = [];
 
-          console.log(oldIDs);
           var action = actionCopyEntities(oldIDs, oldGraph);
           context.perform(action);
 
@@ -87957,21 +87905,7 @@
                   return originals.has(parent.id);
               });
 
-              const preset = _mainPresetIndex.item('highway/footway/sidewalk');
-              var entityID = newEntity.id;
-              var entity = context.graph().entity(entityID);
-              var geometry = entity.geometry(context.graph());
-
-              console.log(entityID);
-              var oldPreset = _mainPresetIndex.match(context.graph().entity(entityID), context.graph());
-              var tags = {};
-              console.log(entity.tags);
-              if (oldPreset) tags = oldPreset.unsetTags(tags, geometry);
-              if(newEntity.type === 'way' && preset) {
-                  tags = preset.setTags({name: entity.tags.name}, geometry, false);
-              }
-              console.log(tags);
-              context.perform(actionChangeTags(entityID, tags));
+              setTags(newEntity);
               if (!parentCopied) {
                   newIDs.push(newEntity.id);
               }
@@ -88004,14 +87938,18 @@
 
 
       operation.available = function() {
-          return true;
+          return getFilteredIdsToCopy().length;
       };
 
 
       // don't cache this because the visible extent could change
       operation.disabled = function() {
 
-          return false;
+          if (!getFilteredIdsToCopy().length) return 'Please select a way to add sidewalk';
+
+          if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+              return 'too_large';
+          }
       };
 
 
@@ -105542,9 +105480,6 @@
               var parentCopied = parents.some(function(parent) {
                   return originals.has(parent.id);
               });
-              console.log(id);
-
-              console.log('running in pareentCopied');
               setTags(newEntity);
               if (!parentCopied) {
                   newIDs.push(newEntity.id);
@@ -105562,7 +105497,6 @@
 
           window.setTimeout(function() {
               // TODO: Do we need validation
-              console.log('validate sidewalk here');
               // context.validator().validate();
           }, 300);  // after any transition
       }

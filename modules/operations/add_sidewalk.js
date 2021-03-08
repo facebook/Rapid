@@ -22,46 +22,25 @@ export function operationAddSidewalk(context, selectedIDs) {
         .map(function(n) { return n.loc; });
 
 
-    // TODO: not needed
     function getFilteredIdsToCopy() {
-        return selectedIDs.filter(function(selectedID) {
+        return selectedIDs.filter(selectedID => {
             var entity = context.graph().hasEntity(selectedID);
-            // don't copy untagged vertices separately from ways
-            return entity.hasInterestingTags() || entity.geometry(context.graph()) !== 'vertex';
+            return entity.type === 'way';
         });
     }
 
-    // TODO: might not be needed later
-    function groupEntities(ids, graph) {
-        var entities = ids.map(function (id) { return graph.entity(id); });
-        return Object.assign(
-            { relation: [], way: [], node: [] },
-            utilArrayGroupBy(entities, 'type')
-        );
-    }
+    function setTags(entity) {
+        const preset = presetManager.item('highway/footway/sidewalk');
+        var entityID = entity.id;
+        var geometry = entity.geometry(context.graph());
 
-    function getDescendants(id, graph, descendants) {
-        var entity = graph.entity(id);
-        var children;
-
-        descendants = descendants || {};
-
-        if (entity.type === 'relation') {
-            children = entity.members.map(function(m) { return m.id; });
-        } else if (entity.type === 'way') {
-            children = entity.nodes;
-        } else {
-            children = [];
+        var oldPreset = presetManager.match(context.graph().entity(entityID), context.graph());
+        var tags = {};
+        if (oldPreset) tags = oldPreset.unsetTags(tags, geometry);
+        if(entity.type === 'way' && preset) {
+            tags = preset.setTags({name: entity.tags.name}, geometry, false);
         }
-
-        for (var i = 0; i < children.length; i++) {
-            if (!descendants[children[i]]) {
-                descendants[children[i]] = true;
-                descendants = getDescendants(children[i], graph, descendants);
-            }
-        }
-
-        return descendants;
+        context.perform(actionChangeTags(entityID, tags));
     }
 
     function getAction(entityID) {
@@ -86,37 +65,7 @@ export function operationAddSidewalk(context, selectedIDs) {
 
         // 1st copy the points
         var graph = context.graph();
-        var selected = groupEntities(getFilteredIdsToCopy(), graph);
-        var canCopy = [];
-        var skip = {};
-        var entity;
-        var i;
-
-        for (i = 0; i < selected.relation.length; i++) {
-            console.log('THERE IS A RELATION!')
-            entity = selected.relation[i];
-            if (!skip[entity.id] && entity.isComplete(graph)) {
-                canCopy.push(entity.id);
-                skip = getDescendants(entity.id, graph, skip);
-            }
-        }
-        for (i = 0; i < selected.way.length; i++) {
-            entity = selected.way[i];
-            if (!skip[entity.id]) {
-                canCopy.push(entity.id);
-                skip = getDescendants(entity.id, graph, skip);
-            }
-        }
-        for (i = 0; i < selected.node.length; i++) {
-            entity = selected.node[i];
-            if (!skip[entity.id]) {
-                canCopy.push(entity.id);
-            }
-        }
-
-
-        // Now paster the selected as side walk
-        var oldIDs = canCopy;
+        var oldIDs = getFilteredIdsToCopy();
         if (!oldIDs.length) return;
 
         var projection = context.projection;
@@ -124,7 +73,6 @@ export function operationAddSidewalk(context, selectedIDs) {
         var oldGraph = context.graph();
         var newIDs = [];
 
-        console.log(oldIDs);
         var action = actionCopyEntities(oldIDs, oldGraph);
         context.perform(action);
 
@@ -144,21 +92,7 @@ export function operationAddSidewalk(context, selectedIDs) {
                 return originals.has(parent.id);
             });
 
-            const preset = presetManager.item('highway/footway/sidewalk');
-            var entityID = newEntity.id;
-            var entity = context.graph().entity(entityID);
-            var geometry = entity.geometry(context.graph());
-
-            console.log(entityID);
-            var oldPreset = presetManager.match(context.graph().entity(entityID), context.graph());
-            var tags = {};
-            console.log(entity.tags);
-            if (oldPreset) tags = oldPreset.unsetTags(tags, geometry);
-            if(newEntity.type === 'way' && preset) {
-                tags = preset.setTags({name: entity.tags.name}, geometry, false);
-            }
-            console.log(tags);
-            context.perform(actionChangeTags(entityID, tags));
+            setTags(newEntity);
             if (!parentCopied) {
                 newIDs.push(newEntity.id);
             }
@@ -191,50 +125,17 @@ export function operationAddSidewalk(context, selectedIDs) {
 
 
     operation.available = function() {
-        return true;
-        return _actions.length && selectedIDs.length === _actions.length;
+        return getFilteredIdsToCopy().length;
     };
 
 
     // don't cache this because the visible extent could change
     operation.disabled = function() {
 
-        return false;
-        if (!_actions.length) return '';
+        if (!getFilteredIdsToCopy().length) return 'Please select a way to add sidewalk';
 
-        var actionDisableds = _actions.map(function(action) {
-            return action.disabled(context.graph());
-        }).filter(Boolean);
-
-        if (actionDisableds.length === _actions.length) {
-            // none of the features can be circularized
-
-            if (new Set(actionDisableds).size > 1) {
-                return 'multiple_blockers';
-            }
-            return actionDisableds[0];
-        } else if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+        if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
-        } else if (someMissing()) {
-            return 'not_downloaded';
-        } else if (selectedIDs.some(context.hasHiddenConnections)) {
-            return 'connected_to_hidden';
-        }
-
-        return false;
-
-
-        function someMissing() {
-            if (context.inIntro()) return false;
-            var osm = context.connection();
-            if (osm) {
-                var missing = _coords.filter(function(loc) { return !osm.isDataLoaded(loc); });
-                if (missing.length) {
-                    missing.forEach(function(loc) { context.loadTileAtLoc(loc); });
-                    return true;
-                }
-            }
-            return false;
         }
     };
 
