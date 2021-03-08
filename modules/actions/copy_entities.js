@@ -8,6 +8,7 @@ export function actionCopyEntities(ids, fromGraph) {
         });
 
         for (var id in _copies) {
+            console.log('DEBUG here')
             graph = graph.replace(_copies[id]);
         }
 

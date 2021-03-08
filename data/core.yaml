@@ -514,6 +514,11 @@ en:
       description: Shortcut to cycle selected highway through several different tags.
       annotation: Changed highway tag of selected way.
       restriction: This operation is only permitted for highways and untagged lines.
+    add_sidewalk:
+      title: Add Sidewalk
+      key: K
+      description: Shortcut to add sidwalk to selected way.
+      annotation: Added sidewalk.
   restriction:
     controls:
       distance: Distance
@@ -1618,6 +1623,7 @@ en:
       delete: "{delete_icon} **{delete}** removes features from the map. Anything that doesn't exist in the real world should be deleted."
       downgrade: "{downgrade_icon} **{downgrade}** removes most tags except building and address info. This is helpful when businesses close yet their facilities remain."
       copy_paste: "{copy_icon} **{copy}** and {paste_icon} **{paste}** let you duplicate features."
+      add_sidewalk: "{add_sidewalk_icon} **{add_sidewalk}** lets you add sidewalk to selected way."
     notes:
       title: Notes
       intro: "*Notes* are used to alert other users that a feature requires fixing or attention. Notes mark a specific location on the map. To view existing notes or add new ones, open the {data_icon} **{map_data}** panel and enable the {osm_notes} layer."

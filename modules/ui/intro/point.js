@@ -367,6 +367,7 @@ export function uiIntroPoint(context, reveal) {
         if (!entity) return chapter.restart();
 
         context.enter(modeBrowse(context));
+        console.log('**** 3')
 
         var box = pointBox(entity.loc, context);
         var textId = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';

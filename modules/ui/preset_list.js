@@ -418,6 +418,7 @@ export function uiPresetList(context) {
                     for (var i in _entityIDs) {
                         var entityID = _entityIDs[i];
                         var oldPreset = presetManager.match(graph.entity(entityID), graph);
+                        console.log('$$$$$$ changing id of entity: ', entityID)
                         graph = actionChangePreset(entityID, oldPreset, preset)(graph);
                     }
                     return graph;

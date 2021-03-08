@@ -15,6 +15,7 @@ export function operationCopy(context, selectedIDs) {
 
     var operation = function() {
 
+        console.log('Copy Operation in progress 3');
         var graph = context.graph();
         var selected = groupEntities(getFilteredIdsToCopy(), graph);
         var canCopy = [];

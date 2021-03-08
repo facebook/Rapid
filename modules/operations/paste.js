@@ -57,6 +57,7 @@ export function operationPaste(context) {
         // Move the pasted objects to be anchored at the paste location
         context.replace(actionMove(newIDs, delta, projection), operation.annotation());
         context.enter(modeSelect(context, newIDs));
+        console.log('We really did do paste')
     };
 
     operation.point = function(val) {

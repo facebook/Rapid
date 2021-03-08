@@ -936,6 +936,8 @@ export function uiIntroLine(context, reveal) {
             helpHtml('intro.lines.multi_' + (context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch'));
         reveal(box, rightClickString);
 
+        console.log('***********')
+
         context.map().on('move.intro drawn.intro', function() {
             var padding = 200 * Math.pow(2, context.map().zoom() - 18);
             var box = pad(twelfthAvenue, padding, context);

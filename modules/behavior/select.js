@@ -170,6 +170,8 @@ export function behaviorSelect(context) {
 
 
     function contextmenu(d3_event) {
+        console.log('&&&& 1');
+        console.log(d3_event)
         d3_event.preventDefault();
 
         if (!+d3_event.clientX && !+d3_event.clientY) {
@@ -234,6 +236,7 @@ export function behaviorSelect(context) {
             (_multiselectionPointerId && !multiselectEntityId)
         );
 
+        console.log(multiselectEntityId)
         processClick(targetDatum, isMultiselect, p2, multiselectEntityId);
 
         function mapContains(event) {

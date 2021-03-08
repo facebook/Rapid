@@ -57,6 +57,7 @@ export function behaviorPaste(context) {
 
         context.perform(actionMove(newIDs, delta, projection));
         context.enter(modeMove(context, newIDs, baseGraph));
+        console.log('THIS IS A PASTE BEHAVIOUR');
     }
 
 

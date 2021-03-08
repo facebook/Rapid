@@ -12,6 +12,7 @@ import { behaviorHover } from '../behavior/hover';
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorPaste } from '../behavior/paste';
 import { behaviorSelect } from '../behavior/select';
+import {behaviorAddSidewalk} from '../behavior/add_sidewalk'
 
 import { operationMove } from '../operations/move';
 
@@ -174,7 +175,7 @@ export function modeSelect(context, selectedIDs) {
                 context.uninstall(operation.behavior);
             }
         });
-
+        console.log('%%%%% we are in Load Operations in select mode');
         _operations = Object.values(Operations)
             .map(function(o) { return o(context, selectedIDs); })
             .filter(function(o) { return o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'; })
@@ -182,7 +183,8 @@ export function modeSelect(context, selectedIDs) {
                 // group copy/downgrade/delete operation together at the end of the list
                 Operations.operationCopy(context, selectedIDs),
                 Operations.operationDowngrade(context, selectedIDs),
-                Operations.operationDelete(context, selectedIDs)
+                Operations.operationDelete(context, selectedIDs),
+                Operations.operationAddSidewalk(context, selectedIDs)
             ]).filter(function(operation) {
                 return operation.available();
             });
@@ -221,7 +223,8 @@ export function modeSelect(context, selectedIDs) {
                 _selectBehavior,
                 behaviorLasso(context),
                 _modeDragNode.behavior,
-                modeDragNote(context).behavior
+                modeDragNote(context).behavior,
+                behaviorAddSidewalk(context, selectedIDs),
             ];
         }
         _behaviors.forEach(context.install);

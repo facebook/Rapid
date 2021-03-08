@@ -4,6 +4,9 @@ export function actionChangePreset(entityID, oldPreset, newPreset, skipFieldDefa
         var geometry = entity.geometry(graph);
         var tags = entity.tags;
 
+        console.log(oldPreset);
+        console.log(newPreset);
+
         if (oldPreset) tags = oldPreset.unsetTags(tags, geometry);
         if (newPreset) tags = newPreset.setTags(tags, geometry, skipFieldDefaults);
 

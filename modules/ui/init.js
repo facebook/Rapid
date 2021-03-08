@@ -652,6 +652,8 @@ export function uiInit(context) {
 
     ui.showEditMenu = function(anchorPoint, triggerType, operations) {
 
+        console.log('about to show edit menu')
+        console.log(context.mode());
         // remove any displayed menu
         ui.closeEditMenu();
 
@@ -671,6 +673,8 @@ export function uiInit(context) {
             if (operation.point) operation.point(anchorPoint);
         });
 
+        console.log(triggerType)
+        console.log(operations)
         _editMenu
             .anchorLoc(anchorPoint)
             .triggerType(triggerType)
