@@ -12,7 +12,7 @@ export { validationMissingRole } from './missing_role';
 export { validationMissingTag } from './missing_tag';
 export { validationOutdatedTags } from './outdated_tags';
 export { validationPrivateData } from './private_data';
-export { validationShortRoad } from './short_road';
+// export { validationShortRoad } from './short_road';
 export { validationYShapedConnection } from './y_shaped_connection';
 export { validationSuspiciousName } from './suspicious_name';
 export { validationUnsquareWay } from './unsquare_way';

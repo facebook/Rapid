@@ -427,7 +427,7 @@ export function validationCrossingWays(context) {
                 // ensure the correct connection tags are added in the fix
                 JSON.stringify(connectionTags),
             loc: crossing.crossPoint,
-            autoArgs: connectionTags && connectWaysAutoArgs(crossing.crossPoint, edges, connectionTags),
+            autoArgs: connectionTags && !connectionTags.ford && connectWaysAutoArgs(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function(context) {
                 var mode = context.mode();
                 if (!mode || mode.id !== 'select' || mode.selectedIDs().length !== 1) return [];
