@@ -1,73 +1,90 @@
+# [1.1.2](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.2)
+##### 2021-Mar-09
+#### :trumpet: Updates
+* This is a 'refresh' release, based off iD version 2.19.6.
+
+
 # [1.1.1](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.1)
-#### 2021-Jan-15th
+##### 2021-Jan-15
 #### :bug: Bugfixes:
-#195, #196, and #197.
-#### :trumpet:
-This is a 'refresh' release, based off iD version 2.19.5.
+* #195, #196, and #197.
+
+#### :trumpet: Updates
+* This is a 'refresh' release, based off iD version 2.19.5.
+
 
 # [1.1.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.0)
-#### 2020-Dec-7th
+##### 2020-Dec-7
 #### :trumpet: New Features!
-This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to RapiD!
+* This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to RapiD!
 
-Read the [FAQ] (https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) and our engineering [blog post] (https://tech.fb.com/osm-ready-data-sets/).
+Read the [FAQ](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) and our engineering [blog post](https://tech.fb.com/osm-ready-data-sets/).
 
-This release is based off of iD version 2.18.3.
 #### :trumpet: Updates
-This release fixes issue #168, which prevented users from editing certain types of ways.
+* This release is based off of iD version 2.18.3.
+* This release fixes issue #168, which prevented users from editing certain types of ways.
+
 
 # [1.0.12](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.12)
-#### 2020-Sept-11th
+##### 2020-Sept-11
 #### :trumpet: Updates
-This release fixes issue #168, which prevented users from editing certain types of ways.
+* This release fixes issue #168, which prevented users from editing certain types of ways.
+
 
 # [1.0.11](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.11)
-#### 2020-Aug-24th
+##### 2020-Aug-24
 #### :trumpet: Updates
-This release fixes issue #158, which prevented saves from occurring. Other fixes: #163 and #164.
+* This release fixes issue #158, which prevented some saves from occurring.
+* Other fixes: #163, #164.
+
 
 # [1.0.10](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.10)
-#### 2020-Aug-07th
+##### 2020-Aug-07
 #### :trumpet: Updates
-This brings the RapiD code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff. Also add a one-time dialog for the rapid-esri collaboration. Finally, fix issue #144.
+* This brings the RapiD code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff.
+* Also add a one-time dialog for the rapid-esri collaboration.
+* Finally, fix issue #144.
+
 
 # [1.0.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.9)
-#### 2020-Jun-09th
+##### 2020-Jun-09
 #### :trumpet: Updates
-This removes the FB-Maxar imagery layer. We recommend using the the Maxar Premium (Beta) layer instead.
+* This removes the FB-Maxar imagery layer. We recommend using the the Maxar Premium (Beta) layer instead.
+
 
 # [1.0.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.8)
-#### 2020-Mar-30th
+##### 2020-Mar-30
 #### :trumpet: Updates
-This eliminates RapiD's need to contact the facebook.com domain and instead contacts the mapwith.ai domain. This should mean fewer configuration issues for folks using Firefox or similar.
+* This eliminates RapiD's need to contact the facebook.com domain and instead contacts the mapwith.ai domain. This should mean fewer configuration issues for folks using Firefox or similar.
+
 
 # [1.0.7](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.7)
 ##### 2020-Feb-18
 
 #### :trumpet: Updates
-This brings the RapiD code up-to-date with v2.17.2, which re-introduces Maxar Imagery.
+* This brings the RapiD code up-to-date with v2.17.2, which re-introduces Maxar Imagery.
 
 
 # [1.0.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.6)
 ##### 2020-Jan-31
-
 #### :trumpet: Updates
-This brings the RapiD code up-to-date with v2.17.1. This also fixes issue #105.
+* This brings the RapiD code up-to-date with v2.17.1. This also fixes issue #105.
+
 
 # [1.0.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.5)
 ##### 2019-Dec-12
-
 #### :trumpet: Updates
-This brings the RapiD code up-to-date with v2.17. This fixes issue #92.
+* This brings the RapiD code up-to-date with v2.17. This fixes issue #92.
+
 
 # [1.0.4](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.4)
 ##### 2019-Dec-12
 
 #### :bug: Bugfixes
-Fixed issue #84: https://github.com/facebookincubator/RapiD/issues/84 - With this fix, no more than 50 AI roads or buildings can be added to the map in a single save.
+* Fixed issue #84: https://github.com/facebookincubator/RapiD/issues/84 - With this fix, no more than 50 AI roads or buildings can be added to the map in a single save.
 
 #### :tada: New Features
-Merged with [iD v2.16](https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#2160) including support for objects detected in Mapillary images & a visual diff hotkey!
+* Merged with [iD v2.16](https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#2160) including support for objects detected in Mapillary images & a visual diff hotkey!
 
 
 # [1.0.3](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.3)
@@ -79,9 +96,9 @@ https://blogs.bing.com/maps/2019-09/microsoft-releases-18M-building-footprints-i
 
 For up-to-date availability of roads and buildings, check our continually-updated GeoJSON link here: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/develop/data/rapid_releases.geojson
 
-
 #### :sparkles: Usability
-The RapiD button is no longer an AI-roads toggle- instead, a dialog opens allowing you to enable Facebook's road layer, Microsoft's building layer, or nothing at all.
+* The RapiD button is no longer an AI-roads toggle- instead, a dialog opens allowing you to enable Facebook's road layer, Microsoft's building layer, or nothing at all.
+
 
 # [1.0.2](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.2)
 ##### 2019-Oct-14
@@ -93,7 +110,6 @@ The RapiD button is no longer an AI-roads toggle- instead, a dialog opens allowi
 
 #### :sparkles: Usability
 * Added options for drawing 2x2, 3x3, 4x4, 5x5, or 6x6 grids within the task area when working on a TM task with a rectangular shape.
-
 
 
 # [1.0.1](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.1)
