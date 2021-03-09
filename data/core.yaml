@@ -587,6 +587,7 @@ en:
     upload_explanation: "The changes you upload will be visible on all maps that use OpenStreetMap data."
     upload_explanation_with_user: "The changes you upload as {user} will be visible on all maps that use OpenStreetMap data."
     request_review: "I would like someone to review my edits."
+    request_review_info: "Unsure about something? Invite an experienced mapper to check your work once it's live."
     save: Upload
     cancel: Cancel
     changes: Changes
@@ -738,6 +739,21 @@ en:
     add_fields: "Add field:"
     lock:
       suggestion: 'The "{label}" field is locked because there is a Wikidata tag. You can delete it or edit the tags in the "Tags" section.'
+    display_name:
+      direction: "{direction}"
+      from_to: "from {from} to {to}"
+      from_to_via: "from {from} to {to} via {via}"
+      network_direction: "{network} {direction}"
+      network_from_to: "{network} from {from} to {to}"
+      network_from_to_via: "{network} from {from} to {to} via {via}"
+      ref: "{ref}"
+      ref_direction: "{ref} {direction}"
+      ref_from_to: "{ref} from {from} to {to}"
+      ref_from_to_via: "{ref} from {from} to {to} via {via}"
+      network_ref: "{network} {ref}"
+      network_ref_direction: "{network} {ref} {direction}"
+      network_ref_from_to: "{network} {ref} from {from} to {to}"
+      network_ref_from_to_via: "{network} {ref} from {from} to {to} via {via}"
   background:
     title: Background
     description: Background Settings
@@ -1746,6 +1762,8 @@ en:
         message: "{feature} ends very close to itself but does not reconnect"
       highway-highway:
         reference: Intersecting highways should share a junction vertex.
+    area_as_point:
+      message: '{feature} should be an area, not a point'
     close_nodes:
       title: "Very Close Points"
       tip: "Find redundant and crowded points"
@@ -1830,9 +1848,14 @@ en:
         message: '{feature} has an invalid email address'
         message_multi: '{feature} has multiple invalid email addresses'
         reference: 'Email addresses must look like "user@example.com".'
+    line_as_area:
+      message: '{feature} should be a line, not an area'
+    line_as_point:
+      message: '{feature} should be a line, not a point'
     mismatched_geometry:
       title: Mismatched Geometry
       tip: "Find features with conflicting tags and geometry"
+      reference: Most features are limited to certain geometry types.
     missing_role:
       title: Missing Roles
       message: "{member} has no role within {relation}"
@@ -1864,6 +1887,10 @@ en:
         message: "{feature} looks like a brand with nonstandard tags"
         message_incomplete: "{feature} looks like a brand with incomplete tags"
         reference: "All features of the same brand should be tagged the same way."
+    point_as_area:
+      message: '{feature} should be a point, not an area'
+    point_as_line:
+      message: '{feature} should be a point, not a line'
     point_as_vertex:
       message: '{feature} should be a standalone point based on its tags'
       reference: "Some features shouldn't be part of lines or areas."
@@ -1948,6 +1975,9 @@ en:
         title: Continue drawing from start
       continue_from_end:
         title: Continue drawing from end
+      convert_to_line:
+        title: Convert this to a line
+        annotation: Converted an area to a line.
       delete_feature:
         title: Delete this feature
       extract_point:
@@ -2383,6 +2413,7 @@ en:
         next: "Jump to next node"
         first: "Jump to first node"
         last: "Jump to last node"
+        parent: "Select parent way"
         change_parent: "Switch parent way"
     editing:
       title: "Editing"

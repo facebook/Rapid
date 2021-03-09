@@ -16,8 +16,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
 
         if (tags.highway === 'track') {
             tags.surface = 'unpaved';
-        }
-        else {
+        } else {
             delete tags.surface;
         }
     };

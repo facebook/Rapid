@@ -287,6 +287,12 @@ export function uiInit(context) {
             .attr('class', 'user-list')
             .call(uiContributors(context));
 
+        aboutList
+            .append('li')
+            .attr('class', 'fb-road-license')
+            .attr('tabindex', -1)
+            .call(uiRapidServiceLicense());
+
         var apiConnections = context.apiConnections();
         if (apiConnections && apiConnections.length > 1) {
             aboutList
@@ -334,19 +340,6 @@ export function uiInit(context) {
             aboutList
                 .call(uiAccount(context));
         }
-
-        aboutList
-            .append('li')
-            .attr('class', 'user-list')
-            .attr('tabindex', -1)
-            .call(uiContributors(context));
-
-        aboutList
-            .append('li')
-            .attr('class', 'fb-road-license')
-            .attr('tabindex', -1)
-            .call(uiRapidServiceLicense());
-
 
         // Setup map dimensions and move map to initial center/zoom.
         // This should happen after .main-content and toolbars exist.

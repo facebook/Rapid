@@ -9,6 +9,7 @@ import { geoExtent } from '../geo/extent';
 import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
+import { utilArrayIntersection } from '../util/array';
 import { utilRebind, utilUniqueDomId } from '../util';
 
 
@@ -313,21 +314,19 @@ export function uiField(context, presetField, entityIDs, options) {
             return field.matchGeometry(context.graph().geometry(entityID));
         })) return false;
 
-        if (field.countryCodes || field.notCountryCodes) {
+        if (field.locationSet) {
             var extent = combinedEntityExtent();
             if (!extent) return true;
 
             var center = extent.center();
-            var countryCode = countryCoder.iso1A2Code(center);
+            var codes = countryCoder.iso1A2Codes(center).map(function(code) {
+                return code.toLowerCase();
+            });
 
-            if (!countryCode) return false;
-
-            countryCode = countryCode.toLowerCase();
-
-            if (field.countryCodes && field.countryCodes.indexOf(countryCode) === -1) {
+            if (field.locationSet.include && !utilArrayIntersection(codes, field.locationSet.include).length) {
                 return false;
             }
-            if (field.notCountryCodes && field.notCountryCodes.indexOf(countryCode) !== -1) {
+            if (field.locationSet.exclude && utilArrayIntersection(codes, field.locationSet.exclude).length) {
                 return false;
             }
         }

@@ -42,8 +42,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
       // if a RapiD feature is selected, reselect it to update sidebar too
       const mode = context.mode();
-      if (mode && mode.id === 'select-ai-features')
-      context.enter(mode, mode.selectedDatum());
+      if (mode && mode.id === 'select-ai-features') {
+        context.enter(mode, mode.selectedDatum());
+      }
     }
   }
 

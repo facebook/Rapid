@@ -3,8 +3,8 @@ import { select as d3_select } from 'd3-selection';
 import { t } from '../../core/localizer';
 import { uiSection } from '../section';
 
-export function uiSectionGridDisplayOptions(context) {
 
+export function uiSectionGridDisplayOptions(context) {
 
     var section = uiSection('grid-display-options', context)
         .label(t('background.grid.grids'))
@@ -30,12 +30,12 @@ export function uiSectionGridDisplayOptions(context) {
 
             var gridItems = gridList.selectAll('li')
                 .data(
-                    [{numSplit: 0, name: t('background.grid.no_grid')},
-                     {numSplit: 2, name: t('background.grid.n_by_n', {num: 2})},
-                     {numSplit: 3, name: t('background.grid.n_by_n', {num: 3})},
-                     {numSplit: 4, name: t('background.grid.n_by_n', {num: 4})},
-                     {numSplit: 5, name: t('background.grid.n_by_n', {num: 5})},
-                     {numSplit: 6, name: t('background.grid.n_by_n', {num: 6})}],
+                    [{ numSplit: 0, name: t('background.grid.no_grid')},
+                     { numSplit: 2, name: t('background.grid.n_by_n', { num: 2 }) },
+                     { numSplit: 3, name: t('background.grid.n_by_n', { num: 3 }) },
+                     { numSplit: 4, name: t('background.grid.n_by_n', { num: 4 }) },
+                     { numSplit: 5, name: t('background.grid.n_by_n', { num: 5 }) },
+                     { numSplit: 6, name: t('background.grid.n_by_n', { num: 6 }) }],
                     function(d) { return d.name; }
                 );
 
@@ -53,7 +53,7 @@ export function uiSectionGridDisplayOptions(context) {
                 .on('change', chooseGrid);
 
             label.append('span')
-                .text(function(d) {return d.name;});
+                .text(function(d) { return d.name; });
 
             gridItems.exit()
                 .remove();

@@ -1094,6 +1094,14 @@ a.hide-toggle {
     fill: transparent;
 }
 
+.preset-icon-category-border path {
+    stroke: #999;
+    stroke-width: 1px;
+    fill: transparent;
+    backface-visibility: hidden;
+    vector-effect: non-scaling-stroke;
+}
+
 .preset-icon-line {
     margin: auto;
     position: absolute;
@@ -1169,7 +1177,7 @@ a.hide-toggle {
 .preset-icon.framed .icon {
     transform: scale(0.4);
 }
-.preset-icon.framed.line-geom .icon,
+.preset-icon.framed.line-geom:not(.category) .icon,
 .preset-icon.framed.route-geom .icon {
     top: 20%;
     transform: translateY(-30%) scale(0.4);
@@ -1180,7 +1188,7 @@ a.hide-toggle {
 .preset-icon-iD.framed .icon {
     transform: scale(0.74);
 }
-.preset-icon-iD.framed.line-geom .icon,
+.preset-icon-iD.framed.line-geom:not(.category) .icon,
 .preset-icon-iD.framed.route-geom .icon {
     transform: translateY(-30%) scale(0.74);
 }
@@ -1593,6 +1601,13 @@ a.hide-toggle {
     display: none;
 }
 
+.form-field-input-combo input.raw-value {
+    font-family: monospace;
+}
+.form-field-input-combo input.known-value {
+    color: #7092ff;
+}
+
 .form-field-input-multicombo ul.chiplist {
     padding: 5px 8px 5px 8px;
     background: #fff;
@@ -1620,6 +1635,7 @@ a.hide-toggle {
     background-color: #eff2f7;
     border: 1px solid #ccd5e3;
     max-width: 100%;
+    color: #7092ff;
 }
 .ideditor[dir='ltr'] .form-field-input-multicombo li.chip {
     padding: 2px 0px 2px 5px;
@@ -1634,6 +1650,10 @@ a.hide-toggle {
     opacity: 0.75;
     z-index: 3000;
     cursor: grabbing;
+}
+.form-field-input-multicombo li.chip.raw-value {
+    font-family: monospace;
+    color: #333;
 }
 .form-field-input-multicombo li.mixed {
     border-color: #eff2f7;
@@ -1862,26 +1882,26 @@ a.hide-toggle {
 }
 
 
-/* Field - Maxspeed
+/* Field - roadspeed
 ------------------------------------------------------- */
-.form-field-input-maxspeed input.maxspeed-number {
+.form-field-input-roadspeed input.roadspeed-number {
     flex-basis: 0;
 }
-.form-field-input-maxspeed input.maxspeed-unit {
+.form-field-input-roadspeed input.roadspeed-unit {
     flex: 0 1 auto;
     width: 80px;
 }
-.ideditor[dir='ltr'] .form-field-input-maxspeed > input:first-of-type {
+.ideditor[dir='ltr'] .form-field-input-roadspeed > input:first-of-type {
     border-radius: 0 0 0 4px;
 }
-.ideditor[dir='rtl'] .form-field-input-maxspeed > input:first-of-type {
+.ideditor[dir='rtl'] .form-field-input-roadspeed > input:first-of-type {
     border-radius: 0 0 4px 0;
 }
-.ideditor[dir='ltr'] .form-field-input-maxspeed > input:last-of-type {
+.ideditor[dir='ltr'] .form-field-input-roadspeed > input:last-of-type {
     border-left: 0;
     border-radius: 0 0 4px 0;
 }
-.ideditor[dir='rtl'] .form-field-input-maxspeed > input:last-of-type {
+.ideditor[dir='rtl'] .form-field-input-roadspeed > input:last-of-type {
     border-right: 0;
     border-radius: 0 0 0 4px;
 }
@@ -2216,6 +2236,11 @@ div.combobox {
     border-top: 5px solid #ccc;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
+}
+
+.combobox .combobox-option.raw-option {
+    font-family: monospace;
+    color: #333;
 }
 
 
@@ -4382,9 +4407,12 @@ img.tile-debug {
     justify-content: space-between;
     align-items: flex-end;
     z-index: 0;
+    pointer-events: none;
 }
 
-.attribution-wrap * { pointer-events: all; }
+.attribution-wrap > * {
+    pointer-events: auto;
+}
 
 .attribution-wrap .base-layer-attribution,
 .attribution-wrap .overlay-layer-attribution {

@@ -98,7 +98,7 @@ export function uiTooltip(klass) {
                 .html(function(d) {
                     return d;
                 });
-        }; 
+        };
     });
 
     return tooltip;

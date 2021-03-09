@@ -8,6 +8,8 @@ import { presetCollection } from './collection';
 //
 export function presetCategory(categoryID, category, all) {
   let _this = Object.assign({}, category);   // shallow copy
+  let _searchName; // cache
+  let _searchNameStripped; // cache
 
   _this.id = categoryID;
 
@@ -33,11 +35,28 @@ export function presetCategory(categoryID, category, all) {
 
   _this.matchScore = () => -1;
 
-  _this.name = () => t(`presets.categories.${categoryID}.name`, { 'default': categoryID });
-  _this.nameLabel = () => t.html(`presets.categories.${categoryID}.name`, { 'default': categoryID });
+  _this.name = () => t(`_tagging.presets.categories.${categoryID}.name`, { 'default': categoryID });
+  _this.nameLabel = () => t.html(`_tagging.presets.categories.${categoryID}.name`, { 'default': categoryID });
 
   _this.terms = () => [];
 
+  _this.searchName = () => {
+    if (!_searchName) {
+      _searchName = (_this.suggestion ? _this.originalName : _this.name()).toLowerCase();
+    }
+    return _searchName;
+  };
+
+  _this.searchNameStripped = () => {
+    if (!_searchNameStripped) {
+      _searchNameStripped = _this.searchName();
+      // split combined diacritical characters into their parts
+      if (_searchNameStripped.normalize) _searchNameStripped = _searchNameStripped.normalize('NFD');
+      // remove diacritics
+      _searchNameStripped = _searchNameStripped.replace(/[\u0300-\u036f]/g, '');
+    }
+    return _searchNameStripped;
+  };
 
   return _this;
 }

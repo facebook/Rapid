@@ -52,7 +52,7 @@ export function validationYShapedConnection(context) {
 
     function createIssueAndFixForNode(node, context) {
         var deletable = !operationDelete(context, [node.id]).disabled();
-        var fix = undefined;
+        var fix;
         if (deletable) {
             fix = new validationIssueFix({
                 icon: 'iD-operation-delete',

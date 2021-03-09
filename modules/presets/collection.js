@@ -1,4 +1,5 @@
-import { utilArrayUniq, utilEditDistance } from '../util';
+import { utilArrayIntersection, utilArrayUniq } from '../util/array';
+import { utilEditDistance } from '../util';
 
 
 //
@@ -45,9 +46,10 @@ export function presetCollection(collection) {
     return _this.item(id);
   };
 
-  _this.search = (value, geometry, countryCode) => {
+  _this.search = (value, geometry, countryCodes) => {
     if (!value) return _this;
 
+    // don't remove diacritical characters since we're assuming the user is being intentional
     value = value.toLowerCase().trim();
 
     // match at name beginning or just after a space (e.g. "office" -> match "Law Office")
@@ -62,31 +64,38 @@ export function presetCollection(collection) {
       return index === 0;
     }
 
-    function sortNames(a, b) {
-      let aCompare = (a.suggestion ? a.originalName : a.name()).toLowerCase();
-      let bCompare = (b.suggestion ? b.originalName : b.name()).toLowerCase();
+    function sortPresets(nameProp) {
+      return function sortNames(a, b) {
+        let aCompare = a[nameProp]();
+        let bCompare = b[nameProp]();
 
-      // priority if search string matches preset name exactly - #4325
-      if (value === aCompare) return -1;
-      if (value === bCompare) return 1;
+        // priority if search string matches preset name exactly - #4325
+        if (value === aCompare) return -1;
+        if (value === bCompare) return 1;
 
-      // priority for higher matchScore
-      let i = b.originalScore - a.originalScore;
-      if (i !== 0) return i;
+        // priority for higher matchScore
+        let i = b.originalScore - a.originalScore;
+        if (i !== 0) return i;
 
-      // priority if search string appears earlier in preset name
-      i = aCompare.indexOf(value) - bCompare.indexOf(value);
-      if (i !== 0) return i;
+        // priority if search string appears earlier in preset name
+        i = aCompare.indexOf(value) - bCompare.indexOf(value);
+        if (i !== 0) return i;
 
-      // priority for shorter preset names
-      return aCompare.length - bCompare.length;
+        // priority for shorter preset names
+        return aCompare.length - bCompare.length;
+      };
     }
 
     let pool = _this.collection;
-    if (countryCode) {
+    if (countryCodes) {
+      if (typeof countryCodes === 'string') countryCodes = [countryCodes];
+      countryCodes = countryCodes.map(code => code.toLowerCase());
+
       pool = pool.filter(a => {
-        if (a.countryCodes && a.countryCodes.indexOf(countryCode) === -1) return false;
-        if (a.notCountryCodes && a.notCountryCodes.indexOf(countryCode) !== -1) return false;
+        if (a.locationSet) {
+          if (a.locationSet.include && !utilArrayIntersection(a.locationSet.include, countryCodes).length) return false;
+          if (a.locationSet.exclude && utilArrayIntersection(a.locationSet.exclude, countryCodes).length) return false;
+        }
         return true;
       });
     }
@@ -94,52 +103,62 @@ export function presetCollection(collection) {
     const suggestions = pool.filter(a => a.suggestion === true);
 
     // matches value to preset.name
-    const leading_name = searchable
-      .filter(a => leading(a.name().toLowerCase()))
-      .sort(sortNames);
+    const leadingNames = searchable
+      .filter(a => leading(a.searchName()))
+      .sort(sortPresets('searchName'));
 
-    // matches value to preset suggestion name (original name is unhyphenated)
-    const leading_suggestions = suggestions
-      .filter(a => leadingStrict(a.originalName.toLowerCase()))
-      .sort(sortNames);
+    // matches value to preset suggestion name
+    const leadingSuggestions = suggestions
+      .filter(a => leadingStrict(a.searchName()))
+      .sort(sortPresets('searchName'));
+
+    const leadingNamesStripped = searchable
+      .filter(a => leading(a.searchNameStripped()))
+      .sort(sortPresets('searchNameStripped'));
+
+    const leadingSuggestionsStripped = suggestions
+      .filter(a => leadingStrict(a.searchNameStripped()))
+      .sort(sortPresets('searchNameStripped'));
 
     // matches value to preset.terms values
-    const leading_terms = searchable
+    const leadingTerms = searchable
       .filter(a => (a.terms() || []).some(leading));
 
     // matches value to preset.tags values
-    const leading_tag_values = searchable
+    const leadingTagValues = searchable
       .filter(a => Object.values(a.tags || {}).filter(val => val !== '*').some(leading));
 
     // finds close matches to value in preset.name
-    const similar_name = searchable
-      .map(a => ({ preset: a, dist: utilEditDistance(value, a.name()) }))
-      .filter(a => a.dist + Math.min(value.length - a.preset.name().length, 0) < 3)
+    const similarName = searchable
+      .map(a => ({ preset: a, dist: utilEditDistance(value, a.searchName()) }))
+      .filter(a => a.dist + Math.min(value.length - a.preset.searchName().length, 0) < 3)
       .sort((a, b) => a.dist - b.dist)
       .map(a => a.preset);
 
-    // finds close matches to value to preset suggestion name (original name is unhyphenated)
-    const similar_suggestions = suggestions
-      .map(a => ({ preset: a, dist: utilEditDistance(value, a.originalName.toLowerCase()) }))
-      .filter(a => a.dist + Math.min(value.length - a.preset.originalName.length, 0) < 1)
+    // finds close matches to value to preset suggestion name
+    const similarSuggestions = suggestions
+      .map(a => ({ preset: a, dist: utilEditDistance(value, a.searchName()) }))
+      .filter(a => a.dist + Math.min(value.length - a.preset.searchName().length, 0) < 1)
       .sort((a, b) => a.dist - b.dist)
       .map(a => a.preset);
 
     // finds close matches to value in preset.terms
-    const similar_terms = searchable
+    const similarTerms = searchable
       .filter(a => {
         return (a.terms() || []).some(b => {
           return utilEditDistance(value, b) + Math.min(value.length - b.length, 0) < 3;
         });
       });
 
-    let results = leading_name.concat(
-      leading_suggestions,
-      leading_terms,
-      leading_tag_values,
-      similar_name,
-      similar_suggestions,
-      similar_terms
+    let results = leadingNames.concat(
+      leadingSuggestions,
+      leadingNamesStripped,
+      leadingSuggestionsStripped,
+      leadingTerms,
+      leadingTagValues,
+      similarName,
+      similarSuggestions,
+      similarTerms
     ).slice(0, MAXRESULTS - 1);
 
     if (geometry) {

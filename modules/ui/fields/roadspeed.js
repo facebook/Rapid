@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
 
 
-export function uiFieldMaxspeed(field, context) {
+export function uiFieldRoadspeed(field, context) {
     var dispatch = d3_dispatch('change');
     var unitInput = d3_select(null);
     var input = d3_select(null);
@@ -15,15 +15,15 @@ export function uiFieldMaxspeed(field, context) {
     var _tags;
     var _isImperial;
 
-    var speedCombo = uiCombobox(context, 'maxspeed');
-    var unitCombo = uiCombobox(context, 'maxspeed-unit')
+    var speedCombo = uiCombobox(context, 'roadspeed');
+    var unitCombo = uiCombobox(context, 'roadspeed-unit')
             .data(['km/h', 'mph'].map(comboValues));
 
     var metricValues = [20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
     var imperialValues = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
 
 
-    function maxspeed(selection) {
+    function roadspeed(selection) {
 
         var wrap = selection.selectAll('.form-field-input-wrap')
             .data([0]);
@@ -34,13 +34,13 @@ export function uiFieldMaxspeed(field, context) {
             .merge(wrap);
 
 
-        input = wrap.selectAll('input.maxspeed-number')
+        input = wrap.selectAll('input.roadspeed-number')
             .data([0]);
 
         input = input.enter()
             .append('input')
             .attr('type', 'text')
-            .attr('class', 'maxspeed-number')
+            .attr('class', 'roadspeed-number')
             .attr('id', field.domId)
             .call(utilNoAuto)
             .call(speedCombo)
@@ -53,13 +53,13 @@ export function uiFieldMaxspeed(field, context) {
         var loc = combinedEntityExtent().center();
         _isImperial = countryCoder.roadSpeedUnit(loc) === 'mph';
 
-        unitInput = wrap.selectAll('input.maxspeed-unit')
+        unitInput = wrap.selectAll('input.roadspeed-unit')
             .data([0]);
 
         unitInput = unitInput.enter()
             .append('input')
             .attr('type', 'text')
-            .attr('class', 'maxspeed-unit')
+            .attr('class', 'roadspeed-unit')
             .call(unitCombo)
             .merge(unitInput);
 
@@ -110,7 +110,7 @@ export function uiFieldMaxspeed(field, context) {
     }
 
 
-    maxspeed.tags = function(tags) {
+    roadspeed.tags = function(tags) {
         _tags = tags;
 
         var value = tags[field.key];
@@ -134,12 +134,12 @@ export function uiFieldMaxspeed(field, context) {
     };
 
 
-    maxspeed.focus = function() {
+    roadspeed.focus = function() {
         input.node().focus();
     };
 
 
-    maxspeed.entityIDs = function(val) {
+    roadspeed.entityIDs = function(val) {
         _entityIDs = val;
     };
 
@@ -149,5 +149,5 @@ export function uiFieldMaxspeed(field, context) {
     }
 
 
-    return utilRebind(maxspeed, dispatch, 'on');
+    return utilRebind(roadspeed, dispatch, 'on');
 }

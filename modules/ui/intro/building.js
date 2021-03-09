@@ -750,10 +750,10 @@ export function uiIntroBuilding(context, reveal) {
 
     function play() {
         dispatch.call('done');
-        reveal('#id-container',
-            t('intro.buildings.play', { next: t('intro.rapid.title') }), {
+        reveal('.ideditor',
+            helpHtml('intro.buildings.play', { next: t('intro.rapid.title') }), {
                 tooltipBox: '.intro-nav-wrap .chapter-rapid',
-                buttonText: t('intro.ok'),
+                buttonText: t.html('intro.ok'),
                 buttonCallback: function() { reveal('.ideditor'); }
             }
         );

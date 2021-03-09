@@ -179,8 +179,7 @@ export function uiShortcuts(context) {
                     return {
                         shortcut: s,
                         separator: d.separator,
-                        suffix: d.suffix,
-                        rapid: d.rapid
+                        suffix: d.suffix
                     };
                 });
             })
@@ -214,17 +213,8 @@ export function uiShortcuts(context) {
                         .append('span')
                         .html(d.suffix);
                 }
-
-                if (d.rapid){
-                    selection
-                        .append('svg')
-                        .lower()
-                        .attr('class', 'icon logo-rapid')
-                        .append('use')
-                        .attr('xlink:href', '#iD-logo-rapid')
-                        .attr('class', '#iD-logo-rapid'); 
-                }
             });
+
 
         shortcutKeys
             .filter(function(d) { return d.gesture; })
