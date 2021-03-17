@@ -94,6 +94,7 @@ export function uiIntroRapid(context, reveal) {
 
 
   function roadAdded() {
+    console.log('are we adding a road? ')
     if (context.mode().id !== 'select') return chapter.restart();
 
     timeout(() => {

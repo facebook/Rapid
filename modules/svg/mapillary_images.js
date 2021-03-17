@@ -209,6 +209,7 @@ export function svgMapillaryImages(projection, context, dispatch) {
             .attr('class', 'viewfield-scale');
 
         // update
+        console.log('Mapillary Update marker!!!')
         var markers = groups
             .merge(groupsEnter)
             .sort(function(a, b) {

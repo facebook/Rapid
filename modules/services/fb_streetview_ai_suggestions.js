@@ -207,7 +207,8 @@ function parseStreetViewImageSet(xmlEle) {
             url: img.getAttribute("url"),
             sidewalkSide: img.getAttribute("sidewalk-side"),
             lat: parseFloat(img.getAttribute("lat")),
-            lon: parseFloat(img.getAttribute('lon'))
+            lon: parseFloat(img.getAttribute('lon')),
+            ca: parseFloat(img.getAttribute('ca'))
         };
     }
     streetViewImageSet.images = images;
@@ -325,6 +326,15 @@ function parseXML(dataset, xml, callback, options) {
                 }
             }
         }
+
+        // associate cubitor context with osm entities
+        console.log(osmEntities);
+        console.log(cubitorContext);
+        osmEntities.forEach(entity => {
+            if(entity.suggestionId && cubitorContext[entity.suggestionId]) {
+                entity.suggestionContext = cubitorContext[entity.suggestionId];
+            }
+        });
 
         callback(null, osmEntities);
     });
@@ -482,12 +492,15 @@ export default {
             if (Object.keys(cache.loaded).length > 0 || Object.keys(cache.inflight).length > 0) return;
 
             var controller = new AbortController();
-            d3_xml(tileURL(ds, tile.extent, taskExtent), { signal: controller.signal })
+            console.log('http://localhost:8081/' + tileURL(ds, tile.extent, taskExtent));
+            d3_xml('http://localhost:8081/' + tileURL(ds, tile.extent, taskExtent), { signal: controller.signal, mode: 'cors' })
                 .then(function (dom) {
+                    console.log(dom);
                     delete cache.inflight[tile.id];
                     if (!dom) return;
                     parseXML(ds, dom, function(err, results) {
                         if (err) return;
+                        console.log(results);
                         graph.rebase(results, [graph], true);
                         tree.rebase(results, true);
                         cache.loaded[tile.id] = true;

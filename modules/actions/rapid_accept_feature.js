@@ -73,6 +73,8 @@ export function actionRapidAcceptFeature(entityID, extGraph) {
         var seenRelations = {};    // keep track of seen relations to avoid infinite recursion
         var extEntity = extGraph.entity(entityID);
 
+        console.log(extEntity.type)
+
         if (extEntity.type === 'node') {
             acceptNode(extEntity);
         } else if (extEntity.type === 'way') {
