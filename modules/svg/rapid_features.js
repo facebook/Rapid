@@ -146,7 +146,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
 
   function render(selection) {
-    console.log(selection);
     const rapidContext = context.rapidContext();
 
     // Ensure Rapid layer and <defs> exists
@@ -263,9 +262,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
     if (!service) return;
     const selectedIDs = context.selectedIDs();
 
-    console.log(selectedIDs);
-
-
     // Adjust the dataset id for whether we want the data conflated or not.
     const internalID = dataset.id + (dataset.conflated ? '-conflated' : '');
     const graph = service.graph(internalID);
@@ -306,10 +302,11 @@ export function svgRapidFeatures(projection, context, dispatch) {
               seen[last] = true;
               geoData.vertices.push(graph.entity(last));
             }
-            console.log(d);
-            if(d.suggestionContext && d.suggestionContext.streetViewImageSet) {
+            if(selectedIDs.includes(d.id) && d.suggestionContext && d.suggestionContext.streetViewImageSet) {
               const {images} = d.suggestionContext.streetViewImageSet;
-              geoData.viewfieldPoints = geoData.viewfieldPoints.concat(images);
+              if(images) {
+                geoData.viewfieldPoints = geoData.viewfieldPoints.concat(images);
+              }
             }
           });
 
@@ -381,13 +378,13 @@ export function svgRapidFeatures(projection, context, dispatch) {
   }
 
   function drawViewfieldPoints(selection, viewfieldPoints) {
-    let viewfield = selection.selectAll("g.viewfieldgroup")
+    let viewfield = selection.selectAll("g.suggestionViewfieldgroup")
       .data(viewfieldPoints.length ? [0] : []);
     viewfield.exit().remove();
 
     viewfield = viewfield.enter()
       .append('g')
-      .attr('class', 'viewfieldgroup')
+      .attr('class', 'suggestionViewfieldgroup')
       .merge(viewfield);
 
     let points = viewfield

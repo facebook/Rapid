@@ -328,8 +328,6 @@ function parseXML(dataset, xml, callback, options) {
         }
 
         // associate cubitor context with osm entities
-        console.log(osmEntities);
-        console.log(cubitorContext);
         osmEntities.forEach(entity => {
             if(entity.suggestionId && cubitorContext[entity.suggestionId]) {
                 entity.suggestionContext = cubitorContext[entity.suggestionId];
@@ -492,15 +490,12 @@ export default {
             if (Object.keys(cache.loaded).length > 0 || Object.keys(cache.inflight).length > 0) return;
 
             var controller = new AbortController();
-            console.log('http://localhost:8081/' + tileURL(ds, tile.extent, taskExtent));
             d3_xml('http://localhost:8081/' + tileURL(ds, tile.extent, taskExtent), { signal: controller.signal, mode: 'cors' })
                 .then(function (dom) {
-                    console.log(dom);
                     delete cache.inflight[tile.id];
                     if (!dom) return;
                     parseXML(ds, dom, function(err, results) {
                         if (err) return;
-                        console.log(results);
                         graph.rebase(results, [graph], true);
                         tree.rebase(results, true);
                         cache.loaded[tile.id] = true;
