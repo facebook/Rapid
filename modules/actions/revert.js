@@ -1,7 +1,7 @@
 import { actionDeleteRelation } from './delete_relation';
 import { actionDeleteWay } from './delete_way';
 
-
+// test comment
 export function actionRevert(id) {
     var action = function(graph) {
         var entity = graph.hasEntity(id),
