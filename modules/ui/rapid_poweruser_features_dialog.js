@@ -37,7 +37,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     return prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
   }
 
-  function toggleFeature(featureFlag) {
+  function toggleFeature(_, featureFlag) {
     let enabled = prefs(`rapid-internal-feature.${featureFlag}`) === 'true';
     enabled = !enabled;
     prefs(`rapid-internal-feature.${featureFlag}`, enabled);
