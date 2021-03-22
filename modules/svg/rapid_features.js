@@ -15,6 +15,7 @@ let _actioned;
 
 
 export function svgRapidFeatures(projection, context, dispatch) {
+  const VIEWFIELD_MAGENTA = 'rgba(218, 38, 212, 0.6)';
   const RAPID_MAGENTA = '#da26d3';
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
   const gpxInUrl = utilStringQs(window.location.hash).gpx;
@@ -240,12 +241,26 @@ export function svgRapidFeatures(projection, context, dispatch) {
     }
   }
 
+  function transformViewFieldPoint(d) {
+      if(!d.loc) {
+        d.loc = [d.lon, d.lat];
+      }
+      var t = svgPointTransform(projection)(d);
+      t += ' scale(1.5,1.5) rotate(' + Math.floor(d.ca) + ',0,0)';
+      return t;
+  }
+
+  function viewfieldPath() {
+      return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';
+  }
+
 
   function eachDataset(dataset, i, nodes) {
     const rapidContext = context.rapidContext();
     const selection = d3_select(nodes[i]);
     const service = getServiceByDataset(dataset);
     if (!service) return;
+    const selectedIDs = context.selectedIDs();
 
     // Adjust the dataset id for whether we want the data conflated or not.
     const internalID = dataset.id + (dataset.conflated ? '-conflated' : '');
@@ -257,7 +272,8 @@ export function svgRapidFeatures(projection, context, dispatch) {
     let geoData = {
       paths: [],
       vertices: [],
-      points: []
+      points: [],
+      viewfieldPoints: []
     };
 
     if (context.map().zoom() >= context.minEditableZoom()) {
@@ -286,6 +302,12 @@ export function svgRapidFeatures(projection, context, dispatch) {
             if (!seen[last]) {
               seen[last] = true;
               geoData.vertices.push(graph.entity(last));
+            }
+            if(selectedIDs.includes(d.id) && d.suggestionContext && d.suggestionContext.streetViewImageSet) {
+              const {images} = d.suggestionContext.streetViewImageSet;
+              if(images) {
+                geoData.viewfieldPoints = geoData.viewfieldPoints.concat(images);
+              }
             }
           });
 
@@ -317,7 +339,8 @@ export function svgRapidFeatures(projection, context, dispatch) {
     selection
       .call(drawPaths, geoData.paths, dataset, getPath)
       .call(drawVertices, geoData.vertices, getTransform)
-      .call(drawPoints, geoData.points, getTransform);
+      .call(drawPoints, geoData.points, getTransform)
+      .call(drawViewfieldPoints, geoData.viewfieldPoints);
   }
 
 
@@ -353,6 +376,46 @@ export function svgRapidFeatures(projection, context, dispatch) {
       })
       .merge(paths)
       .attr('d', getPath);
+  }
+
+
+  function drawViewfieldPoints(selection, viewfieldPoints) {
+    let viewfield = selection.selectAll("g.suggestionViewfieldgroup")
+      .data(viewfieldPoints.length ? [0] : []);
+    viewfield.exit().remove();
+
+    viewfield = viewfield.enter()
+      .append('g')
+      .attr('class', 'suggestionViewfieldgroup')
+      .merge(viewfield);
+
+    let points = viewfield
+      .selectAll('g.viewfield')
+      .data(viewfieldPoints, d => d.key);
+
+
+    const enter = points.enter()
+      .append('g')
+      .attr('class', d => `viewfield ${d.key}`);
+
+
+    enter
+      .append('circle')
+      .attr('r', 4)
+      .attr('cx', 8)
+      .attr('cy', 14)
+      .attr('fill', VIEWFIELD_MAGENTA);
+
+    enter
+      .append('path')
+      .attr('d', viewfieldPath)
+      .attr('fill', VIEWFIELD_MAGENTA);
+
+
+    // update
+    points = points
+      .merge(enter)
+      .attr('transform', transformViewFieldPoint);
   }
 
 

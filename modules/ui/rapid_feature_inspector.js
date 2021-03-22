@@ -29,6 +29,18 @@ export function uiRapidFeatureInspector(context, keybinding) {
   }
 
 
+  function getService(serviceName) {
+    switch(serviceName) {
+      case 'esri':
+        return services.esriData;
+      case 'fbml_streetview':
+        return services.fbStreetviewSuggestions;
+      default:
+        return services.fbMLRoads;
+    }
+  }
+
+
   function onAcceptFeature() {
     if (!_datum) return;
 
@@ -54,7 +66,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
 
-    const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+    const service = getService(_datum.__service__);
     const graph = service.graph(_datum.__datasetid__);
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
@@ -261,6 +273,29 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .append('div')
       .attr('class', d => `rapid-inspector-choice rapid-inspector-choice-${d.key}`)
       .each(showChoice);
+
+    if(_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
+      const {images} = _datum.suggestionContext.streetViewImageSet;
+      if(images) {
+        const img = body.selectAll('.rapid-inspector-images')
+          .data([0]);
+        const imagesEnter = img
+          .enter()
+          .append('div');
+
+        imagesEnter.selectAll('.rapid-inspector-image')
+          .data(images)
+          .enter()
+          .append('div')
+          .each(showImage);
+      }
+    }
+  }
+
+
+  function showImage(d, i, nodes) {
+    const selection = d3_select(nodes[i]);
+    selection.append('img').attr('src', d.url).attr('class', 'rapid-inspector-image');
   }
 
 
