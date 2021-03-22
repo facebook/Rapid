@@ -207,7 +207,8 @@ function parseStreetViewImageSet(xmlEle) {
             url: img.getAttribute("url"),
             sidewalkSide: img.getAttribute("sidewalk-side"),
             lat: parseFloat(img.getAttribute("lat")),
-            lon: parseFloat(img.getAttribute('lon'))
+            lon: parseFloat(img.getAttribute('lon')),
+            ca: parseFloat(img.getAttribute('ca'))
         };
     }
     streetViewImageSet.images = images;
@@ -325,6 +326,13 @@ function parseXML(dataset, xml, callback, options) {
                 }
             }
         }
+
+        // associate suggestion context with osm entities
+        osmEntities.forEach(entity => {
+            if(entity.suggestionId && cubitorContext[entity.suggestionId]) {
+                entity.suggestionContext = cubitorContext[entity.suggestionId];
+            }
+        });
 
         callback(null, osmEntities);
     });
