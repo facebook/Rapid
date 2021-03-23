@@ -250,10 +250,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
       return t;
   }
 
-  function viewfieldPath() {
-      return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';
-  }
-
 
   function eachDataset(dataset, i, nodes) {
     const rapidContext = context.rapidContext();
@@ -380,13 +376,13 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
 
   function drawViewfieldPoints(selection, viewfieldPoints) {
-    let viewfield = selection.selectAll("g.suggestionViewfieldgroup")
+    let viewfield = selection.selectAll("g.suggestionViewfieldGroup")
       .data(viewfieldPoints.length ? [0] : []);
     viewfield.exit().remove();
 
     viewfield = viewfield.enter()
       .append('g')
-      .attr('class', 'suggestionViewfieldgroup')
+      .attr('class', 'suggestionViewfieldGroup')
       .merge(viewfield);
 
     let points = viewfield
@@ -399,6 +395,8 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .attr('class', d => `viewfield ${d.key}`);
 
 
+    // the circle created here needs to be aligned with
+    // viewfield path added after it.
     enter
       .append('circle')
       .attr('r', 4)
@@ -408,7 +406,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
     enter
       .append('path')
-      .attr('d', viewfieldPath)
+      .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
       .attr('fill', VIEWFIELD_MAGENTA);
 
 
