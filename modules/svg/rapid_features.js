@@ -241,12 +241,13 @@ export function svgRapidFeatures(projection, context, dispatch) {
     }
   }
 
+
   function transformViewFieldPoint(d) {
       if(!d.loc) {
         d.loc = [d.lon, d.lat];
       }
       var t = svgPointTransform(projection)(d);
-      t += ' scale(1.5,1.5) rotate(' + Math.floor(d.ca) + ',0,0)';
+      t += ' scale(2,2) rotate(' + Math.floor(d.ca) + ',0,0)';
       return t;
   }
 
@@ -302,7 +303,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
             if(selectedIDs.includes(d.id) && d.suggestionContext && d.suggestionContext.streetViewImageSet) {
               const {images} = d.suggestionContext.streetViewImageSet;
               if(images) {
-                geoData.viewfieldPoints = geoData.viewfieldPoints.concat(images);
+                geoData.viewfieldPoints = images;
               }
             }
           });
@@ -337,6 +338,16 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .call(drawVertices, geoData.vertices, getTransform)
       .call(drawPoints, geoData.points, getTransform)
       .call(drawViewfieldPoints, geoData.viewfieldPoints);
+
+    context.rapidContext().on('select_suggested_viewfield', function() {
+      const selectedImage = rapidContext.getSelectSuggestedImage();
+      if(selectedImage) {
+        selection.select(`.${selectedImage.key}`).style('stroke', 'white');
+      } else {
+        selection.selectAll(`.viewfieldSuggestion`)
+          .style('stroke', VIEWFIELD_MAGENTA);
+      }
+    });
   }
 
 
@@ -376,6 +387,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
 
   function drawViewfieldPoints(selection, viewfieldPoints) {
+    const rapidContext = context.rapidContext();
     let viewfield = selection.selectAll("g.suggestionViewfieldGroup")
       .data(viewfieldPoints.length ? [0] : []);
     viewfield.exit().remove();
@@ -386,14 +398,23 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .merge(viewfield);
 
     let points = viewfield
-      .selectAll('g.viewfield')
+      .selectAll('g.viewfieldSuggestion')
+      .style('stroke', VIEWFIELD_MAGENTA)
+      .on('mouseenter', (d, i) => {
+        selection.select(`.${viewfieldPoints[i].key}`).style('stroke', 'white');
+        rapidContext.selectSuggestedImage(viewfieldPoints[i]);
+      })
+      .on('mouseleave', () => {
+        selection.selectAll(`.viewfieldSuggestion`).style('stroke', VIEWFIELD_MAGENTA);
+        rapidContext.selectSuggestedImage(null);
+      })
       .data(viewfieldPoints, d => d.key);
 
+    points.exit().remove();
 
     const enter = points.enter()
       .append('g')
-      .attr('class', d => `viewfield ${d.key}`);
-
+      .attr('class', d => `viewfieldSuggestion ${d.key}`);
 
     // the circle created here needs to be aligned with
     // viewfield path added after it.
@@ -408,7 +429,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .append('path')
       .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
       .attr('fill', VIEWFIELD_MAGENTA);
-
 
     // update
     points = points

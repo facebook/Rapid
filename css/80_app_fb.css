@@ -293,6 +293,14 @@ button.rapid-features.layer-off use {
     margin: 5px;
 }
 
+.rapid-inspector-image-highlight {
+    border: 2px solid white;
+}
+
+.rapid-inspector-image:hover {
+    border: 2px solid white;
+}
+
 .rapid-inspector-choices {
     display: flex;
     flex-flow: column nowrap;

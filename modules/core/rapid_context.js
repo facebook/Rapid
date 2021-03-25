@@ -6,7 +6,10 @@ import { utilRebind } from '../util';
 
 
 export function coreRapidContext(context) {
-  const dispatch = d3_dispatch('task_extent_set');
+  const dispatch = d3_dispatch(
+    'task_extent_set',
+    'select_suggested_image',
+    'select_suggested_viewfield');
   let _rapidContext = {};
   _rapidContext.version = '1.1.4';
   _rapidContext.showPowerUser = context.initialHashParams.poweruser === 'true';
@@ -148,6 +151,19 @@ export function coreRapidContext(context) {
     _rapidContext.sources = new Set();
   };
 
+  _rapidContext.selectSuggestedImage = (d) => {
+    _rapidContext.selectedSuggestedImage = d;
+    dispatch.call('select_suggested_image');
+  }
+
+  _rapidContext.selectSuggestedViewfield = (d) => {
+    _rapidContext.selectedSuggestedImage = d;
+    dispatch.call('select_suggested_viewfield');
+  }
+
+  _rapidContext.getSelectSuggestedImage = () => {
+    return _rapidContext.selectedSuggestedImage;
+  }
 
   return utilRebind(_rapidContext, dispatch, 'on');
 }
