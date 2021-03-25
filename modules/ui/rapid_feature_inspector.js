@@ -286,7 +286,26 @@ export function uiRapidFeatureInspector(context, keybinding) {
           .data(images)
           .enter()
           .append('div')
+          .on('mouseenter', d => {
+            const rapidContext = context.rapidContext();
+            rapidContext.selectSuggestedViewfield(d);
+          })
+          .on('mouseleave', () => {
+            const rapidContext = context.rapidContext();
+            rapidContext.selectSuggestedViewfield(null);
+          })
           .each(showImage);
+
+        context.rapidContext().on('select_suggested_image', function() {
+          const selectedImage = rapidContext.getSelectSuggestedImage();
+          if(selectedImage) {
+            body.select(`.rapid-inspector-image-${selectedImage.key}`)
+              .classed('rapid-inspector-image-highlight', true);
+          } else {
+            body.selectAll(`.rapid-inspector-image`)
+              .classed('rapid-inspector-image-highlight', false);
+          }
+        });
       }
     }
   }
@@ -294,7 +313,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
   function showImage(d, i, nodes) {
     const selection = d3_select(nodes[i]);
-    selection.append('img').attr('src', d.url).attr('class', 'rapid-inspector-image');
+    selection.append('img').attr('src', d.url)
+      .attr('class', `rapid-inspector-image rapid-inspector-image-${d.key}`);
+
   }
 
 
