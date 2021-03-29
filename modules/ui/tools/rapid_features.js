@@ -10,8 +10,8 @@ import { uiRapidPowerUserFeaturesDialog } from '../rapid_poweruser_features_dial
 
 export function uiToolRapidFeatures(context) {
   const toggleKeyDispatcher = d3_dispatch('ai_feature_toggle');
-  const rapidFeaturesToggleKey = uiCmd('⇧' + t('map_data.layers.ai-features.key'));
-  const datasetDialog = uiRapidFeatureToggleDialog(context, rapidFeaturesToggleKey, toggleKeyDispatcher);
+  const rapidFeaturesToggleKey = '⇧' + t('map_data.layers.ai-features.key');
+  const datasetDialog = uiRapidFeatureToggleDialog(context, uiCmd(rapidFeaturesToggleKey), toggleKeyDispatcher);
   const powerUserDialog = uiRapidPowerUserFeaturesDialog(context);
   const showPowerUser = context.rapidContext().showPowerUser;
 
@@ -21,7 +21,7 @@ export function uiToolRapidFeatures(context) {
   };
 
   context.keybinding()
-    .on(rapidFeaturesToggleKey, (d3_event) => {
+    .on(uiCmd(rapidFeaturesToggleKey), (d3_event) => {
       d3_event.preventDefault();
       d3_event.stopPropagation();
       toggleFeatures();
