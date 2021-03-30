@@ -45,8 +45,7 @@ export function uiRapidFirstEditDialog(context) {
     let loginToOsm = buttonWrap
       .append('button')
       .attr('class', 'rapid-login-to-osm')
-      .on('click', (d, i, nodes) => {
-        d3_select(nodes[i]).node().blur();
+      .on('click', () => {
         modalSelection.close();
         const osm = context.connection();
         if (!osm) return;
