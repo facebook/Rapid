@@ -624,6 +624,16 @@ export function coreHistory(context) {
                         });
                     }
 
+                    // restore RapiD sources
+                    if (d.annotation && d.annotation.type === 'rapid_accept_feature') {
+                        var rapidContext = context.rapidContext();
+                        var sourceTag = d.annotation.source;
+                        rapidContext.sources.add('mapwithai');      // always add 'mapwithai'
+                        if (sourceTag && /^esri/.test(sourceTag)) {
+                            rapidContext.sources.add('esri');       // add 'esri' for esri sources
+                        }
+                    }
+
                     return {
                         graph: coreGraph(_stack[0].graph).load(entities),
                         annotation: d.annotation,

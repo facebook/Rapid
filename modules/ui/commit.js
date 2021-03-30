@@ -56,13 +56,15 @@ export function uiCommit(context) {
         // Initialize changeset if one does not exist yet.
         if (!context.changeset) initChangeset();
 
-        loadDerivedChangesetTags();
-
+        updateSessionChangesetTags();
         selection.call(render);
     }
 
-    function initChangeset() {
 
+    //
+    // Creates an initial changeset
+    //
+    function initChangeset() {
         // expire stored comment, hashtags, source after cutoff datetime - #3947 #4899
         var commentDate = +prefs('commentDate') || 0;
         var currDate = Date.now();
@@ -108,42 +110,52 @@ export function uiCommit(context) {
         if (source) {
             tags.source = source;
         }
-        var photoOverlaysUsed = context.history().photoOverlaysUsed();
-        if (photoOverlaysUsed.length) {
-            var sources = (tags.source || '').split(';');
-
-            // include this tag for any photo layer
-            if (sources.indexOf('streetlevel imagery') === -1) {
-                sources.push('streetlevel imagery');
-            }
-
-            // add the photo overlays used during editing as sources
-            photoOverlaysUsed.forEach(function(photoOverlay) {
-                if (sources.indexOf(photoOverlay) === -1) {
-                    sources.push(photoOverlay);
-                }
-            });
-
-            tags.source = context.cleanTagValue(sources.join(';'));
-        }
 
         context.changeset = new osmChangeset({ tags: tags });
     }
 
-    // Calculates read-only metadata tags based on the user's editing session and applies
-    // them to the changeset.
-    function loadDerivedChangesetTags() {
 
+    //
+    // Calculates tags based on the user's editing session
+    //
+    function updateSessionChangesetTags() {
         var osm = context.connection();
         if (!osm) return;
 
         var tags = Object.assign({}, context.changeset.tags);   // shallow copy
+        var sources = new Set((tags.source || '').split(';'));
 
-        // assign tags for imagery used
-        var imageryUsed = context.cleanTagValue(context.history().imageryUsed().join(';'));
-        tags.imagery_used = imageryUsed || 'None';
+        // Sync up the the used photo sources with `sources`
+        var usedPhotos = new Set(context.history().photoOverlaysUsed());
+        var allPhotos = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam'];
+        allPhotos.forEach(function(val) { sources.delete(val); });   // reset all
+        if (usedPhotos.size) {
+            sources.add('streetlevel imagery');
+            usedPhotos.forEach(function(val) { sources.add(val); });
+        } else {
+            sources.delete('streetlevel imagery');
+        }
 
-        // assign tags for closed issues and notes
+        // Sync up the used RapiD sources with `sources`
+        var usedRapiD = context.rapidContext().sources;
+        var allRapiD = ['mapwithai', 'esri'];
+        allRapiD.forEach(function(val) { sources.delete(val); });   // reset all
+        usedRapiD.forEach(function(val) { sources.add(val); });
+
+        // Update `source` tag
+        var setSource = context.cleanTagValue(Array.from(sources).filter(Boolean).join(';'));
+        if (setSource) {
+            tags.source = setSource;
+        } else {
+            delete tags.source;
+        }
+
+        // Update `imagery_used` tag
+        var imageries = new Set(context.history().imageryUsed());
+        var setImagery = context.cleanTagValue(Array.from(imageries).filter(Boolean).join(';'));
+        tags.imagery_used = setImagery || 'None';
+
+        // Update tags for closed issues and notes
         var osmClosed = osm.getClosedIDs();
         var itemType;
         if (osmClosed.length) {
@@ -203,8 +215,10 @@ export function uiCommit(context) {
         context.changeset = context.changeset.update({ tags: tags });
     }
 
-    function render(selection) {
 
+    //
+    //
+    function render(selection) {
         var osm = context.connection();
         if (!osm) return;
 

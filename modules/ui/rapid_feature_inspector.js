@@ -47,24 +47,27 @@ export function uiRapidFeatureInspector(context, keybinding) {
     // annotation, where "type" and "description" are standard keys,
     // and there may be additional properties. Note that this will be
     // serialized to JSON while saving undo/redo state in history.save().
-    const annotation = {
+    let annotation = {
       type: 'rapid_accept_feature',
       description: t('rapid_feature_inspector.option_accept.annotation'),
       id: _datum.id,
-      origid: _datum.__origid__,
+      origid: _datum.__origid__
     };
 
     const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
     const graph = service.graph(_datum.__datasetid__);
+    const sourceTag = _datum.tags && _datum.tags.source;
+    if (sourceTag) annotation.source = sourceTag;
+
     context.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
     context.enter(modeSelect(context, [_datum.id]));
 
     if (context.inIntro()) return;
 
     // remember sources for later when we prepare the changeset
-    const source = _datum.tags && _datum.tags.source;
-    if (source) {
-      rapidContext.sources.add(source);
+    rapidContext.sources.add('mapwithai');    // always add 'mapwithai'
+    if (sourceTag && /^esri/.test(sourceTag)) {
+      rapidContext.sources.add('esri');       // add 'esri' for esri sources
     }
 
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
