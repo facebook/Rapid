@@ -9,9 +9,12 @@ For basic information about the iD editor (architecture, build and installation 
 ## Participate!
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
-* See [open issues in the issue tracker](https://github.com/facebookincubator/RapiD/issues?state=open)
-if you're looking to help on issues.
+* See [open issues in the issue tracker](https://github.com/facebookincubator/RapiD/issues?state=open) if you're looking to help on issues.
 * To help with internationalization, please follow the [general translating page in iD repo](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating).
+
+We're available to chat!  Ping us on the `#mapwithai_feedback` channel on either:
+* [OpenStreetMap US Slack](https://slack.openstreetmap.us/)
+* [HOTOSM Slack](https://slack.hotosm.org/)
 
 ## Country Data Requests
 To request RapiD data for other countries, please submit [a new issue](https://github.com/facebookincubator/RapiD/issues/new).
