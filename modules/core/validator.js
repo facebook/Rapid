@@ -29,6 +29,50 @@ export function coreValidator(context) {
   const RETRY = 5000;             // wait 5sec before revalidating provisional entities
 
 
+  // Allow validation severity to be overridden by url queryparams...
+  // See: https://github.com/openstreetmap/iD/pull/8243
+  //
+  // Each param should contain a urlencoded comma separated list of
+  // `type/subtype` rules.  `*` may be used as a wildcard..
+  // Examples:
+  //  `validationError=disconnected_way/*`
+  //  `validationError=disconnected_way/highway`
+  //  `validationError=crossing_ways/bridge*`
+  //  `validationError=crossing_ways/bridge*,crossing_ways/tunnel*`
+
+  const _errorOverrides = parseHashParam(context.initialHashParams.validationError);
+  const _warningOverrides = parseHashParam(context.initialHashParams.validationWarning);
+  const _disableOverrides = parseHashParam(context.initialHashParams.validationDisable);
+
+  // `parseHashParam()`   (private)
+  // Checks hash parameters for severity overrides
+  // Arguments
+  //   `param` - a url hash parameter (`validationError`, `validationWarning`, or `validationDisable`)
+  // Returns
+  //   Array of Objects like { type: RegExp, subtype: RegExp }
+  //
+  function parseHashParam(param) {
+    let result = [];
+    let rules = (param || '').split(',');
+    rules.forEach(rule => {
+      rule = rule.trim();
+      const parts = rule.split('/', 2);  // "type/subtype"
+      const type = parts[0];
+      const subtype = parts[1] || '*';
+      if (!type || !subtype) return;
+      result.push({ type: makeRegExp(type), subtype: makeRegExp(subtype) });
+    });
+    return result;
+
+    function makeRegExp(str) {
+      const escaped = str
+        .replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&')   // escape all reserved chars except for the '*'
+        .replace(/\*/g, '.*');                      // treat a '*' like '.*'
+      return new RegExp('^' + escaped + '$');
+    }
+  }
+
+
   // `init()`
   // Initialize the validator, called once on iD startup
   //
@@ -40,7 +84,7 @@ export function coreValidator(context) {
       _rules[key] = fn;
     });
 
-    let disabledRules = prefs('validate-disabledRules');
+    const disabledRules = prefs('validate-disabledRules');
     if (disabledRules) {
       disabledRules.split(',').forEach(k => _disabledRules[k] = true);
     }
@@ -504,6 +548,9 @@ export function coreValidator(context) {
   //
   function validateEntity(entity, graph) {
     let result = { issues: [], provisional: false };
+    Object.keys(_rules).forEach(runValidation);   // run all rules
+    return result;
+
 
     // runs validation and appends resulting issues
     function runValidation(key) {
@@ -513,17 +560,40 @@ export function coreValidator(context) {
         return;
       }
 
-      const detected = fn(entity, graph);
+      const detected = fn(entity, graph).filter(applySeverityOverrides);
       if (detected.provisional) {  // this validation should be run again later
         result.provisional = true;
       }
+
       result.issues = result.issues.concat(detected);
+
+      // If there are any override rules that match the issue type/subtype,
+      // adjust severity (or disable it) and keep/discard as quickly as possible.
+      function applySeverityOverrides(issue) {
+        const type = issue.type;
+        const subtype = issue.subtype || '';
+        let i;
+
+        for (i = 0; i < _errorOverrides.length; i++) {
+          if (_errorOverrides[i].type.test(type) && _errorOverrides[i].subtype.test(subtype)) {
+            issue.severity = 'error';
+            return true;
+          }
+        }
+        for (i = 0; i < _warningOverrides.length; i++) {
+          if (_warningOverrides[i].type.test(type) && _warningOverrides[i].subtype.test(subtype)) {
+            issue.severity = 'warning';
+            return true;
+          }
+        }
+        for (i = 0; i < _disableOverrides.length; i++) {
+          if (_disableOverrides[i].type.test(type) && _disableOverrides[i].subtype.test(subtype)) {
+            return false;
+          }
+        }
+        return true;
+      }
     }
-
-    // run all rules
-    Object.keys(_rules).forEach(runValidation);
-
-    return result;
   }
 
 
