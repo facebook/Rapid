@@ -20,8 +20,6 @@ export function coreFileFetcher() {
     'keepRight': 'data/keepRight.min.json',
     'languages': 'data/languages.min.json',
     'locales': 'locales/index.min.json',
-    'nsi_brands': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@4/dist/brands.min.json',
-    'nsi_filters': 'https://cdn.jsdelivr.net/npm/name-suggestion-index@4/dist/filters.min.json',
     'oci_features': 'https://cdn.jsdelivr.net/npm/osm-community-index@3/dist/featureCollection.min.json',
     'oci_resources': 'https://cdn.jsdelivr.net/npm/osm-community-index@3/dist/resources.min.json',
     'preset_categories': 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/preset_categories.min.json',
