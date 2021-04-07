@@ -60,6 +60,7 @@ function buildData() {
   // compile Font Awesome icons
   let faIcons = new Set([
     // list here the icons we want to use in the UI that aren't tied to other data
+    'fas-filter',
     'fas-i-cursor',
     'fas-lock',
     'fas-palette',

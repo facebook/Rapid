@@ -690,42 +690,6 @@ hide this one and style something on top of it.  */
     color: #aaa;
 }
 
-/*
-.rapid-checkbox.poweruser:hover {
-    color: #ddd;
-    background: #8885;
-}
-
-.rapid-feature-animation.poweruser {
-    background-size: 100% 100%;
-    width: 130px;
-    height: 130px;
-    border-radius: 10px;
-    margin: 5px;
-    border: 1px solid darkgrey;
-}
-*/
-/*
-.modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
-    background-image: url('rapid/ai-feature-halo-still.png');
-}
-.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
-    background-image: url('rapid/ai-feature-halo.gif');
-}
-.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
-    background-image: url('rapid/tagnostic-road-join-still.png');
-}
-.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
-    background-image: url('rapid/tagnostic-road-join.gif');
-}
-.modal-section.rapid-checkbox.poweruser div#tag-sources {
-    background-image: url('rapid/tag-sources-still.png');
-}
-.modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
-    background-image: url('rapid/tag-sources.gif');
-}
-*/
-
 /* View/Manage Datasets modal */
 /* view-manage-wrap is an absolutely positioned div to create a new stacking context,
    so we can put a modal on top of the other modal.
@@ -779,14 +743,30 @@ hide this one and style something on top of it.  */
     font-size: 24px;
     padding: 0 5px;
 }
-.rapid-view-manage-header-inputs {
-    flex: 0 1 auto;
-}
 .rapid-view-manage-header-about {
     color: #ddd;
 }
-.rapid-view-manage-header-about  {
+
+
+.modal-view-manage .modal-section.rapid-view-manage-filter {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid #aaaa;
+    color: #fff;
+}
+.rapid-view-manage-filter-wrap {
+    flex: 0 0 200px;
+    padding: 0 5px;
+}
+.rapid-view-manage-filter-input {
+    background: #666;
     color: #ddd;
+}
+.rapid-view-manage-filter-results {
+    color: #ddd;
+    flex: 1;
+    padding: 0 5px;
 }
 
 
@@ -811,7 +791,7 @@ hide this one and style something on top of it.  */
 
 .modal-view-manage .modal-section.rapid-view-manage-datasets-section {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     align-items: stretch;
 }
 .rapid-view-manage-pageleft,
