@@ -317,8 +317,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     labelsEnter
       .append('div')
-      .attr('class', 'rapid-view-manage-dataset-name')
-      .text(d => d.title);
+      .attr('class', 'rapid-view-manage-dataset-name');
 
     labelsEnter
       .append('div')
@@ -339,7 +338,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     labelsEnter
       .append('div')
-      .text(d => d.snippet);
+      .attr('class', 'rapid-view-manage-dataset-snippet');
 
     labelsEnter
       .append('button')
@@ -359,6 +358,12 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     datasets = datasets
       .merge(datasetsEnter)
       .classed('hide', d => d.filtered);
+
+    datasets.selectAll('.rapid-view-manage-dataset-name')
+      .html(d => highlight(_filter, d.title));
+
+    datasets.selectAll('.rapid-view-manage-dataset-snippet')
+      .html(d => highlight(_filter, d.snippet));
 
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
@@ -448,6 +453,19 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     return datasets[d.id] && datasets[d.id].added;
   }
 
+
+  function highlight(needle, haystack) {
+    let html = haystack;// escape(haystack);   // text -> html
+    if (needle) {
+      const re = new RegExp('\(' + escapeRegex(needle) + '\)', 'gi');
+      html = html.replace(re, '<mark>$1</mark>');
+    }
+    return html;
+  }
+
+  function escapeRegex(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  }
 
   return utilRebind(render, dispatch, 'on');
 }
