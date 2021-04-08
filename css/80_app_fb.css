@@ -24,8 +24,8 @@ svg.logo-rapid.dark,
     font-weight: bold;
     color: #eee;
     margin: 0 10px;
-    width: 1.7em;
-    height: 1.7em;
+    width: 1.8em;
+    height: 1.8em;
     border: 1px solid #909;
     border-radius: 5px;
     background: rgb(203,16,237);
@@ -354,6 +354,7 @@ button.rapid-features.layer-off use {
     top: 80px;
     min-width: 650px;
     max-width: 650px;
+    max-height: 85%;
     background: rgba(25, 25, 25, 0.9);
     -webkit-backdrop-filter: blur(2.5px);
     backdrop-filter: blur(2.5px);
@@ -376,6 +377,7 @@ button.rapid-features.layer-off use {
 
 .modal.rapid-modal .content {
     box-shadow: unset;
+    overflow-y: hidden;
 }
 .modal.rapid-modal .modal-section {
     border: 0px;
@@ -690,7 +692,7 @@ hide this one and style something on top of it.  */
     color: #aaa;
 }
 
-/* View/Manage Datasets modal */
+/* Add/Manage Datasets modal */
 /* view-manage-wrap is an absolutely positioned div to create a new stacking context,
    so we can put a modal on top of the other modal.
    (it functions like .shaded for layout but without adding any shading)
@@ -747,7 +749,6 @@ hide this one and style something on top of it.  */
     color: #ddd;
 }
 
-
 .modal-view-manage .modal-section.rapid-view-manage-filter {
     display: flex;
     flex-flow: row nowrap;
@@ -756,56 +757,46 @@ hide this one and style something on top of it.  */
     color: #fff;
 }
 .rapid-view-manage-filter-wrap {
-    flex: 0 0 200px;
-    padding: 0 5px;
-}
-.rapid-view-manage-filter-input {
-    background: #666;
-    color: #ddd;
-}
-.rapid-view-manage-filter-results {
-    color: #ddd;
+    position: relative;
     flex: 1;
     padding: 0 5px;
 }
-
-
-.modal-view-manage .modal-section.rapid-view-manage-pages {
-    justify-content: center;
+.rapid-view-manage-filter-wrap .icon {
+    position: absolute;
+    left: 16px;
+    top: 10px;
+    color: #aaa;
+    width: 16px;
+    height: 16px;
 }
-.rapid-view-manage-page {
-    font-size: 9px;
-    padding: 10px 4px 13px 4px;
-    margin: 5px 2px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.rapid-view-manage-page:hover {
+.rapid-view-manage-filter-input {
+    background: #444;
     color: #ddd;
-    background: #8885;
+    padding: 4px 12px 4px 40px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    font-size: 16px;
+    width: 75%;
 }
-.rapid-view-manage-page.current {
-    color: #da26d3;
+.rapid-view-manage-filter-input:focus,
+.rapid-view-manage-filter-input:active {
+    background: #444;
+    color: #eee;
+    outline: none;
+    border: 1px solid #aaa;
 }
-
+.rapid-view-manage-filter-results {
+    flex: 1;
+    padding: 0 5px;
+    text-align: end;
+    font-size: 20px;
+}
 
 .modal-view-manage .modal-section.rapid-view-manage-datasets-section {
     display: flex;
     flex-flow: column nowrap;
     align-items: stretch;
-}
-.rapid-view-manage-pageleft,
-.rapid-view-manage-pageright {
-    cursor: pointer;
-}
-.rapid-view-manage-pageleft svg,
-.rapid-view-manage-pageright svg {
-    height: 100%;
-}
-.rapid-view-manage-pageleft:hover,
-.rapid-view-manage-pageright:hover {
-    color: #ddd;
-    background: #8885;
+    overflow-y: auto;
 }
 
 .rapid-view-manage-datasets {

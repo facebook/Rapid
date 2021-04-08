@@ -14,42 +14,11 @@ import { utilKeybinding, utilNoAuto, utilRebind, utilWrap } from '../util';
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
-  const PERPAGE = 4;
 
   let _content = d3_select(null);
   let _filter;
   let _datasetInfo;
-  let _datasetStart = 0;
   let _myClose = () => true;   // custom close handler
-
-
-  // function clamp(num, min, max) {
-  //   return Math.max(min, Math.min(num, max));
-  // }
-
-
-  // function clickPage(_, d) {
-  //   if (!Array.isArray(_datasetInfo)) return;
-
-  //   const pages = Math.ceil(_datasetInfo.length / PERPAGE);
-  //   _datasetStart = clamp(d, 0, pages - 1) * PERPAGE;
-
-  //   _content
-  //     .call(renderModalContent);
-  // }
-
-
-  // function nextPreviousPage(d) {
-  //   if (!Array.isArray(_datasetInfo)) return;
-
-  //   const pages = Math.ceil(_datasetInfo.length / PERPAGE);
-  //   const currPage = Math.floor(_datasetStart / PERPAGE);
-  //   const nextPage = utilWrap(currPage + d, pages);
-  //   _datasetStart = nextPage * PERPAGE;
-
-  //   _content
-  //     .call(renderModalContent);
-  // }
 
 
   function render() {
@@ -64,6 +33,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     // override the close handler
     _myClose = () => {
+      _filter = null;
       myModal
         .transition()
         .duration(200)
@@ -169,12 +139,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-filter-input')
       .attr('placeholder', 'filter datasets')
       .call(utilNoAuto)
-      .on('input', (event) => {
-        const target = event.target;
+      .on('input', (d3_event) => {
+        const target = d3_event.target;
         const val = (target && target.value) || '';
         _filter = val.trim().toLowerCase();
-        console.log('filter = ' + _filter);
-
         dsSection
           .call(renderDatasets);
       });
@@ -182,19 +150,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     filterEnter
       .append('div')
       .attr('class', 'rapid-view-manage-filter-results');
-
-
-    // /* Pages section */
-    // let pagesSection = selection.selectAll('.rapid-view-manage-pages')
-    //   .data([0]);
-
-    // let pagesSectionEnter = pagesSection.enter()
-    //   .append('div')
-    //   .attr('class', 'modal-section rapid-view-manage-pages');
-
-    // pagesSection = pagesSection
-    //   .merge(pagesSectionEnter)
-    //   .call(renderPages);
 
 
     /* Dataset section */
@@ -206,12 +161,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('div')
       .attr('class', 'modal-section rapid-view-manage-datasets-section');
 
-    // dsSectionEnter
-    //   .append('div')
-    //   .attr('class', 'rapid-view-manage-pageleft')
-    //   .call(svgIcon(isRTL ? '#iD-icon-forward' : '#iD-icon-backward'))
-    //   .on('click', () => nextPreviousPage(isRTL ? 1 : -1) );
-
     dsSectionEnter
       .append('div')
       .attr('class', 'rapid-view-manage-datasets-status');
@@ -219,12 +168,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     dsSectionEnter
       .append('div')
       .attr('class', 'rapid-view-manage-datasets');
-
-    // dsSectionEnter
-    //   .append('div')
-    //   .attr('class', 'rapid-view-manage-pageright')
-    //   .call(svgIcon(isRTL ? '#iD-icon-backward' : '#iD-icon-forward'))
-    //   .on('click', () => nextPreviousPage(isRTL ? -1 : 1) );
 
     // update
     dsSection = dsSection
@@ -277,8 +220,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     results.classed('hide', false);
     status.classed('hide', true);
 
-    // selection.text('');
-
     // apply filter
     _datasetInfo.forEach(d => {
       if (!_filter) {
@@ -298,7 +239,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       d.filtered = true;
     });
 
-    // let page = _datasetInfo.slice(_datasetStart, _datasetStart + PERPAGE);
     let datasets = results.selectAll('.rapid-view-manage-dataset')
       .data(_datasetInfo, d => d.id);
 
@@ -373,32 +313,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     _content.selectAll('.rapid-view-manage-filter-results')
       .text(`${count} dataset(s) found`);
   }
-
-
-  // function renderPages(selection) {
-  //   if (!_datasetInfo) return;
-
-  //   const total = _datasetInfo.length;
-  //   const numPages = Math.ceil(total / PERPAGE);
-  //   const currPage = Math.floor(_datasetStart / PERPAGE);
-  //   const pages = Array.from(Array(numPages).keys());
-
-  //   let dots = selection.selectAll('.rapid-view-manage-page')
-  //     .data(pages);
-
-  //   // exit
-  //   dots.exit()
-  //     .remove();
-
-  //   // enter/update
-  //   dots.enter()
-  //     .append('span')
-  //     .attr('class', 'rapid-view-manage-page')
-  //     .html('&#11044;')
-  //     .on('click', clickPage)
-  //     .merge(dots)
-  //     .classed('current', d => d === currPage);
-  // }
 
 
   function toggleDataset(d3_event, d) {

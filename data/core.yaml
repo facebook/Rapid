@@ -1072,7 +1072,7 @@ en:
   rapid_feature_license: Facebook's Map With AI License
   rapid_feature_toggle:
     toggle_all: Toggle all {rapidicon} features
-    view_manage_datasets: "View/Manage Datasets"
+    view_manage_datasets: "Add/Manage Datasets"
     center_map: Center map here
     worldwide: Worldwide
     fbRoads:
@@ -1087,7 +1087,7 @@ en:
       fetching_datasets: Fetching available datasets...
       no_datasets: No datasets available.
       remove: Remove
-      add_to_map: Add To Map
+      add_to_map: Add Dataset
       more_info: More Info
       license_markdown: "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
   rapid_poweruser_features:
