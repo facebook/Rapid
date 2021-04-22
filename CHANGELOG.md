@@ -1,3 +1,62 @@
+# What's New
+
+Thanks to all our contributors, users, and the many people that make RapiD possible! :heart:
+
+The RapiD map editor is an open source project. You can submit bug reports, help out,
+or learn more by visiting our project page on GitHub:  :octocat: https://github.com/facebookincubator/RapiD
+
+If you love RapiD, please star our project on GitHub to show your support! :star:
+
+_Breaking developer changes, which may affect downstream projects or sites that embed RapiD, are marked with a_ :warning:
+
+<!--
+# A.B.C
+##### YYYY-MMM-DD
+
+#### :newspaper: News
+#### :mega: Release Highlights
+#### :boom: Breaking Changes
+#### :tada: New Features
+#### :sparkles: Usability & Accessibility
+#### :scissors: Operations
+#### :camera: Street-Level
+#### :white_check_mark: Validation
+#### :bug: Bugfixes
+#### :earth_asia: Localization
+#### :hourglass: Performance
+#### :mortar_board: Walkthrough / Help
+#### :rocket: Presets
+###### New Presets
+###### Changed Presets
+###### New and Changed Fields
+#### :hammer: Development
+* ([#])
+
+[iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
+[#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
+[@xxxx]: https://github.com/xxxx
+-->
+
+# [1.1.3](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.3)
+##### 2021-Apr-22
+#### :tada: Updates
+* Use Mapillary Vector Tile API ([iD#8372])
+* Name Suggestion Index v5 ([iD#8305])
+* Fix centroid calculation in measurement panel ([iD#8341])
+* Allow validation severity to be overridden with url params ([iD#8243])
+* Update all dependencies (numerous here, but it includes refreshes to things like [osm-community-index](https://github.com/osmlab/osm-community-index/), [temaki](https://github.com/ideditor/temaki), Rollup)
+* Use `addr:` tags as a fallback name ([iD#8440])
+* Bugfix for move/rotate cancel ([iD#8442] / [#80])
+
+[iD#8243]: https://github.com/openstreetmap/iD/issues/8243
+[iD#8305]: https://github.com/openstreetmap/iD/issues/8305
+[iD#8341]: https://github.com/openstreetmap/iD/issues/8341
+[iD#8372]: https://github.com/openstreetmap/iD/issues/8372
+[iD#8440]: https://github.com/openstreetmap/iD/issues/8440
+[iD#8442]: https://github.com/openstreetmap/iD/issues/8442
+[#80]: https://github.com/facebookincubator/RapiD/issues/80
+
+
 # [1.1.2](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.2)
 ##### 2021-Mar-09
 #### :trumpet: Updates
