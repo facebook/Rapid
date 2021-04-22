@@ -127,16 +127,17 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('div')
       .attr('class', 'modal-section rapid-view-manage-filter');
 
-    let filterInputEnter = filterEnter
-      .append('div')
-      .attr('class', 'rapid-view-manage-filter-wrap');
 
-    filterInputEnter
+    let filterSearchEnter = filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-search-wrap');
+
+    filterSearchEnter
       .call(svgIcon('#fas-filter', 'inline'));
 
-    filterInputEnter
+    filterSearchEnter
       .append('input')
-      .attr('class', 'rapid-view-manage-filter-input')
+      .attr('class', 'rapid-view-manage-filter-search')
       .attr('placeholder', 'filter datasets')
       .call(utilNoAuto)
       .on('input', (d3_event) => {
@@ -146,6 +147,25 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dsSection
           .call(renderDatasets);
       });
+
+
+    let filterTypeEnter = filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-type-wrap');
+
+    filterTypeEnter
+      .append('input')
+      .attr('class', 'rapid-view-manage-filter-type')
+      .attr('placeholder', 'any type')
+      .call(utilNoAuto)
+      .on('input', (d3_event) => {
+        // const target = d3_event.target;
+        // const val = (target && target.value) || '';
+        // _filter = val.trim().toLowerCase();
+        // dsSection
+        //   .call(renderDatasets);
+      });
+
 
     filterEnter
       .append('div')

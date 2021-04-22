@@ -756,37 +756,41 @@ hide this one and style something on top of it.  */
     border-bottom: 1px solid #aaaa;
     color: #fff;
 }
-.rapid-view-manage-filter-wrap {
+.rapid-view-manage-filter-search-wrap,
+.rapid-view-manage-filter-type-wrap {
     position: relative;
     flex: 1;
     padding: 0 5px;
 }
-.rapid-view-manage-filter-wrap .icon {
+.rapid-view-manage-filter-search-wrap > .icon {
     position: absolute;
     left: 16px;
-    top: 10px;
+    top: 11px;
     color: #aaa;
     width: 16px;
     height: 16px;
 }
-.rapid-view-manage-filter-input {
+.rapid-view-manage-filter-search,
+.rapid-view-manage-filter-type {
     background: #444;
     color: #ddd;
     padding: 4px 12px 4px 40px;
     border-radius: 10px;
     border: 1px solid #333;
     font-size: 16px;
-    width: 75%;
+    width: 85%;
 }
-.rapid-view-manage-filter-input:focus,
-.rapid-view-manage-filter-input:active {
+.rapid-view-manage-filter-search:focus,
+.rapid-view-manage-filter-search:active,
+.rapid-view-manage-filter-type:focus,
+.rapid-view-manage-filter-type:active {
     background: #444;
     color: #eee;
     outline: none;
     border: 1px solid #aaa;
 }
 .rapid-view-manage-filter-results {
-    flex: 1;
+    flex: 1 1 auto;
     padding: 0 5px;
     text-align: end;
     font-size: 20px;
