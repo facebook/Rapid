@@ -14,7 +14,7 @@ $  git add . && git commit -m 'npm run imagery'
 - Set release version number in `modules/core/rapid_context.js` and `package.json`
 
 ```bash
-$  git add . && git commit -m 'vA.B.C'
+$  git add . && git commit -m 'rapid-vA.B.C'
 $  git push origin main
 ```
 
@@ -25,8 +25,8 @@ $  git reset --hard main
 $  npm run all
 $  git add -f dist
 $  git commit -m 'Check in build'
-$  git tag vA.B.C
-$  git push origin -f release vA.B.C
+$  git tag rapid-vA.B.C
+$  git push origin -f release rapid-vA.B.C
 ```
 - Open https://github.com/facebookincubator/RapiD/releases
 
