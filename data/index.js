@@ -16,7 +16,6 @@ import {
   resources as ociResources
 } from 'osm-community-index';
 
-import { rapid_config } from './rapid_config.json'
 import { dataImagery } from './imagery.json';
 import { presets } from './presets/presets.json';
 import { defaults } from './presets/defaults.json';
@@ -59,5 +58,3 @@ export let data = {
   },
   groups: groups
 };
-
-export var rapid_feature_config = rapid_config; 

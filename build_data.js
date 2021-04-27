@@ -117,7 +117,6 @@ function buildData(build_type) {
     writeFileProm('data/presets/groups.json', prettyStringify({ groups: groups }, { maxLength: 1000 })),
     writeFileProm('data/taginfo.json', prettyStringify(taginfo, { maxLength: 9999 }) ),
     writeFileProm('data/territory-languages.json', prettyStringify({ dataTerritoryLanguages: territoryLanguages }, { maxLength: 9999 }) ),
-    writeRapidConfig(build_type), 
     writeEnJson(tstrings),
     writeFaIcons(faIcons),
     writeTnpIcons(tnpIcons)
@@ -769,17 +768,6 @@ function translationsToYAML(translations) {
 
   return YAML.safeDump({ en: { presets: translations }}, { sortKeys: commentFirst, lineWidth: -1 })
     .replace(/\'.*#\':/g, '#');
-}
-
-
-function writeRapidConfig(build_type) {
-  var readRapidConfig = readFileProm('data/rapid_config.yaml', 'utf8'); 
-
-  return Promise.all([readRapidConfig]).then(function(data) {
-      var config = YAML.load(data[0]); 
-
-      return writeFileProm('data/rapid_config.json', JSON.stringify(config[build_type], null, 4)); 
-  }); 
 }
 
 
