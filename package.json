@@ -38,7 +38,7 @@
     "quickstart": "npm-run-all -s build:dev start:server",
     "start:server": "node scripts/server.js",
     "test": "npm-run-all -s lint build:css build:data build:legacy test:spec",
-    "test:spec": "phantomjs --web-security=no node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js test/index.html spec",
+    "test:spec": "phantomjs --web-security=no test/mocha-phantomjs-core/mocha-phantomjs-core.js test/index.html spec",
     "translations": "node scripts/update_locales.js"
   },
   "dependencies": {
@@ -99,8 +99,7 @@
     "mapillary_sprite_source": "^1.8.0",
     "mapillary-js": "~3.1.0",
     "minimist": "^1.2.3",
-    "mocha": "^7.0.1",
-    "mocha-phantomjs-core": "^2.1.0",
+    "mocha": "^8.3.2",
     "name-suggestion-index": "~5.0",
     "node-fetch": "^2.6.1",
     "npm-run-all": "^4.0.0",
