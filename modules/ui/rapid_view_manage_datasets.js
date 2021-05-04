@@ -225,7 +225,16 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     if (!_datasetInfo) {
       results.classed('hide', true);
-      status.classed('hide', false).text(t('rapid_feature_toggle.esri.fetching_datasets'));
+      status.classed('hide', false)
+        .text(t('rapid_feature_toggle.esri.fetching_datasets'));
+
+      status
+        .append('br');
+
+      status
+        .append('img')
+        .attr('class', 'rapid-view-manage-datasets-spinner')
+        .attr('src', context.imagePath('loader-black.gif'));
 
       service.loadDatasets()
         .then(results => {

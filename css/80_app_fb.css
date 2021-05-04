@@ -710,6 +710,7 @@ hide this one and style something on top of it.  */
     width: 80%;
     min-width: 600px;
     max-width: 1000px;
+    min-height: 85%;
 }
 .modal.rapid-modal.modal-view-manage p {
     font-size: 12px;
@@ -790,7 +791,7 @@ hide this one and style something on top of it.  */
     border: 1px solid #aaa;
 }
 .rapid-view-manage-filter-results {
-    flex: 1 1 auto;
+    flex: 1 1 200px;
     padding: 0 5px;
     text-align: end;
     font-size: 20px;
@@ -801,6 +802,21 @@ hide this one and style something on top of it.  */
     flex-flow: column nowrap;
     align-items: stretch;
     overflow-y: auto;
+}
+
+/* give this section height, even when its contents are hidden */
+.rapid-view-manage-datasets-status,
+.rapid-view-manage-datasets {
+    flex: 1 1 9999px;
+}
+
+.rapid-view-manage-datasets-status {
+    font-size: 20px;
+    text-align: center;
+    margin: 50px;
+}
+.rapid-view-manage-datasets-spinner {
+    filter: brightness(2)contrast(0.8);
 }
 
 .rapid-view-manage-datasets {
