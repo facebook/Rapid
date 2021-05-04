@@ -272,7 +272,7 @@ export function uiSectionBackgroundList(context) {
   }
 
 
-  function chooseBackground(_, d) {
+  function chooseBackground(d3_event, d) {
     if (d.id === 'custom' && !d.template()) {
       return editCustom();
     }
@@ -288,10 +288,10 @@ export function uiSectionBackgroundList(context) {
   function customChanged(d) {
     if (d && d.template) {
       _customSource.template(d.template);
-      chooseBackground(_customSource);
+      chooseBackground(undefined, _customSource);
     } else {
       _customSource.template('');
-      chooseBackground(context.background().findSource('none'));
+      chooseBackground(undefined, context.background().findSource('none'));
     }
   }
 
@@ -338,7 +338,7 @@ export function uiSectionBackgroundList(context) {
       nextBackgroundIndex = (nextBackgroundIndex + offset + backgrounds.length) % backgrounds.length;
       nextBackground = backgrounds[nextBackgroundIndex];
     }
-    chooseBackground(nextBackground);
+    chooseBackground(undefined, nextBackground);
   }
 
   function nextBackground() {
