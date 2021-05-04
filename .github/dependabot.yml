@@ -9,3 +9,5 @@ updates:
       interval: "daily"
     labels:
       - "chore-dependabot"
+    ignore:
+      - dependency-name: "sinon"  # can't upgrade beyond sinon 9.x and still use PhantomJS
