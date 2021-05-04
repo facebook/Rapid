@@ -9,5 +9,3 @@ updates:
       interval: "daily"
     labels:
       - "chore-dependabot"
-    ignore:
-      - dependency-name: "*"
