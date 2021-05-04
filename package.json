@@ -59,7 +59,7 @@
     "fast-json-stable-stringify": "2.1.0",
     "lodash-es": "~4.17.15",
     "marked": "~2.0.0",
-    "node-diff3": "2.1.0",
+    "node-diff3": "2.1.1",
     "osm-auth": "1.1.0",
     "pannellum": "2.5.6",
     "polygon-clipping": "~0.15.1",
