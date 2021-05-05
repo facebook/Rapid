@@ -440,10 +440,15 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dataset.extent = geoExtent(d.extent);
       }
 
-      // Test running building layers only through conflation service
+      // Test running building layers through FBML conflation service
       if (isBuildings) {
         dataset.conflated = true;
         dataset.service = 'fbml';
+
+        // and disable the Microsoft buildings to avoid clutter
+        if (datasets.msBuildings) {
+          datasets.msBuildings.enabled = false;
+        }
       }
 
       datasets[d.id] = dataset;
