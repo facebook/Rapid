@@ -307,6 +307,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       const snippet = (d.snippet || '').toLowerCase();
 
       d.filtered = false;
+      if (datasetAdded(d)) return;  // always show these
 
       if (_filterText && title.indexOf(_filterText) === -1 && snippet.indexOf(_filterText) === -1) {
         d.filtered = true;   // filterText not found anywhere in `title` or `snippet`
@@ -375,6 +376,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     // update
     datasets = datasets
       .merge(datasetsEnter)
+      .sort(sortDatasets)
       .classed('hide', d => d.filtered);
 
     datasets.selectAll('.rapid-view-manage-dataset-name')
@@ -390,6 +392,15 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     const count = _datasetInfo.filter(d => !d.filtered).length;
     _content.selectAll('.rapid-view-manage-filter-results')
       .text(`${count} dataset(s) found`);
+  }
+
+
+  function sortDatasets(a, b) {
+    const aAdded = datasetAdded(a);
+    const bAdded = datasetAdded(b);
+    return aAdded && !bAdded ? -1
+      : bAdded && !aAdded ? 1
+      : a.title.localeCompare(b.title);
   }
 
 
@@ -452,7 +463,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function highlight(needle, haystack) {
-    let html = haystack;// escape(haystack);   // text -> html
+    let html = haystack;
     if (needle) {
       const re = new RegExp('\(' + escapeRegex(needle) + '\)', 'gi');
       html = html.replace(re, '<mark>$1</mark>');
