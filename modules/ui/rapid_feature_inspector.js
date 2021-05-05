@@ -284,7 +284,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
           .append('div');
 
         imagesEnter.selectAll('.rapid-inspector-image')
-          .data(images)
+          .data(images.sort(sortByLon))
           .enter()
           .append('div')
           .on('mouseenter', d => {
@@ -309,6 +309,13 @@ export function uiRapidFeatureInspector(context, keybinding) {
         });
       }
     }
+  }
+
+
+  function sortByLon(img1, img2) {
+    if (img1.lon > img2.lon) return 1;
+    if (img1.lon < img2.lon) return -1;
+    return 0;
   }
 
 
