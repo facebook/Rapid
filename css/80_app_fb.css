@@ -775,11 +775,14 @@ hide this one and style something on top of it.  */
 .rapid-view-manage-filter-type {
     background: #444;
     color: #ddd;
-    padding: 4px 12px 4px 40px;
+    padding: 4px 12px;
     border-radius: 10px;
     border: 1px solid #333;
     font-size: 16px;
-    width: 85%;
+    width: 90%;
+}
+.rapid-view-manage-filter-search {
+    padding: 4px 12px 4px 40px;
 }
 .rapid-view-manage-filter-search:focus,
 .rapid-view-manage-filter-search:active,
@@ -790,6 +793,36 @@ hide this one and style something on top of it.  */
     outline: none;
     border: 1px solid #aaa;
 }
+
+div.combobox.combobox-dataset-categories {
+    background: #333;
+    color: #ddd;
+    border: 1px solid #222;
+}
+
+div.combobox.combobox-dataset-categories a {
+    color: #ddd;
+    border-top: 1px solid #222;
+}
+
+div.combobox.combobox-dataset-categories a.selected,
+div.combobox.combobox-dataset-categories a:active,
+div.combobox.combobox-dataset-categories a:focus {
+    color: #eee;
+    background: #3c3c3c;
+}
+@media (hover: hover) {
+    div.combobox.combobox-dataset-categories a:hover {
+        color: #eee;
+        background: #3c3c3c;
+    }
+}
+
+.rapid-view-manage-filter-clear a {
+    padding: 15px;
+    font-size: 14px;
+}
+
 .rapid-view-manage-filter-results {
     flex: 1 1 200px;
     padding: 0 5px;
@@ -828,7 +861,7 @@ hide this one and style something on top of it.  */
 }
 .rapid-view-manage-dataset {
     flex: 0 1 50%;
-    padding: 10px 20px;
+    padding: 15px 25px;
     margin-bottom: 10px;
     color: #eee;
     display: flex;

@@ -144,12 +144,11 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-filter-search')
       .attr('placeholder', 'filter datasets')
       .call(utilNoAuto)
-      .on('input', (d3_event) => {
+      .on('input', d3_event => {
         const target = d3_event.target;
         const val = (target && target.value) || '';
         _filterText = val.trim().toLowerCase();
-        dsSection
-          .call(renderDatasets);
+        dsSection.call(renderDatasets);
       });
 
 
@@ -163,15 +162,15 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('placeholder', 'any type')
       .call(utilNoAuto)
       .call(categoryCombo)
-      .on('change', (d3_event) => {
+      .on('change', d3_event => {
         const target = d3_event.target;
         const val = (target && target.value) || '';
         _filterCategory = val;
-        dsSection
-          .call(renderDatasets);
+        dsSection.call(renderDatasets);
       });
 
       // Make sure `change` event gets called when the `input` is changed programatically
+      // (Basically mean that the datasets update as the user adjusts the combo, rather than waiting for the change event)
       // https://stackoverflow.com/a/58585971/7620
       // This is a neat trick, but I'm not sure I'm ready to add it yet.
       //
@@ -187,6 +186,22 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       //     return descriptor.get.apply(this);
       //   }
       // });
+
+    filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-clear')
+      .append('a')
+      .attr('href', '#')
+      .text('Clear Filters')
+      .on('click', d3_event => {
+        d3_event.preventDefault();
+        const target = d3_event.target;
+        target.blur();
+        selection.selectAll('input').property('value', '');
+        _filterText = null;
+        _filterCategory = null;
+        dsSection.call(renderDatasets);
+      });
 
     filterEnter
       .append('div')
