@@ -8,15 +8,18 @@ import { geoExtent } from '../geo';
 import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
+import { uiCombobox} from './combobox';
 import { utilKeybinding, utilNoAuto, utilRebind, utilWrap } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
+  const categoryCombo = uiCombobox(context, 'dataset-categories');
 
   let _content = d3_select(null);
-  let _filter;
+  let _filterText;
+  let _filterCategory;
   let _datasetInfo;
   let _myClose = () => true;   // custom close handler
 
@@ -33,7 +36,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     // override the close handler
     _myClose = () => {
-      _filter = null;
+      _filterText = null;
+      _filterCategory = null;
       myModal
         .transition()
         .duration(200)
@@ -143,7 +147,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .on('input', (d3_event) => {
         const target = d3_event.target;
         const val = (target && target.value) || '';
-        _filter = val.trim().toLowerCase();
+        _filterText = val.trim().toLowerCase();
         dsSection
           .call(renderDatasets);
       });
@@ -158,14 +162,31 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-filter-type')
       .attr('placeholder', 'any type')
       .call(utilNoAuto)
-      .on('input', (d3_event) => {
-        // const target = d3_event.target;
-        // const val = (target && target.value) || '';
-        // _filter = val.trim().toLowerCase();
-        // dsSection
-        //   .call(renderDatasets);
+      .call(categoryCombo)
+      .on('change', (d3_event) => {
+        const target = d3_event.target;
+        const val = (target && target.value) || '';
+        _filterCategory = val;
+        dsSection
+          .call(renderDatasets);
       });
 
+      // Make sure `change` event gets called when the `input` is changed programatically
+      // https://stackoverflow.com/a/58585971/7620
+      // This is a neat trick, but I'm not sure I'm ready to add it yet.
+      //
+      // const input = selection.selectAll('.rapid-view-manage-filter-type').node();
+      // const descriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(input), 'value');
+      // Object.defineProperty(input, 'value', {
+      //   configurable: true,
+      //   set: function(t) {
+      //     console.log('value was changed programmatically to ' + t);
+      //     descriptor.set.apply(this, arguments);
+      //   },
+      //   get: function() {
+      //     return descriptor.get.apply(this);
+      //   }
+      // });
 
     filterEnter
       .append('div')
@@ -238,35 +259,48 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
       service.loadDatasets()
         .then(results => {
-          // exclude preview datasets unless user has opted into them
-          return _datasetInfo = Object.values(results)
-            .filter(d => showPreview || !d.groupCategories.some(category => category === '/Categories/Preview'));
+          // Build set of available categories
+          let categories = new Set();
+          Object.values(results).forEach(d => {
+            d.groupCategories.forEach(c => {
+              categories.add(c.toLowerCase().replace('/categories/', ''));
+            });
+          });
+
+          if (!showPreview) {
+            categories.delete('preview');
+          }
+          categoryCombo.data(Array.from(categories).map(c => ({ title: c, value: c }) ));
+
+          // Exclude preview datasets unless user has opted into them
+          _datasetInfo = Object.values(results)
+            .filter(d => showPreview || !d.groupCategories.some(category => category.toLowerCase() === '/categories/preview'));
+
+          return _datasetInfo;
         })
         .then(() => _content.call(renderModalContent));
+
       return;
     }
 
     results.classed('hide', false);
     status.classed('hide', true);
 
-    // apply filter
+    // Apply filters
     _datasetInfo.forEach(d => {
-      if (!_filter) {
-        d.filtered = false;
-        return;
-      }
       const title = (d.title || '').toLowerCase();
-      if (title.indexOf(_filter) !== -1)  {
-        d.filtered = false;
-        return;
-      }
       const snippet = (d.snippet || '').toLowerCase();
-      if (snippet.indexOf(_filter) !== -1) {
-        d.filtered = false;
-        return;
+
+      d.filtered = false;
+
+      if (_filterText && title.indexOf(_filterText) === -1 && snippet.indexOf(_filterText) === -1) {
+        d.filtered = true;   // filterText not found anywhere in `title` or `snippet`
       }
-      d.filtered = true;
+      if (_filterCategory && !(d.groupCategories.some(category => category.toLowerCase() === `/categories/${_filterCategory}`))) {
+        d.filtered = true;   // filterCategory not found anywhere in `groupCategories``
+      }
     });
+
 
     let datasets = results.selectAll('.rapid-view-manage-dataset')
       .data(_datasetInfo, d => d.id);
@@ -299,7 +333,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .call(svgIcon('#iD-icon-out-link', 'inline'));
 
     labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
-      .data(d => d.groupCategories.filter(d => d === '/Categories/Preview'))
+      .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))
       .enter()
       .append('div')
       .attr('class', 'rapid-view-manage-dataset-beta beta')
@@ -329,10 +363,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .classed('hide', d => d.filtered);
 
     datasets.selectAll('.rapid-view-manage-dataset-name')
-      .html(d => highlight(_filter, d.title));
+      .html(d => highlight(_filterText, d.title));
 
     datasets.selectAll('.rapid-view-manage-dataset-snippet')
-      .html(d => highlight(_filter, d.snippet));
+      .html(d => highlight(_filterText, d.snippet));
 
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
@@ -357,8 +391,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         service.loadLayer(d.id);
       }
 
-      const isBeta = d.groupCategories.some(d => d === '/Categories/Preview');
-      const isBuildings = d.groupCategories.some(d => d === '/Categories/Buildings');
+      const isBeta = d.groupCategories.some(d => d.toLowerCase() === '/categories/preview');
+      const isBuildings = d.groupCategories.some(d => d.toLowerCase() === '/categories/buildings');
 
       // pick a new color
       const colors = rapidContext.colors();
