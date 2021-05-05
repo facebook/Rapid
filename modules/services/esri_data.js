@@ -260,7 +260,6 @@ export default {
       return Promise.resolve(_datasets);
     }
 
-    const that = this;
     return d3_json(searchURL())
       .then(json => {
         (json.results || []).forEach(ds => {   // add each one to _datasets, create internal state
@@ -280,9 +279,6 @@ export default {
 
           // generate public link to this item
           ds.itemURL = itemURL(ds.id);
-
-          // preload the layer info (or we could wait do this once the user actually clicks 'add to map')
-          that.loadLayer(ds.id);
         });
         return _datasets;
       })

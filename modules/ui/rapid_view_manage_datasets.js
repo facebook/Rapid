@@ -352,6 +352,11 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       ds.added = !ds.added;
 
     } else {  // hasn't been added yet
+      const service = services.esriData;
+      if (service) {   // start fetching layer info (the mapping between attributes and tags)
+        service.loadLayer(d.id);
+      }
+
       const isBeta = d.groupCategories.some(d => d === '/Categories/Preview');
       const isBuildings = d.groupCategories.some(d => d === '/Categories/Buildings');
 
