@@ -2,20 +2,21 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import marked from 'marked';
-import { t, localizer } from '../core/localizer';
+import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { geoExtent } from '../geo';
 import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { uiCombobox} from './combobox';
-import { utilKeybinding, utilNoAuto, utilRebind, utilWrap } from '../util';
+import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
   const categoryCombo = uiCombobox(context, 'dataset-categories');
+  const MAXRESULTS = 100;
 
   let _content = d3_select(null);
   let _filterText;
@@ -90,8 +91,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function renderModalContent(selection) {
-    const isRTL = localizer.textDirection() === 'rtl';
-
     /* Header section */
     let headerEnter = selection.selectAll('.rapid-view-manage-header')
       .data([0])
@@ -302,12 +301,17 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     status.classed('hide', true);
 
     // Apply filters
+    let count = 0;
     _datasetInfo.forEach(d => {
+      count++;
       const title = (d.title || '').toLowerCase();
       const snippet = (d.snippet || '').toLowerCase();
+      if (datasetAdded(d)) {  // always show added datasets at the top of the list
+        d.filtered = false;
+        return;
+      }
 
-      d.filtered = false;
-      if (datasetAdded(d)) return;  // always show these
+      d.filtered = (count > MAXRESULTS);
 
       if (_filterText && title.indexOf(_filterText) === -1 && snippet.indexOf(_filterText) === -1) {
         d.filtered = true;   // filterText not found anywhere in `title` or `snippet`
@@ -389,9 +393,10 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .classed('secondary', d => datasetAdded(d))
       .text(d => datasetAdded(d) ? t('rapid_feature_toggle.esri.remove') : t('rapid_feature_toggle.esri.add_to_map'));
 
-    const count = _datasetInfo.filter(d => !d.filtered).length;
+    const numShown = _datasetInfo.filter(d => !d.filtered).length;
+    const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
     _content.selectAll('.rapid-view-manage-filter-results')
-      .text(`${count} dataset(s) found`);
+      .text(`${gt}${numShown} dataset(s) found`);
   }
 
 
