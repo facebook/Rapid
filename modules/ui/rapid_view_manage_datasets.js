@@ -284,7 +284,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
           if (!showPreview) {
             categories.delete('preview');
           }
-          categoryCombo.data(Array.from(categories).map(c => ({ title: c, value: c }) ));
+          categoryCombo.data(Array.from(categories).sort().map(c => ({ title: c, value: c }) ));
 
           // Exclude preview datasets unless user has opted into them
           _datasetInfo = Object.values(results)
