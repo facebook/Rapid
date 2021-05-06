@@ -275,16 +275,20 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         .then(results => {
           // Build set of available categories
           let categories = new Set();
+
           Object.values(results).forEach(d => {
             d.groupCategories.forEach(c => {
               categories.add(c.toLowerCase().replace('/categories/', ''));
             });
           });
+          if (!showPreview) categories.delete('preview');
 
-          if (!showPreview) {
-            categories.delete('preview');
-          }
-          categoryCombo.data(Array.from(categories).sort().map(c => ({ title: c, value: c }) ));
+          const combodata = Array.from(categories).sort().map(c => {
+            let item = { title: c, value: c };
+            if (c === 'preview') item.display = `${c} <span class="beta"></span>`;
+            return item;
+          });
+          categoryCombo.data(combodata);
 
           // Exclude preview datasets unless user has opted into them
           _datasetInfo = Object.values(results)
