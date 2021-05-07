@@ -459,6 +459,27 @@ button.rapid-features.layer-off use {
     flex: 0 0 36px;
 }
 
+/* dark scrollbars */
+.modal.rapid-modal {
+    scrollbar-width: thin;
+    scrollbar-color: #aaa #555;
+}
+.modal.rapid-modal ::-webkit-scrollbar {
+    width: 10px;
+}
+.modal.rapid-modal ::-webkit-scrollbar-track {
+    background: #444;
+}
+.modal.rapid-modal ::-webkit-scrollbar-thumb {
+    background-color: #da26d3;
+    border-radius: 6px;
+    border: 0;
+}
+.modal.rapid-modal ::-webkit-scrollbar-thumb:hover {
+    background-color: #c6d;
+    cursor: pointer;
+}
+
 
 /* Toggle Features */
 .modal.rapid-modal .modal-section.rapid-checkbox {
