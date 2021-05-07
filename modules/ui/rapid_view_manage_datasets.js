@@ -356,6 +356,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .text(t('rapid_feature_toggle.esri.more_info'))
       .call(svgIcon('#iD-icon-out-link', 'inline'));
 
+    labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
+      .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/featured'))
+      .enter()
+      .append('div')
+      .attr('class', 'rapid-view-manage-dataset-featured')
+      .text('\u2b50 ' + 'featured');
+
     labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))
       .enter()
@@ -404,11 +411,20 @@ export function uiRapidViewManageDatasets(context, parentModal) {
   }
 
 
+  // Sort:
+  // Added datasets to the beginning
+  // Featured datasets next
+  // All others sort by name
   function sortDatasets(a, b) {
     const aAdded = datasetAdded(a);
     const bAdded = datasetAdded(b);
+    const aFeatured = a.groupCategories.some(d => d.toLowerCase() === '/categories/featured');
+    const bFeatured = b.groupCategories.some(d => d.toLowerCase() === '/categories/featured');
+
     return aAdded && !bAdded ? -1
       : bAdded && !aAdded ? 1
+      : aFeatured && !bFeatured ? -1
+      : bFeatured && !aFeatured ? 1
       : a.title.localeCompare(b.title);
   }
 

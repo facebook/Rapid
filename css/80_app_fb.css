@@ -918,6 +918,16 @@ img.rapid-view-manage-dataset-thumbnail {
 .rapid-view-manage-dataset-beta {
     font-size: 10px;
 }
+.rapid-view-manage-dataset-featured {
+    display: inline-block;
+    font-size: 11px;
+    background: #a21;
+    color: #dcdcdc;
+    padding: 1px 7px;
+    border-radius: 5px;
+    margin: 0px 10px;
+    line-height: 1.5;
+}
 
 /* Colorpicker popup */
 
