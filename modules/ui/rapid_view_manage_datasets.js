@@ -285,7 +285,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
           const combodata = Array.from(categories).sort().map(c => {
             let item = { title: c, value: c };
-            if (c === 'preview') item.display = `${c} <span class="beta"></span>`;
+            if (c === 'preview') item.display = `${c} <span class="rapid-view-manage-dataset-beta beta"></span>`;
             return item;
           });
           categoryCombo.data(combodata);
