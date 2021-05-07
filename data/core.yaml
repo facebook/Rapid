@@ -1084,6 +1084,11 @@ en:
     esri:
       title: ArcGIS Datasets
       about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
+      filter_datasets: filter datasets
+      any_type: any type
+      clear_filters: Clear Filters
+      datasets_found: "{num} dataset(s) found"
+      featured: featured
       fetching_datasets: Fetching available datasets...
       no_datasets: No datasets available.
       remove: Remove

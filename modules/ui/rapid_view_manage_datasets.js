@@ -141,7 +141,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     filterSearchEnter
       .append('input')
       .attr('class', 'rapid-view-manage-filter-search')
-      .attr('placeholder', 'filter datasets')
+      .attr('placeholder', t('rapid_feature_toggle.esri.filter_datasets'))
       .call(utilNoAuto)
       .on('input', d3_event => {
         const target = d3_event.target;
@@ -158,7 +158,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     filterTypeEnter
       .append('input')
       .attr('class', 'rapid-view-manage-filter-type')
-      .attr('placeholder', 'any type')
+      .attr('placeholder', t('rapid_feature_toggle.esri.any_type'))
       .call(utilNoAuto)
       .call(categoryCombo)
       .on('change', d3_event => {
@@ -168,30 +168,12 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dsSection.call(renderDatasets);
       });
 
-      // Make sure `change` event gets called when the `input` is changed programatically
-      // (Basically mean that the datasets update as the user adjusts the combo, rather than waiting for the change event)
-      // https://stackoverflow.com/a/58585971/7620
-      // This is a neat trick, but I'm not sure I'm ready to add it yet.
-      //
-      // const input = selection.selectAll('.rapid-view-manage-filter-type').node();
-      // const descriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(input), 'value');
-      // Object.defineProperty(input, 'value', {
-      //   configurable: true,
-      //   set: function(t) {
-      //     console.log('value was changed programmatically to ' + t);
-      //     descriptor.set.apply(this, arguments);
-      //   },
-      //   get: function() {
-      //     return descriptor.get.apply(this);
-      //   }
-      // });
-
     filterEnter
       .append('div')
       .attr('class', 'rapid-view-manage-filter-clear')
       .append('a')
       .attr('href', '#')
-      .text('Clear Filters')
+      .text(t('rapid_feature_toggle.esri.clear_filters'))
       .on('click', d3_event => {
         d3_event.preventDefault();
         const target = d3_event.target;
@@ -361,7 +343,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .enter()
       .append('div')
       .attr('class', 'rapid-view-manage-dataset-featured')
-      .text('\u2b50 ' + 'featured');
+      .text('\u2b50 ' + t('rapid_feature_toggle.esri.featured'));
 
     labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))
@@ -407,7 +389,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     const numShown = _datasetInfo.filter(d => !d.filtered).length;
     const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
     _content.selectAll('.rapid-view-manage-filter-results')
-      .text(`${gt}${numShown} dataset(s) found`);
+      .text(t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
   }
 
 
