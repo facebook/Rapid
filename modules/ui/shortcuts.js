@@ -179,7 +179,8 @@ export function uiShortcuts(context) {
                     return {
                         shortcut: s,
                         separator: d.separator,
-                        suffix: d.suffix
+                        suffix: d.suffix,
+                        rapid: d.rapid
                     };
                 });
             })
@@ -212,6 +213,16 @@ export function uiShortcuts(context) {
                     selection
                         .append('span')
                         .html(d.suffix);
+                }
+
+                if (d.rapid){
+                    selection
+                        .append('svg')
+                        .lower()
+                        .attr('class', 'icon logo-rapid')
+                        .append('use')
+                        .attr('xlink:href', '#iD-logo-rapid')
+                        .attr('class', '#iD-logo-rapid');
                 }
             });
 
