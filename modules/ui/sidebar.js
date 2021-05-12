@@ -274,6 +274,7 @@ export function uiSidebar(context) {
                 context.container().selectAll('.layer-ai-features .hover').classed('hover', false);
                 context.container().selectAll('.note').classed('hover', false);
                 context.container().selectAll('.qaItem').classed('hover', false);
+                context.container().select('.rapid-image-strip').style('display', 'none');
                 sidebar.hide();
             }
         }
