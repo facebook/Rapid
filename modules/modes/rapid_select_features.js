@@ -18,7 +18,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
   const keybinding = utilKeybinding('select-ai-features');
   const rapidInspector = uiRapidFeatureInspector(context, keybinding);
-  const service = selectedDatum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+  const service = getService(selectedDatum.__service__);
   const rapidGraph = service.graph(selectedDatum.__datasetid__);
 
   let behaviors = [
@@ -53,6 +53,20 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
     context.enter(modeBrowse(context));
   }
 
+  function getService(serviceName) {
+    let service;
+    switch (serviceName) {
+      case 'esri':
+        service = services.esriData;
+        break;
+      case 'fbml_streetview':
+        service = services.fbStreetviewSuggestions;
+        break;
+      default:
+        service = services.fbMLRoads;
+    }
+    return service; 
+  }
 
   mode.selectedIDs = function() {
     return [selectedDatum.id];
