@@ -11,7 +11,8 @@ export function uiRapidImageStrip(context) {
 
   function rapidImageStrip(selection) {
     let imageStrip = selection.selectAll('.rapid-image-strip')
-      .data([0]);
+      .data([0])
+      .style('display', 'block');
 
     let imageStripEnter = imageStrip
       .enter()
