@@ -144,8 +144,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('placeholder', t('rapid_feature_toggle.esri.filter_datasets'))
       .call(utilNoAuto)
       .on('input', d3_event => {
-        const target = d3_event.target;
-        const val = (target && target.value) || '';
+        const element = d3_event.currentTarget;
+        const val = (element && element.value) || '';
         _filterText = val.trim().toLowerCase();
         dsSection.call(renderDatasets);
       });
@@ -161,10 +161,16 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('placeholder', t('rapid_feature_toggle.esri.any_type'))
       .call(utilNoAuto)
       .call(categoryCombo)
-      .on('change', d3_event => {
-        const target = d3_event.target;
-        const val = (target && target.value) || '';
-        _filterCategory = val;
+      .on('blur change', d3_event => {
+        const element = d3_event.currentTarget;
+        const val = (element && element.value) || '';
+        const data = categoryCombo.data();
+        if (data.some(item => item.value === val)) {  // only allow picking values from the list
+          _filterCategory = val;
+        } else {
+          d3_event.currentTarget.value = '';
+          _filterCategory = null;
+        }
         dsSection.call(renderDatasets);
       });
 
@@ -176,8 +182,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .text(t('rapid_feature_toggle.esri.clear_filters'))
       .on('click', d3_event => {
         d3_event.preventDefault();
-        const target = d3_event.target;
-        target.blur();
+        const element = d3_event.currentTarget;
+        element.blur();
         selection.selectAll('input').property('value', '');
         _filterText = null;
         _filterCategory = null;
