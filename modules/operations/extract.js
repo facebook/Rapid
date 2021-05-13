@@ -2,6 +2,7 @@ import { actionExtract } from '../actions/extract';
 import { behaviorOperation } from '../behavior/operation';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
+import { prefs } from '../core/preferences';
 import { presetManager } from '../presets';
 import { utilArrayUniq } from '../util/array';
 
@@ -55,8 +56,8 @@ export function operationExtract(context, selectedIDs) {
 
 
     operation.disabled = function () {
-
-        if (_extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+        if (!allowLargeEdits && _extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (selectedIDs.some(function(entityID) {
             return context.graph().geometry(entityID) === 'vertex' && context.hasHiddenConnections(entityID);

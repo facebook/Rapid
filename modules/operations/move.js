@@ -1,5 +1,6 @@
 import { t } from '../core/localizer';
 import { behaviorOperation } from '../behavior/operation';
+import { prefs } from '../core/preferences';
 import { modeMove } from '../modes/move';
 import { utilGetAllNodes, utilTotalExtent } from '../util/util';
 
@@ -22,7 +23,8 @@ export function operationMove(context, selectedIDs) {
 
 
     operation.disabled = function() {
-        if (extent.percentContainedIn(context.map().extent()) < 0.8) {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+        if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (someMissing()) {
             return 'not_downloaded';

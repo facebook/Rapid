@@ -1,6 +1,7 @@
 import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';
 import { behaviorOperation } from '../behavior/operation';
+import { prefs } from '../core/preferences';
 import { utilArrayUniq } from '../util/array';
 import { utilGetAllNodes, utilTotalExtent } from '../util/util';
 
@@ -161,7 +162,8 @@ export function operationDisconnect(context, selectedIDs) {
             if (reason) return reason;
         }
 
-        if (_extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+        if (!allowLargeEdits && _extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large.' + ((_vertexIDs.length ? _vertexIDs : _wayIDs).length === 1 ? 'single' : 'multiple');
         } else if (_coords && someMissing()) {
             return 'not_downloaded';

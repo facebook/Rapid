@@ -2,6 +2,7 @@ import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
 import { behaviorOperation } from '../behavior/operation';
+import { prefs } from '../core/preferences';
 import { utilArrayDifference, utilGetAllNodes, utilTotalExtent } from '../util/index';
 
 
@@ -92,10 +93,11 @@ export function operationStraighten(context, selectedIDs) {
 
 
     operation.disabled = function() {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
         var reason = _action.disabled(context.graph());
         if (reason) {
             return reason;
-        } else if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+        } else if (!allowLargeEdits && _extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (someMissing()) {
             return 'not_downloaded';

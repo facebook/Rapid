@@ -1,6 +1,7 @@
 import { t } from '../core/localizer';
 import { actionCircularize } from '../actions/circularize';
 import { behaviorOperation } from '../behavior/operation';
+import { prefs } from '../core/preferences';
 import { utilGetAllNodes } from '../util';
 
 
@@ -56,6 +57,8 @@ export function operationCircularize(context, selectedIDs) {
     operation.disabled = function() {
         if (!_actions.length) return '';
 
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+
         var actionDisableds = _actions.map(function(action) {
             return action.disabled(context.graph());
         }).filter(Boolean);
@@ -67,7 +70,7 @@ export function operationCircularize(context, selectedIDs) {
                 return 'multiple_blockers';
             }
             return actionDisableds[0];
-        } else if (_extent.percentContainedIn(context.map().extent()) < 0.8) {
+        } else if (!allowLargeEdits && _extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (someMissing()) {
             return 'not_downloaded';
