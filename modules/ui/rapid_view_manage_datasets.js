@@ -338,12 +338,19 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .text(t('rapid_feature_toggle.esri.more_info'))
       .call(svgIcon('#iD-icon-out-link', 'inline'));
 
-    labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
+    let featuredEnter = labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/featured'))
       .enter()
       .append('div')
-      .attr('class', 'rapid-view-manage-dataset-featured')
-      .text('\u2b50 ' + t('rapid_feature_toggle.esri.featured'));
+      .attr('class', 'rapid-view-manage-dataset-featured');
+
+    featuredEnter
+      .append('span')
+      .text('\u2b50');
+
+    featuredEnter
+      .append('span')
+      .text(t('rapid_feature_toggle.esri.featured'));
 
     labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))

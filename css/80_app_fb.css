@@ -911,6 +911,8 @@ img.rapid-view-manage-dataset-thumbnail {
 }
 .rapid-view-manage-dataset-name {
     font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 3px;
 }
 .rapid-view-manage-dataset-license {
     display: inline-block;
@@ -927,6 +929,9 @@ img.rapid-view-manage-dataset-thumbnail {
     border-radius: 5px;
     margin: 0px 10px;
     line-height: 1.5;
+}
+.rapid-view-manage-dataset-featured span {
+    margin: 0px 3px;
 }
 
 /* Colorpicker popup */
