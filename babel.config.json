@@ -6,7 +6,8 @@
         "corejs": 3,
         "modules": false
       }
-    ]
+    ],
+    "@babel/preset-react"
   ],
   "compact": false
 }

@@ -5,7 +5,8 @@
         "es6": true
     },
     "extends": [
-        "eslint:recommended"
+        "eslint:recommended",
+        "plugin:react/recommended"
     ],
     "globals": {
         "d3": false
@@ -106,5 +107,10 @@
         "semi-spacing": "error",
         "space-unary-ops": "error",
         "wrap-regex": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

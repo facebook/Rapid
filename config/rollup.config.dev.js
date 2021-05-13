@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
+import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import includePaths from 'rollup-plugin-includepaths';
 import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import progress from 'rollup-plugin-progress';
-
+import replace from '@rollup/plugin-replace';
 
 // The "dev" build includes all modules in a single bundle - for now
-// * Skips transpilation (so it includes ES6 code and must run in a modern browser)
+// * Runs `babel` to transpile ES6 -> ES5 (needed for IE11 and PhantomJS)
 // * Also generates sourcemaps
 
 export default {
@@ -25,8 +26,17 @@ export default {
       paths: ['node_modules/d3/node_modules']  // npm2 or windows
     }),
     nodeResolve({ dedupe: ['object-inspect'] }),
-    commonjs(),
-    json({ indent: '' })
+    commonjs({ exclude: 'modules/**' }),
+    json({ indent: '' }),
+    babel({
+      babelHelpers: 'bundled',
+      // avoid circular dependencies due to `useBuiltIns: usage` option
+      exclude: [/\/core-js\//]
+    }),
+    replace({
+      preventAssignment: true,
+      'process.env.NODE_ENV': JSON.stringify( 'production' )
+    })
   ]
 };
 
