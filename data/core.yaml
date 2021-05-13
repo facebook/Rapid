@@ -1114,7 +1114,7 @@ en:
       description: Enable the autofix buttons on Issue pane for fixing simple issues
     allowLargeEdits:
       label: Allow large edits
-      description: Removes the limitations about editing features that are not currently visible
+      description: Remove the limitations about editing features that are not currently visible
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:
