@@ -120,11 +120,16 @@ export function coreLocalizer() {
                 let loadStringsPromises = [];
 
                 indexes.forEach((index, i) => {
-                    // Will always return the index for `en` if nothing else
-                    const fullCoverageIndex = _localeCodes.findIndex(function(locale) {
-                        return index[locale] && index[locale].pct === 1;
-                    });
-                    // We only need to load locales up until we find one with full coverage
+//                    // Will always return the index for `en` if nothing else
+//                    const fullCoverageIndex = _localeCodes.findIndex(function(locale) {
+//                        return index[locale] && index[locale].pct === 1;
+//                    });
+//                    // We only need to load locales up until we find one with full coverage
+// RapiD note:
+// We always need `en` because it contains RapiD strings that are not localized to other languages.
+// This means we can't assume that a language with 100% coverage is an alternative for `en`.
+const fullCoverageIndex = _localeCodes.length - 1;  // load them all
+
                     _localeCodes.slice(0, fullCoverageIndex + 1).forEach(function(code) {
                         let scopeId = Object.keys(localeDirs)[i];
                         let directory = Object.values(localeDirs)[i];
