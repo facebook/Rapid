@@ -24,8 +24,8 @@ svg.logo-rapid.dark,
     font-weight: bold;
     color: #eee;
     margin: 0 10px;
-    width: 1.7em;
-    height: 1.7em;
+    width: 1.8em;
+    height: 1.8em;
     border: 1px solid #909;
     border-radius: 5px;
     background: rgb(203,16,237);
@@ -354,6 +354,7 @@ button.rapid-features.layer-off use {
     top: 80px;
     min-width: 650px;
     max-width: 650px;
+    max-height: 85%;
     background: rgba(25, 25, 25, 0.9);
     -webkit-backdrop-filter: blur(2.5px);
     backdrop-filter: blur(2.5px);
@@ -376,6 +377,7 @@ button.rapid-features.layer-off use {
 
 .modal.rapid-modal .content {
     box-shadow: unset;
+    overflow-y: hidden;
 }
 .modal.rapid-modal .modal-section {
     border: 0px;
@@ -455,6 +457,27 @@ button.rapid-features.layer-off use {
 .modal.rapid-modal.modal-whatsnew .rapid-checkbox-custom {
     display: flex;
     flex: 0 0 36px;
+}
+
+/* dark scrollbars */
+.modal.rapid-modal {
+    scrollbar-width: thin;
+    scrollbar-color: #aaa #555;
+}
+.modal.rapid-modal ::-webkit-scrollbar {
+    width: 10px;
+}
+.modal.rapid-modal ::-webkit-scrollbar-track {
+    background: #444;
+}
+.modal.rapid-modal ::-webkit-scrollbar-thumb {
+    background-color: #da26d3;
+    border-radius: 6px;
+    border: 0;
+}
+.modal.rapid-modal ::-webkit-scrollbar-thumb:hover {
+    background-color: #c6d;
+    cursor: pointer;
 }
 
 
@@ -690,43 +713,7 @@ hide this one and style something on top of it.  */
     color: #aaa;
 }
 
-/*
-.rapid-checkbox.poweruser:hover {
-    color: #ddd;
-    background: #8885;
-}
-
-.rapid-feature-animation.poweruser {
-    background-size: 100% 100%;
-    width: 130px;
-    height: 130px;
-    border-radius: 10px;
-    margin: 5px;
-    border: 1px solid darkgrey;
-}
-*/
-/*
-.modal-section.rapid-checkbox.poweruser div#ai-feature-halo {
-    background-image: url('rapid/ai-feature-halo-still.png');
-}
-.modal-section.rapid-checkbox.poweruser:hover div#ai-feature-halo {
-    background-image: url('rapid/ai-feature-halo.gif');
-}
-.modal-section.rapid-checkbox.poweruser div#tagnostic-road-combine {
-    background-image: url('rapid/tagnostic-road-join-still.png');
-}
-.modal-section.rapid-checkbox.poweruser:hover  div#tagnostic-road-combine {
-    background-image: url('rapid/tagnostic-road-join.gif');
-}
-.modal-section.rapid-checkbox.poweruser div#tag-sources {
-    background-image: url('rapid/tag-sources-still.png');
-}
-.modal-section.rapid-checkbox.poweruser:hover div#tag-sources {
-    background-image: url('rapid/tag-sources.gif');
-}
-*/
-
-/* View/Manage Datasets modal */
+/* Add/Manage Datasets modal */
 /* view-manage-wrap is an absolutely positioned div to create a new stacking context,
    so we can put a modal on top of the other modal.
    (it functions like .shaded for layout but without adding any shading)
@@ -744,6 +731,7 @@ hide this one and style something on top of it.  */
     width: 80%;
     min-width: 600px;
     max-width: 1000px;
+    min-height: 85%;
 }
 .modal.rapid-modal.modal-view-manage p {
     font-size: 12px;
@@ -779,53 +767,110 @@ hide this one and style something on top of it.  */
     font-size: 24px;
     padding: 0 5px;
 }
-.rapid-view-manage-header-inputs {
-    flex: 0 1 auto;
-}
 .rapid-view-manage-header-about {
     color: #ddd;
 }
-.rapid-view-manage-header-about  {
+
+.modal-view-manage .modal-section.rapid-view-manage-filter {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid #aaaa;
+    color: #fff;
+}
+.rapid-view-manage-filter-search-wrap,
+.rapid-view-manage-filter-type-wrap {
+    position: relative;
+    flex: 1;
+    padding: 0 5px;
+}
+.rapid-view-manage-filter-search-wrap > .icon {
+    position: absolute;
+    left: 16px;
+    top: 11px;
+    color: #aaa;
+    width: 16px;
+    height: 16px;
+}
+.rapid-view-manage-filter-search,
+.rapid-view-manage-filter-type {
+    background: #444;
     color: #ddd;
+    padding: 4px 12px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    font-size: 16px;
+    width: 90%;
+}
+.rapid-view-manage-filter-search {
+    padding: 4px 12px 4px 40px;
+}
+.rapid-view-manage-filter-search:focus,
+.rapid-view-manage-filter-search:active,
+.rapid-view-manage-filter-type:focus,
+.rapid-view-manage-filter-type:active {
+    background: #444;
+    color: #eee;
+    outline: none;
+    border: 1px solid #aaa;
 }
 
-
-.modal-view-manage .modal-section.rapid-view-manage-pages {
-    justify-content: center;
-}
-.rapid-view-manage-page {
-    font-size: 9px;
-    padding: 10px 4px 13px 4px;
-    margin: 5px 2px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.rapid-view-manage-page:hover {
+div.combobox.combobox-dataset-categories {
+    background: #333;
     color: #ddd;
-    background: #8885;
-}
-.rapid-view-manage-page.current {
-    color: #da26d3;
+    border: 1px solid #222;
 }
 
+div.combobox.combobox-dataset-categories a {
+    color: #ddd;
+    border-top: 1px solid #222;
+}
+
+div.combobox.combobox-dataset-categories a.selected,
+div.combobox.combobox-dataset-categories a:active,
+div.combobox.combobox-dataset-categories a:focus {
+    color: #eee;
+    background: #3c3c3c;
+}
+@media (hover: hover) {
+    div.combobox.combobox-dataset-categories a:hover {
+        color: #eee;
+        background: #3c3c3c;
+    }
+}
+
+.rapid-view-manage-filter-clear a {
+    padding: 15px;
+    font-size: 14px;
+}
+
+.rapid-view-manage-filter-results {
+    flex: 1 1 200px;
+    padding: 0 5px;
+    text-align: end;
+    font-size: 20px;
+}
 
 .modal-view-manage .modal-section.rapid-view-manage-datasets-section {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     align-items: stretch;
+    overflow-y: auto;
 }
-.rapid-view-manage-pageleft,
-.rapid-view-manage-pageright {
-    cursor: pointer;
+
+/* give this section height, even when its contents are hidden */
+.rapid-view-manage-datasets-status,
+.rapid-view-manage-datasets {
+    flex: 1 1 9999px;
 }
-.rapid-view-manage-pageleft svg,
-.rapid-view-manage-pageright svg {
-    height: 100%;
+
+.rapid-view-manage-datasets-status {
+    font-size: 20px;
+    text-align: center;
+    margin: 50px;
 }
-.rapid-view-manage-pageleft:hover,
-.rapid-view-manage-pageright:hover {
-    color: #ddd;
-    background: #8885;
+.rapid-view-manage-datasets-spinner {
+    filter: brightness(2)contrast(0.8);
 }
 
 .rapid-view-manage-datasets {
@@ -837,7 +882,7 @@ hide this one and style something on top of it.  */
 }
 .rapid-view-manage-dataset {
     flex: 0 1 50%;
-    padding: 10px 20px;
+    padding: 15px 25px;
     margin-bottom: 10px;
     color: #eee;
     display: flex;
@@ -866,12 +911,27 @@ img.rapid-view-manage-dataset-thumbnail {
 }
 .rapid-view-manage-dataset-name {
     font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 3px;
 }
 .rapid-view-manage-dataset-license {
     display: inline-block;
 }
 .rapid-view-manage-dataset-beta {
     font-size: 10px;
+}
+.rapid-view-manage-dataset-featured {
+    display: inline-block;
+    font-size: 11px;
+    background: #a21;
+    color: #dcdcdc;
+    padding: 1px 7px;
+    border-radius: 5px;
+    margin: 0px 10px;
+    line-height: 1.5;
+}
+.rapid-view-manage-dataset-featured span {
+    margin: 0px 3px;
 }
 
 /* Colorpicker popup */

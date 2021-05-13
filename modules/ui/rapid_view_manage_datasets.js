@@ -2,53 +2,27 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import marked from 'marked';
-import { t, localizer } from '../core/localizer';
+import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { geoExtent } from '../geo';
 import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
-import { utilKeybinding, utilRebind, utilWrap } from '../util';
+import { uiCombobox} from './combobox';
+import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
   const rapidContext = context.rapidContext();
   const dispatch = d3_dispatch('done');
-  const PERPAGE = 4;
+  const categoryCombo = uiCombobox(context, 'dataset-categories');
+  const MAXRESULTS = 100;
 
   let _content = d3_select(null);
+  let _filterText;
+  let _filterCategory;
   let _datasetInfo;
-  let _datasetStart = 0;
   let _myClose = () => true;   // custom close handler
-
-
-  function clamp(num, min, max) {
-    return Math.max(min, Math.min(num, max));
-  }
-
-
-  function clickPage(_, d) {
-    if (!Array.isArray(_datasetInfo)) return;
-
-    const pages = Math.ceil(_datasetInfo.length / PERPAGE);
-    _datasetStart = clamp(d, 0, pages - 1) * PERPAGE;
-
-    _content
-      .call(renderModalContent);
-  }
-
-
-  function nextPreviousPage(d) {
-    if (!Array.isArray(_datasetInfo)) return;
-
-    const pages = Math.ceil(_datasetInfo.length / PERPAGE);
-    const currPage = Math.floor(_datasetStart / PERPAGE);
-    const nextPage = utilWrap(currPage + d, pages);
-    _datasetStart = nextPage * PERPAGE;
-
-    _content
-      .call(renderModalContent);
-  }
 
 
   function render() {
@@ -63,6 +37,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     // override the close handler
     _myClose = () => {
+      _filterText = null;
+      _filterCategory = null;
       myModal
         .transition()
         .duration(200)
@@ -115,8 +91,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function renderModalContent(selection) {
-    const isRTL = localizer.textDirection() === 'rtl';
-
     /* Header section */
     let headerEnter = selection.selectAll('.rapid-view-manage-header')
       .data([0])
@@ -137,11 +111,6 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-header-text')
       .text(t('rapid_feature_toggle.esri.title'));
 
-    line1
-      .append('div')
-      .attr('class', 'rapid-view-manage-header-inputs');
-      // .text('Home / Search');
-
     let line2 = headerEnter
       .append('div');
 
@@ -154,17 +123,76 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('target', '_blank');
 
 
-    /* Pages section */
-    let pagesSection = selection.selectAll('.rapid-view-manage-pages')
-      .data([0]);
-
-    let pagesSectionEnter = pagesSection.enter()
+    /* Filter section */
+    let filterEnter = selection.selectAll('.rapid-view-manage-filter')
+      .data([0])
+      .enter()
       .append('div')
-      .attr('class', 'modal-section rapid-view-manage-pages');
+      .attr('class', 'modal-section rapid-view-manage-filter');
 
-    pagesSection = pagesSection
-      .merge(pagesSectionEnter)
-      .call(renderPages);
+
+    let filterSearchEnter = filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-search-wrap');
+
+    filterSearchEnter
+      .call(svgIcon('#fas-filter', 'inline'));
+
+    filterSearchEnter
+      .append('input')
+      .attr('class', 'rapid-view-manage-filter-search')
+      .attr('placeholder', t('rapid_feature_toggle.esri.filter_datasets'))
+      .call(utilNoAuto)
+      .on('input', d3_event => {
+        const element = d3_event.currentTarget;
+        const val = (element && element.value) || '';
+        _filterText = val.trim().toLowerCase();
+        dsSection.call(renderDatasets);
+      });
+
+
+    let filterTypeEnter = filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-type-wrap');
+
+    filterTypeEnter
+      .append('input')
+      .attr('class', 'rapid-view-manage-filter-type')
+      .attr('placeholder', t('rapid_feature_toggle.esri.any_type'))
+      .call(utilNoAuto)
+      .call(categoryCombo)
+      .on('blur change', d3_event => {
+        const element = d3_event.currentTarget;
+        const val = (element && element.value) || '';
+        const data = categoryCombo.data();
+        if (data.some(item => item.value === val)) {  // only allow picking values from the list
+          _filterCategory = val;
+        } else {
+          d3_event.currentTarget.value = '';
+          _filterCategory = null;
+        }
+        dsSection.call(renderDatasets);
+      });
+
+    filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-clear')
+      .append('a')
+      .attr('href', '#')
+      .text(t('rapid_feature_toggle.esri.clear_filters'))
+      .on('click', d3_event => {
+        d3_event.preventDefault();
+        const element = d3_event.currentTarget;
+        element.blur();
+        selection.selectAll('input').property('value', '');
+        _filterText = null;
+        _filterCategory = null;
+        dsSection.call(renderDatasets);
+      });
+
+    filterEnter
+      .append('div')
+      .attr('class', 'rapid-view-manage-filter-results');
 
 
     /* Dataset section */
@@ -178,25 +206,15 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     dsSectionEnter
       .append('div')
-      .attr('class', 'rapid-view-manage-pageleft')
-      .call(svgIcon(isRTL ? '#iD-icon-forward' : '#iD-icon-backward'))
-      .on('click', () => nextPreviousPage(isRTL ? 1 : -1) );
+      .attr('class', 'rapid-view-manage-datasets-status');
 
     dsSectionEnter
       .append('div')
       .attr('class', 'rapid-view-manage-datasets');
 
-    dsSectionEnter
-      .append('div')
-      .attr('class', 'rapid-view-manage-pageright')
-      .call(svgIcon(isRTL ? '#iD-icon-backward' : '#iD-icon-forward'))
-      .on('click', () => nextPreviousPage(isRTL ? -1 : 1) );
-
     // update
     dsSection = dsSection
-      .merge(dsSectionEnter);
-
-    dsSection.selectAll('.rapid-view-manage-datasets')
+      .merge(dsSectionEnter)
       .call(renderDatasets);
 
 
@@ -216,30 +234,88 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
 
   function renderDatasets(selection) {
+    const status = selection.selectAll('.rapid-view-manage-datasets-status');
+    const results = selection.selectAll('.rapid-view-manage-datasets');
+
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const service = services.esriData;
+
     if (!service || (Array.isArray(_datasetInfo) && !_datasetInfo.length)) {
-      selection.text(t('rapid_feature_toggle.esri.no_datasets'));
+      results.classed('hide', true);
+      status.classed('hide', false).text(t('rapid_feature_toggle.esri.no_datasets'));
       return;
     }
 
     if (!_datasetInfo) {
-      selection.text(t('rapid_feature_toggle.esri.fetching_datasets'));
+      results.classed('hide', true);
+      status.classed('hide', false)
+        .text(t('rapid_feature_toggle.esri.fetching_datasets'));
+
+      status
+        .append('br');
+
+      status
+        .append('img')
+        .attr('class', 'rapid-view-manage-datasets-spinner')
+        .attr('src', context.imagePath('loader-black.gif'));
+
       service.loadDatasets()
         .then(results => {
-          // exclude preview datasets unless user has opted into them
-          return _datasetInfo = Object.values(results)
-            .filter(d => showPreview || !d.groupCategories.some(category => category === '/Categories/Preview'));
+          // Build set of available categories
+          let categories = new Set();
+
+          Object.values(results).forEach(d => {
+            d.groupCategories.forEach(c => {
+              categories.add(c.toLowerCase().replace('/categories/', ''));
+            });
+          });
+          if (!showPreview) categories.delete('preview');
+
+          const combodata = Array.from(categories).sort().map(c => {
+            let item = { title: c, value: c };
+            if (c === 'preview') item.display = `${c} <span class="rapid-view-manage-dataset-beta beta"></span>`;
+            return item;
+          });
+          categoryCombo.data(combodata);
+
+          // Exclude preview datasets unless user has opted into them
+          _datasetInfo = Object.values(results)
+            .filter(d => showPreview || !d.groupCategories.some(category => category.toLowerCase() === '/categories/preview'));
+
+          return _datasetInfo;
         })
         .then(() => _content.call(renderModalContent));
+
       return;
     }
 
-    selection.text('');
+    results.classed('hide', false);
+    status.classed('hide', true);
 
-    let page = _datasetInfo.slice(_datasetStart, _datasetStart + PERPAGE);
-    let datasets = selection.selectAll('.rapid-view-manage-dataset')
-      .data(page, d => d.id);
+    // Apply filters
+    let count = 0;
+    _datasetInfo.forEach(d => {
+      count++;
+      const title = (d.title || '').toLowerCase();
+      const snippet = (d.snippet || '').toLowerCase();
+      if (datasetAdded(d)) {  // always show added datasets at the top of the list
+        d.filtered = false;
+        return;
+      }
+
+      d.filtered = (count > MAXRESULTS);
+
+      if (_filterText && title.indexOf(_filterText) === -1 && snippet.indexOf(_filterText) === -1) {
+        d.filtered = true;   // filterText not found anywhere in `title` or `snippet`
+      }
+      if (_filterCategory && !(d.groupCategories.some(category => category.toLowerCase() === `/categories/${_filterCategory}`))) {
+        d.filtered = true;   // filterCategory not found anywhere in `groupCategories``
+      }
+    });
+
+
+    let datasets = results.selectAll('.rapid-view-manage-dataset')
+      .data(_datasetInfo, d => d.id);
 
     // exit
     datasets.exit()
@@ -256,8 +332,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     labelsEnter
       .append('div')
-      .attr('class', 'rapid-view-manage-dataset-name')
-      .text(d => d.title);
+      .attr('class', 'rapid-view-manage-dataset-name');
 
     labelsEnter
       .append('div')
@@ -269,8 +344,22 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .text(t('rapid_feature_toggle.esri.more_info'))
       .call(svgIcon('#iD-icon-out-link', 'inline'));
 
+    let featuredEnter = labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
+      .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/featured'))
+      .enter()
+      .append('div')
+      .attr('class', 'rapid-view-manage-dataset-featured');
+
+    featuredEnter
+      .append('span')
+      .text('\u2b50');
+
+    featuredEnter
+      .append('span')
+      .text(t('rapid_feature_toggle.esri.featured'));
+
     labelsEnter.selectAll('.rapid-view-manage-dataset-beta')
-      .data(d => d.groupCategories.filter(d => d === '/Categories/Preview'))
+      .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/preview'))
       .enter()
       .append('div')
       .attr('class', 'rapid-view-manage-dataset-beta beta')
@@ -278,7 +367,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     labelsEnter
       .append('div')
-      .text(d => d.snippet);
+      .attr('class', 'rapid-view-manage-dataset-snippet');
 
     labelsEnter
       .append('button')
@@ -296,37 +385,42 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     // update
     datasets = datasets
-      .merge(datasetsEnter);
+      .merge(datasetsEnter)
+      .sort(sortDatasets)
+      .classed('hide', d => d.filtered);
+
+    datasets.selectAll('.rapid-view-manage-dataset-name')
+      .html(d => highlight(_filterText, d.title));
+
+    datasets.selectAll('.rapid-view-manage-dataset-snippet')
+      .html(d => highlight(_filterText, d.snippet));
 
     datasets.selectAll('.rapid-view-manage-dataset-action')
       .classed('secondary', d => datasetAdded(d))
       .text(d => datasetAdded(d) ? t('rapid_feature_toggle.esri.remove') : t('rapid_feature_toggle.esri.add_to_map'));
+
+    const numShown = _datasetInfo.filter(d => !d.filtered).length;
+    const gt = (count > MAXRESULTS && numShown === MAXRESULTS) ? '>' : '';
+    _content.selectAll('.rapid-view-manage-filter-results')
+      .text(t('rapid_feature_toggle.esri.datasets_found', { num: `${gt}${numShown}` }));
   }
 
 
-  function renderPages(selection) {
-    if (!_datasetInfo) return;
+  // Sort:
+  // Added datasets to the beginning
+  // Featured datasets next
+  // All others sort by name
+  function sortDatasets(a, b) {
+    const aAdded = datasetAdded(a);
+    const bAdded = datasetAdded(b);
+    const aFeatured = a.groupCategories.some(d => d.toLowerCase() === '/categories/featured');
+    const bFeatured = b.groupCategories.some(d => d.toLowerCase() === '/categories/featured');
 
-    const total = _datasetInfo.length;
-    const numPages = Math.ceil(total / PERPAGE);
-    const currPage = Math.floor(_datasetStart / PERPAGE);
-    const pages = Array.from(Array(numPages).keys());
-
-    let dots = selection.selectAll('.rapid-view-manage-page')
-      .data(pages);
-
-    // exit
-    dots.exit()
-      .remove();
-
-    // enter/update
-    dots.enter()
-      .append('span')
-      .attr('class', 'rapid-view-manage-page')
-      .html('&#11044;')
-      .on('click', clickPage)
-      .merge(dots)
-      .classed('current', d => d === currPage);
+    return aAdded && !bAdded ? -1
+      : bAdded && !aAdded ? 1
+      : aFeatured && !bFeatured ? -1
+      : bFeatured && !aFeatured ? 1
+      : a.title.localeCompare(b.title);
   }
 
 
@@ -338,8 +432,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       ds.added = !ds.added;
 
     } else {  // hasn't been added yet
-      const isBeta = d.groupCategories.some(d => d === '/Categories/Preview');
-      const isBuildings = d.groupCategories.some(d => d === '/Categories/Buildings');
+      const service = services.esriData;
+      if (service) {   // start fetching layer info (the mapping between attributes and tags)
+        service.loadLayer(d.id);
+      }
+
+      const isBeta = d.groupCategories.some(d => d.toLowerCase() === '/categories/preview');
+      const isBuildings = d.groupCategories.some(d => d.toLowerCase() === '/categories/buildings');
 
       // pick a new color
       const colors = rapidContext.colors();
@@ -361,10 +460,15 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         dataset.extent = geoExtent(d.extent);
       }
 
-      // Test running building layers only through conflation service
+      // Test running building layers through FBML conflation service
       if (isBuildings) {
         dataset.conflated = true;
         dataset.service = 'fbml';
+
+        // and disable the Microsoft buildings to avoid clutter
+        if (datasets.msBuildings) {
+          datasets.msBuildings.enabled = false;
+        }
       }
 
       datasets[d.id] = dataset;
@@ -382,6 +486,19 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     return datasets[d.id] && datasets[d.id].added;
   }
 
+
+  function highlight(needle, haystack) {
+    let html = haystack;
+    if (needle) {
+      const re = new RegExp('\(' + escapeRegex(needle) + '\)', 'gi');
+      html = html.replace(re, '<mark>$1</mark>');
+    }
+    return html;
+  }
+
+  function escapeRegex(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  }
 
   return utilRebind(render, dispatch, 'on');
 }

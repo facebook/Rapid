@@ -1072,7 +1072,7 @@ en:
   rapid_feature_license: Facebook's Map With AI License
   rapid_feature_toggle:
     toggle_all: Toggle all {rapidicon} features
-    view_manage_datasets: "View/Manage Datasets"
+    view_manage_datasets: "Add/Manage Datasets"
     center_map: Center map here
     worldwide: Worldwide
     fbRoads:
@@ -1084,10 +1084,15 @@ en:
     esri:
       title: ArcGIS Datasets
       about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
+      filter_datasets: filter datasets
+      any_type: any type
+      clear_filters: Clear Filters
+      datasets_found: "{num} dataset(s) found"
+      featured: featured
       fetching_datasets: Fetching available datasets...
       no_datasets: No datasets available.
       remove: Remove
-      add_to_map: Add To Map
+      add_to_map: Add Dataset
       more_info: More Info
       license_markdown: "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
   rapid_poweruser_features:
@@ -1107,6 +1112,9 @@ en:
     showAutoFix:
       label: Enable fix buttons on Issue Pane
       description: Enable the autofix buttons on Issue pane for fixing simple issues
+    allowLargeEdits:
+      label: Allow large edits
+      description: Removes the limitations about editing features that are not currently visible
   version:
     whats_new: "What's new in RapiD {version}"
   tag_reference:

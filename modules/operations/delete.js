@@ -4,6 +4,7 @@ import { behaviorOperation } from '../behavior/operation';
 import { geoSphericalDistance } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
+import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
 import { utilGetAllNodes, utilTotalExtent } from '../util';
 
@@ -70,7 +71,8 @@ export function operationDelete(context, selectedIDs) {
 
 
     operation.disabled = function() {
-        if (extent.percentContainedIn(context.map().extent()) < 0.8) {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+        if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (someMissing()) {
             return 'not_downloaded';

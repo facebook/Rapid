@@ -7,7 +7,9 @@ import { uiModal } from './modal';
 
 
 export function uiRapidPowerUserFeaturesDialog(context) {
-  const featureFlags = ['previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix'];
+  const featureFlags = [
+    'previewDatasets', 'tagnosticRoadCombine', 'tagSources', 'showAutoFix', 'allowLargeEdits'
+  ];
   const rapidContext = context.rapidContext();
   const showPowerUser = rapidContext.showPowerUser;
   let _modalSelection = d3_select(null);

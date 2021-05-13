@@ -2215,7 +2215,7 @@ div.combobox {
 .combobox-caret {
     display: inline-block;
     position: relative;
-    height: 5px;
+    height: 30px;
     width: 30px !important;
     margin-left: -30px;
     align-self: center;
@@ -4660,9 +4660,9 @@ img.tile-debug {
 .badge .icon {
     vertical-align: baseline;
     width: 11px;
-    height: 11px;
     color: #fff;
     flex: 0 0 auto;
+    margin-bottom: 2px;
 }
 
 /* For text (e.g. upcoming events) */

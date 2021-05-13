@@ -14,6 +14,7 @@ import { behaviorPaste } from '../behavior/paste';
 import { behaviorSelect } from '../behavior/select';
 
 import { operationMove } from '../operations/move';
+import { prefs } from '../core/preferences';
 
 import { geoExtent, geoChooseEdge, geoMetersToLat, geoMetersToLon } from '../geo';
 import { modeBrowse } from './browse';
@@ -326,10 +327,11 @@ export function modeSelect(context, selectedIDs) {
                 // These disabled checks would normally be handled by an operation
                 // object, but we don't want an actual scale operation at this point.
                 function scalingDisabled() {
+                    const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
 
                     if (tooSmall()) {
                         return 'too_small';
-                    } else if (extent.percentContainedIn(context.map().extent()) < 0.8) {
+                    } else if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
                         return 'too_large';
                     } else if (someMissing() || selectedIDs.some(incompleteRelation)) {
                         return 'not_downloaded';
