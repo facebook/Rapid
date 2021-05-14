@@ -38,8 +38,11 @@ export function uiRapidImageStrip(context) {
       const {images} = _datum.suggestionContext.streetViewImageSet;
       if(images) {
 
+        images.sort(sortByLon);
+
         let imagesSelection = body.selectAll('.image')
-          .data(images, d => d.key);  //TODO: remove this sort once the backend serves stuff up in the appropriate order
+          .data(images, d => d.key)  //TODO: remove this sort once the backend serves stuff up in the appropriate order
+          .order();
 
         imagesSelection.exit().remove();
 
@@ -57,7 +60,7 @@ export function uiRapidImageStrip(context) {
             rapidContext.selectSuggestedViewfield(null);
           })
 
-          imagesSelection = imagesSelection.merge(imagesSelectionEnter).sort(sortByLon);
+          imagesSelection = imagesSelection.merge(imagesSelectionEnter);
 
         context.rapidContext().on('select_suggested_image', function() {
           const selectedImage = rapidContext.getSelectSuggestedImage();
