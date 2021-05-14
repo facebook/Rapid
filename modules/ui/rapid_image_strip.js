@@ -37,15 +37,17 @@ export function uiRapidImageStrip(context) {
     if(_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
       const {images} = _datum.suggestionContext.streetViewImageSet;
       if(images) {
-        const img = body.selectAll('.rapid-image-strip .images')
-          .data([0]);
-        const imagesEnter = img
-          .enter()
 
-        imagesEnter.selectAll('.rapid-image-strip .image')
-          .data(images.sort(sortByLon))  //TODO: remove this sort once the backend serves stuff up in the appropriate order
-          .enter()
-          .append('div')
+        let imagesSelection = body.selectAll('.image')
+          .data(images, d => d.key);  //TODO: remove this sort once the backend serves stuff up in the appropriate order
+
+        imagesSelection.exit().remove();
+
+        let imagesSelectionEnter = imagesSelection.enter();
+
+        imagesSelectionEnter
+          .append('img').attr('src', d => d.url)
+          .attr('class', d => `image rapid-image-strip-${d.key}`)
           .on('mouseenter', d => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(d);
@@ -54,7 +56,8 @@ export function uiRapidImageStrip(context) {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(null);
           })
-          .each(showImage);
+
+          imagesSelection = imagesSelection.merge(imagesSelectionEnter).sort(sortByLon);
 
         context.rapidContext().on('select_suggested_image', function() {
           const selectedImage = rapidContext.getSelectSuggestedImage();
