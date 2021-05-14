@@ -144,8 +144,11 @@ function gotResource(err, results) {
 
           let coverage = coverageByLocaleCode[code];
           if (coverage === undefined) {
-            console.log('Could not get language coverage');
-            process.exit(1);
+            coverage = 0;
+            // @bhousel note - I dont know what's going on here but RapiD doesn't
+            //   use these language coverage numbers anyway per 0489e474b
+            // console.log('Could not get language coverage');
+            // process.exit(1);
           }
           // we don't need high precision here, but we need to know if it's exactly 100% or not
           coverage = Math.floor(coverage * 100) / 100;
@@ -242,7 +245,7 @@ function getLanguage(resourceURL) {
         return res.json();
       })
       .then(json => {
-        callback(null, YAML.safeLoad(json.content)[code]);
+        callback(null, YAML.load(json.content)[code]);
       })
       .catch(err => callback(err));
   };
