@@ -1,5 +1,15 @@
 ## **RapiD** Release Checklist
 
+#### If you want to update translations
+- If you don't have a `transifex.auth` file in the root of your RapiD project,
+you'll need to create a Transifex account, ask @bhousel for admin rights
+on the iD project, and then create this file with contents like<br>
+```js
+{ "user": "yourusername", "password": "*******" }
+```
+This file is not version-controlled and will not be checked in.
+
+
 #### Update `main` branch
 ```bash
 $  git checkout main
@@ -8,6 +18,8 @@ $  npm install
 $  npm run imagery
 $  npm run all
 $  git add . && git commit -m 'npm run imagery'
+$  npm run translations
+$  git add . && git commit -m 'npm run translations'
 ```
 
 - Update `CHANGELOG.md`
