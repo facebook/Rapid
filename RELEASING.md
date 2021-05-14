@@ -3,7 +3,7 @@
 #### Update `main` branch
 ```bash
 $  git checkout main
-$  rm -rf node_modules/editor-layer-index/
+$  rm -rf package-lock.json node_modules/editor-layer-index/
 $  npm install
 $  npm run imagery
 $  npm run all
