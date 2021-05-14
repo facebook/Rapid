@@ -37,15 +37,38 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [1.1.4](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.4)
+##### 2021-May-14
+#### :tada: Updates
+* Improved search/filtering panel for Esri datasets ([#146], [#216])
+* osm-community-index v4 ([iD#8483])
+
+#### :bug: Bugfixes
+* Fix bug when adding custom layers ([#204])
+* Restore missing icons for RapiD keyboard shortcuts ([#138])
+* CrossEditableZoom event firing fix ([iD#8473])
+* Fix fallback to English language for RapiD strings ([OMaF#19])
+
+[OMaF#19]: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/issues/19
+[iD#8473]: https://github.com/openstreetmap/iD/issues/8473
+[iD#8483]: https://github.com/openstreetmap/iD/issues/8483
+[#138]: https://github.com/facebookincubator/RapiD/issues/138
+[#146]: https://github.com/facebookincubator/RapiD/issues/146
+[#204]: https://github.com/facebookincubator/RapiD/issues/204
+[#216]: https://github.com/facebookincubator/RapiD/issues/216
+
+
 # [1.1.3](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.3)
 ##### 2021-Apr-22
 #### :tada: Updates
 * Use Mapillary Vector Tile API ([iD#8372])
 * Name Suggestion Index v5 ([iD#8305])
-* Fix centroid calculation in measurement panel ([iD#8341])
 * Allow validation severity to be overridden with url params ([iD#8243])
 * Update all dependencies (numerous here, but it includes refreshes to things like [osm-community-index](https://github.com/osmlab/osm-community-index/), [temaki](https://github.com/ideditor/temaki), Rollup)
 * Use `addr:` tags as a fallback name ([iD#8440])
+
+#### :bug: Bugfixes
+* Fix centroid calculation in measurement panel ([iD#8341])
 * Bugfix for move/rotate cancel ([iD#8442] / [#80])
 
 [iD#8243]: https://github.com/openstreetmap/iD/issues/8243
