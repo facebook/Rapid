@@ -2,15 +2,18 @@ import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 
 import { geoScaleToZoom, geoVecLength } from '../geo';
-import { utilPrefixCSSProperty, utilTiler } from '../util';
+import { utilPrefixCSSProperty } from '../util';
+import { Projection } from '@id-sdk/projection';
+import { Tiler } from '@id-sdk/tiler';
 
 
 export function rendererTileLayer(context) {
     var transformProp = utilPrefixCSSProperty('Transform');
-    var tiler = utilTiler();
+    var _tiler = new Tiler();
+    var _internal = new Projection();     // the projection we use to make the tiler work
+    var _projection;                      // hold a reference to a projection from elsewhere
 
     var _tileSize = 256;
-    var _projection;
     var _cache = {};
     var _tileOrigin;
     var _zoom;
@@ -64,7 +67,8 @@ export function rendererTileLayer(context) {
 
     // Update tiles based on current state of `projection`.
     function background(selection) {
-        _zoom = geoScaleToZoom(_projection.scale(), _tileSize);
+        var k = _projection.scale();
+        _zoom = geoScaleToZoom(k, _tileSize);
 
         var pixelOffset;
         if (_source) {
@@ -81,13 +85,14 @@ export function rendererTileLayer(context) {
             _projection.translate()[1] + pixelOffset[1]
         ];
 
-        tiler
-            .scale(_projection.scale() * 2 * Math.PI)
+        // update the tiler's projection (including imagery offset)
+        _internal
+            .scale(k)
             .translate(translate);
 
         _tileOrigin = [
-            _projection.scale() * Math.PI - translate[0],
-            _projection.scale() * Math.PI - translate[1]
+            k * Math.PI - translate[0],
+            k * Math.PI - translate[1]
         ];
 
         render(selection);
@@ -103,9 +108,11 @@ export function rendererTileLayer(context) {
         var showDebug = context.getDebug('tile') && !_source.overlay;
 
         if (_source.validZoom(_zoom)) {
-            tiler.skipNullIsland(!!_source.overlay);
+            _tiler.skipNullIsland(!!_source.overlay);
 
-            tiler().forEach(function(d) {
+            var result = _tiler.getTiles(_internal);
+            result.tiles.forEach(function(tile) {
+                var d = tile.xyz.slice();  // shallow copy
                 addSource(d);
                 if (d[3] === '') return;
                 if (typeof d[3] !== 'string') return; // Workaround for #2295
@@ -164,9 +171,11 @@ export function rendererTileLayer(context) {
 
         // Pick a representative tile near the center of the viewport
         // (This is useful for sampling the imagery vintage)
-        var dims = tiler.size();
-        var mapCenter = [dims[0] / 2, dims[1] / 2];
-        var minDist = Math.max(dims[0], dims[1]);
+        var dims = _internal.dimensions();
+        var min = dims[0];
+        var max = dims[1];
+        var mapCenter = [(max[0] - min[0]) / 2, (max[1] - min[1]) / 2];
+        var minDist = Math.max(max[0], max[1]);
         var nearCenter;
 
         requests.forEach(function(d) {
@@ -264,8 +273,8 @@ export function rendererTileLayer(context) {
 
 
     background.dimensions = function(val) {
-        if (!arguments.length) return tiler.size();
-        tiler.size(val);
+        if (!arguments.length) return _internal.dimensions()[1];   // return 'max' only
+        _internal.dimensions([[0, 0], val]);                       // set min/max
         return background;
     };
 
@@ -275,7 +284,7 @@ export function rendererTileLayer(context) {
         _source = val;
         _tileSize = _source.tileSize;
         _cache = {};
-        tiler.tileSize(_source.tileSize).zoomExtent(_source.zoomExtent);
+        _tiler.tileSize(_source.tileSize).zoomRange(_source.zoomExtent);
         return background;
     };
 
