@@ -63,7 +63,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
       default:
         service = services.fbMLRoads;
     }
-    return service; 
+    return service;
   }
 
   mode.selectedIDs = function() {
@@ -115,6 +115,9 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
     context.surface()
       .selectAll('.layer-ai-features .selected')
       .classed('selected hover', false);
+
+context.container().selectAll('.over-map .rapid-image-strip')
+      .attr('style', 'display: none;');
 
     context.map()
       .on('drawn.select-ai-features', null);
