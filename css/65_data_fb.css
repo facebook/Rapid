@@ -25,6 +25,13 @@
     stroke-opacity: 0;
     fill: none;
 }
+.layer-ai-features path.dashed {
+    stroke-dasharray: 16;
+    stroke-width: 5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke: rgb(225, 129, 223);
+}
 
 .low-zoom .layer-ai-features path.stroke {
     stroke-width: 3;
@@ -60,17 +67,16 @@
     stroke-width: 2;
 }
 
-
 /* Polygons */
-.layer-ai-features  path.line.building.stroke {
+.layer-ai-features path.line.building.stroke {
     stroke-width: 3;
     fill-opacity: 1;
 }
-.layer-ai-features  path.line.building.casing {
+.layer-ai-features path.line.building.casing {
     stroke-width: 5;
     fill-opacity: 1;
 }
-.layer-ai-features  path.line.building.shadow {
+.layer-ai-features path.line.building.shadow {
     stroke-width: 15;
 }
 
@@ -83,7 +89,6 @@
 .low-zoom .layer-ai-features path.line.building.shadow {
     stroke-width: 10;
 }
-
 
 /* Nodes */
 .layer-ai-features g.node.point .shadow {
@@ -113,8 +118,6 @@
     stroke-width: 1px;
 }
 
-.ideditor .fill-wireframe  .layer-ai-features .point {
-    display : inline !important;
+.ideditor .fill-wireframe .layer-ai-features .point {
+    display: inline !important;
 }
-
-

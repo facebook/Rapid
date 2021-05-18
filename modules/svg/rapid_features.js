@@ -251,6 +251,10 @@ export function svgRapidFeatures(projection, context, dispatch) {
       return t;
   }
 
+  function isSidewalk(pathData) {
+    return pathData.some(path => path.tags && path.tags.footway === 'sidewalk');
+  }
+
 
   function eachDataset(dataset, i, nodes) {
     const rapidContext = context.rapidContext();
@@ -353,8 +357,10 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
   function drawPaths(selection, pathData, dataset, getPath) {
     // Draw shadow, casing, stroke layers
-    let linegroups = selection
+    let linegroups = isSidewalk(pathData) ? selection
       .selectAll('g.linegroup')
+      .data(['shadow', 'casing', 'stroke', 'dashed']) :
+      selection.selectAll('g.linegroup')
       .data(['shadow', 'casing', 'stroke']);
 
     linegroups = linegroups.enter()
