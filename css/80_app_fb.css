@@ -347,30 +347,40 @@ button.rapid-features.layer-off use {
     position: relative;
     flex-shrink: 0;
     overflow-x: auto;
-    margin-bottom: 80px;
-    width: 90%;
-    height: 175px;
-    padding: 5px;
-    background-color: #fff;
+    margin-bottom: 4em;
+    width: 80%;
+    color:#666;
+    border-radius: 1em;
 }
 
 .rapid-image-strip .body {
-    padding: 10px;
     display: flex;
     overflow-x: auto;
+    align-items: flex-end;
+}
+
+.rapid-image-strip .image-container {
+    height: 80%;
+    background-color: #0008;
+    padding:10px;
 }
 
 .rapid-image-strip .image {
-    height: 100%;
-    margin: 5px;
+    max-width: 10vw;
 }
 
 .rapid-image-strip-highlight {
-    border: 2px solid white;
+    outline: 2px solid white;
 }
 
-.rapid-image-strip:hover {
-    border: 2px solid white;
+.rapid-image-strip .image:hover {
+    outline: 2px solid white;
+    animation: .75s .25s enlarge forwards;
+}
+
+@keyframes enlarge {
+    from { max-width: 10vw }
+    to { max-width: 20vw }
 }
 
 /* For things that should stack in rows */
