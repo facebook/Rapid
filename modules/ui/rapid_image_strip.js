@@ -40,7 +40,7 @@ export function uiRapidImageStrip(context) {
 
         images.sort(sortByLon);
 
-        let imagesSelection = body.selectAll('.image')
+        let imagesSelection = body.selectAll('.image-container')
           .data(images, d => d.key)  //TODO: remove this sort once the backend serves stuff up in the appropriate order
           .order();
 
@@ -49,15 +49,18 @@ export function uiRapidImageStrip(context) {
         let imagesSelectionEnter = imagesSelection.enter();
 
         imagesSelectionEnter
+          .append('div').attr('class', 'image-container')
           .append('img').attr('src', d => d.url)
           .attr('class', d => `image rapid-image-strip-${d.key}`)
           .on('mouseenter', d => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(d);
+            this.classed('blargh', true);
           })
           .on('mouseleave', () => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(null);
+            this.classed('blargh', false);
           })
 
           imagesSelection = imagesSelection.merge(imagesSelectionEnter);
