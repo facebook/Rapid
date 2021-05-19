@@ -1780,6 +1780,11 @@ en:
       detached:
         message: "{feature} is too close to {feature2}"
         reference: "Separate points should not share a location."
+    duplicate_way_segments:
+      title: "Duplicate Way Segments"
+      tip: "Find way segments that are duplicated (same node endpoints)"
+      message: "Two or more segments share the same pair of nodes"
+      reference: "Redundant way segments should be merged or moved apart."
     crossing_ways:
       title: Crossings Ways
       message: "{feature} crosses {feature2}"
@@ -1994,10 +1999,14 @@ en:
         title: Ignore this issue
       merge_close_vertices:
         annotation: Merged very close points in a way.
+      merge_duplicate_way_segments:
+        annotation: Merged duplicate segments in a way.
       merge_points:
         title: Merge these points
       move_points_apart:
         title: Move these points apart
+      move_way_segments_apart:
+        title: Move these way segments apart
       move_tags:
         title: Move the tags
         annotation: Moved tags.
