@@ -8,17 +8,21 @@ import { validationIssue, validationIssueFix } from '../core/validation';
 export function validationDuplicateWaySegments(context) {
     var type = 'duplicate_way_segments';
 
+
     var validation = function(entity, graph) {
         if (entity.type === 'way') {
             return getIssuesForWay(entity);
         }
         return [];
 
+
         function isRoutableTag(key) {
             return key === 'highway' ||
                 key === 'railway' ||
                 key === 'waterway';
         }
+
+
         function isAreaTag(key) {
             return key === 'area';
         }
@@ -31,11 +35,11 @@ export function validationDuplicateWaySegments(context) {
         return Object.keys(way.tags).some(isRoutableTag);
     }
 
+
     function adjacentNodes(node1, node2, way) {
         const nodes = graph.childNodes(way);
         return Math.abs(nodes.findIndex(node => node.id === node1.id) - nodes.findIndex(node =>  node.id === node2.id)) === 1;
     }
-
 
 
         function getIssuesForWay(way) {
@@ -50,6 +54,7 @@ export function validationDuplicateWaySegments(context) {
             }
             return issues;
         }
+
 
         function getWayIssueIfAny(node1, node2, way) {
             if (node1.id === node2.id || !hasRoutableTags(way)) {
@@ -75,6 +80,7 @@ export function validationDuplicateWaySegments(context) {
                 // We just want to know if they share 2 or more ways, which means we have duplicate way geometries.
                 if (waysWithContiguousNodes.length <= 1) return null;
             }
+
 
             return new validationIssue({
                 type: type,
@@ -105,6 +111,7 @@ export function validationDuplicateWaySegments(context) {
                 }
             });
 
+            
             function showReference(selection) {
                 var referenceText = t('issues.duplicate_way_segments.reference');
                 selection.selectAll('.issue-reference')
