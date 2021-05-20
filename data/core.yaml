@@ -2007,6 +2007,8 @@ en:
         title: Move these points apart
       move_way_segments_apart:
         title: Move these way segments apart
+      remove_way_segments:
+        title: Delete one of these way segments
       move_tags:
         title: Move the tags
         annotation: Moved tags.

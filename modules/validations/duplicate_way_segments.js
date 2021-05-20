@@ -1,9 +1,6 @@
-import { actionMerge } from '../actions/merge';
 import { utilDisplayLabel } from '../util';
 import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
-import { indexOf } from 'core-js/core/array';
-import { node } from 'prop-types';
 
 // This validation determines whether way segments are duplicated atop one another,
 // which is impossible to detect via the tool(the geometries are stacked on top of
@@ -17,15 +14,21 @@ export function validationDuplicateWaySegments(context) {
         }
         return [];
 
-        function rapidIsRoutableTag(key) {
+        function isRoutableTag(key) {
             return key === 'highway' ||
                 key === 'railway' ||
                 key === 'waterway';
         }
+        function isAreaTag(key) {
+            return key === 'area';
+        }
 
 
+    // Consider a way to be routable if it is a highway, railway, or wateray.
+    // if it is an area of any kind, it is not routable.
     function hasRoutableTags(way) {
-        return Object.keys(way.tags).some(rapidIsRoutableTag);
+        if (Object.keys(way.tags).some(isAreaTag)) return false;
+        return Object.keys(way.tags).some(isRoutableTag);
     }
 
     function adjacentNodes(node1, node2, way) {
@@ -89,6 +92,10 @@ export function validationDuplicateWaySegments(context) {
                         new validationIssueFix({
                             icon: 'iD-icon-plus',
                             title: t.html('issues.fix.merge_points.title'),
+                        }),
+                        new validationIssueFix({
+                            icon: 'iD-operation-delete',
+                            title: t.html('issues.fix.remove_way_segments.title')
                         }),
                         new validationIssueFix({
                             icon: 'iD-operation-disconnect',
