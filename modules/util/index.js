@@ -45,7 +45,6 @@ export { utilSessionMutex } from './session_mutex';
 export { utilStringQs } from './util';
 export { utilTagDiff } from './util';
 export { utilTagText } from './util';
-export { utilTiler } from './tiler';
 export { utilTotalExtent } from './util';
 export { utilTriggerEvent } from './trigger_event';
 export { utilUnicodeCharsCount } from './util';

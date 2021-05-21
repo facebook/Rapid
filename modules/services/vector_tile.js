@@ -4,14 +4,15 @@ import deepEqual from 'fast-deep-equal';
 import turf_bboxClip from '@turf/bbox-clip';
 import stringify from 'fast-json-stable-stringify';
 import polygonClipping from 'polygon-clipping';
-
 import Protobuf from 'pbf';
 import vt from '@mapbox/vector-tile';
+import { Projection } from '@id-sdk/projection';
+import { Tiler } from '@id-sdk/tiler';
 
-import { utilHashcode, utilRebind, utilTiler } from '../util';
+import { utilHashcode, utilRebind } from '../util';
 
 
-var tiler = utilTiler().tileSize(512).margin(1);
+var tiler = new Tiler().tileSize(512).margin(1);
 var dispatch = d3_dispatch('loadedData');
 var _vtCache;
 
@@ -44,7 +45,7 @@ function vtToGeoJSON(data, tile, mergeCache) {
 
                 // Clip to tile bounds
                 if (geometry.type === 'MultiPolygon') {
-                    var featureClip = turf_bboxClip(feature, tile.extent.rectangle());
+                    var featureClip = turf_bboxClip(feature, tile.wgs84Extent.rectangle());
                     if (!deepEqual(feature.geometry, featureClip.geometry)) {
                         // feature = featureClip;
                         isClipped = true;
@@ -172,7 +173,8 @@ export default {
         var source = _vtCache[sourceID];
         if (!source) return [];
 
-        var tiles = tiler.getTiles(projection);
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var tiles = tiler.getTiles(proj).tiles;
         var seen = {};
         var results = [];
 
@@ -202,7 +204,8 @@ export default {
             source = this.addSource(sourceID, template);
         }
 
-        var tiles = tiler.getTiles(projection);
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var tiles = tiler.getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         Object.keys(source.inflight).forEach(function(k) {

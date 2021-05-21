@@ -2,16 +2,19 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 
+import { Projection } from '@id-sdk/projection';
+import { Tiler } from '@id-sdk/tiler';
+
 import { coreGraph, coreTree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
-import { utilRebind, utilTiler } from '../util';
+import { utilRebind } from '../util';
 
 
 const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
 const APIROOT = 'https://openstreetmap.maps.arcgis.com/sharing/rest/content';
 const HOMEROOT = 'https://openstreetmap.maps.arcgis.com/home';
 const TILEZOOM = 14;
-const tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
+const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loadedData');
 
 let _datasets = {};
@@ -219,7 +222,8 @@ export default {
     const cache = ds.cache;
     const tree = ds.tree;
     const graph = ds.graph;
-    const tiles = tiler.getTiles(projection);
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    const tiles = tiler.getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed
     Object.keys(cache.inflight).forEach(k => {
@@ -234,7 +238,7 @@ export default {
       if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
       const controller = new AbortController();
-      const url = tileURL(ds, tile.extent);
+      const url = tileURL(ds, tile.wgs84Extent);
 
       d3_json(url, { signal: controller.signal })
         .then(geojson => {

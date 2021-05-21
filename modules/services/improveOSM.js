@@ -3,17 +3,20 @@ import RBush from 'rbush';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 
+import { Projection } from '@id-sdk/projection';
+import { Tiler } from '@id-sdk/tiler';
+
 import { fileFetcher } from '../core/file_fetcher';
 import { geoExtent, geoVecAdd, geoVecScale } from '../geo';
 import { QAItem } from '../osm';
 import { serviceOsm } from './index';
 import { t } from '../core/localizer';
-import { utilRebind, utilTiler, utilQsString } from '../util';
+import { utilRebind, utilQsString } from '../util';
 
 
-const tiler = utilTiler();
+const TILEZOOM = 14;
+const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loaded');
-const _tileZoom = 14;
 const _impOsmUrls = {
   ow: 'https://grab.community.improve-osm.org/directionOfFlowService',
   mr: 'https://grab.community.improve-osm.org/missingGeoService',
@@ -156,9 +159,8 @@ export default {
     };
 
     // determine the needed tiles to cover the view
-    const tiles = tiler
-      .zoomExtent([_tileZoom, _tileZoom])
-      .getTiles(projection);
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    const tiles = tiler.getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed
     abortUnwantedRequests(_cache, tiles);
@@ -167,7 +169,7 @@ export default {
     tiles.forEach(tile => {
       if (_cache.loadedTile[tile.id] || _cache.inflightTile[tile.id]) return;
 
-      const [ east, north, west, south ] = tile.extent.rectangle();
+      const [ east, north, west, south ] = tile.wgs84Extent.rectangle();
       const params = Object.assign({}, options, { east, south, west, north });
 
       // 3 separate requests to store for each tile

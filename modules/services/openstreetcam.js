@@ -2,17 +2,19 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
+import { Projection } from '@id-sdk/projection';
+import { Tiler } from '@id-sdk/tiler';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';
 import { geoExtent, geoScaleToZoom } from '../geo';
-import { utilArrayUnion, utilQsString, utilRebind, utilSetTransform, utilStringQs, utilTiler } from '../util';
+import { utilArrayUnion, utilQsString, utilRebind, utilSetTransform, utilStringQs } from '../util';
 
 
 var apibase = 'https://openstreetcam.org';
 var maxResults = 1000;
 var tileZoom = 14;
-var tiler = utilTiler().zoomExtent([tileZoom, tileZoom]).skipNullIsland(true);
+var tiler = new Tiler().skipNullIsland(true);
 var dispatch = d3_dispatch('loadedImages');
 var imgZoom = d3_zoom()
     .extent([[0, 0], [320, 240]])
@@ -40,7 +42,9 @@ function maxPageAtZoom(z) {
 
 function loadTiles(which, url, projection) {
     var currZoom = Math.floor(geoScaleToZoom(projection.scale()));
-    var tiles = tiler.getTiles(projection);
+    // determine the needed tiles to cover the view
+    var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    var tiles = tiler.zoomRange([tileZoom, tileZoom]).getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed
     var cache = _oscCache[which];
@@ -60,7 +64,7 @@ function loadTiles(which, url, projection) {
 
 function loadNextTilePage(which, currZoom, url, tile) {
     var cache = _oscCache[which];
-    var bbox = tile.extent.bbox();
+    var bbox = tile.wgs84Extent.bbox();
     var maxPages = maxPageAtZoom(currZoom);
     var nextPage = cache.nextPage[tile.id] || 1;
     var params = utilQsString({
@@ -149,10 +153,10 @@ function loadNextTilePage(which, currZoom, url, tile) {
 function partitionViewport(projection) {
     var z = geoScaleToZoom(projection.scale());
     var z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-    var tiler = utilTiler().zoomExtent([z2, z2]);
 
-    return tiler.getTiles(projection)
-        .map(function(tile) { return tile.extent; });
+    var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    var tiles = tiler.zoomRange([z2, z2]).getTiles(proj).tiles;
+    return tiles.map(function(tile) { return tile.wgs84Extent; });
 }
 
 
