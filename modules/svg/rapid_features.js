@@ -251,8 +251,8 @@ export function svgRapidFeatures(projection, context, dispatch) {
       return t;
   }
 
-  function isSidewalk(pathData) {
-    return pathData.some(path => path.tags && path.tags.footway === 'sidewalk');
+  function isSidewalk(way) {
+    return way.tags && way.tags.footway === 'sidewalk';
   }
 
 
@@ -357,11 +357,9 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
   function drawPaths(selection, pathData, dataset, getPath) {
     // Draw shadow, casing, stroke layers
-    let linegroups = isSidewalk(pathData) ? selection
+    let linegroups = selection
       .selectAll('g.linegroup')
-      .data(['shadow', 'casing', 'stroke', 'dashed']) :
-      selection.selectAll('g.linegroup')
-      .data(['shadow', 'casing', 'stroke']);
+      .data(['shadow', 'casing', 'stroke', 'dashed']);
 
     linegroups = linegroups.enter()
       .append('g')
@@ -383,7 +381,10 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .attr('style', d => isArea(d) ? `fill: url(#fill-${dataset.id})` : null)
       .attr('class', (d, i, nodes) => {
         const currNode = nodes[i];
-        const linegroup = currNode.parentNode.__data__;
+        let linegroup = currNode.parentNode.__data__;
+        if(linegroup === 'dashed') {
+          linegroup = !isSidewalk(d) ? 'dashed-transparent' : linegroup;
+        }
         const klass = isArea(d) ? 'building' : 'road';
         return `line ${linegroup} ${klass} data${d.__fbid__}`;
       })

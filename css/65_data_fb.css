@@ -33,6 +33,14 @@
     stroke: rgb(225, 129, 223);
 }
 
+.layer-ai-features path.dashed-transparent {
+    stroke-dasharray: 16;
+    stroke-width: 5;
+    fill: none;
+    stroke-linecap: butt;
+    stroke: rgba(225, 129, 223, 0);
+}
+
 .low-zoom .layer-ai-features path.stroke {
     stroke-width: 3;
 }
