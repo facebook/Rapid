@@ -216,7 +216,6 @@ function parseStreetViewImageSet(xmlEle) {
 }
 
 function parseCrosswalkSuggestion(xmlEle, cubitorContext) {
-    console.log('Inside crosswalk parser');
     var id = xmlEle.getAttribute("id");
     // TODO: respect new data in both <create> entities and <cubitor-context> later.
     if (cubitorContext[id]) return;
