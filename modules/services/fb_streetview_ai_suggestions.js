@@ -215,6 +215,30 @@ function parseStreetViewImageSet(xmlEle) {
     return streetViewImageSet;
 }
 
+function parseCrosswalkSuggestion(xmlEle, cubitorContext) {
+    console.log('Inside crosswalk parser');
+    var id = xmlEle.getAttribute("id");
+    // TODO: respect new data in both <create> entities and <cubitor-context> later.
+    if (cubitorContext[id]) return;
+
+    var suggestion = {id: id};
+
+    // we'll support other feature types like crosswalk and speed limit in the future
+    suggestion.featureType = "crosswalk";
+
+    // whether it's suggestion for geometry or tag change
+    suggestion.suggestionType = xmlEle.getAttribute("type");
+
+    xmlEle.childNodes.forEach(function (ele) {
+        if (ele.nodeName === "osm-road") {
+            suggestion.osmRoadMeta = parseOsmRoadMeta(ele);
+        } else if (ele.nodeName === "street-view-image-set") {
+            suggestion.streetViewImageSet = parseStreetViewImageSet(ele);
+        }
+    });
+    cubitorContext[suggestion.id] = suggestion;
+}
+
 
 // parse <sidewalk-suggestion>
 function parseSidewalkSuggestion(xmlEle, cubitorContext) {
@@ -242,7 +266,8 @@ function parseSidewalkSuggestion(xmlEle, cubitorContext) {
 
 
 var cubitorParsers = {
-    "sidewalk-suggestion": parseSidewalkSuggestion
+    "sidewalk-suggestion": parseSidewalkSuggestion,
+    "crosswalk-suggestion": parseCrosswalkSuggestion
 };
 
 
@@ -333,7 +358,6 @@ function parseXML(dataset, xml, callback, options) {
                 entity.suggestionContext = cubitorContext[entity.suggestionId];
             }
         });
-
         callback(null, osmEntities);
     });
 
