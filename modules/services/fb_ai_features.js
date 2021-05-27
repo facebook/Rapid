@@ -3,8 +3,7 @@ import _forEach from 'lodash-es/forEach';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
 
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
+import { Projection, Tiler } from '@id-sdk/math';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';

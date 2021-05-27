@@ -2,8 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
+import { Projection, Tiler } from '@id-sdk/math';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';

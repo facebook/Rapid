@@ -2,8 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
 
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
+import { Projection, Tiler } from '@id-sdk/math';
 import RBush from 'rbush';
 
 import { t, localizer } from '../core/localizer';

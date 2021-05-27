@@ -2,8 +2,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
+import { Projection, Tiler } from '@id-sdk/math';
 
 import Protobuf from 'pbf';
 import RBush from 'rbush';

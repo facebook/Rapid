@@ -6,8 +6,7 @@ import stringify from 'fast-json-stable-stringify';
 import polygonClipping from 'polygon-clipping';
 import Protobuf from 'pbf';
 import vt from '@mapbox/vector-tile';
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
+import { Projection, Tiler } from '@id-sdk/math';
 
 import { utilHashcode, utilRebind } from '../util';
 
