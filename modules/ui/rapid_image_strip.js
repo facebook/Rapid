@@ -55,12 +55,10 @@ export function uiRapidImageStrip(context) {
           .on('mouseenter', d => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(d);
-            this.classed('blargh', true);
           })
           .on('mouseleave', () => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(null);
-            this.classed('blargh', false);
           })
 
           imagesSelection = imagesSelection.merge(imagesSelectionEnter);
@@ -71,7 +69,7 @@ export function uiRapidImageStrip(context) {
             body.select(`.rapid-image-strip-${selectedImage.key}`)
               .classed('rapid-image-strip-highlight', true);
           } else {
-            body.selectAll(`.rapid-image-strip`)
+            body.selectAll(`img`)
               .classed('rapid-image-strip-highlight', false);
           }
         });
