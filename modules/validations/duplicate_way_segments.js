@@ -5,7 +5,7 @@ import { validationIssue, validationIssueFix } from '../core/validation';
 // This validation determines whether way segments are duplicated atop one another,
 // which is impossible to detect via the tool(the geometries are stacked on top of
 // one another, so they are not visible ever).
-export function validationDuplicateWaySegments(context) {
+export function validationDuplicateWaySegments() {
     var type = 'duplicate_way_segments';
 
 
@@ -20,11 +20,6 @@ export function validationDuplicateWaySegments(context) {
             return key === 'highway' ||
                 key === 'railway' ||
                 key === 'waterway';
-        }
-
-
-        function isAreaTag(key) {
-            return key === 'area';
         }
 
 
@@ -76,7 +71,7 @@ export function validationDuplicateWaySegments(context) {
                 var remainingSharedWays = sharedWays.filter(way => hasRoutableTags(way));
 
                 //Finally, get rid of ways where the two nodes in question are not continguous (this indicates a dogleg or u-shaped road splitting off from node1 and then re-joining at node 2)
-                var waysWithContiguousNodes = remainingSharedWays.filter(way => adjacentNodes(node1, node2, way))
+                var waysWithContiguousNodes = remainingSharedWays.filter(way => adjacentNodes(node1, node2, way));
 
                 // If the nodes don't share a way, or share 1 way, that's fine!
                 // We just want to know if they share 2 or more ways, which means we have duplicate way geometries.
