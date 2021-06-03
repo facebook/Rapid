@@ -349,7 +349,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
         selection.select(`.viewfield-${selectedImage.key}`).style('stroke', 'white');
       } else {
         selection.selectAll(`.viewfieldSuggestion`)
-          .style('stroke', VIEWFIELD_MAGENTA).attr('class', 'unzoomed');
+          .style('stroke', VIEWFIELD_MAGENTA);
       }
     });
   }
