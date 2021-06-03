@@ -31,7 +31,7 @@ export function validationDuplicateWaySegments(context) {
     // Consider a way to be routable if it is a highway, railway, or wateray.
     // if it is an area of any kind, it is not routable.
     function hasRoutableTags(way) {
-        if (Object.keys(way.tags).some(isAreaTag)) return false;
+        if (way.isArea()) return false;
         return Object.keys(way.tags).some(isRoutableTag);
     }
 
@@ -42,22 +42,24 @@ export function validationDuplicateWaySegments(context) {
     }
 
 
-        function getIssuesForWay(way) {
-            var issues = [],
-                nodes = graph.childNodes(way);
-            for (var i = 0; i < nodes.length - 1; i++) {
-                var node1 = nodes[i];
-                var node2 = nodes[i+1];
+    function getIssuesForWay(way) {
+        var issues = [];
+            if (!hasRoutableTags(way)) return issues;
 
-                var issue = getWayIssueIfAny(node1, node2, way);
-                if (issue) issues.push(issue);
-            }
-            return issues;
+        var nodes = graph.childNodes(way);
+        for (var i = 0; i < nodes.length - 1; i++) {
+            var node1 = nodes[i];
+            var node2 = nodes[i+1];
+
+            var issue = getWayIssueIfAny(node1, node2, way);
+            if (issue) issues.push(issue);
         }
+        return issues;
+    }
 
 
         function getWayIssueIfAny(node1, node2, way) {
-            if (node1.id === node2.id || !hasRoutableTags(way)) {
+            if (node1.id === node2.id ) {
                 return null;
             }
 
@@ -111,7 +113,7 @@ export function validationDuplicateWaySegments(context) {
                 }
             });
 
-            
+
             function showReference(selection) {
                 var referenceText = t('issues.duplicate_way_segments.reference');
                 selection.selectAll('.issue-reference')
