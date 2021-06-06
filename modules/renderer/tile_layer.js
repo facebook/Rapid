@@ -1,17 +1,20 @@
 import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 
+import { Projection, Tiler } from '@id-sdk/math';
+
 import { geoScaleToZoom, geoVecLength } from '../geo';
-import { utilPrefixCSSProperty, utilTiler } from '../util';
+import { utilPrefixCSSProperty } from '../util';
 
 
 export function rendererTileLayer(context) {
     var transformProp = utilPrefixCSSProperty('Transform');
-    var tiler = utilTiler();
+    var _tiler = new Tiler();
+    var _internal = new Projection();     // the projection we use to make the tiler work
+    var _projection;                      // hold a reference to a projection from elsewhere
 
     var _tileSize = 256;
-    var _projection;
-    var _cache = {};
+    var _failures = {};
     var _tileOrigin;
     var _zoom;
     var _source;
@@ -23,48 +26,10 @@ export function rendererTileLayer(context) {
     }
 
 
-    function atZoom(t, distance) {
-        var power = Math.pow(2, distance);
-        return [
-            Math.floor(t[0] * power),
-            Math.floor(t[1] * power),
-            t[2] + distance
-        ];
-    }
-
-
-    function lookUp(d) {
-        for (var up = -1; up > -d[2]; up--) {
-            var tile = atZoom(d, up);
-            if (_cache[_source.url(tile)] !== false) {
-                return tile;
-            }
-        }
-    }
-
-
-    function uniqueBy(a, n) {
-        var o = [];
-        var seen = {};
-        for (var i = 0; i < a.length; i++) {
-            if (seen[a[i][n]] === undefined) {
-                o.push(a[i]);
-                seen[a[i][n]] = true;
-            }
-        }
-        return o;
-    }
-
-
-    function addSource(d) {
-        d.push(_source.url(d));
-        return d;
-    }
-
-
     // Update tiles based on current state of `projection`.
     function background(selection) {
-        _zoom = geoScaleToZoom(_projection.scale(), _tileSize);
+        var k = _projection.scale();
+        _zoom = geoScaleToZoom(k, _tileSize);
 
         var pixelOffset;
         if (_source) {
@@ -81,13 +46,14 @@ export function rendererTileLayer(context) {
             _projection.translate()[1] + pixelOffset[1]
         ];
 
-        tiler
-            .scale(_projection.scale() * 2 * Math.PI)
+        // update the tiler's projection (including imagery offset)
+        _internal
+            .scale(k)
             .translate(translate);
 
         _tileOrigin = [
-            _projection.scale() * Math.PI - translate[0],
-            _projection.scale() * Math.PI - translate[1]
+            k * Math.PI - translate[0],
+            k * Math.PI - translate[1]
         ];
 
         render(selection);
@@ -99,30 +65,41 @@ export function rendererTileLayer(context) {
     // rentered when tiles load/error (see #644).
     function render(selection) {
         if (!_source) return;
-        var requests = [];
+        var tiles = [];
         var showDebug = context.getDebug('tile') && !_source.overlay;
 
-        if (_source.validZoom(_zoom)) {
-            tiler.skipNullIsland(!!_source.overlay);
-
-            tiler().forEach(function(d) {
-                addSource(d);
-                if (d[3] === '') return;
-                if (typeof d[3] !== 'string') return; // Workaround for #2295
-                requests.push(d);
-                if (_cache[d[3]] === false && lookUp(d)) {
-                    requests.push(addSource(lookUp(d)));
-                }
-            });
-
-            requests = uniqueBy(requests, 3).filter(function(r) {
-                // don't re-request tiles which have failed in the past
-                return _cache[r[3]] !== false;
-            });
+        var maxZoom = Math.round(_zoom);             // the zoom we want
+        var minZoom = Math.max(0, maxZoom - 5);      // the mininimum zoom we'll accept for filling holes
+        if (!_source.overzoom) {
+            maxZoom = minZoom = Math.floor(_zoom);   // try no zooms outside the one we're at
         }
 
-        function load(d3_event, d) {
-            _cache[d[3]] = true;
+        // gather tiles to cover viewfield, incl zoomed out tiles if this field contains any holes
+        var covered = false;
+        for (var z = maxZoom; !covered && z >= minZoom; z--) {
+            if (!_source.validZoom(z)) continue;  // zoom out
+
+            _tiler
+                .skipNullIsland(!!_source.overlay)
+                .zoomRange([z, z]);
+
+            var result = _tiler.getTiles(_internal);
+            var holes = false;
+            for (var i = 0; i < result.tiles.length; i++) {
+                var tile = result.tiles[i];
+                tile.url = _source.url(tile.xyz);
+                if (!tile.url || typeof tile.url !== 'string' || _failures[tile.url]) {
+                    holes = true;   // url invalid or has failed in the past
+                } else {
+                    tiles.push(tile);
+                }
+            }
+            covered = !holes;
+        }
+
+
+        function load(d3_event, tile) {
+            delete _failures[tile.url];
             d3_select(this)
                 .on('error', null)
                 .on('load', null)
@@ -130,8 +107,8 @@ export function rendererTileLayer(context) {
             render(selection);
         }
 
-        function error(d3_event, d) {
-            _cache[d[3]] = false;
+        function error(d3_event, tile) {
+            _failures[tile.url] = (_failures[tile.url] || 0) + 1;
             d3_select(this)
                 .on('error', null)
                 .on('load', null)
@@ -139,7 +116,8 @@ export function rendererTileLayer(context) {
             render(selection);
         }
 
-        function imageTransform(d) {
+        function imageTransform(tile) {
+            var d = tile.xyz;
             var ts = _tileSize * Math.pow(2, _zoom - d[2]);
             var scale = tileSizeAtZoom(d, _zoom);
             return 'translate(' +
@@ -148,7 +126,8 @@ export function rendererTileLayer(context) {
                 'scale(' + scale + ',' + scale + ')';
         }
 
-        function tileCenter(d) {
+        function tileCenter(tile) {
+            var d = tile.xyz;
             var ts = _tileSize * Math.pow(2, _zoom - d[2]);
             return [
                 ((d[0] * ts) - _tileOrigin[0] + (ts / 2)),
@@ -156,41 +135,43 @@ export function rendererTileLayer(context) {
             ];
         }
 
-        function debugTransform(d) {
-            var coord = tileCenter(d);
+        function debugTransform(tile) {
+            var coord = tileCenter(tile);
             return 'translate(' + coord[0] + 'px,' + coord[1] + 'px)';
         }
 
 
         // Pick a representative tile near the center of the viewport
         // (This is useful for sampling the imagery vintage)
-        var dims = tiler.size();
-        var mapCenter = [dims[0] / 2, dims[1] / 2];
-        var minDist = Math.max(dims[0], dims[1]);
+        var dims = _internal.dimensions();
+        var min = dims[0];
+        var max = dims[1];
+        var mapCenter = [(max[0] - min[0]) / 2, (max[1] - min[1]) / 2];
+        var minDist = Math.max(max[0], max[1]);
         var nearCenter;
 
-        requests.forEach(function(d) {
-            var c = tileCenter(d);
+        tiles.forEach(function(tile) {
+            var c = tileCenter(tile);
             var dist = geoVecLength(c, mapCenter);
             if (dist < minDist) {
                 minDist = dist;
-                nearCenter = d;
+                nearCenter = tile;
             }
         });
 
 
         var image = selection.selectAll('img')
-            .data(requests, function(d) { return d[3]; });
+            .data(tiles, function(tile) { return tile.url; });
 
         image.exit()
             .style(transformProp, imageTransform)
             .classed('tile-removing', true)
             .classed('tile-center', false)
             .each(function() {
-                var tile = d3_select(this);
+                var img = d3_select(this);
                 window.setTimeout(function() {
-                    if (tile.classed('tile-removing')) {
-                        tile.remove();
+                    if (img.classed('tile-removing')) {
+                        img.remove();
                     }
                 }, 300);
             });
@@ -201,7 +182,8 @@ export function rendererTileLayer(context) {
             .attr('draggable', 'false')
             .style('width', _tileSize + 'px')
             .style('height', _tileSize + 'px')
-            .attr('src', function(d) { return d[3]; })
+            .style('z-index', function(d) { return d.xyz[2]; })  // draw zoomed tiles above unzoomed tiles
+            .attr('src', function(d) { return d.url; })
             .on('error', error)
             .on('load', load)
           .merge(image)
@@ -213,7 +195,7 @@ export function rendererTileLayer(context) {
 
 
         var debug = selection.selectAll('.tile-label-debug')
-            .data(showDebug ? requests : [], function(d) { return d[3]; });
+            .data(showDebug ? tiles : [], function(tile) { return tile.url; });
 
         debug.exit()
             .remove();
@@ -221,6 +203,7 @@ export function rendererTileLayer(context) {
         if (showDebug) {
             var debugEnter = debug.enter()
                 .append('div')
+                .style('z-index', function(tile) { return tile.xyz[2]; })  // draw zoomed tiles above unzoomed tiles
                 .attr('class', 'tile-label-debug');
 
             debugEnter
@@ -238,14 +221,17 @@ export function rendererTileLayer(context) {
 
             debug
                 .selectAll('.tile-label-debug-coord')
-                .html(function(d) { return d[2] + ' / ' + d[0] + ' / ' + d[1]; });
+                .html(function(tile) {
+                    let d = tile.xyz;
+                    return d[2] + ' / ' + d[0] + ' / ' + d[1];
+                });
 
             debug
                 .selectAll('.tile-label-debug-vintage')
-                .each(function(d) {
+                .each(function(tile) {
                     var span = d3_select(this);
-                    var center = context.projection.invert(tileCenter(d));
-                    _source.getMetadata(center, d, function(err, result) {
+                    var center = context.projection.invert(tileCenter(tile));
+                    _source.getMetadata(center, tile.xyz, function(err, result) {
                         span.html((result && result.vintage && result.vintage.range) ||
                             t('info_panels.background.vintage') + ': ' + t('info_panels.background.unknown')
                         );
@@ -264,8 +250,8 @@ export function rendererTileLayer(context) {
 
 
     background.dimensions = function(val) {
-        if (!arguments.length) return tiler.size();
-        tiler.size(val);
+        if (!arguments.length) return _internal.dimensions()[1];   // return 'max' only
+        _internal.dimensions([[0, 0], val]);                       // set min/max
         return background;
     };
 
@@ -274,8 +260,8 @@ export function rendererTileLayer(context) {
         if (!arguments.length) return _source;
         _source = val;
         _tileSize = _source.tileSize;
-        _cache = {};
-        tiler.tileSize(_source.tileSize).zoomExtent(_source.zoomExtent);
+        _failures = {};
+        _tiler.tileSize(_source.tileSize);
         return background;
     };
 

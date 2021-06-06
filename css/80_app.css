@@ -4146,6 +4146,9 @@ img.tile-debug {
     bottom: 0;
 }
 
+.supersurface .layer.layer-data {
+    z-index: 30;  /* above imagery, overlays */
+}
 
 /* Map-In-Map
 ------------------------------------------------------- */
@@ -4172,6 +4175,14 @@ img.tile-debug {
     user-select: none;
 }
 
+.map-in-map-background {
+    position: absolute;
+    z-index: 1;
+}
+.map-in-map-overlay {
+    position: absolute;
+    z-index: 2;
+}
 .map-in-map-viewport,
 .map-in-map-data {
     top: 0;
@@ -4181,19 +4192,20 @@ img.tile-debug {
     width: 100%;
 }
 
-.map-in-map-viewport {
-    position: absolute;
-}
-
 .map-in-map-data {
     position: relative;
-    z-index: 10;
+    z-index: 3;
+}
+
+.map-in-map-viewport {
+    position: absolute;
+    z-index: 4;
 }
 
 .map-in-map-bbox {
     fill: none;
     stroke: rgba(255, 255, 0, 0.75);
-    stroke-width: 1;
+    stroke-width: 1.5;
     shape-rendering: crispEdges;
 }
 
@@ -4210,7 +4222,7 @@ img.tile-debug {
     stroke-width: 2;
 }
 .map-in-map-data .debug {
-    stroke-width: 1;
+    stroke-width: 1.5;
 }
 
 .nocolor { color: rgba(0, 0, 0, 0); }
@@ -4222,7 +4234,7 @@ img.tile-debug {
 .magenta { color: rgba(255, 0, 255, 0.75); }
 .orange  { color: rgba(255, 153, 0, 0.75); }
 .pink    { color: rgba(255, 0, 153, 0.75); }
-.purple  { color: rgba(153, 0, 255, 0.75); }
+.purple  { color: rgba(153, 85, 255, 0.75); }
 
 .debug-legend {
     position: absolute;
@@ -5398,6 +5410,7 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 ------------------------------------------------------- */
 .edit-menu {
     position: absolute;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     background: #fff;

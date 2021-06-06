@@ -101,8 +101,11 @@ export function uiPanelBackground(context) {
         if (tile.empty()) return;
 
         var sourceName = _currSourceName;
-        var d = tile.datum();
-        var zoom = (d && d.length >= 3 && d[2]) || Math.floor(context.map().zoom());
+        var datum = tile.datum();
+        if (!datum) return;
+
+        var d = datum.xyz;
+        var zoom = d[2] || Math.floor(context.map().zoom());
         var center = context.map().center();
 
         // update zoom
@@ -111,8 +114,6 @@ export function uiPanelBackground(context) {
             .classed('hide', false)
             .selectAll('.background-info-span-zoom')
             .html(_metadata.zoom);
-
-        if (!d || !d.length >= 3) return;
 
         background.baseLayerSource().getMetadata(center, d, function(err, result) {
             if (err || _currSourceName !== sourceName) return;

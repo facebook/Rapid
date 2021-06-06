@@ -1,11 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
 
-import {
-  select as d3_select
-} from 'd3-selection';
-
+import { Projection, Tiler } from '@id-sdk/math';
 import RBush from 'rbush';
+
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 
@@ -14,7 +13,7 @@ import {
   geoRotate, geoScaleToZoom, geoVecLength
 } from '../geo';
 
-import { utilArrayUnion, utilQsString, utilRebind, utilStringQs, utilTiler, utilUniqueDomId } from '../util';
+import { utilArrayUnion, utilQsString, utilRebind, utilStringQs, utilUniqueDomId } from '../util';
 
 
 const bubbleApi = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';
@@ -23,8 +22,9 @@ const bubbleAppKey = 'AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrB
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
 const maxResults = 2000;
-const tileZoom = 16.5;
-const tiler = utilTiler().zoomExtent([tileZoom, tileZoom]).skipNullIsland(true);
+const TILEZOOM = 16.5;
+const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]).skipNullIsland(true);
+
 const dispatch = d3_dispatch('loadedImages', 'viewerChanged');
 const minHfov = 10;         // zoom in degrees:  20, 10, 5
 const maxHfov = 90;         // zoom out degrees
@@ -73,7 +73,9 @@ function localeTimestamp(s) {
  * loadTiles() wraps the process of generating tiles and then fetching image points for each tile.
  */
 function loadTiles(which, url, projection, margin) {
-  const tiles = tiler.margin(margin).getTiles(projection);
+  // determine the needed tiles to cover the view
+  const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+  const tiles = tiler.zoomRange([TILEZOOM, TILEZOOM]).margin(margin).getTiles(proj).tiles;
 
   // abort inflight requests that are no longer needed
   const cache = _ssCache[which];
@@ -208,8 +210,8 @@ function connectSequences() {
  * getBubbles() handles the request to the server for a tile extent of 'bubbles' (streetside image locations).
  */
 function getBubbles(url, tile, callback) {
-  let rect = tile.extent.rectangle();
-  let urlForRequest = url + utilQsString({
+  const rect = tile.wgs84Extent.rectangle();
+  const urlForRequest = url + utilQsString({
     n: rect[3],
     s: rect[1],
     e: rect[2],
@@ -231,12 +233,11 @@ function getBubbles(url, tile, callback) {
 
 // partition viewport into higher zoom tiles
 function partitionViewport(projection) {
-  let z = geoScaleToZoom(projection.scale());
-  let z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-  let tiler = utilTiler().zoomExtent([z2, z2]);
-
-  return tiler.getTiles(projection)
-    .map(tile => tile.extent);
+  const z = geoScaleToZoom(projection.scale());
+  const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
+  const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+  const tiles = tiler.zoomRange([z2, z2]).margin(0).getTiles(proj).tiles;
+  return tiles.map(tile => tile.wgs84Extent);
 }
 
 

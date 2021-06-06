@@ -3,16 +3,19 @@ import _throttle from 'lodash-es/throttle';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json, xml as d3_xml } from 'd3-fetch';
 
+import { Projection } from '@id-sdk/projection';
+import { Tiler } from '@id-sdk/tiler';
+
 import osmAuth from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
-import { geoExtent, geoRawMercator, geoVecAdd, geoZoomToScale } from '../geo';
+import { geoExtent, geoVecAdd, geoZoomToScale } from '../geo';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
-import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilTiler, utilQsString, utilStringQs } from '../util';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilQsString, utilStringQs } from '../util';
 
 
-var tiler = utilTiler();
+var tiler = new Tiler();
 var dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
 var urlroot = 'https://www.openstreetmap.org';
 var q = utilStringQs(window.location.hash.substring(1));
@@ -1050,7 +1053,8 @@ export default {
         if (_off) return;
 
         // determine the needed tiles to cover the view
-        var tiles = tiler.zoomExtent([_tileZoom, _tileZoom]).getTiles(projection);
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var tiles = tiler.zoomRange([_tileZoom, _tileZoom]).getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         var hadRequests = hasInflightRequests(_tileCache);
@@ -1080,7 +1084,7 @@ export default {
         var options = { skipSeen: true };
 
         _tileCache.inflight[tile.id] = this.loadFromAPI(
-            path + tile.extent.toParam(),
+            path + tile.wgs84Extent.toParam(),
             tileCallback,
             options
         );
@@ -1090,7 +1094,7 @@ export default {
             if (!err) {
                 delete _tileCache.toLoad[tile.id];
                 _tileCache.loaded[tile.id] = true;
-                var bbox = tile.extent.bbox();
+                var bbox = tile.wgs84Extent.bbox();
                 bbox.id = tile.id;
                 _tileCache.rtree.insert(bbox);
             }
@@ -1118,9 +1122,9 @@ export default {
         if (Object.keys(_tileCache.toLoad).length > 50) return;
 
         var k = geoZoomToScale(_tileZoom + 1);
-        var offset = geoRawMercator().scale(k)(loc);
-        var projection = geoRawMercator().transform({ k: k, x: -offset[0], y: -offset[1] });
-        var tiles = tiler.zoomExtent([_tileZoom, _tileZoom]).getTiles(projection);
+        var offset = new Projection().scale(k).project(loc);
+        var proj = new Projection().transform({ k: k, x: -offset[0], y: -offset[1] });
+        var tiles = tiler.zoomRange([_tileZoom, _tileZoom]).getTiles(proj).tiles;
 
         tiles.forEach(function(tile) {
             if (_tileCache.toLoad[tile.id] || _tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
@@ -1146,7 +1150,8 @@ export default {
         }, 750);
 
         // determine the needed tiles to cover the view
-        var tiles = tiler.zoomExtent([_noteZoom, _noteZoom]).getTiles(projection);
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var tiles = tiler.zoomRange([_noteZoom, _noteZoom]).getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         abortUnwantedRequests(_noteCache, tiles);
@@ -1157,7 +1162,7 @@ export default {
 
             var options = { skipSeen: false };
             _noteCache.inflight[tile.id] = that.loadFromAPI(
-                path + tile.extent.toParam(),
+                path + tile.wgs84Extent.toParam(),
                 function(err) {
                     delete _noteCache.inflight[tile.id];
                     if (!err) {

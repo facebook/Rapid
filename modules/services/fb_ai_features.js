@@ -3,14 +3,16 @@ import _forEach from 'lodash-es/forEach';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
 
+import { Projection, Tiler } from '@id-sdk/math';
+
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
-import { utilRebind, utilStringQs, utilTiler } from '../util';
+import { utilRebind, utilStringQs } from '../util';
 
 // constants
 var APIROOT = 'https://mapwith.ai/maps/ml_roads';
 var TILEZOOM = 16;
-var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
+var tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
 
 var _datasets = {};
@@ -305,8 +307,8 @@ export default {
             _datasets[datasetID] = ds;
         }
 
-
-        var tiles = tiler.getTiles(projection);
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var tiles = tiler.getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         _forEach(cache.inflight, function(v, k) {
@@ -321,7 +323,7 @@ export default {
             if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
             var controller = new AbortController();
-            d3_xml(tileURL(ds, tile.extent, taskExtent), { signal: controller.signal })
+            d3_xml(tileURL(ds, tile.wgs84Extent, taskExtent), { signal: controller.signal })
                 .then(function (dom) {
                     delete cache.inflight[tile.id];
                     if (!dom) return;
