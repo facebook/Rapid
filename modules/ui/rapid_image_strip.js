@@ -64,7 +64,7 @@ export function uiRapidImageStrip(context) {
         context.rapidContext().on('select_suggested_image', function() {
           const selectedImage = rapidContext.getSelectSuggestedImage();
           if (selectedImage) {
-            body.select(`.rapid-image-strip-${selectedImage.key}`)
+            body.selectAll(`.rapid-image-strip-${selectedImage.key}`)
               .classed('rapid-image-strip-highlight', true);
           } else {
             body.selectAll('img')
