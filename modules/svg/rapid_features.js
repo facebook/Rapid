@@ -346,7 +346,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
     context.rapidContext().on('select_suggested_viewfield', function() {
       const selectedImage = rapidContext.getSelectSuggestedImage();
       if (selectedImage) {
-        selection.select(`.viewfield-${selectedImage.key}`).style('stroke', 'white');
+        selection.selectAll(`.viewfield-${selectedImage.key}`).style('stroke', 'white');
       } else {
         selection.selectAll('.viewfieldSuggestion')
           .style('stroke', VIEWFIELD_MAGENTA);
