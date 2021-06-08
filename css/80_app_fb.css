@@ -366,7 +366,7 @@ button.rapid-features.layer-off use {
 }
 
 .rapid-image-strip .image {
-    max-width: 10vw;
+    max-height: 7vw;
 }
 
 .rapid-image-strip-highlight {
@@ -379,8 +379,8 @@ button.rapid-features.layer-off use {
 }
 
 @keyframes enlarge {
-    from { max-width: 10vw }
-    to { max-width: 20vw }
+    from { max-height: 7vw }
+    to { max-height: 14vw }
 }
 
 /* For things that should stack in rows */
