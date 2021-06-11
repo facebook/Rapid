@@ -104,7 +104,7 @@
     "js-yaml": "^4.0.0",
     "json-stringify-pretty-compact": "^3.0.0",
     "mapillary_sprite_source": "^1.8.0",
-    "mapillary-js": "~3.1.0",
+    "mapillary-js": "~4.0.0",
     "minimist": "^1.2.3",
     "mocha": "^8.3.2",
     "name-suggestion-index": "~5.0",
