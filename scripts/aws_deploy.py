@@ -65,30 +65,28 @@ def deploy():
                 )
                 output.write(s)
     print("\nCopying new " + distdir + "folder and index file to s3.")
-    subprocess.check_call(
-        (
-            [
-                "aws",
-                "s3",
-                "cp",
-                distdir,
-                f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{distdir}",
-                "--recursive",
-                "--quiet",
-            ]
-        )
+    subprocess.run(
+        [
+            "aws",
+            "s3",
+            "cp",
+            distdir,
+            f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{distdir}",
+            "--recursive",
+        ],
+        check=True,
+        # capture_output=True,
     )
-    subprocess.check_call(
-        (
-            [
-                "aws",
-                "s3",
-                "cp",
-                newindex,
-                f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{identifier}-rapid.html",
-                "--quiet",
-            ]
-        )
+    subprocess.run(
+        [
+            "aws",
+            "s3",
+            "cp",
+            newindex,
+            f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{identifier}-rapid.html",
+        ],
+        check=True,
+        # capture_output=True,
     )
 
 if __name__ == "__main__":
