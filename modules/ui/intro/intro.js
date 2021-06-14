@@ -242,10 +242,10 @@ export function uiIntro(context, skipToRapid) {
       .attr('class', 'status')
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-    enterChapter(chapters[skipToRapid ? 6 : 0]);
+    enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 
     function enterChapter(d3_event, newChapter) {
-      if (_currChapter) { _currChapter.exit(); }
+      if (_currChapter) _currChapter.exit();
       context.enter(modeBrowse(context));
 
       _currChapter = newChapter;
