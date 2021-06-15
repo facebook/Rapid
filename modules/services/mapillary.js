@@ -2,7 +2,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import base64 from 'base64-js';
 import { Projection, Tiler } from '@id-sdk/math';
 
 import Protobuf from 'pbf';
@@ -720,8 +719,12 @@ export default {
                 _mlyHighlightedDetection = null;
             }
 
-            const geometry = base64.toByteArray(data.geometry);
-            const tile = new VectorTile(new Protobuf(geometry));
+            var decodedGeometry = window.atob(data.geometry);
+            var uintArray = new Uint8Array(decodedGeometry.length);
+            for (var i = 0; i < decodedGeometry.length; i++) {
+                uintArray[i] = decodedGeometry.charCodeAt(i);
+            }
+            const tile = new VectorTile(new Protobuf(uintArray.buffer));
             const layer = tile.layers['mpy-or'];
 
             const geometries = layer.feature(0).loadGeometry();
