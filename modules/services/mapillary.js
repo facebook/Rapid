@@ -10,7 +10,7 @@ import { VectorTile } from '@mapbox/vector-tile';
 import { geoExtent, geoScaleToZoom } from '../geo';
 import { utilQsString, utilRebind, utilTiler, utilStringQs } from '../util';
 
-const accessToken = 'MLY|4100327730013843|5bb78b81720791946a9a7b956c57b7cf';
+const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
 const baseTileUrl = 'https://tiles.mapillary.com/maps/vtp';
 const mapFeatureTileUrl = `${baseTileUrl}/mly_map_feature_point/2/{z}/{x}/{y}?access_token=${accessToken}`;
