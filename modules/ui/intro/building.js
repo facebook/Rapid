@@ -751,8 +751,8 @@ export function uiIntroBuilding(context, reveal) {
     function play() {
         dispatch.call('done');
         reveal('.ideditor',
-            helpHtml('intro.buildings.play', { next: t('intro.startediting.title') }), {
-                tooltipBox: '.intro-nav-wrap .chapter-startEditing',
+            helpHtml('intro.buildings.play', { next: t('intro.rapid.title') }), {
+                tooltipBox: '.intro-nav-wrap .chapter-rapid',
                 buttonText: t.html('intro.ok'),
                 buttonCallback: function() { reveal('.ideditor'); }
             }

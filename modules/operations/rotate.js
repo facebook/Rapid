@@ -1,6 +1,7 @@
 import { t } from '../core/localizer';
 import { behaviorOperation } from '../behavior/operation';
 import { modeRotate } from '../modes/rotate';
+import { prefs } from '../core/preferences';
 import { utilGetAllNodes, utilTotalExtent } from '../util/util';
 
 
@@ -22,8 +23,8 @@ export function operationRotate(context, selectedIDs) {
 
 
     operation.disabled = function() {
-
-        if (extent.percentContainedIn(context.map().extent()) < 0.8) {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+        if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (someMissing()) {
             return 'not_downloaded';

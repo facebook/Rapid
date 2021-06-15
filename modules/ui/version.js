@@ -12,7 +12,7 @@ var isNewUser = false;
 
 export function uiVersion(context) {
 
-    var currVersion = context.version;
+    var currVersion = context.rapidContext().version;
     var matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
 
     if (sawVersion === null && matchedVersion !== null) {
@@ -31,8 +31,9 @@ export function uiVersion(context) {
         selection
             .append('a')
             .attr('target', '_blank')
-            .attr('href', 'https://github.com/openstreetmap/iD')
-            .html(currVersion);
+            .attr('tabindex', -1)
+            .attr('href', 'https://github.com/facebookincubator/RapiD')
+            .text(currVersion);
 
         // only show new version indicator to users that have used iD before
         if (isNewVersion && !isNewUser) {
@@ -40,7 +41,8 @@ export function uiVersion(context) {
                 .append('a')
                 .attr('class', 'badge')
                 .attr('target', '_blank')
-                .attr('href', 'https://github.com/openstreetmap/iD/blob/release/CHANGELOG.md#whats-new')
+                .attr('tabindex', -1)
+                .attr('href', 'https://github.com/facebookincubator/RapiD/blob/main/CHANGELOG.md')
                 .call(svgIcon('#maki-gift-11'))
                 .call(uiTooltip()
                     .title(t.html('version.whats_new', { version: currVersion }))

@@ -26,6 +26,7 @@ export function rendererBackground(context) {
   let _contrast = 1;
   let _saturation = 1;
   let _sharpness = 1;
+  var _numGridSplits = 0; // No grid by default.
 
 
   function ensureImageryIndex() {
@@ -191,6 +192,12 @@ export function rendererBackground(context) {
       .each((layer, i, nodes) => d3_select(nodes[i]).call(layer));
   }
 
+  background.numGridSplits = function(_) {
+      if (!arguments.length) return _numGridSplits;
+      _numGridSplits = _;
+      dispatch.call('change');
+      return background;
+  };
 
   background.updateImagery = function() {
     let currSource = baseLayer.source();
@@ -480,14 +487,15 @@ export function rendererBackground(context) {
           background.baseLayerSource(custom.template(template));
           prefs('background-custom-template', template);
         } else {
-          background.baseLayerSource(
-            background.findSource(requested) ||
-            best ||
-            background.findSource(prefs('background-last-used')) ||
-            background.findSource('Bing') ||
-            first ||
-            background.findSource('none')
-          );
+            background.baseLayerSource(
+                background.findSource(requested) ||
+                best ||
+                background.findSource(prefs('background-last-used')) ||
+                background.findSource('Maxar-Premium') ||
+                background.findSource('Bing') ||
+                first ||
+                background.findSource('none')
+            );
         }
 
         const locator = imageryIndex.backgrounds.find(d => d.overlay && d.default);
@@ -525,5 +533,5 @@ export function rendererBackground(context) {
   };
 
 
-  return utilRebind(background, dispatch, 'on');
-}
+    return utilRebind(background, dispatch, 'on');
+  }

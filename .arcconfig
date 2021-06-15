@@ -1,0 +1,4 @@
+{
+  "linter.scriptandregex.script": "sh -c '([ -e ./node_modules/.bin/eslint ]) && (./node_modules/.bin/eslint -f compact \"$0\" || true)'",
+  "linter.scriptandregex.regex": "/^(?P<file>.*): line (?P<line>[0-9]*), col (?P<char>[0-9]*), ((?P<warning>Warning)|(?P<error>Error)) - (?P<message>.*)(?: \\((?P<code>[a-z-\\/]+)\\))?$/m"
+}

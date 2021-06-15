@@ -60,8 +60,10 @@ function buildData() {
   // compile Font Awesome icons
   let faIcons = new Set([
     // list here the icons we want to use in the UI that aren't tied to other data
+    'fas-filter',
     'fas-i-cursor',
     'fas-lock',
+    'fas-palette',
     'fas-th-list',
     'fas-user-cog'
   ]);
@@ -81,12 +83,14 @@ function buildData() {
     minifyJSON('data/address_formats.json', 'dist/data/address_formats.min.json'),
     minifyJSON('data/imagery.json', 'dist/data/imagery.min.json'),
     minifyJSON('data/intro_graph.json', 'dist/data/intro_graph.min.json'),
+    minifyJSON('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json'),
     minifyJSON('data/keepRight.json', 'dist/data/keepRight.min.json'),
     minifyJSON('data/languages.json', 'dist/data/languages.min.json'),
     minifyJSON('data/phone_formats.json', 'dist/data/phone_formats.min.json'),
     minifyJSON('data/qa_data.json', 'dist/data/qa_data.min.json'),
     minifyJSON('data/shortcuts.json', 'dist/data/shortcuts.min.json'),
     minifyJSON('data/territory_languages.json', 'dist/data/territory_languages.min.json'),
+    // writeRapidConfig(),
     Promise.all([
       // Fetch the icons that are needed by the expected tagging schema version
       fetch('https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/presets.min.json'),

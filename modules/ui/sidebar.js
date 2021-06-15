@@ -18,15 +18,19 @@ import { uiOsmoseEditor } from './osmose_editor';
 import { uiNoteEditor } from './note_editor';
 import { localizer } from '../core/localizer';
 
+import { uiRapidFeatureInspector } from './rapid_feature_inspector';
+
 
 export function uiSidebar(context) {
     var inspector = uiInspector(context);
+    var rapidInspector = uiRapidFeatureInspector(context);
     var dataEditor = uiDataEditor(context);
     var noteEditor = uiNoteEditor(context);
     var improveOsmEditor = uiImproveOsmEditor(context);
     var keepRightEditor = uiKeepRightEditor(context);
     var osmoseEditor = uiOsmoseEditor(context);
     var _current;
+    var _wasRapiD = false;
     var _wasData = false;
     var _wasNote = false;
     var _wasQaItem = false;
@@ -183,6 +187,16 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
+            } else if (datum && datum.__fbid__) {   // hovering on RapiD data
+                _wasRapiD = true;
+                sidebar
+                    .show(rapidInspector.datum(datum));
+
+                selection.selectAll('.sidebar-component')
+                    .classed('inspector-hover', true)
+                    .classed('rapid-inspector-fadein', true);
+
+
             } else if (datum instanceof osmNote) {
                 if (context.mode().id === 'drag-note') return;
                 _wasNote = true;
@@ -252,10 +266,12 @@ export function uiSidebar(context) {
                 inspector
                     .state('hide');
 
-            } else if (_wasData || _wasNote || _wasQaItem) {
+            } else if (_wasRapiD || _wasData || _wasNote || _wasQaItem) {
+                _wasRapiD = false;
                 _wasNote = false;
                 _wasData = false;
                 _wasQaItem = false;
+                context.container().selectAll('.layer-ai-features .hover').classed('hover', false);
                 context.container().selectAll('.note').classed('hover', false);
                 context.container().selectAll('.qaItem').classed('hover', false);
                 sidebar.hide();

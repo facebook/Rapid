@@ -37,3 +37,5 @@ export { actionStraightenWay } from './straighten_way';
 export { actionUnrestrictTurn } from './unrestrict_turn';
 export { actionReflect } from './reflect.js';
 export { actionUpgradeTags } from './upgrade_tags';
+
+export { actionRapidAcceptFeature } from './rapid_accept_feature';

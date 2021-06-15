@@ -1,100 +1,28 @@
-# iD - friendly JavaScript editor for [OpenStreetMap](https://www.openstreetmap.org/)
+[![build](https://github.com/facebookincubator/RapiD/workflows/build/badge.svg)](https://github.com/facebookincubator/RapiD/actions?query=workflow%3A%22build%22)
 
-[![build](https://github.com/openstreetmap/iD/workflows/build/badge.svg)](https://github.com/openstreetmap/iD/actions?query=workflow%3A%22build%22)
+# RapiD - an enhanced version of iD for mapping with AI.
 
-## Basics
+RapiD is an extension of the [iD editor](https://github.com/openstreetmap/iD) for mapping on [OpenStreetMap](https://www.openstreetmap.org/). It is enhanced with AI-generated roads from the Facebook Map With AI service to make adding and editing roads quick and simple for anyone to use. It also includes data integrity checks to ensure that new map edits are consistent and accurate. To learn about all the enhanced features RapiD provides, please check out our [Change Log](CHANGELOG.md) and [training document](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki#editing-in-rapid).
 
-* iD is a JavaScript [OpenStreetMap](https://www.openstreetmap.org/) editor.
-* It's intentionally simple. It lets you do the most basic tasks while
-  not breaking other people's data.
-* It supports all popular modern desktop browsers: Chrome, Firefox, Safari,
-  Opera, Edge, and IE11.
-* iD is not yet designed for mobile browsers, but this is something we hope to add!
-* Data is rendered with [d3.js](https://d3js.org/).
+For basic information about the iD editor (architecture, build and installation instructions, etc.), please refer to the [iD github repo](https://github.com/openstreetmap/iD). RapiD shares the same building and installation process as iD.
 
 ## Participate!
 
-* Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and remember to be nice to one another.
-* Read up on [Contributing and the code style of iD](CONTRIBUTING.md).
-* See [open issues in the issue tracker](https://github.com/openstreetmap/iD/issues?state=open)
-if you're looking for something to do.
-* [Translate!](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating)
-* Test a prerelease version of iD:
-  * Stable mirror of `release` branch: https://ideditor-release.netlify.app
-  * Development mirror of `develop` branch + latest translations: https://ideditor.netlify.com
-  * Development mirror of `v3-prototype` branch: https://preview.ideditor.com/master
+* Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
+* See [open issues in the issue tracker](https://github.com/facebookincubator/RapiD/issues?state=open) if you're looking to help on issues.
+* To help with internationalization, please follow the [general translating page in iD repo](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating).
 
-Come on in, the water's lovely. More help? Ping `quincylvania` or `bhousel` on:
+We're available to chat!  Ping us on the `#mapwithai_feedback` channel on either:
 * [OpenStreetMap US Slack](https://slack.openstreetmap.us/)
-(`#id` or `#general` channels)
-* [OpenStreetMap IRC](https://wiki.openstreetmap.org/wiki/IRC)
-(`irc.oftc.net`, in `#osm-dev` or `#osm`)
-* [OpenStreetMap `dev` mailing list](https://wiki.openstreetmap.org/wiki/Mailing_lists)
+* [HOTOSM Slack](https://slack.hotosm.org/)
 
-## Prerequisites
+## Country Data Requests
+To request RapiD data for other countries, please submit [a new issue](https://github.com/facebookincubator/RapiD/issues/new).
 
-* [Node.js](https://nodejs.org/) version 10 or newer
-* [`git`](https://www.atlassian.com/git/tutorials/install-git/) for your platform
-  * Note for Windows users:
-    * Edit `$HOME\.gitconfig`:<br/>
-      Add these lines to avoid checking in files with CRLF newlines<br><pre>
-      [core]
-          autocrlf = input</pre>
-
-## Installation
-
-Note: Windows users should run these steps in a shell started with "Run as administrator".
-This is only necessary the first time so that the build process can create symbolic links.
-
-To run the current development version of iD on your own computer:
-
-#### Cloning the repository
-
-The repository is reasonably large, and it's unlikely that you need the full history (~200 MB). If you are happy to wait for it all to download, run:
-
-```
-git clone https://github.com/openstreetmap/iD.git
-```
-
-To clone only the most recent version, instead use a 'shallow clone':
-
-```
-git clone --depth=1 https://github.com/openstreetmap/iD.git
-```
-
-If you want to add in the full history later on, perhaps to run `git blame` or `git log`, run `git fetch --depth=1000000`
-
-#### Building iD
-
-1. `cd` into the newly cloned project folder
-2. Run `npm install`
-3. Run `npm run all`
-3. Run `npm start`
-4. Open `http://localhost:8080/` in a web browser
-
-For guidance on building a packaged version, running tests, and contributing to
-development, see [CONTRIBUTING.md](CONTRIBUTING.md).
-
+## Available Countries for AI-generated Roads
+Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). If you would like to request roads for a new country, please [create an issue here](https://github.com/facebookincubator/RapiD/issues). We track all the requests and our progress on [this page](COUNTRY_REQUESTS.md).
 
 ## License
 
-iD is available under the [ISC License](https://opensource.org/licenses/ISC).
+RapiD is available under the [ISC License](https://opensource.org/licenses/ISC).
 See the [LICENSE.md](LICENSE.md) file for more details.
-
-iD also bundles portions of the following open source software.
-
-* [D3.js (BSD-3-Clause)](https://github.com/d3/d3)
-* [CLDR (Unicode Consortium Terms of Use)](https://github.com/unicode-cldr/cldr-json)
-* [editor-layer-index (CC-BY-SA 3.0)](https://github.com/osmlab/editor-layer-index)
-* [Font Awesome (CC-BY 4.0)](https://fontawesome.com/license)
-* [Maki (CC0 1.0)](https://github.com/mapbox/maki)
-* [Temaki (CC0 1.0)](https://github.com/ideditor/temaki)
-* [Mapillary JS (MIT)](https://github.com/mapillary/mapillary-js)
-* [iD Tagging Schema (ISC)](https://github.com/openstreetmap/id-tagging-schema)
-* [name-suggestion-index (BSD-3-Clause)](https://github.com/osmlab/name-suggestion-index)
-* [osm-community-index (ISC)](https://github.com/osmlab/osm-community-index)
-
-
-## Thank you
-
-Initial development of iD was made possible by a [grant of the Knight Foundation](https://www.mapbox.com/blog/knight-invests-openstreetmap/).

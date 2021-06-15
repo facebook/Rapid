@@ -6,6 +6,7 @@ import { fileFetcher } from '../../core/file_fetcher';
 import { coreGraph } from '../../core/graph';
 import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
+import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
 import { utilArrayDifference, utilArrayUniq } from '../../util';
@@ -17,7 +18,7 @@ import { uiIntroArea } from './area';
 import { uiIntroLine } from './line';
 import { uiIntroBuilding } from './building';
 import { uiIntroStartEditing } from './start_editing';
-
+import { uiIntroRapid } from './rapid';
 
 const chapterUi = {
   welcome: uiIntroWelcome,
@@ -26,6 +27,7 @@ const chapterUi = {
   area: uiIntroArea,
   line: uiIntroLine,
   building: uiIntroBuilding,
+  rapid: uiIntroRapid,
   startEditing: uiIntroStartEditing
 };
 
@@ -36,28 +38,40 @@ const chapterFlow = [
   'area',
   'line',
   'building',
+  'rapid',
   'startEditing'
 ];
 
 
-export function uiIntro(context) {
+export function uiIntro(context, skipToRapid) {
   const INTRO_IMAGERY = 'EsriWorldImageryClarity';
   let _introGraph = {};
+  let _rapidGraph = {};
   let _currChapter;
 
 
   function intro(selection) {
-    fileFetcher.get('intro_graph')
-      .then(dataIntroGraph => {
-        // create entities for intro graph and localize names
-        for (let id in dataIntroGraph) {
-          if (!_introGraph[id]) {
-            _introGraph[id] = osmEntity(localize(dataIntroGraph[id]));
-          }
+    Promise.all([
+      fileFetcher.get('intro_rapid_graph'),
+      fileFetcher.get('intro_graph')
+    ])
+    .then(values => {
+      const rapidData = values[0];
+      const introData = values[1];
+
+      for (const id in rapidData) {
+        if (!_rapidGraph[id]) {
+          _rapidGraph[id] = osmEntity(localize(rapidData[id]));
         }
-        selection.call(startIntro);
-      })
-      .catch(function() { /* ignore */ });
+      }
+      for (const id in introData) {
+        if (!_introGraph[id]) {
+          _introGraph[id] = osmEntity(localize(introData[id]));
+        }
+      }
+
+      selection.call(startIntro, skipToRapid);
+    });
   }
 
 
@@ -99,15 +113,36 @@ export function uiIntro(context) {
     }
     overlays.forEach(d => context.background().toggleOverlayLayer(d));
 
-    // Setup data layers (only OSM)
+    // Setup data layers (only OSM & ai-features)
     let layers = context.layers();
     layers.all().forEach(item => {
       // if the layer has the function `enabled`
       if (typeof item.layer.enabled === 'function') {
-        item.layer.enabled(item.id === 'osm');
+        item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
       }
     });
 
+    // Setup RapiD Walkthrough dataset and disable service
+    let rapidDatasets = context.rapidContext().datasets();
+    const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
+    Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
+
+    rapidDatasets.rapid_intro_graph = {
+      id: 'rapid_intro_graph',
+      beta: false,
+      added: true,
+      enabled: true,
+      conflated: false,
+      service: 'fbml',
+      color: '#da26d3',
+      label: 'RapiD Walkthrough'
+    };
+
+    if (services.fbMLRoads) {
+      services.fbMLRoads.toggle(false);    // disable network
+      const entities = Object.values(coreGraph().load(_rapidGraph).entities);
+      services.fbMLRoads.merge('rapid_intro_graph', entities);
+    }
 
     context.container().selectAll('.main-map .layer-background').style('opacity', 1);
 
@@ -151,6 +186,15 @@ export function uiIntro(context) {
       let incomplete = utilArrayDifference(chapterFlow, progress);
       if (!incomplete.length) {
         prefs('walkthrough_completed', 'yes');
+      }
+
+      // Restore RapiD datasets and service
+      let rapidDatasets = context.rapidContext().datasets();
+      delete rapidDatasets.rapid_intro_graph;
+      Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);
+      Object.assign(rapidDatasets, rapidDatasetsCopy);
+      if (services.fbMLRoads) {
+        services.fbMLRoads.toggle(true);
       }
 
       curtain.remove();
@@ -198,11 +242,10 @@ export function uiIntro(context) {
       .attr('class', 'status')
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-    enterChapter(null, chapters[0]);
-
+    enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 
     function enterChapter(d3_event, newChapter) {
-      if (_currChapter) { _currChapter.exit(); }
+      if (_currChapter) _currChapter.exit();
       context.enter(modeBrowse(context));
 
       _currChapter = newChapter;

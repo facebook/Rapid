@@ -1,6 +1,7 @@
 import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';
 import { behaviorOperation } from '../behavior/operation';
+import { prefs } from '../core/preferences';
 import { utilGetAllNodes } from '../util';
 
 
@@ -82,15 +83,15 @@ export function operationOrthogonalize(context, selectedIDs) {
             return action.disabled(context.graph());
         }).filter(Boolean);
 
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+
         if (actionDisableds.length === _actions.length) {
             // none of the features can be squared
-
             if (new Set(actionDisableds).size > 1) {
                 return 'multiple_blockers';
             }
             return actionDisableds[0];
-        } else if (_extent &&
-                   _extent.percentContainedIn(context.map().extent()) < 0.8) {
+        } else if (!allowLargeEdits && _extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         } else if (someMissing()) {
             return 'not_downloaded';

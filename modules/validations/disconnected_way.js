@@ -13,6 +13,7 @@ export function validationDisconnectedWay() {
         return osmRoutableHighwayTagValues[entity.tags.highway];
     }
 
+
     var validation = function checkDisconnectedWay(entity, graph) {
 
         var routingIslandWays = routingIslandForEntity(entity);

@@ -55,6 +55,12 @@ of iD (e.g. `https://ideditor-release.netlify.app`), the following parameters ar
 * __`rtl=true`__ - Force iD into right-to-left mode (useful for testing).
 * __`source`__ - Prefills the changeset source. Pass a url encoded string.<br/>
   _Example:_ `source=Bing%3BMapillary`
+* __`validationDisable`__ - The issues identified by these types/subtypes will be disabled (i.e. Issues will not be shown at all). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.<br/>
+  _Example:_ `validationDisable=crossing_ways/highway*,crossing_ways/tunnel*`
+* __`validationWarning`__ - The issues identified by these types/subtypes will be treated as warnings (i.e. Issues will be surfaced to the user but not block changeset upload). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.<br/>
+  _Example:_ `validationWarning=crossing_ways/highway*,crossing_ways/tunnel*`
+* __`validationError`__ - The issues identified by these types/subtypes will be treated as errors (i.e. Issues will be surfaced to the user but will block changeset upload). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.<br/>
+  _Example:_ `validationError=crossing_ways/highway*,crossing_ways/tunnel*`
 * __`walkthrough=true`__ - Start the walkthrough automatically
 
 ##### iD on openstreetmap.org (Rails Port)
@@ -319,62 +325,3 @@ var id = iD.coreContext()
 ```
 
 This should be set with caution for performance reasons. The OpenStreetMap API has a limitation of 50000 nodes per request.
-
-
-### Custom Presets
-
-iD supports deployments which use a custom set of presets. You can supply presets via
-the `presets` accessor:
-
-```js
-var id = iD.coreContext().presets({
-    presets: { ... },
-    fields: { ... },
-    defaults: { ... },
-    categories: { ... }
-});
-```
-
-All four parts (presets, fields, defaults, and categories) must be supplied. In addition,
-several base presets and fields must be included.
-
-Basic geometric presets must be included so that every feature matches at least one preset.
-For example:
-
-```js
-"area": {
-    "name": "Area",
-    "tags": {},
-    "geometry": ["area"],
-    "matchScore": 0.1
-},
-"line": {
-    "name": "Line",
-    "tags": {},
-    "geometry": ["line"],
-    "matchScore": 0.1
-},
-"point": {
-    "name": "Point",
-    "tags": {},
-    "geometry": ["point", "vertex"],
-    "matchScore": 0.1
-},
-"relation": {
-    "name": "Relation",
-    "tags": {},
-    "geometry": ["relation"],
-    "matchScore": 0.1
-}
-```
-
-A "name" field must be included:
-
-```js
-"name": {
-    "key": "name",
-    "type": "localized",
-    "label": "Name",
-    "placeholder": "Common name (if any)"
-}
-```

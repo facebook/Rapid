@@ -19,11 +19,14 @@ import { svgTouch } from './touch';
 import { utilArrayDifference, utilRebind } from '../util';
 import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 
+import { svgRapidFeatures } from './rapid_features';
+
 
 export function svgLayers(projection, context) {
     var dispatch = d3_dispatch('change');
     var svg = d3_select(null);
     var _layers = [
+        { id: 'ai-features', layer: svgRapidFeatures(projection, context, dispatch) },
         { id: 'osm', layer: svgOsm(projection, context, dispatch) },
         { id: 'notes', layer: svgNotes(projection, context, dispatch) },
         { id: 'data', layer: svgData(projection, context, dispatch) },
@@ -57,6 +60,10 @@ export function svgLayers(projection, context) {
         defs.enter()
             .append('defs')
             .attr('class', 'surface-defs');
+
+        defs.enter()
+            .append('svg')
+            .attr('class', 'grids-svg');
 
         var groups = svg.selectAll('.data-layer')
             .data(_layers);

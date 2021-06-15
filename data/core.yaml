@@ -17,6 +17,7 @@ en:
     recent: Recent
     favorites: Favorites
     add_feature: Add Feature
+    rapid_features: Assist
   title:
     format:
       context: "{base} – {context}"
@@ -507,6 +508,12 @@ en:
       connected_to_hidden:
         single: This point can't be extracted because it is connected to a hidden feature.
         multiple: Points can't be extracted from these features because some are connected to hidden features.
+    cycle_highway_tag:
+      title: Cycle Highway Tag
+      key: C
+      description: Shortcut to cycle selected highway through several different tags.
+      annotation: Changed highway tag of selected way.
+      restriction: This operation is only permitted for highways and untagged lines.
   restriction:
     controls:
       distance: Distance
@@ -757,6 +764,11 @@ en:
     switch: Switch back to this background
     custom: Custom
     overlays: Overlays
+    grid:
+      grids: Grids
+      no_grid: No Grid
+      n_by_n: "{num} by {num} Grid"
+    imagery_source_faq: Imagery Info / Report a Problem
     imagery_problem_faq: Report an Imagery Problem
     reset: reset
     reset_all: Reset All
@@ -777,6 +789,10 @@ en:
       tooltip: Show coordinates and regional details.
     fix_misalignment: Imagery Offset
     offset: "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values in meters."
+    next_background:
+      key: '.'
+    previous_background:
+      key: ','
   map_data:
     title: Map Data
     description: Map Data
@@ -802,6 +818,11 @@ en:
         tooltip: "Drag and drop a data file onto the page, or click the button to setup"
         title: Custom Map Data
         zoom: Zoom to data
+      'ai-features':
+        tooltip: Features from Facebook's Map With AI
+        title: RapiD Feature Layer
+        key: R
+    fill_area: Fill Areas
     history_panel:
       title: Show History Panel
       tooltip: Show version details for the selection.
@@ -970,6 +991,10 @@ en:
       download_changes: Or download osmChange file
       done: "All conflicts resolved!"
       help: "Another user changed some of the same map features you changed. Click on each feature below for more details about the conflict, and choose whether to keep your changes or the other user's changes."
+  download_osc:
+    title: Download
+    help: "Download current changes to the map in an osc file."
+    no_changes: No changes to download.
   merge_remote_changes:
     conflict:
       deleted: 'This feature has been deleted by {user}.'
@@ -1010,8 +1035,88 @@ en:
     live: live
     lose_changes: "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?"
     dev: dev
+  rapid_splash:
+    welcome: Introducing AI-assisted mapping!
+    text: "Select the {rapidicon} option to start the RapiD walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu."
+    walkthrough: "Start the whole walkthrough"
+    skip_to_rapid: "Learn about RapiD!"
+    start: "No thanks, just start mapping"
+  rapid_whats_new:
+    welcome: What's New- Esri Datasets in {rapidicon}
+    text: "Come check out our latest experimental feature - Esri datasets that are useable from within {rapidicon}!\nLearn more about it [here](https://tech.fb.com/osm-ready-data-sets/)."
+    ok: Okay, let's go
+    nope: No thanks, just take me to RapiD
+    dontshowagain: Don't show this again
+  rapid_first_edit:
+    nice: You just added your first {rapidicon} AI-Assisted feature, nice.
+    text: You'll need an OpenStreetMap account to save your work. Would you like to log in with OSM now or keep exploring?
+    exploring: "I'm just exploring"
+    login_with_osm: "Log in with OSM"
+  rapid_feature_inspector:
+    prompt: How would you like to proceed with this selected feature?
+    tags: Tags
+    option_accept:
+      label: Use This Feature
+      description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
+      annotation: Added a RapiD feature.
+      tooltip: Add this feature to the map to begin editing.
+      disabled: To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.
+      disabled_flash: To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.
+      key: A
+    option_ignore:
+      label: Ignore This Feature
+      description: Ignoring this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
+      annotation: Ignored a RapiD feature.
+      tooltip: Ignore this feature.
+      key: D
+  rapid_feature_license: Facebook's Map With AI License
+  rapid_feature_toggle:
+    toggle_all: Toggle all {rapidicon} features
+    view_manage_datasets: "Add/Manage Datasets"
+    center_map: Center map here
+    worldwide: Worldwide
+    fbRoads:
+      label: Facebook Roads
+      license_markdown: "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
+    msBuildings:
+      label: Microsoft Buildings
+      license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
+    esri:
+      title: ArcGIS Datasets
+      about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
+      filter_datasets: filter datasets
+      any_type: any type
+      clear_filters: Clear Filters
+      datasets_found: "{num} dataset(s) found"
+      featured: featured
+      fetching_datasets: Fetching available datasets...
+      no_datasets: No datasets available.
+      remove: Remove
+      add_to_map: Add Dataset
+      more_info: More Info
+      license_markdown: "[license](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets#License)"
+  rapid_poweruser_features:
+    beta: Beta Feature
+    heading:
+      label: RapiD Power User Features
+      description: "for RapiD Insiders"
+    previewDatasets:
+      label: Show preview datasets
+      description: Preview datasets are still in review and not available for all users
+    tagnosticRoadCombine:
+      label: Tag-agnostic road combine
+      description: Allow the Combine operation for roads whose highway tagging differs
+    tagSources:
+      label: Tag highways as Maxar
+      description: Add the tag 'source=maxar' to all highways
+    showAutoFix:
+      label: Enable fix buttons on Issue Pane
+      description: Enable the autofix buttons on Issue pane for fixing simple issues
+    allowLargeEdits:
+      label: Allow large edits
+      description: Remove the limitations about editing features that are not currently visible
   version:
-    whats_new: "What's new in iD {version}"
+    whats_new: "What's new in RapiD {version}"
   tag_reference:
     description: Description
     on_wiki: "{tag} on wiki.osm.org"
@@ -1390,14 +1495,14 @@ en:
     key: H
     help:
       title: Help
-      welcome: "Welcome to the iD editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser."
+      welcome: "Welcome to the RapiD editor for [OpenStreetMap](https://www.openstreetmap.org/). RapiD is an enhanced version of the [iD editor](https://github.com/openstreetmap/iD). With this editor you can update OpenStreetMap right from your web browser."
       open_data_h: "Open Data"
       open_data: "Edits that you make on this map will be visible to everyone who uses OpenStreetMap. Your edits can be based on personal knowledge, on-the-ground surveying, or imagery collected from aerial or street level photos. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright)."
       before_start_h: "Before you start"
-      before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. iD contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
+      before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. RapiD contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
       open_source_h: "Open Source"
-      open_source: "The iD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/openstreetmap/iD)."
-      open_source_help: "You can help iD by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/openstreetmap/iD/issues)."
+      open_source: "The RapiD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD)."
+      open_source_help: "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
     overview:
       title: Overview
       navigation_h: "Navigation"
@@ -1502,7 +1607,7 @@ en:
       edit_relation_add: "To add a feature to a relation, select the feature, then press the {plus} add button in the \"{relations}\" section of the feature editor. You can choose from a list of nearby relations, or choose the \"{new_relation}\" option."
       edit_relation_delete: "You can also press the {delete_icon} **{delete}** button to remove the selected feature from the relation. If you remove all of the members from a relation, the relation will be deleted automatically."
       maintain_relation_h: "Maintaining Relations"
-      maintain_relation: "For the most part, iD will maintain relations automatically as you edit. You should take care when replacing features that might be members of relations. For example if you delete a section of road and draw a new section of road to replace it, you should add the new section to the same relations (routes, turn restrictions, etc.) as the original."
+      maintain_relation: "For the most part, RapiD will maintain relations automatically as you edit. You should take care when replacing features that might be members of relations. For example if you delete a section of road and draw a new section of road to replace it, you should add the new section to the same relations (routes, turn restrictions, etc.) as the original."
       relation_types_h: "Relation Types"
       multipolygon_h: "Multipolygons"
       multipolygon: "A *multipolygon* relation is a group of one or more *outer* features and one or more inner features. The outer features define the outer edges of the multipolygon, and the inner features define sub-areas or holes cut out from the inside of the multipolygon."
@@ -1559,7 +1664,7 @@ en:
       offset_change: "Press the small triangle buttons to adjust the imagery offset in small steps, or hold the {leftclick} left mouse button and drag within the gray square to slide the imagery into alignment."
     streetlevel:
       title: Street Level Photos
-      intro: "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The iD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [OpenStreetCam](https://www.openstreetcam.org)."
+      intro: "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The RapiD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [OpenStreetCam](https://www.openstreetcam.org)."
       using_h: "Using Street Level Photos"
       using: "To use street level photos for mapping, open the {data_icon} **{map_data}** panel on the side of the map to enable or disable the available photo overlays."
       photos: "When enabled, the photo overlay displays a line along the sequence of photos. At higher zoom levels, a circle marks at each photo location, and at even higher zoom levels, a cone indicates the direction the camera was facing when the photo was taken."
@@ -1675,6 +1780,11 @@ en:
       detached:
         message: "{feature} is too close to {feature2}"
         reference: "Separate points should not share a location."
+    duplicate_way_segments:
+      title: "Duplicate Way Segments"
+      tip: "Find way segments that are duplicated (same node endpoints)"
+      message: "Two or more segments share the same pair of nodes"
+      reference: "Redundant way segments should be merged or moved apart."
     crossing_ways:
       title: Crossings Ways
       message: "{feature} crosses {feature2}"
@@ -1722,6 +1832,11 @@ en:
     fixme_tag:
       message: '{feature} has a "Fix Me" request'
       reference: 'A "fixme" tag indicates that a mapper has requested help with a feature.'
+    short_road:
+      title: Short road
+      message: "{highway} is shorter than 20 meters."
+      tip: "You may want to delete or extend the road."
+      reference: "Short roads may need to be extended or deleted."
     generic_name:
       message: '{feature} has the suspicious name "{name}"'
       message_language: '{feature} has the suspicious name "{name}" in {language}'
@@ -1782,9 +1897,9 @@ en:
         message: "{feature} has incomplete tags"
         reference: "Some features should have additional tags."
       noncanonical_brand:
-        message: "{feature} looks like a brand with nonstandard tags"
-        message_incomplete: "{feature} looks like a brand with incomplete tags"
-        reference: "All features of the same brand should be tagged the same way."
+        message: "{feature} looks like a common feature with nonstandard tags"
+        message_incomplete: "{feature} looks like a common feature with incomplete tags"
+        reference: "Some features, for example retail chains or post offices, are expected to have certain tags in common."
     point_as_area:
       message: '{feature} should be a point, not an area'
     point_as_line:
@@ -1807,6 +1922,17 @@ en:
     unknown_road:
       message: "{feature} has no classification"
       reference: "Roads without a specific type may not appear in maps or routing."
+    dupe_node_on_road:
+      title: Very close nodes on road
+      message: "Very close nodes on road"
+      tip: "Nodes are less than 2 meters away."
+      tip_merge: "Nodes are less than 2 meters away; you may want to merge them."
+      tip_move_away: "Nodes are less than 2 meters away but not mergable; you may want to move them further apart."
+    y_shaped_connection:
+      title: Possible extra node near connection
+      message: "Possible extra node near connection"
+      tip: "You may want to delete or move nodes around to simplify the connection."
+      reference: "Nodes around the connection may need to be moved or deleted."
     impossible_oneway:
       title: Impossible One-Ways
       tip: "Find route issues with one-way features"
@@ -1873,10 +1999,16 @@ en:
         title: Ignore this issue
       merge_close_vertices:
         annotation: Merged very close points in a way.
+      merge_duplicate_way_segments:
+        annotation: Merged duplicate segments in a way.
       merge_points:
         title: Merge these points
       move_points_apart:
         title: Move these points apart
+      move_way_segments_apart:
+        title: Move these way segments apart
+      remove_way_segments:
+        title: Delete one of these way segments
       move_tags:
         title: Move the tags
         annotation: Moved tags.
@@ -1930,6 +2062,10 @@ en:
         title: Use different layers or levels
       use_different_levels:
         title: Use different levels
+      delete_node_around_conn:
+        title: Delete this node to simplify connection
+      move_node_around_conn:
+        title: Move this node to adjust connection shape
   intro:
     done: done
     ok: OK
@@ -2046,6 +2182,7 @@ en:
         three-rivers-post-office: Three Rivers Post Office
         three-rivers-public-library: Three Rivers Public Library
         three-rivers: Three Rivers
+        tulip-lane: Tulip Lane
         unique-jewelry: Unique Jewelry
         walnut-street: Walnut Street
         washington-street: Washington Street
@@ -2198,6 +2335,24 @@ en:
       circle_tank: "**Press the {circularize_icon} {circularize} button to make the tank a circle.**"
       retry_circle: "You didn't press the {circularize_icon} {circularize} button. Try again."
       play: "Great Job! Practice tracing a few more buildings, and try some of the other operations in the edit menu. **When you are ready to continue to the next chapter, press '{next}'.**"
+    rapid:
+      title: "RapiD Features"
+      start: "{rapid} AI-assisted features are generated from satellite imagery processing with machine-learning algorithms. This section of the walkthrough will teach you how to use these AI-assisted features."
+      ai_roads: "AI-assisted features are presented in a magenta-colored overlay. Press 'OK' to enable the AI features layer (In the future, these feature layers can be controlled with the {rapid} button up above)."
+      add_road_h: "Adding AI-assisted features"
+      select_road: "A single AI-assisted road has shown up on the map. **Select the AI-assisted road with a left-click.**"
+      add_road: "Click the 'Use this Feature' button to add the road to the working map."
+      add_road_not_saved_yet: "The AI-assisted road has been added as a change to the map. Like any other map change, it will not show up for others until you save it."
+      new_lints: "The addition of the road has caused a new issue to appear in the issues panel. RapiD has introduced several new validation checks that will assist you in correcting issues that arise from adding AI-assisted roads."
+      fix_lint: "This particular issue is letting you know that the road you just added isn't quite connected to its neighbor. ** Press the {connect} Connect option to join them. **"
+      fixed_lint: "The roads are now connected! There are other types of helpful issue checks (and fixes) available in RapiD."
+      undo_fix_lint: "If you have second thoughts about using an AI-assisted road, you can always undo it like any other change. **Press on the {button} button to undo the connection you just made.**"
+      undo_road_add: "The issue about the crossed roads is back. Now let's undo again to return things back the way they were. **Press on the {button} button to undo the road addition and return the map to its original state.**"
+      undo_road_add_aftermath: "The road is removed from your local changes, and has returned to the magenta layer as before!"
+      select_road_again: "Next, we'll learn how to ignore roads that you don't want to add. **Select the AI-assisted road again with a left-click.**"
+      ignore_road: "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map. This helps our AI learning algorithms get better over time."
+      help: "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new RapiD-specific shortcuts that speed up your mapping."
+      done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). **Click '{next}' to continue.**"
     startediting:
       title: "Start Editing"
       help: "You're now ready to edit OpenStreetMap!{br}You can replay this walkthrough anytime or view more documentation by pressing the {help_icon} {help} button or the `{help_key}` key."
@@ -2248,6 +2403,8 @@ en:
         title: "Display options"
         background: "Toggle background imagery pane"
         background_switch: "Switch back to last background"
+        background_previous: "Switch to previous background in list"
+        background_next: "Switch to next background in list"
         map_data: "Toggle map data pane"
         issues: "Toggle validation issues pane"
         preferences: "Toggle user preferences pane"
@@ -2256,6 +2413,8 @@ en:
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
         minimap: "Toggle minimap"
+        rapid_features_data: "Toggle RapiD Features"
+        highlight_way_edits: "Highlight way edits in current session"
         highlight_edits: "Highlight unsaved edits"
       selecting:
         title: "Selecting features"
@@ -2306,6 +2465,7 @@ en:
         reflect_long: "Flip features across the longer axis"
         reflect_short: "Flip features across the shorter axis"
         delete: "Delete selected features"
+        cycle_highway_tag: "Change selected road type"
       commands:
         title: "Commands"
         copy: "Copy selected features"
@@ -2313,6 +2473,10 @@ en:
         undo: "Undo last action"
         redo: "Redo last action"
         save: "Save changes"
+      rapid:
+        title: "RapiD AI-Assist"
+        accept_feature: "Add the selected feature"
+        ignore_feature: "Ignore the selected feature"
     tools:
       title: "Tools"
       info:

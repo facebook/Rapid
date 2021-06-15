@@ -1085,7 +1085,7 @@ a.hide-toggle {
     visibility: visible;
 }
 .preset-icon-container.showing-img *:not(.image-icon) {
-    visibility: hidden;
+    display: none;
 }
 
 .preset-icon-point-border path {
@@ -2215,7 +2215,7 @@ div.combobox {
 .combobox-caret {
     display: inline-block;
     position: relative;
-    height: 5px;
+    height: 30px;
     width: 30px !important;
     margin-left: -30px;
     align-self: center;
@@ -3226,11 +3226,11 @@ div.full-screen > button:focus {
 
 .issue-text .issue-icon {
     flex: 0 0 auto;
-    padding: 5px 7px;
+    padding: 2px 3px;
 }
 .issue-text .issue-message {
     flex: 1 1 auto;
-    padding: 5px 0;
+    padding: 4px 5px;
 }
 .issue-label .issue-autofix {
     flex: 0 0 auto;
@@ -3266,6 +3266,7 @@ button.autofix.action {
     width: 20px;
     background: #7092ff;
     color: #fff;
+    padding: 0;
 }
 button.autofix.action:focus,
 button.autofix.action:active,
@@ -3545,6 +3546,9 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 .issue-container:not(.active) ul.issue-fix-list {
+    display: none;
+}
+.issue-container:not(.active) .issue-info {
     display: none;
 }
 
@@ -4142,6 +4146,9 @@ img.tile-debug {
     bottom: 0;
 }
 
+.supersurface .layer.layer-data {
+    z-index: 30;  /* above imagery, overlays */
+}
 
 /* Map-In-Map
 ------------------------------------------------------- */
@@ -4168,6 +4175,14 @@ img.tile-debug {
     user-select: none;
 }
 
+.map-in-map-background {
+    position: absolute;
+    z-index: 1;
+}
+.map-in-map-overlay {
+    position: absolute;
+    z-index: 2;
+}
 .map-in-map-viewport,
 .map-in-map-data {
     top: 0;
@@ -4177,19 +4192,20 @@ img.tile-debug {
     width: 100%;
 }
 
-.map-in-map-viewport {
-    position: absolute;
-}
-
 .map-in-map-data {
     position: relative;
-    z-index: 10;
+    z-index: 3;
+}
+
+.map-in-map-viewport {
+    position: absolute;
+    z-index: 4;
 }
 
 .map-in-map-bbox {
     fill: none;
     stroke: rgba(255, 255, 0, 0.75);
-    stroke-width: 1;
+    stroke-width: 1.5;
     shape-rendering: crispEdges;
 }
 
@@ -4206,7 +4222,7 @@ img.tile-debug {
     stroke-width: 2;
 }
 .map-in-map-data .debug {
-    stroke-width: 1;
+    stroke-width: 1.5;
 }
 
 .nocolor { color: rgba(0, 0, 0, 0); }
@@ -4218,7 +4234,7 @@ img.tile-debug {
 .magenta { color: rgba(255, 0, 255, 0.75); }
 .orange  { color: rgba(255, 153, 0, 0.75); }
 .pink    { color: rgba(255, 0, 153, 0.75); }
-.purple  { color: rgba(153, 0, 255, 0.75); }
+.purple  { color: rgba(153, 85, 255, 0.75); }
 
 .debug-legend {
     position: absolute;
@@ -4630,6 +4646,11 @@ img.tile-debug {
     }
 }
 
+.fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
+
 /* Notification Badges
 ------------------------------------------------------- */
 /* For an icon (e.g. new version) */
@@ -4651,9 +4672,9 @@ img.tile-debug {
 .badge .icon {
     vertical-align: baseline;
     width: 11px;
-    height: 11px;
     color: #fff;
     flex: 0 0 auto;
+    margin-bottom: 2px;
 }
 
 /* For text (e.g. upcoming events) */
@@ -4785,7 +4806,8 @@ img.tile-debug {
     margin: auto;
 }
 
-.modal-actions > :first-child {
+.modal-actions > :first-child,
+.modal-actions > :nth-child(2) {
     border-right: 1px solid #ccc;
 }
 
@@ -5388,6 +5410,7 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 ------------------------------------------------------- */
 .edit-menu {
     position: absolute;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     background: #fff;

@@ -3,12 +3,14 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import base64 from 'base64-js';
+import { Projection, Tiler } from '@id-sdk/math';
+
 import Protobuf from 'pbf';
 import RBush from 'rbush';
 import { VectorTile } from '@mapbox/vector-tile';
 
 import { geoExtent, geoScaleToZoom } from '../geo';
-import { utilQsString, utilRebind, utilTiler, utilStringQs } from '../util';
+import { utilQsString, utilRebind, utilStringQs } from '../util';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -21,6 +23,7 @@ const viewercss = 'mapillary-js/mapillary.css';
 const viewerjs = 'mapillary-js/mapillary.js';
 const minZoom = 14;
 const dispatch = d3_dispatch('change', 'loadedImages', 'loadedSigns', 'loadedMapFeatures', 'bearingChanged', 'imageChanged');
+const tiler = new Tiler().skipNullIsland(true);
 
 let _loadViewerPromise;
 let _mlyActiveImage;
@@ -35,8 +38,9 @@ let _mlyViewerFilter = ['all'];
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
-    const tiler = utilTiler().zoomExtent([minZoom, maxZoom]).skipNullIsland(true);
-    const tiles = tiler.getTiles(projection);
+    // determine the needed tiles to cover the view
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    const tiles = tiler.zoomRange([minZoom, maxZoom]).getTiles(proj).tiles;
 
     tiles.forEach(function(tile) {
         loadTile(which, url, tile);
@@ -51,7 +55,8 @@ function loadTile(which, url, tile) {
     if (cache.loaded[tileId] || cache.inflight[tileId]) return;
     const controller = new AbortController();
     cache.inflight[tileId] = controller;
-    const requestUrl = url.replace('{x}', tile.xyz[0])
+    const requestUrl = url
+        .replace('{x}', tile.xyz[0])
         .replace('{y}', tile.xyz[1])
         .replace('{z}', tile.xyz[2]);
 
@@ -165,7 +170,7 @@ function loadTileDataToCache(data, tile, which) {
     if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
         features = [];
         cache = _mlyCache[which];
-        layer = vectorTile.layers.point;
+        layer = vectorTile.layers.traffic_sign;
 
         for (i = 0; i < layer.length; i++) {
             feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
@@ -211,10 +216,9 @@ function loadData(url) {
 function partitionViewport(projection) {
     const z = geoScaleToZoom(projection.scale());
     const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-    const tiler = utilTiler().zoomExtent([z2, z2]);
-
-    return tiler.getTiles(projection)
-        .map(function(tile) { return tile.extent; });
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    const tiles = tiler.zoomRange([z2, z2]).getTiles(proj).tiles;
+    return tiles.map(tile => tile.wgs84Extent);
 }
 
 
@@ -224,10 +228,7 @@ function searchLimited(limit, projection, rtree) {
 
     return partitionViewport(projection)
         .reduce(function(result, extent) {
-            const found = rtree.search(extent.bbox())
-                .slice(0, limit)
-                .map(function(d) { return d.data; });
-
+            const found = rtree.search(extent.bbox()).slice(0, limit).map(d => d.data);
             return (found.length ? result.concat(found) : result);
         }, []);
 }

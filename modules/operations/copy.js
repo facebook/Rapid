@@ -1,5 +1,6 @@
 import { t } from '../core/localizer';
 import { behaviorOperation } from '../behavior/operation';
+import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
 import { utilArrayGroupBy, utilTotalExtent } from '../util';
 
@@ -96,7 +97,8 @@ export function operationCopy(context, selectedIDs) {
 
     operation.disabled = function() {
         var extent = utilTotalExtent(getFilteredIdsToCopy(), context.graph());
-        if (extent.percentContainedIn(context.map().extent()) < 0.8) {
+        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+        if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
             return 'too_large';
         }
         return false;

@@ -3,16 +3,17 @@ import RBush from 'rbush';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 
+import { Projection, Tiler } from '@id-sdk/math';
+
 import { fileFetcher } from '../core/file_fetcher';
 import { geoExtent, geoVecAdd } from '../geo';
 import { QAItem } from '../osm';
 import { t } from '../core/localizer';
-import { utilRebind, utilTiler, utilQsString } from '../util';
+import { utilRebind, utilQsString } from '../util';
 
-
-const tiler = utilTiler();
+const TILEZOOM = 14;
+const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loaded');
-const _tileZoom = 14;
 const _krUrlRoot = 'https://www.keepright.at';
 let _krData = { errorTypes: {}, localizeStrings: {} };
 
@@ -293,9 +294,8 @@ export default {
     };
 
     // determine the needed tiles to cover the view
-    const tiles = tiler
-      .zoomExtent([_tileZoom, _tileZoom])
-      .getTiles(projection);
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    const tiles = tiler.getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed
     abortUnwantedRequests(_cache, tiles);
@@ -304,7 +304,7 @@ export default {
     tiles.forEach(tile => {
       if (_cache.loadedTile[tile.id] || _cache.inflightTile[tile.id]) return;
 
-      const [ left, top, right, bottom ] = tile.extent.rectangle();
+      const [ left, top, right, bottom ] = tile.wgs84Extent.rectangle();
       const params = Object.assign({}, options, { left, bottom, right, top });
       const url = `${_krUrlRoot}/export.php?` + utilQsString(params);
       const controller = new AbortController();

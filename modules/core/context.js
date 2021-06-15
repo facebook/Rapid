@@ -6,7 +6,8 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 
-import { fileFetcher as data } from './file_fetcher';
+import { coreRapidContext } from './rapid_context';
+import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
 import { prefs } from './preferences';
 import { coreHistory } from './history';
@@ -33,7 +34,6 @@ export function coreContext() {
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
 
   context.isFirstSession = !prefs('sawSplash') && !prefs('sawPrivacyVersion');
-
 
   /* Changeset */
   // An osmChangeset object. Not loaded until needed.
@@ -447,7 +447,7 @@ export function coreContext() {
   context.assetPath = function(val) {
     if (!arguments.length) return _assetPath;
     _assetPath = val;
-    data.assetPath(val);
+    fileFetcher.assetPath(val);
     return context;
   };
 
@@ -455,7 +455,7 @@ export function coreContext() {
   context.assetMap = function(val) {
     if (!arguments.length) return _assetMap;
     _assetMap = val;
-    data.assetMap(val);
+    fileFetcher.assetMap(val);
     return context;
   };
 
@@ -501,6 +501,10 @@ export function coreContext() {
   context.projection = geoRawMercator();
   context.curtainProjection = geoRawMercator();
 
+  /* RapiD */
+  let _rapidContext;
+  context.rapidContext = () => _rapidContext;
+
 
   /* Init */
   context.init = () => {
@@ -527,6 +531,7 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
+      _rapidContext = coreRapidContext(context);
       _validator = coreValidator(context);
       _uploader = coreUploader(context);
 
@@ -557,13 +562,14 @@ export function coreContext() {
 
       Object.values(services).forEach(service => {
         if (service && typeof service.init === 'function') {
-          service.init();
+          service.init(context);
         }
       });
 
       _map.init();
       _validator.init();
       _features.init();
+      _rapidContext.init();
 
       if (services.maprules && context.initialHashParams.maprules) {
         d3_json(context.initialHashParams.maprules)
@@ -576,13 +582,13 @@ export function coreContext() {
 
       // if the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {
-        _ui.ensureLoaded().then(function() {
-          _photos.init();
-        });
+        _ui.ensureLoaded()
+          .then(() => {
+            _photos.init();
+          });
       }
     }
   };
-
 
   return context;
 }

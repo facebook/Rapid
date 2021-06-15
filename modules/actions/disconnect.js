@@ -74,7 +74,21 @@ export function actionDisconnect(nodeId, newNodeId) {
             }
         }
 
-        return keeping ? candidates : candidates.slice(1);
+        if (keeping) {
+            return candidates;
+        } else {
+            // if nodeId is positive, make sure a positive way retains it
+            if (nodeId[1] !== '-' && candidates.length > 1 &&
+                candidates[0].wayID[1] === '-') {
+                for (var pos = 1; pos < candidates.length; pos++) {
+                    if (candidates[pos].wayID[1] !== '-') {
+                        candidates.splice(pos, 1);
+                        return candidates;
+                    }
+                }
+            }
+            return candidates.slice(1);
+        }
     };
 
 

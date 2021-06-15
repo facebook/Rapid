@@ -295,9 +295,22 @@ export function uiFieldCombo(field, context) {
     }
 
 
+    function isFbRoadId (entity) {
+        if (entity.id) {
+            return entity.id.startswith('w-');
+        } else {
+            return false;
+       }
+    }
+
+
     function removeMultikey(d3_event, d) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
+
+        // don't move source=digitalglobe or source=maxar on ML road
+        // TODO: switch to check on __fbid__
+        if (field.key === 'source' && _entityIDs[0] && isFbRoadId(_entityIDs[0]) && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
         var t = {};
         if (_isMulti) {
             t[d.key] = undefined;
@@ -533,7 +546,11 @@ export function uiFieldCombo(field, context) {
                 .attr('href', '#')
                 .on('click', removeMultikey)
                 .attr('class', 'remove')
-                .html('×');
+                .text(function(d) {
+                    // don't show 'x' on the digitalglobe/maxar label on ML road
+                    // TODO: switch to check on __fbid__
+                    return _entityIDs[0] && isFbRoadId(_entityIDs[0]) && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
+                });
 
         } else {
             var isMixed = Array.isArray(tags[field.key]);
@@ -545,7 +562,6 @@ export function uiFieldCombo(field, context) {
             var showsValue = !isMixed && tags[field.key] && !(field.type === 'typeCombo' && tags[field.key] === 'yes');
             var isRawValue = showsValue && !field.hasTextForStringId('options.' + tags[field.key]);
             var isKnownValue = showsValue && !isRawValue;
-
             var isReadOnly = !_allowCustomValues || isKnownValue;
 
             utilGetSetValue(_input, !isMixed ? displayValue(tags[field.key]) : '')

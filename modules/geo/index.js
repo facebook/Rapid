@@ -1,4 +1,5 @@
 export { geoExtent } from './extent.js';
+export { geoExtentFromBounds } from './extent.js';
 
 export { geoLatToMeters } from './geo.js';
 export { geoLonToMeters } from './geo.js';

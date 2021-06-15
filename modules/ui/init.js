@@ -32,7 +32,6 @@ import { uiShortcuts } from './shortcuts';
 import { uiSidebar } from './sidebar';
 import { uiSourceSwitch } from './source_switch';
 import { uiSpinner } from './spinner';
-import { uiSplash } from './splash';
 import { uiStatus } from './status';
 import { uiTooltip } from './tooltip';
 import { uiTopToolbar } from './top_toolbar';
@@ -46,6 +45,11 @@ import { uiPaneHelp } from './panes/help';
 import { uiPaneIssues } from './panes/issues';
 import { uiPaneMapData } from './panes/map_data';
 import { uiPanePreferences } from './panes/preferences';
+
+import { uiRapidServiceLicense } from './rapid_service_license';
+// import { uiRapidWhatsNew } from './rapid_whatsnew';
+import { uiRapidSplash } from './rapid_splash';
+
 
 export function uiInit(context) {
     var _initCounter = 0;
@@ -283,6 +287,12 @@ export function uiInit(context) {
             .attr('class', 'user-list')
             .call(uiContributors(context));
 
+        aboutList
+            .append('li')
+            .attr('class', 'fb-road-license')
+            .attr('tabindex', -1)
+            .call(uiRapidServiceLicense());
+
         var apiConnections = context.apiConnections();
         if (apiConnections && apiConnections.length > 1) {
             aboutList
@@ -309,7 +319,8 @@ export function uiInit(context) {
         issueLinks
             .append('a')
             .attr('target', '_blank')
-            .attr('href', 'https://github.com/openstreetmap/iD/issues')
+            .attr('tabindex', -1)
+            .attr('href', 'https://github.com/facebookincubator/RapiD/issues')
             .call(svgIcon('#iD-icon-bug', 'light'))
             .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
 
@@ -329,7 +340,6 @@ export function uiInit(context) {
             aboutList
                 .call(uiAccount(context));
         }
-
 
         // Setup map dimensions and move map to initial center/zoom.
         // This should happen after .main-content and toolbars exist.
@@ -419,18 +429,29 @@ export function uiInit(context) {
 
         context.enter(modeBrowse(context));
 
+        var osm = context.connection();
+
         if (!_initCounter++) {
             if (!ui.hash.startWalkthrough) {
-                context.container()
-                    .call(uiSplash(context))
-                    .call(uiRestore(context));
+                if (context.history().lock() && context.history().hasRestorableChanges()) {
+                    context.container()
+                        .call(uiRestore(context));
+
+//                // If users have already seen the 'welcome to RapiD' splash screen, don't also
+//                // show them the what's new screen
+//               } else if (prefs('sawRapidSplash')) {
+//                    context.container()
+//                        .call(uiRapidWhatsNew(context));
+                } else if (osm.authenticated()) {
+                    context.container()
+                        .call(uiRapidSplash(context));
+                }
             }
 
             context.container()
                 .call(ui.shortcuts);
         }
 
-        var osm = context.connection();
         var auth = uiLoading(context).message(t.html('loading_auth')).blocking(true);
 
         if (osm && auth) {

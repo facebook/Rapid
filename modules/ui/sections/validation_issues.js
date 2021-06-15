@@ -1,9 +1,7 @@
 import _debounce from 'lodash-es/debounce';
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
-//import { actionNoop } from '../actions/noop';
+import { actionNoop } from '../../actions/noop';
 import { geoSphericalDistance } from '../../geo';
 import { svgIcon } from '../../svg/icon';
 import { prefs } from '../../core/preferences';
@@ -63,6 +61,8 @@ export function uiSectionValidationIssues(id, severity, context) {
     }
 
     function drawIssuesList(selection, issues) {
+        const showAutoFix = prefs('rapid-internal-feature.showAutoFix') === 'true';
+
         var list = selection.selectAll('.issues-list')
             .data([0]);
 
@@ -114,31 +114,29 @@ export function uiSectionValidationIssues(id, severity, context) {
             .append('span')
             .attr('class', 'issue-message');
 
-        /*
-        labelsEnter
-            .append('span')
-            .attr('class', 'issue-autofix')
-            .each(function(d) {
-                if (!d.autoFix) return;
+        if (showAutoFix) {
+            labelsEnter
+                .append('span')
+                .attr('class', 'issue-autofix')
+                .each(function(d) {
+                    if (!d.autoArgs) return;
 
-                d3_select(this)
-                    .append('button')
-                    .attr('title', t('issues.fix_one.title'))
-                    .datum(d.autoFix)  // set button datum to the autofix
-                    .attr('class', 'autofix action')
-                    .on('click', function(d3_event, d) {
-                        d3_event.preventDefault();
-                        d3_event.stopPropagation();
+                    d3_select(this)
+                        .append('button')
+                        .attr('title', t('issues.fix_one.title'))
+                        .datum(d)  // set button datum to the issue
+                        .attr('class', 'autofix action')
+                        .on('click', function(d3_event, d) {
+                            d3_event.preventDefault();
+                            d3_event.stopPropagation();
 
-                        var issuesEntityIDs = d.issue.entityIds;
-                        utilHighlightEntities(issuesEntityIDs.concat(d.entityIds), false, context);
-
-                        context.perform.apply(context, d.autoArgs);
-                        context.validator().validate();
-                    })
-                    .call(svgIcon('#iD-icon-wrench'));
-            });
-        */
+                            utilHighlightEntities(d.entityIds, false, context);  // unhighlight
+                            context.perform.apply(context, d.autoArgs);
+                            context.validator().validate();
+                        })
+                        .call(svgIcon('#iD-icon-wrench'));
+                });
+        }  /* show autoFix */
 
         // Update
         items = items
@@ -150,12 +148,9 @@ export function uiSectionValidationIssues(id, severity, context) {
                 return d.message(context);
             });
 
-        /*
-        // autofix
-        var canAutoFix = issues.filter(function(issue) { return issue.autoFix; });
-
+        var canAutoFix = issues.filter(function(issue) { return issue.autoArgs; });
         var autoFixAll = selection.selectAll('.autofix-all')
-            .data(canAutoFix.length ? [0] : []);
+            .data(showAutoFix && canAutoFix.length ? [0] : []);
 
         // exit
         autoFixAll.exit()
@@ -181,9 +176,9 @@ export function uiSectionValidationIssues(id, severity, context) {
             .attr('class', 'autofix-all-link-icon')
             .call(svgIcon('#iD-icon-wrench'));
 
-        if (severity === 'warning') {
-            renderIgnoredIssuesReset(selection);
-        }
+        // if (severity === 'warning') {
+        //     renderIgnoredIssuesReset(selection);
+        // }
 
         // update
         autoFixAll = autoFixAll
@@ -194,7 +189,7 @@ export function uiSectionValidationIssues(id, severity, context) {
                 context.pauseChangeDispatch();
                 context.perform(actionNoop());
                 canAutoFix.forEach(function(issue) {
-                    var args = issue.autoFix.autoArgs.slice();  // copy
+                    var args = issue.autoArgs.slice();  // copy
                     if (typeof args[args.length - 1] !== 'function') {
                         args.pop();
                     }
@@ -204,7 +199,6 @@ export function uiSectionValidationIssues(id, severity, context) {
                 context.resumeChangeDispatch();
                 context.validator().validate();
             });
-        */
     }
 
     context.validator().on('validated.uiSectionValidationIssues' + id, function() {

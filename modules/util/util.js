@@ -218,6 +218,16 @@ export function utilDisplayName(entity) {
         name = t('inspector.display_name.' + keyComponents.join('_'), tags);
     }
 
+    // if there's still no name found, try addr:housename
+    if (!name && entity.tags['addr:housename']) {
+        name = entity.tags['addr:housename'];
+    }
+
+    // as a last resort, use the street address as a name
+    if (!name && entity.tags['addr:housenumber'] && entity.tags['addr:street']) {
+        name = entity.tags['addr:housenumber'] + ' ' + entity.tags['addr:street'];
+    }
+
     return name;
 }
 
@@ -243,21 +253,29 @@ export function utilDisplayType(id) {
 }
 
 
-export function utilDisplayLabel(entity, graphOrGeometry) {
+// `utilDisplayLabel`
+// Returns a string suitable for display
+// By default returns something like name/ref, fallback to preset type, fallback to OSM type
+//   "Main Street" or "Tertiary Road"
+// If `verbose=true`, include both preset name and feature name.
+//   "Tertiary Road Main Street"
+//
+export function utilDisplayLabel(entity, graphOrGeometry, verbose) {
+    var result;
     var displayName = utilDisplayName(entity);
-    if (displayName) {
-        // use the display name if there is one
-        return displayName;
-    }
     var preset = typeof graphOrGeometry === 'string' ?
         presetManager.matchTags(entity.tags, graphOrGeometry) :
         presetManager.match(entity, graphOrGeometry);
-    if (preset && preset.name()) {
-        // use the preset name if there is a match
-        return preset.name();
+    var presetName = preset && (preset.suggestion ? preset.subtitle() : preset.name());
+
+    if (verbose) {
+        result = [presetName, displayName].filter(Boolean).join(' ');
+    } else {
+        result = displayName || presetName;
     }
-    // fallback to the display type (node/way/relation)
-    return utilDisplayType(entity.id);
+
+    // Fallback to the OSM type (node/way/relation)
+    return result || utilDisplayType(entity.id);
 }
 
 

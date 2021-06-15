@@ -1,0 +1,1009 @@
+/* possibly existed before and was removed? */
+svg.icon.icon-30 {
+    width: 30px;
+    height: 30px;
+}
+
+svg.logo-rapid,
+.icon.rapid {
+    fill: #333;
+    color: #da26d3;
+}
+
+svg.logo-rapid.dark,
+.dark .icon.rapid,
+.icon.rapid.dark {
+    fill: #eee;
+    color: #da26d3;
+}
+
+/* beta badge */
+.beta {
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    color: #eee;
+    margin: 0 10px;
+    width: 1.8em;
+    height: 1.8em;
+    border: 1px solid #909;
+    border-radius: 5px;
+    background: rgb(203,16,237);
+    background: linear-gradient(0deg, rgba(108,1,167,1) 6%, rgba(203,16,237,1) 50%, rgb(229, 140, 253) 90%, rgb(201, 42, 251) 100%);
+    cursor: default;
+}
+.beta:before {
+    content: '\03b2';  /* β */
+}
+
+
+/* Toolbar buttons */
+button.rapid-features svg.logo-rapid {
+    width: 46px;
+    height: 22px;
+}
+button.rapid-poweruser-features .beta {
+    font-size: 1.2em;
+    margin: 0;
+}
+button.rapid-features.layer-off use {
+    fill: rgba(0,0,0,.4);
+    color: rgba(0,0,0,.4);
+}
+
+.fb-road-license a {
+    padding: 2px 4px 4px 4px;
+    border-radius: 2px;
+}
+
+
+/* UI Buttons */
+/* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
+/* We can not just add an `opacity: 0.5` .disabled rule because that affects children too including tooltips */
+.rapid-inspector button,
+.modal.rapid-modal button {
+    border: 0;
+    background: #da26d3;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 30px;
+    height: 3rem;
+}
+.rapid-inspector button svg,
+.modal.rapid-modal button svg {
+    color: #eee;
+    fill: #da26d3;
+}
+.rapid-inspector button:focus,
+.rapid-inspector button:hover,
+.modal.rapid-modal button:focus,
+.modal.rapid-modal button:hover {
+    background: #c6d;
+}
+.rapid-inspector button:focus svg,
+.rapid-inspector button:hover svg,
+.modal.rapid-modal button:focus svg,
+.modal.rapid-modal button:hover svg {
+    fill: #c6d;
+}
+
+.rapid-inspector button.disabled,
+.modal.rapid-modal button.disabled {
+    background: #da26d388;
+    color: #eee8;
+}
+.rapid-inspector button.disabled svg,
+.modal.rapid-modal button.disabled svg {
+    color: #eee8;
+    fill: #da26d388;
+}
+.rapid-inspector button.disabled:focus,
+.rapid-inspector button.disabled:hover,
+.modal.rapid-modal button.disabled:focus,
+.modal.rapid-modal button.disabled:hover {
+    background: #c6d8;
+}
+.rapid-inspector button.disabled:focus svg,
+.rapid-inspector button.disabled:hover svg,
+.modal.rapid-modal button.disabled:focus svg,
+.modal.rapid-modal button.disabled:hover svg {
+    fill: #c6d8;
+}
+
+
+.rapid-inspector button.secondary,
+.modal.rapid-modal button.secondary {
+    border: 0;
+    background: #666;
+    color: #eee;
+}
+.rapid-inspector button.secondary svg,
+.modal.rapid-modal button.secondary svg {
+    color: #eee;
+    fill: #666;
+}
+.rapid-inspector button.secondary:focus,
+.rapid-inspector button.secondary:hover,
+.modal.rapid-modal button.secondary:focus,
+.modal.rapid-modal button.secondary:hover {
+    background: #888;
+}
+.rapid-inspector button.secondary:focus svg,
+.rapid-inspector button.secondary:hover svg,
+.modal.rapid-modal button.secondary:focus svg,
+.modal.rapid-modal button.secondary:hover svg {
+    fill: #888;
+}
+
+.rapid-inspector button.secondary.disabled,
+.modal.rapid-modal button.secondary.disabled {
+    background: #6668;
+    color: #eee8;
+}
+.rapid-inspector button.secondary.disabled svg,
+.modal.rapid-modal button.secondary.disabled svg {
+    color: #eee8;
+    fill: #6668;
+}
+.rapid-inspector button.secondary.disabled:focus,
+.rapid-inspector button.secondary.disabled:hover,
+.modal.rapid-modal button.secondary.disabled:focus,
+.modal.rapid-modal button.secondary.disabled:hover {
+    background: #8888;
+}
+.rapid-inspector button.secondary.disabled:focus svg,
+.rapid-inspector button.secondary.disabled:hover svg,
+.modal.rapid-modal button.secondary.disabled:focus svg,
+.modal.rapid-modal button.secondary.disabled:hover svg {
+    fill: #8888;
+}
+
+
+.modal.rapid-modal button svg.logo-rapid,
+.modal.rapid-modal button svg.logo-rapid:focus,
+.modal.rapid-modal button svg.logo-rapid:hover {
+    color: #eee;
+    fill: #eee;
+}
+.modal.rapid-modal button.disabled svg.logo-rapid,
+.modal.rapid-modal button.disabled svg.logo-rapid:focus,
+.modal.rapid-modal button.disabled svg.logo-rapid:hover {
+    color: #eee8;
+    fill: #eee8;
+}
+
+
+/* Sidebar - Rapid Inspector */
+.rapid-inspector > div {
+    /* background: #222; */
+    /* color: #ddd; */
+}
+
+.rapid-inspector svg.logo-rapid {
+    height: 35px;
+}
+
+.rapid-inspector .header {
+    /* background: #222; */
+    /* color: #fff; */
+    background: #f6f6f6;
+    color: #333;
+    border-bottom: 1px solid #aaaa;
+}
+.rapid-inspector .header h3 {
+    display: flex;
+}
+
+.rapid-inspector .header button.rapid-inspector-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+}
+.ideditor[dir='rtl'] .rapid-inspector .header button.rapid-inspector-close {
+    right: unset;
+    left: 0;
+}
+.rapid-inspector .header button.rapid-inspector-close svg {
+    color: #da26d3;
+}
+.rapid-inspector .header button.rapid-inspector-close:hover {
+    background: #8885;
+}
+
+.rapid-inspector .tooltip .popover-inner {
+    border: 1px solid #aaaa;
+}
+
+.rapid-inspector-fadein .rapid-inspector .body {
+    animation: fadein 0s .25s forwards;
+}
+
+.rapid-inspector .body {
+    /* background: #222; */
+    /* color: #ddd; */
+    background: #f6f6f6;
+    color: #333;
+    padding: 20px;
+    opacity: 1;
+}
+
+@keyframes fadein {
+    from  { opacity: 0 }
+    to    { opacity: 1 }
+}
+
+
+.rapid-inspector .body p {
+    padding: 20px 0;
+}
+
+.rapid-inspector .feature-info {
+    display: flex;
+    padding: 5px 10px;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid #333;
+}
+
+.rapid-inspector .feature-info .dataset-label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: bold;
+}
+.rapid-inspector .feature-info .dataset-beta {
+    font-size: 13px;
+}
+
+.rapid-inspector .tag-info {
+    padding: 7px;
+    background: #444;
+    color: #ddd;
+    border-radius: 0 0 5px 5px;
+    border: 1px transparent;
+}
+.rapid-inspector .tag-bag {
+    display: flex;
+    flex-wrap: wrap;
+}
+.rapid-inspector .tag-heading {
+    margin-right: 5px;
+    padding-left: 3px;
+}
+.rapid-inspector .tag-info .tag-entry {
+    flex: 0 1 auto;
+    display: flex;
+    border: 1px solid #aaaa;
+    border-radius: 5px;
+    font-size: smaller;
+    font-weight: 300;
+    margin: 0 3px;
+}
+.rapid-inspector .tag-key,
+.rapid-inspector .tag-value {
+    flex: 0 1 auto;
+    padding: 0px 3px;
+}
+.rapid-inspector .tag-key {
+    font-weight: bold;
+    font-size: unset;
+}
+
+.rapid-inspector-choices {
+    display: flex;
+    flex-flow: column nowrap;
+    text-align: center;
+    background: linear-gradient(to top left, #ccc, #eee 90%);
+    border-radius: 5px;
+}
+
+.rapid-inspector-choice .choice-wrap {
+    display: flex;
+    flex: 1;
+    margin: 10px;
+    height: 50px;
+}
+
+.rapid-inspector-choice .choice-wrap > button {
+    display: flex;
+    flex: 1;
+    border: 0;
+    align-items: center;
+    height: 100%;
+}
+.rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: 1px solid #333a;
+    border-radius: 25px 0 0 25px;
+}
+.ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.choice-button {
+    border-right: unset;
+    border-left: 1px solid #333a;
+    border-radius: 0 25px 25px 0;
+}
+.rapid-inspector-choice .choice-wrap > button.tag-reference-button {
+    display: flex;
+    flex: 0 0 40px;
+    border-radius: 0 25px 25px 0;
+}
+.ideditor[dir='rtl'] .rapid-inspector-choice .choice-wrap > button.tag-reference-button {
+    border-radius: 25px 0 0 25px;
+}
+
+.rapid-inspector-choice .choice-button .choice-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 15px;
+}
+.rapid-inspector-choice .tag-reference-button .icon {
+    margin: 0 5px;
+}
+
+/* when hovering, hide the choices */
+.inspector-hover .rapid-inspector-choices {
+    display: none;
+}
+
+/* For things that should stack in rows */
+.rapid-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* RapiD modal dialogs */
+.modal.rapid-modal {
+    top: 80px;
+    min-width: 650px;
+    max-width: 650px;
+    max-height: 85%;
+    background: rgba(25, 25, 25, 0.9);
+    -webkit-backdrop-filter: blur(2.5px);
+    backdrop-filter: blur(2.5px);
+    color: #ddd;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    border: 1px solid #888a;
+}
+
+.modal.rapid-modal h3 {
+    color: #fff;
+}
+
+.modal.rapid-modal .modal-section.buttons {
+    flex-flow: column;
+    padding: 20px;
+    border-top: 1px solid #888a;
+    width: 100%;
+}
+
+.modal.rapid-modal .content {
+    box-shadow: unset;
+    overflow-y: hidden;
+}
+.modal.rapid-modal .modal-section {
+    border: 0px;
+}
+.modal.rapid-modal .modal-section .logo-rapid {
+    fill: white;
+}
+.modal.rapid-modal p {
+    font-size: 14px;
+}
+.modal.rapid-modal button.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    height: 40px;
+    border-radius: 0;
+}
+.modal.rapid-modal button.close svg {
+    color: #da26d3;
+}
+.modal.rapid-modal button.close:hover {
+    background: #8885;
+}
+
+/* Splash, Whats New, Login to OSM */
+.modal.rapid-modal .modal-section p .icon {
+    height: 25px;
+    width: 30px;
+    color: #fff;
+}
+.modal.rapid-modal .modal-section h3 .icon.logo-rapid,
+.modal.rapid-modal .modal-section p .icon.logo-rapid {
+    height: 25px;
+    width: 55px;
+    margin-top: -2px;
+    color: #da26d3;
+}
+.modal.rapid-modal .modal-actions > button {
+    width: 100%;
+    margin: 20px;
+}
+.modal.rapid-modal.modal-splash .modal-actions > button {
+    height: unset;  /* big buttons */
+    padding: 10px;
+}
+.modal.rapid-modal .modal-actions > button.whats-new-nothanks,
+.modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
+    background: #eee;
+    color: #111;
+    height: 160px;
+}
+.modal.rapid-modal .modal-actions > button.whats-new-nothanks:hover,
+.modal.rapid-modal .modal-actions > button.rapid-login-to-osm:hover {
+    background: #ccc;
+}
+
+.modal.rapid-modal.modal-whatsnew img.whatsnew-image {
+    width: 100%;
+    margin-top: 20px;
+}
+.modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
+    font-size: 16px;
+    padding: 0 30px;
+}
+.modal.rapid-modal.modal-whatsnew .rapid-checkbox-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.modal.rapid-modal.modal-whatsnew .rapid-checkbox-text {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0px 20px;
+}
+.modal.rapid-modal.modal-whatsnew .rapid-checkbox-custom {
+    display: flex;
+    flex: 0 0 36px;
+}
+
+/* dark scrollbars */
+.modal.rapid-modal {
+    scrollbar-width: thin;
+    scrollbar-color: #aaa #555;
+}
+.modal.rapid-modal ::-webkit-scrollbar {
+    width: 10px;
+}
+.modal.rapid-modal ::-webkit-scrollbar-track {
+    background: #444;
+}
+.modal.rapid-modal ::-webkit-scrollbar-thumb {
+    background-color: #da26d3;
+    border-radius: 6px;
+    border: 0;
+}
+.modal.rapid-modal ::-webkit-scrollbar-thumb:hover {
+    background-color: #c6d;
+    cursor: pointer;
+}
+
+
+/* Toggle Features */
+.modal.rapid-modal .modal-section.rapid-checkbox {
+    font-size: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 10px;
+    width: 100%;
+}
+.modal.rapid-modal .rapid-datasets-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+
+.modal.rapid-modal .rapid-stack .rapid-datasets-container {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+}
+
+.rapid-stack .modal-section.rapid-checkbox.rapid-toggle-all {
+    border-bottom: 1px solid #888a;
+    padding: 45px 10px 10px 10px;
+}
+.rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets {
+    border-top: 1px solid #888a;
+    padding: 10px;
+    cursor: pointer;
+}
+.rapid-stack .modal-section.rapid-checkbox.rapid-manage-datasets:hover {
+    color: #ddd;
+    background: #8885;
+}
+
+.modal.rapid-modal .rapid-stack .rapid-feature {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.rapid-feature-label-container {
+    display: flex;
+    align-items: center;
+}
+.rapid-feature-label-container > div {
+    margin: 0 5px;
+}
+.rapid-feature-extent-container {
+    font-size: 14px;
+    font-style: italic;
+    margin: -5px 5px 5px 5px;
+    color: #aaa;
+}
+
+.rapid-feature-label {
+    display: flex;
+    align-items: center;
+}
+.rapid-feature-label-container .rapid-feature-label-beta {
+    font-size: 14px;
+}
+.rapid-feature-label > svg.icon.logo-rapid {
+    width: 4em;
+    height: 1.3em;
+    margin: -5px;
+}
+.rapid-feature-label-divider {
+    width: 1px;
+    height: 20px;
+    background: #888a;
+}
+
+.rapid-feature-description {
+    font-size: 14px;
+    margin: 4px;
+}
+.rapid-feature-license p {
+    font-size: 10px;
+}
+.modal-section.rapid-checkbox.disabled {
+    opacity: .5;
+}
+.rapid-feature-checkbox {
+    margin-left: auto;
+}
+
+.modal-section.rapid-checkbox.section-divider {
+    width: 100%;
+    height: 1px;
+    background: #888a;
+    padding: 1px;
+    align-self: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.modal-section.rapid-checkbox.section-divider.strong {
+    background: #fffa;
+}
+
+.rapid-feature-hotkey {
+    margin: 0 5px;
+    font-size: 14px;
+}
+
+.rapid-checkbox-inputs {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.rapid-colorpicker-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: 0 15px;
+}
+.rapid-colorpicker-label:not(.disabled),
+.rapid-checkbox-label:not(.disabled) {
+    cursor: pointer;
+}
+.rapid-colorpicker-label.disabled {
+    opacity: 0.5;
+}
+
+.rapid-colorpicker {
+    padding: 2px;
+    border: none;
+    background: #fff;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+}
+.rapid-colorpicker-label:not(.disabled):hover {
+    opacity: 0.9;
+}
+
+.rapid-colorpicker-fill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+}
+.rapid-colorpicker-fill .icon {
+    pointer-events: none;
+}
+
+/* since checkboxes can't be styled, we'll
+hide this one and style something on top of it.  */
+.rapid-checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.rapid-checkbox-label .rapid-checkbox-custom {
+    height: 36px;
+    width: 36px;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #fff;
+}
+
+.rapid-checkbox-label .rapid-checkbox-custom::after {
+    content: "";
+    height: 0px;
+    width: 0px;
+}
+
+.rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
+    content: "";
+    display: block;
+    padding: 2px;
+    border-radius: 0;
+    border: solid #da26d3;
+    background-color: transparent;
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg);
+    opacity: 1;
+    margin: 3px 9px;
+    height: 12px;
+    width: 6px;
+}
+.ideditor[dir='rtl'] .rapid-checkbox-label input:checked ~ .rapid-checkbox-custom::after {
+    margin: 6px 6px;
+    height: 6px;
+    width: 12px;
+}
+
+
+/* Rapid Power User features */
+
+.rapid-stack.poweruser .modal-section-heading {
+    display: flex;
+    flex-flow: column;
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.rapid-stack.poweruser .modal-section-heading h3 {
+    font-size: 24px
+}
+.rapid-stack.poweruser .modal-heading-desc {
+    font-size: 16px;
+    font-style: italic;
+}
+.rapid-stack.poweruser .modal-heading-desc .smile {
+    font-style: normal;
+    margin: 0 10px;
+}
+.rapid-stack.poweruser .rapid-features-container {
+    width: 100%;
+    border-top: 1px solid #888a;
+}
+.rapid-stack.poweruser .rapid-features-container > .modal-section.rapid-checkbox:last-of-type {
+    padding-bottom: 15px;
+}
+.rapid-stack.poweruser .rapid-features-container .rapid-feature-label {
+    margin: 0 5px;
+}
+
+.rapid-stack.poweruser .rapid-features-container .rapid-feature-description {
+    font-size: 14px;
+    font-style: italic;
+    margin: -5px 5px 5px 5px;
+    color: #aaa;
+}
+
+/* Add/Manage Datasets modal */
+/* view-manage-wrap is an absolutely positioned div to create a new stacking context,
+   so we can put a modal on top of the other modal.
+   (it functions like .shaded for layout but without adding any shading)
+*/
+.view-manage-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 51;   /* above existing modal */
+}
+.modal.rapid-modal.modal-view-manage {
+    width: 80%;
+    min-width: 600px;
+    max-width: 1000px;
+    min-height: 85%;
+}
+.modal.rapid-modal.modal-view-manage p {
+    font-size: 12px;
+}
+
+.modal-view-manage .modal-section {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.modal-view-manage .modal-section.rapid-view-manage-header {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid #aaaa;
+    color: #fff;
+}
+.modal-view-manage .modal-section.rapid-view-manage-header > div {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    align-items: center;
+}
+
+.rapid-view-manage-header-icon {
+    flex: 0 0 40px;
+}
+.rapid-view-manage-header-text {
+    flex: 1 1 auto;
+    font-size: 24px;
+    padding: 0 5px;
+}
+.rapid-view-manage-header-about {
+    color: #ddd;
+}
+
+.modal-view-manage .modal-section.rapid-view-manage-filter {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 10px 20px;
+    border-bottom: 1px solid #aaaa;
+    color: #fff;
+}
+.rapid-view-manage-filter-search-wrap,
+.rapid-view-manage-filter-type-wrap {
+    position: relative;
+    flex: 1;
+    padding: 0 5px;
+}
+.rapid-view-manage-filter-search-wrap > .icon {
+    position: absolute;
+    left: 16px;
+    top: 11px;
+    color: #aaa;
+    width: 16px;
+    height: 16px;
+}
+.rapid-view-manage-filter-search,
+.rapid-view-manage-filter-type {
+    background: #444;
+    color: #ddd;
+    padding: 4px 12px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    font-size: 16px;
+    width: 90%;
+}
+.rapid-view-manage-filter-search {
+    padding: 4px 12px 4px 40px;
+}
+.rapid-view-manage-filter-search:focus,
+.rapid-view-manage-filter-search:active,
+.rapid-view-manage-filter-type:focus,
+.rapid-view-manage-filter-type:active {
+    background: #444;
+    color: #eee;
+    outline: none;
+    border: 1px solid #aaa;
+}
+
+div.combobox.combobox-dataset-categories {
+    background: #333;
+    color: #ddd;
+    border: 1px solid #222;
+}
+
+div.combobox.combobox-dataset-categories a {
+    color: #ddd;
+    border-top: 1px solid #222;
+}
+
+div.combobox.combobox-dataset-categories a.selected,
+div.combobox.combobox-dataset-categories a:active,
+div.combobox.combobox-dataset-categories a:focus {
+    color: #eee;
+    background: #3c3c3c;
+}
+@media (hover: hover) {
+    div.combobox.combobox-dataset-categories a:hover {
+        color: #eee;
+        background: #3c3c3c;
+    }
+}
+
+.rapid-view-manage-filter-clear a {
+    padding: 15px;
+    font-size: 14px;
+}
+
+.rapid-view-manage-filter-results {
+    flex: 1 1 200px;
+    padding: 0 5px;
+    text-align: end;
+    font-size: 20px;
+}
+
+.modal-view-manage .modal-section.rapid-view-manage-datasets-section {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    overflow-y: auto;
+}
+
+/* give this section height, even when its contents are hidden */
+.rapid-view-manage-datasets-status,
+.rapid-view-manage-datasets {
+    flex: 1 1 9999px;
+}
+
+.rapid-view-manage-datasets-status {
+    font-size: 20px;
+    text-align: center;
+    margin: 50px;
+}
+.rapid-view-manage-datasets-spinner {
+    filter: brightness(2)contrast(0.8);
+}
+
+.rapid-view-manage-datasets {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+.rapid-view-manage-dataset {
+    flex: 0 1 50%;
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    color: #eee;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.rapid-view-manage-dataset-label {
+    flex: 1;
+    padding: 0 8px;
+}
+.rapid-view-manage-dataset-thumb {
+    flex: 0;
+}
+img.rapid-view-manage-dataset-thumbnail {
+    border-radius: 10px;
+    width: 180px;
+    filter: invert(1)brightness(2)contrast(0.75);
+}
+
+.rapid-view-manage-dataset button.rapid-view-manage-dataset-action {
+    font-size: 12px;
+    height: 28px;
+    border-radius: 14px;
+    margin: 10px 0;
+    padding: 0 15px;
+}
+.rapid-view-manage-dataset-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+.rapid-view-manage-dataset-license {
+    display: inline-block;
+}
+.rapid-view-manage-dataset-beta {
+    font-size: 10px;
+}
+.rapid-view-manage-dataset-featured {
+    display: inline-block;
+    font-size: 11px;
+    background: #a21;
+    color: #dcdcdc;
+    padding: 1px 7px;
+    border-radius: 5px;
+    margin: 0px 10px;
+    line-height: 1.5;
+}
+.rapid-view-manage-dataset-featured span {
+    margin: 0px 3px;
+}
+
+/* Colorpicker popup */
+
+.colorpicker-popup {
+    position: absolute;
+    padding: 10px;
+    z-index: 100;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    border-radius: 6px;
+    box-shadow: 0 0 2em black;
+}
+.colorpicker-arrow {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid #fff;
+}
+
+.colorpicker-colors {
+    display: flex;
+    flex-flow: row wrap;
+}
+.colorpicker-option {
+    border: 2px solid transparent;
+    background: #fff;
+    border-radius: 6px;
+}
+.colorpicker-option:hover {
+    border: 2px solid #ddd;
+}
+.colorpicker-option.selected {
+    border: 2px solid #444;
+}
+.colorpicker-option-fill {
+    background-color: currentColor;
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    border-radius: 5px;
+}
+
+
+/* Background layer list customizations */
+ul.layer-list.layer-background-list li button.background-favorite-button {
+    background-color: inherit;
+}
+button.background-favorite-button .icon {
+    fill-opacity: 0;
+    stroke-width: 1;
+}
+button.background-favorite-button.active .icon {
+    fill-opacity: inherit;
+}
+.background-pane .layer-list button.background-favorite-button {
+    border: 0;
+}
+
+li.best > label > span.background-name {
+    flex: 1 1 auto;
+}
+
+li.best > label > span.best {
+    flex: 0 0 auto;
+}
+
+li.best > label > span.best > svg {
+    color: #e98733;
+    height: 19px;
+}

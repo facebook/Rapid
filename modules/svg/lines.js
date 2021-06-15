@@ -9,6 +9,9 @@ import { svgTagClasses } from './tag_classes';
 import { osmEntity, osmOldMultipolygonOuterMember } from '../osm';
 import { utilArrayFlatten, utilArrayGroupBy } from '../util';
 import { utilDetect } from '../util/detect';
+import _isEqual from 'lodash-es/isEqual';
+import _omit from 'lodash-es/omit';
+import { rapid_config } from '../../data/rapid_config.json';
 
 export function svgLines(projection, context) {
     var detected = utilDetect();
@@ -27,7 +30,6 @@ export function svgLines(projection, context) {
         service: 10,
         footway: 11
     };
-
 
     function drawTargets(selection, graph, entities, filter) {
         var targetClass = context.getDebug('target') ? 'pink ' : 'nocolor ';
@@ -114,6 +116,30 @@ export function svgLines(projection, context) {
             return scoreA - scoreB;
         }
 
+        var getAIRoadStylingClass =  function(d){
+            if (!rapid_config.style_fb_ai_roads.enabled) return '';
+
+           return (d.tags.source === 'digitalglobe' || d.tags.source === 'maxar') ? ' airoad ' : '';
+        };
+
+        // Class for styling currently edited lines
+        var tagEditClass = function(d) {
+            var result = graph.entities[d.id] && base.entities[d.id] &&  !_isEqual(graph.entities[d.id].tags, base.entities[d.id].tags);
+
+            return result ?
+               ' tagedited ' :  '';
+        };
+
+        // Class for styling currently edited lines
+        var graphEditClass = function(d) {
+            if (!base.entities[d.id]) {
+                return ' graphedited ';
+            }
+
+            var result = graph.entities[d.id] && base.entities[d.id] &&  !_isEqual(_omit(graph.entities[d.id], ['tags', 'v']), _omit(base.entities[d.id], ['tags', 'v']));
+
+            return result ? ' graphedited ' :  '';
+        };
 
         function drawLineGroup(selection, klass, isSelected) {
             // Note: Don't add `.selected` class in draw modes
@@ -155,7 +181,7 @@ export function svgLines(projection, context) {
                     }
 
                     var oldMPClass = oldMultiPolygonOuters[d.id] ? 'old-multipolygon ' : '';
-                    return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + d.id;
+                    return prefix + ' ' + klass + ' ' + selectedClass + oldMPClass + graphEditClass(d) + tagEditClass(d) + getAIRoadStylingClass(d) + d.id;
                 })
                 .classed('added', function(d) {
                     return !base.entities[d.id];

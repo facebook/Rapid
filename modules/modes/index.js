@@ -14,3 +14,5 @@ export { modeSelect } from './select';
 export { modeSelectData } from './select_data';
 export { modeSelectError} from './select_error';
 export { modeSelectNote } from './select_note';
+
+export { modeRapidSelectFeatures } from './rapid_select_features';

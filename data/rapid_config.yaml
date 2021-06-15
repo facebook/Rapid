@@ -1,0 +1,9 @@
+
+# Rapid configuration-  for customizing runtime behavior. 
+# The use case for this file is to enable/disable features without
+# needing to open/edit/rebuild the code. 
+rapid_config: 
+  # This setting styles any features in the map with a special shadow effect if 
+  # and only if they were originally presented to the user as AI features
+  style_fb_ai_roads:
+    enabled: false

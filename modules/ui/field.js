@@ -1,15 +1,14 @@
-import * as countryCoder from '@ideditor/country-coder';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
+import { locationManager } from '../core/locations';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
 import { geoExtent } from '../geo/extent';
 import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
-import { utilArrayIntersection } from '../util/array';
 import { utilRebind, utilUniqueDomId } from '../util';
 
 
@@ -22,12 +21,32 @@ export function uiField(context, presetField, entityIDs, options) {
         info: true
     }, options);
 
+    // Don't show the remove and revert buttons if any of the entity IDs are FB features
+    // with source=digitalglobe or source=maxar
+    var someFbRoadsSelected = entityIDs ? entityIDs.some(function(entity) {
+            return entity.__fbid__ && (entity.tags.source === 'maxar' || entity.tags.source === 'digitalglobe');
+        }) : false;
+
+
+    if ( someFbRoadsSelected ) {
+        options.remove = false;
+        options.revert = false;
+    }
+
     var dispatch = d3_dispatch('change', 'revert');
     var field = Object.assign({}, presetField);   // shallow copy
     field.domId = utilUniqueDomId('form-field-' + field.safeid);
     var _show = options.show;
     var _state = '';
     var _tags = {};
+
+    var _entityExtent;
+    if (entityIDs && entityIDs.length) {
+        _entityExtent = entityIDs.reduce(function(extent, entityID) {
+            var entity = context.graph().entity(entityID);
+            return extent.extend(entity.extent(context.graph()));
+        }, geoExtent());
+    }
 
     var _locked = false;
     var _lockedTip = uiTooltip()
@@ -302,21 +321,9 @@ export function uiField(context, presetField, entityIDs, options) {
             return field.matchGeometry(context.graph().geometry(entityID));
         })) return false;
 
-        if (field.locationSet) {
-            var extent = combinedEntityExtent();
-            if (!extent) return true;
-
-            var center = extent.center();
-            var codes = countryCoder.iso1A2Codes(center).map(function(code) {
-                return code.toLowerCase();
-            });
-
-            if (field.locationSet.include && !utilArrayIntersection(codes, field.locationSet.include).length) {
-                return false;
-            }
-            if (field.locationSet.exclude && utilArrayIntersection(codes, field.locationSet.exclude).length) {
-                return false;
-            }
+        if (entityIDs && _entityExtent && field.locationSetID) {   // is field allowed in this location?
+            var validLocations = locationManager.locationsAt(_entityExtent.center());
+            if (!validLocations[field.locationSetID]) return false;
         }
 
         var prerequisiteTag = field.prerequisiteTag;
@@ -353,14 +360,6 @@ export function uiField(context, presetField, entityIDs, options) {
             field.impl.focus();
         }
     };
-
-
-    function combinedEntityExtent() {
-        return entityIDs && entityIDs.length && entityIDs.reduce(function(extent, entityID) {
-            var entity = context.graph().entity(entityID);
-            return extent.extend(entity.extent(context.graph()));
-        }, geoExtent());
-    }
 
 
     return utilRebind(field, dispatch, 'on');

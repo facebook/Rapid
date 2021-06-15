@@ -9,7 +9,6 @@ import { svgIcon } from '../../svg';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 
-
 export function uiToolUndoRedo(context) {
 
     var tool = {
@@ -49,9 +48,17 @@ export function uiToolUndoRedo(context) {
         var tooltipBehavior = uiTooltip()
             .placement('bottom')
             .title(function (d) {
-                return d.annotation() ?
-                    t.html(d.id + '.tooltip', { action: d.annotation() }) :
-                    t.html(d.id + '.nothing');
+                // Handle string- or object-style annotations. Object-style
+                // should include "type" and "description" keys, where
+                // "description" is used in place of a string-style annotation.
+                // See ui/rapid_feature_inspector.js for the motivating use case.
+                return (d.annotation() ?
+                    t(d.id + '.tooltip', {
+                        action: d.annotation().description
+                            ? d.annotation().description
+                            : d.annotation(),
+                    }) :
+                    t(d.id + '.nothing'), d.cmd);
             })
             .keys(function(d) {
                 return [d.cmd];

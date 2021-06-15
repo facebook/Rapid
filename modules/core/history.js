@@ -125,6 +125,22 @@ export function coreHistory(context) {
         },
 
 
+        peekAnnotation: function() {
+            return _stack[_index].annotation;
+        },
+
+
+        peekAllAnnotations: function() {
+            var result = [];
+            for (var i = 0; i <= _index; i++) {
+                if (_stack[i].annotation) {
+                    result.push(_stack[i].annotation);
+                }
+            }
+            return result;
+        },
+
+
         merge: function(entities/*, extent*/) {
             var stack = _stack.map(function(state) { return state.graph; });
             _stack[0].graph.rebase(entities, stack, false);
@@ -364,6 +380,7 @@ export function coreHistory(context) {
             }
             dispatch.call('reset');
             dispatch.call('change');
+            dispatch.call('restore');
             return history;
         },
 
@@ -605,6 +622,16 @@ export function coreHistory(context) {
                         d.deleted.forEach(function(id) {
                             entities[id] = undefined;
                         });
+                    }
+
+                    // restore RapiD sources
+                    if (d.annotation && d.annotation.type === 'rapid_accept_feature') {
+                        var rapidContext = context.rapidContext();
+                        var sourceTag = d.annotation.source;
+                        rapidContext.sources.add('mapwithai');      // always add 'mapwithai'
+                        if (sourceTag && /^esri/.test(sourceTag)) {
+                            rapidContext.sources.add('esri');       // add 'esri' for esri sources
+                        }
                     }
 
                     return {

@@ -5,8 +5,8 @@ describe('iD.serviceOsm', function () {
     function login() {
         connection.switch({
             urlroot: 'http://www.openstreetmap.org',
-            oauth_consumer_key: '5A043yRSEugj4DJ5TljuapfnrflWDte8jTOcWLlT',
-            oauth_secret: 'aB3jKq1TRsCOUrfOIZ6oQMEDmv2ptV76PA54NGLL',
+            oauth_consumer_key: 'MlAcABGGdqadlgrjpmG6qSQu3bwbAgxC7hW0vRwm',
+            oauth_secret: 'M0g3lCJTvpnwMic0HYYwwTMpVvugNRlkycQL7so5',
             oauth_token: 'foo',
             oauth_token_secret: 'foo'
         });

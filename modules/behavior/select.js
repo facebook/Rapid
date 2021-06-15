@@ -9,6 +9,8 @@ import { modeSelectError } from '../modes/select_error';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { utilFastMouse } from '../util/util';
 
+import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
+
 
 export function behaviorSelect(context) {
     var _tolerancePx = 4; // see also behaviorDrag
@@ -283,9 +285,13 @@ export function behaviorSelect(context) {
         }
 
         var newMode;
+        if (datum && datum.__fbid__) {    // clicked a RapiD feature ..
+            context
+                .selectedNoteID(null)
+                .selectedErrorID(null)
+                .enter(modeRapidSelectFeatures(context, datum));
 
-        if (datum instanceof osmEntity) {
-            // targeting an entity
+        } else if (datum instanceof osmEntity) {    // clicked an entity..
             var selectedIDs = context.selectedIDs();
             context.selectedNoteID(null);
             context.selectedErrorID(null);

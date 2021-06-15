@@ -1,0 +1,120 @@
+.mode-browse .layer-ai-features .line,
+.mode-select .layer-ai-features .line,
+.mode-browse .layer-ai-features .vertex,
+.mode-select .layer-ai-features .vertex {
+    cursor: pointer;
+    cursor: url(img/cursor-select-line.png), pointer;
+}
+
+/* Lines */
+.layer-ai-features path.stroke {
+    stroke: currentColor;
+    stroke-width: 5;
+    fill: none;
+}
+.layer-ai-features path.casing {
+    stroke: #111;
+    stroke-width: 7;
+    stroke-opacity: 0;
+    fill: none;
+}
+.layer-ai-features path.shadow {
+    pointer-events: stroke;
+    stroke: #fff;
+    stroke-width: 20;
+    stroke-opacity: 0;
+    fill: none;
+}
+
+.low-zoom .layer-ai-features path.stroke {
+    stroke-width: 3;
+}
+.low-zoom .layer-ai-features path.casing {
+    stroke-width: 5;
+}
+.low-zoom .layer-ai-features path.shadow {
+    stroke-width: 15;
+}
+
+.layer-ai-features path.casing.hover,
+.layer-ai-features path.casing.selected {
+    stroke-opacity: 1;
+}
+.layer-ai-features path.shadow.hover:not(.selected) {
+    stroke-opacity: 0.4;
+}
+.layer-ai-features path.shadow.selected {
+    stroke-opacity: 0.4;
+}
+
+/* Vertices */
+.layer-ai-features g.vertex .fill {
+    fill: #fff;
+}
+.layer-ai-features g.vertex .stroke {
+    stroke: currentColor;
+    stroke-width: 3;
+    fill: #fff;
+}
+.low-zoom .layer-ai-features g.vertex .stroke {
+    stroke-width: 2;
+}
+
+
+/* Polygons */
+.layer-ai-features  path.line.building.stroke {
+    stroke-width: 3;
+    fill-opacity: 1;
+}
+.layer-ai-features  path.line.building.casing {
+    stroke-width: 5;
+    fill-opacity: 1;
+}
+.layer-ai-features  path.line.building.shadow {
+    stroke-width: 15;
+}
+
+.low-zoom .layer-ai-features path.line.building.stroke {
+    stroke-width: 2;
+}
+.low-zoom .layer-ai-features path.line.building.casing {
+    stroke-width: 4;
+}
+.low-zoom .layer-ai-features path.line.building.shadow {
+    stroke-width: 10;
+}
+
+
+/* Nodes */
+.layer-ai-features g.node.point .shadow {
+    stroke: #fff;
+    stroke-width: 12;
+    stroke-opacity: 0;
+    fill: none;
+}
+.layer-ai-features g.node.point.hover:not(.selected) .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+.layer-ai-features g.node.point.selected .shadow {
+    stroke-opacity: 0.4;
+    fill-opacity: 0.4;
+}
+
+.layer-ai-features g.node.point .fill {
+    fill: currentColor;
+}
+.layer-ai-features g.node.point .stroke {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #333;
+}
+.low-zoom .layer-ai-features g.node.point .stroke {
+    stroke-width: 1px;
+}
+
+.ideditor .fill-wireframe  .layer-ai-features .point {
+    display : inline !important;
+}
+
+

@@ -15,6 +15,15 @@ export function geoExtent(min, max) {
     }
 }
 
+
+export function geoExtentFromBounds(mapBounds) {
+    return geoExtent([
+        [mapBounds.minlon, mapBounds.minlat],
+        [mapBounds.maxlon, mapBounds.maxlat]
+    ]);
+}
+
+
 geoExtent.prototype = new Array(2);
 
 Object.assign(geoExtent.prototype, {

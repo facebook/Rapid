@@ -3,16 +3,19 @@ import {
 } from 'd3-selection';
 
 import _debounce from 'lodash-es/debounce';
-import { uiToolOldDrawModes, uiToolNotes, uiToolSave, uiToolSidebarToggle, uiToolUndoRedo } from './tools';
+import { utilStringQs } from '../util';
+import { uiToolRapidFeatures, uiToolOldDrawModes, uiToolNotes, uiToolSave, uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
 
 
 export function uiTopToolbar(context) {
 
     var sidebarToggle = uiToolSidebarToggle(context),
+        rapidFeatures = uiToolRapidFeatures(context),
         modes = uiToolOldDrawModes(context),
         notes = uiToolNotes(context),
         undoRedo = uiToolUndoRedo(context),
-        save = uiToolSave(context);
+        save = uiToolSave(context),
+        downloadOsc = uiToolDownloadOsc(context);
 
     function notesEnabled() {
         var noteLayer = context.layers().layer('notes');
@@ -40,7 +43,9 @@ export function uiTopToolbar(context) {
             var tools = [
                 sidebarToggle,
                 'spacer',
-                modes
+                modes,
+                rapidFeatures
+            //    searchAdd
             ];
 
             tools.push('spacer');
@@ -49,6 +54,10 @@ export function uiTopToolbar(context) {
                 tools = tools.concat([notes, 'spacer']);
             }
 
+            var q = utilStringQs(window.location.hash.substring(1));
+            if (q.support_download_osc === 'true') {
+                tools.push(downloadOsc);
+            }
             tools = tools.concat([undoRedo, save]);
 
             var toolbarItems = bar.selectAll('.toolbar-item')

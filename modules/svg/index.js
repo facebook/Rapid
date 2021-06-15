@@ -27,3 +27,5 @@ export { svgTagPattern } from './tag_pattern.js';
 export { svgTouch } from './touch.js';
 export { svgTurns } from './turns.js';
 export { svgVertices } from './vertices.js';
+
+export { svgRapidFeatures } from './rapid_features.js';
