@@ -2,6 +2,7 @@ import errno
 import os
 import shutil
 import subprocess
+import sys
 
 """Script to upload RapiD to S3 bucket
 Usage: python3 aws_deploy.py
@@ -64,6 +65,22 @@ def deploy():
                     .replace("'iD.legacy.js'", f"'/rapid/{distdir}/iD.legacy.js'")
                 )
                 output.write(s)
+    print("\nCopying new index file to s3.")
+    results = subprocess.run(
+        [
+            "aws",
+            "s3",
+            "cp",
+            newindex,
+            f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{identifier}-rapid.html",
+        ],
+        capture_output=True,
+    )
+    if results.returncode != 0:
+        print("Got an error:")
+        print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
+        print(f"STDERR:\n{results.stderr.decode('utf-8')}")
+        sys.exit(-1)
     print("\nCopying new " + distdir + "folder and index file to s3.")
     subprocess.run(
         [
@@ -74,20 +91,13 @@ def deploy():
             f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{distdir}",
             "--recursive",
         ],
-        check=True,
-        # capture_output=True,
+        capture_output=True,
     )
-    subprocess.run(
-        [
-            "aws",
-            "s3",
-            "cp",
-            newindex,
-            f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{identifier}-rapid.html",
-        ],
-        check=True,
-        # capture_output=True,
-    )
+    if results.returncode != 0:
+        print("Got an error:")
+        print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
+        print(f"STDERR:\n{results.stderr.decode('utf-8')}")
+        sys.exit(-1)
 
 if __name__ == "__main__":
     deploy()
