@@ -547,7 +547,7 @@ export default {
             .classed('currentView', function(d) { return d.properties.key === selectedSequenceKey; });
 
         // update viewfields if needed
-        context.container().selectAll('.viewfield-group .viewfield')
+        context.container().selectAll('.layer-openstreetcam .viewfield-group .viewfield')
             .attr('d', viewfieldPath);
 
         function viewfieldPath() {
