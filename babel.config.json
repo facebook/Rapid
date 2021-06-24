@@ -9,5 +9,8 @@
     ],
     "@babel/preset-react"
   ],
+  "plugins": [
+    "inline-json-import"
+  ],
   "compact": false
 }
