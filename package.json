@@ -43,8 +43,8 @@
   },
   "dependencies": {
     "@id-sdk/math": "~3.0.0-pre.5",
-    "@ideditor/country-coder": "^4.1.0",
-    "@ideditor/location-conflation": "~0.9.0",
+    "@ideditor/country-coder": "~5.0.3",
+    "@ideditor/location-conflation": "~1.0.2",
     "@mapbox/geojson-area": "^0.2.2",
     "@mapbox/geojson-rewind": "^0.5.0",
     "@mapbox/sexagesimal": "1.2.0",
@@ -107,15 +107,15 @@
     "mapillary-js": "4.0.0",
     "minimist": "^1.2.3",
     "mocha": "^9.0.0",
-    "name-suggestion-index": "~5.0",
+    "name-suggestion-index": "~6.0",
     "node-fetch": "^2.6.1",
     "npm-run-all": "^4.0.0",
     "object-inspect": "1.10.3",
-    "osm-community-index": "~4.0.2",
+    "osm-community-index": "~5.0.1",
     "phantomjs-prebuilt": "~2.1.16",
     "postcss": "^8.1.1",
     "postcss-selector-prepend": "^0.5.0",
-    "rollup": "~2.51.0",
+    "rollup": "~2.52.3",
     "rollup-plugin-includepaths": "~0.2.3",
     "rollup-plugin-progress": "^1.1.1",
     "rollup-plugin-visualizer": "~5.5.0",
@@ -129,7 +129,7 @@
     "uglify-js": "~3.13.0"
   },
   "engines": {
-    "node": ">=10"
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "browserslist": [
     "> 0.2%, last 6 major versions, Firefox ESR, IE 11, maintained node versions"
