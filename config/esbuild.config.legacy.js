@@ -17,5 +17,6 @@ esbuild
             //     ignore: ['**/*.json']
             // }
         })],
+        target: ['es5']
     })
     .catch(() => process.exit(1));
