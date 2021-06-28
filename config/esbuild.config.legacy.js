@@ -5,7 +5,7 @@ esbuild
     .build({
         entryPoints: ['./modules/id.js'],
         bundle: true,
-        outfile: 'dist/iD.js',
+        outfile: 'dist/iD.legacy.js',
         plugins: [babel({
             filter: /.*/,
             namespace: '',
