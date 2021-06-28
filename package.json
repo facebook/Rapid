@@ -39,7 +39,7 @@
     "start": "npm-run-all -s esbuild:legacy start:server",
     "quickstart": "npm-run-all -s esbuild:dev start:server",
     "start:server": "node scripts/server.js",
-    "test": "npm-run-all -s lint build:css build:data build:legacy test:spec",
+    "test": "npm-run-all -s lint build:css build:data esbuild:legacy test:spec",
     "test:spec": "phantomjs --web-security=no test/mocha-phantomjs-core/mocha-phantomjs-core.js test/index.html spec",
     "translations": "node scripts/update_locales.js"
   },
@@ -76,6 +76,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
+    "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.12.13",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",

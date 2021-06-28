@@ -3,7 +3,7 @@
     [
       "@babel/preset-env", {
         "useBuiltIns": "entry",
-        "corejs": 3,
+         "corejs": 3,
         "modules": false,
         "targets": {
           "chrome": "58",
@@ -14,7 +14,10 @@
     "@babel/preset-react"
   ],
   "plugins": [
-    "inline-json-import"
+    "inline-json-import",
+    ["@babel/transform-runtime", {
+      "regenerator": true
+    }]
   ],
   "compact": false
 }
