@@ -36,7 +36,7 @@
     "imagery": "node scripts/update_imagery.js",
     "lint": "eslint scripts test/spec modules",
     "lint:fix": "eslint scripts test/spec modules --fix",
-    "start": "npm-run-all -s build start:server",
+    "start": "npm-run-all -s esbuild:legacy start:server",
     "quickstart": "npm-run-all -s esbuild:dev start:server",
     "start:server": "node scripts/server.js",
     "test": "npm-run-all -s lint build:css build:data build:legacy test:spec",

@@ -11,12 +11,9 @@ esbuild
             namespace: '',
             babelHelpers: 'bundled',
             // avoid circular dependencies due to `useBuiltIns: usage` option
-            exclude: [/\/core-js\//]
-            // babel config here or in babel.config.json
-            // config: {
-            //     ignore: ['**/*.json']
-            // }
+            exclude: [/\/core-js\//],
+            sourceType: 'unambiguous',
         })],
-        target: ['es5']
+         target: ['es5']
     })
     .catch(() => process.exit(1));

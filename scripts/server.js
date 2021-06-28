@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
-const colors = require('colors/safe');
-const gaze = require('gaze');
-const StaticServer = require('static-server');
+import colors from 'colors/safe.js';
 
-const buildCSS = require('./build_css.js');
+import gaze from 'gaze/lib/gaze.js';
+import StaticServer from 'static-server/server.js';
+// const StaticServer = require('static-server');
+
+import { buildCSS } from './build_css.js';
 
 
 gaze(['css/**/*.css'], (err, watcher) => {
