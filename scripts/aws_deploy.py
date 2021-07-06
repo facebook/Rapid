@@ -73,6 +73,7 @@ def deploy():
             "cp",
             newindex,
             f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{identifier}-rapid.html",
+            "--no-progress"
         ],
         capture_output=True,
     )
@@ -90,6 +91,7 @@ def deploy():
             distdir,
             f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{distdir}",
             "--recursive",
+            "--no-progress",
         ],
         capture_output=True,
     )
