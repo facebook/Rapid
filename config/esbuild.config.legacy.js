@@ -6,6 +6,7 @@ esbuild
         entryPoints: ['./modules/id.js'],
         bundle: true,
         outfile: 'dist/iD.legacy.js',
+        metafile: true,
         plugins: [babel({
             filter: /.*/,
             namespace: '',
