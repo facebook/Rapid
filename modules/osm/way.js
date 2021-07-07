@@ -43,7 +43,8 @@ Object.assign(osmWay.prototype, {
 
 
     extent: function(resolver) {
-        return resolver.transient(this, 'extent', function() {
+        // return resolver.transient(this, 'extent', function() {
+            return resolver && resolver.transient(this, 'extent', function() {
             var extent = geoExtent();
             for (var i = 0; i < this.nodes.length; i++) {
                 var node = resolver.hasEntity(this.nodes[i]);

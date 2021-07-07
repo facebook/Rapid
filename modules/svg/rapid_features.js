@@ -407,14 +407,15 @@ export function svgRapidFeatures(projection, context, dispatch) {
     let points = viewfield
       .selectAll('g.viewfieldSuggestion')
       .style('stroke', VIEWFIELD_MAGENTA)
-      .on('mouseenter', (d, i) => {
-        selection.select(`.viewfield-${viewfieldPoints[i].key}`).style('stroke', 'white');
-        rapidContext.selectSuggestedImage(viewfieldPoints[i]);
-      })
-      .on('mouseleave', () => {
-        selection.selectAll(`.viewfieldSuggestion`).style('stroke', VIEWFIELD_MAGENTA);
-        rapidContext.selectSuggestedImage(null);
-      })
+      // .attr('pointer-events', 'all')
+      // .on('mouseenter', (d, i) => {
+      //   selection.select(`.${viewfieldPoints[i].key}`).style('stroke', 'white');
+      //   rapidContext.selectSuggestedImage(viewfieldPoints[i]);
+      // })
+      // .on('mouseleave', () => {
+      //   selection.selectAll(`.viewfieldSuggestion`).style('stroke', VIEWFIELD_MAGENTA);
+      //   rapidContext.selectSuggestedImage(null);
+      // })
       .data(viewfieldPoints, d => d.key);
 
     points.exit().remove();
@@ -435,6 +436,17 @@ export function svgRapidFeatures(projection, context, dispatch) {
     enter
       .append('path')
       .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
+      .attr('pointer-events', 'all')
+      .on('mouseenter', (d, i) => {
+        console.log('*****')
+        selection.select(`.${viewfieldPoints[i].key}`).style('stroke', 'white');
+        rapidContext.selectSuggestedImage(viewfieldPoints[i]);
+      })
+      .on('mouseleave', () => {
+        console.log('***** exit')
+        selection.selectAll(`.viewfieldSuggestion`).style('stroke', VIEWFIELD_MAGENTA);
+        rapidContext.selectSuggestedImage(null);
+      })
       .attr('fill', VIEWFIELD_MAGENTA);
 
     // update
