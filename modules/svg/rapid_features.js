@@ -342,7 +342,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
     context.rapidContext().on('select_suggested_viewfield', function() {
       const selectedImage = rapidContext.getSelectSuggestedImage();
       if(selectedImage) {
-        selection.select(`.${selectedImage.key}`).style('stroke', 'white');
+        selection.select(`.viewfield-${selectedImage.key}`).style('stroke', 'white');
       } else {
         selection.selectAll(`.viewfieldSuggestion`)
           .style('stroke', VIEWFIELD_MAGENTA);
@@ -401,7 +401,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .selectAll('g.viewfieldSuggestion')
       .style('stroke', VIEWFIELD_MAGENTA)
       .on('mouseenter', (d, i) => {
-        selection.select(`.${viewfieldPoints[i].key}`).style('stroke', 'white');
+        selection.select(`.viewfield-${viewfieldPoints[i].key}`).style('stroke', 'white');
         rapidContext.selectSuggestedImage(viewfieldPoints[i]);
       })
       .on('mouseleave', () => {
@@ -414,7 +414,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
     const enter = points.enter()
       .append('g')
-      .attr('class', d => `viewfieldSuggestion ${d.key}`);
+      .attr('class', d => `viewfieldSuggestion viewfield-${d.key}`);
 
     // the circle created here needs to be aligned with
     // viewfield path added after it.
