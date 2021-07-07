@@ -5,14 +5,16 @@ import { xml as d3_xml } from 'd3-fetch';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay, osmRelation } from '../osm';
-import { utilRebind, utilStringQs, utilTiler } from '../util';
+import { utilRebind, utilStringQs} from '../util';
+
+import { Projection, Tiler } from '@id-sdk/math';
 
 // TODO: extract common logic shared with fb_ai_features.js into util files.
 
 // constants
 var APIROOT = 'https://www.mapwith.ai/maps/ml_roads';
 var TILEZOOM = 16;
-var tiler = utilTiler().zoomExtent([TILEZOOM, TILEZOOM]);
+var tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
 var dispatch = d3_dispatch('loadedData');
 
 var _datasets = {};
@@ -492,8 +494,8 @@ export default {
             _datasets[datasetID] = ds;
         }
 
-
-        var tiles = tiler.getTiles(projection);
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var tiles = tiler.getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         _forEach(cache.inflight, function(v, k) {
@@ -509,11 +511,11 @@ export default {
             // same dummy result for every tile, so as long as cache has anything loaded or inflight,
             // we can just return to avoid reloading the same data repeatedly.
             // TODO: change early return logic once backend starts to return real results.
-            // if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
-            if (Object.keys(cache.loaded).length > 0 || Object.keys(cache.inflight).length > 0) return;
+             if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
+//            if (Object.keys(cache.loaded).length > 0 || Object.keys(cache.inflight).length > 0) return;
 
             var controller = new AbortController();
-            d3_xml(tileURL(ds, tile.extent, taskExtent), { signal: controller.signal })
+            d3_xml(tileURL(ds, tile.wgs84Extent, taskExtent), { signal: controller.signal })
                 .then(function (dom) {
                     delete cache.inflight[tile.id];
                     if (!dom) return;

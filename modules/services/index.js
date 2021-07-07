@@ -21,6 +21,7 @@ import serviceWikipedia from './wikipedia';
 export let services = {
   esriData: serviceEsriData,
   fbMLRoads: serviceFbAIFeatures,
+  fbStreetviewSuggestions: serviceFbStreetviewSuggestions,
   geocoder: serviceNominatim,
   keepRight: serviceKeepRight,
   improveOSM: serviceImproveOSM,
@@ -41,6 +42,7 @@ export let services = {
 export {
   serviceEsriData,
   serviceFbAIFeatures,
+  serviceFbStreetviewSuggestions,
   serviceKeepRight,
   serviceImproveOSM,
   serviceOsmose,

@@ -220,12 +220,12 @@ export function coreRapidContext(context) {
   };
 
   _rapidContext.selectSuggestedImage = (d) => {
-    _rapidContext.selectedSuggestedImage = d;
+    _rapidContext.selectedSuggestedImage = d?.srcElement?.__data__;
     dispatch.call('select_suggested_image');
   };
 
   _rapidContext.selectSuggestedViewfield = (d) => {
-    _rapidContext.selectedSuggestedImage = d;
+      _rapidContext.selectedSuggestedImage = d?.srcElement?.__data__;
     dispatch.call('select_suggested_viewfield');
   };
 
