@@ -65,6 +65,7 @@ export { uiRapidColorpicker } from './rapid_colorpicker';
 export { uiRapidFeatureInspector } from './rapid_feature_inspector';
 export { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 export { uiRapidFeatureToggleDialog } from './rapid_feature_toggle_dialog';
+export { uiRapidImageStrip } from './rapid_image_strip';
 export { uiRapidPowerUserFeaturesDialog } from './rapid_poweruser_features_dialog';
 export { uiRapidServiceLicense } from './rapid_service_license';
 export { uiRapidSplash } from './rapid_splash';
