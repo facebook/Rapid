@@ -104,8 +104,8 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
       // accept and reject proposed roads.
       _expandedOnce = true;
       // expand the sidebar, avoid obscuring the data if needed
-      const extent = selectedDatum.extent(rapidGraph);
-      sidebar.expand(sidebar.intersects(extent));
+      // const extent = selectedDatum.extent(rapidGraph);
+      // sidebar.expand(sidebar.intersects(extent));
     }
 
     context.map()
