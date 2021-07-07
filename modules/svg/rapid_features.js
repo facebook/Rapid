@@ -438,7 +438,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
       .attr('pointer-events', 'all')
       .on('mouseenter', (d) => {
-        selection.select(`.viewfield-${d.key}`).style('stroke', 'white');
+        selection.select(`.viewfield-${d.srcElement.__data__.key}`).style('stroke', 'white');
         rapidContext.selectSuggestedImage(d);
       })
       .on('mouseleave', () => {
