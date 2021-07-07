@@ -8,6 +8,7 @@ import { svgIcon } from '../svg';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
 import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
+import { uiRapidImageStrip } from './rapid_image_strip';
 
 
 export function uiRapidFeatureInspector(context, keybinding) {
@@ -276,36 +277,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
     if(_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
       const {images} = _datum.suggestionContext.streetViewImageSet;
       if(images) {
-        const img = body.selectAll('.rapid-inspector-images')
-          .data([0]);
-        const imagesEnter = img
-          .enter()
-          .append('div');
-
-        imagesEnter.selectAll('.rapid-inspector-image')
-          .data(images.sort(sortByLon))
-          .enter()
-          .append('div')
-          .on('mouseenter', d => {
-            const rapidContext = context.rapidContext();
-            rapidContext.selectSuggestedViewfield(d);
-          })
-          .on('mouseleave', () => {
-            const rapidContext = context.rapidContext();
-            rapidContext.selectSuggestedViewfield(null);
-          })
-          .each(showImage);
-
-        context.rapidContext().on('select_suggested_image', function() {
-          const selectedImage = rapidContext.getSelectSuggestedImage();
-          if(selectedImage) {
-            body.select(`.rapid-inspector-image-${selectedImage.key}`)
-              .classed('rapid-inspector-image-highlight', true);
-          } else {
-            body.selectAll(`.rapid-inspector-image`)
-              .classed('rapid-inspector-image-highlight', false);
-          }
-        });
+        let imageStripRenderer = uiRapidImageStrip(context).datum(_datum);
+        imageStripRenderer(context.container().selectAll('.over-map'));
       }
     }
   }
