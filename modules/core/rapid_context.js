@@ -222,16 +222,16 @@ export function coreRapidContext(context) {
   _rapidContext.selectSuggestedImage = (d) => {
     _rapidContext.selectedSuggestedImage = d;
     dispatch.call('select_suggested_image');
-  }
+  };
 
   _rapidContext.selectSuggestedViewfield = (d) => {
     _rapidContext.selectedSuggestedImage = d;
     dispatch.call('select_suggested_viewfield');
-  }
+  };
 
   _rapidContext.getSelectSuggestedImage = () => {
     return _rapidContext.selectedSuggestedImage;
-  }
+  };
 
   return utilRebind(_rapidContext, dispatch, 'on');
 }

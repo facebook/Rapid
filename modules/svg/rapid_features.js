@@ -243,7 +243,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
 
   function transformViewFieldPoint(d) {
-      if(!d.loc) {
+      if (!d.loc) {
         d.loc = [d.lon, d.lat];
       }
       var t = svgPointTransform(projection)(d);
@@ -304,9 +304,9 @@ export function svgRapidFeatures(projection, context, dispatch) {
               seen[last] = true;
               geoData.vertices.push(graph.entity(last));
             }
-            if(selectedIDs.includes(d.id) && d.suggestionContext && d.suggestionContext.streetViewImageSet) {
+            if (selectedIDs.includes(d.id) && d.suggestionContext && d.suggestionContext.streetViewImageSet) {
               const {images} = d.suggestionContext.streetViewImageSet;
-              if(images) {
+              if (images) {
                 geoData.viewfieldPoints = images;
               }
             }
@@ -345,10 +345,10 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
     context.rapidContext().on('select_suggested_viewfield', function() {
       const selectedImage = rapidContext.getSelectSuggestedImage();
-      if(selectedImage) {
+      if (selectedImage) {
         selection.select(`.viewfield-${selectedImage.key}`).style('stroke', 'white');
       } else {
-        selection.selectAll(`.viewfieldSuggestion`)
+        selection.selectAll('.viewfieldSuggestion')
           .style('stroke', VIEWFIELD_MAGENTA);
       }
     });
@@ -382,7 +382,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .attr('class', (d, i, nodes) => {
         const currNode = nodes[i];
         let linegroup = currNode.parentNode.__data__;
-        if(linegroup === 'dashed') {
+        if (linegroup === 'dashed') {
           linegroup = !isSidewalk(d) ? 'dashed-transparent' : linegroup;
         }
         const klass = isArea(d) ? 'building' : 'road';
@@ -395,7 +395,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
   function drawViewfieldPoints(selection, viewfieldPoints) {
     const rapidContext = context.rapidContext();
-    let viewfield = selection.selectAll("g.suggestionViewfieldGroup")
+    let viewfield = selection.selectAll('g.suggestionViewfieldGroup')
       .data(viewfieldPoints.length ? [0] : []);
     viewfield.exit().remove();
 
@@ -437,14 +437,12 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .append('path')
       .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
       .attr('pointer-events', 'all')
-      .on('mouseenter', (d, i) => {
-        console.log('*****')
-        selection.select(`.${viewfieldPoints[i].key}`).style('stroke', 'white');
-        rapidContext.selectSuggestedImage(viewfieldPoints[i]);
+      .on('mouseenter', (d) => {
+        selection.select(`.viewfield-${d.key}`).style('stroke', 'white');
+        rapidContext.selectSuggestedImage(d);
       })
       .on('mouseleave', () => {
-        console.log('***** exit')
-        selection.selectAll(`.viewfieldSuggestion`).style('stroke', VIEWFIELD_MAGENTA);
+        selection.selectAll('.viewfieldSuggestion').style('stroke', VIEWFIELD_MAGENTA);
         rapidContext.selectSuggestedImage(null);
       })
       .attr('fill', VIEWFIELD_MAGENTA);
