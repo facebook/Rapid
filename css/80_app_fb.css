@@ -238,7 +238,7 @@ button.rapid-features.layer-off use {
     padding: 20px 0;
 }
 
-.rapid-inspector .feature-info {
+.rapid-inspector .feature-info .rapid-image-strip {
     display: flex;
     padding: 5px 10px;
     border-radius: 5px 5px 0 0;
@@ -288,18 +288,6 @@ button.rapid-features.layer-off use {
     font-size: unset;
 }
 
-.rapid-inspector-image {
-    width: 100%;
-    margin: 5px;
-}
-
-.rapid-inspector-image-highlight {
-    border: 2px solid white;
-}
-
-.rapid-inspector-image:hover {
-    border: 2px solid white;
-}
 
 .rapid-inspector-choices {
     display: flex;
@@ -353,6 +341,36 @@ button.rapid-features.layer-off use {
 /* when hovering, hide the choices */
 .inspector-hover .rapid-inspector-choices {
     display: none;
+}
+
+.rapid-image-strip {
+    position: relative;
+    flex-shrink: 0;
+    overflow-x: auto;
+    margin-bottom: 80px;
+    width: 90%;
+    height: 175px;
+    padding: 5px;
+    background-color: #fff;
+}
+
+.rapid-image-strip .body {
+    padding: 10px;
+    display: flex;
+    overflow-x: auto;
+}
+
+.rapid-image-strip .image {
+    height: 100%;
+    margin: 5px;
+}
+
+.rapid-image-strip-highlight {
+    border: 2px solid white;
+}
+
+.rapid-image-strip:hover {
+    border: 2px solid white;
 }
 
 /* For things that should stack in rows */
