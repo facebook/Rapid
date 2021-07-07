@@ -3,8 +3,6 @@ import { t } from '../core/localizer';
 
 import { svgIcon } from '../svg';
 import { uiTooltip } from './tooltip';
-
-
 export function uiRapidImageStrip(context) {
   const rapidContext = context.rapidContext();
   let _datum;
@@ -34,9 +32,9 @@ export function uiRapidImageStrip(context) {
     body = body
       .merge(bodyEnter);
 
-    if(_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
+    if (_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
       const {images} = _datum.suggestionContext.streetViewImageSet;
-      if(images) {
+      if (images) {
 
         images.sort(sortByLon);
 
@@ -59,17 +57,17 @@ export function uiRapidImageStrip(context) {
           .on('mouseleave', () => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(null);
-          })
+          });
 
           imagesSelection = imagesSelection.merge(imagesSelectionEnter);
 
         context.rapidContext().on('select_suggested_image', function() {
           const selectedImage = rapidContext.getSelectSuggestedImage();
-          if(selectedImage) {
+          if (selectedImage) {
             body.select(`.rapid-image-strip-${selectedImage.key}`)
               .classed('rapid-image-strip-highlight', true);
           } else {
-            body.selectAll(`img`)
+            body.selectAll('img')
               .classed('rapid-image-strip-highlight', false);
           }
         });
@@ -82,14 +80,6 @@ export function uiRapidImageStrip(context) {
     if (img1.lon > img2.lon) return 1;
     if (img1.lon < img2.lon) return -1;
     return 0;
-  }
-
-
-  function showImage(d, i, nodes) {
-    const selection = d3_select(nodes[i]);
-    selection.append('img').attr('src', d.url)
-      .attr('class', `rapid-image-strip image rapid-image-strip-${d.key}`);
-
   }
 
 
