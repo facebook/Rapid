@@ -14,7 +14,8 @@ Assumptions:
 2) You have installed python 3.
 3) You are running from within the iD directory.
 4) Environment variable RAPID_S3_BUCKET_NAME is defined (default: world.ai.rapid)
-5) Environment variable NODE_VERSION is defined
+5) Environment variable RAPID_WEB_ROOT is defined (default: https://mapwith.ai/)
+6) Environment variable NODE_VERSION is defined
 See .github/workflows/build.yml for usage there
 """
 
@@ -82,7 +83,7 @@ def deploy():
         print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
         print(f"STDERR:\n{results.stderr.decode('utf-8')}")
         sys.exit(-1)
-    print("\nCopying new " + distdir + "folder and index file to s3.")
+    print(f"\nCopying new {distdir} folder and index file to s3.")
     subprocess.run(
         [
             "aws",
@@ -100,6 +101,7 @@ def deploy():
         print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
         print(f"STDERR:\n{results.stderr.decode('utf-8')}")
         sys.exit(-1)
+    print(f"Build deployment complete. Your build is here: {os.environ['RAPID_WEB_ROOT']}/rapid/{distdir}/index.html")
 
 if __name__ == "__main__":
     deploy()
