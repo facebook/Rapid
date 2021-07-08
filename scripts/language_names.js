@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* Downloads the latest translations from Transifex */
-const fs = require('fs');
+import fs from 'fs';
 
 const cldrMainDir = 'node_modules/cldr-localenames-full/main/';
 const rematchCodes = { 'ar-AA': 'ar', 'zh-CN': 'zh', 'zh-HK': 'zh-Hant-HK', 'zh-TW': 'zh-Hant', 'pt-BR': 'pt', 'pt': 'pt-PT' };
@@ -9,7 +9,7 @@ const codesToSkip = ['ase', 'mis', 'mul', 'und', 'zxx'];
 
 let referencedScripts = [];
 
-function getLangNamesInNativeLang() {
+export function langNamesInNativeLang() {
   // manually add languages we want that aren't in CLDR
   let unordered = {
     'oc': {
@@ -74,11 +74,8 @@ function getLangNamesInNativeLang() {
   return ordered;
 }
 
-const langNamesInNativeLang = getLangNamesInNativeLang();
 
-exports.langNamesInNativeLang = langNamesInNativeLang;
-
-exports.languageNamesInLanguageOf = function(code) {
+export function languageNamesInLanguageOf (code) {
   if (rematchCodes[code]) code = rematchCodes[code];
 
   let languageFilePath = `${cldrMainDir}${code}/languages.json`;
@@ -111,10 +108,10 @@ exports.languageNamesInLanguageOf = function(code) {
   }
 
   return translatedLangsByCode;
-};
+}
 
 
-exports.scriptNamesInLanguageOf = function(code) {
+export function scriptNamesInLanguageOf(code) {
   if (rematchCodes[code]) code = rematchCodes[code];
 
   let languageFilePath = `${cldrMainDir}${code}/scripts.json`;
@@ -129,4 +126,4 @@ exports.scriptNamesInLanguageOf = function(code) {
   });
 
   return translatedScripts;
-};
+}
