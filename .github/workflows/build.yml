@@ -32,5 +32,5 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: us-west-2
         RAPID_S3_BUCKET_NAME: world.ai.rapid
-        RAPID_WEB_ROOT: https://mapwith.ai/
+        RAPID_WEB_ROOT: https://mapwith.ai
         NODE_VERSION: ${{ matrix.node-version }}
