@@ -34,3 +34,4 @@ jobs:
         RAPID_S3_BUCKET_NAME: world.ai.rapid
         RAPID_WEB_ROOT: https://mapwith.ai
         NODE_VERSION: ${{ matrix.node-version }}
+      if: matrix.node-version == 16.x
