@@ -599,15 +599,6 @@ export function rendererMap(context) {
         }
 
         projection.transform(eventTransform);
-    
-        var withinEditableZoom = map.withinEditableZoom();
-        if (_lastWithinEditableZoom !== withinEditableZoom) {
-            if (_lastWithinEditableZoom !== undefined) {
-                // notify that the map zoomed in or out over the editable zoom threshold
-                dispatch.call('crossEditableZoom', this, withinEditableZoom);
-            }
-            _lastWithinEditableZoom = withinEditableZoom;
-        }
 
         var withinEditableZoom = map.withinEditableZoom();
         if (_lastWithinEditableZoom !== withinEditableZoom) {
