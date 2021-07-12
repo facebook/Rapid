@@ -16,7 +16,7 @@
     "build": "npm-run-all -s build:css build:data build:dev",
     "build:css": "node scripts/build_css.js",
     "build:data": "shx mkdir -p dist/data && node scripts/build_data.js",
-    "build:dev": "esbuild ./modules/id.js --outfile=dist/iD.js --bundle --metafile=dist/esbuild.json",
+    "build:dev": "esbuild ./modules/id.js --outfile=dist/iD.js --bundle --sourcemap --metafile=dist/esbuild.json",
     "build:stats": "esbuild-visualizer --metadata dist/esbuild.json --exclude *.png",
     "build:legacy": "node config/esbuild.config.legacy.js",
     "clean": "shx rm -f dist/*.js dist/*.map dist/*.css dist/img/*.svg",
