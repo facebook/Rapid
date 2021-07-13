@@ -1,13 +1,13 @@
 # What's New
 
-Thanks to all our contributors, users, and the many people that make RapiD possible! :heart:
+Thanks to all our contributors, users, and the many people that make RapiD possible! ❤️
 
 The RapiD map editor is an open source project. You can submit bug reports, help out,
 or learn more by visiting our project page on GitHub:  :octocat: https://github.com/facebookincubator/RapiD
 
-If you love RapiD, please star our project on GitHub to show your support! :star:
+If you love RapiD, please star our project on GitHub to show your support! ⭐️
 
-_Breaking developer changes, which may affect downstream projects or sites that embed RapiD, are marked with a_ :warning:
+_Breaking developer changes, which may affect downstream projects or sites that embed RapiD, are marked with a_ ⚠️
 
 <!--
 # A.B.C
@@ -36,6 +36,35 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
+# [1.1.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.5)
+##### 2021-Jul-13
+#### :tada: Updates
+* Name Suggestion Index v6.0
+* OSM Community Index v5.1
+* D3.js v7.0
+* Mapillary API and Mapillary-JS Viewer v4.0 ([#233], [#236])
+* Add new duplicate way validation ([#220])
+
+#### :hammer: Development
+* Replace rollup with esbuild for much faster project builds ([#246])
+
+#### :bug: Bugfixes
+* Remove artificial limit of 100 on Esri Datasets ([#257], [#265])
+* Ensure freshness of Bing Imagery ([iD#8570])
+* If locationSet is missing include, default to worldwide include ([iD#bfb36d5])
+* Fix bug in walkthrough ([#234])
+
+[#220]: https://github.com/facebookincubator/RapiD/issues/220
+[#233]: https://github.com/facebookincubator/RapiD/issues/233
+[#234]: https://github.com/facebookincubator/RapiD/issues/234
+[#236]: https://github.com/facebookincubator/RapiD/issues/236
+[#246]: https://github.com/facebookincubator/RapiD/issues/246
+[#257]: https://github.com/facebookincubator/RapiD/issues/257
+[#265]: https://github.com/facebookincubator/RapiD/issues/265
+[iD#8570]: https://github.com/openstreetmap/iD/issues/8570
+[iD#bfb36d5]: https://github.com/openstreetmap/iD/pull/8305/commits/bfb36d572d35271f1a77227d776ebddc7f232ac3)
+
 
 # [1.1.4](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.4)
 ##### 2021-May-14
