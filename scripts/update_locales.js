@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
 /* Downloads the latest translations from Transifex */
-const fs = require('fs');
-const fetch = require('node-fetch');
-const btoa = require('btoa');
-const YAML = require('js-yaml');
-const colors = require('colors/safe');
+import btoa from 'btoa';
+import colors from 'colors/safe.js';
+import fetch from 'node-fetch';
+import fs from 'node:fs';
+import YAML from 'js-yaml';
+
+import * as languageNames from './language_names.js';
 
 const resourceIds = ['core', 'imagery', 'community'];
 const reviewedOnlyLangs = ['vi'];
 const outdir = 'dist/locales/';
 const apiroot = 'https://www.transifex.com/api/2';
 const projectURL = `${apiroot}/project/id-editor`;
-
-const languageNames = require('./language_names.js');
 
 
 // Transifex doesn't allow anonymous downloading

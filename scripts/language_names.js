@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* Downloads the latest translations from Transifex */
-import fs from 'fs';
+import fs from 'node:fs';
 
 const cldrMainDir = 'node_modules/cldr-localenames-full/main/';
 const rematchCodes = { 'ar-AA': 'ar', 'zh-CN': 'zh', 'zh-HK': 'zh-Hant-HK', 'zh-TW': 'zh-Hant', 'pt-BR': 'pt', 'pt': 'pt-PT' };

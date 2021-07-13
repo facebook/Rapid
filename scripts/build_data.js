@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import colors from 'colors/safe.js';
-import fs from 'fs';
+import fs from 'node:fs';
 import stringify from 'json-stringify-pretty-compact';
 import shell from 'shelljs';
 import YAML from 'js-yaml';

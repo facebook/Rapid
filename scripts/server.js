@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 import colors from 'colors/safe.js';
-
 import gaze from 'gaze/lib/gaze.js';
 import StaticServer from 'static-server/server.js';
-// const StaticServer = require('static-server');
 
 import { buildCSS } from './build_css.js';
 
