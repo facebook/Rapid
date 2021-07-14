@@ -63,7 +63,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#257]: https://github.com/facebookincubator/RapiD/issues/257
 [#265]: https://github.com/facebookincubator/RapiD/issues/265
 [iD#8570]: https://github.com/openstreetmap/iD/issues/8570
-[iD#bfb36d5]: https://github.com/openstreetmap/iD/pull/8305/commits/bfb36d572d35271f1a77227d776ebddc7f232ac3)
+[iD#bfb36d5]: https://github.com/openstreetmap/iD/pull/8305/commits/bfb36d572d35271f1a77227d776ebddc7f232ac3
 
 
 # [1.1.4](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.4)
