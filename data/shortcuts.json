@@ -117,7 +117,11 @@
           {
             "shortcuts": ["shortcuts.toggle.key", "?"],
             "text": "shortcuts.browsing.help.keyboard"
-          },
+          }
+        ]
+      },
+      {
+        "rows": [
           {
             "section": "selecting",
             "text": "shortcuts.browsing.selecting.title"
@@ -180,13 +184,17 @@
             "text": "shortcuts.browsing.vertex_selected.parent"
           },
           {
-            "modifiers": ["⌘"],
-            "shortcuts": ["↓"],
-            "text": "shortcuts.browsing.vertex_selected.child"
-          },
-          {
             "shortcuts": ["\\", "shortcuts.key.pause"],
             "text": "shortcuts.browsing.vertex_selected.change_parent"
+          },
+          {
+            "section": "way_selected",
+            "text": "shortcuts.browsing.way_selected.title"
+          },
+          {
+            "modifiers": ["⌘"],
+            "shortcuts": ["↓"],
+            "text": "shortcuts.browsing.way_selected.child"
           }
         ]
       }
