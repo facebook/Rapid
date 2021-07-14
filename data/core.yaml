@@ -2462,7 +2462,7 @@ en:
         change_parent: "Switch parent way"
       way_selected:
         title: "With way selected"
-        child: "Select child node"
+        child: "Select child nodes"
     editing:
       title: "Editing"
       drawing:
