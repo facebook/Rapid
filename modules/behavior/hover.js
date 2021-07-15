@@ -8,6 +8,11 @@ import { presetManager } from '../presets';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { utilKeybinding, utilRebind } from '../util';
 
+import { actionRapidAcceptFeature } from '../actions/rapid_accept_feature';
+import { services } from '../services';
+import { t } from '../core/localizer';
+import { modeSelect } from '../modes';
+
 /*
    The hover behavior adds the `.hover` class on pointerover to all elements to which
    the identical datum is bound, and removes it on pointerout.
@@ -160,7 +165,21 @@ export function behaviorHover(context) {
 
                 // What are we hovering over?
                 if (datum.__fbid__) {    // hovering a RapiD feature
-                    selector += ', .data' + datum.__fbid__;
+                    // selector += ', .data' + datum.__fbid__;
+                    let annotation = {
+                        type: 'rapid_accept_feature',
+                        description: t('rapid_feature_inspector.option_accept.annotation'),
+                        id: datum.id,
+                        origid: datum.__origid__
+                    };
+
+                    const service = datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+                    const graph = service.graph(datum.__datasetid__);
+                    const sourceTag = datum.tags && datum.tags.source;
+                    if (sourceTag) annotation.source = sourceTag;
+
+                    context.perform(actionRapidAcceptFeature(datum.id, graph), annotation);
+                    context.enter(modeSelect(context, [datum.id]));
 
                 } else if (datum.__featurehash__) {  // hovering custom data
                     selector += ', .data' + datum.__featurehash__;
