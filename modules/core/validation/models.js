@@ -1,4 +1,4 @@
-import { geoExtent } from '../../geo';
+import { Extent } from '@id-sdk/extent';
 import { t } from '../../core/localizer';
 
 export function validationIssue(attrs) {
@@ -42,12 +42,12 @@ export function validationIssue(attrs) {
 
     this.extent = function(resolver) {
         if (this.loc) {
-            return geoExtent(this.loc);
+            return new Extent(this.loc);
         }
         if (this.entityIds && this.entityIds.length) {
             return this.entityIds.reduce(function(extent, entityId) {
                 return extent.extend(resolver.entity(entityId).extent(resolver));
-            }, geoExtent());
+            }, new Extent());
         }
         return null;
     };

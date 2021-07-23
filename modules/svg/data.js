@@ -7,11 +7,12 @@ import { select as d3_select } from 'd3-selection';
 import stringify from 'fast-json-stable-stringify';
 import toGeoJSON from '@mapbox/togeojson';
 
-import { geoExtent, geoPolygonIntersectsPolygon } from '../geo';
+import { geoPolygonIntersectsPolygon } from '../geo';
 import { services } from '../services';
 import { svgPath } from './helpers';
 import { utilDetect } from '../util/detect';
 import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '../util';
+import { Extent } from '@id-sdk/extent';
 
 
 var _initialized = false;
@@ -525,7 +526,7 @@ export function svgData(projection, context, dispatch) {
         }, []);
 
         if (!geoPolygonIntersectsPolygon(viewport, coords, true)) {
-            var extent = geoExtent(d3_geoBounds({ type: 'LineString', coordinates: coords }));
+            var extent = new Extent(d3_geoBounds({ type: 'LineString', coordinates: coords }));
             map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
         }
 

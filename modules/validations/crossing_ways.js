@@ -3,13 +3,14 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { geoAngle, geoExtent, geoLatToMeters, geoLonToMeters, geoLineIntersection,
+import { geoAngle, geoLatToMeters, geoLonToMeters, geoLineIntersection,
     geoSphericalClosestNode, geoSphericalDistance, geoVecAngle, geoVecLength, geoMetersToLat, geoMetersToLon } from '../geo';
 import { osmNode } from '../osm/node';
 import { osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
 import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
+import { Extent } from '@id-sdk/extent';
 
 
 export function validationCrossingWays(context) {
@@ -222,7 +223,7 @@ export function validationCrossingWays(context) {
         for (i = 0; i < way1Nodes.length - 1; i++) {
             n1 = way1Nodes[i];
             n2 = way1Nodes[i + 1];
-            extent = geoExtent([
+            extent = new Extent([
                 [
                     Math.min(n1.loc[0], n2.loc[0]),
                     Math.min(n1.loc[1], n2.loc[1])

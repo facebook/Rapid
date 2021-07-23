@@ -6,12 +6,12 @@ import { json as d3_json } from 'd3-fetch';
 import { Projection, Tiler } from '@id-sdk/math';
 
 import { fileFetcher } from '../core/file_fetcher';
-import { geoExtent, geoVecAdd, geoVecScale } from '../geo';
+import { geoVecAdd, geoVecScale } from '../geo';
 import { QAItem } from '../osm';
 import { serviceOsm } from './index';
 import { t } from '../core/localizer';
 import { utilRebind, utilQsString } from '../util';
-
+import { Extent } from '@id-sdk/extent';
 
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
@@ -115,7 +115,7 @@ function preventCoincident(loc, bumpUp) {
         bumpUp ? [0, 0.00001] :
         [0, 0];
     loc = geoVecAdd(loc, delta);
-    let bbox = geoExtent(loc).bbox();
+    let bbox = new Extent(loc).bbox();
     coincident = _cache.rtree.search(bbox).length;
   } while (coincident);
 
@@ -442,7 +442,7 @@ export default {
     const viewport = projection.clipExtent();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
-    const bbox = geoExtent(projection.invert(min), projection.invert(max)).bbox();
+    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
 
     return _cache.rtree.search(bbox).map(d => d.data);
   },

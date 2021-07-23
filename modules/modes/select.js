@@ -16,7 +16,8 @@ import { behaviorSelect } from '../behavior/select';
 import { operationMove } from '../operations/move';
 import { prefs } from '../core/preferences';
 
-import { geoExtent, geoChooseEdge, geoMetersToLat, geoMetersToLon } from '../geo';
+import { Extent } from '@id-sdk/extent';
+import { geoChooseEdge, geoMetersToLat, geoMetersToLon } from '../geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -277,11 +278,11 @@ export function modeSelect(context, selectedIDs) {
         selectElements();
 
         if (_follow) {
-            var extent = geoExtent();
+            var extent = new Extent();
             var graph = context.graph();
             selectedIDs.forEach(function(id) {
                 var entity = context.entity(id);
-                extent._extend(entity.extent(graph));
+                extent.extend(entity.extent(graph));
             });
 
             var loc = extent.center();

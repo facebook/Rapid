@@ -5,7 +5,7 @@ import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { utilArrayUnion } from './array';
 import { utilDetect } from './detect';
-import { geoExtent } from '../geo/extent';
+import { Extent } from '@id-sdk/extent';
 
 
 export function utilTagText(entity) {
@@ -17,13 +17,13 @@ export function utilTagText(entity) {
 
 
 export function utilTotalExtent(array, graph) {
-    var extent = geoExtent();
+    var extent =  new Extent();
     var val, entity;
     for (var i = 0; i < array.length; i++) {
         val = array[i];
         entity = typeof val === 'string' ? graph.hasEntity(val) : val;
         if (entity) {
-            extent._extend(entity.extent(graph));
+            extent.extend(entity.extent(graph));
         }
     }
     return extent;

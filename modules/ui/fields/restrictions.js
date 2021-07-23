@@ -7,7 +7,8 @@ import { t, localizer } from '../../core/localizer';
 import { actionRestrictTurn } from '../../actions/restrict_turn';
 import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 import { behaviorBreathe } from '../../behavior/breathe';
-import { geoExtent, geoRawMercator, geoVecScale, geoVecSubtract, geoZoomToScale } from '../../geo';
+import { Extent } from '@id-sdk/extent';
+import { geoRawMercator, geoVecScale, geoVecSubtract, geoZoomToScale } from '../../geo';
 import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
 import { utilDisplayName, utilDisplayType, utilEntitySelector, utilFunctor, utilRebind } from '../../util';
@@ -218,9 +219,9 @@ export function uiFieldRestrictions(field, context) {
         projection.scale(geoZoomToScale(z));
 
         // Calculate extent of all key vertices
-        var extent = geoExtent();
+        var extent = new Extent();
         for (var i = 0; i < _intersection.vertices.length; i++) {
-            extent._extend(_intersection.vertices[i].extent());
+            extent.extend(_intersection.vertices[i].extent());
         }
 
         // If this is a large intersection, adjust zoom to fit extent

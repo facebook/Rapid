@@ -7,7 +7,7 @@ import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { prefs } from '../core/preferences';
-import { geoExtent, geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
+import { geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilEntityAndDeepMemberIDs } from '../util/util';
@@ -17,6 +17,8 @@ import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util/rebind';
 import { utilZoomPan } from '../util/zoom_pan';
 import { utilDoubleUp } from '../util/double_up';
+
+import { Extent } from '@id-sdk/extent';
 
 // constants
 var TILESIZE = 256;
@@ -981,12 +983,12 @@ export function rendererMap(context) {
 
     map.extent = function(val) {
         if (!arguments.length) {
-            return new geoExtent(
+            return new Extent(
                 projection.invert([0, _dimensions[1]]),
                 projection.invert([_dimensions[0], 0])
             );
         } else {
-            var extent = geoExtent(val);
+            var extent = new Extent(val);
             map.centerZoom(extent.center(), map.extentZoom(extent));
         }
     };
@@ -997,12 +999,12 @@ export function rendererMap(context) {
             var headerY = 71;
             var footerY = 30;
             var pad = 10;
-            return new geoExtent(
+            return new Extent(
                 projection.invert([pad, _dimensions[1] - footerY - pad]),
                 projection.invert([_dimensions[0] - pad, headerY + pad])
             );
         } else {
-            var extent = geoExtent(val);
+            var extent = new Extent(val);
             map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
         }
     };
@@ -1024,7 +1026,7 @@ export function rendererMap(context) {
 
 
     map.extentZoom = function(val) {
-        return calcExtentZoom(geoExtent(val), _dimensions);
+        return calcExtentZoom(new Extent(val), _dimensions);
     };
 
 
@@ -1032,7 +1034,7 @@ export function rendererMap(context) {
         var trimY = 120;
         var trimX = 40;
         var trimmed = [_dimensions[0] - trimX, _dimensions[1] - trimY];
-        return calcExtentZoom(geoExtent(val), trimmed);
+        return calcExtentZoom(new Extent(val), trimmed);
     };
 
 

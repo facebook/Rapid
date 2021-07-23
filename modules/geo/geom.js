@@ -3,7 +3,7 @@ import {
     polygonCentroid as d3_polygonCentroid
 } from 'd3-polygon';
 
-import { geoExtent } from './extent.js';
+import { Extent } from '@id-sdk/extent';
 
 import {
     geoVecAngle, geoVecCross, geoVecDot, geoVecEqual,
@@ -291,8 +291,8 @@ export function geoGetSmallestSurroundingRectangle(points) {
         var angle = Math.atan2(c2[1] - c1[1], c2[0] - c1[0]);
         var poly = geoRotate(hull, -angle, centroid);
         var extent = poly.reduce(function(extent, point) {
-            return extent.extend(geoExtent(point));
-        }, geoExtent());
+            return extent.extend(new Extent(point));
+        }, new Extent());
 
         var area = extent.area();
         if (area < minArea) {

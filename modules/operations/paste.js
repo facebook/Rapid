@@ -2,7 +2,9 @@
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
 import { modeSelect } from '../modes/select';
-import { geoExtent, geoVecSubtract } from '../geo';
+import { geoVecSubtract } from '../geo';
+import { Extent } from '@id-sdk/extent';
+
 import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
 import { utilDisplayLabel } from '../util/util';
@@ -20,7 +22,7 @@ export function operationPaste(context) {
         if (!oldIDs.length) return;
 
         var projection = context.projection;
-        var extent = geoExtent();
+        var extent = new Extent();
         var oldGraph = context.copyGraph();
         var newIDs = [];
 
@@ -35,7 +37,7 @@ export function operationPaste(context) {
             var oldEntity = oldGraph.entity(id);
             var newEntity = copies[id];
 
-            extent._extend(oldEntity.extent(oldGraph));
+            extent.extend(oldEntity.extent(oldGraph));
 
             // Exclude child nodes from newIDs if their parent way was also copied.
             var parents = context.graph().parentWays(newEntity);

@@ -1,4 +1,4 @@
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { localizer, t } from '../core/localizer';
 import toGeoJSON from '@mapbox/togeojson';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
@@ -66,7 +66,7 @@ export function coreRapidContext(context) {
         }
       });
 
-      _taskExtent = new geoExtent([minlon, minlat], [maxlon, maxlat]);
+      _taskExtent = new Extent([minlon, minlat], [maxlon, maxlat]);
       dispatch.call('task_extent_set');
     }
   };

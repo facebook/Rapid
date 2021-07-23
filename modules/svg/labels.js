@@ -4,15 +4,14 @@ import { geoPath as d3_geoPath } from 'd3-geo';
 import RBush from 'rbush';
 import { localizer } from '../core/localizer';
 
-import {
-    geoExtent, geoPolygonIntersectsPolygon, geoPathLength,
+import { geoPolygonIntersectsPolygon, geoPathLength,
     geoScaleToZoom, geoVecInterp, geoVecLength
 } from '../geo';
 import { presetManager } from '../presets';
 import { osmEntity } from '../osm';
 import { utilDetect } from '../util/detect';
 import { utilDisplayName, utilDisplayNameForPath, utilEntitySelector } from '../util';
-
+import { Extent } from '@id-sdk/extent';
 
 
 export function svgLabels(projection, context) {
@@ -439,7 +438,7 @@ export function svgLabels(projection, context) {
 
 
         function getLineLabel(entity, width, height) {
-            var viewport = geoExtent(context.projection.clipExtent()).polygon();
+            var viewport = new Extent(context.projection.clipExtent()).polygon();
             var points = graph.childNodes(entity)
                 .map(function(node) { return projection(node.loc); });
             var length = geoPathLength(points);

@@ -1,6 +1,7 @@
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
-import { geoExtent, geoPointInPolygon, geoVecSubtract } from '../geo';
+import { geoPointInPolygon, geoVecSubtract } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { modeMove } from '../modes/move';
 import { uiCmd } from '../ui/cmd';
 
@@ -16,14 +17,14 @@ export function behaviorPaste(context) {
         var baseGraph = context.graph();
         var mouse = context.map().mouse();
         var projection = context.projection;
-        var viewport = geoExtent(projection.clipExtent()).polygon();
+        var viewport = new Extent(projection.clipExtent()).polygon();
 
         if (!geoPointInPolygon(mouse, viewport)) return;
 
         var oldIDs = context.copyIDs();
         if (!oldIDs.length) return;
 
-        var extent = geoExtent();
+        var extent = new Extent();
         var oldGraph = context.copyGraph();
         var newIDs = [];
 
@@ -38,7 +39,7 @@ export function behaviorPaste(context) {
             var oldEntity = oldGraph.entity(id);
             var newEntity = copies[id];
 
-            extent._extend(oldEntity.extent(oldGraph));
+            extent.extend(oldEntity.extent(oldGraph));
 
             // Exclude child nodes from newIDs if their parent way was also copied.
             var parents = context.graph().parentWays(newEntity);
