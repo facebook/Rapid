@@ -19,7 +19,7 @@ osmNode.prototype = Object.create(osmEntity.prototype);
 
 Object.assign(osmNode.prototype, {
     type: 'node',
-    loc: [9999, 9999],
+    loc: new Extent([9999, 9999]),
 
     extent: function() {
         return new Extent(this.loc);
