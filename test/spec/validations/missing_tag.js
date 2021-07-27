@@ -1,6 +1,3 @@
-const { Extent } = require('@id-sdk/extent');
-
-
 describe('iD.validations.missing_tag', function () {
     var context;
 
@@ -9,8 +6,8 @@ describe('iD.validations.missing_tag', function () {
     });
 
     function createWay(tags) {
-        var n1 = iD.osmNode({id: 'n-1', loc: new Extent([4,4])});
-        var n2 = iD.osmNode({id: 'n-2', loc: new Extent([4,5])});
+        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
         var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
 
         context.perform(
@@ -21,9 +18,9 @@ describe('iD.validations.missing_tag', function () {
     }
 
     function createRelation(tags) {
-        var n1 = iD.osmNode({id: 'n-1', loc: new Extent([4,4])});
-        var n2 = iD.osmNode({id: 'n-2', loc: new Extent([4,5])});
-        var n3 = iD.osmNode({id: 'n-3', loc: new Extent([5,5])});
+        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
+        var n3 = iD.osmNode({id: 'n-3', loc: [5,5]});
         var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1']});
         var r = iD.osmRelation({id: 'r-1', members: [{id: 'w-1'}], tags: tags});
 
