@@ -72,7 +72,7 @@ export function uiPanelMeasurement(context) {
                 var extent = new Extent();
                 for (var i in selected) {
                     var entity = selected[i];
-                    extent._extend(entity.extent(graph));
+                    extent = extent.extend(entity.extent(graph));
 
                     geometry = entity.geometry(graph);
                     if (geometry === 'line' || geometry === 'area') {
