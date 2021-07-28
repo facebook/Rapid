@@ -20,7 +20,7 @@ export function geoRawMercator() {
     var k = 512 / Math.PI; // scale
     var x = 0;
     var y = 0; // translate
-    var clipExtent = [[0, 0], [0, 0]];
+    var clipExtent = new Extent([[0, 0], [0, 0]]);
 
 
     function projection(point) {
