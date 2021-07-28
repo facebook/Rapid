@@ -23,7 +23,7 @@ export function utilTotalExtent(array, graph) {
         val = array[i];
         entity = typeof val === 'string' ? graph.hasEntity(val) : val;
         if (entity) {
-            extent.extend(entity.extent(graph));
+            extent = extent.extend(entity.extent(graph));
         }
     }
     return extent;
