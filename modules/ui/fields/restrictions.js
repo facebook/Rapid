@@ -221,7 +221,7 @@ export function uiFieldRestrictions(field, context) {
         // Calculate extent of all key vertices
         var extent = new Extent();
         for (var i = 0; i < _intersection.vertices.length; i++) {
-            extent.extend(_intersection.vertices[i].extent());
+            extent = extent.extend(_intersection.vertices[i].extent());
         }
 
         // If this is a large intersection, adjust zoom to fit extent

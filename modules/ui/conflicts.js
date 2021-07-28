@@ -291,12 +291,12 @@ export function uiConflicts(context) {
         var entity;
 
         entity = context.graph().hasEntity(datum.id);
-        if (entity) extent.extend(entity.extent(context.graph()));
+        if (entity) extent = extent.extend(entity.extent(context.graph()));
 
         datum.action();
 
         entity = context.graph().hasEntity(datum.id);
-        if (entity) extent.extend(entity.extent(context.graph()));
+        if (entity) extent = extent.extend(entity.extent(context.graph()));
 
         zoomToEntity(datum.id, extent);
     }

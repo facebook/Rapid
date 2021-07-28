@@ -60,7 +60,7 @@ Object.assign(osmRelation.prototype, {
             for (var i = 0; i < this.members.length; i++) {
                 var member = resolver.hasEntity(this.members[i].id);
                 if (member) {
-                    extent.extend(member.extent(resolver, memo));
+                    extent = extent.extend(member.extent(resolver, memo));
                 }
             }
             return extent;

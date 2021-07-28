@@ -37,7 +37,7 @@ export function operationPaste(context) {
             var oldEntity = oldGraph.entity(id);
             var newEntity = copies[id];
 
-            extent.extend(oldEntity.extent(oldGraph));
+            extent = extent.extend(oldEntity.extent(oldGraph));
 
             // Exclude child nodes from newIDs if their parent way was also copied.
             var parents = context.graph().parentWays(newEntity);

@@ -282,7 +282,7 @@ export function modeSelect(context, selectedIDs) {
             var graph = context.graph();
             selectedIDs.forEach(function(id) {
                 var entity = context.entity(id);
-                extent.extend(entity.extent(graph));
+                extent = extent.extend(entity.extent(graph));
             });
 
             var loc = extent.center();
