@@ -526,7 +526,9 @@ export function svgData(projection, context, dispatch) {
         }, []);
 
         if (!geoPolygonIntersectsPolygon(viewport, coords, true)) {
-            var extent = new Extent(d3_geoBounds({ type: 'LineString', coordinates: coords }));
+            var bounds = d3_geoBounds({ type: 'LineString', coordinates: coords });
+            var extent = new Extent(bounds[0], bounds[1]);
+
             map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
         }
 

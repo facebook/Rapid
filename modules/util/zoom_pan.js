@@ -11,6 +11,8 @@ import { Transform } from '../../node_modules/d3-zoom/src/transform.js';
 import { utilFastMouse, utilFunctor } from './util';
 import { utilRebind } from './rebind';
 
+import { Extent } from '@id-sdk/extent';
+
 // Ignore right-click, since that should open the context menu.
 function defaultFilter(d3_event) {
   return !d3_event.ctrlKey && !d3_event.button;
@@ -34,10 +36,10 @@ function defaultWheelDelta(d3_event) {
 }
 
 function defaultConstrain(transform, extent, translateExtent) {
-  var dx0 = transform.invertX(extent[0][0]) - translateExtent[0][0],
-      dx1 = transform.invertX(extent[1][0]) - translateExtent[1][0],
-      dy0 = transform.invertY(extent[0][1]) - translateExtent[0][1],
-      dy1 = transform.invertY(extent[1][1]) - translateExtent[1][1];
+  var dx0 = transform.invertX(extent.min[0]) - translateExtent.min[0],
+      dx1 = transform.invertX(extent.max[0]) - translateExtent.max[0],
+      dy0 = transform.invertY(extent.min[1]) - translateExtent.min[1],
+      dy1 = transform.invertY(extent.max[1]) - translateExtent.max[1];
   return transform.translate(
     dx1 > dx0 ? (dx0 + dx1) / 2 : Math.min(0, dx0) || Math.max(0, dx1),
     dy1 > dy0 ? (dy0 + dy1) / 2 : Math.min(0, dy0) || Math.max(0, dy1)
@@ -134,7 +136,7 @@ export function utilZoomPan() {
   }
 
   function centroid(extent) {
-    return [(+extent[0][0] + +extent[1][0]) / 2, (+extent[0][1] + +extent[1][1]) / 2];
+    return [(+extent.min[0] + +extent.max[0]) / 2, (+extent.min[1] + +extent.max[1]) / 2];
   }
 
   function schedule(transition, transform, point) {
@@ -226,7 +228,7 @@ export function utilZoomPan() {
     d3_event.preventDefault();
     d3_event.stopImmediatePropagation();
     g.wheel = setTimeout(wheelidled, _wheelDelay);
-    g.zoom(d3_event, 'mouse', constrain(translate(scale(t, k), g.mouse[0], g.mouse[1]), g.extent, translateExtent));
+    g.zoom(d3_event, 'mouse', constrain(translate(scale(t, k), g.mouse[0], g.mouse[1]), new Extent(g.extent), new Extent(translateExtent)));
 
     function wheelidled() {
       g.wheel = null;
@@ -306,7 +308,7 @@ export function utilZoomPan() {
     } else {
       return;
     }
-    g.zoom(d3_event, 'touch', constrain(translate(t, p, l), g.extent, translateExtent));
+    g.zoom(d3_event, 'touch', constrain(translate(t, p, l), new Extent(g.extent), new Extent(translateExtent)));
   }
 
   function pointerup(d3_event) {
@@ -351,7 +353,7 @@ export function utilZoomPan() {
   };
 
   zoom.translateExtent = function(_) {
-    return arguments.length ? (translateExtent[0][0] = +_[0][0], translateExtent[1][0] = +_[1][0], translateExtent[0][1] = +_[0][1], translateExtent[1][1] = +_[1][1], zoom) : [[translateExtent[0][0], translateExtent[0][1]], [translateExtent[1][0], translateExtent[1][1]]];
+    return arguments.length ? (translateExtent.min[0] = +_[0][0], translateExtent.max[0] = +_[1][0], translateExtent.min[1] = +_[0][1], translateExtent.max[1] = +_[1][1], zoom) : [[translateExtent.min[0], translateExtent.min[1]], [translateExtent.max[0], translateExtent.max[1]]];
   };
 
   zoom.constrain = function(_) {

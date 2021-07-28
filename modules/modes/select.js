@@ -344,9 +344,9 @@ export function modeSelect(context, selectedIDs) {
 
                     function tooSmall() {
                         if (isUp) return false;
-                        let dLon = Math.abs(extent[1][0] - extent[0][0]);
-                        let dLat = Math.abs(extent[1][1] - extent[0][1]);
-                        return dLon < geoMetersToLon(1, extent[1][1]) &&
+                        let dLon = Math.abs(extent.max[0] - extent.min[0]);
+                        let dLat = Math.abs(extent.max[1] - extent.min[1]);
+                        return dLon < geoMetersToLon(1, extent.max[1]) &&
                             dLat < geoMetersToLat(1);
                     }
 

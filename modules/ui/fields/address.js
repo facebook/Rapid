@@ -46,8 +46,8 @@ export function uiFieldAddress(field, context) {
             .filter(isAddressable)
             .map(function(d) {
                 var loc = context.projection([
-                    (extent[0][0] + extent[1][0]) / 2,
-                    (extent[0][1] + extent[1][1]) / 2
+                    (extent.min[0] + extent.max[0]) / 2,
+                    (extent.min[1] + extent.max[1]) / 2
                 ]);
                 var choice = geoChooseEdge(context.graph().childNodes(d), loc, context.projection);
 

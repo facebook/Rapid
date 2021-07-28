@@ -1011,8 +1011,8 @@ export function rendererMap(context) {
 
 
     function calcExtentZoom(extent, dim) {
-        var tl = projection([extent[0][0], extent[1][1]]);
-        var br = projection([extent[1][0], extent[0][1]]);
+        var tl = projection([extent.min[0], extent.max[1]]);
+        var br = projection([extent.max[0], extent.min[1]]);
 
         // Calculate maximum zoom that fits extent
         var hFactor = (br[0] - tl[0]) / dim[0];
