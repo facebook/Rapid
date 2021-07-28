@@ -6,7 +6,7 @@ import {
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { geoSphericalDistance } from '../../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';

@@ -1,4 +1,5 @@
-import { geoAngle, geoSphericalDistance } from '../geo';
+import { geoAngle } from '../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { operationDelete } from '../operations/index';
 import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';

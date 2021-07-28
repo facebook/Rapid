@@ -3,8 +3,9 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { geoAngle, geoLatToMeters, geoLonToMeters, geoLineIntersection,
-    geoSphericalClosestNode, geoSphericalDistance, geoVecAngle, geoVecLength, geoMetersToLat, geoMetersToLon } from '../geo';
+import { geoAngle, geoLineIntersection,geoVecAngle, geoVecLength } from '../geo';
+
+import { geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint, geoSphericalDistance, geoMetersToLat, geoMetersToLon } from '@id-sdk/geo';
 import { osmNode } from '../osm/node';
 import { osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
 import { t } from '../core/localizer';
@@ -706,9 +707,10 @@ export function validationCrossingWays(context) {
 
             edges.forEach(function(edge) {
                 var edgeNodes = [graph.entity(edge[0]), graph.entity(edge[1])];
-                var closestNodeInfo = geoSphericalClosestNode(edgeNodes, loc);
+                var edgePoints = edgeNodes.map(node => node.loc);
+                var closestNodeInfo = new geoSphericalClosestPoint(edgePoints, loc);
                 if (closestNodeInfo.distance < mergeThresholdInMeters) {
-                    nodesToMerge.push(closestNodeInfo.node.id);   // use an existing nearby point
+                    nodesToMerge.push(closestNodeInfo.id);   // use an existing nearby point
                 } else {
                     graph = actionAddMidpoint({loc: loc, edge: edge}, node)(graph);
                 }
@@ -751,7 +753,7 @@ export function validationCrossingWays(context) {
 
                         edges.forEach(function(edge) {
                             var edgeNodes = [graph.entity(edge[0]), graph.entity(edge[1])];
-                            var nearby = geoSphericalClosestNode(edgeNodes, loc);
+                            var nearby = geoSphericalClosestPoint(edgeNodes, loc);
                             // if there is already a suitable node nearby, use that
                             if (!nearby.node.hasInterestingTags() && nearby.distance < mergeThresholdInMeters) {
                                 nodesToMerge.push(nearby.node.id);

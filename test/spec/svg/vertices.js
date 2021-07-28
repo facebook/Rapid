@@ -1,3 +1,6 @@
+import { geoZoomToScale } from '@id-sdk/geo';
+
+
 import { Extent } from '@id-sdk/extent';
 
 describe('iD.svgVertices', function () {
@@ -5,7 +8,7 @@ describe('iD.svgVertices', function () {
     var surface;
     var projection = d3.geoProjection(function(x, y) { return [x, -y]; })
         .translate([0, 0])
-        .scale(iD.geoZoomToScale(17))
+        .scale(geoZoomToScale(17))
         .clipExtent([[0, 0], [Infinity, Infinity]]);
 
 

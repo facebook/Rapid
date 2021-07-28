@@ -1,4 +1,6 @@
 import { Extent } from '@id-sdk/extent';
+import { geoZoomToScale } from '@id-sdk/geo';
+
 
 describe('iD.svgMidpoints', function () {
     var context, surface;
@@ -6,7 +8,7 @@ describe('iD.svgMidpoints', function () {
     var filter = function() { return true; };
     var projection = d3.geoProjection(function(x, y) { return [x, -y]; })
         .translate([0, 0])
-        .scale(iD.geoZoomToScale(17))
+        .scale(geoZoomToScale(17))
         .clipExtent([[0, 0], [Infinity, Infinity]]);
 
 

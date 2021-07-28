@@ -1,4 +1,4 @@
-import { geoSphericalDistance } from '../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeDrawLine } from '../modes';
 import { operationDelete } from '../operations/index';
 import { t } from '../core/localizer';

@@ -3,7 +3,8 @@ import { t } from '../core/localizer';
 
 import { Projection, Tiler } from '@id-sdk/math';
 
-import { geoScaleToZoom, geoVecLength } from '../geo';
+import { geoVecLength } from '../geo';
+import {  geoScaleToZoom, } from '@id-sdk/geo';
 import { utilPrefixCSSProperty } from '../util';
 
 

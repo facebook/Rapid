@@ -8,9 +8,9 @@ import RBush from 'rbush';
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 
-import { geoMetersToLat, geoMetersToLon, geoPointInPolygon,
-  geoRotate, geoScaleToZoom, geoVecLength
-} from '../geo';
+import { geoPointInPolygon, geoRotate, geoVecLength } from '../geo';
+
+import { geoMetersToLat, geoMetersToLon, geoScaleToZoom } from '@id-sdk/geo';
 import { Extent } from '@id-sdk/extent';
 
 import { utilArrayUnion, utilQsString, utilRebind, utilStringQs, utilUniqueDomId } from '../util';

@@ -3,7 +3,7 @@ import {
 } from 'd3-selection';
 
 import { t, localizer } from '../../core/localizer';
-import { geoMetersToOffset, geoOffsetToMeters } from '../../geo';
+import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/geo';
 import { svgIcon } from '../../svg/icon';
 import { uiSection } from '../section';
 

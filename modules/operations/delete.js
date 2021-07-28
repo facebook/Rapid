@@ -1,7 +1,7 @@
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
 import { behaviorOperation } from '../behavior/operation';
-import { geoSphericalDistance } from '../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { prefs } from '../core/preferences';

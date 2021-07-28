@@ -1,5 +1,5 @@
 import deepEqual from 'fast-deep-equal';
-import { geoScaleToZoom } from '../geo';
+import { geoScaleToZoom } from '@id-sdk/geo';
 import { osmEntity } from '../osm';
 import { svgPointTransform } from './helpers';
 import { svgTagClasses } from './tag_classes';

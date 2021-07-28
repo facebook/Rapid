@@ -7,7 +7,7 @@ import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
 import { coreGraph } from '../core/graph';
-import { geoSphericalDistance } from '../geo/geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { Extent } from '@id-sdk/extent';
 import { modeSelect } from '../modes/select';
 import { osmEntity } from '../osm/entity';

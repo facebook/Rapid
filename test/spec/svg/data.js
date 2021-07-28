@@ -1,10 +1,13 @@
+import { geoZoomToScale } from '@id-sdk/geo';
+
+
 describe('iD.svgData', function () {
     var context;
     var surface;
     var dispatch = d3.dispatch('change');
     var projection = iD.geoRawMercator()
         .translate([6934098.868981334, 4092682.5519805425])
-        .scale(iD.geoZoomToScale(17))
+        .scale(geoZoomToScale(17))
         .clipExtent([[0, 0], [1000, 1000]]);
 
     var geojson =

@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { svgPointTransform } from './helpers';
-import { geoMetersToLat } from '../geo';
+import { geoMetersToLat } from '@id-sdk/geo';
 
 
 export function svgGeolocate(projection) {

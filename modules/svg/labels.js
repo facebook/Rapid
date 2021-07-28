@@ -5,8 +5,10 @@ import RBush from 'rbush';
 import { localizer } from '../core/localizer';
 
 import { geoPolygonIntersectsPolygon, geoPathLength,
-    geoScaleToZoom, geoVecInterp, geoVecLength
+     geoVecInterp, geoVecLength
 } from '../geo';
+
+import { geoScaleToZoom } from '@id-sdk/geo';
 import { presetManager } from '../presets';
 import { osmEntity } from '../osm';
 import { utilDetect } from '../util/detect';

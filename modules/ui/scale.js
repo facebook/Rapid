@@ -1,5 +1,5 @@
 import { displayLength } from '../util/units';
-import { geoLonToMeters, geoMetersToLon } from '../geo';
+import { geoLonToMeters, geoMetersToLon } from '@id-sdk/geo';
 import { localizer } from '../core/localizer';
 
 

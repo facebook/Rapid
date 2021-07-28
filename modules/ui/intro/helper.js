@@ -1,5 +1,6 @@
 import { t, localizer } from '../../core/localizer';
-import { geoSphericalDistance, geoVecNormalizedDot } from '../../geo';
+import { geoVecNormalizedDot } from '../../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { uiCmd } from '../cmd';
 
 export function pointBox(loc, context) {

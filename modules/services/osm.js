@@ -10,7 +10,8 @@ import osmAuth from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
-import { geoVecAdd, geoZoomToScale } from '../geo';
+import { geoVecAdd } from '../geo';
+import { geoZoomToScale } from '@id-sdk/geo';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilQsString, utilStringQs } from '../util';
 import { Extent } from '@id-sdk/extent';
