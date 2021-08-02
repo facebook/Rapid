@@ -11,6 +11,7 @@ import { Transform } from '../../node_modules/d3-zoom/src/transform.js';
 import { utilFastMouse, utilFunctor } from './util';
 import { utilRebind } from './rebind';
 
+
 // Ignore right-click, since that should open the context menu.
 function defaultFilter(d3_event) {
   return !d3_event.ctrlKey && !d3_event.button;

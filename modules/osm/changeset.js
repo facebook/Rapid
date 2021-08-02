@@ -1,5 +1,5 @@
 import { osmEntity } from './entity';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 
 
 export function osmChangeset() {
@@ -21,7 +21,7 @@ Object.assign(osmChangeset.prototype, {
 
 
     extent: function() {
-        return new geoExtent();
+        return new new Extent();
     },
 
 

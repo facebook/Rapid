@@ -8,7 +8,7 @@ import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
 import { coreGraph } from '../core/graph';
 import { geoSphericalDistance } from '../geo/geo';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { modeSelect } from '../modes/select';
 import { osmEntity } from '../osm/entity';
 import { services } from '../services';
@@ -204,7 +204,7 @@ export function uiFeatureList(context) {
                         geometry: tempEntity.geometry(tempGraph),
                         type: type,
                         name: d.display_name,
-                        extent: new geoExtent(
+                        extent: new Extent(
                             [parseFloat(d.boundingbox[3]), parseFloat(d.boundingbox[0])],
                             [parseFloat(d.boundingbox[2]), parseFloat(d.boundingbox[1])])
                     });

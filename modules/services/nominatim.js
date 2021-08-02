@@ -1,7 +1,7 @@
 import { json as d3_json } from 'd3-fetch';
 
 import RBush from 'rbush';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { utilQsString } from '../util';
 
 
@@ -60,7 +60,7 @@ export default {
                 if (result && result.error) {
                     throw new Error(result.error);
                 }
-                var extent = geoExtent(loc).padByMeters(200);
+                var extent = new Extent(loc).padByMeters(200);
                 _nominatimCache.insert(Object.assign(extent.bbox(), {data: result}));
                 if (callback) callback(null, result);
             })
