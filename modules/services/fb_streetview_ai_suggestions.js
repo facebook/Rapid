@@ -42,8 +42,8 @@ function tileURL(dataset, extent, taskExtent) {
         ext: 1918681607
     };
 
-    if (datasetID === 'fbSidewalks') {
-        qs.sources = 'fb_sidewalk';
+    if (datasetID === 'fbFootways') {
+        qs.sources = 'fb_footway';
     }
 
     qs.bbox = extent.toParam();

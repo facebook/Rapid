@@ -131,16 +131,16 @@ export function coreRapidContext(context) {
             label: t('rapid_feature_toggle.msBuildings.label'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
           },
-          'fbSidewalks': {
-            id: 'fbSidewalks',
+          'fbFootways': {
+            id: 'fbFootways',
             beta: true,
             added: true,         // whether it should appear in the list
             enabled: true,       // whether the user has checked it on
             conflated: true,
             service: 'fbml_streetview',
             color: RAPID_MAGENTA,
-            label: t('rapid_feature_toggle.fbSidewalks.label'),
-            license_markdown: t('rapid_feature_toggle.fbSidewalks.license_markdown')
+            label: t('rapid_feature_toggle.fbFootways.label'),
+            license_markdown: t('rapid_feature_toggle.fbFootways.license_markdown')
           }
         };
       });
