@@ -1,4 +1,5 @@
-import { geoGetSmallestSurroundingRectangle, geoVecDot, geoVecLength, geoVecInterp } from '../geo';
+import { geoVecDot, geoVecLength, geoVecInterp } from '../geo';
+import { geomGetSmallestSurroundingRectangle } from '@id-sdk/geom';
 
 
 /* Align nodes along their common axis */
@@ -10,7 +11,7 @@ export function actionStraightenNodes(nodeIDs, projection) {
 
     // returns the endpoints of the long axis of symmetry of the `points` bounding rect
     function getEndpoints(points) {
-        var ssr = geoGetSmallestSurroundingRectangle(points);
+        var ssr = geomGetSmallestSurroundingRectangle(points);
 
         // Choose line pq = axis of symmetry.
         // The shape's surrounding rectangle has 2 axes of symmetry.

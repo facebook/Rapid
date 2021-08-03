@@ -1,10 +1,13 @@
-import { geoLineIntersection, geoVecInterp, geoHasSelfIntersections, geoAngle
+import { geoVecInterp, geoHasSelfIntersections, geoAngle
 } from '../geo';
 
 import {
   geoMetersToLat, geoMetersToLon,
   geoSphericalDistance, geoSphericalClosestPoint
 } from '@id-sdk/geo';
+
+import { geomLineIntersection } from '@id-sdk/geom';
+
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
@@ -314,7 +317,7 @@ export function validationAlmostJunction(context) {
 
         let nA = graph.entity(nAid),
           nB = graph.entity(nBid);
-        let crossLoc = geoLineIntersection([tipNode.loc, extTipLoc], [nA.loc, nB.loc]);
+        let crossLoc = geomLineIntersection([tipNode.loc, extTipLoc], [nA.loc, nB.loc]);
         if (crossLoc) {
           return {
             mid: midNode,

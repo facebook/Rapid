@@ -1,4 +1,5 @@
-import { geoGetSmallestSurroundingRectangle, geoVecInterp, geoVecLength } from '../geo';
+import { geoVecInterp, geoVecLength } from '../geo';
+import { geomGetSmallestSurroundingRectangle } from '@id-sdk/geom';
 import { utilGetAllNodes } from '../util';
 
 
@@ -13,7 +14,7 @@ export function actionReflect(reflectIds, projection) {
 
         var nodes = utilGetAllNodes(reflectIds, graph);
         var points = nodes.map(function(n) { return projection(n.loc); });
-        var ssr = geoGetSmallestSurroundingRectangle(points);
+        var ssr = geomGetSmallestSurroundingRectangle(points);
 
         // Choose line pq = axis of symmetry.
         // The shape's surrounding rectangle has 2 axes of symmetry.

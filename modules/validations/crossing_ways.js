@@ -3,9 +3,11 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { geoAngle, geoLineIntersection,geoVecAngle, geoVecLength } from '../geo';
+import { geoAngle, geoVecAngle, geoVecLength } from '../geo';
 
 import { geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint, geoSphericalDistance, geoMetersToLat, geoMetersToLon } from '@id-sdk/geo';
+import { geomLineIntersection } from '@id-sdk/geom';
+
 import { osmNode } from '../osm/node';
 import { osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
 import { t } from '../core/localizer';
@@ -279,7 +281,7 @@ export function validationCrossingWays(context) {
 
                 segment1 = [n1.loc, n2.loc];
                 segment2 = [nA.loc, nB.loc];
-                var point = geoLineIntersection(segment1, segment2);
+                var point = geomLineIntersection(segment1, segment2);
                 if (point) {
                     edgeCrossInfos.push({
                         wayInfos: [

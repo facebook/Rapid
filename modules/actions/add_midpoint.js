@@ -1,4 +1,4 @@
-import { geoEdgeEqual } from '../geo';
+import { geomEdgeEqual } from '@id-sdk/geom';
 import { utilArrayIntersection } from '../util';
 
 
@@ -13,7 +13,7 @@ export function actionAddMidpoint(midpoint, node) {
 
         parents.forEach(function(way) {
             for (var i = 0; i < way.nodes.length - 1; i++) {
-                if (geoEdgeEqual([way.nodes[i], way.nodes[i + 1]], midpoint.edge)) {
+                if (geomEdgeEqual([way.nodes[i], way.nodes[i + 1]], midpoint.edge)) {
                     graph = graph.replace(graph.entity(way.id).addNode(node.id, i + 1));
 
                     // Add only one midpoint on doubled-back segments,

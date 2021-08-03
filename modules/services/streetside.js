@@ -8,7 +8,8 @@ import RBush from 'rbush';
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 
-import { geoPointInPolygon, geoRotate, geoVecLength } from '../geo';
+import { geoVecLength } from '../geo';
+import { geomPointInPolygon, geomRotatePoints } from '@id-sdk/geom';
 
 import { geoMetersToLat, geoMetersToLon, geoScaleToZoom } from '@id-sdk/geo';
 import { Extent } from '@id-sdk/extent';
@@ -643,7 +644,7 @@ export default {
 
         // rotate it to face forward/backward
         let angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
-        poly = geoRotate(poly, -angle, origin);
+        poly = geomRotatePoints(poly, -angle, origin);
 
         let extent = poly.reduce((extent, point) => {
           return extent.extend(new Extent(point));
@@ -654,7 +655,7 @@ export default {
         _ssCache.bubbles.rtree.search(extent.bbox())
           .forEach(d => {
             if (d.data.key === selected.key) return;
-            if (!geoPointInPolygon(d.data.loc, poly)) return;
+            if (!geomPointInPolygon(d.data.loc, poly)) return;
 
             let dist = geoVecLength(d.data.loc, selected.loc);
             let theta = selected.ca - d.data.ca;

@@ -4,11 +4,12 @@ import { geoPath as d3_geoPath } from 'd3-geo';
 import RBush from 'rbush';
 import { localizer } from '../core/localizer';
 
-import { geoPolygonIntersectsPolygon, geoPathLength,
+import {
      geoVecInterp, geoVecLength
 } from '../geo';
 
 import { geoScaleToZoom } from '@id-sdk/geo';
+import { geomPolygonIntersectsPolygon, geomPathLength } from '@id-sdk/geom';
 import { presetManager } from '../presets';
 import { osmEntity } from '../osm';
 import { utilDetect } from '../util/detect';
@@ -443,7 +444,7 @@ export function svgLabels(projection, context) {
             var viewport = new Extent(context.projection.clipExtent()).polygon();
             var points = graph.childNodes(entity)
                 .map(function(node) { return projection(node.loc); });
-            var length = geoPathLength(points);
+            var length = geomPathLength(points);
 
             if (length < width + 20) return;
 
@@ -461,7 +462,7 @@ export function svgLabels(projection, context) {
 
                 // generate subpath and ignore paths that are invalid or don't cross viewport.
                 var sub = subpath(points, start, start + width);
-                if (!sub || !geoPolygonIntersectsPolygon(viewport, sub, true)) {
+                if (!sub || !geomPolygonIntersectsPolygon(viewport, sub, true)) {
                     continue;
                 }
 

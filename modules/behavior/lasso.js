@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { geoPointInPolygon } from '../geo';
+import { geomPointInPolygon } from '@id-sdk/geom';
 import { Extent } from '@id-sdk/extent';
 
 import { modeSelect } from '../modes/select';
@@ -69,7 +69,7 @@ export function behaviorLasso(context) {
             var intersects = context.history().intersects(extent).filter(function(entity) {
                 return entity.type === 'node' &&
                     (!limitToNodes || limitToNodes.has(entity)) &&
-                    geoPointInPolygon(context.projection(entity.loc), lasso.coordinates) &&
+                    geomPointInPolygon(context.projection(entity.loc), lasso.coordinates) &&
                     !context.features().isHidden(entity, graph, entity.geometry(graph));
             });
 

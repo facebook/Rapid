@@ -1,4 +1,5 @@
-import { geoAngle, geoPathLength } from '../geo';
+import { geoAngle } from '../geo';
+import { geomPathLength } from '@id-sdk/geom';
 
 
 export function svgTurns(projection, context) {
@@ -18,7 +19,7 @@ export function svgTurns(projection, context) {
             var toPoints = graph.childNodes(toWay)
                 .map(function (n) { return n.loc; })
                 .map(projection);
-            var toLength = geoPathLength(toPoints);
+            var toLength = geomPathLength(toPoints);
             var mid = toLength / 2;    // midpoint of destination way
 
             var toNode = graph.entity(d.to.node);
