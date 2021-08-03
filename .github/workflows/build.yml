@@ -5,9 +5,9 @@ name: build
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, sidewalks_v1_preview ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, sidewalks_v1_preview ]
 
 jobs:
   build:
