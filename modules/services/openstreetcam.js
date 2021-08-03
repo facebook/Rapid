@@ -6,8 +6,9 @@ import { Projection, Tiler } from '@id-sdk/math';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';
-import { geoExtent, geoScaleToZoom } from '../geo';
+import { geoScaleToZoom } from '../geo';
 import { utilArrayUnion, utilQsString, utilRebind, utilSetTransform, utilStringQs } from '../util';
+import { Extent } from '@id-sdk/extent';
 
 
 var apibase = 'https://openstreetcam.org';
@@ -208,7 +209,7 @@ export default {
         var viewport = projection.clipExtent();
         var min = [viewport[0][0], viewport[1][1]];
         var max = [viewport[1][0], viewport[0][1]];
-        var bbox = geoExtent(projection.invert(min), projection.invert(max)).bbox();
+        var bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
         var sequenceKeys = {};
 
         // all sequences for images in viewport

@@ -6,7 +6,7 @@ import {
 
 import { t } from '../core/localizer';
 import { JXON } from '../util/jxon';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { osmChangeset } from '../osm';
 import { svgIcon } from '../svg/icon';
 import { utilDetect } from '../util/detect';
@@ -287,16 +287,16 @@ export function uiConflicts(context) {
             .selectAll('input')
             .property('checked', function(d) { return d === datum; });
 
-        var extent = geoExtent();
+        var extent = new Extent();
         var entity;
 
         entity = context.graph().hasEntity(datum.id);
-        if (entity) extent._extend(entity.extent(context.graph()));
+        if (entity) extent = extent.extend(entity.extent(context.graph()));
 
         datum.action();
 
         entity = context.graph().hasEntity(datum.id);
-        if (entity) extent._extend(entity.extent(context.graph()));
+        if (entity) extent = extent.extend(entity.extent(context.graph()));
 
         zoomToEntity(datum.id, extent);
     }

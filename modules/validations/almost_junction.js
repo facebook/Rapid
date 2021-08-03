@@ -1,5 +1,4 @@
-import {
-  geoExtent, geoLineIntersection, geoMetersToLat, geoMetersToLon,
+import { geoLineIntersection, geoMetersToLat, geoMetersToLon,
   geoSphericalDistance, geoVecInterp, geoHasSelfIntersections,
   geoSphericalClosestNode, geoAngle
 } from '../geo';
@@ -12,6 +11,7 @@ import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { services } from '../services';
+import { Extent } from '@id-sdk/extent';
 
 
 /**
@@ -281,7 +281,7 @@ export function validationAlmostJunction(context) {
       const lat = tipNode.loc[1];
       const lon_range = geoMetersToLon(EXTEND_TH_METERS, lat) / 2;
       const lat_range = geoMetersToLat(EXTEND_TH_METERS) / 2;
-      const queryExtent = geoExtent([
+      const queryExtent = new Extent([
         [lon - lon_range, lat - lat_range],
         [lon + lon_range, lat + lat_range]
       ]);

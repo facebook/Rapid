@@ -5,9 +5,10 @@ import {
 
 import { t, localizer } from '../../core/localizer';
 import { displayArea, displayLength, decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { geoExtent, geoSphericalDistance } from '../../geo';
+import { geoSphericalDistance } from '../../geo';
 import { services } from '../../services';
 import { utilGetAllNodes } from '../../util';
+import { Extent } from '@id-sdk/extent';
 
 export function uiPanelMeasurement(context) {
 
@@ -68,10 +69,10 @@ export function uiPanelMeasurement(context) {
                 t('info_panels.selected', { n: selected.length });
 
             if (selected.length) {
-                var extent = geoExtent();
+                var extent = new Extent();
                 for (var i in selected) {
                     var entity = selected[i];
-                    extent._extend(entity.extent(graph));
+                    extent = extent.extend(entity.extent(graph));
 
                     geometry = entity.geometry(graph);
                     if (geometry === 'line' || geometry === 'area') {

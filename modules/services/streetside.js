@@ -8,10 +8,10 @@ import RBush from 'rbush';
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 
-import {
-  geoExtent, geoMetersToLat, geoMetersToLon, geoPointInPolygon,
+import { geoMetersToLat, geoMetersToLon, geoPointInPolygon,
   geoRotate, geoScaleToZoom, geoVecLength
 } from '../geo';
+import { Extent } from '@id-sdk/extent';
 
 import { utilArrayUnion, utilQsString, utilRebind, utilStringQs, utilUniqueDomId } from '../util';
 
@@ -442,7 +442,7 @@ export default {
     const viewport = projection.clipExtent();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
-    const bbox = geoExtent(projection.invert(min), projection.invert(max)).bbox();
+    const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
     let seen = {};
     let results = [];
 
@@ -646,8 +646,8 @@ export default {
         poly = geoRotate(poly, -angle, origin);
 
         let extent = poly.reduce((extent, point) => {
-          return extent.extend(geoExtent(point));
-        }, geoExtent());
+          return extent.extend(new Extent(point));
+        }, new Extent());
 
         // find nearest other bubble in the search polygon
         let minDist = Infinity;

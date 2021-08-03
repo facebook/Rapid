@@ -4,10 +4,11 @@ import * as countryCoder from '@ideditor/country-coder';
 
 import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';
-import { geoExtent, geoChooseEdge, geoSphericalDistance } from '../../geo';
+import { geoChooseEdge, geoSphericalDistance } from '../../geo';
 import { uiCombobox } from '../combobox';
 import { utilArrayUniqBy, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
 import { t } from '../../core/localizer';
+import { Extent } from '@id-sdk/extent';
 
 
 export function uiFieldAddress(field, context) {
@@ -39,14 +40,14 @@ export function uiFieldAddress(field, context) {
     function getNearStreets() {
         var extent = combinedEntityExtent();
         var l = extent.center();
-        var box = geoExtent(l).padByMeters(200);
+        var box = new Extent(l).padByMeters(200);
 
         var streets = context.history().intersects(box)
             .filter(isAddressable)
             .map(function(d) {
                 var loc = context.projection([
-                    (extent[0][0] + extent[1][0]) / 2,
-                    (extent[0][1] + extent[1][1]) / 2
+                    (extent.min[0] + extent.max[0]) / 2,
+                    (extent.min[1] + extent.max[1]) / 2
                 ]);
                 var choice = geoChooseEdge(context.graph().childNodes(d), loc, context.projection);
 
@@ -71,7 +72,7 @@ export function uiFieldAddress(field, context) {
     function getNearCities() {
         var extent = combinedEntityExtent();
         var l = extent.center();
-        var box = geoExtent(l).padByMeters(200);
+        var box = new Extent(l).padByMeters(200);
 
         var cities = context.history().intersects(box)
             .filter(isAddressable)
@@ -105,7 +106,7 @@ export function uiFieldAddress(field, context) {
     function getNearValues(key) {
         var extent = combinedEntityExtent();
         var l = extent.center();
-        var box = geoExtent(l).padByMeters(200);
+        var box = new Extent(l).padByMeters(200);
 
         var results = context.history().intersects(box)
             .filter(function hasTag(d) { return _entityIDs.indexOf(d.id) === -1 && d.tags[key]; })

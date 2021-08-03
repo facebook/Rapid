@@ -10,9 +10,10 @@ import osmAuth from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
-import { geoExtent, geoVecAdd, geoZoomToScale } from '../geo';
+import { geoVecAdd, geoZoomToScale } from '../geo';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
 import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilQsString, utilStringQs } from '../util';
+import { Extent } from '@id-sdk/extent';
 
 
 var tiler = new Tiler();
@@ -395,7 +396,7 @@ var parsers = {
             if (coincident) {
                 props.loc = geoVecAdd(props.loc, [epsilon, epsilon]);
             }
-            var bbox = geoExtent(props.loc).bbox();
+            var bbox = new Extent(props.loc).bbox();
             coincident = _noteCache.rtree.search(bbox).length;
         } while (coincident);
 
@@ -1416,7 +1417,7 @@ export default {
         var viewport = projection.clipExtent();
         var min = [viewport[0][0], viewport[1][1]];
         var max = [viewport[1][0], viewport[0][1]];
-        var bbox = geoExtent(projection.invert(min), projection.invert(max)).bbox();
+        var bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
 
         return _noteCache.rtree.search(bbox)
             .map(function(d) { return d.data; });

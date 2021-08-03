@@ -7,7 +7,7 @@ import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
 import { svgIcon } from '../svg/index';
 import { uiTooltip } from './tooltip';
-import { geoExtent } from '../geo/extent';
+import { Extent } from '@id-sdk/extent';
 import { uiPresetIcon } from './preset_icon';
 import { uiTagReference } from './tag_reference';
 import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
@@ -486,7 +486,7 @@ export function uiPresetList(context) {
             const extent = _entityIDs.reduce(function(extent, entityID) {
                 var entity = context.graph().entity(entityID);
                 return extent.extend(entity.extent(context.graph()));
-            }, geoExtent());
+            }, new Extent());
             _currLoc = extent.center();
 
             // match presets

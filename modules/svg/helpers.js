@@ -147,10 +147,20 @@ export function svgPath(projection, graph, isArea) {
     var cache = {};
     var padding = isArea ? 65 : 5;
     var viewport = projection.clipExtent();
-    var paddedExtent = [
-        [viewport[0][0] - padding, viewport[0][1] - padding],
-        [viewport[1][0] + padding, viewport[1][1] + padding]
-    ];
+    var paddedExtent;
+
+    if (viewport.min) {
+        paddedExtent = [
+            [viewport.min[0] - padding, viewport.min[1] - padding],
+            [viewport.max[0] + padding, viewport.max[1] + padding]
+        ];
+    } else {
+        paddedExtent = [
+            [viewport[0][0] - padding, viewport[0][1] - padding],
+            [viewport[1][0] + padding, viewport[1][1] + padding]
+        ];
+    }
+
     var clip = d3_geoIdentity().clipExtent(paddedExtent).stream;
     var project = projection.stream;
     var path = d3_geoPath()

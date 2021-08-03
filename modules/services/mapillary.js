@@ -8,8 +8,9 @@ import Protobuf from 'pbf';
 import RBush from 'rbush';
 import { VectorTile } from '@mapbox/vector-tile';
 
-import { geoExtent, geoScaleToZoom } from '../geo';
+import { geoScaleToZoom } from '../geo';
 import { utilQsString, utilRebind, utilStringQs } from '../util';
+import { Extent } from '@id-sdk/extent';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -289,7 +290,7 @@ export default {
         const viewport = projection.clipExtent();
         const min = [viewport[0][0], viewport[1][1]];
         const max = [viewport[1][0], viewport[0][1]];
-        const bbox = geoExtent(projection.invert(min), projection.invert(max)).bbox();
+        const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
         const sequenceIds = {};
         let lineStrings = [];
 

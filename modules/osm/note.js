@@ -1,4 +1,4 @@
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 
 
 export function osmNote() {
@@ -44,7 +44,7 @@ Object.assign(osmNote.prototype, {
     },
 
     extent: function() {
-        return new geoExtent(this.loc);
+        return new Extent(this.loc);
     },
 
     update: function(attrs) {
