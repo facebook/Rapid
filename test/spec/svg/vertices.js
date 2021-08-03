@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 describe('iD.svgVertices', function () {
     var context;
     var surface;

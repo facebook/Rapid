@@ -1,3 +1,5 @@
+const { Extent } = require('@id-sdk/extent');
+
 describe('iD.Map', function() {
     var content, context, map;
 
