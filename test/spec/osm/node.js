@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 describe('iD.osmNode', function () {
     it('returns a node', function () {
         expect(iD.osmNode()).to.be.an.instanceOf(iD.osmNode);

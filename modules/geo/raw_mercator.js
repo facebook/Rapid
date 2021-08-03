@@ -1,3 +1,4 @@
+import { Extent } from '@id-sdk/extent';
 import {
     geoMercatorRaw as d3_geoMercatorRaw,
     geoTransform as d3_geoTransform
