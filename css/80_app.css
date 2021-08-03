@@ -4146,8 +4146,15 @@ img.tile-debug {
     bottom: 0;
 }
 
+
+.supersurface .layer.layer-background {
+    z-index: 1;
+}
+.supersurface .layer.layer-overlay {
+    z-index: 2;
+}
 .supersurface .layer.layer-data {
-    z-index: 30;  /* above imagery, overlays */
+    z-index: 3;
 }
 
 /* Map-In-Map

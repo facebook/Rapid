@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { uiToggle } from './toggle';
 
 
@@ -35,8 +35,8 @@ export function uiLasso(context) {
 
     lasso.extent = function () {
         return lasso.coordinates.reduce(function(extent, point) {
-            return extent.extend(geoExtent(point));
-        }, geoExtent());
+            return extent.extend(new Extent(point));
+        }, new Extent());
     };
 
 

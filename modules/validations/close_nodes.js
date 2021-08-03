@@ -4,7 +4,7 @@ import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { osmPathHighwayTagValues } from '../osm/tags';
 import { geoMetersToLat, geoMetersToLon, geoSphericalDistance } from '../geo/geo';
-import { geoExtent } from '../geo/extent';
+import { Extent } from '@id-sdk/extent';
 
 export function validationCloseNodes(context) {
     var type = 'close_nodes';
@@ -133,7 +133,7 @@ export function validationCloseNodes(context) {
             var lat = node.loc[1];
             var lon_range = geoMetersToLon(pointThresholdMeters, lat) / 2;
             var lat_range = geoMetersToLat(pointThresholdMeters) / 2;
-            var queryExtent = geoExtent([
+            var queryExtent = new Extent([
                 [lon - lon_range, lat - lat_range],
                 [lon + lon_range, lat + lat_range]
             ]);

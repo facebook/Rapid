@@ -1,4 +1,6 @@
-describe('iD.osmWay', function() {
+const { Extent } = require('@id-sdk/extent');
+
+describe('iD.osmWay', function () {
     var _savedAreaKeys;
 
     before(function() {
@@ -134,7 +136,7 @@ describe('iD.osmWay', function() {
                 node2 = iD.osmNode({loc: [5, 10]}),
                 way   = iD.osmWay({nodes: [node1.id, node2.id]}),
                 graph = iD.coreGraph([node1, node2, way]);
-            expect(way.extent(graph).equals([[0, 0], [5, 10]])).to.be.ok;
+            expect(way.extent(graph).equals(new Extent([[0, 0], [5, 10]]))).to.be.ok;
         });
     });
 

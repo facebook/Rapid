@@ -2,9 +2,10 @@ import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-g
 import { json as d3_json } from 'd3-fetch';
 
 import { t, localizer } from '../core/localizer';
-import { geoExtent, geoSphericalDistance } from '../geo';
+import { geoSphericalDistance } from '../geo';
 import { utilQsString, utilStringQs } from '../util';
 import { utilAesDecrypt } from '../util/aes';
+import { Extent } from '@id-sdk/extent';
 
 
 var isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
@@ -103,7 +104,7 @@ export function rendererBackgroundSource(data) {
 
     source.template = function(val) {
         if (!arguments.length) return _template;
-        if (source.id === 'custom') {
+        if (source.id === 'custom' || source.id === 'Bing') {
             _template = val;
         }
         return source;
@@ -266,15 +267,23 @@ export function rendererBackgroundSource(data) {
 
 
 rendererBackgroundSource.Bing = function(data, dispatch) {
-    // http://msdn.microsoft.com/en-us/library/ff701716.aspx
-    // http://msdn.microsoft.com/en-us/library/ff701701.aspx
+    // https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
+    // https://docs.microsoft.com/en-us/bingmaps/rest-services/directly-accessing-the-bing-maps-tiles
 
-    data.template = 'https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=587&mkt=en-gb&n=z';
+    //fallback url template
+    data.template = 'https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=10555&n=z';
 
     var bing = rendererBackgroundSource(data);
-    // var key = 'Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU'; // P2, JOSM, etc
-    var key = 'Ak5oTE46TUbjRp08OFVcGpkARErDobfpuyNKa-W2mQ8wbt1K1KL8p1bIRwWwcF-Q';    // iD
+    var key = 'Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU'; // P2, JOSM, etc
+    //var key = 'Ak5oTE46TUbjRp08OFVcGpkARErDobfpuyNKa-W2mQ8wbt1K1KL8p1bIRwWwcF-Q';    // iD
 
+    /*
+    missing tile image strictness param (n=)
+    •	n=f -> (Fail) returns a 404
+    •	n=z -> (Empty) returns a 200 with 0 bytes (no content)
+    •	n=t -> (Transparent) returns a 200 with a transparent (png) tile
+    */
+    const strictParam = 'n';
 
     var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?include=ImageryProviders&key=' + key;
     var cache = {};
@@ -283,13 +292,28 @@ rendererBackgroundSource.Bing = function(data, dispatch) {
 
     d3_json(url)
         .then(function(json) {
-            providers = json.resourceSets[0].resources[0].imageryProviders.map(function(provider) {
+            let imageryResource = json.resourceSets[0].resources[0];
+
+            //retrieve and prepare up to date imagery template
+            let template = imageryResource.imageUrl; //http://ecn.{subdomain}.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=10339
+            let subDomains = imageryResource.imageUrlSubdomains; //["t0, t1, t2, t3"]
+            let subDomainNumbers = subDomains.map((subDomain) => {
+                return subDomain.substring(1);
+            } ).join(',');
+
+            template = template.replace('{subdomain}', `t{switch:${subDomainNumbers}}`).replace('{quadkey}', '{u}');
+            if (!new URLSearchParams(template).has(strictParam)){
+                template += `&${strictParam}=z`;
+            }
+            bing.template(template);
+
+            providers = imageryResource.imageryProviders.map(function(provider) {
                 return {
                     attribution: provider.attribution,
                     areas: provider.coverageAreas.map(function(area) {
                         return {
                             zoom: [area.zoomMin, area.zoomMax],
-                            extent: geoExtent([area.bbox[1], area.bbox[0]], [area.bbox[3], area.bbox[2]])
+                            extent: new Extent([area.bbox[1], area.bbox[0]], [area.bbox[3], area.bbox[2]])
                         };
                     })
                 };

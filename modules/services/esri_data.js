@@ -17,6 +17,7 @@ const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
 const dispatch = d3_dispatch('loadedData');
 
 let _datasets = {};
+let _gotDatasets = false;
 let _off;
 
 
@@ -26,8 +27,9 @@ function abortRequest(controller) {
 
 
 // API
-function searchURL() {
-  return `${APIROOT}/groups/${GROUPID}/search?num=100&start=1&sortField=title&sortOrder=asc&f=json`;
+//https://developers.arcgis.com/rest/users-groups-and-items/search.htm
+function searchURL(start) {
+  return `${APIROOT}/groups/${GROUPID}/search?num=100&start=${start}&sortField=title&sortOrder=asc&f=json`;
   // use to get
   // .results[]
   //   .extent
@@ -55,6 +57,28 @@ function tileURL(dataset, extent) {
   const layerId = dataset.layer.id;
   const bbox = extent.toParam();
   return `${dataset.url}/${layerId}/query?f=geojson&outfields=*&outSR=4326&geometryType=esriGeometryEnvelope&geometry=${bbox}`;
+}
+
+
+// Add each dataset to _datasets, create internal state
+function parseDataset(ds) {
+  if (_datasets[ds.id]) return;  // unless we've seen it already
+
+  _datasets[ds.id] = ds;
+  ds.graph = coreGraph();
+  ds.tree = coreTree(ds.graph);
+  ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+
+  // cleanup the `licenseInfo` field by removing styles  (not used currently)
+  let license = d3_select(document.createElement('div'));
+  license.html(ds.licenseInfo);       // set innerHtml
+  license.selectAll('*')
+    .attr('style', null)
+    .attr('size', null);
+  ds.license_html = license.html();   // get innerHtml
+
+  // generate public link to this item
+  ds.itemURL = itemURL(ds.id);
 }
 
 
@@ -258,34 +282,34 @@ export default {
   },
 
 
-  loadDatasets: function () {    // eventually pass search params?
-    if (Object.keys(_datasets).length) {   // for now, if we have fetched datasets, return them
+  loadDatasets: function () {
+    if (_gotDatasets) {
       return Promise.resolve(_datasets);
+
+    } else {
+      return new Promise((resolve, reject) => {
+        let start = 1;
+        fetchMore(start);
+
+        function fetchMore(start) {
+          d3_json(searchURL(start))
+            .then(json => {
+              (json.results || []).forEach(ds => parseDataset(ds));
+
+              if (json.nextStart > 0) {
+                fetchMore(json.nextStart);   // fetch next page
+              } else {
+                _gotDatasets = true;   // no more pages
+                resolve(_datasets);
+              }
+            })
+            .catch(err => {
+              _gotDatasets = false;
+              reject(err);
+            });
+        }
+      });
     }
-
-    return d3_json(searchURL())
-      .then(json => {
-        (json.results || []).forEach(ds => {   // add each one to _datasets, create internal state
-          if (_datasets[ds.id]) return;        // unless we've seen it already
-          _datasets[ds.id] = ds;
-          ds.graph = coreGraph();
-          ds.tree = coreTree(ds.graph);
-          ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-
-          // cleanup the `licenseInfo` field by removing styles  (not used currently)
-          let license = d3_select(document.createElement('div'));
-          license.html(ds.licenseInfo);       // set innerHtml
-          license.selectAll('*')
-            .attr('style', null)
-            .attr('size', null);
-          ds.license_html = license.html();   // get innerHtml
-
-          // generate public link to this item
-          ds.itemURL = itemURL(ds.id);
-        });
-        return _datasets;
-      })
-      .catch(() => { /* ignore */ });
   },
 
 

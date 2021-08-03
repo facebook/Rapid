@@ -11,7 +11,7 @@ import { behaviorSelect } from '../behavior/select';
 
 import { t } from '../core/localizer';
 
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -61,8 +61,9 @@ export function modeSelectData(context, selectedDatum) {
     }
 
 
-    mode.zoomToSelected = function() {
-        var extent = geoExtent(d3_geoBounds(selectedDatum));
+    mode.zoomToSelected = function () {
+        var bounds = d3_geoBounds(selectedDatum);
+        var extent = new Extent(bounds[0], bounds[1]);
         context.map().centerZoomEase(extent.center(), context.map().trimmedExtentZoom(extent));
     };
 
@@ -83,7 +84,7 @@ export function modeSelectData(context, selectedDatum) {
         sidebar.show(dataEditor.datum(selectedDatum));
 
         // expand the sidebar, avoid obscuring the data if needed
-        var extent = geoExtent(d3_geoBounds(selectedDatum));
+        var extent = new Extent(d3_geoBounds(selectedDatum));
         sidebar.expand(sidebar.intersects(extent));
 
         context.map()

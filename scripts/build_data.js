@@ -1,18 +1,21 @@
 /* eslint-disable no-console */
-const colors = require('colors/safe');
-const fs = require('fs');
-const prettyStringify = require('json-stringify-pretty-compact');
-const shell = require('shelljs');
-const YAML = require('js-yaml');
-const fetch = require('node-fetch');
+import colors from 'colors/safe.js';
+import fs from 'node:fs';
+import stringify from 'json-stringify-pretty-compact';
+import shell from 'shelljs';
+import YAML from 'js-yaml';
+import fetch from 'node-fetch';
 
-const languageNames = require('./language_names.js');
+import * as languageNames from './language_names.js';
 
 // fontawesome icons
-const fontawesome = require('@fortawesome/fontawesome-svg-core');
-const fas = require('@fortawesome/free-solid-svg-icons').fas;
-const far = require('@fortawesome/free-regular-svg-icons').far;
-const fab = require('@fortawesome/free-brands-svg-icons').fab;
+import fontawesome from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+
+import territoryInfo from 'cldr-core/supplemental/territoryInfo.json';
+
 fontawesome.library.add(fas, far, fab);
 
 let _currBuild = null;
@@ -71,11 +74,11 @@ function buildData() {
   readQAIssueIcons(faIcons);
 
   let territoryLanguages = generateTerritoryLanguages();
-  fs.writeFileSync('data/territory_languages.json', prettyStringify(territoryLanguages, { maxLength: 9999 }) );
+  fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) );
   writeEnJson();
 
-  const languageInfo = languageNames.langNamesInNativeLang;
-  fs.writeFileSync('data/languages.json', prettyStringify(languageInfo, { maxLength: 200 }));
+  const languageInfo = languageNames.langNamesInNativeLang();
+  fs.writeFileSync('data/languages.json', stringify(languageInfo, { maxLength: 200 }));
   fs.writeFileSync('dist/data/languages.min.json', JSON.stringify(languageInfo));
 
   // Save individual data files
@@ -152,7 +155,7 @@ function readQAIssueIcons(faIcons) {
 
 
 function generateTerritoryLanguages() {
-  let allRawInfo = require('cldr-core/supplemental/territoryInfo.json').supplemental.territoryInfo;
+  let allRawInfo = territoryInfo.supplemental;
   let territoryLanguages = {};
 
   Object.keys(allRawInfo).forEach(territoryCode => {
@@ -255,4 +258,4 @@ function minifyJSON(inPath, outPath) {
 }
 
 
-module.exports = buildData;
+export default buildData;

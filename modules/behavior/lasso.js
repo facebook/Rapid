@@ -1,6 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 
-import { geoExtent, geoPointInPolygon } from '../geo';
+import { geoPointInPolygon } from '../geo';
+import { Extent } from '@id-sdk/extent';
+
 import { modeSelect } from '../modes/select';
 import { uiLasso } from '../ui/lasso';
 import { utilArrayIntersection } from '../util/array';
@@ -62,7 +64,7 @@ export function behaviorLasso(context) {
             }
 
             var bounds = lasso.extent().map(context.projection.invert);
-            var extent = geoExtent(normalize(bounds[0], bounds[1]));
+            var extent = new Extent(normalize(bounds[0], bounds[1]));
 
             var intersects = context.history().intersects(extent).filter(function(entity) {
                 return entity.type === 'node' &&
