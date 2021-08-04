@@ -339,14 +339,14 @@ function parseXML(dataset, xml, callback, options) {
         for (var i = 0; i < topLevelChildren.length; i++) {
             var tlc = topLevelChildren[i];
             if (tlc.nodeName === 'create') {
-                var children = tlc.childNodes;
-                for (var j = 0; j < children.length; j++) {
+                let children = tlc.childNodes;
+                for (let j = 0; j < children.length; j++) {
                     var entity = parseChild(children[j]);
                     if (entity) osmEntities.push(entity);
                 }
             } else if (tlc.nodeName === 'cubitor-context') {
-                var children = tlc.childNodes;
-                for (var j = 0; j < children.length; j++) {
+                let children = tlc.childNodes;
+                for (let j = 0; j < children.length; j++) {
                     var ele = children[j];
                     parseCubitorContextChild(ele, cubitorContext);
                 }
@@ -355,7 +355,7 @@ function parseXML(dataset, xml, callback, options) {
 
         // associate suggestion context with osm entities
         osmEntities.forEach(entity => {
-            if(entity.suggestionId && cubitorContext[entity.suggestionId]) {
+            if (entity.suggestionId && cubitorContext[entity.suggestionId]) {
                 entity.suggestionContext = cubitorContext[entity.suggestionId];
             }
         });
@@ -488,7 +488,7 @@ export default {
             // as tile requests arrive, setup the resources needed to hold the results
             graph = coreGraph();
             tree = coreTree(graph);
-            cubitorContext = {};
+            let cubitorContext = {};
             cache = { inflight: {}, loaded: {}, seen: {}};
             ds = { id: datasetID, graph: graph, tree: tree, cubitorContext: cubitorContext, cache: cache };
             _datasets[datasetID] = ds;
