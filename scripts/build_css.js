@@ -1,23 +1,21 @@
 /* eslint-disable no-console */
-const colors = require('colors/safe');
-const concat = require('concat-files');
-const glob = require('glob');
-const fs = require('fs');
-const postcss = require('postcss');
-const prepend = require('postcss-selector-prepend');
-const autoprefixer = require('autoprefixer');
+import colors from 'colors/safe.js';
+import concat from 'concat-files';
+import glob from 'glob';
+import fs from 'node:fs';
+import postcss from 'postcss';
+import prepend from 'postcss-selector-prepend';
+import autoprefixer from 'autoprefixer';
+
 
 let _currBuild = null;
 
 // if called directly, do the thing.
 if (process.argv[1].indexOf('build_css.js') > -1) {
   buildCSS();
-} else {
-  module.exports = buildCSS;
 }
 
-
-function buildCSS() {
+export function buildCSS() {
   if (_currBuild) return _currBuild;
 
   const START = '🏗   ' + colors.yellow('Building css...');

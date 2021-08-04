@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-const fs = require('fs');
-let sources = require('editor-layer-index/imagery.json');
-const prettyStringify = require('json-stringify-pretty-compact');
+import fs from 'node:fs';
+import prettyStringify from 'json-stringify-pretty-compact';
+import imageryJSON from 'editor-layer-index/imagery.json';
 
+let sources = imageryJSON;
 if (fs.existsSync('./data/manual_imagery.json')) {
   // we can include additional imagery sources that aren't in the index
   sources = sources.concat(JSON.parse(fs.readFileSync('./data/manual_imagery.json')));

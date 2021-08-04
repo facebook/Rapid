@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { prefs } from './preferences';
 import { coreDifference } from './difference';
-import { geoExtent } from '../geo/extent';
+import { Extent } from '@id-sdk/extent';
 import { modeSelect } from '../modes/select';
 import { utilArrayChunk, utilArrayGroupBy, utilRebind } from '../util';
 import * as Validations from '../validations/index';
@@ -155,7 +155,7 @@ export function coreValidator(context) {
     // uncache existing
     cache.uncacheIssuesOfType('unsquare_way');
 
-    const buildings = context.history().tree().intersects(geoExtent([-180,-90],[180, 90]), graph)  // everywhere
+    const buildings = context.history().tree().intersects(new Extent([-180,-90],[180, 90]), graph)  // everywhere
       .filter(entity => (entity.type === 'way' && entity.tags.building && entity.tags.building !== 'no'));
 
     // rerun for all buildings

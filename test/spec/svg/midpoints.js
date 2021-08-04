@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 describe('iD.svgMidpoints', function () {
     var context, surface;
     var _selectedIDs = [];
@@ -30,7 +32,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [1, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = iD.geoExtent([0, 0], [1, 1]);
+        var extent = new Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -45,7 +47,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [0.0001, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = iD.geoExtent([0, 0], [1, 1]);
+        var extent = new Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -60,7 +62,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [-0.5, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = iD.geoExtent([0, 0], [1, 1]);
+        var extent = new Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -75,7 +77,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [2, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = iD.geoExtent([0, 0], [1, 1]);
+        var extent = new Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -90,7 +92,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [2, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = iD.geoExtent([0, 0], [1, 1]);
+        var extent = new Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };

@@ -2,7 +2,8 @@ import { geoArea as d3_geoArea } from 'd3-geo';
 
 import { osmEntity } from './entity';
 import { osmJoinWays } from './multipolygon';
-import { geoExtent, geoPolygonContainsPolygon, geoPolygonIntersectsPolygon } from '../geo';
+import { geoPolygonContainsPolygon, geoPolygonIntersectsPolygon } from '../geo';
+import { Extent } from '@id-sdk/extent';
 
 
 export function osmRelation() {
@@ -51,15 +52,15 @@ Object.assign(osmRelation.prototype, {
 
     extent: function(resolver, memo) {
         return resolver.transient(this, 'extent', function() {
-            if (memo && memo[this.id]) return geoExtent();
+            if (memo && memo[this.id]) return new Extent();
             memo = memo || {};
             memo[this.id] = true;
 
-            var extent = geoExtent();
+            var extent = new Extent();
             for (var i = 0; i < this.members.length; i++) {
                 var member = resolver.hasEntity(this.members[i].id);
                 if (member) {
-                    extent._extend(member.extent(resolver, memo));
+                    extent = extent.extend(member.extent(resolver, memo));
                 }
             }
             return extent;

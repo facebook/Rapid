@@ -7,7 +7,8 @@ import { t, localizer } from '../../core/localizer';
 import { actionRestrictTurn } from '../../actions/restrict_turn';
 import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 import { behaviorBreathe } from '../../behavior/breathe';
-import { geoExtent, geoRawMercator, geoVecScale, geoVecSubtract, geoZoomToScale } from '../../geo';
+import { Extent } from '@id-sdk/extent';
+import { geoRawMercator, geoVecScale, geoVecSubtract, geoZoomToScale } from '../../geo';
 import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
 import { utilDisplayName, utilDisplayType, utilEntitySelector, utilFunctor, utilRebind } from '../../util';
@@ -218,16 +219,16 @@ export function uiFieldRestrictions(field, context) {
         projection.scale(geoZoomToScale(z));
 
         // Calculate extent of all key vertices
-        var extent = geoExtent();
+        var extent = new Extent();
         for (var i = 0; i < _intersection.vertices.length; i++) {
-            extent._extend(_intersection.vertices[i].extent());
+            extent = extent.extend(_intersection.vertices[i].extent());
         }
 
         // If this is a large intersection, adjust zoom to fit extent
         if (_intersection.vertices.length > 1) {
             var padding = 180;   // in z22 pixels
-            var tl = projection([extent[0][0], extent[1][1]]);
-            var br = projection([extent[1][0], extent[0][1]]);
+            var tl = projection([extent.min[0], extent.max[1]]);
+            var br = projection([extent.max[0], extent.min[1]]);
             var hFactor = (br[0] - tl[0]) / (d[0] - padding);
             var vFactor = (br[1] - tl[1]) / (d[1] - padding);
             var hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
