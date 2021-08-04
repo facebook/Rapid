@@ -1,5 +1,5 @@
 import { actionAddMember } from './add_member';
-import { geoSphericalDistance } from '../geo/geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { osmIsOldMultipolygonOuterMember } from '../osm/multipolygon';
 import { osmRelation } from '../osm/relation';
 import { osmWay } from '../osm/way';

@@ -1,4 +1,7 @@
-describe('iD.serviceStreetside', function() {
+import { geoZoomToScale } from '@id-sdk/geo';
+
+
+describe('iD.serviceStreetside', function () {
     var dimensions = [64, 64];
     var context, server, streetside;
 
@@ -13,7 +16,7 @@ describe('iD.serviceStreetside', function() {
     beforeEach(function() {
         context = iD.coreContext().assetPath('../dist/').init();
         context.projection
-            .scale(iD.geoZoomToScale(14))
+            .scale(geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0
             .clipExtent([[0,0], dimensions]);
 
@@ -53,7 +56,7 @@ describe('iD.serviceStreetside', function() {
             // adjust projection so that only one tile is fetched
             // (JSONP hack will return the same data for every fetch)
             context.projection
-                .scale(iD.geoZoomToScale(18))
+                .scale(geoZoomToScale(18))
                 .translate([-1863988.9381333336, 762.8270222954452])  // 10.002,0.002
                 .clipExtent([[0,0], dimensions]);
 
@@ -88,7 +91,7 @@ describe('iD.serviceStreetside', function() {
 
         it('does not load bubbles around null island', function(done) {
             context.projection
-                .scale(iD.geoZoomToScale(18))
+                .scale(geoZoomToScale(18))
                 .translate([0, 0])
                 .clipExtent([[0,0], dimensions]);
 

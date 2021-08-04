@@ -2,7 +2,7 @@ import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-g
 import { json as d3_json } from 'd3-fetch';
 
 import { t, localizer } from '../core/localizer';
-import { geoSphericalDistance } from '../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { utilQsString, utilStringQs } from '../util';
 import { utilAesDecrypt } from '../util/aes';
 import { Extent } from '@id-sdk/extent';

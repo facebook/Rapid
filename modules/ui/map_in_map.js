@@ -3,7 +3,8 @@ import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { t } from '../core/localizer';
-import { geoRawMercator, geoScaleToZoom, geoVecSubtract, geoVecScale, geoZoomToScale } from '../geo';
+import { geoRawMercator, geoVecSubtract, geoVecScale } from '../geo';
+import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
 import { rendererTileLayer } from '../renderer';
 import { svgDebug, svgData } from '../svg';
 import { utilSetTransform } from '../util';

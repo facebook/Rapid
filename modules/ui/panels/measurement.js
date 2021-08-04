@@ -5,7 +5,7 @@ import {
 
 import { t, localizer } from '../../core/localizer';
 import { displayArea, displayLength, decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { geoSphericalDistance } from '../../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { services } from '../../services';
 import { utilGetAllNodes } from '../../util';
 import { Extent } from '@id-sdk/extent';

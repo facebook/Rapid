@@ -8,7 +8,7 @@ import Protobuf from 'pbf';
 import RBush from 'rbush';
 import { VectorTile } from '@mapbox/vector-tile';
 
-import { geoScaleToZoom } from '../geo';
+import { geoScaleToZoom } from '@id-sdk/geo';
 import { utilQsString, utilRebind, utilStringQs } from '../util';
 import { Extent } from '@id-sdk/extent';
 

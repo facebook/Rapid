@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
 import { actionNoop } from '../../actions/noop';
-import { geoSphericalDistance } from '../../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { svgIcon } from '../../svg/icon';
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';

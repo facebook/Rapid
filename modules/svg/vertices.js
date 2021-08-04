@@ -2,7 +2,7 @@ import deepEqual from 'fast-deep-equal';
 import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../presets';
-import { geoScaleToZoom } from '../geo';
+import { geoScaleToZoom } from '@id-sdk/geo';
 import { osmEntity } from '../osm';
 import { svgPassiveVertex, svgPointTransform } from './helpers';
 

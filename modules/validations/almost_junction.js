@@ -1,7 +1,10 @@
-import { geoLineIntersection, geoMetersToLat, geoMetersToLon,
-  geoSphericalDistance, geoVecInterp, geoHasSelfIntersections,
-  geoSphericalClosestNode, geoAngle
+import { geoLineIntersection, geoVecInterp, geoHasSelfIntersections, geoAngle
 } from '../geo';
+
+import {
+  geoMetersToLat, geoMetersToLon,
+  geoSphericalDistance, geoSphericalClosestPoint
+} from '@id-sdk/geo';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
@@ -112,12 +115,14 @@ export function validationAlmostJunction(context) {
           const targetEdge = this.issue.data.edge;
           const crossLoc = this.issue.data.cross_loc;
           const edgeNodes = [context.entity(targetEdge[0]), context.entity(targetEdge[1])];
-          const closestNodeInfo = geoSphericalClosestNode(edgeNodes, crossLoc);
+          const points = edgeNodes.map(node => node.loc);
+
+          const closestPointInfo = geoSphericalClosestPoint(points, crossLoc);
 
           // already a point nearby, just connect to that
-          if (closestNodeInfo.distance < WELD_TH_METERS) {
+          if (closestPointInfo.distance < WELD_TH_METERS) {
             context.perform(
-              actionMergeNodes([closestNodeInfo.node.id, endNode.id], closestNodeInfo.node.loc),
+              actionMergeNodes([closestPointInfo.id, endNode.id], closestPointInfo.loc),
               annotation
             );
           // else add the end node to the edge way

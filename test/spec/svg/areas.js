@@ -1,3 +1,5 @@
+import { geoZoomToScale } from '@id-sdk/geo';
+
 describe('iD.svgAreas', function () {
     var context, _surface, _savedAreaKeys;
     var all = function() { return true; };
@@ -5,7 +7,7 @@ describe('iD.svgAreas', function () {
 
     var projection = d3.geoProjection(function(x, y) { return [x, -y]; })
         .translate([0, 0])
-        .scale(iD.geoZoomToScale(17))
+        .scale(geoZoomToScale(17))
         .clipExtent([[0, 0], [Infinity, Infinity]]);
 
 

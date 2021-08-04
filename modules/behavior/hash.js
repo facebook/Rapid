@@ -2,7 +2,7 @@ import _throttle from 'lodash-es/throttle';
 
 import { select as d3_select } from 'd3-selection';
 
-import { geoSphericalDistance } from '../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { utilDisplayLabel, utilObjectOmit, utilQsString, utilStringQs } from '../util';

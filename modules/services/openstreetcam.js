@@ -6,7 +6,7 @@ import { Projection, Tiler } from '@id-sdk/math';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';
-import { geoScaleToZoom } from '../geo';
+import { geoScaleToZoom } from '@id-sdk/geo';
 import { utilArrayUnion, utilQsString, utilRebind, utilSetTransform, utilStringQs } from '../util';
 import { Extent } from '@id-sdk/extent';
 

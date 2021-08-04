@@ -4,7 +4,8 @@ import * as countryCoder from '@ideditor/country-coder';
 
 import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';
-import { geoChooseEdge, geoSphericalDistance } from '../../geo';
+import { geoChooseEdge } from '../../geo';
+import { geoSphericalDistance } from '@id-sdk/geo';
 import { uiCombobox } from '../combobox';
 import { utilArrayUniqBy, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
 import { t } from '../../core/localizer';

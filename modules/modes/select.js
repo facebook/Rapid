@@ -17,7 +17,8 @@ import { operationMove } from '../operations/move';
 import { prefs } from '../core/preferences';
 
 import { Extent } from '@id-sdk/extent';
-import { geoChooseEdge, geoMetersToLat, geoMetersToLon } from '../geo';
+import { geoChooseEdge } from '../geo';
+import { geoMetersToLat, geoMetersToLon  } from '@id-sdk/geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';

@@ -7,7 +7,8 @@ import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { prefs } from '../core/preferences';
-import { geoRawMercator, geoScaleToZoom, geoZoomToScale } from '../geo';
+import { geoRawMercator} from '../geo';
+import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilEntityAndDeepMemberIDs } from '../util/util';
