@@ -5,7 +5,7 @@ import { t, localizer } from '../core/localizer';
 import { locationManager } from '../core/locations';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
-import { geoExtent } from '../geo/extent';
+import { Extent } from '@id-sdk/extent';
 import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
@@ -45,7 +45,7 @@ export function uiField(context, presetField, entityIDs, options) {
         _entityExtent = entityIDs.reduce(function(extent, entityID) {
             var entity = context.graph().entity(entityID);
             return extent.extend(entity.extent(context.graph()));
-        }, geoExtent());
+        }, new Extent());
     }
 
     var _locked = false;

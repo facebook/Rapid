@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 import { uiLoading } from './loading';
@@ -51,7 +51,7 @@ export function uiGeolocate(context) {
     function success(geolocation) {
         _position = geolocation;
         var coords = _position.coords;
-        _extent = geoExtent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
+        _extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
         zoomTo();
         finish();
     }

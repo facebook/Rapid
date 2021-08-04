@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import marked from 'marked';
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
-import { geoExtent } from '../geo';
+import { Extent } from '@id-sdk/extent';
 import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
@@ -457,7 +457,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       };
 
       if (d.extent) {
-        dataset.extent = geoExtent(d.extent);
+        dataset.extent = new Extent(d.extent);
       }
 
       // Test running building layers through FBML conflation service

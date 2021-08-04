@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 describe('iD.operationExtract', function () {
     var fakeContext;
     var graph;
@@ -9,7 +11,7 @@ describe('iD.operationExtract', function () {
     fakeContext.map = function() {
         return {
             extent: function() {
-                return iD.geoExtent([-180, -90], [180, 90]);
+                return new Extent([-180, -90], [180, 90]);
             }
         };
     };

@@ -16,7 +16,8 @@ import { behaviorSelect } from '../behavior/select';
 import { operationMove } from '../operations/move';
 import { prefs } from '../core/preferences';
 
-import { geoExtent, geoChooseEdge, geoMetersToLat, geoMetersToLon } from '../geo';
+import { Extent } from '@id-sdk/extent';
+import { geoChooseEdge, geoMetersToLat, geoMetersToLon } from '../geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -277,11 +278,11 @@ export function modeSelect(context, selectedIDs) {
         selectElements();
 
         if (_follow) {
-            var extent = geoExtent();
+            var extent = new Extent();
             var graph = context.graph();
             selectedIDs.forEach(function(id) {
                 var entity = context.entity(id);
-                extent._extend(entity.extent(graph));
+                extent = extent.extend(entity.extent(graph));
             });
 
             var loc = extent.center();
@@ -343,9 +344,9 @@ export function modeSelect(context, selectedIDs) {
 
                     function tooSmall() {
                         if (isUp) return false;
-                        let dLon = Math.abs(extent[1][0] - extent[0][0]);
-                        let dLat = Math.abs(extent[1][1] - extent[0][1]);
-                        return dLon < geoMetersToLon(1, extent[1][1]) &&
+                        let dLon = Math.abs(extent.max[0] - extent.min[0]);
+                        let dLat = Math.abs(extent.max[1] - extent.min[1]);
+                        return dLon < geoMetersToLon(1, extent.max[1]) &&
                             dLat < geoMetersToLat(1);
                     }
 

@@ -6,12 +6,13 @@ import whichPolygon from 'which-polygon';
 
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
-import { geoExtent, geoMetersToOffset, geoOffsetToMeters} from '../geo';
+import { geoMetersToOffset, geoOffsetToMeters} from '../geo';
 import { rendererBackgroundSource } from './background_source';
 import { rendererTileLayer } from './tile_layer';
 import { utilQsString, utilStringQs } from '../util';
 import { utilDetect } from '../util/detect';
 import { utilRebind } from '../util/rebind';
+import { Extent } from '@id-sdk/extent';
 
 
 let _imageryIndex = null;
@@ -464,7 +465,7 @@ export function rendererBackground(context) {
       if (!qmap) return false;
       const params = qmap.split('/').map(Number);
       if (params.length < 3 || params.some(isNaN)) return false;
-      return geoExtent([params[2], params[1]]);  // lon,lat
+      return new Extent([params[2], params[1]]);  // lon,lat
     }
 
     const hash = utilStringQs(window.location.hash);

@@ -1,5 +1,7 @@
 import { osmEntity } from './entity';
-import { geoAngle, geoExtent } from '../geo';
+import { geoAngle } from '../geo';
+import { Extent } from '@id-sdk/extent';
+
 import { utilArrayUniq } from '../util';
 
 
@@ -20,7 +22,7 @@ Object.assign(osmNode.prototype, {
     loc: [9999, 9999],
 
     extent: function() {
-        return new geoExtent(this.loc);
+        return new Extent(this.loc);
     },
 
 

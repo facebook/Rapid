@@ -7,7 +7,7 @@ import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { svgIcon } from '../../svg/icon';
-import { geoExtent } from '../../geo';
+import { Extent } from '@id-sdk/extent';
 import { modeBrowse } from '../../modes/browse';
 import { uiCmd } from '../cmd';
 import { uiSection } from '../section';
@@ -201,7 +201,7 @@ export function uiSectionDataLayers(context) {
         ];
 
         // Only show this if the map is around Detroit..
-        var detroit = geoExtent([-83.5, 42.1], [-82.8, 42.5]);
+        var detroit = new Extent([-83.5, 42.1], [-82.8, 42.5]);
         var showVectorItems = (context.map().zoom() > 9 && detroit.contains(context.map().center()));
 
         var container = selection.selectAll('.vectortile-container')
