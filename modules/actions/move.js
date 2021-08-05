@@ -1,7 +1,10 @@
 import {
-  geoAngle, geoChooseEdge, geoPathIntersections, geoPathLength,
+  geoAngle, geoChooseEdge,
   geoVecAdd, geoVecEqual, geoVecInterp, geoVecSubtract
 } from '../geo';
+
+import { geomPathIntersections, geomPathLength } from '@id-sdk/geom';
+
 
 import { osmNode } from '../osm/node';
 import { utilArrayIntersection } from '../util';
@@ -177,8 +180,8 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
         // moving forward or backward along way?
         var p1 = [prev.loc, orig.loc, moved.loc, next.loc].map(projection);
         var p2 = [prev.loc, moved.loc, orig.loc, next.loc].map(projection);
-        var d1 = geoPathLength(p1);
-        var d2 = geoPathLength(p2);
+        var d1 = geomPathLength(p1);
+        var d2 = geomPathLength(p2);
         var insertAt = (d1 <= d2) ? movedIndex : nextIndex;
 
         // moving around closed loop?
@@ -325,7 +328,7 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
             var movedPath = movedNodes.map(function(n) { return moveNode(n.loc); });
             var unmovedNodes = graph.childNodes(graph.entity(obj.unmovedId));
             var unmovedPath = unmovedNodes.map(function(n) { return projection(n.loc); });
-            var hits = geoPathIntersections(movedPath, unmovedPath);
+            var hits = geomPathIntersections(movedPath, unmovedPath);
 
             for (var j = 0; i < hits.length; i++) {
                 if (geoVecEqual(hits[j], end)) continue;

@@ -1,6 +1,7 @@
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
-import { geoPointInPolygon, geoVecSubtract } from '../geo';
+import { geoVecSubtract } from '../geo';
+import { geomPointInPolygon } from '@id-sdk/geom';
 import { Extent } from '@id-sdk/extent';
 import { modeMove } from '../modes/move';
 import { uiCmd } from '../ui/cmd';
@@ -19,7 +20,7 @@ export function behaviorPaste(context) {
         var projection = context.projection;
         var viewport = new Extent(projection.clipExtent()).polygon();
 
-        if (!geoPointInPolygon(mouse, viewport)) return;
+        if (!geomPointInPolygon(mouse, viewport)) return;
 
         var oldIDs = context.copyIDs();
         if (!oldIDs.length) return;

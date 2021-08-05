@@ -3,7 +3,8 @@ import { services } from '../services';
 import { actionNoop } from '../actions/noop';
 import { behaviorDrag } from '../behavior/drag';
 import { behaviorEdit } from '../behavior/edit';
-import { geoVecSubtract, geoViewportEdge } from '../geo';
+import { geoVecSubtract } from '../geo';
+import { geomViewportNudge } from '@id-sdk/geom';
 import { modeSelectNote } from './select_note';
 
 
@@ -65,7 +66,7 @@ export function modeDragNote(context) {
         _lastLoc = context.projection.invert(point);
 
         doMove(d3_event);
-        var nudge = geoViewportEdge(point, context.map().dimensions());
+        var nudge = geomViewportNudge(point, context.map().dimensions());
         if (nudge) {
             startNudge(d3_event, nudge);
         } else {

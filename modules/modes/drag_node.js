@@ -19,9 +19,9 @@ import {
     geoHasLineIntersections,
     geoHasSelfIntersections,
     geoVecSubtract,
-    geoViewportEdge
 } from '../geo';
 
+import { geomViewportNudge } from '@id-sdk/geom';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
@@ -359,7 +359,7 @@ export function modeDragNode(context) {
         _lastLoc = context.projection.invert(point);
 
         doMove(d3_event, entity);
-        var nudge = geoViewportEdge(point, context.map().dimensions());
+        var nudge = geomViewportNudge(point, context.map().dimensions());
         if (nudge) {
             startNudge(d3_event, entity, nudge);
         } else {

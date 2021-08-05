@@ -1,18 +1,7 @@
 export { geoAngle } from './geom.js';
 export { geoChooseEdge } from './geom.js';
-export { geoEdgeEqual } from './geom.js';
-export { geoGetSmallestSurroundingRectangle } from './geom.js';
 export { geoHasLineIntersections } from './geom.js';
 export { geoHasSelfIntersections } from './geom.js';
-export { geoRotate } from './geom.js';
-export { geoLineIntersection } from './geom.js';
-export { geoPathHasIntersections } from './geom.js';
-export { geoPathIntersections } from './geom.js';
-export { geoPathLength } from './geom.js';
-export { geoPointInPolygon } from './geom.js';
-export { geoPolygonContainsPolygon } from './geom.js';
-export { geoPolygonIntersectsPolygon } from './geom.js';
-export { geoViewportEdge } from './geom.js';
 
 export { geoRawMercator } from './raw_mercator.js';
 

@@ -2,7 +2,7 @@ import { geoArea as d3_geoArea } from 'd3-geo';
 
 import { osmEntity } from './entity';
 import { osmJoinWays } from './multipolygon';
-import { geoPolygonContainsPolygon, geoPolygonIntersectsPolygon } from '../geo';
+import { geomPolygonContainsPolygon, geomPolygonIntersectsPolygon } from '@id-sdk/geom';
 import { Extent } from '@id-sdk/extent';
 
 
@@ -331,14 +331,14 @@ Object.assign(osmRelation.prototype, {
 
             for (o = 0; o < outers.length; o++) {
                 outer = outers[o];
-                if (geoPolygonContainsPolygon(outer, inner)) {
+                if (geomPolygonContainsPolygon(outer, inner)) {
                     return o;
                 }
             }
 
             for (o = 0; o < outers.length; o++) {
                 outer = outers[o];
-                if (geoPolygonIntersectsPolygon(outer, inner, false)) {
+                if (geomPolygonIntersectsPolygon(outer, inner, false)) {
                     return o;
                 }
             }

@@ -1,6 +1,7 @@
 import { svgPointTransform } from './helpers';
 import { svgTagClasses } from './tag_classes';
-import { geoAngle, geoLineIntersection, geoVecInterp, geoVecLength } from '../geo';
+import { geoAngle, geoVecInterp, geoVecLength } from '../geo';
+import { geomLineIntersection } from '@id-sdk/geom';
 
 
 export function svgMidpoints(projection, context) {
@@ -80,7 +81,7 @@ export function svgMidpoints(projection, context) {
                         loc = point;
                     } else {
                         for (var k = 0; k < 4; k++) {
-                            point = geoLineIntersection([a.loc, b.loc], [poly[k], poly[k + 1]]);
+                            point = geomLineIntersection([a.loc, b.loc], [poly[k], poly[k + 1]]);
                             if (point &&
                                 geoVecLength(projection(a.loc), projection(point)) > 20 &&
                                 geoVecLength(projection(b.loc), projection(point)) > 20) {

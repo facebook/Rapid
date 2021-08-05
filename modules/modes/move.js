@@ -8,7 +8,7 @@ import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
 import { behaviorEdit } from '../behavior/edit';
 import { geoVecLength, geoVecSubtract } from '../geo/vector';
-import { geoViewportEdge } from '../geo/geom';
+import { geomViewportNudge } from '@id-sdk/geom';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { utilKeybinding } from '../util';
@@ -94,7 +94,7 @@ export function modeMove(context, entityIDs, baseGraph) {
 
     function move() {
         doMove();
-        var nudge = geoViewportEdge(context.map().mouse(), context.map().dimensions());
+        var nudge = geomViewportNudge(context.map().mouse(), context.map().dimensions());
         if (nudge) {
             startNudge(nudge);
         } else {

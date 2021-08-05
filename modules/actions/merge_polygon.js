@@ -1,4 +1,4 @@
-import { geoPolygonContainsPolygon } from '../geo';
+import { geomPolygonContainsPolygon } from '@id-sdk/geom';
 import { osmJoinWays, osmRelation } from '../osm';
 import { utilArrayGroupBy, utilArrayIntersection, utilObjectOmit } from '../util';
 
@@ -45,7 +45,7 @@ export function actionMergePolygon(ids, newRelationId) {
         var contained = polygons.map(function(w, i) {
             return polygons.map(function(d, n) {
                 if (i === n) return null;
-                return geoPolygonContainsPolygon(
+                return geomPolygonContainsPolygon(
                     d.nodes.map(function(n) { return n.loc; }),
                     w.nodes.map(function(n) { return n.loc; })
                 );

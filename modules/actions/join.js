@@ -2,7 +2,7 @@ import { actionDeleteRelation } from './delete_relation';
 import { actionDeleteWay } from './delete_way';
 import { osmIsInterestingTag } from '../osm/tags';
 import { osmJoinWays } from '../osm/multipolygon';
-import { geoPathIntersections } from '../geo';
+import { geomPathIntersections } from '@id-sdk/geom';
 import { utilArrayGroupBy, utilArrayIntersection } from '../util';
 
 // RapiD
@@ -149,7 +149,7 @@ export function actionJoin(ids) {
                     .map(function(e) { return e.loc; });
                 var path2 = graph.childNodes(graph.entity(ids[j]))
                     .map(function(e) { return e.loc; });
-                var intersections = geoPathIntersections(path1, path2);
+                var intersections = geomPathIntersections(path1, path2);
 
                 // Check if intersections are just nodes lying on top of
                 // each other/the line, as opposed to crossing it
