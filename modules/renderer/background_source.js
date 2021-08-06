@@ -274,8 +274,8 @@ rendererBackgroundSource.Bing = function(data, dispatch) {
     data.template = 'https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=10555&n=z';
 
     var bing = rendererBackgroundSource(data);
-    var key = 'Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU'; // P2, JOSM, etc
-    //var key = 'Ak5oTE46TUbjRp08OFVcGpkARErDobfpuyNKa-W2mQ8wbt1K1KL8p1bIRwWwcF-Q';    // iD
+    //var key = 'Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU'; // P2, JOSM, etc
+    var key = 'Ak5oTE46TUbjRp08OFVcGpkARErDobfpuyNKa-W2mQ8wbt1K1KL8p1bIRwWwcF-Q';    // iD
 
     /*
     missing tile image strictness param (n=)
@@ -285,7 +285,7 @@ rendererBackgroundSource.Bing = function(data, dispatch) {
     */
     const strictParam = 'n';
 
-    var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?include=ImageryProviders&key=' + key;
+    var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?include=ImageryProviders&uriScheme=https&key=' + key;
     var cache = {};
     var inflight = {};
     var providers = [];
@@ -295,7 +295,7 @@ rendererBackgroundSource.Bing = function(data, dispatch) {
             let imageryResource = json.resourceSets[0].resources[0];
 
             //retrieve and prepare up to date imagery template
-            let template = imageryResource.imageUrl; //http://ecn.{subdomain}.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=10339
+            let template = imageryResource.imageUrl; //https://ecn.{subdomain}.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=10339
             let subDomains = imageryResource.imageUrlSubdomains; //["t0, t1, t2, t3"]
             let subDomainNumbers = subDomains.map((subDomain) => {
                 return subDomain.substring(1);

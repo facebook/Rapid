@@ -27,7 +27,7 @@ export function coreContext() {
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
-  context.version = '2.20.0-dev';
+  context.version = '2.20.1-dev';
   context.privacyVersion = '20201202';
 
   // iD will alter the hash so cache the parameters intended to setup the session
@@ -562,7 +562,7 @@ export function coreContext() {
 
       Object.values(services).forEach(service => {
         if (service && typeof service.init === 'function') {
-          service.init(context);
+          service.init();
         }
       });
 
