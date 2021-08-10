@@ -2,14 +2,15 @@
 import { geomLineIntersection} from '@id-sdk/geom';
 
 import {
-    geoVecAngle, geoVecDot, geoVecEqual, geoVecLength, geoVecSubtract
-} from './vector.js';
+    vecAngle, vecDot, vecEqual,
+    vecLength, vecSubtract
+} from '@id-sdk/math';
 
 
 // Return the counterclockwise angle in the range (-pi, pi)
 // between the positive X axis and the line intersecting a and b.
 export function geoAngle(a, b, projection) {
-    return geoVecAngle(projection(a.loc), projection(b.loc));
+    return vecAngle(projection(a.loc), projection(b.loc));
 }
 
 
@@ -18,7 +19,7 @@ export function geoAngle(a, b, projection) {
 // the closest vertex on that edge. Returns an object with the `index` of the
 // chosen edge, the chosen `loc` on that edge, and the `distance` to to it.
 export function geoChooseEdge(nodes, point, projection, activeID) {
-    var dist = geoVecLength;
+    var dist = vecLength;
     var points = nodes.map(function(n) { return projection(n.loc); });
     var ids = nodes.map(function(n) { return n.id; });
     var min = Infinity;
@@ -29,9 +30,9 @@ export function geoChooseEdge(nodes, point, projection, activeID) {
         if (ids[i] === activeID || ids[i + 1] === activeID) continue;
 
         var o = points[i];
-        var s = geoVecSubtract(points[i + 1], o);
-        var v = geoVecSubtract(point, o);
-        var proj = geoVecDot(v, s) / geoVecDot(s, s);
+        var s = vecSubtract(points[i + 1], o);
+        var v = vecSubtract(point, o);
+        var proj = vecDot(v, s) / vecDot(s, s);
         var p;
 
         if (proj < 0) {
@@ -126,8 +127,8 @@ export function geoHasSelfIntersections(nodes, activeID) {
             var p = actives[j];
             var q = inactives[k];
             // skip if segments share an endpoint
-            if (geoVecEqual(p[1], q[0]) || geoVecEqual(p[0], q[1]) ||
-                geoVecEqual(p[0], q[0]) || geoVecEqual(p[1], q[1]) ) {
+            if (vecEqual(p[1], q[0]) || vecEqual(p[0], q[1]) ||
+                vecEqual(p[0], q[0]) || vecEqual(p[1], q[1]) ) {
                 continue;
             }
 
@@ -135,8 +136,8 @@ export function geoHasSelfIntersections(nodes, activeID) {
             if (hit) {
                 var epsilon = 1e-8;
                 // skip if the hit is at the segment's endpoint
-                if (geoVecEqual(p[1], hit, epsilon) || geoVecEqual(p[0], hit, epsilon) ||
-                    geoVecEqual(q[1], hit, epsilon) || geoVecEqual(q[0], hit, epsilon) ) {
+                if (vecEqual(p[1], hit, epsilon) || vecEqual(p[0], hit, epsilon) ||
+                    vecEqual(q[1], hit, epsilon) || vecEqual(q[0], hit, epsilon) ) {
                     continue;
                 } else {
                     return true;

@@ -1,4 +1,4 @@
-import { geoVecInterp } from '../geo/vector';
+import { vecInterp } from '@id-sdk/math';
 import { osmNode, osmRelation, osmWay } from '../osm';
 
 
@@ -43,7 +43,7 @@ function findConnectionPoint(graph, newNode, targetWay, nodeA, nodeB) {
     var coeff = Math.abs(locA[0] - locB[0]) > Math.abs(locA[1] - locB[1])
         ? (locN[0] - locA[0]) / (locB[0] - locA[0])
         : (locN[1] - locA[1]) / (locB[1] - locA[1]);
-    var interpLoc = geoVecInterp(locA, locB, coeff);
+    var interpLoc = vecInterp(locA, locB, coeff);
 
     return {
         insertIdx: insertIdx,

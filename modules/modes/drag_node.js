@@ -14,14 +14,12 @@ import { behaviorDrag } from '../behavior/drag';
 import { behaviorEdit } from '../behavior/edit';
 import { behaviorHover } from '../behavior/hover';
 
+import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
 import {
-    geoChooseEdge,
-    geoHasLineIntersections,
-    geoHasSelfIntersections,
-    geoVecSubtract,
-} from '../geo';
+    vecSubtract,
+    geomViewportNudge
+} from '@id-sdk/math';
 
-import { geomViewportNudge } from '@id-sdk/geom';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
@@ -187,7 +185,7 @@ export function modeDragNode(context) {
         nudge = nudge || [0, 0];
 
         var currPoint = (d3_event && d3_event.point) || context.projection(_lastLoc);
-        var currMouse = geoVecSubtract(currPoint, nudge);
+        var currMouse = vecSubtract(currPoint, nudge);
         var loc = context.projection.invert(currMouse);
 
         var target, edge;

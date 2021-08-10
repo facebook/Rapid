@@ -8,8 +8,9 @@ import { actionRestrictTurn } from '../../actions/restrict_turn';
 import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 import { behaviorBreathe } from '../../behavior/breathe';
 import { Extent } from '@id-sdk/extent';
-import { geoRawMercator, geoVecScale, geoVecSubtract } from '../../geo';
+import { geoRawMercator } from '../../geo';
 import { geoZoomToScale } from '@id-sdk/geo';
+import { vecScale, vecSubtract } from '@id-sdk/vector';
 import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
 import { utilDisplayName, utilDisplayType, utilEntitySelector, utilFunctor, utilRebind } from '../../util';
@@ -214,7 +215,7 @@ export function uiFieldRestrictions(field, context) {
         // var d = utilGetDimensions(selection);
         var sdims = utilGetDimensions(context.container().select('.sidebar'));
         var d = [ sdims[0] - 50, 370 ];
-        var c = geoVecScale(d, 0.5);
+        var c = vecScale(d, 0.5);
         var z = 22;
 
         projection.scale(geoZoomToScale(z));
@@ -243,7 +244,7 @@ export function uiFieldRestrictions(field, context) {
         extentCenter[1] = extentCenter[1] - padTop;
 
         projection
-            .translate(geoVecSubtract(c, extentCenter))
+            .translate(vecSubtract(c, extentCenter))
             .clipExtent([[0, 0], d]);
 
         var drawLayers = svgLayers(projection, context).only(['osm','touch']).dimensions(d);

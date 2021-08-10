@@ -3,10 +3,9 @@ import RBush from 'rbush';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 
-import { Projection, Tiler } from '@id-sdk/math';
+import { Projection, Tiler, vecAdd, vecScale} from '@id-sdk/math';
 
 import { fileFetcher } from '../core/file_fetcher';
-import { geoVecAdd, geoVecScale } from '../geo';
 import { QAItem } from '../osm';
 import { serviceOsm } from './index';
 import { t } from '../core/localizer';
@@ -69,10 +68,10 @@ function linkEntity(d) {
 function pointAverage(points) {
   if (points.length) {
     const sum = points.reduce(
-      (acc, point) => geoVecAdd(acc, [point.lon, point.lat]),
+      (acc, point) => vecAdd(acc, [point.lon, point.lat]),
       [0,0]
     );
-    return geoVecScale(sum, 1 / points.length);
+    return vecScale(sum, 1 / points.length);
   } else {
     return [0,0];
   }
@@ -114,7 +113,7 @@ function preventCoincident(loc, bumpUp) {
     let delta = coincident ? [0.00001, 0] :
         bumpUp ? [0, 0.00001] :
         [0, 0];
-    loc = geoVecAdd(loc, delta);
+    loc = vecAdd(loc, delta);
     let bbox = new Extent(loc).bbox();
     coincident = _cache.rtree.search(bbox).length;
   } while (coincident);
