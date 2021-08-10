@@ -160,7 +160,7 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
 
         var start, end;
         if (delta) {
-            start = projection(...cache.startLoc[nodeId]);
+            start = projection(cache.startLoc[nodeId]);
             end = projection.invert(vecAdd(start, delta));
         } else {
             end = cache.startLoc[nodeId];
