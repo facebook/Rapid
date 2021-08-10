@@ -7,8 +7,8 @@ import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { prefs } from '../core/preferences';
+import { geoRawMercator} from '../geo';
 import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
-import { Projection } from '@id-sdk/projection';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilEntityAndDeepMemberIDs } from '../util/util';
@@ -774,13 +774,13 @@ export function rendererMap(context) {
         var z = map.zoom();
         if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z && !force) return false;
 
-        var proj = new Projection().transform(projection.transform());  // copy projection
+        var proj = geoRawMercator().transform(projection.transform());  // copy projection
 
         var k2 = clamp(geoZoomToScale(z2, TILESIZE), kMin, kMax);
         proj.scale(k2);
 
         var t = proj.translate();
-        var point = proj.project(loc2);
+        var point = proj(loc2);
 
         var center = pxCenter();
         t[0] += center[0] - point[0];
@@ -821,7 +821,7 @@ export function rendererMap(context) {
         _dimensions = val;
         drawLayers.dimensions(_dimensions);
         context.background().dimensions(_dimensions);
-        projection.dimensions([[0, 0], _dimensions]);
+        projection.clipExtent([[0, 0], _dimensions]);
         _getMouseCoords = utilFastMouse(supersurface.node());
 
         scheduleRedraw();
@@ -861,7 +861,7 @@ export function rendererMap(context) {
     map.unobscuredCenterZoomEase = function(loc, zoom) {
         var offset = map.unobscuredOffsetPx();
 
-        var proj = new Projection().transform(projection.transform());  // copy projection
+        var proj = geoRawMercator().transform(projection.transform());  // copy projection
         // use the target zoom to calculate the offset center
         proj.scale(geoZoomToScale(zoom, TILESIZE));
 

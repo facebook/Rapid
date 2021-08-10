@@ -8,7 +8,7 @@ import { actionRestrictTurn } from '../../actions/restrict_turn';
 import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 import { behaviorBreathe } from '../../behavior/breathe';
 import { Extent } from '@id-sdk/extent';
-import { Projection } from '@id-sdk/projection';
+import { geoRawMercator } from '../../geo';
 import { geoZoomToScale } from '@id-sdk/geo';
 import { vecScale, vecSubtract } from '@id-sdk/vector';
 import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
@@ -205,7 +205,7 @@ export function uiFieldRestrictions(field, context) {
 
         var vgraph = _intersection.graph;
         var filter = utilFunctor(true);
-        var projection = new Projection();
+        var projection = geoRawMercator();
 
         // Reflow warning: `utilGetDimensions` calls `getBoundingClientRect`
         // Instead of asking the restriction-container for its dimensions,

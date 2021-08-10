@@ -66,7 +66,7 @@ export function modeMove(context, entityIDs, baseGraph) {
         }
 
         var currMouse = context.map().mouse();
-        var origMouse = context.projection.project(_origin);
+        var origMouse = context.projection(_origin);
         var delta = vecSubtract(vecSubtract(currMouse, origMouse), nudge);
 
         fn(actionMove(entityIDs, delta, context.projection, _cache));

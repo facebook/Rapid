@@ -66,7 +66,7 @@ export function svgMarkerSegments(projection, graph, dt,
         var i = 0;
         var offset = dt;
         var segments = [];
-        var clip = d3_geoIdentity().clipExtent(projection.dimensions()).stream;
+        var clip = d3_geoIdentity().clipExtent(projection.clipExtent()).stream;
         var coordinates = graph.childNodes(entity).map(function(n) { return n.loc; });
         var a, b;
 
@@ -146,7 +146,7 @@ export function svgPath(projection, graph, isArea) {
 
     var cache = {};
     var padding = isArea ? 65 : 5;
-    var viewport = projection.dimensions();
+    var viewport = projection.clipExtent();
     var paddedExtent;
 
     if (viewport.min) {
@@ -162,7 +162,7 @@ export function svgPath(projection, graph, isArea) {
     }
 
     var clip = d3_geoIdentity().clipExtent(paddedExtent).stream;
-    var project = projection.getStream();
+    var project = projection.stream;
     var path = d3_geoPath()
         .projection({stream: function(output) { return project(clip(output)); }});
 
@@ -193,7 +193,7 @@ export function svgPath(projection, graph, isArea) {
 export function svgPointTransform(projection) {
     var svgpoint = function(entity) {
         // http://jsperf.com/short-array-join
-        var pt = projection.project(entity.loc);
+        var pt = projection(entity.loc);
         return 'translate(' + pt[0] + ',' + pt[1] + ')';
     };
 

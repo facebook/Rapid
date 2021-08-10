@@ -46,7 +46,7 @@ export function uiFieldAddress(field, context) {
         var streets = context.history().intersects(box)
             .filter(isAddressable)
             .map(function(d) {
-                var loc = context.projection.project([
+                var loc = context.projection([
                     (extent.min[0] + extent.max[0]) / 2,
                     (extent.min[1] + extent.max[1]) / 2
                 ]);

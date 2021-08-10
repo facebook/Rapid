@@ -172,7 +172,7 @@ export default {
         var source = _vtCache[sourceID];
         if (!source) return [];
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.dimensions());
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
         var tiles = tiler.getTiles(proj).tiles;
         var seen = {};
         var results = [];
@@ -203,7 +203,7 @@ export default {
             source = this.addSource(sourceID, template);
         }
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.dimensions());
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
         var tiles = tiler.getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed

@@ -58,7 +58,7 @@ export function validationUnsquareWay(context) {
         var storedDegreeThreshold = prefs('validate-square-degrees');
         var degreeThreshold = isNaN(storedDegreeThreshold) ? DEFAULT_DEG_THRESHOLD : parseFloat(storedDegreeThreshold);
 
-        var points = nodes.map(function(node) { return context.projection.project(node.loc); });
+        var points = nodes.map(function(node) { return context.projection(node.loc); });
         if (!geoOrthoCanOrthogonalize(points, isClosed, epsilon, degreeThreshold, true)) return [];
 
         var autoArgs;

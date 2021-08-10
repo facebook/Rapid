@@ -13,7 +13,7 @@ import { prefs } from './preferences';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
-import { Projection } from '@id-sdk/projection';
+import { geoRawMercator } from '../geo/raw_mercator';
 import { modeSelect } from '../modes/select';
 import { presetManager } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
@@ -498,8 +498,8 @@ export function coreContext() {
 
 
   /* Projections */
-  context.projection = new Projection();
-  context.curtainProjection = new Projection();
+  context.projection = geoRawMercator();
+  context.curtainProjection = geoRawMercator();
 
   /* RapiD */
   let _rapidContext;

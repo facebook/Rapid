@@ -114,7 +114,7 @@ export default {
     };
 
     // determine the needed tiles to cover the view
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.dimensions());
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
     const tiles = tiler.getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed
@@ -299,7 +299,7 @@ export default {
 
   // Get all cached QAItems covering the viewport
   getItems(projection) {
-    const viewport = projection.dimensions();
+    const viewport = projection.clipExtent();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();

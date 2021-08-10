@@ -18,7 +18,7 @@ export function behaviorPaste(context) {
         var baseGraph = context.graph();
         var mouse = context.map().mouse();
         var projection = context.projection;
-        var viewport = new Extent(projection.dimensions()).polygon();
+        var viewport = new Extent(projection.clipExtent()).polygon();
 
         if (!geomPointInPolygon(mouse, viewport)) return;
 
