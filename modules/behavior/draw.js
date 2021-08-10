@@ -216,7 +216,7 @@ export function behaviorDraw(context) {
         // get the current mouse position
         var loc = context.map().mouse() ||
             // or the map center if the mouse has never entered the map
-            context.projection(context.map().center());
+            context.projection.project(context.map().center());
         click(d3_event, loc);
     }
 

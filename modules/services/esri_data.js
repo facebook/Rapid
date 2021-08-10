@@ -245,7 +245,7 @@ export default {
     const cache = ds.cache;
     const tree = ds.tree;
     const graph = ds.graph;
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+    const proj = new Projection().transform(projection.transform()).dimensions(projection.dimensions());
     const tiles = tiler.getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed

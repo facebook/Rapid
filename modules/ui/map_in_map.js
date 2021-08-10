@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { t } from '../core/localizer';
-import { geoRawMercator, } from '../geo';
+import { Projection } from '@id-sdk/projection';
 import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
 import { vecScale, vecSubtract } from '@id-sdk/vector';
 import { rendererTileLayer } from '../renderer';
@@ -17,7 +17,7 @@ export function uiMapInMap(context) {
     function mapInMap(selection) {
         var backgroundLayer = rendererTileLayer(context);
         var overlayLayers = {};
-        var projection = geoRawMercator();
+        var projection = new Projection();
         var dataLayer = svgData(projection, context).showLabels(false);
         var debugLayer = svgDebug(projection, context);
         var zoom = d3_zoom()

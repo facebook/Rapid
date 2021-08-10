@@ -292,7 +292,7 @@ export function svgLabels(projection, context) {
                     markerPadding = 0;
                 }
 
-                var coord = projection(entity.loc);
+                var coord = projection.project(entity.loc);
                 var nodePadding = 10;
                 var bbox = {
                     minX: coord[0] - nodePadding,
@@ -401,7 +401,7 @@ export function svgLabels(projection, context) {
 
             var textDirection = localizer.textDirection();
 
-            var coord = projection(entity.loc);
+            var coord = projection.project(entity.loc);
             var textPadding = 2;
             var offset = pointOffsets[textDirection];
             var p = {
@@ -437,7 +437,7 @@ export function svgLabels(projection, context) {
 
 
         function getLineLabel(entity, width, height) {
-            var viewport = new Extent(context.projection.clipExtent()).polygon();
+            var viewport = new Extent(context.projection.dimensions()).polygon();
             var points = graph.childNodes(entity)
                 .map(function(node) { return projection(node.loc); });
             var length = geomPathLength(points);
@@ -550,7 +550,7 @@ export function svgLabels(projection, context) {
         function getAreaLabel(entity, width, height) {
             var centroid = path.centroid(entity.asGeoJSON(graph));
             var extent = entity.extent(graph);
-            var areaWidth = projection(extent.max)[0] - projection(extent.min)[0];
+            var areaWidth = projection.project(extent.max)[0] - projection.project(extent.min)[0];
 
             if (isNaN(centroid[0]) || areaWidth < 20) return;
 

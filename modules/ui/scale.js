@@ -35,7 +35,7 @@ export function uiScale(context) {
         }
 
         dLon = geoMetersToLon(scale.dist / conversion, lat);
-        scale.px = Math.round(projection([loc1[0] + dLon, loc1[1]])[0]);
+        scale.px = Math.round(projection.project([loc1[0] + dLon, loc1[1]])[0]);
 
         scale.text = displayLength(scale.dist / conversion, isImperial);
 

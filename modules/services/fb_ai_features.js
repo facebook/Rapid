@@ -307,7 +307,7 @@ export default {
             _datasets[datasetID] = ds;
         }
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+        var proj = new Projection().transform(projection.transform()).dimensions(projection.dimensions());
         var tiles = tiler.getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed

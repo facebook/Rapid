@@ -189,7 +189,7 @@ export function uiEditMenu(context) {
 
         if (!_menu || _menu.empty()) return;
 
-        var anchorLoc = context.projection(_anchorLocLonLat);
+        var anchorLoc = context.projection.project(_anchorLocLonLat);
 
         var viewport = context.surfaceRect();
 
