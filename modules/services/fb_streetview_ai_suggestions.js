@@ -369,7 +369,7 @@ function parseXML(dataset, xml, callback, options) {
 
         var uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
         if (options.skipSeen) {
-            if (cache.seen[uid]) return null;  // avoid reparsing a "seen' entity
+            if (cache.seen[uid]) return null;  // avoid reparsing a 'seen' entity
             cache.seen[uid] = true;
         }
 
