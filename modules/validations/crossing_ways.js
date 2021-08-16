@@ -3,10 +3,10 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { geoAngle, geoVecAngle, geoVecLength } from '../geo';
+import { geoAngle,  } from '../geo';
+import { vecAngle, vecLength, geomLineIntersection } from '@id-sdk/math';
 
 import { geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint, geoSphericalDistance, geoMetersToLat, geoMetersToLon } from '@id-sdk/geo';
-import { geomLineIntersection } from '@id-sdk/geom';
 
 import { osmNode } from '../osm/node';
 import { osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
@@ -577,10 +577,10 @@ export function validationCrossingWays(context) {
                     var projEdgeNode1 = geomToProj(edgeNodes[0].loc);
                     var projEdgeNode2 = geomToProj(edgeNodes[1].loc);
 
-                    var projectedAngle = geoVecAngle(projEdgeNode1, projEdgeNode2);
+                    var projectedAngle = vecAngle(projEdgeNode1, projEdgeNode2);
 
                     var projectedCrossingLoc = geomToProj(crossingLoc);
-                    var linearToSphericalMetersRatio = geoVecLength(projEdgeNode1, projEdgeNode2) /
+                    var linearToSphericalMetersRatio = vecLength(projEdgeNode1, projEdgeNode2) /
                         geoSphericalDistance(edgeNodes[0].loc, edgeNodes[1].loc);
 
                     function locSphericalDistanceFromCrossingLoc(angle, distanceMeters) {

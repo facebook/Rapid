@@ -3,10 +3,9 @@ import RBush from 'rbush';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 
-import { Projection, Tiler } from '@id-sdk/math';
+import { Projection, Tiler, vecAdd} from '@id-sdk/math';
 
 import { fileFetcher } from '../core/file_fetcher';
-import { geoVecAdd } from '../geo';
 import { QAItem } from '../osm';
 import { t } from '../core/localizer';
 import { utilRebind, utilQsString } from '../util';
@@ -380,7 +379,7 @@ export default {
             do {
               // first time, move marker up. after that, move marker right.
               let delta = coincident ? [0.00001, 0] : [0, 0.00001];
-              loc = geoVecAdd(loc, delta);
+              loc = vecAdd(loc, delta);
               let bbox = new Extent(loc).bbox();
               coincident = _cache.rtree.search(bbox).length;
             } while (coincident);

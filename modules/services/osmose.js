@@ -9,7 +9,7 @@ import { Tiler } from '@id-sdk/tiler';
 
 import { fileFetcher } from '../core/file_fetcher';
 import { localizer } from '../core/localizer';
-import { geoVecAdd } from '../geo';
+import { vecAdd } from '@id-sdk/math';
 import { QAItem } from '../osm';
 import { utilRebind, utilQsString } from '../util';
 import { Extent } from '@id-sdk/extent';
@@ -58,7 +58,7 @@ function preventCoincident(loc) {
   do {
     // first time, move marker up. after that, move marker right.
     let delta = coincident ? [0.00001, 0] : [0, 0.00001];
-    loc = geoVecAdd(loc, delta);
+    loc = vecAdd(loc, delta);
     let bbox = new Extent(loc).bbox();
     coincident = _cache.rtree.search(bbox).length;
   } while (coincident);

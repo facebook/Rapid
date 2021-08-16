@@ -1,5 +1,5 @@
 import { t, localizer } from '../../core/localizer';
-import { geoVecNormalizedDot } from '../../geo';
+import { vecNormalizedDot } from '@id-sdk/math';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { uiCmd } from '../cmd';
 
@@ -240,7 +240,7 @@ export function isMostlySquare(points) {
         var origin = points[i];
         var b = points[(i + 1) % points.length];
 
-        var dotp = geoVecNormalizedDot(a, b, origin);
+        var dotp = vecNormalizedDot(a, b, origin);
         var mag = Math.abs(dotp);
         if (mag > lowerBound && mag < upperBound) {
             return false;

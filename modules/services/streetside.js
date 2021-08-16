@@ -8,9 +8,9 @@ import RBush from 'rbush';
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 
-import { geoVecLength } from '../geo';
-import { geomPointInPolygon, geomRotatePoints } from '@id-sdk/geom';
+import { vecLength } from '@id-sdk/vector';
 
+import { geomRotatePoints, geomPointInPolygon } from '@id-sdk/geom';
 import { geoMetersToLat, geoMetersToLon, geoScaleToZoom } from '@id-sdk/geo';
 import { Extent } from '@id-sdk/extent';
 
@@ -657,7 +657,7 @@ export default {
             if (d.data.key === selected.key) return;
             if (!geomPointInPolygon(d.data.loc, poly)) return;
 
-            let dist = geoVecLength(d.data.loc, selected.loc);
+            let dist = vecLength(d.data.loc, selected.loc);
             let theta = selected.ca - d.data.ca;
             let minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
             if (minTheta > 20) {

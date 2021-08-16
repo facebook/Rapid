@@ -1,13 +1,10 @@
-import { geoVecInterp, geoHasSelfIntersections, geoAngle
-} from '../geo';
+import { geoHasSelfIntersections, geoAngle } from '../geo';
 
 import {
   geoMetersToLat, geoMetersToLon,
-  geoSphericalDistance, geoSphericalClosestPoint
-} from '@id-sdk/geo';
-
-import { geomLineIntersection } from '@id-sdk/geom';
-
+  geoSphericalDistance, geoSphericalClosestPoint,
+  geomLineIntersection, vecInterp
+} from '@id-sdk/math';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
@@ -297,7 +294,7 @@ export function validationAlmostJunction(context) {
       // first, extend the edge of [midNode -> tipNode] by EXTEND_TH_METERS and find the "extended tip" location
       const edgeLen = geoSphericalDistance(midNode.loc, tipNode.loc);
       const t = EXTEND_TH_METERS / edgeLen + 1.0;
-      const extTipLoc = geoVecInterp(midNode.loc, tipNode.loc, t);
+      const extTipLoc = vecInterp(midNode.loc, tipNode.loc, t);
 
       // then, check if the extension part [tipNode.loc -> extTipLoc] intersects any other ways
       const segmentInfos = tree.waySegments(queryExtent, graph);
