@@ -3,7 +3,9 @@ describe('iD.validations.mismatched_geometry', function () {
 
     beforeEach(function() {
         _savedAreaKeys = iD.osmAreaKeys;
-        context = iD.coreContext().init();
+        context = iD.coreContext()
+            .assetPath('../dist/')
+            .init();
     });
 
     afterEach(function() {

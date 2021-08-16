@@ -11,7 +11,9 @@ describe('iD.serviceOpenstreetcam', function () {
     });
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = iD.coreContext()
+            .assetPath('../dist/')
+            .init();
         context.projection
             .scale(sdk.geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0

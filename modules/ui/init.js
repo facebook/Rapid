@@ -442,7 +442,7 @@ export function uiInit(context) {
 //               } else if (prefs('sawRapidSplash')) {
 //                    context.container()
 //                        .call(uiRapidWhatsNew(context));
-                } else if (osm.authenticated()) {
+                } else if (osm && osm.authenticated()) {
                     context.container()
                         .call(uiRapidSplash(context));
                 }
