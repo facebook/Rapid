@@ -616,67 +616,6 @@ export function coreValidator(context) {
         return true;
       }
     }
-<<<<<<< HEAD
-  }
-
-
-  // `entityIDsToValidate()`   (private)
-  // Collects the complete list of entityIDs related to the input entityIDs.
-  //
-  // Arguments
-  //   `entityIDs` - Set or Array containing entityIDs.
-  //   `graph` - graph containing the entities
-  //
-  // Returns
-  //   Set containing entityIDs
-  //
-  function entityIDsToValidate(entityIDs, graph) {
-    let seen = new Set();
-    let collected = new Set();
-
-    entityIDs.forEach(entityID => {
-      // keep `seen` separate from `collected` because an `entityID`
-      // could have been added to `collected` as a related entity through an earlier pass
-      if (seen.has(entityID)) return;
-      seen.add(entityID);
-
-      const entity = graph.hasEntity(entityID);
-      if (!entity) return;
-
-      collected.add(entityID);   // collect self
-
-      let checkParentRels = [entity];
-
-      if (entity.type === 'node') {
-        graph.parentWays(entity).forEach(parentWay => {
-          collected.add(parentWay.id);    // collect parent ways
-          checkParentRels.push(parentWay);
-        });
-
-      } else if (entity.type === 'relation' && entity.isMultipolygon()) {
-        entity.members.forEach(member => collected.add(member.id));  // collect members
-
-      } else if (entity.type === 'way') {
-        entity.nodes.forEach(nodeID => {
-          collected.add(nodeID);    // collect child nodes
-          graph._parentWays[nodeID].forEach(wayID => collected.add(wayID));  // collect connected ways
-        });
-      }
-
-      checkParentRels.forEach(entity => {    // collect parent relations
-        if (entity.type !== 'relation') {    // but not super-relations
-          graph.parentRelations(entity).forEach(parentRelation => {
-            if (parentRelation.isMultipolygon()) {
-              collected.add(parentRelation.id);
-            }
-          });
-        }
-      });
-    });
-
-    return collected;
-=======
->>>>>>> upstream/validation_8632_etc
   }
 
 
