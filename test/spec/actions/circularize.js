@@ -1,11 +1,19 @@
 describe('iD.actionCircularize', function () {
     var projection = d3.geoMercator().scale(150);
 
+    // For now, copy this here, since it is not exported under the iD namespace anymore
+    function vecLength(a, b) {
+        b = b || [0, 0];
+        var x = a[0] - b[0];
+        var y = a[1] - b[1];
+        return Math.sqrt(x * x + y * y);
+    }
+
     function isCircular(id, graph) {
         var points = graph.childNodes(graph.entity(id))
                 .map(function (n) { return projection(n.loc); }),
             centroid = d3.polygonCentroid(points),
-            radius = iD.vecLength(centroid, points[0]),
+            radius = vecLength(centroid, points[0]),
             estArea = Math.PI * radius * radius,
             trueArea = Math.abs(d3.polygonArea(points)),
             pctDiff = (estArea - trueArea) / estArea;
@@ -31,10 +39,10 @@ describe('iD.actionCircularize', function () {
             vector2 = [point2[0] - center[0], point2[1] - center[1]],
             distance;
 
-        distance = iD.vecLength(vector1, [0, 0]);
+        distance = vecLength(vector1, [0, 0]);
         vector1 = [vector1[0] / distance, vector1[1] / distance];
 
-        distance = iD.vecLength(vector2, [0, 0]);
+        distance = vecLength(vector2, [0, 0]);
         vector2 = [vector2[0] / distance, vector2[1] / distance];
 
         return 180 / Math.PI * Math.acos(vector1[0] * vector2[0] + vector1[1] * vector2[1]);
@@ -106,7 +114,7 @@ describe('iD.actionCircularize', function () {
         graph = iD.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
-        expect(iD.vecLength(graph.entity('d').loc, [2, -2])).to.be.lt(0.5);
+        expect(vecLength(graph.entity('d').loc, [2, -2])).to.be.lt(0.5);
     });
 
     it('creates circle respecting min-angle limit', function() {
