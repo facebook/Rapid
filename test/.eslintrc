@@ -8,6 +8,7 @@
         "fakeFetch": true,
         "happen": false,
         "iD": false,
+        "sdk": false,
         "sinon": false
     },
     "rules": {

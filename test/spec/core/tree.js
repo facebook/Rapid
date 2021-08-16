@@ -1,6 +1,3 @@
-import { Extent } from '@id-sdk/extent';
-
-
 describe('iD.coreTree', function () {
     describe('#rebase', function() {
         it('adds entities to the tree', function() {
@@ -11,14 +8,14 @@ describe('iD.coreTree', function () {
             graph.rebase([node], [graph]);
             tree.rebase([node]);
 
-            expect(tree.intersects(new Extent([0, 0], [2, 2]), graph)).to.eql([node]);
+            expect(tree.intersects(new sdk.Extent([0, 0], [2, 2]), graph)).to.eql([node]);
         });
 
         it('is idempotent', function() {
             var graph = iD.coreGraph(),
                 tree = iD.coreTree(graph),
                 node = iD.osmNode({id: 'n', loc: [1, 1]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph.rebase([node], [graph]);
             tree.rebase([node]);
@@ -36,13 +33,13 @@ describe('iD.coreTree', function () {
                 node_ = node.update({loc: [10, 10]}),
                 g = graph.replace(node_);
 
-            expect(tree.intersects(new Extent([9, 9], [11, 11]), g)).to.eql([node_]);
+            expect(tree.intersects(new sdk.Extent([9, 9], [11, 11]), g)).to.eql([node_]);
 
             graph.rebase([node], [graph]);
             tree.rebase([node]);
 
-            expect(tree.intersects(new Extent([0, 0], [2, 2]), g)).to.eql([]);
-            expect(tree.intersects(new Extent([0, 0], [11, 11]), g)).to.eql([node_]);
+            expect(tree.intersects(new sdk.Extent([0, 0], [2, 2]), g)).to.eql([]);
+            expect(tree.intersects(new sdk.Extent([0, 0], [11, 11]), g)).to.eql([node_]);
         });
 
         it('does not error on self-referencing relations', function() {
@@ -57,7 +54,7 @@ describe('iD.coreTree', function () {
             graph.rebase([node, relation], [graph]);
             tree.rebase([relation]);
 
-            expect(tree.intersects(new Extent([0, 0], [2, 2]), graph)).to.eql([relation]);
+            expect(tree.intersects(new sdk.Extent([0, 0], [2, 2]), graph)).to.eql([relation]);
         });
 
         it('adjusts entities that are force-rebased', function() {
@@ -72,7 +69,7 @@ describe('iD.coreTree', function () {
             graph.rebase([node], [graph], true);
             tree.rebase([node], true);
 
-            expect(tree.intersects(new Extent([0, 0], [2, 2]), graph)).to.eql([]);
+            expect(tree.intersects(new sdk.Extent([0, 0], [2, 2]), graph)).to.eql([]);
         });
     });
 
@@ -82,7 +79,7 @@ describe('iD.coreTree', function () {
                 tree = iD.coreTree(graph),
                 n1 = iD.osmNode({loc: [1, 1]}),
                 n2 = iD.osmNode({loc: [3, 3]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph = graph.replace(n1).replace(n2);
             expect(tree.intersects(extent, graph)).to.eql([n1]);
@@ -94,7 +91,7 @@ describe('iD.coreTree', function () {
                 n1 = iD.osmNode({id: 'n1', loc: [0, 0]}),
                 n2 = iD.osmNode({id: 'n2', loc: [1, 1]}),
                 relation = iD.osmRelation({id: 'r', members: [{id: 'n1'}, {id: 'n2'}]}),
-                extent = new Extent([0.5, 0.5], [1.5, 1.5]);
+                extent = new sdk.Extent([0.5, 0.5], [1.5, 1.5]);
 
             graph.rebase([relation, n1], [graph]);
             tree.rebase([relation, n1]);
@@ -112,7 +109,7 @@ describe('iD.coreTree', function () {
                 node = iD.osmNode({id: 'n', loc: [0.5, 0.5]}),
                 way = iD.osmWay({nodes: ['n']}),
                 graph = base.replace(way),
-                extent = new Extent([0, 0], [1, 1]);
+                extent = new sdk.Extent([0, 0], [1, 1]);
 
             expect(tree.intersects(extent, graph)).to.eql([]);
 
@@ -126,7 +123,7 @@ describe('iD.coreTree', function () {
                 tree = iD.coreTree(graph),
                 node = iD.osmNode({id: 'n', loc: [1, 1]}),
                 way = iD.osmWay({nodes: ['n']}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph = graph.replace(node).replace(way);
             expect(tree.intersects(extent, graph)).to.eql([node, way]);
@@ -140,7 +137,7 @@ describe('iD.coreTree', function () {
                 tree = iD.coreTree(graph),
                 node = iD.osmNode({id: 'n', loc: [1, 1]}),
                 relation = iD.osmRelation({members: [{type: 'node', id: 'n'}]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph = graph.replace(node).replace(relation);
             expect(tree.intersects(extent, graph)).to.eql([node, relation]);
@@ -155,7 +152,7 @@ describe('iD.coreTree', function () {
                 node = iD.osmNode({id: 'n', loc: [1, 1]}),
                 way = iD.osmWay({id: 'w', nodes: ['n']}),
                 relation = iD.osmRelation({members: [{type: 'multipolygon', id: 'w'}]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph = graph.replace(node).replace(way).replace(relation);
             expect(tree.intersects(extent, graph)).to.eql([node, way, relation]);
@@ -170,7 +167,7 @@ describe('iD.coreTree', function () {
                 n1 = iD.osmNode({id: 'n1', loc: [1, 1]}),
                 n2 = iD.osmNode({id: 'n2', loc: [3, 3]}),
                 way = iD.osmWay({nodes: ['n1', 'n2']}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph = graph.replace(n1).replace(n2).replace(way);
             expect(tree.intersects(extent, graph)).to.eql([n1, way]);
@@ -186,7 +183,7 @@ describe('iD.coreTree', function () {
                 n1 = iD.osmNode({id: 'n1', loc: [1, 1]}),
                 n2 = iD.osmNode({id: 'n2', loc: [3, 3]}),
                 way = iD.osmWay({id: 'w1', nodes: ['n1', 'n2']}),
-                extent = new Extent([0, 0], [4, 4]);
+                extent = new sdk.Extent([0, 0], [4, 4]);
 
             graph = graph.replace(n1).replace(n2).replace(way);
             expect(tree.intersects(extent, graph)).to.eql([n1, n2, way]);
@@ -200,7 +197,7 @@ describe('iD.coreTree', function () {
             var graph = iD.coreGraph(),
                 tree = iD.coreTree(graph),
                 node = iD.osmNode({loc: [1, 1]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             graph = graph.replace(node);
             expect(tree.intersects(extent, graph)).to.eql([node]);
@@ -213,7 +210,7 @@ describe('iD.coreTree', function () {
             var base = iD.coreGraph(),
                 tree = iD.coreTree(base),
                 node = iD.osmNode({id: 'n', loc: [1, 1]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             var graph = base.replace(node).remove(node);
             expect(tree.intersects(extent, graph)).to.eql([]);
@@ -229,7 +226,7 @@ describe('iD.coreTree', function () {
                 node = iD.osmNode({id: 'n', loc: [1, 1]}),
                 r1   = iD.osmRelation({id: 'r1', members: [{id: 'n'}]}),
                 r2   = iD.osmRelation({id: 'r2', members: [{id: 'r1'}]}),
-                extent = new Extent([0, 0], [2, 2]);
+                extent = new sdk.Extent([0, 0], [2, 2]);
 
             var graph = base.replace(r1).replace(r2);
             expect(tree.intersects(extent, graph)).to.eql([]);

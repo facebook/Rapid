@@ -1,6 +1,3 @@
-import { geoSphericalDistance } from '@id-sdk/geo';
-
-
 describe('iD.actionOrthogonalize', function () {
     var projection = function (l) { return l; };
     projection.invert = projection;
@@ -153,9 +150,9 @@ describe('iD.actionOrthogonalize', function () {
                     iD.osmNode({id: 'd', loc: tests[i][3]}),
                     iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
-                var initialWidth = geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
+                var initialWidth = sdk.geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
                 graph = iD.actionOrthogonalize('-', projection)(graph);
-                var finalWidth = geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
+                var finalWidth = sdk.geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
                 expect(finalWidth / initialWidth).within(0.90, 1.10);
             }
         });

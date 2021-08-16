@@ -1,6 +1,3 @@
-import { geoZoomToScale } from '@id-sdk/geo';
-
-
 describe('iD.serviceMapillary', function() {
     var dimensions = [64, 64];
     var context, server, mapillary;
@@ -17,7 +14,7 @@ describe('iD.serviceMapillary', function() {
     beforeEach(function() {
         context = iD.coreContext().assetPath('../dist/').init();
         context.projection
-            .scale(geoZoomToScale(14))
+            .scale(sdk.geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0
             .clipExtent([[0,0], dimensions]);
 

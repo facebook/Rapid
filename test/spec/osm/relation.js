@@ -1,5 +1,3 @@
-import { Extent } from '@id-sdk/extent';
-
 describe('iD.osmRelation', function () {
     if (iD.debug) {
         it('freezes nodes', function () {
@@ -135,7 +133,7 @@ describe('iD.osmRelation', function () {
         it('does not error on self-referencing relations', function () {
             var r = iD.osmRelation();
             r = r.addMember({id: r.id});
-            expect(r.extent(iD.coreGraph([r]))).to.eql(new Extent());
+            expect(r.extent(iD.coreGraph([r]))).to.eql(new sdk.Extent());
         });
     });
 

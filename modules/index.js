@@ -25,7 +25,7 @@ export let debug = false;
 
 // Reexport just what our tests use, see #4379
 import * as D3 from 'd3';
-export let d3 = {
+export const d3 = {
   dispatch:  D3.dispatch,
   geoMercator: D3.geoMercator,
   geoProjection: D3.geoProjection,
@@ -34,4 +34,13 @@ export let d3 = {
   select: D3.select,
   selectAll: D3.selectAll,
   timerFlush: D3.timerFlush
+};
+
+// Reexport the sdk things that our tests use too
+import * as SDK from '@id-sdk/math';
+export const sdk = {
+  Extent: SDK.Extent,
+  geoSphericalDistance: SDK.geoSphericalDistance,
+  geoZoomToScale: SDK.geoZoomToScale,
+  vecLength: SDK.vecLength
 };

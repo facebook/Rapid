@@ -1,14 +1,9 @@
-import { geoZoomToScale } from '@id-sdk/geo';
-
-
-import { Extent } from '@id-sdk/extent';
-
 describe('iD.svgVertices', function () {
     var context;
     var surface;
     var projection = d3.geoProjection(function(x, y) { return [x, -y]; })
         .translate([0, 0])
-        .scale(geoZoomToScale(17))
+        .scale(sdk.geoZoomToScale(17))
         .clipExtent([[0, 0], [Infinity, Infinity]]);
 
 
@@ -27,7 +22,7 @@ describe('iD.svgVertices', function () {
         var way2 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}});
         var graph = iD.coreGraph([node, way1, way2]);
         var filter = function() { return true; };
-        var extent = new Extent([0, 0], [1, 1]);
+        var extent = new sdk.Extent([0, 0], [1, 1]);
 
         surface.call(iD.svgVertices(projection, context), graph, [node], filter, extent);
         expect(surface.select('.vertex').classed('shared')).to.be.true;

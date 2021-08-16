@@ -1,6 +1,3 @@
-import { geoZoomToScale } from '@id-sdk/geo';
-
-
 describe('iD.serviceOsm', function () {
     var context, connection, spy;
     var serverFetch, serverXHR;
@@ -264,7 +261,7 @@ describe('iD.serviceOsm', function () {
         beforeEach(function() {
             var dimensions = [64, 64];
             context.projection
-                .scale(geoZoomToScale(20))
+                .scale(sdk.geoZoomToScale(20))
                 .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
                 .clipExtent([[0,0], dimensions]);
         });
@@ -602,7 +599,7 @@ describe('iD.serviceOsm', function () {
         beforeEach(function() {
             var dimensions = [64, 64];
             context.projection
-                .scale(geoZoomToScale(14))
+                .scale(sdk.geoZoomToScale(14))
                 .translate([-116508, 0])  // 10,0
                 .clipExtent([[0,0], dimensions]);
         });
@@ -627,7 +624,7 @@ describe('iD.serviceOsm', function () {
         beforeEach(function() {
             var dimensions = [64, 64];
             context.projection
-                .scale(geoZoomToScale(14))
+                .scale(sdk.geoZoomToScale(14))
                 .translate([-116508, 0])  // 10,0
                 .clipExtent([[0,0], dimensions]);
         });

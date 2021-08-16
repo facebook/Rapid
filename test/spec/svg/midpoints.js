@@ -1,14 +1,10 @@
-import { Extent } from '@id-sdk/extent';
-import { geoZoomToScale } from '@id-sdk/geo';
-
-
 describe('iD.svgMidpoints', function () {
     var context, surface;
     var _selectedIDs = [];
     var filter = function() { return true; };
     var projection = d3.geoProjection(function(x, y) { return [x, -y]; })
         .translate([0, 0])
-        .scale(geoZoomToScale(17))
+        .scale(sdk.geoZoomToScale(17))
         .clipExtent([[0, 0], [Infinity, Infinity]]);
 
 
@@ -34,7 +30,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [1, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = new Extent([0, 0], [1, 1]);
+        var extent = new sdk.Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -49,7 +45,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [0.0001, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = new Extent([0, 0], [1, 1]);
+        var extent = new sdk.Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -64,7 +60,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [-0.5, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = new Extent([0, 0], [1, 1]);
+        var extent = new sdk.Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -79,7 +75,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [2, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = new Extent([0, 0], [1, 1]);
+        var extent = new sdk.Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
@@ -94,7 +90,7 @@ describe('iD.svgMidpoints', function () {
         var b = iD.osmNode({loc: [2, 0]});
         var line = iD.osmWay({nodes: [a.id, b.id]});
         var graph = iD.coreGraph([a, b, line]);
-        var extent = new Extent([0, 0], [1, 1]);
+        var extent = new sdk.Extent([0, 0], [1, 1]);
 
         _selectedIDs = [line.id];
         context.entity = function(id) { return graph.entity(id); };
