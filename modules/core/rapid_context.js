@@ -1,6 +1,6 @@
 import { Extent } from '@id-sdk/extent';
 import { localizer, t } from '../core/localizer';
-import toGeoJSON from '@mapbox/togeojson';
+import { gpx } from '@tmcw/togeojson';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilRebind } from '../util';
 
@@ -22,7 +22,7 @@ export function coreRapidContext(context) {
 
   _rapidContext.setTaskExtentByGpxData = function(gpxData) {
     const dom = (new DOMParser()).parseFromString(gpxData, 'text/xml');
-    const gj = toGeoJSON.gpx(dom);
+    const gj = gpx(dom);
     const lineStringCount = gj.features.reduce((accumulator, currentValue) =>  {
       return accumulator + (currentValue.geometry.type === 'LineString' ? 1 : 0);
     }, 0);
