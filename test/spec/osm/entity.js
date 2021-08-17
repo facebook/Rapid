@@ -179,14 +179,14 @@ describe('iD.osmEntity', function () {
             var node  = iD.osmNode({loc: [0, 0]});
             var way   = iD.osmWay({nodes: [node.id]});
             var graph = iD.coreGraph([node, way]);
-            expect(way.intersects(new sdk.Extent([[-5, -5], [5, 5]]), graph)).to.equal(true);
+            expect(way.intersects(new sdk.Extent([-5, -5], [5, 5]), graph)).to.equal(true);
         });
 
         it('returns false for way with no nodes within the given extent', function () {
             var node  = iD.osmNode({loc: [6, 6]});
             var way   = iD.osmWay({nodes: [node.id]});
             var graph = iD.coreGraph([node, way]);
-            expect(way.intersects(new sdk.Extent([[-5, -5], [5, 5]]), graph)).to.equal(false);
+            expect(way.intersects(new sdk.Extent([-5, -5], [5, 5]), graph)).to.equal(false);
         });
     });
 

@@ -134,7 +134,7 @@ describe('iD.osmWay', function () {
                 node2 = iD.osmNode({loc: [5, 10]}),
                 way   = iD.osmWay({nodes: [node1.id, node2.id]}),
                 graph = iD.coreGraph([node1, node2, way]);
-            expect(way.extent(graph).equals(new sdk.Extent([[0, 0], [5, 10]]))).to.be.ok;
+            expect(way.extent(graph).equals(new sdk.Extent([0, 0], [5, 10]))).to.be.ok;
         });
     });
 

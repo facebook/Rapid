@@ -121,18 +121,19 @@ describe('iD.Map', function() {
     });
 
     describe('#extent', function() {
-        it('gets and sets extent', function() {
+        it('gets and sets extent', function () {
             map.dimensions([100, 100])
                 .center([0, 0]);
 
-            expect(map.extent(new sdk.Extent([0][0]))).to.be.closeTo(-17.5, 0.5);
-            expect(map.extent(new sdk.Extent([1][0]))).to.be.closeTo(17.5, 0.5);
-            expect(map.extent(new sdk.Extent([[10, 1], [30, 1]])));
-            expect(map.extent(new sdk.Extent([0][0]))).to.be.closeTo(10, 0.1);
-            expect(map.extent(new sdk.Extent([1][0]))).to.be.closeTo(30, 0.1);
-            expect(map.extent(new sdk.Extent([[-1, -40], [1, -20]])));
-            expect(map.extent(new sdk.Extent([0][1]))).to.be.closeTo(-40, 1);
-            expect(map.extent(new sdk.Extent([1][1]))).to.be.closeTo(-20, 1);
+            let newExtent = new sdk.Extent([0, 0]);
+            expect(map.extent(newExtent)).to.be.closeTo(-17.5, 0.5);
+            expect(map.extent(new sdk.Extent([1, 0]))).to.be.closeTo(17.5, 0.5);
+            expect(map.extent(new sdk.Extent([10, 1], [30, 1])));
+            expect(map.extent(new sdk.Extent([0, 0]))).to.be.closeTo(10, 0.1);
+            expect(map.extent(new sdk.Extent([1, 0]))).to.be.closeTo(30, 0.1);
+            expect(map.extent(new sdk.Extent([-1, -40], [1, -20])));
+            expect(map.extent(new sdk.Extent([0, 1]))).to.be.closeTo(-40, 1);
+            expect(map.extent(new sdk.Extent([1, 1]))).to.be.closeTo(-20, 1);
         });
     });
 

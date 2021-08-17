@@ -14,17 +14,17 @@ describe('iD.osmNode', function () {
 
     describe('#extent', function() {
         it('returns a point extent', function() {
-            expect(iD.osmNode({loc: [5, 10]}).extent().equals(new sdk.Extent([[5, 10], [5, 10]]))).to.be.ok;
+            expect(iD.osmNode({loc: [5, 10]}).extent().equals(new sdk.Extent([5, 10], [5, 10]))).to.be.ok;
         });
     });
 
     describe('#intersects', function () {
         it('returns true for a node within the given extent', function () {
-            expect(iD.osmNode({loc: [0, 0]}).intersects(new sdk.Extent([[-5, -5], [5, 5]]))).to.equal(true);
+            expect(iD.osmNode({loc: [0, 0]}).intersects(new sdk.Extent([-5, -5], [5, 5]))).to.equal(true);
         });
 
         it('returns false for a node outside the given extend', function () {
-            expect(iD.osmNode({loc: [6, 6]}).intersects(new sdk.Extent([[-5, -5], [5, 5]]))).to.equal(false);
+            expect(iD.osmNode({loc: [6, 6]}).intersects(new sdk.Extent([-5, -5], [5, 5]))).to.equal(false);
         });
     });
 
