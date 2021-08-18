@@ -1088,8 +1088,8 @@ en:
     msBuildings:
       label: Microsoft Buildings
       license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
-    fbSidewalks:
-      label: Facebook Sidewalk Suggestions
+    fbFootways:
+      label: Facebook Footway Suggestions
       license_markdown: "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
     esri:
       title: ArcGIS Datasets

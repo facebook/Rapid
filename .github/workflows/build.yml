@@ -3,7 +3,11 @@
 
 name: Build
 
-on: pull_request
+on:
+  push:
+    branches: [ main, develop, sidewalks_v1_preview ]
+  pull_request:
+    branches: [ main, develop, sidewalks_v1_preview ]
 
 jobs:
   build:
@@ -23,3 +27,12 @@ jobs:
     - run: npm install
     - run: npm run all
     - run: npm run test
+    - env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-west-2
+        RAPID_S3_BUCKET_NAME: world.ai.rapid
+        RAPID_WEB_ROOT: https://mapwith.ai
+        NODE_VERSION: ${{ matrix.node-version }}
+      if: ${{ matrix.node-version == '16.x' }}
+      run: npm run aws_deploy
