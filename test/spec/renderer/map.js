@@ -122,18 +122,35 @@ describe('iD.Map', function() {
 
     describe('#extent', function() {
         it('gets and sets extent', function () {
-            map.dimensions([100, 100])
-                .center([0, 0]);
+            map.dimensions([100, 100]).center([0, 0]);
+            var extent;
 
-            let newExtent = new sdk.Extent([0, 0]);
-            expect(map.extent(newExtent)).to.be.closeTo(-17.5, 0.5);
-            expect(map.extent(new sdk.Extent([1, 0]))).to.be.closeTo(17.5, 0.5);
-            expect(map.extent(new sdk.Extent([10, 1], [30, 1])));
-            expect(map.extent(new sdk.Extent([0, 0]))).to.be.closeTo(10, 0.1);
-            expect(map.extent(new sdk.Extent([1, 0]))).to.be.closeTo(30, 0.1);
-            expect(map.extent(new sdk.Extent([-1, -40], [1, -20])));
-            expect(map.extent(new sdk.Extent([0, 1]))).to.be.closeTo(-40, 1);
-            expect(map.extent(new sdk.Extent([1, 1]))).to.be.closeTo(-20, 1);
+            // get
+            extent = new sdk.Extent(map.extent());
+            expect(extent.min[0]).to.be.closeTo(-17.5, 0.1);
+            expect(extent.min[1]).to.be.closeTo(-17.3, 0.1);
+            expect(extent.max[0]).to.be.closeTo(17.5, 0.1);
+            expect(extent.max[1]).to.be.closeTo(17.3, 0.1);
+
+            // set
+            map.extent( new sdk.Extent([10, 1], [30, 1]) );
+
+            // get
+            extent = new sdk.Extent(map.extent());
+            expect(extent.min[0]).to.be.closeTo(10, 0.1);
+            expect(extent.min[1]).to.be.closeTo(-9, 0.1);
+            expect(extent.max[0]).to.be.closeTo(30, 0.1);
+            expect(extent.max[1]).to.be.closeTo(11, 0.1);
+
+            // set
+            map.extent( new sdk.Extent([-1, -40], [1, -20]) );
+
+            // get
+            extent = new sdk.Extent(map.extent());
+            expect(extent.min[0]).to.be.closeTo(-11.6, 0.1);
+            expect(extent.min[1]).to.be.closeTo(-39.5, 0.1);
+            expect(extent.max[0]).to.be.closeTo(11.6, 0.1);
+            expect(extent.max[1]).to.be.closeTo(-19.4, 0.1);
         });
     });
 

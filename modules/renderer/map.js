@@ -983,20 +983,19 @@ export function rendererMap(context) {
     };
 
 
-    map.extent = function(val) {
+    map.extent = function(extent) {
         if (!arguments.length) {
             return new Extent(
                 projection.invert([0, _dimensions[1]]),
                 projection.invert([_dimensions[0], 0])
             );
         } else {
-            var extent = new Extent(val);
             map.centerZoom(extent.center(), map.extentZoom(extent));
         }
     };
 
 
-    map.trimmedExtent = function(val) {
+    map.trimmedExtent = function(extent) {
         if (!arguments.length) {
             var headerY = 71;
             var footerY = 30;
@@ -1006,7 +1005,6 @@ export function rendererMap(context) {
                 projection.invert([_dimensions[0] - pad, headerY + pad])
             );
         } else {
-            var extent = new Extent(val);
             map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
         }
     };
@@ -1021,22 +1019,23 @@ export function rendererMap(context) {
         var vFactor = (br[1] - tl[1]) / dim[1];
         var hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
         var vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
-        var newZoom = map.zoom() - Math.max(hZoomDiff, vZoomDiff);
+        var zoomDiff = Math.max(hZoomDiff, vZoomDiff);
 
-        return newZoom;
+        var currZoom = map.zoom();
+        return isFinite(zoomDiff) ? (currZoom - zoomDiff) : currZoom;
     }
 
 
-    map.extentZoom = function(val) {
-        return calcExtentZoom(new Extent(val), _dimensions);
+    map.extentZoom = function(extent) {
+        return calcExtentZoom(extent, _dimensions);
     };
 
 
-    map.trimmedExtentZoom = function(val) {
+    map.trimmedExtentZoom = function(extent) {
         var trimY = 120;
         var trimX = 40;
         var trimmed = [_dimensions[0] - trimX, _dimensions[1] - trimY];
-        return calcExtentZoom(new Extent(val), trimmed);
+        return calcExtentZoom(extent, trimmed);
     };
 
 
@@ -1051,7 +1050,6 @@ export function rendererMap(context) {
 
 
     map.editableDataEnabled = function(skipZoomCheck) {
-
         var layer = context.layers().layer('osm');
         if (!layer || !layer.enabled()) return false;
 
