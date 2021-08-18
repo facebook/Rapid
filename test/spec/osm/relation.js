@@ -117,8 +117,7 @@ describe('iD.osmRelation', function () {
             var b = iD.osmNode({loc: [5, 10]});
             var r = iD.osmRelation({members: [{id: a.id}, {id: b.id}]});
             var graph = iD.coreGraph([a, b, r]);
-
-            expect(r.extent(graph).equals([[0, 0], [5, 10]])).to.be.ok;
+            expect(r.extent(graph)).to.eql(new sdk.Extent([0, 0], [5, 10]));
         });
 
         it('returns the known extent of incomplete relations', function () {
@@ -126,14 +125,14 @@ describe('iD.osmRelation', function () {
             var b = iD.osmNode({loc: [5, 10]});
             var r = iD.osmRelation({members: [{id: a.id}, {id: b.id}]});
             var graph = iD.coreGraph([a, r]);
-
-            expect(r.extent(graph).equals([[0, 0], [0, 0]])).to.be.ok;
+            expect(r.extent(graph)).to.eql(new sdk.Extent([0, 0], [0, 0]));
         });
 
         it('does not error on self-referencing relations', function () {
             var r = iD.osmRelation();
             r = r.addMember({id: r.id});
-            expect(r.extent(iD.coreGraph([r]))).to.eql(new sdk.Extent());
+            var graph = iD.coreGraph([r]);
+            expect(r.extent(graph)).to.eql(new sdk.Extent());
         });
     });
 
