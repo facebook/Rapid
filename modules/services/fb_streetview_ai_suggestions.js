@@ -42,8 +42,8 @@ function tileURL(dataset, extent, taskExtent) {
         ext: 1918681607
     };
 
-    if (datasetID === 'fbSidewalks') {
-        qs.sources = 'fb_sidewalk';
+    if (datasetID === 'fbFootways') {
+        qs.sources = 'fb_footway';
     }
 
     qs.bbox = extent.toParam();
@@ -150,7 +150,7 @@ var parsers = {
         var attrs = obj.attributes;
         return new osmWay({
             id: uid,
-            suggestionId: obj.getAttribute("suggestion-id"),
+            suggestionId: obj.getAttribute('suggestion-id'),
             visible: getVisible(attrs),
             tags: getTags(obj),
             nodes: getNodes(obj),
@@ -161,7 +161,7 @@ var parsers = {
         var attrs = obj.attributes;
         return new osmRelation({
             id: uid,
-            suggestionId: obj.getAttribute("suggestion-id"),
+            suggestionId: obj.getAttribute('suggestion-id'),
             visible: getVisible(attrs),
             tags: getTags(obj),
             members: getMembers(obj)
@@ -173,19 +173,19 @@ var parsers = {
 // parse <osm-road> element inside <sidewalk-suggestion>
 function parseOsmRoadMeta(xmlEle) {
     var osmRoadMeta = {};
-    osmRoadMeta.wid = osmEntity.id.fromOSM("way", xmlEle.getAttribute("way-id"));
-    osmRoadMeta.version = xmlEle.getAttribute("version");
-    osmRoadMeta.sidewalk_tag = xmlEle.getAttribute("sidewalk-tag");
+    osmRoadMeta.wid = osmEntity.id.fromOSM('way', xmlEle.getAttribute('way-id'));
+    osmRoadMeta.version = xmlEle.getAttribute('version');
+    osmRoadMeta.sidewalk_tag = xmlEle.getAttribute('sidewalk-tag');
 
-    var nodeEles = xmlEle.getElementsByTagName("nd");
+    var nodeEles = xmlEle.getElementsByTagName('nd');
     var nodes = new Array(nodeEles.length);
     for (var i = 0; i < nodeEles.length; i++) {
         var n = nodeEles[i];
         nodes[i] = {
-            nid: osmEntity.id.fromOSM("node", n.getAttribute("ref")),
-            version: n.getAttribute("version"),
-            lat: parseFloat(n.getAttribute("lat")),
-            lon: parseFloat(n.getAttribute("lon"))
+            nid: osmEntity.id.fromOSM('node', n.getAttribute('ref')),
+            version: n.getAttribute('version'),
+            lat: parseFloat(n.getAttribute('lat')),
+            lon: parseFloat(n.getAttribute('lon'))
         };
     }
     osmRoadMeta.nodes = nodes;
@@ -196,19 +196,19 @@ function parseOsmRoadMeta(xmlEle) {
 // parse <steet-view-image-set> element inside <sidewalk-suggestion>
 function parseStreetViewImageSet(xmlEle) {
     var streetViewImageSet = {};
-    streetViewImageSet.id = xmlEle.getAttribute("id");
-    streetViewImageSet.cameraPointingDirection = xmlEle.getAttribute("camera-pointing-direction");
-    streetViewImageSet.relativeSideToRoad = xmlEle.getAttribute("relative-side-to-road");
+    streetViewImageSet.id = xmlEle.getAttribute('id');
+    streetViewImageSet.cameraPointingDirection = xmlEle.getAttribute('camera-pointing-direction');
+    streetViewImageSet.relativeSideToRoad = xmlEle.getAttribute('relative-side-to-road');
 
-    var imageEles = xmlEle.getElementsByTagName("street-view-image");
+    var imageEles = xmlEle.getElementsByTagName('street-view-image');
     var images = new Array(imageEles.length);
     for (var i = 0; i < imageEles.length; i++) {
         var img = imageEles[i];
         images[i] = {
-            key: img.getAttribute("key"),
-            url: img.getAttribute("url"),
-            sidewalkSide: img.getAttribute("sidewalk-side"),
-            lat: parseFloat(img.getAttribute("lat")),
+            key: img.getAttribute('key'),
+            url: img.getAttribute('url'),
+            sidewalkSide: img.getAttribute('sidewalk-side'),
+            lat: parseFloat(img.getAttribute('lat')),
             lon: parseFloat(img.getAttribute('lon')),
             ca: parseFloat(img.getAttribute('ca'))
         };
@@ -218,22 +218,22 @@ function parseStreetViewImageSet(xmlEle) {
 }
 
 function parseCrosswalkSuggestion(xmlEle, cubitorContext) {
-    var id = xmlEle.getAttribute("id");
+    var id = xmlEle.getAttribute('id');
     // TODO: respect new data in both <create> entities and <cubitor-context> later.
     if (cubitorContext[id]) return;
 
     var suggestion = {id: id};
 
     // we'll support other feature types like crosswalk and speed limit in the future
-    suggestion.featureType = "crosswalk";
+    suggestion.featureType = 'crosswalk';
 
     // whether it's suggestion for geometry or tag change
-    suggestion.suggestionType = xmlEle.getAttribute("type");
+    suggestion.suggestionType = xmlEle.getAttribute('type');
 
     xmlEle.childNodes.forEach(function (ele) {
-        if (ele.nodeName === "osm-road") {
+        if (ele.nodeName === 'osm-road') {
             suggestion.osmRoadMeta = parseOsmRoadMeta(ele);
-        } else if (ele.nodeName === "street-view-image-set") {
+        } else if (ele.nodeName === 'street-view-image-set') {
             suggestion.streetViewImageSet = parseStreetViewImageSet(ele);
         }
     });
@@ -243,22 +243,22 @@ function parseCrosswalkSuggestion(xmlEle, cubitorContext) {
 
 // parse <sidewalk-suggestion>
 function parseSidewalkSuggestion(xmlEle, cubitorContext) {
-    var id = xmlEle.getAttribute("id");
+    var id = xmlEle.getAttribute('id');
     // TODO: respect new data in both <create> entities and <cubitor-context> later.
     if (cubitorContext[id]) return;
 
     var suggestion = {id: id};
 
     // we'll support other feature types like crosswalk and speed limit in the future
-    suggestion.featureType = "sidewalk";
+    suggestion.featureType = 'sidewalk';
 
     // whether it's suggestion for geometry or tag change
-    suggestion.suggestionType = xmlEle.getAttribute("type");
+    suggestion.suggestionType = xmlEle.getAttribute('type');
 
     xmlEle.childNodes.forEach(function (ele) {
-        if (ele.nodeName === "osm-road") {
+        if (ele.nodeName === 'osm-road') {
             suggestion.osmRoadMeta = parseOsmRoadMeta(ele);
-        } else if (ele.nodeName === "street-view-image-set") {
+        } else if (ele.nodeName === 'street-view-image-set') {
             suggestion.streetViewImageSet = parseStreetViewImageSet(ele);
         }
     });
@@ -267,8 +267,8 @@ function parseSidewalkSuggestion(xmlEle, cubitorContext) {
 
 
 var cubitorParsers = {
-    "sidewalk-suggestion": parseSidewalkSuggestion,
-    "crosswalk-suggestion": parseCrosswalkSuggestion
+    'sidewalk-suggestion': parseSidewalkSuggestion,
+    'crosswalk-suggestion': parseCrosswalkSuggestion
 };
 
 
@@ -338,15 +338,15 @@ function parseXML(dataset, xml, callback, options) {
         var osmEntities = [];
         for (var i = 0; i < topLevelChildren.length; i++) {
             var tlc = topLevelChildren[i];
-            if (tlc.nodeName === "create") {
-                var children = tlc.childNodes;
-                for (var j = 0; j < children.length; j++) {
+            if (tlc.nodeName === 'create') {
+                let children = tlc.childNodes;
+                for (let j = 0; j < children.length; j++) {
                     var entity = parseChild(children[j]);
                     if (entity) osmEntities.push(entity);
                 }
-            } else if (tlc.nodeName === "cubitor-context") {
-                var children = tlc.childNodes;
-                for (var j = 0; j < children.length; j++) {
+            } else if (tlc.nodeName === 'cubitor-context') {
+                let children = tlc.childNodes;
+                for (let j = 0; j < children.length; j++) {
                     var ele = children[j];
                     parseCubitorContextChild(ele, cubitorContext);
                 }
@@ -355,7 +355,7 @@ function parseXML(dataset, xml, callback, options) {
 
         // associate suggestion context with osm entities
         osmEntities.forEach(entity => {
-            if(entity.suggestionId && cubitorContext[entity.suggestionId]) {
+            if (entity.suggestionId && cubitorContext[entity.suggestionId]) {
                 entity.suggestionContext = cubitorContext[entity.suggestionId];
             }
         });
@@ -369,7 +369,7 @@ function parseXML(dataset, xml, callback, options) {
 
         var uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
         if (options.skipSeen) {
-            if (cache.seen[uid]) return null;  // avoid reparsing a "seen" entity
+            if (cache.seen[uid]) return null;  // avoid reparsing a 'seen' entity
             cache.seen[uid] = true;
         }
 
@@ -488,7 +488,7 @@ export default {
             // as tile requests arrive, setup the resources needed to hold the results
             graph = coreGraph();
             tree = coreTree(graph);
-            cubitorContext = {};
+            let cubitorContext = {};
             cache = { inflight: {}, loaded: {}, seen: {}};
             ds = { id: datasetID, graph: graph, tree: tree, cubitorContext: cubitorContext, cache: cache };
             _datasets[datasetID] = ds;

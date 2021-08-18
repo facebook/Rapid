@@ -31,7 +31,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
 
   function getService(serviceName) {
-    switch(serviceName) {
+    switch (serviceName) {
       case 'esri':
         return services.esriData;
       case 'fbml_streetview':
@@ -275,9 +275,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .attr('class', d => `rapid-inspector-choice rapid-inspector-choice-${d.key}`)
       .each(showChoice);
 
-    if(_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
+    if (_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
       const {images} = _datum.suggestionContext.streetViewImageSet;
-      if(images) {
+      if (images) {
         let imageStripRenderer = uiRapidImageStrip(context).datum(_datum);
         imageStripRenderer(context.container().selectAll('.over-map'));
       }
