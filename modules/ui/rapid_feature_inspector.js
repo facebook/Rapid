@@ -83,6 +83,10 @@ export function uiRapidFeatureInspector(context, keybinding) {
       rapidContext.sources.add('esri');       // add 'esri' for esri sources
     }
 
+    if (_datum.__service__ === 'fbml_streetview') {
+      rapidContext.sources.add('mapillary');
+    }
+
     if (window.sessionStorage.getItem('acknowledgedLogin') === 'true') return;
     window.sessionStorage.setItem('acknowledgedLogin', 'true');
 
