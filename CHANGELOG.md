@@ -37,6 +37,50 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [1.1.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.6)
+##### 2021-Aug-19
+
+#### :tada: Updates
+* Select parent/child keystroke improvement ([iD#8298], [iD#8577])
+* Fix jittery renders caused by redrawing while transformed ([iD#8638])
+* Validator improvements and performance ([iD#8626], [iD#8637])
+  * Add a validator fix option to tag as `not:` a matched item ([iD#8628])
+  * Crossing_ways - improve code for repurposing crossing nodes ([iD#8625])
+  * General performance issues ([iD#8612])
+  * Improve crossing_ways validation (user should need to move the road more to make a new issue)
+  * Better counting of "issues caused by user" ([iD#8632])
+  * Improve code for focusing a validation issue on a relation
+  * Issues viewed are being counted towards issues ignored ([iD#8613])
+  * Fixme issues shouldn't count towards ignored issues ([iD#8603])
+* Name-suggestion-index related improvements and bugfixes ([iD#8618])
+  * Treat route_master relations like route relations for matching to NSI ([iD#8627], [NSI#5184])
+  * Don't overwrite "toplevel" tag like `internet_access` ([iD#8615])
+  * Don't consider `old_name` as a name for matching ([iD#8617])
+
+#### :hammer: Development
+* Many improvements to the testing system ([iD#8642])
+* Update the Maxar Premium imagery url ([iD#8623])
+
+[iD#8298] https://github.com/openstreetmap/iD/issues/8298
+[iD#8577] https://github.com/openstreetmap/iD/issues/8577
+[iD#8603] https://github.com/openstreetmap/iD/issues/8603
+[iD#8612] https://github.com/openstreetmap/iD/issues/8612
+[iD#8613] https://github.com/openstreetmap/iD/issues/8613
+[iD#8615] https://github.com/openstreetmap/iD/issues/8615
+[iD#8617] https://github.com/openstreetmap/iD/issues/8617
+[iD#8618] https://github.com/openstreetmap/iD/issues/8618
+[iD#8623] https://github.com/openstreetmap/iD/issues/8623
+[iD#8625] https://github.com/openstreetmap/iD/issues/8625
+[iD#8626] https://github.com/openstreetmap/iD/issues/8626
+[iD#8627] https://github.com/openstreetmap/iD/issues/8627
+[iD#8628] https://github.com/openstreetmap/iD/issues/8628
+[iD#8632] https://github.com/openstreetmap/iD/issues/8632
+[iD#8637] https://github.com/openstreetmap/iD/issues/8637
+[iD#8638] https://github.com/openstreetmap/iD/issues/8638
+[iD#8642] https://github.com/openstreetmap/iD/issues/8642
+[NSI#5184] https://github.com/osmlab/name-suggestion-index/issues/5184
+
+
 # [1.1.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.5)
 ##### 2021-Jul-13
 #### :tada: Updates
