@@ -137,7 +137,7 @@ export function coreRapidContext(context) {
           },
           'fbFootways': {
             id: 'fbFootways',
-            beta: true,
+            beta: false,
             added: true,         // whether it should appear in the list
             enabled: true,       // whether the user has checked it on
             conflated: true,
