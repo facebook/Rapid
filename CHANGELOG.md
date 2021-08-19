@@ -61,24 +61,24 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * Many improvements to the testing system ([iD#8642])
 * Update the Maxar Premium imagery url ([iD#8623])
 
-[iD#8298] https://github.com/openstreetmap/iD/issues/8298
-[iD#8577] https://github.com/openstreetmap/iD/issues/8577
-[iD#8603] https://github.com/openstreetmap/iD/issues/8603
-[iD#8612] https://github.com/openstreetmap/iD/issues/8612
-[iD#8613] https://github.com/openstreetmap/iD/issues/8613
-[iD#8615] https://github.com/openstreetmap/iD/issues/8615
-[iD#8617] https://github.com/openstreetmap/iD/issues/8617
-[iD#8618] https://github.com/openstreetmap/iD/issues/8618
-[iD#8623] https://github.com/openstreetmap/iD/issues/8623
-[iD#8625] https://github.com/openstreetmap/iD/issues/8625
-[iD#8626] https://github.com/openstreetmap/iD/issues/8626
-[iD#8627] https://github.com/openstreetmap/iD/issues/8627
-[iD#8628] https://github.com/openstreetmap/iD/issues/8628
-[iD#8632] https://github.com/openstreetmap/iD/issues/8632
-[iD#8637] https://github.com/openstreetmap/iD/issues/8637
-[iD#8638] https://github.com/openstreetmap/iD/issues/8638
-[iD#8642] https://github.com/openstreetmap/iD/issues/8642
-[NSI#5184] https://github.com/osmlab/name-suggestion-index/issues/5184
+[iD#8298]: https://github.com/openstreetmap/iD/issues/8298
+[iD#8577]: https://github.com/openstreetmap/iD/issues/8577
+[iD#8603]: https://github.com/openstreetmap/iD/issues/8603
+[iD#8612]: https://github.com/openstreetmap/iD/issues/8612
+[iD#8613]: https://github.com/openstreetmap/iD/issues/8613
+[iD#8615]: https://github.com/openstreetmap/iD/issues/8615
+[iD#8617]: https://github.com/openstreetmap/iD/issues/8617
+[iD#8618]: https://github.com/openstreetmap/iD/issues/8618
+[iD#8623]: https://github.com/openstreetmap/iD/issues/8623
+[iD#8625]: https://github.com/openstreetmap/iD/issues/8625
+[iD#8626]: https://github.com/openstreetmap/iD/issues/8626
+[iD#8627]: https://github.com/openstreetmap/iD/issues/8627
+[iD#8628]: https://github.com/openstreetmap/iD/issues/8628
+[iD#8632]: https://github.com/openstreetmap/iD/issues/8632
+[iD#8637]: https://github.com/openstreetmap/iD/issues/8637
+[iD#8638]: https://github.com/openstreetmap/iD/issues/8638
+[iD#8642]: https://github.com/openstreetmap/iD/issues/8642
+[NSI#5184]: https://github.com/osmlab/name-suggestion-index/issues/5184
 
 
 # [1.1.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.5)
