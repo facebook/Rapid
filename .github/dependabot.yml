@@ -11,3 +11,4 @@ updates:
       - "chore-dependabot"
     ignore:
       - dependency-name: "sinon"  # can't upgrade beyond sinon 9.x and still use PhantomJS
+      - dependency-name: "editor-layer-index"  # doesn't actually use version numbers
