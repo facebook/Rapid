@@ -1036,6 +1036,7 @@ en:
     live: live
     lose_changes: "You have unsaved changes. Switching the map server will discard them. Are you sure you want to switch servers?"
     dev: dev
+  rapid_multiselect: Multiple Selection
   rapid_splash:
     welcome: Introducing AI-assisted mapping!
     text: "Select the {rapidicon} option to start the RapiD walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu."
