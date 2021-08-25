@@ -426,7 +426,7 @@ export function validationCrossingWays(context) {
             },
             hash: uniqueID,
             loc: crossing.crossPoint,
-            autoArgs: connectionTags && !connectionTags.ford && connectWaysAutoArgs(crossing.crossPoint, edges, connectionTags),
+            autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function(context) {
                 var mode = context.mode();
                 if (!mode || mode.id !== 'select' || mode.selectedIDs().length !== 1) return [];
@@ -693,31 +693,47 @@ export function validationCrossingWays(context) {
         });
     }
 
-    function connectWaysAutoArgs(loc, edges, connectionTags) {
-        var fn = function actionConnectCrossingWays(graph) {
-            // create the new node for the points
-            var node = osmNode({ loc: loc, tags: connectionTags });
-            graph = graph.replace(node);
 
-            var nodesToMerge = [node.id];
+    function getConnectWaysAction(loc, edges, connectionTags) {
+        var fn = function actionConnectCrossingWays(graph) {
+            var didSomething = false;
+
+            // Create a new candidate node which will be inserted at the crossing point..
+            var newNode = osmNode({ loc: loc, tags: connectionTags });
+            var newGraph = graph.replace(newNode);
+            var nodesToMerge = [newNode.id];
             var mergeThresholdInMeters = 0.75;
 
+            // Insert the new node along the edges (or reuse one already there)..
             edges.forEach(function(edge) {
-                var edgeNodes = [graph.entity(edge[0]), graph.entity(edge[1])];
-                var edgePoints = edgeNodes.map(node => node.loc);
-                var closestNodeInfo = new geoSphericalClosestPoint(edgePoints, loc);
-                if (closestNodeInfo.distance < mergeThresholdInMeters) {
-                    nodesToMerge.push(closestNodeInfo.id);   // use an existing nearby point
-                } else {
-                    graph = actionAddMidpoint({loc: loc, edge: edge}, node)(graph);
+                var n0 = newGraph.hasEntity(edge[0]);
+                var n1 = newGraph.hasEntity(edge[1]);
+                if (!n0 || !n1) return;  // graph has changed and these nodes are no longer there?
+
+                // Look for a suitable existing node nearby to reuse..
+                var canReuse = false;
+                var edgeNodes = [n0, n1];
+                var closest = geoSphericalClosestPoint([n0.loc, n1.loc], loc);
+                if (closest && closest.distance < mergeThresholdInMeters) {
+                    var closeNode = edgeNodes[closest.index];
+                    // Reuse the close node if it has no interesting tags or if it is already a crossing - #8326
+                    if (!closeNode.hasInterestingTags() || closeNode.isCrossing()) {
+                        canReuse = true;
+                        nodesToMerge.push(closeNode.id);
+                    }
+                }
+                if (!canReuse) {
+                    newGraph = actionAddMidpoint({loc: loc, edge: edge}, newNode)(newGraph);  // Insert the new node
+                    didSomething = true;
                 }
             });
 
-            if (nodesToMerge.length > 1) {   // if we're using nearby nodes, merge them with the new node
-                graph = actionMergeNodes(nodesToMerge, loc)(graph);
+            if (nodesToMerge.length > 1) {   // If we're reusing nearby nodes, merge them with the new node
+                newGraph = actionMergeNodes(nodesToMerge, loc)(newGraph);
+                didSomething = true;
             }
 
-            return graph;
+            return didSomething ? newGraph : graph;
         };
 
         return [fn, t('issues.fix.connect_crossing_features.annotation')];
@@ -725,51 +741,20 @@ export function validationCrossingWays(context) {
 
 
     function makeConnectWaysFix(connectionTags) {
-
         var fixTitleID = 'connect_features';
         if (connectionTags.ford) {
             fixTitleID = 'connect_using_ford';
         }
-
         return new validationIssueFix({
             icon: 'iD-icon-crossing',
             title: t.html('issues.fix.' + fixTitleID + '.title'),
             onClick: function(context) {
                 var loc = this.issue.loc;
-                var connectionTags = this.issue.data.connectionTags;
                 var edges = this.issue.data.edges;
+                var connectionTags = this.issue.data.connectionTags;
+                var action = getConnectWaysAction(loc, edges, connectionTags);
 
-                context.perform(
-                    function actionConnectCrossingWays(graph) {
-                        // create the new node for the points
-                        var node = osmNode({ loc: loc, tags: connectionTags });
-                        graph = graph.replace(node);
-
-                        var nodesToMerge = [node.id];
-                        var mergeThresholdInMeters = 0.75;
-
-                        edges.forEach(function(edge) {
-                            var edgeNodes = [graph.entity(edge[0]), graph.entity(edge[1])];
-                            var nearby = geoSphericalClosestPoint(edgeNodes, loc);
-                            // if there is already a suitable node nearby, use that
-                            // use the node if node has no interesting tags or if it is a crossing node #8326
-                            if ((!nearby.node.hasInterestingTags() || nearby.node.isCrossing()) && nearby.distance < mergeThresholdInMeters) {
-                                nodesToMerge.push(nearby.node.id);
-                            // else add the new node to the way
-                            } else {
-                                graph = actionAddMidpoint({loc: loc, edge: edge}, node)(graph);
-                            }
-                        });
-
-                        if (nodesToMerge.length > 1) {
-                            // if we're using nearby nodes, merge them with the new node
-                            graph = actionMergeNodes(nodesToMerge, loc)(graph);
-                        }
-
-                        return graph;
-                    },
-                    t('issues.fix.connect_crossing_features.annotation')
-                );
+                context.perform(action[0], action[1]);  // function, annotation
             }
         });
     }
