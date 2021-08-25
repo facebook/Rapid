@@ -623,6 +623,11 @@ export default {
         return loadData(`${apiUrl}/${id}/detections?access_token=${accessToken}&fields=id,value,image`);
     },
 
+    // Return the thumbnail for a given image id
+    getImageThumbnail(imageId) {
+        return loadData(`${apiUrl}/${imageId}?access_token=${accessToken}&fields=id,thumb_1024_url`).thumb_1024_url;
+    },
+
 
     // Set the currently visible image
     setActiveImage: function(image) {

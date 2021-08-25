@@ -8,6 +8,7 @@ import { osmEntity, osmNode, osmWay, osmRelation } from '../osm';
 import { utilRebind, utilStringQs} from '../util';
 
 import { Projection, Tiler } from '@id-sdk/math';
+import { services } from '../services';
 
 // TODO: extract common logic shared with fb_ai_features.js into util files.
 
@@ -20,7 +21,55 @@ var dispatch = d3_dispatch('loadedData');
 var _datasets = {};
 var _deferredAiFeaturesParsing = new Set();
 var _off;
+let _mapillary;
 
+
+
+    function getMapillaryService() {
+        if (services.mapillary && !_mapillary) {
+            _mapillary = services.mapillary;
+        } else if (!services.mapillary && _mapillary) {
+            _mapillary = null;
+        }
+        return _mapillary;
+    }
+
+
+
+// web workers for image pre-fetching
+
+class DynamicWorker{
+  constructor( fn, useInit=false ){
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      const src  = ( !useInit )? fn.toString() : '(' + fn.toString() + ')()';
+      const blob = new Blob(
+          [ 'self.onmessage=', src ],
+          { type:'text/javascript' }
+      );
+
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      const url  = window.URL.createObjectURL( blob );
+      window.URL.revokeObjectURL(blob);
+
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      this._worker = new Worker( url );
+  }
+
+  post( data ){ this._worker.postMessage( data ); return this; }
+
+  once( fn ){ this._worker.addEventListener( 'message', fn, { once:true } ); return this; }
+  on( fn ){ this._worker.addEventListener( 'message', fn ); return this; }
+}
+
+
+function FootwayImageryPreloadWorker(){
+  return e => {
+    fetch(e.data.thumbnailUrl);
+    self.postMessage( 'done' );
+  };
+}
+
+const imageWorker = new DynamicWorker(FootwayImageryPreloadWorker, true);
 
 function abortRequest(i) {
     i.abort();
@@ -173,6 +222,8 @@ var parsers = {
 // parse <osm-road> element inside <sidewalk-suggestion>
 function parseOsmRoadMeta(xmlEle) {
     var osmRoadMeta = {};
+    getMapillaryService();
+
     osmRoadMeta.wid = osmEntity.id.fromOSM('way', xmlEle.getAttribute('way-id'));
     osmRoadMeta.version = xmlEle.getAttribute('version');
     osmRoadMeta.sidewalk_tag = xmlEle.getAttribute('sidewalk-tag');
@@ -202,16 +253,27 @@ function parseStreetViewImageSet(xmlEle) {
 
     var imageEles = xmlEle.getElementsByTagName('street-view-image');
     var images = new Array(imageEles.length);
+
+
     for (var i = 0; i < imageEles.length; i++) {
         var img = imageEles[i];
         images[i] = {
             key: img.getAttribute('key'),
+            id: img.getAttribute('id'),
             url: img.getAttribute('url'),
             sidewalkSide: img.getAttribute('sidewalk-side'),
             lat: parseFloat(img.getAttribute('lat')),
             lon: parseFloat(img.getAttribute('lon')),
             ca: parseFloat(img.getAttribute('ca'))
         };
+
+        // if we detect an id on the message, we're dealing with Mapillary API v4.
+        // Pass the image key to the preload worker and set the URL.
+        if (images[i].id) {
+            const thumbnailUrl = _mapillary.getImageThumbnail(images[i].id);
+            imageWorker.post({ imageUrl: thumbnailUrl, index: i });
+            images[i].url = thumbnailUrl;
+        }
     }
     streetViewImageSet.images = images;
     return streetViewImageSet;
