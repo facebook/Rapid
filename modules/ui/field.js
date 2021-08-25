@@ -5,11 +5,10 @@ import { t, localizer } from '../core/localizer';
 import { locationManager } from '../core/locations';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
-import { Extent } from '@id-sdk/extent';
 import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
-import { utilRebind, utilUniqueDomId } from '../util';
+import { utilRebind, utilTotalExtent, utilUniqueDomId } from '../util';
 
 
 export function uiField(context, presetField, entityIDs, options) {
@@ -40,12 +39,9 @@ export function uiField(context, presetField, entityIDs, options) {
     var _state = '';
     var _tags = {};
 
-    var _entityExtent;
+    var _entityExtent = null;
     if (entityIDs && entityIDs.length) {
-        _entityExtent = entityIDs.reduce(function(extent, entityID) {
-            var entity = context.graph().entity(entityID);
-            return extent.extend(entity.extent(context.graph()));
-        }, new Extent());
+        _entityExtent = utilTotalExtent(entityIDs, context.graph());
     }
 
     var _locked = false;

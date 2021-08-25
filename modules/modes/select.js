@@ -16,7 +16,6 @@ import { behaviorSelect } from '../behavior/select';
 import { operationMove } from '../operations/move';
 import { prefs } from '../core/preferences';
 
-import { Extent } from '@id-sdk/extent';
 import { geoChooseEdge } from '../geo';
 import { geoMetersToLat, geoMetersToLon  } from '@id-sdk/geo';
 import { modeBrowse } from './browse';
@@ -305,13 +304,7 @@ export function modeSelect(context, selectedIDs) {
         selectElements();
 
         if (_follow) {
-            var extent = new Extent();
-            var graph = context.graph();
-            selectedIDs.forEach(function(id) {
-                var entity = context.entity(id);
-                extent = extent.extend(entity.extent(graph));
-            });
-
+            var extent = utilTotalExtent(selectedIDs, context.graph());
             var loc = extent.center();
             context.map().centerEase(loc);
             // we could enter the mode multiple times, so reset follow for next time

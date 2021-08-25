@@ -4,7 +4,7 @@ import { vecCross } from '@id-sdk/math';
 import { osmEntity } from './entity';
 import { osmLanes } from './lanes';
 import { osmTagSuggestingArea, osmOneWayTags, osmRightSideIsInsideTags } from './tags';
-import { utilArrayUniq } from '../util';
+import { utilArrayUniq, utilTotalExtent } from '../util';
 import { Extent } from '@id-sdk/extent';
 
 
@@ -45,14 +45,7 @@ Object.assign(osmWay.prototype, {
 
     extent: function(resolver) {
         return resolver.transient(this, 'extent', function() {
-            var extent = new Extent();
-            for (var i = 0; i < this.nodes.length; i++) {
-                var node = resolver.hasEntity(this.nodes[i]);
-                if (node) {
-                   extent = extent.extend(node.extent());
-                }
-            }
-            return extent;
+            return utilTotalExtent(this.nodes, resolver);
         });
     },
 

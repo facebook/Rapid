@@ -1,4 +1,5 @@
 import { Extent } from '@id-sdk/extent';
+import { utilTotalExtent } from '../../util';
 import { t } from '../../core/localizer';
 
 export function validationIssue(attrs) {
@@ -45,9 +46,7 @@ export function validationIssue(attrs) {
             return new Extent(this.loc);
         }
         if (this.entityIds && this.entityIds.length) {
-            return this.entityIds.reduce(function(extent, entityId) {
-                return extent.extend(resolver.entity(entityId).extent(resolver));
-            }, new Extent());
+            return utilTotalExtent(this.entityIds, resolver);
         }
         return null;
     };

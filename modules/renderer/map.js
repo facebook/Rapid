@@ -11,7 +11,7 @@ import { geoRawMercator} from '../geo';
 import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
-import { utilFastMouse, utilFunctor, utilSetTransform, utilEntityAndDeepMemberIDs } from '../util/util';
+import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent, utilEntityAndDeepMemberIDs } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
@@ -948,19 +948,12 @@ export function rendererMap(context) {
     };
 
 
-    map.zoomToEase = function(obj, duration) {
+    map.zoomToEase = function(val, duration) {
         var extent;
-        if (Array.isArray(obj)) {
-            obj.forEach(function(entity) {
-                var entityExtent = entity.extent(context.graph());
-                if (!extent) {
-                    extent = entityExtent;
-                } else {
-                    extent = extent.extend(entityExtent);
-                }
-            });
+        if (Array.isArray(val)) {
+            extent = utilTotalExtent(val, context.graph());
         } else {
-            extent = obj.extent(context.graph());
+            extent = val.extent(context.graph());
         }
         if (!isFinite(extent.area())) return map;
 

@@ -16,17 +16,18 @@ export function utilTagText(entity) {
 }
 
 
+// Accepts an array of entities -or- entityIDs
 export function utilTotalExtent(array, graph) {
-    var extent =  new Extent();
-    var val, entity;
-    for (var i = 0; i < array.length; i++) {
-        val = array[i];
-        entity = typeof val === 'string' ? graph.hasEntity(val) : val;
+    return array.reduce(function(extent, val) {
+        var entity = (typeof val === 'string' ? graph.hasEntity(val) : val);
         if (entity) {
-            extent = extent.extend(entity.extent(graph));
+            var other = entity.extent(graph);
+            // update extent in place
+            extent.min = [ Math.min(extent.min[0], other.min[0]), Math.min(extent.min[1], other.min[1]) ];
+            extent.max = [ Math.max(extent.max[0], other.max[0]), Math.max(extent.max[1], other.max[1]) ];
         }
-    }
-    return extent;
+        return extent;
+    }, new Extent());
 }
 
 
