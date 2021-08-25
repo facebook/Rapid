@@ -42,6 +42,8 @@ export function behaviorLasso(context) {
         }
 
 
+        // After inverting the projection from screen coordintes to wgs84 coordinates
+        // we need to fix min/max (in screen +y is down, in wgs84 +y is up)
         function normalize(a, b) {
             return [
                 [Math.min(a[0], b[0]), Math.min(a[1], b[1])],
@@ -63,10 +65,11 @@ export function behaviorLasso(context) {
                 return [];
             }
 
-            var bounds = lasso.extent().map(context.projection.invert);
-            var extent = new Extent(normalize(bounds[0], bounds[1]));
+            var extent = lasso.extent();  // extent in screen coordinates
+            var bounds = normalize(context.projection.invert(extent.min), context.projection.invert(extent.max));
+            var wgs84Extent = new Extent(bounds[0], bounds[1]);
 
-            var intersects = context.history().intersects(extent).filter(function(entity) {
+            var intersects = context.history().intersects(wgs84Extent).filter(function(entity) {
                 return entity.type === 'node' &&
                     (!limitToNodes || limitToNodes.has(entity)) &&
                     geomPointInPolygon(context.projection(entity.loc), lasso.coordinates) &&

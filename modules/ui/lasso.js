@@ -35,7 +35,10 @@ export function uiLasso(context) {
 
     lasso.extent = function () {
         return lasso.coordinates.reduce(function(extent, point) {
-            return extent.extend(new Extent(point));
+            // update extent in place
+            extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
+            extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
+            return extent;
         }, new Extent());
     };
 
