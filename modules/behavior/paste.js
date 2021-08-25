@@ -15,10 +15,11 @@ export function behaviorPaste(context) {
 
         d3_event.preventDefault();
 
-        var baseGraph = context.graph();
+        var startGraph = context.graph();
         var mouse = context.map().mouse();
         var projection = context.projection;
-        var viewport = new Extent(projection.clipExtent()).polygon();
+        var dimensions = projection.clipExtent();
+        var viewport = new Extent(dimensions[0], dimensions[1]).polygon();
 
         if (!geomPointInPolygon(mouse, viewport)) return;
 
@@ -26,10 +27,10 @@ export function behaviorPaste(context) {
         if (!oldIDs.length) return;
 
         var extent = new Extent();
-        var oldGraph = context.copyGraph();
+        var copyGraph = context.copyGraph();
         var newIDs = [];
 
-        var action = actionCopyEntities(oldIDs, oldGraph);
+        var action = actionCopyEntities(oldIDs, copyGraph);
         context.perform(action);
 
         var copies = action.copies();
@@ -37,10 +38,10 @@ export function behaviorPaste(context) {
         Object.values(copies).forEach(function(entity) { originals.add(entity.id); });
 
         for (var id in copies) {
-            var oldEntity = oldGraph.entity(id);
+            var oldEntity = copyGraph.entity(id);
             var newEntity = copies[id];
 
-            extent = extent.extend(oldEntity.extent(oldGraph));
+            extent = extent.extend(oldEntity.extent(copyGraph));
 
             // Exclude child nodes from newIDs if their parent way was also copied.
             var parents = context.graph().parentWays(newEntity);
@@ -58,7 +59,7 @@ export function behaviorPaste(context) {
         var delta = vecSubtract(mouse, copyPoint);
 
         context.perform(actionMove(newIDs, delta, projection));
-        context.enter(modeMove(context, newIDs, baseGraph));
+        context.enter(modeMove(context, newIDs, startGraph));
     }
 
 
