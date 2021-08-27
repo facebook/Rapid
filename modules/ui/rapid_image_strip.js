@@ -1,8 +1,3 @@
-import { select as d3_select } from 'd3-selection';
-import { t } from '../core/localizer';
-
-import { svgIcon } from '../svg';
-import { uiTooltip } from './tooltip';
 export function uiRapidImageStrip(context) {
   const rapidContext = context.rapidContext();
   let _datum;
@@ -39,7 +34,7 @@ export function uiRapidImageStrip(context) {
         images.sort(sortByLon);
 
         let imagesSelection = body.selectAll('.image-container')
-          .data(images, d => d.key)  //TODO: remove this sort once the backend serves stuff up in the appropriate order
+          .data(images, d => d.key)
           .order();
 
         imagesSelection.exit().remove();

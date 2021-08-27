@@ -1,4 +1,4 @@
-import { select as d3_select, select } from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
@@ -286,21 +286,6 @@ export function uiRapidFeatureInspector(context, keybinding) {
         imageStripRenderer(context.container().selectAll('.over-map'));
       }
     }
-  }
-
-
-  function sortByLon(img1, img2) {
-    if (img1.lon > img2.lon) return 1;
-    if (img1.lon < img2.lon) return -1;
-    return 0;
-  }
-
-
-  function showImage(d, i, nodes) {
-    const selection = d3_select(nodes[i]);
-    selection.append('img').attr('src', d.url)
-      .attr('class', `rapid-inspector-image rapid-inspector-image-${d.key}`);
-
   }
 
 
