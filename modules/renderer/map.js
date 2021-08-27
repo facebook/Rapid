@@ -350,7 +350,7 @@ export function rendererMap(context) {
             fullRedraw = true;
             filter = utilFunctor(true);
             // selected features should always be visible, so we can skip filtering
-            applyFeatureLayerFilters = false;
+//            applyFeatureLayerFilters = false;
 
         } else if (difference) {
             var complete = difference.complete(map.extent());
@@ -411,23 +411,23 @@ export function rendererMap(context) {
         drawLabels = svgLabels(projection, context);
     };
 
-    function editOff() {
+    function osmEditOff() {
         context.features().resetStats();
         surface.selectAll('.layer-osm *').remove();
         surface.selectAll('.layer-touch:not(.markers) *').remove();
 
-        var allowed = {
-            'browse': true,
-            'save': true,
-            'select-note': true,
-            'select-data': true,
-            'select-error': true
-        };
+        // var allowed = {
+        //     'browse': true,
+        //     'save': true,
+        //     'select-note': true,
+        //     'select-data': true,
+        //     'select-error': true
+        // };
 
-        var mode = context.mode();
-        if (mode && !allowed[mode.id]) {
-            context.enter(modeBrowse(context));
-        }
+        // var mode = context.mode();
+        // if (mode && !allowed[mode.id]) {
+        //     context.enter(modeBrowse(context));
+        // }
 
         dispatch.call('drawn', this, {full: true});
     }
@@ -691,8 +691,11 @@ export function rendererMap(context) {
         if (map.editableDataEnabled() || map.isInWideSelection()) {
             context.loadTiles(projection);
             drawEditable(difference, extent);
-        } else {
-            editOff();
+            if (!map.osmDataEnabled()) {
+                osmEditOff();
+            }
+        } else if (!map.osmDataEnabled()) {
+            osmEditOff();
         }
 
         _transformStart = projection.transform();
@@ -1042,9 +1045,23 @@ export function rendererMap(context) {
     };
 
 
+
+    map.osmDataEnabled = function() {
+        var osmLayer = context.layers().layer('osm');
+
+        if (!osmLayer || !osmLayer.enabled()) return false;
+
+        return true;
+    };
+
+    map.rapidDataEnabled = function() {
+        var aiFeaturesLayer = context.layers().layer('ai-features');
+        if (!aiFeaturesLayer || !aiFeaturesLayer.enabled()) return false;
+        return true;
+    };
+
     map.editableDataEnabled = function(skipZoomCheck) {
-        var layer = context.layers().layer('osm');
-        if (!layer || !layer.enabled()) return false;
+        if (!this.osmDataEnabled && !this.rapidDataEnabled) return false;
 
         return skipZoomCheck || map.withinEditableZoom();
     };
