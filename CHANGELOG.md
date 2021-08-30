@@ -37,6 +37,26 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [1.1.7](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.7)
+##### 2021-Aug-30
+
+#### :sparkles: Usability & Accessibility
+* Add link button next to website field ([iD#8650])
+
+#### :bug: Bugfixes
+* Various fixes for validator involving stale state and detections ([iD#8663], [iD#8655], [#300])
+* Fix issue involving shift-clicking and lasso-selecting features ([#299], [#301])
+* Fix issue involving copy-paste ([#311])
+
+[#299]: https://github.com/facebookincubator/RapiD/issues/299
+[#300]: https://github.com/facebookincubator/RapiD/issues/300
+[#301]: https://github.com/facebookincubator/RapiD/issues/301
+[#311]: https://github.com/facebookincubator/RapiD/issues/311
+[iD#8650]: https://github.com/openstreetmap/iD/issues/8650
+[iD#8655]: https://github.com/openstreetmap/iD/issues/8655
+[iD#8663]: https://github.com/openstreetmap/iD/issues/8663
+
+
 # [1.1.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.6)
 ##### 2021-Aug-19
 
