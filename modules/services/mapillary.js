@@ -631,6 +631,10 @@ export default {
         return loadData(`${apiUrl}/${imageId}?access_token=${accessToken}&fields=id,thumb_1024_url`).thumb_1024_url;
     },
 
+    // Return the thumbnail for a given image id
+    getv3ImageThumbnail(imageKey) {
+        return `https://images.mapillary.com/${imageKey}/thumb-2048.jpg`;
+    },
 
     // Set the currently visible image
     setActiveImage: function(image) {
