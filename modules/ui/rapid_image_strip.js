@@ -1,3 +1,5 @@
+import { select as d3_select } from 'd3-selection';
+
 export function uiRapidImageStrip(context) {
   const rapidContext = context.rapidContext();
   let _datum;
@@ -49,9 +51,13 @@ export function uiRapidImageStrip(context) {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(d);
           })
-          .on('mouseleave', () => {
+          .on('mousedown', (d3_event, _) => {
+            d3_select(d3_event.currentTarget).classed('rapid-image-strip-clicked', true);
+          })
+          .on('mouseleave', (d3_event, _) => {
             const rapidContext = context.rapidContext();
             rapidContext.selectSuggestedViewfield(null);
+            d3_select(d3_event.currentTarget).classed('rapid-image-strip-clicked', false);
           });
 
           imagesSelection = imagesSelection.merge(imagesSelectionEnter);
