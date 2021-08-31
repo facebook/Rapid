@@ -227,14 +227,8 @@ export function validationCrossingWays(context) {
             n1 = way1Nodes[i];
             n2 = way1Nodes[i + 1];
             extent = new Extent(
-                [
-                    Math.min(n1.loc[0], n2.loc[0]),
-                    Math.min(n1.loc[1], n2.loc[1])
-                ],
-                [
-                    Math.max(n1.loc[0], n2.loc[0]),
-                    Math.max(n1.loc[1], n2.loc[1])
-                ]
+                [ Math.min(n1.loc[0], n2.loc[0]), Math.min(n1.loc[1], n2.loc[1]) ],
+                [ Math.max(n1.loc[0], n2.loc[0]), Math.max(n1.loc[1], n2.loc[1]) ]
             );
 
             // Optimize by only checking overlapping segments, not every segment

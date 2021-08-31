@@ -457,7 +457,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       };
 
       if (d.extent) {
-        dataset.extent = new Extent(d.extent);
+        dataset.extent = new Extent(d.extent[0], d.extent[1]);
       }
 
       // Test running building layers through FBML conflation service

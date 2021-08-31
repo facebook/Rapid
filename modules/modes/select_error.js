@@ -1,6 +1,6 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+
+import { Extent } from '@id-sdk/extent';
 
 import { behaviorBreathe } from '../behavior/breathe';
 import { behaviorHover } from '../behavior/hover';
@@ -107,6 +107,9 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
         var sidebar = context.ui().sidebar;
         sidebar.show(errorEditor.error(error));
+
+        // expand the sidebar, avoid obscuring the data if needed
+        sidebar.expand(sidebar.intersects(new Extent(error.loc)));
 
         context.map()
             .on('drawn.select-error', selectError);

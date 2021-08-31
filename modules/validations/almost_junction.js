@@ -286,10 +286,10 @@ export function validationAlmostJunction(context) {
       const lat = tipNode.loc[1];
       const lon_range = geoMetersToLon(EXTEND_TH_METERS, lat) / 2;
       const lat_range = geoMetersToLat(EXTEND_TH_METERS) / 2;
-      const queryExtent = new Extent([
+      const queryExtent = new Extent(
         [lon - lon_range, lat - lat_range],
         [lon + lon_range, lat + lat_range]
-      ]);
+      );
 
       // first, extend the edge of [midNode -> tipNode] by EXTEND_TH_METERS and find the "extended tip" location
       const edgeLen = geoSphericalDistance(midNode.loc, tipNode.loc);

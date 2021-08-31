@@ -437,7 +437,8 @@ export function svgLabels(projection, context) {
 
 
         function getLineLabel(entity, width, height) {
-            var viewport = new Extent(context.projection.clipExtent()).polygon();
+            var bounds = context.projection.clipExtent();
+            var viewport = new Extent(bounds[0], bounds[1]).polygon();
             var points = graph.childNodes(entity)
                 .map(function(node) { return projection(node.loc); });
             var length = geomPathLength(points);

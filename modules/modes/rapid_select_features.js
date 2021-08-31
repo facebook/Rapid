@@ -7,8 +7,6 @@ import { services } from '../services';
 import { uiRapidFeatureInspector } from '../ui';
 import { utilKeybinding } from '../util';
 
-let _expandedOnce = false;
-
 
 export function modeRapidSelectFeatures(context, selectedDatum) {
   let mode = {
@@ -85,14 +83,9 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
     const sidebar = context.ui().sidebar;
     sidebar.show(rapidInspector.datum(selectedDatum));
 
-    if (!_expandedOnce) {
-      // Expand sidebar at least once per session to inform user how to
-      // accept and reject proposed roads.
-      _expandedOnce = true;
-      // expand the sidebar, avoid obscuring the data if needed
-      const extent = selectedDatum.extent(rapidGraph);
-      sidebar.expand(sidebar.intersects(extent));
-    }
+    // expand the sidebar, avoid obscuring the data if needed
+    const extent = selectedDatum.extent(rapidGraph);
+    sidebar.expand(sidebar.intersects(extent));
 
     context.map()
       .on('drawn.select-ai-features', selectData);

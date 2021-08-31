@@ -206,7 +206,8 @@ export function uiFeatureList(context) {
                         name: d.display_name,
                         extent: new Extent(
                             [parseFloat(d.boundingbox[3]), parseFloat(d.boundingbox[0])],
-                            [parseFloat(d.boundingbox[2]), parseFloat(d.boundingbox[1])])
+                            [parseFloat(d.boundingbox[2]), parseFloat(d.boundingbox[1])]
+                        )
                     });
                 }
             });

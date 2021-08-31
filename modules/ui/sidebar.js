@@ -1,9 +1,9 @@
 import _throttle from 'lodash-es/throttle';
 
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+
+import { Extent } from '@id-sdk/extent';
 
 import { utilArrayIdentical } from '../util/array';
 import { utilFastMouse } from '../util';
@@ -77,8 +77,8 @@ export function uiSidebar(context) {
             containerWidth = container.node().getBoundingClientRect().width;
             var widthPct = (sidebarWidth / containerWidth) * 100;
             selection
-                .style('width', widthPct + '%')    // lock in current width
-                .style('max-width', '85%');        // but allow larger widths
+                .style('width', widthPct + '%') // lock in current width
+                .style('max-width', '85%'); // but allow larger widths
 
             resizer.classed('dragging', true);
 
@@ -165,7 +165,7 @@ export function uiSidebar(context) {
                 targets && targets.length) {
 
                 var elements = context.container().selectAll('.feature-list-item button')
-                    .filter(function (node) {
+                    .filter(function(node) {
                         return targets.indexOf(node) !== -1;
                     });
 
@@ -179,7 +179,7 @@ export function uiSidebar(context) {
 
         function hover(targets) {
             var datum = targets && targets.length && targets[0];
-            if (datum && datum.__featurehash__) {   // hovering on data
+            if (datum && datum.__featurehash__) { // hovering on data
                 _wasData = true;
                 sidebar
                     .show(dataEditor.datum(datum));
@@ -187,7 +187,7 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
-            } else if (datum && datum.__fbid__) {   // hovering on RapiD data
+            } else if (datum && datum.__fbid__) { // hovering on RapiD data
                 _wasRapiD = true;
                 sidebar
                     .show(rapidInspector.datum(datum));
@@ -203,7 +203,7 @@ export function uiSidebar(context) {
 
                 var osm = services.osm;
                 if (osm) {
-                    datum = osm.getNote(datum.id);   // marker may contain stale data - get latest
+                    datum = osm.getNote(datum.id); // marker may contain stale data - get latest
                 }
 
                 sidebar
@@ -281,12 +281,12 @@ export function uiSidebar(context) {
         sidebar.hover = _throttle(hover, 200);
 
 
-        sidebar.intersects = function(extent) {
+        sidebar.intersects = function(wgs84Extent) {
             var rect = selection.node().getBoundingClientRect();
-            return extent.intersects([
+            return wgs84Extent.intersects(new Extent(
                 context.projection.invert([0, rect.height]),
                 context.projection.invert([rect.width, 0])
-            ]);
+            ));
         };
 
 

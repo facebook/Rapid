@@ -133,10 +133,10 @@ export function validationCloseNodes(context) {
             var lat = node.loc[1];
             var lon_range = geoMetersToLon(pointThresholdMeters, lat) / 2;
             var lat_range = geoMetersToLat(pointThresholdMeters) / 2;
-            var queryExtent = new Extent([
+            var queryExtent = new Extent(
                 [lon - lon_range, lat - lat_range],
                 [lon + lon_range, lat + lat_range]
-            ]);
+            );
 
             var intersected = context.history().tree().intersects(queryExtent, graph);
             for (var j = 0; j < intersected.length; j++) {
