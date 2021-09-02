@@ -295,22 +295,24 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     // Apply filters
     let count = 0;
     _datasetInfo.forEach(d => {
-      count++;
       const title = (d.title || '').toLowerCase();
       const snippet = (d.snippet || '').toLowerCase();
+
       if (datasetAdded(d)) {  // always show added datasets at the top of the list
         d.filtered = false;
+        ++count;
         return;
       }
-
-      d.filtered = (count > MAXRESULTS);
-
       if (_filterText && title.indexOf(_filterText) === -1 && snippet.indexOf(_filterText) === -1) {
         d.filtered = true;   // filterText not found anywhere in `title` or `snippet`
+        return;
       }
       if (_filterCategory && !(d.groupCategories.some(category => category.toLowerCase() === `/categories/${_filterCategory}`))) {
         d.filtered = true;   // filterCategory not found anywhere in `groupCategories``
+        return;
       }
+
+      d.filtered = (++count > MAXRESULTS);
     });
 
 
