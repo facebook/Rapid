@@ -82,7 +82,7 @@ def deploy():
         print("Got an error:")
         print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
         print(f"STDERR:\n{results.stderr.decode('utf-8')}")
-        sys.exit(-1)
+        sys.exit(0)  # -1 for failure
     print(f"\nCopying new {distdir} folder and index file to s3.")
     subprocess.run(
         [
