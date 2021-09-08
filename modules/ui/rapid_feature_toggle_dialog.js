@@ -9,6 +9,8 @@ import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
+import { utilQsString, utilStringQs } from '../util';
+
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
@@ -25,16 +27,30 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleDataset(event, d) {
-    const dataset = rapidContext.datasets()[d.id];
+    let datasets = rapidContext.datasets();
+    let dataset = datasets[d.id];
     if (dataset) {
       dataset.enabled = !dataset.enabled;
+
+      // update url hash
+      let hash = utilStringQs(window.location.hash);
+      hash.datasets = Object.values(datasets)
+        .filter(ds => ds.added && ds.enabled)
+        .map(ds => ds.id)
+        .join(',');
+
+      if (!window.mocha) {
+        window.location.replace('#' + utilQsString(hash, true));  // update hash
+      }
+
       context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
       context.map().pan([0,0]);             // trigger a map redraw
     }
   }
 
   function changeColor(datasetID, color) {
-    const dataset = rapidContext.datasets()[datasetID];
+    let datasets = rapidContext.datasets();
+    let dataset = datasets[datasetID];
     if (dataset) {
       dataset.color = color;
       context.map().pan([0,0]);   // trigger a map redraw

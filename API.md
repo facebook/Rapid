@@ -5,7 +5,7 @@ This file documents efforts toward establishing a public API for iD.
 ##### iD Standalone
 
 iD supports several URL parameters. When constructing a URL to a standalone instance
-of iD (e.g. `https://ideditor-release.netlify.app`), the following parameters are available
+of iD (e.g. `https://mapwith.ai/rapid`), the following parameters are available
 **in the hash portion of the URL**:
 
 * __`background`__ - The value from a `sourcetag` property in iD's
@@ -17,6 +17,8 @@ of iD (e.g. `https://ideditor-release.netlify.app`), the following parameters ar
   _Example:_ `background=custom:https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png`
 * __`comment`__ - Prefills the changeset comment. Pass a url encoded string.<br/>
   _Example:_ `comment=CAR%20crisis%2C%20refugee%20areas%20in%20Cameroon`
+* __`datasets`__ - **RapiD Only:** A comma-separated list of dataset IDs to enable<br/>
+  _Example:_ `datasets=fbRoads,msBuildings,e75b56f13b404d7d8b47ef8be1c619ec`
 * __`disable_features`__ - Disables features in the list.<br/>
   _Example:_ `disable_features=water,service_roads,points,paths,boundaries`<br/>
   _Available features:_ `points`, `traffic_roads`, `service_roads`, `paths`, `buildings`, `building_parts`, `indoor`, `landuse`,

@@ -9,7 +9,7 @@ import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { uiCombobox} from './combobox';
-import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
+import { utilKeybinding, utilNoAuto, utilQsString, utilRebind, utilStringQs } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
@@ -439,8 +439,8 @@ export function uiRapidViewManageDatasets(context, parentModal) {
         service.loadLayer(d.id);
       }
 
-      const isBeta = d.groupCategories.some(d => d.toLowerCase() === '/categories/preview');
-      const isBuildings = d.groupCategories.some(d => d.toLowerCase() === '/categories/buildings');
+      const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
+      const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
 
       // pick a new color
       const colors = rapidContext.colors();
@@ -474,6 +474,17 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       }
 
       datasets[d.id] = dataset;
+    }
+
+    // update url hash
+    let hash = utilStringQs(window.location.hash);
+    hash.datasets = Object.values(datasets)
+      .filter(ds => ds.added && ds.enabled)
+      .map(ds => ds.id)
+      .join(',');
+
+    if (!window.mocha) {
+      window.location.replace('#' + utilQsString(hash, true));  // update hash
     }
 
     _content.call(renderModalContent);
