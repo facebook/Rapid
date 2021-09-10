@@ -2,11 +2,11 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Extent, Projection, Tiler, geoScaleToZoom } from '@id-sdk/math';
-import { utilArrayUnion } from '@id-sdk/util';
+import { utilArrayUnion, utilQsString, utilStringQs } from '@id-sdk/util';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';
-import { utilQsString, utilRebind, utilSetTransform, utilStringQs } from '../util';
+import { utilRebind, utilSetTransform } from '../util';
 
 
 var apibase = 'https://openstreetcam.org';

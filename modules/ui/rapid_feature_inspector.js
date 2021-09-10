@@ -7,7 +7,6 @@ import { services } from '../services';
 import { svgIcon } from '../svg';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
-import { utilStringQs } from '../util';
 import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
 
 
@@ -20,7 +19,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
   function isAddFeatureDisabled() {
     // when task GPX is set in URL (TM mode), "add roads" is always enabled
-    const gpxInUrl = utilStringQs(window.location.hash).gpx;
+    const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
     if (gpxInUrl) return false;
 
     const annotations = context.history().peekAllAnnotations();

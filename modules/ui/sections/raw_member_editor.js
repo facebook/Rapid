@@ -1,7 +1,6 @@
 import { drag as d3_drag } from 'd3-drag';
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+import { utilUniqueString } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
@@ -15,7 +14,7 @@ import { svgIcon } from '../../svg/icon';
 import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
-import { utilDisplayName, utilDisplayType, utilHighlightEntities, utilNoAuto, utilUniqueDomId } from '../../util';
+import { utilDisplayName, utilDisplayType, utilHighlightEntities, utilNoAuto } from '../../util';
 
 
 export function uiSectionRawMemberEditor(context) {
@@ -133,7 +132,7 @@ export function uiSectionRawMemberEditor(context) {
                 role: member.role,
                 relation: entity,
                 member: context.hasEntity(member.id),
-                domId: utilUniqueDomId(entityID + '-member-' + index)
+                domId: utilUniqueString(entityID + '-member-' + index)
             });
         });
 

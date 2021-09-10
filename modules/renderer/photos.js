@@ -1,8 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilQsString, utilStringQs } from '@id-sdk/util';
 
 import { services } from '../services';
 import { utilRebind } from '../util/rebind';
-import { utilQsString, utilStringQs } from '../util';
 
 
 export function rendererPhotos(context) {

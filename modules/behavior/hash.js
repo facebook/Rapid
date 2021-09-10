@@ -1,12 +1,12 @@
 import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@id-sdk/math';
-import { utilArrayIdentical, utilObjectOmit } from '@id-sdk/util';
+import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
 import { t } from '../core/localizer';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
-import { utilDisplayLabel, utilQsString, utilStringQs } from '../util';
+import { utilDisplayLabel } from '../util';
 
 
 export function behaviorHash(context) {

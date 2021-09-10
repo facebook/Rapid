@@ -4,14 +4,13 @@ import { timer as d3_timer } from 'd3-timer';
 import {
   Extent, Projection, Tiler,
   geoMetersToLat, geoMetersToLon, geoScaleToZoom,
-  geomRotatePoints, geomPointInPolygon, vecLength
-} from '@id-sdk/math';
-import { utilArrayUnion } from '@id-sdk/util';
+  geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
+import { utilArrayUnion, utilQsString, utilStringQs, utilUniqueString } from '@id-sdk/util';
 import RBush from 'rbush';
 
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
-import { utilQsString, utilRebind, utilStringQs, utilUniqueDomId } from '../util';
+import { utilRebind } from '../util';
 
 
 const bubbleApi = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';
@@ -763,7 +762,7 @@ export default {
       .append('div')
       .attr('class', 'attribution-row');
 
-    const hiresDomId = utilUniqueDomId('streetside-hires');
+    const hiresDomId = utilUniqueString('streetside-hires');
 
     // Add hires checkbox
     let label = line1

@@ -1,5 +1,6 @@
-import { t } from '../core/localizer';
+import { utilHashcode } from '@id-sdk/util';
 
+import { t } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionUpgradeTags } from '../actions/upgrade_tags';
@@ -7,7 +8,7 @@ import { fileFetcher } from '../core';
 import { presetManager } from '../presets';
 import { services } from '../services';
 import { osmIsOldMultipolygonOuterMember, osmOldMultipolygonOuterMemberOfRelation } from '../osm/multipolygon';
-import { utilDisplayLabel, utilHashcode, utilTagDiff } from '../util';
+import { utilDisplayLabel, utilTagDiff } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 

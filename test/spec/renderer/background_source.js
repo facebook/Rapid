@@ -19,7 +19,7 @@ describe('iD.rendererBackgroundSource', function() {
             template: 'SRS={proj}&imageSR={wkid}&bboxSR={wkid}&FORMAT=image/jpeg&WIDTH={width}&HEIGHT={height}&BBOX={bbox}'
         });
 
-        var result = iD.utilStringQs(source.url([0,1,2]));
+        var result = sdk.utilStringQs(source.url([0,1,2]));
         expect(result.SRS).to.equal('EPSG:3857');
         expect(result.imageSR).to.equal('3857');
         expect(result.bboxSR).to.equal('3857');

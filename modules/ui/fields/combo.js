@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { drag as d3_drag } from 'd3-drag';
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq, utilUnicodeCharsCount } from '@id-sdk/util';
 import * as countryCoder from '@ideditor/country-coder';
 
 import { fileFetcher } from '../../core/file_fetcher';
@@ -10,7 +10,7 @@ import { t } from '../../core/localizer';
 import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { utilKeybinding } from '../../util/keybinding';
-import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent, utilUnicodeCharsCount } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
 
 export {
     uiFieldCombo as uiFieldManyCombo,

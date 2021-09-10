@@ -1,13 +1,13 @@
-import _forEach from 'lodash-es/forEach';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
-
 import { Projection, Tiler } from '@id-sdk/math';
+import { utilStringQs } from '@id-sdk/util';
+import _forEach from 'lodash-es/forEach';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
-import { utilRebind, utilStringQs } from '../util';
+import { utilRebind } from '../util';
+
 
 // constants
 var APIROOT = 'https://mapwith.ai/maps/ml_roads';
@@ -59,7 +59,7 @@ function tileURL(dataset, extent, taskExtent) {
     var customRoadTags = utilStringQs(window.location.hash).fb_ml_road_tags;
 
     var urlRoot = customUrlRoot || APIROOT;
-    var url = urlRoot + '?' + utilQsString(qs, true);  // true = noencode
+    var url = urlRoot + '?' + fbmlQsString(qs, true);  // true = noencode
 
     if (customRoadTags) {
       customRoadTags.split(',').forEach(function (tag) {
@@ -71,7 +71,7 @@ function tileURL(dataset, extent, taskExtent) {
 
 
     // This utilQsString does not sort the keys, because the fbml service needs them to be ordered a certain way.
-    function utilQsString(obj, noencode) {
+    function fbmlQsString(obj, noencode) {
         // encode everything except special characters used in certain hash parameters:
         // "/" in map states, ":", ",", {" and "}" in background
         function softEncode(s) {

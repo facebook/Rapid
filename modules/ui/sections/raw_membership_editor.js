@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { utilArrayGroupBy, utilArrayIntersection } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayIntersection, utilUniqueString } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
@@ -14,7 +14,7 @@ import { svgIcon } from '../../svg/icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTooltip } from '../tooltip';
-import { utilDisplayName, utilNoAuto, utilHighlightEntities, utilUniqueDomId } from '../../util';
+import { utilDisplayName, utilNoAuto, utilHighlightEntities } from '../../util';
 
 
 export function uiSectionRawMembershipEditor(context) {
@@ -101,7 +101,7 @@ export function uiSectionRawMembershipEditor(context) {
         }
 
         memberships.forEach(function(membership) {
-            membership.domId = utilUniqueDomId('membership-' + membership.relation.id);
+            membership.domId = utilUniqueString('membership-' + membership.relation.id);
             var roles = [];
             membership.members.forEach(function(member) {
                 if (roles.indexOf(member.role) === -1) roles.push(member.role);

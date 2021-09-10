@@ -1,10 +1,10 @@
+import { select as d3_select} from 'd3-selection';
+import { geoScaleToZoom } from '@id-sdk/math';
 import _throttle from 'lodash-es/throttle';
 
-import { select as d3_select} from 'd3-selection';
-import { geoScaleToZoom } from '@id-sdk/geo';
 import { services } from '../services';
 import { svgPath, svgPointTransform } from './index';
-import { utilStringQs } from '../util';
+
 
 let _enabled = false;
 let _initialized = false;
@@ -16,7 +16,7 @@ let _actioned;
 export function svgRapidFeatures(projection, context, dispatch) {
   const RAPID_MAGENTA = '#da26d3';
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
-  const gpxInUrl = utilStringQs(window.location.hash).gpx;
+  const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
   let _layer = d3_select(null);
 
 

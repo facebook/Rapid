@@ -1,8 +1,7 @@
-import { utilArrayUniq, utilObjectOmit } from '@id-sdk/util';
+import { utilArrayUniq, utilObjectOmit, utilSafeString } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { osmAreaKeys } from '../osm/tags';
-import { utilSafeClassName } from '../util/util';
 
 
 //
@@ -21,7 +20,7 @@ export function presetPreset(presetID, preset, addable, allFields, allPresets) {
 
   _this.id = presetID;
 
-  _this.safeid = utilSafeClassName(presetID);  // for use in css classes, selectors, element ids
+  _this.safeid = utilSafeString(presetID);  // for use in css classes, selectors, element ids
 
   _this.originalTerms = (_this.terms || []).join();
 

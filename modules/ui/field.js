@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilUniqueString } from '@id-sdk/util';
 
 import { t, localizer } from '../core/localizer';
 import { locationManager } from '../core/locations';
@@ -8,7 +9,7 @@ import { uiTooltip } from './tooltip';
 import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
-import { utilRebind, utilTotalExtent, utilUniqueDomId } from '../util';
+import { utilRebind, utilTotalExtent } from '../util';
 
 
 export function uiField(context, presetField, entityIDs, options) {
@@ -34,7 +35,7 @@ export function uiField(context, presetField, entityIDs, options) {
 
     var dispatch = d3_dispatch('change', 'revert');
     var field = Object.assign({}, presetField);   // shallow copy
-    field.domId = utilUniqueDomId('form-field-' + field.safeid);
+    field.domId = utilUniqueString('form-field-' + field.safeid);
     var _show = options.show;
     var _state = '';
     var _tags = {};

@@ -1,14 +1,14 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
+import { Projection, Tiler } from '@id-sdk/math';
+import { utilHashcode } from '@id-sdk/util';
 import deepEqual from 'fast-deep-equal';
 import turf_bboxClip from '@turf/bbox-clip';
 import stringify from 'fast-json-stable-stringify';
 import polygonClipping from 'polygon-clipping';
 import Protobuf from 'pbf';
 import vt from '@mapbox/vector-tile';
-import { Projection, Tiler } from '@id-sdk/math';
 
-import { utilHashcode, utilRebind } from '../util';
+import { utilRebind } from '../util';
 
 
 var tiler = new Tiler().tileSize(512).margin(1);

@@ -1,8 +1,7 @@
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq, utilStringQs } from '@id-sdk/util';
 
 import { fileFetcher } from './file_fetcher';
 import { utilDetect } from '../util/detect';
-import { utilStringQs } from '../util';
 
 
 let _mainLocalizer = coreLocalizer(); // singleton

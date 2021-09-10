@@ -37,10 +37,13 @@ export const d3 = {
 };
 
 // Reexport the sdk things that our tests use too
-import * as SDK from '@id-sdk/math';
+import * as SDKMATH from '@id-sdk/math';
+import * as SDKUTIL from '@id-sdk/util';
 export const sdk = {
-  Extent: SDK.Extent,
-  geoSphericalDistance: SDK.geoSphericalDistance,
-  geoZoomToScale: SDK.geoZoomToScale,
-  vecLength: SDK.vecLength
+  Extent: SDKMATH.Extent,
+  geoSphericalDistance: SDKMATH.geoSphericalDistance,
+  geoZoomToScale: SDKMATH.geoZoomToScale,
+  vecLength: SDKMATH.vecLength,
+  utilQsString: SDKUTIL.utilQsString,
+  utilStringQs: SDKUTIL.utilStringQs
 };

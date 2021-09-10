@@ -1,10 +1,9 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilArrayGroupBy, utilArrayUnion } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '@id-sdk/util';
 
 import { prefs } from '../core/preferences';
 import { osmEntity } from '../osm';
 import { utilRebind } from '../util/rebind';
-import { utilQsString, utilStringQs } from '../util';
 
 
 export function rendererFeatures(context) {

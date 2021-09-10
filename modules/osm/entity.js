@@ -1,8 +1,7 @@
-import { utilArrayUnion } from '@id-sdk/util';
+import { utilArrayUnion, utilUnicodeCharsTruncated } from '@id-sdk/util';
 
 import { debug } from '../index';
 import { osmIsInterestingTag } from './tags';
-import { utilUnicodeCharsTruncated } from '../util/util';
 
 
 export function osmEntity(attrs) {

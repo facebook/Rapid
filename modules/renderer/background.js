@@ -1,18 +1,16 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
-
+import { Extent, geoMetersToOffset, geoOffsetToMeters} from '@id-sdk/math';
+import { utilQsString, utilStringQs } from '@id-sdk/util';
 import whichPolygon from 'which-polygon';
 
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
-import { geoMetersToOffset, geoOffsetToMeters} from '@id-sdk/geo';
 import { rendererBackgroundSource } from './background_source';
 import { rendererTileLayer } from './tile_layer';
-import { utilQsString, utilStringQs } from '../util';
 import { utilDetect } from '../util/detect';
 import { utilRebind } from '../util/rebind';
-import { Extent } from '@id-sdk/extent';
 
 
 let _imageryIndex = null;

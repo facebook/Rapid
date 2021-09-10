@@ -1,5 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
 import { Extent } from '@id-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy } from '@id-sdk/util';
 

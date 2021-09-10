@@ -1,18 +1,15 @@
-import RBush from 'rbush';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
-
+import { Extent, Projection, Tiler, vecAdd } from '@id-sdk/math';
+import { utilQsString } from '@id-sdk/util';
 import marked from 'marked';
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
+import RBush from 'rbush';
 
 import { fileFetcher } from '../core/file_fetcher';
 import { localizer } from '../core/localizer';
-import { vecAdd } from '@id-sdk/math';
 import { QAItem } from '../osm';
-import { utilRebind, utilQsString } from '../util';
-import { Extent } from '@id-sdk/extent';
+import { utilRebind } from '../util';
+
 
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
