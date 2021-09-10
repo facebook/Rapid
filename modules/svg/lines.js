@@ -1,17 +1,16 @@
-import deepEqual from 'fast-deep-equal';
 import { range as d3_range } from 'd3-array';
+import { utilArrayFlatten, utilArrayGroupBy } from '@id-sdk/util';
 
-import {
-    svgMarkerSegments, svgPath, svgRelationMemberTags, svgSegmentWay
-} from './helpers';
-import { svgTagClasses } from './tag_classes';
-
-import { osmEntity, osmOldMultipolygonOuterMember } from '../osm';
-import { utilArrayFlatten, utilArrayGroupBy } from '../util';
-import { utilDetect } from '../util/detect';
 import _isEqual from 'lodash-es/isEqual';
 import _omit from 'lodash-es/omit';
+import deepEqual from 'fast-deep-equal';
+
+import { svgMarkerSegments, svgPath, svgRelationMemberTags, svgSegmentWay } from './helpers';
+import { svgTagClasses } from './tag_classes';
+import { osmEntity, osmOldMultipolygonOuterMember } from '../osm';
+import { utilDetect } from '../util/detect';
 import { rapid_config } from '../../data/rapid_config.json';
+
 
 export function svgLines(projection, context) {
     var detected = utilDetect();

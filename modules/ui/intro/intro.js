@@ -1,6 +1,7 @@
+import { utilArrayDifference, utilArrayUniq } from '@id-sdk/util';
+
 import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
-
 import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
 import { coreGraph } from '../../core/graph';
@@ -9,7 +10,6 @@ import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
 import { uiCurtain } from '../curtain';
-import { utilArrayDifference, utilArrayUniq } from '../../util';
 
 import { uiIntroWelcome } from './welcome';
 import { uiIntroNavigation } from './navigation';

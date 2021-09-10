@@ -1,14 +1,13 @@
 import { median as d3_median } from 'd3-array';
-
 import {
     polygonArea as d3_polygonArea,
     polygonHull as d3_polygonHull,
     polygonCentroid as d3_polygonCentroid
 } from 'd3-polygon';
-
 import { vecInterp, vecLength, vecLengthSquare } from '@id-sdk/math';
+import { utilArrayUniq } from '@id-sdk/util';
+
 import { osmNode } from '../osm/node';
-import { utilArrayUniq } from '../util';
 
 
 export function actionCircularize(wayId, projection, maxAngle) {

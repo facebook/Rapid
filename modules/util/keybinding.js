@@ -1,8 +1,5 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
-import { utilArrayUniq } from './array';
+import { select as d3_select } from 'd3-selection';
+import { utilArrayUniq } from '@id-sdk/util';
 
 
 export function utilKeybinding(namespace) {

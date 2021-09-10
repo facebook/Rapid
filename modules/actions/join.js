@@ -1,9 +1,10 @@
+import { geomPathIntersections } from '@id-sdk/math';
+import { utilArrayGroupBy, utilArrayIntersection } from '@id-sdk/util';
+
 import { actionDeleteRelation } from './delete_relation';
 import { actionDeleteWay } from './delete_way';
 import { osmIsInterestingTag } from '../osm/tags';
 import { osmJoinWays } from '../osm/multipolygon';
-import { geomPathIntersections } from '@id-sdk/geom';
-import { utilArrayGroupBy, utilArrayIntersection } from '../util';
 
 // RapiD
 import { prefs } from '../core/preferences';

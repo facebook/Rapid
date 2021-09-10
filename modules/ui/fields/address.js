@@ -1,15 +1,15 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { Extent, geoSphericalDistance } from '@id-sdk/math';
+import { utilArrayUniqBy } from '@id-sdk/util';
 import * as countryCoder from '@ideditor/country-coder';
 
 import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';
 import { geoChooseEdge } from '../../geo';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { uiCombobox } from '../combobox';
-import { utilArrayUniqBy, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
 import { t } from '../../core/localizer';
-import { Extent } from '@id-sdk/extent';
 
 
 export function uiFieldAddress(field, context) {

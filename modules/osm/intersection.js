@@ -1,11 +1,12 @@
+import { geoSphericalDistance } from '@id-sdk/math';
+import { utilArrayDifference, utilArrayUniq } from '@id-sdk/util';
+
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { actionReverse } from '../actions/reverse';
 import { actionSplit } from '../actions/split';
 import { coreGraph } from '../core/graph';
 import { geoAngle } from '../geo';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { osmEntity } from './entity';
-import { utilArrayDifference, utilArrayUniq } from '../util';
 
 
 export function osmTurn(turn) {

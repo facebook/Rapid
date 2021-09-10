@@ -1,8 +1,8 @@
+import { Extent } from '@id-sdk/math';
+import { utilArrayUniq } from '@id-sdk/util';
+
 import { osmEntity } from './entity';
 import { geoAngle } from '../geo';
-import { Extent } from '@id-sdk/extent';
-
-import { utilArrayUniq } from '../util';
 
 
 export function osmNode() {

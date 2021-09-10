@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayIdentical } from '@id-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
 import { presetManager } from '../presets';
@@ -6,7 +7,6 @@ import { t, localizer } from '../core/localizer';
 import { actionChangeTags } from '../actions/change_tags';
 import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
-import { utilArrayIdentical } from '../util/array';
 import { utilCleanTags, utilCombinedTags, utilRebind } from '../util';
 
 import { uiSectionEntityIssues } from './sections/entity_issues';
@@ -16,6 +16,7 @@ import { uiSectionRawMemberEditor } from './sections/raw_member_editor';
 import { uiSectionRawMembershipEditor } from './sections/raw_membership_editor';
 import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
 import { uiSectionSelectionList } from './sections/selection_list';
+
 
 export function uiEntityEditor(context) {
     var dispatch = d3_dispatch('choose');

@@ -1,9 +1,9 @@
-import _debounce from 'lodash-es/debounce';
-
 import { json as d3_json } from 'd3-fetch';
+import _debounce from 'lodash-es/debounce';
+import { utilObjectOmit } from '@id-sdk/util';
 
-import { utilObjectOmit, utilQsString } from '../util';
 import { localizer } from '../core/localizer';
+import { utilQsString } from '../util';
 
 
 var apibase = 'https://taginfo.openstreetmap.org/api/4/';

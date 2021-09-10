@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayUniq } from '@id-sdk/util';
 import * as countryCoder from '@ideditor/country-coder';
 
 import { presetManager } from '../../presets';
@@ -9,7 +10,7 @@ import { services } from '../../services';
 import { svgIcon } from '../../svg';
 import { uiTooltip } from '../tooltip';
 import { uiCombobox } from '../combobox';
-import { utilArrayUniq, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent, utilUniqueDomId } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent, utilUniqueDomId } from '../../util';
 
 var _languagesArray = [];
 

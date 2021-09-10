@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayUniqBy } from '@id-sdk/util';
 
 import { presetManager } from '../presets';
 import { t } from '../core/localizer';
@@ -6,7 +7,7 @@ import { svgIcon } from '../svg/icon';
 import { uiCombobox} from './combobox';
 import { uiField } from './field';
 import { uiFormFields } from './form_fields';
-import { utilArrayUniqBy, utilRebind, utilTriggerEvent } from '../util';
+import { utilRebind, utilTriggerEvent } from '../util';
 
 
 export function uiChangesetEditor(context) {

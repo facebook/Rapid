@@ -1,6 +1,7 @@
-import { geomPolygonContainsPolygon } from '@id-sdk/geom';
+import { geomPolygonContainsPolygon } from '@id-sdk/math';
+import { utilArrayGroupBy, utilArrayIntersection, utilObjectOmit } from '@id-sdk/util';
+
 import { osmJoinWays, osmRelation } from '../osm';
-import { utilArrayGroupBy, utilArrayIntersection, utilObjectOmit } from '../util';
 
 
 export function actionMergePolygon(ids, newRelationId) {

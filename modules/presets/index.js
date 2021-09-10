@@ -1,15 +1,15 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayUniq } from '@id-sdk/util';
 
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
 import { locationManager } from '../core/locations';
-
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { presetCategory } from './category';
 import { presetCollection } from './collection';
 import { presetField } from './field';
 import { presetPreset } from './preset';
-import { utilArrayUniq, utilRebind } from '../util';
+import { utilRebind } from '../util';
 
 export { presetCategory };
 export { presetCollection };

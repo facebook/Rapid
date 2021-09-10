@@ -1,10 +1,9 @@
-import {
-  geoAngle, geoChooseEdge,
-} from '../geo';
-
 import { geomPathIntersections, geomPathLength, vecAdd, vecEqual, vecInterp, vecSubtract } from '@id-sdk/math';
+import { utilArrayIntersection } from '@id-sdk/util';
+
+import { geoAngle, geoChooseEdge } from '../geo';
 import { osmNode } from '../osm/node';
-import { utilArrayIntersection } from '../util';
+
 
 // https://github.com/openstreetmap/josm/blob/mirror/src/org/openstreetmap/josm/command/MoveCommand.java
 // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/MoveNodeAction.as

@@ -1,11 +1,11 @@
+import { Extent } from '@id-sdk/math';
+import { utilArrayUnion } from '@id-sdk/util';
+
 import { remove as removeDiacritics } from 'diacritics';
 import { fixRTLTextForSvg, rtlRegex } from './svg_paths_rtl_fix';
-
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
-import { utilArrayUnion } from './array';
 import { utilDetect } from './detect';
-import { Extent } from '@id-sdk/extent';
 
 
 export function utilTagText(entity) {

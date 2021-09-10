@@ -1,20 +1,17 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
-
-import { Projection, Tiler } from '@id-sdk/math';
+import {
+  Extent, Projection, Tiler,
+  geoMetersToLat, geoMetersToLon, geoScaleToZoom,
+  geomRotatePoints, geomPointInPolygon, vecLength
+} from '@id-sdk/math';
+import { utilArrayUnion } from '@id-sdk/util';
 import RBush from 'rbush';
 
 import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
-
-import { vecLength } from '@id-sdk/vector';
-
-import { geomRotatePoints, geomPointInPolygon } from '@id-sdk/geom';
-import { geoMetersToLat, geoMetersToLon, geoScaleToZoom } from '@id-sdk/geo';
-import { Extent } from '@id-sdk/extent';
-
-import { utilArrayUnion, utilQsString, utilRebind, utilStringQs, utilUniqueDomId } from '../util';
+import { utilQsString, utilRebind, utilStringQs, utilUniqueDomId } from '../util';
 
 
 const bubbleApi = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';

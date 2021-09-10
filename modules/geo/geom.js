@@ -1,10 +1,6 @@
 
 import { geomLineIntersection} from '@id-sdk/geom';
-
-import {
-    vecAngle, vecDot, vecEqual,
-    vecLength, vecSubtract
-} from '@id-sdk/math';
+import { vecAngle, vecDot, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
 
 // Return the counterclockwise angle in the range (-pi, pi)

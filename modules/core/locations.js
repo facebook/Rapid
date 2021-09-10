@@ -1,7 +1,7 @@
 import LocationConflation from '@ideditor/location-conflation';
 import whichPolygon from 'which-polygon';
 import calcArea from '@mapbox/geojson-area';
-import { utilArrayChunk } from '../util';
+import { utilArrayChunk } from '@id-sdk/util';
 
 let _mainLocations = coreLocations(); // singleton
 export { _mainLocations as locationManager };

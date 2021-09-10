@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayGroupBy } from '@id-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
 import { prefs } from '../core/preferences';
@@ -12,8 +13,7 @@ import { uiChangesetEditor } from './changeset_editor';
 import { uiSectionChanges } from './sections/changes';
 import { uiCommitWarnings } from './commit_warnings';
 import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
-import { utilArrayGroupBy, utilRebind, utilUniqueDomId } from '../util';
-import { utilDetect } from '../util/detect';
+import { utilDetect, utilRebind, utilUniqueDomId } from '../util';
 
 
 var readOnlyTags = [

@@ -1,8 +1,9 @@
+import { utilArrayUniq } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
-import { utilArrayUniq } from '../util/array';
 import { utilGetAllNodes, utilTotalExtent } from '../util/util';
 
 

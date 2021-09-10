@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayDifference } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
@@ -7,7 +8,7 @@ import { svgIcon } from '../svg/icon';
 import { uiCombobox } from './combobox';
 import { uiDisclosure } from './disclosure';
 import { uiTagReference } from './tag_reference';
-import { utilArrayDifference, utilGetSetValue, utilNoAuto, utilRebind, utilTagDiff } from '../util';
+import { utilGetSetValue, utilNoAuto, utilRebind, utilTagDiff } from '../util';
 
 
 export function uiRawTagEditor(context) {

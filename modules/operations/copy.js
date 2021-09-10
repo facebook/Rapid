@@ -1,8 +1,11 @@
+import { utilArrayGroupBy } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
-import { utilArrayGroupBy, utilTotalExtent } from '../util';
+import { utilTotalExtent } from '../util';
+
 
 export function operationCopy(context, selectedIDs) {
 

@@ -1,10 +1,12 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { Extent } from '@id-sdk/extent';
+
+import { Extent } from '@id-sdk/math';
+import { utilArrayChunk, utilArrayGroupBy } from '@id-sdk/util';
 
 import { prefs } from './preferences';
 import { coreDifference } from './difference';
 import { modeSelect } from '../modes/select';
-import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs, utilRebind } from '../util';
+import { utilEntityAndDeepMemberIDs, utilRebind } from '../util';
 import * as Validations from '../validations/index';
 
 

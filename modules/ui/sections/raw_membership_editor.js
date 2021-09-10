@@ -1,15 +1,12 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+import { utilArrayGroupBy, utilArrayIntersection } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
-
 import { actionAddEntity } from '../../actions/add_entity';
 import { actionAddMember } from '../../actions/add_member';
 import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMembers } from '../../actions/delete_members';
-
 import { modeSelect } from '../../modes/select';
 import { osmEntity, osmRelation } from '../../osm';
 import { services } from '../../services';
@@ -17,7 +14,6 @@ import { svgIcon } from '../../svg/icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTooltip } from '../tooltip';
-import { utilArrayGroupBy, utilArrayIntersection } from '../../util/array';
 import { utilDisplayName, utilNoAuto, utilHighlightEntities, utilUniqueDomId } from '../../util';
 
 

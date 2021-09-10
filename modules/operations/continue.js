@@ -1,7 +1,8 @@
+import { utilArrayGroupBy } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { modeDrawLine } from '../modes/draw_line';
 import { behaviorOperation } from '../behavior/operation';
-import { utilArrayGroupBy } from '../util';
 
 
 export function operationContinue(context, selectedIDs) {

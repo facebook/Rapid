@@ -1,6 +1,7 @@
-import { actionDeleteNode } from './delete_node';
 import { vecDot, vecInterp, vecLength } from '@id-sdk/math';
-import { utilArrayDifference } from '../util';
+import { utilArrayDifference } from '@id-sdk/util';
+
+import { actionDeleteNode } from './delete_node';
 
 
 /*

@@ -1,11 +1,9 @@
-import _throttle from 'lodash-es/throttle';
-
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
+import { Extent } from '@id-sdk/math';
+import { utilArrayIdentical } from '@id-sdk/util';
+import _throttle from 'lodash-es/throttle';
 
-import { Extent } from '@id-sdk/extent';
-
-import { utilArrayIdentical } from '../util/array';
 import { utilFastMouse } from '../util';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { services } from '../services';

@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
+import { utilArrayIdentical } from '@id-sdk/util';
 
 import { prefs } from '../../core/preferences';
 import { svgIcon } from '../../svg/icon';
-import { utilArrayIdentical } from '../../util/array';
 import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
