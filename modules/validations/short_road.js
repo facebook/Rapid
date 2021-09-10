@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeDrawLine } from '../modes';
 import { operationDelete } from '../operations/index';
@@ -29,7 +31,7 @@ export function validationShortRoad(context) {
     function continueDrawing(way, vertex, context) {
         // make sure the vertex is actually visible and editable
         var map = context.map();
-        if (!map.editable() || !map.trimmedExtent().contains(vertex.loc)) {
+        if (!map.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
             map.zoomToEase(vertex);
         }
 

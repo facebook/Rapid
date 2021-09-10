@@ -1056,7 +1056,7 @@ export default {
 
         // determine the needed tiles to cover the view
         var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.zoomRange([_tileZoom, _tileZoom]).getTiles(proj).tiles;
+        var tiles = tiler.zoomRange(_tileZoom).getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         var hadRequests = hasInflightRequests(_tileCache);
@@ -1126,7 +1126,7 @@ export default {
         var k = geoZoomToScale(_tileZoom + 1);
         var offset = new Projection().scale(k).project(loc);
         var proj = new Projection().transform({ k: k, x: -offset[0], y: -offset[1] });
-        var tiles = tiler.zoomRange([_tileZoom, _tileZoom]).getTiles(proj).tiles;
+        var tiles = tiler.zoomRange(_tileZoom).getTiles(proj).tiles;
 
         tiles.forEach(function(tile) {
             if (_tileCache.toLoad[tile.id] || _tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
@@ -1153,7 +1153,7 @@ export default {
 
         // determine the needed tiles to cover the view
         var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.zoomRange([_noteZoom, _noteZoom]).getTiles(proj).tiles;
+        var tiles = tiler.zoomRange(_noteZoom).getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
         abortUnwantedRequests(_noteCache, tiles);

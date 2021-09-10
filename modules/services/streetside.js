@@ -24,7 +24,7 @@ const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
 const maxResults = 2000;
 const TILEZOOM = 16.5;
-const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]).skipNullIsland(true);
+const tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
 
 const dispatch = d3_dispatch('loadedImages', 'viewerChanged');
 const minHfov = 10;         // zoom in degrees:  20, 10, 5
@@ -76,7 +76,7 @@ function localeTimestamp(s) {
 function loadTiles(which, url, projection, margin) {
   // determine the needed tiles to cover the view
   const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-  const tiles = tiler.zoomRange([TILEZOOM, TILEZOOM]).margin(margin).getTiles(proj).tiles;
+  const tiles = tiler.zoomRange(TILEZOOM).margin(margin).getTiles(proj).tiles;
 
   // abort inflight requests that are no longer needed
   const cache = _ssCache[which];
@@ -237,7 +237,7 @@ function partitionViewport(projection) {
   const z = geoScaleToZoom(projection.scale());
   const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
   const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-  const tiles = tiler.zoomRange([z2, z2]).margin(0).getTiles(proj).tiles;
+  const tiles = tiler.zoomRange(z2).margin(0).getTiles(proj).tiles;
   return tiles.map(tile => tile.wgs84Extent);
 }
 

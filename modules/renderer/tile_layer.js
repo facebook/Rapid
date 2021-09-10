@@ -81,7 +81,7 @@ export function rendererTileLayer(context) {
 
             _tiler
                 .skipNullIsland(!!_source.overlay)
-                .zoomRange([z, z]);
+                .zoomRange(z);
 
             var result = _tiler.getTiles(_internal);
             var holes = false;

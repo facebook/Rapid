@@ -12,7 +12,7 @@ import { utilRebind, utilStringQs } from '../util';
 // constants
 var APIROOT = 'https://mapwith.ai/maps/ml_roads';
 var TILEZOOM = 16;
-var tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
+var tiler = new Tiler().zoomRange(TILEZOOM);
 var dispatch = d3_dispatch('loadedData');
 
 var _datasets = {};

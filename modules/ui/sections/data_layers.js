@@ -202,7 +202,8 @@ export function uiSectionDataLayers(context) {
 
         // Only show this if the map is around Detroit..
         var detroit = new Extent([-83.5, 42.1], [-82.8, 42.5]);
-        var showVectorItems = (context.map().zoom() > 9 && detroit.contains(context.map().center()));
+        var mapCenter = new Extent(context.map().center());
+        var showVectorItems = (context.map().zoom() > 9 && detroit.contains(mapCenter));
 
         var container = selection.selectAll('.vectortile-container')
             .data(showVectorItems ? [0] : []);

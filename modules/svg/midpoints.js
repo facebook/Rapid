@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 import { svgPointTransform } from './helpers';
 import { svgTagClasses } from './tag_classes';
 import { geoAngle } from '../geo';
@@ -77,7 +79,7 @@ export function svgMidpoints(projection, context) {
                     var point = vecInterp(a.loc, b.loc, 0.5);
                     var loc = null;
 
-                    if (extent.intersects(point)) {
+                    if (extent.intersects(new Extent(point))) {
                         loc = point;
                     } else {
                         for (var k = 0; k < 4; k++) {

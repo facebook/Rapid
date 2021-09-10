@@ -13,7 +13,7 @@ import { utilRebind, utilQsString } from '../util';
 import { Extent } from '@id-sdk/extent';
 
 const TILEZOOM = 14;
-const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
+const tiler = new Tiler().zoomRange(TILEZOOM);
 const dispatch = d3_dispatch('loaded');
 const _impOsmUrls = {
   ow: 'https://grab.community.improve-osm.org/directionOfFlowService',

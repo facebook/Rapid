@@ -40,7 +40,7 @@ let _mlyViewerFilter = ['all'];
 function loadTiles(which, url, maxZoom, projection) {
     // determine the needed tiles to cover the view
     const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.zoomRange([minZoom, maxZoom]).getTiles(proj).tiles;
+    const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(proj).tiles;
 
     tiles.forEach(function(tile) {
         loadTile(which, url, tile);
@@ -217,7 +217,7 @@ function partitionViewport(projection) {
     const z = geoScaleToZoom(projection.scale());
     const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
     const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.zoomRange([z2, z2]).getTiles(proj).tiles;
+    const tiles = tiler.zoomRange(z2).getTiles(proj).tiles;
     return tiles.map(tile => tile.wgs84Extent);
 }
 

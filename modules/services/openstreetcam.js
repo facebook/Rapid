@@ -44,7 +44,7 @@ function loadTiles(which, url, projection) {
     var currZoom = Math.floor(geoScaleToZoom(projection.scale()));
     // determine the needed tiles to cover the view
     var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    var tiles = tiler.zoomRange([tileZoom, tileZoom]).getTiles(proj).tiles;
+    var tiles = tiler.zoomRange(tileZoom).getTiles(proj).tiles;
 
     // abort inflight requests that are no longer needed
     var cache = _oscCache[which];
@@ -155,7 +155,7 @@ function partitionViewport(projection) {
     var z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
 
     var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    var tiles = tiler.zoomRange([z2, z2]).getTiles(proj).tiles;
+    var tiles = tiler.zoomRange(z2).getTiles(proj).tiles;
     return tiles.map(function(tile) { return tile.wgs84Extent; });
 }
 

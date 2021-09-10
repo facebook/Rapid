@@ -13,7 +13,7 @@ const GROUPID = 'bdf6c800b3ae453b9db239e03d7c1727';
 const APIROOT = 'https://openstreetmap.maps.arcgis.com/sharing/rest/content';
 const HOMEROOT = 'https://openstreetmap.maps.arcgis.com/home';
 const TILEZOOM = 14;
-const tiler = new Tiler().zoomRange([TILEZOOM, TILEZOOM]);
+const tiler = new Tiler().zoomRange(TILEZOOM);
 const dispatch = d3_dispatch('loadedData');
 
 let _datasets = {};

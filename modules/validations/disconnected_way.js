@@ -1,3 +1,5 @@
+import { Extent } from '@id-sdk/extent';
+
 import { t, localizer } from '../core/localizer';
 import { modeDrawLine } from '../modes/draw_line';
 import { operationDelete } from '../operations/delete';
@@ -197,7 +199,7 @@ export function validationDisconnectedWay() {
 
                     // make sure the vertex is actually visible and editable
                     var map = context.map();
-                    if (!context.editable() || !map.trimmedExtent().contains(vertex.loc)) {
+                    if (!context.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
                         map.zoomToEase(vertex);
                     }
 
