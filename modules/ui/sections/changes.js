@@ -1,4 +1,5 @@
 import { select as d3_select } from 'd3-selection';
+import { utilEntityOrMemberSelector } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';
@@ -7,14 +8,8 @@ import { JXON } from '../../util/jxon';
 import { actionDiscardTags } from '../../actions/discard_tags';
 import { osmChangeset } from '../../osm';
 import { svgIcon } from '../../svg/icon';
-import { utilDetect } from '../../util/detect';
 import { uiSection } from '../section';
-
-import {
-    utilDisplayName,
-    utilDisplayType,
-    utilEntityOrMemberSelector
-} from '../../util';
+import { utilDetect, utilDisplayName, utilDisplayType } from '../../util';
 
 
 export function uiSectionChanges(context) {

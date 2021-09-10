@@ -1,14 +1,11 @@
-import {
-    geoLength as d3_geoLength,
-    geoPath as d3_geoPath
-} from 'd3-geo';
+import { geoLength as d3_geoLength, geoPath as d3_geoPath } from 'd3-geo';
+import { Extent, geoSphericalDistance } from '@id-sdk/math';
+import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t, localizer } from '../../core/localizer';
 import { displayArea, displayLength, decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { services } from '../../services';
-import { utilGetAllNodes } from '../../util';
-import { Extent } from '@id-sdk/extent';
+
 
 export function uiPanelMeasurement(context) {
 

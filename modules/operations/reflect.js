@@ -1,8 +1,10 @@
+import { utilGetAllNodes } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { actionReflect } from '../actions/reflect';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
-import { utilGetAllNodes, utilTotalExtent } from '../util/util';
+import { utilTotalExtent } from '../util/util';
 
 
 export function operationReflectShort(context, selectedIDs) {

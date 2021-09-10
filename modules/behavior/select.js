@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
-
 import { vecLength } from '@id-sdk/math';
+
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { modeSelectData } from '../modes/select_data';

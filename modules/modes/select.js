@@ -1,6 +1,9 @@
 import { select as d3_select } from 'd3-selection';
 import { geoMetersToLat, geoMetersToLon  } from '@id-sdk/math';
-import { utilArrayIntersection, utilArrayUnion } from '@id-sdk/util';
+import {
+    utilArrayIntersection, utilArrayUnion, utilDeepMemberSelector,
+    utilEntityOrDeepMemberSelector, utilEntitySelector, utilGetAllNodes
+} from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
@@ -21,10 +24,7 @@ import { modeDragNote } from './drag_note';
 import { osmNode, osmWay } from '../osm';
 import * as Operations from '../operations/index';
 import { uiCmd } from '../ui/cmd';
-import {
-    utilDeepMemberSelector, utilEntityOrDeepMemberSelector,
-    utilEntitySelector, utilKeybinding, utilTotalExtent, utilGetAllNodes
-} from '../util';
+import { utilKeybinding, utilTotalExtent } from '../util';
 
 
 export function modeSelect(context, selectedIDs) {

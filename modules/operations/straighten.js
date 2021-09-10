@@ -1,11 +1,11 @@
-import { utilArrayDifference } from '@id-sdk/util';
+import { utilArrayDifference, utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
-import { utilGetAllNodes, utilTotalExtent } from '../util/index';
+import { utilTotalExtent } from '../util/index';
 
 
 export function operationStraighten(context, selectedIDs) {

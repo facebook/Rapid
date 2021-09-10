@@ -1,8 +1,9 @@
+import { utilGetAllNodes } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
-import { utilGetAllNodes } from '../util';
 
 
 export function operationOrthogonalize(context, selectedIDs) {

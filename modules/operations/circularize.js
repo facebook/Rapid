@@ -1,8 +1,9 @@
+import { utilGetAllNodes } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { actionCircularize } from '../actions/circularize';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
-import { utilGetAllNodes } from '../util';
 
 
 export function operationCircularize(context, selectedIDs) {

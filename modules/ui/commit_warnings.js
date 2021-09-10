@@ -1,7 +1,8 @@
+import { utilEntityOrMemberSelector } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
-import { utilEntityOrMemberSelector } from '../util';
 
 
 export function uiCommitWarnings(context) {

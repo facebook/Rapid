@@ -1,11 +1,9 @@
-import {
-  select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../presets';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
-import { utilDisplayName, utilHighlightEntities, utilEntityRoot } from '../util';
+import { utilDisplayName, utilHighlightEntities } from '../util';
 
 
 export function uiKeepRightDetails(context) {
@@ -61,9 +59,7 @@ export function uiKeepRightDetails(context) {
       .each(function() {
         const link = d3_select(this);
         const isObjectLink = link.classed('error_object_link');
-        const entityID = isObjectLink ?
-          (utilEntityRoot(_qaItem.objectType) + _qaItem.objectId)
-          : this.textContent;
+        const entityID = isObjectLink ? (_qaItem.objectType.charAt(0) + _qaItem.objectId) : this.textContent;
         const entity = context.hasEntity(entityID);
 
         relatedEntities.push(entityID);

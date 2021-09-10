@@ -1,4 +1,7 @@
+import { geoSphericalDistance } from '@id-sdk/math';
+import { utilTagText } from '@id-sdk/util';
 import deepEqual from 'fast-deep-equal';
+
 import { actionAddVertex } from '../actions/add_vertex';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
@@ -8,9 +11,8 @@ import { osmJoinWays } from '../osm/multipolygon';
 import { osmNodeGeometriesForTags, osmTagSuggestingArea } from '../osm/tags';
 import { presetManager } from '../presets';
 import { geoHasSelfIntersections } from '../geo';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { t } from '../core/localizer';
-import { utilDisplayLabel, utilTagText } from '../util';
+import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 

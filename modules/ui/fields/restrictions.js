@@ -1,5 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { Extent, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
+import { utilEntitySelector } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { prefs } from '../../core/preferences';
@@ -7,13 +9,10 @@ import { t, localizer } from '../../core/localizer';
 import { actionRestrictTurn } from '../../actions/restrict_turn';
 import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 import { behaviorBreathe } from '../../behavior/breathe';
-import { Extent } from '@id-sdk/extent';
 import { geoRawMercator } from '../../geo';
-import { geoZoomToScale } from '@id-sdk/geo';
-import { vecScale, vecSubtract } from '@id-sdk/vector';
 import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
-import { utilDisplayName, utilDisplayType, utilEntitySelector, utilFunctor, utilRebind } from '../../util';
+import { utilDisplayName, utilDisplayType, utilFunctor, utilRebind } from '../../util';
 import { utilGetDimensions, utilSetDimensions } from '../../util/dimensions';
 
 

@@ -1,17 +1,17 @@
-import _throttle from 'lodash-es/throttle';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { Extent, geoScaleToZoom, geoZoomToScale } from '@id-sdk/math';
+import { utilEntityAndDeepMemberIDs } from '@id-sdk/util';
+import _throttle from 'lodash-es/throttle';
 
 import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
-import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
-import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent, utilEntityAndDeepMemberIDs } from '../util/util';
+import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
@@ -19,7 +19,6 @@ import { utilRebind } from '../util/rebind';
 import { utilZoomPan } from '../util/zoom_pan';
 import { utilDoubleUp } from '../util/double_up';
 
-import { Extent } from '@id-sdk/extent';
 
 // constants
 var TILESIZE = 256;
