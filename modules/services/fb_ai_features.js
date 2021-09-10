@@ -2,7 +2,6 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
 import { Projection, Tiler } from '@id-sdk/math';
 import { utilStringQs } from '@id-sdk/util';
-import _forEach from 'lodash-es/forEach';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
@@ -311,10 +310,10 @@ export default {
         var tiles = tiler.getTiles(proj).tiles;
 
         // abort inflight requests that are no longer needed
-        _forEach(cache.inflight, function(v, k) {
+        Object.keys(cache.inflight).forEach(k => {
             var wanted = tiles.find(function(tile) { return k === tile.id; });
             if (!wanted) {
-                abortRequest(v);
+                abortRequest(cache.inflight[k]);
                 delete cache.inflight[k];
             }
         });
