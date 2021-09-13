@@ -1,8 +1,10 @@
-import { Extent } from '@id-sdk/extent';
-import { localizer, t } from '../core/localizer';
-import { gpx } from '@tmcw/togeojson';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilRebind } from '../util';
+import { gpx } from '@tmcw/togeojson';
+import { Extent } from '@id-sdk/extent';
+
+import { localizer, t } from '../core/localizer';
+import { services } from '../services';
+import { utilQsString, utilRebind, utilStringQs } from '../util';
 
 
 export function coreRapidContext(context) {
@@ -106,11 +108,12 @@ export function coreRapidContext(context) {
     localizer.ensureLoaded()
       .then(() => {
         _datasets = {
+          // setup the built-in datasets
           'fbRoads': {
             id: 'fbRoads',
             beta: false,
             added: true,         // whether it should appear in the list
-            enabled: true,       // whether the user has checked it on
+            enabled: false,      // whether the user has checked it on
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,
@@ -121,7 +124,7 @@ export function coreRapidContext(context) {
             id: 'msBuildings',
             beta: false,
             added: true,         // whether it should appear in the list
-            enabled: true,       // whether the user has checked it on
+            enabled: false,      // whether the user has checked it on
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,
@@ -129,6 +132,70 @@ export function coreRapidContext(context) {
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
           }
         };
+
+        // Parse enabled datasets from url hash
+        let enabled = context.initialHashParams.datasets || '';
+        if (!context.initialHashParams.hasOwnProperty('datasets')) {
+          let hash = utilStringQs(window.location.hash);
+          enabled = hash.datasets = 'fbRoads,msBuildings';  // assign default
+          if (!window.mocha) {
+            window.location.replace('#' + utilQsString(hash, true));  // update hash
+          }
+        }
+
+        let toLoad = new Set();
+        enabled.split(',').forEach(id => {
+          id = id.trim();
+          if (_datasets[id]) {
+            _datasets[id].enabled = true;
+          } else {  // not a known dataset, we will need to look for it in esri
+            toLoad.add(id);
+          }
+        });
+
+        // Load any datasets from esri that aren't known to us
+        const service = services.esriData;
+        if (!service || !toLoad.size) return;
+
+        service.loadDatasets()
+          .then(results => {
+            toLoad.forEach(id => {
+              const d = results[id];
+              if (!d) return;  // dataset with requested id not found, fail silently
+
+              // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
+              service.loadLayer(d.id);   // start fetching layer info (the mapping between attributes and tags)
+
+              const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
+              const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
+              const nextColor = Object.keys(_datasets).length % COLORS.length;
+
+              let dataset = {
+                id: d.id,
+                beta: isBeta,
+                added: true,       // whether it should appear in the list
+                enabled: true,     // whether the user has checked it on
+                conflated: false,
+                service: 'esri',
+                color: COLORS[nextColor],
+                label: d.title,
+                license_markdown: t('rapid_feature_toggle.esri.license_markdown')
+              };
+
+              if (d.extent) {
+                dataset.extent = new Extent(d.extent[0], d.extent[1]);
+              }
+
+              // Test running building layers through FBML conflation service
+              if (isBuildings) {
+                dataset.conflated = true;
+                dataset.service = 'fbml';
+              }
+
+              _datasets[d.id] = dataset;  // add it
+            });
+          });
+
       });
   };
 
