@@ -1,9 +1,7 @@
-import { Extent } from '@id-sdk/extent';
+import { Extent, vecAngle, vecInterp, vecLength, geomLineIntersection } from '@id-sdk/math';
 
 import { svgPointTransform } from './helpers';
 import { svgTagClasses } from './tag_classes';
-import { geoAngle } from '../geo';
-import { vecInterp, vecLength, geomLineIntersection } from '@id-sdk/math';
 
 
 export function svgMidpoints(projection, context) {
@@ -145,9 +143,9 @@ export function svgMidpoints(projection, context) {
             .merge(enter)
             .attr('transform', function(d) {
                 var translate = svgPointTransform(projection);
-                var a = graph.entity(d.edge[0]);
-                var b = graph.entity(d.edge[1]);
-                var angle = geoAngle(a, b, projection) * (180 / Math.PI);
+                var a = projection(graph.entity(d.edge[0]).loc);
+                var b = projection(graph.entity(d.edge[1]).loc);
+                var angle = vecAngle(a, b) * (180 / Math.PI);
                 return translate(d) + ' rotate(' + angle + ')';
             })
             .call(svgTagClasses().tags(

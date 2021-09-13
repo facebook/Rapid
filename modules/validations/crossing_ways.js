@@ -3,7 +3,6 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { geoAngle,  } from '../geo';
 import { vecAngle, vecLength, geomLineIntersection } from '@id-sdk/math';
 
 import { geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint, geoSphericalDistance, geoMetersToLat, geoMetersToLon } from '@id-sdk/geo';
@@ -536,8 +535,8 @@ export function validationCrossingWays(context) {
                         structLengthMeters = 8;
                     }
 
-                    var a1 = geoAngle(edgeNodes[0], edgeNodes[1], projection) + Math.PI;
-                    var a2 = geoAngle(graph.entity(crossedEdge[0]), graph.entity(crossedEdge[1]), projection) + Math.PI;
+                    var a1 = vecAngle(projection(edgeNodes[0].loc), projection(edgeNodes[1].loc)) + Math.PI;
+                    var a2 = vecAngle(projection(graph.entity(crossedEdge[0]).loc), projection(graph.entity(crossedEdge[1]).loc)) + Math.PI;
                     var crossingAngle = Math.max(a1, a2) - Math.min(a1, a2);
                     if (crossingAngle > Math.PI) crossingAngle -= Math.PI;
                     // lengthen the structure to account for the angle of the crossing

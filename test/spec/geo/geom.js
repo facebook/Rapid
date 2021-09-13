@@ -1,15 +1,5 @@
 describe('iD.geo - geometry', function() {
 
-    describe('geoAngle', function() {
-        it('returns angle between a and b', function() {
-            var projection = function (_) { return _; };
-            expect(iD.geoAngle({loc:[0, 0]}, {loc:[1, 0]}, projection)).to.be.closeTo(0, 1e-6);
-            expect(iD.geoAngle({loc:[0, 0]}, {loc:[0, 1]}, projection)).to.be.closeTo(Math.PI / 2, 1e-6);
-            expect(iD.geoAngle({loc:[0, 0]}, {loc:[-1, 0]}, projection)).to.be.closeTo(Math.PI, 1e-6);
-            expect(iD.geoAngle({loc:[0, 0]}, {loc:[0, -1]}, projection)).to.be.closeTo(-Math.PI / 2, 1e-6);
-        });
-    });
-
     describe('geoChooseEdge', function() {
         var projection = function (l) { return l; };
         projection.invert = projection;

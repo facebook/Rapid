@@ -1,13 +1,4 @@
-
-import { geomLineIntersection} from '@id-sdk/geom';
-import { vecAngle, vecDot, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
-
-
-// Return the counterclockwise angle in the range (-pi, pi)
-// between the positive X axis and the line intersecting a and b.
-export function geoAngle(a, b, projection) {
-    return vecAngle(projection(a.loc), projection(b.loc));
-}
+import { geomLineIntersection, vecDot, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
 
 // Choose the edge with the minimal distance from `point` to its orthogonal

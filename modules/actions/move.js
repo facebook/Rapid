@@ -1,7 +1,7 @@
-import { geomPathIntersections, geomPathLength, vecAdd, vecEqual, vecInterp, vecSubtract } from '@id-sdk/math';
+import { geomPathIntersections, geomPathLength, vecAdd, vecAngle, vecEqual, vecInterp, vecSubtract } from '@id-sdk/math';
 import { utilArrayIntersection } from '@id-sdk/util';
 
-import { geoAngle, geoChooseEdge } from '../geo';
+import { geoChooseEdge } from '../geo';
 import { osmNode } from '../osm/node';
 
 
@@ -166,8 +166,10 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
         }
         orig = orig.move(end);
 
-        var angle = Math.abs(geoAngle(orig, prev, projection) -
-                geoAngle(orig, next, projection)) * 180 / Math.PI;
+        var o = projection(orig.loc);
+        var a = projection(prev.loc);
+        var b = projection(next.loc);
+        var angle = Math.abs(vecAngle(o, a) - vecAngle(o, b)) * (180 / Math.PI);
 
         // Don't add orig vertex if it would just make a straight line..
         if (angle > 175 && angle < 185) return graph;

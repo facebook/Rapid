@@ -1,5 +1,5 @@
-import { geoAngle } from '../geo';
-import { geoSphericalDistance } from '@id-sdk/geo';
+import { geoSphericalDistance, vecAngle } from '@id-sdk/math';
+
 import { operationDelete } from '../operations/index';
 import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
@@ -119,22 +119,26 @@ export function validationYShapedConnection(context) {
         if (edgeLen > SHORT_EDGE_THD_METERS) return false;
 
         // check if connNode is a Y-shaped connection
-        var prevEdgeGeoAngle = 0;
-        var nextEdgeGeoAngle = 0;
+        var prevEdgeAngle = 0;
+        var nextEdgeAngle = 0;
         var angleBetweenEdges = 0;
         var otherNodeIdx = connNodeIdx < edgeNodeIdx ? connNodeIdx - 1 : connNodeIdx + 1;
         var otherNid = way.nodes[otherNodeIdx];
         var otherNode = graph.entity(otherNid);
+
+        var other = context.projection(otherNode.loc);
+        var conn = context.projection(connNode.loc);
+        var edge = context.projection(edgeNode.loc);
         if (otherNodeIdx < edgeNodeIdx) {
             // node order along way: otherNode -> connNode -> edgeNode
-            prevEdgeGeoAngle = geoAngle(otherNode, connNode, context.projection);
-            nextEdgeGeoAngle = geoAngle(connNode, edgeNode, context.projection);
-            angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
+            prevEdgeAngle = vecAngle(other, conn);
+            nextEdgeAngle = vecAngle(conn, edge);
+            angleBetweenEdges = Math.abs(nextEdgeAngle - prevEdgeAngle) / Math.PI * 180.0;
         } else {
             // node order along way: edgeNode -> connNode -> otherNode
-            prevEdgeGeoAngle = geoAngle(edgeNode, connNode, context.projection);
-            nextEdgeGeoAngle = geoAngle(connNode, otherNode, context.projection);
-            angleBetweenEdges = Math.abs(nextEdgeGeoAngle - prevEdgeGeoAngle) / Math.PI * 180.0;
+            prevEdgeAngle = vecAngle(edge, conn);
+            nextEdgeAngle = vecAngle(conn, other);
+            angleBetweenEdges = Math.abs(nextEdgeAngle - prevEdgeAngle) / Math.PI * 180.0;
         }
 
         return angleBetweenEdges > NON_FLAT_ANGLE_THD_DEGREES;

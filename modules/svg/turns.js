@@ -1,5 +1,4 @@
-import { geoAngle } from '../geo';
-import { geomPathLength } from '@id-sdk/geom';
+import { geomPathLength, vecAngle } from '@id-sdk/math';
 
 
 export function svgTurns(projection, context) {
@@ -24,7 +23,7 @@ export function svgTurns(projection, context) {
 
             var toNode = graph.entity(d.to.node);
             var toVertex = graph.entity(d.to.vertex);
-            var a = geoAngle(toVertex, toNode, projection);
+            var a = vecAngle(projection(toVertex.loc), projection(toNode.loc));
             var o = projection(toVertex.loc);
             var r = d.u ? 0                  // u-turn: no radius
                 : !toWay.__via ? pxRadius    // leaf way: put marker at pxRadius

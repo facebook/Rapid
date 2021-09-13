@@ -1,11 +1,10 @@
-import { geoSphericalDistance } from '@id-sdk/math';
+import { geoSphericalDistance, vecAngle } from '@id-sdk/math';
 import { utilArrayDifference, utilArrayUniq } from '@id-sdk/util';
 
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { actionReverse } from '../actions/reverse';
 import { actionSplit } from '../actions/split';
 import { coreGraph } from '../core/graph';
-import { geoAngle } from '../geo';
 import { osmEntity } from './entity';
 
 
@@ -605,8 +604,11 @@ export function osmInferRestriction(graph, turn, projection) {
 
     var fromOneWay = (fromWay.tags.oneway === 'yes');
     var toOneWay = (toWay.tags.oneway === 'yes');
-    var angle = (geoAngle(fromVertex, fromNode, projection) -
-                geoAngle(toVertex, toNode, projection)) * 180 / Math.PI;
+
+    var angle = (
+        vecAngle(projection(fromVertex.loc), projection(fromNode.loc)) -
+        vecAngle(projection(toVertex.loc), projection(toNode.loc))
+    ) * (180 / Math.PI);
 
     while (angle < 0) {
         angle += 360;
