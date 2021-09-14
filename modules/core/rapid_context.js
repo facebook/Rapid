@@ -1,10 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { gpx } from '@tmcw/togeojson';
-import { Extent } from '@id-sdk/extent';
+import { Extent } from '@id-sdk/math';
+import { utilQsString, utilStringQs } from '@id-sdk/util';
 
 import { localizer, t } from '../core/localizer';
 import { services } from '../services';
-import { utilQsString, utilRebind, utilStringQs } from '../util';
+import { utilRebind } from '../util';
 
 
 export function coreRapidContext(context) {

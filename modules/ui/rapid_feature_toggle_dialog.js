@@ -1,6 +1,7 @@
 import { select as d3_select } from 'd3-selection';
-
+import { utilQsString, utilStringQs } from '@id-sdk/util';
 import marked from 'marked';
+
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
@@ -9,7 +10,6 @@ import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
-import { utilQsString, utilStringQs } from '../util';
 
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {

@@ -1,15 +1,16 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-
+import { Extent } from '@id-sdk/math';
+import { utilQsString, utilStringQs } from '@id-sdk/util';
 import marked from 'marked';
+
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
-import { Extent } from '@id-sdk/extent';
 import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { uiCombobox} from './combobox';
-import { utilKeybinding, utilNoAuto, utilQsString, utilRebind, utilStringQs } from '../util';
+import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
 
 export function uiRapidViewManageDatasets(context, parentModal) {
