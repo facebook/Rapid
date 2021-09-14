@@ -1,11 +1,10 @@
-import _debounce from 'lodash-es/debounce';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
+import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
+import _debounce from 'lodash-es/debounce';
 
 import { t } from '../core/localizer';
-
 import { coreRapidContext } from './rapid_context';
 import { fileFetcher } from './file_fetcher';
 import { localizer } from './localizer';
@@ -19,7 +18,7 @@ import { presetManager } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
-import { utilKeybinding, utilRebind, utilStringQs, utilUnicodeCharsTruncated } from '../util';
+import { utilKeybinding, utilRebind } from '../util';
 
 
 export function coreContext() {

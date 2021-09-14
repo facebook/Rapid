@@ -1,4 +1,5 @@
-import { utilGetAllNodes } from '../util';
+import { utilGetAllNodes } from '@id-sdk/util';
+
 
 export function actionScale(ids, pivotLoc, scaleFactor, projection) {
     return function(graph) {

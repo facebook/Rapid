@@ -1,9 +1,11 @@
+import { geoSphericalDistance } from '@id-sdk/math';
+import { utilArrayIntersection, utilArrayUniq } from '@id-sdk/util';
+
 import { actionAddMember } from './add_member';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { osmIsOldMultipolygonOuterMember } from '../osm/multipolygon';
 import { osmRelation } from '../osm/relation';
 import { osmWay } from '../osm/way';
-import { utilArrayIntersection, utilWrap, utilArrayUniq } from '../util';
+import { utilWrap } from '../util';
 
 
 // Split a way at the given node.

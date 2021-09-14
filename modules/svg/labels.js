@@ -1,16 +1,14 @@
-import _throttle from 'lodash-es/throttle';
-
 import { geoPath as d3_geoPath } from 'd3-geo';
+import { Extent, geoScaleToZoom, geomPolygonIntersectsPolygon, geomPathLength, vecInterp, vecLength } from '@id-sdk/math';
+import { utilEntitySelector } from '@id-sdk/util';
+import _throttle from 'lodash-es/throttle';
 import RBush from 'rbush';
 import { localizer } from '../core/localizer';
 
-import { geoScaleToZoom } from '@id-sdk/geo';
-import { geomPolygonIntersectsPolygon, geomPathLength, vecInterp, vecLength } from '@id-sdk/math';
 import { presetManager } from '../presets';
 import { osmEntity } from '../osm';
 import { utilDetect } from '../util/detect';
-import { utilDisplayName, utilDisplayNameForPath, utilEntitySelector } from '../util';
-import { Extent } from '@id-sdk/extent';
+import { utilDisplayName, utilDisplayNameForPath } from '../util';
 
 
 export function svgLabels(projection, context) {

@@ -1,7 +1,8 @@
 import { json as d3_json } from 'd3-fetch';
+import { utilQsString } from '@id-sdk/util';
 
-import { utilQsString } from '../util';
 import { localizer } from '../core/localizer';
+
 
 var apibase = 'https://www.wikidata.org/w/api.php?';
 var _wikidataCache = {};

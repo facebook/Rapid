@@ -1,22 +1,13 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+import { Extent } from '@id-sdk/math';
+import { utilEntityOrMemberSelector } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { JXON } from '../util/jxon';
-import { Extent } from '@id-sdk/extent';
 import { osmChangeset } from '../osm';
 import { svgIcon } from '../svg/icon';
-import { utilDetect } from '../util/detect';
-
-import {
-    utilEntityOrMemberSelector,
-    utilKeybinding,
-    utilRebind,
-    utilWrap
-} from '../util';
+import { utilDetect, utilKeybinding, utilRebind, utilWrap } from '../util';
 
 
 export function uiConflicts(context) {

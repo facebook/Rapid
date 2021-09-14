@@ -1,12 +1,9 @@
 import { select as d3_select } from 'd3-selection';
-
-import { geomPointInPolygon } from '@id-sdk/geom';
-import { Extent } from '@id-sdk/extent';
+import { Extent, geomPointInPolygon } from '@id-sdk/math';
+import { utilArrayIntersection, utilGetAllNodes } from '@id-sdk/util';
 
 import { modeSelect } from '../modes/select';
 import { uiLasso } from '../ui/lasso';
-import { utilArrayIntersection } from '../util/array';
-import { utilGetAllNodes } from '../util/util';
 
 
 export function behaviorLasso(context) {

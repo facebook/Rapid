@@ -1,16 +1,13 @@
 /* global mapillary:false */
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-
-import { Projection, Tiler } from '@id-sdk/math';
-
+import { Extent, Projection, Tiler, geoScaleToZoom } from '@id-sdk/math';
+import { utilQsString, utilStringQs } from '@id-sdk/util';
+import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
-import { VectorTile } from '@mapbox/vector-tile';
 
-import { geoScaleToZoom } from '@id-sdk/geo';
-import { utilQsString, utilRebind, utilStringQs } from '../util';
-import { Extent } from '@id-sdk/extent';
+import { utilRebind } from '../util';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';

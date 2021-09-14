@@ -31,7 +31,7 @@ describe('iD.serviceTaginfo', function() {
     });
 
     function query(url) {
-        return iD.utilStringQs(url.substring(url.indexOf('?')));
+        return sdk.utilStringQs(url.substring(url.indexOf('?')));
     }
 
 

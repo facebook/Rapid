@@ -1,30 +1,21 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
-import { presetManager } from '../presets';
-import { t } from '../core/localizer';
+import { select as d3_select } from 'd3-selection';
+import { vecSubtract, geomViewportNudge } from '@id-sdk/math';
+import { utilArrayIntersection } from '@id-sdk/util';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-
 import { behaviorDrag } from '../behavior/drag';
 import { behaviorEdit } from '../behavior/edit';
 import { behaviorHover } from '../behavior/hover';
-
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
-import {
-    vecSubtract,
-    geomViewportNudge
-} from '@id-sdk/math';
-
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
-import { utilArrayIntersection, utilKeybinding } from '../util';
-
+import { presetManager } from '../presets';
+import { t } from '../core/localizer';
+import { utilKeybinding } from '../util';
 
 
 export function modeDragNode(context) {

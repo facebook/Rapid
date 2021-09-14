@@ -1,28 +1,21 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
-import {
-    polygonHull as d3_polygonHull,
-    polygonCentroid as d3_polygonCentroid
-} from 'd3-polygon';
+import { select as d3_select } from 'd3-selection';
+import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } from 'd3-polygon';
+import { vecInterp, vecLength } from '@id-sdk/math';
+import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
 import { behaviorEdit } from '../behavior/edit';
-import { vecInterp, vecLength } from '@id-sdk/math';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
-
 import { operationCircularize } from '../operations/circularize';
 import { operationDelete } from '../operations/delete';
 import { operationMove } from '../operations/move';
 import { operationOrthogonalize } from '../operations/orthogonalize';
 import { operationReflectLong, operationReflectShort } from '../operations/reflect';
-
 import { utilKeybinding } from '../util/keybinding';
-import { utilFastMouse, utilGetAllNodes } from '../util/util';
+import { utilFastMouse } from '../util/util';
 
 
 export function modeRotate(context, entityIDs) {

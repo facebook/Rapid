@@ -1,10 +1,12 @@
+import { utilArrayUniq } from '@id-sdk/util';
+
 import { actionExtract } from '../actions/extract';
 import { behaviorOperation } from '../behavior/operation';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { presetManager } from '../presets';
-import { utilArrayUniq } from '../util/array';
+
 
 export function operationExtract(context, selectedIDs) {
 

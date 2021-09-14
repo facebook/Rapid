@@ -1,10 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayUnion } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { uiField } from '../field';
-import { utilArrayUnion, utilRebind } from '../../util';
+import { utilRebind } from '../../util';
 
 
 export { uiFieldRadio as uiFieldStructureRadio };

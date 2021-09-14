@@ -1,9 +1,8 @@
+import { json as d3_json } from 'd3-fetch';
+import { utilQsString } from '@id-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
-import { json as d3_json } from 'd3-fetch';
-
 import { localizer } from '../core/localizer';
-import { utilQsString } from '../util';
 
 
 var apibase = 'https://wiki.openstreetmap.org/w/api.php';

@@ -1,5 +1,6 @@
+import { utilArrayGroupBy, utilArrayUniq } from '@id-sdk/util';
+
 import { osmTagSuggestingArea } from '../osm/tags';
-import { utilArrayGroupBy, utilArrayUniq } from '../util';
 
 
 export function actionMerge(ids) {

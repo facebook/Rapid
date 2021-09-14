@@ -1,8 +1,7 @@
 import { json as d3_json } from 'd3-fetch';
-
-import RBush from 'rbush';
 import { Extent } from '@id-sdk/extent';
-import { utilQsString } from '../util';
+import { utilQsString } from '@id-sdk/util';
+import RBush from 'rbush';
 
 
 var apibase = 'https://nominatim.openstreetmap.org/';

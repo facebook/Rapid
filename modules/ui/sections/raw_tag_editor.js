@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@id-sdk/util';
 
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
@@ -8,8 +9,8 @@ import { uiSection } from '../section';
 import { uiTagReference } from '../tag_reference';
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
-import { utilArrayDifference, utilArrayIdentical } from '../../util/array';
-import { utilGetSetValue, utilNoAuto, utilRebind, utilTagDiff } from '../../util';
+import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+
 
 export function uiSectionRawTagEditor(id, context) {
 

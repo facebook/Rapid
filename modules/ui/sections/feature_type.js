@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayIdentical } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
-import { utilArrayIdentical } from '../../util/array';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { utilRebind } from '../../util';

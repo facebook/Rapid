@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayDifference } from '@id-sdk/util';
 
 import { svgData } from './data';
 import { svgDebug } from './debug';
@@ -16,7 +17,7 @@ import { svgOpenstreetcamImages } from './openstreetcam_images';
 import { svgOsm } from './osm';
 import { svgNotes } from './notes';
 import { svgTouch } from './touch';
-import { utilArrayDifference, utilRebind } from '../util';
+import { utilRebind } from '../util';
 import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 
 import { svgRapidFeatures } from './rapid_features';

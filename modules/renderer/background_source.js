@@ -1,11 +1,9 @@
 import { geoArea as d3_geoArea, geoMercatorRaw as d3_geoMercatorRaw } from 'd3-geo';
 import { json as d3_json } from 'd3-fetch';
+import { utilAesDecrypt, utilQsString, utilStringQs } from '@id-sdk/util';
+import { Extent, geoSphericalDistance } from '@id-sdk/math';
 
 import { t, localizer } from '../core/localizer';
-import { geoSphericalDistance } from '@id-sdk/geo';
-import { utilQsString, utilStringQs } from '../util';
-import { utilAesDecrypt } from '../util/aes';
-import { Extent } from '@id-sdk/extent';
 
 
 var isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;

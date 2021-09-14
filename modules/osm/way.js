@@ -1,11 +1,11 @@
 import { geoArea as d3_geoArea } from 'd3-geo';
+import { Extent, vecCross } from '@id-sdk/math';
+import { utilArrayUniq } from '@id-sdk/util';
 
-import { vecCross } from '@id-sdk/math';
 import { osmEntity } from './entity';
 import { osmLanes } from './lanes';
 import { osmTagSuggestingArea, osmOneWayTags, osmRightSideIsInsideTags } from './tags';
-import { utilArrayUniq, utilTotalExtent } from '../util';
-import { Extent } from '@id-sdk/extent';
+import { utilTotalExtent } from '../util';
 
 
 export function osmWay() {

@@ -1,6 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
+import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@id-sdk/util';
 
 import { prefs } from './preferences';
 import { coreDifference } from './difference';
@@ -8,10 +9,7 @@ import { coreGraph } from './graph';
 import { coreTree } from './tree';
 import { osmEntity } from '../osm/entity';
 import { uiLoading } from '../ui/loading';
-import {
-    utilArrayDifference, utilArrayGroupBy, utilArrayUnion,
-    utilObjectOmit, utilRebind, utilSessionMutex
-} from '../util';
+import { utilRebind } from '../util';
 
 
 export function coreHistory(context) {

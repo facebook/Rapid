@@ -1,10 +1,10 @@
+import { utilArrayUnion, utilArrayUniq } from '@id-sdk/util';
 import deepEqual from 'fast-deep-equal';
 import { diff3Merge } from 'node-diff3';
 
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from './delete_multiple';
 import { osmEntity } from '../osm';
-import { utilArrayUnion, utilArrayUniq } from '../util';
 
 
 export function actionMergeRemoteChanges(id, localGraph, remoteGraph, discardTags, formatUser) {

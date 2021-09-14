@@ -1,6 +1,6 @@
+import { utilArrayUniq, utilEditDistance } from '@id-sdk/util';
+
 import { locationManager } from '../core/locations';
-import { utilArrayUniq } from '../util/array';
-import { utilEditDistance } from '../util';
 
 
 //

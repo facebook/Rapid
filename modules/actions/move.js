@@ -1,10 +1,9 @@
-import {
-  geoAngle, geoChooseEdge,
-} from '../geo';
+import { geomPathIntersections, geomPathLength, vecAdd, vecAngle, vecEqual, vecInterp, vecSubtract } from '@id-sdk/math';
+import { utilArrayIntersection } from '@id-sdk/util';
 
-import { geomPathIntersections, geomPathLength, vecAdd, vecEqual, vecInterp, vecSubtract } from '@id-sdk/math';
+import { geoChooseEdge } from '../geo';
 import { osmNode } from '../osm/node';
-import { utilArrayIntersection } from '../util';
+
 
 // https://github.com/openstreetmap/josm/blob/mirror/src/org/openstreetmap/josm/command/MoveCommand.java
 // https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/MoveNodeAction.as
@@ -167,8 +166,10 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
         }
         orig = orig.move(end);
 
-        var angle = Math.abs(geoAngle(orig, prev, projection) -
-                geoAngle(orig, next, projection)) * 180 / Math.PI;
+        var o = projection(orig.loc);
+        var a = projection(prev.loc);
+        var b = projection(next.loc);
+        var angle = Math.abs(vecAngle(o, a) - vecAngle(o, b)) * (180 / Math.PI);
 
         // Don't add orig vertex if it would just make a straight line..
         if (angle > 175 && angle < 185) return graph;

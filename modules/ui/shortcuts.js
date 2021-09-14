@@ -1,11 +1,11 @@
 import { select as d3_select } from 'd3-selection';
+import { utilArrayUniq } from '@id-sdk/util';
 
 import { fileFetcher } from '../core/file_fetcher';
 import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { uiCmd } from './cmd';
 import { uiModal } from './modal';
-import { utilArrayUniq } from '../util';
 import { utilDetect } from '../util/detect';
 
 

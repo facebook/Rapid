@@ -1,12 +1,14 @@
+import { geoSphericalDistance } from '@id-sdk/math';
+import { utilGetAllNodes } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
 import { behaviorOperation } from '../behavior/operation';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
-import { utilGetAllNodes, utilTotalExtent } from '../util';
+import { utilTotalExtent } from '../util';
 
 
 export function operationDelete(context, selectedIDs) {

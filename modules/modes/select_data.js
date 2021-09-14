@@ -1,7 +1,6 @@
 import { geoBounds as d3_geoBounds } from 'd3-geo';
 import { select as d3_select } from 'd3-selection';
-
-import { Extent } from '@id-sdk/extent';
+import { Extent } from '@id-sdk/math';
 
 import { behaviorBreathe } from '../behavior/breathe';
 import { behaviorHover } from '../behavior/hover';

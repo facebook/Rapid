@@ -1,26 +1,20 @@
-import _throttle from 'lodash-es/throttle';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json, xml as d3_xml } from 'd3-fetch';
-
-import { Projection } from '@id-sdk/projection';
-import { Tiler } from '@id-sdk/tiler';
-
+import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@id-sdk/math';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilQsString, utilStringQs } from '@id-sdk/util';
+import _throttle from 'lodash-es/throttle';
 import osmAuth from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
-import { vecAdd } from '@id-sdk/math';
-import { geoZoomToScale } from '@id-sdk/geo';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
-import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilQsString, utilStringQs } from '../util';
-import { Extent } from '@id-sdk/extent';
+import { utilRebind } from '../util';
 
 
 var tiler = new Tiler();
 var dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
 var urlroot = 'https://www.openstreetmap.org';
-var q = utilStringQs(window.location.hash.substring(1));
+var q = utilStringQs(window.location.hash);
 var credentialsMode = 'omit';
 if (q.hasOwnProperty('osm_api_url')) {
     urlroot = q.osm_api_url;

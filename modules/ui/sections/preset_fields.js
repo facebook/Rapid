@@ -1,13 +1,14 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayIdentical, utilArrayUnion } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
-import { utilArrayIdentical } from '../../util/array';
-import { utilArrayUnion, utilRebind } from '../../util';
 import { modeBrowse } from '../../modes/browse';
 import { uiField } from '../field';
 import { uiFormFields } from '../form_fields';
 import { uiSection } from '../section';
+import { utilRebind } from '../../util';
+
 
 export function uiSectionPresetFields(context) {
 

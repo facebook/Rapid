@@ -1,7 +1,6 @@
 import { svg as d3_svg } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
-
-import { utilArrayUniq } from '../util';
+import { utilArrayUniq } from '@id-sdk/util';
 
 
 /*

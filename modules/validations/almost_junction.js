@@ -1,14 +1,12 @@
-import { geoHasSelfIntersections, geoAngle } from '../geo';
-
 import {
-  geoMetersToLat, geoMetersToLon,
-  geoSphericalDistance, geoSphericalClosestPoint,
-  geomLineIntersection, vecInterp
+  geoMetersToLat, geoMetersToLon, geoSphericalDistance, geoSphericalClosestPoint,
+  geomLineIntersection, vecAngle, vecInterp
 } from '@id-sdk/math';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
+import { geoHasSelfIntersections } from '../geo';
 import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
@@ -233,8 +231,12 @@ export function validationAlmostJunction(context) {
 
       // Checks midNode -> tipNode -> endNode for collinearity
       endNodes.forEach(endNode => {
-        const a1 = geoAngle(midNode, tipNode, context.projection) + Math.PI;
-        const a2 = geoAngle(midNode, endNode, context.projection) + Math.PI;
+        const mid = context.projection(midNode.loc);
+        const tip = context.projection(tipNode.loc);
+        const end = context.projection(endNode.loc);
+
+        const a1 = vecAngle(mid, tip) + Math.PI;
+        const a2 = vecAngle(mid, end) + Math.PI;
         const diff = Math.max(a1, a2) - Math.min(a1, a2);
 
         if (diff < minAngle) {

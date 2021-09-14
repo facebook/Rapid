@@ -1,10 +1,11 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
+import { select as d3_select } from 'd3-selection';
+import { utilStringQs } from '@id-sdk/util';
 import _debounce from 'lodash-es/debounce';
-import { utilStringQs } from '../util';
-import { uiToolRapidFeatures, uiToolOldDrawModes, uiToolNotes, uiToolSave, uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc } from './tools';
+
+import {
+    uiToolRapidFeatures, uiToolOldDrawModes, uiToolNotes, uiToolSave,
+    uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
+} from './tools';
 
 
 export function uiTopToolbar(context) {
@@ -54,7 +55,7 @@ export function uiTopToolbar(context) {
                 tools = tools.concat([notes, 'spacer']);
             }
 
-            var q = utilStringQs(window.location.hash.substring(1));
+            var q = utilStringQs(window.location.hash);
             if (q.support_download_osc === 'true') {
                 tools.push(downloadOsc);
             }

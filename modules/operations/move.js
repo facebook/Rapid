@@ -1,8 +1,10 @@
+import { utilGetAllNodes } from '@id-sdk/util';
+
 import { t } from '../core/localizer';
 import { behaviorOperation } from '../behavior/operation';
 import { prefs } from '../core/preferences';
 import { modeMove } from '../modes/move';
-import { utilGetAllNodes, utilTotalExtent } from '../util/util';
+import { utilTotalExtent } from '../util/util';
 
 
 export function operationMove(context, selectedIDs) {

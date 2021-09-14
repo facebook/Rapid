@@ -1,5 +1,5 @@
+import { utilArrayDifference } from '@id-sdk/util';
 import { debug } from '../index';
-import { utilArrayDifference } from '../util';
 
 
 export function coreGraph(other, mutable) {

@@ -1,8 +1,7 @@
-import { osmEntity } from './entity';
-import { geoAngle } from '../geo';
-import { Extent } from '@id-sdk/extent';
+import { Extent, vecAngle } from '@id-sdk/math';
+import { utilArrayUniq } from '@id-sdk/util';
 
-import { utilArrayUniq } from '../util';
+import { osmEntity } from './entity';
 
 
 export function osmNode() {
@@ -132,10 +131,10 @@ Object.assign(osmNode.prototype, {
             }, this);
 
             Object.keys(nodeIds).forEach(function(nodeId) {
-                // +90 because geoAngle returns angle from X axis, not Y (north)
-                results.push(
-                    (geoAngle(this, resolver.entity(nodeId), projection) * (180 / Math.PI)) + 90
-                );
+                // +90 because vecAngle returns angle from X axis, not Y (north)
+                var a = projection(this.loc);
+                var b = projection(resolver.entity(nodeId).loc);
+                results.push( (vecAngle(a, b) * 180 / Math.PI) + 90 );
             }, this);
 
         }, this);

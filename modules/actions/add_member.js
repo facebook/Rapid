@@ -1,6 +1,7 @@
+import { utilArrayGroupBy, utilObjectOmit } from '@id-sdk/util';
+
 import { osmJoinWays } from '../osm/multipolygon';
 import { osmWay } from '../osm/way';
-import { utilArrayGroupBy, utilObjectOmit } from '../util';
 
 
 export function actionAddMember(relationId, member, memberIndex, insertPair) {

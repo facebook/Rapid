@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayUnion, utilArrayUniq } from '@id-sdk/util';
 
 import { fileFetcher } from './file_fetcher';
 import { actionDiscardTags } from '../actions/discard_tags';
@@ -7,7 +8,7 @@ import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
 import { coreGraph } from '../core/graph';
 import { t } from '../core/localizer';
-import { utilArrayUnion, utilArrayUniq, utilDisplayName, utilDisplayType, utilRebind } from '../util';
+import { utilDisplayName, utilDisplayType, utilRebind } from '../util';
 
 
 export function coreUploader(context) {

@@ -1,5 +1,6 @@
+import { utilSafeString } from '@id-sdk/util';
+
 import { localizer, t } from '../core/localizer';
-import { utilSafeClassName } from '../util/util';
 
 
 //
@@ -12,7 +13,7 @@ export function presetField(fieldID, field) {
   _this.id = fieldID;
 
   // for use in classes, element ids, css selectors
-  _this.safeid = utilSafeClassName(fieldID);
+  _this.safeid = utilSafeString(fieldID);
 
   _this.matchGeometry = (geom) => !_this.geometry || _this.geometry.indexOf(geom) !== -1;
 

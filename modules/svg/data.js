@@ -1,18 +1,16 @@
-import _throttle from 'lodash-es/throttle';
-
 import { geoBounds as d3_geoBounds, geoPath as d3_geoPath } from 'd3-geo';
 import { text as d3_text } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 
+import _throttle from 'lodash-es/throttle';
 import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
+import { Extent, geomPolygonIntersectsPolygon } from '@id-sdk/math';
+import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@id-sdk/util';
 
-import { geomPolygonIntersectsPolygon } from '@id-sdk/geom';
 import { services } from '../services';
 import { svgPath } from './helpers';
 import { utilDetect } from '../util/detect';
-import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '../util';
-import { Extent } from '@id-sdk/extent';
 
 
 var _initialized = false;

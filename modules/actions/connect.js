@@ -1,6 +1,7 @@
+import { utilArrayUniq } from '@id-sdk/util';
+
 import { actionDeleteNode } from './delete_node';
 import { actionDeleteWay } from './delete_way';
-import { utilArrayUniq } from '../util';
 
 
 // Connect the ways at the given nodes.

@@ -1,10 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { utilArrayUniq } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
-import { utilArrayUniq, utilRebind } from '../../util';
+import { utilRebind } from '../../util';
 import { helpHtml, icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
 
 
