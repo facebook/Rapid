@@ -1,10 +1,20 @@
+import { utilArrayChunk } from '@id-sdk/util';
+import calcArea from '@mapbox/geojson-area';
 import LocationConflation from '@ideditor/location-conflation';
 import whichPolygon from 'which-polygon';
-import calcArea from '@mapbox/geojson-area';
-import { utilArrayChunk } from '@id-sdk/util';
+import workerpool from 'workerpool';
+
 
 let _mainLocations = coreLocations(); // singleton
 export { _mainLocations as locationManager };
+
+export const workerFunctions = {
+  sayHi: (arg) => {
+    console.log(`worker here, main thread sent me: ${arg}`);
+    return 'bar';
+  }
+};
+
 
 //
 // `coreLocations` maintains an internal index of all the boundaries/geofences used by iD.
@@ -21,6 +31,7 @@ export { _mainLocations as locationManager };
 // https://github.com/ideditor/country-coder
 //
 export function coreLocations() {
+  const pool = workerpool.pool('dist/worker.js');
   let _this = {};
   let _resolvedFeatures = {};              // cache of *resolved* locationSet features
   let _loco = new LocationConflation();    // instance of a location-conflation resolver
@@ -173,6 +184,12 @@ export function coreLocations() {
     // https://github.com/ideditor/location-conflation/issues/26
     // https://github.com/osmlab/name-suggestion-index/issues/4784#issuecomment-742003434
     _queue = _queue.concat(utilArrayChunk(objects, 200));
+
+    console.log('main thread here, going to tell the worker about foo.');
+    pool.exec('sayHi', ['foo'])
+      .then(result => {
+        console.log(`main thread here, worker sent me back: ${result}`);
+      });
 
     if (!_inProcess) {
       _inProcess = processQueue()

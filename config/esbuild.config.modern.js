@@ -15,3 +15,14 @@ esbuild
     fs.writeFileSync('./dist/esbuild.json', JSON.stringify(result.metafile, null, 2));
   })
   .catch(() => process.exit(1));
+
+esbuild
+  .build({
+    bundle: true,
+    sourcemap: true,
+    entryPoints: ['./modules/worker.js'],
+    legalComments: 'none',
+    logLevel: 'info',
+    outfile: 'dist/worker.js'
+  })
+  .catch(() => process.exit(1));

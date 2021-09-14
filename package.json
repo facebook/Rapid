@@ -70,7 +70,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "whatwg-fetch": "^3.4.1",
-    "which-polygon": "2.2.0"
+    "which-polygon": "2.2.0",
+    "workerpool": "^6.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
