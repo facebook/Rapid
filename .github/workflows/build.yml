@@ -1,16 +1,13 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: build
+name: Build
 
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+on: pull_request
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,12 +23,3 @@ jobs:
     - run: npm install
     - run: npm run all
     - run: npm run test
-    - run: npm run aws_deploy
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: us-west-2
-        RAPID_S3_BUCKET_NAME: world.ai.rapid
-        RAPID_WEB_ROOT: https://mapwith.ai
-        NODE_VERSION: ${{ matrix.node-version }}
-      if: ${{ matrix.node-version == '16.x' }}
