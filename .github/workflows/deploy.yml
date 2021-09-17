@@ -32,26 +32,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: us-west-2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
 
     - name: Setup vars
       id: vars
       run: |
         echo ::set-output name=identifier::$(git rev-parse --short ${{ github.sha }})-16.x
         echo ::set-output name=distdir::$(git rev-parse --short ${{ github.sha }})-16.x-dist
-
-    - name: TEST
-      run: |
-        echo $IDENTIFIER
-        echo $DISTDIR
-      env:
-        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.DISTDIR }}
 
     - name: Prep files
       run: npm run aws_deploy
