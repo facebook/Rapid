@@ -33,6 +33,10 @@
     stroke: rgb(225, 129, 223);
 }
 
+.fill-wireframe .layer-ai-features path.dashed {
+    stroke-width: 2.5;
+}
+
 .layer-ai-features path.dashed-transparent {
     stroke-dasharray: 16;
     stroke-width: 5;
