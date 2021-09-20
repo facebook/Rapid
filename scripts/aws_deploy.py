@@ -26,14 +26,14 @@ def deploy():
     )
     hash = output.stdout.decode("utf-8").strip()
     print("\ngithash: " + hash)
-    identifier = f"{hash}-{os.environ['NODE_VERSION']}"
-    distdir = identifier + "-dist"
+    identifier = os.environ["IDENTIFIER"]
+    distdir = os.environ["DISTDIR"]
     print("\ndistdir: " + distdir)
     # Blow away the previous dir, if any.
     if os.path.exists(distdir):
         print(f"Previous distribution dir {distdir} found, removing.")
         shutil.rmtree(distdir)
-    print("\nCreating dist folder")
+    print(f"\nCreating dist folder {distdir}")
     try:
         os.mkdir(distdir)
     except OSError as err:
@@ -66,42 +66,6 @@ def deploy():
                     .replace("'iD.legacy.js'", f"'/rapid/{distdir}/iD.legacy.js'")
                 )
                 output.write(s)
-    print("\nCopying new index file to s3.")
-    results = subprocess.run(
-        [
-            "aws",
-            "s3",
-            "cp",
-            newindex,
-            f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{identifier}-rapid.html",
-            "--no-progress"
-        ],
-        capture_output=True,
-    )
-    if results.returncode != 0:
-        print("Got an error:")
-        print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
-        print(f"STDERR:\n{results.stderr.decode('utf-8')}")
-        sys.exit(0)  # -1 for failure
-    print(f"\nCopying new {distdir} folder and index file to s3.")
-    subprocess.run(
-        [
-            "aws",
-            "s3",
-            "cp",
-            distdir,
-            f"s3://{os.environ['RAPID_S3_BUCKET_NAME']}/rapid/{distdir}",
-            "--recursive",
-            "--no-progress",
-        ],
-        capture_output=True,
-    )
-    if results.returncode != 0:
-        print("Got an error:")
-        print(f"STDOUT:\n{results.stdout.decode('utf-8')}")
-        print(f"STDERR:\n{results.stderr.decode('utf-8')}")
-        sys.exit(-1)
-    print(f"Build deployment complete. Your build is here: {os.environ['RAPID_WEB_ROOT']}/rapid/{distdir}/index.html")
 
 if __name__ == "__main__":
     deploy()
