@@ -394,9 +394,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
 
   function drawViewfieldPoints(selection, viewfieldPoints) {
-
-    if (viewfieldPoints.length === 0) return;
-
     const rapidContext = context.rapidContext();
     let viewfield = selection.selectAll('g.suggestionViewfieldGroup')
       .data(viewfieldPoints.length ? [0] : []);

@@ -9,6 +9,9 @@ export function uiRapidImageStrip(context) {
       .data([0])
       .style('display', 'block');
 
+    context.container().selectAll('.layer-rapid-dataset .suggestionViewfieldGroup')
+      .style('display', 'inline');
+
     let imageStripEnter = imageStrip
       .enter()
       .append('div')
