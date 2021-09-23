@@ -103,7 +103,28 @@ function loadNsiData() {
 
       _nsi.matcher = new Matcher();
       _nsi.matcher.buildMatchIndex(_nsi.data);
-      _nsi.matcher.buildLocationIndex(_nsi.data, locationManager.loco());
+
+// !!! hack - nsi matcher expects to be able to call loco.resolveLocationSet
+//  to resolve these in a synchronous way - for now just return the "world"
+const locoProxy = {
+  resolveLocationSet: (locationSet) => {
+    return {
+      id: '+[Q2]',
+      feature: {
+        id: '+[Q2]',
+        type: 'Feature',
+        properties: { area: 511207893.3958111 },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [[[-180,-90],[180,-90],[180,90],[-180,90],[-180,-90]]]
+        }
+      }
+    };
+  }
+};
+// !!! next line can be synchronous now
+      _nsi.matcher.buildLocationIndex(_nsi.data, locoProxy);
+//    _nsi.matcher.buildLocationIndex(_nsi.data, locationManager.loco());
 
       Object.keys(_nsi.data).forEach(tkv => {
         const category = _nsi.data[tkv];
