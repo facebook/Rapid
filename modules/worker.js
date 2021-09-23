@@ -1,4 +1,4 @@
-import workerpool from 'workerpool';
-import { workerFunctions } from './core/locations.js';
+import { expose } from 'threads/worker';
+import { workerFunctions } from './core/locations_worker.js';
 
-workerpool.worker(workerFunctions);
+expose(workerFunctions);

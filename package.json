@@ -69,9 +69,9 @@
     "rbush": "3.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "threads": "^1.6.5",
     "whatwg-fetch": "^3.4.1",
-    "which-polygon": "2.2.0",
-    "workerpool": "^6.1.5"
+    "which-polygon": "2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
