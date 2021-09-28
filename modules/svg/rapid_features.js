@@ -343,10 +343,10 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .call(drawPoints, geoData.points, getTransform)
       .call(drawViewfieldPoints, geoData.viewfieldPoints);
 
-    context.rapidContext().on('select_suggested_viewfield', function() {
-      const selectedImage = rapidContext.getSelectSuggestedImage();
-      if (selectedImage) {
-        selection.selectAll(`.viewfield-${selectedImage.key}`).style('stroke', 'white');
+    context.rapidContext().on('hover_suggested_image', function() {
+      const hoveredImage = rapidContext.getHoveredSuggestedImage();
+      if (hoveredImage) {
+        selection.selectAll(`.viewfield-${hoveredImage.key}`).style('stroke', 'white');
       } else {
         selection.selectAll('.viewfieldSuggestion')
           .style('stroke', VIEWFIELD_MAGENTA);
@@ -437,13 +437,13 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .append('path')
       .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
       .attr('pointer-events', 'all')
-      .on('mouseenter', (d) => {
-        selection.select(`.viewfield-${d.srcElement.__data__.key}`).style('stroke', 'white');
-        rapidContext.selectSuggestedImage(d);
+      .on('mouseenter', (_, d) => {
+        selection.select(`.viewfield-${d.key}`).style('stroke', 'white');
+        rapidContext.hoveredSuggestedViewfield(d);
       })
       .on('mouseleave', () => {
         selection.selectAll('.viewfieldSuggestion').style('stroke', VIEWFIELD_MAGENTA);
-        rapidContext.selectSuggestedImage(null);
+        rapidContext.hoveredSuggestedViewfield(null);
       })
       .attr('fill', VIEWFIELD_MAGENTA);
 

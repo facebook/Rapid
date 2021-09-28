@@ -50,25 +50,27 @@ export function uiRapidImageStrip(context) {
           .append('div').attr('class', 'image-container')
           .append('img').attr('src', d => d.url)
           .attr('class', d => `image rapid-image-strip-${d.key}`)
-          .on('mouseenter', d => {
+          .on('mouseenter', (d3_event, d) => {
             const rapidContext = context.rapidContext();
-            rapidContext.selectSuggestedViewfield(d);
+            rapidContext.hoveredSuggestedImage(d);
           })
-          .on('mousedown', (d3_event, _) => {
+          .on('mousedown', (d3_event, d) => {
+            context.map().centerEase(d.loc);
             d3_select(d3_event.currentTarget).classed('rapid-image-strip-clicked', true);
+            rapidContext.hoveredSuggestedImage(d);  //We still want the viewfield to remain highlighted after panning.
           })
-          .on('mouseleave', (d3_event, _) => {
+          .on('mouseleave', (d3_event) => {
             const rapidContext = context.rapidContext();
-            rapidContext.selectSuggestedViewfield(null);
+            rapidContext.hoveredSuggestedImage(null);
             d3_select(d3_event.currentTarget).classed('rapid-image-strip-clicked', false);
           });
 
           imagesSelection = imagesSelection.merge(imagesSelectionEnter);
 
-        context.rapidContext().on('select_suggested_image', function() {
-          const selectedImage = rapidContext.getSelectSuggestedImage();
-          if (selectedImage) {
-            body.selectAll(`.rapid-image-strip-${selectedImage.key}`)
+        context.rapidContext().on('hover_suggested_viewfield', function() {
+          const hoveredViewfield = rapidContext.getHoveredSuggestedViewfield();
+          if (hoveredViewfield) {
+            body.selectAll(`.rapid-image-strip-${hoveredViewfield.key}`)
               .classed('rapid-image-strip-highlight', true);
           } else {
             body.selectAll('img')
