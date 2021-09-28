@@ -11,8 +11,8 @@ import { utilRebind } from '../util';
 export function coreRapidContext(context) {
   const dispatch = d3_dispatch(
     'task_extent_set',
-    'select_suggested_image',
-    'select_suggested_viewfield');
+    'hover_suggested_image',
+    'hover_suggested_viewfield');
   let _rapidContext = {};
   _rapidContext.version = '1.1.8';
   _rapidContext.showPowerUser = context.initialHashParams.poweruser === 'true';
@@ -219,19 +219,23 @@ export function coreRapidContext(context) {
     _rapidContext.sources = new Set();
   };
 
-  _rapidContext.selectSuggestedImage = (d) => {
-    _rapidContext.selectedSuggestedImage = d?.srcElement?.__data__;
-    dispatch.call('select_suggested_image');
+  _rapidContext.hoveredSuggestedImage = (d) => {
+    _rapidContext.selectedSuggestedImage = d;
+    dispatch.call('hover_suggested_image');
+  };
+  _rapidContext.hoveredSuggestedViewfield = (d) => {
+      _rapidContext.hoveredViewfield = d;
+    dispatch.call('hover_suggested_viewfield');
   };
 
-  _rapidContext.selectSuggestedViewfield = (d) => {
-      _rapidContext.selectedSuggestedImage = d?.srcElement?.__data__;
-    dispatch.call('select_suggested_viewfield');
-  };
-
-  _rapidContext.getSelectSuggestedImage = () => {
+  _rapidContext.getHoveredSuggestedImage = () => {
     return _rapidContext.selectedSuggestedImage;
   };
+
+    _rapidContext.getHoveredSuggestedViewfield = () => {
+    return _rapidContext.hoveredViewfield;
+  };
+
 
   return utilRebind(_rapidContext, dispatch, 'on');
 }
