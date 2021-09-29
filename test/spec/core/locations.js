@@ -1,5 +1,5 @@
 describe('iD.coreLocations', function() {
-    var locationManager, loco;
+    var locationManager;
 
     var colorado = {
       type: 'Feature',
@@ -26,14 +26,21 @@ describe('iD.coreLocations', function() {
     beforeEach(function() {
         // make a new one each time, so we aren't accidentally testing the "global" locationManager
         locationManager = iD.coreLocations();
-        loco = locationManager.loco();
     });
 
 
     describe('#mergeCustomGeoJSON', function() {
-        it('merges geojson into lococation-conflation cache', function() {
-            locationManager.mergeCustomGeoJSON(fc);
-            expect(loco._cache['colorado.geojson']).to.be.eql(colorado);
+        it('merges geojson into lococation-conflation cache', function(done) {
+            var prom = locationManager.mergeCustomGeoJSON(fc);
+            prom
+                .then(function() {
+                    done();
+                })
+                .catch(function(err) {
+                    done(err);
+                });
+
+            window.setTimeout(function() {}, 20); // async - to let the promise settle in phantomjs
         });
     });
 
@@ -91,18 +98,6 @@ describe('iD.coreLocations', function() {
                 });
 
             window.setTimeout(function() {}, 20); // async - to let the promise settle in phantomjs
-        });
-    });
-
-
-    describe('#locationSetID', function() {
-        it('calculates a locationSetID for a locationSet', function() {
-            expect(locationManager.locationSetID({ include: ['usa'] })).to.be.eql('+[Q30]');
-        });
-
-        it('falls back to the world locationSetID in case of errors', function() {
-            expect(locationManager.locationSetID({ foo: 'bar' })).to.be.eql('+[Q2]');
-            expect(locationManager.locationSetID({ include: ['fake.geojson'] })).to.be.eql('+[Q2]');
         });
     });
 

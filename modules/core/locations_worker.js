@@ -1,63 +1,17 @@
 import calcArea from '@mapbox/geojson-area';
 import LocationConflation from '@ideditor/location-conflation';
-import whichPolygon from 'which-polygon';
 
+let _loco = new LocationConflation();    // instance of a location-conflation resolver
+let _seen = new Set();
 
+//
+// `coreLocations` worker-side functions
+//
 export const workerFunctions = {
   mergeCustomGeoJSON: (fc) => _mergeCustomGeoJSON(fc),
-  mergeLocationSets: (locationSets) => _mergeLocationSets(locationSets),
-  locationSetID: (locationSet) => _locationSetID(locationSet),
-  feature: (locationSetID) => _feature(locationSetID),
-  locationsAt: (loc) => _locationsAt(loc),
-  query: (loc, multi) => _query(loc, multi)
+  mergeLocationSets: (locationSets) => _mergeLocationSets(locationSets)
 };
 
-
-let _resolvedFeatures = {};              // cache of *resolved* locationSet features
-let _loco = new LocationConflation();    // instance of a location-conflation resolver
-let _wp;                                 // instance of a which-polygon index
-
-(function _init() {
-  // pre-resolve the worldwide locationSet
-  const world = { locationSet: { include: ['Q2'] } };
-  _resolveLocationSet(world);
-  _rebuildIndex();
-})();
-
-
-// Pass a `locationSet` Object
-// Performs the locationSet resolution, caches the result, and returns a `locationSetID`
-function _resolveLocationSet(locationSet) {
-  let result;
-  if (!locationSet.include) {
-    locationSet.include = ['Q2'];  // default worldwide
-  }
-
-  try {
-    const resolved = _loco._resolveLocationSet(locationSet);
-    const locationSetID = resolved.id;
-    result = locationSetID;
-
-    if (!resolved.feature.geometry.coordinates.length || !resolved.feature.properties.area) {
-      throw new Error(`locationSet ${locationSetID} resolves to an empty feature.`);
-    }
-    if (!_resolvedFeatures[locationSetID]) {  // First time seeing this locationSet feature
-      let feature = JSON.parse(JSON.stringify(resolved.feature));   // deep clone
-      feature.id = locationSetID;      // Important: always use the locationSet `id` (`+[Q30]`), not the feature `id` (`Q30`)
-      feature.properties.id = locationSetID;
-      _resolvedFeatures[locationSetID] = feature;  // insert into cache
-    }
-  } catch (err) {
-    result = '+[Q2]';
-  }
-  return result;
-}
-
-
-// Rebuilds the whichPolygon index with whatever features have been resolved.
-function _rebuildIndex() {
-  _wp = whichPolygon({ features: Object.values(_resolvedFeatures) });
-}
 
 //
 // `mergeCustomGeoJSON`
@@ -105,102 +59,62 @@ function _mergeCustomGeoJSON(fc) {
 
 //
 // `mergeLocationSets`
-//  Accepts an Array of `locationSet` Objects:
-//  The locationSets will be resolved and indexed in the background.
-//    [{ include: ['world']}, {include: ['usa']}, {include: ['q2']}, … ]
+//  Accepts an Array of `locationSet` Objects, like:
+//    [ {include: ['world']}, {include: ['usa']}, {include: ['q2']}, … ]
 //
-//  Returns a matching Array of `locationSetIDs`:
-//    ['+[Q2]', '+[Q30]', '+[Q2]', … ]
+//  Returns a result message Object like
+//   {
+//     locationSetIDs: […],                 // Array of locationSetIDs (1 for each object)
+//     newFeatures:    Map(id -> geojson)   // Map of new (unseen) GeoJSON features
+//   }
 //
-//  Returns a Promise fulfilled when the resolving/indexing has been completed
-//
-function _mergeLocationSets(objects) {
-  const results = (objects || []).map(_resolveLocationSet);
-  _rebuildIndex();
-  return results;
+function _mergeLocationSets(locationSets) {
+  let message = { locationSetIDs: [], newFeatures: new Map() };
+
+  (locationSets || []).forEach(locationSet => {
+    const resolved = _resolveLocationSet(locationSet);
+    message.locationSetIDs.push(resolved.id);
+
+    if (!_seen.has(resolved.id)) {  // send only new features to keep message size down
+      _seen.add(resolved.id);
+      message.newFeatures.set(resolved.id, resolved.feature);
+    }
+  });
+
+  return message;  // 🏓  Transfer message back to main thread
 }
 
 
+// `_resolveLocationSet` (internal)
+//  Accepts a `locationSet` Object like:
+//   {
+//     include: [ Array of locations ],
+//     exclude: [ Array of locations ]
+//   }
 //
-// `locationSetID`
-// Returns a locationSetID for a given locationSet (fallback to `+[Q2]`, world)
-// (The locationset doesn't necessarily need to be resolved to compute its `id`)
+//  Calls LocationConflation to perform the locationSet -> GeoJSON resolution.
 //
-// Arguments
-//   `locationSet`: A locationSet, e.g. `{ include: ['us'] }`
-// Returns
-//   The locationSetID, e.g. `+[Q30]`
-//
-function _locationSetID(locationSet) {
-  let locationSetID;
-  try {
-    locationSetID = _loco.validateLocationSet(locationSet).id;
-  } catch (err) {
-    locationSetID = '+[Q2]';  // the world
+//  Returns a result like:
+//   {
+//     type:         'locationset'
+//     locationSet:  the queried locationSet
+//     id:           the stable identifier for the feature, e.g. '+[Q2]'
+//     feature:      the resolved GeoJSON feature
+//   }
+function _resolveLocationSet(locationSet) {
+  if (!locationSet.include) {
+    locationSet.include = ['Q2'];  // default worldwide
   }
-  return locationSetID;
-}
 
-
-//
-// `feature`
-// Returns the resolved GeoJSON feature for a given locationSetID (fallback to 'world')
-//
-// Arguments
-//   `locationSetID`: id of the form like `+[Q30]`  (United States)
-// Returns
-//   A GeoJSON feature:
-//   {
-//     type: 'Feature',
-//     id: '+[Q30]',
-//     properties: { id: '+[Q30]', area: 21817019.17, … },
-//     geometry: { … }
-//   }
-function _feature(locationSetID) {
-  return _resolvedFeatures[locationSetID] || _resolvedFeatures['+[Q2]'];
-}
-
-
-//
-// `locationsAt`
-// Find all the resolved locationSets valid at the given location.
-// Results include the area (in km²) to facilitate sorting.
-//
-// Arguments
-//   `loc`: the [lon,lat] location to query, e.g. `[-74.4813, 40.7967]`
-// Returns
-//   Object of locationSetIDs to areas (in km²)
-//   {
-//     "+[Q2]": 511207893.3958111,
-//     "+[Q30]": 21817019.17,
-//     "+[new_jersey.geojson]": 22390.77,
-//     …
-//   }
-//
-function _locationsAt(loc) {
-  let result = {};
-  (_wp(loc, true) || []).forEach(prop => result[prop.id] = prop.area);
+  let result;
+  try {
+    result = _loco.resolveLocationSet(locationSet);
+    if (!result.feature || !result.feature.geometry.coordinates.length || !result.feature.properties.area) {
+      throw new Error(`locationSet ${result.id} resolves to an empty feature.`);
+    }
+  } catch (err) {
+    if (typeof console !== 'undefined') console.log(err);    // eslint-disable-line
+    result = _loco.resolveLocationSet({ include: ['Q2'] });  // world
+  }
   return result;
 }
-
-//
-// `query`
-// Execute a query directly against which-polygon
-// https://github.com/mapbox/which-polygon
-//
-// Arguments
-//   `loc`: the [lon,lat] location to query,
-//   `multi`: `true` to return all results, `false` to return first result
-// Returns
-//   Array of GeoJSON *properties* for the locationSet features that exist at `loc`
-//
-function _query(loc, multi) {
-  return _wp(loc, multi);
-}
-
-
-// // Direct access to the location-conflation resolver
-// _this.loco = () => _loco;
-
-// // Direct access to the which-polygon index
-// _this.wp = () => _wp;
