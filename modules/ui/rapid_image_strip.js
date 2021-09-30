@@ -50,7 +50,7 @@ export function uiRapidImageStrip(context) {
           .append('div').attr('class', 'image-container')
           .append('img').attr('src', d => d.url)
           .attr('class', d => `image rapid-image-strip-${d.key}`)
-          .on('mouseenter', (d3_event, d) => {
+          .on('mouseenter', (_, d) => {
             const rapidContext = context.rapidContext();
             rapidContext.hoveredSuggestedImage(d);
           })
