@@ -420,10 +420,12 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
     points.exit().remove();
 
+    const selected = rapidContext.getHoveredSuggestedImage();
+    points.style('stroke', d => (!!selected && selected.key === d.key) ? 'white' : VIEWFIELD_MAGENTA);
+
     const enter = points.enter()
       .append('g')
       .attr('class', d => `viewfieldSuggestion viewfield-${d.key}`);
-
     // the circle created here needs to be aligned with
     // viewfield path added after it.
     enter
