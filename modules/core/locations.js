@@ -21,9 +21,11 @@ export { _mainLocations as locationManager };
 //
 export function coreLocations() {
   let _worker = spawn(new Worker('dist/worker.js'));
+  let _inProcess = null;        // Promise for any in process queue work
   let _queue = [];              // queue of objects to merge
   let _resolvedFeatures = {};   // cache of resolved locationSet features
   let _wp;                      // instance of a which-polygon index
+  const decoder = new TextDecoder();
 
   // Pre-resolve and index the worldwide locationSet, so that early calls to `locationsAt` don't fail.
   (function _init() {
@@ -74,16 +76,16 @@ export function coreLocations() {
       if (!Array.isArray(objects)) return Promise.reject('nothing to do');
 
       _queue.push(objects);
-console.log(`main thread: enqueued mergeLocationSets work: ${objects.length} objects, queue length ${_queue.length}`);
 
-      return processQueue()
+      if (_inProcess) return _inProcess;
+
+      return _inProcess = processQueue()
         .then(() => {
-console.log('main thread: queue drained rebuiding which-polygon index');
-const t0 = performance.now();
+console.time('main thread: which-polygon index rebuilt');
           // Rebuild the whichPolygon index with whatever features we now have in the cache...
           _wp = whichPolygon({ features: Object.values(_resolvedFeatures) });
-const t1 = performance.now();
-console.log(`main thread: index rebuilt in ${(t1 - t0)} ms`);
+console.timeEnd('main thread: which-polygon index rebuilt');
+          _inProcess = null;
         });
 
 
@@ -96,16 +98,27 @@ console.log(`main thread: index rebuilt in ${(t1 - t0)} ms`);
           if (!obj.locationSet.include)  obj.locationSet.include = ['Q2'];  // default worldwide
           return obj.locationSet;
         });
+console.log(`main thread: sending ${objects.length} objects`);
 
         return _worker
           .then(w => w.mergeLocationSets(locationSets))  // 🏓  Send locationSets to worker
-          .then(message => {                             // 🏓  Receive message from worker
-console.log(`main thread: received back message on ${objects.length} objects` );
+          .then(buf => {                             // 🏓  Receive message from worker
+
+console.log(`Transfer finished at ${Date.now()}`);
+
+// POSTMESSAGE:
+// const message = buf;
+
+// TRANSFEROBJECT:
+console.time('main thread: unpack');
+const message = JSON.parse(decoder.decode(buf));
+console.timeEnd('main thread: unpack');
+
             // Decorate the objects with resolved locationSetIDs..
             message.locationSetIDs.forEach((val, index) => objects[index].locationSetID = val);
 
             // Add new features into _resolvedFeatures cache
-            message.newFeatures.forEach((feature, locationSetID) => {
+            Object.entries(message.newFeatures).forEach(([locationSetID, feature]) => {
               // Important: always use the locationSet `id` (`+[Q30]`), not the feature `id` (`Q30`)
               // Also Important: on the main thread these are copies, so we're free to modify them.
               feature.id = locationSetID;

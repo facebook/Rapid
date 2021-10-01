@@ -1,9 +1,10 @@
 import calcArea from '@mapbox/geojson-area';
 import LocationConflation from '@ideditor/location-conflation';
+import { Transfer } from 'threads/worker';
 
 let _loco = new LocationConflation();    // instance of a location-conflation resolver
 let _seen = new Set();
-
+const encoder = new TextEncoder();
 //
 // `coreLocations` worker-side functions
 //
@@ -64,12 +65,17 @@ function _mergeCustomGeoJSON(fc) {
 //
 //  Returns a result message Object like
 //   {
-//     locationSetIDs: […],                 // Array of locationSetIDs (1 for each object)
-//     newFeatures:    Map(id -> geojson)   // Map of new (unseen) GeoJSON features
+//     locationSetIDs: […],                   // Array of locationSetIDs (1 for each object)
+//     newFeatures:    Object(id -> geojson)  // Map of new (unseen) GeoJSON features
 //   }
 //
 function _mergeLocationSets(locationSets) {
-  let message = { locationSetIDs: [], newFeatures: new Map() };
+  let message = {
+    locationSetIDs: [],
+    newFeatures: {}
+  };
+
+console.time(`worker thread: process ${locationSets.length} locationSets`);
 
   (locationSets || []).forEach(locationSet => {
     const resolved = _resolveLocationSet(locationSet);
@@ -77,11 +83,21 @@ function _mergeLocationSets(locationSets) {
 
     if (!_seen.has(resolved.id)) {  // send only new features to keep message size down
       _seen.add(resolved.id);
-      message.newFeatures.set(resolved.id, resolved.feature);
+      message.newFeatures[resolved.id] = resolved.feature;
     }
   });
+console.timeEnd(`worker thread: process ${locationSets.length} locationSets`);
 
-  return message;  // 🏓  Transfer message back to main thread
+// POSTMESSAGE:
+// console.log(`Transfer starting at ${Date.now()}`);
+// return message;  // 🏓  Transfer message back to main thread
+
+// // TRANSFEROBJECT:
+console.time('worker thread: pack');
+const view = encoder.encode(JSON.stringify(message));
+console.timeEnd('worker thread: pack');
+console.log(`Transfer starting at ${Date.now()}`);
+return Transfer(view.buffer);  // 🏓  Transfer message back to main thread
 }
 
 
