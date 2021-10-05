@@ -6,6 +6,8 @@ esbuild
     bundle: true,
     sourcemap: true,
     entryPoints: ['./modules/id.js'],
+    define: { global: 'self' },           // for Buffer polyfill
+    inject: ['./config/buffer_shim.js'],  // for Buffer polyfill
     legalComments: 'none',
     logLevel: 'info',
     metafile: true,
@@ -21,6 +23,8 @@ esbuild
     bundle: true,
     sourcemap: true,
     entryPoints: ['./modules/worker.js'],
+    define: { global: 'self' },           // for Buffer polyfill
+    inject: ['./config/buffer_shim.js'],  // for Buffer polyfill
     legalComments: 'none',
     logLevel: 'info',
     outfile: 'dist/worker.js'

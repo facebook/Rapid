@@ -1,6 +1,8 @@
 import { spawn, Worker } from 'threads';
 import whichPolygon from 'which-polygon';
 
+import avro from 'avsc/etc/browser/avsc-types';
+const decoder = new TextDecoder();
 let _mainLocations = coreLocations(); // singleton
 export { _mainLocations as locationManager };
 
@@ -25,7 +27,6 @@ export function coreLocations() {
   let _queue = [];              // queue of objects to merge
   let _resolvedFeatures = {};   // cache of resolved locationSet features
   let _wp;                      // instance of a which-polygon index
-  const decoder = new TextDecoder();
 
   // Pre-resolve and index the worldwide locationSet, so that early calls to `locationsAt` don't fail.
   (function _init() {
@@ -38,6 +39,57 @@ export function coreLocations() {
     _resolvedFeatures[world.id] = world;
     _wp = whichPolygon({ features: [world] });
   })();
+
+
+const schema =
+{
+  "type": "record",
+  "name": "message",
+  "fields": [
+    { "name": "locationSetIDs", "type": { "type": "array", "items": "string" } },
+    { "name": "newFeatures", "type": {
+      "type": "array", "items": {
+        "type": "record",
+        "name": "feature",
+        "fields": [
+          { "name": "type", "type": {"type": "enum", "name": "Feature", "symbols": ["Feature"] }, "default": "Feature"},
+          { "name": "id", "type": "string" },
+          { "name": "properties", "type":
+            {
+              "type": "record",
+              "name": "properties",
+              "fields": [
+                { "name": "id", "type": "string" },
+                { "name": "area", "type": "float" }
+              ]
+            }
+          },
+          { "name": "geometry", "type":
+            {
+              "type": "record",
+              "name": "PolygonOrMultiPolygon",
+              "fields": [
+                { "name": "type", "type": "string" },
+                { "name": "coordinates", "type":
+                  {
+                    "type": "array", "items": {
+                      "type": "array", "items": {
+                        "type": "array", "items": ["float", {"type": "array", "items": "float"}]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  ]
+};
+
+const avroType = avro.Type.forSchema(schema);
 
 
   const _this = {
@@ -109,24 +161,38 @@ console.log(`Transfer finished at ${Date.now()}`);
 // POSTMESSAGE:
 // const message = buf;
 
-// TRANSFEROBJECT:
+// TRANSFEROBJECT (TextDecoder):
+// console.time('main thread: unpack');
+// const message = JSON.parse(decoder.decode(buf));
+// console.timeEnd('main thread: unpack');
+
+// TRANSFEROBJECT (Avro):
 console.time('main thread: unpack');
-const message = JSON.parse(decoder.decode(buf));
+const message = avroType.fromBuffer(Buffer.from(buf));
 console.timeEnd('main thread: unpack');
 
             // Decorate the objects with resolved locationSetIDs..
             message.locationSetIDs.forEach((val, index) => objects[index].locationSetID = val);
 
             // Add new features into _resolvedFeatures cache
-            Object.entries(message.newFeatures).forEach(([locationSetID, feature]) => {
-              // Important: always use the locationSet `id` (`+[Q30]`), not the feature `id` (`Q30`)
-              // Also Important: on the main thread these are copies, so we're free to modify them.
-              feature.id = locationSetID;
-              feature.properties.id = locationSetID;
-              _resolvedFeatures[locationSetID] = feature;  // insert into cache
+            message.newFeatures.forEach(feature => {
+              _resolvedFeatures[feature.id] = feature;  // insert into cache
             });
+
+            // // Add new features into _resolvedFeatures cache
+            // Object.entries(message.newFeatures).forEach(([locationSetID, feature]) => {
+            //   // Important: always use the locationSet `id` (`+[Q30]`), not the feature `id` (`Q30`)
+            //   // Also Important: on the main thread these are copies, so we're free to modify them.
+            //   feature.id = locationSetID;
+            //   feature.properties.id = locationSetID;
+            //   _resolvedFeatures[locationSetID] = feature;  // insert into cache
+            // });
           })
-          .then(() => processQueue());
+          .then(() => processQueue())
+          .catch((err) => {
+            console.error(err);
+            debugger;
+          });
       }
     },
 

@@ -55,6 +55,8 @@
     "@turf/bbox-clip": "^6.0.0",
     "abortcontroller-polyfill": "^1.4.0",
     "alif-toolkit": "^1.2.9",
+    "avsc": "^5.7.3",
+    "buffer": "^4.9.2",
     "esbuild": "^0.12.27",
     "fast-deep-equal": "~3.1.1",
     "fast-json-stable-stringify": "2.1.0",

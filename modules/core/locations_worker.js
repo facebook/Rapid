@@ -2,9 +2,61 @@ import calcArea from '@mapbox/geojson-area';
 import LocationConflation from '@ideditor/location-conflation';
 import { Transfer } from 'threads/worker';
 
+import avro from 'avsc/etc/browser/avsc-types';
+const encoder = new TextEncoder();
+
+const schema =
+{
+  "type": "record",
+  "name": "message",
+  "fields": [
+    { "name": "locationSetIDs", "type": { "type": "array", "items": "string" } },
+    { "name": "newFeatures", "type": {
+      "type": "array", "items": {
+        "type": "record",
+        "name": "feature",
+        "fields": [
+          { "name": "type", "type": {"type": "enum", "name": "Feature", "symbols": ["Feature"] }, "default": "Feature"},
+          { "name": "id", "type": "string" },
+          { "name": "properties", "type":
+            {
+              "type": "record",
+              "name": "properties",
+              "fields": [
+                { "name": "id", "type": "string" },
+                { "name": "area", "type": "float" }
+              ]
+            }
+          },
+          { "name": "geometry", "type":
+            {
+              "type": "record",
+              "name": "PolygonOrMultiPolygon",
+              "fields": [
+                { "name": "type", "type": "string" },
+                { "name": "coordinates", "type":
+                  {
+                    "type": "array", "items": {
+                      "type": "array", "items": {
+                        "type": "array", "items": ["float", {"type": "array", "items": "float"}]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+  ]
+};
+
+const avroType = avro.Type.forSchema(schema);
+
 let _loco = new LocationConflation();    // instance of a location-conflation resolver
 let _seen = new Set();
-const encoder = new TextEncoder();
 //
 // `coreLocations` worker-side functions
 //
@@ -20,13 +72,13 @@ export const workerFunctions = {
 //  Each feature must have a filename-like `id`, for example: `something.geojson`
 //
 //  {
-//    "type": "FeatureCollection"
-//    "features": [
+//    type: 'FeatureCollection'
+//    features: [
 //      {
-//        "type": "Feature",
-//        "id": "philly_metro.geojson",
-//        "properties": { … },
-//        "geometry": { … }
+//        type: 'Feature',
+//        id: 'philly_metro.geojson',
+//        properties: { … },
+//        geometry: { … }
 //      }
 //    ]
 //  }
@@ -72,7 +124,7 @@ function _mergeCustomGeoJSON(fc) {
 function _mergeLocationSets(locationSets) {
   let message = {
     locationSetIDs: [],
-    newFeatures: {}
+    newFeatures: []
   };
 
 console.time(`worker thread: process ${locationSets.length} locationSets`);
@@ -83,7 +135,15 @@ console.time(`worker thread: process ${locationSets.length} locationSets`);
 
     if (!_seen.has(resolved.id)) {  // send only new features to keep message size down
       _seen.add(resolved.id);
-      message.newFeatures[resolved.id] = resolved.feature;
+
+      // Important: always use the locationSet `id` (`+[Q30]`), not the feature `id` (`Q30`)
+      const f = JSON.parse(JSON.stringify(resolved.feature));   // clone deep
+      f.id = resolved.id;
+      f.properties = {
+        id: resolved.id,
+        area: resolved.feature.properties.area
+      };
+      message.newFeatures.push(f);
     }
   });
 console.timeEnd(`worker thread: process ${locationSets.length} locationSets`);
@@ -92,11 +152,30 @@ console.timeEnd(`worker thread: process ${locationSets.length} locationSets`);
 // console.log(`Transfer starting at ${Date.now()}`);
 // return message;  // 🏓  Transfer message back to main thread
 
-// // TRANSFEROBJECT:
+
+// TRANSFEROBJECT (TextEncode):
+// console.time('worker thread: pack');
+// const view = encoder.encode(JSON.stringify(message));
+// console.timeEnd('worker thread: pack');
+// const kilobytes = Math.round(view.byteLength / 1024);
+// console.log(`Transfer starting at ${Date.now()} (${kilobytes} kilobytes)`);
+// return Transfer(view.buffer);  // 🏓  Transfer message back to main thread
+
+// TRANSFEROBJECT (Avro):
+// // determine schema
+// // const inferredType = avro.Type.forValue(message);
+// // console.log(JSON.stringify(inferredType.schema()));
 console.time('worker thread: pack');
-const view = encoder.encode(JSON.stringify(message));
+let view;
+try {
+view = avroType.toBuffer(message);
+} catch (e) {
+console.error(e);
+debugger;
+}
 console.timeEnd('worker thread: pack');
-console.log(`Transfer starting at ${Date.now()}`);
+const kilobytes = Math.round(view.byteLength / 1024);
+console.log(`Transfer starting at ${Date.now()} (${kilobytes} kilobytes)`);
 return Transfer(view.buffer);  // 🏓  Transfer message back to main thread
 }
 
@@ -112,7 +191,7 @@ return Transfer(view.buffer);  // 🏓  Transfer message back to main thread
 //
 //  Returns a result like:
 //   {
-//     type:         'locationset'
+//     "type":         'locationset'
 //     locationSet:  the queried locationSet
 //     id:           the stable identifier for the feature, e.g. '+[Q2]'
 //     feature:      the resolved GeoJSON feature
