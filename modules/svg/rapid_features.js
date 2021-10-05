@@ -279,7 +279,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
     if (context.map().zoom() >= context.minEditableZoom()) {
       /* Facebook AI/ML */
-      if (dataset.service === 'fbml' || dataset.service === 'fbml_streetview') {
+      if (dataset.service === 'fbml' || (dataset.service === 'fbml_streetview' && context.map().zoom() > getFbStreetviewSuggestionsService().minEditableZoom())){
 
         service.loadTiles(internalID, projection, rapidContext.getTaskExtent());
         let pathData = service
