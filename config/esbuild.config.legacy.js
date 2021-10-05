@@ -5,7 +5,7 @@ esbuild
   .build({
     bundle: true,
     sourcemap: true,
-    entryPoints: ['./modules/id.js'],
+    entryPoints: ['./modules/iD.legacy.js'],
     legalComments: 'none',
     logLevel: 'info',
     outfile: 'dist/iD.legacy.js',
@@ -25,7 +25,7 @@ esbuild
   .build({
     bundle: true,
     sourcemap: true,
-    entryPoints: ['./modules/worker.js'],
+    entryPoints: ['./modules/worker.legacy.js'],
     legalComments: 'none',
     logLevel: 'info',
     outfile: 'dist/worker.legacy.js',

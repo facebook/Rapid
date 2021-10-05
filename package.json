@@ -57,6 +57,7 @@
     "alif-toolkit": "^1.2.9",
     "esbuild": "^0.12.27",
     "fast-deep-equal": "~3.1.1",
+    "fast-text-encoding": "^1.0.3",
     "fast-json-stable-stringify": "2.1.0",
     "lodash-es": "~4.17.15",
     "marked": "~3.0.3",
