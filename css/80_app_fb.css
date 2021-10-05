@@ -380,16 +380,10 @@ button.rapid-features.layer-off use {
 
 .rapid-image-strip-clicked {
     outline: 2px solid white;
-    animation: .75s .25s enlarge forwards;
 }
 
 .rapid-image-strip .image:hover {
     outline: 2px solid white;
-}
-
-@keyframes enlarge {
-    from { max-height: 7vw }
-    to { max-height: 14vw }
 }
 
 /* For things that should stack in rows */
