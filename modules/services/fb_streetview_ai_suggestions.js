@@ -22,7 +22,7 @@ var _datasets = {};
 var _deferredAiFeaturesParsing = new Set();
 var _off;
 let _mapillary;
-
+const _minEditableZoom = 18;
 
 
     function getMapillaryService() {
@@ -538,6 +538,11 @@ export default {
     toggle: function(val) {
         _off = !val;
         return this;
+    },
+
+
+    minEditableZoom: function () {
+        return _minEditableZoom;
     },
 
 
