@@ -15,6 +15,8 @@ export function uiRapidImageStrip(context) {
     body.classed('hide', !_showImageStrip);
 
     let showHide = imageStrip.select('.showhide');
+    showHide.classed('collapsed', !_showImageStrip);
+
     let button = showHide.select('use');
     button.attr('href', _showImageStrip ? '#iD-icon-close' : '#iD-icon-plus');
   }
