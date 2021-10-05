@@ -1,8 +1,24 @@
 import { select as d3_select } from 'd3-selection';
+import { svgIcon } from '../svg/icon';
+let _showImageStrip = true;
 
 export function uiRapidImageStrip(context) {
   const rapidContext = context.rapidContext();
   let _datum;
+
+  function showToggle() {
+    _showImageStrip = !_showImageStrip;
+
+    let imageStrip = context.container().select('.rapid-image-strip');
+
+    let body = imageStrip.select('.body');
+    body.classed('hide', !_showImageStrip);
+
+    let showHide = imageStrip.select('.showhide');
+    let button = showHide.select('use');
+    button.attr('href', _showImageStrip ? '#iD-icon-close' : '#iD-icon-plus');
+  }
+
 
   function rapidImageStrip(selection) {
     let imageStrip = selection.selectAll('.rapid-image-strip')
@@ -20,7 +36,6 @@ export function uiRapidImageStrip(context) {
     imageStrip = imageStrip
       .merge(imageStripEnter);
 
-    // Body
     let body = imageStrip.selectAll('.body')
       .data([0]);
 
@@ -79,8 +94,26 @@ export function uiRapidImageStrip(context) {
         });
       }
     }
-  }
 
+    let imageStripHeader = selection.selectAll('.rapid-image-strip');
+
+    imageStripHeader
+      .insert('div', ':first-child')
+      .attr('class', 'showhide');
+
+    // Add a Show/hide close button.
+     let showHide = imageStripHeader.selectAll('.showhide').data([_showImageStrip]);
+
+    showHide
+      .append('div')
+      .attr('class', 'showhide')
+      .append('button')
+      .call(svgIcon(_showImageStrip ? '#iD-icon-close' : '#iD-icon-plus'))
+      .on('click', showToggle);
+
+
+    showHide.exit().remove();
+  }
 
   function sortByLon(img1, img2) {
     if (img1.lon > img2.lon) return 1;
