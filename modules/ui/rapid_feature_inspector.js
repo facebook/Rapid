@@ -281,7 +281,8 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     if (_datum.suggestionContext && _datum.suggestionContext.streetViewImageSet) {
       const {images} = _datum.suggestionContext.streetViewImageSet;
-      if (images) {
+      const otherPhotoViewerShowing = context.container().selectAll('.photoviewer.hide').size();
+      if (images && otherPhotoViewerShowing) {
         let imageStripRenderer = uiRapidImageStrip(context).datum(_datum);
         imageStripRenderer(context.container().selectAll('.over-map'));
       }
