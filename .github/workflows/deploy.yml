@@ -5,7 +5,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ main, develop, 286-separate_cd ]
+    branches: [ main, develop, '*staging*' ]
 
 jobs:
   build:
