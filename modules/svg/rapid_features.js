@@ -407,15 +407,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
     let points = viewfield
       .selectAll('g.viewfieldSuggestion')
       .style('stroke', VIEWFIELD_MAGENTA)
-      // .attr('pointer-events', 'all')
-      // .on('mouseenter', (d, i) => {
-      //   selection.select(`.${viewfieldPoints[i].key}`).style('stroke', 'white');
-      //   rapidContext.selectSuggestedImage(viewfieldPoints[i]);
-      // })
-      // .on('mouseleave', () => {
-      //   selection.selectAll(`.viewfieldSuggestion`).style('stroke', VIEWFIELD_MAGENTA);
-      //   rapidContext.selectSuggestedImage(null);
-      // })
       .data(viewfieldPoints, d => d.key);
 
     points.exit().remove();
