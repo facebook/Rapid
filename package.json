@@ -95,7 +95,7 @@
     "d3": "~7.1.1",
     "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
     "esbuild-plugin-babel": "^0.2.3",
-    "esbuild-visualizer": "^0.3.0",
+    "esbuild-visualizer": "^0.3.1",
     "eslint": "^7.1.0",
     "eslint-plugin-react": "^7.26.1",
     "gaze": "^1.1.3",
