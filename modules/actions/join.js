@@ -1,5 +1,5 @@
 import { geomPathIntersections } from '@id-sdk/math';
-import { utilArrayGroupBy, utilArrayIntersection } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayIdentical, utilArrayIntersection } from '@id-sdk/util';
 
 import { actionDeleteRelation } from './delete_relation';
 import { actionDeleteWay } from './delete_way';
