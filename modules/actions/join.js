@@ -142,9 +142,27 @@ export function actionJoin(ids) {
             return 'not_adjacent';
         }
 
+        var i;
+
+        // All joined ways must belong to the same set of (non-restriction) relations.
+        // Restriction relations have different logic, below, which allows some cases
+        // this prohibits, and prohibits some cases this allows.
+        var sortedParentRelations = function (id) {
+            return graph.parentRelations(graph.entity(id))
+                .filter((rel) => !rel.isRestriction() && !rel.isConnectivity())
+                .sort((a, b) => a.id - b.id);
+        };
+        var relsA = sortedParentRelations(ids[0]);
+        for (i = 1; i < ids.length; i++) {
+            var relsB = sortedParentRelations(ids[i]);
+            if (!utilArrayIdentical(relsA, relsB)) {
+                return 'conflicting_relations';
+            }
+        }
+
         // Loop through all combinations of path-pairs
         // to check potential intersections between all pairs
-        for (var i = 0; i < ids.length - 1; i++) {
+        for (i = 0; i < ids.length - 1; i++) {
             for (var j = i + 1; j < ids.length; j++) {
                 var path1 = graph.childNodes(graph.entity(ids[i]))
                     .map(function(e) { return e.loc; });
@@ -172,7 +190,7 @@ export function actionJoin(ids) {
         joined[0].forEach(function(way) {
             var parents = graph.parentRelations(way);
             parents.forEach(function(parent) {
-                if (parent.isRestriction() && parent.members.some(function(m) { return nodeIds.indexOf(m.id) >= 0; })) {
+                if ((parent.isRestriction() || parent.isConnectivity()) && parent.members.some(function(m) { return nodeIds.indexOf(m.id) >= 0; })) {
                     relation = parent;
                 }
             });
@@ -193,7 +211,7 @@ export function actionJoin(ids) {
         });
 
         if (relation) {
-            return 'restriction';
+            return relation.isRestriction() ? 'restriction' : 'connectivity';
         }
 
         if (conflicting) {
