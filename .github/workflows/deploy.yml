@@ -13,15 +13,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout 📥
       uses: actions/checkout@v2
-    - name: Use Node.js 16.x
+
+    - name: Use Node.js 16.x ⚙️
       uses: actions/setup-node@v1
       with:
         node-version: 16.x
-    - run: npm install
-    - run: npm run all
-    - run: npm run test
+
+    - name: Install 🎯
+      run: npm install
+
+    - name: Run 🏃
+      run: npm run all
+
+    - name: Test 🧪
+      run: npm run test
+
+    - name: Upload artifacts 📤
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: dist
+        if-no-files-found: error
 
   deploy:
     name: Deploy
@@ -29,37 +43,46 @@ jobs:
     needs: build
 
     steps:
-    - name: Checkout
+    - name: Checkout 📥
       uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
+    - name: Download artifacts 📥
+      uses: actions/download-artifact@v2
+      with:
+        name: build-artifacts
+        path: dist
+
+    - name: Configure AWS credentials 🔐
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
 
-    - name: Setup vars
+    - name: Setup vars 📋
       id: vars
       run: |
         echo ::set-output name=identifier::$(git rev-parse --short ${{ github.sha }})-16.x
         echo ::set-output name=distdir::$(git rev-parse --short ${{ github.sha }})-16.x-dist
 
-    - name: Prep files
+    - name: Prep files 🔨
       run: npm run aws_deploy
       env:
         IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.DISTDIR }}
+        DISTDIR: ${{ steps.vars.outputs.distdir }}
 
-    - name: Copy new index file to S3
+    - name: Copy new index file to S3 📤
       run: aws s3 cp $DISTDIR/index.html s3://world.ai.rapid/rapid/$IDENTIFIER-rapid.html --no-progress
       env:
         IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.DISTDIR }}
+        DISTDIR: ${{ steps.vars.outputs.distdir }}
 
-    - name: Copy new dist dir to S3
+    - name: Copy new dist dir to S3 📤
       run: aws s3 cp $DISTDIR s3://world.ai.rapid/$DISTDIR --recursive --no-progress
       env:
         IDENTIFIER: ${{ steps.vars.outputs.identifier }}
-        DISTDIR: ${{ steps.vars.outputs.DISTDIR }}
-      # run: echo "Your build is here: https://mapwith.ai/rapid/${GITHUB_SHA::8}-16.x-dist/index.html"
+        DISTDIR: ${{ steps.vars.outputs.distdir }}
+
+    - name: Deployment complete! 🚀
+      run: |
+        echo "Your build is here: https://mapwith.ai/rapid/${{ steps.vars.outputs.distdir }}/index.html"
