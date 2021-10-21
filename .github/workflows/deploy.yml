@@ -78,7 +78,7 @@ jobs:
         DISTDIR: ${{ steps.vars.outputs.distdir }}
 
     - name: Copy new dist dir to S3 📤
-      run: aws s3 cp $DISTDIR s3://world.ai.rapid/$DISTDIR --recursive --no-progress
+      run: aws s3 cp $DISTDIR s3://world.ai.rapid/rapid/$DISTDIR --recursive --no-progress
       env:
         IDENTIFIER: ${{ steps.vars.outputs.identifier }}
         DISTDIR: ${{ steps.vars.outputs.distdir }}
