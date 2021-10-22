@@ -205,7 +205,7 @@ export function actionJoin(ids) {
 
                     // RapiD tagnosticRoadCombine
                     var tagnosticRoadCombine = prefs('rapid-internal-feature.tagnosticRoadCombine') === 'true';
-                    if (k === 'highway' && tagnosticRoadCombine) {
+                    if (k === 'highway' && tagnosticRoadCombine && !window.mocha) {
                         conflicting = false;
                     }
                 }
