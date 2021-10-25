@@ -37,6 +37,55 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [1.1.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.8)
+##### 2021-Oct-25
+
+#### :tada: New Features
+* Add `datasets=` url parameter to specify which RapiD datasets are enabled ([#335])
+
+#### :sparkles: Usability & Accessibility
+* Show an error if localStorage is full ([iD#8727])
+* Keep the oldest way when merging ([iD#8708])
+* Show ref in the name of route relations ([iD#8707])
+* Improve Map Control scrolling on small devices ([iD#8685])
+
+#### :bug: Bugfixes
+* Fix issue causing some road labels to be missing
+* Some Esri Datasets were missing from the list ([#328])
+* Fix Extent calculation for Esri datasets ([#322])
+
+#### :scissors: Operations
+* Disable merge operation when it would damage relations ([iD#8675])
+
+#### :white_check_mark: Validation
+* Add warning for some commercial mapservice in China ([iD#8701])
+
+#### :earth_asia: Localization
+* Turn off RTL text patch on Chromium >=96 ([iD#8741])
+
+#### :hourglass: Performance
+* Improve preset matching performance ([iD#8768], [iD#8761], [iD#8612])
+* Decomission Maxar Standard legacy imagery layer ([iD#8689])
+* Debounce input events in the preset list ([iD#8288])
+
+[#322]: https://github.com/facebookincubator/RapiD/issues/322
+[#328]: https://github.com/facebookincubator/RapiD/issues/328
+[#335]: https://github.com/facebookincubator/RapiD/issues/335
+[iD#8288]: https://github.com/openstreetmap/iD/issues/8288
+[iD#8612]: https://github.com/openstreetmap/iD/issues/8612
+[iD#8675]: https://github.com/openstreetmap/iD/issues/8675
+[iD#8685]: https://github.com/openstreetmap/iD/issues/8685
+[iD#8689]: https://github.com/openstreetmap/iD/issues/8689
+[iD#8701]: https://github.com/openstreetmap/iD/issues/8701
+[iD#8707]: https://github.com/openstreetmap/iD/issues/8707
+[iD#8708]: https://github.com/openstreetmap/iD/issues/8708
+[iD#8727]: https://github.com/openstreetmap/iD/issues/8727
+[iD#8741]: https://github.com/openstreetmap/iD/issues/8741
+[iD#8761]: https://github.com/openstreetmap/iD/issues/8761
+[iD#8768]: https://github.com/openstreetmap/iD/issues/8768
+
+
+
 # [1.1.7](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.7)
 ##### 2021-Aug-30
 
