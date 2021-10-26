@@ -5,15 +5,17 @@ trim_trailing_whitespace = true
 insert_final_newline = false
 
 
-[*.{js,json,css,html}]
+[*.{js,jsx,ts,tsx,json,css,html}]
 indent_style = space
 indent_size = 4
+ij_javascript_use_double_quotes = false
+ij_typescript_use_double_quotes = false
+ij_html_quote_style = single
 
 
 # EOL for ESLint
 # newline follows Airbnb style guide
 # mix of indent size between ES5 and ES6 syntax files
-[*.js]
+[*.{js,jsx,ts,tsx}]
 end_of_line = lf
 insert_final_newline = true
-indent_size = tab_width
