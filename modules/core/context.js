@@ -22,7 +22,7 @@ import { utilKeybinding, utilRebind } from '../util';
 
 
 export function coreContext() {
-  const dispatch = d3_dispatch('enter', 'exit', 'change');
+  const dispatch = d3_dispatch('busy', 'idle', 'enter', 'exit', 'change');
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
@@ -505,6 +505,27 @@ export function coreContext() {
   context.rapidContext = () => _rapidContext;
 
 
+  let _jobs = new Set();
+  function beginJob(id) {
+    if (_jobs.has(id)) return;
+    _jobs.add(id);
+    if (_jobs.size === 1) {
+console.log('NOW BUSY');
+      dispatch.call('busy');
+    }
+console.log(`| beginning ${id}`);
+  }
+
+  function endJob(id) {
+    if (!_jobs.has(id)) return;
+    _jobs.delete(id);
+console.log(`| ending ${id}`);
+    if (_jobs.size === 0) {
+console.log('NOW IDLE');
+      dispatch.call('idle');
+    }
+  }
+
   /* Init */
   context.init = () => {
 
@@ -559,11 +580,21 @@ export function coreContext() {
       _background.ensureLoaded();
       presetManager.ensureLoaded();
 
-      Object.values(services).forEach(service => {
-        if (service && typeof service.init === 'function') {
+      for (const k in services) {
+        const service = services[k];
+        if (!service) return;
+        if (typeof service.init === 'function') {
           service.init();
         }
-      });
+        if (typeof service.on === 'function') {
+          try {
+            service.on('busy.context', () => beginJob(k));
+            service.on('idle.context', () => endJob(k));
+          } catch (err) {
+            /* ignore */
+          }
+        }
+      }
 
       _map.init();
       _validator.init();

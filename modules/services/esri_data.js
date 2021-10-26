@@ -14,7 +14,8 @@ const APIROOT = 'https://openstreetmap.maps.arcgis.com/sharing/rest/content';
 const HOMEROOT = 'https://openstreetmap.maps.arcgis.com/home';
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
-const dispatch = d3_dispatch('loadedData');
+const dispatch = d3_dispatch('busy', 'idle', 'loadedData');
+let _jobs = new Set();
 
 let _datasets = {};
 let _gotDatasets = false;
@@ -24,6 +25,23 @@ let _off;
 function abortRequest(controller) {
   controller.abort();
 }
+
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
+}
+
 
 
 // API
@@ -262,6 +280,7 @@ export default {
 
       const controller = new AbortController();
       const url = tileURL(ds, tile.wgs84Extent);
+      beginJob(url);
 
       d3_json(url, { signal: controller.signal })
         .then(geojson => {
@@ -275,7 +294,8 @@ export default {
             dispatch.call('loadedData');
           });
         })
-        .catch(() => { /* ignore */ });
+        .catch(() => { /* ignore */ })
+        .finally(() => endJob(url));   // aborted tiles will throw, should get here
 
       cache.inflight[tile.id] = controller;
     });
@@ -287,7 +307,7 @@ export default {
       return Promise.resolve(_datasets);
 
     } else {
-      return new Promise((resolve, reject) => {
+      const prom = new Promise((resolve, reject) => {
         let start = 1;
         fetchMore(start);
 
@@ -309,6 +329,10 @@ export default {
             });
         }
       });
+
+      beginJob('loadDatasets');
+      return prom
+        .finally(() => endJob('loadDatasets'));
     }
   },
 
@@ -321,7 +345,10 @@ export default {
       return Promise.resolve(ds.layer);
     }
 
-    return d3_json(layerURL(ds.url))
+    const url = layerURL(ds.url);
+    beginJob(url);
+
+    return d3_json(url)
       .then(json => {
         if (!json.layers || !json.layers.length) {
           throw new Error(`Missing layer info for datasetID: ${datasetID}`);
@@ -342,6 +369,8 @@ export default {
 
         return ds.layer;
       })
-      .catch(() => { /* ignore */ });
+      .catch(() => { /* ignore */ })
+      .finally(() => endJob(url));
   }
+
 };
