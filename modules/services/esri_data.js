@@ -15,8 +15,8 @@ const HOMEROOT = 'https://openstreetmap.maps.arcgis.com/home';
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
 const dispatch = d3_dispatch('busy', 'idle', 'loadedData');
-let _jobs = new Set();
 
+let _jobs = new Set();
 let _datasets = {};
 let _gotDatasets = false;
 let _off;
