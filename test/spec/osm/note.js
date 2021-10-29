@@ -1,5 +1,3 @@
-const { Extent } = require('@id-sdk/extent');
-
 describe('iD.osmNote', function () {
     it('returns a note', function () {
         expect(iD.osmNote()).to.be.an.instanceOf(iD.osmNote);

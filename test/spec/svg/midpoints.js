@@ -1,5 +1,3 @@
-import { Extent } from '@id-sdk/extent';
-
 describe('iD.svgMidpoints', function () {
     var context, surface;
     var _selectedIDs = [];

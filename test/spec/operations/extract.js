@@ -1,5 +1,3 @@
-import { Extent } from '@id-sdk/extent';
-
 describe('iD.operationExtract', function () {
     var fakeContext;
     var graph;

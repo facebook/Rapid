@@ -1,5 +1,3 @@
-import { Extent } from '@id-sdk/extent';
-
 describe('iD.osmRelation', function () {
     if (iD.debug) {
         it('freezes nodes', function () {
