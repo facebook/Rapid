@@ -5,7 +5,8 @@ import { xml as d3_xml } from 'd3-fetch';
 
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay, osmRelation } from '../osm';
-import { utilRebind, utilStringQs} from '../util';
+import { utilStringQs} from '@id-sdk/util';
+import { utilRebind } from '../util/rebind';
 
 import { Projection, Tiler } from '@id-sdk/math';
 import { services } from '../services';
