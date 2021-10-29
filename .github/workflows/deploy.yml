@@ -64,7 +64,6 @@ jobs:
       run: |
         echo ::set-output name=identifier::$(git rev-parse --short ${{ github.sha }})-16.x
         echo ::set-output name=distdir::$(git rev-parse --short ${{ github.sha }})-16.x-dist
-
     - name: Prep files 🔨
       run: npm run aws_deploy
       env:
