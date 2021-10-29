@@ -5,7 +5,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ main, develop, '*staging*' ]
+    branches: [ main, develop, sidewalks_v1_preview, '*staging*' ]
 
 jobs:
   build:
