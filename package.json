@@ -64,6 +64,7 @@
     "osm-auth": "1.1.1",
     "pannellum": "2.5.6",
     "pbf": "^3.2.1",
+    "pixi.js": "^6.2.0",
     "polygon-clipping": "~0.15.1",
     "prop-types": "^15.7.2",
     "rbush": "3.0.1",

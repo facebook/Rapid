@@ -19,6 +19,7 @@ import { utilRebind } from '../util/rebind';
 import { utilZoomPan } from '../util/zoom_pan';
 import { utilDoubleUp } from '../util/double_up';
 
+import * as PIXI from 'pixi.js';
 
 // constants
 var TILESIZE = 256;
@@ -176,9 +177,16 @@ export function rendererMap(context) {
             .attr('class', 'layer pixi-data')
             .style('z-index', '3');
 
-        const app = new PIXI.Application({ width: 640, height: 360 , transparent: true});
+        const app = new PIXI.Application({
+            // width: 640,
+            // height: 360 ,
+            transparent: true,
+        });
         document.querySelector('.pixi-data').appendChild(app.view);
         const sprite = PIXI.Sprite.from('https://pixijs.io/guides/static/images/sample.png');
+        sprite.anchor.set(0.5);
+        sprite.x = app.screen.width / 2;
+        sprite.y = app.screen.height / 2;
         app.stage.addChild(sprite);
 
         map.surface = surface = wrapper
