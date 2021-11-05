@@ -173,9 +173,10 @@ export function rendererMap(context) {
 
         supersurface
             .append('div')
-            .attr('class', 'layer pixi-data');
+            .attr('class', 'layer pixi-data')
+            .style('z-index', '3');
 
-        const app = new PIXI.Application({ width: 640, height: 360 });
+        const app = new PIXI.Application({ width: 640, height: 360 , transparent: true});
         document.querySelector('.pixi-data').appendChild(app.view);
         const sprite = PIXI.Sprite.from('https://pixijs.io/guides/static/images/sample.png');
         app.stage.addChild(sprite);
