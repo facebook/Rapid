@@ -171,6 +171,15 @@ export function rendererMap(context) {
             .append('div')
             .attr('class', 'layer layer-data');
 
+        supersurface
+            .append('div')
+            .attr('class', 'layer pixi-data');
+
+        const app = new PIXI.Application({ width: 640, height: 360 });
+        document.querySelector('.pixi-data').appendChild(app.view);
+        const sprite = PIXI.Sprite.from('https://pixijs.io/guides/static/images/sample.png');
+        app.stage.addChild(sprite);
+
         map.surface = surface = wrapper
             .call(drawLayers)
             .selectAll('.surface');
