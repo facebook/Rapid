@@ -272,7 +272,7 @@ function parseStreetViewImageSet(xmlEle) {
         // Pass the image key to the preload worker and set the URL.
         if (images[i].id) {
             const thumbnailUrl = _mapillary.getImageThumbnail(images[i].id);
-            imageWorker.post({ imageUrl: thumbnailUrl, index: i });
+            // imageWorker.post({ imageUrl: thumbnailUrl, index: i });
             images[i].url = thumbnailUrl;
         } else if (images[i].key && !images[i].url) {
             const thumbnailUrl = _mapillary.getv3ImageThumbnail(images[i].key);
