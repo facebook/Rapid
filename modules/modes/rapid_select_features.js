@@ -117,12 +117,13 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
       .selectAll('.layer-ai-features .selected')
       .classed('selected hover', false);
 
-    context.container().selectAll('.over-map .rapid-image-strip')
+    context.surface().selectAll('.over-map .rapid-image-strip')
       .attr('style', 'display: none;');
 
-    context.container().select('.layer-rapid-dataset .suggestionViewfieldGroup')
-      .data([0])
-      .attr('style', 'display: none;');
+    let viewfieldGroup = context.surface().select('.layer-rapid-dataset .suggestionViewfieldGroup');
+    if (viewfieldGroup) {
+      viewfieldGroup.data([0]).attr('style', 'display: none;');
+    }
 
     context.map()
       .on('drawn.select-ai-features', null);
