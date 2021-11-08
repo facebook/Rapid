@@ -56,7 +56,7 @@ export function uiRapidImageStrip(context) {
         images.sort(sortByLon);
 
         let imagesSelection = body.selectAll('.image-container')
-          .data(images, d => d.key)
+          .data(images, d => d.id)
           .order();
 
         imagesSelection.exit().remove();
@@ -65,8 +65,8 @@ export function uiRapidImageStrip(context) {
 
         imagesSelectionEnter
           .append('div').attr('class', 'image-container')
-          .append('img').attr('src', d => d.url)
-          .attr('class', d => `image rapid-image-strip-${d.key}`)
+          .append('img').attr('src', '')
+          .attr('class', d => `image rapid-image-strip-${d.id}`)
           .on('mouseenter', (_, d) => {
             const rapidContext = context.rapidContext();
             rapidContext.hoveredSuggestedImage(d);
@@ -87,7 +87,7 @@ export function uiRapidImageStrip(context) {
         context.rapidContext().on('hover_suggested_viewfield', function() {
           const hoveredViewfield = rapidContext.getHoveredSuggestedViewfield();
           if (hoveredViewfield) {
-            body.selectAll(`.rapid-image-strip-${hoveredViewfield.key}`)
+            body.selectAll(`.rapid-image-strip-${hoveredViewfield.id}`)
               .classed('rapid-image-strip-highlight', true);
           } else {
             body.selectAll('img')
@@ -95,7 +95,18 @@ export function uiRapidImageStrip(context) {
           }
         });
       }
+
+
+      images.imageURLPromise.then(resp => {
+        Object.keys(resp).forEach(key => {
+          let image = selection.selectAll(`.image.rapid-image-strip-${key}`);
+          image.attr('src', resp[key].thumb_1024_url);
+        });
+      });
+
     }
+
+
 
     let imageStripHeader = selection.selectAll('.rapid-image-strip');
 

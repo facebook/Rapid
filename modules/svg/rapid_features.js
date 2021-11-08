@@ -346,7 +346,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
     context.rapidContext().on('hover_suggested_image', function() {
       const hoveredImage = rapidContext.getHoveredSuggestedImage();
       if (hoveredImage) {
-        selection.selectAll(`.viewfield-${hoveredImage.key}`).style('stroke', 'white');
+        selection.selectAll(`.viewfield-${hoveredImage.id}`).style('stroke', 'white');
       } else {
         selection.selectAll('.viewfieldSuggestion')
           .style('stroke', VIEWFIELD_MAGENTA);
@@ -407,16 +407,16 @@ export function svgRapidFeatures(projection, context, dispatch) {
     let points = viewfield
       .selectAll('g.viewfieldSuggestion')
       .style('stroke', VIEWFIELD_MAGENTA)
-      .data(viewfieldPoints, d => d.key);
+      .data(viewfieldPoints, d => d.id);
 
     points.exit().remove();
 
     const selected = rapidContext.getHoveredSuggestedImage();
-    points.style('stroke', d => (!!selected && selected.key === d.key) ? 'white' : VIEWFIELD_MAGENTA);
+    points.style('stroke', d => (!!selected && selected.id === d.id) ? 'white' : VIEWFIELD_MAGENTA);
 
     const enter = points.enter()
       .append('g')
-      .attr('class', d => `viewfieldSuggestion viewfield-${d.key}`);
+      .attr('class', d => `viewfieldSuggestion viewfield-${d.id}`);
     // the circle created here needs to be aligned with
     // viewfield path added after it.
     enter
@@ -431,7 +431,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
       .attr('d', 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z')
       .attr('pointer-events', 'all')
       .on('mouseenter', (_, d) => {
-        selection.select(`.viewfield-${d.key}`).style('stroke', 'white');
+        selection.select(`.viewfield-${d.id}`).style('stroke', 'white');
         rapidContext.hoveredSuggestedViewfield(d);
       })
       .on('mouseleave', () => {

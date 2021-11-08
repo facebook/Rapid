@@ -204,7 +204,9 @@ function loadData(url) {
             if (!result) {
                 return [];
             }
-            return result.data || [];
+            // The MJS api returns a 'data' blob if multiple items are requested,
+            // but just that thing if only one thing was requested.
+            return result.data || result;
         });
 }
 
@@ -623,15 +625,12 @@ export default {
         return loadData(`${apiUrl}/${id}/detections?access_token=${accessToken}&fields=id,value,image`);
     },
 
-    // Return the thumbnail for a given image id
-    getImageThumbnail(imageId) {
-        return loadData(`${apiUrl}/${imageId}?access_token=${accessToken}&fields=id,thumb_1024_url`).thumb_1024_url;
-    },
 
     // Return the thumbnail for a given image id
-    getv3ImageThumbnail(imageKey) {
-        return `https://images.mapillary.com/${imageKey}/thumb-2048.jpg`;
+    getImageThumbnails(imageIds) {
+        return loadData(`${apiUrl}/?access_token=${accessToken}&fields=id,thumb_1024_url&ids=${imageIds.join()}`);
     },
+
 
     // Set the currently visible image
     setActiveImage: function(image) {

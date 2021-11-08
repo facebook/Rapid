@@ -36,42 +36,6 @@ const _minEditableZoom = 18;
     }
 
 
-
-// web workers for image pre-fetching
-
-class DynamicWorker{
-  constructor( fn, useInit=false ){
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      const src  = ( !useInit )? fn.toString() : '(' + fn.toString() + ')()';
-      const blob = new Blob(
-          [ 'self.onmessage=', src ],
-          { type:'text/javascript' }
-      );
-
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      const url  = window.URL.createObjectURL( blob );
-      window.URL.revokeObjectURL(blob);
-
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      this._worker = new Worker( url );
-  }
-
-  post( data ){ this._worker.postMessage( data ); return this; }
-
-  once( fn ){ this._worker.addEventListener( 'message', fn, { once:true } ); return this; }
-  on( fn ){ this._worker.addEventListener( 'message', fn ); return this; }
-}
-
-
-function FootwayImageryPreloadWorker(){
-  return e => {
-    fetch(e.data.thumbnailUrl);
-    self.postMessage( 'done' );
-  };
-}
-
-const imageWorker = new DynamicWorker(FootwayImageryPreloadWorker, true);
-
 function abortRequest(i) {
     i.abort();
 }
@@ -255,10 +219,12 @@ function parseStreetViewImageSet(xmlEle) {
     var imageEles = xmlEle.getElementsByTagName('street-view-image');
     var images = new Array(imageEles.length);
 
+    let j = 0;
+    let imageIds = [];
 
-    for (var i = 0; i < imageEles.length; i++) {
-        var img = imageEles[i];
-        images[i] = {
+    for ( j = 0; j < imageEles.length; j++) {
+        var img = imageEles[j];
+        images[j] = {
             key: img.getAttribute('key'),
             id: img.getAttribute('id'),
             url: img.getAttribute('url'),
@@ -268,18 +234,14 @@ function parseStreetViewImageSet(xmlEle) {
             ca: parseFloat(img.getAttribute('ca'))
         };
 
-        // if we detect an id on the message, we're dealing with Mapillary API v4.
-        // Pass the image key to the preload worker and set the URL.
-        if (images[i].id) {
-            const thumbnailUrl = _mapillary.getImageThumbnail(images[i].id);
-            // imageWorker.post({ imageUrl: thumbnailUrl, index: i });
-            images[i].url = thumbnailUrl;
-        } else if (images[i].key && !images[i].url) {
-            const thumbnailUrl = _mapillary.getv3ImageThumbnail(images[i].key);
-            // imageWorker.post({ imageUrl: thumbnailUrl, index: i });
-            images[i].url = thumbnailUrl;
-        }
+        imageIds.push(images[j].id);
     }
+
+    if (imageIds.length > 0) {
+        let prom = _mapillary.getImageThumbnails(imageIds);
+        images.imageURLPromise = prom;
+    }
+
     streetViewImageSet.images = images;
     return streetViewImageSet;
 }
