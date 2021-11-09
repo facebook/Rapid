@@ -177,17 +177,119 @@ export function rendererMap(context) {
             .attr('class', 'layer pixi-data')
             .style('z-index', '3');
 
+        const rect = supersurface.node().getBoundingClientRect();
         const app = new PIXI.Application({
-            // width: 640,
-            // height: 360 ,
-            transparent: true,
+            width: rect.width,
+            height: rect.height,
+            backgroundAlpha: 0.0,
         });
         document.querySelector('.pixi-data').appendChild(app.view);
-        const sprite = PIXI.Sprite.from('https://pixijs.io/guides/static/images/sample.png');
-        sprite.anchor.set(0.5);
-        sprite.x = app.screen.width / 2;
-        sprite.y = app.screen.height / 2;
-        app.stage.addChild(sprite);
+
+
+        if (false)
+        {
+            // Single ship in the middle
+            const sprite = PIXI.Sprite.from('https://pixijs.io/guides/static/images/sample.png');
+            sprite.anchor.set(0.5);
+            sprite.x = app.screen.width / 2;
+            sprite.y = app.screen.height / 2;
+            app.stage.addChild(sprite);
+
+            // var proj = geoRawMercator().transform(projection.transform());  // copy projection
+            // const projected = proj([172.6001968975388 * 3.141592653589/180, -43.49447165349062 * 3.141592653589/180]);
+
+            // sprite.x = projected[0];
+            // sprite.y = projected[1];
+        }
+        else if (true)
+        {
+            // Lots of sprites
+
+            const spriteCount = 10000;
+            const sprites = new PIXI.ParticleContainer(spriteCount, {
+                scale: true,
+                position: true,
+                rotation: true,
+                uvs: true,
+                alpha: true,
+            });
+            app.stage.addChild(sprites);
+
+            const bunnies = [];
+
+            for (let i = 0; i < spriteCount; i++) {
+                // create a new Sprite
+                const dude = PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png');
+            
+                // set the anchor point so the texture is centerd on the sprite
+                dude.anchor.set(0.5);
+            
+                // different bunnies, different sizes
+                const scale = (0.8 + Math.random() * 0.3)/4
+
+                dude.scale.set(scale, scale);
+            
+                // scatter them all
+                dude.x = Math.random() * app.screen.width;
+                dude.y = Math.random() * app.screen.height;
+            
+                dude.tint = Math.random() * 0x808080;
+            
+                // create a random direction in radians
+                dude.direction = Math.random() * Math.PI * 2;
+            
+                // this number will be used to modify the direction of the sprite over time
+                dude.turningSpeed = Math.random() - 0.8;
+            
+                // create a random speed between 0 - 2, and these bunnies are slooww
+                dude.speed = (2 + Math.random() * 2) * 0.2;
+            
+                dude.offset = Math.random() * 100;
+            
+                // finally we push the dude into the bunnies array so it it can be easily accessed later
+                bunnies.push(dude);
+            
+                sprites.addChild(dude);
+            }
+
+            const dudeBoundsPadding = 100;
+            const dudeBounds = new PIXI.Rectangle(
+                -dudeBoundsPadding,
+                -dudeBoundsPadding,
+                app.screen.width + dudeBoundsPadding * 2,
+                app.screen.height + dudeBoundsPadding * 2,
+            );
+
+            let tick = 0;
+
+            app.ticker.add(() => {
+                // iterate through the sprites and update their position
+                for (let i = 0; i < bunnies.length; i++) {
+                    const dude = bunnies[i];
+                    dude.scale.y = 0.95 + Math.sin(tick + dude.offset) * 0.05;
+                    dude.direction += dude.turningSpeed * 0.01;
+                    dude.x += Math.sin(dude.direction) * (dude.speed * dude.scale.y);
+                    dude.y += Math.cos(dude.direction) * (dude.speed * dude.scale.y);
+                    dude.rotation = -dude.direction + Math.PI;
+
+                    // wrap the bunnies
+                    if (dude.x < dudeBounds.x) {
+                        dude.x += dudeBounds.width;
+                    } else if (dude.x > dudeBounds.x + dudeBounds.width) {
+                        dude.x -= dudeBounds.width;
+                    }
+
+                    if (dude.y < dudeBounds.y) {
+                        dude.y += dudeBounds.height;
+                    } else if (dude.y > dudeBounds.y + dudeBounds.height) {
+                        dude.y -= dudeBounds.height;
+                    }
+                }
+
+                // increment the ticker
+                tick += 0.1;
+            });
+        }
 
         map.surface = surface = wrapper
             .call(drawLayers)
