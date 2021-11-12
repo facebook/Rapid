@@ -3,7 +3,7 @@ import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Extent, geoScaleToZoom, geoZoomToScale } from '@id-sdk/math';
+import { Projection, Tiler, vecLength, Extent, geoScaleToZoom, geoZoomToScale } from '@id-sdk/math';
 import { utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
@@ -172,12 +172,12 @@ export function rendererMap(context) {
             .append('div')
             .attr('class', 'layer layer-data');
 
-        supersurface
+        selection
             .append('div')
             .attr('class', 'layer pixi-data')
             .style('z-index', '3');
 
-        const rect = supersurface.node().getBoundingClientRect();
+        const rect = selection.node().getBoundingClientRect();
         const app = new PIXI.Application({
             width: rect.width,
             height: rect.height,
@@ -186,26 +186,41 @@ export function rendererMap(context) {
         document.querySelector('.pixi-data').appendChild(app.view);
 
 
-        if (false)
+        if (true)
         {
             // Single ship in the middle
-            const sprite = PIXI.Sprite.from('https://pixijs.io/guides/static/images/sample.png');
+            const sprite = PIXI.Sprite.from('img/arrow-icon.png');
             sprite.anchor.set(0.5);
             sprite.x = app.screen.width / 2;
             sprite.y = app.screen.height / 2;
             app.stage.addChild(sprite);
 
-            // var proj = geoRawMercator().transform(projection.transform());  // copy projection
-            // const projected = proj([172.6001968975388 * 3.141592653589/180, -43.49447165349062 * 3.141592653589/180]);
+            app.ticker.add(() => {
+                var proj = geoRawMercator().transform(projection.transform());  // copy projection
+                // Wallace and Aorangi
+                // -43.50176/172.59671 lat/lon
+                // const projected = proj([172.59671 * 3.141592653589/180, -43.50176 * 3.141592653589/180]);
 
-            // sprite.x = projected[0];
-            // sprite.y = projected[1];
+                
+                // const k = 10680707.430881744;
+                // const x = -32173839.585644133;
+                // const y = -9023382.066785308;
+                const k = context.projection.transform().k;
+                const x = context.projection.transform().x;
+                const y = context.projection.transform().y;
+                const _p = new Projection(x, y, k);
+                const coords = _p.project([172.59671, -43.50176]);
+
+                sprite.x = coords[0];
+                sprite.y = coords[1];
+                console.log(`Arrow is at ${coords}`);
+            });
         }
-        else if (true)
+        else if (false)
         {
             // Lots of sprites
 
-            const spriteCount = 10000;
+            const spriteCount = 100;
             const sprites = new PIXI.ParticleContainer(spriteCount, {
                 scale: true,
                 position: true,
