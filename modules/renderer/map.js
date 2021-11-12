@@ -219,7 +219,7 @@ export function rendererMap(context) {
 
             for (let i = 0; i < spriteCount; i++) {
                 // create a new Sprite
-                const dude = PIXI.Sprite.from('https://pixijs.io/examples/examples/assets/bunny.png');
+                const dude = PIXI.Sprite.from('img/arrow-icon.png');
             
                 // set the anchor point so the texture is centerd on the sprite
                 dude.anchor.set(0.5);
@@ -227,7 +227,7 @@ export function rendererMap(context) {
                 // different bunnies, different sizes
                 const scale = (0.8 + Math.random() * 0.3)/4
 
-                dude.scale.set(scale, scale);
+                dude.scale.set(scale);
             
                 // scatter them all
                 dude.x = Math.random() * app.screen.width;
