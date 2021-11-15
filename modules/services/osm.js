@@ -12,7 +12,7 @@ import { utilRebind } from '../util';
 
 
 var tiler = new Tiler();
-var dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
+var dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'busy', 'idle', 'change', 'loading', 'loaded', 'loadedNotes');
 var urlroot = 'https://www.openstreetmap.org';
 var q = utilStringQs(window.location.hash);
 var credentialsMode = 'omit';
@@ -35,6 +35,7 @@ var _userCache = { toLoad: {}, user: {} };
 var _cachedApiStatus;
 var _changeset = {};
 
+var _jobs = new Set();
 var _deferred = new Set();
 var _connectionID = 1;
 var _tileZoom = 16;
@@ -47,7 +48,6 @@ var _off;
 // set a default but also load this from the API status
 var _maxWayNodes = 2000;
 
-
 function authLoading() {
     dispatch.call('authLoading');
 }
@@ -57,6 +57,21 @@ function authDone() {
     dispatch.call('authDone');
 }
 
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
+}
 
 function abortRequest(controllerOrXHR) {
     if (controllerOrXHR) {
@@ -534,7 +549,7 @@ function wrapcb(thisArg, callback, cid) {
 export default {
 
     init: function() {
-        utilRebind(this, dispatch, 'on');
+        this.event = utilRebind(this, dispatch, 'on');
     },
 
 
@@ -615,6 +630,10 @@ export default {
         var that = this;
         var cid = _connectionID;
 
+        var jobID = String(cid) + ': ' + path;
+        beginJob(jobID);
+
+
         function done(err, payload) {
             if (that.getConnectionId() !== cid) {
                 if (callback) callback({ message: 'Connection Switched', status: -1 });
@@ -662,7 +681,11 @@ export default {
         }
 
         if (this.authenticated()) {
-            return oauth.xhr({ method: 'GET', path: path }, done);
+            return oauth.xhr({ method: 'GET', path: path }, function(err, payload) {
+                done(err, payload);
+                endJob(jobID);
+            });
+
         } else {
             var url = urlroot + path;
             var controller = new AbortController();
@@ -688,6 +711,9 @@ export default {
                     } else {
                         done(err.message);
                     }
+                })
+                .finally(function() {
+                    endJob(jobID);
                 });
             return controller;
         }
@@ -779,14 +805,17 @@ export default {
     // PUT /api/0.6/changeset/#id/close
     putChangeset: function(changeset, changes, callback) {
         var cid = _connectionID;
+        var jobID = String(cid) + ': putChangeset ' + changeset.id;
 
         if (_changeset.inflight) {
             return callback({ message: 'Changeset already inflight', status: -2 }, changeset);
 
         } else if (_changeset.open) {   // reuse existing open changeset..
+            beginJob(jobID);
             return createdChangeset.call(this, null, _changeset.open);
 
         } else {   // Open a new changeset..
+            beginJob(jobID);
             var options = {
                 method: 'PUT',
                 path: '/api/0.6/changeset/create',
@@ -802,7 +831,10 @@ export default {
 
         function createdChangeset(err, changesetID) {
             _changeset.inflight = null;
-            if (err) { return callback(err, changeset); }
+            if (err) {
+                endJob(jobID);
+                return callback(err, changeset);
+            }
 
             _changeset.open = changesetID;
             changeset = changeset.update({ id: changesetID });
@@ -823,11 +855,18 @@ export default {
 
         function uploadedChangeset(err) {
             _changeset.inflight = null;
-            if (err) return callback(err, changeset);
+            if (err) {
+                endJob(jobID);
+                return callback(err, changeset);
+            }
 
             // Upload was successful, safe to call the callback.
             // Add delay to allow for postgres replication #1646 #2678
-            window.setTimeout(function() { callback(null, changeset); }, 2500);
+            window.setTimeout(function() {
+                endJob(jobID);
+                callback(null, changeset);
+            }, 2500);
+
             _changeset.open = null;
 
             // At this point, we don't really care if the connection was switched..
@@ -866,21 +905,24 @@ export default {
         }
 
         utilArrayChunk(toLoad, 150).forEach(function(arr) {
+            var jobID = String(_connectionID) + ': loadUsers ' + arr.join();
+            beginJob(jobID);
             oauth.xhr(
                 { method: 'GET', path: '/api/0.6/users.json?users=' + arr.join() },
                 wrapcb(this, done, _connectionID)
             );
-        }.bind(this));
 
-        function done(err, payload) {
-            if (err) return callback(err);
-
-            var options = { skipSeen: true };
-            return parseUserJSON(payload, function(err, results) {
+            function done(err, payload) {
+                endJob(jobID);
                 if (err) return callback(err);
-                return callback(undefined, results);
-            }, options);
-        }
+
+                var options = { skipSeen: true };
+                return parseUserJSON(payload, function(err, results) {
+                    if (err) return callback(err);
+                    return callback(undefined, results);
+                }, options);
+            }
+        }.bind(this));
     },
 
 
@@ -892,12 +934,15 @@ export default {
             return callback(undefined, _userCache.user[uid]);
         }
 
+        var jobID = String(_connectionID) + ': loadUser ' + uid;
+        beginJob(jobID);
         oauth.xhr(
             { method: 'GET', path: '/api/0.6/user/' + uid + '.json' },
             wrapcb(this, done, _connectionID)
         );
 
         function done(err, payload) {
+            endJob(jobID);
             if (err) return callback(err);
 
             var options = { skipSeen: true };
@@ -916,12 +961,15 @@ export default {
             return callback(undefined, _userDetails);
         }
 
+        var jobID = String(_connectionID) + ': userDetails';
+        beginJob(jobID);
         oauth.xhr(
             { method: 'GET', path: '/api/0.6/user/details.json' },
             wrapcb(this, done, _connectionID)
         );
 
         function done(err, payload) {
+            endJob(jobID);
             if (err) return callback(err);
 
             var options = { skipSeen: false };
@@ -949,24 +997,28 @@ export default {
         function gotDetails(err, user) {
             if (err) { return callback(err); }
 
+            var jobID = String(_connectionID) + ': userChangesets';
+            beginJob(jobID);
             oauth.xhr(
                 { method: 'GET', path: '/api/0.6/changesets?user=' + user.id },
-                wrapcb(this, done, _connectionID)
+                wrapcb(this, gotChangesets, _connectionID)
             );
-        }
 
-        function done(err, xml) {
-            if (err) { return callback(err); }
+            function gotChangesets(err, xml) {
+                endJob(jobID);
+                if (err) { return callback(err); }
 
-            _userChangesets = Array.prototype.map.call(
-                xml.getElementsByTagName('changeset'),
-                function (changeset) { return { tags: getTags(changeset) }; }
-            ).filter(function (changeset) {
-                var comment = changeset.tags.comment;
-                return comment && comment !== '';
-            });
+                _userChangesets = Array.prototype.map.call(
+                    xml.getElementsByTagName('changeset'),
+                    function (changeset) { return { tags: getTags(changeset) }; }
+                ).filter(function (changeset) {
+                    var comment = changeset.tags.comment;
+                    return comment && comment !== '';
+                });
 
-            return callback(undefined, _userChangesets);
+                return callback(undefined, _userChangesets);
+            }
+
         }
     },
 
@@ -976,11 +1028,15 @@ export default {
     status: function(callback) {
         var url = urlroot + '/api/capabilities';
         var errback = wrapcb(this, done, _connectionID);
+
+        var jobID = String(_connectionID) + ': status';
+        beginJob(jobID);
         d3_xml(url, { credentials: credentialsMode })
             .then(function(data) { errback(null, data); })
             .catch(function(err) { errback(err.message); });
 
         function done(err, xml) {
+            endJob(jobID);
             if (err) {
                 // the status is null if no response could be retrieved
                 return callback(err, null);
@@ -1189,6 +1245,8 @@ export default {
         if (note.newCategory && note.newCategory !== 'None') { comment += ' #' + note.newCategory; }
 
         var path = '/api/0.6/notes?' + utilQsString({ lon: note.loc[0], lat: note.loc[1], text: comment });
+        var jobID = String(_connectionID) + ': postNoteCreate ' + note.id;
+        beginJob(jobID);
 
         _noteCache.inflightPost[note.id] = oauth.xhr(
             { method: 'POST', path: path },
@@ -1197,6 +1255,7 @@ export default {
 
 
         function done(err, xml) {
+            endJob(jobID);
             delete _noteCache.inflightPost[note.id];
             if (err) { return callback(err); }
 
@@ -1242,6 +1301,8 @@ export default {
             path += '?' + utilQsString({ text: note.newComment });
         }
 
+        var jobID = String(_connectionID) + ': postNoteUpdate ' + note.id + ' ' + newStatus;
+        beginJob(jobID);
         _noteCache.inflightPost[note.id] = oauth.xhr(
             { method: 'POST', path: path },
             wrapcb(this, done, _connectionID)
@@ -1249,6 +1310,7 @@ export default {
 
 
         function done(err, xml) {
+            endJob(jobID);
             delete _noteCache.inflightPost[note.id];
             if (err) { return callback(err); }
 
@@ -1376,7 +1438,10 @@ export default {
         _userChangesets = undefined;
         _userDetails = undefined;
 
+        var jobID = String(_connectionID) + ': authenticate';
+
         function done(err, res) {
+            endJob(jobID);
             if (err) {
                 if (callback) callback(err);
                 return;
@@ -1391,6 +1456,7 @@ export default {
             that.userChangesets(function() {});  // eagerly load user details/changesets
         }
 
+        beginJob(jobID);
         return oauth.authenticate(done);
     },
 

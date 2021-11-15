@@ -22,16 +22,19 @@ const maxResults = 2000;
 const TILEZOOM = 16.5;
 const tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
 
-const dispatch = d3_dispatch('loadedImages', 'viewerChanged');
+const dispatch = d3_dispatch('busy', 'idle', 'loadedImages', 'viewerChanged');
 const minHfov = 10;         // zoom in degrees:  20, 10, 5
 const maxHfov = 90;         // zoom out degrees
 const defaultHfov = 45;
 
+let _jobs = new Set();
 let _hires = false;
 let _resolution = 512;    // higher numbers are slower - 512, 1024, 2048, 4096
 let _currScene = 0;
 let _ssCache;
 let _pannellumViewer;
+let _loadViewerPromise;
+
 let _sceneOptions = {
   showFullscreenCtrl: false,
   autoLoad: true,
@@ -43,16 +46,27 @@ let _sceneOptions = {
   type: 'cubemap',
   cubeMap: []
 };
-let _loadViewerPromise;
 
 
-/**
- * abortRequest().
- */
 function abortRequest(i) {
   i.abort();
 }
 
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
+}
 
 /**
  * localeTimeStamp().
@@ -218,12 +232,14 @@ function getBubbles(url, tile, callback) {
     jsCallback: '{callback}'
   });
 
+  beginJob(urlForRequest);
   return jsonpRequest(urlForRequest, (data) => {
     if (!data || data.error) {
       callback(null);
     } else {
       callback(data);
     }
+    endJob(urlForRequest);
   });
 }
 
@@ -257,6 +273,7 @@ function searchLimited(limit, projection, rtree) {
  * loadImage()
  */
 function loadImage(imgInfo) {
+  beginJob(imgInfo.url);
   return new Promise(resolve => {
     let img = new Image();
     img.onload = () => {
@@ -270,7 +287,8 @@ function loadImage(imgInfo) {
     };
     img.setAttribute('crossorigin', '');
     img.src = imgInfo.url;
-  });
+  })
+  .finally(() => endJob(imgInfo.url));
 }
 
 
@@ -490,7 +508,6 @@ export default {
 
 
   ensureViewerLoaded: function(context) {
-
     if (_loadViewerPromise) return _loadViewerPromise;
 
     // create ms-wrapper, a photo wrapper class
@@ -562,8 +579,8 @@ export default {
       }
     });
 
+    beginJob('setupPannellumViewer');
     _loadViewerPromise = new Promise((resolve, reject) => {
-
       let loadedCount = 0;
       function loaded() {
         loadedCount += 1;
@@ -583,9 +600,7 @@ export default {
         .attr('crossorigin', 'anonymous')
         .attr('href', context.asset(pannellumViewerCSS))
         .on('load.serviceStreetside', loaded)
-        .on('error.serviceStreetside', function() {
-            reject();
-        });
+        .on('error.serviceStreetside', () => reject());
 
       // load streetside pannellum viewer js
       head.selectAll('#ideditor-streetside-viewerjs')
@@ -596,13 +611,10 @@ export default {
         .attr('crossorigin', 'anonymous')
         .attr('src', context.asset(pannellumViewerJS))
         .on('load.serviceStreetside', loaded)
-        .on('error.serviceStreetside', function() {
-            reject();
-        });
+        .on('error.serviceStreetside', () => reject());
       })
-      .catch(function() {
-        _loadViewerPromise = null;
-      });
+      .catch(() => _loadViewerPromise = null)
+      .finally(() => endJob('setupPannellumViewer'));
 
     return _loadViewerPromise;
 
@@ -688,11 +700,11 @@ export default {
     return this;
   },
 
+
   /**
    * showViewer()
    */
   showViewer: function(context) {
-
     let wrap = context.container().select('.photoviewer')
       .classed('hide', false);
 
@@ -738,9 +750,7 @@ export default {
    */
   selectImage: function (context, key) {
     let that = this;
-
     let d = this.cachedImage(key);
-
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(d);
 
@@ -960,15 +970,15 @@ export default {
 
 
   updateUrlImage: function(imageKey) {
-      if (!window.mocha) {
-          var hash = utilStringQs(window.location.hash);
-          if (imageKey) {
-              hash.photo = 'streetside/' + imageKey;
-          } else {
-              delete hash.photo;
-          }
-          window.location.replace('#' + utilQsString(hash, true));
+    if (!window.mocha) {
+      var hash = utilStringQs(window.location.hash);
+      if (imageKey) {
+        hash.photo = 'streetside/' + imageKey;
+      } else {
+        delete hash.photo;
       }
+      window.location.replace('#' + utilQsString(hash, true));
+    }
   },
 
 

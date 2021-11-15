@@ -13,17 +13,18 @@ import { utilRebind } from '../util';
 
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
-const dispatch = d3_dispatch('loaded');
+const dispatch = d3_dispatch('busy', 'idle', 'loaded');
+
 const _impOsmUrls = {
   ow: 'https://grab.community.improve-osm.org/directionOfFlowService',
   mr: 'https://grab.community.improve-osm.org/missingGeoService',
   tr: 'https://grab.community.improve-osm.org/turnRestrictionService'
 };
+
 let _impOsmData = { icons: {} };
-
-
-// This gets reassigned if reset
+let _jobs = new Set();
 let _cache;
+
 
 function abortRequest(i) {
   Object.values(i).forEach(controller => {
@@ -33,6 +34,7 @@ function abortRequest(i) {
   });
 }
 
+
 function abortUnwantedRequests(cache, tiles) {
   Object.keys(cache.inflightTile).forEach(k => {
     const wanted = tiles.find(tile => k === tile.id);
@@ -41,6 +43,22 @@ function abortUnwantedRequests(cache, tiles) {
       delete cache.inflightTile[k];
     }
   });
+}
+
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
 }
 
 function encodeIssueRtree(d) {
@@ -179,10 +197,12 @@ export default {
           params,
           (k === 'mr') ? { type: 'PARKING,ROAD,BOTH,PATH' } : { confidenceLevel: 'C1' }
         );
+
         const url = `${_impOsmUrls[k]}/search?` + utilQsString(kParams);
         const controller = new AbortController();
 
         requests[k] = controller;
+        beginJob(url);
 
         d3_json(url, { signal: controller.signal })
           .then(data => {
@@ -320,7 +340,8 @@ export default {
               delete _cache.inflightTile[tile.id];
               _cache.loadedTile[tile.id] = true;
             }
-          });
+          })
+          .finally(() => endJob(url));
       });
 
       _cache.inflightTile[tile.id] = requests;
@@ -353,8 +374,13 @@ export default {
       this.replaceItem(item);
     };
 
-    return d3_json(url).then(cacheComments).then(() => item);
+    beginJob(url);
+    return d3_json(url)
+      .then(cacheComments)
+      .then(() => item)
+      .finally(() => endJob(url));
   },
+
 
   postUpdate(d, callback) {
     if (!serviceOsm.authenticated()) { // Username required in payload
@@ -396,6 +422,8 @@ export default {
         body: JSON.stringify(payload)
       };
 
+      const jobID = `${url}:${d.identifier}`;
+      beginJob(jobID);
       d3_json(url, options)
         .then(() => {
           delete _cache.inflightPost[d.id];
@@ -430,7 +458,8 @@ export default {
         .catch(err => {
           delete _cache.inflightPost[d.id];
           if (callback) callback(err.message);
-        });
+        })
+        .finally(() => endJob(jobID));
     }
   },
 

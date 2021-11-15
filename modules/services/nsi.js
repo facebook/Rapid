@@ -1,15 +1,17 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { Matcher } from 'name-suggestion-index';
 
 import { fileFetcher, locationManager } from '../core';
 import { presetManager } from '../presets';
+import { utilRebind } from '../util';
 
 // This service contains all the code related to the **name-suggestion-index** (aka NSI)
 // NSI contains the most correct tagging for many commonly mapped features.
 // See https://github.com/osmlab/name-suggestion-index  and  https://nsi.guide
 
+const dispatch = d3_dispatch('busy', 'idle');
 
-// DATA
-
+let _jobs = new Set();
 let _nsiStatus = 'loading';  // 'loading', 'ok', 'failed'
 let _nsi = {};
 
@@ -34,6 +36,22 @@ const notBranches = /(coop|express|wireless|factory|outlet)/i;
 
 
 // PRIVATE FUNCTIONS
+
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
+}
 
 // `setNsiSources()`
 // Adds the sources to iD's filemap so we can start downloading data.
@@ -629,17 +647,21 @@ export default {
   // `init()`
   // On init, start preparing the name-suggestion-index
   //
-  init: () => {
+  init: function() {
+    this.event = utilRebind(this, dispatch, 'on');
+
     // Note: service.init is called immediately after the presetManager has started loading its data.
     // We expect to chain onto an unfulfilled promise here.
     setNsiSources();
+    beginJob('setup NSI');
     presetManager.ensureLoaded()
       .then(() => loadNsiPresets())
       .then(() => delay(100))  // wait briefly for locationSets to enter the locationManager queue
       .then(() => locationManager.mergeLocationSets([]))   // wait for locationSets to resolve
       .then(() => loadNsiData())
       .then(() => _nsiStatus = 'ok')
-      .catch(() => _nsiStatus = 'failed');
+      .catch(() => _nsiStatus = 'failed')
+      .finally(() => endJob('setup NSI'));
 
     function delay(msec) {
       return new Promise(resolve => {

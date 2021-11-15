@@ -295,7 +295,7 @@ export default {
           });
         })
         .catch(() => { /* ignore */ })
-        .finally(() => endJob(url));   // aborted tiles will throw, should get here
+        .finally(() => endJob(url));
 
       cache.inflight[tile.id] = controller;
     });

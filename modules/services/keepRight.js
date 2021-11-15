@@ -10,13 +10,13 @@ import { t } from '../core/localizer';
 import { utilRebind } from '../util';
 
 
+const APIROOT = 'https://www.keepright.at';
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
-const dispatch = d3_dispatch('loaded');
-const _krUrlRoot = 'https://www.keepright.at';
-let _krData = { errorTypes: {}, localizeStrings: {} };
+const dispatch = d3_dispatch('busy', 'idle', 'loaded');
 
-// This gets reassigned if reset
+let _krData = { errorTypes: {}, localizeStrings: {} };
+let _jobs = new Set();
 let _cache;
 
 const _krRuleset = [
@@ -33,6 +33,22 @@ const _krRuleset = [
 function abortRequest(controller) {
   if (controller) {
     controller.abort();
+  }
+}
+
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
   }
 }
 
@@ -305,11 +321,12 @@ export default {
 
       const [ left, top, right, bottom ] = tile.wgs84Extent.rectangle();
       const params = Object.assign({}, options, { left, bottom, right, top });
-      const url = `${_krUrlRoot}/export.php?` + utilQsString(params);
+      const url = `${APIROOT}/export.php?` + utilQsString(params);
       const controller = new AbortController();
 
       _cache.inflightTile[tile.id] = controller;
 
+      beginJob(url);
       d3_json(url, { signal: controller.signal })
         .then(data => {
           delete _cache.inflightTile[tile.id];
@@ -406,7 +423,8 @@ export default {
         .catch(() => {
           delete _cache.inflightTile[tile.id];
           _cache.loadedTile[tile.id] = true;
-        });
+        })
+        .finally(() => endJob(url));
 
     });
   },
@@ -428,13 +446,14 @@ export default {
 
     // NOTE: This throws a CORS err, but it seems successful.
     // We don't care too much about the response, so this is fine.
-    const url = `${_krUrlRoot}/comment.php?` + utilQsString(params);
+    const url = `${APIROOT}/comment.php?` + utilQsString(params);
     const controller = new AbortController();
 
     _cache.inflightPost[d.id] = controller;
 
     // Since this is expected to throw an error just continue as if it worked
     // (worst case scenario the request truly fails and issue will show up if iD restarts)
+    beginJob(url);
     d3_json(url, { signal: controller.signal })
       .finally(() => {
         delete _cache.inflightPost[d.id];
@@ -455,6 +474,7 @@ export default {
         }
 
         if (callback) callback(null, d);
+        endJob(url);
       });
   },
 
@@ -492,7 +512,7 @@ export default {
   },
 
   issueURL(item) {
-    return `${_krUrlRoot}/report_map.php?schema=${item.schema}&error=${item.id}`;
+    return `${APIROOT}/report_map.php?schema=${item.schema}&error=${item.id}`;
   },
 
   // Get an array of issues closed during this session.

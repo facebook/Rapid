@@ -19,9 +19,10 @@ const trafficSignTileUrl = `${baseTileUrl}/mly_map_feature_traffic_sign/2/{z}/{x
 const viewercss = 'mapillary-js/mapillary.css';
 const viewerjs = 'mapillary-js/mapillary.js';
 const minZoom = 14;
-const dispatch = d3_dispatch('change', 'loadedImages', 'loadedSigns', 'loadedMapFeatures', 'bearingChanged', 'imageChanged');
+const dispatch = d3_dispatch('busy', 'idle', 'change', 'loadedImages', 'loadedSigns', 'loadedMapFeatures', 'bearingChanged', 'imageChanged');
 const tiler = new Tiler().skipNullIsland(true);
 
+let _jobs = new Set();
 let _loadViewerPromise;
 let _mlyActiveImage;
 let _mlyCache;
@@ -35,55 +36,67 @@ let _mlyViewerFilter = ['all'];
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
-    // determine the needed tiles to cover the view
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(proj).tiles;
+  // determine the needed tiles to cover the view
+  const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+  const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(proj).tiles;
+  tiles.forEach(tile => loadTile(which, url, tile));
+}
 
-    tiles.forEach(function(tile) {
-        loadTile(which, url, tile);
-    });
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
 }
 
 
 // Load all data for the specified type from one vector tile
 function loadTile(which, url, tile) {
-    const cache = _mlyCache.requests;
-    const tileId = `${tile.id}-${which}`;
-    if (cache.loaded[tileId] || cache.inflight[tileId]) return;
-    const controller = new AbortController();
-    cache.inflight[tileId] = controller;
-    const requestUrl = url
-        .replace('{x}', tile.xyz[0])
-        .replace('{y}', tile.xyz[1])
-        .replace('{z}', tile.xyz[2]);
+  const cache = _mlyCache.requests;
+  const tileId = `${tile.id}-${which}`;
+  if (cache.loaded[tileId] || cache.inflight[tileId]) return;
+  const controller = new AbortController();
+  cache.inflight[tileId] = controller;
+  const requestUrl = url
+    .replace('{x}', tile.xyz[0])
+    .replace('{y}', tile.xyz[1])
+    .replace('{z}', tile.xyz[2]);
 
-    fetch(requestUrl, { signal: controller.signal })
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error(response.status + ' ' + response.statusText);
-            }
-            cache.loaded[tileId] = true;
-            delete cache.inflight[tileId];
-            return response.arrayBuffer();
-        })
-        .then(function(data) {
-            if (!data) {
-                throw new Error('No Data');
-            }
-            loadTileDataToCache(data, tile, which);
+  beginJob(requestUrl);
+  fetch(requestUrl, { signal: controller.signal })
+    .then(response => {
+      if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
 
-            if (which === 'images') {
-                dispatch.call('loadedImages');
-            } else if (which === 'signs') {
-                dispatch.call('loadedSigns');
-            } else if (which === 'points') {
-                dispatch.call('loadedMapFeatures');
-            }
-        })
-        .catch(function() {
-            cache.loaded[tileId] = true;
-            delete cache.inflight[tileId];
-        });
+      cache.loaded[tileId] = true;
+      delete cache.inflight[tileId];
+      return response.arrayBuffer();
+    })
+    .then(data => {
+      if (!data) throw new Error('No Data');
+
+      loadTileDataToCache(data, tile, which);
+      if (which === 'images') {
+        dispatch.call('loadedImages');
+      } else if (which === 'signs') {
+        dispatch.call('loadedSigns');
+      } else if (which === 'points') {
+        dispatch.call('loadedMapFeatures');
+      }
+    })
+    .catch(() => {
+      cache.loaded[tileId] = true;
+      delete cache.inflight[tileId];
+    })
+    .finally(() => endJob(requestUrl));
 }
 
 
@@ -193,41 +206,39 @@ function loadTileDataToCache(data, tile, which) {
 
 // Get data from the API
 function loadData(url) {
-    return fetch(url)
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error(response.status + ' ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(function(result) {
-            if (!result) {
-                return [];
-            }
-            return result.data || [];
-        });
+  beginJob(url);
+  return fetch(url)
+    .then(response => {
+      if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
+      return response.json();
+    })
+    .then(result => {
+      if (!result) return [];
+      return result.data || [];
+    })
+    .finally(() => endJob(url));
 }
 
 
 // Partition viewport into higher zoom tiles
 function partitionViewport(projection) {
-    const z = geoScaleToZoom(projection.scale());
-    const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.zoomRange(z2).getTiles(proj).tiles;
-    return tiles.map(tile => tile.wgs84Extent);
+  const z = geoScaleToZoom(projection.scale());
+  const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
+  const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
+  const tiles = tiler.zoomRange(z2).getTiles(proj).tiles;
+  return tiles.map(tile => tile.wgs84Extent);
 }
 
 
 // Return no more than `limit` results per partition.
 function searchLimited(limit, projection, rtree) {
-    limit = limit || 5;
+  limit = limit || 5;
 
-    return partitionViewport(projection)
-        .reduce(function(result, extent) {
-            const found = rtree.search(extent.bbox()).slice(0, limit).map(d => d.data);
-            return (found.length ? result.concat(found) : result);
-        }, []);
+  return partitionViewport(projection)
+    .reduce((result, extent) => {
+      const found = rtree.search(extent.bbox()).slice(0, limit).map(d => d.data);
+      return (found.length ? result.concat(found) : result);
+    }, []);
 }
 
 
@@ -343,11 +354,11 @@ export default {
 
         const that = this;
 
+        beginJob('setupMapillaryViewer');
         _loadViewerPromise = new Promise((resolve, reject) => {
             let loadedCount = 0;
             function loaded() {
                 loadedCount += 1;
-
                 // wait until both files are loaded
                 if (loadedCount === 2) resolve();
             }
@@ -364,9 +375,7 @@ export default {
                 .attr('crossorigin', 'anonymous')
                 .attr('href', context.asset(viewercss))
                 .on('load.serviceMapillary', loaded)
-                .on('error.serviceMapillary', function() {
-                    reject();
-                });
+                .on('error.serviceMapillary', () => reject());
 
             // load mapillary-viewerjs
             head.selectAll('#ideditor-mapillary-viewerjs')
@@ -377,16 +386,11 @@ export default {
                 .attr('crossorigin', 'anonymous')
                 .attr('src', context.asset(viewerjs))
                 .on('load.serviceMapillary', loaded)
-                .on('error.serviceMapillary', function() {
-                    reject();
-                });
+                .on('error.serviceMapillary', () => reject());
         })
-        .catch(function() {
-            _loadViewerPromise = null;
-        })
-        .then(function() {
-            that.initViewer(context);
-        });
+        .catch(() => _loadViewerPromise = null)
+        .then(() => that.initViewer(context))
+        .finally(() => endJob('setupMapillaryViewer'));
 
         return _loadViewerPromise;
     },

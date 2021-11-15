@@ -11,20 +11,38 @@ import { QAItem } from '../osm';
 import { utilRebind } from '../util';
 
 
+const APIROOT = 'https://osmose.openstreetmap.fr/api/0.3';
 const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
-const dispatch = d3_dispatch('loaded');
-const _osmoseUrlRoot = 'https://osmose.openstreetmap.fr/api/0.3';
+const dispatch = d3_dispatch('busy', 'idle', 'loaded');
+
+let _cache;
+let _jobs = new Set();
 let _osmoseData = { icons: {}, items: [] };
 
-// This gets reassigned if reset
-let _cache;
 
 function abortRequest(controller) {
   if (controller) {
     controller.abort();
   }
 }
+
+function beginJob(id) {
+  if (_jobs.has(id)) return;
+  _jobs.add(id);
+  if (_jobs.size === 1) {
+    dispatch.call('busy');
+  }
+}
+
+function endJob(id) {
+  if (!_jobs.has(id)) return;
+  _jobs.delete(id);
+  if (_jobs.size === 0) {
+    dispatch.call('idle');
+  }
+}
+
 
 function abortUnwantedRequests(cache, tiles) {
   Object.keys(cache.inflightTile).forEach(k => {
@@ -62,6 +80,7 @@ function preventCoincident(loc) {
 
   return loc;
 }
+
 
 export default {
   title: 'osmose',
@@ -122,11 +141,11 @@ export default {
       if (_cache.loadedTile[tile.id] || _cache.inflightTile[tile.id]) return;
 
       const [ x, y, z ] = tile.xyz;
-      const url = `${_osmoseUrlRoot}/issues/${z}/${x}/${y}.json?` + utilQsString(params);
-
-      let controller = new AbortController();
+      const url = `${APIROOT}/issues/${z}/${x}/${y}.json?` + utilQsString(params);
+      const controller = new AbortController();
       _cache.inflightTile[tile.id] = controller;
 
+      beginJob(url);
       d3_json(url, { signal: controller.signal })
         .then(data => {
           delete _cache.inflightTile[tile.id];
@@ -162,9 +181,11 @@ export default {
         .catch(() => {
           delete _cache.inflightTile[tile.id];
           _cache.loadedTile[tile.id] = true;
-        });
+        })
+        .finally(() => endJob(url));
     });
   },
+
 
   loadIssueDetail(issue) {
     // Issue details only need to be fetched once
@@ -172,7 +193,7 @@ export default {
       return Promise.resolve(issue);
     }
 
-    const url = `${_osmoseUrlRoot}/issue/${issue.id}?langs=${localizer.localeCode()}`;
+    const url = `${APIROOT}/issue/${issue.id}?langs=${localizer.localeCode()}`;
     const cacheDetails = data => {
       // Associated elements used for highlighting
       // Assign directly for immediate use in the callback
@@ -184,8 +205,13 @@ export default {
       this.replaceItem(issue);
     };
 
-    return d3_json(url).then(cacheDetails).then(() => issue);
+    beginJob(url);
+    return d3_json(url)
+      .then(cacheDetails)
+      .then(() => issue)
+      .finally(() => endJob(url));
   },
+
 
   loadStrings(locale=localizer.localeCode()) {
     const items = Object.keys(_osmoseData.icons);
@@ -194,7 +220,7 @@ export default {
       locale in _cache.strings
       && Object.keys(_cache.strings[locale]).length === items.length
     ) {
-        return Promise.resolve(_cache.strings[locale]);
+      return Promise.resolve(_cache.strings[locale]);
     }
 
     // May be partially populated already if some requests were successful
@@ -245,54 +271,63 @@ export default {
       const [ item, cl ] = itemType.split('-');
 
       // Osmose API falls back to English strings where untranslated or if locale doesn't exist
-      const url = `${_osmoseUrlRoot}/items/${item}/class/${cl}?langs=${locale}`;
+      const url = `${APIROOT}/items/${item}/class/${cl}?langs=${locale}`;
 
-      return d3_json(url).then(cacheData);
+      beginJob(url);
+      return d3_json(url)
+        .then(cacheData)
+        .finally(() => endJob(url));
+
     }).filter(Boolean);
 
     return Promise.all(allRequests).then(() => _cache.strings[locale]);
   },
+
 
   getStrings(itemType, locale=localizer.localeCode()) {
     // No need to fallback to English, Osmose API handles this for us
     return (locale in _cache.strings) ? _cache.strings[locale][itemType] : {};
   },
 
+
   getColor(itemType) {
     return (itemType in _cache.colors) ? _cache.colors[itemType] : '#FFFFFF';
   },
 
+
   postUpdate(issue, callback) {
+    const that = this;
     if (_cache.inflightPost[issue.id]) {
       return callback({ message: 'Issue update already inflight', status: -2 }, issue);
     }
 
     // UI sets the status to either 'done' or 'false'
-    const url = `${_osmoseUrlRoot}/issue/${issue.id}/${issue.newStatus}`;
+    const url = `${APIROOT}/issue/${issue.id}/${issue.newStatus}`;
     const controller = new AbortController();
-    const after = () => {
-      delete _cache.inflightPost[issue.id];
-
-      this.removeItem(issue);
-      if (issue.newStatus === 'done') {
-        // Keep track of the number of issues closed per `item` to tag the changeset
-        if (!(issue.item in _cache.closed)) {
-          _cache.closed[issue.item] = 0;
-        }
-        _cache.closed[issue.item] += 1;
-      }
-      if (callback) callback(null, issue);
-    };
-
     _cache.inflightPost[issue.id] = controller;
 
+    beginJob(url);
     fetch(url, { signal: controller.signal })
-      .then(after)
+      .then(() => {
+        delete _cache.inflightPost[issue.id];
+
+        that.removeItem(issue);
+        if (issue.newStatus === 'done') {
+          // Keep track of the number of issues closed per `item` to tag the changeset
+          if (!(issue.item in _cache.closed)) {
+            _cache.closed[issue.item] = 0;
+          }
+          _cache.closed[issue.item] += 1;
+        }
+        if (callback) callback(null, issue);
+      })
       .catch(err => {
         delete _cache.inflightPost[issue.id];
         if (callback) callback(err.message);
-      });
+      })
+      .finally(() => endJob(url));
   },
+
 
   // Get all cached QAItems covering the viewport
   getItems(projection) {
@@ -304,16 +339,19 @@ export default {
     return _cache.rtree.search(bbox).map(d => d.data);
   },
 
+
   // Get a QAItem from cache
   // NOTE: Don't change method name until UI v3 is merged
   getError(id) {
     return _cache.data[id];
   },
 
+
   // get the name of the icon to display for this item
   getIcon(itemType) {
     return _osmoseData.icons[itemType];
   },
+
 
   // Replace a single QAItem in the cache
   replaceItem(item) {
@@ -324,6 +362,7 @@ export default {
     return item;
   },
 
+
   // Remove a single QAItem from the cache
   removeItem(item) {
     if (!(item instanceof QAItem) || !item.id) return;
@@ -332,10 +371,12 @@ export default {
     updateRtree(encodeIssueRtree(item), false); // false = remove
   },
 
+
   // Used to populate `closed:osmose:*` changeset tags
   getClosedCounts() {
     return _cache.closed;
   },
+
 
   itemURL(item) {
     return `https://osmose.openstreetmap.fr/en/error/${item.id}`;
