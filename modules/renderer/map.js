@@ -192,54 +192,35 @@ export function rendererMap(context) {
         if (true)
         {
 
-            setTimeout(() => {
-                var service = services.esriData;
-                var internalID = '6654118947a347ef902fb723bb815709';
+            var service = services.esriData;
+            var internalID = '6654118947a347ef902fb723bb815709';
+            // service.loadTiles(internalID, projection);
+            let features = new Map();
 
-                service.loadTiles(internalID, projection);
+            _pixi.ticker.add(() => {
+              // get visible data
+              let visibleData = service.intersects(internalID, context.map().extent());
 
-                setTimeout(() => {
+              let points = visibleData
+                .filter(d => d.type === 'node' && !!d.__fbid__)  // standalone only (not vertices/childnodes)
+                .forEach(node => {
+                  let sprite = features.get(node.id);
 
-                    // do once
-                    let visibleData = service
-                      .intersects(internalID, context.map().extent());
+                  // make sprite if needed
+                  if (!sprite) {
+                    sprite = PIXI.Sprite.from('img/arrow-icon.png');
+                    sprite.anchor.set(0.5);
+                    _pixi.stage.addChild(sprite);
+                    features.set(node.id, sprite);
+                  }
 
-                    let features = new Set();
+                  // update sprite
+                  const coord = context.projection(node.loc);
+                  sprite.x = coord[0];
+                  sprite.y = coord[1];
+                });
+            });
 
-                    let points = visibleData
-                      .filter(d => d.type === 'node' && !!d.__fbid__)  // standalone only (not vertices/childnodes)
-                      .forEach(node => {
-                        const sprite = PIXI.Sprite.from('img/arrow-icon.png');
-                        sprite.anchor.set(0.5);
-
-                        features.add([node, sprite]);
-
-                        const coord = context.projection(node.loc);
-                        sprite.x = coord[0];
-                        sprite.y = coord[1];
-                        _pixi.stage.addChild(sprite);
-                      });
-
-                      // do often
-                      _pixi.ticker.add(() => {
-                          features.forEach(feature => {
-                              const node = feature[0];
-                              let sprite = feature[1];
-                              const coord = context.projection(node.loc);
-                              sprite.x = coord[0];
-                              sprite.y = coord[1];
-                          });
-                      });
-
-                }, 3000);  // after data is fetched
-
-            }, 2000);  // after view is ready
-
-
-            // geoData.paths = visibleData
-            //   .filter(d => d.type === 'way' || d.type === 'relation')
-            //   .filter(getPath);
-      // }
 
             // // Single ship in the middle
             // const sprite = PIXI.Sprite.from('img/arrow-icon.png');
