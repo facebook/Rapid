@@ -13,10 +13,10 @@ window.matchMedia(`
         (-webkit-min-device-pixel-ratio: 2), /* Safari */
         (min-resolution: 2dppx),             /* standard */
         (min-resolution: 192dpi)             /* fallback */
-    `).addListener(function() {
+    `).addEventListener('change', function() {
 
     isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
-});
+}, true);
 
 
 function localeDateString(s) {
