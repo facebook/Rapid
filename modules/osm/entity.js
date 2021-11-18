@@ -147,6 +147,13 @@ osmEntity.prototype = {
             if (!t1) {
                 changed = true;
                 merged[k] = t2;
+            } else if (k === 'building') {
+                if (t2 === 'yes') {
+                    continue;
+                } else if (t1 === 'yes') {
+                    changed = true;
+                    merged[k] = t2;
+                }
             } else if (t1 !== t2) {
                 changed = true;
                 merged[k] = utilUnicodeCharsTruncated(
