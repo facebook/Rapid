@@ -44,6 +44,10 @@ function tileURL(dataset, extent, taskExtent) {
         qs.result_type = 'road_building_vector_xml';
         qs.building_source = 'microsoft';
 
+    } else if (datasetID === 'grabRoads') {
+        qs.result_type = 'road_vector_xml';
+        qs.building_source = 'grab';
+
     } else {
         qs.result_type = 'osm_xml';
         qs.sources = `esri_building.${datasetID}`;

@@ -131,6 +131,17 @@ export function coreRapidContext(context) {
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.msBuildings.label'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
+          },
+          'grabRoads': {
+            id: 'grabRoads',
+            beta: true,
+            added: true,         // whether it should appear in the list
+            enabled: true,      // whether the user has checked it on
+            conflated: true,
+            service: 'fbml',
+            color: RAPID_MAGENTA,
+            label: t('rapid_feature_toggle.grabRoads.label'),
+            license_markdown: t('rapid_feature_toggle.grabRoads.license_markdown')
           }
         };
 
