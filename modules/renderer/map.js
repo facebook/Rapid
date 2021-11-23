@@ -189,156 +189,103 @@ export function rendererMap(context) {
         document.querySelector('.pixi-data').appendChild(_pixi.view);
 
 
-        if (true)
-        {
+//////////////////////////////////////
+        // DEMO CODE
 
-            var service = services.esriData;
-            var internalID = '6654118947a347ef902fb723bb815709';
-            // service.loadTiles(internalID, projection);
-            let features = new Map();
-
-            _pixi.ticker.add(() => {
-              // get visible data
-              let visibleData = service.intersects(internalID, context.map().extent());
-
-              let points = visibleData
-                .filter(d => d.type === 'node' && !!d.__fbid__)  // standalone only (not vertices/childnodes)
-                .forEach(node => {
-                  let sprite = features.get(node.id);
-
-                  // make sprite if needed
-                  if (!sprite) {
-                    sprite = PIXI.Sprite.from('img/arrow-icon.png');
-                    sprite.anchor.set(0.5);
-                    _pixi.stage.addChild(sprite);
-                    features.set(node.id, sprite);
-                  }
-
-                  // update sprite
-                  const coord = context.projection(node.loc);
-                  sprite.x = coord[0];
-                  sprite.y = coord[1];
-                });
-            });
-
-
-            // // Single ship in the middle
-            // const sprite = PIXI.Sprite.from('img/arrow-icon.png');
-            // sprite.anchor.set(0.5);
-            // sprite.x = _pixi.screen.width / 2;
-            // sprite.y = _pixi.screen.height / 2;
-            // _pixi.stage.addChild(sprite);
-
-            // _pixi.ticker.add(() => {
-            //     var proj = geoRawMercator().transform(projection.transform());  // copy projection
-            //     // Wallace and Aorangi
-            //     // -43.50176/172.59671 lat/lon
-            //     // const projected = proj([172.59671 * 3.141592653589/180, -43.50176 * 3.141592653589/180]);
-
-
-            //     // const k = 10680707.430881744;
-            //     // const x = -32173839.585644133;
-            //     // const y = -9023382.066785308;
-            //     const k = context.projection.transform().k;
-            //     const x = context.projection.transform().x;
-            //     const y = context.projection.transform().y;
-            //     const _p = new Projection(x, y, k);
-            //     const coords = _p.project([172.59671, -43.50176]);
-
-            //     sprite.x = coords[0];
-            //     sprite.y = coords[1];
-            //     // console.log(`Arrow is at ${coords}`);
-            // });
+        function isArea(d) {
+          return (d.type === 'relation' || (d.type === 'way' && d.isArea()));
         }
-        else if (false)
-        {
-            // Lots of sprites
 
-            const spriteCount = 100;
-            const sprites = new PIXI.ParticleContainer(spriteCount, {
-                scale: true,
-                position: true,
-                rotation: true,
-                uvs: true,
-                alpha: true,
-            });
-            _pixi.stage.addChild(sprites);
 
-            const bunnies = [];
+        var service = services.fbMLRoads;
+        var internalID = 'msBuildings-conflated';
+        // service.loadTiles(internalID, projection);
+        let features = new Map();
 
-            for (let i = 0; i < spriteCount; i++) {
-                // create a new Sprite
-                const dude = PIXI.Sprite.from('img/arrow-icon.png');
+        _pixi.ticker.add(() => {
+          // get visible data
+          let pathData = service
+            .intersects(internalID, context.map().extent())
+            .filter(d => d.type === 'way')
+            // .filter(getPath)
+            .filter(isArea);
 
-                // set the anchor point so the texture is centerd on the sprite
-                dude.anchor.set(0.5);
+          pathData
+            .forEach(way => {
+              const color = Math.random() * 0x808080;
 
-                // different bunnies, different sizes
-                const scale = (0.8 + Math.random() * 0.3)/4
+              way.nodes.forEach(nodeid => {
+                let cached = features.get(nodeid);
+                let sprite, loc;
 
-                dude.scale.set(scale);
+                // make sprite if needed
+                if (!cached) {
+                  const graph = service.graph(internalID);
+                  const node = graph.entity(nodeid);
 
-                // scatter them all
-                dude.x = Math.random() * _pixi.screen.width;
-                dude.y = Math.random() * _pixi.screen.height;
+                  // const geojson = way.asGeoJSON(graph);
+                  // loc = geojson.coordinates[0][0];  // get corner
+                  // each corner
+                  loc = node.loc;
 
-                dude.tint = Math.random() * 0x808080;
+                  sprite = PIXI.Sprite.from('img/arrow-icon.png');
+                  sprite.anchor.set(0.5);
+                  sprite.tint = color;
 
-                // create a random direction in radians
-                dude.direction = Math.random() * Math.PI * 2;
-
-                // this number will be used to modify the direction of the sprite over time
-                dude.turningSpeed = Math.random() - 0.8;
-
-                // create a random speed between 0 - 2, and these bunnies are slooww
-                dude.speed = (2 + Math.random() * 2) * 0.2;
-
-                dude.offset = Math.random() * 100;
-
-                // finally we push the dude into the bunnies array so it it can be easily accessed later
-                bunnies.push(dude);
-
-                sprites.addChild(dude);
-            }
-
-            const dudeBoundsPadding = 100;
-            const dudeBounds = new PIXI.Rectangle(
-                -dudeBoundsPadding,
-                -dudeBoundsPadding,
-                _pixi.screen.width + dudeBoundsPadding * 2,
-                _pixi.screen.height + dudeBoundsPadding * 2,
-            );
-
-            let tick = 0;
-
-            _pixi.ticker.add(() => {
-                // iterate through the sprites and update their position
-                for (let i = 0; i < bunnies.length; i++) {
-                    const dude = bunnies[i];
-                    dude.scale.y = 0.95 + Math.sin(tick + dude.offset) * 0.05;
-                    dude.direction += dude.turningSpeed * 0.01;
-                    dude.x += Math.sin(dude.direction) * (dude.speed * dude.scale.y);
-                    dude.y += Math.cos(dude.direction) * (dude.speed * dude.scale.y);
-                    dude.rotation = -dude.direction + Math.PI;
-
-                    // wrap the bunnies
-                    if (dude.x < dudeBounds.x) {
-                        dude.x += dudeBounds.width;
-                    } else if (dude.x > dudeBounds.x + dudeBounds.width) {
-                        dude.x -= dudeBounds.width;
-                    }
-
-                    if (dude.y < dudeBounds.y) {
-                        dude.y += dudeBounds.height;
-                    } else if (dude.y > dudeBounds.y + dudeBounds.height) {
-                        dude.y -= dudeBounds.height;
-                    }
+                  _pixi.stage.addChild(sprite);
+                  features.set(node.id, {
+                    loc: loc,
+                    sprite: sprite
+                  });
+                } else {
+                  loc = cached.loc;
+                  sprite = cached.sprite;
                 }
 
-                // increment the ticker
-                tick += 0.1;
+                // update sprite
+                const coord = context.projection(loc);
+                sprite.x = coord[0];
+                sprite.y = coord[1];
+
+              });
+
             });
-        }
+        });
+
+// arrow code
+        // var service = services.esriData;
+        // var internalID = '6654118947a347ef902fb723bb815709';
+        // // service.loadTiles(internalID, projection);
+        // let features = new Map();
+
+        // _pixi.ticker.add(() => {
+        //   // get visible data
+        //   let visibleData = service.intersects(internalID, context.map().extent());
+
+        //   let points = visibleData
+        //     .filter(d => d.type === 'node' && !!d.__fbid__)  // standalone only (not vertices/childnodes)
+        //     .forEach(node => {
+        //       let sprite = features.get(node.id);
+
+        //       // make sprite if needed
+        //       if (!sprite) {
+        //         sprite = PIXI.Sprite.from('img/arrow-icon.png');
+        //         sprite.anchor.set(0.5);
+        //         _pixi.stage.addChild(sprite);
+        //         features.set(node.id, sprite);
+        //       }
+
+        //       // update sprite
+        //       const coord = context.projection(node.loc);
+        //       sprite.x = coord[0];
+        //       sprite.y = coord[1];
+        //     });
+        // });
+
+
+//////////////////////////////////////
+
+
 
         map.surface = surface = wrapper
             .call(drawLayers)
