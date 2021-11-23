@@ -214,40 +214,84 @@ export function rendererMap(context) {
             .forEach(way => {
               const color = Math.random() * 0x808080;
 
-              way.nodes.forEach(nodeid => {
-                let cached = features.get(nodeid);
-                let sprite, loc;
+              let cached = features.get(way);
+              let graphics;
+              let coords;
 
-                // make sprite if needed
-                if (!cached) {
-                  const graph = service.graph(internalID);
-                  const node = graph.entity(nodeid);
+              // make poly if needed
+              if (!cached) {
+                const graph = service.graph(internalID);
+                const geojson = way.asGeoJSON(graph);
+                coords = geojson.coordinates[0];
+                graphics = new PIXI.Graphics();
+                _pixi.stage.addChild(graphics);
 
-                  // const geojson = way.asGeoJSON(graph);
-                  // loc = geojson.coordinates[0][0];  // get corner
-                  // each corner
-                  loc = node.loc;
+                features.set(way, {
+                  coords: coords,
+                  graphics: graphics
+                });
 
-                  sprite = PIXI.Sprite.from('img/arrow-icon.png');
-                  sprite.anchor.set(0.5);
-                  sprite.tint = color;
+              } else {
+                graphics = cached.graphics;
+                coords = cached.coords;
+              }
 
-                  _pixi.stage.addChild(sprite);
-                  features.set(node.id, {
-                    loc: loc,
-                    sprite: sprite
-                  });
-                } else {
-                  loc = cached.loc;
-                  sprite = cached.sprite;
-                }
-
-                // update sprite
-                const coord = context.projection(loc);
-                sprite.x = coord[0];
-                sprite.y = coord[1];
-
+              // update
+              const path = [];
+              coords.forEach(coord => {
+                const p = context.projection(coord);
+                path.push(p[0]);
+                path.push(p[1]);
               });
+              graphics.lineStyle(0);
+              graphics.beginFill(color, 1);
+              graphics.drawPolygon(path);
+              graphics.endFill();
+
+              // way.nodes.forEach(nodeid => {
+              //   let cached = features.get(nodeid);
+              //   let sprite, loc;
+
+              //   // make sprite if needed
+              //   if (!cached) {
+              //     const graph = service.graph(internalID);
+              //     const node = graph.entity(nodeid);
+
+              //     // const geojson = way.asGeoJSON(graph);
+              //     // loc = geojson.coordinates[0][0];  // get corner
+              //     // each corner
+              //     loc = node.loc;
+
+              //     const graphics = new PIXI.Graphics();
+              //     const path = [600, 370, 700, 460, 780, 420, 730, 570, 590, 520];
+
+              //     graphics.lineStyle(0);
+              //     graphics.beginFill(0x3500FA, 1);
+              //     graphics.drawPolygon(path);
+              //     graphics.endFill();
+
+              //     app.stage.addChild(graphics);
+
+              //     // sprite = PIXI.Sprite.from('img/arrow-icon.png');
+              //     // sprite.anchor.set(0.5);
+              //     // sprite.tint = color;
+              //     // _pixi.stage.addChild(sprite);
+
+              //     features.set(node.id, {
+              //       loc: loc,
+              //       sprite: sprite
+              //     });
+              //   } else {
+              //     loc = cached.loc;
+              //     sprite = cached.sprite;
+              //   }
+
+              //   // update sprite
+              //   const coord = context.projection(loc);
+              //   sprite.x = coord[0];
+              //   sprite.y = coord[1];
+
+              // });
 
             });
         });
