@@ -3,8 +3,8 @@ import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Projection, Tiler, vecLength, Extent, geoScaleToZoom, geoZoomToScale } from '@id-sdk/math';
-import { utilEntityAndDeepMemberIDs } from '@id-sdk/util';
+import { Projection, Extent, geoScaleToZoom, geoZoomToScale } from '@id-sdk/math';
+import { utilArrayFlatten, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
 import { prefs } from '../core/preferences';
@@ -192,29 +192,37 @@ export function rendererMap(context) {
 //////////////////////////////////////
         // DEMO CODE
 
-        function isArea(d) {
-          return (d.type === 'relation' || (d.type === 'way' && d.isArea()));
-        }
-
-
         var service = services.fbMLRoads;
         var internalID = 'msBuildings-conflated';
         // service.loadTiles(internalID, projection);
-        let features = new Map();
+        let pixicache = new Map();
 
         _pixi.ticker.add(() => {
           // get visible data
+          let keepIDs = {};
           let pathData = service
             .intersects(internalID, context.map().extent())
-            .filter(d => d.type === 'way')
-            // .filter(getPath)
-            .filter(isArea);
+            .filter(d => d.type === 'way');
 
+          pathData
+            .forEach(d => keepIDs[d.id] = true);
+
+          // exit
+          [...pixicache.entries()].forEach(entry => {
+            const k = entry[0];
+            const v = entry[1];
+            if (!keepIDs[k]) {
+              _pixi.stage.removeChild(v.graphics);
+              pixicache.delete(k);
+            }
+          });
+
+          // enter/update
           pathData
             .forEach(way => {
               const color = Math.random() * 0x808080;
 
-              let cached = features.get(way);
+              let cached = pixicache.get(way.id);
               let graphics;
               let coords;
 
@@ -223,10 +231,12 @@ export function rendererMap(context) {
                 const graph = service.graph(internalID);
                 const geojson = way.asGeoJSON(graph);
                 coords = geojson.coordinates[0];
+
                 graphics = new PIXI.Graphics();
+                graphics.name = way.id;
                 _pixi.stage.addChild(graphics);
 
-                features.set(way, {
+                pixicache.set(way.id, {
                   coords: coords,
                   graphics: graphics
                 });
@@ -237,12 +247,8 @@ export function rendererMap(context) {
               }
 
               // update
-              const path = [];
-              coords.forEach(coord => {
-                const p = context.projection(coord);
-                path.push(p[0]);
-                path.push(p[1]);
-              });
+              const path = utilArrayFlatten(coords.map(coord => context.projection(coord)));
+              graphics.clear();
               graphics.lineStyle(0);
               graphics.beginFill(color, 1);
               graphics.drawPolygon(path);
