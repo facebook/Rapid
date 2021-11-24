@@ -267,7 +267,10 @@ export function svgRapidFeatures(projection, context, dispatch) {
           });
 
         } else if (dataset.id === 'msBuildings') {
-          geoData.paths = pathData.filter(isArea);
+
+// demo: pixi will draw them
+geoData.paths = [];
+//          geoData.paths = pathData.filter(isArea);
           // no vertices
 
         } else {

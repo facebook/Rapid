@@ -194,10 +194,15 @@ export function rendererMap(context) {
 
         var service = services.fbMLRoads;
         var internalID = 'msBuildings-conflated';
-        // service.loadTiles(internalID, projection);
         let pixicache = new Map();
 
-        _pixi.ticker.add(() => {
+        _pixi.ticker.add(time => {
+          // make it psychadelic
+          const hue = (0.8 * _pixi.ticker.lastTime) % 360;
+          filter = new PIXI.filters.ColorMatrixFilter();
+          filter.hue(hue);
+          _pixi.stage.filters = [filter];
+
           // get visible data
           let keepIDs = {};
           let pathData = service
@@ -210,9 +215,9 @@ export function rendererMap(context) {
           // exit
           [...pixicache.entries()].forEach(entry => {
             const k = entry[0];
-            const v = entry[1];
+            const obj = entry[1];
             if (!keepIDs[k]) {
-              _pixi.stage.removeChild(v.graphics);
+              _pixi.stage.removeChild(obj.graphic);
               pixicache.delete(k);
             }
           });
@@ -220,39 +225,32 @@ export function rendererMap(context) {
           // enter/update
           pathData
             .forEach(way => {
-              const color = Math.random() * 0x808080;
-
-              let cached = pixicache.get(way.id);
-              let graphics;
-              let coords;
-
+              let polygon = pixicache.get(way.id);
               // make poly if needed
-              if (!cached) {
+              if (!polygon) {
                 const graph = service.graph(internalID);
                 const geojson = way.asGeoJSON(graph);
                 coords = geojson.coordinates[0];
 
-                graphics = new PIXI.Graphics();
-                graphics.name = way.id;
-                _pixi.stage.addChild(graphics);
+                graphic = new PIXI.Graphics();
+                graphic.name = way.id;
+                _pixi.stage.addChild(graphic);
 
-                pixicache.set(way.id, {
+                polygon = {
+                  color: Math.random() * 0xFFFFFF,
                   coords: coords,
-                  graphics: graphics
-                });
-
-              } else {
-                graphics = cached.graphics;
-                coords = cached.coords;
+                  graphic: graphic
+                };
+                pixicache.set(way.id, polygon);
               }
 
               // update
-              const path = utilArrayFlatten(coords.map(coord => context.projection(coord)));
-              graphics.clear();
-              graphics.lineStyle(0);
-              graphics.beginFill(color, 1);
-              graphics.drawPolygon(path);
-              graphics.endFill();
+              const path = utilArrayFlatten(polygon.coords.map(coord => context.projection(coord)));
+              polygon.graphic.clear();
+              polygon.graphic.lineStyle(0);
+              polygon.graphic.beginFill(polygon.color, 0.8);
+              polygon.graphic.drawPolygon(path);
+              polygon.graphic.endFill();
 
               // way.nodes.forEach(nodeid => {
               //   let cached = features.get(nodeid);
