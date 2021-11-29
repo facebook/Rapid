@@ -237,7 +237,7 @@ export function rendererMap(context) {
                 _pixi.stage.addChild(graphics);
 
                 polygon = {
-                  color: Math.random() * 0x808080,
+                  color: 0xff00ff,
                   coords: coords,
                   graphics: graphics
                 };
