@@ -198,10 +198,10 @@ export function rendererMap(context) {
 
         _pixi.ticker.add(time => {
           // make it psychadelic
-          const hue = (0.8 * _pixi.ticker.lastTime) % 360;
-          filter = new PIXI.filters.ColorMatrixFilter();
-          filter.hue(hue);
-          _pixi.stage.filters = [filter];
+        //   const hue = (0.8 * _pixi.ticker.lastTime) % 360;
+        //   filter = new PIXI.filters.ColorMatrixFilter();
+        //   filter.hue(hue);
+        //   _pixi.stage.filters = [filter];
 
           // get visible data
           let keepIDs = {};
@@ -217,7 +217,7 @@ export function rendererMap(context) {
             const k = entry[0];
             const obj = entry[1];
             if (!keepIDs[k]) {
-              _pixi.stage.removeChild(obj.graphic);
+              _pixi.stage.removeChild(obj.graphics);
               pixicache.delete(k);
             }
           });
@@ -230,27 +230,27 @@ export function rendererMap(context) {
               if (!polygon) {
                 const graph = service.graph(internalID);
                 const geojson = way.asGeoJSON(graph);
-                coords = geojson.coordinates[0];
+                const coords = geojson.coordinates[0];
 
-                graphic = new PIXI.Graphics();
-                graphic.name = way.id;
-                _pixi.stage.addChild(graphic);
+                const graphics = new PIXI.Graphics();
+                graphics.name = way.id;
+                _pixi.stage.addChild(graphics);
 
                 polygon = {
-                  color: Math.random() * 0xFFFFFF,
+                  color: Math.random() * 0x808080,
                   coords: coords,
-                  graphic: graphic
+                  graphics: graphics
                 };
                 pixicache.set(way.id, polygon);
               }
 
               // update
               const path = utilArrayFlatten(polygon.coords.map(coord => context.projection(coord)));
-              polygon.graphic.clear();
-              polygon.graphic.lineStyle(0);
-              polygon.graphic.beginFill(polygon.color, 0.8);
-              polygon.graphic.drawPolygon(path);
-              polygon.graphic.endFill();
+              polygon.graphics.clear();
+              polygon.graphics.lineStyle(0);
+              polygon.graphics.beginFill(polygon.color, 0.4);
+              polygon.graphics.drawPolygon(path);
+              polygon.graphics.endFill();
 
               // way.nodes.forEach(nodeid => {
               //   let cached = features.get(nodeid);
