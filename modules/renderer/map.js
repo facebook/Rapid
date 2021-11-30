@@ -234,6 +234,19 @@ export function rendererMap(context) {
 
                 const graphics = new PIXI.Graphics();
                 graphics.name = way.id;
+                graphics.buttonMode = true;
+                graphics.interactive = true;
+                graphics.on('pointerover', () => {
+                    // eslint-disable-next-line no-console
+                    console.log('pointerover hit');
+                    const localPolygon = pixicache.get(way.id);
+                    localPolygon.color = 0x00ff00;
+                });
+                graphics.on('pointerout', () => {
+                    // eslint-disable-next-line no-console
+                    const localPolygon = pixicache.get(way.id);
+                    localPolygon.color = 0xff00ff;
+                });
                 _pixi.stage.addChild(graphics);
 
                 polygon = {
