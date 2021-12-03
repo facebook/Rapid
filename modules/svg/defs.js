@@ -19,7 +19,7 @@ export function svgDefs(context) {
         _defsSelection = selection.append('defs');
 
         // add patterns for AI candycane-red buildings
-        defs.append('pattern')
+        _defsSelection.append('pattern')
             .attr('id', 'ai-feature-candycane-red')
             .attr('width', 25)
             .attr('height', 25)
@@ -31,7 +31,7 @@ export function svgDefs(context) {
             .attr('y2', '25');
 
         // add patterns for AI candycane-red buildings
-        defs.append('pattern')
+        _defsSelection.append('pattern')
             .attr('id', 'ai-feature-candycane-red-lowzoom')
             .attr('width', 15)
             .attr('height', 15)
@@ -43,7 +43,7 @@ export function svgDefs(context) {
             .attr('y2', '15');
 
         // add patterns for AI candycane-green buildings
-        defs.append('pattern')
+        _defsSelection.append('pattern')
             .attr('id', 'ai-feature-candycane-green')
             .attr('width', 25)
             .attr('height', 25)
@@ -54,7 +54,7 @@ export function svgDefs(context) {
             .attr('stroke-width', '25px')
             .attr('y2', '25');
 
-        defs.append('pattern')
+        _defsSelection.append('pattern')
             .attr('id', 'ai-feature-candycane-green-lowzoom')
             .attr('width', 15)
             .attr('height', 15)
@@ -66,7 +66,7 @@ export function svgDefs(context) {
             .attr('y2', '15');
 
         // add pattern for AI buildings
-        defs.append('pattern')
+        _defsSelection.append('pattern')
             .attr('id', 'ai-building-pink')
             .attr('width', 4)
             .attr('height', 15)
