@@ -18,6 +18,69 @@ export function svgDefs(context) {
     function drawDefs(selection) {
         _defsSelection = selection.append('defs');
 
+        // add patterns for AI candycane-red buildings
+        defs.append('pattern')
+            .attr('id', 'ai-feature-candycane-red')
+            .attr('width', 25)
+            .attr('height', 25)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(55)')
+            .append('line')
+            .attr('stroke', '#ff0012')
+            .attr('stroke-width', '25px')
+            .attr('y2', '25');
+
+        // add patterns for AI candycane-red buildings
+        defs.append('pattern')
+            .attr('id', 'ai-feature-candycane-red-lowzoom')
+            .attr('width', 15)
+            .attr('height', 15)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(55)')
+            .append('line')
+            .attr('stroke', '#ff0012')
+            .attr('stroke-width', '15px')
+            .attr('y2', '15');
+
+        // add patterns for AI candycane-green buildings
+        defs.append('pattern')
+            .attr('id', 'ai-feature-candycane-green')
+            .attr('width', 25)
+            .attr('height', 25)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(35)')
+            .append('line')
+            .attr('stroke', '#00ff3e')
+            .attr('stroke-width', '25px')
+            .attr('y2', '25');
+
+        defs.append('pattern')
+            .attr('id', 'ai-feature-candycane-green-lowzoom')
+            .attr('width', 15)
+            .attr('height', 15)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(35)')
+            .append('line')
+            .attr('stroke', '#00ff3e')
+            .attr('stroke-width', '15px')
+            .attr('y2', '15');
+
+        // add pattern for AI buildings
+        defs.append('pattern')
+            .attr('id', 'ai-building-pink')
+            .attr('width', 4)
+            .attr('height', 15)
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('patternTransform', 'rotate(45 50 50)')
+            .append('line')
+            .attr('stroke', '#e11383')
+            .attr('stroke-width', '2px')
+            .attr('y2', '15')
+            .append('line')
+            .attr('stroke', 'white')
+            .attr('stroke-width', '2px')
+            .attr('y2', '25');
+
         // add markers
         _defsSelection
             .append('marker')

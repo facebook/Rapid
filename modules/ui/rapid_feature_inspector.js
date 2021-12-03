@@ -24,8 +24,20 @@ export function uiRapidFeatureInspector(context, keybinding) {
 
     const annotations = context.history().peekAllAnnotations();
     const aiFeatureAccepts = annotations.filter(a => a.type === 'rapid_accept_feature');
+    updateSnowflakeDensity(aiFeatureAccepts.length);
     return aiFeatureAccepts.length >= ACCEPT_FEATURES_LIMIT;
   }
+
+
+    function updateSnowflakeDensity(aiFeatureCount) {
+      var snowflakesSlow = d3_select('#snowflakes-slow');
+      var snowflakes = d3_select('#snowflakes');
+      var snowflakesFast = d3_select('#snowflakes-fast');
+
+      snowflakesSlow.classed('hide', aiFeatureCount < 10);
+      snowflakes.classed('hide', aiFeatureCount < 20);
+      snowflakesFast.classed('hide', aiFeatureCount < 30);
+    }
 
 
   function onAcceptFeature() {

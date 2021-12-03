@@ -4,7 +4,7 @@ import _debounce from 'lodash-es/debounce';
 
 import {
     uiToolRapidFeatures, uiToolOldDrawModes, uiToolNotes, uiToolSave,
-    uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
+    uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc, uiToolFbBannerOne, uiToolFbBannerTwo
 } from './tools';
 
 
@@ -12,6 +12,8 @@ export function uiTopToolbar(context) {
 
     var sidebarToggle = uiToolSidebarToggle(context),
         rapidFeatures = uiToolRapidFeatures(context),
+        bannerOne = uiToolFbBannerOne(context),
+        bannerTwo = uiToolFbBannerTwo(context),
         modes = uiToolOldDrawModes(context),
         notes = uiToolNotes(context),
         undoRedo = uiToolUndoRedo(context),
@@ -44,9 +46,10 @@ export function uiTopToolbar(context) {
             var tools = [
                 sidebarToggle,
                 'spacer',
+                bannerOne,
                 modes,
-                rapidFeatures
-            //    searchAdd
+                rapidFeatures,
+                bannerTwo
             ];
 
             tools.push('spacer');

@@ -6,3 +6,5 @@ export * from './sidebar_toggle';
 export * from './undo_redo';
 
 export * from './rapid_features';
+export * from './fb_banner_1';
+export * from './fb_banner_2';
