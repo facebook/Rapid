@@ -180,11 +180,14 @@ export function rendererMap(context) {
             .attr('class', 'layer pixi-data')
             .style('z-index', '3');
 
+        var pixijunk = document.querySelector('.pixi-data');
+
         const rect = selection.node().getBoundingClientRect();
         _pixi = new PIXI.Application({
             width: rect.width,
             height: rect.height,
             backgroundAlpha: 0.0,
+            resizeTo: pixijunk
         });
 
         const canvas = document.getElementsByClassName('pixi-data')[0];
