@@ -1007,3 +1007,7 @@ li.best > label > span.best > svg {
     color: #e98733;
     height: 19px;
 }
+
+.layer.pixi-data {
+    pointer-events: none;
+}

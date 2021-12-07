@@ -186,6 +186,37 @@ export function rendererMap(context) {
             height: rect.height,
             backgroundAlpha: 0.0,
         });
+
+        const canvas = document.getElementsByClassName('pixi-data')[0];
+        let mousedown = false;
+
+        const clone = e => new e.constructor(e.type, e);
+        const forward = (e) => {
+            canvas.dispatchEvent(clone(e));
+        };
+        const forwardDown = (e) => {
+            mousedown = true;
+            forward(e);
+        };
+        const forwardUp = (e) => {
+            forward(e);
+            if (mousedown) {
+                mousedown = false;
+            }
+        };
+
+        const mainMap = document.getElementsByClassName('supersurface')[0]; //There should be only one!
+
+        mainMap.addEventListener('pointerdown', forwardDown);
+        mainMap.addEventListener('pointerup', forwardUp);
+        mainMap.addEventListener('pointermove', forward);
+        mainMap.addEventListener('pointerover', forward);
+        mainMap.addEventListener('pointerout', forward);
+
+
+
+        // _pixi.renderer.plugins.interaction.autoPreventDefault = false; //Allow mouse events to 'fall through' the PIXI glass panel
+        var interactionManager = _pixi.renderer.plugins.interaction;
         document.querySelector('.pixi-data').appendChild(_pixi.view);
 
 
@@ -236,17 +267,23 @@ export function rendererMap(context) {
                 graphics.name = way.id;
                 graphics.buttonMode = true;
                 graphics.interactive = true;
-                graphics.on('pointerover', () => {
+                graphics.on('pointermove', (iData) => {
                     // eslint-disable-next-line no-console
-                    console.log('pointerover hit');
+
+                    let hitObject = interactionManager.hitTest(iData.data.global, graphics);
                     const localPolygon = pixicache.get(way.id);
-                    localPolygon.color = 0x00ff00;
+                    if (hitObject !== null) {
+                        console.log('pointerover hit');
+                        localPolygon.color = 0x00ff00;
+                    } else {
+                        localPolygon.color = 0xff00ff;
+                    }
                 });
-                graphics.on('pointerout', () => {
-                    // eslint-disable-next-line no-console
-                    const localPolygon = pixicache.get(way.id);
-                    localPolygon.color = 0xff00ff;
-                });
+                // graphics.on('pointerout', () => {
+                //     // eslint-disable-next-line no-console
+                //     const localPolygon = pixicache.get(way.id);
+                //     localPolygon.color = 0xff00ff;
+                // });
                 _pixi.stage.addChild(graphics);
 
                 polygon = {
