@@ -9,7 +9,8 @@
         "happen": false,
         "iD": false,
         "sdk": false,
-        "sinon": false
+        "sinon": false,
+        "fetchMock": true
     },
     "rules": {
         "no-unused-expressions": "off"

@@ -1,9 +1,10 @@
-describe('iD.serviceOpenstreetcam', function () {
+describe('iD.serviceKartaview', function () {
     var dimensions = [64, 64];
-    var context, server, openstreetcam;
+    var context, kartaview;
 
     before(function() {
-        iD.services.openstreetcam = iD.serviceOpenstreetcam;
+        iD.services.kartaview = iD.serviceKartaview;
+        fetchMock.reset();
     });
 
     after(function() {
@@ -19,13 +20,13 @@ describe('iD.serviceOpenstreetcam', function () {
             .translate([-116508, 0])  // 10,0
             .clipExtent([[0,0], dimensions]);
 
-        server = window.fakeFetch().create();
-        openstreetcam = iD.services.openstreetcam;
-        openstreetcam.reset();
+        kartaview = iD.services.kartaview;
+        kartaview.reset();
+        fetchMock.reset();
     });
 
     afterEach(function() {
-        server.restore();
+        fetchMock.reset();
     });
 
 
@@ -54,13 +55,6 @@ describe('iD.serviceOpenstreetcam', function () {
 
     describe('#loadImages', function() {
         it('fires loadedImages when images are loaded', function(done) {
-            openstreetcam.on('loadedImages', function() {
-                expect(server.requests().length).to.eql(1);  // 1 nearby-photos
-                done();
-            });
-
-            openstreetcam.loadImages(context.projection);
-
             var data = {
                 status: { apiCode: '600', httpCode: 200, httpMessage: 'Success' },
                 currentPageItems:[{
@@ -103,18 +97,21 @@ describe('iD.serviceOpenstreetcam', function () {
                 totalFilteredItems: ['3']
             };
 
-            server.respondWith('POST', /nearby-photos/,
-                [200, { 'Content-Type': 'application/json' }, JSON.stringify(data) ]);
-            server.respond();
+            fetchMock.mock(new RegExp('/nearby-photos/'), {
+                body: JSON.stringify(data),
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            kartaview.on('loadedImages', function() {
+                expect(fetchMock.calls().length).to.eql(1);  // 1 nearby-photos
+                done();
+            });
+
+            kartaview.loadImages(context.projection);
         });
 
-        it('does not load images around null island', function(done) {
-            var spy = sinon.spy();
-            context.projection.translate([0,0]);
-
-            openstreetcam.on('loadedImages', spy);
-            openstreetcam.loadImages(context.projection);
-
+        it('does not load images around null island', function (done) {
             var data = {
                 status: { apiCode: '600', httpCode: 200, httpMessage: 'Success' },
                 currentPageItems:[{
@@ -157,28 +154,26 @@ describe('iD.serviceOpenstreetcam', function () {
                 totalFilteredItems: ['3']
             };
 
-            server.respondWith('POST', /nearby-photos/,
-                [200, { 'Content-Type': 'application/json' }, JSON.stringify(data) ]);
-            server.respond();
+            var spy = sinon.spy();
+            fetchMock.mock(new RegExp('/nearby-photos/'), {
+                body: JSON.stringify(data),
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            context.projection.translate([0, 0]);
+
+            kartaview.on('loadedImages', spy);
+            kartaview.loadImages(context.projection);
 
             window.setTimeout(function() {
                 expect(spy).to.have.been.not.called;
-                expect(server.requests().length).to.eql(0);   // no tile requests of any kind
+                expect(fetchMock.calls().length).to.eql(0);   // no tile requests of any kind
                 done();
             }, 200);
         });
 
-        //This test is highly flaky and seems to collide with the prev two tests in this group.
-        // 'loadedImages' simply doesn't fire a significant percentage of the time,
-        // especially on our containerized build environments, so it blocks deployments more often than not.
-        it.skip('loads multiple pages of image results', function(done) {
-            openstreetcam.on('loadedImages', function() {
-                expect(server.requests().length).to.eql(2);   // 2 nearby-photos
-                done();
-            });
-
-            openstreetcam.loadImages(context.projection);
-
+        it('loads multiple pages of image results', function(done) {
             var features = [];
             for (var i = 0; i < 1000; i++) {
                 var key = String(i);
@@ -196,15 +191,25 @@ describe('iD.serviceOpenstreetcam', function () {
                     username: 'test'
                 });
             }
+
             var response = {
                 status: { apiCode: '600', httpCode: 200, httpMessage: 'Success' },
                 currentPageItems: features,
                 totalFilteredItems: ['1000']
             };
 
-            server.respondWith('POST', /nearby-photos/,
-                [200, { 'Content-Type': 'application/json' }, JSON.stringify(response) ]);
-            server.respond();
+            fetchMock.mock(new RegExp('/nearby-photos/'), {
+                body: JSON.stringify(response),
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            kartaview.on('loadedImages', function() {
+                expect(fetchMock.calls().length).to.eql(2);   // 2 nearby-photos
+                done();
+            });
+
+            kartaview.loadImages(context.projection);
         });
     });
 
