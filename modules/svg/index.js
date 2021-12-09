@@ -29,3 +29,4 @@ export { svgTurns } from './turns.js';
 export { svgVertices } from './vertices.js';
 
 export { svgRapidFeatures } from './rapid_features.js';
+export { pixiPoints } from './pixiPoints.js';

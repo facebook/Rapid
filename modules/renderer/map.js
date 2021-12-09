@@ -10,7 +10,7 @@ import _throttle from 'lodash-es/throttle';
 import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
-import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, svgPoints, svgVertices } from '../svg';
+import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, pixiPoints, svgVertices } from '../svg';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -33,8 +33,6 @@ var kMax = geoZoomToScale(maxZoom, TILESIZE);
 function clamp(num, min, max) {
     return Math.max(min, Math.min(num, max));
 }
-
-var _pixi;
 
 export function rendererMap(context) {
     var dispatch = d3_dispatch(
@@ -180,15 +178,21 @@ export function rendererMap(context) {
             .attr('class', 'layer pixi-data')
             .style('z-index', '3');
 
+
+// Init PIXI
         var pixijunk = document.querySelector('.pixi-data');
 
         const rect = selection.node().getBoundingClientRect();
-        _pixi = new PIXI.Application({
+        context.pixi = new PIXI.Application({
             width: rect.width,
             height: rect.height,
             backgroundAlpha: 0.0,
             resizeTo: pixijunk
         });
+
+        document.querySelector('.pixi-data').appendChild(context.pixi.view);
+
+        // var interactionManager = context.pixi.renderer.plugins.interaction;
 
         const canvas = document.getElementsByClassName('pixi-data')[0];
         let mousedown = false;
@@ -216,176 +220,92 @@ export function rendererMap(context) {
         mainMap.addEventListener('pointerover', forward);
         mainMap.addEventListener('pointerout', forward);
 
+        context.pixi.ticker.add(time => redrawPixi(time));
 
 
-        // _pixi.renderer.plugins.interaction.autoPreventDefault = false; //Allow mouse events to 'fall through' the PIXI glass panel
-        var interactionManager = _pixi.renderer.plugins.interaction;
-        document.querySelector('.pixi-data').appendChild(_pixi.view);
+// //////////////////////////////////////
+//         // DEMO CODE
 
+//         var service = services.fbMLRoads;
+//         var internalID = 'msBuildings-conflated';
+//         let pixicache = new Map();
 
-//////////////////////////////////////
-        // DEMO CODE
+//         _pixi.ticker.add(time => {
+//           // make it psychadelic
+//         //   const hue = (0.8 * _pixi.ticker.lastTime) % 360;
+//         //   filter = new PIXI.filters.ColorMatrixFilter();
+//         //   filter.hue(hue);
+//         //   _pixi.stage.filters = [filter];
 
-        var service = services.fbMLRoads;
-        var internalID = 'msBuildings-conflated';
-        let pixicache = new Map();
+//           // get visible data
+//           let keepIDs = {};
+//           let pathData = service
+//             .intersects(internalID, context.map().extent())
+//             .filter(d => d.type === 'way');
 
-        _pixi.ticker.add(time => {
-          // make it psychadelic
-        //   const hue = (0.8 * _pixi.ticker.lastTime) % 360;
-        //   filter = new PIXI.filters.ColorMatrixFilter();
-        //   filter.hue(hue);
-        //   _pixi.stage.filters = [filter];
+//           pathData
+//             .forEach(d => keepIDs[d.id] = true);
 
-          // get visible data
-          let keepIDs = {};
-          let pathData = service
-            .intersects(internalID, context.map().extent())
-            .filter(d => d.type === 'way');
+//           // exit
+//           [...pixicache.entries()].forEach(entry => {
+//             const k = entry[0];
+//             const obj = entry[1];
+//             if (!keepIDs[k]) {
+//               _pixi.stage.removeChild(obj.graphics);
+//               pixicache.delete(k);
+//             }
+//           });
 
-          pathData
-            .forEach(d => keepIDs[d.id] = true);
+//           // enter/update
+//           pathData
+//             .forEach(way => {
+//               let polygon = pixicache.get(way.id);
+//               // make poly if needed
+//               if (!polygon) {
+//                 const graph = service.graph(internalID);
+//                 const geojson = way.asGeoJSON(graph);
+//                 const coords = geojson.coordinates[0];
 
-          // exit
-          [...pixicache.entries()].forEach(entry => {
-            const k = entry[0];
-            const obj = entry[1];
-            if (!keepIDs[k]) {
-              _pixi.stage.removeChild(obj.graphics);
-              pixicache.delete(k);
-            }
-          });
+//                 const graphics = new PIXI.Graphics();
+//                 graphics.name = way.id;
+//                 graphics.buttonMode = true;
+//                 graphics.interactive = true;
+//                 graphics.on('pointermove', (iData) => {
+//                     // eslint-disable-next-line no-console
 
-          // enter/update
-          pathData
-            .forEach(way => {
-              let polygon = pixicache.get(way.id);
-              // make poly if needed
-              if (!polygon) {
-                const graph = service.graph(internalID);
-                const geojson = way.asGeoJSON(graph);
-                const coords = geojson.coordinates[0];
+//                     let hitObject = interactionManager.hitTest(iData.data.global, graphics);
+//                     const localPolygon = pixicache.get(way.id);
+//                     if (hitObject !== null) {
+//                         console.log('pointerover hit');
+//                         localPolygon.color = 0x00ff00;
+//                     } else {
+//                         localPolygon.color = 0xff00ff;
+//                     }
+//                 });
+//                 // graphics.on('pointerout', () => {
+//                 //     // eslint-disable-next-line no-console
+//                 //     const localPolygon = pixicache.get(way.id);
+//                 //     localPolygon.color = 0xff00ff;
+//                 // });
+//                 _pixi.stage.addChild(graphics);
 
-                const graphics = new PIXI.Graphics();
-                graphics.name = way.id;
-                graphics.buttonMode = true;
-                graphics.interactive = true;
-                graphics.on('pointermove', (iData) => {
-                    // eslint-disable-next-line no-console
+//                 polygon = {
+//                   color: 0xff00ff,
+//                   coords: coords,
+//                   graphics: graphics
+//                 };
+//                 pixicache.set(way.id, polygon);
+//               }
 
-                    let hitObject = interactionManager.hitTest(iData.data.global, graphics);
-                    const localPolygon = pixicache.get(way.id);
-                    if (hitObject !== null) {
-                        console.log('pointerover hit');
-                        localPolygon.color = 0x00ff00;
-                    } else {
-                        localPolygon.color = 0xff00ff;
-                    }
-                });
-                // graphics.on('pointerout', () => {
-                //     // eslint-disable-next-line no-console
-                //     const localPolygon = pixicache.get(way.id);
-                //     localPolygon.color = 0xff00ff;
-                // });
-                _pixi.stage.addChild(graphics);
-
-                polygon = {
-                  color: 0xff00ff,
-                  coords: coords,
-                  graphics: graphics
-                };
-                pixicache.set(way.id, polygon);
-              }
-
-              // update
-              const path = utilArrayFlatten(polygon.coords.map(coord => context.projection(coord)));
-              polygon.graphics.clear();
-              polygon.graphics.lineStyle(0);
-              polygon.graphics.beginFill(polygon.color, 0.4);
-              polygon.graphics.drawPolygon(path);
-              polygon.graphics.endFill();
-
-              // way.nodes.forEach(nodeid => {
-              //   let cached = features.get(nodeid);
-              //   let sprite, loc;
-
-              //   // make sprite if needed
-              //   if (!cached) {
-              //     const graph = service.graph(internalID);
-              //     const node = graph.entity(nodeid);
-
-              //     // const geojson = way.asGeoJSON(graph);
-              //     // loc = geojson.coordinates[0][0];  // get corner
-              //     // each corner
-              //     loc = node.loc;
-
-              //     const graphics = new PIXI.Graphics();
-              //     const path = [600, 370, 700, 460, 780, 420, 730, 570, 590, 520];
-
-              //     graphics.lineStyle(0);
-              //     graphics.beginFill(0x3500FA, 1);
-              //     graphics.drawPolygon(path);
-              //     graphics.endFill();
-
-              //     app.stage.addChild(graphics);
-
-              //     // sprite = PIXI.Sprite.from('img/arrow-icon.png');
-              //     // sprite.anchor.set(0.5);
-              //     // sprite.tint = color;
-              //     // _pixi.stage.addChild(sprite);
-
-              //     features.set(node.id, {
-              //       loc: loc,
-              //       sprite: sprite
-              //     });
-              //   } else {
-              //     loc = cached.loc;
-              //     sprite = cached.sprite;
-              //   }
-
-              //   // update sprite
-              //   const coord = context.projection(loc);
-              //   sprite.x = coord[0];
-              //   sprite.y = coord[1];
-
-              // });
-
-            });
-        });
-
-// arrow code
-        // var service = services.esriData;
-        // var internalID = '6654118947a347ef902fb723bb815709';
-        // // service.loadTiles(internalID, projection);
-        // let features = new Map();
-
-        // _pixi.ticker.add(() => {
-        //   // get visible data
-        //   let visibleData = service.intersects(internalID, context.map().extent());
-
-        //   let points = visibleData
-        //     .filter(d => d.type === 'node' && !!d.__fbid__)  // standalone only (not vertices/childnodes)
-        //     .forEach(node => {
-        //       let sprite = features.get(node.id);
-
-        //       // make sprite if needed
-        //       if (!sprite) {
-        //         sprite = PIXI.Sprite.from('img/arrow-icon.png');
-        //         sprite.anchor.set(0.5);
-        //         _pixi.stage.addChild(sprite);
-        //         features.set(node.id, sprite);
-        //       }
-
-        //       // update sprite
-        //       const coord = context.projection(node.loc);
-        //       sprite.x = coord[0];
-        //       sprite.y = coord[1];
-        //     });
-        // });
-
-
-//////////////////////////////////////
-
+//               // update
+//               const path = utilArrayFlatten(polygon.coords.map(coord => context.projection(coord)));
+//               polygon.graphics.clear();
+//               polygon.graphics.lineStyle(0);
+//               polygon.graphics.beginFill(polygon.color, 0.4);
+//               polygon.graphics.drawPolygon(path);
+//               polygon.graphics.endFill();
+//             });
+//         });
 
 
         map.surface = surface = wrapper
@@ -611,15 +531,16 @@ export function rendererMap(context) {
             .call(drawLines, graph, data, filter)
             .call(drawAreas, graph, data, filter)
             .call(drawMidpoints, graph, data, filter, map.trimmedExtent())
-            .call(drawLabels, graph, data, filter, _dimensions, fullRedraw)
-            .call(drawPoints, graph, data, filter);
+            .call(drawLabels, graph, data, filter, _dimensions, fullRedraw);
+            // .call(drawPoints, graph, data, filter);  // THIS IS PIXI
 
         dispatch.call('drawn', this, {full: true});
     }
 
     map.init = function() {
         drawLayers = svgLayers(projection, context);
-        drawPoints = svgPoints(projection, context);
+        // drawPoints = svgPoints(projection, context);
+        drawPoints = pixiPoints(projection, context);
         drawVertices = svgVertices(projection, context);
         drawLines = svgLines(projection, context);
         drawAreas = svgAreas(projection, context);
@@ -867,6 +788,14 @@ export function rendererMap(context) {
             curtainProjection.transform(projection.transform());
         }
         return true;
+    }
+
+
+    function redrawPixi() {
+        // todo: only draw if necessary
+        var graph = context.graph();
+        var data = context.history().intersects(map.extent());
+        drawPoints(graph, data);
     }
 
 
