@@ -187,7 +187,8 @@ export function rendererMap(context) {
             width: rect.width,
             height: rect.height,
             backgroundAlpha: 0.0,
-            resizeTo: pixijunk
+            resizeTo: pixijunk,
+            antialias: true
         });
 
         document.querySelector('.pixi-data').appendChild(context.pixi.view);
