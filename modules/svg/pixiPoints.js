@@ -9,10 +9,28 @@ import { presetManager } from '../presets';
 
 export function pixiPoints(projection, context) {
   let scene = new Map();   // map of OSM ID -> Pixi Graphic
+  let sprites = {};
+
+  let _didInit = false;
+
+  function init(context) {
+    const pixi = context.pixi;
+    const loader = PIXI.Loader.shared;
+    loader.add('maki', context.imagePath('maki-sprite.svg'));
+    loader.load((loader, resources) => {
+      debugger;
+      // sprites.bunny = new PIXI.TilingSprite(resources.bunny.texture);
+      // sprites.spaceship = new PIXI.TilingSprite(resources.spaceship.texture);
+      // sprites.scoreFont = new PIXI.TilingSprite(resources.scoreFont.texture);
+    });
+    _didInit = true;
+  }
+
 
   function render(graph, entities) {
-    const pixi = context.pixi;
+    if (!_didInit) init(context);
 
+    const pixi = context.pixi;
     let data = entities
       .filter(entity => entity.geometry(graph) === 'point')
       .sort((a, b) => b.loc[1] - a.loc[1]);
