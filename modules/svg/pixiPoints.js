@@ -16,12 +16,13 @@ export function pixiPoints(projection, context) {
   function init(context) {
     const pixi = context.pixi;
     const loader = PIXI.Loader.shared;
-    loader.add('maki', context.imagePath('maki-sprite.svg'));
+    loader.add('dist/img/maki-spritesheet.json');
     loader.load((loader, resources) => {
-      debugger;
-      // sprites.bunny = new PIXI.TilingSprite(resources.bunny.texture);
-      // sprites.spaceship = new PIXI.TilingSprite(resources.spaceship.texture);
-      // sprites.scoreFont = new PIXI.TilingSprite(resources.scoreFont.texture);
+      let sheet = loader.resources['dist/img/maki-spritesheet.json'];
+      sprites.cafe = new PIXI.Sprite(sheet.textures['cafe-11.svg']);
+      sprites.feesh = new PIXI.Sprite(sheet.textures['aquarium-11.svg']);
+      sprites.tree = new PIXI.Sprite(sheet.textures['park-11.svg']);
+      pixi.stage.addChild(sprites.feesh);
     });
     _didInit = true;
   }
@@ -71,8 +72,14 @@ export function pixiPoints(projection, context) {
         point.graphic
           .clear()
           .lineStyle(2, 0x000000)
-          .beginFill(0xffffff, 0.9)
-          .drawCircle(coord[0], coord[1], 10)
+          // .beginFill(0xffffff, 0.9)
+          .beginTextureFill(
+            {
+              texture: PIXI.Loader.shared.resources['dist/img/maki-spritesheet.json'].textures['park-11.svg'],
+              alpha: 0.9,
+              fill: PIXI.Texture.WHITE
+            })
+          .drawCircle(coord[0], coord[1], 15)
           .endFill();
       });
   }
