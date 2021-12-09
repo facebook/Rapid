@@ -30,6 +30,7 @@ var maxZoom = 24;
 var kMin = geoZoomToScale(minZoom, TILESIZE);
 var kMax = geoZoomToScale(maxZoom, TILESIZE);
 
+
 function clamp(num, min, max) {
     return Math.max(min, Math.min(num, max));
 }
