@@ -22,7 +22,9 @@ export function pixiPoints(projection, context) {
       sprites.cafe = new PIXI.Sprite(sheet.textures['cafe-11.svg']);
       sprites.feesh = new PIXI.Sprite(sheet.textures['aquarium-11.svg']);
       sprites.tree = new PIXI.Sprite(sheet.textures['park-11.svg']);
-      pixi.stage.addChild(sprites.feesh);
+      sprites.feesh.x = window.innerWidth / 2;
+      sprites.feesh.y = window.innerHeight / 2;
+//      sprites.feesh.anchor.set(0.5);
     });
     _didInit = true;
   }
@@ -56,12 +58,13 @@ export function pixiPoints(projection, context) {
 
         if (!point) {   // make point if needed
           const graphic = new PIXI.Graphics();
+          const container = new PIXI.Container();
           graphic.name = entity.id;
-          pixi.stage.addChild(graphic);
 
           point = {
             loc: entity.loc,
-            graphic: graphic
+            graphic: graphic,
+            container: container
           };
 
           scene.set(entity.id, point);
@@ -71,17 +74,22 @@ export function pixiPoints(projection, context) {
         const coord = context.projection(point.loc);
         point.graphic
           .clear()
-          .lineStyle(2, 0x000000)
-          // .beginFill(0xffffff, 0.9)
-          .beginTextureFill(
-            {
-              texture: PIXI.Loader.shared.resources['dist/img/maki-spritesheet.json'].textures['park-11.svg'],
-              alpha: 0.9,
-              fill: PIXI.Texture.WHITE
-            })
-          .drawCircle(coord[0], coord[1], 15)
+          .lineStyle(1.5, 0x000000)
+          .beginFill(0xffffff, 0.7)
+          .drawCircle(7, 7, 15)
           .endFill();
+
+        point.container.x = coord[0];
+        point.container.y = coord[1];
+        sprites.feesh.x = 0;
+        sprites.feesh.y = 0;
+        point.container.addChild(point.graphic);
+        point.container.addChild(sprites.feesh);
+        pixi.stage.addChild(point.container);
+
       });
+
+
   }
 
 
