@@ -44,10 +44,9 @@ export function pixiPoints(projection, context) {
       .forEach(entity => keep[entity.id] = true);
 
     // exit
-    // TODO: Fix this as we need to do better removal here now that we're container-fied with icons
     [...scene.entries()].forEach(([id, data]) => {
       if (!keep[id]) {
-        pixi.stage.removeChild(data.graphic);
+        pixi.stage.removeChild(data.container);
         scene.delete(id);
       }
     });

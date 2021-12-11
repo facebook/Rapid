@@ -10,8 +10,8 @@ import _throttle from 'lodash-es/throttle';
 import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
-import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, } from '../svg';
-import { pixiPoints, pixiVertices } from '../pixi';
+import { svgAreas, svgLabels, svgLayers, svgMidpoints, } from '../svg';
+import { pixiPoints, pixiVertices, pixiLines } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -416,7 +416,7 @@ export function rendererMap(context) {
 
             surface
 //                .call(drawVertices.drawSelected, graph, map.extent()) // PIXI-FIED
-                .call(drawLines, graph, data, filter)
+//                .call(drawLines, graph, data, filter)      // PIXI-FIED
                 .call(drawAreas, graph, data, filter)
                 .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
 
@@ -531,7 +531,7 @@ export function rendererMap(context) {
 
         surface
             // .call(drawVertices, graph, data, filter, map.extent(), fullRedraw) // PIXI-FIED
-            .call(drawLines, graph, data, filter)
+            //.call(drawLines, graph, data, filter) //PIXI_FIED
             .call(drawAreas, graph, data, filter)
             .call(drawMidpoints, graph, data, filter, map.trimmedExtent())
             .call(drawLabels, graph, data, filter, _dimensions, fullRedraw);
@@ -546,7 +546,8 @@ export function rendererMap(context) {
         drawPoints = pixiPoints(projection, context);
         // drawVertices = svgVertices(projection, context);
         drawVertices = pixiVertices(projection, context);
-        drawLines = svgLines(projection, context);
+        //drawLines = svgLines(projection, context);
+        drawLines = pixiLines(projection, context);
         drawAreas = svgAreas(projection, context);
         drawMidpoints = svgMidpoints(projection, context);
         drawLabels = svgLabels(projection, context);
@@ -801,6 +802,7 @@ export function rendererMap(context) {
         var data = context.history().intersects(map.extent());
         drawPoints(graph, data);
         drawVertices(graph, data);
+        drawLines(graph, data);
     }
 
 
