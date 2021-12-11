@@ -65,6 +65,18 @@ export function pixiVertices(projection, context) {
         }
         let vertices = entities.filter(entity => entity.geometry(graph) === 'vertex');
         vertices.sort(sortY);
+        // gather ids to keep
+        let keep = {};
+        vertices
+            .forEach(entity => keep[entity.id] = true);
+
+        [...scene.entries()].forEach(([id, data]) => {
+            if (!keep[id]) {
+                pixi.stage.removeChild(data.container);
+                scene.delete(id);
+            }
+        });
+
         drawVertices(graph, vertices, true);
     }
 
@@ -206,13 +218,17 @@ export function pixiVertices(projection, context) {
                 scene.set(entity.id, vertex);
             }
 
+            const width = 6;
+            const height = 6;
+            const widthOffset = width / 2;
+            const heightOffset = height / 2;
             //update
             const coord = context.projection(vertex.loc);
             vertex.graphic
                 .clear()
                 .lineStyle(1, 0xff00ff)
                 .beginFill(0xffffff, 0.5)
-                .drawRoundedRect(-4, -4, 5, 5, 2)
+                .drawRoundedRect(-widthOffset, -heightOffset, width, height, 3)
                 .endFill();
 
             vertex.container.x = coord[0];

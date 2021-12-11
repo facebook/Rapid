@@ -415,7 +415,7 @@ export function rendererMap(context) {
             data = context.features().filter(data, graph);
 
             surface
-                .call(drawVertices.drawSelected, graph, map.extent())
+//                .call(drawVertices.drawSelected, graph, map.extent()) // PIXI-FIED
                 .call(drawLines, graph, data, filter)
                 .call(drawAreas, graph, data, filter)
                 .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
