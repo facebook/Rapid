@@ -84,13 +84,19 @@ export function pixiLines(projection, context) {
             }
 
             // update
-            const path = utilArrayFlatten(polygon.coords.map(coord => context.projection(coord)));
+            const pathCoords = polygon.coords.map(coord => context.projection(coord));
             polygon.graphics.clear();
             polygon.graphics.lineStyle({
                 color: 0xff26db,
                 width: 3,
             });
-            polygon.graphics.drawPolygon(path);
+            pathCoords.forEach(([x, y], i) => {
+                if (i === 0) {
+                    polygon.graphics.moveTo(x, y);
+                } else {
+                    polygon.graphics.lineTo(x, y);
+                }
+            });
 
             pixi.stage.addChild(polygon.graphics);
         });
