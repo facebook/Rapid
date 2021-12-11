@@ -10,7 +10,8 @@ import _throttle from 'lodash-es/throttle';
 import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
-import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, pixiPoints, svgVertices } from '../svg';
+import { svgAreas, svgLabels, svgLayers, svgLines, svgMidpoints, } from '../svg';
+import { pixiPoints, pixiVertices } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -317,35 +318,35 @@ export function rendererMap(context) {
         surface
             .call(drawLabels.observe)
             .call(_doubleUpHandler)
-            .on(_pointerPrefix + 'down.zoom', function(d3_event) {
+            .on(_pointerPrefix + 'down.zoom', function (d3_event) {
                 _lastPointerEvent = d3_event;
                 if (d3_event.button === 2) {
                     d3_event.stopPropagation();
                 }
             }, true)
-            .on(_pointerPrefix + 'up.zoom', function(d3_event) {
+            .on(_pointerPrefix + 'up.zoom', function (d3_event) {
                 _lastPointerEvent = d3_event;
                 if (resetTransform()) {
                     immediateRedraw();
                 }
             })
-            .on(_pointerPrefix + 'move.map', function(d3_event) {
+            .on(_pointerPrefix + 'move.map', function (d3_event) {
                 _lastPointerEvent = d3_event;
-            })
-            .on(_pointerPrefix + 'over.vertices', function(d3_event) {
-                if (map.editableDataEnabled() && !_isTransformed) {
-                    var hover = d3_event.target.__data__;
-                    surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
-                    dispatch.call('drawn', this, { full: false });
-                }
-            })
-            .on(_pointerPrefix + 'out.vertices', function(d3_event) {
-                if (map.editableDataEnabled() && !_isTransformed) {
-                    var hover = d3_event.relatedTarget && d3_event.relatedTarget.__data__;
-                    surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
-                    dispatch.call('drawn', this, { full: false });
-                }
             });
+            // .on(_pointerPrefix + 'over.vertices', function(d3_event) {
+            //     if (map.editableDataEnabled() && !_isTransformed) {
+            //         var hover = d3_event.target.__data__;
+            //         surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
+            //         dispatch.call('drawn', this, { full: false });
+            //     }
+            // })
+            // .on(_pointerPrefix + 'out.vertices', function(d3_event) {
+            //     if (map.editableDataEnabled() && !_isTransformed) {
+            //         var hover = d3_event.relatedTarget && d3_event.relatedTarget.__data__;
+            //         surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
+            //         dispatch.call('drawn', this, { full: false });
+            //     }
+            // });
 
         var detected = utilDetect();
 
@@ -529,7 +530,7 @@ export function rendererMap(context) {
         }
 
         surface
-            .call(drawVertices, graph, data, filter, map.extent(), fullRedraw)
+            // .call(drawVertices, graph, data, filter, map.extent(), fullRedraw) // PIXI-FIED
             .call(drawLines, graph, data, filter)
             .call(drawAreas, graph, data, filter)
             .call(drawMidpoints, graph, data, filter, map.trimmedExtent())
@@ -543,7 +544,8 @@ export function rendererMap(context) {
         drawLayers = svgLayers(projection, context);
         // drawPoints = svgPoints(projection, context);
         drawPoints = pixiPoints(projection, context);
-        drawVertices = svgVertices(projection, context);
+        // drawVertices = svgVertices(projection, context);
+        drawVertices = pixiVertices(projection, context);
         drawLines = svgLines(projection, context);
         drawAreas = svgAreas(projection, context);
         drawMidpoints = svgMidpoints(projection, context);
@@ -798,6 +800,7 @@ export function rendererMap(context) {
         var graph = context.graph();
         var data = context.history().intersects(map.extent());
         drawPoints(graph, data);
+        drawVertices(graph, data);
     }
 
 

@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 import deepEqual from 'fast-deep-equal';
 import { geoScaleToZoom } from '@id-sdk/geo';
 import { osmEntity } from '../osm';
-import { svgPointTransform } from './helpers';
+import { svgPointTransform } from '../svg/helpers';
 import { presetManager } from '../presets';
 
 
@@ -44,6 +44,7 @@ export function pixiPoints(projection, context) {
       .forEach(entity => keep[entity.id] = true);
 
     // exit
+    // TODO: Fix this as we need to do better removal here now that we're container-fied with icons
     [...scene.entries()].forEach(([id, data]) => {
       if (!keep[id]) {
         pixi.stage.removeChild(data.graphic);
