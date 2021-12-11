@@ -11,7 +11,7 @@ import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLabels, svgLayers, svgMidpoints, } from '../svg';
-import { pixiPoints, pixiVertices, pixiLines } from '../pixi';
+import { pixiPoints, pixiVertices, pixiLines, pixiAreas } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -532,7 +532,7 @@ export function rendererMap(context) {
         surface
             // .call(drawVertices, graph, data, filter, map.extent(), fullRedraw) // PIXI-FIED
             //.call(drawLines, graph, data, filter) //PIXI_FIED
-            .call(drawAreas, graph, data, filter)
+            //.call(drawAreas, graph, data, filter) //PIXI_FIED
             .call(drawMidpoints, graph, data, filter, map.trimmedExtent())
             .call(drawLabels, graph, data, filter, _dimensions, fullRedraw);
             // .call(drawPoints, graph, data, filter);  // THIS IS PIXI
@@ -548,7 +548,8 @@ export function rendererMap(context) {
         drawVertices = pixiVertices(projection, context);
         //drawLines = svgLines(projection, context);
         drawLines = pixiLines(projection, context);
-        drawAreas = svgAreas(projection, context);
+        // drawAreas = svgAreas(projection, context);
+        drawAreas = pixiAreas(projection, context);
         drawMidpoints = svgMidpoints(projection, context);
         drawLabels = svgLabels(projection, context);
     };
@@ -803,6 +804,7 @@ export function rendererMap(context) {
         drawPoints(graph, data);
         drawVertices(graph, data);
         drawLines(graph, data);
+        drawAreas(graph, data);
     }
 
 
