@@ -208,6 +208,10 @@ export function pixiVertices(projection, context) {
                 const graphic = new PIXI.Graphics();
                 const container = new PIXI.Container();
                 graphic.name = entity.id;
+            const width = 6;
+            const height = 6;
+            const widthOffset = width / 2;
+            const heightOffset = height / 2;
 
                 vertex = {
                     loc: entity.loc,
@@ -215,26 +219,24 @@ export function pixiVertices(projection, context) {
                     container: container
                 };
 
-                scene.set(entity.id, vertex);
-            }
-
-            const width = 6;
-            const height = 6;
-            const widthOffset = width / 2;
-            const heightOffset = height / 2;
-            //update
-            const coord = context.projection(vertex.loc);
-            vertex.graphic
+                vertex.graphic
                 .clear()
                 .lineStyle(1, 0xff00ff)
                 .beginFill(0xffffff, 0.5)
                 .drawRoundedRect(-widthOffset, -heightOffset, width, height, 3)
                 .endFill();
 
+                vertex.container.addChild(vertex.graphic);
+                pixi.stage.addChild(vertex.container);
+
+                scene.set(entity.id, vertex);
+            }
+
+            //update
+            const coord = context.projection(vertex.loc);
+
             vertex.container.x = coord[0];
             vertex.container.y = coord[1];
-            vertex.container.addChild(vertex.graphic);
-            pixi.stage.addChild(vertex.container);
 
         });
 
