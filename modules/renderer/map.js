@@ -92,26 +92,20 @@ export function rendererMap(context) {
         });
     var _doubleUpHandler = utilDoubleUp();
 
-    var scheduleRedraw = _throttle(redraw, 750);
-    // var isRedrawScheduled = false;
-    // var pendingRedrawCall;
-    // function scheduleRedraw() {
-    //     // Only schedule the redraw if one has not already been set.
-    //     if (isRedrawScheduled) return;
-    //     isRedrawScheduled = true;
-    //     var that = this;
-    //     var args = arguments;
-    //     pendingRedrawCall = window.requestIdleCallback(function () {
-    //         // Reset the boolean so future redraws can be set.
-    //         isRedrawScheduled = false;
-    //         redraw.apply(that, args);
-    //     }, { timeout: 1400 });
-    // }
 
-    function cancelPendingRedraw() {
-        scheduleRedraw.cancel();
-        // isRedrawScheduled = false;
-        // window.cancelIdleCallback(pendingRedrawCall);
+    var deferredRedraw = _throttle(redraw, 750);
+
+    function scheduleRedraw() {
+        redrawPixi();        // draw Pixi now..
+        deferredRedraw();    // draw Backgrounds and SVG whenever..
+    }
+
+    function immediateRedraw(difference, extent) {
+        if (!difference && !extent) {
+            deferredRedraw.cancel();
+        }
+        redrawPixi();                  // draw Pixi now..
+        redraw(difference, extent);    // draw Backgrounds and SVG now..
     }
 
 
@@ -135,7 +129,7 @@ export function rendererMap(context) {
         }
 
         context.history()
-            .on('merge.map', function() { scheduleRedraw(); })
+            .on('merge.map', scheduleRedraw)
             .on('change.map', immediateRedraw)
             .on('undone.map', function(stack, fromStack) {
                 didUndoOrRedo(fromStack.transform);
@@ -223,8 +217,10 @@ export function rendererMap(context) {
         mainMap.addEventListener('pointerover', forward);
         mainMap.addEventListener('pointerout', forward);
 
-        context.pixi.ticker.add(time => redrawPixi(time));
-
+        // context.pixi.ticker.add(time => redrawPixi(time));
+        var ticker = context.pixi.ticker;
+        ticker.autoStart = false;
+        ticker.stop();
 
 // //////////////////////////////////////
 //         // DEMO CODE
@@ -577,8 +573,6 @@ export function rendererMap(context) {
 
 
 
-
-
     function gestureChange(d3_event) {
         // Remap Safari gesture events to wheel events - #5492
         // We want these disabled most places, but enabled for zoom/unzoom on map surface
@@ -797,14 +791,23 @@ export function rendererMap(context) {
     }
 
 
+    let pixiPending = false;
     function redrawPixi() {
-        // todo: only draw if necessary
-        var graph = context.graph();
-        var data = context.history().intersects(map.extent());
+        if (pixiPending) return;
+
+        const graph = context.graph();
+        const data = context.history().intersects(map.extent());
         drawPoints(graph, data);
         drawVertices(graph, data);
         drawLines(graph, data);
         drawAreas(graph, data);
+        pixiPending = true;
+
+        const ticker = context.pixi.ticker;
+        window.requestAnimationFrame(timestamp => {
+            ticker.update(timestamp);
+            pixiPending = false;
+        });
     }
 
 
@@ -853,13 +856,6 @@ export function rendererMap(context) {
 
         return map;
     }
-
-
-
-    var immediateRedraw = function(difference, extent) {
-        if (!difference && !extent) cancelPendingRedraw();
-        redraw(difference, extent);
-    };
 
 
     map.lastPointerEvent = function() {
