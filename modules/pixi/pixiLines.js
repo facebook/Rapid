@@ -20,7 +20,7 @@ export function pixiLines(projection, context) {
     let _didInit = false;
 
 
-    function init(context) {
+    function initLines(context) {
         const pixi = context.pixi;
         const loader = PIXI.Loader.shared;
         _didInit = true;
@@ -43,8 +43,8 @@ export function pixiLines(projection, context) {
     };
 
 
-    function render(graph, entities) {
-        if (!_didInit) init(context);
+    function renderLines(graph, entities) {
+        if (!_didInit) initLines(context);
         const pixi = context.pixi;
 
         let pathData = entities
@@ -107,5 +107,5 @@ export function pixiLines(projection, context) {
     }
 
 
-    return render;
+    return renderLines;
 }

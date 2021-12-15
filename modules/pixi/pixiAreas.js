@@ -20,7 +20,7 @@ export function pixiAreas(projection, context) {
     let _didInit = false;
 
 
-    function init(context) {
+    function initAreas(context) {
         const pixi = context.pixi;
         const loader = PIXI.Loader.shared;
         _didInit = true;
@@ -43,8 +43,8 @@ export function pixiAreas(projection, context) {
     };
 
 
-    function render(graph, entities) {
-        if (!_didInit) init(context);
+    function renderAreas(graph, entities) {
+        if (!_didInit) initAreas(context);
         const pixi = context.pixi;
 
         let pathData = entities
@@ -103,5 +103,5 @@ export function pixiAreas(projection, context) {
     }
 
 
-    return render;
+    return renderAreas;
 }

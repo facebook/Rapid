@@ -797,6 +797,7 @@ export function rendererMap(context) {
 
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
+
         drawPoints(graph, data);
         drawVertices(graph, data);
         drawLines(graph, data);
