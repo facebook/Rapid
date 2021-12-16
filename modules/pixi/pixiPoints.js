@@ -1,14 +1,14 @@
 import * as PIXI from 'pixi.js';
 
 
-export function pixiPoints(projection, context) {
+export function pixiPoints(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
   let _templates = {};
   let _sprites = {};
   let _didInit = false;
 
 
-  function initPoints(context) {
+  function initPoints() {
     // prepare template geometry
     _templates.point = new PIXI.Graphics();
     _templates.point
@@ -20,7 +20,7 @@ export function pixiPoints(projection, context) {
     // prepare sprites
     const loader = PIXI.Loader.shared;
     loader.add('dist/img/maki-spritesheet.json');
-    loader.load((loader, resources) => {
+    loader.load(loader => {
       let sheet = loader.resources['dist/img/maki-spritesheet.json'];
       _sprites.cafe = new PIXI.Sprite(sheet.textures['cafe-11.svg']);
       _sprites.feesh = new PIXI.Sprite(sheet.textures['aquarium-11.svg']);
@@ -32,12 +32,11 @@ export function pixiPoints(projection, context) {
 
 
   function renderPoints(graph, entities) {
-    if (!_didInit) initPoints(context);
+    if (!_didInit) initPoints();
 
     const pixi = context.pixi;
     let data = entities
-      .filter(entity => entity.geometry(graph) === 'point')
-      .sort((a, b) => b.loc[1] - a.loc[1]);
+      .filter(entity => entity.geometry(graph) === 'point');
 
     // gather ids to keep
     let keep = {};

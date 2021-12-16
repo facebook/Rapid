@@ -522,7 +522,7 @@ export function rendererMap(context) {
         if (mode && mode.id === 'select') {
             // update selected vertices - the user might have just double-clicked a way,
             // creating a new vertex, triggering a partial redraw without a mode change
-            surface.call(drawVertices.drawSelected, graph, map.extent());
+            // surface.call(drawVertices.drawSelected, graph, map.extent());
         }
 
         surface
@@ -536,19 +536,22 @@ export function rendererMap(context) {
         dispatch.call('drawn', this, {full: true});
     }
 
+
     map.init = function() {
+        drawPoints = pixiPoints(context);
+        drawVertices = pixiVertices(context);
+        drawLines = pixiLines(context);
+        drawAreas = pixiAreas(context);
+
         drawLayers = svgLayers(projection, context);
         // drawPoints = svgPoints(projection, context);
-        drawPoints = pixiPoints(projection, context);
         // drawVertices = svgVertices(projection, context);
-        drawVertices = pixiVertices(projection, context);
-        //drawLines = svgLines(projection, context);
-        drawLines = pixiLines(projection, context);
+        // drawLines = svgLines(projection, context);
         // drawAreas = svgAreas(projection, context);
-        drawAreas = pixiAreas(projection, context);
         drawMidpoints = svgMidpoints(projection, context);
         drawLabels = svgLabels(projection, context);
     };
+
 
     function editOff() {
         context.features().resetStats();

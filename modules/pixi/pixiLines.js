@@ -13,7 +13,7 @@ import { utilDetect } from '../util/detect';
 import { rapid_config } from '../../data/rapid_config.json';
 
 
-export function pixiLines(projection, context) {
+export function pixiLines(context) {
     var detected = utilDetect();
     let scene = new Map();
     let sprites = {};

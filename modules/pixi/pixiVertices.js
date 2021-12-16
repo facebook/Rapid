@@ -1,13 +1,13 @@
 import * as PIXI from 'pixi.js';
 
 
-export function pixiVertices(projection, context) {
+export function pixiVertices(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
   let _templates = {};
   let _didInit = false;
 
 
-  function initVertices(context) {
+  function initVertices() {
     // prepare template geometry
     _templates.plainVertex = new PIXI.Graphics();
     _templates.plainVertex
@@ -29,12 +29,11 @@ export function pixiVertices(projection, context) {
 
 
   function renderVertices(graph, entities) {
-    if (!_didInit) initVertices(context);
+    if (!_didInit) initVertices();
 
     const pixi = context.pixi;
     let data = entities
-      .filter(entity => entity.geometry(graph) === 'vertex')
-      .sort((a, b) => b.loc[1] - a.loc[1]);
+      .filter(entity => entity.geometry(graph) === 'vertex');
 
     // gather ids to keep
     let keep = {};
