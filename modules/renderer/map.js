@@ -10,8 +10,8 @@ import _throttle from 'lodash-es/throttle';
 import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
-import { svgAreas, svgLabels, svgLayers, svgMidpoints, } from '../svg';
-import { pixiPoints, pixiVertices, pixiLines, pixiAreas } from '../pixi';
+import { svgAreas, svgLayers, svgMidpoints, } from '../svg';
+import { pixiPoints, pixiVertices, pixiLines, pixiAreas, pixiLabels } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -529,8 +529,8 @@ export function rendererMap(context) {
             // .call(drawVertices, graph, data, filter, map.extent(), fullRedraw) // PIXI-FIED
             //.call(drawLines, graph, data, filter) //PIXI_FIED
             //.call(drawAreas, graph, data, filter) //PIXI_FIED
-            .call(drawMidpoints, graph, data, filter, map.trimmedExtent())
-            .call(drawLabels, graph, data, filter, _dimensions, fullRedraw);
+            .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
+            // .call(drawLabels, graph, data, filter, _dimensions, fullRedraw); //PIXI-IFIED
             // .call(drawPoints, graph, data, filter);  // THIS IS PIXI
 
         dispatch.call('drawn', this, {full: true});
@@ -549,7 +549,7 @@ export function rendererMap(context) {
         // drawLines = svgLines(projection, context);
         // drawAreas = svgAreas(projection, context);
         drawMidpoints = svgMidpoints(projection, context);
-        drawLabels = svgLabels(projection, context);
+        drawLabels = pixiLabels(projection, context, _dimensions);
     };
 
 
@@ -800,11 +800,11 @@ export function rendererMap(context) {
 
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
-
         drawPoints(graph, data);
         drawVertices(graph, data);
         drawLines(graph, data);
         drawAreas(graph, data);
+        drawLabels(graph, data, _dimensions);
         pixiPending = true;
 
         const ticker = context.pixi.ticker;
