@@ -32,7 +32,11 @@ export function pixiVertices(context) {
     if (!_didInit) initVertices();
 
     let data = entities
-      .filter(entity => entity.geometry(graph) === 'vertex');
+      .filter(entity => {
+        return entity.geometry(graph) === 'vertex' && (
+          graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
+        );
+      });
 
     // gather ids to keep
     let visible = {};
