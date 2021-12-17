@@ -5,8 +5,7 @@ export function pixiLines(context) {
   let _cache = new Map();
 
 
-  function renderLines(graph, entities) {
-    const pixi = context.pixi;
+  function renderLines(layer, graph, entities) {
     const zoom = context.map().zoom();
 
     let data = entities
@@ -19,10 +18,6 @@ export function pixiLines(context) {
     // exit
     [..._cache.entries()].forEach(function cullLines([id, datum]) {
       datum.container.visible = !!visible[id];
-      // if (!visible[id]) {
-      //   pixi.stage.removeChild(datum.container);
-      //   _cache.delete(id);
-      // }
     });
 
     // enter/update
@@ -42,7 +37,7 @@ export function pixiLines(context) {
           container.addChild(casing);
           container.addChild(stroke);
 
-          pixi.stage.addChild(container);
+          layer.addChild(container);
 
           const style = styleMatch(entity.tags);
 

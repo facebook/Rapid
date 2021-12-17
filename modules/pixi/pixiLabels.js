@@ -115,15 +115,13 @@ export function pixiLabels(projection, context) {
         }
     }
 
-    function drawLineLabels(cache, entities, labels) {
-
-        drawPointLabels(cache, entities, labels);
+    function drawLineLabels(layer, cache, entities, labels) {
+        drawPointLabels(layer, cache, entities, labels);
     }
 
 
-    function drawPointLabels( cache, entities, labels) {
+    function drawPointLabels(layer, cache, entities, labels) {
         let data = entities;
-        const pixi = context.pixi;
 
         // gather ids to keep
         let keep = {};
@@ -133,7 +131,7 @@ export function pixiLabels(projection, context) {
         // exit
         [...cache.entries()].forEach(([id, data]) => {
         if (!keep[id]) {
-            pixi.stage.removeChild(data.container);
+            layer.removeChild(data.container);
             cache.delete(id);
         }
         });
@@ -149,7 +147,7 @@ export function pixiLabels(projection, context) {
                 text.y = 0;
                 const container = new PIXI.Container();
                 container.addChild(text);
-                pixi.stage.addChild(container);
+                layer.addChild(container);
 
                 datum = {
                     loc: [labels[i].x, labels[i].y],
@@ -174,10 +172,10 @@ export function pixiLabels(projection, context) {
     }
 
 
-    function drawAreaLabels(entities, labels) {
+    function drawAreaLabels(layer, entities, labels) {
         let filteredEntities = entities.filter( (entity, i) => labels[i].hasOwnProperty('x') && labels[i].hasOwnProperty('y'));
         let filteredLabels = labels.filter( label => label.hasOwnProperty('x') && label.hasOwnProperty('y'));
-        drawPointLabels(_areacache, filteredEntities, filteredLabels);
+        drawPointLabels(layer, _areacache, filteredEntities, filteredLabels);
     }
 
 
@@ -244,7 +242,7 @@ export function pixiLabels(projection, context) {
     }
 
 
-    function drawLabels(graph, entities, dimensions) {
+    function drawLabels(layer, graph, entities, dimensions) {
         if (!_didInit) initLabels(context);
 
         var wireframe = context.surface().classed('fill-wireframe');
@@ -667,16 +665,16 @@ export function pixiLabels(projection, context) {
         }
 
         // points
-        drawPointLabels( _pointcache, labelled.point, positions.point);
+        drawPointLabels(layer, _pointcache, labelled.point, positions.point);
         // drawPointLabels(halo, labelled.point, filter, 'pointlabel-halo', positions.point);
 
         // lines
         // drawLinePaths(layer, labelled.line, filter, '', positions.line);
-        drawLineLabels(_linecache, labelled.line, positions.line);
+        drawLineLabels(layer, _linecache, labelled.line, positions.line);
         // drawLineLabels(halo, labelled.line, filter, 'linelabel-halo', positions.line);
 
         // areas
-         drawAreaLabels( labelled.area,  positions.area);
+         drawAreaLabels(layer, labelled.area,  positions.area);
         // drawAreaLabels(halo, labelled.area, filter, 'arealabel-halo', positions.area);
         // drawAreaIcons(label, labelled.area, filter, 'areaicon', positions.area);
         // drawAreaIcons(halo, labelled.area, filter, 'areaicon-halo', positions.area);

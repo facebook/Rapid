@@ -5,9 +5,7 @@ export function pixiAreas(context) {
   let _cache = new Map();
 
 
-  function renderAreas(graph, entities) {
-    const pixi = context.pixi;
-
+  function renderAreas(layer, graph, entities) {
     let data = entities
       .filter(entity => entity.geometry(graph) === 'area');
 
@@ -18,10 +16,6 @@ export function pixiAreas(context) {
     // exit
     [..._cache.entries()].forEach(function cullAreas([id, datum]) {
       datum.graphics.visible = !!visible[id];
-      // if (!visible[id]) {
-      //   pixi.stage.removeChild(datum.graphics);
-      //   _cache.delete(id);
-      // }
     });
 
     // enter/update
@@ -35,7 +29,7 @@ export function pixiAreas(context) {
 
           const graphics = new PIXI.Graphics();
           graphics.name = entity.id;
-          pixi.stage.addChild(graphics);
+          layer.addChild(graphics);
 
           const style = styleMatch(entity.tags);
 

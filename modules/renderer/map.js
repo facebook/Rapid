@@ -794,23 +794,55 @@ export function rendererMap(context) {
     }
 
 
-    let pixiPending = false;
+    let _pixiInit = false;
+    let _pixiPending = false;
+
     function redrawPixi() {
-        if (pixiPending) return;
+        if (_pixiPending) return;
+
+        const pixi = context.pixi;
+        let areasLayer;
+        let linesLayer;
+        let verticesLayer;
+        let pointsLayer;
+        let labelsLayer;
+
+        if (!_pixiInit) {  // create layers
+          areasLayer = new PIXI.Container();
+          areasLayer.name = 'areas';
+          linesLayer = new PIXI.Container();
+          linesLayer.name = 'lines';
+          verticesLayer = new PIXI.Container();
+          verticesLayer.name = 'vertices';
+          pointsLayer = new PIXI.Container();
+          pointsLayer.name = 'points';
+          labelsLayer = new PIXI.Container();
+          labelsLayer.name = 'labels';
+
+          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer);
+          _pixiInit = true;
+
+        } else {
+           areasLayer = pixi.stage.getChildAt(0);
+           linesLayer = pixi.stage.getChildAt(1);
+           verticesLayer = pixi.stage.getChildAt(2);
+           pointsLayer = pixi.stage.getChildAt(3);
+           labelsLayer = pixi.stage.getChildAt(4);
+        }
 
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
-        drawPoints(graph, data);
-        drawVertices(graph, data);
-        drawLines(graph, data);
-        drawAreas(graph, data);
-        drawLabels(graph, data, _dimensions);
-        pixiPending = true;
+        drawAreas(areasLayer, graph, data);
+        drawLines(linesLayer, graph, data);
+        drawVertices(verticesLayer, graph, data);
+        drawPoints(pointsLayer, graph, data);
+        drawLabels(labelsLayer, graph, data, _dimensions);
+        _pixiPending = true;
 
-        const ticker = context.pixi.ticker;
+        const ticker = pixi.ticker;
         window.requestAnimationFrame(timestamp => {
             ticker.update(timestamp);
-            pixiPending = false;
+            _pixiPending = false;
         });
     }
 

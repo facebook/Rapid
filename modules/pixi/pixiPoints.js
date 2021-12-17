@@ -31,10 +31,9 @@ export function pixiPoints(context) {
   }
 
 
-  function renderPoints(graph, entities) {
+  function renderPoints(layer, graph, entities) {
     if (!_didInit) initPoints();
 
-    const pixi = context.pixi;
     let data = entities
       .filter(entity => entity.geometry(graph) === 'point');
 
@@ -45,10 +44,6 @@ export function pixiPoints(context) {
     // exit
     [..._cache.entries()].forEach(function cullPoints([id, datum]) {
       datum.container.visible = !!visible[id];
-      // if (!visible[id]) {
-      //   pixi.stage.removeChild(datum.container);
-      //   _cache.delete(id);
-      // }
     });
 
     // enter/update
@@ -68,7 +63,7 @@ export function pixiPoints(context) {
           _sprites.feesh.x = -5;  //?
           _sprites.feesh.y = -5;
 
-          pixi.stage.addChild(container);
+          layer.addChild(container);
 
           datum = {
             loc: entity.loc,

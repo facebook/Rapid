@@ -28,10 +28,9 @@ export function pixiVertices(context) {
   }
 
 
-  function renderVertices(graph, entities) {
+  function renderVertices(layer, graph, entities) {
     if (!_didInit) initVertices();
 
-    const pixi = context.pixi;
     let data = entities
       .filter(entity => entity.geometry(graph) === 'vertex');
 
@@ -42,11 +41,6 @@ export function pixiVertices(context) {
     // exit
     [..._cache.entries()].forEach(function cullVertices([id, datum]) {
       datum.container.visible = !!visible[id];
-      // if (!visible[id]) {
-      //   pixi.stage.removeChild(datum.container);
-      //   _cache.delete(id);
-      //   datum.container.visible = false;
-      // }
     });
 
     // enter/update
@@ -61,7 +55,7 @@ export function pixiVertices(context) {
           const container = new PIXI.Container();
           container.name = entity.id;
           container.addChild(graphic);
-          pixi.stage.addChild(container);
+          layer.addChild(container);
 
           datum = {
             loc: entity.loc,
