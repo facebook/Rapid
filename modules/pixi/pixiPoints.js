@@ -59,9 +59,9 @@ export function pixiPoints(context) {
         if (!datum) {   // make point if needed
           const template = _templates.point;
           const graphic = new PIXI.Graphics(template.geometry);
-          graphic.name = entity.id;
 
           const container = new PIXI.Container();
+          container.name = entity.id;
           container.addChild(graphic);
           container.addChild(_sprites.feesh);
 

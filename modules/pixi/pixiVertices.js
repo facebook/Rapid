@@ -57,9 +57,9 @@ export function pixiVertices(context) {
         if (!datum) {   // make point if needed
           const template = entity.hasInterestingTags() ? _templates.interestingVertex : _templates.plainVertex;
           const graphic = new PIXI.Graphics(template.geometry);
-          graphic.name = entity.id;
 
           const container = new PIXI.Container();
+          container.name = entity.id;
           container.addChild(graphic);
           pixi.stage.addChild(container);
 
