@@ -36,21 +36,22 @@ export function pixiVertices(context) {
       .filter(entity => entity.geometry(graph) === 'vertex');
 
     // gather ids to keep
-    let keep = {};
-    data
-      .forEach(entity => keep[entity.id] = true);
+    let visible = {};
+    data.forEach(entity => visible[entity.id] = true);
 
     // exit
-    [..._cache.entries()].forEach(([id, data]) => {
-      if (!keep[id]) {
-        pixi.stage.removeChild(data.container);
-        _cache.delete(id);
-      }
+    [..._cache.entries()].forEach(function cullVertices([id, datum]) {
+      datum.container.visible = !!visible[id];
+      // if (!visible[id]) {
+      //   pixi.stage.removeChild(datum.container);
+      //   _cache.delete(id);
+      //   datum.container.visible = false;
+      // }
     });
 
     // enter/update
     data
-      .forEach(entity => {
+      .forEach(function prepareVertices(entity) {
         let datum = _cache.get(entity.id);
 
         if (!datum) {   // make point if needed
@@ -64,7 +65,6 @@ export function pixiVertices(context) {
 
           datum = {
             loc: entity.loc,
-            graphic: graphic,
             container: container
           };
 
@@ -75,6 +75,7 @@ export function pixiVertices(context) {
         const coord = context.projection(datum.loc);
         datum.container.x = coord[0];
         datum.container.y = coord[1];
+        datum.container.visible = true;
       });
   }
 

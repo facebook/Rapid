@@ -1,111 +1,68 @@
 import * as PIXI from 'pixi.js';
-import { range as d3_range } from 'd3-array';
-import { utilArrayFlatten, utilArrayGroupBy } from '@id-sdk/util';
-
-import _isEqual from 'lodash-es/isEqual';
-import _omit from 'lodash-es/omit';
-import deepEqual from 'fast-deep-equal';
-
-import { svgMarkerSegments, svgPath, svgRelationMemberTags, svgSegmentWay } from '../svg/helpers';
-import { svgTagClasses } from '../svg/tag_classes';
-import { osmEntity, osmOldMultipolygonOuterMember } from '../osm';
-import { utilDetect } from '../util/detect';
-import { rapid_config } from '../../data/rapid_config.json';
 
 
 export function pixiLines(context) {
-    var detected = utilDetect();
-    let scene = new Map();
-    let sprites = {};
-    let _didInit = false;
+  let _cache = new Map();
 
 
-    function initLines(context) {
-        const pixi = context.pixi;
-        const loader = PIXI.Loader.shared;
-        _didInit = true;
-    }
+  function renderLines(graph, entities) {
+    const pixi = context.pixi;
 
+    let data = entities
+      .filter(entity => entity.geometry(graph) === 'line');
 
-    var highway_stack = {
-        motorway: 0,
-        motorway_link: 1,
-        trunk: 2,
-        trunk_link: 3,
-        primary: 4,
-        primary_link: 5,
-        secondary: 6,
-        tertiary: 7,
-        unclassified: 8,
-        residential: 9,
-        service: 10,
-        footway: 11
-    };
+    // gather ids to keep
+    let visible = {};
+    data.forEach(entity => visible[entity.id] = true);
 
+    // exit
+    [..._cache.entries()].forEach(function cullLines([id, datum]) {
+      datum.graphics.visible = !!visible[id];
+      // if (!visible[id]) {
+      //   pixi.stage.removeChild(datum.graphics);
+      //   _cache.delete(id);
+      // }
+    });
 
-    function renderLines(graph, entities) {
-        if (!_didInit) initLines(context);
-        const pixi = context.pixi;
+    // enter/update
+    data
+      .forEach(function prepareLines(entity) {
+        let datum = _cache.get(entity.id);
 
-        let pathData = entities
-            .filter(entity => entity.geometry(graph) === 'line');
+        if (!datum) {   // make line if needed
+          const geojson = entity.asGeoJSON(graph);
+          const coords = geojson.coordinates;
 
-        // gather ids to keep
-        let keep = {};
-        pathData
-        .forEach(entity => keep[entity.id] = true);
+          const graphics = new PIXI.Graphics();
+          graphics.name = entity.id;
+          pixi.stage.addChild(graphics);
 
-        // exit
-        [...scene.entries()].forEach(([id, pathData]) => {
-        if (!keep[id]) {
-            pixi.stage.removeChild(pathData.graphics);
-            scene.delete(id);
+          datum = {
+            coords: coords,
+            graphics: graphics
+          };
+
+          _cache.set(entity.id, datum);
         }
+
+        // update
+        const points = datum.coords.map(coord => context.projection(coord));
+
+        datum.graphics
+          .clear()
+          .lineStyle({ color: 0xff00ff, width: 3 });
+
+        points.forEach(([x, y], i) => {
+          if (i === 0) {
+            datum.graphics.moveTo(x, y);
+          } else {
+            datum.graphics.lineTo(x, y);
+          }
         });
 
-        // enter/update
-        pathData
-        .forEach(way => {
-            let polygon = scene.get(way.id);
-            // make poly if needed
-            if (!polygon) {
-            const geojson = way.asGeoJSON(graph);
-            const coords = geojson.coordinates;
+        datum.graphics.visible = true;
+      });
+  }
 
-            const graphics = new PIXI.Graphics();
-            graphics.name = way.id;
-
-            polygon = {
-                color: 0xff00ff,
-                coords: coords,
-                graphics: graphics
-            };
-            scene.set(way.id, polygon);
-            }
-
-            // update
-            const pathCoords = polygon.coords.map(coord => context.projection(coord));
-            polygon.graphics.clear();
-            polygon.graphics.lineStyle({
-                color: 0xff26db,
-                width: 3,
-            });
-            pathCoords.forEach(([x, y], i) => {
-                if (i === 0) {
-                    polygon.graphics.moveTo(x, y);
-                } else {
-                    polygon.graphics.lineTo(x, y);
-                }
-            });
-
-            pixi.stage.addChild(polygon.graphics);
-        });
-
-        //TODO: Worry about covered vs. uncovered
-
-        //TODO: Add markers, one-way indicators
-    }
-
-
-    return renderLines;
+  return renderLines;
 }
