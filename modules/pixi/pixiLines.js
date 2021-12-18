@@ -62,7 +62,7 @@ export function pixiLines(context) {
 
           graphic
             .clear()
-            .lineStyle({ color: color, width: width });
+            .lineStyle({ color: color, width: width, alpha: datum.style.alpha });
 
           points.forEach(([x, y], i) => {
             if (i === 0) {
@@ -152,22 +152,48 @@ const STYLES = {
     casingColor: 0x746f6f,
     strokeWidth: 5,
     strokeColor: 0xc5b59f
+  },
+  river: {
+    casingWidth: 10,
+    casingColor: 0x444444,
+    strokeWidth: 8,
+    strokeColor: 0x77dddd
+  },
+  stream: {
+    casingWidth: 7,
+    casingColor: 0x444444,
+    strokeWidth: 5,
+    strokeColor: 0x77dddd
   }
 };
 
 const TAGSTYLES = {
   highway: {
     motorway: 'motorway',
+    motorway_link: 'motorway',
     trunk: 'trunk',
+    trunk_link: 'trunk',
     primary: 'primary',
+    primary_link: 'primary',
     secondary: 'secondary',
+    secondary_link: 'secondary',
     tertiary: 'tertiary',
+    tertiary_link: 'tertiary',
     unclassified: 'unclassified',
+    unclassified_link: 'unclassified',
     residential: 'residential',
+    residential_link: 'residential',
     living_street: 'living_street',
+    living_street_link: 'living_street',
     service: 'service',
+    service_link: 'service',
     bus_guideway: 'special_service',
     track: 'track'
+  },
+  waterway: {
+    river: 'river',
+    dam: 'default',
+    '*': 'stream'
   },
   service: {
     '*': 'special_service'
@@ -179,7 +205,18 @@ function styleMatch(tags) {
   let style = STYLES.default;
   let selectivity = 999;
 
+  let hasBridge = false;
+  let hasTunnel = false;
+
   for (const k in tags) {
+    if (k === 'bridge') {
+      hasBridge = true;
+      continue;
+    }
+    if (k === 'tunnel') {
+      hasTunnel = true;
+      continue;
+    }
     const v = tags[k];
     const group = TAGSTYLES[k];
     if (!group || !v) continue;
@@ -194,6 +231,17 @@ function styleMatch(tags) {
       selectivity = groupsize;
       if (selectivity === 1) break;  // no need to keep looking at tags
     }
+  }
+
+  style = Object.assign({}, style);  // shallow copy
+  if (hasBridge) {
+    style.casingWidth += 6;
+    style.casingColor = 0x000000;
+  }
+  if (hasTunnel) {
+    style.alpha = 0.5;
+  } else {
+    style.alpha = 1.0;
   }
 
   return style;

@@ -13,7 +13,7 @@ export function pixiVertices(context) {
     _templates.plainVertex
       .lineStyle(1, 0x000000)
       .beginFill(0xaaaaaa, 1)
-      .drawCircle(0, 0, 4)
+      .drawCircle(0, 0, 4.5)
       .endFill();
 
     // prepare template geometry
@@ -21,7 +21,7 @@ export function pixiVertices(context) {
     _templates.interestingVertex
       .lineStyle(1, 0x000000)
       .beginFill(0xdddddd, 1)
-      .drawCircle(0, 0, 6)
+      .drawCircle(0, 0, 8)
       .endFill();
 
     _didInit = true;
