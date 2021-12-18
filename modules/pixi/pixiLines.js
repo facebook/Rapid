@@ -62,7 +62,13 @@ export function pixiLines(context) {
 
           graphic
             .clear()
-            .lineStyle({ color: color, width: width, alpha: datum.style.alpha });
+            .lineStyle({
+              color: color,
+              width: width,
+              alpha: datum.style.alpha,
+              join: datum.style.join,
+              cap: datum.style.cap
+            });
 
           points.forEach(([x, y], i) => {
             if (i === 0) {
@@ -234,15 +240,20 @@ function styleMatch(tags) {
   }
 
   style = Object.assign({}, style);  // shallow copy
+  style.join= PIXI.LINE_JOIN.ROUND;
+  style.cap = PIXI.LINE_CAP.ROUND;
+  style.alpha = 1.0;
+
   if (hasBridge) {
-    style.casingWidth += 6;
+    style.casingWidth += 7;
     style.casingColor = 0x000000;
+    style.cap = PIXI.LINE_CAP.BUTT;
   }
   if (hasTunnel) {
     style.alpha = 0.5;
-  } else {
-    style.alpha = 1.0;
   }
+
+
 
   return style;
 }
