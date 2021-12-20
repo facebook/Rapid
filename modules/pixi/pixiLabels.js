@@ -71,12 +71,12 @@ export function pixiLabels(projection, context) {
     function initLabels(context) {
 
         _textStyle = new PIXI.TextStyle({
-            dropShadow: true,
-            dropShadowColor: '#ff26db',
-            dropShadowDistance: 3,
-            fill: '#e5e1e1',
-            fontFamily: 'Georgia',
-            fontStyle: 'italic'
+            dropShadowColor: 'white',
+            dropShadowDistance: 2,
+            fontSize: 12,
+            fontWeight: 600,
+            stroke: '#f2f2f2',
+            strokeThickness: 4
         });
         _didInit = true;
     }
