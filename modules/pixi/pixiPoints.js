@@ -19,12 +19,18 @@ export function pixiPoints(context) {
 
     // prepare sprites
     const loader = PIXI.Loader.shared;
-    loader.add('dist/img/maki-spritesheet.json');
+    loader.add('dist/img/icons/maki-spritesheet.json');
+    loader.add('dist/img/icons/temaki-spritesheet.json');
+    loader.add('dist/img/icons/fontawesome-spritesheet.json');
     loader.load(loader => {
-      let sheet = loader.resources['dist/img/maki-spritesheet.json'];
+      let sheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
+      let temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
+      let fontawesomesheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
       _sprites.cafe = new PIXI.Sprite(sheet.textures['cafe-11.svg']);
       _sprites.feesh = new PIXI.Sprite(sheet.textures['aquarium-11.svg']);
       _sprites.tree = new PIXI.Sprite(sheet.textures['park-11.svg']);
+      _sprites.accounting = new PIXI.Sprite(temakiSheet.textures['accounting.svg']);
+      _sprites.ambulance = new PIXI.Sprite(fontawesomesheet.textures['fas-ambulance.svg']);
 //      _sprites.feesh.anchor.set(0.5);
     });
     _didInit = true;
@@ -58,11 +64,14 @@ export function pixiPoints(context) {
           const container = new PIXI.Container();
           container.name = entity.id;
           container.addChild(graphic);
-          container.addChild(_sprites.feesh);
+          let thisSprite = _sprites.feesh;
+          container.addChild(thisSprite);
 
-          _sprites.feesh.x = -5;  //?
-          _sprites.feesh.y = -5;
-
+          let iconsize = 10;
+          thisSprite.x = -0.5 *iconsize;  //?
+          thisSprite.y = -0.5 *iconsize;  //?
+          thisSprite.width = iconsize;
+          thisSprite.height = iconsize;
           layer.addChild(container);
 
           datum = {
