@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js';
+import { DashLine } from 'pixi-dashed-line';
+import { osmPavedTags } from '../osm/tags';
 
 
 export function pixiLines(context) {
@@ -54,27 +56,38 @@ export function pixiLines(context) {
         const points = datum.coords.map(coord => context.projection(coord));
 
         datum.container.children.forEach((graphic, index) => {
-          const color = (index === 0) ? datum.style.casingColor : datum.style.strokeColor;
-          let width = (index === 0) ? datum.style.casingWidth : datum.style.strokeWidth;
+          const which = (index === 0 ? 'casing' : 'stroke');
+          let width = datum.style[which].width;
           if (zoom < 17) width -= 2;
           if (zoom < 15) width -= 2;
           if (width < 0) width = 0;
 
-          graphic
-            .clear()
-            .lineStyle({
-              color: color,
+          let g = graphic.clear();
+
+          if (datum.style[which].dash) {
+            g = new DashLine(g, {
+              dash: datum.style[which].dash,
+              color: datum.style[which].color,
               width: width,
-              alpha: datum.style.alpha,
-              join: datum.style.join,
-              cap: datum.style.cap
+              alpha: datum.style[which].alpha || 1.0,
+              join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
+              cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
             });
+          } else {
+            g = g.lineStyle({
+              color: datum.style[which].color,
+              width: width,
+              alpha: datum.style[which].alpha || 1.0,
+              join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
+              cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
+            });
+          }
 
           points.forEach(([x, y], i) => {
             if (i === 0) {
-              graphic.moveTo(x, y);
+              g.moveTo(x, y);
             } else {
-              graphic.lineTo(x, y);
+              g.lineTo(x, y);
             }
           });
         });
@@ -88,88 +101,144 @@ export function pixiLines(context) {
 
 const STYLES = {
   default: {
-    casingWidth: 5,
-    casingColor: 0x444444,
-    strokeWidth: 3,
-    strokeColor: 0xcccccc
+    casing: {
+      width: 5,
+      color: 0x444444
+    },
+    stroke: {
+      width: 3,
+      color: 0xcccccc
+    }
   },
   motorway: {
-    casingWidth: 10,
-    casingColor: 0x70372f,
-    strokeWidth: 8,
-    strokeColor: 0xcf2081
+    casing: {
+      width: 10,
+      color: 0x70372f
+    },
+    stroke: {
+      width: 8,
+      color: 0xcf2081
+    }
   },
   trunk: {
-    casingWidth: 10,
-    casingColor: 0x70372f,
-    strokeWidth: 8,
-    strokeColor: 0xdd2f22
+    casing: {
+      width: 10,
+      color: 0x70372f
+    },
+    stroke: {
+      width: 8,
+      color: 0xdd2f22
+    }
   },
   primary: {
-    casingWidth: 10,
-    casingColor: 0x70372f,
-    strokeWidth: 8,
-    strokeColor: 0xf99806
+    casing: {
+      width: 10,
+      color: 0x70372f
+    },
+    stroke: {
+      width: 8,
+      color: 0xf99806
+    }
   },
   secondary: {
-    casingWidth: 10,
-    casingColor: 0x70372f,
-    strokeWidth: 8,
-    strokeColor: 0xf3f312
+    casing: {
+      width: 10,
+      color: 0x70372f
+    },
+    stroke: {
+      width: 8,
+      color: 0xf3f312
+    }
   },
   tertiary: {
-    casingWidth: 10,
-    casingColor: 0x70372f,
-    strokeWidth: 8,
-    strokeColor: 0xfff9b3
+    casing: {
+      width: 10,
+      color: 0x70372f
+    },
+    stroke: {
+      width: 8,
+      color: 0xfff9b3
+    }
   },
   unclassified: {
-    casingWidth: 10,
-    casingColor: 0x444444,
-    strokeWidth: 8,
-    strokeColor: 0xddccaa
+    casing: {
+      width: 10,
+      color: 0x444444
+    },
+    stroke: {
+      width: 8,
+      color: 0xddccaa
+    }
   },
   residential: {
-    casingWidth: 10,
-    casingColor: 0x444444,
-    strokeWidth: 8,
-    strokeColor: 0xffffff
+    casing: {
+      width: 10,
+      color: 0x444444
+    },
+    stroke: {
+      width: 8,
+      color: 0xffffff
+    }
   },
   living_street: {
-    casingWidth: 7,
-    casingColor: 0xffffff,
-    strokeWidth: 5,
-    strokeColor: 0xcccccc
+    casing: {
+      width: 7,
+      color: 0xffffff
+    },
+    stroke: {
+      width: 5,
+      color: 0xcccccc
+    }
   },
   service: {
-    casingWidth: 7,
-    casingColor: 0x444444,
-    strokeWidth: 5,
-    strokeColor: 0xffffff
+    casing: {
+      width: 7,
+      color: 0x444444
+    },
+    stroke: {
+      width: 5,
+      color: 0xffffff
+    }
   },
   special_service: {
-    casingWidth: 7,
-    casingColor: 0x444444,
-    strokeWidth: 5,
-    strokeColor: 0xfff6e4
+    casing: {
+      width: 7,
+      color: 0x444444
+    },
+    stroke: {
+      width: 5,
+      color: 0xfff6e4
+    }
   },
   track: {
-    casingWidth: 7,
-    casingColor: 0x746f6f,
-    strokeWidth: 5,
-    strokeColor: 0xc5b59f
+    casing: {
+      width: 7,
+      color: 0x746f6f
+    },
+    stroke: {
+      width: 5,
+      color: 0xc5b59f
+    }
   },
   river: {
-    casingWidth: 10,
-    casingColor: 0x444444,
-    strokeWidth: 8,
-    strokeColor: 0x77dddd
+    casing: {
+      width: 10,
+      color: 0x444444
+    },
+    stroke: {
+      width: 8,
+      color: 0x77dddd
+    }
   },
   stream: {
-    casingWidth: 7,
-    casingColor: 0x444444,
-    strokeWidth: 5,
-    strokeColor: 0x77dddd
+    casing: {
+      width: 7,
+      color: 0x444444
+    },
+    stroke: {
+      width: 5,
+      color: 0x77dddd
+    }
   }
 };
 
@@ -211,18 +280,16 @@ function styleMatch(tags) {
   let style = STYLES.default;
   let selectivity = 999;
 
-  let hasBridge = false;
-  let hasTunnel = false;
+  let isBridge = !!tags.bridge;
+  let isTunnel = !!tags.tunnel;
+
+  // determine surface for paved/unpaved
+  let surface = tags.surface;
+  if (tags.highway === 'track' && tags.tracktype !== 'grade1') {
+    surface = surface || 'dirt';
+  }
 
   for (const k in tags) {
-    if (k === 'bridge') {
-      hasBridge = true;
-      continue;
-    }
-    if (k === 'tunnel') {
-      hasTunnel = true;
-      continue;
-    }
     const v = tags[k];
     const group = TAGSTYLES[k];
     if (!group || !v) continue;
@@ -239,21 +306,22 @@ function styleMatch(tags) {
     }
   }
 
-  style = Object.assign({}, style);  // shallow copy
-  style.join= PIXI.LINE_JOIN.ROUND;
-  style.cap = PIXI.LINE_CAP.ROUND;
-  style.alpha = 1.0;
+  style = JSON.parse(JSON.stringify(style));  // deep copy
 
-  if (hasBridge) {
-    style.casingWidth += 7;
-    style.casingColor = 0x000000;
-    style.cap = PIXI.LINE_CAP.BUTT;
+  // overrides
+  if (isBridge) {
+    style.casing.width += 7;
+    style.casing.color = 0x000000;
+    style.casing.cap = PIXI.LINE_CAP.BUTT;
   }
-  if (hasTunnel) {
-    style.alpha = 0.5;
+  if (isTunnel) {
+    style.stroke.alpha = 0.5;
   }
-
-
+  if (surface && !!tags.highway && !osmPavedTags.surface[surface]) {
+    if (!isBridge) style.casing.color = 0xcccccc;
+    style.casing.cap = PIXI.LINE_CAP.BUTT;
+    style.casing.dash = [4, 4];
+  }
 
   return style;
 }

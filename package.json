@@ -65,6 +65,7 @@
     "pannellum": "2.5.6",
     "pbf": "^3.2.1",
     "pixi.js": "^6.2.0",
+    "pixi-dashed-line": "^1.0.0",
     "polygon-clipping": "~0.15.1",
     "prop-types": "^15.7.2",
     "rbush": "3.0.1",
