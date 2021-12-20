@@ -57,12 +57,14 @@ export function pixiLines(context) {
 
         datum.container.children.forEach((graphic, index) => {
           const which = (index === 0 ? 'casing' : 'stroke');
+          let minwidth = (index === 0 ? 3 : 2);
           let width = datum.style[which].width;
           if (zoom < 17) width -= 2;
           if (zoom < 15) width -= 2;
-          if (width < 0) width = 0;
+          if (width < minwidth) width = minwidth;
 
           let g = graphic.clear();
+          if (datum.style[which].alpha === 0) return;
 
           if (datum.style[which].dash) {
             g = new DashLine(g, {
@@ -110,6 +112,7 @@ const STYLES = {
       color: 0xcccccc
     }
   },
+
   motorway: {
     casing: {
       width: 10,
@@ -220,6 +223,116 @@ const STYLES = {
       color: 0xc5b59f
     }
   },
+
+  pedestrian: {
+    casing: {
+      width: 7,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [8, 8],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 5,
+      color: 0x998888
+    }
+  },
+  path: {
+    casing: {
+      width: 5,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [6, 6],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x998888
+    }
+  },
+  footway: {
+    casing: {
+      width: 5,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [6, 6],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x998888
+    }
+  },
+  crossing_marked: {
+    casing: {
+      width: 5,
+      color: 0xddccaa
+    },
+    stroke: {
+      dash: [6, 3],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x4c4444
+    }
+  },
+  crossing_unmarked: {
+    casing: {
+      width: 5,
+      color: 0xddccaa
+    },
+    stroke: {
+      dash: [6, 4],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x776a6a
+    }
+  },
+  cycleway: {
+    casing: {
+      width: 5,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [6, 6],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x58a9ed
+    }
+  },
+  bridleway: {
+    casing: {
+      width: 5,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [6, 6],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0xe06d5f
+    }
+  },
+  corridor: {
+    casing: {
+      width: 5,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [2, 8],
+      cap: PIXI.LINE_CAP.ROUND,
+      width: 3,
+      color: 0x8cd05f
+    }
+  },
+  steps: {
+    casing: {
+      width: 5,
+      color: 0xffffff
+    },
+    stroke: {
+      dash: [3, 3],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x81d25c
+    }
+  },
+
   river: {
     casing: {
       width: 10,
@@ -239,10 +352,155 @@ const STYLES = {
       width: 5,
       color: 0x77dddd
     }
+  },
+
+  runway: {
+    casing: {
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 10,
+      color: 0x000000
+    },
+    stroke: {
+      dash: [24, 48],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 8,
+      color: 0xffffff
+    }
+  },
+  taxiway: {
+    casing: {
+      width: 7,
+      color: 0x444444
+    },
+    stroke: {
+      width: 5,
+      color: 0xffff00
+    }
+  },
+
+  railway: {
+    casing: {
+      width: 7,
+      cap: PIXI.LINE_CAP.BUTT,
+      color: 0x555555
+    },
+    stroke: {
+      dash: [12, 12],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 2,
+      color: 0xeeeeee
+    }
+  },
+
+  ferry: {
+    casing: {
+      alpha: 0,  // disable it
+      width: 2,
+      cap: PIXI.LINE_CAP.BUTT,
+      color: 0x000000
+    },
+    stroke: {
+      dash: [12, 8],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x58a9ed
+    }
+  },
+
+  boundary: {
+    casing: {
+      width: 6,
+      cap: PIXI.LINE_CAP.BUTT,
+      color: 0x82b5fe
+    },
+    stroke: {
+      dash: [20, 5, 5, 5],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 2,
+      color: 0xffffff
+    }
+  },
+  boundary_park: {
+    casing: {
+      width: 6,
+      cap: PIXI.LINE_CAP.BUTT,
+      color: 0x82b5fe
+    },
+    stroke: {
+      dash: [20, 5, 5, 5],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 2,
+      color: 0xb0e298
+    }
+  },
+
+  barrier: {
+    casing: {
+      alpha: 0,  // disable it
+      width: 2,
+      cap: PIXI.LINE_CAP.ROUND,
+      color: 0x000000
+    },
+    stroke: {
+      dash: [15, 5, 1, 5],
+      cap: PIXI.LINE_CAP.ROUND,
+      width: 3,
+      color: 0xdddddd
+    }
+  },
+  barrier_wall: {
+    casing: {
+      alpha: 0,  // disable it
+      width: 2,
+      cap: PIXI.LINE_CAP.ROUND,
+      color: 0x000000
+    },
+    stroke: {
+      dash: [15, 5, 1, 5],
+      cap: PIXI.LINE_CAP.ROUND,
+      width: 3,
+      color: 0xdddddd
+    }
+  },
+  barrier_hedge: {
+    casing: {
+      alpha: 0,  // disable it
+      width: 2,
+      cap: PIXI.LINE_CAP.BUTT,
+      color: 0x000000
+    },
+    stroke: {
+      dash: [16, 3, 9, 3],
+      cap: PIXI.LINE_CAP.BUTT,
+      width: 3,
+      color: 0x8cd05f
+    }
   }
+
 };
 
 const TAGSTYLES = {
+  aeroway: {
+    runway: 'runway',
+    taxiway: 'taxiway'
+  },
+  barrier: {
+    hedge: 'barrier_hedge',
+    retaining_wall: 'barrier_wall',
+    city_wall: 'barrier_wall',
+    wall: 'barrier_wall',
+    '*': 'barrier'
+  },
+  boundary: {
+    protected_area: 'boundary_park',
+    national_park: 'boundary_park',
+    '*': 'boundary'
+  },
+  crossing: {
+    marked: 'crossing_marked',
+    zebra: 'crossing_marked',
+    '*': 'crossing_unmarked'
+  },
   highway: {
     motorway: 'motorway',
     motorway_link: 'motorway',
@@ -263,7 +521,24 @@ const TAGSTYLES = {
     service: 'service',
     service_link: 'service',
     bus_guideway: 'special_service',
-    track: 'track'
+    track: 'track',
+    pedestrian: 'pedestrian',
+    path: 'path',
+    footway: 'footway',
+    cycleway: 'cycleway',
+    bridleway: 'bridleway',
+    corridor: 'corridor',
+    steps: 'steps'
+  },
+  man_made: {
+    groyne: 'barrier_wall',
+    breakwater: 'barrier_wall'
+  },
+  railway: {
+    '*': 'railway'
+  },
+  route: {
+    'ferry': 'ferry'
   },
   waterway: {
     river: 'river',
@@ -275,19 +550,33 @@ const TAGSTYLES = {
   }
 };
 
+const ROADS = {
+  motorway: true,
+  motorway_link: true,
+  trunk: true,
+  trunk_link: true,
+  primary: true,
+  primary_link: true,
+  secondary: true,
+  secondary_link: true,
+  tertiary: true,
+  tertiary_link: true,
+  unclassified: true,
+  unclassified_link: true,
+  residential: true,
+  residential_link: true,
+  living_street: true,
+  living_street_link: true,
+  service: true,
+  service_link: true,
+  bus_guideway: true,
+  track: true
+}
+
 
 function styleMatch(tags) {
   let style = STYLES.default;
   let selectivity = 999;
-
-  let isBridge = !!tags.bridge;
-  let isTunnel = !!tags.tunnel;
-
-  // determine surface for paved/unpaved
-  let surface = tags.surface;
-  if (tags.highway === 'track' && tags.tracktype !== 'grade1') {
-    surface = surface || 'dirt';
-  }
 
   for (const k in tags) {
     const v = tags[k];
@@ -299,7 +588,7 @@ function styleMatch(tags) {
     let stylename = group[v];
     if (!stylename) stylename = group['*'];  // fallback value
 
-    if (stylename && groupsize < selectivity) {
+    if (stylename && groupsize <= selectivity) {
       style = STYLES[stylename];
       selectivity = groupsize;
       if (selectivity === 1) break;  // no need to keep looking at tags
@@ -309,16 +598,23 @@ function styleMatch(tags) {
   style = JSON.parse(JSON.stringify(style));  // deep copy
 
   // overrides
-  if (isBridge) {
+  if (tags.bridge) {
     style.casing.width += 7;
     style.casing.color = 0x000000;
     style.casing.cap = PIXI.LINE_CAP.BUTT;
   }
-  if (isTunnel) {
+  if (tags.tunnel) {
     style.stroke.alpha = 0.5;
   }
-  if (surface && !!tags.highway && !osmPavedTags.surface[surface]) {
-    if (!isBridge) style.casing.color = 0xcccccc;
+
+  // determine surface for paved/unpaved
+  let surface = tags.surface;
+  let highway = tags.highway;
+  if (highway === 'track' && tags.tracktype !== 'grade1') {
+    surface = surface || 'dirt';
+  }
+  if (surface && ROADS[highway] && !osmPavedTags.surface[surface]) {
+    if (!tags.bridge) style.casing.color = 0xcccccc;
     style.casing.cap = PIXI.LINE_CAP.BUTT;
     style.casing.dash = [4, 4];
   }
