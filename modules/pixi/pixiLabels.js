@@ -71,12 +71,11 @@ export function pixiLabels(projection, context) {
     function initLabels(context) {
 
         _textStyle = new PIXI.TextStyle({
-            dropShadowColor: 'white',
-            dropShadowDistance: 2,
             fontSize: 12,
             fontWeight: 600,
-            stroke: '#f2f2f2',
-            strokeThickness: 4
+            miterLimit: 1,
+            stroke: 'white',
+            strokeThickness: 3
         });
         _didInit = true;
     }
@@ -142,7 +141,7 @@ export function pixiLabels(projection, context) {
             if (!datum) {
                 const text = new PIXI.Text(utilDisplayName(entity, true), _textStyle);
                 text.width = labels[i].width || 100;
-                text.height = labels[i].height || 25;
+                text.height = labels[i].height || 18;
                 text.x = 0;
                 text.y = 0;
                 const container = new PIXI.Container();
@@ -151,7 +150,7 @@ export function pixiLabels(projection, context) {
 
                 datum = {
                     loc: [labels[i].x, labels[i].y],
-                    height: labels[i].height || 25,
+                    height: labels[i].height || 18,
                     width: labels[i].width || 100,
                     label: text,
                     rotation: labels[i].rotation,
@@ -166,7 +165,6 @@ export function pixiLabels(projection, context) {
             datum.container.rotation = datum.rotation || 0;
             datum.container.height = datum.height;
             datum.container.width = datum.width;
-
         });
 
     }
