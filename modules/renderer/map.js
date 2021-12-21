@@ -176,18 +176,24 @@ export function rendererMap(context) {
 
 
 // Init PIXI
-        var pixijunk = document.querySelector('.pixi-data');
+        var pixiContainer = document.querySelector('.pixi-data');
 
         const rect = selection.node().getBoundingClientRect();
         context.pixi = new PIXI.Application({
             width: rect.width,
             height: rect.height,
             backgroundAlpha: 0.0,
-            resizeTo: pixijunk,
+            resizeTo: pixiContainer,
             antialias: true
         });
 
         document.querySelector('.pixi-data').appendChild(context.pixi.view);
+
+        // Register Pixi with the pixi-inspector extension if it is installed
+        // https://github.com/bfanger/pixi-inspector
+        if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
+          window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
+        }
 
         // var interactionManager = context.pixi.renderer.plugins.interaction;
 
