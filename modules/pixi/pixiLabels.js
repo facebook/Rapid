@@ -9,6 +9,7 @@ import { localizer } from '../core/localizer';
 
 import { presetManager } from '../presets';
 import { osmEntity } from '../osm';
+import { getIconSpriteHelper } from './pixiHelpers';
 import { utilDetect } from '../util/detect';
 import { utilDisplayName, utilDisplayNameForPath } from '../util';
 
@@ -114,12 +115,12 @@ export function pixiLabels(projection, context) {
         }
     }
 
-    function drawLineLabels(layer, cache, entities, labels) {
-        drawPointLabels(layer, cache, entities, labels);
+    function drawLineLabels(layer, graph, cache, entities, labels) {
+        drawPointLabels(layer, graph, cache, entities, labels, false);
     }
 
 
-    function drawPointLabels(layer, cache, entities, labels) {
+    function drawPointLabels(layer, graph, cache, entities, labels, drawIcons) {
         let data = entities;
 
         // gather ids to keep
@@ -148,8 +149,25 @@ export function pixiLabels(projection, context) {
                 // text.y = 0;
                 const container = new PIXI.Container();
                 container.name = str;
-                container.addChild(text);
 
+                if (drawIcons) {
+                    const preset = presetManager.match(entity, graph);
+                    const picon = preset && preset.icon;
+
+                    if (picon) {
+                        let thisSprite = getIconSpriteHelper(context, picon);
+
+                        let iconsize = 16;
+                        thisSprite.x = text.width * 0.5 + -0.5 *iconsize;  //?
+                        thisSprite.y = -text.height -0.5 *iconsize;  //?
+                        thisSprite.width = iconsize;
+                        thisSprite.height = iconsize;
+                        container.addChild(thisSprite);
+                    }
+
+
+                container.addChild(text);
+                }
                 layer.addChild(container);
 
                 datum = {
@@ -173,42 +191,42 @@ export function pixiLabels(projection, context) {
     }
 
 
-    function drawAreaLabels(layer, entities, labels) {
+    function drawAreaLabels(layer, graph, entities, labels) {
         let filteredEntities = entities.filter( (entity, i) => labels[i].hasOwnProperty('x') && labels[i].hasOwnProperty('y'));
         let filteredLabels = labels.filter( label => label.hasOwnProperty('x') && label.hasOwnProperty('y'));
-        drawPointLabels(layer, _areacache, filteredEntities, filteredLabels);
+        drawPointLabels(layer, graph, _areacache, filteredEntities, filteredLabels, true);
     }
 
 
-    function drawAreaIcons(selection, entities, filter, classes, labels) {
-        var icons = selection.selectAll('use.' + classes)
-            .filter(filter)
-            .data(entities, osmEntity.key);
+    // function drawAreaIcons(selection, entities, labels) {
+    //     var icons = selection.selectAll('use.' + classes)
+    //         .filter(filter)
+    //         .data(entities, osmEntity.key);
 
-        // exit
-        icons.exit()
-            .remove();
+    //     // exit
+    //     icons.exit()
+    //         .remove();
 
-        // enter/update
-        icons.enter()
-            .append('use')
-            .attr('class', 'icon ' + classes)
-            .attr('width', '17px')
-            .attr('height', '17px')
-            .merge(icons)
-            .attr('transform', get(labels, 'transform'))
-            .attr('xlink:href', function(d) {
-                var preset = presetManager.match(d, context.graph());
-                var picon = preset && preset.icon;
+    //     // enter/update
+    //     icons.enter()
+    //         .append('use')
+    //         .attr('class', 'icon ' + classes)
+    //         .attr('width', '17px')
+    //         .attr('height', '17px')
+    //         .merge(icons)
+    //         .attr('transform', get(labels, 'transform'))
+    //         .attr('xlink:href', function(d) {
+    //             var preset = presetManager.match(d, context.graph());
+    //             var picon = preset && preset.icon;
 
-                if (!picon) {
-                    return '';
-                } else {
-                    var isMaki = /^maki-/.test(picon);
-                    return '#' + picon + (isMaki ? '-15' : '');
-                }
-            });
-    }
+    //             if (!picon) {
+    //                 return '';
+    //             } else {
+    //                 var isMaki = /^maki-/.test(picon);
+    //                 return '#' + picon + (isMaki ? '-15' : '');
+    //             }
+    //         });
+    // }
 
 
     function drawCollisionBoxes(selection, rtree, which) {
@@ -666,18 +684,18 @@ export function pixiLabels(projection, context) {
         }
 
         // points
-        drawPointLabels(layer, _pointcache, labelled.point, positions.point);
+        drawPointLabels(layer, graph, _pointcache, labelled.point, positions.point);
         // drawPointLabels(halo, labelled.point, filter, 'pointlabel-halo', positions.point);
 
         // lines
         // drawLinePaths(layer, labelled.line, filter, '', positions.line);
-        drawLineLabels(layer, _linecache, labelled.line, positions.line);
+        drawLineLabels(layer, graph, _linecache, labelled.line, positions.line);
         // drawLineLabels(halo, labelled.line, filter, 'linelabel-halo', positions.line);
 
         // areas
-         drawAreaLabels(layer, labelled.area,  positions.area);
+         drawAreaLabels(layer, graph, labelled.area,  positions.area);
         // drawAreaLabels(halo, labelled.area, filter, 'arealabel-halo', positions.area);
-        // drawAreaIcons(label, labelled.area, filter, 'areaicon', positions.area);
+//         drawAreaIcons(layer, labelled.area,  positions.area);
         // drawAreaIcons(halo, labelled.area, filter, 'areaicon-halo', positions.area);
 
         // debug

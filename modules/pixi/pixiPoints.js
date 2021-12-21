@@ -1,16 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { presetManager } from '../presets';
-
+import { getIconSpriteHelper } from './pixiHelpers';
 
 export function pixiPoints(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
   let _templates = {};
-  let _sprites = {};
   let _didInit = false;
-
-  let _makiSheet;
-  let _temakiSheet;
-  let _fontAwesomeSheet;
 
   function initPoints() {
     // prepare template geometry
@@ -22,36 +17,6 @@ export function pixiPoints(context) {
       .endFill();
 
     _didInit = true;
-  }
-
-//       _sprites.cafe = new PIXI.Sprite(_makiSheet.textures['cafe-11.svg']);
-//       _sprites.feesh = new PIXI.Sprite(_makiSheet.textures['aquarium-11.svg']);
-//       _sprites.tree = new PIXI.Sprite(_makiSheet.textures['park-11.svg']);
-//       _sprites.accounting = new PIXI.Sprite(_temakiSheet.textures['accounting.svg']);
-//       _sprites.ambulance = new PIXI.Sprite(_fontAwesomeSheet.textures['fas-ambulance.svg']);
-// //      _sprites.feesh.anchor.set(0.5);
-
-  function getIconSpriteHelper(picon) {
-    const isMaki = /^maki-/.test(picon);
-    const isTemaki = /^temaki-/.test(picon);
-    const isFas = /^fas-/.test(picon);
-
-    let spritesheet;
-    let spriteName;
-    if (isMaki) {
-      spritesheet = context._makiSheet;
-      spriteName = picon.slice('maki-'.length);
-    } else if (isTemaki) {
-      spritesheet = context._temakiSheet;
-      spriteName = picon.slice('temaki-'.length);
-    }
-    else {
-      spritesheet = context._fontAwesomeSheet;
-      spriteName = picon;
-    }
-
-    spriteName = spriteName + (isMaki ? '-11' : '') + '.svg';
-    return new PIXI.Sprite(spritesheet.textures[spriteName]);
   }
 
   function renderPoints(layer, graph, entities) {
@@ -86,9 +51,9 @@ export function pixiPoints(context) {
           container.addChild(graphic);
 
           if (picon) {
-            let thisSprite = getIconSpriteHelper(picon);
+            let thisSprite = getIconSpriteHelper(context, picon);
 
-            let iconsize = 10;
+            let iconsize = 12;
             thisSprite.x = -0.5 *iconsize;  //?
             thisSprite.y = -0.5 *iconsize;  //?
             thisSprite.width = iconsize;
