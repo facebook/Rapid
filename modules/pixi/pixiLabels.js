@@ -139,20 +139,23 @@ export function pixiLabels(projection, context) {
             let datum = cache.get(entity.id);
 
             if (!datum) {
-                const text = new PIXI.Text(utilDisplayName(entity, true), _textStyle);
-                text.width = labels[i].width || 100;
-                text.height = labels[i].height || 18;
-                text.x = 0;
-                text.y = 0;
+                const str = utilDisplayName(entity, true)
+                const text = new PIXI.Text(str, _textStyle);
+                text.name = str;
+                // text.width = labels[i].width || 100;
+                // text.height = labels[i].height || 18;
+                // text.x = 0;
+                // text.y = 0;
                 const container = new PIXI.Container();
+                container.name = str;
                 container.addChild(text);
+
                 layer.addChild(container);
 
                 datum = {
                     loc: [labels[i].x, labels[i].y],
                     height: labels[i].height || 18,
                     width: labels[i].width || 100,
-                    label: text,
                     rotation: labels[i].rotation,
                     container: container
                 };
@@ -163,8 +166,8 @@ export function pixiLabels(projection, context) {
             datum.container.x = labels[i].x - Math.cos(datum.container.width) / 2;
             datum.container.y = labels[i].y - Math.sin(datum.container.height) / 2;
             datum.container.rotation = datum.rotation || 0;
-            datum.container.height = datum.height;
-            datum.container.width = datum.width;
+            // datum.container.height = datum.height;
+            // datum.container.width = datum.width;
         });
 
     }
