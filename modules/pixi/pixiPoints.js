@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { presetManager } from '../presets';
 
 
 export function pixiPoints(context) {
@@ -7,6 +8,9 @@ export function pixiPoints(context) {
   let _sprites = {};
   let _didInit = false;
 
+  let _makiSheet;
+  let _temakiSheet;
+  let _fontAwesomeSheet;
 
   function initPoints() {
     // prepare template geometry
@@ -17,24 +21,15 @@ export function pixiPoints(context) {
       .drawCircle(0, 0, 10)
       .endFill();
 
-    // prepare sprites
-    const loader = PIXI.Loader.shared;
-    loader.add('dist/img/icons/maki-spritesheet.json');
-    loader.add('dist/img/icons/temaki-spritesheet.json');
-    loader.add('dist/img/icons/fontawesome-spritesheet.json');
-    loader.load(loader => {
-      let sheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
-      let temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
-      let fontawesomesheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
-      _sprites.cafe = new PIXI.Sprite(sheet.textures['cafe-11.svg']);
-      _sprites.feesh = new PIXI.Sprite(sheet.textures['aquarium-11.svg']);
-      _sprites.tree = new PIXI.Sprite(sheet.textures['park-11.svg']);
-      _sprites.accounting = new PIXI.Sprite(temakiSheet.textures['accounting.svg']);
-      _sprites.ambulance = new PIXI.Sprite(fontawesomesheet.textures['fas-ambulance.svg']);
-//      _sprites.feesh.anchor.set(0.5);
-    });
     _didInit = true;
   }
+
+//       _sprites.cafe = new PIXI.Sprite(_makiSheet.textures['cafe-11.svg']);
+//       _sprites.feesh = new PIXI.Sprite(_makiSheet.textures['aquarium-11.svg']);
+//       _sprites.tree = new PIXI.Sprite(_makiSheet.textures['park-11.svg']);
+//       _sprites.accounting = new PIXI.Sprite(_temakiSheet.textures['accounting.svg']);
+//       _sprites.ambulance = new PIXI.Sprite(_fontAwesomeSheet.textures['fas-ambulance.svg']);
+// //      _sprites.feesh.anchor.set(0.5);
 
 
   function renderPoints(layer, graph, entities) {
@@ -60,18 +55,29 @@ export function pixiPoints(context) {
         if (!datum) {   // make point if needed
           const template = _templates.point;
           const graphic = new PIXI.Graphics(template.geometry);
+          const preset = presetManager.match(entity, graph);
+          const picon = preset && preset.icon;
+
 
           const container = new PIXI.Container();
           container.name = entity.id;
           container.addChild(graphic);
-          let thisSprite = _sprites.feesh;
-          container.addChild(thisSprite);
 
-          let iconsize = 10;
-          thisSprite.x = -0.5 *iconsize;  //?
-          thisSprite.y = -0.5 *iconsize;  //?
-          thisSprite.width = iconsize;
-          thisSprite.height = iconsize;
+          if (picon) {
+            const isMaki = /^maki-/.test(picon);
+            let iconName = picon + (isMaki ? '-11' : '') + '.svg';
+            let spritesheet = isMaki ? context._makiSheet : context._temakiSheet;
+            let spriteName = isMaki ? iconName.slice(5) : iconName.slice(7);
+            let thisSprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
+
+            let iconsize = 10;
+            thisSprite.x = -0.5 *iconsize;  //?
+            thisSprite.y = -0.5 *iconsize;  //?
+            thisSprite.width = iconsize;
+            thisSprite.height = iconsize;
+            container.addChild(thisSprite);
+          }
+
           layer.addChild(container);
 
           datum = {

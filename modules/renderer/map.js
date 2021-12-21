@@ -187,6 +187,19 @@ export function rendererMap(context) {
             antialias: true
         });
 
+        // prepare sprites
+        const loader = PIXI.Loader.shared;
+        loader.add('dist/img/icons/maki-spritesheet.json');
+        loader.add('dist/img/icons/temaki-spritesheet.json');
+        loader.add('dist/img/icons/fontawesome-spritesheet.json');
+        loader.load(loader => {
+            context._makiSheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
+            context._temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
+            context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
+        });
+
+
+
         document.querySelector('.pixi-data').appendChild(context.pixi.view);
 
         // Register Pixi with the pixi-inspector extension if it is installed
