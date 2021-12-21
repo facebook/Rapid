@@ -31,6 +31,28 @@ export function pixiPoints(context) {
 //       _sprites.ambulance = new PIXI.Sprite(_fontAwesomeSheet.textures['fas-ambulance.svg']);
 // //      _sprites.feesh.anchor.set(0.5);
 
+  function getIconSpriteHelper(picon) {
+    const isMaki = /^maki-/.test(picon);
+    const isTemaki = /^temaki-/.test(picon);
+    const isFas = /^fas-/.test(picon);
+
+    let spritesheet;
+    let spriteName;
+    if (isMaki) {
+      spritesheet = context._makiSheet;
+      spriteName = picon.slice('maki-'.length);
+    } else if (isTemaki) {
+      spritesheet = context._temakiSheet;
+      spriteName = picon.slice('temaki-'.length);
+    }
+    else {
+      spritesheet = context._fontAwesomeSheet;
+      spriteName = picon;
+    }
+
+    spriteName = spriteName + (isMaki ? '-11' : '') + '.svg';
+    return new PIXI.Sprite(spritesheet.textures[spriteName]);
+  }
 
   function renderPoints(layer, graph, entities) {
     if (!_didInit) initPoints();
@@ -64,11 +86,7 @@ export function pixiPoints(context) {
           container.addChild(graphic);
 
           if (picon) {
-            const isMaki = /^maki-/.test(picon);
-            let iconName = picon + (isMaki ? '-11' : '') + '.svg';
-            let spritesheet = isMaki ? context._makiSheet : context._temakiSheet;
-            let spriteName = isMaki ? iconName.slice(5) : iconName.slice(7);
-            let thisSprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
+            let thisSprite = getIconSpriteHelper(picon);
 
             let iconsize = 10;
             thisSprite.x = -0.5 *iconsize;  //?
