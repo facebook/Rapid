@@ -11,7 +11,7 @@ import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLayers, svgMidpoints, } from '../svg';
-import { pixiPoints, pixiVertices, pixiLines, pixiAreas, pixiLabels } from '../pixi';
+import { pixiPoints, pixiVertices, pixiLines, pixiAreas, pixiLabels, pixiMidpoints } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -429,11 +429,11 @@ export function rendererMap(context) {
 
             data = context.features().filter(data, graph);
 
-            surface
+//            surface
 //                .call(drawVertices.drawSelected, graph, map.extent()) // PIXI-FIED
 //                .call(drawLines, graph, data, filter)      // PIXI-FIED
-                .call(drawAreas, graph, data, filter)
-                .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
+//                .call(drawAreas, graph, data, filter)
+//                .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
 
             dispatch.call('drawn', this, { full: false });
 
@@ -544,11 +544,11 @@ export function rendererMap(context) {
             // surface.call(drawVertices.drawSelected, graph, map.extent());
         }
 
-        surface
+        // surface
             // .call(drawVertices, graph, data, filter, map.extent(), fullRedraw) // PIXI-FIED
             //.call(drawLines, graph, data, filter) //PIXI_FIED
             //.call(drawAreas, graph, data, filter) //PIXI_FIED
-            .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
+            // .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
             // .call(drawLabels, graph, data, filter, _dimensions, fullRedraw); //PIXI-IFIED
             // .call(drawPoints, graph, data, filter);  // THIS IS PIXI
 
@@ -561,14 +561,17 @@ export function rendererMap(context) {
         drawVertices = pixiVertices(context);
         drawLines = pixiLines(context);
         drawAreas = pixiAreas(context);
+        drawMidpoints = pixiMidpoints(projection, context, _dimensions);
+        drawLabels = pixiLabels(projection, context, _dimensions);
+
 
         drawLayers = svgLayers(projection, context);
         // drawPoints = svgPoints(projection, context);
         // drawVertices = svgVertices(projection, context);
         // drawLines = svgLines(projection, context);
+        // drawLabels = svgLabels(projection, context);
         // drawAreas = svgAreas(projection, context);
-        drawMidpoints = svgMidpoints(projection, context);
-        drawLabels = pixiLabels(projection, context, _dimensions);
+        // drawMidpoints = svgMidpoints(projection, context);
     };
 
 
@@ -825,6 +828,7 @@ export function rendererMap(context) {
         let verticesLayer;
         let pointsLayer;
         let labelsLayer;
+        let midpointsLayer;
 
         if (!_pixiInit) {  // create layers
           areasLayer = new PIXI.Container();
@@ -837,8 +841,10 @@ export function rendererMap(context) {
           pointsLayer.name = 'points';
           labelsLayer = new PIXI.Container();
           labelsLayer.name = 'labels';
+          midpointsLayer = new PIXI.Container();
+          midpointsLayer.name = 'midpoints';
 
-          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer);
+          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
           _pixiInit = true;
 
         } else {
@@ -847,6 +853,7 @@ export function rendererMap(context) {
            verticesLayer = pixi.stage.getChildAt(2);
            pointsLayer = pixi.stage.getChildAt(3);
            labelsLayer = pixi.stage.getChildAt(4);
+           midpointsLayer = pixi.stage.getChildAt(5);
         }
 
         const graph = context.graph();
@@ -856,6 +863,7 @@ export function rendererMap(context) {
         drawVertices(verticesLayer, graph, data);
         drawPoints(pointsLayer, graph, data);
         drawLabels(labelsLayer, graph, data, _dimensions);
+        drawMidpoints(midpointsLayer, graph, data, _dimensions);
         _pixiPending = true;
 
         const ticker = pixi.ticker;
