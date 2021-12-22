@@ -9,11 +9,21 @@ export function pixiPoints(context) {
 
   function initPoints() {
     // prepare template geometry
+
+    // was:  (off by a half pixel!)
+    // .attr('transform', 'translate(-8, -23)')
+    // .attr('d', 'M 17,8 C 17,13 11,21 8.5,23.5 C 6,21 0,13 0,8 C 0,4 4,-0.5 8.5,-0.5 C 13,-0.5 17,4 17,8 z');
+
     _templates.point = new PIXI.Graphics();
     _templates.point
       .lineStyle(1.5, 0x000000)
       .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 10)
+      .moveTo(0, 0)
+      .bezierCurveTo(-2,-2, -8,-10, -8,-15)
+      .bezierCurveTo(-8,-19, -4,-23, 0,-23)
+      .bezierCurveTo(4,-23, 8,-19, 8,-15)
+      .bezierCurveTo(8,-10, 2,-2, 0,0)
+      .closePath()
       .endFill();
 
     _didInit = true;
@@ -53,9 +63,11 @@ export function pixiPoints(context) {
           if (picon) {
             let thisSprite = getIconSpriteHelper(context, picon);
 
-            let iconsize = 12;
-            thisSprite.x = -0.5 *iconsize;  //?
-            thisSprite.y = -0.5 *iconsize;  //?
+            let iconsize = 10;
+            thisSprite.anchor.set(0.5, 0.5);
+            // mathematically 0,-15 is center of marker, move down slightly
+            thisSprite.x = 0;
+            thisSprite.y = -14;
             thisSprite.width = iconsize;
             thisSprite.height = iconsize;
             container.addChild(thisSprite);
