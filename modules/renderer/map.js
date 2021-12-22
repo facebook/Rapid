@@ -180,11 +180,11 @@ export function rendererMap(context) {
 
         const rect = selection.node().getBoundingClientRect();
         context.pixi = new PIXI.Application({
-            width: rect.width,
-            height: rect.height,
+            antialias: true,
+            autoDensity: true,
             backgroundAlpha: 0.0,
             resizeTo: pixiContainer,
-            antialias: true
+            resolution: window.devicePixelRatio
         });
 
         // prepare sprites
