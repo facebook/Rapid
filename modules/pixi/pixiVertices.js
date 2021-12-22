@@ -1,4 +1,6 @@
 import * as PIXI from 'pixi.js';
+import { presetManager } from '../presets';
+import { getIconSpriteHelper } from './pixiHelpers';
 
 
 export function pixiVertices(context) {
@@ -8,19 +10,49 @@ export function pixiVertices(context) {
 
 
   function initVertices() {
-    // prepare template geometry
-    _templates.plainVertex = new PIXI.Graphics();
-    _templates.plainVertex
-      .lineStyle(1, 0x000000)
-      .beginFill(0xaaaaaa, 1)
+    _templates.plain = new PIXI.Graphics();
+    _templates.plain
+      .lineStyle(1, 0x666666)
+      .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    // prepare template geometry
-    _templates.interestingVertex = new PIXI.Graphics();
-    _templates.interestingVertex
-      .lineStyle(1, 0x000000)
-      .beginFill(0xdddddd, 1)
+    _templates.junction = new PIXI.Graphics();
+    _templates.junction
+      .lineStyle(1, 0x666666)
+      .beginFill(0xbbbbbb, 1)
+      .drawCircle(0, 0, 4.5)
+      .endFill();
+
+    _templates.taggedPlain = new PIXI.Graphics();
+    _templates.taggedPlain
+      .lineStyle(1, 0x666666)
+      .beginFill(0xffffff, 1)
+      .drawCircle(0, 0, 4.5)
+      .beginFill(0x000000, 1)
+      .drawCircle(0, 0, 1.5)
+      .endFill();
+
+    _templates.taggedJunction = new PIXI.Graphics();
+    _templates.taggedJunction
+      .lineStyle(1, 0x666666)
+      .beginFill(0xbbbbbb, 1)
+      .drawCircle(0, 0, 4.5)
+      .beginFill(0x000000, 1)
+      .drawCircle(0, 0, 1.5)
+      .endFill();
+
+    _templates.iconPlain = new PIXI.Graphics();
+    _templates.iconPlain
+      .lineStyle(1, 0x666666)
+      .beginFill(0xffffff, 1)
+      .drawCircle(0, 0, 8)
+      .endFill();
+
+    _templates.iconJunction = new PIXI.Graphics();
+    _templates.iconJunction
+      .lineStyle(1, 0x666666)
+      .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 8)
       .endFill();
 
@@ -53,12 +85,35 @@ export function pixiVertices(context) {
         let datum = _cache.get(entity.id);
 
         if (!datum) {   // make point if needed
-          const template = entity.hasInterestingTags() ? _templates.interestingVertex : _templates.plainVertex;
+          const preset = presetManager.match(entity, graph);
+          const picon = preset && preset.icon;
+          const isJunction = graph.isShared(entity);
+
+          let template;
+          if (picon) {
+            template = isJunction ? _templates.iconJunction : _templates.iconPlain;
+          } else if (entity.hasInterestingTags()) {
+            template = isJunction ? _templates.taggedJunction : _templates.taggedPlain;
+          } else {
+            template = isJunction ? _templates.junction : _templates.plain;
+          }
           const graphic = new PIXI.Graphics(template.geometry);
 
           const container = new PIXI.Container();
           container.name = entity.id;
           container.addChild(graphic);
+
+          if (picon) {
+            let thisSprite = getIconSpriteHelper(context, picon);
+            const iconsize = 11;
+            thisSprite.anchor.set(0.5, 0.5);
+            thisSprite.x = 0;
+            thisSprite.y = 0;
+            thisSprite.width = iconsize;
+            thisSprite.height = iconsize;
+            container.addChild(thisSprite);
+          }
+
           layer.addChild(container);
 
           datum = {

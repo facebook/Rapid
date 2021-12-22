@@ -16,7 +16,7 @@ export function pixiPoints(context) {
 
     _templates.point = new PIXI.Graphics();
     _templates.point
-      .lineStyle(1.5, 0x000000)
+      .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .moveTo(0, 0)
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)
@@ -50,11 +50,11 @@ export function pixiPoints(context) {
         let datum = _cache.get(entity.id);
 
         if (!datum) {   // make point if needed
-          const template = _templates.point;
-          const graphic = new PIXI.Graphics(template.geometry);
           const preset = presetManager.match(entity, graph);
           const picon = preset && preset.icon;
 
+          const template = _templates.point;
+          const graphic = new PIXI.Graphics(template.geometry);
 
           const container = new PIXI.Container();
           container.name = entity.id;
@@ -62,8 +62,7 @@ export function pixiPoints(context) {
 
           if (picon) {
             let thisSprite = getIconSpriteHelper(context, picon);
-
-            let iconsize = 10;
+            const iconsize = 11;
             thisSprite.anchor.set(0.5, 0.5);
             // mathematically 0,-15 is center of marker, move down slightly
             thisSprite.x = 0;
