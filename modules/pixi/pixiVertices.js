@@ -5,27 +5,27 @@ import { getIconSpriteHelper } from './pixiHelpers';
 
 export function pixiVertices(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
-  let _templates = {};
+  let _textures = {};
   let _didInit = false;
 
 
   function initVertices() {
-    _templates.plain = new PIXI.Graphics();
-    _templates.plain
+    let plain = new PIXI.Graphics();
+    plain
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    _templates.junction = new PIXI.Graphics();
-    _templates.junction
+    let junction = new PIXI.Graphics();
+    junction
       .lineStyle(1, 0x666666)
       .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    _templates.taggedPlain = new PIXI.Graphics();
-    _templates.taggedPlain
+    let taggedPlain = new PIXI.Graphics();
+    taggedPlain
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
@@ -33,8 +33,8 @@ export function pixiVertices(context) {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    _templates.taggedJunction = new PIXI.Graphics();
-    _templates.taggedJunction
+    let taggedJunction = new PIXI.Graphics();
+    taggedJunction
       .lineStyle(1, 0x666666)
       .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 4.5)
@@ -42,19 +42,30 @@ export function pixiVertices(context) {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    _templates.iconPlain = new PIXI.Graphics();
-    _templates.iconPlain
+    let iconPlain = new PIXI.Graphics();
+    iconPlain
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 8)
       .endFill();
 
-    _templates.iconJunction = new PIXI.Graphics();
-    _templates.iconJunction
+    let iconJunction = new PIXI.Graphics();
+    iconJunction
       .lineStyle(1, 0x666666)
       .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 8)
       .endFill();
+
+    // convert graphics to textures/sprites for performance
+    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+    const renderer = context.pixi.renderer;
+    const options = { resolution: 2 };
+    _textures.plain = renderer.generateTexture(plain, options);
+    _textures.junction = renderer.generateTexture(junction, options);
+    _textures.taggedPlain = renderer.generateTexture(taggedPlain, options);
+    _textures.taggedJunction = renderer.generateTexture(taggedJunction, options);
+    _textures.iconPlain = renderer.generateTexture(iconPlain, options);
+    _textures.iconJunction = renderer.generateTexture(iconJunction, options);
 
     _didInit = true;
   }
@@ -89,29 +100,40 @@ export function pixiVertices(context) {
           const picon = preset && preset.icon;
           const isJunction = graph.isShared(entity);
 
-          let template;
+          // let template;
+          // if (picon) {
+          //   template = isJunction ? _textures.iconJunction : _textures.iconPlain;
+          // } else if (entity.hasInterestingTags()) {
+          //   template = isJunction ? _textures.taggedJunction : _textures.taggedPlain;
+          // } else {
+          //   template = isJunction ? _textures.junction : _textures.plain;
+          // }
+          // const marker = new PIXI.Graphics(template.geometry);
+
+          let t;
           if (picon) {
-            template = isJunction ? _templates.iconJunction : _templates.iconPlain;
+            t = isJunction ? 'iconJunction' : 'iconPlain';
           } else if (entity.hasInterestingTags()) {
-            template = isJunction ? _templates.taggedJunction : _templates.taggedPlain;
+            t = isJunction ? 'taggedJunction' : 'taggedPlain';
           } else {
-            template = isJunction ? _templates.junction : _templates.plain;
+            t = isJunction ? 'junction' : 'plain';
           }
-          const graphic = new PIXI.Graphics(template.geometry);
+
+          const marker = new PIXI.Sprite(_textures[t]);
+          marker.name = t;
+          marker.anchor.set(0.5, 0.5);
 
           const container = new PIXI.Container();
           container.name = entity.id;
-          container.addChild(graphic);
+          container.addChild(marker);
 
           if (picon) {
-            let thisSprite = getIconSpriteHelper(context, picon);
+            let icon = getIconSpriteHelper(context, picon);
             const iconsize = 11;
-            thisSprite.anchor.set(0.5, 0.5);
-            thisSprite.x = 0;
-            thisSprite.y = 0;
-            thisSprite.width = iconsize;
-            thisSprite.height = iconsize;
-            container.addChild(thisSprite);
+            icon.anchor.set(0.5, 0.5);
+            icon.width = iconsize;
+            icon.height = iconsize;
+            container.addChild(icon);
           }
 
           layer.addChild(container);

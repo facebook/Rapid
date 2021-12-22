@@ -4,8 +4,9 @@ import { getIconSpriteHelper } from './pixiHelpers';
 
 export function pixiPoints(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
-  let _templates = {};
+  let _textures = {};
   let _didInit = false;
+
 
   function initPoints() {
     // prepare template geometry
@@ -14,8 +15,8 @@ export function pixiPoints(context) {
     // .attr('transform', 'translate(-8, -23)')
     // .attr('d', 'M 17,8 C 17,13 11,21 8.5,23.5 C 6,21 0,13 0,8 C 0,4 4,-0.5 8.5,-0.5 C 13,-0.5 17,4 17,8 z');
 
-    _templates.point = new PIXI.Graphics();
-    _templates.point
+    let point = new PIXI.Graphics();
+    point
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .moveTo(0, 0)
@@ -26,8 +27,15 @@ export function pixiPoints(context) {
       .closePath()
       .endFill();
 
+    // convert graphics to textures/sprites for performance
+    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+    const renderer = context.pixi.renderer;
+    const options = { resolution: 2 };
+    _textures.point = renderer.generateTexture(point, options);
+
     _didInit = true;
   }
+
 
   function renderPoints(layer, graph, entities) {
     if (!_didInit) initPoints();
@@ -53,12 +61,17 @@ export function pixiPoints(context) {
           const preset = presetManager.match(entity, graph);
           const picon = preset && preset.icon;
 
-          const template = _templates.point;
-          const graphic = new PIXI.Graphics(template.geometry);
+          // const template = _textures.point;
+          // const marker = new PIXI.Graphics(template.geometry);
+
+          const t = 'point';
+          const marker = new PIXI.Sprite(_textures[t]);
+          marker.name = t;
+          marker.anchor.set(0.5, 1);  // note: middle, bottom
 
           const container = new PIXI.Container();
           container.name = entity.id;
-          container.addChild(graphic);
+          container.addChild(marker);
 
           if (picon) {
             let thisSprite = getIconSpriteHelper(context, picon);
