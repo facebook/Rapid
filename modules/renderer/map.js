@@ -476,7 +476,7 @@ export function rendererMap(context) {
     map.init = function() {
         drawPoints = pixiPoints(context);
         drawVertices = pixiVertices(context);
-        drawLines = pixiLines(context);
+        drawLines = pixiLines(projection, context);
         drawAreas = pixiAreas(context);
         drawMidpoints = pixiMidpoints(projection, context, _dimensions);
         drawLabels = pixiLabels(projection, context, _dimensions);

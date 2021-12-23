@@ -1,11 +1,18 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { osmPavedTags } from '../osm/tags';
+import { pixiOnewayMarkerPoints } from './pixiHelpers';
+import { Container } from 'postcss';
 
-
-export function pixiLines(context) {
+export function pixiLines(projection, context) {
   let _cache = new Map();
-
+  const _markerArrowWidth = 10;
+  const _markerArrowHeight = 5;
+  const _markerGraphics = new PIXI.Graphics()
+    .lineStyle(1, 0x000000)
+    .beginFill('black', 1)
+    .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, _markerArrowWidth,2.5, 5,5])
+    .endFill();
 
   function renderLines(layer, graph, entities) {
     const zoom = context.map().zoom();
@@ -20,8 +27,15 @@ export function pixiLines(context) {
     // exit
     [..._cache.entries()].forEach(function cullLines([id, datum]) {
       datum.container.visible = !!visible[id];
+      datum.oneWaysContainer.visible = !!visible[id];
     });
 
+    const oneWaySegments = pixiOnewayMarkerPoints(projection, graph, 35,
+              function shouldReverse(entity) { return entity.tags.oneway === '-1'; },
+              function bothDirections(entity) {
+                return entity.tags.oneway === 'reversible' || entity.tags.oneway === 'alternating';
+              }
+            );
     // enter/update
     data
       .forEach(function prepareLines(entity) {
@@ -33,20 +47,26 @@ export function pixiLines(context) {
 
           const casing = new PIXI.Graphics();
           const stroke = new PIXI.Graphics();
-
+          let markerSegments = null;
           const container = new PIXI.Container();
           container.name = entity.id;
           container.addChild(casing);
           container.addChild(stroke);
-
           layer.addChild(container);
 
           const style = styleMatch(entity.tags);
 
+          const oneWaysContainer = new PIXI.Container();
+          oneWaysContainer.name = entity.id + '-oneways';
+
+          layer.addChild(oneWaysContainer);
+
           datum = {
             coords: coords,
             container: container,
-            style: style
+            style: style,
+            hasMarkers: needsDirectionMarkers(entity),
+            oneWaysContainer: oneWaysContainer
           };
 
           _cache.set(entity.id, datum);
@@ -92,6 +112,31 @@ export function pixiLines(context) {
               g.lineTo(x, y);
             }
           });
+
+          if (datum.hasMarkers) {
+            let markerSegments = oneWaySegments(entity);
+            const container = datum.oneWaysContainer;
+            container.removeChildren();
+
+            markerSegments.forEach(segment => {
+                let angle = segment.angle;
+                segment.coords.forEach((coord) => {
+                  let markerTemplate = _markerGraphics;
+
+                // const container = new PIXI.Container();
+                // container.name = 'marker-' + segment.id + '-' + i;
+                  const arrow = new PIXI.Graphics(markerTemplate.geometry);
+                  // const container = datum.container;
+                  container.addChild(arrow);
+                  arrow.alpha = 0.5;
+                  arrow.pivot.x = _markerArrowWidth / 2;
+                  arrow.pivot.y = _markerArrowHeight / 2;
+                  arrow.x = coord[0];
+                  arrow.y = coord[1];
+                  arrow.rotation = angle;
+                });
+              });
+          }
         });
 
       });
@@ -100,6 +145,9 @@ export function pixiLines(context) {
   return renderLines;
 }
 
+function needsDirectionMarkers(way) {
+  return way.isSided() || way.isOneWay();
+}
 
 const STYLES = {
   default: {
