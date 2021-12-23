@@ -175,7 +175,9 @@ export function rendererMap(context) {
             .style('z-index', '3');
 
 
-// Init PIXI
+///////////////////////
+// BEGIN PIXI
+//
         var pixiContainer = document.querySelector('.pixi-data');
 
         const rect = selection.node().getBoundingClientRect();
@@ -198,8 +200,6 @@ export function rendererMap(context) {
             context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
         });
 
-
-
         document.querySelector('.pixi-data').appendChild(context.pixi.view);
 
         // Register Pixi with the pixi-inspector extension if it is installed
@@ -209,7 +209,6 @@ export function rendererMap(context) {
         }
 
         // var interactionManager = context.pixi.renderer.plugins.interaction;
-
         const canvas = document.getElementsByClassName('pixi-data')[0];
         let mousedown = false;
 
@@ -240,90 +239,9 @@ export function rendererMap(context) {
         var ticker = context.pixi.ticker;
         ticker.autoStart = false;
         ticker.stop();
-
-// //////////////////////////////////////
-//         // DEMO CODE
-
-//         var service = services.fbMLRoads;
-//         var internalID = 'msBuildings-conflated';
-//         let pixicache = new Map();
-
-//         _pixi.ticker.add(time => {
-//           // make it psychadelic
-//         //   const hue = (0.8 * _pixi.ticker.lastTime) % 360;
-//         //   filter = new PIXI.filters.ColorMatrixFilter();
-//         //   filter.hue(hue);
-//         //   _pixi.stage.filters = [filter];
-
-//           // get visible data
-//           let keepIDs = {};
-//           let pathData = service
-//             .intersects(internalID, context.map().extent())
-//             .filter(d => d.type === 'way');
-
-//           pathData
-//             .forEach(d => keepIDs[d.id] = true);
-
-//           // exit
-//           [...pixicache.entries()].forEach(entry => {
-//             const k = entry[0];
-//             const obj = entry[1];
-//             if (!keepIDs[k]) {
-//               _pixi.stage.removeChild(obj.graphics);
-//               pixicache.delete(k);
-//             }
-//           });
-
-//           // enter/update
-//           pathData
-//             .forEach(way => {
-//               let polygon = pixicache.get(way.id);
-//               // make poly if needed
-//               if (!polygon) {
-//                 const graph = service.graph(internalID);
-//                 const geojson = way.asGeoJSON(graph);
-//                 const coords = geojson.coordinates[0];
-
-//                 const graphics = new PIXI.Graphics();
-//                 graphics.name = way.id;
-//                 graphics.buttonMode = true;
-//                 graphics.interactive = true;
-//                 graphics.on('pointermove', (iData) => {
-//                     // eslint-disable-next-line no-console
-
-//                     let hitObject = interactionManager.hitTest(iData.data.global, graphics);
-//                     const localPolygon = pixicache.get(way.id);
-//                     if (hitObject !== null) {
-//                         console.log('pointerover hit');
-//                         localPolygon.color = 0x00ff00;
-//                     } else {
-//                         localPolygon.color = 0xff00ff;
-//                     }
-//                 });
-//                 // graphics.on('pointerout', () => {
-//                 //     // eslint-disable-next-line no-console
-//                 //     const localPolygon = pixicache.get(way.id);
-//                 //     localPolygon.color = 0xff00ff;
-//                 // });
-//                 _pixi.stage.addChild(graphics);
-
-//                 polygon = {
-//                   color: 0xff00ff,
-//                   coords: coords,
-//                   graphics: graphics
-//                 };
-//                 pixicache.set(way.id, polygon);
-//               }
-
-//               // update
-//               const path = utilArrayFlatten(polygon.coords.map(coord => context.projection(coord)));
-//               polygon.graphics.clear();
-//               polygon.graphics.lineStyle(0);
-//               polygon.graphics.beginFill(polygon.color, 0.4);
-//               polygon.graphics.drawPolygon(path);
-//               polygon.graphics.endFill();
-//             });
-//         });
+//
+// END PIXI
+///////////////////////
 
 
         map.surface = surface = wrapper
@@ -393,53 +311,51 @@ export function rendererMap(context) {
                 !d3_select(d3_event.target).classed('fill')) return;
 
             var zoomOut = d3_event.shiftKey;
-
             var t = projection.transform();
-
             var p1 = t.invert(p0);
 
             t = t.scale(zoomOut ? 0.5 : 2);
-
             t.x = p0[0] - p1[0] * t.k;
             t.y = p0[1] - p1[1] * t.k;
 
             map.transformEase(t);
         });
 
-        context.on('enter.map',  function() {
-            if (!map.editableDataEnabled(true /* skip zoom check */)) return;
-            if (_isTransformed) return;
-
-            // redraw immediately any objects affected by a change in selectedIDs.
-            var graph = context.graph();
-            var selectedAndParents = {};
-            context.selectedIDs().forEach(function(id) {
-                var entity = graph.hasEntity(id);
-                if (entity) {
-                    selectedAndParents[entity.id] = entity;
-                    if (entity.type === 'node') {
-                        graph.parentWays(entity).forEach(function(parent) {
-                            selectedAndParents[parent.id] = parent;
-                        });
-                    }
-                }
-            });
-            var data = Object.values(selectedAndParents);
-            var filter = function(d) { return d.id in selectedAndParents; };
-
-            data = context.features().filter(data, graph);
-
-//            surface
-//                .call(drawVertices.drawSelected, graph, map.extent()) // PIXI-FIED
-//                .call(drawLines, graph, data, filter)      // PIXI-FIED
-//                .call(drawAreas, graph, data, filter)
-//                .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
-
-            dispatch.call('drawn', this, { full: false });
-
-            // redraw everything else later
-            scheduleRedraw();
-        });
+// All data is rendered by pixi now?
+//         context.on('enter.map',  function() {
+//             if (!map.editableDataEnabled(true /* skip zoom check */)) return;
+//             if (_isTransformed) return;
+//
+//             // redraw immediately any objects affected by a change in selectedIDs.
+//             var graph = context.graph();
+//             var selectedAndParents = {};
+//             context.selectedIDs().forEach(function(id) {
+//                 var entity = graph.hasEntity(id);
+//                 if (entity) {
+//                     selectedAndParents[entity.id] = entity;
+//                     if (entity.type === 'node') {
+//                         graph.parentWays(entity).forEach(function(parent) {
+//                             selectedAndParents[parent.id] = parent;
+//                         });
+//                     }
+//                 }
+//             });
+//             var data = Object.values(selectedAndParents);
+//             var filter = function(d) { return d.id in selectedAndParents; };
+//
+//             data = context.features().filter(data, graph);
+//
+//             surface
+//                 .call(drawVertices.drawSelected, graph, map.extent())
+//                 .call(drawLines, graph, data, filter)
+//                 .call(drawAreas, graph, data, filter)
+//                 .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
+//
+//             dispatch.call('drawn', this, { full: false });
+//
+//             // redraw everything else later
+//             scheduleRedraw();
+//         });
 
         map.dimensions(utilGetDimensions(selection));
     }
@@ -485,74 +401,75 @@ export function rendererMap(context) {
 
 
     function drawEditable(difference, extent) {
-        var mode = context.mode();
-        var graph = context.graph();
-        var features = context.features();
-        var all = context.history().intersects(map.extent());
-        var fullRedraw = false;
-        var data;
-        var set;
-        var filter;
-        var applyFeatureLayerFilters = true;
-
-        if (map.isInWideSelection()) {
-            data = [];
-            utilEntityAndDeepMemberIDs(mode.selectedIDs(), context.graph()).forEach(function(id) {
-                var entity = context.hasEntity(id);
-                if (entity) data.push(entity);
-            });
-            fullRedraw = true;
-            filter = utilFunctor(true);
-            // selected features should always be visible, so we can skip filtering
-            applyFeatureLayerFilters = false;
-
-        } else if (difference) {
-            var complete = difference.complete(map.extent());
-            data = Object.values(complete).filter(Boolean);
-            set = new Set(Object.keys(complete));
-            filter = function(d) { return set.has(d.id); };
-            features.clear(data);
-
-        } else {
-            // force a full redraw if gatherStats detects that a feature
-            // should be auto-hidden (e.g. points or buildings)..
-            if (features.gatherStats(all, graph, _dimensions)) {
-                extent = undefined;
-            }
-
-            if (extent) {
-                data = context.history().intersects(map.extent().intersection(extent));
-                set = new Set(data.map(function(entity) { return entity.id; }));
-                filter = function(d) { return set.has(d.id); };
-
-            } else {
-                data = all;
-                fullRedraw = true;
-                filter = utilFunctor(true);
-            }
-        }
-
-        if (applyFeatureLayerFilters) {
-            data = features.filter(data, graph);
-        } else {
-            context.features().resetStats();
-        }
-
-        if (mode && mode.id === 'select') {
-            // update selected vertices - the user might have just double-clicked a way,
-            // creating a new vertex, triggering a partial redraw without a mode change
-            // surface.call(drawVertices.drawSelected, graph, map.extent());
-        }
-
-        // surface
-            // .call(drawVertices, graph, data, filter, map.extent(), fullRedraw) // PIXI-FIED
-            //.call(drawLines, graph, data, filter) //PIXI_FIED
-            //.call(drawAreas, graph, data, filter) //PIXI_FIED
-            // .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
-            // .call(drawLabels, graph, data, filter, _dimensions, fullRedraw); //PIXI-IFIED
-            // .call(drawPoints, graph, data, filter);  // THIS IS PIXI
-
-        dispatch.call('drawn', this, {full: true});
+// All data is rendered by pixi now?
+//        var mode = context.mode();
+//        var graph = context.graph();
+//        var features = context.features();
+//        var all = context.history().intersects(map.extent());
+//        var fullRedraw = false;
+//        var data;
+//        var set;
+//        var filter;
+//        var applyFeatureLayerFilters = true;
+//
+//        if (map.isInWideSelection()) {
+//            data = [];
+//            utilEntityAndDeepMemberIDs(mode.selectedIDs(), context.graph()).forEach(function(id) {
+//                var entity = context.hasEntity(id);
+//                if (entity) data.push(entity);
+//            });
+//            fullRedraw = true;
+//            filter = utilFunctor(true);
+//            // selected features should always be visible, so we can skip filtering
+//            applyFeatureLayerFilters = false;
+//
+//        } else if (difference) {
+//            var complete = difference.complete(map.extent());
+//            data = Object.values(complete).filter(Boolean);
+//            set = new Set(Object.keys(complete));
+//            filter = function(d) { return set.has(d.id); };
+//            features.clear(data);
+//
+//        } else {
+//            // force a full redraw if gatherStats detects that a feature
+//            // should be auto-hidden (e.g. points or buildings)..
+//            if (features.gatherStats(all, graph, _dimensions)) {
+//                extent = undefined;
+//            }
+//
+//            if (extent) {
+//                data = context.history().intersects(map.extent().intersection(extent));
+//                set = new Set(data.map(function(entity) { return entity.id; }));
+//                filter = function(d) { return set.has(d.id); };
+//
+//            } else {
+//                data = all;
+//                fullRedraw = true;
+//                filter = utilFunctor(true);
+//            }
+//        }
+//
+//        if (applyFeatureLayerFilters) {
+//            data = features.filter(data, graph);
+//        } else {
+//            context.features().resetStats();
+//        }
+//
+//        if (mode && mode.id === 'select') {
+//            // update selected vertices - the user might have just double-clicked a way,
+//            // creating a new vertex, triggering a partial redraw without a mode change
+//            surface.call(drawVertices.drawSelected, graph, map.extent());
+//        }
+//
+//        surface
+//            .call(drawVertices, graph, data, filter, map.extent(), fullRedraw)
+//            .call(drawLines, graph, data, filter)
+//            .call(drawAreas, graph, data, filter)
+//            .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
+//            .call(drawLabels, graph, data, filter, _dimensions, fullRedraw);
+//            .call(drawPoints, graph, data, filter);
+//
+//        dispatch.call('drawn', this, {full: true});
     }
 
 
@@ -563,7 +480,6 @@ export function rendererMap(context) {
         drawAreas = pixiAreas(context);
         drawMidpoints = pixiMidpoints(projection, context, _dimensions);
         drawLabels = pixiLabels(projection, context, _dimensions);
-
 
         drawLayers = svgLayers(projection, context);
         // drawPoints = svgPoints(projection, context);
@@ -820,6 +736,7 @@ export function rendererMap(context) {
     let _pixiPending = false;
 
     function redrawPixi() {
+        if (!context.pixi || !_redrawEnabled) return;
         if (_pixiPending) return;
 
         const pixi = context.pixi;
@@ -868,8 +785,11 @@ export function rendererMap(context) {
 
         const ticker = pixi.ticker;
         window.requestAnimationFrame(timestamp => {
-            ticker.update(timestamp);
-            _pixiPending = false;
+          ticker.update(timestamp);
+          _pixiPending = false;
+
+          // watch out - are we dispatching too many of these now?
+          dispatch.call('drawn', this, { full: true });
         });
     }
 
@@ -884,23 +804,23 @@ export function rendererMap(context) {
             difference = extent = undefined;
         }
 
-        var zoom = map.zoom();
-        var z = String(~~zoom);
-
-        if (surface.attr('data-zoom') !== z) {
-            surface.attr('data-zoom', z);
-        }
-
-        // class surface as `lowzoom` around z17-z18.5 (based on latitude)
-        var lat = map.center()[1];
-        var lowzoom = d3_scaleLinear()
-            .domain([-60, 0, 60])
-            .range([17, 18.5, 17])
-            .clamp(true);
-
-        surface
-            .classed('low-zoom', zoom <= lowzoom(lat));
-
+// pixi not using this
+//        var zoom = map.zoom();
+//        var z = String(~~zoom);
+//
+//        if (surface.attr('data-zoom') !== z) {
+//            surface.attr('data-zoom', z);
+//        }
+//
+//        // class surface as `lowzoom` around z17-z18.5 (based on latitude)
+//        var lat = map.center()[1];
+//        var lowzoom = d3_scaleLinear()
+//            .domain([-60, 0, 60])
+//            .range([17, 18.5, 17])
+//            .clamp(true);
+//
+//        surface
+//            .classed('low-zoom', zoom <= lowzoom(lat));
 
         if (!difference) {
             supersurface.call(context.background());
