@@ -4080,16 +4080,11 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 img.tile {
     position: absolute;
     transform-origin: 0 0;
-
     user-select: none;
-
     pointer-events: none;
-
     -webkit-user-drag: none;
-
     opacity: 0;
-
-    transition: opacity 200ms linear;
+    /*transition: opacity 200ms linear;*/
 }
 
 img.tile-loaded {

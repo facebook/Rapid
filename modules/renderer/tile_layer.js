@@ -81,7 +81,8 @@ export function rendererTileLayer(context) {
 
             _tiler
                 .skipNullIsland(!!_source.overlay)
-                .zoomRange(z);
+                .zoomRange(z)
+                .margin(2);  // prefetch offscreen tiles as well
 
             var result = _tiler.getTiles(_internal);
             var holes = false;
@@ -104,7 +105,7 @@ export function rendererTileLayer(context) {
                 .on('error', null)
                 .on('load', null)
                 .classed('tile-loaded', true);
-            render(selection);
+            // render(selection);  // why?
         }
 
         function error(d3_event, tile) {
@@ -164,22 +165,24 @@ export function rendererTileLayer(context) {
             .data(tiles, function(tile) { return tile.url; });
 
         image.exit()
-            .style(transformProp, imageTransform)
-            .classed('tile-removing', true)
-            .classed('tile-center', false)
-            .each(function() {
-                var img = d3_select(this);
-                window.setTimeout(function() {
-                    if (img.classed('tile-removing')) {
-                        img.remove();
-                    }
-                }, 300);
-            });
+            .remove();   // just remove it
+            // .style(transformProp, imageTransform)
+            // .classed('tile-removing', true)
+            // .classed('tile-center', false)
+            // .each(function() {
+            //     var img = d3_select(this);
+            //     window.setTimeout(function() {
+            //         if (img.classed('tile-removing')) {
+            //             img.remove();
+            //         }
+            //     }, 300);
+            // });
 
         image.enter()
           .append('img')
             .attr('class', 'tile')
             .attr('draggable', 'false')
+            .attr('loading', 'eager')
             .style('width', _tileSize + 'px')
             .style('height', _tileSize + 'px')
             .style('z-index', function(d) { return d.xyz[2]; })  // draw zoomed tiles above unzoomed tiles
@@ -189,7 +192,7 @@ export function rendererTileLayer(context) {
           .merge(image)
             .style(transformProp, imageTransform)
             .classed('tile-debug', showDebug)
-            .classed('tile-removing', false)
+            // .classed('tile-removing', false)
             .classed('tile-center', function(d) { return d === nearCenter; });
 
 
