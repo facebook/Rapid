@@ -1050,7 +1050,11 @@ export default {
 
         // determine the needed tiles to cover the view
         var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.zoomRange(_tileZoom).getTiles(proj).tiles;
+        var tiles = tiler
+            .zoomRange(_tileZoom)
+            .margin(1)       // prefetch offscreen tiles as well
+            .getTiles(proj)
+            .tiles;
 
         // abort inflight requests that are no longer needed
         var hadRequests = hasInflightRequests(_tileCache);
@@ -1147,7 +1151,11 @@ export default {
 
         // determine the needed tiles to cover the view
         var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.zoomRange(_noteZoom).getTiles(proj).tiles;
+        var tiles = tiler
+            .zoomRange(_noteZoom)
+            .margin(1)       // prefetch offscreen tiles as well
+            .getTiles(proj)
+            .tiles;
 
         // abort inflight requests that are no longer needed
         abortUnwantedRequests(_noteCache, tiles);
