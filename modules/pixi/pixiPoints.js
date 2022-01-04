@@ -7,16 +7,11 @@ export function pixiPoints(context) {
   let _textures = {};
   let _didInit = false;
 
-
-  function initPoints() {
-    // prepare template geometry
-
-    // was:  (off by a half pixel!)
-    // .attr('transform', 'translate(-8, -23)')
-    // .attr('d', 'M 17,8 C 17,13 11,21 8.5,23.5 C 6,21 0,13 0,8 C 0,4 4,-0.5 8.5,-0.5 C 13,-0.5 17,4 17,8 z');
-
-    let point = new PIXI.Graphics();
-    point
+  //
+  // prepare template geometry
+  //
+  function initPointTextures() {
+    const point = new PIXI.Graphics()
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .moveTo(0, 0)
@@ -37,8 +32,11 @@ export function pixiPoints(context) {
   }
 
 
+  //
+  // render
+  //
   function renderPoints(layer, graph, entities) {
-    if (!_didInit) initPoints();
+    if (!_didInit) initPointTextures();
 
     let data = entities
       .filter(entity => entity.geometry(graph) === 'point');

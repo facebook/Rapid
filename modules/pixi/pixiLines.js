@@ -2,20 +2,49 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { osmPavedTags } from '../osm/tags';
 import { pixiOnewayMarkerPoints } from './pixiHelpers';
-import { Container } from 'postcss';
 
 export function pixiLines(projection, context) {
   let _cache = new Map();
-  const _markerArrowWidth = 10;
-  const _markerArrowHeight = 5;
-  const _markerGraphics = new PIXI.Graphics()
-    .lineStyle(1, 0x000000)
-    .beginFill('black', 1)
-    .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, _markerArrowWidth,2.5, 5,5])
-    .endFill();
+  let _textures = {};
+  let _didInit = false;
 
+  //
+  // prepare template geometry
+  //
+  function initLineTextures() {
+    const midpoint = new PIXI.Graphics()
+      .lineStyle(1, 0x000000)
+      .beginFill(0xffffff, 1)
+      .drawPolygon([-3,4, 5,0, -3,-4])
+      .endFill();
+
+    const oneway = new PIXI.Graphics()
+      .beginFill(0x030303, 1)
+      .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
+      .endFill();
+
+    // convert graphics to textures/sprites for performance
+    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+    const renderer = context.pixi.renderer;
+    const options = { resolution: 2 };
+    _textures.midpoint = renderer.generateTexture(midpoint, options);
+    _textures.oneway = renderer.generateTexture(oneway, options);
+
+    _didInit = true;
+  }
+
+
+  //
+  // render
+  //
   function renderLines(layer, graph, entities) {
+    if (!_didInit) initLineTextures();
+
     const zoom = context.map().zoom();
+    const getOneWaySegments = pixiOnewayMarkerPoints(projection, graph, 35,
+      function shouldReverse(entity) { return entity.tags.oneway === '-1'; },
+      function bothDirections(entity) { return entity.tags.oneway === 'reversible' || entity.tags.oneway === 'alternating'; }
+    );
 
     let data = entities
       .filter(entity => entity.geometry(graph) === 'line');
@@ -27,127 +56,114 @@ export function pixiLines(projection, context) {
     // exit
     [..._cache.entries()].forEach(function cullLines([id, datum]) {
       datum.container.visible = !!visible[id];
-      datum.oneWaysContainer.visible = !!visible[id];
     });
 
-    const oneWaySegments = pixiOnewayMarkerPoints(projection, graph, 35,
-              function shouldReverse(entity) { return entity.tags.oneway === '-1'; },
-              function bothDirections(entity) {
-                return entity.tags.oneway === 'reversible' || entity.tags.oneway === 'alternating';
-              }
-            );
     // enter/update
-    data
-      .forEach(function prepareLines(entity) {
-        let datum = _cache.get(entity.id);
+    data.forEach(function prepareLine(entity) {
+      let datum = _cache.get(entity.id);
 
-        if (!datum) {   // make line if needed
-          const geojson = entity.asGeoJSON(graph);
-          const coords = geojson.coordinates;
+      if (!datum) {   // make line if needed
+        const geojson = entity.asGeoJSON(graph);
+        const coords = geojson.coordinates;
 
-          const casing = new PIXI.Graphics();
-          const stroke = new PIXI.Graphics();
-          let markerSegments = null;
-          const container = new PIXI.Container();
-          container.name = entity.id;
-          container.addChild(casing);
-          container.addChild(stroke);
-          layer.addChild(container);
+        const container = new PIXI.Container();
+        container.name = entity.id;
+        layer.addChild(container);
 
-          const style = styleMatch(entity.tags);
+        const casing = new PIXI.Graphics();
+        casing.name = entity.id + '-casing';
+        container.addChild(casing);
 
-          const oneWaysContainer = new PIXI.Container();
-          oneWaysContainer.name = entity.id + '-oneways';
+        const stroke = new PIXI.Graphics();
+        stroke.name = entity.id + '-stroke';
+        container.addChild(stroke);
 
-          layer.addChild(oneWaysContainer);
+        const style = styleMatch(entity.tags);
 
-          datum = {
-            coords: coords,
-            container: container,
-            style: style,
-            hasMarkers: needsDirectionMarkers(entity),
-            oneWaysContainer: oneWaysContainer
-          };
+        datum = {
+          coords: coords,
+          container: container,
+          casing: casing,
+          stroke: stroke,
+          style: style
+        };
 
-          _cache.set(entity.id, datum);
+        if (entity.isOneWay()) {
+          const oneways = new PIXI.Container();
+          oneways.name = entity.id + '-oneways';
+          container.addChild(oneways);
+          datum.oneways = oneways;
         }
 
-        // update
-        const points = datum.coords.map(coord => context.projection(coord));
+        _cache.set(entity.id, datum);
+      }
 
-        datum.container.children.forEach((graphic, index) => {
-          const which = (index === 0 ? 'casing' : 'stroke');
-          let minwidth = (index === 0 ? 3 : 2);
-          let width = datum.style[which].width;
-          if (zoom < 17) width -= 2;
-          if (zoom < 15) width -= 2;
-          if (width < minwidth) width = minwidth;
+      // update
+      const points = datum.coords.map(coord => context.projection(coord));
+      updateGraphic('casing', datum.casing);
+      updateGraphic('stroke', datum.stroke);
 
-          let g = graphic.clear();
-          if (datum.style[which].alpha === 0) return;
+      if (datum.oneways) {
+        const segments = getOneWaySegments(entity);
+        datum.oneways.removeChildren();
 
-          if (datum.style[which].dash) {
-            g = new DashLine(g, {
-              dash: datum.style[which].dash,
-              color: datum.style[which].color,
-              width: width,
-              alpha: datum.style[which].alpha || 1.0,
-              join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
-              cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
-            });
-          } else {
-            g = g.lineStyle({
-              color: datum.style[which].color,
-              width: width,
-              alpha: datum.style[which].alpha || 1.0,
-              join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
-              cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
-            });
-          }
-
-          points.forEach(([x, y], i) => {
-            if (i === 0) {
-              g.moveTo(x, y);
-            } else {
-              g.lineTo(x, y);
-            }
+        segments.forEach(segment => {
+          segment.coords.forEach(coord => {
+            const arrow = new PIXI.Sprite(_textures.oneway);
+            arrow.anchor.set(0.5, 0.5);  // middle, middle
+            arrow.x = coord[0];
+            arrow.y = coord[1];
+            arrow.rotation = segment.angle;
+            datum.oneways.addChild(arrow);
           });
+        });
+      }
 
-          if (datum.hasMarkers) {
-            let markerSegments = oneWaySegments(entity);
-            const container = datum.oneWaysContainer;
-            container.removeChildren();
+      function updateGraphic(which, graphic) {
+        const minwidth = (which === 'casing' ? 3 : 2);
+        let width = datum.style[which].width;
+        if (zoom < 17) width -= 2;
+        if (zoom < 15) width -= 2;
+        if (width < minwidth) width = minwidth;
 
-            markerSegments.forEach(segment => {
-                let angle = segment.angle;
-                segment.coords.forEach((coord) => {
-                  let markerTemplate = _markerGraphics;
+        let g = graphic.clear();
+        if (datum.style[which].alpha === 0) return;
 
-                // const container = new PIXI.Container();
-                // container.name = 'marker-' + segment.id + '-' + i;
-                  const arrow = new PIXI.Graphics(markerTemplate.geometry);
-                  // const container = datum.container;
-                  container.addChild(arrow);
-                  arrow.alpha = 0.5;
-                  arrow.pivot.x = _markerArrowWidth / 2;
-                  arrow.pivot.y = _markerArrowHeight / 2;
-                  arrow.x = coord[0];
-                  arrow.y = coord[1];
-                  arrow.rotation = angle;
-                });
-              });
+        if (datum.style[which].dash) {
+          g = new DashLine(g, {
+            dash: datum.style[which].dash,
+            color: datum.style[which].color,
+            width: width,
+            alpha: datum.style[which].alpha || 1.0,
+            join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
+            cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
+          });
+        } else {
+          g = g.lineStyle({
+            color: datum.style[which].color,
+            width: width,
+            alpha: datum.style[which].alpha || 1.0,
+            join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
+            cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
+          });
+        }
+
+        points.forEach(([x, y], i) => {
+          if (i === 0) {
+            g.moveTo(x, y);
+          } else {
+            g.lineTo(x, y);
           }
         });
-
-      });
+      }
+    });
   }
 
   return renderLines;
 }
 
-function needsDirectionMarkers(way) {
-  return way.isSided() || way.isOneWay();
-}
+
+
 
 const STYLES = {
   default: {
@@ -619,7 +635,7 @@ const ROADS = {
   service_link: true,
   bus_guideway: true,
   track: true
-}
+};
 
 
 function styleMatch(tags) {

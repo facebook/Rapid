@@ -8,24 +8,23 @@ export function pixiVertices(context) {
   let _textures = {};
   let _didInit = false;
 
-
-  function initVertices() {
-    let plain = new PIXI.Graphics();
-    plain
+  //
+  // prepare template geometry
+  //
+  function initVertexTextures() {
+    const plain = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    let junction = new PIXI.Graphics();
-    junction
+    const junction = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    let taggedPlain = new PIXI.Graphics();
-    taggedPlain
+    const taggedPlain = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
@@ -33,8 +32,7 @@ export function pixiVertices(context) {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    let taggedJunction = new PIXI.Graphics();
-    taggedJunction
+    const taggedJunction = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 4.5)
@@ -42,15 +40,13 @@ export function pixiVertices(context) {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    let iconPlain = new PIXI.Graphics();
-    iconPlain
+    const iconPlain = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 8)
       .endFill();
 
-    let iconJunction = new PIXI.Graphics();
-    iconJunction
+    const iconJunction = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 8)
@@ -71,8 +67,11 @@ export function pixiVertices(context) {
   }
 
 
+  //
+  // render
+  //
   function renderVertices(layer, graph, entities) {
-    if (!_didInit) initVertices();
+    if (!_didInit) initVertexTextures();
 
     let data = entities
       .filter(entity => {

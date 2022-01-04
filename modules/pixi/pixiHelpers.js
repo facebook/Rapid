@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js';
 import {
-    geoIdentity as d3_geoIdentity,
-    geoStream as d3_geoStream
+  geoIdentity as d3_geoIdentity,
+  geoStream as d3_geoStream
 } from 'd3-geo';
 
 import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
+
 
 export function getIconSpriteHelper(context, picon) {
   const isMaki = /^maki-/.test(picon);
@@ -18,19 +19,18 @@ export function getIconSpriteHelper(context, picon) {
   } else if (isTemaki) {
     spritesheet = context._temakiSheet;
     spriteName = picon.slice('temaki-'.length);
-  }
-  else {
+  } else {
     spritesheet = context._fontAwesomeSheet;
     spriteName = picon;
   }
 
-    spriteName = spriteName + (isMaki ? '-11' : '') + '.svg';
-    return new PIXI.Sprite(spritesheet.textures[spriteName]);
+  spriteName = spriteName + (isMaki ? '-11' : '') + '.svg';
+  return new PIXI.Sprite(spritesheet.textures[spriteName]);
 }
 
 
-export function pixiOnewayMarkerPoints(projection, graph, dt,
-                                  shouldReverse) {
+
+export function pixiOnewayMarkerPoints(projection, graph, dt, shouldReverse) {
   return function (entity) {
         var i = 0;
         var offset = dt;

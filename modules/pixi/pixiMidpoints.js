@@ -1,81 +1,92 @@
 import * as PIXI from 'pixi.js';
-import { Extent, vecAngle, vecInterp, vecLength, geomLineIntersection } from '@id-sdk/math';
+import { vecAngle, vecInterp } from '@id-sdk/math';
 
 
 export function pixiMidpoints(projection, context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
-    let midPointRadius = 4;
-
-  let _templates = {};
+  let _textures = {};
   let _didInit = false;
 
-  function initMidpoints() {
-    // prepare template geometry
-    _templates.point = new PIXI.Graphics();
-    _templates.point
+  //
+  // prepare template geometry
+  //
+  function initMidpointTextures() {
+    const midpoint = new PIXI.Graphics()
       .lineStyle(1, 0x000000)
       .beginFill(0xffffff, 1)
-      .drawPolygon([-3,4,5,0,-3,-4])
+      .drawPolygon([-3,4, 5,0, -3,-4])
       .endFill();
+
+    // convert graphics to textures/sprites for performance
+    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+    const renderer = context.pixi.renderer;
+    const options = { resolution: 2 };
+    _textures.midpoint = renderer.generateTexture(midpoint, options);
 
     _didInit = true;
   }
 
-    function renderMidpoints(layer, graph, entities) {
-        if (!_didInit) initMidpoints();
 
-        let ways = entities
-            .filter(entity => entity.geometry(graph) === 'line');
+  //
+  // render
+  //
+  function renderMidpoints(layer, graph, entities) {
+    if (!_didInit) initMidpointTextures();
 
-        // gather ids to keep
-        let visible = {};
+    let ways = entities
+      .filter(entity => entity.geometry(graph) === 'line');
 
-        // exit
-        [..._cache.entries()].forEach(function cullPoints([id, datum]) {
-            datum.container.visible = !!visible[id];
-        });
+    // gather ids to keep
+    let visible = {};
+    ways.forEach(way => visible[way.id] = true);
 
-        // enter/update
-        ways.forEach(way => {
+    // exit
+    [..._cache.entries()].forEach(function cullMidpoints([id, datum]) {
+      datum.container.visible = !!visible[id];
+    });
 
-            let nodes = graph.childNodes(way);
+    // enter/update
+    ways.forEach(way => {
+      let nodes = graph.childNodes(way);
 
-            nodes.slice(0, -1).forEach((_, i) => {
-                var a = nodes[i];
-                var b = nodes[i + 1];
+      nodes.slice(0, -1).forEach((_, i) => {
+        const a = nodes[i];
+        const b = nodes[i + 1];
 
-                let nodeId = [a.id, b.id].sort().join('-');
+        const nodeId = [a.id, b.id].sort().join('-');
+        let datum = _cache.get(nodeId);
 
-                let datum = _cache.get(nodeId);
+        if (!datum) {
+          const midpoint = new PIXI.Sprite(_textures.midpoint);
+          midpoint.name = nodeId;
+          midpoint.anchor.set(0.5, 0.5);
 
-                if (!datum) {
-                    const template = _templates.point;
-                    const graphic = new PIXI.Graphics(template.geometry);
+          const container = new PIXI.Container();
+          container.name = nodeId;
+          container.addChild(midpoint);
+          container.alpha = 0.5;
 
-                    const container = new PIXI.Container();
-                    container.name = nodeId;
-                    container.addChild(graphic);
-                    container.alpha = 0.5;
-                    // calculate rotation
-                    layer.addChild(container);
-                    datum = {
-                        container: container,
-                    };
+          layer.addChild(container);
+          datum = {
+            container: container,
+          };
 
-                    _cache.set(nodeId, datum);
-                }
-                const aProj = projection(a.loc);
-                const bProj = projection(b.loc);
-                const rotation = vecAngle(aProj, bProj);
-                const midPoint = vecInterp(aProj, bProj, 0.5);
+          _cache.set(nodeId, datum);
+        }
 
-                datum.container.x = midPoint[0];
-                datum.container.y = midPoint[1];
-                datum.container.rotation = rotation;
-                datum.container.visible = true;
-            });
-        });
-    }
+        // update
+        const aProj = projection(a.loc);
+        const bProj = projection(b.loc);
+        const rotation = vecAngle(aProj, bProj);
+        const midPoint = vecInterp(aProj, bProj, 0.5);
 
-    return renderMidpoints;
+        datum.container.x = midPoint[0];
+        datum.container.y = midPoint[1];
+        datum.container.rotation = rotation;
+        datum.container.visible = true;
+      });
+    });
+  }
+
+  return renderMidpoints;
 }

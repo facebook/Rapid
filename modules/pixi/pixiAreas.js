@@ -5,6 +5,9 @@ export function pixiAreas(context) {
   let _cache = new Map();
 
 
+  //
+  // render
+  //
   function renderAreas(layer, graph, entities) {
     let data = entities
       .filter(entity => entity.geometry(graph) === 'area');
