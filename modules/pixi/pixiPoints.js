@@ -11,7 +11,7 @@ export function pixiPoints(context) {
   // prepare template geometry
   //
   function initPointTextures() {
-    const point = new PIXI.Graphics()
+    const marker = new PIXI.Graphics()
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .moveTo(0, 0)
@@ -26,7 +26,7 @@ export function pixiPoints(context) {
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
-    _textures.point = renderer.generateTexture(point, options);
+    _textures.marker = renderer.generateTexture(marker, options);
 
     _didInit = true;
   }
@@ -62,9 +62,8 @@ export function pixiPoints(context) {
           // const template = _textures.point;
           // const marker = new PIXI.Graphics(template.geometry);
 
-          const t = 'point';
-          const marker = new PIXI.Sprite(_textures[t]);
-          marker.name = t;
+          const marker = new PIXI.Sprite(_textures.marker);
+          marker.name = 'marker';
           marker.anchor.set(0.5, 1);  // note: middle, bottom
 
           const container = new PIXI.Container();

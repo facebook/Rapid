@@ -23,6 +23,7 @@ import { utilDoubleUp } from '../util/double_up';
 
 import { services } from '../services';
 import * as PIXI from 'pixi.js';
+const _pixiAutoTick = false;     // set to true to turn the ticker back on
 
 // constants
 var TILESIZE = 256;
@@ -208,7 +209,7 @@ export function rendererMap(context) {
           window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
         }
 
-        // var interactionManager = context.pixi.renderer.plugins.interaction;
+        // const interactionManager = context.pixi.renderer.plugins.interaction;
         const canvas = document.getElementsByClassName('pixi-data')[0];
         let mousedown = false;
 
@@ -235,10 +236,20 @@ export function rendererMap(context) {
         mainMap.addEventListener('pointerover', forward);
         mainMap.addEventListener('pointerout', forward);
 
-        // context.pixi.ticker.add(time => redrawPixi(time));
-        var ticker = context.pixi.ticker;
-        ticker.autoStart = false;
-        ticker.stop();
+        let ticker = context.pixi.ticker;
+        if (_pixiAutoTick) {  // redraw automatically every frame
+          ticker.add(time => redrawPixi(time));
+        } else {              // redraw only on zoom/pan
+          ticker.autoStart = false;
+          ticker.stop();
+        }
+
+        // dispatch 'drawn' when done drawing
+        // watch out - are we dispatching too many of these now?
+        const that = this;
+        context.pixi.renderer.on('postrender', function postrender() {
+          dispatch.call('drawn', that, { full: true });
+        });
 //
 // END PIXI
 ///////////////////////
@@ -509,7 +520,7 @@ export function rendererMap(context) {
             context.enter(modeBrowse(context));
         }
 
-        dispatch.call('drawn', this, {full: true});
+        // dispatch.call('drawn', this, {full: true});
     }
 
 
@@ -780,17 +791,16 @@ export function rendererMap(context) {
         drawVertices(verticesLayer, graph, data);
         drawPoints(pointsLayer, graph, data);
         drawLabels(labelsLayer, graph, data, _dimensions);
-        drawMidpoints(midpointsLayer, graph, data, _dimensions);
-        _pixiPending = true;
+        // drawMidpoints(midpointsLayer, graph, data, _dimensions);  // off for now
 
-        const ticker = pixi.ticker;
-        window.requestAnimationFrame(timestamp => {
-          ticker.update(timestamp);
-          _pixiPending = false;
-
-          // watch out - are we dispatching too many of these now?
-          dispatch.call('drawn', this, { full: true });
-        });
+        if (!_pixiAutoTick) {    // tick manually
+          _pixiPending = true;
+          const ticker = pixi.ticker;
+          window.requestAnimationFrame(timestamp => {
+            ticker.update(timestamp);
+            _pixiPending = false;
+          });
+        }
     }
 
 
