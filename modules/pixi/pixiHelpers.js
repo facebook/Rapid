@@ -25,7 +25,12 @@ export function getIconSpriteHelper(context, picon) {
   }
 
   spriteName = spriteName + (isMaki ? '-11' : '') + '.svg';
-  return new PIXI.Sprite(spritesheet.textures[spriteName]);
+
+  let sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
+  sprite.name = spriteName;
+  sprite.anchor.set(0.5, 0.5);   // middle, middle
+
+  return sprite;
 }
 
 

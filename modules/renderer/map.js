@@ -250,6 +250,10 @@ export function rendererMap(context) {
         context.pixi.renderer.on('postrender', function postrender() {
           dispatch.call('drawn', that, { full: true });
         });
+
+// tick every half second for testing
+window.setInterval(() => redrawPixi(), 500);
+
 //
 // END PIXI
 ///////////////////////
@@ -784,13 +788,22 @@ export function rendererMap(context) {
            midpointsLayer = pixi.stage.getChildAt(5);
         }
 
+// geometry will only reproject when zoom changes
+// so just inverse project the coordinate for the corner of the viewport
+// and translate the whole scene to there.
+const k = projection.scale();
+const cornerWGS84 = projection.invert([0, 0]);   // corner of viewport
+const toMercator = new Projection(0, 0, k);
+const origin = toMercator.project(cornerWGS84);
+pixi.stage.position.set(-origin[0], -origin[1]);
+
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
         drawAreas(areasLayer, graph, data);
         drawLines(linesLayer, graph, data);
         drawVertices(verticesLayer, graph, data);
         drawPoints(pointsLayer, graph, data);
-        drawLabels(labelsLayer, graph, data, _dimensions);
+        // drawLabels(labelsLayer, graph, data, _dimensions);
         // drawMidpoints(midpointsLayer, graph, data, _dimensions);  // off for now
 
         if (!_pixiAutoTick) {    // tick manually

@@ -1,14 +1,17 @@
 import * as PIXI from 'pixi.js';
-import { utilArrayFlatten } from '@id-sdk/util';
+import { Projection } from '@id-sdk/math';
+
 
 export function pixiAreas(context) {
   let _cache = new Map();
-
 
   //
   // render
   //
   function renderAreas(layer, graph, entities) {
+    const k = context.projection.scale();
+    const toMercator = new Projection(0, 0, k);
+
     let data = entities
       .filter(entity => entity.geometry(graph) === 'area');
 
@@ -45,16 +48,21 @@ export function pixiAreas(context) {
           _cache.set(entity.id, datum);
         }
 
-        // update
-        const path = utilArrayFlatten(datum.coords.map(coord => context.projection(coord)));
+        // reproject only if zoom changed
+        if (k && k === datum.k) return;
+
+        let path = [];
+        datum.coords.forEach(coord => {
+          let p = toMercator.project(coord);
+          path.push(p[0], p[1]);
+        });
+
         datum.graphics
           .clear()
           .lineStyle(datum.style.width, datum.style.color)
           .beginFill(datum.style.color, datum.style.alpha)
           .drawPolygon(path)
           .endFill();
-
-        datum.graphics.visible = true;
       });
   }
 

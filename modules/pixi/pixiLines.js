@@ -1,7 +1,10 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
+import { Projection, geoScaleToZoom } from '@id-sdk/math';
+
 import { osmPavedTags } from '../osm/tags';
 import { pixiOnewayMarkerPoints } from './pixiHelpers';
+
 
 export function pixiLines(projection, context) {
   let _cache = new Map();
@@ -40,7 +43,10 @@ export function pixiLines(projection, context) {
   function renderLines(layer, graph, entities) {
     if (!_didInit) initLineTextures();
 
-    const zoom = context.map().zoom();
+    const k = context.projection.scale();
+    const zoom = geoScaleToZoom(k);
+    const toMercator = new Projection(0, 0, k);
+
     const getOneWaySegments = pixiOnewayMarkerPoints(projection, graph, 35,
       function shouldReverse(entity) { return entity.tags.oneway === '-1'; },
       function bothDirections(entity) { return entity.tags.oneway === 'reversible' || entity.tags.oneway === 'alternating'; }
@@ -98,26 +104,28 @@ export function pixiLines(projection, context) {
         _cache.set(entity.id, datum);
       }
 
-      // update
-      const points = datum.coords.map(coord => context.projection(coord));
+      // reproject only if zoom changed
+      if (k && k === datum.k) return;
+
+      const points = datum.coords.map(coord => toMercator.project(coord));
       updateGraphic('casing', datum.casing);
       updateGraphic('stroke', datum.stroke);
 
-      if (datum.oneways) {
-        const segments = getOneWaySegments(entity);
-        datum.oneways.removeChildren();
+      // if (datum.oneways) {
+      //   const segments = getOneWaySegments(entity);
+      //   datum.oneways.removeChildren();
 
-        segments.forEach(segment => {
-          segment.coords.forEach(coord => {
-            const arrow = new PIXI.Sprite(_textures.oneway);
-            arrow.anchor.set(0.5, 0.5);  // middle, middle
-            arrow.x = coord[0];
-            arrow.y = coord[1];
-            arrow.rotation = segment.angle;
-            datum.oneways.addChild(arrow);
-          });
-        });
-      }
+      //   segments.forEach(segment => {
+      //     segment.coords.forEach(coord => {
+      //       const arrow = new PIXI.Sprite(_textures.oneway);
+      //       arrow.anchor.set(0.5, 0.5);  // middle, middle
+      //       arrow.x = coord[0];
+      //       arrow.y = coord[1];
+      //       arrow.rotation = segment.angle;
+      //       datum.oneways.addChild(arrow);
+      //     });
+      //   });
+      // }
 
       function updateGraphic(which, graphic) {
         const minwidth = (which === 'casing' ? 3 : 2);

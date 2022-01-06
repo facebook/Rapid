@@ -1,4 +1,6 @@
+import { Projection } from '@id-sdk/math';
 import * as PIXI from 'pixi.js';
+
 import { presetManager } from '../presets';
 import { getIconSpriteHelper } from './pixiHelpers';
 
@@ -73,6 +75,9 @@ export function pixiVertices(context) {
   function renderVertices(layer, graph, entities) {
     if (!_didInit) initVertexTextures();
 
+    const k = context.projection.scale();
+    const toMercator = new Projection(0, 0, k);
+
     let data = entities
       .filter(entity => {
         return entity.geometry(graph) === 'vertex' && (
@@ -95,19 +100,13 @@ export function pixiVertices(context) {
         let datum = _cache.get(entity.id);
 
         if (!datum) {   // make point if needed
+          const container = new PIXI.Container();
+          container.name = entity.id;
+          layer.addChild(container);
+
           const preset = presetManager.match(entity, graph);
           const picon = preset && preset.icon;
           const isJunction = graph.isShared(entity);
-
-          // let template;
-          // if (picon) {
-          //   template = isJunction ? _textures.iconJunction : _textures.iconPlain;
-          // } else if (entity.hasInterestingTags()) {
-          //   template = isJunction ? _textures.taggedJunction : _textures.taggedPlain;
-          // } else {
-          //   template = isJunction ? _textures.junction : _textures.plain;
-          // }
-          // const marker = new PIXI.Graphics(template.geometry);
 
           let t;
           if (picon) {
@@ -117,25 +116,18 @@ export function pixiVertices(context) {
           } else {
             t = isJunction ? 'junction' : 'plain';
           }
-
           const marker = new PIXI.Sprite(_textures[t]);
           marker.name = t;
-          marker.anchor.set(0.5, 0.5);
-
-          const container = new PIXI.Container();
-          container.name = entity.id;
+          marker.anchor.set(0.5, 0.5);  // middle, middle
           container.addChild(marker);
 
           if (picon) {
             let icon = getIconSpriteHelper(context, picon);
             const iconsize = 11;
-            icon.anchor.set(0.5, 0.5);
             icon.width = iconsize;
             icon.height = iconsize;
             container.addChild(icon);
           }
-
-          layer.addChild(container);
 
           datum = {
             loc: entity.loc,
@@ -145,11 +137,12 @@ export function pixiVertices(context) {
           _cache.set(entity.id, datum);
         }
 
-        // update
-        const coord = context.projection(datum.loc);
-        datum.container.x = coord[0];
-        datum.container.y = coord[1];
-        datum.container.visible = true;
+        // reproject only if zoom changed
+        if (k && k === datum.k) return;
+
+        const coord = toMercator.project(datum.loc);
+        datum.container.position.set(coord[0], coord[1]);
+        datum.k = k;
       });
   }
 

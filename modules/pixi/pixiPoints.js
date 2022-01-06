@@ -1,6 +1,9 @@
+import { Projection } from '@id-sdk/math';
 import * as PIXI from 'pixi.js';
+
 import { presetManager } from '../presets';
 import { getIconSpriteHelper } from './pixiHelpers';
+
 
 export function pixiPoints(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
@@ -38,6 +41,9 @@ export function pixiPoints(context) {
   function renderPoints(layer, graph, entities) {
     if (!_didInit) initPointTextures();
 
+    const k = context.projection.scale();
+    const toMercator = new Projection(0, 0, k);
+
     let data = entities
       .filter(entity => entity.geometry(graph) === 'point');
 
@@ -56,33 +62,27 @@ export function pixiPoints(context) {
         let datum = _cache.get(entity.id);
 
         if (!datum) {   // make point if needed
-          const preset = presetManager.match(entity, graph);
-          const picon = preset && preset.icon;
-
-          // const template = _textures.point;
-          // const marker = new PIXI.Graphics(template.geometry);
+          const container = new PIXI.Container();
+          container.name = entity.id;
+          layer.addChild(container);
 
           const marker = new PIXI.Sprite(_textures.marker);
           marker.name = 'marker';
-          marker.anchor.set(0.5, 1);  // note: middle, bottom
-
-          const container = new PIXI.Container();
-          container.name = entity.id;
+          marker.anchor.set(0.5, 1);  // middle, bottom
           container.addChild(marker);
 
-          if (picon) {
-            let thisSprite = getIconSpriteHelper(context, picon);
-            const iconsize = 11;
-            thisSprite.anchor.set(0.5, 0.5);
-            // mathematically 0,-15 is center of marker, move down slightly
-            thisSprite.x = 0;
-            thisSprite.y = -14;
-            thisSprite.width = iconsize;
-            thisSprite.height = iconsize;
-            container.addChild(thisSprite);
-          }
+          const preset = presetManager.match(entity, graph);
+          const picon = preset && preset.icon;
 
-          layer.addChild(container);
+          if (picon) {
+            let icon = getIconSpriteHelper(context, picon);
+            const iconsize = 11;
+            // mathematically 0,-15 is center of marker, move down slightly
+            icon.position.set(0, -14);
+            icon.width = iconsize;
+            icon.height = iconsize;
+            container.addChild(icon);
+          }
 
           datum = {
             loc: entity.loc,
@@ -92,11 +92,12 @@ export function pixiPoints(context) {
           _cache.set(entity.id, datum);
         }
 
-        // update
-        const coord = context.projection(datum.loc);
-        datum.container.x = coord[0];
-        datum.container.y = coord[1];
-        datum.container.visible = true;
+        // reproject only if zoom changed
+        if (k && k === datum.k) return;
+
+        const coord = toMercator.project(datum.loc);
+        datum.container.position.set(coord[0], coord[1]);
+        datum.k = k;
       });
   }
 
