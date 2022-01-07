@@ -788,14 +788,16 @@ window.setInterval(() => redrawPixi(), 500);
            midpointsLayer = pixi.stage.getChildAt(5);
         }
 
-// geometry will only reproject when zoom changes
-// so just inverse project the coordinate for the corner of the viewport
-// and translate the whole scene to there.
-const k = projection.scale();
-const cornerWGS84 = projection.invert([0, 0]);   // corner of viewport
-const toMercator = new Projection(0, 0, k);
-const origin = toMercator.project(cornerWGS84);
-pixi.stage.position.set(-origin[0], -origin[1]);
+//// reproject only when zoom changes
+//// so just inverse project the coordinate for the corner of the viewport
+//// and translate the whole scene to there.
+//const k = projection.scale();
+//const cornerWGS84 = projection.invert([0, 0]);   // corner of viewport
+//const toMercator = new Projection(0, 0, k);
+//const origin = toMercator.project(cornerWGS84);
+//
+//// ...either this?
+//pixi.stage.position.set(-origin[0], -origin[1]);
 
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
@@ -808,9 +810,17 @@ pixi.stage.position.set(-origin[0], -origin[1]);
 
         if (!_pixiAutoTick) {    // tick manually
           _pixiPending = true;
-          const ticker = pixi.ticker;
+          // const ticker = pixi.ticker;
           window.requestAnimationFrame(timestamp => {
-            ticker.update(timestamp);
+pixi.ticker.update(timestamp);
+
+// ...or this?
+// const m = new PIXI.Matrix (1, 0, 0, 1, -origin[0], -origin[1]);
+// const options = {
+  // transform: m
+  // skipUpdateTransform: true
+// };
+            // pixi.renderer.render(pixi.stage, options);
             _pixiPending = false;
           });
         }
@@ -845,15 +855,18 @@ pixi.stage.position.set(-origin[0], -origin[1]);
 //        surface
 //            .classed('low-zoom', zoom <= lowzoom(lat));
 
+
+// skip some stuff
+// trying to determine where the jank is coming from
         if (!difference) {
             supersurface.call(context.background());
-            wrapper.call(drawLayers);
+//            wrapper.call(drawLayers);
         }
 
         // OSM
         if (map.editableDataEnabled() || map.isInWideSelection()) {
             context.loadTiles(projection);
-            drawEditable(difference, extent);
+//            drawEditable(difference, extent);
         } else {
             editOff();
         }

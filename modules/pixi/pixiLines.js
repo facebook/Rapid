@@ -104,10 +104,14 @@ export function pixiLines(projection, context) {
         _cache.set(entity.id, datum);
       }
 
-      // reproject only if zoom changed
-      if (k && k === datum.k) return;
+// reproject only if zoom changed
+//      if (k && k === datum.k) return;
+//
+//      const points = datum.coords.map(coord => toMercator.project(coord));
 
-      const points = datum.coords.map(coord => toMercator.project(coord));
+// reproject every time
+     const points = datum.coords.map(coord => context.projection(coord));
+
       updateGraphic('casing', datum.casing);
       updateGraphic('stroke', datum.stroke);
 

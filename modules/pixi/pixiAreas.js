@@ -48,12 +48,19 @@ export function pixiAreas(context) {
           _cache.set(entity.id, datum);
         }
 
-        // reproject only if zoom changed
-        if (k && k === datum.k) return;
+// reproject only if zoom changed
+//        if (k && k === datum.k) return;
+//
+//        let path = [];
+//        datum.coords.forEach(coord => {
+//          let p = toMercator.project(coord);
+//          path.push(p[0], p[1]);
+//        });
 
+// reproject every time
         let path = [];
         datum.coords.forEach(coord => {
-          let p = toMercator.project(coord);
+          let p = context.projection(coord);
           path.push(p[0], p[1]);
         });
 

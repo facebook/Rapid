@@ -92,10 +92,14 @@ export function pixiPoints(context) {
           _cache.set(entity.id, datum);
         }
 
-        // reproject only if zoom changed
-        if (k && k === datum.k) return;
+// reproject only if zoom changed
+//        if (k && k === datum.k) return;
+//
+//        const coord = toMercator.project(datum.loc);
 
-        const coord = toMercator.project(datum.loc);
+// reproject every time
+        const coord = context.projection(datum.loc);
+
         datum.container.position.set(coord[0], coord[1]);
         datum.k = k;
       });
