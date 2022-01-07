@@ -31,7 +31,9 @@ export function pixiAreas(context) {
 
         if (!datum) {   // make poly if needed
           const geojson = entity.asGeoJSON(graph);
-          const coords = geojson.coordinates[0];   // outer ring only
+          const coords = (geojson.type === 'Polygon') ? geojson.coordinates[0]
+            : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
+          if (!coords.length) return;
 
           const graphics = new PIXI.Graphics();
           graphics.name = entity.id;
