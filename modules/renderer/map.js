@@ -244,15 +244,19 @@ export function rendererMap(context) {
           ticker.stop();
         }
 
-        // dispatch 'drawn' when done drawing
-        // watch out - are we dispatching too many of these now?
-        const that = this;
-        context.pixi.renderer.on('postrender', function postrender() {
-          dispatch.call('drawn', that, { full: true });
-        });
+
+// skip some stuff
+// trying to determine where the jank is coming from
+
+        // // dispatch 'drawn' when done drawing
+        // // watch out - are we dispatching too many of these now?
+        // const that = this;
+        // context.pixi.renderer.on('postrender', function postrender() {
+        //   dispatch.call('drawn', that, { full: true });
+        // });
 
 // tick every half second for testing
-window.setInterval(() => redrawPixi(), 500);
+// window.setInterval(() => redrawPixi(), 500);
 
 //
 // END PIXI
