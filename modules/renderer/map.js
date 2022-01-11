@@ -94,10 +94,11 @@ export function rendererMap(context) {
     var _doubleUpHandler = utilDoubleUp();
 
 
-    var deferredRedraw = _throttle(redraw, 750);
+    var deferredRedraw = _throttle(redraw, 200);
+    // var deferredRedraw = _throttle(redraw, 750);
 
     function scheduleRedraw() {
-        redrawPixi();        // draw Pixi now..
+        // redrawPixi();        // draw Pixi now..
         deferredRedraw();    // draw Backgrounds and SVG whenever..
     }
 
@@ -105,7 +106,7 @@ export function rendererMap(context) {
         if (!difference && !extent) {
             deferredRedraw.cancel();
         }
-        redrawPixi();                  // draw Pixi now..
+        // redrawPixi();                  // draw Pixi now..
         redraw(difference, extent);    // draw Backgrounds and SVG now..
     }
 
@@ -170,7 +171,14 @@ export function rendererMap(context) {
             .append('div')
             .attr('class', 'layer layer-data');
 
-        selection
+// pixi as sibling to supersurface
+//        selection
+//            .append('div')
+//            .attr('class', 'layer pixi-data')
+//            .style('z-index', '3');
+
+// pixi as child of supersurface
+        wrapper
             .append('div')
             .attr('class', 'layer pixi-data')
             .style('z-index', '3');
@@ -210,35 +218,35 @@ export function rendererMap(context) {
         }
 
         // const interactionManager = context.pixi.renderer.plugins.interaction;
-        const canvas = document.getElementsByClassName('pixi-data')[0];
-        let mousedown = false;
-
-        const clone = e => new e.constructor(e.type, e);
-        const forward = (e) => {
-            canvas.dispatchEvent(clone(e));
-        };
-        const forwardDown = (e) => {
-            mousedown = true;
-            forward(e);
-        };
-        const forwardUp = (e) => {
-            forward(e);
-            if (mousedown) {
-                mousedown = false;
-            }
-        };
-
-        const mainMap = document.getElementsByClassName('supersurface')[0]; //There should be only one!
-
-        mainMap.addEventListener('pointerdown', forwardDown);
-        mainMap.addEventListener('pointerup', forwardUp);
-        mainMap.addEventListener('pointermove', forward);
-        mainMap.addEventListener('pointerover', forward);
-        mainMap.addEventListener('pointerout', forward);
+//        const canvas = document.getElementsByClassName('pixi-data')[0];
+//        let mousedown = false;
+//
+//        const clone = e => new e.constructor(e.type, e);
+//        const forward = (e) => {
+//            canvas.dispatchEvent(clone(e));
+//        };
+//        const forwardDown = (e) => {
+//            mousedown = true;
+//            forward(e);
+//        };
+//        const forwardUp = (e) => {
+//            forward(e);
+//            if (mousedown) {
+//                mousedown = false;
+//            }
+//        };
+//
+//        const mainMap = document.getElementsByClassName('supersurface')[0]; //There should be only one!
+//
+//        mainMap.addEventListener('pointerdown', forwardDown);
+//        mainMap.addEventListener('pointerup', forwardUp);
+//        mainMap.addEventListener('pointermove', forward);
+//        mainMap.addEventListener('pointerover', forward);
+//        mainMap.addEventListener('pointerout', forward);
 
         let ticker = context.pixi.ticker;
         if (_pixiAutoTick) {  // redraw automatically every frame
-          ticker.add(time => redrawPixi(time));
+          // ticker.add(time => redrawPixi(time));
         } else {              // redraw only on zoom/pan
           ticker.autoStart = false;
           ticker.stop();
@@ -727,11 +735,10 @@ export function rendererMap(context) {
         }
         _isTransformed = true;
         _transformLast = eventTransform;
+
         utilSetTransform(supersurface, tX, tY, scale);
         scheduleRedraw();
-
         dispatch.call('move', this, map);
-
 
         function isInteger(val) {
             return typeof val === 'number' && isFinite(val) && Math.floor(val) === val;
@@ -865,6 +872,7 @@ pixi.ticker.update(timestamp);
         if (!difference) {
             supersurface.call(context.background());
 //            wrapper.call(drawLayers);
+redrawPixi();
         }
 
         // OSM
