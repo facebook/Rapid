@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* Downloads the latest translations from Transifex */
 import btoa from 'btoa';
-import colors from 'colors/safe.js';
+import chalk from 'chalk';
 import fetch from 'node-fetch';
 import fs from 'node:fs';
 import YAML from 'js-yaml';
@@ -334,7 +334,7 @@ function checkForDuplicateShortcuts(code, coreStrings) {
       let shortcut = modifier + rep;
       if (usedShortcuts[shortcut] && usedShortcuts[shortcut] !== shortcutPathString) {
         let message = code + ': duplicate shortcut "' + shortcut + '" for "' + usedShortcuts[shortcut] + '" and "' + shortcutPathString + '"';
-        console.warn(colors.yellow(message));
+        console.warn(chalk.yellow(message));
       } else {
         usedShortcuts[shortcut] = shortcutPathString;
       }

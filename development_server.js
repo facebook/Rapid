@@ -30,7 +30,7 @@ if (isDevelopment) {
             'data/rapid_config.yaml',
             // ignore the output files of `buildData`
             '!data/presets/categories.json',
-            '!data/rapid_config.json', 
+            '!data/rapid_config.json',
             '!data/presets/fields.json',
             '!data/presets/presets.json',
             '!data/presets.yaml',
@@ -57,6 +57,6 @@ if (isDevelopment) {
 
     const server = new StaticServer({ rootPath: __dirname, port: 8080, followSymlink: true });
     server.start(function () {
-        console.log(colors.yellow('Listening on ' + server.port));
+        console.log(chalk.yellow('Listening on ' + server.port));
     });
 }

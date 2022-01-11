@@ -89,7 +89,7 @@
     "chai": "^4.1.0",
     "cldr-core": "39.0.0",
     "cldr-localenames-full": "39.0.0",
-    "colors": "^1.1.2",
+    "chalk": "^5.0.0",
     "concat-files": "^0.1.1",
     "core-js-bundle": "^3.19.0",
     "d3": "~7.1.1",
