@@ -164,6 +164,26 @@ describe('iD.osmEntity', function () {
             expect(a.mergeTags(b.tags).tags).to.eql({a: 'a;b'});
             expect(b.mergeTags(a.tags).tags).to.eql({a: 'b;a'});
         });
+
+        it('does NOT combine building tags for new tag: building=yes', function () {
+            var a = iD.osmEntity({tags: {building: 'residential'}});
+            var b = a.mergeTags({building: 'yes'});
+            expect(b.tags).to.eql({building: 'residential'});
+        });
+
+        it('does combine building tags if existing tag is building=yes', function () {
+            var a = iD.osmEntity({tags: {building: 'yes'}});
+            var b = a.mergeTags({building: 'residential'});
+            expect(b.tags).to.eql({building: 'residential'});
+        });
+
+        it('keeps the existing building tag if the new tag is not building=yes', function () {
+            var a = iD.osmEntity({tags: {building: 'residential'}});
+            var b = a.mergeTags({building: 'house'});
+            expect(b.tags).to.eql({building: 'residential'});
+        });
+
+
     });
 
     describe('#osmId', function () {
