@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Projection } from '@id-sdk/math';
 
 
 export function pixiAreas(context) {
@@ -8,9 +7,9 @@ export function pixiAreas(context) {
   //
   // render
   //
-  function renderAreas(layer, graph, entities) {
-    const k = context.projection.scale();
-    const toMercator = new Projection(0, 0, k);
+  function renderAreas(layer, projection, entities) {
+    const graph = context.graph();
+    const k = projection.scale();
 
     let data = entities
       .filter(entity => entity.geometry(graph) === 'area');
@@ -50,19 +49,13 @@ export function pixiAreas(context) {
           _cache.set(entity.id, datum);
         }
 
-// reproject only if zoom changed
-//        if (k && k === datum.k) return;
-//
-//        let path = [];
-//        datum.coords.forEach(coord => {
-//          let p = toMercator.project(coord);
-//          path.push(p[0], p[1]);
-//        });
+        // remember scale and reproject only when it changes
+        if (k === datum.k) return;
+        datum.k = k;
 
-// reproject every time
         let path = [];
         datum.coords.forEach(coord => {
-          let p = context.projection(coord);
+          const p = projection.project(coord);
           path.push(p[0], p[1]);
         });
 

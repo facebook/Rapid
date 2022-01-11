@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
-import { Projection, geoScaleToZoom } from '@id-sdk/math';
+import { geoScaleToZoom } from '@id-sdk/math';
 
 import { osmPavedTags } from '../osm/tags';
 import { pixiOnewayMarkerPoints } from './pixiHelpers';
@@ -40,12 +40,12 @@ export function pixiLines(projection, context) {
   //
   // render
   //
-  function renderLines(layer, graph, entities) {
+  function renderLines(layer, projection, entities) {
     if (!_didInit) initLineTextures();
 
-    const k = context.projection.scale();
+    const graph = context.graph();
+    const k = projection.scale();
     const zoom = geoScaleToZoom(k);
-    const toMercator = new Projection(0, 0, k);
 
     const getOneWaySegments = pixiOnewayMarkerPoints(projection, graph, 35,
       function shouldReverse(entity) { return entity.tags.oneway === '-1'; },
@@ -104,14 +104,11 @@ export function pixiLines(projection, context) {
         _cache.set(entity.id, datum);
       }
 
-// reproject only if zoom changed
-//      if (k && k === datum.k) return;
-//
-//      const points = datum.coords.map(coord => toMercator.project(coord));
+      // remember scale and reproject only when it changes
+      if (k === datum.k) return;
+      datum.k = k;
 
-// reproject every time
-     const points = datum.coords.map(coord => context.projection(coord));
-
+      const points = datum.coords.map(coord => projection.project(coord));
       updateGraphic('casing', datum.casing);
       updateGraphic('stroke', datum.stroke);
 

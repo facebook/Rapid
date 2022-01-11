@@ -1,4 +1,3 @@
-import { Projection } from '@id-sdk/math';
 import * as PIXI from 'pixi.js';
 
 import { presetManager } from '../presets';
@@ -72,11 +71,11 @@ export function pixiVertices(context) {
   //
   // render
   //
-  function renderVertices(layer, graph, entities) {
+  function renderVertices(layer, projection, entities) {
     if (!_didInit) initVertexTextures();
 
-    const k = context.projection.scale();
-    const toMercator = new Projection(0, 0, k);
+    const graph = context.graph();
+    const k = projection.scale();
 
     let data = entities
       .filter(entity => {
@@ -137,16 +136,12 @@ export function pixiVertices(context) {
           _cache.set(entity.id, datum);
         }
 
-// reproject only if zoom changed
-//        if (k && k === datum.k) return;
-//
-//        const coord = toMercator.project(datum.loc);
-
-// reproject every time
-        const coord = context.projection(datum.loc);
-
-        datum.container.position.set(coord[0], coord[1]);
+        // remember scale and reproject only when it changes
+        if (k === datum.k) return;
         datum.k = k;
+
+        const coord = projection.project(datum.loc);
+        datum.container.position.set(coord[0], coord[1]);
       });
   }
 

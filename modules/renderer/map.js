@@ -94,8 +94,8 @@ export function rendererMap(context) {
     var _doubleUpHandler = utilDoubleUp();
 
 
-    var deferredRedraw = _throttle(redraw, 200);
     // var deferredRedraw = _throttle(redraw, 750);
+    var deferredRedraw = _throttle(redraw, 200);
 
     function scheduleRedraw() {
         // redrawPixi();        // draw Pixi now..
@@ -758,8 +758,11 @@ export function rendererMap(context) {
     }
 
 
-    let _pixiInit = false;
-    let _pixiPending = false;
+
+// pixi state
+let _pixiInit = false;
+let _pixiPending = false;
+let _pixiProjection = new Projection();   // only update transform after zooming
 
     function redrawPixi() {
         if (!context.pixi || !_redrawEnabled) return;
@@ -787,6 +790,7 @@ export function rendererMap(context) {
           midpointsLayer = new PIXI.Container();
           midpointsLayer.name = 'midpoints';
 
+          pixi.stage.name = 'stage';
           pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
           _pixiInit = true;
 
@@ -799,23 +803,31 @@ export function rendererMap(context) {
            midpointsLayer = pixi.stage.getChildAt(5);
         }
 
-//// reproject only when zoom changes
-//// so just inverse project the coordinate for the corner of the viewport
-//// and translate the whole scene to there.
-//const k = projection.scale();
+// reproject the pixi geometries only whenever zoom changes
+
+const currTransform = projection.transform();
+const pixiTransform = _pixiProjection.transform();
+let offset;
+if (pixiTransform.k !== currTransform.k) {
+  offset = [0, 0];
+  _pixiProjection.transform(currTransform);
+} else {
+  offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ]
+}
 //const cornerWGS84 = projection.invert([0, 0]);   // corner of viewport
 //const toMercator = new Projection(0, 0, k);
 //const origin = toMercator.project(cornerWGS84);
 //
-//// ...either this?
-//pixi.stage.position.set(-origin[0], -origin[1]);
+
+// ...this?
+pixi.stage.position.set(-offset[0], -offset[1]);
 
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
-        drawAreas(areasLayer, graph, data);
-        drawLines(linesLayer, graph, data);
-        drawVertices(verticesLayer, graph, data);
-        drawPoints(pointsLayer, graph, data);
+        drawAreas(areasLayer, _pixiProjection, data);
+        drawLines(linesLayer, _pixiProjection, data);
+        drawVertices(verticesLayer, _pixiProjection, data);
+        drawPoints(pointsLayer, _pixiProjection, data);
         // drawLabels(labelsLayer, graph, data, _dimensions);
         // drawMidpoints(midpointsLayer, graph, data, _dimensions);  // off for now
 
@@ -823,15 +835,17 @@ export function rendererMap(context) {
           _pixiPending = true;
           // const ticker = pixi.ticker;
           window.requestAnimationFrame(timestamp => {
+
+// ...this?
 pixi.ticker.update(timestamp);
 
 // ...or this?
-// const m = new PIXI.Matrix (1, 0, 0, 1, -origin[0], -origin[1]);
+// const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
 // const options = {
-  // transform: m
-  // skipUpdateTransform: true
+//   transform: m
+//   // skipUpdateTransform: true
 // };
-            // pixi.renderer.render(pixi.stage, options);
+// pixi.renderer.render(pixi.stage, options);
             _pixiPending = false;
           });
         }
