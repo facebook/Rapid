@@ -3,10 +3,11 @@ import { DashLine } from 'pixi-dashed-line';
 import { geoScaleToZoom } from '@id-sdk/math';
 
 import { osmPavedTags } from '../osm/tags';
-import { pixiOnewayMarkerPoints } from './pixiHelpers';
+import { getLineSegments } from './pixiHelpers';
 
 
 export function pixiLines(projection, context) {
+  const ONEWAY_SPACING = 35;
   let _cache = new Map();
   let _textures = {};
   let _didInit = false;
@@ -46,11 +47,6 @@ export function pixiLines(projection, context) {
     const graph = context.graph();
     const k = projection.scale();
     const zoom = geoScaleToZoom(k);
-
-    const getOneWaySegments = pixiOnewayMarkerPoints(projection, graph, 35,
-      function shouldReverse(entity) { return entity.tags.oneway === '-1'; },
-      function bothDirections(entity) { return entity.tags.oneway === 'reversible' || entity.tags.oneway === 'alternating'; }
-    );
 
     let data = entities
       .filter(entity => entity.geometry(graph) === 'line');
@@ -109,24 +105,28 @@ export function pixiLines(projection, context) {
       datum.k = k;
 
       const points = datum.coords.map(coord => projection.project(coord));
+      if (entity.tags.oneway === '-1') {
+        points.reverse();
+      }
+
       updateGraphic('casing', datum.casing);
       updateGraphic('stroke', datum.stroke);
 
-      // if (datum.oneways) {
-      //   const segments = getOneWaySegments(entity);
-      //   datum.oneways.removeChildren();
+      if (datum.oneways) {
+        const segments = getLineSegments(points, ONEWAY_SPACING);
+        datum.oneways.removeChildren();
 
-      //   segments.forEach(segment => {
-      //     segment.coords.forEach(coord => {
-      //       const arrow = new PIXI.Sprite(_textures.oneway);
-      //       arrow.anchor.set(0.5, 0.5);  // middle, middle
-      //       arrow.x = coord[0];
-      //       arrow.y = coord[1];
-      //       arrow.rotation = segment.angle;
-      //       datum.oneways.addChild(arrow);
-      //     });
-      //   });
-      // }
+        segments.forEach(segment => {
+          segment.coords.forEach(coord => {
+            const arrow = new PIXI.Sprite(_textures.oneway);
+            arrow.anchor.set(0.5, 0.5);  // middle, middle
+            arrow.x = coord[0];
+            arrow.y = coord[1];
+            arrow.rotation = segment.angle;
+            datum.oneways.addChild(arrow);
+          });
+        });
+      }
 
       function updateGraphic(which, graphic) {
         const minwidth = (which === 'casing' ? 3 : 2);
