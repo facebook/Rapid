@@ -276,7 +276,7 @@ export function rendererMap(context) {
             .selectAll('.surface');
 
         surface
-            .call(drawLabels.observe)
+            // .call(drawLabels.observe)
             .call(_doubleUpHandler)
             .on(_pointerPrefix + 'down.zoom', function (d3_event) {
                 _lastPointerEvent = d3_event;
@@ -506,7 +506,7 @@ export function rendererMap(context) {
         drawLines = pixiLines(context);
         drawAreas = pixiAreas(context);
         drawMidpoints = pixiMidpoints(context);
-        drawLabels = pixiLabels(projection, context, _dimensions);
+        drawLabels = pixiLabels(context);
 
         drawLayers = svgLayers(projection, context);
         // drawPoints = svgPoints(projection, context);
@@ -828,7 +828,7 @@ pixi.stage.position.set(-offset[0], -offset[1]);
         drawLines(linesLayer, _pixiProjection, data);
         drawVertices(verticesLayer, _pixiProjection, data);
         drawPoints(pointsLayer, _pixiProjection, data);
-        // drawLabels(labelsLayer, graph, data, _dimensions);
+        drawLabels(labelsLayer, _pixiProjection, data);
         // drawMidpoints(midpointsLayer, _pixiProjection, data);
 
         if (!_pixiAutoTick) {    // tick manually
