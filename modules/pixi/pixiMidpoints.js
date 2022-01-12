@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { vecAngle, vecInterp } from '@id-sdk/math';
 
 
-export function pixiMidpoints(projection, context) {
+export function pixiMidpoints(context) {
   let _cache = new Map();   // map of OSM ID -> Pixi data
   let _textures = {};
   let _didInit = false;
@@ -30,15 +30,22 @@ export function pixiMidpoints(projection, context) {
   //
   // render
   //
-  function renderMidpoints(layer, graph, entities) {
+  function renderMidpoints(layer, projection, entities) {
     if (!_didInit) initMidpointTextures();
 
-    let ways = entities
-      .filter(entity => entity.geometry(graph) === 'line');
+    const graph = context.graph();
+    const k = projection.scale();
+
+    function isLine(entity) {
+      return (entity.type === 'way' || entity.type === 'relation') &&
+        (entity.geometry(graph) === 'line' || entity.geometry(graph) === 'area');
+    }
+
+    const data = entities.filter(isLine);
 
     // gather ids to keep
     let visible = {};
-    ways.forEach(way => visible[way.id] = true);
+    data.forEach(way => visible[way.id] = true);
 
     // exit
     [..._cache.entries()].forEach(function cullMidpoints([id, datum]) {
@@ -46,46 +53,56 @@ export function pixiMidpoints(projection, context) {
     });
 
     // enter/update
-    ways.forEach(way => {
-      let nodes = graph.childNodes(way);
-
-      nodes.slice(0, -1).forEach((_, i) => {
-        const a = nodes[i];
-        const b = nodes[i + 1];
-
-        const nodeId = [a.id, b.id].sort().join('-');
-        let datum = _cache.get(nodeId);
+    data
+      .forEach(function prepareMidpoints(way) {
+        let datum = _cache.get(way.id);
 
         if (!datum) {
-          const midpoint = new PIXI.Sprite(_textures.midpoint);
-          midpoint.name = nodeId;
-          midpoint.anchor.set(0.5, 0.5);
-
           const container = new PIXI.Container();
-          container.name = nodeId;
-          container.addChild(midpoint);
+          container.name = way.id;
           container.alpha = 0.5;
-
           layer.addChild(container);
+
           datum = {
-            container: container,
+            nodes: graph.childNodes(way),
+            container: container
           };
 
-          _cache.set(nodeId, datum);
+          _cache.set(way.id, datum);
         }
 
-        // update
-        const aProj = projection(a.loc);
-        const bProj = projection(b.loc);
-        const rotation = vecAngle(aProj, bProj);
-        const midPoint = vecInterp(aProj, bProj, 0.5);
+        // remember scale and reproject only when it changes
+        if (k === datum.k) return;
+        datum.k = k;
 
-        datum.container.x = midPoint[0];
-        datum.container.y = midPoint[1];
-        datum.container.rotation = rotation;
-        datum.container.visible = true;
+        datum.container.removeChildren();
+
+        let nodeData = datum.nodes.map(node => {
+          return {
+            id: node.id,
+            point: projection.project(node.loc)
+          };
+        });
+
+        if (way.tags.oneway === '-1') {
+          nodeData.reverse();
+        }
+
+        nodeData.slice(0, -1).forEach((_, i) => {
+          const a = nodeData[i];
+          const b = nodeData[i + 1];
+          const pos = vecInterp(a.point, b.point, 0.5);
+          const rot = vecAngle(a.point, b.point);
+
+          const midpoint = new PIXI.Sprite(_textures.midpoint);
+          midpoint.name = [a.id, b.id].sort().join('-');
+          midpoint.anchor.set(0.5, 0.5);  // middle, middle
+          midpoint.position.set(pos[0], pos[1]);
+          midpoint.rotation = rot;
+
+          datum.container.addChild(midpoint);
+        });
       });
-    });
   }
 
   return renderMidpoints;

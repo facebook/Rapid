@@ -43,12 +43,15 @@ export function pixiPoints(context) {
     const graph = context.graph();
     const k = projection.scale();
 
-    let data = entities
-      .filter(entity => entity.geometry(graph) === 'point');
+    function isPoint(entity) {
+      return entity.type === 'node' && entity.geometry(graph) === 'point';
+    }
+
+    const data = entities.filter(isPoint);
 
     // gather ids to keep
     let visible = {};
-    data.forEach(entity => visible[entity.id] = true);
+    data.forEach(node => visible[node.id] = true);
 
     // exit
     [..._cache.entries()].forEach(function cullPoints([id, datum]) {
@@ -57,12 +60,12 @@ export function pixiPoints(context) {
 
     // enter/update
     data
-      .forEach(function preparePoints(entity) {
-        let datum = _cache.get(entity.id);
+      .forEach(function preparePoints(node) {
+        let datum = _cache.get(node.id);
 
         if (!datum) {   // make point if needed
           const container = new PIXI.Container();
-          container.name = entity.id;
+          container.name = node.id;
           layer.addChild(container);
 
           const marker = new PIXI.Sprite(_textures.marker);
@@ -70,7 +73,7 @@ export function pixiPoints(context) {
           marker.anchor.set(0.5, 1);  // middle, bottom
           container.addChild(marker);
 
-          const preset = presetManager.match(entity, graph);
+          const preset = presetManager.match(node, graph);
           const picon = preset && preset.icon;
 
           if (picon) {
@@ -84,11 +87,11 @@ export function pixiPoints(context) {
           }
 
           datum = {
-            loc: entity.loc,
+            loc: node.loc,
             container: container
           };
 
-          _cache.set(entity.id, datum);
+          _cache.set(node.id, datum);
         }
 
         // remember scale and reproject only when it changes

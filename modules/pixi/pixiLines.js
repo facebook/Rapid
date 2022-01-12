@@ -6,7 +6,7 @@ import { osmPavedTags } from '../osm/tags';
 import { getLineSegments } from './pixiHelpers';
 
 
-export function pixiLines(projection, context) {
+export function pixiLines(context) {
   const ONEWAY_SPACING = 35;
   let _cache = new Map();
   let _textures = {};
@@ -48,8 +48,11 @@ export function pixiLines(projection, context) {
     const k = projection.scale();
     const zoom = geoScaleToZoom(k);
 
-    let data = entities
-      .filter(entity => entity.geometry(graph) === 'line');
+    function isLine(entity) {
+      return entity.type === 'way' && entity.geometry(graph) === 'line';
+    }
+
+    const data = entities.filter(isLine);
 
     // gather ids to keep
     let visible = {};

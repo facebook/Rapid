@@ -77,16 +77,17 @@ export function pixiVertices(context) {
     const graph = context.graph();
     const k = projection.scale();
 
-    let data = entities
-      .filter(entity => {
-        return entity.geometry(graph) === 'vertex' && (
-          graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
-        );
-      });
+    function isInterestingVertex(entity) {
+      return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
+        graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
+      );
+    }
+
+    const data = entities.filter(isInterestingVertex);
 
     // gather ids to keep
     let visible = {};
-    data.forEach(entity => visible[entity.id] = true);
+    data.forEach(node => visible[node.id] = true);
 
     // exit
     [..._cache.entries()].forEach(function cullVertices([id, datum]) {
@@ -95,22 +96,22 @@ export function pixiVertices(context) {
 
     // enter/update
     data
-      .forEach(function prepareVertices(entity) {
-        let datum = _cache.get(entity.id);
+      .forEach(function prepareVertices(node) {
+        let datum = _cache.get(node.id);
 
         if (!datum) {   // make point if needed
           const container = new PIXI.Container();
-          container.name = entity.id;
+          container.name = node.id;
           layer.addChild(container);
 
-          const preset = presetManager.match(entity, graph);
+          const preset = presetManager.match(node, graph);
           const picon = preset && preset.icon;
-          const isJunction = graph.isShared(entity);
+          const isJunction = graph.isShared(node);
 
           let t;
           if (picon) {
             t = isJunction ? 'iconJunction' : 'iconPlain';
-          } else if (entity.hasInterestingTags()) {
+          } else if (node.hasInterestingTags()) {
             t = isJunction ? 'taggedJunction' : 'taggedPlain';
           } else {
             t = isJunction ? 'junction' : 'plain';
@@ -129,11 +130,11 @@ export function pixiVertices(context) {
           }
 
           datum = {
-            loc: entity.loc,
+            loc: node.loc,
             container: container
           };
 
-          _cache.set(entity.id, datum);
+          _cache.set(node.id, datum);
         }
 
         // remember scale and reproject only when it changes

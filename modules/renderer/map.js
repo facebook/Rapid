@@ -503,9 +503,9 @@ export function rendererMap(context) {
     map.init = function() {
         drawPoints = pixiPoints(context);
         drawVertices = pixiVertices(context);
-        drawLines = pixiLines(projection, context);
+        drawLines = pixiLines(context);
         drawAreas = pixiAreas(context);
-        drawMidpoints = pixiMidpoints(projection, context, _dimensions);
+        drawMidpoints = pixiMidpoints(context);
         drawLabels = pixiLabels(projection, context, _dimensions);
 
         drawLayers = svgLayers(projection, context);
@@ -812,7 +812,7 @@ if (pixiTransform.k !== currTransform.k) {
   offset = [0, 0];
   _pixiProjection.transform(currTransform);
 } else {
-  offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ]
+  offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
 }
 //const cornerWGS84 = projection.invert([0, 0]);   // corner of viewport
 //const toMercator = new Projection(0, 0, k);
@@ -829,7 +829,7 @@ pixi.stage.position.set(-offset[0], -offset[1]);
         drawVertices(verticesLayer, _pixiProjection, data);
         drawPoints(pointsLayer, _pixiProjection, data);
         // drawLabels(labelsLayer, graph, data, _dimensions);
-        // drawMidpoints(midpointsLayer, graph, data, _dimensions);  // off for now
+        // drawMidpoints(midpointsLayer, _pixiProjection, data);
 
         if (!_pixiAutoTick) {    // tick manually
           _pixiPending = true;

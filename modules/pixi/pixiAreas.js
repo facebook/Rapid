@@ -11,8 +11,11 @@ export function pixiAreas(context) {
     const graph = context.graph();
     const k = projection.scale();
 
-    let data = entities
-      .filter(entity => entity.geometry(graph) === 'area');
+    function isPolygon(entity) {
+      return (entity.type === 'way' || entity.type === 'relation') && entity.geometry(graph) === 'area';
+    }
+
+    const data = entities.filter(isPolygon);
 
     // gather ids to keep
     let visible = {};
