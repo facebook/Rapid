@@ -789,38 +789,48 @@ let _pixiProjection = new Projection();   // only update transform after zooming
           labelsLayer.name = 'labels';
           midpointsLayer = new PIXI.Container();
           midpointsLayer.name = 'midpoints';
-
           pixi.stage.name = 'stage';
           pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
+
+// debug
+// const origin = new PIXI.Graphics();
+// origin.name = 'origin';
+// pixi.stage.addChild(origin);
+
           _pixiInit = true;
 
         } else {
-           areasLayer = pixi.stage.getChildAt(0);
-           linesLayer = pixi.stage.getChildAt(1);
-           verticesLayer = pixi.stage.getChildAt(2);
-           pointsLayer = pixi.stage.getChildAt(3);
-           labelsLayer = pixi.stage.getChildAt(4);
-           midpointsLayer = pixi.stage.getChildAt(5);
+           areasLayer = pixi.stage.getChildByName('areas');
+           linesLayer = pixi.stage.getChildByName('lines');
+           verticesLayer = pixi.stage.getChildByName('vertices');
+           pointsLayer = pixi.stage.getChildByName('points');
+           labelsLayer = pixi.stage.getChildByName('labels');
+           midpointsLayer = pixi.stage.getChildByName('midpoints');
         }
 
-// reproject the pixi geometries only whenever zoom changes
+      // Reproject the pixi geometries only whenever zoom changes
+      const currTransform = projection.transform();
+      const pixiTransform = _pixiProjection.transform();
+      let offset;
 
-const currTransform = projection.transform();
-const pixiTransform = _pixiProjection.transform();
-let offset;
-if (pixiTransform.k !== currTransform.k) {
-  offset = [0, 0];
-  _pixiProjection.transform(currTransform);
-} else {
-  offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
-}
-//const cornerWGS84 = projection.invert([0, 0]);   // corner of viewport
-//const toMercator = new Projection(0, 0, k);
-//const origin = toMercator.project(cornerWGS84);
-//
+      if (pixiTransform.k !== currTransform.k) {
+        offset = [0, 0];
+        _pixiProjection.transform(currTransform);
 
-// ...this?
-pixi.stage.position.set(-offset[0], -offset[1]);
+// debug
+// const origin = pixi.stage.getChildByName('origin');
+// origin
+//   .clear()
+//   .lineStyle(2, 0x000000)
+//   .beginFill(0x6666ff, 1)
+//   .drawCircle(0, 0, 15)
+//   .endFill();
+
+        } else {
+          offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
+        }
+
+        pixi.stage.position.set(-offset[0], -offset[1]);
 
         const graph = context.graph();
         const data = context.history().intersects(map.extent());
@@ -833,20 +843,17 @@ pixi.stage.position.set(-offset[0], -offset[1]);
 
         if (!_pixiAutoTick) {    // tick manually
           _pixiPending = true;
-          // const ticker = pixi.ticker;
           window.requestAnimationFrame(timestamp => {
+            pixi.ticker.update(timestamp);
 
-// ...this?
-pixi.ticker.update(timestamp);
-
-// ...or this?
-// const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
-// const options = {
-//   transform: m
-//   // skipUpdateTransform: true
-// };
-// pixi.renderer.render(pixi.stage, options);
-            _pixiPending = false;
+            // ...or this?
+            // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
+            // const options = {
+            //   transform: m
+            //   // skipUpdateTransform: true
+            // };
+            // pixi.renderer.render(pixi.stage, options);
+              _pixiPending = false;
           });
         }
     }

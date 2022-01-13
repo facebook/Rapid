@@ -12,8 +12,9 @@ import { utilDisplayName, utilDisplayNameForPath } from '../util';
 
 export function pixiLabels(context) {
   let _labelCache = new Map();   // map of OSM ID -> Pixi data
-  let _avoidCache = new Map();   // map of OSM ID -> Pixi data
+  let _debugCache = new Map();   // map of OSM ID -> Pixi data
   let _labels = new Map();       // map of OSM ID -> label string
+  let _lastk = 0;
 
   let _rdrawn = new RBush();
   let _rskipped = new RBush();
@@ -24,7 +25,14 @@ export function pixiLabels(context) {
 
   let SHOWDEBUG = true;
 
-  function initLabels(context) {
+
+  function initLabels(context, layer) {
+    const debugLayer = new PIXI.Container();
+    debugLayer.name = 'debug';
+    const labelsLayer = new PIXI.Container();
+    labelsLayer.name = 'labels';
+    layer.addChild(debugLayer, labelsLayer);
+
     _textStyle = new PIXI.TextStyle({
       fill: 0x333333,
       fontSize: 12,
@@ -33,6 +41,7 @@ export function pixiLabels(context) {
       stroke: 0xeeeeee,
       strokeThickness: 3
     });
+
     _didInit = true;
   }
 //
@@ -176,21 +185,13 @@ export function pixiLabels(context) {
 
 
   function renderLabels(layer, projection, entities) {
-    if (!_didInit) initLabels(context);
+    if (!_didInit) initLabels(context, layer);
+
+    const debugLayer = layer.getChildByName('debug');
+    const labelsLayer = layer.getChildByName('labels');
 
     const graph = context.graph();
     const k = projection.scale();
-
-
-    function isInterestingVertex(entity) {
-      return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
-        graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
-      );
-    }
-
-    function isPoint(entity) {
-      return entity.type === 'node' && entity.geometry(graph) === 'point';
-    }
 
     function isLabelable(entity) {
       if (!_labels.has(entity.id)) {
@@ -203,19 +204,53 @@ export function pixiLabels(context) {
 
     // gather labels
     const data = entities.filter(isLabelable);
-    const avoids = entities.filter(e => (isPoint(e) || isInterestingVertex(e)));
 
-    // gather ids to keep
+
+    // cull
     let visible = {};
-    data.forEach(entity => visible[entity.id] = true);
-    avoids.forEach(entity => visible[entity.id] = true);
-
-    // exit
+    entities.forEach(entity => visible[entity.id] = true);
     [..._labelCache.entries()].forEach(function cullLabels([id, datum]) {
       datum.container.visible = !!visible[id];
+      // cull the label bbox too??
     });
 
-    // enter/update
+
+    // gather bounding boxes to avoid
+    const stage = context.pixi.stage;
+    const vertices = stage.getChildByName('vertices');
+    const points = stage.getChildByName('points');
+
+    vertices.children.forEach(getBBox);
+    points.children.forEach(getBBox);
+
+    function getBBox(sourceObject) {
+      const name = sourceObject.name + '-bbox';
+      let datum = _debugCache.get(name);
+
+      if (!datum) {
+        const graphics = new PIXI.Graphics();
+        graphics.name = name;
+        debugLayer.addChild(graphics);
+
+        datum = { bbox: graphics };
+        _debugCache.set(name, datum);
+      }
+
+      datum.bbox.visible = sourceObject.visible;
+      if (sourceObject.visible) {
+        const offset = stage.position;
+        datum.bbox.position.set(-offset.x, -offset.y);
+
+        const rect = sourceObject.getBounds().pad(2);
+        datum.bbox
+          .clear()
+          .lineStyle(1, 0xffff00)
+          .drawRect(rect.x, rect.y, rect.width, rect.height);
+      }
+    }
+
+
+    // enter/update LABELS
     data
       .forEach(function prepareLabels(entity) {
         let datum = _labelCache.get(entity.id);
@@ -224,83 +259,50 @@ export function pixiLabels(context) {
           const container = new PIXI.Container();
           const label = _labels.get(entity.id);
           container.name = label;
-          layer.addChild(container);
+          labelsLayer.addChild(container);
 
           const text = new PIXI.Text(label, _textStyle);
           text.name = label;
+          text.anchor.set(0.5, 0.5);  // middle, middle
           container.addChild(text);
 
           // for now
           const center = entity.extent(graph).center();
 
+          const graphics = new PIXI.Graphics();
+          graphics.name = entity.id + '-labelbbox';
+          debugLayer.addChild(graphics);
+
           datum = {
             loc: center,
             label: label,
-            container: container
+            container: container,
+            text: text,
+            bbox: graphics
           };
 
           _labelCache.set(entity.id, datum);
         }
 
         // remember scale and reproject only when it changes
-        if (k === datum.k) return;
-        datum.k = k;
-
-        const coord = projection.project(datum.loc);
-        datum.container.position.set(coord[0], coord[1]);
-      });
-
-
-//  AVOIDS - for now draw a box
-
-    // exit
-    [..._avoidCache.entries()].forEach(function cullAvoids([id, datum]) {
-      datum.graphics.visible = !!visible[id];
-    });
-
-    // enter/update
-    avoids
-      .forEach(function prepareAvoids(node) {
-        let datum = _avoidCache.get(node.id);
-
-        if (!datum) {
-          const graphics = new PIXI.Graphics();
-          graphics.name = node.id;
-          layer.addChild(graphics);
-
-          datum = {
-            loc: node.loc,
-            graphics: graphics
-          };
-
-          _avoidCache.set(node.id, datum);
+        if (k !== datum.k) {
+          datum.k = k;
+          const coord = projection.project(datum.loc);
+          datum.container.position.set(coord[0], coord[1]);
         }
 
-        // remember scale and reproject only when it changes
-        if (k === datum.k) return;
-        datum.k = k;
+        const offset = stage.position;
+        datum.bbox.position.set(-offset.x, -offset.y);
 
-        const coord = projection.project(datum.loc);
-
-        let x, y, w, h;
-        if (isPoint(node)) {   // avoid the pin
-          x = coord[0] - 9;
-          y = coord[1] - 25;
-          w = 18;
-          h = 26;
-        } else {               // avoid the vertex
-          x = coord[0] - 9;
-          y = coord[1] - 9;
-          w = 18;
-          h = 18;
-        }
-
-        datum.graphics
+        const rect = datum.container.getBounds();
+        datum.bbox
           .clear()
-          .lineStyle(1, 0xffff00)
-          .drawRect(x, y, w, h);
+          .lineStyle(1, 0x66ff66)
+          .drawRect(rect.x, rect.y, rect.width, rect.height);
       });
+
   }
+
 
 
 
