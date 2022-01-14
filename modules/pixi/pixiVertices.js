@@ -53,7 +53,17 @@ export function pixiVertices(context) {
       .drawCircle(0, 0, 8)
       .endFill();
 
-    // convert graphics to textures/sprites for performance
+    const iconViewfield = new PIXI.Graphics()
+      .lineStyle(0.75, 0xffffff)
+      .beginFill(0x333333, 0.75)
+      .moveTo(6, 14)
+      .bezierCurveTo(8,13.4, 8,13.4, 10,14)
+      .lineTo(16,3)
+      .bezierCurveTo(12,0, 4,0, 0,3)
+      .closePath()
+      .endFill();
+
+      // convert graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
@@ -63,6 +73,7 @@ export function pixiVertices(context) {
     _textures.taggedJunction = renderer.generateTexture(taggedJunction, options);
     _textures.iconPlain = renderer.generateTexture(iconPlain, options);
     _textures.iconJunction = renderer.generateTexture(iconJunction, options);
+    _textures.iconViewfield = renderer.generateTexture(iconViewfield, options);
 
     _didInit = true;
   }
@@ -108,6 +119,18 @@ export function pixiVertices(context) {
           const picon = preset && preset.icon;
           const isJunction = graph.isShared(node);
 
+          let directions = node.directions(graph,context.projection);
+          const viewfieldDecoration = new PIXI.Sprite(_textures.iconViewfield);
+          viewfieldDecoration.scale.set(1.6, 1.6);
+          if (directions.length > 0) {
+            viewfieldDecoration.anchor.set(0.5, 1);
+
+            directions.forEach(direction => {
+              viewfieldDecoration.angle = direction;
+              container.addChild(viewfieldDecoration);
+            });
+          }
+
           let t;
           if (picon) {
             t = isJunction ? 'iconJunction' : 'iconPlain';
@@ -120,7 +143,6 @@ export function pixiVertices(context) {
           marker.name = t;
           marker.anchor.set(0.5, 0.5);  // middle, middle
           container.addChild(marker);
-
           if (picon) {
             let icon = getIconSpriteHelper(context, picon);
             const iconsize = 11;
