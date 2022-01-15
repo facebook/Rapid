@@ -1,13 +1,49 @@
 import * as PIXI from 'pixi.js';
+import { svgTagPattern } from '../svg/tag_pattern';
 
+const _innerStrokeWidth = 32;
 
 export function pixiAreas(context) {
+
+  let _initAreas = false;
+  let _patternKeys = [];
+
+  function initAreas(context) {
+  _patternKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
+      'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
+      'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
+
+    const height = context.pixi.renderer.view.height;
+    const width = context.pixi.renderer.view.width;
+
+  }
+
+
+
+  function getPixiTagPattern(tags) {
+    let svgPattern = svgTagPattern(tags);
+    if (svgPattern) {
+      let key = svgPattern.split('-')[1];
+
+      if (_patternKeys.includes(key)) {
+        return new PIXI.TilingSprite.from(`dist/img/pattern/${key}.png`, { width: 4096, height: 4096 });
+      }
+    }
+    return null;
+  }
+
   let _cache = new Map();
 
   //
   // render
   //
   function renderAreas(layer, projection, entities) {
+
+    if (!_initAreas) {
+      initAreas(context);
+      _initAreas = true;
+    }
+
     const graph = context.graph();
     const k = projection.scale();
 
@@ -23,7 +59,7 @@ export function pixiAreas(context) {
 
     // exit
     [..._cache.entries()].forEach(function cullAreas([id, datum]) {
-      datum.graphics.visible = !!visible[id];
+      datum.areaContainer.visible = !!visible[id];
     });
 
     // enter/update
@@ -37,16 +73,45 @@ export function pixiAreas(context) {
             : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
           if (!coords.length) return;
 
-          const graphics = new PIXI.Graphics();
-          graphics.name = entity.id;
-          layer.addChild(graphics);
+          const areaContainer = new PIXI.Container();
+          const fillContainer = new PIXI.Container();
+          const outlineGraphics = new PIXI.Graphics();
+          const fillGraphics = new PIXI.Graphics();
+          const mask = new PIXI.Graphics();
+          mask.isMask = true;
 
+          mask.name = entity.id - '-mask';
+          outlineGraphics.name = entity.id + '-outline';
+          fillGraphics.name = entity.id + '-fill';
+          fillGraphics.mask = mask;
+          areaContainer.addChild(outlineGraphics);
+          areaContainer.addChild(fillGraphics);
+          areaContainer.addChild(fillContainer);
+          layer.addChild(areaContainer);
+
+          fillContainer.addChild(fillGraphics);
+          fillContainer.addChild(mask);
+
+          const colorMatrix = new PIXI.filters.AlphaFilter();
+          colorMatrix.alpha = 0.25;
+
+          fillContainer.filters = [colorMatrix];
+
+          let pattern = getPixiTagPattern(entity.tags);
+          if (pattern) {
+            fillContainer.addChild(pattern);
+          }
           const style = styleMatch(entity.tags);
 
           datum = {
             coords: coords,
-            graphics: graphics,
-            style: style
+            areaContainer: areaContainer,
+            outlineGraphics: outlineGraphics,
+            fillContainer: fillContainer,
+            fillGraphics: fillGraphics,
+            pattern: pattern,
+            mask: mask,
+            style: style,
           };
 
           _cache.set(entity.id, datum);
@@ -62,12 +127,47 @@ export function pixiAreas(context) {
           path.push(p[0], p[1]);
         });
 
-        datum.graphics
+        var isBuilding = (entity.tags.building && entity.tags.building !== 'no') ||
+          (entity.tags['building:part'] && entity.tags['building:part'] !== 'no');
+
+
+        // Inner stroke width refers to the masked 'stroke' that fills the interior pixels of an area,
+        // leaving an empty 'center' portion if the area is large enough.
+        // Buildings get special treatment and are filled completely.
+        if (!isBuilding) {
+          datum.mask
+            .clear()
+            .lineStyle(1, datum.style.color)
+            .beginFill(datum.style.color, 1.0)
+            .drawPolygon(path)
+            .endFill();
+
+          datum.mask.isMask = true;
+        }
+
+
+        if (datum.pattern) {
+          datum.pattern.mask = datum.mask;
+        }
+
+
+        datum.fillGraphics
           .clear()
-          .lineStyle(datum.style.width, datum.style.color)
-          .beginFill(datum.style.color, datum.style.alpha)
+          .lineStyle({
+            width: isBuilding ? datum.style.width : _innerStrokeWidth * 2,
+            color: datum.style.color,
+          })
+          .beginFill(datum.style.color, isBuilding ? datum.style.alpha : 0.0)
           .drawPolygon(path)
           .endFill();
+
+        // datum.fillGraphics.mask = datum.mask;
+        datum.outlineGraphics
+          .clear()
+          .lineStyle(datum.style.width, datum.style.color)
+          .drawPolygon(path);
+
+
       });
   }
 
