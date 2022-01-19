@@ -81,10 +81,9 @@ export function pixiAreas(context) {
           fillContainer.name = 'fill';
           const outlineGraphics = new PIXI.Graphics();
           const textureGraphics = new PIXI.Graphics();
-          // outlineGraphics.blendMode = PIXI.BLEND_MODES.COLOR_BURN;
+           textureGraphics.blendMode = PIXI.BLEND_MODES.NORMAL;
 
           const fillGraphics = new PIXI.Graphics();
-          // fillGraphics.blendMode = PIXI.BLEND_MODES.COLOR_BURN;
 
           const mask = new PIXI.Graphics();
           mask.isMask = true;
@@ -100,11 +99,10 @@ export function pixiAreas(context) {
           layer.addChild(areaContainer);
 
           fillContainer.addChild(fillGraphics);
-          areaContainer.addChild(textureGraphics);
+          fillContainer.addChild(textureGraphics);
           fillContainer.addChild(mask);
 
-          const colorMatrix = new PIXI.filters.AlphaFilter();
-          colorMatrix.alpha = 0.25;
+          const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
           fillContainer.filters = [colorMatrix];
 
           let patternKey = getPixiTagPatternKey(entity.tags);
@@ -171,7 +169,7 @@ export function pixiAreas(context) {
             .clear()
             .lineTextureStyle({
               width: _innerStrokeWidth * 2,
-              color: datum.style.color,
+               color: datum.style.color,
               texture: _textures.get(datum.patternKey),
             })
             .drawPolygon(path);
