@@ -4,32 +4,52 @@ import { svgTagPattern } from '../svg/tag_pattern';
 const _innerStrokeWidth = 32;
 
 export function pixiAreas(context) {
-
+  let _didInit = false;
   let _initAreas = false;
+  let _textures = {};
   let _patternKeys = [];
 
   function initAreas(context) {
-  _patternKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
+    _patternKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
       'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
       'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
 
     const height = context.pixi.renderer.view.height;
     const width = context.pixi.renderer.view.width;
 
+
+// oneway arrows
+    const oneway = new PIXI.Graphics()
+      .beginFill(0x030303, 1)
+      .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
+      .endFill();
+
+    // convert graphics to textures/sprites for performance
+    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+    const renderer = context.pixi.renderer;
+    const options = {
+      resolution: 2,
+      region: new PIXI.Rectangle(0, 0, 32, 32)
+    };
+    _textures.oneway = renderer.generateTexture(oneway, options);
+
+    _didInit = true;
   }
 
 
 
   function getPixiTagPattern(tags) {
-    let svgPattern = svgTagPattern(tags);
-    if (svgPattern) {
-      let key = svgPattern.split('-')[1];
 
-      if (_patternKeys.includes(key)) {
-        return new PIXI.TilingSprite.from(`dist/img/pattern/${key}.png`, { width: 4096, height: 4096 });
-      }
-    }
-    return null;
+    // return _textures.oneway;
+    // let svgPattern = svgTagPattern(tags);
+    // if (svgPattern) {
+    //   let key = svgPattern.split('-')[1];
+
+    //   if (_patternKeys.includes(key)) {
+    //     return new PIXI.TilingSprite.from(`dist/img/pattern/${key}.png`, { width: 4096, height: 4096 });
+    //   }
+    // }
+    // return null;
   }
 
   let _cache = new Map();
@@ -76,7 +96,11 @@ export function pixiAreas(context) {
           const areaContainer = new PIXI.Container();
           const fillContainer = new PIXI.Container();
           const outlineGraphics = new PIXI.Graphics();
+          outlineGraphics.blendMode = PIXI.BLEND_MODES.COLOR_BURN;
+
           const fillGraphics = new PIXI.Graphics();
+          fillGraphics.blendMode = PIXI.BLEND_MODES.COLOR_BURN;
+
           const mask = new PIXI.Graphics();
           mask.isMask = true;
 
@@ -92,15 +116,14 @@ export function pixiAreas(context) {
           fillContainer.addChild(fillGraphics);
           fillContainer.addChild(mask);
 
-          const colorMatrix = new PIXI.filters.AlphaFilter();
-          colorMatrix.alpha = 0.25;
+          // const colorMatrix = new PIXI.filters.AlphaFilter();
+          // colorMatrix.alpha = 0.25;
+          // fillContainer.filters = [colorMatrix];
 
-          fillContainer.filters = [colorMatrix];
-
-          let pattern = getPixiTagPattern(entity.tags);
-          if (pattern) {
-            fillContainer.addChild(pattern);
-          }
+          // let pattern = getPixiTagPattern(entity.tags);
+          // if (pattern) {
+          //   fillContainer.addChild(pattern);
+          // }
           const style = styleMatch(entity.tags);
 
           datum = {
@@ -109,7 +132,7 @@ export function pixiAreas(context) {
             outlineGraphics: outlineGraphics,
             fillContainer: fillContainer,
             fillGraphics: fillGraphics,
-            pattern: pattern,
+            // pattern: pattern,
             mask: mask,
             style: style,
           };
@@ -153,18 +176,37 @@ export function pixiAreas(context) {
 
         datum.fillGraphics
           .clear()
-          .lineStyle({
+          .lineTextureStyle({
             width: isBuilding ? datum.style.width : _innerStrokeWidth * 2,
             color: datum.style.color,
+            texture: _textures.oneway,
           })
+          // .lineStyle({
+          //   width: isBuilding ? datum.style.width : _innerStrokeWidth * 2,
+          //   color: datum.style.color,
+          // })
           .beginFill(datum.style.color, isBuilding ? datum.style.alpha : 0.0)
+          // .beginTextureFill({
+          //   texture: _textures.oneway,
+          //   color: datum.style.color,
+          //   // alpha: isBuilding ? datum.style.alpha : 0.0
+          // })
           .drawPolygon(path)
           .endFill();
 
         // datum.fillGraphics.mask = datum.mask;
         datum.outlineGraphics
           .clear()
-          .lineStyle(datum.style.width, datum.style.color)
+          // .beginTextureFill({
+          //   texture: _textures.oneway,
+          //   color: datum.style.color
+          // })
+          // .lineStyle(datum.style.width, datum.style.color)
+          .lineTextureStyle({
+            width: datum.style.width,
+            color: datum.style.color,
+            texture: _textures.oneway,
+          })
           .drawPolygon(path);
 
 
