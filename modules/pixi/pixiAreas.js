@@ -1,3 +1,5 @@
+import geojsonRewind from '@mapbox/geojson-rewind';
+
 import * as PIXI from 'pixi.js';
 import { svgTagPattern } from '../svg/tag_pattern';
 
@@ -52,37 +54,38 @@ export function pixiAreas(context, featureCache) {
         let feature = featureCache.get(entity.id);
 
         if (!feature) {   // make poly if needed
-          const geojson = entity.asGeoJSON(graph);
+          const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
           const coords = (geojson.type === 'Polygon') ? geojson.coordinates[0]
             : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
           if (!coords.length) return;
 
-          const areaContainer = new PIXI.Container();
-          areaContainer.name = entity.id;
+          const container = new PIXI.Container();
+          container.name = entity.id;
+          layer.addChild(container);
+
           const fillContainer = new PIXI.Container();
           fillContainer.name = 'fill';
+          container.addChild(fillContainer);
+
           const outlineGraphics = new PIXI.Graphics();
-          const textureGraphics = new PIXI.Graphics();
-           textureGraphics.blendMode = PIXI.BLEND_MODES.NORMAL;
+          outlineGraphics.name = entity.id + '-outline';
+          container.addChild(outlineGraphics);
+
+          // const mask = new PIXI.Graphics();
+          // mask.isMask = true;
+          // mask.name = entity.id - '-mask';
+          // fillContainer.addChild(mask);
 
           const fillGraphics = new PIXI.Graphics();
-
-          const mask = new PIXI.Graphics();
-          mask.isMask = true;
-
-          mask.name = entity.id - '-mask';
-          outlineGraphics.name = entity.id + '-outline';
-          textureGraphics.name = 'texture';
-          fillGraphics.name = 'fill';
-          fillGraphics.mask = mask;
-          textureGraphics.mask = mask;
-          areaContainer.addChild(outlineGraphics);
-          areaContainer.addChild(fillContainer);
-          layer.addChild(areaContainer);
-
+          fillGraphics.name = entity.id + '-fill';
+          // fillGraphics.mask = mask;
           fillContainer.addChild(fillGraphics);
+
+          const textureGraphics = new PIXI.Graphics();
+          textureGraphics.name = entity.id + '-texture';
+          textureGraphics.blendMode = PIXI.BLEND_MODES.NORMAL;
+          // textureGraphics.mask = mask;
           fillContainer.addChild(textureGraphics);
-          fillContainer.addChild(mask);
 
           const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
           fillContainer.filters = [colorMatrix];
@@ -91,14 +94,14 @@ export function pixiAreas(context, featureCache) {
           const style = styleMatch(entity.tags);
 
           feature = {
-            displayObject: areaContainer,
+            displayObject: container,
             coords: coords,
             outlineGraphics: outlineGraphics,
             textureGraphics: textureGraphics,
             fillContainer: fillContainer,
             fillGraphics: fillGraphics,
             patternKey: patternKey,
-            mask: mask,
+            // mask: mask,
             style: style,
           };
 
@@ -115,20 +118,22 @@ export function pixiAreas(context, featureCache) {
           path.push(p[0], p[1]);
         });
 
-        feature.mask
-          .clear()
-          .lineStyle({
-            width: 1,
-            color: feature.style.color
-          })
-          .beginFill(feature.style.color, 1.0)
-          .drawPolygon(path)
-          .endFill();
+        // feature.mask
+        //   .clear()
+        //   .lineStyle({
+        //     width: 1,
+        //     color: feature.style.color
+        //   })
+        //   .beginFill(feature.style.color, 1.0)
+        //   .drawPolygon(path)
+        //   .endFill();
 
         feature.fillGraphics
           .clear()
           .lineStyle({
-            width: _innerStrokeWidth * 2,
+            // width: _innerStrokeWidth * 2,
+            alignment: 0,  // inside
+            width: _innerStrokeWidth,
             color: feature.style.color,
           })
           .beginFill(feature.style.color, feature.style.alpha)
@@ -139,7 +144,9 @@ export function pixiAreas(context, featureCache) {
           feature.textureGraphics
             .clear()
             .lineTextureStyle({
-              width: _innerStrokeWidth * 2,
+              // width: _innerStrokeWidth * 2,
+              alignment: 0,  // inside
+              width: _innerStrokeWidth,
               color: feature.style.color,
               texture: _textures.get(feature.patternKey),
             })
