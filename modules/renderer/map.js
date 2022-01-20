@@ -218,6 +218,16 @@ let _frameStats = {};
             context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
         });
 
+
+    context.pixi.rapidTextureKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
+      'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
+      'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
+    context.pixi.rapidTextures = new Map();
+
+    context.pixi.rapidTextureKeys.forEach(key => {
+      context.pixi.rapidTextures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
+    });
+
         document.querySelector('.pixi-data').appendChild(context.pixi.view);
 
         // Register Pixi with the pixi-inspector extension if it is installed

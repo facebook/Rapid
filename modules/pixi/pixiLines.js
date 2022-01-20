@@ -4,7 +4,7 @@ import { geoScaleToZoom } from '@id-sdk/math';
 
 import { osmPavedTags } from '../osm/tags';
 import { getLineSegments } from './pixiHelpers';
-
+import { styleMatch as areaStyleMatch} from './pixiAreas';
 
 export function pixiLines(context, featureCache) {
   const ONEWAY_SPACING = 35;
@@ -73,7 +73,24 @@ export function pixiLines(context, featureCache) {
           stroke.name = entity.id + '-stroke';
           container.addChild(stroke);
 
-          const style = styleMatch(entity.tags);
+          let style = STYLES.default;
+          //What if the way doesn't have any styling on its own?
+          if (!entity.hasInterestingTags()) {
+            const parentRelations = graph.parentRelations(entity);
+            const parentMultipolygons =
+            parentRelations.filter(function (relation) {
+              return relation.isMultipolygon();
+            });
+
+            const hasParentPolys = parentMultipolygons.length > 0;
+
+            if (hasParentPolys) {
+              const parentPoly = parentMultipolygons[0];
+              style = convertFromAreaStyle(areaStyleMatch(parentPoly.tags));
+            }
+          } else {
+            style = styleMatch(entity.tags);
+          }
 
           feature = {
             displayObject: container,
@@ -639,6 +656,21 @@ const ROADS = {
   track: true
 };
 
+function convertFromAreaStyle(style) {
+
+  return {
+    casing: {
+      alpha: 0,  // disable it
+      width: style.width,
+      color: style.color,
+    },
+    stroke: {
+      alpha: 1,
+      width: style.width,
+      color: style.color,
+    }
+  };
+}
 
 function styleMatch(tags) {
   let style = STYLES.default;
