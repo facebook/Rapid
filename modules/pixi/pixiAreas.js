@@ -9,7 +9,7 @@ export function pixiAreas(context, featureCache) {
   let _patternKeys = [];
 
   function initAreas() {
-    _patternKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
+    _patternKeys = ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
       'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
       'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
 
@@ -20,12 +20,10 @@ export function pixiAreas(context, featureCache) {
   }
 
 
-
   function getPixiTagPatternKey(tags) {
     let svgPattern = svgTagPattern(tags);
     if (svgPattern) {
       let key = svgPattern.split('-')[1];
-
       if (_patternKeys.includes(key)) {
         return key;
       }
@@ -117,55 +115,44 @@ export function pixiAreas(context, featureCache) {
           path.push(p[0], p[1]);
         });
 
-        var isBuilding = (entity.tags.building && entity.tags.building !== 'no') ||
-          (entity.tags['building:part'] && entity.tags['building:part'] !== 'no');
-
-
-        // Inner stroke width refers to the masked 'stroke' that fills the interior pixels of an area,
-        // leaving an empty 'center' portion if the area is large enough.
-        // Buildings get special treatment and are filled completely.
-        if (!isBuilding) {
-          feature.mask
-            .clear()
-            .lineStyle(1, feature.style.color)
-            .beginFill(feature.style.color, 1.0)
-            .drawPolygon(path)
-            .endFill();
-
-          feature.mask.isMask = true;
-        }
-
-
+        feature.mask
+          .clear()
+          .lineStyle({
+            width: 1,
+            color: feature.style.color
+          })
+          .beginFill(feature.style.color, 1.0)
+          .drawPolygon(path)
+          .endFill();
 
         feature.fillGraphics
           .clear()
           .lineStyle({
-            width: isBuilding ? feature.style.width : _innerStrokeWidth * 2,
+            width: _innerStrokeWidth * 2,
             color: feature.style.color,
           })
-          .beginFill(feature.style.color, isBuilding ? feature.style.alpha : 0.0)
+          .beginFill(feature.style.color, feature.style.alpha)
           .drawPolygon(path)
           .endFill();
 
         if (feature.patternKey) {
-
           feature.textureGraphics
             .clear()
             .lineTextureStyle({
               width: _innerStrokeWidth * 2,
-               color: feature.style.color,
+              color: feature.style.color,
               texture: _textures.get(feature.patternKey),
             })
             .drawPolygon(path);
-
         }
 
         feature.outlineGraphics
           .clear()
-           .lineStyle(feature.style.width, feature.style.color)
+          .lineStyle({
+            width: feature.style.width,
+            color: feature.style.color
+          })
           .drawPolygon(path);
-
-
       });
   }
 
