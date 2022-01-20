@@ -3,13 +3,12 @@ import { svgTagPattern } from '../svg/tag_pattern';
 
 const _innerStrokeWidth = 32;
 
-export function pixiAreas(context) {
+export function pixiAreas(context, featureCache) {
   let _didInit = false;
-  let _initAreas = false;
   let _textures = new Map();
   let _patternKeys = [];
 
-  function initAreas(context) {
+  function initAreas() {
     _patternKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
       'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
       'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
@@ -23,7 +22,6 @@ export function pixiAreas(context) {
 
 
   function getPixiTagPatternKey(tags) {
-
     let svgPattern = svgTagPattern(tags);
     if (svgPattern) {
       let key = svgPattern.split('-')[1];
@@ -35,17 +33,12 @@ export function pixiAreas(context) {
     return null;
   }
 
-  let _cache = new Map();
 
   //
   // render
   //
   function renderAreas(layer, projection, entities) {
-
-    if (!_initAreas) {
-      initAreas(context);
-      _initAreas = true;
-    }
+    if (!_didInit) initAreas();
 
     const graph = context.graph();
     const k = projection.scale();
@@ -54,29 +47,20 @@ export function pixiAreas(context) {
       return (entity.type === 'way' || entity.type === 'relation') && entity.geometry(graph) === 'area';
     }
 
-    const data = entities.filter(isPolygon);
-
-    // gather ids to keep
-    let visible = {};
-    data.forEach(entity => visible[entity.id] = true);
-
-    // exit
-    [..._cache.entries()].forEach(function cullAreas([id, datum]) {
-      datum.areaContainer.visible = !!visible[id];
-    });
-
     // enter/update
-    data
+    entities
+      .filter(isPolygon)
       .forEach(function prepareAreas(entity) {
-        let datum = _cache.get(entity.id);
+        let feature = featureCache.get(entity.id);
 
-        if (!datum) {   // make poly if needed
+        if (!feature) {   // make poly if needed
           const geojson = entity.asGeoJSON(graph);
           const coords = (geojson.type === 'Polygon') ? geojson.coordinates[0]
             : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
           if (!coords.length) return;
 
           const areaContainer = new PIXI.Container();
+          areaContainer.name = entity.id;
           const fillContainer = new PIXI.Container();
           fillContainer.name = 'fill';
           const outlineGraphics = new PIXI.Graphics();
@@ -108,9 +92,9 @@ export function pixiAreas(context) {
           let patternKey = getPixiTagPatternKey(entity.tags);
           const style = styleMatch(entity.tags);
 
-          datum = {
+          feature = {
+            displayObject: areaContainer,
             coords: coords,
-            areaContainer: areaContainer,
             outlineGraphics: outlineGraphics,
             textureGraphics: textureGraphics,
             fillContainer: fillContainer,
@@ -120,15 +104,15 @@ export function pixiAreas(context) {
             style: style,
           };
 
-          _cache.set(entity.id, datum);
+          featureCache.set(entity.id, feature);
         }
 
         // remember scale and reproject only when it changes
-        if (k === datum.k) return;
-        datum.k = k;
+        if (k === feature.k) return;
+        feature.k = k;
 
         let path = [];
-        datum.coords.forEach(coord => {
+        feature.coords.forEach(coord => {
           const p = projection.project(coord);
           path.push(p[0], p[1]);
         });
@@ -141,44 +125,44 @@ export function pixiAreas(context) {
         // leaving an empty 'center' portion if the area is large enough.
         // Buildings get special treatment and are filled completely.
         if (!isBuilding) {
-          datum.mask
+          feature.mask
             .clear()
-            .lineStyle(1, datum.style.color)
-            .beginFill(datum.style.color, 1.0)
+            .lineStyle(1, feature.style.color)
+            .beginFill(feature.style.color, 1.0)
             .drawPolygon(path)
             .endFill();
 
-          datum.mask.isMask = true;
+          feature.mask.isMask = true;
         }
 
 
 
-        datum.fillGraphics
+        feature.fillGraphics
           .clear()
           .lineStyle({
-            width: isBuilding ? datum.style.width : _innerStrokeWidth * 2,
-            color: datum.style.color,
+            width: isBuilding ? feature.style.width : _innerStrokeWidth * 2,
+            color: feature.style.color,
           })
-          .beginFill(datum.style.color, isBuilding ? datum.style.alpha : 0.0)
+          .beginFill(feature.style.color, isBuilding ? feature.style.alpha : 0.0)
           .drawPolygon(path)
           .endFill();
 
-        if (datum.patternKey) {
+        if (feature.patternKey) {
 
-          datum.textureGraphics
+          feature.textureGraphics
             .clear()
             .lineTextureStyle({
               width: _innerStrokeWidth * 2,
-               color: datum.style.color,
-              texture: _textures.get(datum.patternKey),
+               color: feature.style.color,
+              texture: _textures.get(feature.patternKey),
             })
             .drawPolygon(path);
 
         }
 
-        datum.outlineGraphics
+        feature.outlineGraphics
           .clear()
-           .lineStyle(datum.style.width, datum.style.color)
+           .lineStyle(feature.style.width, feature.style.color)
           .drawPolygon(path);
 
 

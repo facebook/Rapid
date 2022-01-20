@@ -4,8 +4,7 @@ import { presetManager } from '../presets';
 import { getIconSpriteHelper } from './pixiHelpers';
 
 
-export function pixiPoints(context) {
-  let _cache = new Map();   // map of OSM ID -> Pixi data
+export function pixiPoints(context, featureCache) {
   let _textures = {};
   let _didInit = false;
 
@@ -47,23 +46,13 @@ export function pixiPoints(context) {
       return entity.type === 'node' && entity.geometry(graph) === 'point';
     }
 
-    const data = entities.filter(isPoint);
-
-    // gather ids to keep
-    let visible = {};
-    data.forEach(node => visible[node.id] = true);
-
-    // exit
-    [..._cache.entries()].forEach(function cullPoints([id, datum]) {
-      datum.container.visible = !!visible[id];
-    });
-
     // enter/update
-    data
+    entities
+      .filter(isPoint)
       .forEach(function preparePoints(node) {
-        let datum = _cache.get(node.id);
+        let feature = featureCache.get(node.id);
 
-        if (!datum) {   // make point if needed
+        if (!feature) {   // make point if needed
           const container = new PIXI.Container();
           container.name = node.id;
           layer.addChild(container);
@@ -86,20 +75,20 @@ export function pixiPoints(context) {
             container.addChild(icon);
           }
 
-          datum = {
-            loc: node.loc,
-            container: container
+          feature = {
+            displayObject: container,
+            loc: node.loc
           };
 
-          _cache.set(node.id, datum);
+          featureCache.set(node.id, feature);
         }
 
         // remember scale and reproject only when it changes
-        if (k === datum.k) return;
-        datum.k = k;
+        if (k === feature.k) return;
+        feature.k = k;
 
-        const coord = projection.project(datum.loc);
-        datum.container.position.set(coord[0], coord[1]);
+        const coord = projection.project(feature.loc);
+        feature.displayObject.position.set(coord[0], coord[1]);
       });
   }
 

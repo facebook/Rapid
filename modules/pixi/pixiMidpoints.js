@@ -2,8 +2,7 @@ import * as PIXI from 'pixi.js';
 import { vecAngle, vecInterp } from '@id-sdk/math';
 
 
-export function pixiMidpoints(context) {
-  let _cache = new Map();   // map of OSM ID -> Pixi data
+export function pixiMidpoints(context, featureCache) {
   let _textures = {};
   let _didInit = false;
 
@@ -48,36 +47,36 @@ export function pixiMidpoints(context) {
     data.forEach(way => visible[way.id] = true);
 
     // exit
-    [..._cache.entries()].forEach(function cullMidpoints([id, datum]) {
-      datum.container.visible = !!visible[id];
+    [...featureCache.entries()].forEach(function cullMidpoints([id, feature]) {
+      feature.container.visible = !!visible[id];
     });
 
     // enter/update
     data
       .forEach(function prepareMidpoints(way) {
-        let datum = _cache.get(way.id);
+        let feature = featureCache.get(way.id);
 
-        if (!datum) {
+        if (!feature) {
           const container = new PIXI.Container();
           container.name = way.id;
           container.alpha = 0.5;
           layer.addChild(container);
 
-          datum = {
+          feature = {
             nodes: graph.childNodes(way),
             container: container
           };
 
-          _cache.set(way.id, datum);
+          featureCache.set(way.id, feature);
         }
 
         // remember scale and reproject only when it changes
-        if (k === datum.k) return;
-        datum.k = k;
+        if (k === feature.k) return;
+        feature.k = k;
 
-        datum.container.removeChildren();
+        feature.container.removeChildren();
 
-        let nodeData = datum.nodes.map(node => {
+        let nodeData = feature.nodes.map(node => {
           return {
             id: node.id,
             point: projection.project(node.loc)
@@ -100,7 +99,7 @@ export function pixiMidpoints(context) {
           midpoint.position.set(pos[0], pos[1]);
           midpoint.rotation = rot;
 
-          datum.container.addChild(midpoint);
+          feature.container.addChild(midpoint);
         });
       });
   }

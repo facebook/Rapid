@@ -6,9 +6,8 @@ import { osmPavedTags } from '../osm/tags';
 import { getLineSegments } from './pixiHelpers';
 
 
-export function pixiLines(context) {
+export function pixiLines(context, featureCache) {
   const ONEWAY_SPACING = 35;
-  let _cache = new Map();
   let _textures = {};
   let _didInit = false;
 
@@ -52,123 +51,114 @@ export function pixiLines(context) {
       return entity.type === 'way' && entity.geometry(graph) === 'line';
     }
 
-    const data = entities.filter(isLine);
-
-    // gather ids to keep
-    let visible = {};
-    data.forEach(entity => visible[entity.id] = true);
-
-    // exit
-    [..._cache.entries()].forEach(function cullLines([id, datum]) {
-      datum.container.visible = !!visible[id];
-    });
-
     // enter/update
-    data.forEach(function prepareLine(entity) {
-      let datum = _cache.get(entity.id);
+    entities
+      .filter(isLine)
+      .forEach(function prepareLine(entity) {
+        let feature = featureCache.get(entity.id);
 
-      if (!datum) {   // make line if needed
-        const geojson = entity.asGeoJSON(graph);
-        const coords = geojson.coordinates;
+        if (!feature) {   // make line if needed
+          const geojson = entity.asGeoJSON(graph);
+          const coords = geojson.coordinates;
 
-        const container = new PIXI.Container();
-        container.name = entity.id;
-        layer.addChild(container);
+          const container = new PIXI.Container();
+          container.name = entity.id;
+          layer.addChild(container);
 
-        const casing = new PIXI.Graphics();
-        casing.name = entity.id + '-casing';
-        container.addChild(casing);
+          const casing = new PIXI.Graphics();
+          casing.name = entity.id + '-casing';
+          container.addChild(casing);
 
-        const stroke = new PIXI.Graphics();
-        stroke.name = entity.id + '-stroke';
-        container.addChild(stroke);
+          const stroke = new PIXI.Graphics();
+          stroke.name = entity.id + '-stroke';
+          container.addChild(stroke);
 
-        const style = styleMatch(entity.tags);
+          const style = styleMatch(entity.tags);
 
-        datum = {
-          coords: coords,
-          container: container,
-          casing: casing,
-          stroke: stroke,
-          style: style
-        };
+          feature = {
+            displayObject: container,
+            coords: coords,
+            casing: casing,
+            stroke: stroke,
+            style: style
+          };
 
-        if (entity.isOneWay()) {
-          const oneways = new PIXI.Container();
-          oneways.name = entity.id + '-oneways';
-          container.addChild(oneways);
-          datum.oneways = oneways;
-        }
-
-        _cache.set(entity.id, datum);
-      }
-
-      // remember scale and reproject only when it changes
-      if (k === datum.k) return;
-      datum.k = k;
-
-      const points = datum.coords.map(coord => projection.project(coord));
-      if (entity.tags.oneway === '-1') {
-        points.reverse();
-      }
-
-      updateGraphic('casing', datum.casing);
-      updateGraphic('stroke', datum.stroke);
-
-      if (datum.oneways) {
-        const segments = getLineSegments(points, ONEWAY_SPACING);
-        datum.oneways.removeChildren();
-
-        segments.forEach(segment => {
-          segment.coords.forEach(coord => {
-            const arrow = new PIXI.Sprite(_textures.oneway);
-            arrow.anchor.set(0.5, 0.5);  // middle, middle
-            arrow.x = coord[0];
-            arrow.y = coord[1];
-            arrow.rotation = segment.angle;
-            datum.oneways.addChild(arrow);
-          });
-        });
-      }
-
-      function updateGraphic(which, graphic) {
-        const minwidth = (which === 'casing' ? 3 : 2);
-        let width = datum.style[which].width;
-        if (zoom < 17) width -= 2;
-        if (zoom < 15) width -= 2;
-        if (width < minwidth) width = minwidth;
-
-        let g = graphic.clear();
-        if (datum.style[which].alpha === 0) return;
-
-        if (datum.style[which].dash) {
-          g = new DashLine(g, {
-            dash: datum.style[which].dash,
-            color: datum.style[which].color,
-            width: width,
-            alpha: datum.style[which].alpha || 1.0,
-            join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
-            cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
-          });
-        } else {
-          g = g.lineStyle({
-            color: datum.style[which].color,
-            width: width,
-            alpha: datum.style[which].alpha || 1.0,
-            join: datum.style[which].join || PIXI.LINE_JOIN.ROUND,
-            cap: datum.style[which].cap || PIXI.LINE_CAP.ROUND
-          });
-        }
-
-        points.forEach(([x, y], i) => {
-          if (i === 0) {
-            g.moveTo(x, y);
-          } else {
-            g.lineTo(x, y);
+          if (entity.isOneWay()) {
+            const oneways = new PIXI.Container();
+            oneways.name = entity.id + '-oneways';
+            container.addChild(oneways);
+            feature.oneways = oneways;
           }
-        });
-      }
-    });
+
+          featureCache.set(entity.id, feature);
+        }
+
+        // remember scale and reproject only when it changes
+        if (k === feature.k) return;
+        feature.k = k;
+
+        const points = feature.coords.map(coord => projection.project(coord));
+        if (entity.tags.oneway === '-1') {
+          points.reverse();
+        }
+
+        updateGraphic('casing', feature.casing);
+        updateGraphic('stroke', feature.stroke);
+
+        if (feature.oneways) {
+          const segments = getLineSegments(points, ONEWAY_SPACING);
+          feature.oneways.removeChildren();
+
+          segments.forEach(segment => {
+            segment.coords.forEach(coord => {
+              const arrow = new PIXI.Sprite(_textures.oneway);
+              arrow.anchor.set(0.5, 0.5);  // middle, middle
+              arrow.x = coord[0];
+              arrow.y = coord[1];
+              arrow.rotation = segment.angle;
+              feature.oneways.addChild(arrow);
+            });
+          });
+        }
+
+        function updateGraphic(which, graphic) {
+          const minwidth = (which === 'casing' ? 3 : 2);
+          let width = feature.style[which].width;
+          if (zoom < 17) width -= 2;
+          if (zoom < 15) width -= 2;
+          if (width < minwidth) width = minwidth;
+
+          let g = graphic.clear();
+          if (feature.style[which].alpha === 0) return;
+
+          if (feature.style[which].dash) {
+            g = new DashLine(g, {
+              dash: feature.style[which].dash,
+              color: feature.style[which].color,
+              width: width,
+              alpha: feature.style[which].alpha || 1.0,
+              join: feature.style[which].join || PIXI.LINE_JOIN.ROUND,
+              cap: feature.style[which].cap || PIXI.LINE_CAP.ROUND
+            });
+          } else {
+            g = g.lineStyle({
+              color: feature.style[which].color,
+              width: width,
+              alpha: feature.style[which].alpha || 1.0,
+              join: feature.style[which].join || PIXI.LINE_JOIN.ROUND,
+              cap: feature.style[which].cap || PIXI.LINE_CAP.ROUND
+            });
+          }
+
+          points.forEach(([x, y], i) => {
+            if (i === 0) {
+              g.moveTo(x, y);
+            } else {
+              g.lineTo(x, y);
+            }
+          });
+        }
+      });
   }
 
   return renderLines;

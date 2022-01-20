@@ -10,8 +10,7 @@ import { getIconSpriteHelper } from './pixiHelpers';
 import { utilDisplayName, utilDisplayNameForPath } from '../util';
 
 
-export function pixiLabels(context) {
-  let _labelCache = new Map();   // map of OSM ID -> Pixi data
+export function pixiLabels(context, featureCache) {
   let _debugCache = new Map();   // map of OSM ID -> Pixi data
   let _labels = new Map();       // map of OSM ID -> label string
   let _lastk = 0;
@@ -27,11 +26,11 @@ export function pixiLabels(context) {
 
 
   function initLabels(context, layer) {
-    const debugLayer = new PIXI.Container();
-    debugLayer.name = 'debug';
-    const labelsLayer = new PIXI.Container();
-    labelsLayer.name = 'labels';
-    layer.addChild(debugLayer, labelsLayer);
+    // const debugLayer = new PIXI.Container();
+    // debugLayer.name = 'debug';
+    // const labelsLayer = new PIXI.Container();
+    // labelsLayer.name = 'labels';
+    // layer.addChild(debugLayer, labelsLayer);
 
     _textStyle = new PIXI.TextStyle({
       fill: 0x333333,
@@ -86,9 +85,9 @@ export function pixiLabels(context) {
 //      });
 //
 //      data.forEach((entity, i) => {
-//          let datum = cache.get(entity.id);
+//          let feature = cache.get(entity.id);
 //
-//          if (!datum) {
+//          if (!feature) {
 //              const str = utilDisplayName(entity, true)
 //              const text = new PIXI.Text(str, _textStyle);
 //              text.name = str;
@@ -119,7 +118,7 @@ export function pixiLabels(context) {
 //              }
 //              layer.addChild(container);
 //
-//              datum = {
+//              feature = {
 //                  loc: [labels[i].x, labels[i].y],
 //                  height: labels[i].height || 18,
 //                  width: labels[i].width || 100,
@@ -127,14 +126,14 @@ export function pixiLabels(context) {
 //                  container: container
 //              };
 //
-//              cache.set(entity.id, datum);
+//              cache.set(entity.id, feature);
 //          }
 //
-//          datum.container.x = labels[i].x - Math.cos(datum.container.width) / 2;
-//          datum.container.y = labels[i].y - Math.sin(datum.container.height) / 2;
-//          datum.container.rotation = datum.rotation || 0;
-//          // datum.container.height = datum.height;
-//          // datum.container.width = datum.width;
+//          feature.container.x = labels[i].x - Math.cos(feature.container.width) / 2;
+//          feature.container.y = labels[i].y - Math.sin(feature.container.height) / 2;
+//          feature.container.rotation = feature.rotation || 0;
+//          // feature.container.height = feature.height;
+//          // feature.container.width = feature.width;
 //      });
 //
 //  }
@@ -187,8 +186,8 @@ export function pixiLabels(context) {
   function renderLabels(layer, projection, entities) {
     if (!_didInit) initLabels(context, layer);
 
-    const debugLayer = layer.getChildByName('debug');
-    const labelsLayer = layer.getChildByName('labels');
+    // const debugLayer = layer.getChildByName('debug');
+    // const labelsLayer = layer.getChildByName('labels');
 
     const graph = context.graph();
     const k = projection.scale();
@@ -202,103 +201,93 @@ export function pixiLabels(context) {
       return _labels.get(entity.id);
     }
 
-    // gather labels
-    const data = entities.filter(isLabelable);
 
-
-    // cull
-    let visible = {};
-    entities.forEach(entity => visible[entity.id] = true);
-    [..._labelCache.entries()].forEach(function cullLabels([id, datum]) {
-      datum.container.visible = !!visible[id];
-      // cull the label bbox too??
-    });
-
-
-    // gather bounding boxes to avoid
-    const stage = context.pixi.stage;
-    const vertices = stage.getChildByName('vertices');
-    const points = stage.getChildByName('points');
-
-    vertices.children.forEach(getBBox);
-    points.children.forEach(getBBox);
-
-    function getBBox(sourceObject) {
-      const name = sourceObject.name + '-bbox';
-      let datum = _debugCache.get(name);
-
-      if (!datum) {
-        const graphics = new PIXI.Graphics();
-        graphics.name = name;
-        debugLayer.addChild(graphics);
-
-        datum = { bbox: graphics };
-        _debugCache.set(name, datum);
-      }
-
-      datum.bbox.visible = sourceObject.visible;
-      if (sourceObject.visible) {
-        const offset = stage.position;
-        datum.bbox.position.set(-offset.x, -offset.y);
-
-        const rect = sourceObject.getBounds().pad(2);
-        datum.bbox
-          .clear()
-          .lineStyle(1, 0xffff00)
-          .drawRect(rect.x, rect.y, rect.width, rect.height);
-      }
-    }
+//    // gather bounding boxes to avoid
+//    const stage = context.pixi.stage;
+//    const vertices = stage.getChildByName('vertices');
+//    const points = stage.getChildByName('points');
+//
+//    vertices.children.forEach(getBBox);
+//    points.children.forEach(getBBox);
+//
+//    function getBBox(sourceObject) {
+//      const name = sourceObject.name + '-bbox';
+//      let feature = _debugCache.get(name);
+//
+//      if (!feature) {
+//        const graphics = new PIXI.Graphics();
+//        graphics.name = name;
+//        debugLayer.addChild(graphics);
+//
+//        feature = { bbox: graphics };
+//        _debugCache.set(name, feature);
+//      }
+//
+//      feature.bbox.visible = sourceObject.visible;
+//      if (sourceObject.visible) {
+//        const offset = stage.position;
+//        feature.bbox.position.set(-offset.x, -offset.y);
+//
+//        const rect = sourceObject.getBounds().pad(2);
+//        feature.bbox
+//          .clear()
+//          .lineStyle(1, 0xffff00)
+//          .drawRect(rect.x, rect.y, rect.width, rect.height);
+//      }
+//    }
 
 
     // enter/update LABELS
-    data
+    entities
+      .filter(isLabelable)
       .forEach(function prepareLabels(entity) {
-        let datum = _labelCache.get(entity.id);
+        let feature = featureCache.get(entity.id);
+        if (!feature) return;
 
-        if (!datum) {
+        // Add the label to an existing feature.
+        if (!feature.label) {
           const container = new PIXI.Container();
           const label = _labels.get(entity.id);
           container.name = label;
-          labelsLayer.addChild(container);
+          layer.addChild(container);
 
           const text = new PIXI.Text(label, _textStyle);
           text.name = label;
           text.anchor.set(0.5, 0.5);  // middle, middle
+          text.position.set(0, 8);    // move below pin
           container.addChild(text);
 
           // for now
           const center = entity.extent(graph).center();
 
-          const graphics = new PIXI.Graphics();
-          graphics.name = entity.id + '-labelbbox';
-          debugLayer.addChild(graphics);
+          // const bbox = new PIXI.Graphics();
+          // bbox.name = entity.id + '-labelbbox';
+          // container.addChild(bbox);
 
-          datum = {
+          feature.label = {
+            displayObject: container,
             loc: center,
             label: label,
-            container: container,
-            text: text,
-            bbox: graphics
+            text: text
+            // bbox: bbox
           };
-
-          _labelCache.set(entity.id, datum);
         }
 
         // remember scale and reproject only when it changes
-        if (k !== datum.k) {
-          datum.k = k;
-          const coord = projection.project(datum.loc);
-          datum.container.position.set(coord[0], coord[1]);
-        }
+        if (k === feature.label.k) return;
+        feature.label.k = k;
 
-        const offset = stage.position;
-        datum.bbox.position.set(-offset.x, -offset.y);
+        const coord = projection.project(feature.label.loc);
+        feature.label.displayObject.position.set(coord[0], coord[1]);
 
-        const rect = datum.container.getBounds();
-        datum.bbox
-          .clear()
-          .lineStyle(1, 0x66ff66)
-          .drawRect(rect.x, rect.y, rect.width, rect.height);
+        // const offset = stage.position;
+        // feature.bbox.position.set(-offset.x, -offset.y);
+
+        // const rect = feature.displayObject.getBounds();
+        // feature.bbox
+        //   .clear()
+        //   .lineStyle(1, 0x66ff66)
+        //   .drawRect(rect.x, rect.y, rect.width, rect.height);
       });
 
   }

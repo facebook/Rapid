@@ -23,7 +23,6 @@ import { utilDoubleUp } from '../util/double_up';
 
 import { services } from '../services';
 import * as PIXI from 'pixi.js';
-const _pixiAutoTick = false;     // set to true to turn the ticker back on
 
 // constants
 var TILESIZE = 256;
@@ -38,6 +37,16 @@ function clamp(num, min, max) {
 }
 
 export function rendererMap(context) {
+
+// pixi state
+const _pixiAutoTick = false;     // set to true to turn the ticker back on
+let _pixiInit = false;
+let _pixiPending = false;
+let _pixiProjection = new Projection();   // only update transform after zooming
+let _featureCache = new Map();            // map of OSM ID -> Pixi data
+let _frameStats = {};
+
+
     var dispatch = d3_dispatch(
         'move', 'drawn',
         'crossEditableZoom', 'hitMinZoom',
@@ -501,12 +510,12 @@ export function rendererMap(context) {
 
 
     map.init = function() {
-        drawPoints = pixiPoints(context);
-        drawVertices = pixiVertices(context);
-        drawLines = pixiLines(context);
-        drawAreas = pixiAreas(context);
-        drawMidpoints = pixiMidpoints(context);
-        drawLabels = pixiLabels(context);
+        drawPoints = pixiPoints(context, _featureCache);
+        drawVertices = pixiVertices(context, _featureCache);
+        drawLines = pixiLines(context, _featureCache);
+        drawAreas = pixiAreas(context, _featureCache);
+        drawMidpoints = pixiMidpoints(context, _featureCache);
+        drawLabels = pixiLabels(context, _featureCache);
 
         drawLayers = svgLayers(projection, context);
         // drawPoints = svgPoints(projection, context);
@@ -758,12 +767,6 @@ export function rendererMap(context) {
     }
 
 
-
-// pixi state
-let _pixiInit = false;
-let _pixiPending = false;
-let _pixiProjection = new Projection();   // only update transform after zooming
-
     function redrawPixi() {
         if (!context.pixi || !_redrawEnabled) return;
         if (_pixiPending) return;
@@ -808,6 +811,25 @@ let _pixiProjection = new Projection();   // only update transform after zooming
            midpointsLayer = pixi.stage.getChildByName('midpoints');
         }
 
+
+// GATHER phase
+        const data = context.history().intersects(map.extent());
+
+// CULL phase
+
+    let visible = {};
+    data.forEach(entity => visible[entity.id] = true);
+    [..._featureCache.entries()].forEach(function cull([id, feature]) {
+      const isVisible = !!visible[id];
+      feature.displayObject.visible = isVisible;
+      if (feature.label) {
+        feature.label.displayObject.visible = isVisible;
+      }
+    });
+
+
+// DRAW phase
+
       // Reproject the pixi geometries only whenever zoom changes
       const currTransform = projection.transform();
       const pixiTransform = _pixiProjection.transform();
@@ -832,13 +854,11 @@ let _pixiProjection = new Projection();   // only update transform after zooming
 
         pixi.stage.position.set(-offset[0], -offset[1]);
 
-        const graph = context.graph();
-        const data = context.history().intersects(map.extent());
-        drawAreas(areasLayer, _pixiProjection, data);
-        drawLines(linesLayer, _pixiProjection, data);
-        drawVertices(verticesLayer, _pixiProjection, data);
-        drawPoints(pointsLayer, _pixiProjection, data);
-        drawLabels(labelsLayer, _pixiProjection, data);
+        drawAreas(areasLayer, _pixiProjection, data, _frameStats);
+        drawLines(linesLayer, _pixiProjection, data, _frameStats);
+        drawVertices(verticesLayer, _pixiProjection, data, _frameStats);
+        drawPoints(pointsLayer, _pixiProjection, data, _frameStats);
+        drawLabels(labelsLayer, _pixiProjection, data, _frameStats);
         // drawMidpoints(midpointsLayer, _pixiProjection, data);
 
         if (!_pixiAutoTick) {    // tick manually
