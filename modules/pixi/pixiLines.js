@@ -1,10 +1,11 @@
+import geojsonRewind from '@mapbox/geojson-rewind';
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { geoScaleToZoom } from '@id-sdk/math';
 
 import { osmPavedTags } from '../osm/tags';
-import { getLineSegments } from './pixiHelpers';
-
+import { getLineSegments, getPixiTagPatternKey } from './pixiHelpers';
+import { styleMatch as areaStyleMatch} from './pixiAreas';
 
 export function pixiLines(context, featureCache) {
   const ONEWAY_SPACING = 35;
@@ -58,7 +59,7 @@ export function pixiLines(context, featureCache) {
         let feature = featureCache.get(entity.id);
 
         if (!feature) {   // make line if needed
-          const geojson = entity.asGeoJSON(graph);
+          const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
           const coords = geojson.coordinates;
 
           const container = new PIXI.Container();
@@ -73,13 +74,50 @@ export function pixiLines(context, featureCache) {
           stroke.name = entity.id + '-stroke';
           container.addChild(stroke);
 
-          const style = styleMatch(entity.tags);
+          const fill = new PIXI.Graphics();
+          fill.name = entity.id + '-fill';
+          container.addChild(fill);
+          const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
+          fill.filters = [colorMatrix];
+
+          const texture = new PIXI.Graphics();
+          texture.name = entity.id + '-texture';
+          container.addChild(texture);
+
+          let patternKey;
+          let style = STYLES.default;
+          //What if the way doesn't have any styling on its own?
+          if (!entity.hasInterestingTags()) {
+            const parentRelations = graph.parentRelations(entity);
+            const parentMultipolygons =
+            parentRelations.filter(function (relation) {
+              return relation.isMultipolygon();
+            });
+
+            const hasParentPolys = parentMultipolygons.length > 0;
+
+            if (hasParentPolys) {
+              const parentPoly = parentMultipolygons[0];
+              style = convertFromAreaStyle(areaStyleMatch(parentPoly.tags));
+
+              if (parentPoly.memberById(entity.id).role === 'inner') {
+                style.inner = true;
+                // Okay, we've matched the style of our parent polygon. Now also determine if we need to draw a texture.
+                patternKey = getPixiTagPatternKey(context, parentPoly.tags);
+              }
+            }
+          } else {
+            style = styleMatch(entity.tags);
+          }
 
           feature = {
             displayObject: container,
             coords: coords,
+            patternKey: patternKey,
             casing: casing,
             stroke: stroke,
+            fill: fill,
+            texture: texture,
             style: style
           };
 
@@ -104,6 +142,41 @@ export function pixiLines(context, featureCache) {
 
         updateGraphic('casing', feature.casing);
         updateGraphic('stroke', feature.stroke);
+
+
+        if (feature.style.inner) {
+          //This way is an interior fill for a polygonal relation
+          let path = [];
+          feature.coords.forEach(coord => {
+            const p = projection.project(coord);
+            path.push(p[0], p[1]);
+          });
+
+          let fillTexture = context.pixi.rapidTextures.get(feature.patternKey);
+
+          // Draw the pattern, if we have one.
+          if (feature.patternKey) {
+            let textureGraphics = feature.texture;
+            textureGraphics.clear().lineTextureStyle({
+              // width: _innerStrokeWidth * 2,
+              alignment: 0,  // inside
+              width: 26,
+              color: feature.style.casing.color,
+              texture: fillTexture,
+            })
+              .drawPolygon(path);
+          }
+
+          let fillGraphics = feature.fill;
+          fillGraphics
+            .clear()
+            .lineStyle({
+              alignment: 0,  // inside
+              width: 26,
+              color: feature.style.casing.color,
+            })
+            .drawPolygon(path);
+        }
 
         if (feature.oneways) {
           const segments = getLineSegments(points, ONEWAY_SPACING);
@@ -639,6 +712,21 @@ const ROADS = {
   track: true
 };
 
+function convertFromAreaStyle(style) {
+
+  return {
+    casing: {
+      alpha: 0,  // disable it
+      width: style.width,
+      color: style.color,
+    },
+    stroke: {
+      alpha: 1,
+      width: style.width,
+      color: style.color,
+    }
+  };
+}
 
 function styleMatch(tags) {
   let style = STYLES.default;

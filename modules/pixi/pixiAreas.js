@@ -1,44 +1,16 @@
 import geojsonRewind from '@mapbox/geojson-rewind';
 
 import * as PIXI from 'pixi.js';
-import { svgTagPattern } from '../svg/tag_pattern';
+import { getPixiTagPatternKey } from './pixiHelpers';
 
 const _innerStrokeWidth = 32;
 
+
 export function pixiAreas(context, featureCache) {
-  let _didInit = false;
-  let _textures = new Map();
-  let _patternKeys = [];
-
-  function initAreas() {
-    _patternKeys = ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
-      'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
-      'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
-
-    _patternKeys.forEach(key => {
-      _textures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
-    });
-    _didInit = true;
-  }
-
-
-  function getPixiTagPatternKey(tags) {
-    let svgPattern = svgTagPattern(tags);
-    if (svgPattern) {
-      let key = svgPattern.split('-')[1];
-      if (_patternKeys.includes(key)) {
-        return key;
-      }
-    }
-    return null;
-  }
-
-
   //
   // render
   //
   function renderAreas(layer, projection, entities) {
-    if (!_didInit) initAreas();
 
     const graph = context.graph();
     const k = projection.scale();
@@ -90,7 +62,7 @@ export function pixiAreas(context, featureCache) {
           const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
           fillContainer.filters = [colorMatrix];
 
-          let patternKey = getPixiTagPatternKey(entity.tags);
+          let patternKey = getPixiTagPatternKey(context, entity.tags);
           const style = styleMatch(entity.tags);
 
           feature = {
@@ -148,7 +120,7 @@ export function pixiAreas(context, featureCache) {
               alignment: 0,  // inside
               width: _innerStrokeWidth,
               color: feature.style.color,
-              texture: _textures.get(feature.patternKey),
+              texture: context.pixi.rapidTextures.get(feature.patternKey),
             })
             .drawPolygon(path);
         }
@@ -325,7 +297,7 @@ const TAGSTYLES = {
 };
 
 
-function styleMatch(tags) {
+export function styleMatch(tags) {
   let style = STYLES.lightgray;  // default
   let selectivity = 999;
 
