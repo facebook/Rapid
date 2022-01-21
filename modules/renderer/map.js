@@ -1299,6 +1299,9 @@ redrawPixi();
     map.activeAreaFill = function(val) {
         if (!arguments.length) return prefs('area-fill') || 'partial';
 
+// hack force redraw
+_featureCache.forEach(feature => delete feature.k);
+
         prefs('area-fill', val);
         if (val !== 'wireframe') {
             prefs('area-fill-toggle', val);
