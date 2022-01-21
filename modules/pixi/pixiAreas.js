@@ -3,7 +3,7 @@ import geojsonRewind from '@mapbox/geojson-rewind';
 import * as PIXI from 'pixi.js';
 import { getPixiTagPatternKey } from './pixiHelpers';
 
-const _innerStrokeWidth = 32;
+const PARTIALFILLWIDTH = 32;
 
 
 export function pixiAreas(context, featureCache) {
@@ -26,6 +26,7 @@ export function pixiAreas(context, featureCache) {
         let feature = featureCache.get(entity.id);
 
         if (!feature) {   // make poly if needed
+          const style = styleMatch(entity.tags);
           const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
           const coords = (geojson.type === 'Polygon') ? geojson.coordinates[0]
             : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
@@ -35,46 +36,37 @@ export function pixiAreas(context, featureCache) {
           container.name = entity.id;
           layer.addChild(container);
 
-          const fillContainer = new PIXI.Container();
-          fillContainer.name = 'fill';
-          container.addChild(fillContainer);
+          const stroke = new PIXI.Graphics();
+          stroke.name = entity.id + '-stroke';
 
-          const outlineGraphics = new PIXI.Graphics();
-          outlineGraphics.name = entity.id + '-outline';
-          container.addChild(outlineGraphics);
+          const mask = new PIXI.Graphics();
+          mask.name = entity.id + '-mask';
 
-          // const mask = new PIXI.Graphics();
-          // mask.isMask = true;
-          // mask.name = entity.id - '-mask';
-          // fillContainer.addChild(mask);
+          const fill = new PIXI.Graphics();
+          fill.name = entity.id + '-fill';
+          fill.blendMode = PIXI.BLEND_MODES.NORMAL;
+          const colorMatrix = new PIXI.filters.AlphaFilter(style.alpha || 0.25);
+          fill.filters = [colorMatrix];
+          fill.mask = mask;
 
-          const fillGraphics = new PIXI.Graphics();
-          fillGraphics.name = entity.id + '-fill';
-          // fillGraphics.mask = mask;
-          fillContainer.addChild(fillGraphics);
+          container.addChild(fill);
+          container.addChild(stroke);
+          container.addChild(mask);
 
-          const textureGraphics = new PIXI.Graphics();
-          textureGraphics.name = entity.id + '-texture';
-          textureGraphics.blendMode = PIXI.BLEND_MODES.NORMAL;
-          // textureGraphics.mask = mask;
-          fillContainer.addChild(textureGraphics);
+          const pattern = getPixiTagPatternKey(context, entity.tags);
+          const texture = pattern && context.pixi.rapidTextures.get(pattern);
 
-          const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
-          fillContainer.filters = [colorMatrix];
-
-          let patternKey = getPixiTagPatternKey(context, entity.tags);
-          const style = styleMatch(entity.tags);
+const polygon = new PIXI.Polygon();
 
           feature = {
             displayObject: container,
+            polygon: polygon,
             coords: coords,
-            outlineGraphics: outlineGraphics,
-            textureGraphics: textureGraphics,
-            fillContainer: fillContainer,
-            fillGraphics: fillGraphics,
-            patternKey: patternKey,
-            // mask: mask,
-            style: style,
+            fill: fill,
+            stroke: stroke,
+            mask: mask,
+            texture: texture,
+            style: style
           };
 
           featureCache.set(entity.id, feature);
@@ -90,48 +82,46 @@ export function pixiAreas(context, featureCache) {
           path.push(p[0], p[1]);
         });
 
-        // feature.mask
-        //   .clear()
-        //   .lineStyle({
-        //     width: 1,
-        //     color: feature.style.color
-        //   })
-        //   .beginFill(feature.style.color, 1.0)
-        //   .drawPolygon(path)
-        //   .endFill();
+feature.polygon.points = path;
 
-        feature.fillGraphics
+        feature.stroke
           .clear()
           .lineStyle({
-            // width: _innerStrokeWidth * 2,
-            alignment: 0,  // inside
-            width: _innerStrokeWidth,
-            color: feature.style.color,
+            width: feature.style.width || 2,
+            color: feature.style.color || 0xaaaaaa
           })
-          .beginFill(feature.style.color, feature.style.alpha)
+          .drawShape(feature.polygon);
+
+        feature.mask
+          .clear()
+          .beginFill(0x000000, 1)
           .drawPolygon(path)
           .endFill();
 
-        if (feature.patternKey) {
-          feature.textureGraphics
+        if (feature.texture) {
+          feature.fill
             .clear()
             .lineTextureStyle({
-              // width: _innerStrokeWidth * 2,
+              alpha: 1,
               alignment: 0,  // inside
-              width: _innerStrokeWidth,
-              color: feature.style.color,
-              texture: context.pixi.rapidTextures.get(feature.patternKey),
+              width: PARTIALFILLWIDTH,
+              color: feature.style.color || 0xaaaaaa,
+              texture: feature.texture
             })
-            .drawPolygon(path);
+           .drawShape(feature.polygon);
+
+        } else {
+          feature.fill
+            .clear()
+            .lineStyle({
+              alpha: 1,
+              alignment: 0,  // inside
+              width: PARTIALFILLWIDTH,
+              color: feature.style.color || 0xaaaaaa
+            })
+            .drawShape(feature.polygon);
         }
 
-        feature.outlineGraphics
-          .clear()
-          .lineStyle({
-            width: feature.style.width,
-            color: feature.style.color
-          })
-          .drawPolygon(path);
       });
   }
 

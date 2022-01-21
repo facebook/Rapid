@@ -83,7 +83,6 @@ export function getIconSpriteHelper(context, picon) {
 
 
 export function getPixiTagPatternKey(context, tags) {
-
   let svgPattern = svgTagPattern(tags);
   if (svgPattern) {
     let key = svgPattern.split('-')[1];

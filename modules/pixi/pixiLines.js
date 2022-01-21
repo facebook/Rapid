@@ -144,39 +144,39 @@ export function pixiLines(context, featureCache) {
         updateGraphic('stroke', feature.stroke);
 
 
-        if (feature.style.inner) {
-          //This way is an interior fill for a polygonal relation
-          let path = [];
-          feature.coords.forEach(coord => {
-            const p = projection.project(coord);
-            path.push(p[0], p[1]);
-          });
-
-          let fillTexture = context.pixi.rapidTextures.get(feature.patternKey);
-
-          // Draw the pattern, if we have one.
-          if (feature.patternKey) {
-            let textureGraphics = feature.texture;
-            textureGraphics.clear().lineTextureStyle({
-              // width: _innerStrokeWidth * 2,
-              alignment: 0,  // inside
-              width: 26,
-              color: feature.style.casing.color,
-              texture: fillTexture,
-            })
-              .drawPolygon(path);
-          }
-
-          let fillGraphics = feature.fill;
-          fillGraphics
-            .clear()
-            .lineStyle({
-              alignment: 0,  // inside
-              width: 26,
-              color: feature.style.casing.color,
-            })
-            .drawPolygon(path);
-        }
+//        if (feature.style.inner) {
+//          //This way is an interior fill for a polygonal relation
+//          let path = [];
+//          feature.coords.forEach(coord => {
+//            const p = projection.project(coord);
+//            path.push(p[0], p[1]);
+//          });
+//
+//          let fillTexture = context.pixi.rapidTextures.get(feature.patternKey);
+//
+//          // Draw the pattern, if we have one.
+//          if (feature.patternKey) {
+//            let textureGraphics = feature.texture;
+//            textureGraphics.clear().lineTextureStyle({
+//              // width: _innerStrokeWidth * 2,
+//              alignment: 0,  // inside
+//              width: 26,
+//              color: feature.style.casing.color,
+//              texture: fillTexture,
+//            })
+//              .drawPolygon(path);
+//          }
+//
+//          let fillGraphics = feature.fill;
+//          fillGraphics
+//            .clear()
+//            .lineStyle({
+//              alignment: 0,  // inside
+//              width: 26,
+//              color: feature.style.casing.color,
+//            })
+//            .drawPolygon(path);
+//        }
 
         if (feature.oneways) {
           const segments = getLineSegments(points, ONEWAY_SPACING);
