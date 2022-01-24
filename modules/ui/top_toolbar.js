@@ -45,7 +45,7 @@ export function uiTopToolbar(context) {
                 sidebarToggle,
                 'spacer',
                 modes,
-                rapidFeatures
+                // rapidFeatures
             //    searchAdd
             ];
 

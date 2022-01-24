@@ -20,14 +20,10 @@ import { svgTouch } from './touch';
 import { utilRebind } from '../util';
 import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 
-import { svgRapidFeatures } from './rapid_features';
-
-
 export function svgLayers(projection, context) {
     var dispatch = d3_dispatch('change');
     var svg = d3_select(null);
     var _layers = [
-        { id: 'ai-features', layer: svgRapidFeatures(projection, context, dispatch) },
         { id: 'osm', layer: svgOsm(projection, context, dispatch) },
         { id: 'notes', layer: svgNotes(projection, context, dispatch) },
         { id: 'data', layer: svgData(projection, context, dispatch) },

@@ -11,7 +11,7 @@ import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { svgAreas, svgLayers, svgMidpoints, } from '../svg';
-import { pixiPoints, pixiVertices, pixiLines, pixiAreas, pixiLabels, pixiMidpoints } from '../pixi';
+import { pixiPoints, pixiVertices, pixiLines, pixiAreas, pixiLabels, pixiRapidFeatures, pixiMidpoints } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -61,6 +61,7 @@ let _frameStats = {};
     var drawAreas;
     var drawMidpoints;
     var drawLabels;
+    var drawRapid;
 
     var _selection = d3_select(null);
     var supersurface = d3_select(null);
@@ -526,8 +527,10 @@ let _frameStats = {};
         drawAreas = pixiAreas(context, _featureCache);
         drawMidpoints = pixiMidpoints(context, _featureCache);
         drawLabels = pixiLabels(context, _featureCache);
-
+        drawRapid = pixiRapidFeatures(projection, context, _featureCache);
         drawLayers = svgLayers(projection, context);
+
+
         // drawPoints = svgPoints(projection, context);
         // drawVertices = svgVertices(projection, context);
         // drawLines = svgLines(projection, context);
@@ -787,6 +790,7 @@ let _frameStats = {};
         let verticesLayer;
         let pointsLayer;
         let labelsLayer;
+        let rapidLayer;
         let midpointsLayer;
 
         if (!_pixiInit) {  // create layers
@@ -808,12 +812,13 @@ let _frameStats = {};
 
           labelsLayer = new PIXI.Container();
           labelsLayer.name = 'labels';
-
+          rapidLayer = new PIXI.Container();
+          rapidLayer.name = 'rapid';
           midpointsLayer = new PIXI.Container();
           midpointsLayer.name = 'midpoints';
 
           pixi.stage.name = 'stage';
-          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
+          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, rapidLayer, midpointsLayer);
 
 // debug
 // const origin = new PIXI.Graphics();
@@ -828,6 +833,7 @@ let _frameStats = {};
            verticesLayer = pixi.stage.getChildByName('vertices');
            pointsLayer = pixi.stage.getChildByName('points');
            labelsLayer = pixi.stage.getChildByName('labels');
+           rapidLayer = pixi.stage.getChildByName('rapid');
            midpointsLayer = pixi.stage.getChildByName('midpoints');
         }
 
@@ -840,8 +846,9 @@ let _frameStats = {};
     let visible = {};
     data.forEach(entity => visible[entity.id] = true);
     [..._featureCache.entries()].forEach(function cull([id, feature]) {
-      const isVisible = !!visible[id];
-      feature.displayObject.visible = isVisible;
+    //  const isVisible = !!visible[id];
+    const isVisible = !!visible[id] || !context.graph().hasEntity(id);
+    feature.displayObject.visible = isVisible;
       if (feature.label) {
         feature.label.displayObject.visible = isVisible;
       }
@@ -879,6 +886,7 @@ let _frameStats = {};
         drawVertices(verticesLayer, _pixiProjection, data, _frameStats);
         drawPoints(pointsLayer, _pixiProjection, data, _frameStats);
         drawLabels(labelsLayer, _pixiProjection, data, _frameStats);
+        drawRapid(rapidLayer, _pixiProjection, data, _frameStats);
         // drawMidpoints(midpointsLayer, _pixiProjection, data);
 
         if (!_pixiAutoTick) {    // tick manually
