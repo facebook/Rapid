@@ -383,7 +383,7 @@ const STYLES = {
     },
     stroke: {
       width: 5,
-      color: 0xfff6e4
+      color: 0xddccaa
     }
   },
   track: {
