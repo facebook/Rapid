@@ -141,7 +141,7 @@ export function pixiAreas(context, featureCache) {
             color: color,
             texture: texture
           })
-          .drawPolygon(path)
+          .drawShape(feature.polygon)
           .endFill();
 
         if (doPartialFill) {
