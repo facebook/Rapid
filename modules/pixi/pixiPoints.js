@@ -41,6 +41,7 @@ export function pixiPoints(context, featureCache) {
 
     const graph = context.graph();
     const k = projection.scale();
+    const SHOWBBOX = false;
 
     function isPoint(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'point';
@@ -62,6 +63,13 @@ export function pixiPoints(context, featureCache) {
           marker.anchor.set(0.5, 1);  // middle, bottom
           container.addChild(marker);
 
+          const bounds = new PIXI.Rectangle();
+
+          const bbox = new PIXI.Graphics();
+          bbox.name = node.id + '-bbox';
+          bbox.visible = SHOWBBOX;
+          container.addChild(bbox);
+
           const preset = presetManager.match(node, graph);
           const picon = preset && preset.icon;
 
@@ -77,18 +85,33 @@ export function pixiPoints(context, featureCache) {
 
           feature = {
             displayObject: container,
-            loc: node.loc
+            bounds: bounds,
+            loc: node.loc,
+            marker: marker,
+            bbox: bbox
           };
 
           featureCache.set(node.id, feature);
         }
 
-        // remember scale and reproject only when it changes
+        // Remember scale and reproject only when it changes
         if (k === feature.k) return;
         feature.k = k;
 
+        // Reproject and recalculate the bounding box
         const [x, y] = projection.project(feature.loc);
         feature.displayObject.position.set(x, y);
+
+        // `getLocalBounds` will do the math for us and store it into the rect we provide
+        // TODO: account for viewfields
+        feature.marker.getLocalBounds(feature.bounds);
+
+        if (SHOWBBOX) {
+          feature.bbox
+            .clear()
+            .lineStyle(1, 0x66ff66)
+            .drawShape(feature.bounds);
+        }
       });
   }
 

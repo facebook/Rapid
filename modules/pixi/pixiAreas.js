@@ -63,8 +63,8 @@ export function pixiAreas(context, featureCache) {
 
           feature = {
             displayObject: container,
-            polygon: polygon,
             bounds: bounds,
+            polygon: polygon,
             style: style,
             coords: coords,
             texture: texture,

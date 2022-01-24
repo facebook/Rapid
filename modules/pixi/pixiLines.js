@@ -47,6 +47,7 @@ export function pixiLines(context, featureCache) {
     const graph = context.graph();
     const k = projection.scale();
     const zoom = geoScaleToZoom(k);
+    const SHOWBBOX = false;
 
     function isLine(entity) {
       return entity.type === 'way' && entity.geometry(graph) === 'line';
@@ -74,15 +75,15 @@ export function pixiLines(context, featureCache) {
           stroke.name = entity.id + '-stroke';
           container.addChild(stroke);
 
-          const fill = new PIXI.Graphics();
-          fill.name = entity.id + '-fill';
-          container.addChild(fill);
-          const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
-          fill.filters = [colorMatrix];
+          // const fill = new PIXI.Graphics();
+          // fill.name = entity.id + '-fill';
+          // container.addChild(fill);
+          // const colorMatrix = new PIXI.filters.AlphaFilter(0.25);
+          // fill.filters = [colorMatrix];
 
-          const texture = new PIXI.Graphics();
-          texture.name = entity.id + '-texture';
-          container.addChild(texture);
+          // const texture = new PIXI.Graphics();
+          // texture.name = entity.id + '-texture';
+          // container.addChild(texture);
 
           let patternKey;
           let style = STYLES.default;
@@ -110,14 +111,24 @@ export function pixiLines(context, featureCache) {
             style = styleMatch(entity.tags);
           }
 
+          const bounds = new PIXI.Rectangle();
+
+          const bbox = new PIXI.Graphics();
+          bbox.name = entity.id + '-bbox';
+          bbox.visible = SHOWBBOX;
+          container.addChild(bbox);
+
+
           feature = {
             displayObject: container,
+            bounds: bounds,
             coords: coords,
             patternKey: patternKey,
             casing: casing,
             stroke: stroke,
-            fill: fill,
-            texture: texture,
+            // fill: fill,
+            bbox: bbox,
+            // texture: texture,
             style: style
           };
 
@@ -131,14 +142,30 @@ export function pixiLines(context, featureCache) {
           featureCache.set(entity.id, feature);
         }
 
-        // remember scale and reproject only when it changes
+        // Remember scale and reproject only when it changes
         if (k === feature.k) return;
         feature.k = k;
 
-        const points = feature.coords.map(coord => projection.project(coord));
+        // Reproject and recalculate the bounding box
+        let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
+        let points = [];
+
+        feature.coords.forEach(coord => {
+          const [x, y] = projection.project(coord);
+          points.push([x, y]);
+
+          [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+          [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+        });
         if (entity.tags.oneway === '-1') {
           points.reverse();
         }
+
+        const [w, h] = [maxX - minX, maxY - minY];
+        feature.bounds.x = minX;
+        feature.bounds.y = minY;
+        feature.bounds.width = w;
+        feature.bounds.height = h;
 
         updateGraphic('casing', feature.casing);
         updateGraphic('stroke', feature.stroke);
@@ -183,15 +210,22 @@ export function pixiLines(context, featureCache) {
           feature.oneways.removeChildren();
 
           segments.forEach(segment => {
-            segment.coords.forEach(coord => {
+            segment.coords.forEach(([x, y]) => {
               const arrow = new PIXI.Sprite(_textures.oneway);
               arrow.anchor.set(0.5, 0.5);  // middle, middle
-              arrow.x = coord[0];
-              arrow.y = coord[1];
+              arrow.x = x;
+              arrow.y = y;
               arrow.rotation = segment.angle;
               feature.oneways.addChild(arrow);
             });
           });
+        }
+
+        if (SHOWBBOX) {
+          feature.bbox
+            .clear()
+            .lineStyle(1, 0x66ff66)
+            .drawShape(feature.bounds);
         }
 
         function updateGraphic(which, graphic) {
