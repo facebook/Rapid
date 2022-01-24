@@ -15,6 +15,7 @@ export function pixiAreas(context, featureCache) {
     const graph = context.graph();
     const k = projection.scale();
     const fillstyle = (prefs('area-fill') || 'partial');
+    const SHOWBBOX = false;
 
     function isPolygon(entity) {
       return (entity.type === 'way' || entity.type === 'relation') && entity.geometry(graph) === 'area';
@@ -40,22 +41,21 @@ export function pixiAreas(context, featureCache) {
           container.name = entity.id;
           layer.addChild(container);
 
+          const fill = new PIXI.Graphics();
+          fill.name = entity.id + '-fill';
+          container.addChild(fill);
+
           const stroke = new PIXI.Graphics();
           stroke.name = entity.id + '-stroke';
+          container.addChild(stroke);
 
           const mask = new PIXI.Graphics();
           mask.name = entity.id + '-mask';
-
-          const fill = new PIXI.Graphics();
-          fill.name = entity.id + '-fill';
-          fill.blendMode = PIXI.BLEND_MODES.NORMAL;
+          container.addChild(mask);
 
           const bbox = new PIXI.Graphics();
           bbox.name = entity.id + '-bbox';
-
-          container.addChild(fill);
-          container.addChild(stroke);
-          container.addChild(mask);
+          bbox.visible = SHOWBBOX;
           container.addChild(bbox);
 
           const pattern = getPixiTagPatternKey(context, entity.tags);
@@ -67,11 +67,11 @@ export function pixiAreas(context, featureCache) {
             bounds: bounds,
             style: style,
             coords: coords,
+            texture: texture,
             fill: fill,
             stroke: stroke,
             mask: mask,
-            bbox: bbox,
-            texture: texture
+            bbox: bbox
           };
 
           featureCache.set(entity.id, feature);
@@ -120,11 +120,6 @@ export function pixiAreas(context, featureCache) {
 
 
         // update shapes
-        feature.bbox
-          .clear()
-          .lineStyle(1, doPartialFill ? 0xffff00 : 0x66ff66)
-          .drawShape(feature.bounds);
-
         feature.stroke
           .clear()
           .lineStyle({
@@ -163,6 +158,14 @@ export function pixiAreas(context, featureCache) {
           feature.mask.visible = false;
           feature.fill.mask = null;
         }
+
+        if (SHOWBBOX) {
+          feature.bbox
+            .clear()
+            .lineStyle(1, doPartialFill ? 0xffff00 : 0x66ff66)
+            .drawShape(feature.bounds);
+        }
+
       });
   }
 
