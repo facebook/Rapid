@@ -277,8 +277,8 @@ export function pixiLabels(context, featureCache) {
         if (k === feature.label.k) return;
         feature.label.k = k;
 
-        const coord = projection.project(feature.label.loc);
-        feature.label.displayObject.position.set(coord[0], coord[1]);
+        const [x, y] = projection.project(feature.label.loc);
+        feature.label.displayObject.position.set(x, y);
 
         // const offset = stage.position;
         // feature.bbox.position.set(-offset.x, -offset.y);

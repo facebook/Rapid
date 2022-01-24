@@ -32,6 +32,10 @@ export function pixiAreas(context, featureCache) {
             : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
           if (!coords.length) return;
 
+          const polygon = new PIXI.Polygon();
+          const bounds = new PIXI.Rectangle();
+          const colorMatrix = new PIXI.filters.AlphaFilter(style.alpha || 0.25);
+
           const container = new PIXI.Container();
           container.name = entity.id;
           layer.addChild(container);
@@ -45,83 +49,130 @@ export function pixiAreas(context, featureCache) {
           const fill = new PIXI.Graphics();
           fill.name = entity.id + '-fill';
           fill.blendMode = PIXI.BLEND_MODES.NORMAL;
-          const colorMatrix = new PIXI.filters.AlphaFilter(style.alpha || 0.25);
-          fill.filters = [colorMatrix];
-          fill.mask = mask;
+
+          const bbox = new PIXI.Graphics();
+          bbox.name = entity.id + '-bbox';
 
           container.addChild(fill);
           container.addChild(stroke);
           container.addChild(mask);
+          container.addChild(bbox);
 
           const pattern = getPixiTagPatternKey(context, entity.tags);
           const texture = pattern && context.pixi.rapidTextures.get(pattern);
 
-const polygon = new PIXI.Polygon();
-
           feature = {
             displayObject: container,
             polygon: polygon,
+            bounds: bounds,
+            colorMatrix: colorMatrix,
+            style: style,
             coords: coords,
             fill: fill,
             stroke: stroke,
             mask: mask,
-            texture: texture,
-            style: style
+            bbox: bbox,
+            texture: texture
           };
 
           featureCache.set(entity.id, feature);
         }
 
-        // remember scale and reproject only when it changes
+        // Remember scale and reproject only when it changes
         if (k === feature.k) return;
         feature.k = k;
 
+        // Reproject and recalculate the bounding box
+        let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
         let path = [];
+
         feature.coords.forEach(coord => {
-          const p = projection.project(coord);
-          path.push(p[0], p[1]);
+          const [x, y] = projection.project(coord);
+          path.push(x, y);
+
+          [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+          [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
         });
 
-feature.polygon.points = path;
+        feature.polygon.points = path;
+
+        const [w, h] = [maxX - minX, maxY - minY];
+        feature.bounds.x = minX;
+        feature.bounds.y = minY;
+        feature.bounds.width = w;
+        feature.bounds.height = h;
+
+
+        // Determine style info
+        let color = feature.style.color || 0xaaaaaa;
+        let alpha = feature.style.alpha || 0.25;
+        let texture = feature.texture || PIXI.Texture.WHITE;  // WHITE turns off the texture
+        let doPartialFill = true;
+
+        // If this shape is so small that partial filling makes no sense, fill fully (faster?)
+        const cutoff = (2 * PARTIALFILLWIDTH) + 5;
+        if (w < cutoff || h < cutoff) {
+          doPartialFill = false;
+        }
+        // If this shape is so small that texture filling makes no sense, skip it (faster?)
+        if (w < 32 || h < 32) {
+          texture = PIXI.Texture.WHITE;
+        }
+
+
+        // update shapes
+        feature.bbox
+          .clear()
+          .lineStyle(1, doPartialFill ? 0x66ff66 : 0xffff00)
+          .drawShape(feature.bounds);
 
         feature.stroke
           .clear()
           .lineStyle({
+            alpha: 1,
             width: feature.style.width || 2,
-            color: feature.style.color || 0xaaaaaa
+            color: color
           })
           .drawShape(feature.polygon);
 
-        feature.mask
-          .clear()
-          .beginFill(0x000000, 1)
-          .drawPolygon(path)
-          .endFill();
 
-        if (feature.texture) {
+        if (doPartialFill) {
+          feature.mask.visible = true;
+          feature.mask
+            .clear()
+            .beginFill(0x000000, 1)
+            .drawPolygon(path)
+            .endFill();
+
           feature.fill
             .clear()
             .lineTextureStyle({
               alpha: 1,
               alignment: 0,  // inside
               width: PARTIALFILLWIDTH,
-              color: feature.style.color || 0xaaaaaa,
-              texture: feature.texture
-            })
-           .drawShape(feature.polygon);
-
-        } else {
-          feature.fill
-            .clear()
-            .lineStyle({
-              alpha: 1,
-              alignment: 0,  // inside
-              width: PARTIALFILLWIDTH,
-              color: feature.style.color || 0xaaaaaa
+              color: color,
+              texture: texture
             })
             .drawShape(feature.polygon);
-        }
 
+          feature.fill.filters = [feature.colorMatrix];
+          feature.fill.mask = feature.mask;
+
+        } else {  // full fill
+          feature.mask.visible = false;
+          feature.fill
+            .clear()
+            .beginTextureFill({
+              alpha: alpha,
+              color: color,
+              texture: texture
+            })
+            .drawPolygon(path)
+            .endFill();
+
+          feature.fill.filters = null;
+          feature.fill.mask = null;
+        }
       });
   }
 

@@ -136,8 +136,8 @@ export function pixiVertices(context, featureCache) {
         if (k === feature.k) return;
         feature.k = k;
 
-        const coord = projection.project(feature.loc);
-        feature.displayObject.position.set(coord[0], coord[1]);
+        const [x, y] = projection.project(feature.loc);
+        feature.displayObject.position.set(x, y);
       });
   }
 
