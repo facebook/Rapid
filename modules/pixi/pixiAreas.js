@@ -1,7 +1,8 @@
+import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
-import * as PIXI from 'pixi.js';
 import { getPixiTagPatternKey } from './pixiHelpers';
+import { prefs } from '../core/preferences';
 
 const PARTIALFILLWIDTH = 32;
 
@@ -11,9 +12,9 @@ export function pixiAreas(context, featureCache) {
   // render
   //
   function renderAreas(layer, projection, entities) {
-
     const graph = context.graph();
     const k = projection.scale();
+    const fillstyle = (prefs('area-fill') || 'partial');
 
     function isPolygon(entity) {
       return (entity.type === 'way' || entity.type === 'relation') && entity.geometry(graph) === 'area';
@@ -34,7 +35,6 @@ export function pixiAreas(context, featureCache) {
 
           const polygon = new PIXI.Polygon();
           const bounds = new PIXI.Rectangle();
-          const colorMatrix = new PIXI.filters.AlphaFilter(style.alpha || 0.25);
 
           const container = new PIXI.Container();
           container.name = entity.id;
@@ -65,7 +65,6 @@ export function pixiAreas(context, featureCache) {
             displayObject: container,
             polygon: polygon,
             bounds: bounds,
-            colorMatrix: colorMatrix,
             style: style,
             coords: coords,
             fill: fill,
@@ -107,7 +106,7 @@ export function pixiAreas(context, featureCache) {
         let color = feature.style.color || 0xaaaaaa;
         let alpha = feature.style.alpha || 0.25;
         let texture = feature.texture || PIXI.Texture.WHITE;  // WHITE turns off the texture
-        let doPartialFill = true;
+        let doPartialFill = (fillstyle === 'partial');
 
         // If this shape is so small that partial filling makes no sense, fill fully (faster?)
         const cutoff = (2 * PARTIALFILLWIDTH) + 5;
@@ -123,7 +122,7 @@ export function pixiAreas(context, featureCache) {
         // update shapes
         feature.bbox
           .clear()
-          .lineStyle(1, doPartialFill ? 0x66ff66 : 0xffff00)
+          .lineStyle(1, doPartialFill ? 0xffff00 : 0x66ff66)
           .drawShape(feature.bounds);
 
         feature.stroke
@@ -135,42 +134,33 @@ export function pixiAreas(context, featureCache) {
           })
           .drawShape(feature.polygon);
 
+        feature.fill
+          .clear()
+          .beginTextureFill({
+            alpha: alpha,
+            color: color,
+            texture: texture
+          })
+          .drawPolygon(path)
+          .endFill();
 
         if (doPartialFill) {
-          feature.mask.visible = true;
           feature.mask
-            .clear()
-            .beginFill(0x000000, 1)
-            .drawPolygon(path)
-            .endFill();
-
-          feature.fill
             .clear()
             .lineTextureStyle({
               alpha: 1,
               alignment: 0,  // inside
               width: PARTIALFILLWIDTH,
-              color: color,
-              texture: texture
+              color: 0x000000,
+              texture: PIXI.Texture.WHITE
             })
             .drawShape(feature.polygon);
 
-          feature.fill.filters = [feature.colorMatrix];
+          feature.mask.visible = true;
           feature.fill.mask = feature.mask;
 
         } else {  // full fill
           feature.mask.visible = false;
-          feature.fill
-            .clear()
-            .beginTextureFill({
-              alpha: alpha,
-              color: color,
-              texture: texture
-            })
-            .drawPolygon(path)
-            .endFill();
-
-          feature.fill.filters = null;
           feature.fill.mask = null;
         }
       });
