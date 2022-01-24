@@ -30,11 +30,9 @@ export function pixiAreas(context, featureCache) {
         if (!feature) {   // make poly if needed
           const style = styleMatch(entity.tags);
           const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-          const coords = (geojson.type === 'Polygon') ? geojson.coordinates[0]
-            : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];   // outer ring only
-          if (!coords.length) return;
+          const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
+            : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-          const polygon = new PIXI.Polygon();
           const bounds = new PIXI.Rectangle();
 
           const container = new PIXI.Container();
@@ -64,9 +62,8 @@ export function pixiAreas(context, featureCache) {
           feature = {
             displayObject: container,
             bounds: bounds,
-            polygon: polygon,
             style: style,
-            coords: coords,
+            polygons: polygons,
             texture: texture,
             fill: fill,
             stroke: stroke,
@@ -81,26 +78,54 @@ export function pixiAreas(context, featureCache) {
         if (k === feature.k) return;
         feature.k = k;
 
+// Refresh the GeoJSON to deal with multipolygons not being fully loaded initially?
+// This is wasteful, but we can work around it
+// TODO : figure out a way to invalidate and redo geometry as we load more stuff from the OSM API.
+const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
+  : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+feature.polygons = polygons;
+
+
         // Reproject and recalculate the bounding box
         let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
-        let path = [];
+        let shapes = [];
 
-        feature.coords.forEach(coord => {
-          const [x, y] = projection.project(coord);
-          path.push(x, y);
+        // Convert the GeoJSON style multipolygons to array of Pixi polygons with inner/outer
+        feature.polygons.forEach(rings => {
+          if (!rings.length) return;  // no rings?
 
-          [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
-          [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+          let shape = { outer: undefined, holes: [] };
+          shapes.push(shape);
+
+          rings.forEach((ring, index) => {
+            const isOuter = (index === 0);
+            let points = [];
+
+            ring.forEach(coord => {
+              const [x, y] = projection.project(coord);
+              points.push(x, y);
+
+              if (isOuter) {   // outer rings define the bounding box
+                [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+                [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+              }
+            });
+
+            const poly = new PIXI.Polygon(points);
+            if (isOuter) {
+              shape.outer = poly;
+            } else {
+              shape.holes.push(poly);
+            }
+          });
         });
-
-        feature.polygon.points = path;
 
         const [w, h] = [maxX - minX, maxY - minY];
         feature.bounds.x = minX;
         feature.bounds.y = minY;
         feature.bounds.width = w;
         feature.bounds.height = h;
-
 
         // Determine style info
         let color = feature.style.color || 0xaaaaaa;
@@ -118,43 +143,62 @@ export function pixiAreas(context, featureCache) {
           texture = PIXI.Texture.WHITE;
         }
 
+        // redraw the shapes
 
-        // update shapes
+        // STROKES
         feature.stroke
           .clear()
           .lineStyle({
             alpha: 1,
             width: feature.style.width || 2,
             color: color
-          })
-          .drawShape(feature.polygon);
+          });
 
-        feature.fill
-          .clear()
-          .beginTextureFill({
-            alpha: alpha,
-            color: color,
-            texture: texture
-          })
-          .drawShape(feature.polygon)
-          .endFill();
+        shapes.forEach(shape => {
+          feature.stroke.drawShape(shape.outer);
+          shape.holes.forEach(hole => feature.stroke.drawShape(hole));
+        });
 
-        if (doPartialFill) {
+
+        // FILLS
+        feature.fill.clear();
+        shapes.forEach(shape => {
+          feature.fill
+            .beginTextureFill({
+              alpha: alpha,
+              color: color,
+              texture: texture
+            })
+            .drawShape(shape.outer);
+
+          if (shape.holes.length) {
+            feature.fill.beginHole();
+            shape.holes.forEach(hole => feature.fill.drawShape(hole));
+            feature.fill.endHole();
+          }
+          feature.fill.endFill();
+        });
+
+        if (doPartialFill) {   // mask around the edges of the fill
           feature.mask
             .clear()
             .lineTextureStyle({
               alpha: 1,
-              alignment: 0,  // inside
+              alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
               width: PARTIALFILLWIDTH,
               color: 0x000000,
               texture: PIXI.Texture.WHITE
-            })
-            .drawShape(feature.polygon);
+            });
+
+          shapes.forEach(shape => {
+            feature.mask.drawShape(shape.outer);
+            shape.holes.forEach(hole => feature.mask.drawShape(hole));
+          });
 
           feature.mask.visible = true;
           feature.fill.mask = feature.mask;
 
-        } else {  // full fill
+        } else {  // full fill - no mask
           feature.mask.visible = false;
           feature.fill.mask = null;
         }

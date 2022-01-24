@@ -49,8 +49,17 @@ export function pixiLines(context, featureCache) {
     const zoom = geoScaleToZoom(k);
     const SHOWBBOX = false;
 
+    function isUntaggedMultipolygonRing(entity) {
+      if (entity.hasInterestingTags()) return false;
+      return graph.parentRelations(entity)
+        .some(relation => relation.isMultipolygon());
+    }
+
+
     function isLine(entity) {
-      return entity.type === 'way' && entity.geometry(graph) === 'line';
+      return entity.type === 'way' &&
+        entity.geometry(graph) === 'line' &&
+        !isUntaggedMultipolygonRing(entity);
     }
 
     // enter/update
@@ -87,29 +96,30 @@ export function pixiLines(context, featureCache) {
 
           let patternKey;
           let style = STYLES.default;
-          //What if the way doesn't have any styling on its own?
-          if (!entity.hasInterestingTags()) {
-            const parentRelations = graph.parentRelations(entity);
-            const parentMultipolygons =
-            parentRelations.filter(function (relation) {
-              return relation.isMultipolygon();
-            });
 
-            const hasParentPolys = parentMultipolygons.length > 0;
-
-            if (hasParentPolys) {
-              const parentPoly = parentMultipolygons[0];
-              style = convertFromAreaStyle(areaStyleMatch(parentPoly.tags));
-
-              if (parentPoly.memberById(entity.id).role === 'inner') {
-                style.inner = true;
-                // Okay, we've matched the style of our parent polygon. Now also determine if we need to draw a texture.
-                patternKey = getPixiTagPatternKey(context, parentPoly.tags);
-              }
-            }
-          } else {
+//          //What if the way doesn't have any styling on its own?
+//          if (!entity.hasInterestingTags()) {
+//            const parentRelations = graph.parentRelations(entity);
+//            const parentMultipolygons =
+//            parentRelations.filter(function (relation) {
+//              return relation.isMultipolygon();
+//            });
+//
+//            const hasParentPolys = parentMultipolygons.length > 0;
+//
+//            if (hasParentPolys) {
+//              const parentPoly = parentMultipolygons[0];
+//              style = convertFromAreaStyle(areaStyleMatch(parentPoly.tags));
+//
+//              if (parentPoly.memberById(entity.id).role === 'inner') {
+//                style.inner = true;
+//                // Okay, we've matched the style of our parent polygon. Now also determine if we need to draw a texture.
+//                patternKey = getPixiTagPatternKey(context, parentPoly.tags);
+//              }
+//            }
+//          } else {
             style = styleMatch(entity.tags);
-          }
+//          }
 
           const bounds = new PIXI.Rectangle();
 
