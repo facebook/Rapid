@@ -57,6 +57,7 @@ export function pixiPoints(context, featureCache) {
         if (!feature) {   // make point if needed
           const container = new PIXI.Container();
           container.name = node.id;
+          container.zIndex = node.loc[1];  // sort by latitude ascending
           layer.addChild(container);
 
           const marker = new PIXI.Sprite(_textures.marker);

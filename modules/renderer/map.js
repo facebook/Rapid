@@ -792,16 +792,26 @@ let _frameStats = {};
         if (!_pixiInit) {  // create layers
           areasLayer = new PIXI.Container();
           areasLayer.name = 'areas';
+          areasLayer.sortableChildren = true;
+
           linesLayer = new PIXI.Container();
           linesLayer.name = 'lines';
+          linesLayer.sortableChildren = true;
+
           verticesLayer = new PIXI.Container();
           verticesLayer.name = 'vertices';
+          verticesLayer.sortableChildren = true;
+
           pointsLayer = new PIXI.Container();
           pointsLayer.name = 'points';
+          pointsLayer.sortableChildren = true;
+
           labelsLayer = new PIXI.Container();
           labelsLayer.name = 'labels';
+
           midpointsLayer = new PIXI.Container();
           midpointsLayer.name = 'midpoints';
+
           pixi.stage.name = 'stage';
           pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
 

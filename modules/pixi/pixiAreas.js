@@ -37,6 +37,8 @@ export function pixiAreas(context, featureCache) {
 
           const container = new PIXI.Container();
           container.name = entity.id;
+          const area = entity.extent(graph).area();  // estimate area from extent for speed
+          container.zIndex = -area;                  // sort by area descending (small things above big things)
           layer.addChild(container);
 
           const fill = new PIXI.Graphics();
