@@ -61,7 +61,7 @@ export function getIconSpriteHelper(context, picon) {
     spriteName = picon;
   }
 
-  spriteName = spriteName + (isMaki ? '-11' : '') + '.svg';
+  spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
 
   let sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
   sprite.name = spriteName;
