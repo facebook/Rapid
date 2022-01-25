@@ -2,54 +2,43 @@ import * as PIXI from 'pixi.js';
 import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
 import { svgTagPattern } from '../svg/tag_pattern';
 
-
-const iconViewfield = new PIXI.Graphics()
-  .lineStyle(0.75, 0xffffff)
-  .beginFill(0x333333, 0.75)
-  .moveTo(6, 14)
-  .bezierCurveTo(8,13.4, 8,13.4, 10,14)
-  .lineTo(16,3)
-  .bezierCurveTo(12,0, 4,0, 0,3)
-  .closePath()
-  .endFill();
-
+let _vfTexture;
 
 /**
 * Generates a pixi container with viewfield icons rotated appropriately
 * @param context main iD context obj.
 * @param {Array<number>} directions an array of directional angles in degrees, 'UP' is zero degrees
 * @returns {PIXI.Container} A container with the ViewfieldSprites rotated according to the supplied directions.
- */
+*/
 export function getViewfieldContainerHelper(context, directions) {
-  let _initViewfieldSprite = false;
-  let _vfTexture;
-  let _vfSprite;
-
-
-  function initViewfieldSprite(context) {
+  if (!_vfTexture) {
     const renderer = context.pixi.renderer;
-    _vfTexture = renderer.generateTexture(iconViewfield, { resolution: 2 });
-    _vfSprite = new PIXI.Sprite(_vfTexture);
-    _vfSprite.scale.set(1.6, 1.6);
-    _vfSprite.anchor.set(0.5, 1);
-  }
+    const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 26);
+    const iconViewfield = new PIXI.Graphics()
+      .lineStyle(1, 0xcccccc)                  //  [-6,21]  ,-___-,  [6,21]
+      .beginFill(0x333333, 0.75)               //          /       \
+      .moveTo(-6, 21)                          //         /         \
+      .bezierCurveTo(-5,19, 5,19, 6,21)        //        /           \
+      .lineTo(12, 4)                           //       /             \
+      .bezierCurveTo(12,0, -12,0, -12,4)       //       ""--_______--""         +y
+      .closePath()                             // [-12,4]              [12,4]    |
+      .endFill();                              //            [0,0]               +-- +x
 
-
-  if (!_initViewfieldSprite) {
-    initViewfieldSprite(context);
-    _initViewfieldSprite = true;
+    _vfTexture = renderer.generateTexture(iconViewfield, {
+      region: viewfieldRect,  // texture the whole 26x26 region
+      resolution: 3           // oversample a bit so it looks pretty when rotated
+    });
   }
 
   const vfContainer = new PIXI.Container();
-
   vfContainer.name = 'viewfields';
-  if (directions.length > 0) {
 
-    directions.forEach(direction => {
-      _vfSprite.angle = direction;
-      vfContainer.addChild(_vfSprite);
-    });
-  }
+  directions.forEach(direction => {
+    const vfSprite = new PIXI.Sprite(_vfTexture);
+    vfSprite.anchor.set(0.5, 1);  // middle, top
+    vfSprite.angle = direction;
+    vfContainer.addChild(vfSprite);
+  });
 
   return vfContainer;
 }

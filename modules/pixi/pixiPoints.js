@@ -12,16 +12,17 @@ export function pixiPoints(context, featureCache) {
   // prepare template geometry
   //
   function initPointTextures() {
-    const marker = new PIXI.Graphics()
-      .lineStyle(1, 0x444444)
-      .beginFill(0xffffff, 1)
-      .moveTo(0, 0)
-      .bezierCurveTo(-2,-2, -8,-10, -8,-15)
-      .bezierCurveTo(-8,-19, -4,-23, 0,-23)
-      .bezierCurveTo(4,-23, 8,-19, 8,-15)
-      .bezierCurveTo(8,-10, 2,-2, 0,0)
-      .closePath()
-      .endFill();
+    const marker = new PIXI.Graphics()         //              [0,-23]
+      .lineStyle(1, 0x444444)                  //              _,-+-,_
+      .beginFill(0xffffff, 1)                  //            /'       `\
+      .moveTo(0, 0)                            //           :           :
+      .bezierCurveTo(-2,-2, -8,-10, -8,-15)    // [-8,-15]  :           :  [8,-15]
+      .bezierCurveTo(-8,-19, -4,-23, 0,-23)    //            \         /
+      .bezierCurveTo(4,-23, 8,-19, 8,-15)      //             \       /
+      .bezierCurveTo(8,-10, 2,-2, 0,0)         //              \     /
+      .closePath()                             //               \   /      -y
+      .endFill();                              //                `+`        |
+                                               //               [0,0]       +-- +x
 
     // convert graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs

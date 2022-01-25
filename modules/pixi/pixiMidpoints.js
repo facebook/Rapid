@@ -10,11 +10,11 @@ export function pixiMidpoints(context, featureCache) {
   // prepare template geometry
   //
   function initMidpointTextures() {
-    const midpoint = new PIXI.Graphics()
-      .lineStyle(1, 0x000000)
-      .beginFill(0xffffff, 1)
-      .drawPolygon([-3,4, 5,0, -3,-4])
-      .endFill();
+    const midpoint = new PIXI.Graphics()      // [-3, 4]  ._                +y
+      .lineStyle(1, 0x000000)                 //          | "-._             |
+      .beginFill(0xffffff, 1)                 //          |    _:>  [5,0]    +-- +x
+      .drawPolygon([-3,4, 5,0, -3,-4])        //          |_,-"
+      .endFill();                             // [-3,-4]  '
 
     // convert graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
