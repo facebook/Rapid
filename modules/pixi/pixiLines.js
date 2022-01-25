@@ -1,11 +1,10 @@
-import geojsonRewind from '@mapbox/geojson-rewind';
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { geoScaleToZoom } from '@id-sdk/math';
 
 import { osmPavedTags } from '../osm/tags';
-import { getLineSegments, getPixiTagPatternKey } from './pixiHelpers';
-import { styleMatch as areaStyleMatch} from './pixiAreas';
+import { getLineSegments } from './pixiHelpers';
+
 
 export function pixiLines(context, featureCache) {
   const ONEWAY_SPACING = 35;
@@ -15,7 +14,7 @@ export function pixiLines(context, featureCache) {
   //
   // prepare template geometry
   //
-  function initLineTextures() {
+  function init(layer) {
     const midpoint = new PIXI.Graphics()
       .lineStyle(1, 0x000000)
       .beginFill(0xffffff, 1)
@@ -34,6 +33,15 @@ export function pixiLines(context, featureCache) {
     _textures.midpoint = renderer.generateTexture(midpoint, options);
     _textures.oneway = renderer.generateTexture(oneway, options);
 
+    // initialize levels (bridge/tunnel/etc)
+    for (let i = -10; i <= 10; i++) {
+      const lvl = new PIXI.Container();
+      lvl.name = i.toString();
+      lvl.zIndex = i;
+      lvl.sortableChildren = true;
+      layer.addChild(lvl);
+    }
+
     _didInit = true;
   }
 
@@ -42,7 +50,7 @@ export function pixiLines(context, featureCache) {
   // render
   //
   function renderLines(layer, projection, entities) {
-    if (!_didInit) initLineTextures();
+    if (!_didInit) init(layer);
 
     const graph = context.graph();
     const k = projection.scale();
@@ -69,12 +77,17 @@ export function pixiLines(context, featureCache) {
         let feature = featureCache.get(entity.id);
 
         if (!feature) {   // make line if needed
-          const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+          const geojson = entity.asGeoJSON(graph);
           const coords = geojson.coordinates;
+
+          // Place this line on the correct level (bridge/tunnel/etc)
+          const lvl = entity.layer().toString();
+          const level = layer.getChildByName(lvl);
 
           const container = new PIXI.Container();
           container.name = entity.id;
-          layer.addChild(container);
+          container.zIndex = getzIndex(entity.tags);
+          level.addChild(container);
 
           const casing = new PIXI.Graphics();
           casing.name = entity.id + '-casing';
@@ -683,21 +696,27 @@ const ROADS = {
   track: true
 };
 
-function convertFromAreaStyle(style) {
+const HIGHWAYSTACK = {
+  motorway: 0,
+  motorway_link: -1,
+  trunk: -2,
+  trunk_link: -3,
+  primary: -4,
+  primary_link: -5,
+  secondary: -6,
+  tertiary: -7,
+  unclassified: -8,
+  residential: -9,
+  service: -10,
+  track: -11,
+  footway: -12
+};
 
-  return {
-    casing: {
-      alpha: 0,  // disable it
-      width: style.width,
-      color: style.color,
-    },
-    stroke: {
-      alpha: 1,
-      width: style.width,
-      color: style.color,
-    }
-  };
+
+function getzIndex(tags) {
+  return HIGHWAYSTACK[tags.highway] || 0;
 }
+
 
 function styleMatch(tags) {
   let style = STYLES.default;
