@@ -13,6 +13,7 @@ import { utilDisplayName, utilDisplayNameForPath } from '../util';
 export function pixiLabels(context, featureCache) {
   let _debugCache = new Map();   // map of OSM ID -> Pixi data
   let _labels = new Map();       // map of OSM ID -> label string
+  let _texts = new Map();     // map of label -> Pixi Texture
   let _lastk = 0;
 
   let _rdrawn = new RBush();
@@ -251,11 +252,19 @@ export function pixiLabels(context, featureCache) {
           container.name = label;
           layer.addChild(container);
 
-          const text = new PIXI.Text(label, _textStyle);
-          text.name = label;
-          text.anchor.set(0.5, 0.5);  // middle, middle
-          text.position.set(0, 8);    // move below pin
-          container.addChild(text);
+          let sprite;
+          let existing = _texts.get(label);
+          if (existing) {
+            sprite = new PIXI.Sprite(existing.texture);
+          } else {
+            sprite = new PIXI.Text(label, _textStyle);
+            _texts.set(label, sprite);
+          }
+
+          sprite.name = label;
+          sprite.anchor.set(0.5, 0.5);  // middle, middle
+          sprite.position.set(0, 8);    // move below pin
+          container.addChild(sprite);
 
           // for now
           const center = entity.extent(graph).center();
@@ -268,7 +277,7 @@ export function pixiLabels(context, featureCache) {
             displayObject: container,
             loc: center,
             label: label,
-            text: text
+            sprite: sprite
             // bbox: bbox
           };
         }
