@@ -119,11 +119,13 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
   function layerOn() {
     context.pixi.stage.getChildByName('rapid').visible = true;
+    _dispatch.call('change');
   }
 
 
   function layerOff() {
     context.pixi.stage.getChildByName('rapid').visible = false;
+    _dispatch.call('change');
   }
 
 
@@ -227,6 +229,14 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
   function drawPaths(graph, layer, projection, entities, dataset) {
 
     const k = projection.scale();
+    let layerContainer = context.pixi.stage.getChildByName('rapid').getChildByName(dataset.id);
+
+    //If this layer container doesn't exist, create it and add it to the main rapid layer.
+    if (!layerContainer) {
+      layerContainer = new PIXI.Container();
+      layerContainer.name = dataset.id;
+      layer.addChild(layerContainer);
+    }
 
     entities.forEach(function preparePaths(entity) {
       let feature = featureCache.get(entity.id);
@@ -237,7 +247,7 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
         const container = new PIXI.Container();
         container.name = entity.id;
-        layer.addChild(container);
+        layerContainer.addChild(container);
 
         const graphics = new PIXI.Graphics();
         container.addChild(graphics);

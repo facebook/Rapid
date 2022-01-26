@@ -1,3 +1,4 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilQsString, utilStringQs } from '@id-sdk/util';
 import marked from 'marked';
@@ -14,6 +15,7 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
+  var dispatch = d3_dispatch('change');
 
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
@@ -66,7 +68,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
   function toggleRapid() {
     const rapidLayer = context.pixi.stage.getChildByName('rapid');
-    rapidLayer.visible = !rapidLayer.visible;   // toggling the layer will trigger a map redraw
+    rapidLayer.visible = !rapidLayer.visible;
+
+    // toggling the layer should trigger a map redraw
+    dispatch.call('change');
+
     _content.call(renderModalContent);
   }
 
