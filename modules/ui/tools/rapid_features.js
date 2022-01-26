@@ -29,13 +29,15 @@ export function uiToolRapidFeatures(context) {
 
 
   function layerEnabled() {
-    return context.layers().layer('ai-features').enabled();
+    if (!context.pixi || context.pixi.stage.children.length === 0) return false;
+
+    return context.pixi.stage.getChildByName('rapid').visible === true;
   }
 
 
   function toggleFeatures() {
-    let layer = context.layers().layer('ai-features');
-    layer.enabled(!layer.enabled());
+    let layer = context.pixi.stage.getChildByName('rapid');
+    layer.visible(!layer.visible);
     toggleKeyDispatcher.call('ai_feature_toggle');
   }
 

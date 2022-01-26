@@ -2,7 +2,7 @@ import { select as d3_select} from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { geoScaleToZoom } from '@id-sdk/math';
 import _throttle from 'lodash-es/throttle';
-
+import { utilArrayFlatten } from '@id-sdk/util';
 import { services } from '../services';
 import { svgPath, svgPointTransform } from '../svg/index';
 import * as PIXI from 'pixi.js';
@@ -118,12 +118,12 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
 
   function layerOn() {
-    context.pixi.stage.getChildByName('ai-features').visible = true;
+    context.pixi.stage.getChildByName('rapid').visible = true;
   }
 
 
   function layerOff() {
-    context.pixi.stage.getChildByName('ai-features').visible = false;
+    context.pixi.stage.getChildByName('rapid').visible = false;
   }
 
 
@@ -175,7 +175,7 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
         service.loadTiles(internalID, _projectionMutator, rapidContext.getTaskExtent());
         let pathData = service
           .intersects(internalID, context.map().extent())
-          .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__) )  // see onHistoryRestore()
+          .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__));  // see onHistoryRestore()
 
         // fb_ai service gives us roads and buildings together,
         // so filter further according to which dataset we're drawing
@@ -242,11 +242,21 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
         const graphics = new PIXI.Graphics();
         container.addChild(graphics);
 
+        let newCoords;
+        let area = false;
+        if (coords.length === 1) { //Area!
+          newCoords = [...coords[0]];
+          area = true;
+        } else {
+          newCoords = coords;
+        }
+
         feature = {
           displayObject: container,
-          coords: coords,
-          color: dataset.color,
+          coords: newCoords,
+          color: PIXI.utils.string2hex(dataset.color),
           graphics: graphics,
+          isArea: area,
         };
         featureCache.set(entity.id, feature);
       }
@@ -256,23 +266,22 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
         if (k === feature.k) return;
         feature.k = k;
 
-      let coords;
-      if (feature.coords.length === 1) { //Area!
-        coords = [...feature.coords[0]];
+
+      const points = feature.coords.map(coord => projection.project(coord));
+      if (feature.isArea) {
+        updateArea(feature.graphics);
       } else {
-        coords = feature.coords;
+        updateWay(feature.graphics);
       }
 
-      const points = coords.map(coord => projection.project(coord));
-      updateGraphic(feature.graphics);
-
-      function updateGraphic(graphic) {
+      function updateWay(graphic) {
         let g = graphic.clear();
         g = g.lineStyle({
-          color: PIXI.utils.string2hex(dataset.color),
+          color: feature.color,
           width: 3,
           alpha: 1
         });
+
 
         points.forEach(([x, y], i) => {
           if (i === 0) {
@@ -281,6 +290,19 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
             g.lineTo(x, y);
           }
         });
+      }
+
+      function updateArea(graphic) {
+        let g = graphic.clear();
+        g = g.lineStyle({
+          color: feature.color,
+          width: 3,
+          alpha: 1
+        });
+
+        g.beginFill(feature.color, 0.35)
+          .drawPolygon(utilArrayFlatten(points))
+          .endFill();
       }
     });
   }
