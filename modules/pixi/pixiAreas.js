@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
+import { geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
 
 import { getPixiTagPatternKey } from './pixiHelpers';
 import { prefs } from '../core/preferences';
@@ -15,7 +16,7 @@ export function pixiAreas(context, featureCache) {
     const graph = context.graph();
     const k = projection.scale();
     const fillstyle = (prefs('area-fill') || 'partial');
-    const SHOWBBOX = false;
+    const SHOWBBOX = true;
 
     function isPolygon(entity) {
       return (entity.type === 'way' || entity.type === 'relation') && entity.geometry(graph) === 'area';
@@ -58,6 +59,12 @@ export function pixiAreas(context, featureCache) {
           bbox.visible = SHOWBBOX;
           container.addChild(bbox);
 
+// SSR Experiment:
+const ssr = new PIXI.Graphics();
+ssr.name = entity.id + '-ssr';
+ssr.visible = SHOWBBOX;
+container.addChild(ssr);
+
           const pattern = getPixiTagPatternKey(context, entity.tags);
           const texture = pattern && context.pixi.rapidTextures.get(pattern);
 
@@ -70,7 +77,8 @@ export function pixiAreas(context, featureCache) {
             fill: fill,
             stroke: stroke,
             mask: mask,
-            bbox: bbox
+            bbox: bbox,
+ssr: ssr
           };
 
           featureCache.set(entity.id, feature);
@@ -104,15 +112,32 @@ feature.polygons = polygons;
             const isOuter = (index === 0);
             let points = [];
 
+// SSR Experiment:
+// If this is an uncomplicated area (no multiple outers)
+// perform a one-time calculation of smallest surrounding rectangle (SSR).
+// Maybe we will use it as a replacement geometry at low zooms.
+let projectedring = [];
+
             ring.forEach(coord => {
               const [x, y] = projection.project(coord);
               points.push(x, y);
+projectedring.push([x, y]);
 
               if (isOuter) {   // outer rings define the bounding box
                 [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
                 [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
               }
             });
+
+if (isOuter && !feature.ssrdata && feature.polygons.length === 1) {
+  let computedSSR = geomGetSmallestSurroundingRectangle(projectedring);   // compute SSR in projected coordinates
+  if (computedSSR && computedSSR.poly) {
+    feature.ssrdata = {
+      poly: computedSSR.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
+      angle: computedSSR.angle
+    };
+  }
+}
 
             const poly = new PIXI.Polygon(points);
             if (isOuter) {
@@ -128,6 +153,7 @@ feature.polygons = polygons;
         feature.bounds.y = minY;
         feature.bounds.width = w;
         feature.bounds.height = h;
+
 
         // Determine style info
         let color = feature.style.color || 0xaaaaaa;
@@ -206,10 +232,24 @@ feature.polygons = polygons;
         }
 
         if (SHOWBBOX) {
-          feature.bbox
-            .clear()
-            .lineStyle(1, doPartialFill ? 0xffff00 : 0x66ff66)
-            .drawShape(feature.bounds);
+          // feature.bbox
+          //   .clear()
+          //   .lineStyle(1, doPartialFill ? 0xffff00 : 0x66ff66)
+          //   .drawShape(feature.bounds);
+
+// SSR Experiment:
+if (feature.ssrdata) {
+  let ssrpath = [];
+  feature.ssrdata.poly.forEach(coord => {
+    const [x, y] = projection.project(coord);  // display in projected coordinates
+    ssrpath.push(x, y);
+  });
+
+  feature.ssr
+    .clear()
+    .lineStyle(1, 0x66ffff)
+    .drawShape(new PIXI.Polygon(ssrpath));
+}
         }
 
       });

@@ -18,7 +18,7 @@ let _dispatch = d3_dispatch('change');
 
 
 export function pixiRapidFeatures(context, featureCache) {
-  const SHOWBBOX = true;
+  const SHOWBBOX = false;
   const RAPID_MAGENTA = '#da26d3';
   const throttledRedraw = _throttle(() => _dispatch.call('change'), 1000);
   const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
