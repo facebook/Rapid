@@ -3,7 +3,7 @@ import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Projection, Extent, geoScaleToZoom, geoZoomToScale } from '@id-sdk/math';
+import { Projection, Extent, geoScaleToZoom, geoZoomToScale, vecAdd } from '@id-sdk/math';
 import { utilArrayFlatten, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
@@ -527,7 +527,8 @@ let _frameStats = {};
         drawAreas = pixiAreas(context, _featureCache);
         drawMidpoints = pixiMidpoints(context, _featureCache);
         drawLabels = pixiLabels(context, _featureCache);
-        drawRapid = pixiRapidFeatures(projection, context, _featureCache);
+        drawRapid = pixiRapidFeatures(context, _featureCache);
+
         drawLayers = svgLayers(projection, context);
 
 
@@ -828,35 +829,17 @@ let _frameStats = {};
           _pixiInit = true;
 
         } else {
-           areasLayer = pixi.stage.getChildByName('areas');
-           linesLayer = pixi.stage.getChildByName('lines');
-           verticesLayer = pixi.stage.getChildByName('vertices');
-           pointsLayer = pixi.stage.getChildByName('points');
-           labelsLayer = pixi.stage.getChildByName('labels');
-           rapidLayer = pixi.stage.getChildByName('rapid');
-           midpointsLayer = pixi.stage.getChildByName('midpoints');
+          areasLayer = pixi.stage.getChildByName('areas');
+          linesLayer = pixi.stage.getChildByName('lines');
+          verticesLayer = pixi.stage.getChildByName('vertices');
+          pointsLayer = pixi.stage.getChildByName('points');
+          labelsLayer = pixi.stage.getChildByName('labels');
+          rapidLayer = pixi.stage.getChildByName('rapid');
+          midpointsLayer = pixi.stage.getChildByName('midpoints');
         }
 
 
-// GATHER phase
-        const data = context.history().intersects(map.extent());
-
-// CULL phase
-
-    let visible = {};
-    data.forEach(entity => visible[entity.id] = true);
-    [..._featureCache.entries()].forEach(function cull([id, feature]) {
-    //  const isVisible = !!visible[id];
-    const isVisible = !!visible[id] || !context.graph().hasEntity(id);
-    feature.displayObject.visible = isVisible;
-      if (feature.label) {
-        feature.label.displayObject.visible = isVisible;
-      }
-    });
-
-
-// DRAW phase
-
+// UPDATE TRANSFORM
       // Reproject the pixi geometries only whenever zoom changes
       const currTransform = projection.transform();
       const pixiTransform = _pixiProjection.transform();
@@ -879,6 +862,51 @@ let _frameStats = {};
           offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
         }
 
+// GATHER phase
+        const data = context.history().intersects(map.extent());
+
+// CULL phase
+        let visibleOSM = {};
+        data.forEach(entity => visibleOSM[entity.id] = true);
+        [..._featureCache.entries()].forEach(function cull([id, feature]) {
+          const isVisible = !!visibleOSM[id] ||
+            !context.graph().hasEntity(id);  // for now non-OSM features will have to cull themselves
+
+          feature.displayObject.visible = isVisible;
+          if (feature.label) {
+            feature.label.displayObject.visible = isVisible;
+          }
+        });
+
+
+
+// CULL phase
+//    const viewMin = offset;  //[0,0];
+//    const viewMax = vecAdd(offset, _dimensions);
+//
+//    _featureCache.forEach(feature => {
+//      const bounds = feature.bounds;
+//      const displayObject = feature.displayObject;
+//      if (!bounds || !displayObject) return;
+//
+//      const featMin = [bounds.x, bounds.y];
+//      const featMax = [bounds.x + bounds.width, bounds.y + bounds.height];
+//
+//      const isVisible = (
+//        featMin[0] <= viewMax[0] &&
+//        featMin[1] <= viewMax[1] &&
+//        featMax[0] >= viewMin[0] &&
+//        featMax[1] >= viewMin[1]
+//      );
+//
+//      displayObject.visible = isVisible;
+//      if (feature.label) {
+//        feature.label.displayObject.visible = isVisible;
+//      }
+//    });
+
+
+// DRAW phase
         pixi.stage.position.set(-offset[0], -offset[1]);
 
         drawAreas(areasLayer, _pixiProjection, data, _frameStats);
@@ -886,8 +914,10 @@ let _frameStats = {};
         drawVertices(verticesLayer, _pixiProjection, data, _frameStats);
         drawPoints(pointsLayer, _pixiProjection, data, _frameStats);
         drawLabels(labelsLayer, _pixiProjection, data, _frameStats);
-        drawRapid(rapidLayer, _pixiProjection, data, _frameStats);
+
+        drawRapid(rapidLayer, _pixiProjection);
         // drawMidpoints(midpointsLayer, _pixiProjection, data);
+
 
         if (!_pixiAutoTick) {    // tick manually
           _pixiPending = true;

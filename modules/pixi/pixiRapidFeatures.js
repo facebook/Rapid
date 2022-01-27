@@ -17,11 +17,14 @@ let _actioned;
 let _dispatch = d3_dispatch('change');
 
 
-export function pixiRapidFeatures(projectionMutator, context, featureCache) {
+export function pixiRapidFeatures(context, featureCache) {
+  const SHOWBBOX = true;
   const RAPID_MAGENTA = '#da26d3';
-  const _projectionMutator = projectionMutator;
   const throttledRedraw = _throttle(() => _dispatch.call('change'), 1000);
   const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
+
+// todo: improve?
+let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we can cull)
 
 
   function init() {
@@ -156,6 +159,7 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
   function eachDataset(layer, projection, dataset) {
     const rapidContext = context.rapidContext();
+
     const service = dataset.service === 'fbml' ? getFbMlService(): getEsriService();
     if (!service) return;
 
@@ -174,7 +178,7 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
 
-        service.loadTiles(internalID, _projectionMutator, rapidContext.getTaskExtent());
+        service.loadTiles(internalID, context.projection, rapidContext.getTaskExtent());
         let pathData = service
           .intersects(internalID, context.map().extent())
           .filter(d => d.type === 'way' && !_actioned.has(d.id) && !_actioned.has(d.__origid__));  // see onHistoryRestore()
@@ -208,7 +212,7 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
       /* ESRI ArcGIS */
       } else if (dataset.service === 'esri') {
-        service.loadTiles(internalID, _projectionMutator);
+        service.loadTiles(internalID, context.projection);
         let visibleData = service
           .intersects(internalID, context.map().extent())
           .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
@@ -220,18 +224,35 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
           .filter(d => d.type === 'way' || d.type === 'relation');
       }
     }
+
+// CULL this dataset's stuff
+// todo: improve :-(
+let visibleRAPID = {};
+geoData.paths.forEach(entity => visibleRAPID[entity.id] = true);
+
+let dsfeatures = _datasetFeatures.get(dataset.id);
+if (dsfeatures) {
+  [...dsfeatures.entries()].forEach(function cull([entityID, feature]) {
+    const isVisible = !!visibleRAPID[entityID];
+    feature.displayObject.visible = isVisible;
+  });
+}
+
+
     drawPaths(graph, layer, projection, geoData.paths, dataset);
       // drawVertices(geoData.vertices, getTransform);
       // drawPoints(geoData.points, getTransform);
   }
 
 
+
+
+
   function drawPaths(graph, layer, projection, entities, dataset) {
-
     const k = projection.scale();
-    let layerContainer = context.pixi.stage.getChildByName('rapid').getChildByName(dataset.id);
+    let layerContainer = layer.getChildByName(dataset.id);
 
-    //If this layer container doesn't exist, create it and add it to the main rapid layer.
+    // If this layer container doesn't exist, create it and add it to the main rapid layer.
     if (!layerContainer) {
       layerContainer = new PIXI.Container();
       layerContainer.name = dataset.id;
@@ -241,9 +262,11 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
     entities.forEach(function preparePaths(entity) {
       let feature = featureCache.get(entity.id);
 
-      if (!feature) { // Make the path if needed
+      if (!feature) {  // Make the path if needed
         const geojson = entity.asGeoJSON(graph);
         const coords = geojson.coordinates;
+
+        const bounds = new PIXI.Rectangle();
 
         const container = new PIXI.Container();
         container.name = entity.id;
@@ -251,6 +274,11 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
         const graphics = new PIXI.Graphics();
         container.addChild(graphics);
+
+        const bbox = new PIXI.Graphics();
+        bbox.name = entity.id + '-bbox';
+        bbox.visible = SHOWBBOX;
+        container.addChild(bbox);
 
         let newCoords;
         let area = false;
@@ -263,26 +291,62 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
 
         feature = {
           displayObject: container,
+          bounds: bounds,
+          graphics: graphics,
+          bbox: bbox,
           coords: newCoords,
           color: PIXI.utils.string2hex(dataset.color),
-          graphics: graphics,
-          isArea: area,
+          isArea: area
         };
+
         featureCache.set(entity.id, feature);
+
+// todo: improve :-(
+let dsfeatures = _datasetFeatures.get(dataset.id);
+if (!dsfeatures) {
+  dsfeatures = new Map();   // map of RAPID ID -> Pixi data
+  _datasetFeatures.set(dataset.id, dsfeatures);
+}
+dsfeatures.set(entity.id, feature);
       }
 
 
-        // remember scale and reproject only when it changes
-        if (k === feature.k) return;
-        feature.k = k;
+      // remember scale and reproject only when it changes
+      if (k === feature.k) return;
+      feature.k = k;
+
+      // Reproject and recalculate the bounding box
+      let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
+      let points = [];
+
+      feature.coords.forEach(coord => {
+        const [x, y] = projection.project(coord);
+        points.push([x, y]);
+
+        [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+        [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+      });
+
+      const [w, h] = [maxX - minX, maxY - minY];
+      feature.bounds.x = minX;
+      feature.bounds.y = minY;
+      feature.bounds.width = w;
+      feature.bounds.height = h;
 
 
-      const points = feature.coords.map(coord => projection.project(coord));
       if (feature.isArea) {
         updateArea(feature.graphics);
       } else {
         updateWay(feature.graphics);
       }
+
+      if (SHOWBBOX) {
+        feature.bbox
+          .clear()
+          .lineStyle(1, 0x66ff66)
+          .drawShape(feature.bounds);
+      }
+
 
       function updateWay(graphic) {
         let g = graphic.clear();
@@ -291,7 +355,6 @@ export function pixiRapidFeatures(projectionMutator, context, featureCache) {
           width: 3,
           alpha: 1
         });
-
 
         points.forEach(([x, y], i) => {
           if (i === 0) {
