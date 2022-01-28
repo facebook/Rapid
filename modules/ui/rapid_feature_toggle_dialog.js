@@ -67,8 +67,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleRapid() {
-    const rapidLayer = context.pixi.stage.getChildByName('rapid');
-    rapidLayer.visible = !rapidLayer.visible;
+    const rapidLayer = context.layers().layer('rapid');
+    rapidLayer.enabled(!rapidLayer.enabled());
 
     // toggling the layer should trigger a map redraw
     dispatch.call('change');
@@ -114,7 +114,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderModalContent(selection) {
-    const rapidLayer = context.pixi.stage.getChildByName('rapid');
+    const rapidLayer = context.layers().layer('rapid');
 
     /* Toggle All */
     let toggleAll = selection.selectAll('.rapid-toggle-all')
@@ -161,7 +161,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .merge(toggleAllEnter);
 
     toggleAll.selectAll('.rapid-feature-checkbox')
-      .property('checked', rapidLayer.visible);
+      .property('checked', rapidLayer.showAll());
 
 
     /* Dataset List */
@@ -219,8 +219,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-
-    const rapidLayer = context.pixi.stage.getChildByName('rapid');
+    const rapidLayer = context.layers().layer('rapid');
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
       .data(datasets, d => d.id);
@@ -332,17 +331,17 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     // update
     rows = rows
       .merge(rowsEnter)
-      .classed('disabled', !rapidLayer.visible);
+      .classed('disabled', !rapidLayer.showAll());
 
     rows.selectAll('.rapid-colorpicker-label')
-      .attr('disabled', rapidLayer.visible ? null : true)
+      .attr('disabled', rapidLayer.showAll() ? null : true)
       .call(_colorpicker);
 
     rows.selectAll('.rapid-checkbox-label')
-      .classed('disabled', !rapidLayer.visible);
+      .classed('disabled', !rapidLayer.showAll());
 
     rows.selectAll('.rapid-feature-checkbox')
       .property('checked', datasetEnabled)
-      .attr('disabled', rapidLayer.visible ? null : true);
+      .attr('disabled', rapidLayer.showAll() ? null : true);
   }
 }
