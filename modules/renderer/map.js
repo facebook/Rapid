@@ -10,8 +10,7 @@ import _throttle from 'lodash-es/throttle';
 import { prefs } from '../core/preferences';
 import { geoRawMercator} from '../geo';
 import { modeBrowse } from '../modes/browse';
-import { svgAreas, svgLayers, svgMidpoints, } from '../svg';
-import { pixiPoints, pixiVertices, pixiLines, pixiAreas, pixiLabels, pixiRapidFeatures, pixiMidpoints } from '../pixi';
+import { pixiPoints, pixiLayers, pixiVertices, pixiLines, pixiAreas, pixiLabels, pixiRapidFeatures, pixiMidpoints } from '../pixi';
 import { utilFastMouse, utilFunctor, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
@@ -61,7 +60,7 @@ let _frameStats = {};
     var drawAreas;
     var drawMidpoints;
     var drawLabels;
-    var drawRapid;
+//    var drawRapid;
 
     var _selection = d3_select(null);
     var supersurface = d3_select(null);
@@ -293,7 +292,7 @@ let _frameStats = {};
 
         map.surface = surface = wrapper
             .call(drawLayers)
-            .selectAll('.surface');
+            .selectAll('canvas');
 
         surface
             // .call(drawLabels.observe)
@@ -527,9 +526,8 @@ let _frameStats = {};
         drawAreas = pixiAreas(context, _featureCache);
         drawMidpoints = pixiMidpoints(context, _featureCache);
         drawLabels = pixiLabels(context, _featureCache);
-        drawRapid = pixiRapidFeatures(context, _featureCache);
 
-        drawLayers = svgLayers(projection, context);
+        drawLayers = pixiLayers(_pixiProjection, context, _featureCache);
 
 
         // drawPoints = svgPoints(projection, context);
@@ -813,13 +811,11 @@ let _frameStats = {};
 
           labelsLayer = new PIXI.Container();
           labelsLayer.name = 'labels';
-          rapidLayer = new PIXI.Container();
-          rapidLayer.name = 'rapid';
           midpointsLayer = new PIXI.Container();
           midpointsLayer.name = 'midpoints';
 
           pixi.stage.name = 'stage';
-          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, rapidLayer, midpointsLayer);
+          pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
 
 // debug
 // const origin = new PIXI.Graphics();
@@ -834,7 +830,6 @@ let _frameStats = {};
           verticesLayer = pixi.stage.getChildByName('vertices');
           pointsLayer = pixi.stage.getChildByName('points');
           labelsLayer = pixi.stage.getChildByName('labels');
-          rapidLayer = pixi.stage.getChildByName('rapid');
           midpointsLayer = pixi.stage.getChildByName('midpoints');
         }
 
@@ -915,7 +910,6 @@ let _frameStats = {};
         drawPoints(pointsLayer, _pixiProjection, data, _frameStats);
         drawLabels(labelsLayer, _pixiProjection, data, _frameStats);
 
-        drawRapid(rapidLayer, _pixiProjection);
         // drawMidpoints(midpointsLayer, _pixiProjection, data);
 
 
@@ -970,7 +964,7 @@ let _frameStats = {};
 // trying to determine where the jank is coming from
         if (!difference) {
             supersurface.call(context.background());
-//            wrapper.call(drawLayers);
+            wrapper.call(drawLayers);
 redrawPixi();
         }
 

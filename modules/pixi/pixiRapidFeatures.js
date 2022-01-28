@@ -1,12 +1,7 @@
-import { select as d3_select} from 'd3-selection';
-import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { geoScaleToZoom } from '@id-sdk/math';
 import _throttle from 'lodash-es/throttle';
 import { utilArrayFlatten } from '@id-sdk/util';
 import { services } from '../services';
-import { svgPath, svgPointTransform } from '../svg/index';
 import * as PIXI from 'pixi.js';
-import { data } from 'autoprefixer';
 
 
 let _enabled = false;
@@ -14,14 +9,16 @@ let _initialized = false;
 let _FbMlService;
 let _EsriService;
 let _actioned;
-let _dispatch = d3_dispatch('change');
 
 
-export function pixiRapidFeatures(context, featureCache) {
+export function pixiRapidFeatures(context, featureCache, dispatch) {
   const SHOWBBOX = false;
-  const RAPID_MAGENTA = '#da26d3';
-  const throttledRedraw = _throttle(() => _dispatch.call('change'), 1000);
-  const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
+  const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
+  let gpxInUrl = null;
+
+  if (context.initialHashParams) {
+    gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
+  }
 
 // todo: improve?
 let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we can cull)
@@ -71,7 +68,7 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
     if (!wasRapidEdit(annotation)) return;
 
     _actioned.delete(annotation.id);
-    if (_enabled) { _dispatch.call('change'); }  // redraw
+    if (_enabled) { dispatch.call('change'); }  // redraw
   }
 
 
@@ -80,7 +77,7 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
     if (!wasRapidEdit(annotation)) return;
 
     _actioned.add(annotation.id);
-    if (_enabled) { _dispatch.call('change'); }  // redraw
+    if (_enabled) { dispatch.call('change'); }  // redraw
   }
 
 
@@ -103,7 +100,7 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
       }
     });
     if (_actioned.size && _enabled) {
-      _dispatch.call('change');  // redraw
+      dispatch.call('change');  // redraw
     }
   }
 
@@ -122,13 +119,13 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
 
   function layerOn() {
     context.pixi.stage.getChildByName('rapid').visible = true;
-    _dispatch.call('change');
+    dispatch.call('change');
   }
 
 
   function layerOff() {
     context.pixi.stage.getChildByName('rapid').visible = false;
-    _dispatch.call('change');
+    dispatch.call('change');
   }
 
 
@@ -144,9 +141,6 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
 
   function render(layer, projection) {
     const rapidContext = context.rapidContext();
-    const surface = context.surface();
-    const waitingForTaskExtent = gpxInUrl && !rapidContext.getTaskExtent();
-    if (!surface || surface.empty() || waitingForTaskExtent) return;  // not ready to draw yet, starting up
 
 
     const rapidDatasets = rapidContext.datasets();
@@ -512,7 +506,7 @@ dsfeatures.set(entity.id, feature);
       hideLayer();
     }
 
-    _dispatch.call('change');
+    dispatch.call('change');
     return render;
   };
 
