@@ -22,21 +22,21 @@ export function pixiNotes(context, featureCache, dispatch) {
 
     function initNotesTextures() {
         const marker = new PIXI.Graphics()
-            .lineStyle(1, 0x444444)
-            .beginFill(0xffffff, 1)
+            .lineStyle(1, 0x333333)
+            .beginFill(0xff3300, 1)
             .moveTo(17.5, 0)
-            .lineTo(15, 0)
-            .bezierCurveTo(-1.37, 0, -2.5, 1.12, -2.5, -2.5)
-            .lineTo(0, 11.25)
-            .bezierCurveTo(0, 1.37, 1.12, 2.5, 2.5, 2.5)
-            .lineTo(3.75, 0)
-            .lineTo(0, 3.28)
-            .bezierCurveTo(0, 0.38, 0.43, 0.6, 0.75, 0.37)
-            .lineTo(4.87, -3.65)
-            .lineTo(5.62, 0)
-            .bezierCurveTo(1.37, 0, 2.5, -1.12, 2.5, -2.5)
-            .lineTo(0, -11.25)
-            .bezierCurveTo(0, -1.37, -1.12, -2.5, -2.5, -2.5)
+            .lineTo(2.5,0)
+            .bezierCurveTo(1.13, 0, 0, 1.12, 0, 2.5)
+            .lineTo(0, 13.75)
+            .bezierCurveTo(0, 15.12, 1.12, 16.25, 2.5, 16.25)
+            .lineTo(6.25, 16.25)
+            .lineTo(6.25, 19.53)
+            .bezierCurveTo(6.25, 19.91, 6.68, 20.13, 7, 19.9)
+            .lineTo(11.87, 16.25)
+            .lineTo(17.49, 16.25)
+            .bezierCurveTo(18.86, 16.25, 20, 15.12, 20, 13.75)
+            .lineTo(20, 2.5)
+            .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
             .closePath()
             .endFill();
 
@@ -104,18 +104,41 @@ export function pixiNotes(context, featureCache, dispatch) {
     // Update the note markers
     function updateMarkers(layer, projection) {
         if (!_notesVisible || !_notesEnabled) return;
+        const k = projection.scale();
 
         var service = getService();
         var selectedID = context.selectedNoteID();
-        var data = (service ? service.notes(projection) : []);
+        const entities = (service ? service.notes(context.projection) : []);
 
+        entities.forEach(function prepareNotes(note) {
+            let feature = featureCache.get(note.id);
 
+            if (!feature) {   // make point if needed
+                const container = new PIXI.Container();
+                container.name = note.id;
+                layer.addChild(container);
 
+                const noteMarker = new PIXI.Sprite(_textures.marker);
+                noteMarker.name = 'note-' + note.id;
+                noteMarker.anchor.set(0.5, 1);
+                container.addChild(noteMarker);
 
+                feature = {
+                    displayObject: container,
+                    loc: note.loc,
+                    marker: noteMarker
+                };
 
+                featureCache.set(note.id, feature);
+            }
 
+            if (k === feature.k) return;
+            feature.k = k;
 
-
+            // Reproject and recalculate the bounding box
+            const [x, y] = projection.project(feature.loc);
+            feature.displayObject.position.set(x, y);
+        });
 
 
         function sortY(a, b) {
@@ -137,7 +160,7 @@ export function pixiNotes(context, featureCache, dispatch) {
         if (_notesEnabled) {
             if (service && ~~context.map().zoom() >= minZoom) {
                 editOn();
-                service.loadNotes(projection);
+                service.loadNotes(context.projection);
                 updateMarkers(layer, projection);
             } else {
                 editOff();
