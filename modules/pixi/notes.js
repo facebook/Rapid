@@ -22,8 +22,9 @@ export function pixiNotes(context, featureCache, dispatch) {
 
     function initNotesTextures() {
         const marker = new PIXI.Graphics()
-            .lineStyle(1, 0x333333)
+            .lineStyle(1.5, 0x333333)
             .beginFill(0xff3300, 1)
+            // Draw the 'word balloon'
             .moveTo(17.5, 0)
             .lineTo(2.5,0)
             .bezierCurveTo(1.13, 0, 0, 1.12, 0, 2.5)
@@ -37,12 +38,17 @@ export function pixiNotes(context, featureCache, dispatch) {
             .bezierCurveTo(18.86, 16.25, 20, 15.12, 20, 13.75)
             .lineTo(20, 2.5)
             .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
+            // Now draw the 'x' in the middle of the balloon
+            .moveTo(7, 5)
+            .lineTo(14, 12)
+            .moveTo(14, 5)
+            .lineTo(7,12)
             .closePath()
             .endFill();
 
         const ellipse = new PIXI.Graphics()
-            .lineStyle(1, 0x444444)
-            .beginFill(0xffffff, 1)
+            .lineStyle(1, 0x222222, 0.6)
+            .beginFill(0x222222, 0.6)
             .drawEllipse(0.5, 1, 6.5, 3)
             .endFill();
 
@@ -115,13 +121,19 @@ export function pixiNotes(context, featureCache, dispatch) {
 
             if (!feature) {   // make point if needed
                 const container = new PIXI.Container();
-                container.name = note.id;
+                container.name = 'note-' + note.id;
                 layer.addChild(container);
 
                 const noteMarker = new PIXI.Sprite(_textures.marker);
-                noteMarker.name = 'note-' + note.id;
+                noteMarker.name = 'marker';
                 noteMarker.anchor.set(0.5, 1);
                 container.addChild(noteMarker);
+
+                const oval = new PIXI.Sprite(_textures.oval);
+                oval.name = 'oval';
+                oval.anchor.set(0.5, 0);
+                oval.x = -2;
+                container.addChild(oval);
 
                 feature = {
                     displayObject: container,
