@@ -8,6 +8,8 @@ import { utilRebind } from '../util';
 import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 import * as PIXI from 'pixi.js';
 import { pixiMidpoints } from '.';
+import { pixiNotes } from './notes';
+import { feature } from '@ideditor/country-coder';
 
 export function pixiLayers(projection, context, featureCache) {
     var dispatch = d3_dispatch('change');
@@ -15,6 +17,7 @@ export function pixiLayers(projection, context, featureCache) {
     var _layers = [
         { id: 'rapid', layer: pixiRapidFeatures(context, featureCache, dispatch)},
         { id: 'osm', layer: pixiOsm(projection, context, dispatch) },
+        { id: 'notes', layer: pixiNotes(context, featureCache, dispatch)},
     ];
 
     let _initialized = false;

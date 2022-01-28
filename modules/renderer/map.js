@@ -196,16 +196,8 @@ let _frameStats = {};
 ///////////////////////
 // BEGIN PIXI
 //
-        var pixiContainer = document.querySelector('.pixi-data');
 
-        const rect = selection.node().getBoundingClientRect();
-        context.pixi = new PIXI.Application({
-            antialias: true,
-            autoDensity: true,
-            backgroundAlpha: 0.0,
-            resizeTo: pixiContainer,
-            resolution: window.devicePixelRatio
-        });
+        // const rect = selection.node().getBoundingClientRect();
 
         // prepare sprites
         const loader = PIXI.Loader.shared;
@@ -519,7 +511,17 @@ let _frameStats = {};
     }
 
 
-    map.init = function() {
+    map.init = function () {
+        var pixiContainer = document.querySelector('.pixi-data');
+
+        context.pixi = new PIXI.Application({
+            antialias: true,
+            autoDensity: true,
+            backgroundAlpha: 0.0,
+            resizeTo: pixiContainer,
+            resolution: window.devicePixelRatio
+        });
+
         drawPoints = pixiPoints(context, _featureCache);
         drawVertices = pixiVertices(context, _featureCache);
         drawLines = pixiLines(context, _featureCache);
@@ -527,7 +529,7 @@ let _frameStats = {};
         drawMidpoints = pixiMidpoints(context, _featureCache);
         drawLabels = pixiLabels(context, _featureCache);
 
-        drawLayers = pixiLayers(_pixiProjection, context, _featureCache);
+        drawLayers = pixiLayers(projection, context, _featureCache);
 
 
         // drawPoints = svgPoints(projection, context);
