@@ -134,8 +134,9 @@ export function pixiVertices(context, featureCache) {
           container.addChild(bbox);
 
           feature = {
+            type: 'vertex',
             displayObject: container,
-            bounds: bounds,
+            localBounds: new PIXI.Rectangle(),
             loc: node.loc,
             marker: marker,
             bbox: bbox
@@ -152,9 +153,11 @@ export function pixiVertices(context, featureCache) {
         const [x, y] = projection.project(feature.loc);
         feature.displayObject.position.set(x, y);
 
-        // `getLocalBounds` will do the math for us and store it into the rect we provide
         // TODO: account for viewfields
-        feature.marker.getLocalBounds(feature.bounds);
+        feature.marker.getLocalBounds(feature.localBounds);    // where 0,0 is the origin of the object
+        feature.sceneBounds = feature.localBounds.clone();     // where 0,0 is the origin of the scene
+        feature.sceneBounds.x += x;
+        feature.sceneBounds.y += y;
 
         if (SHOWBBOX) {
           feature.bbox

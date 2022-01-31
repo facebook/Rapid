@@ -107,6 +107,7 @@ export function pixiLines(context, featureCache) {
           container.addChild(bbox);
 
           feature = {
+            type: 'line',
             displayObject: container,
             bounds: bounds,
             coords: coords,

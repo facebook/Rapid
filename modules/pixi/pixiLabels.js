@@ -11,28 +11,20 @@ import { utilDisplayName, utilDisplayNameForPath } from '../util';
 
 
 export function pixiLabels(context, featureCache) {
-  let _debugCache = new Map();   // map of OSM ID -> Pixi data
   let _labels = new Map();       // map of OSM ID -> label string
-  let _texts = new Map();     // map of label -> Pixi Texture
-  let _lastk = 0;
+  let _texts = new Map();        // map of label -> Pixi Texture
+  let _avoids = new Map();       // map of OSM ID -> Pixi Rectangle
 
-  let _rdrawn = new RBush();
-  let _rskipped = new RBush();
-  let _entitybboxes = {};
+  // let _drawn = new RBush();
+  // let _skipped = new RBush();
+  let _placement = new RBush();
+  let _lastk = 0;
 
   let _didInit = false;
   let _textStyle;
 
-  let SHOWDEBUG = true;
-
 
   function initLabels(context, layer) {
-    // const debugLayer = new PIXI.Container();
-    // debugLayer.name = 'debug';
-    // const labelsLayer = new PIXI.Container();
-    // labelsLayer.name = 'labels';
-    // layer.addChild(debugLayer, labelsLayer);
-
     _textStyle = new PIXI.TextStyle({
       fill: 0x333333,
       fontSize: 12,
@@ -44,6 +36,320 @@ export function pixiLabels(context, featureCache) {
 
     _didInit = true;
   }
+
+
+
+  function reset() {
+    _avoids.clear();
+    _placement.clear();
+  }
+
+
+  function renderLabels(layer, projection, entities) {
+    if (!_didInit) initLabels(context, layer);
+
+    const SHOWBBOX = true;
+    const graph = context.graph();
+    const k = projection.scale();
+    let redoPlacement = false;   // we'll redo all the labels when scale changes
+
+    if (k !== _lastk) {
+      reset();
+      redoPlacement = true;
+      _lastk = k;
+    }
+
+
+    function getLabel(entity) {
+      if (!_labels.has(entity.id)) {
+        const name = utilDisplayName(entity);
+        _labels.set(entity.id, name);   // save display name in `_labels` cache
+        return name;
+      }
+      return _labels.get(entity.id);
+    }
+
+    function hasPointLabel(entity) {
+      const geom = entity.geometry(graph);
+      return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
+    }
+    function hasLineLabel(entity) {
+      return (entity.geometry(graph) === 'line' && getLabel(entity));
+    }
+    function hasAreaLabel(entity) {
+      return (entity.geometry(graph) === 'area' && getLabel(entity));
+    }
+    function canInsert(boxes) {
+      return boxes.every(box => !_placement.collides(box));
+    }
+    function doInsert(boxes) {
+      return _placement.load(boxes);
+    }
+
+
+    // Gather bounding boxes to avoid
+    const stage = context.pixi.stage;
+    const vertices = stage.getChildByName('vertices');
+    const points = stage.getChildByName('points');
+
+    let avoids = [];
+    vertices.children.forEach(gatherAvoids);
+    points.children.forEach(gatherAvoids);
+    if (avoids.length) {
+      _placement.load(avoids);  // bulk insert
+    }
+
+    function gatherAvoids(sourceObject) {
+      const entityID = sourceObject.name;
+
+      if (!_avoids.has(entityID)) {  // haven't seen this one yet
+        const sourceFeature = featureCache.get(entityID);
+        const rect = sourceFeature.sceneBounds;
+        if (!rect) return;
+
+        // boxes here are in "scene" coordinates
+        _avoids.set(entityID, rect);
+        avoids.push({
+          id: entityID,
+          minX: rect.x,
+          minY: rect.y,
+          maxX: rect.x + rect.width,
+          maxY: rect.y + rect.height
+        });
+
+        if (SHOWBBOX) {  // these bboxes were already created, just need to turn them on
+          sourceFeature.bbox.visible = true;
+          sourceFeature.bbox
+            .clear()
+            .lineStyle(2, 0xff3333)
+            .drawShape(sourceFeature.localBounds);
+        }
+      }
+    }
+
+
+    // Place point labels
+    entities
+      .filter(hasPointLabel)
+      .forEach(function preparePointLabels(entity) {
+        let feature = featureCache.get(entity.id);
+        if (!feature) return;
+
+        // Add the label to an existing feature.
+        if (!feature.label) {
+          const container = new PIXI.Container();
+          const label = _labels.get(entity.id);
+          container.name = label;
+          layer.addChild(container);
+
+          let sprite;
+          let existing = _texts.get(label);
+          if (existing) {
+            sprite = new PIXI.Sprite(existing.texture);
+          } else {
+            sprite = new PIXI.Text(label, _textStyle);
+            _texts.set(label, sprite);
+          }
+
+          sprite.name = label;
+          sprite.anchor.set(0.5, 0.5);   // middle, middle
+          container.addChild(sprite);
+
+          const debug = new PIXI.Container();
+          debug.name = label + '-debug';
+          container.addChild(debug);
+
+          const bbox = new PIXI.Graphics();
+          bbox.name = entity.id + '-labelbbox';
+          debug.addChild(bbox);
+
+          feature.label = {
+            displayObject: container,
+            localBounds: sprite.getLocalBounds(),
+            debug: debug,
+            origin: entity.loc,
+            label: label,
+            sprite: sprite
+          };
+        }
+
+        // Remember scale and reproject only when it changes
+        if (!redoPlacement && k === feature.label.k) return;
+        feature.label.k = k;
+
+// label _container_ should stay at 0,0?
+        // const [x, y] = projection.project(feature.label.origin);
+        // feature.label.displayObject.position.set(x, y);
+
+        // Decide where to place the label
+        // `f` - feature, these bounds are in "scene" coordinates
+        const fRect = feature.sceneBounds.clone().pad(3, 1);
+        const fLeft = fRect.x;
+        const fTop = fRect.y;
+        const fWidth = fRect.width;
+        const fHeight = fRect.height;
+        const fRight = fRect.x + fWidth;
+        const fMidX = fRect.x + (fWidth * 0.5);
+        const fBottom = fRect.y + fHeight;
+        const fMidY = (feature.type === 'point') ? (fRect.y + fHeight - 15)  // next to marker
+          : (fRect.y + (fHeight * 0.5));
+
+        // `l` = label, these bounds are in "local" coordinates to the label,
+        // 0,0 is the center of the label
+        const lRect = feature.label.localBounds;
+        const lLeft = lRect.x;
+        const lTop = lRect.y;
+        const lWidth = lRect.width;
+        const lHalfWidth = lWidth * 0.5;
+        const lHeight = lRect.height;
+        const lHalfHeight = lHeight * 0.5;
+        const lRight = lLeft + lWidth;
+        const lBottom = lTop + lHeight;
+
+        // Attempt several placements
+        // (these are calculated in scene coordinates)
+        const north = [fMidX, fTop - lHalfHeight];
+        const east  = [fRight + lHalfWidth, fMidY];
+        const south = [fMidX, fBottom + lHalfHeight];
+        const west  = [fLeft - lHalfWidth,  fMidY];
+
+        const placements = [east, south, west, north];
+        let didPlace = false;
+        for (let i = 0; i < placements.length; i++) {
+          const coord = placements[i];
+          const box = {
+            id: entity.id,
+            minX: coord[0] - lHalfWidth,
+            minY: coord[1] - lHalfHeight,
+            maxX: coord[0] + lHalfWidth,
+            maxY: coord[1] + lHalfHeight
+          };
+          if (canInsert([box])) {
+            doInsert([box]);
+            feature.label.sprite.position.set(coord[0], coord[1]);
+            didPlace = true;
+            break;
+          }
+        }
+        feature.label.sprite.visible = didPlace;
+
+      });
+
+//
+//    // place line labels
+//    entities
+//      .filter(hasPointLabel)
+//      .forEach(function preparePointLabels(entity) {
+//        let feature = featureCache.get(entity.id);
+//        if (!feature) return;
+//
+//        // Add the label to an existing feature.
+//        if (!feature.label) {
+//          const container = new PIXI.Container();
+//          const label = _labels.get(entity.id);
+//          container.name = label;
+//          layer.addChild(container);
+//
+//          // for now
+//          const target = entity.extent(graph).center();
+//
+//          let sprite;
+//          let existing = _texts.get(label);
+//          if (existing) {
+//            sprite = new PIXI.Sprite(existing.texture);
+//          } else {
+//            sprite = new PIXI.Text(label, _textStyle);
+//            _texts.set(label, sprite);
+//          }
+//
+//          sprite.name = label;
+//          sprite.anchor.set(0.5, 0.5);  // middle, middle
+//          // sprite.angle = 40;
+//          // sprite.position.set(0, 8);    // move below pin
+//          container.addChild(sprite);
+//
+//          const rect = new PIXI.Rectangle();
+//          sprite.getLocalBounds(rect);
+//
+//
+//// experiments
+//
+//          const debug = new PIXI.Container();
+//          debug.name = label + '-debug';
+//          container.addChild(debug);
+//
+//          const bbox = new PIXI.Graphics()
+//            .lineStyle(1, 0x00ffaa)
+//            .drawShape(rect);
+//          bbox.name = entity.id + '-bbox';
+//          debug.addChild(bbox);
+//
+//
+//          // try a rope?
+//          let points = [];
+//          let count = 10;
+//          let span = rect.width / count;
+//          for (let i = 0; i < count + 1; i++) {  // count+1 extra point at end
+//            const x = span * i;
+//            const y = Math.sin(i / Math.PI) * 10;
+//            points.push(new PIXI.Point(x, y));
+//          }
+//          const rope = new PIXI.SimpleRope(sprite.texture, points);
+//          rope.name = label + '-rope';
+//          rope.position.set(-rect.width/2, 10);    // move below
+//          container.addChild(rope);
+//
+////          // cover the text in small collision boxes
+////          let rects = [];
+////          const pad = 2;
+////          const startx = -(rect.width / 2) - pad;
+////          const endx = (rect.width / 2) + pad;
+////          const starty = -(rect.height / 2) - pad;
+////          const size = (rect.height + pad + pad);
+////          const half = size / 2;
+////          for (let x = startx, y = starty; x < (endx - half); x += half) {
+////            const rect = new PIXI.Rectangle(x, y, size, size);
+////            rects.push(rect);
+////
+////            const g = new PIXI.Graphics()
+////              .lineStyle(1, 0xffff66)
+////              .drawShape(rect);
+////            g.name = entity.id + '-' + x.toString();
+////            debug.addChild(g);
+////          }
+//
+//
+//          feature.label = {
+//            displayObject: container,
+//            debug: debug,
+//            loc: target,
+//            label: label,
+//            sprite: sprite
+//            // bbox: bbox
+//          };
+//        }
+//
+//        // remember scale and reproject only when it changes
+//        if (k === feature.label.k) return;
+//        feature.label.k = k;
+//
+//        const [x, y] = projection.project(feature.label.loc);
+//        feature.label.displayObject.position.set(x, y);
+//
+//        // const offset = stage.position;
+//        // feature.bbox.position.set(-offset.x, -offset.y);
+//
+//        // const rect = feature.displayObject.getBounds();
+//        // feature.bbox
+//        //   .clear()
+//        //   .lineStyle(1, 0x66ff66)
+//        //   .drawRect(rect.x, rect.y, rect.width, rect.height);
+//      });
+//
+
+  }
+
+
 //
 //
 //  function shouldSkipIcon(preset) {
@@ -181,128 +487,6 @@ export function pixiLabels(context, featureCache) {
   //   }
 
   // }
-
-
-
-  function renderLabels(layer, projection, entities) {
-    if (!_didInit) initLabels(context, layer);
-
-    // const debugLayer = layer.getChildByName('debug');
-    // const labelsLayer = layer.getChildByName('labels');
-
-    const graph = context.graph();
-    const k = projection.scale();
-
-    function isLabelable(entity) {
-      if (!_labels.has(entity.id)) {
-        let name = utilDisplayName(entity);   // save display name in `_labels` cache
-        _labels.set(entity.id, name);
-        return name;
-      }
-      return _labels.get(entity.id);
-    }
-
-
-//    // gather bounding boxes to avoid
-//    const stage = context.pixi.stage;
-//    const vertices = stage.getChildByName('vertices');
-//    const points = stage.getChildByName('points');
-//
-//    vertices.children.forEach(getBBox);
-//    points.children.forEach(getBBox);
-//
-//    function getBBox(sourceObject) {
-//      const name = sourceObject.name + '-bbox';
-//      let feature = _debugCache.get(name);
-//
-//      if (!feature) {
-//        const graphics = new PIXI.Graphics();
-//        graphics.name = name;
-//        debugLayer.addChild(graphics);
-//
-//        feature = { bbox: graphics };
-//        _debugCache.set(name, feature);
-//      }
-//
-//      feature.bbox.visible = sourceObject.visible;
-//      if (sourceObject.visible) {
-//        const offset = stage.position;
-//        feature.bbox.position.set(-offset.x, -offset.y);
-//
-//        const rect = sourceObject.getBounds().pad(2);
-//        feature.bbox
-//          .clear()
-//          .lineStyle(1, 0xffff00)
-//          .drawRect(rect.x, rect.y, rect.width, rect.height);
-//      }
-//    }
-
-
-    // enter/update LABELS
-    entities
-      .filter(isLabelable)
-      .forEach(function prepareLabels(entity) {
-        let feature = featureCache.get(entity.id);
-        if (!feature) return;
-
-        // Add the label to an existing feature.
-        if (!feature.label) {
-          const container = new PIXI.Container();
-          const label = _labels.get(entity.id);
-          container.name = label;
-          layer.addChild(container);
-
-          let sprite;
-          let existing = _texts.get(label);
-          if (existing) {
-            sprite = new PIXI.Sprite(existing.texture);
-          } else {
-            sprite = new PIXI.Text(label, _textStyle);
-            _texts.set(label, sprite);
-          }
-
-          sprite.name = label;
-          sprite.anchor.set(0.5, 0.5);  // middle, middle
-          sprite.position.set(0, 8);    // move below pin
-          container.addChild(sprite);
-
-          // for now
-          const center = entity.extent(graph).center();
-
-          // const bbox = new PIXI.Graphics();
-          // bbox.name = entity.id + '-labelbbox';
-          // container.addChild(bbox);
-
-          feature.label = {
-            displayObject: container,
-            loc: center,
-            label: label,
-            sprite: sprite
-            // bbox: bbox
-          };
-        }
-
-        // remember scale and reproject only when it changes
-        if (k === feature.label.k) return;
-        feature.label.k = k;
-
-        const [x, y] = projection.project(feature.label.loc);
-        feature.label.displayObject.position.set(x, y);
-
-        // const offset = stage.position;
-        // feature.bbox.position.set(-offset.x, -offset.y);
-
-        // const rect = feature.displayObject.getBounds();
-        // feature.bbox
-        //   .clear()
-        //   .lineStyle(1, 0x66ff66)
-        //   .drawRect(rect.x, rect.y, rect.width, rect.height);
-      });
-
-  }
-
-
-
 
 //       var labelable = [];
 //       var renderNodeAs = {};
@@ -479,8 +663,8 @@ export function pixiLabels(context, featureCache) {
 
 
 //       function getLineLabel(entity, width, height) {
-//           var bounds = context.projection.clipExtent();
-//           var viewport = new Extent(bounds[0], bounds[1]).polygon();
+//           var rect = context.projection.clipExtent();
+//           var viewport = new Extent(rect[0], rect[1]).polygon();
 //           var points = graph.childNodes(entity)
 //               .map(function(node) { return projection(node.loc); });
 //           var length = geomPathLength(points);

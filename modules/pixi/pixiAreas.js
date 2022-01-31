@@ -69,6 +69,7 @@ export function pixiAreas(context, featureCache) {
           const texture = pattern && context.pixi.rapidTextures.get(pattern);
 
           feature = {
+            type: 'area',
             displayObject: container,
             bounds: bounds,
             style: style,

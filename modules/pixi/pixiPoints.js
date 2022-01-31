@@ -42,7 +42,7 @@ export function pixiPoints(context, featureCache) {
 
     const graph = context.graph();
     const k = projection.scale();
-    const SHOWBBOX = false;
+    const SHOWBBOX = true;
 
     function isPoint(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'point';
@@ -65,8 +65,6 @@ export function pixiPoints(context, featureCache) {
           marker.anchor.set(0.5, 1);  // middle, bottom
           container.addChild(marker);
 
-          const bounds = new PIXI.Rectangle();
-
           const bbox = new PIXI.Graphics();
           bbox.name = node.id + '-bbox';
           bbox.visible = SHOWBBOX;
@@ -86,8 +84,9 @@ export function pixiPoints(context, featureCache) {
           }
 
           feature = {
+            type: 'point',
             displayObject: container,
-            bounds: bounds,
+            localBounds: new PIXI.Rectangle(),
             loc: node.loc,
             marker: marker,
             bbox: bbox
@@ -104,15 +103,17 @@ export function pixiPoints(context, featureCache) {
         const [x, y] = projection.project(feature.loc);
         feature.displayObject.position.set(x, y);
 
-        // `getLocalBounds` will do the math for us and store it into the rect we provide
         // TODO: account for viewfields
-        feature.marker.getLocalBounds(feature.bounds);
+        feature.marker.getLocalBounds(feature.localBounds);    // where 0,0 is the origin of the object
+        feature.sceneBounds = feature.localBounds.clone();     // where 0,0 is the origin of the scene
+        feature.sceneBounds.x += x;
+        feature.sceneBounds.y += y;
 
         if (SHOWBBOX) {
           feature.bbox
             .clear()
             .lineStyle(1, 0x66ff66)
-            .drawShape(feature.bounds);
+            .drawShape(feature.localBounds);
         }
       });
   }
