@@ -1,19 +1,14 @@
 import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
 
-import { Extent, geoScaleToZoom, geomPolygonIntersectsPolygon, geomPathLength, vecInterp, vecLength } from '@id-sdk/math';
-import { utilEntitySelector } from '@id-sdk/util';
 import { localizer } from '../core/localizer';
-
-import { presetManager } from '../presets';
-import { getIconSpriteHelper } from './pixiHelpers';
 import { utilDisplayName, utilDisplayNameForPath } from '../util';
 
 
 export function pixiLabels(context, featureCache) {
   let _labels = new Map();       // map of OSM ID -> label string
   let _texts = new Map();        // map of label -> Pixi Texture
-  let _avoids = new Map();       // map of OSM ID -> Pixi Rectangle
+  let _avoids = new Set();       // set of OSM ID we are avoiding
 
   // let _drawn = new RBush();
   // let _skipped = new RBush();
@@ -34,27 +29,31 @@ export function pixiLabels(context, featureCache) {
       strokeThickness: 3
     });
 
+    const debugContainer = new PIXI.Container();
+    debugContainer.name = 'label-debug';
+    layer.addChild(debugContainer);
+
     _didInit = true;
   }
 
-
-
-  function reset() {
-    _avoids.clear();
-    _placement.clear();
-  }
 
 
   function renderLabels(layer, projection, entities) {
     if (!_didInit) initLabels(context, layer);
 
     const SHOWBBOX = true;
+    const debugContainer = layer.getChildByName('label-debug');
+
     const graph = context.graph();
     const k = projection.scale();
     let redoPlacement = false;   // we'll redo all the labels when scale changes
 
+
     if (k !== _lastk) {
-      reset();
+console.log('LABEL RESET');
+      _avoids.clear();
+      _placement.clear();
+      debugContainer.removeChildren();
       redoPlacement = true;
       _lastk = k;
     }
@@ -79,58 +78,53 @@ export function pixiLabels(context, featureCache) {
     function hasAreaLabel(entity) {
       return (entity.geometry(graph) === 'area' && getLabel(entity));
     }
-    function canInsert(boxes) {
-      return boxes.every(box => !_placement.collides(box));
-    }
-    function doInsert(boxes) {
-      return _placement.load(boxes);
-    }
 
 
     // Gather bounding boxes to avoid
     const stage = context.pixi.stage;
-    const vertices = stage.getChildByName('vertices');
-    const points = stage.getChildByName('points');
-
     let avoids = [];
-    vertices.children.forEach(gatherAvoids);
-    points.children.forEach(gatherAvoids);
+    stage.getChildByName('vertices').children.forEach(gatherAvoids);
+    stage.getChildByName('points').children.forEach(gatherAvoids);
     if (avoids.length) {
       _placement.load(avoids);  // bulk insert
     }
 
     function gatherAvoids(sourceObject) {
+      if (!sourceObject.visible) return;
+
       const entityID = sourceObject.name;
+      if (_avoids.has(entityID)) return;  // seen it already
+      _avoids.add(entityID);
 
-      if (!_avoids.has(entityID)) {  // haven't seen this one yet
-        const sourceFeature = featureCache.get(entityID);
-        const rect = sourceFeature.sceneBounds;
-        if (!rect) return;
+      const sourceFeature = featureCache.get(entityID);
+      const rect = sourceFeature && sourceFeature.sceneBounds;
+      if (!rect) return;
 
-        // boxes here are in "scene" coordinates
-        _avoids.set(entityID, rect);
-        avoids.push({
-          id: entityID,
-          minX: rect.x,
-          minY: rect.y,
-          maxX: rect.x + rect.width,
-          maxY: rect.y + rect.height
-        });
+      // boxes here are in "scene" coordinates
+      avoids.push({
+        id: entityID,
+        minX: rect.x,
+        minY: rect.y,
+        maxX: rect.x + rect.width,
+        maxY: rect.y + rect.height
+      });
 
-        if (SHOWBBOX) {  // these bboxes were already created, just need to turn them on
-          sourceFeature.bbox.visible = true;
-          sourceFeature.bbox
-            .clear()
-            .lineStyle(2, 0xff3333)
-            .drawShape(sourceFeature.localBounds);
-        }
+      if (SHOWBBOX) {
+        const bbox = new PIXI.Graphics()
+          .lineStyle(2, 0xff3333)
+          .drawShape(rect);
+        debugContainer.addChild(bbox);
       }
     }
 
+    const points = entities.filter(hasPointLabel)
+      .sort((a, b) => b.loc[1] - a.loc[1]);
+
+    // const lines = entities.filter(hasLineLabel).sort();
+    // const areas = entities.filter(hasAreaLabel).sort();
 
     // Place point labels
-    entities
-      .filter(hasPointLabel)
+    points
       .forEach(function preparePointLabels(entity) {
         let feature = featureCache.get(entity.id);
         if (!feature) return;
@@ -155,18 +149,9 @@ export function pixiLabels(context, featureCache) {
           sprite.anchor.set(0.5, 0.5);   // middle, middle
           container.addChild(sprite);
 
-          const debug = new PIXI.Container();
-          debug.name = label + '-debug';
-          container.addChild(debug);
-
-          const bbox = new PIXI.Graphics();
-          bbox.name = entity.id + '-labelbbox';
-          debug.addChild(bbox);
-
           feature.label = {
             displayObject: container,
             localBounds: sprite.getLocalBounds(),
-            debug: debug,
             origin: entity.loc,
             label: label,
             sprite: sprite
@@ -214,32 +199,46 @@ export function pixiLabels(context, featureCache) {
         const west  = [fLeft - lHalfWidth,  fMidY];
 
         const placements = [east, south, west, north];
+
+
+        // show debug boxes
+        if (SHOWBBOX) {
+          placements.forEach(([x,y]) => {
+            const rect = new PIXI.Rectangle(x - lHalfWidth, y - lHalfHeight, lWidth, lHeight);
+            const bbox = new PIXI.Graphics()
+              .lineStyle(1, 0xffff33)
+              .drawShape(rect);
+            debugContainer.addChild(bbox);
+          });
+        }
+
+
         let didPlace = false;
         for (let i = 0; i < placements.length; i++) {
-          const coord = placements[i];
+          const [x, y] = placements[i];
           const box = {
             id: entity.id,
-            minX: coord[0] - lHalfWidth,
-            minY: coord[1] - lHalfHeight,
-            maxX: coord[0] + lHalfWidth,
-            maxY: coord[1] + lHalfHeight
+            minX: x - lHalfWidth,
+            minY: y - lHalfHeight,
+            maxX: x + lHalfWidth,
+            maxY: y + lHalfHeight
           };
-          if (canInsert([box])) {
-            doInsert([box]);
-            feature.label.sprite.position.set(coord[0], coord[1]);
+          if (!_placement.collides(box)) {
+            _placement.insert(box);
+            feature.label.sprite.position.set(x, y);
+const s = _labels.get(entity.id);
+console.log(`placing ${s}`);
             didPlace = true;
             break;
           }
         }
         feature.label.sprite.visible = didPlace;
-
       });
 
 //
 //    // place line labels
-//    entities
-//      .filter(hasPointLabel)
-//      .forEach(function preparePointLabels(entity) {
+//    lines
+//      .forEach(function prepareLineLabels(entity) {
 //        let feature = featureCache.get(entity.id);
 //        if (!feature) return;
 //
