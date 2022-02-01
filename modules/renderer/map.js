@@ -967,8 +967,8 @@ let _frameStats = {};
 // trying to determine where the jank is coming from
         if (!difference) {
             supersurface.call(context.background());
+            redrawPixi();
             wrapper.call(drawLayers);
-redrawPixi();
         }
 
         // OSM
