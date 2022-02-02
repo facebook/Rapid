@@ -1,9 +1,11 @@
-export { pixiPoints } from '../pixi/pixiPoints.js';
-export { pixiVertices } from '../pixi/pixiVertices.js';
-export { pixiLines } from '../pixi/pixiLines.js';
-export { pixiAreas } from '../pixi/pixiAreas.js';
-export { pixiMidpoints } from '../pixi/pixiMidpoints.js';
-export { pixiLabels } from '../pixi/pixiLabels.js';
-export { pixiRapidFeatures } from '../pixi/pixiRapidFeatures.js';
-export { pixiLayers } from '../pixi/layers.js';
+export { pixiPoints } from './pixiPoints.js';
+export { pixiVertices } from './pixiVertices.js';
+export { pixiLines } from './pixiLines.js';
+export { pixiAreas } from './pixiAreas.js';
+export { pixiMidpoints } from './pixiMidpoints.js';
+export { pixiLabels } from './pixiLabels.js';
+export { pixiRapidFeatures } from './pixiRapidFeatures.js';
+export { pixiNotes } from './notes.js';
+export { pixiMapillaryImages } from './pixiMapillaryImages.js';
+export { pixiLayers } from './layers.js';
 

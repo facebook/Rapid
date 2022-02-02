@@ -10,13 +10,13 @@ let _vfTexture;
 * @param {Array<number>} directions an array of directional angles in degrees, 'UP' is zero degrees
 * @returns {PIXI.Container} A container with the ViewfieldSprites rotated according to the supplied directions.
 */
-export function getViewfieldContainerHelper(context, directions) {
+export function getViewfieldContainerHelper(context, directions, color) {
   if (!_vfTexture) {
     const renderer = context.pixi.renderer;
     const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 26);
     const iconViewfield = new PIXI.Graphics()
       .lineStyle(1, 0xcccccc)                  //  [-6,21]  ,-___-,  [6,21]
-      .beginFill(0x333333, 0.75)               //          /       \
+      .beginFill(0xffffff, 0.75)               //          /       \
       .moveTo(-6, 21)                          //         /         \
       .bezierCurveTo(-5,19, 5,19, 6,21)        //        /           \
       .lineTo(12, 4)                           //       /             \
@@ -35,6 +35,7 @@ export function getViewfieldContainerHelper(context, directions) {
 
   directions.forEach(direction => {
     const vfSprite = new PIXI.Sprite(_vfTexture);
+    vfSprite.tint = color ? color : 0x333333;
     vfSprite.anchor.set(0.5, 1);  // middle, top
     vfSprite.angle = direction;
     vfContainer.addChild(vfSprite);
