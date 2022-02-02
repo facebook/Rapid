@@ -98,6 +98,54 @@ export function pixiMapillaryImages(context, featureCache, dispatch) {
         var service = getService();
         const imageEntities = (service ? service.images(context.projection) : []);
         const sequenceEntities = (service ? service.sequences(context.projection) : []);
+
+    sequenceEntities.forEach(function prepareImages(sequence) {
+            let feature = featureCache.get(sequence.id);
+
+            if (!feature) {   // make point if needed
+                const container = new PIXI.Container();
+                container.name = 'sequence-' + sequence.id;
+                container.buttonMode = true;
+                container.interactive = true;
+                container.sortableChildren = true; //Needed because of z-index setting for highlight
+
+                let line = new PIXI.Graphics();
+                container.addChild(line);
+                layer.addChild(container);
+
+                feature = {
+                    displayObject: container,
+                    coords: sequence.geometry.coordinates,
+                    graphics: line,
+                };
+
+                featureCache.set(sequence.id, feature);
+            }
+
+            if (k === feature.k) return;
+            feature.k = k;
+
+            let points = [];
+
+            feature.coords.forEach(coord => {
+                const [x, y] = projection.project(coord);
+                points.push([x, y]);
+            });
+
+        let g = feature.graphics.clear();
+        g.lineStyle({
+            color: mapillary_green,
+            width: 4
+        });
+          points.forEach(([x, y], i) => {
+            if (i === 0) {
+              g.moveTo(x, y);
+            } else {
+              g.lineTo(x, y);
+            }
+          });
+        });
+
         imageEntities.forEach(function prepareImages(image) {
             let feature = featureCache.get(image.id);
 
@@ -141,48 +189,6 @@ export function pixiMapillaryImages(context, featureCache, dispatch) {
             feature.displayObject.position.set(x, y);
         });
 
-    // sequenceEntities.forEach(function prepareImages(image) {
-    //         let feature = featureCache.get(image.id);
-
-    //         if (!feature) {   // make point if needed
-    //             const container = new PIXI.Container();
-    //             container.name = 'image-' + image.id;
-    //             container.buttonMode = true;
-    //             container.interactive = true;
-    //             container.sortableChildren = true; //Needed because of z-index setting for highlight
-
-    //             layer.addChild(container);
-
-    //             if (context.map().zoom() >= minViewfieldZoom) {
-    //                 //Get the capture angle, if any, and attach a viewfield to the point.
-    //                 if (image.ca) {
-    //                     const vfContainer = getViewfieldContainerHelper(context, [image.ca], mapillary_green);
-    //                     container.addChild(vfContainer);
-    //                 }
-    //             }
-
-    //             let viewField = new PIXI.Sprite(_textures.circle);
-    //             viewField.anchor.set(0.5, 0.5);
-    //             viewField.name = 'image-marker';
-    //             viewField.anchor.set(0.5, 0.5);
-
-    //             container.addChild(viewField);
-
-    //             feature = {
-    //                 displayObject: container,
-    //                 loc: image.loc,
-    //             };
-
-    //             featureCache.set(image.id, feature);
-    //         }
-
-    //         if (k === feature.k) return;
-    //         feature.k = k;
-
-    //         // Reproject and recalculate the bounding box
-    //         const [x, y] = projection.project(feature.loc);
-    //         feature.displayObject.position.set(x, y);
-    //     });
 
     }
 
