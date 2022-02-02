@@ -24,11 +24,23 @@ export function pixiPoints(context, featureCache) {
       .endFill();                              //                `+`        |
                                                //               [0,0]       +-- +x
 
+    const wikidataMarker = new PIXI.Graphics()
+      .lineStyle(2, 0x666666)
+      .beginFill(0xdddddd, 1)
+      .moveTo(0, 0)
+      .bezierCurveTo(-2,-2, -8,-10, -8,-15)
+      .bezierCurveTo(-8,-19, -4,-23, 0,-23)
+      .bezierCurveTo(4,-23, 8,-19, 8,-15)
+      .bezierCurveTo(8,-10, 2,-2, 0,0)
+      .closePath()
+      .endFill();
+
     // convert graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
     _textures.marker = renderer.generateTexture(marker, options);
+    _textures.wikidataMarker = renderer.generateTexture(wikidataMarker, options);
 
     _didInit = true;
   }
@@ -60,7 +72,17 @@ export function pixiPoints(context, featureCache) {
           container.zIndex = -node.loc[1];  // sort by latitude ascending
           layer.addChild(container);
 
-          const marker = new PIXI.Sprite(_textures.marker);
+          // Special style for Wikidata-tagged items
+          const hasWikidata = (
+            node.tags.wikidata ||
+            node.tags['flag:wikidata'] ||
+            node.tags['brand:wikidata'] ||
+            node.tags['network:wikidata'] ||
+            node.tags['operator:wikidata']
+          );
+
+          const t = hasWikidata ? 'wikidataMarker' : 'marker';
+          const marker = new PIXI.Sprite(_textures[t]);
           marker.name = 'marker';
           marker.anchor.set(0.5, 1);  // middle, bottom
           container.addChild(marker);
@@ -80,6 +102,7 @@ export function pixiPoints(context, featureCache) {
             icon.position.set(0, -14);
             icon.width = iconsize;
             icon.height = iconsize;
+            icon.alpha = hasWikidata ? 0.6 : 1;
             container.addChild(icon);
           }
 
