@@ -7,5 +7,6 @@ export { pixiLabels } from './pixiLabels.js';
 export { pixiRapidFeatures } from './pixiRapidFeatures.js';
 export { pixiNotes } from './notes.js';
 export { pixiMapillaryImages } from './pixiMapillaryImages.js';
+export { pixiStreetsideImages } from './pixiStreetsideImages.js';
 export { pixiLayers } from './layers.js';
 
