@@ -6,6 +6,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { modeBrowse } from '../modes/browse';
 import { services } from '../services';
+import { modeSelectNote } from '../modes/select_note';
 
 
 var _notesEnabled = false;
@@ -21,7 +22,7 @@ export function pixiNotes(context, featureCache, dispatch) {
     let _didInit = false;
 
     function initNotesTextures() {
-        const marker = new PIXI.Graphics()
+        const balloon = new PIXI.Graphics()
             .lineStyle(1.5, 0x333333)
             .beginFill(0xff3300, 1)
             // Draw the 'word balloon'
@@ -39,12 +40,28 @@ export function pixiNotes(context, featureCache, dispatch) {
             .lineTo(20, 2.5)
             .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
             // Now draw the 'x' in the middle of the balloon
+            .closePath()
+            .endFill();
+
+        // We'll need to re-use the balloon path later when we start rendering 'new' notes
+        const marker = balloon.clone();
+
+        marker
+            .lineStyle(1.5, 0x333333)
             .moveTo(7, 5)
             .lineTo(14, 12)
             .moveTo(14, 5)
-            .lineTo(7,12)
-            .closePath()
-            .endFill();
+            .lineTo(7, 12)
+            .closePath();
+
+
+        const markerHighlight = new PIXI.Graphics()
+            .lineStyle(4, 0xcccccc, 0.6)
+            .moveTo(-1, -1)
+            .lineTo(-1, 17.25)
+            .lineTo(18.5, 17.25)
+            .lineTo(18.5, -1)
+            .closePath();
 
         const ellipse = new PIXI.Graphics()
             .lineStyle(1, 0x222222, 0.6)
@@ -55,6 +72,7 @@ export function pixiNotes(context, featureCache, dispatch) {
         const renderer = context.pixi.renderer;
         const options = { resolution: 2 };
         _textures.marker = renderer.generateTexture(marker, options);
+        _textures.markerHighlight = renderer.generateTexture(markerHighlight, options);
         _textures.oval = renderer.generateTexture(ellipse, options);
         _didInit = true;
 
@@ -115,19 +133,31 @@ export function pixiNotes(context, featureCache, dispatch) {
         var service = getService();
         var selectedID = context.selectedNoteID();
         const entities = (service ? service.notes(context.projection) : []);
-
+        let noteMarkerHighlight;
+        let noteMarker;
         entities.forEach(function prepareNotes(note) {
             let feature = featureCache.get(note.id);
 
             if (!feature) {   // make point if needed
                 const container = new PIXI.Container();
                 container.name = 'note-' + note.id;
+                container.buttonMode = true;
+                container.interactive = true;
+                container.sortableChildren = true; //Needed because of z-index setting for highlight
+
                 layer.addChild(container);
 
-                const noteMarker = new PIXI.Sprite(_textures.marker);
+                noteMarker = new PIXI.Sprite(_textures.marker);
                 noteMarker.name = 'marker';
                 noteMarker.anchor.set(0.5, 1);
+                noteMarker.zIndex = 100;
                 container.addChild(noteMarker);
+
+                noteMarkerHighlight = new PIXI.Sprite(_textures.markerHighlight);
+                noteMarkerHighlight.name = 'marker-highlight';
+                noteMarkerHighlight.anchor.set(0.5, 1);
+                noteMarkerHighlight.visible = false;
+                container.addChild(noteMarkerHighlight);
 
                 const oval = new PIXI.Sprite(_textures.oval);
                 oval.name = 'oval';
@@ -135,10 +165,40 @@ export function pixiNotes(context, featureCache, dispatch) {
                 oval.x = -2;
                 container.addChild(oval);
 
+                //Mouse hover interactivity
+                container.on('pointermove', (iData) => {
+                    const interactionManager = context.pixi.renderer.plugins.interaction;
+
+                    let hitObject = interactionManager.hitTest(iData.data.global, container);
+                    const feature = featureCache.get(note.id);
+                    if (hitObject !== null) {
+                        // feature.displayObject.alpha = 0.5;
+                        feature.markerHighlight.visible = true;
+                        dispatch.call('change');
+                    } else {
+                        // feature.displayObject.alpha = 1.0;
+                        feature.markerHighlight.visible = false;
+                        dispatch.call('change');
+                    }
+                });
+
+                container.on('pointerdown', (iData) => {
+                    const interactionManager = context.pixi.renderer.plugins.interaction;
+
+                    let hitObject = interactionManager.hitTest(iData.data.global, container);
+                    if (hitObject !== null) {
+                        context.selectedNoteID(note.id).enter(modeSelectNote(context, note.id));
+                        dispatch.call('change');
+                    } else {
+                        context.selectedNoteID(null);
+                    }
+                });
+
                 feature = {
                     displayObject: container,
                     loc: note.loc,
-                    marker: noteMarker
+                    marker: noteMarker,
+                    markerHighlight: noteMarkerHighlight
                 };
 
                 featureCache.set(note.id, feature);
