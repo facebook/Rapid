@@ -399,9 +399,9 @@ export function behaviorSelect(context) {
                 }
             });
 
-        selection
-            .on(_pointerPrefix + 'down.select', pointerdown)
-            .on('contextmenu.select', contextmenu);
+        // selection
+        //     .on(_pointerPrefix + 'down.select', pointerdown)
+        //     .on('contextmenu.select', contextmenu);
 
         /*if (d3_event && d3_event.shiftKey) {
             context.surface()
