@@ -18,23 +18,9 @@ export function pixiVertices(context, featureCache) {
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    const junction = new PIXI.Graphics()
-      .lineStyle(1, 0x666666)
-      .beginFill(0xbbbbbb, 1)
-      .drawCircle(0, 0, 4.5)
-      .endFill();
-
     const taggedPlain = new PIXI.Graphics()
       .lineStyle(1, 0x666666)
       .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 4.5)
-      .beginFill(0x000000, 1)
-      .drawCircle(0, 0, 1.5)
-      .endFill();
-
-    const taggedJunction = new PIXI.Graphics()
-      .lineStyle(1, 0x666666)
-      .beginFill(0xbbbbbb, 1)
       .drawCircle(0, 0, 4.5)
       .beginFill(0x000000, 1)
       .drawCircle(0, 0, 1.5)
@@ -46,22 +32,13 @@ export function pixiVertices(context, featureCache) {
       .drawCircle(0, 0, 8)
       .endFill();
 
-    const iconJunction = new PIXI.Graphics()
-      .lineStyle(1, 0x666666)
-      .beginFill(0xbbbbbb, 1)
-      .drawCircle(0, 0, 8)
-      .endFill();
-
     // convert graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
     _textures.plain = renderer.generateTexture(plain, options);
-    _textures.junction = renderer.generateTexture(junction, options);
     _textures.taggedPlain = renderer.generateTexture(taggedPlain, options);
-    _textures.taggedJunction = renderer.generateTexture(taggedJunction, options);
     _textures.iconPlain = renderer.generateTexture(iconPlain, options);
-    _textures.iconJunction = renderer.generateTexture(iconJunction, options);
 
     _didInit = true;
   }
@@ -108,15 +85,17 @@ export function pixiVertices(context, featureCache) {
 
           let t;
           if (picon) {
-            t = isJunction ? 'iconJunction' : 'iconPlain';
+            t = 'iconPlain';
           } else if (node.hasInterestingTags()) {
-            t = isJunction ? 'taggedJunction' : 'taggedPlain';
+            t = 'taggedPlain';
           } else {
-            t = isJunction ? 'junction' : 'plain';
+            t = 'plain';
           }
+
           const marker = new PIXI.Sprite(_textures[t]);
           marker.name = t;
           marker.anchor.set(0.5, 0.5);  // middle, middle
+          marker.tint = isJunction ? 0xffffff : 0xbbbbbb;
           container.addChild(marker);
 
           if (picon) {
@@ -152,6 +131,11 @@ export function pixiVertices(context, featureCache) {
         // Reproject and recalculate the bounding box
         const [x, y] = projection.project(feature.loc);
         feature.displayObject.position.set(x, y);
+
+// Refresh the tint
+// note that whether a thing is a junction can change as more geometry loads
+// TODO : figure out a way to invalidate and redo geometry as we load more stuff from the OSM API.
+        feature.marker.tint = graph.isShared(node) ? 0xbbbbbb : 0xffffff;
 
         // TODO: account for viewfields
         feature.marker.getLocalBounds(feature.localBounds);    // where 0,0 is the origin of the object
