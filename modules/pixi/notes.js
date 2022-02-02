@@ -22,7 +22,7 @@ export function pixiNotes(context, featureCache, dispatch) {
     let _didInit = false;
 
     function initNotesTextures() {
-        const marker = new PIXI.Graphics()
+        const balloon = new PIXI.Graphics()
             .lineStyle(1.5, 0x333333)
             .beginFill(0xff3300, 1)
             // Draw the 'word balloon'
@@ -40,15 +40,28 @@ export function pixiNotes(context, featureCache, dispatch) {
             .lineTo(20, 2.5)
             .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
             // Now draw the 'x' in the middle of the balloon
-            .moveTo(7, 5)
-            .lineTo(14, 12)
-            .moveTo(14, 5)
-            .lineTo(7,12)
             .closePath()
             .endFill();
 
-        const markerHighlight = marker.clone();
-        markerHighlight.lineStyle(3, 0x444444);
+        // We'll need to re-use the balloon path later when we start rendering 'new' notes
+        const marker = balloon.clone();
+
+        marker
+            .lineStyle(1.5, 0x333333)
+            .moveTo(7, 5)
+            .lineTo(14, 12)
+            .moveTo(14, 5)
+            .lineTo(7, 12)
+            .closePath();
+
+
+        const markerHighlight = new PIXI.Graphics()
+            .lineStyle(4, 0xcccccc, 0.6)
+            .moveTo(-1, -1)
+            .lineTo(-1, 17.25)
+            .lineTo(18.5, 17.25)
+            .lineTo(18.5, -1)
+            .closePath();
 
         const ellipse = new PIXI.Graphics()
             .lineStyle(1, 0x222222, 0.6)
@@ -130,11 +143,14 @@ export function pixiNotes(context, featureCache, dispatch) {
                 container.name = 'note-' + note.id;
                 container.buttonMode = true;
                 container.interactive = true;
+                container.sortableChildren = true; //Needed because of z-index setting for highlight
+
                 layer.addChild(container);
 
                 noteMarker = new PIXI.Sprite(_textures.marker);
                 noteMarker.name = 'marker';
                 noteMarker.anchor.set(0.5, 1);
+                noteMarker.zIndex = 100;
                 container.addChild(noteMarker);
 
                 noteMarkerHighlight = new PIXI.Sprite(_textures.markerHighlight);
@@ -156,11 +172,11 @@ export function pixiNotes(context, featureCache, dispatch) {
                     let hitObject = interactionManager.hitTest(iData.data.global, container);
                     const feature = featureCache.get(note.id);
                     if (hitObject !== null) {
-                        feature.displayObject.alpha = 0.5;
+                        // feature.displayObject.alpha = 0.5;
                         feature.markerHighlight.visible = true;
                         dispatch.call('change');
                     } else {
-                        feature.displayObject.alpha = 1.0;
+                        // feature.displayObject.alpha = 1.0;
                         feature.markerHighlight.visible = false;
                         dispatch.call('change');
                     }
