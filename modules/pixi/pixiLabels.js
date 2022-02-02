@@ -22,7 +22,7 @@ export function pixiLabels(context, featureCache) {
   function initLabels(context, layer) {
     _textStyle = new PIXI.TextStyle({
       fill: 0x333333,
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: 600,
       miterLimit: 1,
       stroke: 0xeeeeee,
@@ -41,7 +41,8 @@ export function pixiLabels(context, featureCache) {
   function renderLabels(layer, projection, entities) {
     if (!_didInit) initLabels(context, layer);
 
-    const SHOWBBOX = true;
+    const textDirection = localizer.textDirection();
+    const SHOWBBOX = false;
     const debugContainer = layer.getChildByName('label-debug');
 
     const graph = context.graph();
@@ -50,7 +51,6 @@ export function pixiLabels(context, featureCache) {
 
 
     if (k !== _lastk) {
-console.log('LABEL RESET');
       _avoids.clear();
       _placement.clear();
       debugContainer.removeChildren();
@@ -101,18 +101,25 @@ console.log('LABEL RESET');
       if (!rect) return;
 
       // boxes here are in "scene" coordinates
+      const fuzz = 0.01;
       avoids.push({
         id: entityID,
-        minX: rect.x,
-        minY: rect.y,
-        maxX: rect.x + rect.width,
-        maxY: rect.y + rect.height
+        minX: rect.x + fuzz,
+        minY: rect.y + fuzz,
+        maxX: rect.x + rect.width - fuzz,
+        maxY: rect.y + rect.height - fuzz
       });
 
       if (SHOWBBOX) {
         const bbox = new PIXI.Graphics()
-          .lineStyle(2, 0xff3333)
-          .drawShape(rect);
+          .lineStyle({
+            width: 1,
+            color: 0x000000,
+            alignment: 0   // inside
+          })
+          .beginFill(0xbb3333, 1)
+          .drawShape(rect)
+          .endFill();
         debugContainer.addChild(bbox);
       }
     }
@@ -168,7 +175,7 @@ console.log('LABEL RESET');
 
         // Decide where to place the label
         // `f` - feature, these bounds are in "scene" coordinates
-        const fRect = feature.sceneBounds.clone().pad(3, 1);
+        const fRect = feature.sceneBounds.clone().pad(1, 0);
         const fLeft = fRect.x;
         const fTop = fRect.y;
         const fWidth = fRect.width;
@@ -176,63 +183,108 @@ console.log('LABEL RESET');
         const fRight = fRect.x + fWidth;
         const fMidX = fRect.x + (fWidth * 0.5);
         const fBottom = fRect.y + fHeight;
-        const fMidY = (feature.type === 'point') ? (fRect.y + fHeight - 15)  // next to marker
+        const fMidY = (feature.type === 'point') ? (fRect.y + fHeight - 14)  // next to marker
           : (fRect.y + (fHeight * 0.5));
 
         // `l` = label, these bounds are in "local" coordinates to the label,
         // 0,0 is the center of the label
-        const lRect = feature.label.localBounds;
-        const lLeft = lRect.x;
-        const lTop = lRect.y;
+        // (padY -1, because for some reason, calculated height seems higher than necessary)
+        const lRect = feature.label.localBounds.clone().pad(0, -1);
+        const some = 5;
+        const more = 10;
         const lWidth = lRect.width;
-        const lHalfWidth = lWidth * 0.5;
         const lHeight = lRect.height;
-        const lHalfHeight = lHeight * 0.5;
-        const lRight = lLeft + lWidth;
-        const lBottom = lTop + lHeight;
+        const lWidthHalf = lWidth * 0.5;
+        const lHeightHalf = lHeight * 0.5;
 
-        // Attempt several placements
-        // (these are calculated in scene coordinates)
-        const north = [fMidX, fTop - lHalfHeight];
-        const east  = [fRight + lHalfWidth, fMidY];
-        const south = [fMidX, fBottom + lHalfHeight];
-        const west  = [fLeft - lHalfWidth,  fMidY];
+        // Attempt several placements (these are calculated in scene coordinates)
+        const placements = {
+          t1: [fMidX - more,  fTop - lHeightHalf],       //    t1 t2 t3 t4 t5
+          t2: [fMidX - some,  fTop - lHeightHalf],       //      +---+---+
+          t3: [fMidX,         fTop - lHeightHalf],       //      |       |
+          t4: [fMidX + some,  fTop - lHeightHalf],       //      |       |
+          t5: [fMidX + more,  fTop - lHeightHalf],       //      +---+---+
 
-        const placements = [east, south, west, north];
+          b1: [fMidX - more,  fBottom + lHeightHalf],    //      +---+---+
+          b2: [fMidX - some,  fBottom + lHeightHalf],    //      |       |
+          b3: [fMidX,         fBottom + lHeightHalf],    //      |       |
+          b4: [fMidX + some,  fBottom + lHeightHalf],    //      +---+---+
+          b5: [fMidX + more,  fBottom + lHeightHalf],    //    b1 b2 b3 b4 b5
 
+          r1: [fRight + lWidthHalf,  fMidY - more],      //      +---+---+  r1
+          r2: [fRight + lWidthHalf,  fMidY - some],      //      |       |  r2
+          r3: [fRight + lWidthHalf,  fMidY],             //      |       |  r3
+          r4: [fRight + lWidthHalf,  fMidY + some],      //      |       |  r4
+          r5: [fRight + lWidthHalf,  fMidY + more],      //      +---+---+  r5
 
-        // show debug boxes
+          l1: [fLeft - lWidthHalf,  fMidY - more],       //  l1  +---+---+
+          l2: [fLeft - lWidthHalf,  fMidY - some],       //  l2  |       |
+          l3: [fLeft - lWidthHalf,  fMidY],              //  l3  |       |
+          l4: [fLeft - lWidthHalf,  fMidY + some],       //  l4  |       |
+          l5: [fLeft - lWidthHalf,  fMidY + more]        //  l5  +---+---+
+        };
+
+        // in order of preference (left-to-right language bias, prefer the right of the pin)
+        let preferences;
+        if (textDirection === 'ltr') {
+          preferences = [
+            'r3', 'r4', 'r2',
+            'b3', 'b4', 'b2', 'b5', 'b1',
+            'l3', 'l4', 'l2',
+            't3', 't4', 't2', 't5', 't1',
+            'r5', 'r1',
+            'l5', 'l1'
+          ];
+        } else {
+          preferences = [
+            'l3', 'l4', 'l2',
+            'b3', 'b2', 'b4', 'b1', 'b5',
+            't3', 't2', 't4', 't1', 't5',
+            'r3', 'r4', 'r2',
+            'l5', 'l1',
+            'r5', 'r1'
+          ];
+        }
+
+        let picked = null;
+        for (let i = 0; i < preferences.length; i++) {
+          const where = preferences[i];
+          const [x, y] = placements[where];
+          const fuzz = 0.01;
+          const box = {
+            id: `${entity.id}-${where}`,
+            minX: x - lWidthHalf + fuzz,
+            minY: y - lHeightHalf + fuzz,
+            maxX: x + lWidthHalf - fuzz,
+            maxY: y + lHeightHalf - fuzz
+          };
+
+          if (!_placement.collides(box)) {
+            _placement.insert(box);
+            feature.label.sprite.position.set(x, y);
+            picked = where;
+            break;
+          }
+        }
+
+        feature.label.sprite.visible = !!picked;
+
         if (SHOWBBOX) {
-          placements.forEach(([x,y]) => {
-            const rect = new PIXI.Rectangle(x - lHalfWidth, y - lHalfHeight, lWidth, lHeight);
+          // const arr = Object.values(placements);         // show all possible boxes, or
+          const arr = picked ? [placements[picked]] : [];   // show the one we picked
+          arr.forEach(([x,y]) => {
+            const rect = new PIXI.Rectangle(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight);
             const bbox = new PIXI.Graphics()
-              .lineStyle(1, 0xffff33)
+              .lineStyle({
+                width: 1,
+                color: 0xffff33,
+                alignment: 0   // inside
+              })
               .drawShape(rect);
             debugContainer.addChild(bbox);
           });
         }
 
-
-        let didPlace = false;
-        for (let i = 0; i < placements.length; i++) {
-          const [x, y] = placements[i];
-          const box = {
-            id: entity.id,
-            minX: x - lHalfWidth,
-            minY: y - lHalfHeight,
-            maxX: x + lHalfWidth,
-            maxY: y + lHalfHeight
-          };
-          if (!_placement.collides(box)) {
-            _placement.insert(box);
-            feature.label.sprite.position.set(x, y);
-const s = _labels.get(entity.id);
-console.log(`placing ${s}`);
-            didPlace = true;
-            break;
-          }
-        }
-        feature.label.sprite.visible = didPlace;
       });
 
 //

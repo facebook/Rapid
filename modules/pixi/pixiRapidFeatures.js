@@ -337,7 +337,11 @@ dsfeatures.set(entity.id, feature);
       if (SHOWBBOX) {
         feature.bbox
           .clear()
-          .lineStyle(1, 0x66ff66)
+          .lineStyle({
+            width: 1,
+            color: 0x66ff66,
+            alignment: 0   // inside
+          })
           .drawShape(feature.bounds);
       }
 

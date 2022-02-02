@@ -234,7 +234,11 @@ feature.polygons = polygons;
         if (SHOWBBOX) {
           feature.bbox
             .clear()
-            .lineStyle(1, doPartialFill ? 0xffff00 : 0x66ff66)
+            .lineStyle({
+              width: 1,
+              color: doPartialFill ? 0xffff00 : 0x66ff66,
+              alignment: 0   // inside
+            })
             .drawShape(feature.bounds);
 
 // // SSR Experiment:
@@ -247,7 +251,11 @@ feature.polygons = polygons;
 //
 //   feature.ssr
 //     .clear()
-//     .lineStyle(1, 0x66ffff)
+//     .lineStyle({
+//       width: 1,
+//       color: 0x66ffff,
+//       alignment: 0   // inside
+//     })
 //     .drawShape(new PIXI.Polygon(ssrpath));
 // }
         }

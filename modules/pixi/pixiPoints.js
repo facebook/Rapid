@@ -42,7 +42,7 @@ export function pixiPoints(context, featureCache) {
 
     const graph = context.graph();
     const k = projection.scale();
-    const SHOWBBOX = true;
+    const SHOWBBOX = false;
 
     function isPoint(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'point';
@@ -57,7 +57,7 @@ export function pixiPoints(context, featureCache) {
         if (!feature) {   // make point if needed
           const container = new PIXI.Container();
           container.name = node.id;
-          container.zIndex = node.loc[1];  // sort by latitude ascending
+          container.zIndex = -node.loc[1];  // sort by latitude ascending
           layer.addChild(container);
 
           const marker = new PIXI.Sprite(_textures.marker);
@@ -112,7 +112,11 @@ export function pixiPoints(context, featureCache) {
         if (SHOWBBOX) {
           feature.bbox
             .clear()
-            .lineStyle(1, 0x66ff66)
+            .lineStyle({
+              width: 1,
+              color: 0x66ff66,
+              alignment: 0   // inside
+            })
             .drawShape(feature.localBounds);
         }
       });
