@@ -122,22 +122,18 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
             let feature = featureCache.get(mapObject.id);
 
             if (!feature) {   // make point if needed
-                const container = new PIXI.Container();
-                container.name = mapObject.id;
-                container.buttonMode = true;
-                container.interactive = true;
-
-                layer.addChild(container);
-
                 let icon = getMapillaryIconSpriteHelper(context, mapObject.value);
                 const iconSize = 24;
                 icon.width = iconSize;
+                icon.interactive = true;
+                icon.buttonMode = true;
                 icon.height = iconSize;
+                icon.name = mapObject.id;
                 icon.position.set(0, 0);
-                container.addChild(icon);
+                layer.addChild(icon);
 
                 feature = {
-                    displayObject: container,
+                    displayObject: icon,
                     loc: mapObject.loc,
                 };
 
@@ -151,8 +147,6 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
             const [x, y] = projection.project(feature.loc);
             feature.displayObject.position.set(x, y);
         });
-
-
     }
 
 
