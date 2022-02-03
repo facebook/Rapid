@@ -7,7 +7,7 @@ import { pixiRapidFeatures } from './pixiRapidFeatures';
 import { utilRebind } from '../util';
 import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 import * as PIXI from 'pixi.js';
-import { pixiNotes, pixiMapillaryImages, pixiStreetsideImages,  pixiKartaImages, pixiMapillaryMapFeatures} from './index';
+import { pixiNotes, pixiMapillaryImages, pixiStreetsideImages,  pixiKartaImages, pixiMapillaryMapFeatures, pixiMapillarySigns} from './index';
 
 export function pixiLayers(projection, context, featureCache) {
     var dispatch = d3_dispatch('change');
@@ -20,6 +20,7 @@ export function pixiLayers(projection, context, featureCache) {
         { id: 'streetside', layer: pixiStreetsideImages(context, featureCache, dispatch)},
         { id: 'openstreetcam', layer: pixiKartaImages(context, featureCache, dispatch) },
          { id: 'mapillary-map-features',  layer: pixiMapillaryMapFeatures(context, featureCache, dispatch) },
+         { id: 'mapillary-signs',  layer: pixiMapillarySigns(context, featureCache, dispatch) },
     ];
 
     let _initialized = false;
