@@ -214,11 +214,14 @@ let _frameStats = {};
         loader.add('dist/img/icons/maki-spritesheet.json');
         loader.add('dist/img/icons/temaki-spritesheet.json');
         loader.add('dist/img/icons/fontawesome-spritesheet.json');
+        loader.add('dist/img/icons/mapillary-features-spritesheet.json');
         loader.load(loader => {
             context._makiSheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
             context._temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
             context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
+            context._mapillarySheet = loader.resources['dist/img/icons/mapillary-features-spritesheet.json'];
         });
+
 
 
     context.pixi.rapidTextureKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',

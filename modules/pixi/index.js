@@ -9,5 +9,6 @@ export { pixiNotes } from './notes.js';
 export { pixiMapillaryImages } from './pixiMapillaryImages.js';
 export { pixiKartaImages } from './pixiKartaImages.js';
 export { pixiStreetsideImages } from './pixiStreetsideImages.js';
+export { pixiMapillaryMapFeatures } from './pixiMapillaryMapFeatures.js';
 export { pixiLayers } from './layers.js';
 

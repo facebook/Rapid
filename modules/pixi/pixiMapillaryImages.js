@@ -8,7 +8,6 @@ import { modeBrowse } from '../modes/browse';
 import { services } from '../services';
 import { getViewfieldContainerHelper } from './pixiHelpers';
 
-import { modeSelectNote } from '../modes/select_note';
 
 
 var _mapillaryEnabled = false;
@@ -75,14 +74,14 @@ export function pixiMapillaryImages(context, featureCache, dispatch) {
     }
 
 
-    // Enable the layer.  This shows the notes and transitions them to visible.
+    // Enable the layer.  This shows the image points and transitions them to visible.
     function layerOn() {
         editOn();
         dispatch.call('change');
     }
 
 
-    // Disable the layer.  This transitions the layer invisible and then hides the notes.
+    // Disable the layer.  This transitions the layer invisible and then hides the images.
     function layerOff() {
         throttledRedraw.cancel();
         editOff();
@@ -90,7 +89,7 @@ export function pixiMapillaryImages(context, featureCache, dispatch) {
     }
 
 
-    // Update the note markers
+    // Update the image markers
     function updateImages(layer, projection) {
         if (!_mapillaryVisible || !_mapillaryEnabled) return;
         const k = projection.scale();
@@ -222,9 +221,6 @@ export function pixiMapillaryImages(context, featureCache, dispatch) {
             layerOn();
         } else {
             layerOff();
-            if (context.selectedNoteID()) {
-                context.enter(modeBrowse(context));
-            }
         }
 
         dispatch.call('change');
