@@ -47,7 +47,7 @@ export function pixiLabels(context, featureCache) {
     if (!_didInit) initLabels(context, layer);
 
     const textDirection = localizer.textDirection();
-    const SHOWBBOX = true;
+    const SHOWBBOX = false;
     const debugContainer = layer.getChildByName('label-debug');
 
     const graph = context.graph();
@@ -131,9 +131,7 @@ export function pixiLabels(context, featureCache) {
     }
 
 
-    function createLabelSprite(entityID) {
-      const str = _strings.get(entityID);
-
+    function createLabelSprite(str) {
       let sprite;
       let existing = _texts.get(str);
       if (existing) {
@@ -142,16 +140,9 @@ export function pixiLabels(context, featureCache) {
         sprite = new PIXI.Text(str, _textStyle);
         _texts.set(str, sprite);
       }
-
       sprite.name = str;
       sprite.anchor.set(0.5, 0.5);   // middle, middle
-      layer.addChild(sprite);
-
-      return {
-        displayObject: sprite,
-        localBounds: sprite.getLocalBounds(),
-        string: str
-      };
+      return sprite;
     }
 
 
@@ -169,7 +160,15 @@ export function pixiLabels(context, featureCache) {
           if (!feature) return;
 
           if (!feature.label) {
-            feature.label = createLabelSprite(entity.id);
+            const str = _strings.get(entity.id);
+            const sprite = createLabelSprite(str);
+            layer.addChild(sprite);
+
+            feature.label = {
+              displayObject: sprite,
+              localBounds: sprite.getLocalBounds(),
+              string: str
+            };
           }
 
           // Remember scale and reproject only when it changes
@@ -306,7 +305,21 @@ export function pixiLabels(context, featureCache) {
           if (!feature) return;
 
           if (!feature.label) {
-            feature.label = createLabelSprite(entity.id);
+            const str = _strings.get(entity.id);
+            const sprite = createLabelSprite(str);
+
+            const container = new PIXI.Container();
+            container.name = str;
+            layer.addChild(container);
+
+            // container.addChild(sprite); // ?
+
+            feature.label = {
+              displayObject: container,
+              sprite: sprite,
+              localBounds: sprite.getLocalBounds(),
+              string: str
+            };
           }
 
           // Remember scale and reproject only when it changes
@@ -324,6 +337,9 @@ export function pixiLabels(context, featureCache) {
     // then add the labels in spaces along the line wherever they fit
     //
     function placeLineLabel(feature, entityID) {
+      // start fresh
+      feature.label.displayObject.removeChildren();
+
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
       const lRect = feature.label.localBounds.clone().pad(2, 2);
@@ -392,6 +408,29 @@ export function pixiLabels(context, featureCache) {
       finishChain();
 
 
+      // make ropes for the labels
+      candidates.forEach(function makeRope(chain, index) {
+        let currLength = 0;
+        let prevCoord;
+        let points = [];
+
+        for (let i = 0; i < chain.length; i++) {
+          const coord = chain[i].coord;
+          points.push(new PIXI.Point(coord[0], coord[1]));
+
+          if (prevCoord) {  // add length
+            currLength += vecLength(coord, prevCoord);
+          }
+          if (currLength > lWidth) break;   // we have enough length and can stop
+          prevCoord = coord;
+        }
+
+        const rope = new PIXI.SimpleRope(feature.label.sprite.texture, points);
+        rope.name = `${entityID}-rope-${index}`;
+        feature.label.displayObject.addChild(rope);
+      });
+
+
 //      // if (SHOWBBOX) {
       boxes.forEach(function makeBBox(box) {
         const alpha = 0.75;
@@ -418,24 +457,24 @@ export function pixiLabels(context, featureCache) {
     //
     function placeAreaLabels() {
  return; // not yet
-      const areas = entities
-        .filter(hasAreaLabel);
-
-      areas
-        .forEach(function prepareAreaLabels(entity) {
-          let feature = featureCache.get(entity.id);
-          if (!feature) return;
-
-          if (!feature.label) {
-            feature.label = createLabelSprite(entity.id);
-          }
-
-          // Remember scale and reproject only when it changes
-          if (!redoPlacement && k === feature.label.k) return;
-          feature.label.k = k;
-
-          placeAreaLabel(feature, entity.id);
-        });
+//      const areas = entities
+//        .filter(hasAreaLabel);
+//
+//      areas
+//        .forEach(function prepareAreaLabels(entity) {
+//          let feature = featureCache.get(entity.id);
+//          if (!feature) return;
+//
+//          if (!feature.label) {
+//            feature.label = createLabelData(entity.id);
+//          }
+//
+//          // Remember scale and reproject only when it changes
+//          if (!redoPlacement && k === feature.label.k) return;
+//          feature.label.k = k;
+//
+//          placeAreaLabel(feature, entity.id);
+//        });
     }
 
 
