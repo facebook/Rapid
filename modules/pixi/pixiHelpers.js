@@ -133,3 +133,16 @@ export function getLineSegments(points, spacing) {
 
   return segments;
 }
+
+
+export function getDebugBBox(x, y, width, height, color, alpha, name) {
+  const bbox = new PIXI.Sprite(PIXI.Texture.WHITE);
+  bbox.anchor.set(0, 0);  // top, left
+  bbox.position.set(x, y);
+  bbox.width = width;
+  bbox.height = height;
+  bbox.tint = color || 0xffff33;  // yellow
+  bbox.alpha = alpha || 0.75;
+  if (name) bbox.name = name;
+  return bbox;
+}

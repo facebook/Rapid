@@ -1,12 +1,14 @@
 import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
+import { vecLength } from '@id-sdk/math';
 
 import { localizer } from '../core/localizer';
 import { utilDisplayName, utilDisplayNameForPath } from '../util';
+import { getLineSegments, getDebugBBox } from './pixiHelpers.js';
 
 
 export function pixiLabels(context, featureCache) {
-  let _labels = new Map();       // map of OSM ID -> label string
+  let _strings = new Map();      // map of OSM ID -> label string
   let _texts = new Map();        // map of label -> Pixi Texture
   let _avoids = new Set();       // set of OSM ID we are avoiding
 
@@ -29,7 +31,10 @@ export function pixiLabels(context, featureCache) {
       strokeThickness: 3
     });
 
-    const debugContainer = new PIXI.Container();
+    const debugContainer = new PIXI.ParticleContainer(50000);
+    debugContainer.interactiveChildren = false;
+    debugContainer.sortableChildren = false;
+    debugContainer.roundPixels = false;
     debugContainer.name = 'label-debug';
     layer.addChild(debugContainer);
 
@@ -42,7 +47,7 @@ export function pixiLabels(context, featureCache) {
     if (!_didInit) initLabels(context, layer);
 
     const textDirection = localizer.textDirection();
-    const SHOWBBOX = false;
+    const SHOWBBOX = true;
     const debugContainer = layer.getChildByName('label-debug');
 
     const graph = context.graph();
@@ -50,7 +55,7 @@ export function pixiLabels(context, featureCache) {
     let redoPlacement = false;   // we'll redo all the labels when scale changes
 
 
-    if (k !== _lastk) {
+    if (k !== _lastk) {   // reset
       _avoids.clear();
       _placement.clear();
       debugContainer.removeChildren();
@@ -58,234 +63,391 @@ export function pixiLabels(context, featureCache) {
       _lastk = k;
     }
 
+    gatherAvoids();
+    placePointLabels();
+    placeLineLabels();
+    placeAreaLabels();
+
 
     function getLabel(entity) {
-      if (!_labels.has(entity.id)) {
-        const name = utilDisplayName(entity);
-        _labels.set(entity.id, name);   // save display name in `_labels` cache
-        return name;
+      if (!_strings.has(entity.id)) {
+        const str = utilDisplayName(entity);
+        _strings.set(entity.id, str);   // save display name in `_strings` cache
+        return str;
       }
-      return _labels.get(entity.id);
+      return _strings.get(entity.id);
     }
 
-    function hasPointLabel(entity) {
-      const geom = entity.geometry(graph);
-      return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
-    }
     function hasLineLabel(entity) {
       return (entity.geometry(graph) === 'line' && getLabel(entity));
     }
     function hasAreaLabel(entity) {
       return (entity.geometry(graph) === 'area' && getLabel(entity));
     }
-
-
-    // Gather bounding boxes to avoid
-    const stage = context.pixi.stage;
-    let avoids = [];
-    stage.getChildByName('vertices').children.forEach(gatherAvoids);
-    stage.getChildByName('points').children.forEach(gatherAvoids);
-    if (avoids.length) {
-      _placement.load(avoids);  // bulk insert
+    function hasPointLabel(entity) {
+      const geom = entity.geometry(graph);
+      return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
     }
 
-    function gatherAvoids(sourceObject) {
-      if (!sourceObject.visible) return;
 
-      const entityID = sourceObject.name;
-      if (_avoids.has(entityID)) return;  // seen it already
-      _avoids.add(entityID);
+    //
+    // Gather bounding boxes to avoid
+    //
+    function gatherAvoids() {
+      const stage = context.pixi.stage;
+      let avoids = [];
+      stage.getChildByName('vertices').children.forEach(checkAvoid);
+      stage.getChildByName('points').children.forEach(checkAvoid);
+      if (avoids.length) {
+        _placement.load(avoids);  // bulk insert
+      }
 
-      const sourceFeature = featureCache.get(entityID);
-      const rect = sourceFeature && sourceFeature.sceneBounds;
-      if (!rect) return;
+      function checkAvoid(sourceObject) {
+        if (!sourceObject.visible) return;
 
-      // boxes here are in "scene" coordinates
-      const fuzz = 0.01;
-      avoids.push({
-        id: entityID,
-        minX: rect.x + fuzz,
-        minY: rect.y + fuzz,
-        maxX: rect.x + rect.width - fuzz,
-        maxY: rect.y + rect.height - fuzz
-      });
+        const entityID = sourceObject.name;
+        if (_avoids.has(entityID)) return;  // seen it already
+        _avoids.add(entityID);
 
-      if (SHOWBBOX) {
-        const bbox = new PIXI.Graphics()
-          .lineStyle({
-            width: 1,
-            color: 0x000000,
-            alignment: 0   // inside
-          })
-          .beginFill(0xbb3333, 1)
-          .drawShape(rect)
-          .endFill();
-        debugContainer.addChild(bbox);
+        const sourceFeature = featureCache.get(entityID);
+        const rect = sourceFeature && sourceFeature.sceneBounds;
+        if (!rect) return;
+
+        // boxes here are in "scene" coordinates
+        const fuzz = 0.01;
+        avoids.push({
+          id: entityID,
+          minX: rect.x + fuzz,
+          minY: rect.y + fuzz,
+          maxX: rect.x + rect.width - fuzz,
+          maxY: rect.y + rect.height - fuzz
+        });
+
+        if (SHOWBBOX) {
+          const bbox = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, `avoid-${entityID}`);
+          debugContainer.addChild(bbox);
+        }
       }
     }
 
-    const points = entities.filter(hasPointLabel)
-      .sort((a, b) => b.loc[1] - a.loc[1]);
 
-    // const lines = entities.filter(hasLineLabel).sort();
-    // const areas = entities.filter(hasAreaLabel).sort();
+    function createLabelSprite(entityID) {
+      const str = _strings.get(entityID);
 
+      let sprite;
+      let existing = _texts.get(str);
+      if (existing) {
+        sprite = new PIXI.Sprite(existing.texture);
+      } else {
+        sprite = new PIXI.Text(str, _textStyle);
+        _texts.set(str, sprite);
+      }
+
+      sprite.name = str;
+      sprite.anchor.set(0.5, 0.5);   // middle, middle
+      layer.addChild(sprite);
+
+      return {
+        displayObject: sprite,
+        localBounds: sprite.getLocalBounds(),
+        string: str
+      };
+    }
+
+
+    //
     // Place point labels
-    points
-      .forEach(function preparePointLabels(entity) {
-        let feature = featureCache.get(entity.id);
-        if (!feature) return;
+    //
+    function placePointLabels() {
+      const points = entities
+        .filter(hasPointLabel)
+        .sort((a, b) => b.loc[1] - a.loc[1]);
 
-        // Add the label to an existing feature.
-        if (!feature.label) {
-          const container = new PIXI.Container();
-          const label = _labels.get(entity.id);
-          container.name = label;
-          layer.addChild(container);
+      points
+        .forEach(function preparePointLabels(entity) {
+          let feature = featureCache.get(entity.id);
+          if (!feature) return;
 
-          let sprite;
-          let existing = _texts.get(label);
-          if (existing) {
-            sprite = new PIXI.Sprite(existing.texture);
-          } else {
-            sprite = new PIXI.Text(label, _textStyle);
-            _texts.set(label, sprite);
+          if (!feature.label) {
+            feature.label = createLabelSprite(entity.id);
           }
 
-          sprite.name = label;
-          sprite.anchor.set(0.5, 0.5);   // middle, middle
-          container.addChild(sprite);
+          // Remember scale and reproject only when it changes
+          if (!redoPlacement && k === feature.label.k) return;
+          feature.label.k = k;
 
-          feature.label = {
-            displayObject: container,
-            localBounds: sprite.getLocalBounds(),
-            origin: entity.loc,
-            label: label,
-            sprite: sprite
-          };
-        }
+          placePointLabel(feature, entity.id);
+        });
+    }
 
-        // Remember scale and reproject only when it changes
-        if (!redoPlacement && k === feature.label.k) return;
-        feature.label.k = k;
 
-// label _container_ should stay at 0,0?
-        // const [x, y] = projection.project(feature.label.origin);
-        // feature.label.displayObject.position.set(x, y);
+    //
+    // Point labels are placed somewhere near the marker.
+    // We generate several placement regions around the marker,
+    // try them until we find one that doesn't collide with something.
+    //
+    function placePointLabel(feature, entityID) {
+      // `f` - feature, these bounds are in "scene" coordinates
+      const fRect = feature.sceneBounds.clone().pad(1, 0);
+      const fLeft = fRect.x;
+      const fTop = fRect.y;
+      const fWidth = fRect.width;
+      const fHeight = fRect.height;
+      const fRight = fRect.x + fWidth;
+      const fMidX = fRect.x + (fWidth * 0.5);
+      const fBottom = fRect.y + fHeight;
+      const fMidY = (feature.type === 'point') ? (fRect.y + fHeight - 14)  // next to marker
+        : (fRect.y + (fHeight * 0.5));
 
-        // Decide where to place the label
-        // `f` - feature, these bounds are in "scene" coordinates
-        const fRect = feature.sceneBounds.clone().pad(1, 0);
-        const fLeft = fRect.x;
-        const fTop = fRect.y;
-        const fWidth = fRect.width;
-        const fHeight = fRect.height;
-        const fRight = fRect.x + fWidth;
-        const fMidX = fRect.x + (fWidth * 0.5);
-        const fBottom = fRect.y + fHeight;
-        const fMidY = (feature.type === 'point') ? (fRect.y + fHeight - 14)  // next to marker
-          : (fRect.y + (fHeight * 0.5));
+      // `l` = label, these bounds are in "local" coordinates to the label,
+      // 0,0 is the center of the label
+      // (padY -1, because for some reason, calculated height seems higher than necessary)
+      const lRect = feature.label.localBounds.clone().pad(0, -1);
+      const some = 5;
+      const more = 10;
+      const lWidth = lRect.width;
+      const lHeight = lRect.height;
+      const lWidthHalf = lWidth * 0.5;
+      const lHeightHalf = lHeight * 0.5;
 
-        // `l` = label, these bounds are in "local" coordinates to the label,
-        // 0,0 is the center of the label
-        // (padY -1, because for some reason, calculated height seems higher than necessary)
-        const lRect = feature.label.localBounds.clone().pad(0, -1);
-        const some = 5;
-        const more = 10;
-        const lWidth = lRect.width;
-        const lHeight = lRect.height;
-        const lWidthHalf = lWidth * 0.5;
-        const lHeightHalf = lHeight * 0.5;
+      // Attempt several placements (these are calculated in scene coordinates)
+      const placements = {
+        t1: [fMidX - more,  fTop - lHeightHalf],       //    t1 t2 t3 t4 t5
+        t2: [fMidX - some,  fTop - lHeightHalf],       //      +---+---+
+        t3: [fMidX,         fTop - lHeightHalf],       //      |       |
+        t4: [fMidX + some,  fTop - lHeightHalf],       //      |       |
+        t5: [fMidX + more,  fTop - lHeightHalf],       //      +---+---+
 
-        // Attempt several placements (these are calculated in scene coordinates)
-        const placements = {
-          t1: [fMidX - more,  fTop - lHeightHalf],       //    t1 t2 t3 t4 t5
-          t2: [fMidX - some,  fTop - lHeightHalf],       //      +---+---+
-          t3: [fMidX,         fTop - lHeightHalf],       //      |       |
-          t4: [fMidX + some,  fTop - lHeightHalf],       //      |       |
-          t5: [fMidX + more,  fTop - lHeightHalf],       //      +---+---+
+        b1: [fMidX - more,  fBottom + lHeightHalf],    //      +---+---+
+        b2: [fMidX - some,  fBottom + lHeightHalf],    //      |       |
+        b3: [fMidX,         fBottom + lHeightHalf],    //      |       |
+        b4: [fMidX + some,  fBottom + lHeightHalf],    //      +---+---+
+        b5: [fMidX + more,  fBottom + lHeightHalf],    //    b1 b2 b3 b4 b5
 
-          b1: [fMidX - more,  fBottom + lHeightHalf],    //      +---+---+
-          b2: [fMidX - some,  fBottom + lHeightHalf],    //      |       |
-          b3: [fMidX,         fBottom + lHeightHalf],    //      |       |
-          b4: [fMidX + some,  fBottom + lHeightHalf],    //      +---+---+
-          b5: [fMidX + more,  fBottom + lHeightHalf],    //    b1 b2 b3 b4 b5
+        r1: [fRight + lWidthHalf,  fMidY - more],      //      +---+---+  r1
+        r2: [fRight + lWidthHalf,  fMidY - some],      //      |       |  r2
+        r3: [fRight + lWidthHalf,  fMidY],             //      |       |  r3
+        r4: [fRight + lWidthHalf,  fMidY + some],      //      |       |  r4
+        r5: [fRight + lWidthHalf,  fMidY + more],      //      +---+---+  r5
 
-          r1: [fRight + lWidthHalf,  fMidY - more],      //      +---+---+  r1
-          r2: [fRight + lWidthHalf,  fMidY - some],      //      |       |  r2
-          r3: [fRight + lWidthHalf,  fMidY],             //      |       |  r3
-          r4: [fRight + lWidthHalf,  fMidY + some],      //      |       |  r4
-          r5: [fRight + lWidthHalf,  fMidY + more],      //      +---+---+  r5
+        l1: [fLeft - lWidthHalf,  fMidY - more],       //  l1  +---+---+
+        l2: [fLeft - lWidthHalf,  fMidY - some],       //  l2  |       |
+        l3: [fLeft - lWidthHalf,  fMidY],              //  l3  |       |
+        l4: [fLeft - lWidthHalf,  fMidY + some],       //  l4  |       |
+        l5: [fLeft - lWidthHalf,  fMidY + more]        //  l5  +---+---+
+      };
 
-          l1: [fLeft - lWidthHalf,  fMidY - more],       //  l1  +---+---+
-          l2: [fLeft - lWidthHalf,  fMidY - some],       //  l2  |       |
-          l3: [fLeft - lWidthHalf,  fMidY],              //  l3  |       |
-          l4: [fLeft - lWidthHalf,  fMidY + some],       //  l4  |       |
-          l5: [fLeft - lWidthHalf,  fMidY + more]        //  l5  +---+---+
+      // in order of preference (left-to-right language bias, prefer the right of the pin)
+      let preferences;
+      if (textDirection === 'ltr') {
+        preferences = [
+          'r3', 'r4', 'r2',
+          'b3', 'b4', 'b2', 'b5', 'b1',
+          'l3', 'l4', 'l2',
+          't3', 't4', 't2', 't5', 't1',
+          'r5', 'r1',
+          'l5', 'l1'
+        ];
+      } else {
+        preferences = [
+          'l3', 'l4', 'l2',
+          'b3', 'b2', 'b4', 'b1', 'b5',
+          't3', 't2', 't4', 't1', 't5',
+          'r3', 'r4', 'r2',
+          'l5', 'l1',
+          'r5', 'r1'
+        ];
+      }
+
+      let picked = null;
+      for (let i = 0; i < preferences.length; i++) {
+        const where = preferences[i];
+        const [x, y] = placements[where];
+        const fuzz = 0.01;
+        const box = {
+          id: `${entityID}-${where}`,
+          minX: x - lWidthHalf + fuzz,
+          minY: y - lHeightHalf + fuzz,
+          maxX: x + lWidthHalf - fuzz,
+          maxY: y + lHeightHalf - fuzz
         };
 
-        // in order of preference (left-to-right language bias, prefer the right of the pin)
-        let preferences;
-        if (textDirection === 'ltr') {
-          preferences = [
-            'r3', 'r4', 'r2',
-            'b3', 'b4', 'b2', 'b5', 'b1',
-            'l3', 'l4', 'l2',
-            't3', 't4', 't2', 't5', 't1',
-            'r5', 'r1',
-            'l5', 'l1'
-          ];
-        } else {
-          preferences = [
-            'l3', 'l4', 'l2',
-            'b3', 'b2', 'b4', 'b1', 'b5',
-            't3', 't2', 't4', 't1', 't5',
-            'r3', 'r4', 'r2',
-            'l5', 'l1',
-            'r5', 'r1'
-          ];
+        if (!_placement.collides(box)) {
+          _placement.insert(box);
+          feature.label.displayObject.position.set(x, y);
+          picked = where;
+          break;
         }
+      }
 
-        let picked = null;
-        for (let i = 0; i < preferences.length; i++) {
-          const where = preferences[i];
-          const [x, y] = placements[where];
+      feature.label.displayObject.visible = !!picked;
+
+      if (SHOWBBOX) {
+        // const arr = Object.values(placements);         // show all possible boxes, or
+        const arr = picked ? [placements[picked]] : [];   // show the one we picked
+        arr.forEach(([x,y]) => {
+          const bbox = getDebugBBox(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight, 0xffff33, 0.75, `${entityID}-${picked}`);
+          debugContainer.addChild(bbox);
+        });
+      }
+    }
+
+
+    //
+    // Place line labels
+    //
+    function placeLineLabels() {
+      const lines = entities
+        .filter(hasLineLabel);
+
+      lines
+        .forEach(function prepareLineLabels(entity) {
+          let feature = featureCache.get(entity.id);
+          if (!feature) return;
+
+          if (!feature.label) {
+            feature.label = createLabelSprite(entity.id);
+          }
+
+          // Remember scale and reproject only when it changes
+          if (!redoPlacement && k === feature.label.k) return;
+          feature.label.k = k;
+
+          placeLineLabel(feature, entity.id);
+        });
+    }
+
+
+    //
+    // Line labels are placed along a line.
+    // We generate a chain of bounding boxes along the line,
+    // then add the labels in spaces along the line wherever they fit
+    //
+    function placeLineLabel(feature, entityID) {
+      // `l` = label, these bounds are in "local" coordinates to the label,
+      // 0,0 is the center of the label
+      const lRect = feature.label.localBounds.clone().pad(2, 2);
+      const lWidth = lRect.width;
+      const lHeight = lRect.height;
+      const lWidthHalf = lWidth * 0.5;
+      const lHeightHalf = lHeight * 0.5;
+      const boxsize = lHeight;     // we will use the label height as the size of our box
+      const boxhalf = lHeightHalf;
+
+      const segments = getLineSegments(feature.points, boxsize);
+
+      let boxes = [];
+      let candidates = [];
+
+      let currChain = [];
+      let currLength = 0;
+      let prevCoord = null;
+
+      // Finish current chain of items, if any
+      function finishChain() {
+        if (!currChain.length) return;
+        const isCandidate = (currLength > lWidth);
+        if (isCandidate) {
+          candidates.push(currChain);
+        }
+        currChain.forEach(item => {
+          item.box.candidate = isCandidate;
+          boxes.push(item.box);
+        });
+      }
+
+      // Walk the segments, looking for candidates where labels can go
+      segments.forEach(function nextSegment(segment, segindex) {
+        segment.coords.forEach(function nextCoord(coord, coordindex) {
+          const [x,y] = coord;
           const fuzz = 0.01;
           const box = {
-            id: `${entity.id}-${where}`,
-            minX: x - lWidthHalf + fuzz,
-            minY: y - lHeightHalf + fuzz,
-            maxX: x + lWidthHalf - fuzz,
-            maxY: y + lHeightHalf - fuzz
+            id: `${entityID}-${segindex}-${coordindex}`,
+            minX: x - boxhalf + fuzz,
+            minY: y - boxhalf + fuzz,
+            maxX: x + boxhalf - fuzz,
+            maxY: y + boxhalf - fuzz
           };
 
-          if (!_placement.collides(box)) {
-            _placement.insert(box);
-            feature.label.sprite.position.set(x, y);
-            picked = where;
-            break;
+          const collides = _placement.collides(box);
+
+          if (collides) {   // reset
+            finishChain();
+            box.collides = true;
+            boxes.push(box);
+            currChain = [];
+            currLength = 0;
+            prevCoord = null;
+
+          } else {   // Start or continue a candidate chain of boxes..
+            if (prevCoord) {
+              currLength += vecLength(coord, prevCoord);
+            }
+            currChain.push({ box: box, coord: coord });
+            prevCoord = coord;
           }
-        }
-
-        feature.label.sprite.visible = !!picked;
-
-        if (SHOWBBOX) {
-          // const arr = Object.values(placements);         // show all possible boxes, or
-          const arr = picked ? [placements[picked]] : [];   // show the one we picked
-          arr.forEach(([x,y]) => {
-            const rect = new PIXI.Rectangle(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight);
-            const bbox = new PIXI.Graphics()
-              .lineStyle({
-                width: 1,
-                color: 0xffff33,
-                alignment: 0   // inside
-              })
-              .drawShape(rect);
-            debugContainer.addChild(bbox);
-          });
-        }
-
+        });
       });
+
+      finishChain();
+
+
+//      // if (SHOWBBOX) {
+      boxes.forEach(function makeBBox(box) {
+        const alpha = 0.75;
+        let color;
+        if (box.collides) {
+          color = 0xff3333;
+        } else if (box.candidate) {
+          color = 0x33ff33;
+        } else {
+          color = 0xffff33;
+        }
+
+        const bbox = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.id);
+        debugContainer.addChild(bbox);
+       });
+//      // }
+
+    }
+
+
+
+    //
+    // Place area labels
+    //
+    function placeAreaLabels() {
+ return; // not yet
+      const areas = entities
+        .filter(hasAreaLabel);
+
+      areas
+        .forEach(function prepareAreaLabels(entity) {
+          let feature = featureCache.get(entity.id);
+          if (!feature) return;
+
+          if (!feature.label) {
+            feature.label = createLabelSprite(entity.id);
+          }
+
+          // Remember scale and reproject only when it changes
+          if (!redoPlacement && k === feature.label.k) return;
+          feature.label.k = k;
+
+          placeAreaLabel(feature, entity.id);
+        });
+    }
+
+
+    //
+    // Area labels are placed at the centroid along with an icon.
+    // Can also consider:
+    //   placing at pole-of-inaccessability instead of centroid?
+    //   placing label along edge of area stroke?
+    //
+    function placeAreaLabel(feature, entityID) {
+       // nah
+    }
 
 //
 //    // place line labels
@@ -297,7 +459,7 @@ export function pixiLabels(context, featureCache) {
 //        // Add the label to an existing feature.
 //        if (!feature.label) {
 //          const container = new PIXI.Container();
-//          const label = _labels.get(entity.id);
+//          const label = _strings.get(entity.id);
 //          container.name = label;
 //          layer.addChild(container);
 //
@@ -398,7 +560,10 @@ export function pixiLabels(context, featureCache) {
 //      });
 //
 
-  }
+
+
+
+
 
 
 //
@@ -964,6 +1129,7 @@ export function pixiLabels(context, featureCache) {
 
 //   }
 
+  }
 
   return renderLabels;
 }

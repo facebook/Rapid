@@ -201,25 +201,28 @@ export function uiSectionValidationIssues(id, severity, context) {
             });
     }
 
-    context.validator().on('validated.uiSectionValidationIssues' + id, function() {
-        window.requestIdleCallback(function() {
-            reloadIssues();
-            section.reRender();
-        });
-    });
+// skip some stuff
+// trying to determine where the jank is coming from
 
-    context.map().on('move.uiSectionValidationIssues' + id,
-        _debounce(function() {
-            window.requestIdleCallback(function() {
-                if (getOptions().where === 'visible') {
-                    // must refetch issues if they are viewport-dependent
-                    reloadIssues();
-                }
-                // always reload list to re-sort-by-distance
-                section.reRender();
-            });
-        }, 1000)
-    );
+//    context.validator().on('validated.uiSectionValidationIssues' + id, function() {
+//        window.requestIdleCallback(function() {
+//            reloadIssues();
+//            section.reRender();
+//        });
+//    });
+//
+//    context.map().on('move.uiSectionValidationIssues' + id,
+//        _debounce(function() {
+//            window.requestIdleCallback(function() {
+//                if (getOptions().where === 'visible') {
+//                    // must refetch issues if they are viewport-dependent
+//                    reloadIssues();
+//                }
+//                // always reload list to re-sort-by-distance
+//                section.reRender();
+//            });
+//        }, 1000)
+//    );
 
     return section;
 }

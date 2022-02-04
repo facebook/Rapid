@@ -133,17 +133,17 @@ export function pixiLines(context, featureCache) {
 
         // Reproject and recalculate the bounding box
         let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
-        let points = [];
+        feature.points = [];
 
         feature.coords.forEach(coord => {
           const [x, y] = projection.project(coord);
-          points.push([x, y]);
+          feature.points.push([x, y]);
 
           [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
           [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
         });
         if (entity.tags.oneway === '-1') {
-          points.reverse();
+          feature.points.reverse();
         }
 
         const [w, h] = [maxX - minX, maxY - minY];
@@ -157,15 +157,14 @@ export function pixiLines(context, featureCache) {
 
 
         if (feature.oneways) {
-          const segments = getLineSegments(points, ONEWAY_SPACING);
+          const segments = getLineSegments(feature.points, ONEWAY_SPACING);
           feature.oneways.removeChildren();
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
               const arrow = new PIXI.Sprite(_textures.oneway);
               arrow.anchor.set(0.5, 0.5);  // middle, middle
-              arrow.x = x;
-              arrow.y = y;
+              arrow.position.set(x, y);
               arrow.rotation = segment.angle;
               feature.oneways.addChild(arrow);
             });
@@ -212,7 +211,7 @@ export function pixiLines(context, featureCache) {
             });
           }
 
-          points.forEach(([x, y], i) => {
+          feature.points.forEach(([x, y], i) => {
             if (i === 0) {
               g.moveTo(x, y);
             } else {
