@@ -399,7 +399,7 @@ export function pixiLabels(context, featureCache) {
             if (prevCoord) {
               currLength += vecLength(coord, prevCoord);
             }
-            currChain.push({ box: box, coord: coord });
+            currChain.push({ box: box, coord: coord, angle: segment.angle });
             prevCoord = coord;
           }
         });
@@ -425,29 +425,36 @@ export function pixiLabels(context, featureCache) {
           prevCoord = coord;
         }
 
+        if (points[0].x > points[points.length-1].x) {  // rope is backwards, flip
+          points.reverse();
+        }
+
         const rope = new PIXI.SimpleRope(feature.label.sprite.texture, points);
         rope.name = `${entityID}-rope-${index}`;
+        rope.autoUpdate = false;
+        rope.interactiveChildren = false;
+        rope.sortableChildren = false;
+
         feature.label.displayObject.addChild(rope);
       });
 
 
-//      // if (SHOWBBOX) {
-      boxes.forEach(function makeBBox(box) {
-        const alpha = 0.75;
-        let color;
-        if (box.collides) {
-          color = 0xff3333;
-        } else if (box.candidate) {
-          color = 0x33ff33;
-        } else {
-          color = 0xffff33;
-        }
+      if (SHOWBBOX) {
+        boxes.forEach(function makeBBox(box) {
+          const alpha = 0.75;
+          let color;
+          if (box.collides) {
+            color = 0xff3333;
+          } else if (box.candidate) {
+            color = 0x33ff33;
+          } else {
+            color = 0xffff33;
+          }
 
-        const bbox = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.id);
-        debugContainer.addChild(bbox);
-       });
-//      // }
-
+          const bbox = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.id);
+          debugContainer.addChild(bbox);
+         });
+      }
     }
 
 
