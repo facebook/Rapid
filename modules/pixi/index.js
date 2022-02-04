@@ -10,5 +10,6 @@ export { pixiMapillaryImages } from './pixiMapillaryImages.js';
 export { pixiKartaImages } from './pixiKartaImages.js';
 export { pixiStreetsideImages } from './pixiStreetsideImages.js';
 export { pixiMapillaryMapFeatures } from './pixiMapillaryMapFeatures.js';
+export { pixiMapillarySigns } from './pixiMapillarySigns.js';
 export { pixiLayers } from './layers.js';
 

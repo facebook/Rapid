@@ -46,11 +46,21 @@ export function getViewfieldContainerHelper(context, directions, color) {
 
 export function getMapillaryIconSpriteHelper(context, picon) {
   const spritesheet = context._mapillarySheet;
-  let sprite = new PIXI.Sprite(spritesheet.textures[picon]);
+  let sprite = new PIXI.Sprite(spritesheet.textures[picon + '.svg']);
   sprite.name = picon;
   sprite.anchor.set(0.5, 0.5);
   return sprite;
 }
+
+
+export function getMapillarySignIconSpriteHelper(context, picon) {
+  const spritesheet = context._mapillarySignSheet;
+  let sprite = new PIXI.Sprite(spritesheet.textures[picon + '.svg']);
+  sprite.name = picon;
+  sprite.anchor.set(0.5, 0.5);
+  return sprite;
+}
+
 
 export function getIconSpriteHelper(context, picon) {
   const isMaki = /^maki-/.test(picon);
