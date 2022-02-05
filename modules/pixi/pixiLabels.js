@@ -138,6 +138,8 @@ export function pixiLabels(context, featureCache) {
         sprite = new PIXI.Sprite(existing.texture);
       } else {
         sprite = new PIXI.Text(str, _textStyle);
+        sprite.resolution = 2;
+        sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
         _texts.set(str, sprite);
       }
       sprite.name = str;
@@ -161,6 +163,7 @@ export function pixiLabels(context, featureCache) {
 
           if (!feature.label) {
             const str = _strings.get(entity.id);
+
             const sprite = createLabelSprite(str);
             layer.addChild(sprite);
 
@@ -307,18 +310,17 @@ export function pixiLabels(context, featureCache) {
           if (!feature.label) {
             const str = _strings.get(entity.id);
             const sprite = createLabelSprite(str);
+            // note: we won't add it to container, we just need its texture later
 
             const container = new PIXI.Container();
             container.name = str;
             layer.addChild(container);
 
-            // container.addChild(sprite); // ?
-
             feature.label = {
               displayObject: container,
               sprite: sprite,
               localBounds: sprite.getLocalBounds(),
-              string: str
+              str: str
             };
           }
 
@@ -342,13 +344,13 @@ export function pixiLabels(context, featureCache) {
 
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
-      const lRect = feature.label.localBounds.clone().pad(2, 2);
+      const lRect = feature.label.localBounds;
       const lWidth = lRect.width;
       const lHeight = lRect.height;
       const lWidthHalf = lWidth * 0.5;
       const lHeightHalf = lHeight * 0.5;
-      const boxsize = lHeight;     // we will use the label height as the size of our box
-      const boxhalf = lHeightHalf;
+      const boxsize = lHeight + 4;
+      const boxhalf = boxsize * 0.5;
 
       const segments = getLineSegments(feature.points, boxsize);
 
@@ -434,7 +436,6 @@ export function pixiLabels(context, featureCache) {
         rope.autoUpdate = false;
         rope.interactiveChildren = false;
         rope.sortableChildren = false;
-
         feature.label.displayObject.addChild(rope);
       });
 
