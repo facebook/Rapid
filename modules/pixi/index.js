@@ -12,5 +12,6 @@ export { pixiStreetsideImages } from './pixiStreetsideImages.js';
 export { pixiMapillaryMapFeatures } from './pixiMapillaryMapFeatures.js';
 export { pixiMapillarySigns } from './pixiMapillarySigns.js';
 export { pixiKeepRight } from './pixiKeepRight.js';
+export { pixiImproveOSM } from './pixiImproveOSM.js';
 export { pixiLayers } from './layers.js';
 
