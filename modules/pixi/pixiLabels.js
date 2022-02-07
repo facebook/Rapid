@@ -349,8 +349,10 @@ export function pixiLabels(context, featureCache) {
       const lHeight = lRect.height;
       const lWidthHalf = lWidth * 0.5;
       const lHeightHalf = lHeight * 0.5;
+
       const boxsize = lHeight + 4;
       const boxhalf = boxsize * 0.5;
+      const BENDLIMIT = Math.PI / 8;
 
       const segments = getLineSegments(feature.points, boxsize);
 
@@ -360,6 +362,7 @@ export function pixiLabels(context, featureCache) {
       let currChain = [];
       let currLength = 0;
       let prevCoord = null;
+      let prevAngle = null;
 
       // Finish current chain of items, if any
       function finishChain() {
@@ -374,8 +377,12 @@ export function pixiLabels(context, featureCache) {
         });
       }
 
+
       // Walk the segments, looking for candidates where labels can go
       segments.forEach(function nextSegment(segment, segindex) {
+        let angle = segment.angle;
+        if (angle < 0) angle += Math.PI;   // normalize to 0 ... 2π
+
         segment.coords.forEach(function nextCoord(coord, coordindex) {
           const [x,y] = coord;
           const fuzz = 0.01;
@@ -387,22 +394,31 @@ export function pixiLabels(context, featureCache) {
             maxY: y + boxhalf - fuzz
           };
 
-          const collides = _placement.collides(box);
+          let tooBendy = false;
+          if (prevAngle !== null) {
+            // compare angles properly: https://stackoverflow.com/a/1878936/7620
+            const diff = Math.abs(angle - prevAngle);
+            tooBendy = Math.min((2 * Math.PI) - diff, diff) > BENDLIMIT;
+          }
 
-          if (collides) {   // reset
+          if (tooBendy || _placement.collides(box)) {   // A label can not go here..
             finishChain();
-            box.collides = true;
+            box.bendy = tooBendy;
+            box.collides = !tooBendy;
             boxes.push(box);
-            currChain = [];
+
+            currChain = [];   // reset
             currLength = 0;
             prevCoord = null;
+            prevAngle = null;
 
           } else {   // Start or continue a candidate chain of boxes..
             if (prevCoord) {
               currLength += vecLength(coord, prevCoord);
             }
-            currChain.push({ box: box, coord: coord, angle: segment.angle });
+            currChain.push({ box: box, coord: coord, angle: angle });
             prevCoord = coord;
+            prevAngle = angle;
           }
         });
       });
@@ -444,7 +460,9 @@ export function pixiLabels(context, featureCache) {
         boxes.forEach(function makeBBox(box) {
           const alpha = 0.75;
           let color;
-          if (box.collides) {
+          if (box.bendy) {
+            color = 0xff33ff;
+          } else if (box.collides) {
             color = 0xff3333;
           } else if (box.candidate) {
             color = 0x33ff33;
