@@ -7,7 +7,7 @@ import { pixiRapidFeatures } from './pixiRapidFeatures';
 import { utilRebind } from '../util';
 import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 import * as PIXI from 'pixi.js';
-import { pixiNotes, pixiMapillaryImages, pixiStreetsideImages,  pixiKartaImages, pixiMapillaryMapFeatures, pixiMapillarySigns, pixiKeepRight, pixiImproveOSM} from './index';
+import { pixiNotes, pixiMapillaryImages, pixiStreetsideImages,  pixiKartaImages, pixiMapillaryMapFeatures, pixiMapillarySigns, pixiKeepRight, pixiImproveOSM, pixiOsmose} from './index';
 
 export function pixiLayers(projection, context, featureCache) {
     var dispatch = d3_dispatch('change');
@@ -23,6 +23,7 @@ export function pixiLayers(projection, context, featureCache) {
         { id: 'mapillary-signs',  layer: pixiMapillarySigns(context, featureCache, dispatch) },
         { id: 'keepRight', layer: pixiKeepRight(context, featureCache, dispatch) },
         { id: 'improveOSM', layer: pixiImproveOSM(context, featureCache, dispatch)  },
+        { id: 'osmose', layer: pixiOsmose(context, featureCache, dispatch)  },
     ];
 
     let _initialized = false;
