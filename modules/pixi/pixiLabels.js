@@ -103,7 +103,7 @@ export function pixiLabels(context, featureCache) {
       }
 
       function checkAvoid(sourceObject) {
-        if (!sourceObject.visible) return;
+        // if (!sourceObject.visible) return;
 
         const entityID = sourceObject.name;
         if (_avoids.has(entityID)) return;  // seen it already

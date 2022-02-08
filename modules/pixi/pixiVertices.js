@@ -54,15 +54,29 @@ export function pixiVertices(context, featureCache) {
     const k = projection.scale();
     const SHOWBBOX = false;
 
+    function isLine(entity) {
+      return entity.type === 'way' && entity.geometry(graph) === 'line';
+    }
     function isInterestingVertex(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
         graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
       );
     }
 
-    // enter/update
+    // Gather all interesting child nodes of visible lines
+    let vertices = new Set();
     entities
-      .filter(isInterestingVertex)
+      .filter(isLine)
+      .forEach(line => {
+        graph.childNodes(line).forEach(node => {
+          if (vertices.has(node)) return;
+          if (!isInterestingVertex(node)) return;
+          vertices.add(node);
+        });
+      });
+
+    // enter/update
+    vertices
       .forEach(function prepareVertices(node) {
         let feature = featureCache.get(node.id);
 
