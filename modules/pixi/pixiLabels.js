@@ -349,10 +349,15 @@ export function pixiLabels(context, featureCache) {
       const lHeight = lRect.height;
       const lWidthHalf = lWidth * 0.5;
       const lHeightHalf = lHeight * 0.5;
+      const BENDLIMIT = Math.PI / 8;
 
       const boxsize = lHeight + 4;
       const boxhalf = boxsize * 0.5;
-      const BENDLIMIT = Math.PI / 8;
+      // Boxes we need to span enough width for a label
+      const needBoxes = Math.ceil(lWidth / boxsize) + 1;
+
+      // Break long unbroken chains up into regions, center label within each region
+      const maxChainLength = needBoxes + 15;
 
       const segments = getLineSegments(feature.points, boxsize);
 
@@ -360,28 +365,30 @@ export function pixiLabels(context, featureCache) {
       let candidates = [];
 
       let currChain = [];
-      let currLength = 0;
-      let prevCoord = null;
       let prevAngle = null;
+
 
       // Finish current chain of items, if any
       function finishChain() {
-        if (!currChain.length) return;
-        const isCandidate = (currLength > lWidth);
+        const isCandidate = (currChain.length >= needBoxes);
         if (isCandidate) {
           candidates.push(currChain);
         }
-        currChain.forEach(item => {
-          item.box.candidate = isCandidate;
-          boxes.push(item.box);
+        currChain.forEach(link => {
+          link.box.candidate = isCandidate;
+          boxes.push(link.box);
         });
+
+        currChain = [];   // reset chain
       }
 
 
       // Walk the segments, looking for candidates where labels can go
       segments.forEach(function nextSegment(segment, segindex) {
-        let angle = segment.angle;
-        if (angle < 0) angle += Math.PI;   // normalize to 0 ... 2π
+        let currAngle = segment.angle;
+        if (currAngle < 0) {
+          currAngle += Math.PI;   // normalize to 0…2π
+        }
 
         segment.coords.forEach(function nextCoord(coord, coordindex) {
           const [x,y] = coord;
@@ -394,12 +401,14 @@ export function pixiLabels(context, featureCache) {
             maxY: y + boxhalf - fuzz
           };
 
+          // check bend and break the change where the line bends too much
           let tooBendy = false;
           if (prevAngle !== null) {
             // compare angles properly: https://stackoverflow.com/a/1878936/7620
-            const diff = Math.abs(angle - prevAngle);
+            const diff = Math.abs(currAngle - prevAngle);
             tooBendy = Math.min((2 * Math.PI) - diff, diff) > BENDLIMIT;
           }
+          prevAngle = currAngle;
 
           if (tooBendy || _placement.collides(box)) {   // A label can not go here..
             finishChain();
@@ -407,18 +416,11 @@ export function pixiLabels(context, featureCache) {
             box.collides = !tooBendy;
             boxes.push(box);
 
-            currChain = [];   // reset
-            currLength = 0;
-            prevCoord = null;
-            prevAngle = null;
-
-          } else {   // Start or continue a candidate chain of boxes..
-            if (prevCoord) {
-              currLength += vecLength(coord, prevCoord);
+          } else {   // A label can go here
+            currChain.push({ box: box, coord: coord, angle: currAngle });
+            if (currChain.length === maxChainLength) {
+              finishChain();
             }
-            currChain.push({ box: box, coord: coord, angle: angle });
-            prevCoord = coord;
-            prevAngle = angle;
           }
         });
       });
@@ -426,33 +428,36 @@ export function pixiLabels(context, featureCache) {
       finishChain();
 
 
-      // make ropes for the labels
-      candidates.forEach(function makeRope(chain, index) {
-        let currLength = 0;
-        let prevCoord;
-        let points = [];
+      // make a rope
+      function makeRope(coords) {
+        if (!coords.length) return;
 
-        for (let i = 0; i < chain.length; i++) {
-          const coord = chain[i].coord;
-          points.push(new PIXI.Point(coord[0], coord[1]));
-
-          if (prevCoord) {  // add length
-            currLength += vecLength(coord, prevCoord);
-          }
-          if (currLength > lWidth) break;   // we have enough length and can stop
-          prevCoord = coord;
-        }
-
+        let points = coords.map(([x,y]) => new PIXI.Point(x, y));
         if (points[0].x > points[points.length-1].x) {  // rope is backwards, flip
           points.reverse();
         }
 
         const rope = new PIXI.SimpleRope(feature.label.sprite.texture, points);
-        rope.name = `${entityID}-rope-${index}`;
+        rope.name = `${entityID}-rope`;
         rope.autoUpdate = false;
         rope.interactiveChildren = false;
         rope.sortableChildren = false;
         feature.label.displayObject.addChild(rope);
+      }
+
+
+      candidates.forEach(function scanChain(chain, index) {
+        // Set aside half the extra boxes (if any) at the beginning of the chain
+        // (This centers the label along the chain)
+        const startIndex = Math.floor((chain.length - needBoxes) / 2);
+
+        let coords = [];
+        for (let i = startIndex; i < startIndex + needBoxes; i++) {
+          coords.push(chain[i].coord);
+          _placement.insert(chain[i].box);
+        }
+
+        makeRope(coords);
       });
 
 
@@ -472,7 +477,7 @@ export function pixiLabels(context, featureCache) {
 
           const bbox = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.id);
           debugContainer.addChild(bbox);
-         });
+        });
       }
     }
 
