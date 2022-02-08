@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
-import { vecLength } from '@id-sdk/math';
+import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
 import { localizer } from '../core/localizer';
-import { utilDisplayName, utilDisplayNameForPath } from '../util';
+import { utilDisplayName } from '../util';
 import { getLineSegments, getDebugBBox } from './pixiHelpers.js';
 
 
@@ -239,7 +239,9 @@ export function pixiLabels(context, featureCache) {
         l5: [fLeft - lWidthHalf,  fMidY + more]        //  l5  +---+---+
       };
 
-      // in order of preference (left-to-right language bias, prefer the right of the pin)
+      // In order of preference (If left-to-right language, prefer the right of the pin)
+      // Prefer placements that are more "visually attached" to the pin (right,bottom,left,top)
+      // over placements that are further away (corners)
       let preferences;
       if (textDirection === 'ltr') {
         preferences = [
@@ -300,7 +302,8 @@ export function pixiLabels(context, featureCache) {
     //
     function placeLineLabels() {
       const lines = entities
-        .filter(hasLineLabel);
+        .filter(hasLineLabel)
+        .sort((a, b) => b.layer() - a.layer());
 
       lines
         .forEach(function prepareLineLabels(entity) {
@@ -310,7 +313,8 @@ export function pixiLabels(context, featureCache) {
           if (!feature.label) {
             const str = _strings.get(entity.id);
             const sprite = createLabelSprite(str);
-            // note: we won't add it to container, we just need its texture later
+            // note: we won't add it to container,
+            // we just need its size and texture
 
             const container = new PIXI.Container();
             container.name = str;
@@ -335,42 +339,44 @@ export function pixiLabels(context, featureCache) {
 
     //
     // Line labels are placed along a line.
-    // We generate a chain of bounding boxes along the line,
+    // We generate chains of bounding boxes along the line,
     // then add the labels in spaces along the line wherever they fit
     //
     function placeLineLabel(feature, entityID) {
-      // start fresh
-      feature.label.displayObject.removeChildren();
+      feature.label.displayObject.removeChildren();   // start fresh
 
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
       const lRect = feature.label.localBounds;
       const lWidth = lRect.width;
       const lHeight = lRect.height;
-      const lWidthHalf = lWidth * 0.5;
-      const lHeightHalf = lHeight * 0.5;
       const BENDLIMIT = Math.PI / 8;
 
+      // The size of the collision test bounding boxes, in pixels.
+      // Higher numbers will be faster but yield less granular placement
       const boxsize = lHeight + 4;
       const boxhalf = boxsize * 0.5;
-      // Boxes we need to span enough width for a label
-      const needBoxes = Math.ceil(lWidth / boxsize) + 1;
 
-      // Break long unbroken chains up into regions, center label within each region
-      const maxChainLength = needBoxes + 15;
+      // # of boxes needed to provide enough length for this label
+      const numBoxes = Math.ceil(lWidth / boxsize) + 1;
+      // Labels will be stretched across boxes slightly, this will scale them back to `lWidth` pixels
+      const scaleX = lWidth / ((numBoxes-1) * boxsize);
+      // We'll break long chains into smaller regions and center a label within each region
+      const maxChainLength = numBoxes + 15;
 
+      // Cover the line in bounding boxes
       const segments = getLineSegments(feature.points, boxsize);
 
       let boxes = [];
       let candidates = [];
-
       let currChain = [];
       let prevAngle = null;
 
 
-      // Finish current chain of items, if any
+      // Finish current chain of bounding boxes, if any.
+      // It will be saved as a label candidate if it is long enough.
       function finishChain() {
-        const isCandidate = (currChain.length >= needBoxes);
+        const isCandidate = (currChain.length >= numBoxes);
         if (isCandidate) {
           candidates.push(currChain);
         }
@@ -383,7 +389,8 @@ export function pixiLabels(context, featureCache) {
       }
 
 
-      // Walk the segments, looking for candidates where labels can go
+      // Walk the line, creating chains of bounding boxes,
+      // and testing for candidate chains where labels can go.
       segments.forEach(function nextSegment(segment, segindex) {
         let currAngle = segment.angle;
         if (currAngle < 0) {
@@ -401,7 +408,7 @@ export function pixiLabels(context, featureCache) {
             maxY: y + boxhalf - fuzz
           };
 
-          // check bend and break the change where the line bends too much
+          // Check bend angle and avoid placing labels where the line bends too much..
           let tooBendy = false;
           if (prevAngle !== null) {
             // compare angles properly: https://stackoverflow.com/a/1878936/7620
@@ -410,13 +417,17 @@ export function pixiLabels(context, featureCache) {
           }
           prevAngle = currAngle;
 
-          if (tooBendy || _placement.collides(box)) {   // A label can not go here..
+          if (tooBendy) {
             finishChain();
-            box.bendy = tooBendy;
-            box.collides = !tooBendy;
+            box.bendy = true;
             boxes.push(box);
 
-          } else {   // A label can go here
+          } else if (_placement.collides(box)) {
+            finishChain();
+            box.collides = true;
+            boxes.push(box);
+
+          } else {   // Label can go here..
             currChain.push({ box: box, coord: coord, angle: currAngle });
             if (currChain.length === maxChainLength) {
               finishChain();
@@ -428,36 +439,46 @@ export function pixiLabels(context, featureCache) {
       finishChain();
 
 
-      // make a rope
-      function makeRope(coords) {
-        if (!coords.length) return;
-
-        let points = coords.map(([x,y]) => new PIXI.Point(x, y));
-        if (points[0].x > points[points.length-1].x) {  // rope is backwards, flip
-          points.reverse();
-        }
-
-        const rope = new PIXI.SimpleRope(feature.label.sprite.texture, points);
-        rope.name = `${entityID}-rope`;
-        rope.autoUpdate = false;
-        rope.interactiveChildren = false;
-        rope.sortableChildren = false;
-        feature.label.displayObject.addChild(rope);
-      }
-
-
-      candidates.forEach(function scanChain(chain, index) {
-        // Set aside half the extra boxes (if any) at the beginning of the chain
+      // Compute a label in the middle of each chain,
+      // and insert into the `_placement` rbush.
+      candidates.forEach(function addLabelToChain(chain, chainIndex) {
+        // Set aside half any extra boxes at the beginning of the chain
         // (This centers the label along the chain)
-        const startIndex = Math.floor((chain.length - needBoxes) / 2);
+        const startIndex = Math.floor((chain.length - numBoxes) / 2);
 
         let coords = [];
-        for (let i = startIndex; i < startIndex + needBoxes; i++) {
+        for (let i = startIndex; i < startIndex + numBoxes; i++) {
           coords.push(chain[i].coord);
           _placement.insert(chain[i].box);
         }
 
-        makeRope(coords);
+        if (!coords.length) return;  // shouldn't happen, min numBoxes is 2 boxes
+
+        if (coords[0][0] > coords[coords.length-1][0]) {    // rope is backwards, flip it
+          coords.reverse();
+        }
+
+        // The `coords` array follows our bounding box chain, however it will be a little
+        // longer than the label needs to be, which can cause stretching of small labels.
+        // Here we will scale the points down to the desired label width.
+        const angle = vecAngle(coords[0], coords[coords.length-1]);
+        const sum = coords.reduce((acc, coord) => vecAdd(acc, coord), [0,0]);
+        const centroid = vecScale(sum, 1 / coords.length);  // aka "average" the points
+
+        coords = coords.map(coord => vecSubtract(coord, centroid));  // to local coords
+        coords = geomRotatePoints(coords, -angle, [0,0]);            // rotate to x axis
+        coords = coords.map(([x,y]) => [x * scaleX, y]);             // apply `scaleX`
+        coords = geomRotatePoints(coords, angle, [0,0]);             // rotate back
+        coords = coords.map(coord => vecAdd(coord, centroid));       // back to scene coords
+
+        // make a rope
+        const points = coords.map(([x,y]) => new PIXI.Point(x, y));
+        const rope = new PIXI.SimpleRope(feature.label.sprite.texture, points);
+        rope.name = `${entityID}-rope-${chainIndex}`;
+        rope.autoUpdate = false;
+        rope.interactiveChildren = false;
+        rope.sortableChildren = false;
+        feature.label.displayObject.addChild(rope);
       });
 
 
@@ -629,11 +650,6 @@ export function pixiLabels(context, featureCache) {
 //        //   .drawRect(rect.x, rect.y, rect.width, rect.height);
 //      });
 //
-
-
-
-
-
 
 
 //
