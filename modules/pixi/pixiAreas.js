@@ -3,7 +3,6 @@ import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecLength, geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
 
 import { prefs } from '../core/preferences';
-import { getPixiTagPatternKey } from './pixiHelpers';
 import { styleMatch } from './pixiStyles';
 
 const PARTIALFILLWIDTH = 32;
@@ -106,7 +105,7 @@ export function pixiAreas(context, featureCache) {
 // ssr.visible = SHOWBBOX;
 // container.addChild(ssr);
 
-          const pattern = getPixiTagPatternKey(context, entity.tags);
+          const pattern = style.fill.pattern;
           const texture = pattern && context.pixi.rapidTextures.get(pattern);
 
           feature = {

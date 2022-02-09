@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
-import { svgTagPattern } from '../svg/tag_pattern';
 
 let _vfTexture;
 
@@ -86,19 +85,6 @@ export function getIconSpriteHelper(context, picon) {
   sprite.anchor.set(0.5, 0.5);   // middle, middle
 
   return sprite;
-}
-
-
-export function getPixiTagPatternKey(context, tags) {
-  let svgPattern = svgTagPattern(tags);
-  if (svgPattern) {
-    let key = svgPattern.split('-')[1];
-
-    if (context.pixi.rapidTextureKeys.includes(key)) {
-      return key;
-    }
-  }
-  return null;
 }
 
 

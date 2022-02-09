@@ -212,7 +212,7 @@ const STYLES = {
 // Can use the value '*' to match any osmvalue
 //
 
-const SELECTORS = {
+const STYLE_SELECTORS = {
   aeroway: {
     runway: 'runway',
     taxiway: 'taxiway'
@@ -365,6 +365,65 @@ const SELECTORS = {
 };
 
 
+const PATTERN_SELECTORS = {
+  amenity: {
+    fountain: 'water_standing',
+    grave_yard: 'cemetery'
+  },
+  golf: {
+    green: 'grass'
+  },
+  landuse: {
+    cemetery: 'cemetery',
+    construction: 'construction',
+    farmland: 'farmland',
+    farmyard: 'farmyard',
+    forest: 'forest',
+    grave_yard: 'cemetery',
+    grass: 'grass',
+    landfill: 'landfill',
+    meadow: 'grass',
+    military: 'construction',
+    orchard: 'orchard',
+    quarry: 'quarry',
+    vineyard: 'vineyard'
+  },
+  leaf_type: {
+    broadleaved: 'forest_broadleaved',
+    leafless: 'forest_leafless',
+    needleleaved: 'forest_needleleaved'
+  },
+  natural: {
+    beach: 'dots',
+    grassland: 'grass',
+    sand: 'dots',
+    scrub: 'bushes',
+    water: 'waves',
+    wetland: 'wetland',
+    wood: 'forest'
+  },
+  religion: {
+    buddhist: 'cemetery_buddhist',
+    christian: 'cemetery_christian',
+    jewish: 'cemetery_jewish',
+    muslim: 'cemetery_muslim'
+  },
+  surface: {
+    grass: 'grass'
+  },
+  water: {
+    pond: 'pond',
+    reservoir: 'lines'
+  },
+  wetland: {
+    bog: 'wetland_bog',
+    marsh: 'wetland_marsh',
+    reedbed: 'wetland_reedbed',
+    swamp: 'wetland_swamp'
+  },
+};
+
+
 const ROADS = {
   motorway: true,
   motorway_link: true,
@@ -395,7 +454,7 @@ export function styleMatch(tags) {
 
   for (const k in tags) {
     const v = tags[k];
-    const group = SELECTORS[k];
+    const group = STYLE_SELECTORS[k];
     if (!group || !v) continue;
 
     // smaller groups are more selective
@@ -451,6 +510,29 @@ export function styleMatch(tags) {
     if (!tags.bridge) style.casing.color = 0xcccccc;
     style.casing.cap = PIXI.LINE_CAP.BUTT;
     style.casing.dash = [4, 4];
+  }
+
+
+  if (!style.fill) return style;       // style has no fill, can stop here
+  if (tags.building) return style;     // don't apply patterns to buildings
+
+  // Otherwise, look for a matching fill pattern.
+  selectivity = 999;
+  for (const k in tags) {
+    const v = tags[k];
+    const group = PATTERN_SELECTORS[k];
+    if (!group || !v) continue;
+
+    // smaller groups are more selective
+    let groupsize = Object.keys(group).length;
+    let patternname = group[v];
+    if (!patternname) patternname = group['*'];  // fallback value
+
+    if (patternname && groupsize <= selectivity) {
+      style.fill.pattern = patternname;
+      selectivity = groupsize;
+      if (selectivity === 1) break;  // no need to keep looking at tags
+    }
   }
 
   return style;
