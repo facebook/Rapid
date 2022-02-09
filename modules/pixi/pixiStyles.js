@@ -1,0 +1,457 @@
+import * as PIXI from 'pixi.js';
+import { osmPavedTags } from '../osm/tags';
+
+// Each "style" looks like this:
+//
+// name: {
+//   fill: { props },
+//   casing: { props },
+//   stroke: { props }
+// }
+//
+// available groups:
+//   `fill` - properties used when drawing the feature as a filled area
+//   `casing`/`stroke` - properties used when drawing feature as a line
+//
+// available properties:
+//   `width`
+//   `color`
+//   `alpha`
+//   `cap`
+//   `join`
+//   `dash`
+//
+//  Anything missing will just be pulled from the DEFAULT style.
+//
+
+const STYLES = {
+  DEFAULT: {
+    fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
+    casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
+    stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+  },
+
+  red: {
+    fill: { color: 0xe06e5f, alpha: 0.3 }   // rgba(224, 110, 95)
+  },
+  green: {
+    fill: { color: 0x8cd05f, alpha: 0.3 }   // rgb(140, 208, 95)
+  },
+  blue: {
+    fill: { color: 0x77d4de, alpha: 0.3 }   // rgb(119, 211, 222)
+  },
+  yellow: {
+    fill: { color: 0xffff94, alpha: 0.25 }  // rgb(255, 255, 148)
+  },
+  gold: {
+    fill: { color: 0xc4be19, alpha: 0.3 }   // rgb(196, 189, 25)
+  },
+  orange: {
+    fill: { color: 0xd6881a, alpha: 0.3 }    // rgb(214, 136, 26)
+  },
+  pink: {
+    fill: { color: 0xe3a4f5, alpha: 0.3 }    // rgb(228, 164, 245)
+  },
+  teal: {
+    fill: { color: 0x99e1aa, alpha: 0.3 }    // rgb(153, 225, 170)
+  },
+  lightgreen: {
+    fill: { color: 0xbee83f, alpha: 0.3 }    // rgb(191, 232, 63)
+  },
+  tan: {
+    fill: { color: 0xf5dcba, alpha: 0.3 }    // rgb(245, 220, 186)
+  },
+  darkgray: {
+    fill: { color: 0x8c8c8c, alpha: 0.5 }    // rgb(140, 140, 140)
+  },
+  lightgray: {
+    fill: { color: 0xaaaaaa, alpha: 0.3 }    // rgb(170, 170, 170)
+  },
+
+  motorway: {
+    casing: { width: 10, color: 0x70372f },
+    stroke: { width: 8, color: 0xcf2081 }
+  },
+  trunk: {
+    casing: { width: 10, color: 0x70372f },
+    stroke: { width: 8, color: 0xdd2f22 }
+  },
+  primary: {
+    casing: { width: 10, color: 0x70372f },
+    stroke: { width: 8, color: 0xf99806 }
+  },
+  secondary: {
+    casing: { width: 10, color: 0x70372f },
+    stroke: { width: 8, color: 0xf3f312 }
+  },
+  tertiary: {
+    casing: { width: 10, color: 0x70372f },
+    stroke: { width: 8, color: 0xfff9b3 }
+  },
+  unclassified: {
+    casing: { width: 10, color: 0x444444 },
+    stroke: { width: 8, color: 0xddccaa }
+  },
+  residential: {
+    casing: { width: 10, color: 0x444444 },
+    stroke: { width: 8, color: 0xffffff }
+  },
+  living_street: {
+    casing: { width: 7, color: 0xffffff },
+    stroke: { width: 5, color: 0xcccccc }
+  },
+  service: {
+    casing: { width: 7, color: 0x444444 },
+    stroke: { width: 5, color: 0xffffff }
+  },
+  special_service: {
+    casing: { width: 7, color: 0x444444 },
+    stroke: { width: 5, color: 0xddccaa }
+  },
+  track: {
+    casing: { width: 7, color: 0x746f6f },
+    stroke: { width: 5, color: 0xc5b59f }
+  },
+
+  pedestrian: {
+    casing: { width: 7, color: 0xffffff },
+    stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: PIXI.LINE_CAP.BUTT }
+  },
+  path: {
+    casing: { width: 5, color: 0xffffff },
+    stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+  },
+  footway: {
+    casing: { width: 5, color: 0xffffff },
+    stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+  },
+  crossing_marked: {
+    casing: { width: 5, color: 0xddccaa },
+    stroke: { width: 3, color: 0x4c4444, dash: [6, 3], cap: PIXI.LINE_CAP.BUTT }
+  },
+  crossing_unmarked: {
+    casing: { width: 5, color: 0xddccaa },
+    stroke: { width: 3, color: 0x776a6a, dash: [6, 4], cap: PIXI.LINE_CAP.BUTT }
+  },
+  cycleway: {
+    casing: { width: 5, color: 0xffffff },
+    stroke: { width: 3, color: 0x58a9ed, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+  },
+  bridleway: {
+    casing: { width: 5, color: 0xffffff },
+    stroke: { width: 3, color: 0xe06d5f, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+  },
+  corridor: {
+    casing: { width: 5, color: 0xffffff },
+    stroke: { width: 3, color: 0x8cd05f, dash: [2, 8], cap: PIXI.LINE_CAP.ROUND }
+  },
+  steps: {
+    casing: { width: 5, color: 0xffffff },
+    stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: PIXI.LINE_CAP.BUTT }
+  },
+
+  river: {
+    casing: { width: 10, color: 0x444444 },
+    stroke: { width: 8, color: 0x77dddd }
+  },
+  stream: {
+    casing: { width: 7, color: 0x444444 },
+    stroke: { width: 5, color: 0x77dddd }
+  },
+
+  runway: {
+    casing: { width: 10, color: 0x000000, cap: PIXI.LINE_CAP.BUTT },
+    stroke: { width: 8, color: 0xffffff, dash: [24, 48], cap: PIXI.LINE_CAP.BUTT }
+  },
+  taxiway: {
+    casing: { width: 7, color: 0x444444 },
+    stroke: { width: 5, color: 0xffff00 }
+  },
+
+  railway: {
+    casing: { width: 7, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+  },
+
+  ferry: {
+    casing: { alpha: 0 },  // disable
+    stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: PIXI.LINE_CAP.BUTT }
+  },
+
+  boundary: {
+    casing: { width: 6, color: 0x82b5fe, cap: PIXI.LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xffffff, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+  },
+  boundary_park: {
+    casing: { width: 6, color: 0x82b5fe, cap: PIXI.LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xb0e298, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+  },
+
+  barrier: {
+    casing: { alpha: 0 },  // disable
+    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+  },
+  barrier_wall: {
+    casing: { alpha: 0 },  // disable
+    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+  },
+  barrier_hedge: {
+    fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
+    casing: { alpha: 0 },  // disable
+    stroke: { width: 3, color: 0x8cd05f, dash: [16, 3, 9, 3], cap: PIXI.LINE_CAP.BUTT }
+  }
+};
+
+
+// Each "selector" looks like this:
+//
+// osmkey: {
+//   osmvalue: stylename
+// }
+//
+// Can use the value '*' to match any osmvalue
+//
+
+const SELECTORS = {
+  aeroway: {
+    runway: 'runway',
+    taxiway: 'taxiway'
+  },
+  amenity: {
+    fountain: 'blue',
+    childcare: 'yellow',
+    kindergarten: 'yellow',
+    school: 'yellow',
+    college: 'yellow',
+    university: 'yellow',
+    research_institute: 'yellow',
+    parking: 'darkgray'
+  },
+  building: {
+    '*': 'red'
+  },
+  barrier: {
+    hedge: 'barrier_hedge',
+    retaining_wall: 'barrier_wall',
+    city_wall: 'barrier_wall',
+    wall: 'barrier_wall',
+    '*': 'barrier'
+  },
+  boundary: {
+    protected_area: 'boundary_park',
+    national_park: 'boundary_park',
+    '*': 'boundary'
+  },
+  construction: {
+    '*': 'gold'
+  },
+  crossing: {
+    marked: 'crossing_marked',
+    zebra: 'crossing_marked',
+    '*': 'crossing_unmarked'
+  },
+  golf: {
+    'green': 'lightgreen'
+  },
+  highway: {
+    motorway: 'motorway',
+    motorway_link: 'motorway',
+    trunk: 'trunk',
+    trunk_link: 'trunk',
+    primary: 'primary',
+    primary_link: 'primary',
+    secondary: 'secondary',
+    secondary_link: 'secondary',
+    tertiary: 'tertiary',
+    tertiary_link: 'tertiary',
+    unclassified: 'unclassified',
+    unclassified_link: 'unclassified',
+    residential: 'residential',
+    residential_link: 'residential',
+    living_street: 'living_street',
+    living_street_link: 'living_street',
+    service: 'service',
+    service_link: 'service',
+    bus_guideway: 'special_service',
+    track: 'track',
+    pedestrian: 'pedestrian',
+    path: 'path',
+    footway: 'footway',
+    cycleway: 'cycleway',
+    bridleway: 'bridleway',
+    corridor: 'corridor',
+    steps: 'steps'
+  },
+  landuse: {
+    flowerbed: 'green',
+    forest: 'green',
+    grass: 'green',
+    recreation_ground: 'green',
+    village_green: 'green',
+    residential: 'gold',
+    retail: 'orange',
+    commercial: 'orange',
+    landfill: 'orange',
+    military: 'orange',
+    industrial: 'pink',
+    cemetery: 'lightgreen',
+    farmland: 'lightgreen',
+    meadow: 'lightgreen',
+    orchard: 'lightgreen',
+    vineyard: 'lightgreen',
+    farmyard: 'tan',
+    railway: 'darkgray',
+    quarry: 'darkgray'
+  },
+  leisure: {
+    garden: 'green',
+    golf_course: 'green',
+    nature_reserve: 'green',
+    park: 'green',
+    pitch: 'green',
+    track: 'yellow',
+    swimming_pool: 'blue'
+  },
+  man_made: {
+    adit: 'darkgray',
+    groyne: 'barrier_wall',
+    breakwater: 'barrier_wall'
+  },
+  military: {
+    '*': 'orange'
+  },
+  natural: {
+    bay: 'blue',
+    water: 'blue',
+    beach: 'yellow',
+    sand: 'yellow',
+    scrub: 'yellow',
+    wetland: 'teal',
+    bare_rock: 'darkgray',
+    cave_entrance: 'darkgray',
+    cliff: 'darkgray',
+    rock: 'darkgray',
+    scree: 'darkgray',
+    stone: 'darkgray',
+    shingle: 'darkgray',
+    glacier: 'lightgray',
+    '*': 'green'
+  },
+  power: {
+    'plant': 'pink'
+  },
+  railway: {
+    '*': 'railway'
+  },
+  route: {
+    'ferry': 'ferry'
+  },
+  sport: {
+    beachvolleyball: 'yellow',
+    baseball: 'yellow',
+    softball: 'yellow',
+    basketball: 'darkgray',
+    skateboard: 'darkgray'
+  },
+  waterway: {
+    river: 'river',
+    dam: 'DEFAULT',
+    weir: 'DEFAULT',
+    '*': 'stream'
+  },
+  service: {
+    '*': 'special_service'
+  }
+};
+
+
+const ROADS = {
+  motorway: true,
+  motorway_link: true,
+  trunk: true,
+  trunk_link: true,
+  primary: true,
+  primary_link: true,
+  secondary: true,
+  secondary_link: true,
+  tertiary: true,
+  tertiary_link: true,
+  unclassified: true,
+  unclassified_link: true,
+  residential: true,
+  residential_link: true,
+  living_street: true,
+  living_street_link: true,
+  service: true,
+  service_link: true,
+  bus_guideway: true,
+  track: true
+};
+
+
+export function styleMatch(tags) {
+  let matched = STYLES.DEFAULT;
+  let selectivity = 999;
+
+  for (const k in tags) {
+    const v = tags[k];
+    const group = SELECTORS[k];
+    if (!group || !v) continue;
+
+    // smaller groups are more selective
+    let groupsize = Object.keys(group).length;
+    let stylename = group[v];
+    if (!stylename) stylename = group['*'];  // fallback value
+
+    if (stylename && groupsize <= selectivity) {
+      if (!STYLES[stylename]) {
+        console.error(`invalid stylename: ${stylename}`);
+        continue;
+      }
+      matched = STYLES[stylename];
+      selectivity = groupsize;
+      if (selectivity === 1) break;  // no need to keep looking at tags
+    }
+  }
+
+  // copy style, filling in defaults
+  let style = {};
+  ['fill', 'casing', 'stroke'].forEach(group => {
+    style[group] = {};
+    ['width', 'color', 'alpha', 'cap', 'dash'].forEach(prop => {
+      let value = matched[group] && matched[group][prop];
+      if (value !== undefined) {
+        style[group][prop] = value;
+        return;
+      }
+      let fallback = STYLES.DEFAULT[group] && STYLES.DEFAULT[group][prop];
+      if (fallback !== undefined) {
+        style[group][prop] = fallback;
+      }
+    });
+  });
+
+  // overrides
+  if (tags.bridge) {
+    style.casing.width += 7;
+    style.casing.color = 0x000000;
+    style.casing.cap = PIXI.LINE_CAP.BUTT;
+  }
+  if (tags.tunnel) {
+    style.stroke.alpha = 0.5;
+  }
+
+  // determine surface for paved/unpaved
+  let surface = tags.surface;
+  let highway = tags.highway;
+  if (highway === 'track' && tags.tracktype !== 'grade1') {
+    surface = surface || 'dirt';
+  }
+  if (surface && ROADS[highway] && !osmPavedTags.surface[surface]) {
+    if (!tags.bridge) style.casing.color = 0xcccccc;
+    style.casing.cap = PIXI.LINE_CAP.BUTT;
+    style.casing.dash = [4, 4];
+  }
+
+  return style;
+}
