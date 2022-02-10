@@ -1,25 +1,31 @@
 import * as PIXI from 'pixi.js';
 import { osmPavedTags } from '../osm/tags';
 
+//
+// A "style" is a bundle of properties to say how things should look.
 // Each "style" looks like this:
 //
-// name: {
-//   fill: { props },
+// stylename: {
+//   fill:   { props },
 //   casing: { props },
 //   stroke: { props }
 // }
 //
-// available groups:
-//   `fill` - properties used when drawing the feature as a filled area
-//   `casing`/`stroke` - properties used when drawing feature as a line
+// Available property groups:
+//   `fill`   - properties used when drawing feature as a filled area
+//   `casing` - properties used when drawing feature as a line (casing draws below stroke)
+//   `stroke` - properties used when drawing feature as a line
 //
-// available properties:
-//   `width`
-//   `color`
-//   `alpha`
-//   `cap`
-//   `join`
-//   `dash`
+// Available properties:
+//   `width` - line width in pixel (for fills, this is the width of the outline)
+//   `color` - the color
+//   `alpha` - 0 = transparent/invisible, 1 = filled
+//   `cap`   - `PIXI.LINE_CAP.` `BUTT`, `SQUARE`, or `ROUND`
+//   `join`  - `PIXI.LINE_JOIN.` `BEVEL`, `MITER`, or `ROUND`
+//   `dash`  - array of pixels on/off - e.g. `[20, 5, 5, 5]`
+//
+// The fill group also supports:
+//   `pattern` - supported pattern (see dist/img/pattern/* for these)
 //
 //  Anything missing will just be pulled from the DEFAULT style.
 //
@@ -32,7 +38,7 @@ const STYLES = {
   },
 
   red: {
-    fill: { color: 0xe06e5f, alpha: 0.3 }   // rgba(224, 110, 95)
+    fill: { color: 0xe06e5f, alpha: 0.3 }   // rgb(224, 110, 95)
   },
   green: {
     fill: { color: 0x8cd05f, alpha: 0.3 }   // rgb(140, 208, 95)
@@ -47,25 +53,25 @@ const STYLES = {
     fill: { color: 0xc4be19, alpha: 0.3 }   // rgb(196, 189, 25)
   },
   orange: {
-    fill: { color: 0xd6881a, alpha: 0.3 }    // rgb(214, 136, 26)
+    fill: { color: 0xd6881a, alpha: 0.3 }   // rgb(214, 136, 26)
   },
   pink: {
-    fill: { color: 0xe3a4f5, alpha: 0.3 }    // rgb(228, 164, 245)
+    fill: { color: 0xe3a4f5, alpha: 0.3 }   // rgb(228, 164, 245)
   },
   teal: {
-    fill: { color: 0x99e1aa, alpha: 0.3 }    // rgb(153, 225, 170)
+    fill: { color: 0x99e1aa, alpha: 0.3 }   // rgb(153, 225, 170)
   },
   lightgreen: {
-    fill: { color: 0xbee83f, alpha: 0.3 }    // rgb(191, 232, 63)
+    fill: { color: 0xbee83f, alpha: 0.3 }   // rgb(191, 232, 63)
   },
   tan: {
-    fill: { color: 0xf5dcba, alpha: 0.3 }    // rgb(245, 220, 186)
+    fill: { color: 0xf5dcba, alpha: 0.3 }   // rgb(245, 220, 186)
   },
   darkgray: {
-    fill: { color: 0x8c8c8c, alpha: 0.5 }    // rgb(140, 140, 140)
+    fill: { color: 0x8c8c8c, alpha: 0.5 }   // rgb(140, 140, 140)
   },
   lightgray: {
-    fill: { color: 0xaaaaaa, alpha: 0.3 }    // rgb(170, 170, 170)
+    fill: { color: 0xaaaaaa, alpha: 0.3 }   // rgb(170, 170, 170)
   },
 
   motorway: {
@@ -203,13 +209,23 @@ const STYLES = {
 };
 
 
-// Each "selector" looks like this:
+//
+// A "style selector" contains OSM key/value tags to match to a style.
+// Each "style selector" looks like this:
 //
 // osmkey: {
 //   osmvalue: stylename
 // }
 //
-// Can use the value '*' to match any osmvalue
+// Can use the value '*' to match any osmvalue.
+//
+// Important: The fewer rules in the selector, the more selective it is.
+// For example:
+//   The `amenity` selector has 8 rules in it
+//   The `building` selector has 1 rule in it
+//
+// So a feature with both `amenity=kindergarden` and `building=yes` tags
+// will be styled with the `building` rule.
 //
 
 const STYLE_SELECTORS = {
@@ -365,6 +381,15 @@ const STYLE_SELECTORS = {
 };
 
 
+//
+// "pattern selectors" work exactly like style selectors.
+// They contain OSM key/value tags to match to a pattern.
+//
+// osmkey: {
+//   osmvalue: patternname
+// }
+//
+
 const PATTERN_SELECTORS = {
   amenity: {
     fountain: 'water_standing',
@@ -512,9 +537,8 @@ export function styleMatch(tags) {
     style.casing.dash = [4, 4];
   }
 
-
-  if (!style.fill) return style;       // style has no fill, can stop here
-  if (tags.building) return style;     // don't apply patterns to buildings
+  if (style.fill.pattern) return style;  // already has a pattern defined by the style
+  if (tags.building) return style;       // don't apply patterns to buildings
 
   // Otherwise, look for a matching fill pattern.
   selectivity = 999;
