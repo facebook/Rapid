@@ -178,6 +178,7 @@ export function pixiLabels(context, featureCache) {
           if (!redoPlacement && k === feature.label.k) return;
           feature.label.k = k;
 
+          feature.label.displayObject.visible = false;
           placePointLabel(feature, entity.id);
         });
     }
@@ -189,6 +190,8 @@ export function pixiLabels(context, featureCache) {
     // try them until we find one that doesn't collide with something.
     //
     function placePointLabel(feature, entityID) {
+      if (!feature || !feature.sceneBounds) return;
+
       // `f` - feature, these bounds are in "scene" coordinates
       const fRect = feature.sceneBounds.clone().pad(1, 0);
       const fLeft = fRect.x;
@@ -332,6 +335,7 @@ export function pixiLabels(context, featureCache) {
           if (!redoPlacement && k === feature.label.k) return;
           feature.label.k = k;
 
+          feature.label.displayObject.visible = false;
           placeLineLabel(feature, entity.id);
         });
     }
@@ -438,6 +442,10 @@ export function pixiLabels(context, featureCache) {
 
       finishChain();
 
+
+      if (candidates.length) {  // we will label this line
+        feature.label.displayObject.visible = true;
+      }
 
       // Compute a label in the middle of each chain,
       // and insert into the `_placement` rbush.

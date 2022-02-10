@@ -826,11 +826,16 @@ export function rendererMap(context) {
         const data = context.history().intersects(map.extent());
 
 // CULL phase
+        const effectiveZoom = map.effectiveZoom();
         let visibleOSM = {};
         data.forEach(entity => visibleOSM[entity.id] = true);
         [..._featureCache.entries()].forEach(function cull([id, feature]) {
-          const isVisible = !!visibleOSM[id] ||
+          let isVisible = !!visibleOSM[id] ||
             !context.graph().hasEntity(id);  // for now non-OSM features will have to cull themselves
+
+          if (feature.type === 'vertex' && effectiveZoom < 16) {
+            isVisible = false;
+          }
 
           feature.displayObject.visible = isVisible;
           if (feature.label) {

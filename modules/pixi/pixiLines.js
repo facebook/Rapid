@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
-import { geoScaleToZoom } from '@id-sdk/math';
 
 import { osmPavedTags } from '../osm/tags';
 import { getLineSegments } from './pixiHelpers';
@@ -55,7 +54,7 @@ export function pixiLines(context, featureCache) {
 
     const graph = context.graph();
     const k = projection.scale();
-    const zoom = geoScaleToZoom(k);
+    const effectiveZoom = context.map().effectiveZoom();
     const SHOWBBOX = false;
 
     function isUntaggedMultipolygonRing(entity) {
@@ -153,11 +152,33 @@ export function pixiLines(context, featureCache) {
         feature.bounds.width = w;
         feature.bounds.height = h;
 
-        updateGraphic('casing', feature.casing);
+
+        // effectiveZoom adjustments
+        if (effectiveZoom < 16) {
+          feature.casing.visible = false;
+          if (feature.oneways) {
+            feature.oneways.visible = false;
+            feature.oneways.removeChildren();
+          }
+        } else if (effectiveZoom < 17) {
+          feature.casing.visible = true;
+          if (feature.oneways) {
+            feature.oneways.visible = true;
+          }
+        } else {
+          feature.casing.visible = true;
+          if (feature.oneways) {
+            feature.oneways.visible = true;
+          }
+        }
+
+        if (feature.casing.visible) {
+          updateGraphic('casing', feature.casing);
+        }
         updateGraphic('stroke', feature.stroke);
 
 
-        if (feature.oneways) {
+        if (feature.oneways && feature.oneways.visible) {
           const segments = getLineSegments(feature.points, ONEWAY_SPACING);
           feature.oneways.removeChildren();
 
@@ -183,12 +204,20 @@ export function pixiLines(context, featureCache) {
             .drawShape(feature.bounds);
         }
 
+
         function updateGraphic(which, graphic) {
           const minwidth = (which === 'casing' ? 3 : 2);
           let width = feature.style[which].width;
-          if (zoom < 17) width -= 2;
-          if (zoom < 15) width -= 2;
-          if (width < minwidth) width = minwidth;
+
+          // effectiveZoom adjustments
+          if (effectiveZoom < 16) {
+            width -= 4;
+          } else if (effectiveZoom < 17) {
+            width -= 2;
+          }
+          if (width < minwidth) {
+            width = minwidth;
+          }
 
           let g = graphic.clear();
           if (feature.style[which].alpha === 0) return;

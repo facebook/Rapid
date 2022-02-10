@@ -52,6 +52,7 @@ export function pixiVertices(context, featureCache) {
 
     const graph = context.graph();
     const k = projection.scale();
+    const effectiveZoom = context.map().effectiveZoom();
     const SHOWBBOX = false;
 
     function isLine(entity) {
@@ -91,9 +92,10 @@ export function pixiVertices(context, featureCache) {
           const isJunction = graph.isShared(node);
 
           // Add viewfields, if any are required.
+          let vfContainer;
           const directions = node.directions(graph, context.projection);
           if (directions.length > 0) {
-            const vfContainer = getViewfieldContainerHelper(context, directions);
+            vfContainer = getViewfieldContainerHelper(context, directions);
             container.addChild(vfContainer);
           }
 
@@ -132,6 +134,7 @@ export function pixiVertices(context, featureCache) {
             localBounds: new PIXI.Rectangle(),
             loc: node.loc,
             marker: marker,
+            vfContainer: vfContainer,
             bbox: bbox
           };
 
@@ -141,6 +144,20 @@ export function pixiVertices(context, featureCache) {
         // Remember scale and reproject only when it changes
         if (k === feature.k) return;
         feature.k = k;
+
+        // effectiveZoom adjustments
+        if (effectiveZoom < 16) {
+          feature.displayObject.visible = false;
+          return;  // exit early
+        } else if (effectiveZoom < 17) {
+          feature.displayObject.visible = true;
+          feature.displayObject.scale.set(0.8, 0.8);
+          if (feature.vfContainer) feature.vfContainer.visible = false;
+        } else {
+          feature.displayObject.visible = true;
+          feature.displayObject.scale.set(1, 1);
+          if (feature.vfContainer) feature.vfContainer.visible = true;
+        }
 
         // Reproject and recalculate the bounding box
         const [x, y] = projection.project(feature.loc);

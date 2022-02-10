@@ -35,12 +35,37 @@ export function pixiPoints(context, featureCache) {
       .closePath()
       .endFill();
 
+    const iconPlain = new PIXI.Graphics()
+      .lineStyle(1, 0x666666)
+      .beginFill(0xffffff, 1)
+      .drawCircle(0, 0, 8)
+      .endFill();
+
+    const taggedPlain = new PIXI.Graphics()
+      .lineStyle(1, 0x666666)
+      .beginFill(0xffffff, 1)
+      .drawCircle(0, 0, 4.5)
+      .beginFill(0x000000, 1)
+      .drawCircle(0, 0, 1.5)
+      .endFill();
+
+    const taggedWikidata = new PIXI.Graphics()
+      .lineStyle(1, 0x666666)
+      .beginFill(0xdddddd, 1)
+      .drawCircle(0, 0, 4.5)
+      .beginFill(0x333333, 1)
+      .drawCircle(0, 0, 1.5)
+      .endFill();
+
     // convert graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
     _textures.marker = renderer.generateTexture(marker, options);
     _textures.wikidataMarker = renderer.generateTexture(wikidataMarker, options);
+    _textures.iconPlain = renderer.generateTexture(iconPlain, options);
+    _textures.taggedPlain = renderer.generateTexture(taggedPlain, options);
+    _textures.taggedWikidata = renderer.generateTexture(taggedWikidata, options);
 
     _didInit = true;
   }
@@ -54,17 +79,31 @@ export function pixiPoints(context, featureCache) {
 
     const graph = context.graph();
     const k = projection.scale();
+    const effectiveZoom = context.map().effectiveZoom();
     const SHOWBBOX = false;
 
     function isPoint(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'point';
     }
 
+    // Special style for Wikidata-tagged items
+    function hasWikidata(entity) {
+      return (
+        entity.tags.wikidata ||
+        entity.tags['flag:wikidata'] ||
+        entity.tags['brand:wikidata'] ||
+        entity.tags['network:wikidata'] ||
+        entity.tags['operator:wikidata']
+      );
+    }
+
+
     // enter/update
     entities
       .filter(isPoint)
       .forEach(function preparePoints(node) {
         let feature = featureCache.get(node.id);
+        const hasWd = hasWikidata(node);
 
         if (!feature) {   // make point if needed
           const container = new PIXI.Container();
@@ -72,16 +111,7 @@ export function pixiPoints(context, featureCache) {
           container.zIndex = -node.loc[1];  // sort by latitude ascending
           layer.addChild(container);
 
-          // Special style for Wikidata-tagged items
-          const hasWikidata = (
-            node.tags.wikidata ||
-            node.tags['flag:wikidata'] ||
-            node.tags['brand:wikidata'] ||
-            node.tags['network:wikidata'] ||
-            node.tags['operator:wikidata']
-          );
-
-          const t = hasWikidata ? 'wikidataMarker' : 'marker';
+          const t = hasWd ? 'wikidataMarker' : 'marker';
           const marker = new PIXI.Sprite(_textures[t]);
           marker.name = 'marker';
           marker.anchor.set(0.5, 1);  // middle, bottom
@@ -95,14 +125,15 @@ export function pixiPoints(context, featureCache) {
           const preset = presetManager.match(node, graph);
           const picon = preset && preset.icon;
 
+          let icon;
           if (picon) {
-            let icon = getIconSpriteHelper(context, picon);
+            icon = getIconSpriteHelper(context, picon);
             const iconsize = 11;
             // mathematically 0,-15 is center of marker, move down slightly
             icon.position.set(0, -14);
             icon.width = iconsize;
             icon.height = iconsize;
-            icon.alpha = hasWikidata ? 0.6 : 1;
+            icon.alpha = hasWd ? 0.6 : 1;
             container.addChild(icon);
           }
 
@@ -112,6 +143,7 @@ export function pixiPoints(context, featureCache) {
             localBounds: new PIXI.Rectangle(),
             loc: node.loc,
             marker: marker,
+            icon: icon,
             bbox: bbox
           };
 
@@ -121,6 +153,32 @@ export function pixiPoints(context, featureCache) {
         // Remember scale and reproject only when it changes
         if (k === feature.k) return;
         feature.k = k;
+
+        // effectiveZoom adjustments
+        if (effectiveZoom < 16) {                               // show nothing
+          feature.displayObject.visible = false;
+          return;  // exit early
+
+        } else if (effectiveZoom < 17) {                        // show circles
+          feature.marker.texture = _textures.iconPlain;
+          feature.marker.anchor.set(0.5, 0.5);  // middle, middle
+          if (feature.icon) {
+            feature.icon.position.set(0, 0);
+          }
+          feature.displayObject.visible = true;
+          feature.displayObject.scale.set(0.8, 0.8);
+
+        } else {
+          const t = hasWd ? 'wikidataMarker' : 'marker';         // show pins
+          feature.marker.texture = _textures[t];
+          feature.marker.anchor.set(0.5, 1);  // middle, bottom
+          if (feature.icon) {
+            // mathematically 0,-15 is center of marker, move down slightly
+            feature.icon.position.set(0, -14);
+          }
+          feature.displayObject.visible = true;
+          feature.displayObject.scale.set(1, 1);
+        }
 
         // Reproject and recalculate the bounding box
         const [x, y] = projection.project(feature.loc);
