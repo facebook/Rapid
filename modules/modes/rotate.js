@@ -6,7 +6,6 @@ import { utilGetAllNodes } from '@id-sdk/util';
 import { t } from '../core/localizer';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
-import { behaviorEdit } from '../behavior/edit';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { operationCircularize } from '../operations/circularize';
@@ -29,7 +28,6 @@ export function modeRotate(context, entityIDs) {
 
     var keybinding = utilKeybinding('rotate');
     var behaviors = [
-        behaviorEdit(context),
         operationCircularize(context, entityIDs).behavior,
         operationDelete(context, entityIDs).behavior,
         operationMove(context, entityIDs).behavior,

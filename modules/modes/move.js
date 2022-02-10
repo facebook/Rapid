@@ -1,13 +1,10 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+import { vecLength, vecSubtract, geomViewportNudge } from '@id-sdk/math';
 
 import { t } from '../core/localizer';
 
 import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
-import { behaviorEdit } from '../behavior/edit';
-import { vecLength, vecSubtract, geomViewportNudge } from '@id-sdk/math';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { utilKeybinding } from '../util';
@@ -32,7 +29,6 @@ export function modeMove(context, entityIDs, baseGraph) {
 
     var keybinding = utilKeybinding('move');
     var behaviors = [
-        behaviorEdit(context),
         operationCircularize(context, entityIDs).behavior,
         operationDelete(context, entityIDs).behavior,
         operationOrthogonalize(context, entityIDs).behavior,

@@ -3,7 +3,7 @@ import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { scaleLinear as d3_scaleLinear } from 'd3-scale';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Projection, Extent, geoScaleToZoom, geoZoomToScale, vecAdd } from '@id-sdk/math';
+import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd } from '@id-sdk/math';
 import { utilArrayFlatten, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
@@ -19,16 +19,14 @@ import { utilRebind } from '../util/rebind';
 import { utilZoomPan } from '../util/zoom_pan';
 import { utilDoubleUp } from '../util/double_up';
 
-
-import { services } from '../services';
 import * as PIXI from 'pixi.js';
 
 // constants
 var TILESIZE = 256;
-var minZoom = 2;
-var maxZoom = 24;
-var kMin = geoZoomToScale(minZoom, TILESIZE);
-var kMax = geoZoomToScale(maxZoom, TILESIZE);
+var MINZOOM = 2;
+var MAXZOOM = 24;
+var kMin = geoZoomToScale(MINZOOM, TILESIZE);
+var kMax = geoZoomToScale(MAXZOOM, TILESIZE);
 
 
 function clamp(num, min, max) {
@@ -37,13 +35,13 @@ function clamp(num, min, max) {
 
 export function rendererMap(context) {
 
-// pixi state
-const _pixiAutoTick = false;     // set to true to turn the ticker back on
-let _pixiInit = false;
-let _pixiPending = false;
-let _pixiProjection = new Projection();   // only update transform after zooming
-let _featureCache = new Map();            // map of OSM ID -> Pixi data
-let _frameStats = {};
+    // pixi state
+    const _pixiAutoTick = false;     // set to true to turn the ticker back on
+    let _pixiInit = false;
+    let _pixiPending = false;
+    let _pixiProjection = new Projection();   // only update transform after zooming
+    let _featureCache = new Map();            // map of OSM ID -> Pixi data
+    let _frameStats = {};
 
 
     var dispatch = d3_dispatch(
@@ -74,7 +72,6 @@ let _frameStats = {};
     var _transformStart = projection.transform();
     var _transformLast;
     var _isTransformed = false;
-    var _minzoom = 0;
     var _getMouseCoords;
     var _lastPointerEvent;
     var _lastWithinEditableZoom;
@@ -106,17 +103,9 @@ let _frameStats = {};
     // var deferredRedraw = _throttle(redraw, 750);
     var deferredRedraw = _throttle(redraw, 200);
 
-    function scheduleRedraw() {
-        // redrawPixi();        // draw Pixi now..
-        deferredRedraw();    // draw Backgrounds and SVG whenever..
-    }
-
-    function immediateRedraw(difference, extent) {
-        if (!difference && !extent) {
-            deferredRedraw.cancel();
-        }
-        // redrawPixi();                  // draw Pixi now..
-        redraw(difference, extent);    // draw Backgrounds and SVG now..
+    function immediateRedraw() {
+      deferredRedraw.cancel();
+      redraw();
     }
 
 
@@ -140,7 +129,7 @@ let _frameStats = {};
         }
 
         context.history()
-            .on('merge.map', scheduleRedraw)
+            .on('merge.map', deferredRedraw)
             .on('change.map', immediateRedraw)
             .on('undone.map', function(stack, fromStack) {
                 didUndoOrRedo(fromStack.transform);
@@ -180,34 +169,25 @@ let _frameStats = {};
             .append('div')
             .attr('class', 'layer layer-data');
 
-// pixi as sibling to supersurface
-//        selection
-//            .append('div')
-//            .attr('class', 'layer pixi-data')
-//            .style('z-index', '3');
-
-// pixi as child of supersurface
-        wrapper
-            .append('div')
-            .attr('class', 'layer pixi-data')
-            .style('z-index', '3');
-
 
 ///////////////////////
 // BEGIN PIXI
 //
+        // Add pixi as child of supersurface
+        wrapper
+          .append('div')
+          .attr('class', 'layer pixi-data')
+          .style('z-index', '3');
 
-        var pixiContainer = document.querySelector('.pixi-data');
+        const pixiContainer = document.querySelector('.pixi-data');
 
         context.pixi = new PIXI.Application({
-            antialias: true,
-            autoDensity: true,
-            backgroundAlpha: 0.0,
-            resizeTo: pixiContainer,
-            resolution: window.devicePixelRatio
+          antialias: true,
+          autoDensity: true,
+          backgroundAlpha: 0.0,
+          resizeTo: pixiContainer,
+          resolution: window.devicePixelRatio
         });
-
-        // const rect = selection.node().getBoundingClientRect();
 
         // prepare sprites
         const loader = PIXI.Loader.shared;
@@ -224,16 +204,14 @@ let _frameStats = {};
             context._mapillarySignSheet = loader.resources['dist/img/icons/mapillary-signs-spritesheet.json'];
         });
 
+        context.pixi.rapidTextureKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
+          'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
+          'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
+        context.pixi.rapidTextures = new Map();
 
-
-    context.pixi.rapidTextureKeys =    ['bushes', 'cemetery_christian', 'construction', 'farmyard', 'forest_leafless', 'landfill', 'pond', 'waves', 'wetland_marsh',
-      'cemetery', 'cemetery_jewish', 'dots', 'forest', 'forest_needleleaved', 'lines', 'quarry', 'wetland', 'wetland_reedbed',
-      'cemetery_buddhist', 'cemetery_muslim', 'farmland', 'forest_broadleaved', 'grass', 'orchard', 'vineyard', 'wetland_bog', 'wetland_swamp'];
-    context.pixi.rapidTextures = new Map();
-
-    context.pixi.rapidTextureKeys.forEach(key => {
-      context.pixi.rapidTextures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
-    });
+        context.pixi.rapidTextureKeys.forEach(key => {
+          context.pixi.rapidTextures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
+        });
 
         document.querySelector('.pixi-data').appendChild(context.pixi.view);
 
@@ -407,7 +385,7 @@ let _frameStats = {};
 //             dispatch.call('drawn', this, { full: false });
 //
 //             // redraw everything else later
-//             scheduleRedraw();
+//             deferredRedraw();
 //         });
 
         map.dimensions(utilGetDimensions(selection));
@@ -527,7 +505,6 @@ let _frameStats = {};
 
 
     map.init = function () {
-
         drawPoints = pixiPoints(context, _featureCache);
         drawVertices = pixiVertices(context, _featureCache);
         drawLines = pixiLines(context, _featureCache);
@@ -536,14 +513,6 @@ let _frameStats = {};
         drawLabels = pixiLabels(context, _featureCache);
 
         drawLayers = pixiLayers(_pixiProjection, context, _featureCache);
-
-
-        // drawPoints = svgPoints(projection, context);
-        // drawVertices = svgVertices(projection, context);
-        // drawLines = svgLines(projection, context);
-        // drawLabels = svgLabels(projection, context);
-        // drawAreas = svgAreas(projection, context);
-        // drawMidpoints = svgMidpoints(projection, context);
     };
 
 
@@ -727,11 +696,11 @@ let _frameStats = {};
             return;  // no change
         }
 
-        if (geoScaleToZoom(k, TILESIZE) < _minzoom) {
+        if (geoScaleToZoom(k, TILESIZE) < MINZOOM) {
             surface.interrupt();
             dispatch.call('hitMinZoom', this, map);
             setCenterZoom(map.center(), context.minEditableZoom(), 0, true);
-            scheduleRedraw();
+            deferredRedraw();
             dispatch.call('move', this, map);
             return;
         }
@@ -766,7 +735,7 @@ let _frameStats = {};
         _transformLast = eventTransform;
 
         utilSetTransform(supersurface, tX, tY, scale);
-        scheduleRedraw();
+        deferredRedraw();
         dispatch.call('move', this, map);
 
         function isInteger(val) {
@@ -825,11 +794,6 @@ let _frameStats = {};
           pixi.stage.name = 'stage';
           pixi.stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
 
-// debug
-// const origin = new PIXI.Graphics();
-// origin.name = 'origin';
-// pixi.stage.addChild(origin);
-
           _pixiInit = true;
 
         } else {
@@ -846,24 +810,17 @@ let _frameStats = {};
       // Reproject the pixi geometries only whenever zoom changes
       const currTransform = projection.transform();
       const pixiTransform = _pixiProjection.transform();
-      let offset;
 
+      let offset;
       if (pixiTransform.k !== currTransform.k) {
         offset = [0, 0];
         _pixiProjection.transform(currTransform);
+      } else {
+        offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
+      }
 
-// debug
-// const origin = pixi.stage.getChildByName('origin');
-// origin
-//   .clear()
-//   .lineStyle(2, 0x000000)
-//   .beginFill(0x6666ff, 1)
-//   .drawCircle(0, 0, 15)
-//   .endFill();
+      pixi.stage.position.set(-offset[0], -offset[1]);
 
-        } else {
-          offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
-        }
 
 // GATHER phase
         const data = context.history().intersects(map.extent());
@@ -880,8 +837,6 @@ let _frameStats = {};
             feature.label.displayObject.visible = isVisible;
           }
         });
-
-
 
 // CULL phase
 //    const viewMin = offset;  //[0,0];
@@ -910,16 +865,12 @@ let _frameStats = {};
 
 
 // DRAW phase
-        pixi.stage.position.set(-offset[0], -offset[1]);
-
         drawAreas(areasLayer, _pixiProjection, data, _frameStats);
         drawLines(linesLayer, _pixiProjection, data, _frameStats);
         drawVertices(verticesLayer, _pixiProjection, data, _frameStats);
         drawPoints(pointsLayer, _pixiProjection, data, _frameStats);
-        drawLabels(labelsLayer, _pixiProjection, data, _frameStats);
-
         // drawMidpoints(midpointsLayer, _pixiProjection, data);
-
+        drawLabels(labelsLayer, _pixiProjection, data, _frameStats);
 
         if (!_pixiAutoTick) {    // tick manually
           _pixiPending = true;
@@ -939,54 +890,24 @@ let _frameStats = {};
     }
 
 
-    function redraw(difference, extent) {
-        if (surface.empty() || !_redrawEnabled) return;
+    function redraw() {
+      if (surface.empty() || !_redrawEnabled) return;
 
-        // If we are in the middle of a zoom/pan, we can't do differenced redraws.
-        // It would result in artifacts where differenced entities are redrawn with
-        // one transform and unchanged entities with another.
-        if (resetTransform()) {
-            difference = extent = undefined;
-        }
+      resetTransform();
+      supersurface.call(context.background());
+      redrawPixi();
+      wrapper.call(drawLayers);
 
-// pixi not using this
-//        var zoom = map.zoom();
-//        var z = String(~~zoom);
-//
-//        if (surface.attr('data-zoom') !== z) {
-//            surface.attr('data-zoom', z);
-//        }
-//
-//        // class surface as `lowzoom` around z17-z18.5 (based on latitude)
-//        var lat = map.center()[1];
-//        var lowzoom = d3_scaleLinear()
-//            .domain([-60, 0, 60])
-//            .range([17, 18.5, 17])
-//            .clamp(true);
-//
-//        surface
-//            .classed('low-zoom', zoom <= lowzoom(lat));
+      // OSM
+      if (map.editableDataEnabled() || map.isInWideSelection()) {
+        context.loadTiles(projection);
+      } else {
+        editOff();
+      }
 
+      _transformStart = projection.transform();
 
-// skip some stuff
-// trying to determine where the jank is coming from
-        if (!difference) {
-            supersurface.call(context.background());
-            redrawPixi();
-            wrapper.call(drawLayers);
-        }
-
-        // OSM
-        if (map.editableDataEnabled() || map.isInWideSelection()) {
-            context.loadTiles(projection);
-//            drawEditable(difference, extent);
-        } else {
-            editOff();
-        }
-
-        _transformStart = projection.transform();
-
-        return map;
+      return map;
     }
 
 
@@ -1107,7 +1028,7 @@ let _frameStats = {};
         projection.clipExtent([[0, 0], _dimensions]);
         _getMouseCoords = utilFastMouse(supersurface.node());
 
-        scheduleRedraw();
+        deferredRedraw();
         return map;
     };
 
@@ -1122,11 +1043,11 @@ let _frameStats = {};
 
     map.zoomIn = function() { zoomIn(1); };
     map.zoomInFurther = function() { zoomIn(4); };
-    map.canZoomIn = function() { return map.zoom() < maxZoom; };
+    map.canZoomIn = function() { return map.zoom() < MAXZOOM; };
 
     map.zoomOut = function() { zoomOut(1); };
     map.zoomOutFurther = function() { zoomOut(4); };
-    map.canZoomOut = function() { return map.zoom() > minZoom; };
+    map.canZoomOut = function() { return map.zoom() > MINZOOM; };
 
     map.center = function(loc2) {
         if (!arguments.length) {
@@ -1137,7 +1058,7 @@ let _frameStats = {};
             dispatch.call('move', this, map);
         }
 
-        scheduleRedraw();
+        deferredRedraw();
         return map;
     };
 
@@ -1163,12 +1084,34 @@ let _frameStats = {};
         return [0, 0];
     };
 
+
+    // The "effective" zoom can be more useful for controlling the experience of the user.
+    // This zoom is adjusted by latitude.
+    //
+    // You can think of it as "what the zoom would be if we were editing at the equator"
+    //
+    // For example, if we are editing in Murmansk, Russia, at about 69° North latitude,
+    // a true zoom of 14.6 corresponds to an effective zoom of 16.
+    //
+    // Put another way, even at z14.6 the user should be allowed to edit the map,
+    // and it should be styled as if it were z16.
+    //
+    map.effectiveZoom = function() {
+      const lat = map.center()[1];
+      const z = map.zoom();
+      const atLatitude = geoMetersToLon(1, lat);
+      const atEquator = geoMetersToLon(1, 0);
+      const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
+      return Math.min(z + extraZoom, MAXZOOM);
+    };
+
+
     map.zoom = function(z2) {
         if (!arguments.length) {
             return Math.max(geoScaleToZoom(projection.scale(), TILESIZE), 0);
         }
 
-        if (z2 < _minzoom) {
+        if (z2 < MINZOOM) {
             surface.interrupt();
             dispatch.call('hitMinZoom', this, map);
             z2 = context.minEditableZoom();
@@ -1178,7 +1121,7 @@ let _frameStats = {};
             dispatch.call('move', this, map);
         }
 
-        scheduleRedraw();
+        deferredRedraw();
         return map;
     };
 
@@ -1188,7 +1131,7 @@ let _frameStats = {};
             dispatch.call('move', this, map);
         }
 
-        scheduleRedraw();
+        deferredRedraw();
         return map;
     };
 
@@ -1337,13 +1280,6 @@ let _frameStats = {};
         if (!layer || !layer.enabled()) return false;
 
         return map.withinEditableZoom();
-    };
-
-
-    map.minzoom = function(val) {
-        if (!arguments.length) return _minzoom;
-        _minzoom = val;
-        return map;
     };
 
 

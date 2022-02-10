@@ -1,10 +1,8 @@
+import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
 import { behaviorDrag } from '../behavior/drag';
-import { behaviorEdit } from '../behavior/edit';
-import { vecSubtract } from '@id-sdk/vector';
-import { geomViewportNudge } from '@id-sdk/geom';
 import { modeSelectNote } from './select_note';
 
 
@@ -13,8 +11,6 @@ export function modeDragNote(context) {
         id: 'drag-note',
         button: 'browse'
     };
-
-    var edit = behaviorEdit(context);
 
     var _nudgeInterval;
     var _lastLoc;
@@ -111,14 +107,11 @@ export function modeDragNote(context) {
         .on('end', end);
 
 
-    mode.enter = function() {
-        context.install(edit);
-    };
+    mode.enter = function() {};
 
 
     mode.exit = function() {
         context.ui().sidebar.hover.cancel();
-        context.uninstall(edit);
 
         context.surface()
             .selectAll('.active')

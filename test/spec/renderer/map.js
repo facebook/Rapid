@@ -35,9 +35,8 @@ describe('iD.Map', function() {
         });
 
         it('respects minzoom', function() {
-            map.minzoom(16);
-            map.zoom(15);
-            expect(map.zoom()).to.equal(16);
+            map.zoom(1);
+            expect(map.zoom()).to.equal(2);
         });
     });
 
@@ -62,12 +61,6 @@ describe('iD.Map', function() {
                 expect(map.zoom()).to.be.closeTo(3, 1e-6);
                 done();
             }, 375);
-        });
-    });
-
-    describe('#minzoom', function() {
-        it('is zero by default', function() {
-            expect(map.minzoom()).to.equal(0);
         });
     });
 

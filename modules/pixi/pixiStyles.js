@@ -489,7 +489,7 @@ export function styleMatch(tags) {
 
     if (stylename && groupsize <= selectivity) {
       if (!STYLES[stylename]) {
-        console.error(`invalid stylename: ${stylename}`);
+        console.error(`invalid stylename: ${stylename}`);  // eslint-disable-line
         continue;
       }
       matched = STYLES[stylename];

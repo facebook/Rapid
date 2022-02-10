@@ -1,15 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+import { vecLength } from '@id-sdk/math';
 
 import { presetManager } from '../presets';
-import { behaviorEdit } from './edit';
 import { behaviorHover } from './hover';
 import { geoChooseEdge } from '../geo';
 import { utilFastMouse, utilKeybinding, utilRebind } from '../util';
-import { vecLength } from '@id-sdk/vector';
 
 var _disableSpace = false;
 var _lastSpace = null;
@@ -26,7 +22,6 @@ export function behaviorDraw(context) {
         .altDisables(true)
         .ignoreVertex(true)
         .on('hover', context.ui().sidebar.hover);
-    var _edit = behaviorEdit(context);
 
     var _closeTolerance = 4;
     var _tolerance = 12;
@@ -241,7 +236,6 @@ export function behaviorDraw(context) {
 
     function behavior(selection) {
         context.install(_hover);
-        context.install(_edit);
 
         _downPointer = null;
 
@@ -273,7 +267,6 @@ export function behaviorDraw(context) {
     behavior.off = function(selection) {
         context.ui().sidebar.hover.cancel();
         context.uninstall(_hover);
-        context.uninstall(_edit);
 
         selection
             .on('mouseenter.draw', null)

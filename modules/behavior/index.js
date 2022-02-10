@@ -3,7 +3,6 @@ export { behaviorBreathe } from './breathe';
 export { behaviorDrag } from './drag';
 export { behaviorDrawWay } from './draw_way';
 export { behaviorDraw } from './draw';
-export { behaviorEdit } from './edit';
 export { behaviorHash } from './hash';
 export { behaviorHover } from './hover';
 export { behaviorLasso } from './lasso';
