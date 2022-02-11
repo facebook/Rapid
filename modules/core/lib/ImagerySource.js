@@ -307,7 +307,9 @@ export class ImagerySourceCustom extends ImagerySource {
     }
 
     // from wms/wmts api path parameters
-    cleaned = cleaned.replace(/token\/(\w+)/, 'token/{apikey}');
+    cleaned = cleaned
+      .replace(/token\/(\w+)/, 'token/{apikey}')
+      .replace(/key=(\w+)/, 'key={apikey}');
     return `Custom (${cleaned} )`;
   }
 
