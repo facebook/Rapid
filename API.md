@@ -315,19 +315,6 @@ iD.fileFetcher.cache().presets = {
 ```
 
 
-### Minimum Editable Zoom
-
-The minimum zoom at which iD enters the edit mode is configured using the `context.minEditableZoom()` accessor. The default value is 16. To change this initialise the iD context as:
-
-```js
-
-var id = iD.coreContext()
-  .minEditableZoom(zoom_level)
-
-```
-
-This should be set with caution for performance reasons. The OpenStreetMap API has a limitation of 50000 nodes per request.
-
 
 ### Custom Presets
 

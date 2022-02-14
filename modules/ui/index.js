@@ -37,7 +37,6 @@ export { uiLasso } from './lasso';
 export { uiLoading } from './loading';
 export { uiMapInMap } from './map_in_map';
 export { uiModal } from './modal';
-export { uiNotice } from './notice';
 export { uiNoteComments } from './note_comments';
 export { uiNoteEditor } from './note_editor';
 export { uiNoteHeader } from './note_header';

@@ -1,6 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
+import { geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
@@ -155,6 +156,10 @@ export function coreContext() {
 
 
   context.loadTiles = (projection, callback) => {
+    const TILESIZE = 256;
+    const z = geoScaleToZoom(projection.scale(), TILESIZE);
+    if (z < 15) return;  // this would fire off too many API requests
+
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
       if (_connection && context.editableDataEnabled()) {
@@ -214,15 +219,6 @@ export function coreContext() {
     });
   };
 
-  let _minEditableZoom = 16;
-  context.minEditableZoom = function(val) {
-    if (!arguments.length) return _minEditableZoom;
-    _minEditableZoom = val;
-    if (_connection) {
-      _connection.tileZoom(val);
-    }
-    return context;
-  };
 
   // String length limits in Unicode characters, not JavaScript UTF-16 code units
   context.maxCharsForTagKey = () => 255;

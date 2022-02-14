@@ -1408,13 +1408,6 @@ export default {
     },
 
 
-    tileZoom: function(val) {
-        if (!arguments.length) return _tileZoom;
-        _tileZoom = val;
-        return this;
-    },
-
-
     // get all cached notes covering the viewport
     notes: function(projection) {
         var viewport = projection.clipExtent();

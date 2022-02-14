@@ -24,8 +24,8 @@ import { utilDoubleUp } from '../util/double_up';
 var TILESIZE = 256;
 var MINZOOM = 2;
 var MAXZOOM = 24;
-var kMin = geoZoomToScale(MINZOOM, TILESIZE);
-var kMax = geoZoomToScale(MAXZOOM, TILESIZE);
+var MINK = geoZoomToScale(MINZOOM, TILESIZE);
+var MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
 
 
 function clamp(num, min, max) {
@@ -35,9 +35,7 @@ function clamp(num, min, max) {
 export function rendererMap(context) {
   let _pixiRenderer;
 
-  const dispatch = d3_dispatch(
-    'move', 'drawn', 'crossEditableZoom', 'hitMinZoom', 'changeHighlighting', 'changeAreaFill'
-  );
+  const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
   let projection = context.projection;
   let curtainProjection = context.curtainProjection;
 
@@ -55,7 +53,6 @@ export function rendererMap(context) {
   let _isTransformed = false;
   let _getMouseCoords;
   let _lastPointerEvent;
-  let _lastWithinEditableZoom;
 
   // whether a pointerdown event started the zoom
   let _pointerDown = false;
@@ -67,7 +64,7 @@ export function rendererMap(context) {
   const _zoomerPannerFunction = 'PointerEvent' in window ? utilZoomPan : d3_zoom;
 
   const _zoomerPanner = _zoomerPannerFunction()
-    .scaleExtent([kMin, kMax])
+    .scaleExtent([MINK, MAXK])
     .interpolate(d3_interpolate)
     .filter(zoomEventFilter)
     .on('zoom.map', zoomPan)
@@ -279,79 +276,6 @@ export function rendererMap(context) {
     }
 
 
-    function drawEditable(difference, extent) {
-        // All data is rendered by pixi now?
-        //        var mode = context.mode();
-        //        var graph = context.graph();
-        //        var features = context.features();
-        //        var all = context.history().intersects(map.extent());
-        //        var fullRedraw = false;
-        //        var data;
-        //        var set;
-        //        var filter;
-        //        var applyFeatureLayerFilters = true;
-        //
-        //        if (map.isInWideSelection()) {
-        //            data = [];
-        //            utilEntityAndDeepMemberIDs(mode.selectedIDs(), context.graph()).forEach(function(id) {
-        //                var entity = context.hasEntity(id);
-        //                if (entity) data.push(entity);
-        //            });
-        //            fullRedraw = true;
-        //            filter = utilFunctor(true);
-        //            // selected features should always be visible, so we can skip filtering
-        //            applyFeatureLayerFilters = false;
-        //
-        //        } else if (difference) {
-        //            var complete = difference.complete(map.extent());
-        //            data = Object.values(complete).filter(Boolean);
-        //            set = new Set(Object.keys(complete));
-        //            filter = function(d) { return set.has(d.id); };
-        //            features.clear(data);
-        //
-        //        } else {
-        //            // force a full redraw if gatherStats detects that a feature
-        //            // should be auto-hidden (e.g. points or buildings)..
-        //            if (features.gatherStats(all, graph, _dimensions)) {
-        //                extent = undefined;
-        //            }
-        //
-        //            if (extent) {
-        //                data = context.history().intersects(map.extent().intersection(extent));
-        //                set = new Set(data.map(function(entity) { return entity.id; }));
-        //                filter = function(d) { return set.has(d.id); };
-        //
-        //            } else {
-        //                data = all;
-        //                fullRedraw = true;
-        //                filter = utilFunctor(true);
-        //            }
-        //        }
-        //
-        //        if (applyFeatureLayerFilters) {
-        //            data = features.filter(data, graph);
-        //        } else {
-        //            context.features().resetStats();
-        //        }
-        //
-        //        if (mode && mode.id === 'select') {
-        //            // update selected vertices - the user might have just double-clicked a way,
-        //            // creating a new vertex, triggering a partial redraw without a mode change
-        //            surface.call(drawVertices.drawSelected, graph, map.extent());
-        //        }
-        //
-        //        surface
-        //            .call(drawVertices, graph, data, filter, map.extent(), fullRedraw)
-        //            .call(drawLines, graph, data, filter)
-        //            .call(drawAreas, graph, data, filter)
-        //            .call(drawMidpoints, graph, data, filter, map.trimmedExtent());
-        //            .call(drawLabels, graph, data, filter, _dimensions, fullRedraw);
-        //            .call(drawPoints, graph, data, filter);
-        //
-        //        dispatch.call('drawn', this, {full: true});
-    }
-
-
 // will not work yet
 let drawLayers;
 let _pixiProjection = new Projection();
@@ -463,7 +387,7 @@ let _featureCache = new Map();
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * Math.pow(2, -dY / 500);
-                k2 = clamp(k2, kMin, kMax);
+                k2 = clamp(k2, MINK, MAXK);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -475,7 +399,7 @@ let _featureCache = new Map();
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * source._scale;
-                k2 = clamp(k2, kMin, kMax);
+                k2 = clamp(k2, MINK, MAXK);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -491,7 +415,7 @@ let _featureCache = new Map();
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * Math.pow(2, -dY / 500);
-                k2 = clamp(k2, kMin, kMax);
+                k2 = clamp(k2, MINK, MAXK);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -502,7 +426,7 @@ let _featureCache = new Map();
                 p0 = _getMouseCoords(source);
                 p1 = t0.invert(p0);
                 k2 = t0.k * Math.pow(2, -dY / 500);
-                k2 = clamp(k2, kMin, kMax);
+                k2 = clamp(k2, MINK, MAXK);
                 x2 = p0[0] - p1[0] * k2;
                 y2 = p0[1] - p1[1] * k2;
 
@@ -515,7 +439,7 @@ let _featureCache = new Map();
                 x2 = p1[0] - dX;
                 y2 = p1[1] - dY;
                 k2 = projection.scale();
-                k2 = clamp(k2, kMin, kMax);
+                k2 = clamp(k2, MINK, MAXK);
             }
 
             // something changed - replace the event transform
@@ -532,7 +456,6 @@ let _featureCache = new Map();
                     _selection.node().__zoom = eventTransform;
                 }
             }
-
         }
 
         if (_transformStart.x === x &&
@@ -541,25 +464,9 @@ let _featureCache = new Map();
             return; // no change
         }
 
-        if (geoScaleToZoom(k, TILESIZE) < MINZOOM) {
-            surface.interrupt();
-            dispatch.call('hitMinZoom', this, map);
-            setCenterZoom(map.center(), context.minEditableZoom(), 0, true);
-            deferredRedraw();
-            dispatch.call('move', this, map);
-            return;
-        }
+        k = clamp(k, MINK, MAXK);
 
         projection.transform(eventTransform);
-
-        var withinEditableZoom = map.withinEditableZoom();
-        if (_lastWithinEditableZoom !== withinEditableZoom) {
-            if (_lastWithinEditableZoom !== undefined) {
-                // notify that the map zoomed in or out over the editable zoom threshold
-                dispatch.call('crossEditableZoom', this, withinEditableZoom);
-            }
-            _lastWithinEditableZoom = withinEditableZoom;
-        }
 
         var scale = k / _transformStart.k;
         var tX = (x / scale - _transformStart.x) * scale;
@@ -695,7 +602,7 @@ let _featureCache = new Map();
       const z = map.zoom();
       if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z && !force) return false;
 
-      const k2 = clamp(geoZoomToScale(z2, TILESIZE), kMin, kMax);
+      const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
       let proj = new Projection();
       proj.transform(projection.transform()); // make copy
       proj.scale(k2);
@@ -805,11 +712,7 @@ let _featureCache = new Map();
         return Math.max(geoScaleToZoom(projection.scale(), TILESIZE), 0);
       }
 
-      if (z2 < MINZOOM) {
-        surface.interrupt();
-        dispatch.call('hitMinZoom', this, map);
-        z2 = context.minEditableZoom();
-      }
+      z2 = clamp(z2, MINZOOM, MAXZOOM);
 
       if (setCenterZoom(map.center(), z2)) {
         dispatch.call('move', this, map);
@@ -949,24 +852,11 @@ let _featureCache = new Map();
     };
 
 
-    map.withinEditableZoom = function() {
-      return map.zoom() >= context.minEditableZoom();
-    };
-
-
     map.editableDataEnabled = function(skipZoomCheck) {
       var layer = context.layers().layer('osm');
       if (!layer || !layer.enabled()) return false;
 
-      return skipZoomCheck || map.withinEditableZoom();
-    };
-
-
-    map.notesEditable = function() {
-      var layer = context.layers().layer('notes');
-      if (!layer || !layer.enabled()) return false;
-
-      return map.withinEditableZoom();
+      return true;
     };
 
 

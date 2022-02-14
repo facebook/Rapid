@@ -24,7 +24,6 @@ import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
 import { uiLoading } from './loading';
 import { uiMapInMap } from './map_in_map';
-import { uiNotice } from './notice';
 import { uiPhotoviewer } from './photoviewer';
 import { uiRestore } from './restore';
 import { uiScale } from './scale';
@@ -128,13 +127,6 @@ export function uiInit(context) {
         var map = context.map();
         map.redrawEnable(false);  // don't draw until we've set zoom/lat/long
 
-        map
-            .on('hitMinZoom.ui', function() {
-                ui.flash
-                    .iconName('#iD-icon-no')
-                    .label(t.html('cannot_zoom'))();
-            });
-
         container
             .append('svg')
             .attr('id', 'ideditor-defs')
@@ -177,8 +169,7 @@ export function uiInit(context) {
             .text('t');
 
         overMap
-            .call(uiMapInMap(context))
-            .call(uiNotice(context));
+            .call(uiMapInMap(context));
 
         overMap
             .append('div')

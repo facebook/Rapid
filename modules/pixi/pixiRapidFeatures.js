@@ -13,6 +13,7 @@ let _actioned;
 
 export function pixiRapidFeatures(context, featureCache, dispatch) {
   const SHOWBBOX = false;
+  const MINDATAZOOM = 14;
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
   let gpxInUrl = null;
 
@@ -168,7 +169,7 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
       points: []
     };
 
-    if (context.map().zoom() >= context.minEditableZoom()) {
+    if (context.map().zoom() >= MINDATAZOOM) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
 

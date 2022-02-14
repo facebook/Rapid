@@ -15,6 +15,7 @@ let _actioned;
 
 export function svgRapidFeatures(projection, context, dispatch) {
   const RAPID_MAGENTA = '#da26d3';
+  const MINDATAZOOM = 14;
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
   const gpxInUrl = context.initialHashParams.hasOwnProperty('gpx');
   let _layer = d3_select(null);
@@ -237,7 +238,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
       points: []
     };
 
-    if (context.map().zoom() >= context.minEditableZoom()) {
+    if (context.map().zoom() >= MINDATAZOOM) {
       /* Facebook AI/ML */
       if (dataset.service === 'fbml') {
 

@@ -1,28 +1,19 @@
 import _debounce from 'lodash-es/debounce';
 
 import { select as d3_select } from 'd3-selection';
-
-import {
-    modeAddNote,
-    modeBrowse
-} from '../../modes';
+import { modeAddNote, modeBrowse } from '../../modes';
 
 import { t } from '../../core/localizer';
 import { svgIcon } from '../../svg';
 import { uiTooltip } from '../tooltip';
 
 export function uiToolNotes(context) {
-
     var tool = {
         id: 'notes',
         label: t.html('modes.add_note.label')
     };
 
     var mode = modeAddNote(context);
-
-    function enabled() {
-        return notesEnabled() && notesEditable();
-    }
 
     function notesEnabled() {
         var noteLayer = context.layers().layer('notes');
@@ -31,11 +22,11 @@ export function uiToolNotes(context) {
 
     function notesEditable() {
         var mode = context.mode();
-        return context.map().notesEditable() && mode && mode.id !== 'save';
+        return mode && mode.id !== 'save';
     }
 
     context.keybinding().on(mode.key, function() {
-        if (!enabled(mode)) return;
+        if (!notesEditable()) return;
 
         if (mode.id === context.mode().id) {
             context.enter(modeBrowse(context));
@@ -45,7 +36,6 @@ export function uiToolNotes(context) {
     });
 
     tool.render = function(selection) {
-
         var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
         context.map()
@@ -74,7 +64,7 @@ export function uiToolNotes(context) {
                 .append('button')
                 .attr('class', function(d) { return d.id + ' add-button bar-button'; })
                 .on('click.notes', function(d3_event, d) {
-                    if (!enabled(d)) return;
+                    if (!notesEditable()) return;
 
                     // When drawing, ignore accidental clicks on mode buttons - #4042
                     var currMode = context.mode().id;
@@ -107,7 +97,7 @@ export function uiToolNotes(context) {
             // update
             buttons = buttons
                 .merge(buttonsEnter)
-                .classed('disabled', function(d) { return !enabled(d); })
+                .classed('disabled', function() { return !notesEnabled(); })
                 .classed('active', function(d) { return context.mode() && context.mode().button === d.button; });
         }
     };

@@ -434,13 +434,6 @@ export function uiSidebar(context) {
             }
             sidebar.toggle();
         });
-
-        // ensure hover sidebar is closed when zooming out beyond editable zoom
-        context.map().on('crossEditableZoom.sidebar', function(within) {
-            if (!within && !selection.select('.inspector-hover').empty()) {
-                hover([]);
-            }
-        });
     }
 
     sidebar.showPresetList = function() {};

@@ -288,11 +288,7 @@ export function modeSelect(context, selectedIDs) {
             .on('redone.select', checkSelectedIDs);
 
         context.map()
-            .on('drawn.select', selectElements)
-            .on('crossEditableZoom.select', function() {
-                selectElements();
-                _breatheBehavior.restartIfNeeded(context.surface());
-            });
+            .on('drawn.select', selectElements);
 
         context.map().doubleUpHandler()
             .on('doubleUp.modeSelect', didDoubleUp);
@@ -311,9 +307,6 @@ export function modeSelect(context, selectedIDs) {
 
         function nudgeSelection(delta) {
             return function() {
-                // prevent nudging during low zoom selection
-                if (!context.map().withinEditableZoom()) return;
-
                 var moveOp = operationMove(context, selectedIDs);
                 if (moveOp.disabled()) {
                     context.ui().flash
@@ -330,11 +323,7 @@ export function modeSelect(context, selectedIDs) {
 
         function scaleSelection(factor) {
             return function() {
-                // prevent scaling during low zoom selection
-                if (!context.map().withinEditableZoom()) return;
-
                 let nodes = utilGetAllNodes(selectedIDs, context.graph());
-
                 let isUp = factor > 1;
 
                 // can only scale if multiple nodes are selected
@@ -406,8 +395,6 @@ export function modeSelect(context, selectedIDs) {
 
 
         function didDoubleUp(d3_event, loc) {
-            if (!context.map().withinEditableZoom()) return;
-
             var target = d3_select(d3_event.target);
 
             var datum = target.datum();
@@ -456,7 +443,7 @@ export function modeSelect(context, selectedIDs) {
                     .classed('related', true);
             }
 
-            if (context.map().withinEditableZoom()) {
+            // if (context.map().withinEditableZoom()) {
                 // Apply selection styling if not in wide selection
 
                 surface
@@ -465,7 +452,7 @@ export function modeSelect(context, selectedIDs) {
                 surface
                     .selectAll(utilEntityOrDeepMemberSelector(selectedIDs, context.graph()))
                     .classed('selected', true);
-            }
+            // }
 
         }
 
