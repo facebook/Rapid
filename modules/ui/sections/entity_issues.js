@@ -98,7 +98,7 @@ export function uiSectionEntityIssues(context) {
                 var extent = d.extent(context.graph());
                 if (extent) {
                     var setZoom = Math.max(context.map().zoom(), 19);
-                    context.map().unobscuredCenterZoomEase(extent.center(), setZoom);
+                    context.map().centerZoomEase(extent.center(), setZoom);
                 }
             });
 

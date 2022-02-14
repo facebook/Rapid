@@ -9,7 +9,7 @@ import { utilGetDimensions, utilSetDimensions } from '../util/dimensions';
 import * as PIXI from 'pixi.js';
 import { pixiNotes, pixiMapillaryImages, pixiStreetsideImages,  pixiKartaImages, pixiMapillaryMapFeatures, pixiMapillarySigns, pixiKeepRight, pixiImproveOSM, pixiOsmose} from './index';
 
-export function pixiLayers(projection, context, featureCache) {
+export function pixiLayers(context, projection, featureCache) {
     var dispatch = d3_dispatch('change');
     var svg = d3_select(null);
     var _layers = [

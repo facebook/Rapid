@@ -434,7 +434,10 @@ export function svgVertices(projection, context) {
         var zoom = geoScaleToZoom(projection.scale());
 
         _prevSelected = _currSelected || {};
-        if (context.map().isInWideSelection()) {
+
+        var w = false;
+        if (w) {
+        // if (context.map().isInWideSelection()) {
             _currSelected = {};
             context.selectedIDs().forEach(function(id) {
                 var entity = graph.hasEntity(id);

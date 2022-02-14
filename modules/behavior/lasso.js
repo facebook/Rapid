@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent, geomPointInPolygon } from '@id-sdk/math';
-import { utilArrayIntersection, utilGetAllNodes } from '@id-sdk/util';
+import { utilArrayIntersection } from '@id-sdk/util';
 
 import { modeSelect } from '../modes/select';
 import { uiLasso } from '../ui/lasso';
@@ -53,14 +53,7 @@ export function behaviorLasso(context) {
             if (!lasso) return [];
 
             var graph = context.graph();
-            var limitToNodes;
-
-            if (context.map().editableDataEnabled(true /* skipZoomCheck */) && context.map().isInWideSelection()) {
-                // only select from the visible nodes
-                limitToNodes = new Set(utilGetAllNodes(context.selectedIDs(), graph));
-            } else if (!context.map().editableDataEnabled()) {
-                return [];
-            }
+            if (!context.map().editableDataEnabled()) return [];
 
             var extent = lasso.extent();  // extent in screen coordinates
             var bounds = normalize(context.projection.invert(extent.min), context.projection.invert(extent.max));
@@ -68,7 +61,6 @@ export function behaviorLasso(context) {
 
             var intersects = context.history().intersects(wgs84Extent).filter(function(entity) {
                 return entity.type === 'node' &&
-                    (!limitToNodes || limitToNodes.has(entity)) &&
                     geomPointInPolygon(context.projection(entity.loc), lasso.coordinates) &&
                     !context.features().isHidden(entity, graph, entity.geometry(graph));
             });
