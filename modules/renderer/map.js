@@ -125,13 +125,13 @@ export function rendererMap(context) {
        //     immediateRedraw();
        // });
 
-      selection
-        // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-        .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
-        .call(_zoomerPanner)
-        .call(_zoomerPanner.transform, projection.transform())
-        .on('dblclick.zoom', null); // override d3-zoom dblclick handling
-
+//      selection
+//        // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+//        .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
+//        .call(_zoomerPanner)
+//        .call(_zoomerPanner.transform, projection.transform())
+//        .on('dblclick.zoom', null); // override d3-zoom dblclick handling
+//
         map.supersurface = supersurface = selection.append('div')
           .attr('class', 'supersurface')
           .call(utilSetTransform, 0, 0);
@@ -140,7 +140,7 @@ export function rendererMap(context) {
         // SVG element: http://bl.ocks.org/jfirebaugh/6fbfbd922552bf776c16
         wrapper = supersurface
           .append('div')
-          .attr('class', 'layer layer-data');
+          .attr('class', 'wrapper layer layer-data');
 
 
         ///////////////////////
@@ -160,27 +160,27 @@ export function rendererMap(context) {
         ///////////////////////
 
 
-        map.surface = surface = wrapper
-          .call(drawLayers)                 // FIX!!!
-          .selectAll('canvas');
+        map.surface = surface = wrapper;
+          // .call(drawLayers)                 // FIX!!!
+          // .selectAll('canvas');
 
-        surface
-          .call(_doubleUpHandler)
-          .on(POINTERPREFIX + 'down.zoom', (d3_event) => {
-            _lastPointerEvent = d3_event;
-            if (d3_event.button === 2) {
-              d3_event.stopPropagation();
-            }
-          }, true)
-          .on(POINTERPREFIX + 'up.zoom', (d3_event) => {
-            _lastPointerEvent = d3_event;
-            if (resetTransform()) {
-              immediateRedraw();
-            }
-          })
-          .on(POINTERPREFIX + 'move.map', (d3_event) => {
-            _lastPointerEvent = d3_event;
-          });
+//        surface
+//          .call(_doubleUpHandler)
+//          .on(POINTERPREFIX + 'down.zoom', (d3_event) => {
+//            _lastPointerEvent = d3_event;
+//            if (d3_event.button === 2) {
+//              d3_event.stopPropagation();
+//            }
+//          }, true)
+//          .on(POINTERPREFIX + 'up.zoom', (d3_event) => {
+//            _lastPointerEvent = d3_event;
+//            if (resetTransform()) {
+//              immediateRedraw();
+//            }
+//          })
+//          .on(POINTERPREFIX + 'move.map', (d3_event) => {
+//            _lastPointerEvent = d3_event;
+//          });
         // .on(POINTERPREFIX + 'over.vertices', (d3_event) => {
         //     if (map.editableDataEnabled() && !_isTransformed) {
         //         var hover = d3_event.target.__data__;
@@ -196,42 +196,42 @@ export function rendererMap(context) {
         //     }
         // });
 
-        const detected = utilDetect();
+//        const detected = utilDetect();
 
-        // only WebKit supports gesture events
-        if ('GestureEvent' in window &&
-          // Listening for gesture events on iOS 13.4+ breaks double-tapping,
-          // but we only need to do this on desktop Safari anyway. – #7694
-          !detected.isMobileWebKit) {
+//        // only WebKit supports gesture events
+//        if ('GestureEvent' in window &&
+//          // Listening for gesture events on iOS 13.4+ breaks double-tapping,
+//          // but we only need to do this on desktop Safari anyway. – #7694
+//          !detected.isMobileWebKit) {
 
-          // Desktop Safari sends gesture events for multitouch trackpad pinches.
-          // We can listen for these and translate them into map zooms.
-          surface
-            .on('gesturestart.surface', (d3_event) => {
-              d3_event.preventDefault();
-              _gestureTransformStart = projection.transform();
-            })
-            .on('gesturechange.surface', gestureChange);
-        }
+//          // Desktop Safari sends gesture events for multitouch trackpad pinches.
+//          // We can listen for these and translate them into map zooms.
+//          surface
+//            .on('gesturestart.surface', (d3_event) => {
+//              d3_event.preventDefault();
+//              _gestureTransformStart = projection.transform();
+//            })
+//            .on('gesturechange.surface', gestureChange);
+//        }
 
-        _doubleUpHandler.on('doubleUp.map', (d3_event, p0) => {
-          if (!_dblClickZoomEnabled) return;
+//        _doubleUpHandler.on('doubleUp.map', (d3_event, p0) => {
+//          if (!_dblClickZoomEnabled) return;
 
-          // don't zoom if targeting something other than the map itself
-          if (typeof d3_event.target.__data__ === 'object' &&
-            // or area fills
-            !d3_select(d3_event.target).classed('fill')) return;
+//          // don't zoom if targeting something other than the map itself
+//          if (typeof d3_event.target.__data__ === 'object' &&
+//            // or area fills
+//            !d3_select(d3_event.target).classed('fill')) return;
 
-          const zoomOut = d3_event.shiftKey;
-          let t = projection.transform();
-          let p1 = t.invert(p0);
+//          const zoomOut = d3_event.shiftKey;
+//          let t = projection.transform();
+//          let p1 = t.invert(p0);
 
-          t = t.scale(zoomOut ? 0.5 : 2);
-          t.x = p0[0] - p1[0] * t.k;
-          t.y = p0[1] - p1[1] * t.k;
+//          t = t.scale(zoomOut ? 0.5 : 2);
+//          t.x = p0[0] - p1[0] * t.k;
+//          t.y = p0[1] - p1[1] * t.k;
 
-          map.transformEase(t);
-        });
+//          map.transformEase(t);
+//        });
 
         map.dimensions(utilGetDimensions(selection));
     }

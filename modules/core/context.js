@@ -338,8 +338,8 @@ export function coreContext() {
 
 
   /* Behaviors */
-  context.install = (behavior) => context.surface().call(behavior);
-  context.uninstall = (behavior) => context.surface().call(behavior.off);
+  context.install = (behavior) => { return; } // context.surface().call(behavior);
+  context.uninstall = (behavior) => { return; } //context.surface().call(behavior.off);
 
 
   /* Copy/Paste */

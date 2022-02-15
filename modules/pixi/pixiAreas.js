@@ -72,6 +72,16 @@ export function pixiAreas(context, featureCache) {
           container.name = entity.id;
           const area = entity.extent(graph).area();  // estimate area from extent for speed
           container.zIndex = -area;                  // sort by area descending (small things above big things)
+          container.interactiveChildren = true;
+          container.interactive = true;
+
+          container.buttonMode = true;
+          container.interactive = true;
+          container.on('pointermove', () => {
+            container.alpha = 0xffffff * Math.random();
+            console.log(`over ${entity.id}`);
+          });
+
           layer.addChild(container);
 
           const lowRes = new PIXI.Sprite(_textures.square);
@@ -84,6 +94,7 @@ export function pixiAreas(context, featureCache) {
           const fill = new PIXI.Graphics();
           fill.name = entity.id + '-fill';
           container.addChild(fill);
+
 
           const stroke = new PIXI.Graphics();
           stroke.name = entity.id + '-stroke';
