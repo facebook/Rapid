@@ -125,12 +125,12 @@ export function rendererMap(context) {
        //     immediateRedraw();
        // });
 
-//      selection
-//        // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-//        .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
-//        .call(_zoomerPanner)
-//        .call(_zoomerPanner.transform, projection.transform())
-//        .on('dblclick.zoom', null); // override d3-zoom dblclick handling
+     selection
+       // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+       .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
+       .call(_zoomerPanner)
+       .call(_zoomerPanner.transform, projection.transform())
+       .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 //
         map.supersurface = supersurface = selection.append('div')
           .attr('class', 'supersurface')

@@ -42,6 +42,50 @@ export function getViewfieldContainerHelper(context, directions, color) {
 
   return vfContainer;
 }
+/**
+* Generates a polygon from a line. Intended for use to create custom hit areas for our ways.
+* @param width the width of the polygon in pixels (deviation from either side of the line))
+* @param {Array<points>} A list of point coord pairs that denote the line.
+* @returns {PIXI.Polygon} The polygon encasing the line with specified width.
+* method pilfered from https://jsfiddle.net/bigtimebuddy/xspmq8au/
+*/
+export function lineToPolygon(width, points) {
+  const numPoints = points.length / 2;
+  const output = new Array(points.length * 2);
+  for (let i = 0; i < numPoints; i++) {
+    const j = i * 2;
+
+    // Position of current point
+    const x = points[j];
+    const y = points[j + 1];
+
+    // Start
+    const x0 = points[j - 2] !== undefined ? points[j - 2] : x;
+    const y0 = points[j - 1] !== undefined ? points[j - 1] : y;
+
+    // End
+    const x1 = points[j + 2] !== undefined ? points[j + 2] : x;
+    const y1 = points[j + 3] !== undefined ? points[j + 3] : y;
+
+    // Get the angle of the line
+    const a = Math.atan2(-x1 + x0, y1 - y0);
+    const deltaX = width * Math.cos(a);
+    const deltaY = width * Math.sin(a);
+
+    // Add the x, y at the beginning
+    output[j] = x + deltaX;
+    output[j + 1] = y + deltaY;
+
+    // Add the reflected x, y at the end
+    output[(output.length - 1) - j - 1] = x - deltaX;
+    output[(output.length - 1) - j] = y - deltaY;
+  }
+  // close the shape
+  output.push(output[0], output[1]);
+
+  return new PIXI.Polygon(output);
+}
+
 
 export function getMapillaryIconSpriteHelper(context, picon) {
   const spritesheet = context._mapillarySheet;

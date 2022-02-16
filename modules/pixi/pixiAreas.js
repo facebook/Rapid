@@ -72,16 +72,24 @@ export function pixiAreas(context, featureCache) {
           container.name = entity.id;
           const area = entity.extent(graph).area();  // estimate area from extent for speed
           container.zIndex = -area;                  // sort by area descending (small things above big things)
-          container.interactiveChildren = true;
-          container.interactive = true;
-
           container.buttonMode = true;
           container.interactive = true;
-          container.on('pointermove', () => {
-            container.alpha = 0xffffff * Math.random();
-            console.log(`over ${entity.id}`);
-          });
 
+          // container.on('pointerover', () => {
+          //   console.log(`over polygon ${entity.id}`);
+          // });
+          // container.on('pointerout', () => {
+          //   console.log(`out of polygon ${entity.id}`);
+          // });
+          // container.on('pointerup', () => {
+          //   console.log(`up polygon ${entity.id}`);
+          // });
+          // container.on('pointerdown', () => {
+          //   console.log(`down of polygon ${entity.id}`);
+          // });
+          // // container.on('pointermove', () => {
+          //   console.log(`move of ${entity.id}`);
+          // });
           layer.addChild(container);
 
           const lowRes = new PIXI.Sprite(_textures.square);

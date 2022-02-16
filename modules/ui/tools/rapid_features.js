@@ -30,8 +30,9 @@ export function uiToolRapidFeatures(context) {
 
   function layerEnabled() {
     if (!context.pixi || context.pixi.stage.children.length === 0) return false;
+    let rapidLayer = context.pixi.stage.getChildByName('rapid');
 
-    return context.pixi.stage.getChildByName('rapid').visible === true;
+    return rapidLayer ? rapidLayer.visible : false;
   }
 
 

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 
 import { osmPavedTags } from '../osm/tags';
-import { getLineSegments } from './pixiHelpers';
+import { getLineSegments, lineToPolygon } from './pixiHelpers';
 import { styleMatch } from './pixiStyles';
 
 
@@ -85,9 +85,12 @@ export function pixiLines(context, featureCache) {
           const level = layer.getChildByName(lvl);
 
           const container = new PIXI.Container();
+          container.interactive = true;
+          container.buttonMode = true;
           container.name = entity.id;
           container.zIndex = getzIndex(entity.tags);
           level.addChild(container);
+
 
           const casing = new PIXI.Graphics();
           casing.name = entity.id + '-casing';
@@ -248,6 +251,31 @@ export function pixiLines(context, featureCache) {
               g.lineTo(x, y);
             }
           });
+
+          if (which === 'casing' && g.currentPath) {
+            const hitTarget = lineToPolygon(
+              width,
+              g.currentPath.points
+            );
+            g.hitArea = hitTarget;
+            g.buttonMode = true;
+            g.interactive = true;
+
+            // g.on('pointerover', () => {
+            //   console.log(`pointer over line ${entity.id}`);
+            // });
+            // g.on('pointerout', () => {
+            //   console.log(`pointer out of line ${entity.id}`);
+            // });
+            // g.on('pointerdown', () => {
+            //   console.log(`pointer down on line ${entity.id}`);
+            // });
+
+          }
+
+
+
+
         }
       });
   }

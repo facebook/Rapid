@@ -101,6 +101,16 @@ export class pixiRenderer {
     const midpointsLayer = new PIXI.Container();
     midpointsLayer.name = 'midpoints';
 
+    [areasLayer, linesLayer, pointsLayer].forEach(layer => {
+      layer.interactive = true;
+      layer.interactiveChildren = true;
+      layer.buttonMode = true;
+
+      layer.on('pointerdown', (iData) => {
+            console.log(`pointerdown event, layer ${iData.target.name }`);
+          });
+    });
+
     const stage = this._pixi.stage;
     stage.name = 'stage';
     stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
