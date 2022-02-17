@@ -228,6 +228,9 @@ export function rendererBackgroundSource(data) {
 
 
     source.validZoom = function(z) {
+//hack
+if(source.id === 'mapbox_locator_overlay') return z <15;
+
         return source.zoomExtent[0] <= z &&
             (source.overzoom || source.zoomExtent[1] > z);
     };
@@ -283,97 +286,100 @@ rendererBackgroundSource.Bing = function(data, dispatch) {
     */
     const strictParam = 'n';
 
-    var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?include=ImageryProviders&uriScheme=https&key=' + key;
-    var cache = {};
-    var inflight = {};
-    var providers = [];
+// AFAICT Bing Metadata endpoints dont work anymore
+//    var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?include=ImageryProviders&uriScheme=https&key=' + key;
+//    var cache = {};
+//    var inflight = {};
+//    var providers = [];
+//
+//    d3_json(url)
+//        .then(function(json) {
+//            let imageryResource = json.resourceSets[0].resources[0];
+//
+//            //retrieve and prepare up to date imagery template
+//            let template = imageryResource.imageUrl; //https://ecn.{subdomain}.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=10339
+//            let subDomains = imageryResource.imageUrlSubdomains; //["t0, t1, t2, t3"]
+//            let subDomainNumbers = subDomains.map((subDomain) => {
+//                return subDomain.substring(1);
+//            } ).join(',');
+//
+//            template = template.replace('{subdomain}', `t{switch:${subDomainNumbers}}`).replace('{quadkey}', '{u}');
+//            if (!new URLSearchParams(template).has(strictParam)){
+//                template += `&${strictParam}=z`;
+//            }
+//            bing.template(template);
+//
+//            providers = imageryResource.imageryProviders.map(function(provider) {
+//                return {
+//                    attribution: provider.attribution,
+//                    areas: provider.coverageAreas.map(function(area) {
+//                        return {
+//                            zoom: [area.zoomMin, area.zoomMax],
+//                            extent: new Extent([area.bbox[1], area.bbox[0]], [area.bbox[3], area.bbox[2]])
+//                        };
+//                    })
+//                };
+//            });
+//            dispatch.call('change');
+//        })
+//        .catch(function() {
+//            /* ignore */
+//        });
 
-    d3_json(url)
-        .then(function(json) {
-            let imageryResource = json.resourceSets[0].resources[0];
 
-            //retrieve and prepare up to date imagery template
-            let template = imageryResource.imageUrl; //https://ecn.{subdomain}.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=10339
-            let subDomains = imageryResource.imageUrlSubdomains; //["t0, t1, t2, t3"]
-            let subDomainNumbers = subDomains.map((subDomain) => {
-                return subDomain.substring(1);
-            } ).join(',');
-
-            template = template.replace('{subdomain}', `t{switch:${subDomainNumbers}}`).replace('{quadkey}', '{u}');
-            if (!new URLSearchParams(template).has(strictParam)){
-                template += `&${strictParam}=z`;
-            }
-            bing.template(template);
-
-            providers = imageryResource.imageryProviders.map(function(provider) {
-                return {
-                    attribution: provider.attribution,
-                    areas: provider.coverageAreas.map(function(area) {
-                        return {
-                            zoom: [area.zoomMin, area.zoomMax],
-                            extent: new Extent([area.bbox[1], area.bbox[0]], [area.bbox[3], area.bbox[2]])
-                        };
-                    })
-                };
-            });
-            dispatch.call('change');
-        })
-        .catch(function() {
-            /* ignore */
-        });
-
-
-    bing.copyrightNotices = function(zoom, extent) {
-        zoom = Math.min(zoom, 21);
-        return providers.filter(function(provider) {
-            return provider.areas.some(function(area) {
-                return extent.intersects(area.extent) &&
-                    area.zoom[0] <= zoom &&
-                    area.zoom[1] >= zoom;
-            });
-        }).map(function(provider) {
-            return provider.attribution;
-        }).join(', ');
-    };
+//    bing.copyrightNotices = function(zoom, extent) {
+//        zoom = Math.min(zoom, 21);
+//        return providers.filter(function(provider) {
+//            return provider.areas.some(function(area) {
+//                return extent.intersects(area.extent) &&
+//                    area.zoom[0] <= zoom &&
+//                    area.zoom[1] >= zoom;
+//            });
+//        }).map(function(provider) {
+//            return provider.attribution;
+//        }).join(', ');
+//    };
 
 
     bing.getMetadata = function(center, tileCoord, callback) {
-        var tileID = tileCoord.slice(0, 3).join('/');
-        var zoom = Math.min(tileCoord[2], 21);
-        var centerPoint = center[1] + ',' + center[0];  // lat,lng
-        var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial/' + centerPoint +
-                '?zl=' + zoom + '&key=' + key;
-
-        if (inflight[tileID]) return;
-
-        if (!cache[tileID]) {
-            cache[tileID] = {};
-        }
-        if (cache[tileID] && cache[tileID].metadata) {
-            return callback(null, cache[tileID].metadata);
-        }
-
-        inflight[tileID] = true;
-        d3_json(url)
-            .then(function(result) {
-                delete inflight[tileID];
-                if (!result) {
-                    throw new Error('Unknown Error');
-                }
-                var vintage = {
-                    start: localeDateString(result.resourceSets[0].resources[0].vintageStart),
-                    end: localeDateString(result.resourceSets[0].resources[0].vintageEnd)
-                };
-                vintage.range = vintageRange(vintage);
-
-                var metadata = { vintage: vintage };
-                cache[tileID].metadata = metadata;
-                if (callback) callback(null, metadata);
-            })
-            .catch(function(err) {
-                delete inflight[tileID];
-                if (callback) callback(err.message);
-            });
+// AFAICT Bing Metadata endpoints dont work anymore
+return;
+//        var tileID = tileCoord.slice(0, 3).join('/');
+//        var zoom = Math.min(tileCoord[2], 21);
+//        var centerPoint = center[1] + ',' + center[0];  // lat,lng
+//        var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial/' + centerPoint +
+//                '?zl=' + zoom + '&key=' + key;
+//
+//        if (inflight[tileID]) return;
+//
+//        if (!cache[tileID]) {
+//            cache[tileID] = {};
+//        }
+//        if (cache[tileID] && cache[tileID].metadata) {
+//            return callback(null, cache[tileID].metadata);
+//        }
+//
+//        inflight[tileID] = true;
+//        d3_json(url)
+//            .then(function(result) {
+//                delete inflight[tileID];
+//                if (!result) {
+//                    throw new Error('Unknown Error');
+//                }
+//                var vintage = {
+//                    start: localeDateString(result.resourceSets[0].resources[0].vintageStart),
+//                    end: localeDateString(result.resourceSets[0].resources[0].vintageEnd)
+//                };
+//                vintage.range = vintageRange(vintage);
+//
+//                var metadata = { vintage: vintage };
+//                cache[tileID].metadata = metadata;
+//                if (callback) callback(null, metadata);
+//            })
+//            .catch(function(err) {
+//                delete inflight[tileID];
+//                if (callback) callback(err.message);
+//            });
     };
 
 
