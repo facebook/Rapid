@@ -114,13 +114,7 @@ export function uiIntro(context, skipToRapid) {
     overlays.forEach(d => context.background().toggleOverlayLayer(d));
 
     // Setup data layers (only OSM & ai-features)
-    let layers = context.layers();
-    layers.all().forEach(item => {
-      // if the layer has the function `enabled`
-      if (typeof item.layer.enabled === 'function') {
-        item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
-      }
-    });
+    context.layers().only(['osm', 'rapid']);
 
     // Setup RapiD Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();

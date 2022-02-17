@@ -67,7 +67,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleRapid() {
-    const rapidLayer = context.layers().layer('rapid');
+    const rapidLayer = context.layers().getLayer('rapid');
     rapidLayer.enabled(!rapidLayer.enabled());
 
     // toggling the layer should trigger a map redraw
@@ -114,7 +114,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderModalContent(selection) {
-    const rapidLayer = context.layers().layer('rapid');
+    const rapidLayer = context.layers().getLayer('rapid');
 
     /* Toggle All */
     let toggleAll = selection.selectAll('.rapid-toggle-all')
@@ -219,7 +219,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-    const rapidLayer = context.layers().layer('rapid');
+    const rapidLayer = context.layers().getLayer('rapid');
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
       .data(datasets, d => d.id);

@@ -404,7 +404,7 @@ export function uiInit(context) {
                 var mode = context.mode();
                 if (mode && /^draw/.test(mode.id)) return;
 
-                var layer = context.layers().layer('osm');
+                var layer = context.layers().getLayer('osm');
                 if (layer) {
                     layer.enabled(!layer.enabled());
                     if (!layer.enabled()) {

@@ -253,26 +253,29 @@ export function rendererBackground(context) {
       .filter(d => !d.source().isLocatorOverlay() && !d.source().isHidden())
       .forEach(d => imageryUsed.push(d.source().imageryUsed()));
 
-    const dataLayer = context.layers().layer('data');
-    if (dataLayer && dataLayer.enabled() && dataLayer.hasData()) {
-      imageryUsed.push(dataLayer.getSrc());
-    }
+// find a better way to determine what layers are enabled than
+// `context.layers().getLayer().enabled()`
 
-    const photoOverlayLayers = {
-      streetside: 'Bing Streetside',
-      mapillary: 'Mapillary Images',
-      'mapillary-map-features': 'Mapillary Map Features',
-      'mapillary-signs': 'Mapillary Signs',
-      openstreetcam: 'OpenStreetCam Images'
-    };
-
-    for (let layerID in photoOverlayLayers) {
-      const layer = context.layers().layer(layerID);
-      if (layer && layer.enabled()) {
-        photoOverlaysUsed.push(layerID);
-        imageryUsed.push(photoOverlayLayers[layerID]);
-      }
-    }
+//    const dataLayer = context.layers().getLayer('data');
+//    if (dataLayer && dataLayer.enabled() && dataLayer.hasData()) {
+//      imageryUsed.push(dataLayer.getSrc());
+//    }
+//
+//    const photoOverlayLayers = {
+//      streetside: 'Bing Streetside',
+//      mapillary: 'Mapillary Images',
+//      'mapillary-map-features': 'Mapillary Map Features',
+//      'mapillary-signs': 'Mapillary Signs',
+//      openstreetcam: 'OpenStreetCam Images'
+//    };
+//
+//    for (let layerID in photoOverlayLayers) {
+//      const layer = context.layers().getLayer(layerID);
+//      if (layer && layer.enabled()) {
+//        photoOverlaysUsed.push(layerID);
+//        imageryUsed.push(photoOverlayLayers[layerID]);
+//      }
+//    }
 
     context.history().imageryUsed(imageryUsed);
     context.history().photoOverlaysUsed(photoOverlaysUsed);
@@ -512,7 +515,7 @@ export function rendererBackground(context) {
         });
 
         if (hash.gpx) {
-          const gpx = context.layers().layer('data');
+          const gpx = context.layers().getLayer('data');
           if (gpx) {
             gpx.url(hash.gpx, '.gpx');
           }

@@ -47,7 +47,7 @@ export function uiIntroRapid(context, reveal) {
 
 
   function welcome() {
-    context.layers().layer('ai-features').enabled(true);
+    context.layers().enable('rapid');
     context.enter(modeBrowse(context));
     context.history().reset('initial');
     reveal('.intro-nav-wrap .chapter-rapid',
@@ -71,7 +71,7 @@ export function uiIntroRapid(context, reveal) {
 
 
   function selectRoad() {
-    context.layers().layer('ai-features').enabled(true);
+    context.layers().enable('rapid');
 
     // disallow scrolling
     d3_select('.inspector-wrap').on('wheel.intro', eventCancel);

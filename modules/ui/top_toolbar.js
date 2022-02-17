@@ -19,7 +19,8 @@ export function uiTopToolbar(context) {
         downloadOsc = uiToolDownloadOsc(context);
 
     function notesEnabled() {
-        var noteLayer = context.layers().layer('notes');
+        let layers = context.layers();
+        var noteLayer = layers && layers.getLayer('notes');
         return noteLayer && noteLayer.enabled();
     }
 
@@ -34,8 +35,8 @@ export function uiTopToolbar(context) {
         });
 
         var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
-        context.layers()
-            .on('change.topToolbar', debouncedUpdate);
+        // context.layers()
+        //     .on('change.topToolbar', debouncedUpdate);
 
         update();
 

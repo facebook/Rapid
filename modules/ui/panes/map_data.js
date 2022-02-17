@@ -16,7 +16,7 @@ export function uiPaneMapData(context) {
         .iconName('iD-icon-data')
         .sections([
             uiSectionDataLayers(context),
-            uiSectionPhotoOverlays(context),
+            // uiSectionPhotoOverlays(context),
             uiSectionMapStyleOptions(context),
             uiSectionMapFeatures(context)
         ]);

@@ -317,7 +317,7 @@ export function uiSectionPhotoOverlays(context) {
         }
     }
 
-    context.layers().on('change.uiSectionPhotoOverlays', section.reRender);
+    // context.layers().on('change.uiSectionPhotoOverlays', section.reRender);
     context.photos().on('change.uiSectionPhotoOverlays', section.reRender);
 
     return section;

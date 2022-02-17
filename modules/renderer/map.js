@@ -8,7 +8,6 @@ import { utilArrayFlatten, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
 import { pixiRenderer } from '../pixi/pixiRenderer';
-import { pixiLayers } from '../pixi/layers';
 
 import { prefs } from '../core/preferences';
 import { modeBrowse } from '../modes/browse';
@@ -119,68 +118,67 @@ export function rendererMap(context) {
       // context.features()
       //   .on('redraw.map', immediateRedraw);
 
-       // drawLayers
-       //   .on('change.map', function() {
-       //     context.background().updateImagery();
-       //     immediateRedraw();
-       // });
+      selection
+        // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+        .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
+        .call(_zoomerPanner)
+        .call(_zoomerPanner.transform, projection.transform())
+        .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 
-     selection
-       // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-       .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
-       .call(_zoomerPanner)
-       .call(_zoomerPanner.transform, projection.transform())
-       .on('dblclick.zoom', null); // override d3-zoom dblclick handling
-//
-        map.supersurface = supersurface = selection.append('div')
-          .attr('class', 'supersurface')
-          .call(utilSetTransform, 0, 0);
+      map.supersurface = supersurface = selection.append('div')
+        .attr('class', 'supersurface')
+        .call(utilSetTransform, 0, 0);
 
-        // Need a wrapper div because Opera can't cope with an absolutely positioned
-        // SVG element: http://bl.ocks.org/jfirebaugh/6fbfbd922552bf776c16
-        wrapper = supersurface
-          .append('div')
-          .attr('class', 'wrapper layer layer-data');
+      // Need a wrapper div because Opera can't cope with an absolutely positioned
+      // SVG element: http://bl.ocks.org/jfirebaugh/6fbfbd922552bf776c16
+      wrapper = supersurface
+        .append('div')
+        .attr('class', 'wrapper layer layer-data');
+
+      ///////////////////////
+      // BEGIN PIXI
+      //
+
+      // Add pixi as child of supersurface
+      wrapper
+        .append('div')
+        .attr('class', 'layer pixi-data')
+        .style('z-index', '3');
+
+      const pixiContainer = document.querySelector('.pixi-data');
+      _pixiRenderer = new pixiRenderer(context, pixiContainer);
+
+      const layers = _pixiRenderer.layers();
+      layers
+        .on('change.map', function() {
+          context.background().updateImagery();
+          immediateRedraw();
+        });
+
+      // END PIXI
+      ///////////////////////
 
 
-        ///////////////////////
-        // BEGIN PIXI
-        //
+      map.surface = surface = wrapper.selectAll('canvas');
 
-        // Add pixi as child of supersurface
-        wrapper
-            .append('div')
-            .attr('class', 'layer pixi-data')
-            .style('z-index', '3');
+      surface
+        .call(_doubleUpHandler)
+        .on(POINTERPREFIX + 'down.zoom', (d3_event) => {
+          _lastPointerEvent = d3_event;
+          if (d3_event.button === 2) {
+            d3_event.stopPropagation();
+          }
+        }, true)
+        .on(POINTERPREFIX + 'up.zoom', (d3_event) => {
+          _lastPointerEvent = d3_event;
+          if (resetTransform()) {
+            immediateRedraw();
+          }
+        })
+        .on(POINTERPREFIX + 'move.map', (d3_event) => {
+          _lastPointerEvent = d3_event;
+        });
 
-        const pixiContainer = document.querySelector('.pixi-data');
-        _pixiRenderer = new pixiRenderer(context, pixiContainer);
-
-        // END PIXI
-        ///////////////////////
-
-
-        map.surface = surface = wrapper;
-          // .call(drawLayers)                 // FIX!!!
-          // .selectAll('canvas');
-
-//        surface
-//          .call(_doubleUpHandler)
-//          .on(POINTERPREFIX + 'down.zoom', (d3_event) => {
-//            _lastPointerEvent = d3_event;
-//            if (d3_event.button === 2) {
-//              d3_event.stopPropagation();
-//            }
-//          }, true)
-//          .on(POINTERPREFIX + 'up.zoom', (d3_event) => {
-//            _lastPointerEvent = d3_event;
-//            if (resetTransform()) {
-//              immediateRedraw();
-//            }
-//          })
-//          .on(POINTERPREFIX + 'move.map', (d3_event) => {
-//            _lastPointerEvent = d3_event;
-//          });
         // .on(POINTERPREFIX + 'over.vertices', (d3_event) => {
         //     if (map.editableDataEnabled() && !_isTransformed) {
         //         var hover = d3_event.target.__data__;
@@ -276,12 +274,8 @@ export function rendererMap(context) {
     }
 
 
-// will not work yet
-let drawLayers;
-let _pixiProjection = new Projection();
-let _featureCache = new Map();
     map.init = function() {
-      drawLayers = pixiLayers(context, _pixiProjection, _featureCache);
+      /* noop */
     };
 
 
@@ -520,7 +514,6 @@ let _featureCache = new Map();
       resetTransform();
       supersurface.call(context.background());
       redrawPixi();
-      // wrapper.call(drawLayers);
 
       // OSM
       if (map.editableDataEnabled()) {
@@ -645,7 +638,6 @@ let _featureCache = new Map();
       if (!arguments.length) return _dimensions;
 
       _dimensions = val;
-      // drawLayers.dimensions(_dimensions);
       context.background().dimensions(_dimensions);
       projection.clipExtent([[0, 0], _dimensions]);
       _getMouseCoords = utilFastMouse(supersurface.node());
@@ -852,14 +844,6 @@ let _featureCache = new Map();
     };
 
 
-    map.editableDataEnabled = function(skipZoomCheck) {
-      var layer = context.layers().layer('osm');
-      if (!layer || !layer.enabled()) return false;
-
-      return true;
-    };
-
-
     map.toggleHighlightEdited = function() {
       surface.classed('highlight-edited', !surface.classed('highlight-edited'));
       map.pan([0, 0]); // trigger a redraw
@@ -897,9 +881,19 @@ let _featureCache = new Map();
     };
 
 
-    map.layers = function() { return drawLayers; };
+    map.layers = function() {
+      return _pixiRenderer && _pixiRenderer.layers();
+    };
 
-    map.doubleUpHandler = function() { return _doubleUpHandler; };
+    map.editableDataEnabled = function() {
+return true;
+      // const layer = _pixiRenderer && _pixiRenderer.layers().getLayer('osm');
+      // return layer && layer.enabled();
+    };
+
+    map.doubleUpHandler = function() {
+      return _doubleUpHandler;
+    };
 
     return utilRebind(map, dispatch, 'on');
 }

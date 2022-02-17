@@ -1,6 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { Projection, vecAdd } from '@id-sdk/math';
-import { pixiPoints, pixiLayers, pixiVertices, pixiLines, pixiAreas, pixiLabels, pixiRapidFeatures, pixiMidpoints } from './index.js';
+
+import {
+  pixiAreas,
+  pixiLabels,
+  pixiLayers,
+  pixiLines,
+  pixiMidpoints,
+  pixiPoints,
+  pixiRapidFeatures,
+  pixiVertices
+} from './index.js';
 
 const AUTOTICK = false;     // set to true to turn the ticker back on
 
@@ -122,7 +132,13 @@ export class pixiRenderer {
     this._drawAreas = pixiAreas(context, this._featureCache);
     this._drawMidpoints = pixiMidpoints(context, this._featureCache);
     this._drawLabels = pixiLabels(context, this._featureCache);
-    this._drawLayers = pixiLayers(context, this._pixiProjection, this._featureCache);
+
+    this._drawLayers = new pixiLayers(context, this._pixiProjection, this._featureCache);
+  }
+
+
+  layers() {
+    return this._drawLayers;
   }
 
 
@@ -209,12 +225,18 @@ export class pixiRenderer {
 
 
     // DRAW phase
+
+    // OSM
     this._drawAreas(areasLayer, this._pixiProjection, data);
     this._drawLines(linesLayer, this._pixiProjection, data);
     this._drawVertices(verticesLayer, this._pixiProjection, data);
     this._drawPoints(pointsLayer, this._pixiProjection, data);
     // this._drawMidpoints(midpointsLayer, this._pixiProjection, data);
     this._drawLabels(labelsLayer, this._pixiProjection, data);
+
+    // Everything Else
+    this._drawLayers.render(this._pixiProjection);
+
 
     if (!AUTOTICK) {    // tick manually
       this._redrawPending = true;

@@ -25,6 +25,8 @@ export function uiSectionDataLayers(context) {
         .disclosureContent(renderDisclosureContent);
 
     function renderDisclosureContent(selection) {
+return; // nah
+
         var container = selection.selectAll('.data-layer-container')
             .data([0]);
 
@@ -40,7 +42,7 @@ export function uiSectionDataLayers(context) {
     }
 
     function showsLayer(which) {
-        var layer = layers.layer(which);
+        var layer = layers.getLayer(which);
         if (layer) {
             return layer.enabled();
         }
@@ -52,7 +54,7 @@ export function uiSectionDataLayers(context) {
         var mode = context.mode();
         if (mode && /^draw/.test(mode.id)) return;
 
-        var layer = layers.layer(which);
+        var layer = layers.getLayer(which);
         if (layer) {
             layer.enabled(enabled);
 
@@ -290,7 +292,7 @@ export function uiSectionDataLayers(context) {
     }
 
     function drawCustomDataItems(selection) {
-        var dataLayer = layers.layer('data');
+        var dataLayer = layers.getLayer('data');
         var hasData = dataLayer && dataLayer.hasData();
         var showsData = hasData && dataLayer.enabled();
 
@@ -378,7 +380,7 @@ export function uiSectionDataLayers(context) {
     }
 
     function customChanged(d) {
-        var dataLayer = layers.layer('data');
+        var dataLayer = layers.getLayer('data');
 
         if (d && d.url) {
             dataLayer.url(d.url);
@@ -441,7 +443,7 @@ export function uiSectionDataLayers(context) {
             .html(t.html('map_data.measurement_panel.title'));
     }
 
-    context.layers().on('change.uiSectionDataLayers', section.reRender);
+    // context.layers().on('change.uiSectionDataLayers', section.reRender);
 
     context.map()
         .on('move.uiSectionDataLayers',
