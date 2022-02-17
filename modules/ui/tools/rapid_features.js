@@ -20,14 +20,6 @@ export function uiToolRapidFeatures(context) {
     label: t('toolbar.rapid_features')
   };
 
-  context.keybinding()
-    .on(uiCmd(rapidFeaturesToggleKey), (d3_event) => {
-      d3_event.preventDefault();
-      d3_event.stopPropagation();
-      toggleFeatures();
-    });
-
-
   function layerEnabled() {
     if (!context.pixi || context.pixi.stage.children.length === 0) return false;
     let rapidLayer = context.pixi.stage.getChildByName('rapid');
@@ -52,12 +44,15 @@ export function uiToolRapidFeatures(context) {
   }
 
 
-  tool.render = (selection) => {
+  tool.install = (selection) => {
     const debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
-    let wrap = selection
-      .append('div')
-      .attr('class', showPowerUser ? 'joined' : null)
-      .style('display', 'flex');
+
+    context.keybinding()
+      .on(uiCmd(rapidFeaturesToggleKey), d3_event => {
+        d3_event.preventDefault();
+        d3_event.stopPropagation();
+        toggleFeatures();
+      });
 
     context.map()
       .on('move.rapid_features', debouncedUpdate)
@@ -65,6 +60,11 @@ export function uiToolRapidFeatures(context) {
 
     context
       .on('enter.rapid_features', update);
+
+    let wrap = selection
+      .append('div')
+      .attr('class', showPowerUser ? 'joined' : null)
+      .style('display', 'flex');
 
     update();
 
@@ -111,6 +111,11 @@ export function uiToolRapidFeatures(context) {
         .append('div')
         .attr('class', 'beta');
     }
+  };
+
+
+  tool.uninstall = function () {
+    context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
   };
 
   return tool;

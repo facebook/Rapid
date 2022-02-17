@@ -644,15 +644,11 @@ export function uiInit(context) {
     };
 
     ui.showEditMenu = function(anchorPoint, triggerType, operations) {
-
-        // remove any displayed menu
-        ui.closeEditMenu();
+        ui.closeEditMenu();   // remove any displayed menu
 
         if (!operations && context.mode().operations) operations = context.mode().operations();
         if (!operations || !operations.length) return;
-
-        // disable menu if in wide selection, for example
-        if (!context.map().editableDataEnabled()) return;
+        if (!context.editable()) return;
 
         var surfaceNode = context.surface().node();
         if (surfaceNode.focus) {   // FF doesn't support it

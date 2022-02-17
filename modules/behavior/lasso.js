@@ -53,7 +53,7 @@ export function behaviorLasso(context) {
             if (!lasso) return [];
 
             var graph = context.graph();
-            if (!context.map().editableDataEnabled()) return [];
+            if (!context.editable()) return [];
 
             var extent = lasso.extent();  // extent in screen coordinates
             var bounds = normalize(context.projection.invert(extent.min), context.projection.invert(extent.max));

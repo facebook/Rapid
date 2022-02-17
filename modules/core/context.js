@@ -162,7 +162,7 @@ export function coreContext() {
 
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
-      if (_connection && context.editableDataEnabled()) {
+      if (_connection && context.editable()) {
         const cid = _connection.getConnectionId();
         _connection.loadTiles(projection, afterLoad(cid, callback));
       }
@@ -173,7 +173,7 @@ export function coreContext() {
   context.loadTileAtLoc = (loc, callback) => {
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
-      if (_connection && context.editableDataEnabled()) {
+      if (_connection && context.editable()) {
         const cid = _connection.getConnectionId();
         _connection.loadTileAtLoc(loc, afterLoad(cid, callback));
       }
@@ -338,8 +338,8 @@ export function coreContext() {
 
 
   /* Behaviors */
-  context.install = (behavior) => { return; } // context.surface().call(behavior);
-  context.uninstall = (behavior) => { return; } //context.surface().call(behavior.off);
+  context.install = (behavior) => { return; }; // context.surface().call(behavior);
+  context.uninstall = (behavior) => { return; }; //context.surface().call(behavior.off);
 
 
   /* Copy/Paste */
@@ -387,13 +387,11 @@ export function coreContext() {
   context.map = () => _map;
   context.layers = () => _map.layers();
   context.surface = () => _map.surface;
-  context.editableDataEnabled = () => _map.editableDataEnabled();
   context.surfaceRect = () => _map.surface.node().getBoundingClientRect();
   context.editable = () => {
-    // don't allow editing during save
     const mode = context.mode();
-    if (!mode || mode.id === 'save') return false;
-    return _map.editableDataEnabled();
+    if (!mode || mode.id === 'save') return false;   // don't allow editing during save
+    return true;  // _map.editableDataEnabled();     // todo: disallow editing if OSM layer is off
   };
 
 

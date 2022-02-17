@@ -179,58 +179,6 @@ export function rendererMap(context) {
           _lastPointerEvent = d3_event;
         });
 
-        // .on(POINTERPREFIX + 'over.vertices', (d3_event) => {
-        //     if (map.editableDataEnabled() && !_isTransformed) {
-        //         var hover = d3_event.target.__data__;
-        //         surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
-        //         dispatch.call('drawn', this, { full: false });
-        //     }
-        // })
-        // .on(POINTERPREFIX + 'out.vertices', (d3_event) => {
-        //     if (map.editableDataEnabled() && !_isTransformed) {
-        //         var hover = d3_event.relatedTarget && d3_event.relatedTarget.__data__;
-        //         surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
-        //         dispatch.call('drawn', this, { full: false });
-        //     }
-        // });
-
-//        const detected = utilDetect();
-
-//        // only WebKit supports gesture events
-//        if ('GestureEvent' in window &&
-//          // Listening for gesture events on iOS 13.4+ breaks double-tapping,
-//          // but we only need to do this on desktop Safari anyway. – #7694
-//          !detected.isMobileWebKit) {
-
-//          // Desktop Safari sends gesture events for multitouch trackpad pinches.
-//          // We can listen for these and translate them into map zooms.
-//          surface
-//            .on('gesturestart.surface', (d3_event) => {
-//              d3_event.preventDefault();
-//              _gestureTransformStart = projection.transform();
-//            })
-//            .on('gesturechange.surface', gestureChange);
-//        }
-
-//        _doubleUpHandler.on('doubleUp.map', (d3_event, p0) => {
-//          if (!_dblClickZoomEnabled) return;
-
-//          // don't zoom if targeting something other than the map itself
-//          if (typeof d3_event.target.__data__ === 'object' &&
-//            // or area fills
-//            !d3_select(d3_event.target).classed('fill')) return;
-
-//          const zoomOut = d3_event.shiftKey;
-//          let t = projection.transform();
-//          let p1 = t.invert(p0);
-
-//          t = t.scale(zoomOut ? 0.5 : 2);
-//          t.x = p0[0] - p1[0] * t.k;
-//          t.y = p0[1] - p1[1] * t.k;
-
-//          map.transformEase(t);
-//        });
-
         map.dimensions(utilGetDimensions(selection));
     }
 
@@ -277,28 +225,6 @@ export function rendererMap(context) {
     map.init = function() {
       /* noop */
     };
-
-
-    function editOff() {
-      // context.features().resetStats();
-      // surface.selectAll('.layer-osm *').remove();
-      // surface.selectAll('.layer-touch:not(.markers) *').remove();
-
-      const allowed = {
-        'browse': true,
-        'save': true,
-        'select-note': true,
-        'select-data': true,
-        'select-error': true
-      };
-
-      const mode = context.mode();
-      if (mode && !allowed[mode.id]) {
-        context.enter(modeBrowse(context));
-      }
-
-      // dispatch.call('drawn', this, {full: true});
-    }
 
 
 
@@ -514,17 +440,8 @@ export function rendererMap(context) {
       resetTransform();
       supersurface.call(context.background());
       redrawPixi();
-
-      // OSM
-      if (map.editableDataEnabled()) {
-        context.loadTiles(projection);
-      } else {
-        editOff();
-      }
-
+      context.loadTiles(projection);  // load OSM data that covers the view
       _transformStart = projection.transform();
-
-      return map;
     }
 
 
@@ -883,12 +800,6 @@ export function rendererMap(context) {
 
     map.layers = function() {
       return _pixiRenderer && _pixiRenderer.layers();
-    };
-
-    map.editableDataEnabled = function() {
-return true;
-      // const layer = _pixiRenderer && _pixiRenderer.layers().getLayer('osm');
-      // return layer && layer.enabled();
     };
 
     map.doubleUpHandler = function() {
