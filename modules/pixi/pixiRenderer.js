@@ -1,3 +1,4 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import * as PIXI from 'pixi.js';
 import { Projection, vecAdd } from '@id-sdk/math';
 
@@ -116,9 +117,6 @@ export class pixiRenderer {
       layer.interactiveChildren = true;
       layer.buttonMode = true;
 
-      layer.on('pointerdown', (iData) => {
-            console.log(`pointerdown event, layer ${iData.target.name }`);
-          });
     });
 
     const stage = this._pixi.stage;

@@ -90,20 +90,20 @@ export function behaviorSelect(context) {
     }
 
 
-    function pointerdown(d3_event) {
-        var id = (d3_event.pointerId || 'mouse').toString();
+    function pointerdown(pixiEvent) {
+        const id = pixiEvent.data.originalEvent.pointerId.toString();
 
         cancelLongPress();
 
-        if (d3_event.buttons && d3_event.buttons !== 1) return;
+        if (pixiEvent.data.buttons && pixiEvent.data.buttons !== 1) return;
 
         context.ui().closeEditMenu();
 
-        _longPressTimeout = window.setTimeout(didLongPress, 500, id, 'longdown-' + (d3_event.pointerType || 'mouse'));
+        _longPressTimeout = window.setTimeout(didLongPress, 500, id, 'longdown-' + (pixiEvent.data.pointerType || 'mouse'));
 
         _downPointers[id] = {
-            firstEvent: d3_event,
-            lastEvent: d3_event
+            firstEvent: pixiEvent,
+            lastEvent: pixiEvent
         };
     }
 
@@ -139,10 +139,9 @@ export function behaviorSelect(context) {
         }
     }
 
-
-    function pointerup(d3_event) {
-        var id = (d3_event.pointerId || 'mouse').toString();
-        var pointer = _downPointers[id];
+    function pointerup(pixiEvent) {
+        const id = pixiEvent.data.originalEvent.pointerId.toString();
+        let pointer = _downPointers[id];
         if (!pointer) return;
 
         delete _downPointers[id];
@@ -151,9 +150,10 @@ export function behaviorSelect(context) {
             _multiselectionPointerId = null;
         }
 
+
         if (pointer.done) return;
 
-        click(pointer.firstEvent, d3_event, id);
+        click(pointer.firstEvent, pixiEvent, id);
     }
 
 
@@ -191,83 +191,14 @@ export function behaviorSelect(context) {
     function click(firstEvent, lastEvent, pointerId) {
         cancelLongPress();
 
-        var mapNode = context.container().select('.main-map').node();
+        let point = [lastEvent.data.global.x, lastEvent.data.global.y];
 
-        // Use the `main-map` coordinate system since the surface and supersurface
-        // are transformed when drag-panning.
-        var pointGetter = utilFastMouse(mapNode);
-        var p1 = pointGetter(firstEvent);
-        var p2 = pointGetter(lastEvent);
-        var dist = vecLength(p1, p2);
+        // TODO: Fix this so that the datum is bound to the same entity that gets the hit target. That way, we won't have to go up the parent chain to find the datum bound to the thing that was clicked on.
+        var targetDatum = lastEvent.target.__data__ || lastEvent.target.parent.__data__;
 
-        if (dist > _tolerancePx ||
-            !mapContains(lastEvent)) {
 
-            resetProperties();
-            return;
-        }
+        processClick(targetDatum, false, point, null);
 
-        var targetDatum = lastEvent.target.__data__;
-
-        var multiselectEntityId;
-
-        if (!_multiselectionPointerId) {
-            // If a different pointer than the one triggering this click is down on a
-            // feature, treat this and all future clicks as multiselection until that
-            // pointer is raised.
-            var selectPointerInfo = pointerDownOnSelection(pointerId);
-            if (selectPointerInfo) {
-                _multiselectionPointerId = selectPointerInfo.pointerId;
-                // if the other feature isn't selected yet, make sure we select it
-                multiselectEntityId = !selectPointerInfo.selected && selectPointerInfo.entityId;
-                _downPointers[selectPointerInfo.pointerId].done = true;
-            }
-        }
-
-        // support multiselect if data is already selected
-        var isMultiselect = context.mode().id === 'select' && (
-            // and shift key is down
-            (lastEvent && lastEvent.shiftKey) ||
-            // or we're lasso-selecting
-            context.surface().select('.lasso').node() ||
-            // or a pointer is down over a selected feature
-            (_multiselectionPointerId && !multiselectEntityId)
-        );
-
-        processClick(targetDatum, isMultiselect, p2, multiselectEntityId);
-
-        function mapContains(event) {
-            var rect = mapNode.getBoundingClientRect();
-            return event.clientX >= rect.left &&
-                event.clientX <= rect.right &&
-                event.clientY >= rect.top &&
-                event.clientY <= rect.bottom;
-        }
-
-        function pointerDownOnSelection(skipPointerId) {
-            var mode = context.mode();
-            var selectedIDs = mode.id === 'select' ? mode.selectedIDs() : [];
-            for (var pointerId in _downPointers) {
-                if (pointerId === 'spacebar' || pointerId === skipPointerId) continue;
-
-                var pointerInfo = _downPointers[pointerId];
-
-                var p1 = pointGetter(pointerInfo.firstEvent);
-                var p2 = pointGetter(pointerInfo.lastEvent);
-                if (vecLength(p1, p2) > _tolerancePx) continue;
-
-                var datum = pointerInfo.firstEvent.target.__data__;
-                var entity = (datum && datum.properties && datum.properties.entity) || datum;
-                if (context.graph().hasEntity(entity.id)) {
-                    return {
-                        pointerId: pointerId,
-                        entityId: entity.id,
-                        selected: selectedIDs.indexOf(entity.id) !== -1
-                    };
-                }
-            }
-            return null;
-        }
     }
 
 
@@ -275,9 +206,6 @@ export function behaviorSelect(context) {
         var mode = context.mode();
         var showMenu = _showMenu;
         var interactionType = _lastInteractionType;
-
-        var entity = datum && datum.properties && datum.properties.entity;
-        if (entity) datum = entity;
 
         if (datum && datum.type === 'midpoint') {
             // treat targeting midpoints as if targeting the parent way
@@ -383,21 +311,30 @@ export function behaviorSelect(context) {
         resetProperties();
         _lastMouseEvent = context.map().lastPointerEvent();
 
-        d3_select(window)
-            .on('keydown.select', keydown)
-            .on('keyup.select', keyup)
-            .on(_pointerPrefix + 'move.select', pointermove, true)
-            .on(_pointerPrefix + 'up.select', pointerup, true)
-            .on('pointercancel.select', pointercancel, true)
-            .on('contextmenu.select-window', function(d3_event) {
-                // Edge and IE really like to show the contextmenu on the
-                // menubar when user presses a keyboard menu button
-                // even after we've already preventdefaulted the key event.
-                var e = d3_event;
-                if (+e.clientX === 0 && +e.clientY === 0) {
-                    d3_event.preventDefault();
-                }
-            });
+        const stage = context.pixi.stage;
+
+        const lines = stage.getChildByName('lines');
+        const areas = stage.getChildByName('areas');
+        const points = stage.getChildByName('points');
+
+        [lines, areas, points].forEach(layer => layer.on('pointerup', pointerup));
+        [lines, areas, points].forEach(layer => layer.on('pointerdown', pointerdown));
+
+        // d3_select(window)
+        //     .on('keydown.select', keydown)
+        //     .on('keyup.select', keyup)
+        //     .on(_pointerPrefix + 'move.select', pointermove, true)
+        //     .on(_pointerPrefix + 'up.select', pointerup, true)
+        //     .on('pointercancel.select', pointercancel, true)
+        //     .on('contextmenu.select-window', function(d3_event) {
+        //         // Edge and IE really like to show the contextmenu on the
+        //         // menubar when user presses a keyboard menu button
+        //         // even after we've already preventdefaulted the key event.
+        //         var e = d3_event;
+        //         if (+e.clientX === 0 && +e.clientY === 0) {
+        //             d3_event.preventDefault();
+        //         }
+        //     });
 
         // selection
         //     .on(_pointerPrefix + 'down.select', pointerdown)

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecLength, geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { prefs } from '../core/preferences';
 import { styleMatch } from './pixiStyles';
@@ -11,6 +12,7 @@ const PARTIALFILLWIDTH = 32;
 export function pixiAreas(context, featureCache) {
   let _textures = {};
   let _didInit = false;
+  let dispatch = d3_dispatch('change');
 
   //
   // prepare template geometry
@@ -74,22 +76,8 @@ export function pixiAreas(context, featureCache) {
           container.zIndex = -area;                  // sort by area descending (small things above big things)
           container.buttonMode = true;
           container.interactive = true;
+          container.__data__ = entity;
 
-          // container.on('pointerover', () => {
-          //   console.log(`over polygon ${entity.id}`);
-          // });
-          // container.on('pointerout', () => {
-          //   console.log(`out of polygon ${entity.id}`);
-          // });
-          // container.on('pointerup', () => {
-          //   console.log(`up polygon ${entity.id}`);
-          // });
-          // container.on('pointerdown', () => {
-          //   console.log(`down of polygon ${entity.id}`);
-          // });
-          // // container.on('pointermove', () => {
-          //   console.log(`move of ${entity.id}`);
-          // });
           layer.addChild(container);
 
           const lowRes = new PIXI.Sprite(_textures.square);
@@ -283,7 +271,11 @@ if (isOuter && !feature.ssrdata && feature.polygons.length === 1) {
 
         // redraw the shapes
 
+
         // STROKES
+        // feature.stroke.interactive = true;
+        // feature.stroke.buttonMode = true;
+        feature.displayObject.hitArea = shapes[0].outer;
         feature.stroke
           .clear()
           .lineStyle({
@@ -335,6 +327,7 @@ if (isOuter && !feature.ssrdata && feature.polygons.length === 1) {
 
           feature.mask.visible = true;
           feature.fill.mask = feature.mask;
+          feature.displayObject.hitArea = null;
 
         } else {  // full fill - no mask
           feature.mask.visible = false;

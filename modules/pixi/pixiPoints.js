@@ -109,6 +109,11 @@ export function pixiPoints(context, featureCache) {
           const container = new PIXI.Container();
           container.name = node.id;
           container.zIndex = -node.loc[1];  // sort by latitude ascending
+
+          //Bind the data to the container so that it can be retrieved when clicked on
+          container.__data__ = node;
+          container.interactive = true;
+          container.buttonMode = true;
           layer.addChild(container);
 
           const t = hasWd ? 'wikidataMarker' : 'marker';

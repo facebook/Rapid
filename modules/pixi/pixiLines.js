@@ -91,6 +91,8 @@ export function pixiLines(context, featureCache) {
           container.zIndex = getzIndex(entity.tags);
           level.addChild(container);
 
+          //Bind the data to the container so that it can be retrieved when clicked on
+          container.__data__ = entity;
 
           const casing = new PIXI.Graphics();
           casing.name = entity.id + '-casing';
