@@ -37,7 +37,7 @@
     "lint": "eslint scripts test/spec modules",
     "lint:fix": "eslint scripts test/spec modules --fix",
     "start": "run-s build:legacy start:server",
-    "quickstart": "run-s build:modern start:server",
+    "quickstart": "run-s build start:server",
     "start:server": "node scripts/server.js",
     "test": "run-s lint build:css build:data build:legacy test:spec",
     "test:spec": "phantomjs --web-security=no test/mocha-phantomjs-core/mocha-phantomjs-core.js test/index.html spec",
