@@ -76,7 +76,14 @@ export function pixiLines(context, featureCache) {
       .forEach(function prepareLine(entity) {
         let feature = featureCache.get(entity.id);
 
-        if (!feature) {   // make line if needed
+        //This feature used to be part of the rapid layer... need to redraw it!
+        if (feature && feature.rapidFeature) {
+          feature.displayObject.visible = false;
+          featureCache.delete(entity.id);
+          feature = null;
+        }
+
+        if (!feature ) {   // make line if needed
           const geojson = entity.asGeoJSON(graph);
           const coords = geojson.coordinates;
 

@@ -21,6 +21,7 @@ export function behaviorSelect(context) {
     var _lastInteractionType = null;
     // the id of the down pointer that's enabling multiselection while down
     var _multiselectionPointerId = null;
+    var _initialized = false;
 
     // use pointer events on supported platforms; fallback to mouse events
     var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
@@ -311,15 +312,19 @@ export function behaviorSelect(context) {
         resetProperties();
         _lastMouseEvent = context.map().lastPointerEvent();
 
-        const stage = context.pixi.stage;
+        if (!_initialized) {
+            const stage = context.pixi.stage;
 
-        const lines = stage.getChildByName('lines');
-        const areas = stage.getChildByName('areas');
-        const points = stage.getChildByName('points');
+            const lines = stage.getChildByName('lines');
+            const areas = stage.getChildByName('areas');
+            const points = stage.getChildByName('points');
+            const rapid = stage.getChildByName('rapid');
 
-        [lines, areas, points].forEach(layer => layer.on('pointerup', pointerup));
-        [lines, areas, points].forEach(layer => layer.on('pointerdown', pointerdown));
-
+            const interactiveLayers = [lines, areas, points, rapid];
+            interactiveLayers.forEach(layer => layer.on('pointerup', pointerup));
+            interactiveLayers.forEach(layer => layer.on('pointerdown', pointerdown));
+            _initialized = true;
+        }
         // d3_select(window)
         //     .on('keydown.select', keydown)
         //     .on('keyup.select', keyup)

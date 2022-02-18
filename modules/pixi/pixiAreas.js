@@ -62,6 +62,13 @@ export function pixiAreas(context, featureCache) {
       .forEach(function prepareAreas(entity) {
         let feature = featureCache.get(entity.id);
 
+        //This feature used to be part of the rapid layer... need to redraw it!
+        if (feature && feature.rapidFeature) {
+          feature.displayObject.visible = false;
+          featureCache.delete(entity.id);
+          feature = null;
+        }
+
         if (!feature) {   // make poly if needed
           const style = styleMatch(entity.tags);
           const geojson = geojsonRewind(entity.asGeoJSON(graph), true);

@@ -49,6 +49,8 @@ export class pixiLayers {
       const container = new PIXI.Container();
       container.name = layer.id;
       container.visible = true;
+      container.interactive = true;
+      container.buttonMode = true;
       context.pixi.stage.addChild(container);
     });
   }

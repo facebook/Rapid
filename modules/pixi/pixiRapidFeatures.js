@@ -2,6 +2,7 @@ import _throttle from 'lodash-es/throttle';
 import { utilArrayFlatten } from '@id-sdk/util';
 import { services } from '../services';
 import * as PIXI from 'pixi.js';
+import { lineToPolygon } from './pixiHelpers';
 
 
 let _enabled = false;
@@ -250,6 +251,8 @@ if (dsfeatures) {
     // If this layer container doesn't exist, create it and add it to the main rapid layer.
     if (!layerContainer) {
       layerContainer = new PIXI.Container();
+      layerContainer.interactive = true;
+      layerContainer.buttonMode = true;
       layerContainer.name = dataset.id;
       layer.addChild(layerContainer);
     }
@@ -265,6 +268,9 @@ if (dsfeatures) {
 
         const container = new PIXI.Container();
         container.name = entity.id;
+        container.interactive = true;
+        container.buttonmode = true;
+        container.__data__ = entity;
         layerContainer.addChild(container);
 
         const graphics = new PIXI.Graphics();
@@ -291,7 +297,8 @@ if (dsfeatures) {
           bbox: bbox,
           coords: newCoords,
           color: PIXI.utils.string2hex(dataset.color),
-          isArea: area
+          isArea: area,
+          rapidFeature: true,
         };
 
         featureCache.set(entity.id, feature);
@@ -346,12 +353,12 @@ dsfeatures.set(entity.id, feature);
           .drawShape(feature.bounds);
       }
 
-
       function updateWay(graphic) {
+        const lineWidth = 3;
         let g = graphic.clear();
         g = g.lineStyle({
           color: feature.color,
-          width: 3,
+          width: lineWidth,
           alpha: 1
         });
 
@@ -362,6 +369,11 @@ dsfeatures.set(entity.id, feature);
             g.lineTo(x, y);
           }
         });
+
+        const hitTarget = lineToPolygon(lineWidth, g.currentPath.points);
+        g.hitArea = hitTarget;
+        g.buttonMode = true;
+        g.interactive = true;
       }
 
       function updateArea(graphic) {
