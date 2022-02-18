@@ -430,7 +430,7 @@ export function rendererMap(context) {
 
     function redrawPixi() {
       if (!_pixiRenderer || !_redrawEnabled) return;
-      _pixiRenderer.render(projection);
+      _pixiRenderer.render();
     }
 
 

@@ -76,8 +76,9 @@ export class pixiRenderer {
 
     // setup the ticker
     const ticker = this._pixi.ticker;
-    if (AUTOTICK) {  // redraw automatically every frame
-      // ticker.add(time => redrawPixi(time));
+    if (AUTOTICK) {       // redraw automatically every frame
+      ticker.maxFPS = 30;
+      ticker.autoStart = true;
     } else {              // redraw only on zoom/pan
       ticker.autoStart = false;
       ticker.stop();
@@ -143,7 +144,7 @@ export class pixiRenderer {
   /**
    * render
    */
-  render(projection) {
+  render() {
     if (this._redrawPending) return;
 
     const pixi = this._pixi;
@@ -160,7 +161,7 @@ export class pixiRenderer {
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
-    const currTransform = projection.transform();
+    const currTransform = context.projection.transform();
     const pixiTransform = this._pixiProjection.transform();
 
     let offset;
