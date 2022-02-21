@@ -84,7 +84,12 @@ export function pixiVertices(context, featureCache) {
         if (!feature) {   // make point if needed
           const container = new PIXI.Container();
           container.name = node.id;
+container.__data__ = node;
+container.interactive = false;
+container.interactiveChildren = false;
+          container.sortableChildren = false;
           container.zIndex = -node.loc[1];  // sort by latitude ascending
+          container.__data__ = node;    // Bind the data to the container so that it can be retrieved when clicked on
           layer.addChild(container);
 
           const preset = presetManager.match(node, graph);
@@ -110,6 +115,9 @@ export function pixiVertices(context, featureCache) {
 
           const marker = new PIXI.Sprite(_textures[t]);
           marker.name = t;
+          marker.interactive = false;
+          marker.interactiveChildren = false;
+          marker.sortableChildren = false;
           marker.anchor.set(0.5, 0.5);  // middle, middle
           marker.tint = isJunction ? 0xffffff : 0xbbbbbb;
           container.addChild(marker);
@@ -125,6 +133,9 @@ export function pixiVertices(context, featureCache) {
 
           const bbox = new PIXI.Graphics();
           bbox.name = node.id + '-bbox';
+          bbox.interactive = false;
+          bbox.interactiveChildren = false;
+          bbox.sortableChildren = false;
           bbox.visible = SHOWBBOX;
           container.addChild(bbox);
 

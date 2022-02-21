@@ -37,8 +37,10 @@ export function pixiLines(context, featureCache) {
     for (let i = -10; i <= 10; i++) {
       const lvl = new PIXI.Container();
       lvl.name = i.toString();
-      lvl.zIndex = i;
+      lvl.interactive = false;
+      lvl.interactiveChildren = true;
       lvl.sortableChildren = true;
+      lvl.zIndex = i;
       layer.addChild(lvl);
     }
 
@@ -92,22 +94,28 @@ export function pixiLines(context, featureCache) {
           const level = layer.getChildByName(lvl);
 
           const container = new PIXI.Container();
-          container.interactive = true;
-          container.buttonMode = true;
           container.name = entity.id;
+container.__data__ = entity;
+container.interactive = false;
+container.interactiveChildren = false;
+          container.sortableChildren = false;
+
           container.zIndex = getzIndex(entity.tags);
           level.addChild(container);
 
-          //Bind the data to the container so that it can be retrieved when clicked on
-          container.__data__ = entity;
-
           const casing = new PIXI.Graphics();
           casing.name = entity.id + '-casing';
-          container.addChild(casing);
+          casing.interactive = false;
+          casing.interactiveChildren = false;
+          casing.sortableChildren = false;
 
           const stroke = new PIXI.Graphics();
           stroke.name = entity.id + '-stroke';
-          container.addChild(stroke);
+          stroke.interactive = false;
+          stroke.interactiveChildren = false;
+          stroke.sortableChildren = false;
+
+          container.addChild(casing, stroke);
 
           const style = styleMatch(entity.tags);
 
@@ -115,6 +123,9 @@ export function pixiLines(context, featureCache) {
 
           const bbox = new PIXI.Graphics();
           bbox.name = entity.id + '-bbox';
+          bbox.interactive = false;
+          bbox.interactiveChildren = false;
+          bbox.sortableChildren = false;
           bbox.visible = SHOWBBOX;
           container.addChild(bbox);
 
@@ -132,6 +143,9 @@ export function pixiLines(context, featureCache) {
           if (entity.isOneWay()) {
             const oneways = new PIXI.Container();
             oneways.name = entity.id + '-oneways';
+            oneways.interactive = false;
+            oneways.interactiveChildren = false;
+            oneways.sortableChildren = false;
             container.addChild(oneways);
             feature.oneways = oneways;
           }
@@ -197,6 +211,9 @@ export function pixiLines(context, featureCache) {
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
               const arrow = new PIXI.Sprite(_textures.oneway);
+              arrow.interactive = false;
+              arrow.interactiveChildren = false;
+              arrow.sortableChildren = false;
               arrow.anchor.set(0.5, 0.5);  // middle, middle
               arrow.position.set(x, y);
               arrow.rotation = segment.angle;
@@ -261,26 +278,26 @@ export function pixiLines(context, featureCache) {
             }
           });
 
-          if (which === 'casing' && g.currentPath) {
-            const hitTarget = lineToPolygon(
-              width,
-              g.currentPath.points
-            );
-            g.hitArea = hitTarget;
-            g.buttonMode = true;
-            g.interactive = true;
-
-            // g.on('pointerover', () => {
-            //   console.log(`pointer over line ${entity.id}`);
-            // });
-            // g.on('pointerout', () => {
-            //   console.log(`pointer out of line ${entity.id}`);
-            // });
-            // g.on('pointerdown', () => {
-            //   console.log(`pointer down on line ${entity.id}`);
-            // });
-
-          }
+//          if (which === 'casing' && g.currentPath) {
+//            const hitTarget = lineToPolygon(
+//              width,
+//              g.currentPath.points
+//            );
+//            g.hitArea = hitTarget;
+//            g.buttonMode = true;
+//            g.interactive = true;
+//
+//            // g.on('pointerover', () => {
+//            //   console.log(`pointer over line ${entity.id}`);
+//            // });
+//            // g.on('pointerout', () => {
+//            //   console.log(`pointer out of line ${entity.id}`);
+//            // });
+//            // g.on('pointerdown', () => {
+//            //   console.log(`pointer down on line ${entity.id}`);
+//            // });
+//
+//          }
 
 
 

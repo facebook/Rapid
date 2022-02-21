@@ -13,6 +13,8 @@ import {
   pixiVertices
 } from './index.js';
 
+import { modeBrowse, modeSelect } from '../modes';
+
 const AUTOTICK = false;     // set to true to turn the ticker back on
 
 
@@ -33,6 +35,7 @@ export class pixiRenderer {
     this._pixiProjection = new Projection();
     this._featureCache = new Map();            // map of OSM ID -> Pixi data
     this._container = container;
+    this._hoverTarget = null;
 
     this._pixi = new PIXI.Application({
       antialias: true,
@@ -45,6 +48,11 @@ export class pixiRenderer {
     context.pixi = this._pixi;
     container.appendChild(this._pixi.view);
 
+    // Register Pixi with the pixi-inspector extension if it is installed
+    // https://github.com/bfanger/pixi-inspector
+    if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
+      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
+    }
 
     // prepare sprites
     const loader = PIXI.Loader.shared;
@@ -74,7 +82,7 @@ export class pixiRenderer {
     });
 
 
-    // setup the ticker
+    // Setup the Ticker
     const ticker = this._pixi.ticker;
     if (AUTOTICK) {       // redraw automatically every frame
       ticker.maxFPS = 30;
@@ -84,45 +92,114 @@ export class pixiRenderer {
       ticker.stop();
     }
 
-    // Register Pixi with the pixi-inspector extension if it is installed
-    // https://github.com/bfanger/pixi-inspector
-    if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
-      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
-    }
+    // Setup the Interaction Manager
+    // const interactionManager = this._pixi.renderer.plugins.interaction;
+    // interactionManager.interactionFrequency = 100;    // default 10ms, slow it down?  doesn't do what I thought
 
-
-    // setup scene
-    const areasLayer = new PIXI.Container();
-    areasLayer.name = 'areas';
-    areasLayer.sortableChildren = true;
-
-    const linesLayer = new PIXI.Container();
-    linesLayer.name = 'lines';
-    linesLayer.sortableChildren = true;
-
-    const verticesLayer = new PIXI.Container();
-    verticesLayer.name = 'vertices';
-    verticesLayer.sortableChildren = true;
-
-    const pointsLayer = new PIXI.Container();
-    pointsLayer.name = 'points';
-    pointsLayer.sortableChildren = true;
-
-    const labelsLayer = new PIXI.Container();
-    labelsLayer.name = 'labels';
-    const midpointsLayer = new PIXI.Container();
-    midpointsLayer.name = 'midpoints';
-
-    [areasLayer, linesLayer, pointsLayer].forEach(layer => {
-      layer.interactive = true;
-      layer.interactiveChildren = true;
-      layer.buttonMode = true;
-
-    });
-
+    // Setup Scene
+    //
+    // A few definitions:
+    //
+    // - `buttonMode = true`    this displayObject will turn the cursor to a pointer when hovering over
+    // - `buttonMode = false`   this displayObject will NOT turn the cursor to a pointer when hovering over (default)
+    //
+    // - `interactive = true`   this displayObject can emit events
+    // - `interactive = false`  this displayObject can NOT emit events (default)
+    //
+    // - `interactiveChildren = true`   this container and its children will be checked for hits (default)
+    // - `interactiveChildren = false`  this container and its children will NOT be checked for hits
+    //
+    // - `sortableChildren = true`   we will set a zIndex property on children and they will be sorted according to it
+    // - `sortableChildren = false`  children will be drawn in the ordrer they are added to `children` array (default)
+    //
     const stage = this._pixi.stage;
     stage.name = 'stage';
-    stage.addChild(areasLayer, linesLayer, verticesLayer, pointsLayer, labelsLayer, midpointsLayer);
+    stage.interactive = true;
+    stage.interactiveChildren = true;
+    // Add a big hit area to `stage` so that clicks on nothing will register
+    stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
+
+    const areas = new PIXI.Container();
+    areas.name = 'areas';
+    areas.interactive = false;
+    areas.interactiveChildren = true;
+    areas.sortableChildren = true;
+
+    const lines = new PIXI.Container();
+    lines.name = 'lines';
+    lines.interactive = false;
+    lines.interactiveChildren = true;
+    lines.sortableChildren = true;
+
+    const vertices = new PIXI.Container();
+    vertices.name = 'vertices';
+    vertices.interactive = false;
+    vertices.interactiveChildren = true;
+    vertices.sortableChildren = true;
+
+    const points = new PIXI.Container();
+    points.name = 'points';
+    points.interactive = false;
+    points.interactiveChildren = true;
+    points.sortableChildren = true;
+
+    const labels = new PIXI.Container();
+    labels.name = 'labels';
+    labels.interactive = false;
+    labels.interactiveChildren = false;
+    labels.sortableChildren = false;
+
+    // const midpoints = new PIXI.Container();
+    // midpoints.name = 'midpoints';
+    // midpoints.interactive = false;
+    // midpoints.interactiveChildren = true;
+    // midpoints.sortableChildren = true;
+
+    stage.addChild(areas, lines, vertices, points, labels);
+
+    const thiz = this;
+    stage
+      .on('click', e => {
+        if (!e.target) return;
+        const name = e.target.name || 'nothing';
+        console.log(`clicked on ${name}`);
+        const entity = e.target.__data__;
+        if (entity) {
+          context.enter(modeSelect(context, [entity.id]));
+        } else {
+          context.enter(modeBrowse(context));
+        }
+      })
+      .on('pointermove', e => {
+        if (!e.target) return;
+
+        // hover target has changed
+        if (e.target !== thiz._hoverTarget) {
+          const name = e.target.name || 'nothing';
+          console.log(`pointer over ${name}`);
+
+//          // remove hover
+//          if (thiz._hoverTarget) {
+//            const hover = this._hoverTarget.getChildByName('hover');
+//            if (hover) hover.destroy();
+//          }
+
+          thiz._hoverTarget = e.target;
+
+//          // add new hover
+//          if (e.target !== stage) {
+//            const hover = new PIXI.Sprite(PIXI.Texture.WHITE);
+//            hover.name = 'hover';
+//            hover.width= 50;
+//            hover.height= 50;
+//            hover.interactive = false;
+//            hover.interactiveChildren = false;
+//            e.target.addChild(hover);
+//          }
+
+          thiz.render();
+        }
+      });
 
 
     this._drawPoints = pixiPoints(context, this._featureCache);
@@ -139,6 +216,7 @@ export class pixiRenderer {
   layers() {
     return this._drawLayers;
   }
+
 
 
   /**

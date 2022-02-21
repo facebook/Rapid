@@ -79,11 +79,13 @@ export function pixiAreas(context, featureCache) {
 
           const container = new PIXI.Container();
           container.name = entity.id;
+container.__data__ = entity;
+container.interactive = false;
+container.interactiveChildren = false;
+          container.sortableChildren = false;
+
           const area = entity.extent(graph).area();  // estimate area from extent for speed
           container.zIndex = -area;                  // sort by area descending (small things above big things)
-          container.buttonMode = true;
-          container.interactive = true;
-          container.__data__ = entity;
 
           layer.addChild(container);
 
@@ -96,19 +98,30 @@ export function pixiAreas(context, featureCache) {
 
           const fill = new PIXI.Graphics();
           fill.name = entity.id + '-fill';
+          fill.interactive = false;
+          fill.interactiveChildren = false;
+          fill.sortableChildren = false;
           container.addChild(fill);
-
 
           const stroke = new PIXI.Graphics();
           stroke.name = entity.id + '-stroke';
+          stroke.interactive = false;
+          stroke.interactiveChildren = false;
+          stroke.sortableChildren = false;
           container.addChild(stroke);
 
           const mask = new PIXI.Graphics();
           mask.name = entity.id + '-mask';
+          mask.interactive = false;
+          mask.interactiveChildren = false;
+          mask.sortableChildren = false;
           container.addChild(mask);
 
           const bbox = new PIXI.Graphics();
           bbox.name = entity.id + '-bbox';
+          bbox.interactive = false;
+          bbox.interactiveChildren = false;
+          bbox.sortableChildren = false;
           bbox.visible = SHOWBBOX;
           container.addChild(bbox);
 
@@ -116,6 +129,9 @@ export function pixiAreas(context, featureCache) {
 // // SSR Experiment:
 // const ssr = new PIXI.Graphics();
 // ssr.name = entity.id + '-ssr';
+// ssr.interactive = false;
+// ssr.interactiveChildren = false;
+// ssr.sortableChildren = false;
 // ssr.visible = SHOWBBOX;
 // container.addChild(ssr);
 
@@ -185,38 +201,38 @@ projectedring.push([x, y]);
               }
             });
 
-if (isOuter && !feature.ssrdata && feature.polygons.length === 1) {
-  let ssr = geomGetSmallestSurroundingRectangle(projectedring);   // compute SSR in projected coordinates
-  if (ssr && ssr.poly) {
+            if (isOuter && !feature.ssrdata && feature.polygons.length === 1) {
+              let ssr = geomGetSmallestSurroundingRectangle(projectedring);   // compute SSR in projected coordinates
+              if (ssr && ssr.poly) {
+                // Calculate axes of symmetry to determine width, height
+                // The shape's surrounding rectangle has 2 axes of symmetry.
+                //
+                //       1
+                //   p1 /\              p1 = midpoint of poly[0]-poly[1]
+                //     /\ \ q2          q1 = midpoint of poly[2]-poly[3]
+                //   0 \ \/\
+                //      \/\ \ 2         p2 = midpoint of poly[3]-poly[0]
+                //    p2 \ \/           q2 = midpoint of poly[1]-poly[2]
+                //        \/ q1
+                //        3
 
-    // Calculate axes of symmetry to determine width, height
-    // The shape's surrounding rectangle has 2 axes of symmetry.
-    //
-    //       1
-    //   p1 /\              p1 = midpoint of poly[0]-poly[1]
-    //     /\ \ q2          q1 = midpoint of poly[2]-poly[3]
-    //   0 \ \/\
-    //      \/\ \ 2         p2 = midpoint of poly[3]-poly[0]
-    //    p2 \ \/           q2 = midpoint of poly[1]-poly[2]
-    //        \/ q1
-    //        3
+                const p1 = [(ssr.poly[0][0] + ssr.poly[1][0]) / 2, (ssr.poly[0][1] + ssr.poly[1][1]) / 2 ];
+                const q1 = [(ssr.poly[2][0] + ssr.poly[3][0]) / 2, (ssr.poly[2][1] + ssr.poly[3][1]) / 2 ];
+                const p2 = [(ssr.poly[3][0] + ssr.poly[0][0]) / 2, (ssr.poly[3][1] + ssr.poly[0][1]) / 2 ];
+                const q2 = [(ssr.poly[1][0] + ssr.poly[2][0]) / 2, (ssr.poly[1][1] + ssr.poly[2][1]) / 2 ];
+                const axis1 = [p1, q1];
+                const axis2 = [p2, q2];
+                const centroid = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
+                feature.ssrdata = {
+                  poly: ssr.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
+                  axis1: axis1.map(coord => projection.invert(coord)),
+                  axis2: axis2.map(coord => projection.invert(coord)),
+                  centroid: projection.invert(centroid),
+                  angle: ssr.angle
+                };
+              }
+            }
 
-    const p1 = [(ssr.poly[0][0] + ssr.poly[1][0]) / 2, (ssr.poly[0][1] + ssr.poly[1][1]) / 2 ];
-    const q1 = [(ssr.poly[2][0] + ssr.poly[3][0]) / 2, (ssr.poly[2][1] + ssr.poly[3][1]) / 2 ];
-    const p2 = [(ssr.poly[3][0] + ssr.poly[4][0]) / 2, (ssr.poly[3][1] + ssr.poly[4][1]) / 2 ];
-    const q2 = [(ssr.poly[1][0] + ssr.poly[2][0]) / 2, (ssr.poly[1][1] + ssr.poly[2][1]) / 2 ];
-    const axis1 = [p1, q1];
-    const axis2 = [p2, q2];
-    const centroid = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
-    feature.ssrdata = {
-      poly: ssr.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
-      axis1: axis1.map(coord => projection.invert(coord)),
-      axis2: axis2.map(coord => projection.invert(coord)),
-      centroid: projection.invert(centroid),
-      angle: ssr.angle
-    };
-  }
-}
             const poly = new PIXI.Polygon(points);
             if (isOuter) {
               shape.outer = poly;
@@ -280,9 +296,9 @@ if (isOuter && !feature.ssrdata && feature.polygons.length === 1) {
 
 
         // STROKES
-        // feature.stroke.interactive = true;
-        // feature.stroke.buttonMode = true;
-        feature.displayObject.hitArea = shapes[0].outer;
+//        feature.stroke.interactive = true;
+//        feature.stroke.buttonMode = true;
+//        feature.displayObject.hitArea = shapes[0].outer;
         feature.stroke
           .clear()
           .lineStyle({

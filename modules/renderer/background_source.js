@@ -229,7 +229,7 @@ export function rendererBackgroundSource(data) {
 
     source.validZoom = function(z) {
 //hack
-if(source.id === 'mapbox_locator_overlay') return z <15;
+if (source.id === 'mapbox_locator_overlay') return z <15;
 
         return source.zoomExtent[0] <= z &&
             (source.overzoom || source.zoomExtent[1] > z);

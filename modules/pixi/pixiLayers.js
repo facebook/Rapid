@@ -102,7 +102,7 @@ export class pixiLayers {
 
   only(ids) {
     const stage = this._context.pixi.stage;
-    const toEnable = new Set([].concat(ids));  // coax ids into an Set
+    const toEnable = new Set([].concat(ids));  // coax ids into a Set
     this._layers.forEach(layer => {
       const container = stage.getChildByName(layer.id);
       if (container) container.visible = toEnable.has(layer.id);

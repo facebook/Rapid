@@ -31,13 +31,17 @@ export function getViewfieldContainerHelper(context, directions, color) {
 
   const vfContainer = new PIXI.Container();
   vfContainer.name = 'viewfields';
+  vfContainer.interactive = false;
+  vfContainer.interactiveChildren = false;
 
   directions.forEach(direction => {
-    const vfSprite = new PIXI.Sprite(_vfTexture);
-    vfSprite.tint = color ? color : 0x333333;
-    vfSprite.anchor.set(0.5, 1);  // middle, top
-    vfSprite.angle = direction;
-    vfContainer.addChild(vfSprite);
+    const sprite = new PIXI.Sprite(_vfTexture);
+    sprite.interactive = false;
+    sprite.interactiveChildren = false;
+    sprite.tint = color ? color : 0x333333;
+    sprite.anchor.set(0.5, 1);  // middle, top
+    sprite.angle = direction;
+    vfContainer.addChild(sprite);
   });
 
   return vfContainer;
@@ -91,6 +95,8 @@ export function getMapillaryIconSpriteHelper(context, picon) {
   const spritesheet = context._mapillarySheet;
   let sprite = new PIXI.Sprite(spritesheet.textures[picon + '.svg']);
   sprite.name = picon;
+  sprite.interactive = false;
+  sprite.interactiveChildren = false;
   sprite.anchor.set(0.5, 0.5);
   return sprite;
 }
@@ -100,6 +106,8 @@ export function getMapillarySignIconSpriteHelper(context, picon) {
   const spritesheet = context._mapillarySignSheet;
   let sprite = new PIXI.Sprite(spritesheet.textures[picon + '.svg']);
   sprite.name = picon;
+  sprite.interactive = false;
+  sprite.interactiveChildren = false;
   sprite.anchor.set(0.5, 0.5);
   return sprite;
 }
@@ -126,6 +134,8 @@ export function getIconSpriteHelper(context, picon) {
 
   let sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
   sprite.name = spriteName;
+  sprite.interactive = false;
+  sprite.interactiveChildren = false;
   sprite.anchor.set(0.5, 0.5);   // middle, middle
 
   return sprite;
@@ -177,6 +187,8 @@ export function getLineSegments(points, spacing) {
 
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
   const bbox = new PIXI.Sprite(PIXI.Texture.WHITE);
+  bbox.interactive = false;
+  bbox.interactiveChildren = false;
   bbox.anchor.set(0, 0);  // top, left
   bbox.position.set(x, y);
   bbox.width = width;

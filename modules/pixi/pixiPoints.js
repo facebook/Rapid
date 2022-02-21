@@ -108,22 +108,29 @@ export function pixiPoints(context, featureCache) {
         if (!feature) {   // make point if needed
           const container = new PIXI.Container();
           container.name = node.id;
-          container.zIndex = -node.loc[1];  // sort by latitude ascending
-
-          //Bind the data to the container so that it can be retrieved when clicked on
           container.__data__ = node;
           container.interactive = true;
           container.buttonMode = true;
+          container.interactiveChildren = true;
+          container.sortableChildren = false;
+          container.zIndex = -node.loc[1];  // sort by latitude ascending
+
           layer.addChild(container);
 
           const t = hasWd ? 'wikidataMarker' : 'marker';
           const marker = new PIXI.Sprite(_textures[t]);
           marker.name = 'marker';
+          marker.interactive = false;
+          marker.interactiveChildren = false;
+          marker.sortableChildren = false;
           marker.anchor.set(0.5, 1);  // middle, bottom
           container.addChild(marker);
 
           const bbox = new PIXI.Graphics();
           bbox.name = node.id + '-bbox';
+          bbox.interactive = false;
+          bbox.interactiveChildren = false;
+          bbox.sortableChildren = false;
           bbox.visible = SHOWBBOX;
           container.addChild(bbox);
 

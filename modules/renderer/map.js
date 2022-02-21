@@ -40,7 +40,6 @@ export function rendererMap(context) {
 
   let _selection = d3_select(null);
   let supersurface = d3_select(null);
-  let wrapper = d3_select(null);
   let surface = d3_select(null);
 
   let _dimensions = [1, 1];
@@ -65,7 +64,7 @@ export function rendererMap(context) {
   const _zoomerPanner = _zoomerPannerFunction()
     .scaleExtent([MINK, MAXK])
     .interpolate(d3_interpolate)
-    .filter(zoomEventFilter)
+    // .filter(zoomEventFilter)
     .on('zoom.map', zoomPan)
     .on('start.map', (d3_event) => {
       _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
@@ -129,24 +128,17 @@ export function rendererMap(context) {
         .attr('class', 'supersurface')
         .call(utilSetTransform, 0, 0);
 
-      // Need a wrapper div because Opera can't cope with an absolutely positioned
-      // SVG element: http://bl.ocks.org/jfirebaugh/6fbfbd922552bf776c16
-      wrapper = supersurface
-        .append('div')
-        .attr('class', 'wrapper layer layer-data');
-
       ///////////////////////
       // BEGIN PIXI
       //
 
       // Add pixi as child of supersurface
-      wrapper
+      let pixiContainer = map.supersurface
         .append('div')
         .attr('class', 'layer pixi-data')
         .style('z-index', '3');
 
-      const pixiContainer = document.querySelector('.pixi-data');
-      _pixiRenderer = new pixiRenderer(context, pixiContainer);
+      _pixiRenderer = new pixiRenderer(context, pixiContainer.node());
 
       const layers = _pixiRenderer.layers();
       layers
@@ -159,62 +151,62 @@ export function rendererMap(context) {
       ///////////////////////
 
 
-      map.surface = surface = wrapper.selectAll('canvas');
+      map.surface = surface = pixiContainer.selectAll('canvas');
 
-      surface
-        .call(_doubleUpHandler)
-        .on(POINTERPREFIX + 'down.zoom', (d3_event) => {
-          _lastPointerEvent = d3_event;
-          if (d3_event.button === 2) {
-            d3_event.stopPropagation();
-          }
-        }, true)
-        .on(POINTERPREFIX + 'up.zoom', (d3_event) => {
-          _lastPointerEvent = d3_event;
-          if (resetTransform()) {
-            immediateRedraw();
-          }
-        })
-        .on(POINTERPREFIX + 'move.map', (d3_event) => {
-          _lastPointerEvent = d3_event;
-        });
+//      surface
+//        .call(_doubleUpHandler)
+//        .on(POINTERPREFIX + 'down.zoom', d3_event => {
+//          _lastPointerEvent = d3_event;
+//          if (d3_event.button === 2) {
+//            d3_event.stopPropagation();
+//          }
+//        }, true)
+//        .on(POINTERPREFIX + 'up.zoom', d3_event => {
+//          _lastPointerEvent = d3_event;
+//          if (resetTransform()) {
+//            immediateRedraw();
+//          }
+//        })
+//        .on(POINTERPREFIX + 'move.map', d3_event => {
+//          _lastPointerEvent = d3_event;
+//        });
 
         map.dimensions(utilGetDimensions(selection));
     }
 
 
-    function zoomEventFilter(d3_event) {
-      // Fix for #2151, (see also d3/d3-zoom#60, d3/d3-brush#18)
-      // Intercept `mousedown` and check if there is an orphaned zoom gesture.
-      // This can happen if a previous `mousedown` occurred without a `mouseup`.
-      // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
-      // so that d3-zoom won't stop propagation of new `mousedown` events.
-      if (d3_event.type === 'mousedown') {
-        let hasOrphan = false;
-        let listeners = window.__on;
-        for (let i = 0; i < listeners.length; i++) {
-          const listener = listeners[i];
-          if (listener.name === 'zoom' && listener.type === 'mouseup') {
-            hasOrphan = true;
-            break;
-          }
-        }
-        if (hasOrphan) {
-          let event = window.CustomEvent;
-          if (event) {
-            event = new event('mouseup');
-          } else {
-            event = window.document.createEvent('Event');
-            event.initEvent('mouseup', false, false);
-          }
-          // Event needs to be dispatched with an event.view property.
-          event.view = window;
-          window.dispatchEvent(event);
-        }
-      }
-
-      return d3_event.button !== 2;  // ignore right clicks
-    }
+//    function zoomEventFilter(d3_event) {
+//      // Fix for #2151, (see also d3/d3-zoom#60, d3/d3-brush#18)
+//      // Intercept `mousedown` and check if there is an orphaned zoom gesture.
+//      // This can happen if a previous `mousedown` occurred without a `mouseup`.
+//      // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
+//      // so that d3-zoom won't stop propagation of new `mousedown` events.
+//      if (d3_event.type === 'mousedown') {
+//        let hasOrphan = false;
+//        let listeners = window.__on;
+//        for (let i = 0; i < listeners.length; i++) {
+//          const listener = listeners[i];
+//          if (listener.name === 'zoom' && listener.type === 'mouseup') {
+//            hasOrphan = true;
+//            break;
+//          }
+//        }
+//        if (hasOrphan) {
+//          let event = window.CustomEvent;
+//          if (event) {
+//            event = new event('mouseup');
+//          } else {
+//            event = window.document.createEvent('Event');
+//            event.initEvent('mouseup', false, false);
+//          }
+//          // Event needs to be dispatched with an event.view property.
+//          event.view = window;
+//          window.dispatchEvent(event);
+//        }
+//      }
+//
+//      return d3_event.button !== 2;  // ignore right clicks
+//    }
 
 
     function pxCenter() {
