@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 
 import { presetManager } from '../presets';
-import { getIconSpriteHelper, getViewfieldContainerHelper } from './pixiHelpers';
+import { getIconSpriteHelper, getViewfieldContainerHelper } from './helpers';
 
 
-export function pixiVertices(context, featureCache) {
+export function PixiOsmVertices(context, featureCache) {
   let _textures = {};
   let _didInit = false;
 

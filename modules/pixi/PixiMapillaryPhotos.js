@@ -6,7 +6,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { modeBrowse } from '../modes/browse';
 import { services } from '../services';
-import { getViewfieldContainerHelper } from './pixiHelpers';
+import { getViewfieldContainerHelper } from './helpers';
 
 
 
@@ -15,7 +15,7 @@ var _osmService;
 
 const mapillary_green = 0x55ff22;
 
-export function pixiMapillaryImages(context, featureCache, dispatch) {
+export function PixiMapillaryPhotos(context, featureCache, dispatch) {
 
     if (!dispatch) { dispatch = d3_dispatch('change'); }
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);

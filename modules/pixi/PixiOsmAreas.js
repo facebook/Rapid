@@ -4,12 +4,12 @@ import { vecLength, geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { prefs } from '../core/preferences';
-import { styleMatch } from './pixiStyles';
+import { styleMatch } from './styles';
 
 const PARTIALFILLWIDTH = 32;
 
 
-export function pixiAreas(context, featureCache) {
+export function PixiOsmAreas(context, featureCache) {
   let _textures = {};
   let _didInit = false;
   let dispatch = d3_dispatch('change');

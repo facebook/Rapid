@@ -12,7 +12,7 @@ import { modeSelectNote } from '../modes/select_note';
 var _notesEnabled = false;
 var _osmService;
 
-export function pixiNotes(context, featureCache, dispatch) {
+export function PixiOsmNotes(context, featureCache, dispatch) {
 
     if (!dispatch) { dispatch = d3_dispatch('change'); }
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);

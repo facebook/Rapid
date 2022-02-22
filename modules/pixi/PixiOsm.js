@@ -1,6 +1,6 @@
-export function pixiOsm(projection, context, dispatch) {
-    var enabled = true;
 
+export function PixiOsm(projection, context, dispatch) {
+    var enabled = true;
 
     function drawOsm(selection, _featureCache) {
         // For the OSM Layer, there's nothing to do. All OSM rendering is handled by the map.js file.

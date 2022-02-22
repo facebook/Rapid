@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { vecAngle, vecInterp } from '@id-sdk/math';
 
 
-export function pixiMidpoints(context, featureCache) {
+export function PixiOsmMidpoints(context, featureCache) {
   let _textures = {};
   let _didInit = false;
 

@@ -6,70 +6,76 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { modeBrowse } from '../modes/browse';
 import { services } from '../services';
-import { getViewfieldContainerHelper } from './pixiHelpers';
-
-import { modeSelectNote } from '../modes/select_note';
+import { getViewfieldContainerHelper } from './helpers';
 
 
-var _kartaEnabled = false;
+var _streetsideEnabled = false;
 var _osmService;
 
-const karta_blue = 0x20c4ff;
+const streetside_green = 0xfffc4;
 
-export function pixiKartaImages(context, featureCache, dispatch) {
+export function PixiStreetsidePhotos(context, featureCache, dispatch) {
 
     if (!dispatch) { dispatch = d3_dispatch('change'); }
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
-    const minZoom = 12;
+    const minZoom = 14;
     const minMarkerZoom = 16;
     const minViewfieldZoom = 18;
-    var _kartaVisible = false;
+    var _streetsideVisible = false;
     let _textures = {};
     let _didInitTextures = false;
-    let _karta;
+    let _streetside;
 
     function initTextures() {
         const circle = new PIXI.Graphics()
             .lineStyle({width: 1, color:0x222222})
-            .beginFill(karta_blue)
+            .beginFill(streetside_green)
             .drawCircle(6, 6, 6)
+            .endFill();
+
+
+        const halo = new PIXI.Graphics()
+            .lineStyle({width: 1, color:0x222222})
+            .beginFill(streetside_green, 0.4)
+            .drawCircle(12, 12, 12)
             .endFill();
 
 
         const renderer = context.pixi.renderer;
         const options = { resolution: 2 };
         _textures.circle = renderer.generateTexture(circle, options);
+        _textures.halo = renderer.generateTexture(halo, options);
         _didInitTextures = true;
     }
 
 
     function getService() {
-        if (services.openstreetcam && !_karta) {
-            _karta = services.openstreetcam;
-            _karta.event.on('loadedImages', throttledRedraw);
-        } else if (!services.openstreetcam && _karta) {
-            _karta = null;
+        if (services.streetside && !_streetside) {
+            _streetside = services.streetside;
+            _streetside.event.on('loadedImages', throttledRedraw);
+        } else if (!services.streetside && _streetside) {
+            _streetside = null;
         }
 
-        return _karta;
+        return _streetside;
     }
 
 
 
-    // Show the openstreetcam images
+    // Show the streetside images
     function editOn() {
-        if (!_kartaVisible) {
-            _kartaVisible = true;
-            context.pixi.stage.getChildByName('openstreetcam').visible = true;
+        if (!_streetsideVisible) {
+            _streetsideVisible = true;
+            context.pixi.stage.getChildByName('streetside').visible = true;
         }
     }
 
 
     // Immediately remove the images
     function editOff() {
-        if (_kartaVisible) {
-            _kartaVisible = false;
-            context.pixi.stage.getChildByName('openstreetcam').visible = false;
+        if (_streetsideVisible) {
+            _streetsideVisible = false;
+            context.pixi.stage.getChildByName('streetside').visible = false;
         }
     }
 
@@ -88,30 +94,30 @@ export function pixiKartaImages(context, featureCache, dispatch) {
         dispatch.call('change');
     }
 
-    function filterImages(images) {
+    function filterBubbles(bubbles) {
         var fromDate = context.photos().fromDate();
         var toDate = context.photos().toDate();
         var usernames = context.photos().usernames();
 
         if (fromDate) {
             var fromTimestamp = new Date(fromDate).getTime();
-            images = images.filter(function(item) {
-                return new Date(item.captured_at).getTime() >= fromTimestamp;
+            bubbles = bubbles.filter(function(bubble) {
+                return new Date(bubble.captured_at).getTime() >= fromTimestamp;
             });
         }
         if (toDate) {
             var toTimestamp = new Date(toDate).getTime();
-            images = images.filter(function(item) {
-                return new Date(item.captured_at).getTime() <= toTimestamp;
+            bubbles = bubbles.filter(function(bubble) {
+                return new Date(bubble.captured_at).getTime() <= toTimestamp;
             });
         }
         if (usernames) {
-            images = images.filter(function(item) {
-                return usernames.indexOf(item.captured_by) !== -1;
+            bubbles = bubbles.filter(function(bubble) {
+                return usernames.indexOf(bubble.captured_by) !== -1;
             });
         }
 
-        return images;
+        return bubbles;
     }
 
     function filterSequences(sequences) {
@@ -121,19 +127,19 @@ export function pixiKartaImages(context, featureCache, dispatch) {
 
         if (fromDate) {
             var fromTimestamp = new Date(fromDate).getTime();
-            sequences = sequences.filter(function(image) {
-                return new Date(image.properties.captured_at).getTime() >= fromTimestamp;
+            sequences = sequences.filter(function(sequences) {
+                return new Date(sequences.properties.captured_at).getTime() >= fromTimestamp;
             });
         }
         if (toDate) {
             var toTimestamp = new Date(toDate).getTime();
-            sequences = sequences.filter(function(image) {
-                return new Date(image.properties.captured_at).getTime() <= toTimestamp;
+            sequences = sequences.filter(function(sequences) {
+                return new Date(sequences.properties.captured_at).getTime() <= toTimestamp;
             });
         }
         if (usernames) {
-            sequences = sequences.filter(function(image) {
-                return usernames.indexOf(image.properties.captured_by) !== -1;
+            sequences = sequences.filter(function(sequences) {
+                return usernames.indexOf(sequences.properties.captured_by) !== -1;
             });
         }
 
@@ -143,7 +149,7 @@ export function pixiKartaImages(context, featureCache, dispatch) {
 
     // Update the note markers
     function updateImages(layer, projection) {
-        if (!_kartaVisible || !_kartaEnabled) return;
+        if (!_streetsideVisible || !_streetsideEnabled) return;
         const k = projection.scale();
 
         const z = ~~context.map().zoom();
@@ -151,11 +157,11 @@ export function pixiKartaImages(context, featureCache, dispatch) {
         const showViewfields = (z >= minViewfieldZoom);
 
         var service = getService();
-        const images = (service && showMarkers ? service.images(context.projection) : []);
+        const bubbles = (service && showMarkers ? service.bubbles(context.projection) : []);
         const sequences = (service ? service.sequences(context.projection) : []);
 
         let sequenceEntities = filterSequences(sequences);
-        let imageEntities = filterImages(images);
+        let imageEntities = filterBubbles(bubbles);
 
          sequenceEntities.forEach(function prepareImages(sequence) {
             let feature = featureCache.get('sequence' + sequence.properties.key);
@@ -192,7 +198,7 @@ export function pixiKartaImages(context, featureCache, dispatch) {
 
         let g = feature.graphics.clear();
         g.lineStyle({
-            color: karta_blue,
+            color: streetside_green,
             width: 4
         });
           points.forEach(([x, y], i) => {
@@ -218,9 +224,13 @@ export function pixiKartaImages(context, featureCache, dispatch) {
 
                 //Get the capture angle, if any, and attach a viewfield to the point.
                 if (image.ca) {
-                    const vfContainer = getViewfieldContainerHelper(context, [image.ca], karta_blue);
+                    const vfContainer = getViewfieldContainerHelper(context, [image.ca], streetside_green);
                     container.addChild(vfContainer);
                 }
+
+                let viewFieldHalo = new PIXI.Sprite(_textures.halo);
+                viewFieldHalo.anchor.set(0.5, 0.5);
+                container.addChild(viewFieldHalo);
 
                 let viewField = new PIXI.Sprite(_textures.circle);
                 viewField.anchor.set(0.5, 0.5);
@@ -260,10 +270,10 @@ export function pixiKartaImages(context, featureCache, dispatch) {
         var service = getService();
 
 
-        if (_kartaEnabled) {
+        if (_streetsideEnabled) {
             if (service && ~~context.map().zoom() >= minZoom) {
                 editOn();
-                service.loadImages(context.projection);
+                service.loadBubbles(context.projection);
                 updateImages(layer, projection);
             } else {
                 editOff();
@@ -274,10 +284,10 @@ export function pixiKartaImages(context, featureCache, dispatch) {
 
     // Toggles the layer on and off
     drawImages.enabled = function(val) {
-        if (!arguments.length) return _kartaEnabled;
+        if (!arguments.length) return _streetsideEnabled;
 
-        _kartaEnabled = val;
-        if (_kartaEnabled) {
+        _streetsideEnabled = val;
+        if (_streetsideEnabled) {
             layerOn();
         } else {
             layerOff();

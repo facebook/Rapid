@@ -36,7 +36,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
   }
 
 
-  // Services are loosly coupled in iD, so we use these functions
+  // Services are loosely coupled in iD, so we use these functions
   // to gain access to them, and bind the event handlers a single time.
   function getFbMlService() {
     if (services.fbMLRoads && !_FbMlService) {

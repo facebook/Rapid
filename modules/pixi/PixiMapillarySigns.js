@@ -6,41 +6,19 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { modeBrowse } from '../modes/browse';
 import { services } from '../services';
-import { getMapillaryIconSpriteHelper } from './pixiHelpers';
+import { getMapillarySignIconSpriteHelper } from './helpers';
 
 import _ from 'lodash';
 
-
 var _mapillaryEnabled = false;
-var _osmService;
 
-const mapillary_green = 0x55ff22;
-
-export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
+export function PixiMapillarySigns(context, featureCache, dispatch) {
 
     if (!dispatch) { dispatch = d3_dispatch('change'); }
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
     var _mapillaryVisible = false;
-    let _textures = {};
-    let _didInitTextures = false;
     let _mapillary;
-
-    function initMapillaryTextures() {
-        const circle = new PIXI.Graphics()
-            .lineStyle({width: 1, color:0x555555})
-            .beginFill(mapillary_green)
-            .drawCircle(6, 6, 6)
-            .endFill();
-
-
-
-        const renderer = context.pixi.renderer;
-        const options = { resolution: 2 };
-        _textures.circle = renderer.generateTexture(circle, options);
-        _didInitTextures = true;
-    }
-
 
     function getService() {
         if (services.mapillary && !_mapillary) {
@@ -54,12 +32,11 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
     }
 
 
-
     // Show the mapillary images and their tracks
     function editOn() {
         if (!_mapillaryVisible) {
             _mapillaryVisible = true;
-            context.pixi.stage.getChildByName('mapillary-map-features').visible = true;
+            context.pixi.stage.getChildByName('mapillary-signs').visible = true;
         }
     }
 
@@ -68,7 +45,7 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
     function editOff() {
         if (_mapillaryVisible) {
             _mapillaryVisible = false;
-            context.pixi.stage.getChildByName('mapillary-map-features').visible = false;
+            context.pixi.stage.getChildByName('mapillary-signs').visible = false;
         }
     }
 
@@ -89,17 +66,19 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
 
 
     function filterData(detectedFeatures) {
-        const fromDate = context.photos().fromDate();
-        const toDate = context.photos().toDate();
+        var fromDate = context.photos().fromDate();
+        var toDate = context.photos().toDate();
 
         if (fromDate) {
+            var fromTimestamp = new Date(fromDate).getTime();
             detectedFeatures = detectedFeatures.filter(function(feature) {
-                return new Date(feature.last_seen_at).getTime() >= new Date(fromDate).getTime();
+                return new Date(feature.last_seen_at).getTime() >= fromTimestamp;
             });
         }
         if (toDate) {
+            var toTimestamp = new Date(toDate).getTime();
             detectedFeatures = detectedFeatures.filter(function(feature) {
-                return new Date(feature.first_seen_at).getTime() <= new Date(toDate).getTime();
+                return new Date(feature.first_seen_at).getTime() <= toTimestamp;
             });
         }
 
@@ -107,37 +86,38 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
     }
 
 
+
     // Update the feature markers
     function updateFeatures(layer, projection) {
         if (!_mapillaryVisible || !_mapillaryEnabled) return;
-        if (!context._mapillarySheet) return;
+        if (!context._mapillarySignSheet) return;
 
         const k = projection.scale();
 
         const service = getService();
-        const unfilteredFeatures = (service ? service.mapFeatures(context.projection) : []);
+        const unfilteredFeatures = (service ? service.signs(context.projection) : []);
         const mapFeatures = filterData(unfilteredFeatures);
 
-        mapFeatures.forEach(function prepareImages(mapObject) {
-            let feature = featureCache.get(mapObject.id);
+        mapFeatures.forEach(function prepareImages(sign) {
+            let feature = featureCache.get(sign.id);
 
             if (!feature) {   // make point if needed
-                let icon = getMapillaryIconSpriteHelper(context, mapObject.value);
+                let icon = getMapillarySignIconSpriteHelper(context, sign.value);
                 const iconSize = 24;
                 icon.width = iconSize;
                 icon.interactive = true;
                 icon.buttonMode = true;
                 icon.height = iconSize;
-                icon.name = mapObject.id;
+                icon.name = sign.id;
                 icon.position.set(0, 0);
                 layer.addChild(icon);
 
                 feature = {
                     displayObject: icon,
-                    loc: mapObject.loc,
+                    loc: sign.loc,
                 };
 
-                featureCache.set(mapObject.id, feature);
+                featureCache.set(sign.id, feature);
             }
 
             if (k === feature.k) return;
@@ -151,10 +131,7 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
 
 
     // Draw the mapillary objects layer and schedule loading/updating their markers.
-    function drawObjects(layer, projection) {
-
-        if (!_didInitTextures) initMapillaryTextures();
-
+    function drawSigns(layer, projection) {
         var service = getService();
 
 
@@ -162,29 +139,29 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
             if (service && ~~context.map().zoom() >= minZoom) {
                 editOn();
                 updateFeatures(layer, projection);
-                service.loadMapFeatures(context.projection);
-                service.showFeatureDetections(true);
+                service.loadSigns(context.projection);
+                service.showSignDetections(true);
             } else {
                 editOff();
             }
         } else if (service) {
-            service.showFeatureDetections(false);
+            service.showSignDetections(false);
         }
     }
 
 
     // Toggles the layer on and off
-    drawObjects.enabled = function(val) {
+    drawSigns.enabled = function(val) {
         if (!arguments.length) return _mapillaryEnabled;
 
         _mapillaryEnabled = val;
         if (_mapillaryEnabled) {
             layerOn();
-            context.photos().on('change.mapillary_map_features', updateFeatures);
+            context.photos().on('change.mapillary_signs', updateFeatures);
 
         } else {
             layerOff();
-            context.photos().on('change.mapillary_map_features', null);
+            context.photos().on('change.mapillary_signs', null);
         }
 
         dispatch.call('change');
@@ -192,9 +169,9 @@ export function pixiMapillaryMapFeatures(context, featureCache, dispatch) {
     };
 
 
-    drawObjects.supported = function() {
+    drawSigns.supported = function() {
         return !!getService();
     };
 
-    return drawObjects;
+    return drawSigns;
 }

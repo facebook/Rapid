@@ -1,10 +1,10 @@
 import * as PIXI from 'pixi.js';
 
 import { presetManager } from '../presets';
-import { getIconSpriteHelper } from './pixiHelpers';
+import { getIconSpriteHelper } from './helpers';
 
 
-export function pixiPoints(context, featureCache) {
+export function PixiOsmPoints(context, featureCache) {
   let _textures = {};
   let _didInit = false;
 
@@ -111,7 +111,6 @@ export function pixiPoints(context, featureCache) {
           container.__data__ = node;
           container.interactive = true;
           container.buttonMode = true;
-          container.interactiveChildren = true;
           container.sortableChildren = false;
           container.zIndex = -node.loc[1];  // sort by latitude ascending
 

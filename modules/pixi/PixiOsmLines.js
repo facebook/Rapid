@@ -2,11 +2,11 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 
 import { osmPavedTags } from '../osm/tags';
-import { getLineSegments, lineToPolygon } from './pixiHelpers';
-import { styleMatch } from './pixiStyles';
+import { getLineSegments, lineToPolygon } from './helpers';
+import { styleMatch } from './styles';
 
 
-export function pixiLines(context, featureCache) {
+export function PixiOsmLines(context, featureCache) {
   const ONEWAY_SPACING = 35;
   let _textures = {};
   let _didInit = false;
@@ -38,7 +38,6 @@ export function pixiLines(context, featureCache) {
       const lvl = new PIXI.Container();
       lvl.name = i.toString();
       lvl.interactive = false;
-      lvl.interactiveChildren = true;
       lvl.sortableChildren = true;
       lvl.zIndex = i;
       layer.addChild(lvl);

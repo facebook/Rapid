@@ -4,10 +4,10 @@ import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-s
 
 import { localizer } from '../core/localizer';
 import { utilDisplayName } from '../util';
-import { getLineSegments, getDebugBBox } from './pixiHelpers.js';
+import { getLineSegments, getDebugBBox } from './helpers.js';
 
 
-export function pixiLabels(context, featureCache) {
+export function PixiLabels(context, featureCache) {
   let _strings = new Map();      // map of OSM ID -> label string
   let _texts = new Map();        // map of label -> Pixi Texture
   let _avoids = new Set();       // set of OSM ID we are avoiding

@@ -3,14 +3,14 @@ import * as PIXI from 'pixi.js';
 import { Projection, vecAdd } from '@id-sdk/math';
 
 import {
-  pixiAreas,
-  pixiLabels,
-  pixiLayers,
-  pixiLines,
-  pixiMidpoints,
-  pixiPoints,
-  pixiRapidFeatures,
-  pixiVertices
+  PixiLabels,
+  PixiLayers,
+  PixiOsmAreas,
+  PixiOsmLines,
+  PixiOsmMidpoints,
+  PixiOsmPoints,
+  PixiOsmVertices,
+  PixiRapidFeatures
 } from './index.js';
 
 import { modeBrowse, modeSelect } from '../modes';
@@ -19,10 +19,10 @@ const AUTOTICK = false;     // set to true to turn the ticker back on
 
 
 /**
- * pixiRenderer
+ * PixiRenderer
  * @class
  */
-export class pixiRenderer {
+export class PixiRenderer {
 
   /**
    * constructor
@@ -115,32 +115,27 @@ export class pixiRenderer {
     const stage = this._pixi.stage;
     stage.name = 'stage';
     stage.interactive = true;
-    stage.interactiveChildren = true;
     // Add a big hit area to `stage` so that clicks on nothing will register
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
 
     const areas = new PIXI.Container();
     areas.name = 'areas';
     areas.interactive = false;
-    areas.interactiveChildren = true;
     areas.sortableChildren = true;
 
     const lines = new PIXI.Container();
     lines.name = 'lines';
     lines.interactive = false;
-    lines.interactiveChildren = true;
     lines.sortableChildren = true;
 
     const vertices = new PIXI.Container();
     vertices.name = 'vertices';
     vertices.interactive = false;
-    vertices.interactiveChildren = true;
     vertices.sortableChildren = true;
 
     const points = new PIXI.Container();
     points.name = 'points';
     points.interactive = false;
-    points.interactiveChildren = true;
     points.sortableChildren = true;
 
     const labels = new PIXI.Container();
@@ -152,12 +147,10 @@ export class pixiRenderer {
     // const midpoints = new PIXI.Container();
     // midpoints.name = 'midpoints';
     // midpoints.interactive = false;
-    // midpoints.interactiveChildren = true;
     // midpoints.sortableChildren = true;
 
     stage.addChild(areas, lines, vertices, points, labels);
 
-    const thiz = this;
     stage
       .on('click', e => {
         if (!e.target) return;
@@ -174,17 +167,17 @@ export class pixiRenderer {
         if (!e.target) return;
 
         // hover target has changed
-        if (e.target !== thiz._hoverTarget) {
+        if (e.target !== this._hoverTarget) {
           const name = e.target.name || 'nothing';
           console.log(`pointer over ${name}`);
 
 //          // remove hover
-//          if (thiz._hoverTarget) {
+//          if (this._hoverTarget) {
 //            const hover = this._hoverTarget.getChildByName('hover');
 //            if (hover) hover.destroy();
 //          }
 
-          thiz._hoverTarget = e.target;
+          this._hoverTarget = e.target;
 
 //          // add new hover
 //          if (e.target !== stage) {
@@ -197,24 +190,24 @@ export class pixiRenderer {
 //            e.target.addChild(hover);
 //          }
 
-          thiz.render();
+//          this.render();
         }
       });
 
 
-    this._drawPoints = pixiPoints(context, this._featureCache);
-    this._drawVertices = pixiVertices(context, this._featureCache);
-    this._drawLines = pixiLines(context, this._featureCache);
-    this._drawAreas = pixiAreas(context, this._featureCache);
-    this._drawMidpoints = pixiMidpoints(context, this._featureCache);
-    this._drawLabels = pixiLabels(context, this._featureCache);
+    this._drawPoints = PixiOsmPoints(context, this._featureCache);
+    this._drawVertices = PixiOsmVertices(context, this._featureCache);
+    this._drawLines = PixiOsmLines(context, this._featureCache);
+    this._drawAreas = PixiOsmAreas(context, this._featureCache);
+    this._drawMidpoints = PixiOsmMidpoints(context, this._featureCache);
+    this._drawLabels = PixiLabels(context, this._featureCache);
 
-    this._drawLayers = new pixiLayers(context, this._pixiProjection, this._featureCache);
+    this._layers = new PixiLayers(context, this._featureCache);
   }
 
 
   layers() {
-    return this._drawLayers;
+    return this._layers;
   }
 
 
@@ -229,13 +222,6 @@ export class pixiRenderer {
     const stage = pixi.stage;
     const context = this._context;
     const map = context.map();
-
-    const areasLayer = stage.getChildByName('areas');
-    const linesLayer = stage.getChildByName('lines');
-    const verticesLayer = stage.getChildByName('vertices');
-    const pointsLayer = stage.getChildByName('points');
-    const labelsLayer = stage.getChildByName('labels');
-    const midpointsLayer = stage.getChildByName('midpoints');
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
@@ -304,6 +290,13 @@ export class pixiRenderer {
     // DRAW phase
 
     // OSM
+    const areasLayer = stage.getChildByName('areas');
+    const linesLayer = stage.getChildByName('lines');
+    const verticesLayer = stage.getChildByName('vertices');
+    const pointsLayer = stage.getChildByName('points');
+    const labelsLayer = stage.getChildByName('labels');
+    const midpointsLayer = stage.getChildByName('midpoints');
+
     this._drawAreas(areasLayer, this._pixiProjection, data);
     this._drawLines(linesLayer, this._pixiProjection, data);
     this._drawVertices(verticesLayer, this._pixiProjection, data);
@@ -312,7 +305,7 @@ export class pixiRenderer {
     this._drawLabels(labelsLayer, this._pixiProjection, data);
 
     // Everything Else
-    this._drawLayers.render(this._pixiProjection);
+    this._layers.render(this._pixiProjection);
 
 
     if (!AUTOTICK) {    // tick manually

@@ -7,7 +7,7 @@ import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vec
 import { utilArrayFlatten, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
-import { pixiRenderer } from '../pixi/pixiRenderer';
+import { PixiRenderer } from '../pixi/PixiRenderer';
 
 import { prefs } from '../core/preferences';
 import { modeBrowse } from '../modes/browse';
@@ -138,7 +138,7 @@ export function rendererMap(context) {
         .attr('class', 'layer pixi-data')
         .style('z-index', '3');
 
-      _pixiRenderer = new pixiRenderer(context, pixiContainer.node());
+      _pixiRenderer = new PixiRenderer(context, pixiContainer.node());
 
       const layers = _pixiRenderer.layers();
       layers

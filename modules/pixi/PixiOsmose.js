@@ -4,12 +4,12 @@ import _throttle from 'lodash-es/throttle';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { services } from '../services';
-import { getIconSpriteHelper } from './pixiHelpers';
+import { getIconSpriteHelper } from './helpers';
 
 var _layerEnabled = false;
 
 
-export function pixiOsmose(context, featureCache, dispatch) {
+export function PixiOsmose(context, featureCache, dispatch) {
 
     if (!dispatch) { dispatch = d3_dispatch('change'); }
     var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);

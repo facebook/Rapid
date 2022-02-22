@@ -2,7 +2,7 @@ import _throttle from 'lodash-es/throttle';
 import { utilArrayFlatten } from '@id-sdk/util';
 import { services } from '../services';
 import * as PIXI from 'pixi.js';
-import { lineToPolygon } from './pixiHelpers';
+import { lineToPolygon } from './helpers';
 
 
 let _enabled = false;
@@ -12,7 +12,7 @@ let _EsriService;
 let _actioned;
 
 
-export function pixiRapidFeatures(context, featureCache, dispatch) {
+export function PixiRapidFeatures(context, featureCache, dispatch) {
   const SHOWBBOX = false;
   const MINDATAZOOM = 14;
   const throttledRedraw = _throttle(() => dispatch.call('change'), 1000);
@@ -41,7 +41,7 @@ let _datasetFeatures = new Map();  // Map of dataset ID => dsfeatures Map (so we
   }
 
 
-  // Services are loosly coupled in iD, so we use these functions
+  // Services are loosely coupled in iD, so we use these functions
   // to gain access to them, and bind the event handlers a single time.
   function getFbMlService() {
     if (services.fbMLRoads && !_FbMlService) {
