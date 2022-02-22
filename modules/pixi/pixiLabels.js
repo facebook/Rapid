@@ -141,15 +141,17 @@ export function pixiLabels(context, featureCache) {
       if (existing) {
         sprite = new PIXI.Sprite(existing);
       } else {
-        sprite = new PIXI.Text(str, _textStyle);
+        let tempSprite = new PIXI.Text(str, _textStyle);
 
-        let texture = _allocator.allocate(sprite.width, sprite.height);
+        let texture = _allocator.allocate(tempSprite.width, tempSprite.height);
         const renderer = context.pixi.renderer;
 
-        renderer.render(sprite, texture);
-        sprite.resolution = 2;
-        sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
+        renderer.render(tempSprite, texture);
+        tempSprite.resolution = 2;
+        tempSprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
         _texts.set(str, texture);
+        tempSprite.destroy();
+        sprite = new PIXI.Sprite(texture);
       }
       sprite.name = str;
       sprite.anchor.set(0.5, 0.5);   // middle, middle
