@@ -5,6 +5,7 @@ import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-s
 import { localizer } from '../core/localizer';
 import { utilDisplayName } from '../util';
 import { getLineSegments, getDebugBBox } from './pixiHelpers.js';
+import { RenderTextureAllocator } from '@pixi-essentials/texture-allocator';
 
 
 export function pixiLabels(context, featureCache) {
@@ -20,6 +21,9 @@ export function pixiLabels(context, featureCache) {
   let _didInit = false;
   let _textStyle;
 
+  // Create a render-texture allocator to create an on-the-fly texture atlas for
+  // all our label rendering needs.
+  const _allocator = new RenderTextureAllocator();
 
   function initLabels(context, layer) {
     _textStyle = new PIXI.TextStyle({
@@ -135,12 +139,17 @@ export function pixiLabels(context, featureCache) {
       let sprite;
       let existing = _texts.get(str);
       if (existing) {
-        sprite = new PIXI.Sprite(existing.texture);
+        sprite = new PIXI.Sprite(existing);
       } else {
         sprite = new PIXI.Text(str, _textStyle);
+
+        let texture = _allocator.allocate(sprite.width, sprite.height);
+        const renderer = context.pixi.renderer;
+
+        renderer.render(sprite, texture);
         sprite.resolution = 2;
         sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
-        _texts.set(str, sprite);
+        _texts.set(str, texture);
       }
       sprite.name = str;
       sprite.anchor.set(0.5, 0.5);   // middle, middle
