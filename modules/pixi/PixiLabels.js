@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { RenderTextureAllocator } from '@pixi-essentials/texture-allocator';
 import RBush from 'rbush';
 import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
@@ -20,6 +21,9 @@ export function PixiLabels(context, featureCache) {
   let _didInit = false;
   let _textStyle;
 
+  // Create a render-texture allocator to create an on-the-fly texture atlas for
+  // all our label rendering needs.
+  const _allocator = new RenderTextureAllocator();
 
   function initLabels(context, layer) {
     _textStyle = new PIXI.TextStyle({
@@ -135,12 +139,19 @@ export function PixiLabels(context, featureCache) {
       let sprite;
       let existing = _texts.get(str);
       if (existing) {
-        sprite = new PIXI.Sprite(existing.texture);
+        sprite = new PIXI.Sprite(existing);
       } else {
-        sprite = new PIXI.Text(str, _textStyle);
-        sprite.resolution = 2;
-        sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
-        _texts.set(str, sprite);
+        let tempSprite = new PIXI.Text(str, _textStyle);
+
+        let texture = _allocator.allocate(tempSprite.width, tempSprite.height);
+        const renderer = context.pixi.renderer;
+
+        renderer.render(tempSprite, texture);
+        tempSprite.resolution = 2;
+        tempSprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
+        _texts.set(str, texture);
+        tempSprite.destroy();
+        sprite = new PIXI.Sprite(texture);
       }
       sprite.name = str;
       sprite.anchor.set(0.5, 0.5);   // middle, middle
