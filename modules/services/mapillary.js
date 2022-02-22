@@ -276,6 +276,13 @@ export default {
         const limit = 5;
         return searchLimited(limit, projection, _mlyCache.points.rtree);
     },
+    // Get filtered Map features (streetLihgts, pols, etc)
+    filteredMapFeatures: function(projection) {
+        const filterObjects= ['object--street-light', 'object--support--pole', 'object--street-light' ,'object--bike-rack' ];
+        const mapFeatures = this.mapFeatures(projection);
+        const filteredMapFeatures = mapFeatures.filter((feature) =>  filterObjects.includes(feature.value) );
+        return filteredMapFeatures;
+    },
 
     // Get cached image by id
     cachedImage: function(imageId) {
