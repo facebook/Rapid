@@ -34,8 +34,8 @@
     "dist:svg:mapillary:objects": "svg-sprite --symbol --symbol-dest . --symbol-sprite dist/img/mapillary-object-sprite.svg node_modules/mapillary_sprite_source/package_objects/*.svg",
     "dist:svg:temaki": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"temaki-%s\" --symbol-sprite dist/img/temaki-sprite.svg node_modules/@ideditor/temaki/icons/*.svg",
     "imagery": "node scripts/update_imagery.js",
-    "lint": "eslint scripts test/spec modules",
-    "lint:fix": "eslint scripts test/spec modules --fix",
+    "lint": "eslint test/spec modules",
+    "lint:fix": "eslint test/spec modules --fix",
     "start": "run-s build:legacy start:server",
     "quickstart": "run-s build:modern start:server",
     "start:server": "node scripts/server.js",
@@ -130,12 +130,9 @@
   },
   "type": "module",
   "engines": {
-    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+    "node": ">=16.14"
   },
   "browserslist": [
     "> 0.2%, last 6 major versions, Firefox ESR, IE 11, maintained node versions"
-  ],
-  "volta": {
-    "node": "16.14.1"
-  }
+  ]
 }
