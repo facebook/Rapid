@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilRebind } from '../util';
 
@@ -36,18 +35,18 @@ export class PixiLayers {
     utilRebind(this, this.dispatch, 'on');
 
     this._layers = [
-      new PixiImproveOSM(context, featureCache, this.dispatch)
+      new PixiKartaPhotos(context, featureCache, this.dispatch),
+      new PixiMapillaryPhotos(context, featureCache, this.dispatch),
+      new PixiImproveOSM(context, featureCache, this.dispatch),
+      new PixiKeepRight(context, featureCache, this.dispatch),
+      new PixiOsmose(context, featureCache, this.dispatch),
+      new PixiOsmNotes(context, featureCache, this.dispatch),
+      new PixiOsm(context, featureCache, this.dispatch)
       // { id: 'osm',             renderer: PixiOsm(projection, context, dispatch) },
       // { id: 'rapid',           renderer: PixiRapidFeatures(context, featureCache, dispatch)},
-      // { id: 'notes',           renderer: PixiOsmNotes(context, featureCache, dispatch)},
-      // { id: 'mapillary',       renderer: PixiMapillaryPhotos(context, featureCache, dispatch)},
       // { id: 'streetside',      renderer: PixiStreetsidePhotos(context, featureCache, dispatch)},
-      // { id: 'openstreetcam',   renderer: PixiKartaPhotos(context, featureCache, dispatch) },
       // { id: 'mapillary-map-features',  renderer: PixiMapillaryMapFeatures(context, featureCache, dispatch) },
       // { id: 'mapillary-signs', renderer: PixiMapillarySigns(context, featureCache, dispatch) },
-      // { id: 'keepRight',       renderer: PixiKeepRight(context, featureCache, dispatch) },
-      // { id: 'improveOSM',      renderer: new PixiImproveOSM(context, featureCache, dispatch)  }
-      // { id: 'osmose',          renderer: PixiOsmose(context, featureCache, dispatch)  },
     ];
   }
 
@@ -73,7 +72,6 @@ export class PixiLayers {
 
 
   enable(ids) {
-    const stage = this.context.pixi.stage;
     const toEnable = new Set([].concat(ids));  // coax ids into a Set
     this._layers.forEach(layer => {
       if (toEnable.has(layer.id)) {
@@ -86,7 +84,6 @@ export class PixiLayers {
 
 
   disable(ids) {
-    const stage = this.context.pixi.stage;
     const toDisable = new Set([].concat(ids));  // coax ids into a Set
     this._layers.forEach(layer => {
       if (toDisable.has(layer.id)) {
@@ -99,7 +96,6 @@ export class PixiLayers {
 
 
   only(ids) {
-    const stage = this.context.pixi.stage;
     const toEnable = new Set([].concat(ids));  // coax ids into a Set
     this._layers.forEach(layer => {
       layer.enabled = toEnable.has(layer.id);

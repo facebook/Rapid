@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
-import _throttle from 'lodash-es/throttle';
+// import _throttle from 'lodash-es/throttle';
 
 import { services } from '../services';
+import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainerHelper } from './helpers';
 
 
-const LAYERID = 'kartaphotos';  // was 'openstreetcam'
+const LAYERID = 'KartaPhotos';  // was 'openstreetcam'
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 const MINMARKERZOOM = 16;
@@ -18,7 +19,7 @@ const KARTA_BLUE = 0x20c4ff;
  * PixiKartaPhotos
  * @class
  */
-export class PixiKartaPhotos {
+export class PixiKartaPhotos extends PixiLayer {
 
   /**
    * @constructor
@@ -27,29 +28,16 @@ export class PixiKartaPhotos {
    * @param dispatch
    */
   constructor(context, featureCache, dispatch) {
-    this.context = context;
+    super(context, LAYERID, LAYERZINDEX);
+
     this.featureCache = featureCache;
     this.dispatch = dispatch;
-    this.id = LAYERID;
 
-    this._enabled = false;  // user has chosen to see the layer
     this._service = null;
     this.getService();
 
-    // var throttledRedraw = _throttle(function () { this.dispatch.call('change'); }, 1000);
-
-    // Create layer container
-    const container = new PIXI.Container();
-    container.name = LAYERID;
-    container.zIndex = LAYERZINDEX;
-    container.visible = false;
-    container.interactive = true;
-    container.buttonMode = true;
-    container.sortableChildren = true;
-    context.pixi.stage.addChild(container);
-    this.container = container;
-
     // Create marker texture
+    this.textures = {};
     const circle = new PIXI.Graphics()
       .lineStyle({ width: 1, color: 0x222222 })
       .beginFill(KARTA_BLUE)
@@ -140,7 +128,7 @@ export class PixiKartaPhotos {
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
 
-    sequenceData.forEach(function prepareSequences(d) {
+    sequenceData.forEach(function prepareKartaSequences(d) {
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
       let feature = featureCache.get(featureID);
 
@@ -178,17 +166,17 @@ export class PixiKartaPhotos {
     });
 
 
-    photoData.forEach(function preparePhotos(d) {
+    photoData.forEach(function prepareKartaPhotos(d) {
       const featureID = `${LAYERID}-photo-${d.key}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
         const marker = new PIXI.Sprite(this.textures.circle);
+        marker.name = featureID;
         marker.buttonMode = true;
         marker.interactive = true;
-        marker.zIndex = -d.loc[1];  // sort by latitude ascending
+        marker.zIndex = -d.loc[1];    // sort by latitude ascending
         marker.anchor.set(0.5, 0.5);  // middle, middle
-        marker.name = 'marker';
         this.container.addChild(marker);
 
         // Get the capture angle, if any, and attach a viewfield to the point.
@@ -203,7 +191,7 @@ export class PixiKartaPhotos {
           loc: d.loc
         };
 
-        featureCache.set(image.key, feature);
+        featureCache.set(featureID, feature);
       }
 
       if (k === feature.k) return;
@@ -223,7 +211,7 @@ export class PixiKartaPhotos {
 
   /**
    * render
-   * Draw the Karta layer and schedule loading/updating their markers.
+   * Draw any data we have, and schedule fetching more of it to cover the view
    * @param projection - a pixi projection
    * @param zoom - the effective zoom to use for rendering
    */
@@ -249,37 +237,6 @@ export class PixiKartaPhotos {
    */
   get supported() {
     return !!this.getService();
-  }
-
-  /**
-   * visible
-   * Whether the layer's container is currently visible
-   * (it becomes invisible below min zoom)
-   */
-  get visible() {
-    return this.container.visible;
-  }
-  set visible(val) {
-    this.container.visible = val;
-    // if (!val) {
-    //   throttledRedraw.cancel();
-    // }
-  }
-
-  /**
-   * enabled
-   * Whether the the user has chosen to see the layer
-   */
-  get enabled() {
-    return this._enabled;
-  }
-  set enabled(val) {
-    this._enabled = val;
-    this.visible = val;
-    // if (!val) {
-    //   this.context.enter(modeBrowse(this.context)
-    // }
-    this.dispatch.call('change');
   }
 
 }

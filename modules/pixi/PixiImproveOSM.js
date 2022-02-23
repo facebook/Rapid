@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
-import _throttle from 'lodash-es/throttle';
+// import _throttle from 'lodash-es/throttle';
 
 import { services } from '../services';
+import { PixiLayer } from './PixiLayer';
 import { getIconSpriteHelper } from './helpers';
 
 
-const LAYERID = 'improveOSM';
+const LAYERID = 'ImproveOSM';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
@@ -23,7 +24,7 @@ TINTS.set('mr-both', 0xffa500);    // missing road + parking
  * PixiImproveOSM
  * @class
  */
-export class PixiImproveOSM {
+export class PixiImproveOSM extends PixiLayer {
 
   /**
    * @constructor
@@ -32,31 +33,19 @@ export class PixiImproveOSM {
    * @param dispatch
    */
   constructor(context, featureCache, dispatch) {
-    this.context = context;
+    super(context, LAYERID, LAYERZINDEX);
+
     this.featureCache = featureCache;
     this.dispatch = dispatch;
-    this.id = LAYERID;
 
-    this._enabled = false;  // user has chosen to see the layer
     this._service = null;
     this.getService();
 
     // var throttledRedraw = _throttle(function () { this.dispatch.call('change'); }, 1000);
 
-    // Create layer container
-    const container = new PIXI.Container();
-    container.name = LAYERID;
-    container.zIndex = LAYERZINDEX;
-    container.visible = false;
-    container.interactive = true;
-    container.buttonMode = true;
-    container.sortableChildren = true;
-    context.pixi.stage.addChild(container);
-    this.container = container;
-
     // Create marker texture
     this.textures = {};
-    const balloonMarker = new PIXI.Graphics()
+    const marker = new PIXI.Graphics()
       .lineStyle(1, 0x333333)
       .beginFill(0xffffff)
       .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
@@ -65,7 +54,7 @@ export class PixiImproveOSM {
 
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
-    this.textures.improveOSMMarker = renderer.generateTexture(balloonMarker, options);
+    this.textures.improveOSMMarker = renderer.generateTexture(marker, options);
   }
 
 
@@ -98,16 +87,16 @@ export class PixiImproveOSM {
     if (!service) return;
 
     const visibleData = service.getItems(context.projection);  // note: context.projection !== pixi projection
-    visibleData.forEach(function makeImproveOSMFeatures(d) {
+    visibleData.forEach(function prepareImproveOSMMarkers(d) {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
         const marker = new PIXI.Sprite(this.textures.improveOSMMarker);
-        marker.name = 'marker';
+        marker.name = featureID;
         marker.buttonMode = true;
         marker.interactive = true;
-        marker.zIndex = -d.loc[1];  // sort by latitude ascending
+        marker.zIndex = -d.loc[1];   // sort by latitude ascending
         marker.anchor.set(0.5, 1);   // middle, bottom
         marker.tint = TINTS.get(d.itemType) || 0xffffff;
         this.container.addChild(marker);
@@ -145,7 +134,7 @@ export class PixiImproveOSM {
 
   /**
    * render
-   * Draw the improveOSM layer and schedule loading/updating their markers.
+   * Draw any data we have, and schedule fetching more of it to cover the view
    * @param projection - a pixi projection
    * @param zoom - the effective zoom to use for rendering
    */
@@ -171,37 +160,6 @@ export class PixiImproveOSM {
    */
   get supported() {
     return !!this.getService();
-  }
-
-  /**
-   * visible
-   * Whether the layer's container is currently visible
-   * (it becomes invisible below min zoom)
-   */
-  get visible() {
-    return this.container.visible;
-  }
-  set visible(val) {
-    this.container.visible = val;
-    // if (!val) {
-    //   throttledRedraw.cancel();
-    // }
-  }
-
-  /**
-   * enabled
-   * Whether the the user has chosen to see the layer
-   */
-  get enabled() {
-    return this._enabled;
-  }
-  set enabled(val) {
-    this._enabled = val;
-    this.visible = val;
-    // if (!val) {
-    //   this.context.enter(modeBrowse(this.context)
-    // }
-    this.dispatch.call('change');
   }
 
 }

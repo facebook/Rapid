@@ -116,8 +116,9 @@ export function PixiLabels(context, featureCache) {
     function gatherAvoids() {
       const stage = context.pixi.stage;
       let avoids = [];
-      stage.getChildByName('vertices').children.forEach(checkAvoid);
-      stage.getChildByName('points').children.forEach(checkAvoid);
+      const osmLayer = stage.getChildByName('OSM');
+      osmLayer.getChildByName('vertices').children.forEach(checkAvoid);
+      osmLayer.getChildByName('points').children.forEach(checkAvoid);
       if (avoids.length) {
         _placement.load(avoids);  // bulk insert
       }

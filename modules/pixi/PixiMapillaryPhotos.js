@@ -1,236 +1,242 @@
 import * as PIXI from 'pixi.js';
-import _throttle from 'lodash-es/throttle';
+// import _throttle from 'lodash-es/throttle';
 
-import { select as d3_select } from 'd3-selection';
-import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import { modeBrowse } from '../modes/browse';
 import { services } from '../services';
+import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainerHelper } from './helpers';
 
 
+const LAYERID = 'MapillaryPhotos';
+const LAYERZINDEX = 10;
+const MINZOOM = 12;
+const MINMARKERZOOM = 16;
+const MINVIEWFIELDZOOM = 18;
 
-var _mapillaryEnabled = false;
-var _osmService;
-
-const mapillary_green = 0x55ff22;
-
-export function PixiMapillaryPhotos(context, featureCache, dispatch) {
-
-    if (!dispatch) { dispatch = d3_dispatch('change'); }
-    var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
-    const minZoom = 12;
-    const minMarkerZoom = 16;
-    const minViewfieldZoom = 18;
-    var _mapillaryVisible = false;
-    let _textures = {};
-    let _didInitTextures = false;
-    let _mapillary;
-
-    function initMapillaryTextures() {
-        const circle = new PIXI.Graphics()
-            .lineStyle({width: 1, color:0x555555})
-            .beginFill(mapillary_green)
-            .drawCircle(6, 6, 6)
-            .endFill();
+const MAPILLARY_GREEN = 0x55ff22;
 
 
+/**
+ * PixiMapillaryPhotos
+ * @class
+ */
+export class PixiMapillaryPhotos extends PixiLayer {
 
-        const renderer = context.pixi.renderer;
-        const options = { resolution: 2 };
-        _textures.circle = renderer.generateTexture(circle, options);
-        _didInitTextures = true;
+  /**
+   * @constructor
+   * @param context
+   * @param featureCache
+   * @param dispatch
+   */
+  constructor(context, featureCache, dispatch) {
+    super(context, LAYERID, LAYERZINDEX);
+
+    this.featureCache = featureCache;
+    this.dispatch = dispatch;
+
+    this._service = null;
+    this.getService();
+
+    // Create marker texture
+    this.textures = {};
+    const circle = new PIXI.Graphics()
+      .lineStyle({ width: 1, color: 0x222222 })
+      .beginFill(MAPILLARY_GREEN)
+      .drawCircle(6, 6, 6)
+      .endFill();
+
+    const renderer = context.pixi.renderer;
+    const options = { resolution: 2 };
+    this.textures.circle = renderer.generateTexture(circle, options);
+  }
+
+
+  /**
+   * Services are loosely coupled in iD, so we use a `getService` function
+   * to gain access to them, and bind any event handlers a single time.
+   */
+  getService() {
+    if (services.mapillary && !this._service) {
+      this._service = services.mapillary;
+      // this._service.event.on('loadedImages', throttledRedraw);
+    } else if (!services.mapillary && this._service) {
+      this._service = null;
     }
 
-
-    function getService() {
-        if (services.mapillary && !_mapillary) {
-            _mapillary = services.mapillary;
-            _mapillary.event.on('loadedImages', throttledRedraw);
-        } else if (!services.mapillary && _mapillary) {
-            _mapillary = null;
-        }
-
-        return _mapillary;
-    }
-
-
-
-    // Show the mapillary images and their tracks
-    function editOn() {
-        if (!_mapillaryVisible) {
-            _mapillaryVisible = true;
-            context.pixi.stage.getChildByName('mapillary').visible = true;
-        }
-    }
-
-
-    // Immediately remove the images
-    function editOff() {
-        if (_mapillaryVisible) {
-            _mapillaryVisible = false;
-            context.pixi.stage.getChildByName('mapillary').visible = false;
-        }
-    }
-
-
-    // Enable the layer.  This shows the image points and transitions them to visible.
-    function layerOn() {
-        editOn();
-        dispatch.call('change');
-    }
-
-
-    // Disable the layer.  This transitions the layer invisible and then hides the images.
-    function layerOff() {
-        throttledRedraw.cancel();
-        editOff();
-        dispatch.call('change');
-    }
+    return this._service;
+  }
+//
+//
+//  filterImages(images) {
+//    const fromDate = this.context.photos().fromDate();
+//    const toDate = this.context.photos().toDate();
+//    const usernames = this.context.photos().usernames();
+//
+//    if (fromDate) {
+//      const fromTimestamp = new Date(fromDate).getTime();
+//      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
+//    }
+//    if (toDate) {
+//      const toTimestamp = new Date(toDate).getTime();
+//      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
+//    }
+//    if (usernames) {
+//      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+//    }
+//    return images;
+//  }
+//
+//
+//  filterSequences(sequences) {
+//    const fromDate = this.context.photos().fromDate();
+//    const toDate = this.context.photos().toDate();
+//    const usernames = this.context.photos().usernames();
+//
+//    if (fromDate) {
+//      const fromTimestamp = new Date(fromDate).getTime();
+//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+//    }
+//    if (toDate) {
+//      const toTimestamp = new Date(toDate).getTime();
+//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+//    }
+//    if (usernames) {
+//      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+//    }
+//    return sequences;
+//  }
 
 
-    // Update the image markers
-    function updateImages(layer, projection) {
-        if (!_mapillaryVisible || !_mapillaryEnabled) return;
-        const k = projection.scale();
+  /**
+   * drawMarkers
+   * @param projection - a pixi projection
+   * @param zoom - the effective zoom
+   */
+  drawMarkers(projection, zoom) {
+    const context = this.context;
+    const featureCache = this.featureCache;
+    const k = projection.scale();
 
-        var service = getService();
-        const imageEntities = (service ? service.images(context.projection) : []);
-        const sequenceEntities = (service ? service.sequences(context.projection) : []);
+    const service = this.getService();
+    if (!service) return;
 
-    sequenceEntities.forEach(function prepareImages(sequence) {
-            let feature = featureCache.get(sequence.id);
+    const showMarkers = (zoom >= MINMARKERZOOM);
+    const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
-            if (!feature) {   // make point if needed
-                const container = new PIXI.Container();
-                container.name = 'sequence-' + sequence.id;
-                container.buttonMode = true;
-                container.interactive = true;
-                container.sortableChildren = true; //Needed because of z-index setting for highlight
+    const images = (showMarkers ? service.images(context.projection) : []);
+    const sequences = service.sequences(context.projection);
 
-                let line = new PIXI.Graphics();
-                container.addChild(line);
-                layer.addChild(container);
+    // const sequenceData = this.filterSequences(sequences);
+    // const photoData = this.filterImages(images);
 
-                feature = {
-                    displayObject: container,
-                    coords: sequence.geometry.coordinates,
-                    graphics: line,
-                };
+    sequences.forEach(function prepareMapillarySequences(d) {
+      const featureID = `${LAYERID}-sequence-${d.properties.key}`;
+      let feature = featureCache.get(featureID);
 
-                featureCache.set(sequence.id, feature);
-            }
+      if (!feature) {
+        const line = new PIXI.Graphics();
+        line.name = featureID;
+        line.buttonMode = true;
+        line.interactive = true;
+        line.zIndex = -100;  // beneath the markers (which should be [-90..90])
+        this.container.addChild(line);
 
-            if (k === feature.k) return;
-            feature.k = k;
+        feature = {
+          displayObject: line,
+          coords: d.geometry.coordinates
+        };
 
-            let points = [];
+        featureCache.set(featureID, feature);
+      }
 
-            feature.coords.forEach(coord => {
-                const [x, y] = projection.project(coord);
-                points.push([x, y]);
-            });
+      if (k === feature.k) return;
+      feature.k = k;
 
-        let g = feature.graphics.clear();
-        g.lineStyle({
-            color: mapillary_green,
-            width: 4
-        });
-          points.forEach(([x, y], i) => {
-            if (i === 0) {
-              g.moveTo(x, y);
-            } else {
-              g.lineTo(x, y);
-            }
-          });
-        });
+      const points = feature.coords.map(coord => projection.project(coord));
+      const g = feature.displayObject
+        .clear()
+        .lineStyle({ color: MAPILLARY_GREEN, width: 4 });
 
-        imageEntities.forEach(function prepareImages(image) {
-            let feature = featureCache.get(image.id);
-
-            if (!feature) {   // make point if needed
-                const container = new PIXI.Container();
-                container.name = 'image-' + image.id;
-                container.buttonMode = true;
-                container.interactive = true;
-                container.sortableChildren = true; //Needed because of z-index setting for highlight
-
-                layer.addChild(container);
-
-                if (context.map().zoom() >= minViewfieldZoom) {
-                    //Get the capture angle, if any, and attach a viewfield to the point.
-                    if (image.ca) {
-                        const vfContainer = getViewfieldContainerHelper(context, [image.ca], mapillary_green);
-                        container.addChild(vfContainer);
-                    }
-                }
-
-                let viewField = new PIXI.Sprite(_textures.circle);
-                viewField.anchor.set(0.5, 0.5);
-                viewField.name = 'image-marker';
-                viewField.anchor.set(0.5, 0.5);
-
-                container.addChild(viewField);
-
-                feature = {
-                    displayObject: container,
-                    loc: image.loc,
-                };
-
-                featureCache.set(image.id, feature);
-            }
-
-            if (k === feature.k) return;
-            feature.k = k;
-
-            // Reproject and recalculate the bounding box
-            const [x, y] = projection.project(feature.loc);
-            feature.displayObject.position.set(x, y);
-        });
-
-
-    }
-
-
-    // Draw the mapillary images layer and schedule loading/updating their markers.
-    function drawImages(layer, projection) {
-
-        if (!_didInitTextures) initMapillaryTextures();
-
-        var service = getService();
-
-
-        if (_mapillaryEnabled) {
-            if (service && ~~context.map().zoom() >= minZoom) {
-                editOn();
-                service.loadImages(context.projection);
-                updateImages(layer, projection);
-            } else {
-                editOff();
-            }
-        }
-    }
-
-
-    // Toggles the layer on and off
-    drawImages.enabled = function(val) {
-        if (!arguments.length) return _mapillaryEnabled;
-
-        _mapillaryEnabled = val;
-        if (_mapillaryEnabled) {
-            layerOn();
+      points.forEach(([x, y], i) => {
+        if (i === 0) {
+          g.moveTo(x, y);
         } else {
-            layerOff();
+          g.lineTo(x, y);
+        }
+      });
+    });
+
+
+    images.forEach(function prepareMapillaryPhotos(d) {
+      const featureID = `${LAYERID}-photo-${d.key}`;
+      let feature = featureCache.get(featureID);
+
+      if (!feature) {
+        const marker = new PIXI.Sprite(this.textures.circle);
+        marker.name = featureID;
+        marker.buttonMode = true;
+        marker.interactive = true;
+        marker.zIndex = -d.loc[1];    // sort by latitude ascending
+        marker.anchor.set(0.5, 0.5);  // middle, middle
+        this.container.addChild(marker);
+
+        // Get the capture angle, if any, and attach a viewfield to the point.
+        if (d.ca) {
+          const vfContainer = getViewfieldContainerHelper(this.context, [d.ca], MAPILLARY_GREEN);
+          marker.interactive = false;
+          marker.addChild(vfContainer);
         }
 
-        dispatch.call('change');
-        return this;
-    };
+        feature = {
+          displayObject: marker,
+          loc: d.loc
+        };
+
+        featureCache.set(featureID, feature);
+      }
+
+      if (k === feature.k) return;
+      feature.k = k;
+
+      // Reproject and recalculate the bounding box
+      const [x, y] = projection.project(feature.loc);
+      feature.displayObject.position.set(x, y);
+
+      feature.displayObject.visible = showMarkers;
+
+      const viewfields = feature.displayObject.getChildByName('viewfields');
+      viewfields.visible = showViewfields;
+    });
+  }
 
 
-    drawImages.supported = function() {
-        return !!getService();
-    };
+  /**
+   * render
+   * Draw any data we have, and schedule fetching more of it to cover the view
+   * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
+   */
+  render(projection, zoom) {
+    if (!this._enabled) return;
 
-    return drawImages;
+    const context = this.context;
+    const service = this.getService();
+
+    if (service && zoom >= MINZOOM) {
+      this.visible = true;
+      service.loadImages(context.projection);  // note: context.projection !== pixi projection
+      this.drawMarkers(projection, zoom);
+    } else {
+      this.visible = false;
+    }
+  }
+
+
+  /**
+   * supported
+   * Whether the layer's service exists
+   */
+  get supported() {
+    return !!this.getService();
+  }
+
 }

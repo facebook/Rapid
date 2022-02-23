@@ -32,7 +32,7 @@ function clamp(num, min, max) {
 }
 
 export function rendererMap(context) {
-  let _pixiRenderer;
+  let pixiRenderer;
 
   const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
   let projection = context.projection;
@@ -138,9 +138,9 @@ export function rendererMap(context) {
         .attr('class', 'layer pixi-data')
         .style('z-index', '3');
 
-      _pixiRenderer = new PixiRenderer(context, pixiContainer.node());
+      pixiRenderer = new PixiRenderer(context, pixiContainer.node());
 
-      const layers = _pixiRenderer.layers();
+      const layers = pixiRenderer.layers;
       layers
         .on('change.map', function() {
           context.background().updateImagery();
@@ -421,8 +421,8 @@ export function rendererMap(context) {
 
 
     function redrawPixi() {
-      if (!_pixiRenderer || !_redrawEnabled) return;
-      _pixiRenderer.render();
+      if (!pixiRenderer || !_redrawEnabled) return;
+      pixiRenderer.render();
     }
 
 
@@ -768,7 +768,7 @@ export function rendererMap(context) {
 
       prefs('area-fill', val);
       if (val !== 'wireframe') {
-          prefs('area-fill-toggle', val);
+        prefs('area-fill-toggle', val);
       }
       map.pan([0, 0]); // trigger a redraw
       dispatch.call('changeAreaFill', this);
@@ -791,7 +791,7 @@ export function rendererMap(context) {
 
 
     map.layers = function() {
-      return _pixiRenderer && _pixiRenderer.layers();
+      return pixiRenderer && pixiRenderer.layers;
     };
 
     map.doubleUpHandler = function() {

@@ -1,18 +1,7 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import * as PIXI from 'pixi.js';
-import { Projection, vecAdd } from '@id-sdk/math';
+import { Projection } from '@id-sdk/math';
 
-import {
-  PixiLabels,
-  PixiLayers,
-  PixiOsmAreas,
-  PixiOsmLines,
-  PixiOsmMidpoints,
-  PixiOsmPoints,
-  PixiOsmVertices,
-  PixiRapidFeatures
-} from './index.js';
-
+import { PixiLayers } from './PixiLayers';
 import { modeBrowse, modeSelect } from '../modes';
 
 const AUTOTICK = false;     // set to true to turn the ticker back on
@@ -25,28 +14,32 @@ const AUTOTICK = false;     // set to true to turn the ticker back on
 export class PixiRenderer {
 
   /**
-   * constructor
-   * Create a Pixi application and add it to the given container.
+   * @constructor
+   * Create a Pixi application and add it to the given parentElement.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
+   *
+   * @param context
+   * @param parentElement
    */
-  constructor(context, container) {
-    this._context = context;
+  constructor(context, parentElement) {
+    this.context = context;
+    this.parentElement = parentElement;
+    this.featureCache = new Map();            // map of OSM ID -> Pixi data
+    this.pixiProjection = new Projection();
+
     this._redrawPending = false;
-    this._pixiProjection = new Projection();
-    this._featureCache = new Map();            // map of OSM ID -> Pixi data
-    this._container = container;
     this._hoverTarget = null;
 
-    this._pixi = new PIXI.Application({
+    this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
       backgroundAlpha: 0.0,
-      resizeTo: container,
+      resizeTo: parentElement,
       resolution: window.devicePixelRatio
     });
 
-    context.pixi = this._pixi;
-    container.appendChild(this._pixi.view);
+    context.pixi = this.pixi;
+    parentElement.appendChild(this.pixi.view);
 
     // Register Pixi with the pixi-inspector extension if it is installed
     // https://github.com/bfanger/pixi-inspector
@@ -69,21 +62,21 @@ export class PixiRenderer {
       context._mapillarySignSheet = loader.resources['dist/img/icons/mapillary-signs-spritesheet.json'];
     });
 
-    this._pixi.rapidTextureKeys = [
+    this.pixi.rapidTextureKeys = [
       'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
       'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
       'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
       'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
     ];
 
-    this._pixi.rapidTextures = new Map();
-    this._pixi.rapidTextureKeys.forEach(key => {
-      this._pixi.rapidTextures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
+    this.pixi.rapidTextures = new Map();
+    this.pixi.rapidTextureKeys.forEach(key => {
+      this.pixi.rapidTextures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
     });
 
 
     // Setup the Ticker
-    const ticker = this._pixi.ticker;
+    const ticker = this.pixi.ticker;
     if (AUTOTICK) {       // redraw automatically every frame
       ticker.maxFPS = 30;
       ticker.autoStart = true;
@@ -93,63 +86,14 @@ export class PixiRenderer {
     }
 
     // Setup the Interaction Manager
-    // const interactionManager = this._pixi.renderer.plugins.interaction;
+    // const interactionManager = this.pixi.renderer.plugins.interaction;
     // interactionManager.interactionFrequency = 100;    // default 10ms, slow it down?  doesn't do what I thought
 
-    // Setup Scene
-    //
-    // A few definitions:
-    //
-    // - `buttonMode = true`    this displayObject will turn the cursor to a pointer when hovering over
-    // - `buttonMode = false`   this displayObject will NOT turn the cursor to a pointer when hovering over (default)
-    //
-    // - `interactive = true`   this displayObject can emit events
-    // - `interactive = false`  this displayObject can NOT emit events (default)
-    //
-    // - `interactiveChildren = true`   this container and its children will be checked for hits (default)
-    // - `interactiveChildren = false`  this container and its children will NOT be checked for hits
-    //
-    // - `sortableChildren = true`   we will set a zIndex property on children and they will be sorted according to it
-    // - `sortableChildren = false`  children will be drawn in the ordrer they are added to `children` array (default)
-    //
-    const stage = this._pixi.stage;
+    const stage = this.pixi.stage;
     stage.name = 'stage';
     stage.interactive = true;
     // Add a big hit area to `stage` so that clicks on nothing will register
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
-
-    const areas = new PIXI.Container();
-    areas.name = 'areas';
-    areas.interactive = false;
-    areas.sortableChildren = true;
-
-    const lines = new PIXI.Container();
-    lines.name = 'lines';
-    lines.interactive = false;
-    lines.sortableChildren = true;
-
-    const vertices = new PIXI.Container();
-    vertices.name = 'vertices';
-    vertices.interactive = false;
-    vertices.sortableChildren = true;
-
-    const points = new PIXI.Container();
-    points.name = 'points';
-    points.interactive = false;
-    points.sortableChildren = true;
-
-    const labels = new PIXI.Container();
-    labels.name = 'labels';
-    labels.interactive = false;
-    labels.interactiveChildren = false;
-    labels.sortableChildren = false;
-
-    // const midpoints = new PIXI.Container();
-    // midpoints.name = 'midpoints';
-    // midpoints.interactive = false;
-    // midpoints.sortableChildren = true;
-
-    stage.addChild(areas, lines, vertices, points, labels);
 
     stage
       .on('click', e => {
@@ -195,21 +139,8 @@ export class PixiRenderer {
       });
 
 
-    this._drawPoints = PixiOsmPoints(context, this._featureCache);
-    this._drawVertices = PixiOsmVertices(context, this._featureCache);
-    this._drawLines = PixiOsmLines(context, this._featureCache);
-    this._drawAreas = PixiOsmAreas(context, this._featureCache);
-    this._drawMidpoints = PixiOsmMidpoints(context, this._featureCache);
-    this._drawLabels = PixiLabels(context, this._featureCache);
-
-    this._layers = new PixiLayers(context, this._featureCache);
+    this.layers = new PixiLayers(context, this.featureCache);
   }
-
-
-  layers() {
-    return this._layers;
-  }
-
 
 
   /**
@@ -218,54 +149,27 @@ export class PixiRenderer {
   render() {
     if (this._redrawPending) return;
 
-    const pixi = this._pixi;
-    const stage = pixi.stage;
-    const context = this._context;
-    const map = context.map();
-
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
-    const currTransform = context.projection.transform();
-    const pixiTransform = this._pixiProjection.transform();
+    const currTransform = this.context.projection.transform();
+    const pixiTransform = this.pixiProjection.transform();
 
     let offset;
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset
       offset = [0, 0];
-      this._pixiProjection.transform(currTransform);
+      this.pixiProjection.transform(currTransform);
     } else {
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
 
+    const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
-
-
-    // GATHER phase
-    const data = context.history().intersects(map.extent());
-
-
-    // CULL phase (osm only?)
-    const effectiveZoom = map.effectiveZoom();
-    let visibleOSM = {};
-    data.forEach(entity => visibleOSM[entity.id] = true);
-    [...this._featureCache.entries()].forEach(function cull([id, feature]) {
-      let isVisible = !!visibleOSM[id] ||
-        !context.graph().hasEntity(id);  // for now non-OSM features will have to cull themselves
-
-      if (feature.type === 'vertex' && effectiveZoom < 16) {
-        isVisible = false;
-      }
-
-      feature.displayObject.visible = isVisible;
-      if (feature.label) {
-        feature.label.displayObject.visible = isVisible;
-      }
-    });
 
 // CULL phase (everything)
 //    const viewMin = offset;  //[0,0];
 //    const viewMax = vecAdd(offset, _dimensions);
 //
-//    this._featureCache.forEach(feature => {
+//    this.featureCache.forEach(feature => {
 //      const bounds = feature.bounds;
 //      const displayObject = feature.displayObject;
 //      if (!bounds || !displayObject) return;
@@ -286,32 +190,14 @@ export class PixiRenderer {
 //      }
 //    });
 
-
-    // DRAW phase
-
-    // OSM
-    const areasLayer = stage.getChildByName('areas');
-    const linesLayer = stage.getChildByName('lines');
-    const verticesLayer = stage.getChildByName('vertices');
-    const pointsLayer = stage.getChildByName('points');
-    const labelsLayer = stage.getChildByName('labels');
-    const midpointsLayer = stage.getChildByName('midpoints');
-
-    this._drawAreas(areasLayer, this._pixiProjection, data);
-    this._drawLines(linesLayer, this._pixiProjection, data);
-    this._drawVertices(verticesLayer, this._pixiProjection, data);
-    this._drawPoints(pointsLayer, this._pixiProjection, data);
-    // this._drawMidpoints(midpointsLayer, this._pixiProjection, data);
-    this._drawLabels(labelsLayer, this._pixiProjection, data);
-
-    // Everything Else
-    this._layers.render(this._pixiProjection);
+    // Draw everything
+    this.layers.render(this.pixiProjection);
 
 
     if (!AUTOTICK) {    // tick manually
       this._redrawPending = true;
       window.requestAnimationFrame(timestamp => {
-        pixi.ticker.update(timestamp);
+        this.pixi.ticker.update(timestamp);
 
         // ...or this?
         // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);

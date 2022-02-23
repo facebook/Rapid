@@ -1,190 +1,156 @@
 import * as PIXI from 'pixi.js';
-import _throttle from 'lodash-es/throttle';
-
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+// import _throttle from 'lodash-es/throttle';
 
 import { services } from '../services';
+import { PixiLayer } from './PixiLayer';
 import { getIconSpriteHelper } from './helpers';
 
-var _layerEnabled = false;
+
+const LAYERID = 'Osmose';
+const LAYERZINDEX = 10;
+const MINZOOM = 12;
 
 
-export function PixiOsmose(context, featureCache, dispatch) {
+/**
+ * PixiOsmose
+ * @class
+ */
+export class PixiOsmose extends PixiLayer {
 
-    if (!dispatch) { dispatch = d3_dispatch('change'); }
-    var throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
-    const minZoom = 12;
-    var _visible = false;
-    let _textures = {};
-    let _didInitTextures = false;
-    let _qaService;
+  /**
+   * @constructor
+   * @param context
+   * @param featureCache
+   * @param dispatch
+   */
+  constructor(context, featureCache, dispatch) {
+    super(context, LAYERID, LAYERZINDEX);
 
-    function initTextures() {
-        const balloonMarker = new PIXI.Graphics()
-            .lineStyle(1, 0x33333)
-            .beginFill(0xffffff)
-            .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
-            .endFill()
-            .closePath();
+    this.featureCache = featureCache;
+    this.dispatch = dispatch;
+
+    this._service = null;
+    this.getService();
+
+    // Create marker texture
+    this.textures = {};
+    const marker = new PIXI.Graphics()
+      .lineStyle(1, 0x33333)
+      .beginFill(0xffffff)
+      .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
+      .endFill()
+      .closePath();
+
+    const renderer = context.pixi.renderer;
+    const options = { resolution: 2 };
+    this.textures.osmoseMarker = renderer.generateTexture(marker, options);
+  }
 
 
-        const renderer = context.pixi.renderer;
-        const options = { resolution: 2 };
-        _textures.osmoseMarker = renderer.generateTexture(balloonMarker, options);
-        _didInitTextures = true;
+  /**
+   * Services are loosely coupled in iD, so we use a `getService` function
+   * to gain access to them, and bind any event handlers a single time.
+   */
+  getService() {
+    if (services.osmose && !this._service) {
+      this._service = services.osmose;
+      // this._service.event.on('loadedImages', throttledRedraw);
+    } else if (!services.osmose && this._service) {
+      this._service = null;
     }
 
+    return this._service;
+  }
 
-    function getService() {
-        if (services.osmose && !_qaService) {
-            _qaService = services.osmose;
-            _qaService.event.on('loaded', throttledRedraw);
-        } else if (!services.osmose && _qaService) {
-            _qaService = null;
+
+
+  /**
+   * drawMarkers
+   * @param projection - a pixi projection
+   */
+  drawMarkers(projection) {
+    const context = this.context;
+    const featureCache = this.featureCache;
+    const k = projection.scale();
+
+    const service = this.getService();
+    if (!service) return;
+
+    const visibleData = service.getItems(context.projection);
+    visibleData.forEach(function prepareOsmoseMarkers(d) {
+      const featureID = `${LAYERID}-${d.id}`;
+      let feature = featureCache.get(featureID);
+
+      if (!feature) {
+        const marker = new PIXI.Sprite(this.textures.osmoseMarker);
+        marker.name = featureID;
+        marker.buttonMode = true;
+        marker.interactive = true;
+        marker.zIndex = -d.loc[1];   // sort by latitude ascending
+        marker.anchor.set(0.5, 1);   // middle, bottom
+        const color = service.getColor(d.item);
+        marker.tint = PIXI.utils.string2hex(color);
+        this.container.addChild(marker);
+
+        if (d.icon) {
+          const ICONSIZE = 11;
+          const icon = getIconSpriteHelper(context, d.icon);
+          icon.buttonMode = false;
+          icon.interactive = false;
+          icon.interactiveChildren = false;
+          // mathematically 0,-15 is center of marker, move up slightly
+          icon.position.set(0, -16);
+          icon.width = ICONSIZE;
+          icon.height = ICONSIZE;
+          marker.addChild(icon);
         }
 
-        return _qaService;
+        feature = {
+          displayObject: marker,
+          loc: d.loc,
+        };
+
+        featureCache.set(featureID, feature);
+      }
+
+      if (k === feature.k) return;
+      feature.k = k;
+
+      // Reproject and recalculate the bounding box
+      const [x, y] = projection.project(feature.loc);
+      feature.displayObject.position.set(x, y);
+    });
+  }
+
+
+  /**
+   * render
+   * Draw any data we have, and schedule fetching more of it to cover the view
+   * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
+   */
+  render(projection, zoom) {
+    if (!this._enabled) return;
+
+    const context = this.context;
+    const service = this.getService();
+
+    if (service && zoom >= MINZOOM) {
+      this.visible = true;
+      service.loadIssues(context.projection);  // note: context.projection !== pixi projection
+      this.drawMarkers(projection);
+    } else {
+      this.visible = false;
     }
+  }
 
 
+  /**
+   * supported
+   * Whether the layer's service exists
+   */
+  get supported() {
+    return !!this.getService();
+  }
 
-    // Show the layer
-    function editOn() {
-        if (!_visible) {
-            _visible = true;
-            context.pixi.stage.getChildByName('osmose').visible = true;
-        }
-    }
-
-
-    // Immediately remove the layer
-    function editOff() {
-        if (_visible) {
-            _visible = false;
-            context.pixi.stage.getChildByName('osmose').visible = false;
-        }
-    }
-
-
-    // Enable the layer.  This shows the marker points and transitions them to visible.
-    function layerOn() {
-        editOn();
-        dispatch.call('change');
-    }
-
-
-    // Disable the layer.  This transitions the layer invisible and then hides it.
-    function layerOff() {
-        throttledRedraw.cancel();
-        editOff();
-        dispatch.call('change');
-    }
-
-
-    // Update the image markers
-    function updateMarkers(layer, projection) {
-        if (!_visible || !_layerEnabled) return;
-        const k = projection.scale();
-
-        var service = getService();
-        const osmoseEntities = (service ? service.getItems(context.projection) : []);
-
-        osmoseEntities.forEach(function prepareImages(entity) {
-            let feature = featureCache.get(entity.id);
-
-            if (!feature) {   // make point if needed
-                const container = new PIXI.Container();
-                container.name = 'osmose-' + entity.id;
-                container.buttonMode = true;
-                container.interactive = true;
-                container.sortableChildren = true; //Needed because of z-index setting for highlight
-
-                layer.addChild(container);
-
-                let marker = new PIXI.Sprite(_textures.osmoseMarker);
-                marker.anchor.set(0.5, 1);
-                marker.name = 'osmose-marker';
-                let color = service.getColor((entity.item));
-                marker.tint = PIXI.utils.string2hex(color);
-
-                container.addChild(marker);
-
-                const picon = entity.icon;
-
-                if (picon) {
-                    let icon = getIconSpriteHelper(context, picon);
-                    const iconsize = 11;
-                    // mathematically 0,-15 is center of marker, move down slightly
-                    icon.position.set(0, -16);
-                    icon.width = iconsize;
-                    icon.height = iconsize;
-                    container.addChild(icon);
-                }
-
-
-                feature = {
-                    displayObject: container,
-                    loc: entity.loc,
-                };
-
-                featureCache.set(entity.id, feature);
-            }
-
-            if (k === feature.k) return;
-            feature.k = k;
-
-            // Reproject and recalculate the bounding box
-            const [x, y] = projection.project(feature.loc);
-            feature.displayObject.position.set(x, y);
-        });
-
-
-    }
-
-
-    // Draw the osmose layer and schedule loading/updating their markers.
-    function drawOsmose(layer, projection) {
-
-        if (!_didInitTextures) initTextures();
-
-        var service = getService();
-
-
-        if (_layerEnabled) {
-            if (service && ~~context.map().zoom() >= minZoom) {
-                editOn();
-                service.loadIssues(context.projection);
-                updateMarkers(layer, projection);
-            } else {
-                editOff();
-            }
-        }
-    }
-
-
-    // Toggles the layer on and off
-    drawOsmose.enabled = function(val) {
-        if (!arguments.length) return _layerEnabled;
-
-        _layerEnabled = val;
-        if (_layerEnabled) {
-            getService().loadStrings()
-                .then(layerOn)
-                .catch(err => {
-                    console.log(err); // eslint-disable-line no-console
-                });
-        } else {
-            layerOff();
-        }
-
-        dispatch.call('change');
-        return this;
-    };
-
-
-    drawOsmose.supported = function() {
-        return !!getService();
-    };
-
-    return drawOsmose;
 }
