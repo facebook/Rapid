@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { RenderTextureAllocator } from '@pixi-essentials/texture-allocator';
+// import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
 import RBush from 'rbush';
 import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
@@ -23,7 +23,7 @@ export function PixiLabels(context, featureCache) {
 
   // Create a render-texture allocator to create an on-the-fly texture atlas for
   // all our label rendering needs.
-  const _allocator = new RenderTextureAllocator();
+  // const _allocator = new CanvasTextureAllocator();
 
   function initLabels(context, layer) {
     _textStyle = new PIXI.TextStyle({
@@ -57,6 +57,22 @@ export function PixiLabels(context, featureCache) {
     const graph = context.graph();
     const k = projection.scale();
     let redoPlacement = false;   // we'll redo all the labels when scale changes
+
+
+//// // debug
+//let stage = context.pixi.stage;
+//let sprite = stage.getChildByName('allocator');
+//if (!sprite) {
+//  sprite = new PIXI.Sprite();
+//  sprite.width = 1024;
+//  sprite.height = 1024;
+//  sprite.name = 'allocator';
+//  stage.addChild(sprite);
+//}
+//if (_allocator.textureSlabs.length) {
+//  let baseTexture = _allocator.textureSlabs[0].slab.castToBaseTexture();
+//  sprite.texture = new PIXI.Texture(baseTexture);
+//}
 
 
     if (k !== _lastk) {   // reset
@@ -136,26 +152,60 @@ export function PixiLabels(context, featureCache) {
 
 
     function createLabelSprite(str) {
+
+// OLD just make more textures
       let sprite;
       let existing = _texts.get(str);
       if (existing) {
-        sprite = new PIXI.Sprite(existing);
+        sprite = new PIXI.Sprite(existing.texture);
       } else {
-        let tempSprite = new PIXI.Text(str, _textStyle);
-
-        let texture = _allocator.allocate(tempSprite.width, tempSprite.height);
-        const renderer = context.pixi.renderer;
-
-        renderer.render(tempSprite, texture);
-        tempSprite.resolution = 2;
-        tempSprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
-        _texts.set(str, texture);
-        tempSprite.destroy();
-        sprite = new PIXI.Sprite(texture);
+        sprite = new PIXI.Text(str, _textStyle);
+        sprite.resolution = 2;
+        sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
+        _texts.set(str, sprite);
       }
       sprite.name = str;
       sprite.anchor.set(0.5, 0.5);   // middle, middle
       return sprite;
+
+// NEW with allocator
+//
+//      let sprite;
+//      let texture = _texts.get(str);
+//
+//      if (!texture) {
+//        const text = new PIXI.Text(str, _textStyle);
+//        text.resolution = 2;
+//        text.updateText(false);  // force update it so the texture is prepared
+//
+//        const srcBaseTexture = text.texture.baseTexture;
+//        const srcCanvas = srcBaseTexture.resource.source;
+//        const [w, h] = [srcBaseTexture.realWidth, srcBaseTexture.realHeight];
+//
+//        // Allocate space in the texture atlas
+//        const padding = 0;
+//        texture = _allocator.allocate(w, h, padding);
+//
+//        // The allocator automatically creates internal BaseTextures in "slabs".
+//        // Now is the time change anything about the BaseTexture that got created
+//        texture.baseTexture.resolution = 2;
+//        texture.baseTexture.mipmap = false;
+//
+//        // copy the texture from source canvas -> destination canvas
+//        const frame = texture.frame;
+//        const destCanvas = texture.baseTexture.resource.source;
+//        const destContext = destCanvas.getContext('2d');
+//        destContext.drawImage(srcCanvas, frame.x, frame.y, frame.width, frame.height);
+//
+//        _texts.set(str, texture);
+//        text.destroy();  //?
+//      }
+//
+//      sprite = new PIXI.Sprite(texture);
+//      sprite.name = str;
+//      // sprite.scale.set(0.5, 0.5);
+//      sprite.anchor.set(0.5, 0.5);   // middle, middle
+//      return sprite;
     }
 
 
