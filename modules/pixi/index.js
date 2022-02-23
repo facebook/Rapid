@@ -3,6 +3,7 @@ export { PixiImproveOSM } from './PixiImproveOSM.js';
 export { PixiKartaPhotos } from './PixiKartaPhotos.js';
 export { PixiKeepRight } from './PixiKeepRight.js';
 export { PixiLabels } from './PixiLabels.js';
+export { PixiLayer } from './PixiLayer.js';
 export { PixiLayers } from './PixiLayers.js';
 export { PixiMapillaryMapFeatures } from './PixiMapillaryMapFeatures.js';
 export { PixiMapillaryPhotos } from './PixiMapillaryPhotos.js';

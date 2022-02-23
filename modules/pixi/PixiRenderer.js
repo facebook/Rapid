@@ -91,6 +91,7 @@ export class PixiRenderer {
 
     const stage = this.pixi.stage;
     stage.name = 'stage';
+    stage.sortableChildren = true;
     stage.interactive = true;
     // Add a big hit area to `stage` so that clicks on nothing will register
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);

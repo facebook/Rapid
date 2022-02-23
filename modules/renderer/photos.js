@@ -6,229 +6,239 @@ import { utilRebind } from '../util/rebind';
 
 
 export function rendererPhotos(context) {
-    var dispatch = d3_dispatch('change');
-    var _layerIDs = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam'];
-    var _allPhotoTypes = ['flat', 'panoramic'];
-    var _shownPhotoTypes = _allPhotoTypes.slice();   // shallow copy
-    var _dateFilters = ['fromDate', 'toDate'];
-    var _fromDate;
-    var _toDate;
-    var _usernames;
+  const dispatch = d3_dispatch('change');
+  const LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam'];
+  const PHOTOTYPES = ['flat', 'panoramic'];
 
-    function photos() {}
+  let _shownPhotoTypes = PHOTOTYPES.slice();   // shallow copy
+  let _dateFilters = ['fromDate', 'toDate'];
+  let _fromDate;
+  let _toDate;
+  let _usernames;
 
-    function updateStorage() {
-        if (window.mocha) return;
+  function photos() {}
 
-        var hash = utilStringQs(window.location.hash);
-        var enabled = context.layers().all().filter(function(d) {
-            return _layerIDs.indexOf(d.id) !== -1 && d.layer && d.layer.supported() && d.layer.enabled();
-        }).map(function(d) {
-            return d.id;
-        });
-        if (enabled.length) {
-            hash.photo_overlay = enabled.join(',');
-        } else {
-            delete hash.photo_overlay;
-        }
-        window.location.replace('#' + utilQsString(hash, true));
+//    function updateStorage() {
+//        if (window.mocha) return;
+//
+//        let hash = utilStringQs(window.location.hash);
+//        let enabled = context.layers().all().filter(function(d) {
+//            return LAYERIDS.indexOf(d.id) !== -1 && d.layer && d.layer.supported() && d.layer.enabled();
+//        }).map(function(d) {
+//            return d.id;
+//        });
+//        if (enabled.length) {
+//            hash.photo_overlay = enabled.join(',');
+//        } else {
+//            delete hash.photo_overlay;
+//        }
+//        window.location.replace('#' + utilQsString(hash, true));
+//    }
+
+  photos.overlayLayerIDs = function() {
+    return LAYERIDS;
+  };
+
+  photos.allPhotoTypes = function() {
+    return PHOTOTYPES;
+  };
+
+  photos.dateFilters = function() {
+    return _dateFilters;
+  };
+
+  photos.dateFilterValue = function(val) {
+    return val === _dateFilters[0] ? _fromDate : _toDate;
+  };
+
+  photos.setDateFilter = function(type, val, updateUrl) {
+    // validate the date
+    let date = val && new Date(val);
+    if (date && !isNaN(date)) {
+      val = date.toISOString().substr(0, 10);
+    } else {
+      val = null;
+    }
+    if (type === _dateFilters[0]) {
+      _fromDate = val;
+      if (_fromDate && _toDate && new Date(_toDate) < new Date(_fromDate)) {
+        _toDate = _fromDate;
+      }
+    }
+    if (type === _dateFilters[1]) {
+      _toDate = val;
+      if (_fromDate && _toDate && new Date(_toDate) < new Date(_fromDate)) {
+        _fromDate = _toDate;
+      }
+    }
+    dispatch.call('change', this);
+    if (updateUrl) {
+      let rangeString;
+      if (_fromDate || _toDate) {
+        rangeString = (_fromDate || '') + '_' + (_toDate || '');
+      }
+      setUrlFilterValue('photo_dates', rangeString);
+    }
+  };
+
+  photos.setUsernameFilter = function(val, updateUrl) {
+    if (val && typeof val === 'string') {
+      val = val.replace(/;/g, ',').split(',');
+    }
+    if (val) {
+      val = val.map(d => d.trim()).filter(Boolean);
+      if (!val.length) {
+        val = null;
+      }
+    }
+    _usernames = val;
+    dispatch.call('change', this);
+
+    if (updateUrl) {
+      let hashString;
+      if (_usernames) {
+        hashString = _usernames.join(',');
+      }
+      setUrlFilterValue('photo_username', hashString);
+    }
+  };
+
+
+  function setUrlFilterValue(property, val) {
+    if (window.mocha) return;
+
+    let hash = utilStringQs(window.location.hash);
+    if (val) {
+      if (hash[property] === val) return;
+      hash[property] = val;
+    } else {
+      if (!(property in hash)) return;
+      delete hash[property];
+    }
+    window.location.replace('#' + utilQsString(hash, true));
+  }
+
+
+  function showsLayer(layerID) {
+    const layer = context.layers().getLayer(layerID);
+    return layer && layer.enabled;
+  }
+
+  photos.shouldFilterByDate = function() {
+    return showsLayer('mapillary') || showsLayer('openstreetcam') || showsLayer('streetside');
+  };
+
+  photos.shouldFilterByPhotoType = function() {
+    return showsLayer('mapillary') || (showsLayer('streetside') && showsLayer('openstreetcam'));
+  };
+
+  photos.shouldFilterByUsername = function() {
+    return !showsLayer('mapillary') && showsLayer('openstreetcam') && !showsLayer('streetside');
+  };
+
+  photos.showsPhotoType = function(val) {
+    if (!photos.shouldFilterByPhotoType()) return true;
+
+    return _shownPhotoTypes.indexOf(val) !== -1;
+  };
+
+  photos.showsFlat = function() {
+    return photos.showsPhotoType('flat');
+  };
+
+  photos.showsPanoramic = function() {
+    return photos.showsPhotoType('panoramic');
+  };
+
+  photos.fromDate = function() {
+    return _fromDate;
+  };
+
+  photos.toDate = function() {
+    return _toDate;
+  };
+
+
+  photos.togglePhotoType = function(val) {
+    let index = _shownPhotoTypes.indexOf(val);
+    if (index !== -1) {
+      _shownPhotoTypes.splice(index, 1);
+    } else {
+      _shownPhotoTypes.push(val);
+    }
+    dispatch.call('change', this);
+    return photos;
+  };
+
+
+  photos.usernames = function() {
+    return _usernames;
+  };
+
+
+  photos.init = function() {
+    let hash = utilStringQs(window.location.hash);
+    if (hash.photo_dates) {
+      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
+      const parts = /^(.*)[–_](.*)$/g.exec(hash.photo_dates.trim());
+      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
+      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
     }
 
-    photos.overlayLayerIDs = function() {
-        return _layerIDs;
-    };
-
-    photos.allPhotoTypes = function() {
-        return _allPhotoTypes;
-    };
-
-    photos.dateFilters = function() {
-        return _dateFilters;
-    };
-
-    photos.dateFilterValue = function(val) {
-        return val === _dateFilters[0] ? _fromDate : _toDate;
-    };
-
-    photos.setDateFilter = function(type, val, updateUrl) {
-        // validate the date
-        var date = val && new Date(val);
-        if (date && !isNaN(date)) {
-            val = date.toISOString().substr(0, 10);
-        } else {
-            val = null;
-        }
-        if (type === _dateFilters[0]) {
-            _fromDate = val;
-            if (_fromDate && _toDate && new Date(_toDate) < new Date(_fromDate)) {
-                _toDate = _fromDate;
-            }
-        }
-        if (type === _dateFilters[1]) {
-            _toDate = val;
-            if (_fromDate && _toDate && new Date(_toDate) < new Date(_fromDate)) {
-                _fromDate = _toDate;
-            }
-        }
-        dispatch.call('change', this);
-        if (updateUrl) {
-            var rangeString;
-            if (_fromDate || _toDate) {
-                rangeString = (_fromDate || '') + '_' + (_toDate || '');
-            }
-            setUrlFilterValue('photo_dates', rangeString);
-        }
-    };
-
-    photos.setUsernameFilter = function(val, updateUrl) {
-        if (val && typeof val === 'string') val = val.replace(/;/g, ',').split(',');
-        if (val) {
-            val = val.map(d => d.trim()).filter(Boolean);
-            if (!val.length) {
-                val = null;
-            }
-        }
-        _usernames = val;
-        dispatch.call('change', this);
-        if (updateUrl) {
-            var hashString;
-            if (_usernames) {
-                hashString = _usernames.join(',');
-            }
-            setUrlFilterValue('photo_username', hashString);
-        }
-    };
-
-    function setUrlFilterValue(property, val) {
-        if (!window.mocha) {
-            var hash = utilStringQs(window.location.hash);
-            if (val) {
-                if (hash[property] === val) return;
-                hash[property] = val;
-            } else {
-                if (!(property in hash)) return;
-                delete hash[property];
-            }
-            window.location.replace('#' + utilQsString(hash, true));
-        }
+    if (hash.photo_username) {
+      this.setUsernameFilter(hash.photo_username, false);
     }
 
-    function showsLayer(id) {
-        var layer = context.layers().layer(id);
-        return layer && layer.supported() && layer.enabled();
+    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=openstreetcam;mapillary;streetside`
+    if (hash.photo_overlay) {
+      const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
+      hashOverlayIDs.forEach(layerID => {
+        const layer = context.layers().getLayer(layerID);
+        if (!layer) return;
+        layer.enabled = true;
+      });
     }
 
-    photos.shouldFilterByDate = function() {
-        return showsLayer('mapillary') || showsLayer('openstreetcam') || showsLayer('streetside');
-    };
+    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
+    if (hash.photo) {
+      const photoIds = hash.photo.replace(/;/g, ',').split(',');
+      const photoId = photoIds.length && photoIds[0].trim();
+      const results = /(.*)\/(.*)/g.exec(photoId);
 
-    photos.shouldFilterByPhotoType = function() {
-        return showsLayer('mapillary') ||
-            (showsLayer('streetside') && showsLayer('openstreetcam'));
-    };
+      if (results && results.length >= 3) {
+        const serviceId = results[1];
+        const photoKey = results[2];
+        const service = services[serviceId];
+        if (!service || !service.ensureViewerLoaded) return;
 
-    photos.shouldFilterByUsername = function() {
-        return !showsLayer('mapillary') && showsLayer('openstreetcam') && !showsLayer('streetside');
-    };
+        // if we're showing a photo then make sure its layer is enabled too
+        const layer = context.layers().getLayer(serviceId);
+        if (!layer) return;
+        layer.enabled = true;
 
-    photos.showsPhotoType = function(val) {
-        if (!photos.shouldFilterByPhotoType()) return true;
+        const startTime = Date.now();
+        service.on('loadedImages.rendererPhotos', () => {
+          // don't open the viewer if too much time has elapsed
+          if (Date.now() - startTime > 45000) {
+            service.on('loadedImages.rendererPhotos', null);
+            return;
+          }
 
-        return _shownPhotoTypes.indexOf(val) !== -1;
-    };
+          if (!service.cachedImage(photoKey)) return;
 
-    photos.showsFlat = function() {
-        return photos.showsPhotoType('flat');
-    };
-
-    photos.showsPanoramic = function() {
-        return photos.showsPhotoType('panoramic');
-    };
-
-    photos.fromDate = function() {
-        return _fromDate;
-    };
-
-    photos.toDate = function() {
-        return _toDate;
-    };
-
-    photos.togglePhotoType = function(val) {
-        var index = _shownPhotoTypes.indexOf(val);
-        if (index !== -1) {
-            _shownPhotoTypes.splice(index, 1);
-        } else {
-            _shownPhotoTypes.push(val);
-        }
-        dispatch.call('change', this);
-        return photos;
-    };
-
-    photos.usernames = function() {
-        return _usernames;
-    };
-
-    photos.init = function() {
-        var hash = utilStringQs(window.location.hash);
-        if (hash.photo_dates) {
-            // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
-            var parts = /^(.*)[–_](.*)$/g.exec(hash.photo_dates.trim());
-            this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
-            this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
-        }
-        if (hash.photo_username) {
-            this.setUsernameFilter(hash.photo_username, false);
-        }
-        if (hash.photo_overlay) {
-            // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=openstreetcam;mapillary;streetside`
-
-            var hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
-            hashOverlayIDs.forEach(function(id) {
-                var layer = _layerIDs.indexOf(id) !== -1 && context.layers().layer(id);
-                if (layer && !layer.enabled()) layer.enabled(true);
+          service.on('loadedImages.rendererPhotos', null);
+          service.ensureViewerLoaded(context)
+            .then(() => {
+              service
+                .selectImage(context, photoKey)
+                .showViewer(context);
             });
-        }
-        if (hash.photo) {
-            // support opening a photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
+        });
+      }
+    }
 
-            var photoIds = hash.photo.replace(/;/g, ',').split(',');
-            var photoId = photoIds.length && photoIds[0].trim();
-            var results = /(.*)\/(.*)/g.exec(photoId);
-            if (results && results.length >= 3) {
-                var serviceId = results[1];
-                var photoKey = results[2];
-                var service = services[serviceId];
-                if (service && service.ensureViewerLoaded) {
+    // context.layers().on('change.rendererPhotos', updateStorage);
+  };
 
-                    // if we're showing a photo then make sure its layer is enabled too
-                    var layer = _layerIDs.indexOf(serviceId) !== -1 && context.layers().layer(serviceId);
-                    if (layer && !layer.enabled()) layer.enabled(true);
-
-                    var baselineTime = Date.now();
-
-                    service.on('loadedImages.rendererPhotos', function() {
-                        // don't open the viewer if too much time has elapsed
-                        if (Date.now() - baselineTime > 45000) {
-                            service.on('loadedImages.rendererPhotos', null);
-                            return;
-                        }
-
-                        if (!service.cachedImage(photoKey)) return;
-
-                        service.on('loadedImages.rendererPhotos', null);
-                        service.ensureViewerLoaded(context)
-                            .then(function() {
-                                service
-                                    .selectImage(context, photoKey)
-                                    .showViewer(context);
-                            });
-                    });
-                }
-            }
-        }
-
-        // context.layers().on('change.rendererPhotos', updateStorage);
-    };
-
-    return utilRebind(photos, dispatch, 'on');
+  return utilRebind(photos, dispatch, 'on');
 }

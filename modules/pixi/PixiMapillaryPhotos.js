@@ -6,7 +6,7 @@ import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainerHelper } from './helpers';
 
 
-const LAYERID = 'MapillaryPhotos';
+const LAYERID = 'mapillary';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 const MINMARKERZOOM = 16;
@@ -128,8 +128,8 @@ export class PixiMapillaryPhotos extends PixiLayer {
     // const sequenceData = this.filterSequences(sequences);
     // const photoData = this.filterImages(images);
 
-    sequences.forEach(function prepareMapillarySequences(d) {
-      const featureID = `${LAYERID}-sequence-${d.properties.key}`;
+    sequences.forEach(d => {
+      const featureID = `${LAYERID}-sequence-${d.properties.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
@@ -166,8 +166,8 @@ export class PixiMapillaryPhotos extends PixiLayer {
     });
 
 
-    images.forEach(function prepareMapillaryPhotos(d) {
-      const featureID = `${LAYERID}-photo-${d.key}`;
+    images.forEach(d => {
+      const featureID = `${LAYERID}-photo-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
@@ -203,8 +203,10 @@ export class PixiMapillaryPhotos extends PixiLayer {
 
       feature.displayObject.visible = showMarkers;
 
-      const viewfields = feature.displayObject.getChildByName('viewfields');
-      viewfields.visible = showViewfields;
+      const vfContainer = feature.displayObject.getChildByName('viewfields');
+      if (vfContainer) {
+        vfContainer.visible = showViewfields;
+      }
     });
   }
 

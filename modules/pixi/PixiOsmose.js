@@ -6,7 +6,7 @@ import { PixiLayer } from './PixiLayer';
 import { getIconSpriteHelper } from './helpers';
 
 
-const LAYERID = 'Osmose';
+const LAYERID = 'osmose';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
@@ -77,7 +77,7 @@ export class PixiOsmose extends PixiLayer {
     if (!service) return;
 
     const visibleData = service.getItems(context.projection);
-    visibleData.forEach(function prepareOsmoseMarkers(d) {
+    visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 

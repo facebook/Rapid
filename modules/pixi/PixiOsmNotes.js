@@ -5,7 +5,7 @@ import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
 
 
-const LAYERID = 'OSMNotes';
+const LAYERID = 'notes';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
@@ -116,7 +116,7 @@ export class PixiOsmNotes extends PixiLayer {
     // const selectedID = context.selectedNoteID();
 
     const visibleData = service.notes(context.projection);
-    visibleData.forEach(function prepareOsmNoteMarkers(d) {
+    visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 
@@ -215,7 +215,7 @@ export class PixiOsmNotes extends PixiLayer {
 
     if (service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadIssues(context.projection);  // note: context.projection !== pixi projection
+      service.loadNotes(context.projection);  // note: context.projection !== pixi projection
       this.drawMarkers(projection);
     } else {
       this.visible = false;

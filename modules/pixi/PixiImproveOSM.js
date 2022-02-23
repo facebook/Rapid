@@ -6,7 +6,7 @@ import { PixiLayer } from './PixiLayer';
 import { getIconSpriteHelper } from './helpers';
 
 
-const LAYERID = 'ImproveOSM';
+const LAYERID = 'improveOSM';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
@@ -87,7 +87,7 @@ export class PixiImproveOSM extends PixiLayer {
     if (!service) return;
 
     const visibleData = service.getItems(context.projection);  // note: context.projection !== pixi projection
-    visibleData.forEach(function prepareImproveOSMMarkers(d) {
+    visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 

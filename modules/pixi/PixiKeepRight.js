@@ -5,7 +5,7 @@ import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
 
 
-const LAYERID = 'KeepRight';
+const LAYERID = 'keepRight';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
@@ -117,7 +117,7 @@ export class PixiKeepRight extends PixiLayer {
     if (!service) return;
 
     const visibleData = service.getItems(context.projection);
-    visibleData.forEach(function prepareKeepRightMarkers(d) {
+    visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 

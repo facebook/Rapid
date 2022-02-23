@@ -11,7 +11,7 @@ import { PixiOsmVertices } from './PixiOsmVertices';
 import { PixiLabels } from './PixiLabels';
 
 
-const LAYERID = 'OSM';
+const LAYERID = 'osm';
 const LAYERZINDEX = 1;
 const MINZOOM = 12;
 

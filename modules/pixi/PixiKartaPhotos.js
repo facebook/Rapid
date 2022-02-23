@@ -6,7 +6,7 @@ import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainerHelper } from './helpers';
 
 
-const LAYERID = 'KartaPhotos';  // was 'openstreetcam'
+const LAYERID = 'openstreetcam';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 const MINMARKERZOOM = 16;
@@ -128,7 +128,7 @@ export class PixiKartaPhotos extends PixiLayer {
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
 
-    sequenceData.forEach(function prepareKartaSequences(d) {
+    sequenceData.forEach(d => {
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
       let feature = featureCache.get(featureID);
 
@@ -166,7 +166,7 @@ export class PixiKartaPhotos extends PixiLayer {
     });
 
 
-    photoData.forEach(function prepareKartaPhotos(d) {
+    photoData.forEach(d => {
       const featureID = `${LAYERID}-photo-${d.key}`;
       let feature = featureCache.get(featureID);
 
@@ -203,8 +203,10 @@ export class PixiKartaPhotos extends PixiLayer {
 
       feature.displayObject.visible = showMarkers;
 
-      const viewfields = feature.displayObject.getChildByName('viewfields');
-      viewfields.visible = showViewfields;
+      const vfContainer = feature.displayObject.getChildByName('viewfields');
+      if (vfContainer) {
+        vfContainer.visible = showViewfields;
+      }
     });
   }
 
