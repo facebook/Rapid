@@ -10,19 +10,19 @@ export function PixiOsmPoints(context, featureCache) {
 
   //
   // prepare template geometry
-  //
+  // prettier-ignore
   function initPointTextures() {
-    const marker = new PIXI.Graphics()         //              [0,-23]
-      .lineStyle(1, 0x444444)                  //              _,-+-,_
-      .beginFill(0xffffff, 1)                  //            /'       `\
-      .moveTo(0, 0)                            //           :           :
+    const marker = new PIXI.Graphics()                                    //              [0,-23]
+      .lineStyle(1, 0x444444)                                 //              _,-+-,_
+      .beginFill(0xffffff, 1)                                 //            /'       `\
+      .moveTo(0, 0)                                                  //           :           :
       .bezierCurveTo(-2,-2, -8,-10, -8,-15)    // [-8,-15]  :           :  [8,-15]
       .bezierCurveTo(-8,-19, -4,-23, 0,-23)    //            \         /
       .bezierCurveTo(4,-23, 8,-19, 8,-15)      //             \       /
       .bezierCurveTo(8,-10, 2,-2, 0,0)         //              \     /
-      .closePath()                             //               \   /      -y
-      .endFill();                              //                `+`        |
-                                               //               [0,0]       +-- +x
+      .closePath()                                                        //               \   /      -y
+      .endFill();                                                         //                `+`        |
+                                                                          //               [0,0]       +-- +x
 
     const wikidataMarker = new PIXI.Graphics()
       .lineStyle(2, 0x666666)

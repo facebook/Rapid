@@ -29,7 +29,7 @@ export class PixiLayers {
     this.context = context;
     this.featureCache = featureCache;
 
-    this.dispatch = d3_dispatch('change');
+    this.dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     utilRebind(this, this.dispatch, 'on');
 
     this._layers = [

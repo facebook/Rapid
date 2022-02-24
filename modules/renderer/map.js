@@ -55,11 +55,25 @@ export function rendererMap(context) {
   // whether a pointerdown event started the zoom
   let _pointerDown = false;
 
+  // whether a sub-feature of the map is currently being dragged around. We should stop zooming/panning if so.
+  let _dragging = false;
+
   // use pointer events on supported platforms; fallback to mouse events
   const POINTERPREFIX = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
   // use pointer event interaction if supported; fallback to touch/mouse events in d3-zoom
   const _zoomerPannerFunction = 'PointerEvent' in window ? utilZoomPan : d3_zoom;
+
+
+  function handleDragStart() {
+    _dragging = true;
+  }
+
+  function handleDragEnd() {
+    _dragging = false;
+  }
+
+
 
   const _zoomerPanner = _zoomerPannerFunction()
     .scaleExtent([MINK, MAXK])
@@ -73,6 +87,7 @@ export function rendererMap(context) {
     .on('end.map', () => {
       _pointerDown = false;
     });
+
 
   const _doubleUpHandler = utilDoubleUp();
 
@@ -146,6 +161,14 @@ export function rendererMap(context) {
           context.background().updateImagery();
           immediateRedraw();
         });
+
+      layers.on('dragstart.feature', function () {
+        handleDragStart();
+      });
+
+      layers.on('dragend.feature', function () {
+        handleDragEnd();
+      });
 
       // END PIXI
       ///////////////////////
@@ -246,7 +269,9 @@ export function rendererMap(context) {
     }
 
 
-    function zoomPan(event, key, transform) {
+  function zoomPan(event, key, transform) {
+    if (_dragging) return;
+
         var source = event && event.sourceEvent || event;
         var eventTransform = transform || (event && event.transform);
         var x = eventTransform.x;
