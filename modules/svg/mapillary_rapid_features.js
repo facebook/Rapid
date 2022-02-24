@@ -2,8 +2,9 @@ import _throttle from 'lodash-es/throttle';
 import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
+import { svgMapillaryMapFeatures} from './mapillary_map_features';
 
-export function svgMapillaryMapFeatures(projection, context, dispatch) {
+export function svgMapillaryRapidFeatures(projection, context, dispatch) {
     const throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
     let layer = d3_select(null);
@@ -11,9 +12,9 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     function init() {
-        if (svgMapillaryMapFeatures.initialized) return;  // run once
-        svgMapillaryMapFeatures.enabled = false;
-        svgMapillaryMapFeatures.initialized = true;
+        if (svgMapillaryRapidFeatures.initialized) return;  // run once
+        svgMapillaryRapidFeatures.enabled = false;
+        svgMapillaryRapidFeatures.initialized = true;
     }
 
 
@@ -31,7 +32,8 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     function showLayer() {
         const service = getService();
         if (!service) return;
-
+        svgMapillaryMapFeatures.enabled = false;
+        context.photos().on('change.mapillary_map_features', null);
         service.loadObjectResources(context);
         editOn();
     }
@@ -152,7 +154,7 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     function drawMapFeatures(selection) {
-        const enabled = svgMapillaryMapFeatures.enabled;
+        const enabled = svgMapillaryRapidFeatures.enabled;
         const service = getService();
 
         layer = selection.selectAll('.layer-mapillary-map-features')
@@ -183,9 +185,9 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     drawMapFeatures.enabled = function(_) {
-        if (!arguments.length) return svgMapillaryMapFeatures.enabled;
-        svgMapillaryMapFeatures.enabled = _;
-        if (svgMapillaryMapFeatures.enabled) {
+        if (!arguments.length) return svgMapillaryRapidFeatures.enabled;
+        svgMapillaryRapidFeatures.enabled = _;
+        if (svgMapillaryRapidFeatures.enabled) {
             showLayer();
             context.photos().on('change.mapillary_map_features', update);
         } else {

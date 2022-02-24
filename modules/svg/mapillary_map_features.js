@@ -9,7 +9,6 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     let layer = d3_select(null);
     let _mapillary;
 
-
     function init() {
         if (svgMapillaryMapFeatures.initialized) return;  // run once
         svgMapillaryMapFeatures.enabled = false;
@@ -31,7 +30,6 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     function showLayer() {
         const service = getService();
         if (!service) return;
-
         service.loadObjectResources(context);
         editOn();
     }

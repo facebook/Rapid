@@ -274,14 +274,14 @@ export default {
     // Get visible map (point) features
     mapFeatures: function(projection) {
         const limit = 5;
-        return searchLimited(limit, projection, _mlyCache.points.rtree);
+        const ret = searchLimited(limit, projection, _mlyCache.points.rtree);
+        return ret;
     },
     // Get filtered Map features (streetLihgts, pols, etc)
     filteredMapFeatures: function(projection) {
-        const filterObjects= ['object--street-light', 'object--support--pole', 'object--street-light' ,'object--bike-rack' ];
+        const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
         const mapFeatures = this.mapFeatures(projection);
-        const filteredMapFeatures = mapFeatures.filter((feature) =>  filterObjects.includes(feature.value) );
-        return filteredMapFeatures;
+        return mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
     },
 
     // Get cached image by id

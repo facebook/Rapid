@@ -34,7 +34,7 @@ export function uiSectionPhotoOverlays(context) {
         var photoKeys = context.photos().overlayLayerIDs();
         var photoLayers = layers.all().filter(function(obj) { return photoKeys.indexOf(obj.id) !== -1; });
         var data = photoLayers.filter(function(obj) { return obj.layer.supported(); });
-
+        console.log(photoLayers)
         function layerSupported(d) {
             return d.layer && d.layer.supported();
         }
