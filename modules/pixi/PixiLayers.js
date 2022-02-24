@@ -1,19 +1,17 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilRebind } from '../util';
 
-import {
-  PixiImproveOSM,
-  PixiKartaPhotos,
-  PixiKeepRight,
-  PixiMapillaryPhotos,
-  PixiMapillaryMapFeatures,
-  PixiMapillarySigns,
-  PixiOsm,
-  PixiOsmNotes,
-  PixiOsmose,
-  PixiRapidFeatures,
-  PixiStreetsidePhotos
-} from './index';
+import { PixiImproveOSM } from './PixiImproveOSM';
+import { PixiKartaPhotos } from './PixiKartaPhotos';
+import { PixiKeepRight } from './PixiKeepRight';
+import { PixiMapillaryPhotos } from './PixiMapillaryPhotos';
+import { PixiMapillaryMapFeatures } from './PixiMapillaryMapFeatures';
+import { PixiMapillarySigns } from './PixiMapillarySigns';
+import { PixiOsm } from './PixiOsm';
+import { PixiOsmNotes } from './PixiOsmNotes';
+import { PixiOsmose } from './PixiOsmose';
+import { PixiRapidFeatures } from './PixiRapidFeatures';
+import { PixiStreetsidePhotos } from './PixiStreetsidePhotos';
 
 
 /**
@@ -35,24 +33,24 @@ export class PixiLayers {
     utilRebind(this, this.dispatch, 'on');
 
     this._layers = [
-      new PixiKartaPhotos(context, featureCache, this.dispatch),
-      new PixiMapillaryPhotos(context, featureCache, this.dispatch),
       new PixiImproveOSM(context, featureCache, this.dispatch),
+      new PixiKartaPhotos(context, featureCache, this.dispatch),
       new PixiKeepRight(context, featureCache, this.dispatch),
-      new PixiOsmose(context, featureCache, this.dispatch),
+      new PixiMapillaryMapFeatures(context, featureCache, this.dispatch),
+      new PixiMapillaryPhotos(context, featureCache, this.dispatch),
+      new PixiMapillarySigns(context, featureCache, this.dispatch),
+      new PixiOsm(context, featureCache, this.dispatch),
       new PixiOsmNotes(context, featureCache, this.dispatch),
-      new PixiOsm(context, featureCache, this.dispatch)
-      // { id: 'osm',             renderer: PixiOsm(projection, context, dispatch) },
-      // { id: 'rapid',           renderer: PixiRapidFeatures(context, featureCache, dispatch)},
-      // { id: 'streetside',      renderer: PixiStreetsidePhotos(context, featureCache, dispatch)},
-      // { id: 'mapillary-map-features',  renderer: PixiMapillaryMapFeatures(context, featureCache, dispatch) },
-      // { id: 'mapillary-signs', renderer: PixiMapillarySigns(context, featureCache, dispatch) },
+      new PixiOsmose(context, featureCache, this.dispatch),
+      new PixiRapidFeatures(context, featureCache, this.dispatch),
+      new PixiStreetsidePhotos(context, featureCache, this.dispatch)
     ];
   }
 
 
   /**
    * render
+   * @param projection - a pixi projection
    */
   render(projection) {
     const map = this.context.map();

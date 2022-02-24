@@ -67,8 +67,10 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleRapid() {
-    const rapidLayer = context.layers().getLayer('rapid').renderer;
-    rapidLayer.enabled(!rapidLayer.enabled());
+    const rapidLayer = context.layers().getLayer('rapid');
+    if (rapidLayer) {
+      rapidLayer.enabled = !rapidLayer.enabled;
+    }
 
     // toggling the layer should trigger a map redraw
     dispatch.call('change');
@@ -114,7 +116,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderModalContent(selection) {
-    const rapidLayer = context.layers().getLayer('rapid').renderer;
+    const rapidLayer = context.layers().getLayer('rapid');
+    if (!rapidLayer) return;
 
     /* Toggle All */
     let toggleAll = selection.selectAll('.rapid-toggle-all')
@@ -161,7 +164,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .merge(toggleAllEnter);
 
     toggleAll.selectAll('.rapid-feature-checkbox')
-      .property('checked', rapidLayer.showAll());
+      .property('checked', rapidLayer.enabled);
 
 
     /* Dataset List */
@@ -219,7 +222,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-    const rapidLayer = context.layers().getLayer('rapid').renderer;
+    const rapidLayer = context.layers().getLayer('rapid');
+    if (!rapidLayer) return;
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
       .data(datasets, d => d.id);
@@ -331,17 +335,17 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     // update
     rows = rows
       .merge(rowsEnter)
-      .classed('disabled', !rapidLayer.showAll());
+      .classed('disabled', !rapidLayer.enabled);
 
     rows.selectAll('.rapid-colorpicker-label')
-      .attr('disabled', rapidLayer.showAll() ? null : true)
+      .attr('disabled', rapidLayer.enabled ? null : true)
       .call(_colorpicker);
 
     rows.selectAll('.rapid-checkbox-label')
-      .classed('disabled', !rapidLayer.showAll());
+      .classed('disabled', !rapidLayer.enabled);
 
     rows.selectAll('.rapid-feature-checkbox')
       .property('checked', datasetEnabled)
-      .attr('disabled', rapidLayer.showAll() ? null : true);
+      .attr('disabled', rapidLayer.enabled ? null : true);
   }
 }

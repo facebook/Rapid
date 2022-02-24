@@ -30,6 +30,17 @@ export class PixiLayer {
     this.container = container;
   }
 
+  /**
+   * render
+   * Every layer should have a render function that manages the scene under its container
+   * Override in a subclass with needed logic. It will be passed:
+   *
+   * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
+   */
+  render() {
+    return true;
+  }
 
   /**
    * layer id

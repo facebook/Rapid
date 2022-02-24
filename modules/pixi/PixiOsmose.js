@@ -63,7 +63,6 @@ export class PixiOsmose extends PixiLayer {
   }
 
 
-
   /**
    * drawMarkers
    * @param projection - a pixi projection

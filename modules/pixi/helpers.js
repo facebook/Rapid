@@ -46,6 +46,8 @@ export function getViewfieldContainerHelper(context, directions, color) {
 
   return vfContainer;
 }
+
+
 /**
 * Generates a polygon from a line. Intended for use to create custom hit areas for our ways.
 * @param width the width of the polygon in pixels (deviation from either side of the line))
@@ -88,28 +90,6 @@ export function lineToPolygon(width, points) {
   output.push(output[0], output[1]);
 
   return new PIXI.Polygon(output);
-}
-
-
-export function getMapillaryIconSpriteHelper(context, picon) {
-  const spritesheet = context._mapillarySheet;
-  let sprite = new PIXI.Sprite(spritesheet.textures[picon + '.svg']);
-  sprite.name = picon;
-  sprite.interactive = false;
-  sprite.interactiveChildren = false;
-  sprite.anchor.set(0.5, 0.5);
-  return sprite;
-}
-
-
-export function getMapillarySignIconSpriteHelper(context, picon) {
-  const spritesheet = context._mapillarySignSheet;
-  let sprite = new PIXI.Sprite(spritesheet.textures[picon + '.svg']);
-  sprite.name = picon;
-  sprite.interactive = false;
-  sprite.interactiveChildren = false;
-  sprite.anchor.set(0.5, 0.5);
-  return sprite;
 }
 
 

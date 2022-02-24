@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 
-import { osmPavedTags } from '../osm/tags';
 import { getLineSegments, lineToPolygon } from './helpers';
 import { styleMatch } from './styles';
 
