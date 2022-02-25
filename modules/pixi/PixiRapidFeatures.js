@@ -6,7 +6,7 @@ import { PixiLayer } from './PixiLayer';
 import { prefs } from '../core/preferences';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecLength, geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
-
+import { lineToPolygon } from './helpers';
 
 const LAYERID = 'rapid';
 const LAYERZINDEX = 2;
@@ -307,9 +307,9 @@ if (dsfeatures) {
 
         const container = new PIXI.Container();
         container.name = entity.id;
-  container.interactive = true;
-  container.buttonmode = true;
-  container.__data__ = entity;
+        container.interactive = true;
+        container.buttonmode = true;
+        container.__data__ = entity;
         layerContainer.addChild(container);
 
         const stroke = new PIXI.Graphics();
@@ -332,13 +332,13 @@ if (dsfeatures) {
 
         featureCache.set(entity.id, feature);
 
-// todo: improve CULL :-(
-let dsfeatures = this._datasetFeatures.get(dataset.id);
-if (!dsfeatures) {
- dsfeatures = new Map();   // map of RAPID ID -> Pixi data
- this._datasetFeatures.set(dataset.id, dsfeatures);
-}
-dsfeatures.set(entity.id, feature);
+        // todo: improve CULL :-(
+        let dsfeatures = this._datasetFeatures.get(dataset.id);
+        if (!dsfeatures) {
+        dsfeatures = new Map();   // map of RAPID ID -> Pixi data
+        this._datasetFeatures.set(dataset.id, dsfeatures);
+        }
+        dsfeatures.set(entity.id, feature);
       }
 
 
@@ -364,11 +364,12 @@ dsfeatures.set(entity.id, feature);
       feature.bounds.width = w;
       feature.bounds.height = h;
 
+      let lineWidth = 3;
 
       // redraw the stroke
       let g = feature.stroke
         .clear()
-        .lineStyle({ color: feature.color, width: 3 });
+        .lineStyle({ color: feature.color, width: lineWidth });
 
       points.forEach(([x, y], i) => {
         if (i === 0) {
@@ -378,8 +379,8 @@ dsfeatures.set(entity.id, feature);
         }
       });
 
-      // const hitTarget = lineToPolygon(lineWidth, g.currentPath.points);
-      // g.hitArea = hitTarget;
+       const hitTarget = lineToPolygon(lineWidth, g.currentPath.points);
+       g.hitArea = hitTarget;
       // g.buttonMode = true;
       // g.interactive = true;
 

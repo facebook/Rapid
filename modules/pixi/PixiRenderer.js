@@ -3,6 +3,7 @@ import { Projection } from '@id-sdk/math';
 
 import { PixiLayers } from './PixiLayers';
 import { modeBrowse, modeSelect } from '../modes';
+import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
 const AUTOTICK = false;     // set to true to turn the ticker back on
 
@@ -103,7 +104,14 @@ export class PixiRenderer {
         console.log(`clicked on ${name}`);
         const entity = e.target.__data__;
         if (entity) {
-          context.enter(modeSelect(context, [entity.id]));
+          if (entity.__fbid__) {    // clicked a RapiD feature ..
+            context
+              .selectedNoteID(null)
+              .selectedErrorID(null)
+              .enter(modeRapidSelectFeatures(context, entity));
+          } else {
+            context.enter(modeSelect(context, [entity.id]));
+          }
         } else {
           context.enter(modeBrowse(context));
         }
