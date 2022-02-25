@@ -134,7 +134,7 @@ export class PixiMapillaryMapFeatures extends PixiLayer {
 
     if (service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadSigns(context.projection);  // note: context.projection !== pixi projection
+      service.loadMapFeatures(context.projection);  // note: context.projection !== pixi projection
       service.showFeatureDetections(true);
       this.drawMarkers(projection);
     } else {
