@@ -282,6 +282,7 @@ export default {
         const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
         const mapFeatures = this.mapFeatures(projection);
         // https://graph.mapillary.com/map_features?access_token="mly-something"&fields=id,geometry,images&bbox=12.9,55.7,13.1,55.9&object_values=object--support--utility-pole,object--street-light,object--bench,object--bike-rack,object--fire-hydrant
+        //to calculate teh bbox: context.map().extent().polygon()
         return mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
     },
 
