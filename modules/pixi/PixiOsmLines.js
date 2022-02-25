@@ -93,9 +93,9 @@ export function PixiOsmLines(context, featureCache) {
 
           const container = new PIXI.Container();
           container.name = entity.id;
-container.__data__ = entity;
-container.interactive = false;
-container.interactiveChildren = false;
+          container.__data__ = entity;
+          container.interactive = true;
+          container.interactiveChildren = true;
           container.sortableChildren = false;
 
           container.zIndex = getzIndex(entity.tags);
@@ -276,30 +276,13 @@ container.interactiveChildren = false;
             }
           });
 
-//          if (which === 'casing' && g.currentPath) {
-//            const hitTarget = lineToPolygon(
-//              width,
-//              g.currentPath.points
-//            );
-//            g.hitArea = hitTarget;
-//            g.buttonMode = true;
-//            g.interactive = true;
-//
-//            // g.on('pointerover', () => {
-//            //   console.log(`pointer over line ${entity.id}`);
-//            // });
-//            // g.on('pointerout', () => {
-//            //   console.log(`pointer out of line ${entity.id}`);
-//            // });
-//            // g.on('pointerdown', () => {
-//            //   console.log(`pointer down on line ${entity.id}`);
-//            // });
-//
-//          }
-
-
-
-
+         if (which === 'casing' && g.currentPath) {
+           const hitTarget = lineToPolygon(
+             width,
+             g.currentPath.points
+           );
+           g.hitArea = hitTarget;
+         }
         }
       });
   }
