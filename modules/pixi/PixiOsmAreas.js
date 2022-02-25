@@ -81,7 +81,7 @@ export function PixiOsmAreas(context, featureCache) {
           const container = new PIXI.Container();
           container.name = entity.id;
           container.__data__ = entity;
-          container.interactive = false;
+          container.interactive = true;
           container.buttonMode = true;
           container.interactiveChildren = true;
           container.sortableChildren = false;
@@ -96,12 +96,12 @@ export function PixiOsmAreas(context, featureCache) {
           lowRes.name = entity.id + '-lowRes';
           lowRes.anchor.set(0.5, 0.5);  // middle, middle
           lowRes.visible = false;
-          lowRes.interactive = true;
+          lowRes.interactive = false;
           container.addChild(lowRes);
 
           const fill = new PIXI.Graphics();
           fill.name = entity.id + '-fill';
-          fill.interactive = true;
+          fill.interactive = false;
           fill.interactiveChildren = true;
           fill.sortableChildren = false;
           container.addChild(fill);
