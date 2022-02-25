@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecLength, geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { lineToPolygon } from './helpers';
 
 import { prefs } from '../core/preferences';
 import { styleMatch } from './styles';
@@ -79,9 +80,10 @@ export function PixiOsmAreas(context, featureCache) {
 
           const container = new PIXI.Container();
           container.name = entity.id;
-container.__data__ = entity;
-container.interactive = false;
-container.interactiveChildren = false;
+          container.__data__ = entity;
+          container.interactive = false;
+          container.buttonMode = true;
+          container.interactiveChildren = true;
           container.sortableChildren = false;
 
           const area = entity.extent(graph).area();  // estimate area from extent for speed
@@ -94,12 +96,13 @@ container.interactiveChildren = false;
           lowRes.name = entity.id + '-lowRes';
           lowRes.anchor.set(0.5, 0.5);  // middle, middle
           lowRes.visible = false;
+          lowRes.interactive = true;
           container.addChild(lowRes);
 
           const fill = new PIXI.Graphics();
           fill.name = entity.id + '-fill';
-          fill.interactive = false;
-          fill.interactiveChildren = false;
+          fill.interactive = true;
+          fill.interactiveChildren = true;
           fill.sortableChildren = false;
           container.addChild(fill);
 
@@ -298,7 +301,6 @@ projectedring.push([x, y]);
         // STROKES
 //        feature.stroke.interactive = true;
 //        feature.stroke.buttonMode = true;
-//        feature.displayObject.hitArea = shapes[0].outer;
         feature.stroke
           .clear()
           .lineStyle({
@@ -309,7 +311,10 @@ projectedring.push([x, y]);
 
         shapes.forEach(shape => {
           feature.stroke.drawShape(shape.outer);
-          shape.holes.forEach(hole => feature.stroke.drawShape(hole));
+
+          shape.holes.forEach(hole => {
+            feature.stroke.drawShape(hole);
+          });
         });
 
 
@@ -323,7 +328,6 @@ projectedring.push([x, y]);
               texture: texture
             })
             .drawShape(shape.outer);
-
           if (shape.holes.length) {
             feature.fill.beginHole();
             shape.holes.forEach(hole => feature.fill.drawShape(hole));
@@ -331,6 +335,7 @@ projectedring.push([x, y]);
           }
           feature.fill.endFill();
         });
+
 
         if (doPartialFill) {   // mask around the edges of the fill
           feature.mask
@@ -350,12 +355,15 @@ projectedring.push([x, y]);
 
           feature.mask.visible = true;
           feature.fill.mask = feature.mask;
-          feature.displayObject.hitArea = null;
-
+          feature.displayObject.hitArea = lineToPolygon(3, shapes[0].outer.points);
         } else {  // full fill - no mask
           feature.mask.visible = false;
           feature.fill.mask = null;
+          feature.displayObject.hitArea = null;
         }
+
+        // let hitPoly = new PIXI.Polygon(shapes[0].outer.points);
+        // feature.displayObject.hitArea = feature.fill;
 
         if (SHOWBBOX) {
           feature.bbox

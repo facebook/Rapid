@@ -58,7 +58,7 @@ export class PixiOsm extends PixiLayer {
 
     const areas = new PIXI.Container();
     areas.name = 'areas';
-    areas.interactive = false;
+    areas.interactive = true;
     areas.sortableChildren = true;
 
     const lines = new PIXI.Container();
