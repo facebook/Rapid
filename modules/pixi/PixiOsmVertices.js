@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { presetManager } from '../presets';
-import { getIconSpriteHelper, getViewfieldContainerHelper } from './helpers';
+import { getIconSprite, getViewfieldContainer } from './helpers';
 
 
 export function PixiOsmVertices(context, featureCache) {
@@ -100,7 +100,7 @@ container.interactiveChildren = false;
           let vfContainer;
           const directions = node.directions(graph, context.projection);
           if (directions.length > 0) {
-            vfContainer = getViewfieldContainerHelper(context, directions);
+            vfContainer = getViewfieldContainer(context, directions);
             container.addChild(vfContainer);
           }
 
@@ -123,7 +123,7 @@ container.interactiveChildren = false;
           container.addChild(marker);
 
           if (picon) {
-            let icon = getIconSpriteHelper(context, picon);
+            let icon = getIconSprite(context, picon);
             const iconsize = 11;
             icon.width = iconsize;
             icon.height = iconsize;

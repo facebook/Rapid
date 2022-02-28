@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-import { getViewfieldContainerHelper } from './helpers';
+import { getViewfieldContainer } from './helpers';
 
 
 const LAYERID = 'mapillary';
@@ -181,7 +181,7 @@ export class PixiMapillaryPhotos extends PixiLayer {
 
         // Get the capture angle, if any, and attach a viewfield to the point.
         if (d.ca) {
-          const vfContainer = getViewfieldContainerHelper(this.context, [d.ca], MAPILLARY_GREEN);
+          const vfContainer = getViewfieldContainer(this.context, [d.ca], MAPILLARY_GREEN);
           marker.interactive = false;
           marker.addChild(vfContainer);
         }

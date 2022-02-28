@@ -462,9 +462,6 @@ container.interactiveChildren = false;
         bbox.visible = SHOWBBOX;
         container.addChild(bbox);
 
-        // const pattern = style.fill.pattern;
-        // const texture = pattern && context.pixi.rapidTextures.get(pattern);
-
         feature = {
           displayObject: container,
           bounds: bounds,

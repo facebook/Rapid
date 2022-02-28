@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
 
-let _vfTexture;
 
 /**
 * Generates a pixi container with viewfield icons rotated appropriately
@@ -9,33 +8,16 @@ let _vfTexture;
 * @param {Array<number>} directions an array of directional angles in degrees, 'UP' is zero degrees
 * @returns {PIXI.Container} A container with the ViewfieldSprites rotated according to the supplied directions.
 */
-export function getViewfieldContainerHelper(context, directions, color) {
-  if (!_vfTexture) {
-    const renderer = context.pixi.renderer;
-    const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 26);
-    const iconViewfield = new PIXI.Graphics()
-      .lineStyle(1, 0xcccccc)                  //  [-6,21]  ,-___-,  [6,21]
-      .beginFill(0xffffff, 0.75)               //          /       \
-      .moveTo(-6, 21)                          //         /         \
-      .bezierCurveTo(-5,19, 5,19, 6,21)        //        /           \
-      .lineTo(12, 4)                           //       /             \
-      .bezierCurveTo(12,0, -12,0, -12,4)       //       ""--_______--""         +y
-      .closePath()                             // [-12,4]              [12,4]    |
-      .endFill();                              //            [0,0]               +-- +x
-
-    _vfTexture = renderer.generateTexture(iconViewfield, {
-      region: viewfieldRect,  // texture the whole 26x26 region
-      resolution: 3           // oversample a bit so it looks pretty when rotated
-    });
-  }
-
+export function getViewfieldContainer(context, directions, color) {
   const vfContainer = new PIXI.Container();
   vfContainer.name = 'viewfields';
   vfContainer.interactive = false;
   vfContainer.interactiveChildren = false;
 
+  const vfTexture = context.pixi.rapidTextures.get('viewfield') || PIXI.Texture.WHITE;
+
   directions.forEach(direction => {
-    const sprite = new PIXI.Sprite(_vfTexture);
+    const sprite = new PIXI.Sprite(vfTexture);
     sprite.interactive = false;
     sprite.interactiveChildren = false;
     sprite.tint = color ? color : 0x333333;
@@ -93,26 +75,26 @@ export function lineToPolygon(width, points) {
 }
 
 
-export function getIconSpriteHelper(context, picon) {
-  const isMaki = /^maki-/.test(picon);
-  const isTemaki = /^temaki-/.test(picon);
+export function getIconSprite(context, iconName) {
+  const isMaki = /^maki-/.test(iconName);
+  const isTemaki = /^temaki-/.test(iconName);
 
   let spritesheet;
   let spriteName;
   if (isMaki) {
     spritesheet = context._makiSheet;
-    spriteName = picon.slice('maki-'.length);
+    spriteName = iconName.slice('maki-'.length);
   } else if (isTemaki) {
     spritesheet = context._temakiSheet;
-    spriteName = picon.slice('temaki-'.length);
+    spriteName = iconName.slice('temaki-'.length);
   } else {
     spritesheet = context._fontAwesomeSheet;
-    spriteName = picon;
+    spriteName = iconName;
   }
 
   spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
 
-  let sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
+  const sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
   sprite.name = spriteName;
   sprite.interactive = false;
   sprite.interactiveChildren = false;

@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 import { vecLength, geomGetSmallestSurroundingRectangle } from '@id-sdk/math';
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { lineToPolygon } from './helpers';
 
 import { prefs } from '../core/preferences';
@@ -11,45 +10,14 @@ const PARTIALFILLWIDTH = 32;
 
 
 export function PixiOsmAreas(context, featureCache) {
-  let _textures = {};
-  let _didInit = false;
-  let dispatch = d3_dispatch('change');
-
-  //
-  // prepare template geometry
-  //
-  function init() {
-    const square = new PIXI.Graphics()
-      .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.3)
-      .drawRect(-5, -5, 10, 10)
-      .endFill();
-
-    // const ell = new PIXI.Graphics()
-    //   .lineStyle(1, 0xffffff)
-    //   .beginFill(0xffffff, 0.5)
-    //   .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
-    //   .endFill();
-
-    // convert graphics to textures/sprites for performance
-    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    _textures.square = renderer.generateTexture(square, options);
-    // _textures.ell = renderer.generateTexture(ell, options);
-
-    _didInit = true;
-  }
-
 
   //
   // render
   //
   function renderAreas(layer, projection, entities) {
-    if (!_didInit) init();
-
     const graph = context.graph();
     const k = projection.scale();
+    const textures = context.pixi.rapidTextures;
     const fillstyle = (prefs('area-fill') || 'partial');
     const SHOWBBOX = false;
 
@@ -91,8 +59,9 @@ export function PixiOsmAreas(context, featureCache) {
 
           layer.addChild(container);
 
-          const lowRes = new PIXI.Sprite(_textures.square);
-          // const lowRes = new PIXI.Sprite(_textures.ell);
+          const square = textures.get('square') || PIXI.Texture.WHITE;
+          const lowRes = new PIXI.Sprite(square);
+          // const lowRes = new PIXI.Sprite(textures.ell);
           lowRes.name = entity.id + '-lowRes';
           lowRes.anchor.set(0.5, 0.5);  // middle, middle
           lowRes.visible = false;
@@ -139,7 +108,7 @@ export function PixiOsmAreas(context, featureCache) {
 // container.addChild(ssr);
 
           const pattern = style.fill.pattern;
-          const texture = pattern && context.pixi.rapidTextures.get(pattern);
+          const texture = pattern && context.pixi.rapidTextures.get(pattern) || PIXI.Texture.WHITE;
 
           feature = {
             type: 'area',

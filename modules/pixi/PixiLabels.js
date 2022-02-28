@@ -782,7 +782,7 @@ export function PixiLabels(context, featureCache) {
 //                  const picon = preset && preset.icon;
 //
 //                  if (picon) {
-//                      let thisSprite = getIconSpriteHelper(context, picon);
+//                      let thisSprite = getIconSprite(context, picon);
 //
 //                      let iconsize = 16;
 //                      thisSprite.x = text.width * 0.5 + -0.5 *iconsize;  //?

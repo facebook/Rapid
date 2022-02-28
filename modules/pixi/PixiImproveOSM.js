@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-import { getIconSpriteHelper } from './helpers';
+import { getIconSprite } from './helpers';
 
 
 const LAYERID = 'improveOSM';
@@ -103,7 +103,7 @@ export class PixiImproveOSM extends PixiLayer {
 
         if (d.icon) {
           const ICONSIZE = 11;
-          const icon = getIconSpriteHelper(context, d.icon);
+          const icon = getIconSprite(context, d.icon);
           icon.buttonMode = false;
           icon.interactive = false;
           icon.interactiveChildren = false;

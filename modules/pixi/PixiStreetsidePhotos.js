@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js';
 
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-import { getViewfieldContainerHelper } from './helpers';
+import { getViewfieldContainer } from './helpers';
 
 const LAYERID = 'streetside';
 const LAYERZINDEX = 10;
@@ -180,7 +180,7 @@ export class PixiStreetsidePhotos extends PixiLayer {
 
         // Get the capture angle, if any, and attach a viewfield to the point.
         if (d.ca) {
-          const vfContainer = getViewfieldContainerHelper(this.context, [d.ca], STREETSIDE_TEAL);
+          const vfContainer = getViewfieldContainer(this.context, [d.ca], STREETSIDE_TEAL);
           marker.interactive = false;
           marker.addChild(vfContainer);
         }

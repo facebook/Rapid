@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { Projection } from '@id-sdk/math';
 
 import { PixiLayers } from './PixiLayers';
+import { prepareTextures } from './textures';
 import { modeBrowse, modeSelect } from '../modes';
 import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
@@ -48,33 +49,8 @@ export class PixiRenderer {
       window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
     }
 
-    // prepare sprites
-    const loader = PIXI.Loader.shared;
-    loader.add('dist/img/icons/maki-spritesheet.json');
-    loader.add('dist/img/icons/temaki-spritesheet.json');
-    loader.add('dist/img/icons/fontawesome-spritesheet.json');
-    loader.add('dist/img/icons/mapillary-features-spritesheet.json');
-    loader.add('dist/img/icons/mapillary-signs-spritesheet.json');
-    loader.load(loader => {
-      context._makiSheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
-      context._temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
-      context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
-      context._mapillarySheet = loader.resources['dist/img/icons/mapillary-features-spritesheet.json'];
-      context._mapillarySignSheet = loader.resources['dist/img/icons/mapillary-signs-spritesheet.json'];
-    });
-
-    this.pixi.rapidTextureKeys = [
-      'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
-      'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
-      'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
-      'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
-    ];
-
-    this.pixi.rapidTextures = new Map();
-    this.pixi.rapidTextureKeys.forEach(key => {
-      this.pixi.rapidTextures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
-    });
-
+    // Prepare textures
+    prepareTextures(context, this.pixi.renderer);
 
     // Setup the Ticker
     const ticker = this.pixi.ticker;
