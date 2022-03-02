@@ -7,16 +7,18 @@ import { getIconSprite, getViewfieldContainer } from './helpers';
 /**
  * PixiFeaturePoint
  *
- * properties you can access:
+ * Properties you can access:
+ *   `coord`          Single wgs84 coordinate [lon, lat]
+ *   `markerStyle`    Object containing styling data
+ *   `displayObject`  PIXI.Sprite() for the marker
+ *   `icon`           PIXI.Sprite() for the icon (if any)
+ *   `vfContainer`    PIXI.Container() for the viewfields (if any)
  *
- *  coord
- *  dirty
- *  displayObject  (the marker itself)
- *  icon
- *  vfContainer
- *  k
- *  localBounds
- *  sceneBounds
+ * Inherited from PixiFeature:
+ *   `dirty`
+ *   `k`
+ *   `localBounds`
+ *   `sceneBounds`
  *
  * @class
  */

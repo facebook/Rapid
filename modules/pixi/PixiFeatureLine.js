@@ -10,17 +10,20 @@ const ONEWAY_SPACING = 35;
 /**
  * PixiFeatureLine
  *
- * properties you can access:
+ * Properties you can access:
+ *   `coords`         Array of wgs84 coordinates [lon, lat]
+ *   `points`         Array of projected points in scene coordinates
+ *   `style`          Object containing styling data
+ *   `displayObject`  PIXI.Container() holds the line parts
+ *   `casing`         PIXI.Graphic() for the casing (below)
+ *   `stroke`         PIXI.Graphic() for the stroke (above)
+ *   `markers`        PIXI.ParticleContainer() holds oneway arrows
  *
- *  coords
- *  dirty
- *  displayObject (the container that holds the line parts)
- *  casing
- *  stroke
- *  markers
- *  k
- *  localBounds
- *  sceneBounds
+ * Inherited from PixiFeature:
+ *   `dirty`
+ *   `k`
+ *   `localBounds`
+ *   `sceneBounds`
  *
  * @class
  */
@@ -43,6 +46,7 @@ export class PixiFeatureLine extends PixiFeature {
     this.points = [];
 
     container.name = id;
+    container.buttonMode = true;
     container.interactive = true;
     container.interactiveChildren = true;
     container.sortableChildren = false;
@@ -87,7 +91,6 @@ export class PixiFeatureLine extends PixiFeature {
     //
     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
     this.points = [];
-
     this._coords.forEach(coord => {
       const [x, y] = projection.project(coord);
       this.points.push([x, y]);
@@ -100,6 +103,13 @@ export class PixiFeatureLine extends PixiFeature {
       this.points.reverse();
     }
 
+    // Calculate hit area
+    let hitPath = [];
+    const hitWidth = this.style.casing.width;
+    this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
+    this.displayObject.hitArea = lineToPolygon(hitWidth, hitPath);
+
+    // Calculate bounds
     const [w, h] = [maxX - minX, maxY - minY];
     this.localBounds.x = minX;
     this.localBounds.y = minY;
@@ -198,11 +208,6 @@ export class PixiFeatureLine extends PixiFeature {
           g.lineTo(x, y);
         }
       });
-
-      if (which === 'casing' && g.currentPath) {
-        const hitTarget = lineToPolygon(width, g.currentPath.points);
-        g.hitArea = hitTarget;
-      }
     }
 
   }

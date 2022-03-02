@@ -1,22 +1,32 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from 'pixi-dashed-line';
+import { geomGetSmallestSurroundingRectangle, vecLength } from '@id-sdk/math';
 
 import { PixiFeature } from './PixiFeature';
-import { getLineSegments, lineToPolygon } from './helpers';
+import { lineToPolygon } from './helpers';
+import { prefs } from '../core/preferences';
 
-const ONEWAY_SPACING = 35;
+const PARTIALFILLWIDTH = 32;
+
 
 /**
  * PixiFeaturePolygon
  *
- * properties you can access:
+ * Properties you can access:
+ *   `polygons`       Treat like multipolygon (Array of polygons wgs84 [lon, lat])
+ *   `style`          Object containing styling data
+ *   `displayObject`  PIXI.Container() holds the polygon parts
+ *   `lowRes`         PIXI.Sprite() for a replacement graphic to display at low resolution
+ *   `fill`           PIXI.Graphic() for the fill (below)
+ *   `stroke`         PIXI.Graphic() for the stroke (above)
+ *   `mask`           PIXI.Graphic() for the mask (applied to fill)
+ *   `texture`        PIXI.Texture() for the pattern (applied to the fill)
+ *   `ssrdata`        Object containing SSR data (computed one time for simple polygons)
  *
- *  coords
- *  dirty
- *  displayObject
- *  k
- *  localBounds
- *  sceneBounds
+ * Inherited from PixiFeature:
+ *   `dirty`
+ *   `k`
+ *   `localBounds`
+ *   `sceneBounds`
  *
  * @class
  */
@@ -25,30 +35,37 @@ export class PixiFeaturePolygon extends PixiFeature {
   /**
    * @constructor
    */
-  constructor(context, id, coords, style, showOneWay, reversePoints) {
+  constructor(context, id, polygons, style) {
     const container = new PIXI.Container();
     super(container);
 
     this.context = context;
-    this.type = 'line';
-    this._coords = coords;      // Array of [lon, lat] coordinate pairs
-
+    this.type = 'area';
+    this._polygons = polygons;   // treat everything as a multipolygon
     this.style = style;
-    this.showOneWay = showOneWay;
-    this.reversePoints = reversePoints;
-    this.points = [];
 
     container.name = id;
+    container.buttonMode = true;
     container.interactive = true;
     container.interactiveChildren = true;
     container.sortableChildren = false;
 
-    const casing = new PIXI.Graphics();
-    casing.name = `${id}-casing`;
-    casing.interactive = false;
-    casing.interactiveChildren = false;
-    casing.sortableChildren = false;
-    this.casing = casing;
+    const textures = context.pixi.rapidTextures;
+    const square = textures.get('lowres-square') || PIXI.Texture.WHITE;
+    const lowRes = new PIXI.Sprite(square);
+    // const lowRes = new PIXI.Sprite(textures.ell);
+    lowRes.name = `${id}-lowRes`;
+    lowRes.anchor.set(0.5, 0.5);  // middle, middle
+    lowRes.visible = false;
+    lowRes.interactive = false;
+    this.lowRes = lowRes;
+
+    const fill = new PIXI.Graphics();
+    fill.name = `${id}-fill`;
+    fill.interactive = false;
+    fill.interactiveChildren = true;
+    fill.sortableChildren = false;
+    this.fill = fill;
 
     const stroke = new PIXI.Graphics();
     stroke.name = `${id}-stroke`;
@@ -57,15 +74,18 @@ export class PixiFeaturePolygon extends PixiFeature {
     stroke.sortableChildren = false;
     this.stroke = stroke;
 
-    const markers = new PIXI.Container();
-    markers.name = `${id}-markers`;
-    markers.interactive = false;
-    markers.interactiveChildren = false;
-    markers.sortableChildren = false;
-    markers.renderable = false;
-    this.markers = markers;
+    const mask = new PIXI.Graphics();
+    mask.name = `${id}-mask`;
+    mask.interactive = false;
+    mask.interactiveChildren = false;
+    mask.sortableChildren = false;
+    this.mask = mask;
 
-    container.addChild(casing, stroke, markers);
+    container.addChild(lowRes, fill, stroke, mask);
+
+    const pattern = style.fill.pattern;
+    const texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;
+    this.texture = texture;
   }
 
 
@@ -75,149 +95,215 @@ export class PixiFeaturePolygon extends PixiFeature {
    * @param projection - a pixi projection
    * @param zoom - the effective zoom to use for rendering
    */
-  update(projection, zoom) {
+  update(projection) {
     const k = projection.scale();
     if (!this.dirty && this.k === k) return;  // no change
 
     // Reproject and recalculate the bounding box
     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
-    this.points = [];
+    let shapes = [];
 
-    this._coords.forEach(coord => {
-      const [x, y] = projection.project(coord);
-      this.points.push([x, y]);
+    // Convert the GeoJSON style multipolygons to array of Pixi polygons with inner/outer
+    this._polygons.forEach(rings => {
+      if (!rings.length) return;  // no rings?
 
-      [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
-      [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+      let shape = { outer: undefined, holes: [] };
+      shapes.push(shape);
+
+      rings.forEach((ring, index) => {
+        const isOuter = (index === 0);
+        let points = [];
+        let outerPoints = [];
+
+        ring.forEach(coord => {
+          const [x, y] = projection.project(coord);
+          points.push(x, y);
+
+          if (isOuter) {   // outer rings define the bounding box
+            outerPoints.push([x, y]);
+            [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+            [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+          }
+        });
+
+        // Calculate Smallest Surrounding Rectangle (SSR):
+        // If this is a simple polygon (no multiple outers), perform a one-time
+        // calculation SSR to use as a replacement geometry at low zooms.
+        if (isOuter && !this.ssrdata && this._polygons.length === 1) {
+          let ssr = geomGetSmallestSurroundingRectangle(outerPoints);   // compute SSR in projected coordinates
+          if (ssr && ssr.poly) {
+            // Calculate axes of symmetry to determine width, height
+            // The shape's surrounding rectangle has 2 axes of symmetry.
+            //
+            //       1
+            //   p1 /\              p1 = midpoint of poly[0]-poly[1]
+            //     /\ \ q2          q1 = midpoint of poly[2]-poly[3]
+            //   0 \ \/\
+            //      \/\ \ 2         p2 = midpoint of poly[3]-poly[0]
+            //    p2 \ \/           q2 = midpoint of poly[1]-poly[2]
+            //        \/ q1
+            //        3
+
+            const p1 = [(ssr.poly[0][0] + ssr.poly[1][0]) / 2, (ssr.poly[0][1] + ssr.poly[1][1]) / 2 ];
+            const q1 = [(ssr.poly[2][0] + ssr.poly[3][0]) / 2, (ssr.poly[2][1] + ssr.poly[3][1]) / 2 ];
+            const p2 = [(ssr.poly[3][0] + ssr.poly[0][0]) / 2, (ssr.poly[3][1] + ssr.poly[0][1]) / 2 ];
+            const q2 = [(ssr.poly[1][0] + ssr.poly[2][0]) / 2, (ssr.poly[1][1] + ssr.poly[2][1]) / 2 ];
+            const axis1 = [p1, q1];
+            const axis2 = [p2, q2];
+            const centroid = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
+            this.ssrdata = {
+              poly: ssr.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
+              axis1: axis1.map(coord => projection.invert(coord)),
+              axis2: axis2.map(coord => projection.invert(coord)),
+              centroid: projection.invert(centroid),
+              angle: ssr.angle
+            };
+          }
+        }
+
+        const poly = new PIXI.Polygon(points);
+        if (isOuter) {
+          shape.outer = poly;
+        } else {
+          shape.holes.push(poly);
+        }
+      });
     });
-
-    if (this.reversePoints) {
-      this.points.reverse();
-    }
 
     const [w, h] = [maxX - minX, maxY - minY];
     this.localBounds.x = minX;
     this.localBounds.y = minY;
     this.localBounds.width = w;
     this.localBounds.height = h;
-    this.sceneBounds = this.localBounds.clone();  // for lines, they are the same
+    this.sceneBounds = this.localBounds.clone();  // for polygons, they are the same
 
 
-    // effectiveZoom adjustments
-    if (zoom < 16) {
-      this.casing.renderable = false;
-      this.markers.renderable = false;
-      this.markers.removeChildren();
+    // Determine style info
+    const fillstyle = prefs('area-fill') || 'partial';
+    let color = this.style.fill.color || 0xaaaaaa;
+    let alpha = this.style.fill.alpha || 0.3;
+    let texture = this.texture || PIXI.Texture.WHITE;  // WHITE turns off the texture
+    let doPartialFill = (fillstyle === 'partial');
+
+    // If this shape is so small that partial filling makes no sense, fill fully (faster?)
+    const cutoff = (2 * PARTIALFILLWIDTH) + 5;
+    if (w < cutoff || h < cutoff) {
+      doPartialFill = false;
+    }
+    // If this shape is so small that texture filling makes no sense, skip it (faster?)
+    if (w < PARTIALFILLWIDTH || h < PARTIALFILLWIDTH) {
+      texture = PIXI.Texture.WHITE;
+    }
+
+    // If this shape is very small, swap with lowRes sprite
+    if (this.ssrdata && (w < 20 || h < 20)) {
+      const ssrdata = this.ssrdata;
+      this.fill.visible = false;
+      this.stroke.visible = false;
+      this.mask.visible = false;
+      this.lowRes.visible = true;
+
+      const [x, y] = projection.project(ssrdata.centroid);
+      const poly = ssrdata.poly.map(coord => projection.project(coord));
+      const axis1 = ssrdata.axis1.map(coord => projection.project(coord));
+      const axis2 = ssrdata.axis2.map(coord => projection.project(coord));
+      const w = vecLength(axis1[0], axis1[1]);
+      const h = vecLength(axis2[0], axis2[1]);
+
+      this.lowRes.position.set(x, y);
+      this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
+      this.lowRes.rotation = ssrdata.angle;
+      this.lowRes.tint = color;
+      this.displayObject.hitArea = new PIXI.Polygon(poly);
 
     } else {
-      this.casing.renderable = true;
-      this.markers.renderable = this.showOneWay;
+      this.fill.visible = true;
+      this.stroke.visible = true;
+      this.lowRes.visible = false;
+      this.displayObject.hitArea = null;
     }
 
-    if (this.casing.renderable) {
-      updateGraphic('casing', this.casing, this.style, this.points);
-    }
-    if (this.stroke.renderable) {
-      updateGraphic('stroke', this.stroke, this.style, this.points);
-    }
+    //
+    // redraw the shapes
+    //
 
-    if (this.markers.renderable && this.showOneWay) {
-      const textures = this.context.pixi.rapidTextures;
-      const oneway = textures.get('oneway') || PIXI.Texture.WHITE;
+    // STROKE
+    if (this.stroke.visible) {
+      this.stroke
+        .clear()
+        .lineStyle({
+          alpha: 1,
+          width: this.style.fill.width || 2,
+          color: color
+        });
 
-      const segments = getLineSegments(this.points, ONEWAY_SPACING);
-      this.markers.removeChildren();
-
-      segments.forEach(segment => {
-        segment.coords.forEach(([x, y]) => {
-          const arrow = new PIXI.Sprite(oneway);
-          arrow.interactive = false;
-          arrow.interactiveChildren = false;
-          arrow.sortableChildren = false;
-          arrow.anchor.set(0.5, 0.5);  // middle, middle
-          arrow.position.set(x, y);
-          arrow.rotation = segment.angle;
-          this.markers.addChild(arrow);
+      shapes.forEach(shape => {
+        this.stroke.drawShape(shape.outer);
+        shape.holes.forEach(hole => {
+          this.stroke.drawShape(hole);
         });
       });
+    }
+
+    // FILL
+    if (this.fill.visible) {
+      this.fill.clear();
+      shapes.forEach(shape => {
+        this.fill
+          .beginTextureFill({
+            alpha: alpha,
+            color: color,
+            texture: texture
+          })
+          .drawShape(shape.outer);
+
+        if (shape.holes.length) {
+          this.fill.beginHole();
+          shape.holes.forEach(hole => this.fill.drawShape(hole));
+          this.fill.endHole();
+        }
+        this.fill.endFill();
+      });
+
+      if (doPartialFill) {   // mask around the edges of the fill
+        this.mask
+          .clear()
+          .lineTextureStyle({
+            alpha: 1,
+            alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
+            width: PARTIALFILLWIDTH,
+            color: 0x000000,
+            texture: PIXI.Texture.WHITE
+          });
+
+        shapes.forEach(shape => {
+          this.mask.drawShape(shape.outer);
+          shape.holes.forEach(hole => this.mask.drawShape(hole));
+        });
+
+        this.mask.visible = true;
+        this.fill.mask = this.mask;
+        this.displayObject.hitArea = lineToPolygon(10, shapes[0].outer.points);
+      } else {  // full fill - no mask
+        this.mask.visible = false;
+        this.fill.mask = null;
+        this.displayObject.hitArea = shapes[0].outer;
+      }
     }
 
     this.scale = k;
     this.dirty = false;
-
-//    if (SHOWBBOX) {
-//      feature.bbox
-//        .clear()
-//        .lineStyle({
-//          width: 1,
-//          color: 0x66ff66,
-//          alignment: 0   // inside
-//        })
-//        .drawShape(this.sceneBounds);
-//    }
-
-
-    function updateGraphic(which, graphic, style, points) {
-      const minwidth = (which === 'casing' ? 3 : 2);
-      let width = style[which].width;
-
-      // effectiveZoom adjustments
-      if (zoom < 16) {
-        width -= 4;
-      } else if (zoom < 17) {
-        width -= 2;
-      }
-      if (width < minwidth) {
-        width = minwidth;
-      }
-
-      let g = graphic.clear();
-      if (style[which].alpha === 0) return;
-
-      if (style[which].dash) {
-        g = new DashLine(g, {
-          dash: style[which].dash,
-          color: style[which].color,
-          width: width,
-          alpha: style[which].alpha || 1.0,
-          join: style[which].join || PIXI.LINE_JOIN.ROUND,
-          cap: style[which].cap || PIXI.LINE_CAP.ROUND
-        });
-      } else {
-        g = g.lineStyle({
-          color: style[which].color,
-          width: width,
-          alpha: style[which].alpha || 1.0,
-          join: style[which].join || PIXI.LINE_JOIN.ROUND,
-          cap: style[which].cap || PIXI.LINE_CAP.ROUND
-        });
-      }
-
-      points.forEach(([x, y], i) => {
-        if (i === 0) {
-          g.moveTo(x, y);
-        } else {
-          g.lineTo(x, y);
-        }
-      });
-
-      if (which === 'casing' && g.currentPath) {
-        const hitTarget = lineToPolygon(width, g.currentPath.points);
-        g.hitArea = hitTarget;
-      }
-    }
-
   }
 
 
   /**
    * coord
    */
-  get coords() {
-    return this._coords;
+  get polygons() {
+    return this._polygons;
   }
-  set coords(val) {
-    this._coords = val;
+  set polygons(val) {
+    this._polygons = val;
     this.dirty = true;
   }
 
