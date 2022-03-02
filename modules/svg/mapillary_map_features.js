@@ -2,12 +2,15 @@ import _throttle from 'lodash-es/throttle';
 import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
+import { svgMapillaryRapidFeatures } from './mapillary_rapid_features';
 
 export function svgMapillaryMapFeatures(projection, context, dispatch) {
     const throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
     let layer = d3_select(null);
     let _mapillary;
+
+    dispatch.on("turnOffMapillary", () => hideLayer())
 
     function init() {
         if (svgMapillaryMapFeatures.initialized) return;  // run once
@@ -32,6 +35,9 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
         if (!service) return;
         service.loadObjectResources(context);
         editOn();
+        dispatch.call("turnOffRapid");
+        svgMapillaryRapidFeatures.enabled = false;
+        context.photos().on('change.mapillary_rapid_features', null);
     }
 
 
