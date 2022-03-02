@@ -1,11 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { Projection } from '@id-sdk/math';
-
 import { PixiLayers } from './PixiLayers';
 import { prepareTextures } from './textures';
-import { modeBrowse, modeSelect } from '../modes';
-import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
-
+import { PixiEventsHandler } from './PixiEventsHandler';
 const AUTOTICK = false;     // set to true to turn the ticker back on
 
 
@@ -28,10 +25,10 @@ export class PixiRenderer {
     this.parentElement = parentElement;
     this.featureCache = new Map();            // map of OSM ID -> Pixi data
     this.pixiProjection = new Projection();
-
+    this.selectedEntities = [];
     this._redrawPending = false;
     this._hoverTarget = null;
-
+    this._eventsHandler = new PixiEventsHandler(context);
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
@@ -74,56 +71,8 @@ export class PixiRenderer {
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
 
     stage
-      .on('click', e => {
-        if (!e.target) return;
-        const name = e.target.name || 'nothing';
-        console.log(`clicked on ${name}`);
-        const entity = e.target.__data__;
-        if (entity) {
-          if (entity.__fbid__) {    // clicked a RapiD feature ..
-            context
-              .selectedNoteID(null)
-              .selectedErrorID(null)
-              .enter(modeRapidSelectFeatures(context, entity));
-          } else {
-            context.enter(modeSelect(context, [entity.id]));
-          }
-        } else {
-          context.enter(modeBrowse(context));
-        }
-      })
-      .on('pointermove', e => {
-        if (!e.target) return;
-
-        // hover target has changed
-        if (e.target !== this._hoverTarget) {
-          const name = e.target.name || 'nothing';
-          console.log(`pointer over ${name}`);
-
-//          // remove hover
-//          if (this._hoverTarget) {
-//            const hover = this._hoverTarget.getChildByName('hover');
-//            if (hover) hover.destroy();
-//          }
-
-          this._hoverTarget = e.target;
-
-//          // add new hover
-//          if (e.target !== stage) {
-//            const hover = new PIXI.Sprite(PIXI.Texture.WHITE);
-//            hover.name = 'hover';
-//            hover.width= 50;
-//            hover.height= 50;
-//            hover.interactive = false;
-//            hover.interactiveChildren = false;
-//            e.target.addChild(hover);
-//          }
-
-//          this.render();
-        }
-      });
-
-
+      .on('click', e => this._eventsHandler.onClickHandler(e))
+      .on('pointermove', e => this._eventsHandler.onPointerMoveHandler(e));
     this.layers = new PixiLayers(context, this.featureCache);
   }
 
