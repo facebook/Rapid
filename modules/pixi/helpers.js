@@ -3,24 +3,55 @@ import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
 
 
 /**
+* Generates a icon sprite for the given texture name
+* @returns {PIXI.Sprite}
+*/
+export function getIconSprite(context, iconName) {
+  const isMaki = /^maki-/.test(iconName);
+  const isTemaki = /^temaki-/.test(iconName);
+
+  let spritesheet;
+  let spriteName;
+  if (isMaki) {
+    spritesheet = context._makiSheet;
+    spriteName = iconName.slice('maki-'.length);
+  } else if (isTemaki) {
+    spritesheet = context._temakiSheet;
+    spriteName = iconName.slice('temaki-'.length);
+  } else {
+    spritesheet = context._fontAwesomeSheet;
+    spriteName = iconName;
+  }
+
+  spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
+
+  const sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
+  sprite.name = spriteName;
+  sprite.interactive = false;
+  sprite.interactiveChildren = false;
+  sprite.anchor.set(0.5, 0.5);   // middle, middle
+
+  return sprite;
+}
+
+
+/**
 * Generates a pixi container with viewfield icons rotated appropriately
-* @param context main iD context obj.
+* @param texture
 * @param {Array<number>} directions an array of directional angles in degrees, 'UP' is zero degrees
 * @returns {PIXI.Container} A container with the ViewfieldSprites rotated according to the supplied directions.
 */
-export function getViewfieldContainer(context, directions, color) {
+export function getViewfieldContainer(texture, directions, tint) {
   const vfContainer = new PIXI.Container();
   vfContainer.name = 'viewfields';
   vfContainer.interactive = false;
   vfContainer.interactiveChildren = false;
 
-  const vfTexture = context.pixi.rapidTextures.get('viewfield') || PIXI.Texture.WHITE;
-
   directions.forEach(direction => {
-    const sprite = new PIXI.Sprite(vfTexture);
+    const sprite = new PIXI.Sprite(texture);
     sprite.interactive = false;
     sprite.interactiveChildren = false;
-    sprite.tint = color ? color : 0x333333;
+    sprite.tint = tint || 0x333333;
     sprite.anchor.set(0.5, 1);  // middle, top
     sprite.angle = direction;
     vfContainer.addChild(sprite);
@@ -74,34 +105,6 @@ export function lineToPolygon(width, points) {
   return new PIXI.Polygon(output);
 }
 
-
-export function getIconSprite(context, iconName) {
-  const isMaki = /^maki-/.test(iconName);
-  const isTemaki = /^temaki-/.test(iconName);
-
-  let spritesheet;
-  let spriteName;
-  if (isMaki) {
-    spritesheet = context._makiSheet;
-    spriteName = iconName.slice('maki-'.length);
-  } else if (isTemaki) {
-    spritesheet = context._temakiSheet;
-    spriteName = iconName.slice('temaki-'.length);
-  } else {
-    spritesheet = context._fontAwesomeSheet;
-    spriteName = iconName;
-  }
-
-  spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
-
-  const sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
-  sprite.name = spriteName;
-  sprite.interactive = false;
-  sprite.interactiveChildren = false;
-  sprite.anchor.set(0.5, 0.5);   // middle, middle
-
-  return sprite;
-}
 
 
 export function getLineSegments(points, spacing) {

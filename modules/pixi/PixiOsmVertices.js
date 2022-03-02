@@ -1,59 +1,14 @@
-import * as PIXI from 'pixi.js';
-
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { presetManager } from '../presets';
-import { getIconSprite, getViewfieldContainer } from './helpers';
 
 
 export function PixiOsmVertices(context, featureCache) {
-  let _textures = {};
-  let _didInit = false;
-
-  //
-  // prepare template geometry
-  //
-  function initVertexTextures() {
-    const plain = new PIXI.Graphics()
-      .lineStyle(1, 0x666666)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 4.5)
-      .endFill();
-
-    const taggedPlain = new PIXI.Graphics()
-      .lineStyle(1, 0x666666)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 4.5)
-      .beginFill(0x000000, 1)
-      .drawCircle(0, 0, 1.5)
-      .endFill();
-
-    const iconPlain = new PIXI.Graphics()
-      .lineStyle(1, 0x666666)
-      .beginFill(0xffffff, 1)
-      .drawCircle(0, 0, 8)
-      .endFill();
-
-    // convert graphics to textures/sprites for performance
-    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    _textures.plain = renderer.generateTexture(plain, options);
-    _textures.taggedPlain = renderer.generateTexture(taggedPlain, options);
-    _textures.iconPlain = renderer.generateTexture(iconPlain, options);
-
-    _didInit = true;
-  }
-
 
   //
   // render
   //
-  function renderVertices(layer, projection, entities) {
-    if (!_didInit) initVertexTextures();
-
+  function renderVertices(layer, projection, zoom, entities) {
     const graph = context.graph();
-    const k = projection.scale();
-    const effectiveZoom = context.map().effectiveZoom();
-    const SHOWBBOX = false;
 
     function isLine(entity) {
       return entity.type === 'way' && entity.geometry(graph) === 'line';
@@ -61,6 +16,16 @@ export function PixiOsmVertices(context, featureCache) {
     function isInterestingVertex(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
         graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
+      );
+    }
+    // Special style for Wikidata-tagged items
+    function hasWikidata(entity) {
+      return (
+        entity.tags.wikidata ||
+        entity.tags['flag:wikidata'] ||
+        entity.tags['brand:wikidata'] ||
+        entity.tags['network:wikidata'] ||
+        entity.tags['operator:wikidata']
       );
     }
 
@@ -81,123 +46,62 @@ export function PixiOsmVertices(context, featureCache) {
       .forEach(function prepareVertices(node) {
         let feature = featureCache.get(node.id);
 
-        if (!feature) {   // make point if needed
-          const container = new PIXI.Container();
-          container.name = node.id;
-container.__data__ = node;
-container.interactive = false;
-container.interactiveChildren = false;
-          container.sortableChildren = false;
-          container.zIndex = -node.loc[1];  // sort by latitude ascending
-          container.__data__ = node;    // Bind the data to the container so that it can be retrieved when clicked on
-          layer.addChild(container);
-
+        if (!feature) {
           const preset = presetManager.match(node, graph);
-          const picon = preset && preset.icon;
-          const isJunction = graph.isShared(node);
-
-          // Add viewfields, if any are required.
-          let vfContainer;
+          const iconName = preset && preset.icon;
           const directions = node.directions(graph, context.projection);
-          if (directions.length > 0) {
-            vfContainer = getViewfieldContainer(context, directions);
-            container.addChild(vfContainer);
-          }
 
-          let t;
-          if (picon) {
-            t = 'iconPlain';
-          } else if (node.hasInterestingTags()) {
-            t = 'taggedPlain';
-          } else {
-            t = 'plain';
-          }
-
-          const marker = new PIXI.Sprite(_textures[t]);
-          marker.name = t;
-          marker.interactive = false;
-          marker.interactiveChildren = false;
-          marker.sortableChildren = false;
-          marker.anchor.set(0.5, 0.5);  // middle, middle
-          marker.tint = isJunction ? 0xffffff : 0xbbbbbb;
-          container.addChild(marker);
-
-          if (picon) {
-            let icon = getIconSprite(context, picon);
-            const iconsize = 11;
-            icon.width = iconsize;
-            icon.height = iconsize;
-            container.addChild(icon);
-          }
-          const bounds = new PIXI.Rectangle();
-
-          const bbox = new PIXI.Graphics();
-          bbox.name = node.id + '-bbox';
-          bbox.interactive = false;
-          bbox.interactiveChildren = false;
-          bbox.sortableChildren = false;
-          bbox.visible = SHOWBBOX;
-          container.addChild(bbox);
-
-          feature = {
-            type: 'vertex',
-            displayObject: container,
-            localBounds: new PIXI.Rectangle(),
-            loc: node.loc,
-            marker: marker,
-            vfContainer: vfContainer,
-            bbox: bbox
+          // set marker style
+          let markerStyle = {
+            markerName: 'smallCircle',
+            markerTint: 0xffffff,
+            viewfieldName: 'viewfieldDark',
+            viewfieldTint: 0xffffff,
+            iconName: iconName,
+            iconAlpha: 1
           };
+
+          if (iconName) {
+            markerStyle.markerName = 'largeCircle';
+            markerStyle.iconName = iconName;
+          } else if (node.hasInterestingTags()) {
+            markerStyle.markerName = 'taggedCircle';
+          }
+
+          if (hasWikidata(node)) {
+            markerStyle.markerTint = 0xdddddd;
+            markerStyle.iconAlpha = 0.6;
+          }
+          if (graph.isShared(node)) {     // shared nodes / junctions are more grey
+            markerStyle.markerTint = 0xbbbbbb;
+          }
+
+          feature = new PixiFeaturePoint(context, node.id, node.loc, directions, markerStyle);
+
+          // bind data and add to scene
+          const marker = feature.displayObject;
+          marker.__data__ = node;
+          layer.addChild(marker);
 
           featureCache.set(node.id, feature);
         }
 
-        // Remember scale and reproject only when it changes
-        if (k === feature.k) return;
-        feature.k = k;
+        feature.update(projection, zoom);
 
-        // effectiveZoom adjustments
-        if (effectiveZoom < 16) {
-          feature.displayObject.visible = false;
-          return;  // exit early
-        } else if (effectiveZoom < 17) {
-          feature.displayObject.visible = true;
-          feature.displayObject.scale.set(0.8, 0.8);
-          if (feature.vfContainer) feature.vfContainer.visible = false;
-        } else {
-          feature.displayObject.visible = true;
-          feature.displayObject.scale.set(1, 1);
-          if (feature.vfContainer) feature.vfContainer.visible = true;
-        }
-
-        // Reproject and recalculate the bounding box
-        const [x, y] = projection.project(feature.loc);
-        feature.displayObject.position.set(x, y);
-
-// Refresh the tint
-// note that whether a thing is a junction can change as more geometry loads
-// TODO : figure out a way to invalidate and redo geometry as we load more stuff from the OSM API.
-        feature.marker.tint = graph.isShared(node) ? 0xbbbbbb : 0xffffff;
-
-        // TODO: account for viewfields
-        feature.marker.getLocalBounds(feature.localBounds);    // where 0,0 is the origin of the object
-        feature.sceneBounds = feature.localBounds.clone();     // where 0,0 is the origin of the scene
-        feature.sceneBounds.x += x;
-        feature.sceneBounds.y += y;
-
-        if (SHOWBBOX) {
-          feature.bbox
-            .clear()
-            .lineStyle({
-              width: 1,
-              color: 0x66ff66,
-              alignment: 0   // inside
-            })
-            .drawShape(feature.bounds);
-        }
+//        if (SHOWBBOX) {
+//          feature.bbox
+//            .clear()
+//            .lineStyle({
+//              width: 1,
+//              color: 0x66ff66,
+//              alignment: 0   // inside
+//            })
+//            .drawShape(feature.localBounds);
+//        }
       });
   }
 
 
   return renderVertices;
 }
+

@@ -43,10 +43,10 @@ export function prepareTextures(context, renderer) {
   const options = { resolution: 2 };
 
   //
-  // viewfields
+  // Viewfields
   //
   const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 26);
-  const iconViewfield = new PIXI.Graphics()
+  const viewfield = new PIXI.Graphics()
     .lineStyle(1, 0xcccccc)                    //  [-6,21]  ,-___-,  [6,21]
     .beginFill(0xffffff, 0.75)                 //          /       \
     .moveTo(-6, 21)                            //         /         \
@@ -56,16 +56,30 @@ export function prepareTextures(context, renderer) {
     .closePath()                               // [-12,4]              [12,4]    |
     .endFill();                                //            [0,0]               +-- +x
 
-  textures.set('viewfield', renderer.generateTexture(iconViewfield, {
+  const viewfieldDark = new PIXI.Graphics()
+    .lineStyle(1, 0xcccccc)         // same viewfield, but outline light gray
+    .beginFill(0x333333, 0.75)      // and fill dark gray (not intended to be tinted)
+    .moveTo(-6, 21)
+    .bezierCurveTo(-5,19, 5,19, 6,21)
+    .lineTo(12, 4)
+    .bezierCurveTo(12,0, -12,0, -12,4)
+    .closePath()
+    .endFill();
+
+  textures.set('viewfield', renderer.generateTexture(viewfield, {
+    region: viewfieldRect,  // texture the whole 26x26 region
+    resolution: 3           // oversample a bit so it looks pretty when rotated
+  }));
+  textures.set('viewfieldDark', renderer.generateTexture(viewfieldDark, {
     region: viewfieldRect,  // texture the whole 26x26 region
     resolution: 3           // oversample a bit so it looks pretty when rotated
   }));
 
 
   //
-  // markers
+  // Markers
   //
-  const marker = new PIXI.Graphics()           //              [0,-23]
+  const pin = new PIXI.Graphics()              //              [0,-23]
     .lineStyle(1, 0x444444)                    //              _,-+-,_
     .beginFill(0xffffff, 1)                    //            /'       `\
     .moveTo(0, 0)                              //           :           :
@@ -76,8 +90,8 @@ export function prepareTextures(context, renderer) {
     .closePath()                               //               \   /      -y
     .endFill();                                //                `+`        |
                                                //               [0,0]       +-- +x
-  const wikidataMarker = new PIXI.Graphics()
-    .lineStyle(2, 0x666666)
+  const boldPin = new PIXI.Graphics()
+    .lineStyle(2, 0x666666)        // same pin, bolder line stroke
     .beginFill(0xdddddd, 1)
     .moveTo(0, 0)
     .bezierCurveTo(-2,-2, -8,-10, -8,-15)
@@ -87,13 +101,19 @@ export function prepareTextures(context, renderer) {
     .closePath()
     .endFill();
 
-  const iconPlain = new PIXI.Graphics()
+  const largeCircle = new PIXI.Graphics()    // suitable to display an icon inside
     .lineStyle(1, 0x666666)
     .beginFill(0xffffff, 1)
     .drawCircle(0, 0, 8)
     .endFill();
 
-  const taggedPlain = new PIXI.Graphics()
+  const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
+    .lineStyle(1, 0x666666)
+    .beginFill(0xffffff, 1)
+    .drawCircle(0, 0, 4.5)
+    .endFill();
+
+  const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
     .lineStyle(1, 0x666666)
     .beginFill(0xffffff, 1)
     .drawCircle(0, 0, 4.5)
@@ -101,45 +121,60 @@ export function prepareTextures(context, renderer) {
     .drawCircle(0, 0, 1.5)
     .endFill();
 
-  const taggedWikidata = new PIXI.Graphics()
-    .lineStyle(1, 0x666666)
-    .beginFill(0xdddddd, 1)
-    .drawCircle(0, 0, 4.5)
-    .beginFill(0x333333, 1)
-    .drawCircle(0, 0, 1.5)
+  textures.set('pin', renderer.generateTexture(pin, options));
+  textures.set('boldPin', renderer.generateTexture(boldPin, options));
+  textures.set('largeCircle', renderer.generateTexture(largeCircle, options));
+  textures.set('smallCircle', renderer.generateTexture(smallCircle, options));
+  textures.set('taggedCircle', renderer.generateTexture(taggedCircle, options));
+
+
+  //
+  // Line markers
+  //
+  const midpoint = new PIXI.Graphics()      // [-3, 4]  ._                +y
+    .lineStyle(1, 0x000000)                 //          | "-._             |
+    .beginFill(0xffffff, 1)                 //          |    _:>  [5,0]    +-- +x
+    .drawPolygon([-3,4, 5,0, -3,-4])        //          |_,-"
+    .endFill();                             // [-3,-4]  '
+
+  const oneway = new PIXI.Graphics()
+    .beginFill(0x030303, 1)
+    .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
     .endFill();
 
-  textures.set('marker', renderer.generateTexture(marker, options));
-  textures.set('wikidataMarker', renderer.generateTexture(wikidataMarker, options));
-  textures.set('iconPlain', renderer.generateTexture(iconPlain, options));
-  textures.set('taggedPlain', renderer.generateTexture(taggedPlain, options));
-  textures.set('taggedWikidata', renderer.generateTexture(taggedWikidata, options));
+  textures.set('midpoint', renderer.generateTexture(midpoint, options));
+  textures.set('oneway', renderer.generateTexture(oneway, options));
 
 
   //
-  // lowres areas
+  // Low-res areas
+  // We can replace areas with these sprites when they are very small
+  // They are all sized to 10x10 (would look fine scaled down but not up)
   //
-  const square = new PIXI.Graphics()
+  const lowresSquare = new PIXI.Graphics()
     .lineStyle(1, 0xffffff)
     .beginFill(0xffffff, 0.3)
     .drawRect(-5, -5, 10, 10)
     .endFill();
 
-  const ell = new PIXI.Graphics()
+  const lowresEll = new PIXI.Graphics()
     .lineStyle(1, 0xffffff)
     .beginFill(0xffffff, 0.5)
     .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
     .endFill();
 
-  textures.set('square', renderer.generateTexture(square, options));
-  textures.set('ell', renderer.generateTexture(ell, options));
+  const lowresCircle = new PIXI.Graphics()    // suitable to display an icon inside
+    .lineStyle(1, 0xffffff)
+    .beginFill(0xffffff, 0.3)
+    .drawCircle(0, 0, 5)
+    .endFill();
+
+  textures.set('lowres-square', renderer.generateTexture(lowresSquare, options));
+  textures.set('lowres-ell', renderer.generateTexture(lowresEll, options));
+  textures.set('lowres-circle', renderer.generateTexture(lowresCircle, options));
 
   // store them here
   context.pixi.rapidTextures = textures;
   return textures;
 }
 
-
-export function loadSprites(context) {
-
-}

@@ -14,7 +14,7 @@ export function PixiOsmAreas(context, featureCache) {
   //
   // render
   //
-  function renderAreas(layer, projection, entities) {
+  function renderAreas(layer, projection, zoom, entities) {
     const graph = context.graph();
     const k = projection.scale();
     const textures = context.pixi.rapidTextures;
@@ -59,7 +59,7 @@ export function PixiOsmAreas(context, featureCache) {
 
           layer.addChild(container);
 
-          const square = textures.get('square') || PIXI.Texture.WHITE;
+          const square = textures.get('lowres-square') || PIXI.Texture.WHITE;
           const lowRes = new PIXI.Sprite(square);
           // const lowRes = new PIXI.Sprite(textures.ell);
           lowRes.name = entity.id + '-lowRes';

@@ -3,35 +3,11 @@ import { vecAngle, vecInterp } from '@id-sdk/math';
 
 
 export function PixiOsmMidpoints(context, featureCache) {
-  let _textures = {};
-  let _didInit = false;
-
-  //
-  // prepare template geometry
-  //
-  function initMidpointTextures() {
-    const midpoint = new PIXI.Graphics()      // [-3, 4]  ._                +y
-      .lineStyle(1, 0x000000)                 //          | "-._             |
-      .beginFill(0xffffff, 1)                 //          |    _:>  [5,0]    +-- +x
-      .drawPolygon([-3,4, 5,0, -3,-4])        //          |_,-"
-      .endFill();                             // [-3,-4]  '
-
-    // convert graphics to textures/sprites for performance
-    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    _textures.midpoint = renderer.generateTexture(midpoint, options);
-
-    _didInit = true;
-  }
-
 
   //
   // render
   //
-  function renderMidpoints(layer, projection, entities) {
-    if (!_didInit) initMidpointTextures();
-
+  function renderMidpoints(layer, projection, zoom, entities) {
     const graph = context.graph();
     const k = projection.scale();
 
@@ -41,6 +17,8 @@ export function PixiOsmMidpoints(context, featureCache) {
     }
 
     const data = entities.filter(isLine);
+    const midpointTexture = context.pixi.rapidTextures.get('midpoint');
+
 
     // gather ids to keep
     let visible = {};
@@ -93,7 +71,7 @@ export function PixiOsmMidpoints(context, featureCache) {
           const pos = vecInterp(a.point, b.point, 0.5);
           const rot = vecAngle(a.point, b.point);
 
-          const midpoint = new PIXI.Sprite(_textures.midpoint);
+          const midpoint = new PIXI.Sprite(midpointTexture);
           midpoint.name = [a.id, b.id].sort().join('-');
           midpoint.anchor.set(0.5, 0.5);  // middle, middle
           midpoint.position.set(pos[0], pos[1]);

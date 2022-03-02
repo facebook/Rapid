@@ -160,12 +160,12 @@ export class PixiOsm extends PixiLayer {
       // const midpointsLayer = this.container.getChildByName('midpoints');
       const labelsLayer = this.container.getChildByName('labels');
 
-      this.drawAreas(areasLayer, projection, data);
-      this.drawLines(linesLayer, projection, data);
-      this.drawVertices(verticesLayer, projection, data);
-      this.drawPoints(pointsLayer, projection, data);
-      // this.drawMidpoints(midpointsLayer, projection, data);
-      this.drawLabels(labelsLayer, projection, data);
+      this.drawAreas(areasLayer, projection, zoom, data);
+      this.drawLines(linesLayer, projection, zoom, data);
+      this.drawVertices(verticesLayer, projection, zoom, data);
+      this.drawPoints(pointsLayer, projection, zoom, data);
+      // this.drawMidpoints(midpointsLayer, projection, zoom, data);
+      this.drawLabels(labelsLayer, projection, zoom, data);
 
     } else {
       this.visible = false;
