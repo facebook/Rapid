@@ -1,4 +1,3 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilRebind } from '../util';
 
 import { PixiLayerImproveOsm } from './PixiLayerImproveOsm';
@@ -25,11 +24,12 @@ export class PixiLayers {
    * @param context
    * @param featureCache
    */
-  constructor(context, featureCache) {
+  constructor(context, featureCache, dispatch) {
     this.context = context;
     this.featureCache = featureCache;
+    this.dispatch = dispatch;
 
-    this.dispatch = d3_dispatch('change', 'dragstart', 'dragend');
+
     utilRebind(this, this.dispatch, 'on');
 
     this._layers = [

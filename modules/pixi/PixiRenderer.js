@@ -1,3 +1,4 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import * as PIXI from 'pixi.js';
 import { Projection, vecAdd } from '@id-sdk/math';
 
@@ -31,7 +32,9 @@ export class PixiRenderer {
     this.selectedEntities = [];
     this._redrawPending = false;
     this._hoverTarget = null;
-    this._eventsHandler = new PixiEventsHandler(context);
+    this.dispatch = d3_dispatch('change', 'dragstart', 'dragend');
+    this._eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.featureCache);
+
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
@@ -75,8 +78,13 @@ export class PixiRenderer {
 
     stage
       .on('click', e => this._eventsHandler.onClickHandler(e))
-      .on('pointermove', e => this._eventsHandler.onPointerMoveHandler(e));
-    this.layers = new PixiLayers(context, this.featureCache);
+      // .on('pointermove', e => this._eventsHandler.onPointerMoveHandler(e))
+      .on('pointerdown', e => this._eventsHandler.onTouchStartHandler(e))
+      .on('pointermove', e => this._eventsHandler.onTouchMoveHandler(e))
+      .on('pointerup', e => this._eventsHandler.onTouchEndHandler(e));
+
+
+      this.layers = new PixiLayers(context, this.featureCache, this.dispatch);
   }
 
 

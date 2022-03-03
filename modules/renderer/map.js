@@ -170,6 +170,10 @@ export function rendererMap(context) {
         handleDragEnd();
       });
 
+      layers.on('change.feature', function () {
+        immediateRedraw();
+      });
+
       // END PIXI
       ///////////////////////
 

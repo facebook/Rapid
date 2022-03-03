@@ -38,7 +38,6 @@ export class PixiLayerOsm extends PixiLayer {
     this._service = null;
     this.getService();
 
-    this.draggingState = false;
     // Setup Scene
     //
     // A few definitions:
@@ -180,39 +179,5 @@ export class PixiLayerOsm extends PixiLayer {
   get supported() {
     return !!this.getService();
   }
-
-
-
-  // onPointTouchStart(e) {
-  //   const name = e.target.name || 'nothing';
-  //   console.log(`point: touch started on ${name}`);
-  //   this.touchContainer = e.target;
-  //   this.touchPosition = { x: e.data.global.x , y: e.data.global.y};
-  //   this.draggingState = true;
-  //   this.dispatch.call('dragstart');
-  // }
-
-  // onPointTouchMove(e) {
-  //   if (!this.draggingState || !e.target) return;
-
-  //   const movingPoint = e.target;
-  //   const currentPosition = { x: e.data.global.x, y: e.data.global.y };
-  //   const offsetX = currentPosition.x - this.touchPosition.x;
-  //   const offsetY = currentPosition.y - this.touchPosition.y + e.target.height/2;
-  //   console.log(`[+x, +y]: [${offsetX},${offsetY}]`);
-  //   movingPoint.x = movingPoint.x + offsetX;
-  //   movingPoint.y = movingPoint.y + offsetY;
-  //   this.touchPosition.x = movingPoint.x;
-  //   this.touchPosition.y = movingPoint.y;
-  //   this.dispatch.call('change');
-  // }
-
-  // onPointTouchEnd(e) {
-  //   console.log('Points touch end');
-  //   this.draggingState = false;
-  //   this.dispatch.call('dragend');
-  //   this.dispatch.call('change');
-  // }
-
 }
 

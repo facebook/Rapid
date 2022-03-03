@@ -19,9 +19,15 @@ export class PixiEventsHandler {
    * @param displayObject - root Pixi display object for the feature
    *    (can be a Graphic, Container, Sprite, etc)
    */
-  constructor(context) {
+  constructor(context, dispatch, projection, featureCache) {
     this.context = context;
+    this.dispatch = dispatch;
+    this.projection = projection;
+    this.featureCache = featureCache;
+    this.draggingState = false;
     this._selectedEntities = [];
+    this.draggingEntity = null;
+    this.draggingTarget = null;
   }
 
 
@@ -42,12 +48,11 @@ export class PixiEventsHandler {
         const entity = e.target.__data__;
         if (entity) {
             if (entity.__fbid__) {    // clicked a RapiD feature ..
-                this.context
-                    .selectedNoteID(null)
-                    .selectedErrorID(null)
-                    .enter(modeRapidSelectFeatures(this.context, entity));
+              this.context
+                  .selectedNoteID(null)
+                  .selectedErrorID(null)
+                .enter(modeRapidSelectFeatures(this.context, entity));
             } else {
-
                 this._selectedEntities.forEach(entity => entity.filters = []);
                 this._selectedEntities = [];
                 this.context.enter(modeSelect(this.context, [entity.id]));
@@ -57,6 +62,8 @@ export class PixiEventsHandler {
         } else {
             this.context.enter(modeBrowse(this.context));
         }
+                this.dispatch.call('change');
+
     }
 
   onPointerMoveHandler(e) {
@@ -89,6 +96,63 @@ export class PixiEventsHandler {
 
       //          this.render();
     }
+  }
+
+    isPoint(entity) {
+      return entity.type === 'node' && entity.geometry(this.context.graph()) === 'point';
+    }
+
+  onTouchStartHandler(e) {
+    const name = e.target.name || 'nothing';
+    this.touchContainer = e.target;
+    const entity = e.target.__data__;
+
+    if (!entity) return;
+
+    if (this.isPoint(entity)) {
+    console.log(`point: touch started on ${name}, pos: ${e.target.x},${e.target.y}`);
+      this.touchPosition = { x: e.data.global.x , y: e.data.global.y};
+      this.draggingState = true;
+      this.draggingEntity = entity;
+      this.draggingTarget = e.target;
+      this.dispatch.call('dragstart');
+    }
+
+  }
+
+  onTouchMoveHandler(e) {
+    if (!this.draggingState || !e.target) return;
+
+    if (this.draggingEntity) {
+      const movingContainer = this.draggingTarget;
+      const currentPosition = { x: e.data.global.x, y: e.data.global.y };
+      const offsetX = currentPosition.x - this.touchPosition.x;
+      const offsetY = currentPosition.y - this.touchPosition.y;
+      // console.log(`currentPosition: [${currentPosition.x},${currentPosition.y}]`);
+      // console.log(`[+x, +y]: [${offsetX},${offsetY}]`);
+      // movingContainer.x = movingContainer.x + offsetX;
+      // movingContainer.y = movingContainer.y + offsetY;
+      movingContainer.x = this.touchPosition.x + offsetX;
+      movingContainer.y = this.touchPosition.y + offsetY;
+      console.log(`New position: ${movingContainer.x}, ${movingContainer.y}`);
+      this.touchPosition.x = movingContainer.x;
+      this.touchPosition.y = movingContainer.y;
+      let dest = this.projection.invert([this.touchPosition.x, this.touchPosition.y]);
+
+      let feature = this.featureCache.get(this.draggingEntity.id);
+      feature.coord = dest;
+      feature.update(this.projection);
+      this.dispatch.call('change');
+    }
+  }
+
+  onTouchEndHandler(e) {
+    console.log('Points touch end');
+    this.draggingState = false;
+    this.draggingEntity = null;
+    this.draggingTarget = null;
+    this.dispatch.call('dragend');
+    this.dispatch.call('change');
   }
 
   /**
