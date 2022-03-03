@@ -1,18 +1,27 @@
-import * as PIXI from 'pixi.js';
-// import _throttle from 'lodash-es/throttle';
-
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-import { getViewfieldContainer } from './helpers';
-
+import { PixiFeatureLine } from './PixiFeatureLine';
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'openstreetcam';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
-const MINMARKERZOOM = 16;
-const MINVIEWFIELDZOOM = 18;
-
+//const MINMARKERZOOM = 16;
+//const MINVIEWFIELDZOOM = 18;
 const KARTA_BLUE = 0x20c4ff;
+
+const LINESTYLE = {
+  casing: { alpha: 0 },  // disable
+  stroke: { alpha: 0.9, width: 4, color: KARTA_BLUE }
+};
+
+const MARKERSTYLE = {
+  markerName: 'mediumCircle',
+  markerTint: KARTA_BLUE,
+  viewfieldName: 'viewfield',
+  viewfieldTint: KARTA_BLUE
+};
+
 
 
 /**
@@ -35,18 +44,6 @@ export class PixiLayerKartaPhotos extends PixiLayer {
 
     this._service = null;
     this.getService();
-
-    // Create marker texture
-    this.textures = {};
-    const circle = new PIXI.Graphics()
-      .lineStyle({ width: 1, color: 0x222222 })
-      .beginFill(KARTA_BLUE)
-      .drawCircle(6, 6, 6)
-      .endFill();
-
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    this.textures.circle = renderer.generateTexture(circle, options);
   }
 
 
@@ -114,15 +111,14 @@ export class PixiLayerKartaPhotos extends PixiLayer {
   drawMarkers(projection, zoom) {
     const context = this.context;
     const featureCache = this.featureCache;
-    const k = projection.scale();
 
     const service = this.getService();
     if (!service) return;
 
-    const showMarkers = (zoom >= MINMARKERZOOM);
-    const showViewfields = (zoom >= MINVIEWFIELDZOOM);
+    //const showMarkers = (zoom >= MINMARKERZOOM);
+    //const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
-    const images = (showMarkers ? service.images(context.projection) : []);
+    const images = service.images(context.projection);
     const sequences = service.sequences(context.projection);
 
     const sequenceData = this.filterSequences(sequences);
@@ -133,36 +129,17 @@ export class PixiLayerKartaPhotos extends PixiLayer {
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const line = new PIXI.Graphics();
-        line.name = featureID;
-        line.buttonMode = true;
-        line.interactive = true;
-        line.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        this.container.addChild(line);
+        feature = new PixiFeatureLine(context, featureID, d.coordinates, LINESTYLE);
 
-        feature = {
-          displayObject: line,
-          coords: d.coordinates
-        };
+        const container = feature.displayObject;
+        container.zIndex = -100;  // beneath the markers (which should be [-90..90])
+        container.__data__ = d;
+        this.container.addChild(container);
 
         featureCache.set(featureID, feature);
       }
 
-      if (k === feature.k) return;
-      feature.k = k;
-
-      const points = feature.coords.map(coord => projection.project(coord));
-      const g = feature.displayObject
-        .clear()
-        .lineStyle({ color: KARTA_BLUE, width: 4 });
-
-      points.forEach(([x, y], i) => {
-        if (i === 0) {
-          g.moveTo(x, y);
-        } else {
-          g.lineTo(x, y);
-        }
-      });
+      feature.update(projection, zoom);
     });
 
 
@@ -171,42 +148,18 @@ export class PixiLayerKartaPhotos extends PixiLayer {
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const marker = new PIXI.Sprite(this.textures.circle);
-        marker.name = featureID;
-        marker.buttonMode = true;
-        marker.interactive = true;
-        marker.zIndex = -d.loc[1];    // sort by latitude ascending
-        marker.anchor.set(0.5, 0.5);  // middle, middle
+        const vfDirections = d.ca ? [d.ca] : [];  // ca = camera angle
+        feature = new PixiFeaturePoint(context, featureID, d.loc, vfDirections, MARKERSTYLE);
+
+        // bind data and add to scene
+        const marker = feature.displayObject;
+        marker.__data__ = d;
         this.container.addChild(marker);
-
-        // Get the capture angle, if any, and attach a viewfield to the point.
-        if (d.ca) {
-          const vfContainer = getViewfieldContainer(this.context, [d.ca], KARTA_BLUE);
-          marker.interactive = false;
-          marker.addChild(vfContainer);
-        }
-
-        feature = {
-          displayObject: marker,
-          loc: d.loc
-        };
 
         featureCache.set(featureID, feature);
       }
 
-      if (k === feature.k) return;
-      feature.k = k;
-
-      // Reproject and recalculate the bounding box
-      const [x, y] = projection.project(feature.loc);
-      feature.displayObject.position.set(x, y);
-
-      feature.displayObject.visible = showMarkers;
-
-      const vfContainer = feature.displayObject.getChildByName('viewfields');
-      if (vfContainer) {
-        vfContainer.visible = showViewfields;
-      }
+      feature.update(projection, zoom);
     });
   }
 

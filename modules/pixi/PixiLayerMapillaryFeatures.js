@@ -1,9 +1,6 @@
-import * as PIXI from 'pixi.js';
-// import _throttle from 'lodash-es/throttle';
-
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'mapillary-map-features';
 const LAYERZINDEX = 10;
@@ -71,8 +68,9 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
   /**
    * drawMarkers
    * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
    */
-  drawMarkers(projection) {
+  drawMarkers(projection, zoom) {
     const context = this.context;
     const featureCache = this.featureCache;
     const k = projection.scale();
@@ -87,35 +85,29 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
     detections = this.filterDetections(detections);
 
     detections.forEach(d => {
-      const featureID = `${LAYERID}-mapfeatures-${d.id}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const ICONSIZE = 24;
-        const marker = new PIXI.Sprite(spritesheet.textures[d.value + '.svg']);
-        marker.name = featureID;
-        marker.interactive = true;
-        marker.buttonMode = true;
-        marker.zIndex = -d.loc[1];    // sort by latitude ascending
-        marker.anchor.set(0.5, 0.5);  // middle, middle
-        marker.width = ICONSIZE;
-        marker.height = ICONSIZE;
-        this.container.addChild(marker);
-
-        feature = {
-          displayObject: marker,
-          loc: d.loc
+        const markerStyle = {
+          markerTexture: spritesheet.textures[d.value + '.svg']
         };
+        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+
+        const marker = feature.displayObject;
+        // // Replace default marker with the one we really want
+        // const ICONSIZE = 24;
+        // marker.width = ICONSIZE;
+        // marker.height = ICONSIZE;
+
+        // bind data and add to scene
+        marker.__data__ = d;
+        this.container.addChild(marker);
 
         featureCache.set(featureID, feature);
       }
 
-      if (k === feature.k) return;
-      feature.k = k;
-
-      // Reproject and recalculate the bounding box
-      const [x, y] = projection.project(feature.loc);
-      feature.displayObject.position.set(x, y);
+      feature.update(projection, zoom);
     });
   }
 
@@ -136,7 +128,7 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
       this.visible = true;
       service.loadMapFeatures(context.projection);  // note: context.projection !== pixi projection
       service.showFeatureDetections(true);
-      this.drawMarkers(projection);
+      this.drawMarkers(projection, zoom);
     } else {
       this.visible = false;
       service.showFeatureDetections(false);

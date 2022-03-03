@@ -1,9 +1,6 @@
-import * as PIXI from 'pixi.js';
-// import _throttle from 'lodash-es/throttle';
-
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'keepRight';
 const LAYERZINDEX = 10;
@@ -60,31 +57,6 @@ export class PixiLayerKeepRight extends PixiLayer {
 
     this._service = null;
     this.getService();
-
-    // Create marker texture
-    this.textures = {};
-    const lightning = new PIXI.Graphics()
-      .lineStyle(1, 0x33333)
-      .beginFill(0xffffff)
-      .moveTo(15, 6.5)
-      .lineTo(10.8, 6.5)
-      .bezierCurveTo(12.2, 1.3, 11.7, 0.8, 11.2, 0.8)
-      .lineTo(6.2, 0.8)
-      .bezierCurveTo(5.8, 0.7, 5.4, 1, 5.4, 1.5)
-      .lineTo(4.2, 10.2)
-      .bezierCurveTo(4.1, 10.8, 4.6, 11.2, 5, 11.2)
-      .lineTo(9.3, 11.2)
-      .lineTo(7.6, 18.3)
-      .bezierCurveTo(7.5, 18.8, 8, 19.3, 8.5, 19.3)
-      .bezierCurveTo(8.8, 19.3, 9.1, 19.1, 9.2, 18.8)
-      .lineTo(15.6, 7.8)
-      .bezierCurveTo(16, 7.2, 15.6, 6.5, 15, 6.5)
-      .endFill()
-      .closePath();
-
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    this.textures.lightning = renderer.generateTexture(lightning, options);
   }
 
 
@@ -107,44 +79,38 @@ export class PixiLayerKeepRight extends PixiLayer {
   /**
    * drawMarkers
    * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
    */
-  drawMarkers(projection) {
+  drawMarkers(projection, zoom) {
     const context = this.context;
     const featureCache = this.featureCache;
-    const k = projection.scale();
 
     const service = this.getService();
     if (!service) return;
 
-    const visibleData = service.getItems(context.projection);
+    const visibleData = service.getItems(context.projection);  // note: context.projection !== pixi projection
+
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const marker = new PIXI.Sprite(this.textures.lightning);
-        marker.name = featureID;
-        marker.buttonMode = true;
-        marker.interactive = true;
-        marker.zIndex = -d.loc[1];   // sort by latitude ascending
-        marker.anchor.set(0.5, 1);   // middle, bottom
-        marker.tint = TINTS.get(d.parentIssueType) || 0xffffff;
-        this.container.addChild(marker);
-
-        feature = {
-          displayObject: marker,
-          loc: d.loc,
+        const markerStyle = {
+          markerName: 'keepright',
+          markerTint: TINTS.get(d.parentIssueType) || 0xffffff
         };
+
+        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+
+        // bind data and add to scene
+        const marker = feature.displayObject;
+        marker.__data__ = d;
+        this.container.addChild(marker);
 
         featureCache.set(featureID, feature);
       }
 
-      if (k === feature.k) return;
-      feature.k = k;
-
-      // Reproject and recalculate the bounding box
-      const [x, y] = projection.project(feature.loc);
-      feature.displayObject.position.set(x, y);
+      feature.update(projection, zoom);
     });
   }
 
@@ -164,7 +130,7 @@ export class PixiLayerKeepRight extends PixiLayer {
     if (service && zoom >= MINZOOM) {
       this.visible = true;
       service.loadIssues(context.projection);  // note: context.projection !== pixi projection
-      this.drawMarkers(projection);
+      this.drawMarkers(projection, zoom);
     } else {
       this.visible = false;
     }

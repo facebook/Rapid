@@ -107,6 +107,12 @@ export function prepareTextures(context, renderer) {
     .drawCircle(0, 0, 8)
     .endFill();
 
+  const mediumCircle = new PIXI.Graphics()   // suitable for a streetview photo marker
+    .lineStyle(1, 0x666666)
+    .beginFill(0xffffff, 1)
+    .drawCircle(0, 0, 6)
+    .endFill();
+
   const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
     .lineStyle(1, 0x666666)
     .beginFill(0xffffff, 1)
@@ -124,8 +130,43 @@ export function prepareTextures(context, renderer) {
   textures.set('pin', renderer.generateTexture(pin, options));
   textures.set('boldPin', renderer.generateTexture(boldPin, options));
   textures.set('largeCircle', renderer.generateTexture(largeCircle, options));
+  textures.set('mediumCircle', renderer.generateTexture(mediumCircle, options));
   textures.set('smallCircle', renderer.generateTexture(smallCircle, options));
   textures.set('taggedCircle', renderer.generateTexture(taggedCircle, options));
+
+
+  // KeepRight
+  const keepright = new PIXI.Graphics()
+    .lineStyle(1, 0x333333)
+    .beginFill(0xffffff)
+    .moveTo(15, 6.5)
+    .lineTo(10.8, 6.5)
+    .bezierCurveTo(12.2, 1.3, 11.7, 0.8, 11.2, 0.8)
+    .lineTo(6.2, 0.8)
+    .bezierCurveTo(5.8, 0.7, 5.4, 1, 5.4, 1.5)
+    .lineTo(4.2, 10.2)
+    .bezierCurveTo(4.1, 10.8, 4.6, 11.2, 5, 11.2)
+    .lineTo(9.3, 11.2)
+    .lineTo(7.6, 18.3)
+    .bezierCurveTo(7.5, 18.8, 8, 19.3, 8.5, 19.3)
+    .bezierCurveTo(8.8, 19.3, 9.1, 19.1, 9.2, 18.8)
+    .lineTo(15.6, 7.8)
+    .bezierCurveTo(16, 7.2, 15.6, 6.5, 15, 6.5)
+    .endFill()
+    .closePath();
+
+
+  // ImproveOsm
+  const improveosm = new PIXI.Graphics()
+    .lineStyle(1, 0x333333)
+    .beginFill(0xffffff)
+    .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
+    .endFill()
+    .closePath();
+
+
+  textures.set('keepright', renderer.generateTexture(keepright, options));
+  textures.set('improveosm', renderer.generateTexture(improveosm, options));
 
 
   //

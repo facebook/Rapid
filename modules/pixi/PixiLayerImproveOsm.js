@@ -1,10 +1,6 @@
-import * as PIXI from 'pixi.js';
-// import _throttle from 'lodash-es/throttle';
-
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-import { getIconSprite } from './helpers';
-
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'improveOSM';
 const LAYERZINDEX = 10;
@@ -40,21 +36,6 @@ export class PixiLayerImproveOsm extends PixiLayer {
 
     this._service = null;
     this.getService();
-
-    // var throttledRedraw = _throttle(function () { this.dispatch.call('change'); }, 1000);
-
-    // Create marker texture
-    this.textures = {};
-    const marker = new PIXI.Graphics()
-      .lineStyle(1, 0x333333)
-      .beginFill(0xffffff)
-      .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
-      .endFill()
-      .closePath();
-
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    this.textures.improveOSMMarker = renderer.generateTexture(marker, options);
   }
 
 
@@ -77,57 +58,45 @@ export class PixiLayerImproveOsm extends PixiLayer {
   /**
    * drawMarkers
    * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
    */
-  drawMarkers(projection) {
+  drawMarkers(projection, zoom) {
     const context = this.context;
     const featureCache = this.featureCache;
-    const k = projection.scale();
 
     const service = this.getService();
     if (!service) return;
 
     const visibleData = service.getItems(context.projection);  // note: context.projection !== pixi projection
+
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const marker = new PIXI.Sprite(this.textures.improveOSMMarker);
-        marker.name = featureID;
-        marker.buttonMode = true;
-        marker.interactive = true;
-        marker.zIndex = -d.loc[1];   // sort by latitude ascending
-        marker.anchor.set(0.5, 1);   // middle, bottom
-        marker.tint = TINTS.get(d.itemType) || 0xffffff;
-        this.container.addChild(marker);
-
-        if (d.icon) {
-          const ICONSIZE = 11;
-          const icon = getIconSprite(context, d.icon);
-          icon.buttonMode = false;
-          icon.interactive = false;
-          icon.interactiveChildren = false;
-          // mathematically 0,-15 is center of marker, move up slightly
-          icon.position.set(0, -16);
-          icon.width = ICONSIZE;
-          icon.height = ICONSIZE;
-          marker.addChild(icon);
-        }
-
-        feature = {
-          displayObject: marker,
-          loc: d.loc,
+        const markerStyle = {
+          markerName: 'improveosm',
+          markerTint: TINTS.get(d.itemType) || 0xffffff,
+          iconName: d.icon
         };
+
+        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+
+        // was here before
+        // if (feature.icon) {
+        //  // mathematically 0,-15 is center of marker, move up slightly
+        //  feature.icon.position.set(0, -16);
+        // }
+
+        // bind data and add to scene
+        const marker = feature.displayObject;
+        marker.__data__ = d;
+        this.container.addChild(marker);
 
         featureCache.set(featureID, feature);
       }
 
-      if (k === feature.k) return;
-      feature.k = k;
-
-      // Reproject and recalculate the bounding box
-      const [x, y] = projection.project(feature.loc);
-      feature.displayObject.position.set(x, y);
+      feature.update(projection, zoom);
     });
   }
 

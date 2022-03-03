@@ -269,21 +269,21 @@ export class PixiLayerRapid extends PixiLayer {
     }
 
 
-// CULL this dataset's stuff
-// todo: improve CULL :-(
-let visibleEntities = {};
-geoData.points.forEach(entity => visibleEntities[entity.id] = true);
-geoData.lines.forEach(entity => visibleEntities[entity.id] = true);
-geoData.vertices.forEach(entity => visibleEntities[entity.id] = true);
-geoData.areas.forEach(entity => visibleEntities[entity.id] = true);
+// // CULL this dataset's stuff
+// // todo: improve CULL :-(
+// let visibleEntities = {};
+// geoData.points.forEach(entity => visibleEntities[entity.id] = true);
+// geoData.lines.forEach(entity => visibleEntities[entity.id] = true);
+// geoData.vertices.forEach(entity => visibleEntities[entity.id] = true);
+// geoData.areas.forEach(entity => visibleEntities[entity.id] = true);
 
-let dsfeatures = this._datasetFeatures.get(dataset.id);
-if (dsfeatures) {
-  [...dsfeatures.entries()].forEach(function cull([entityID, feature]) {
-    const isVisible = !!visibleEntities[entityID];
-    feature.displayObject.visible = isVisible;
-  });
-}
+// let dsfeatures = this._datasetFeatures.get(dataset.id);
+// if (dsfeatures) {
+//   [...dsfeatures.entries()].forEach(function cull([entityID, feature]) {
+//     const isVisible = !!visibleEntities[entityID];
+//     feature.displayObject.visible = isVisible;
+//   });
+// }
 
     this.drawLines(layerContainer, graph, projection, geoData.lines, dataset);
     this.drawAreas(layerContainer, graph, projection, geoData.areas, dataset);
@@ -332,15 +332,16 @@ if (dsfeatures) {
 
         featureCache.set(entity.id, feature);
 
-        // todo: improve CULL :-(
-        let dsfeatures = this._datasetFeatures.get(dataset.id);
-        if (!dsfeatures) {
-        dsfeatures = new Map();   // map of RAPID ID -> Pixi data
-        this._datasetFeatures.set(dataset.id, dsfeatures);
-        }
-        dsfeatures.set(entity.id, feature);
+        // // todo: improve CULL :-(
+        // let dsfeatures = this._datasetFeatures.get(dataset.id);
+        // if (!dsfeatures) {
+        // dsfeatures = new Map();   // map of RAPID ID -> Pixi data
+        // this._datasetFeatures.set(dataset.id, dsfeatures);
+        // }
+        // dsfeatures.set(entity.id, feature);
       }
 
+      // feature.displayObject.visible = true;
 
       // remember scale and reproject only when it changes
       if (k === feature.k) return;
@@ -478,14 +479,16 @@ container.interactiveChildren = false;
 
         featureCache.set(entity.id, feature);
 
-// todo: improve CULL :-(
-let dsfeatures = this._datasetFeatures.get(dataset.id);
-if (!dsfeatures) {
- dsfeatures = new Map();   // map of RAPID ID -> Pixi data
- this._datasetFeatures.set(dataset.id, dsfeatures);
-}
-dsfeatures.set(entity.id, feature);
+// // todo: improve CULL :-(
+// let dsfeatures = this._datasetFeatures.get(dataset.id);
+// if (!dsfeatures) {
+//  dsfeatures = new Map();   // map of RAPID ID -> Pixi data
+//  this._datasetFeatures.set(dataset.id, dsfeatures);
+// }
+// dsfeatures.set(entity.id, feature);
       }
+
+      // feature.displayObject.visible = true;
 
       // Remember scale and reproject only when it changes
       if (k === feature.k) return;

@@ -17,7 +17,7 @@ const ONEWAY_SPACING = 35;
  *   `displayObject`  PIXI.Container() holds the line parts
  *   `casing`         PIXI.Graphic() for the casing (below)
  *   `stroke`         PIXI.Graphic() for the stroke (above)
- *   `markers`        PIXI.ParticleContainer() holds oneway arrows
+ *   `markers`        PIXI.ParticleContainer() holds oneway arrows (if any)
  *
  * Inherited from PixiFeature:
  *   `dirty`
@@ -57,6 +57,7 @@ export class PixiFeatureLine extends PixiFeature {
     casing.interactiveChildren = false;
     casing.sortableChildren = false;
     this.casing = casing;
+    container.addChild(casing);
 
     const stroke = new PIXI.Graphics();
     stroke.name = `${id}-stroke`;
@@ -64,15 +65,19 @@ export class PixiFeatureLine extends PixiFeature {
     stroke.interactiveChildren = false;
     stroke.sortableChildren = false;
     this.stroke = stroke;
+    container.addChild(stroke);
 
-    const markers = new PIXI.ParticleContainer(10000);
-    markers.name = `${id}-markers`;
-    markers.interactiveChildren = false;
-    markers.sortableChildren = false;
-    markers.roundPixels = false;
-    this.markers = markers;
+    if (showOneWay) {
+      // const markers = new PIXI.ParticleContainer(10000);
+      const markers = new PIXI.Container();
+      markers.name = `${id}-markers`;
+      markers.interactiveChildren = false;
+      markers.sortableChildren = false;
+      markers.roundPixels = false;
+      this.markers = markers;
+      container.addChild(markers);
+    }
 
-    container.addChild(casing, stroke, markers);
   }
 
 
@@ -123,12 +128,16 @@ export class PixiFeatureLine extends PixiFeature {
     //
     if (zoom < 16) {
       this.casing.renderable = false;
-      this.markers.renderable = false;
-      this.markers.removeChildren();
+      if (this.markers) {
+        this.markers.renderable = false;
+        this.markers.removeChildren();
+      }
 
     } else {
       this.casing.renderable = true;
-      this.markers.renderable = this.showOneWay;
+      if (this.markers) {
+        this.markers.renderable = true;
+      }
     }
 
     if (this.casing.renderable) {
@@ -138,7 +147,7 @@ export class PixiFeatureLine extends PixiFeature {
       updateGraphic('stroke', this.stroke, this.style, this.points);
     }
 
-    if (this.markers.renderable && this.showOneWay) {
+    if (this.markers && this.markers.renderable) {
       const textures = this.context.pixi.rapidTextures;
       const oneway = textures.get('oneway') || PIXI.Texture.WHITE;
 

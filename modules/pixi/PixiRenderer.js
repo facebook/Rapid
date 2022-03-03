@@ -1,9 +1,12 @@
 import * as PIXI from 'pixi.js';
-import { Projection } from '@id-sdk/math';
+import { Projection, vecAdd } from '@id-sdk/math';
+
+import { PixiEventsHandler } from './PixiEventsHandler';
 import { PixiLayers } from './PixiLayers';
 import { prepareTextures } from './textures';
-import { PixiEventsHandler } from './PixiEventsHandler';
+
 const AUTOTICK = false;     // set to true to turn the ticker back on
+
 
 
 /**
@@ -96,16 +99,33 @@ export class PixiRenderer {
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
 
+    const screen = this.pixi.screen;
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 
-// CULL phase (everything)
-//    const viewMin = offset;  //[0,0];
-//    const viewMax = vecAdd(offset, _dimensions);
+
+//   //
+//   // optimistically cull?
+//   //
+//   this.featureCache.forEach(feature => {
+//     if (feature.displayObject) feature.displayObject.visible = false;
+//   });
+
+
+    //
+    // DRAW phase (updates bounding boxes)
+    //
+    this.layers.render(this.pixiProjection);
+
+//    //
+//    // CULL phase (bounds must be updated for this to work)
+//    //
+//    const viewMin = vecAdd(offset, [screen.x, screen.y]);   // x,y should be 0,0
+//    const viewMax = vecAdd(offset, [screen.width, screen.height]);
 //
 //    this.featureCache.forEach(feature => {
-//      const bounds = feature.bounds;
 //      const displayObject = feature.displayObject;
+//      const bounds = feature.sceneBounds;
 //      if (!bounds || !displayObject) return;
 //
 //      const featMin = [bounds.x, bounds.y];
@@ -119,14 +139,8 @@ export class PixiRenderer {
 //      );
 //
 //      displayObject.visible = isVisible;
-//      if (feature.label) {
-//        feature.label.displayObject.visible = isVisible;
-//      }
 //    });
-
-    // Draw everything
-    this.layers.render(this.pixiProjection);
-
+//
 
     if (!AUTOTICK) {    // tick manually
       this._redrawPending = true;

@@ -36,6 +36,7 @@ export class PixiFeaturePoint extends PixiFeature {
     this._coord = coord;      // [lon, lat] coordinate pair
 
     // markerStyle can contatin:
+    // `markerTexture`
     // `markerName`
     // `markerTint`
     // `viewfieldName`
@@ -57,7 +58,7 @@ export class PixiFeaturePoint extends PixiFeature {
     marker.interactive = true;
     marker.interactiveChildren = true;
     marker.sortableChildren = false;
-    marker.texture = textures.get(markerStyle.markerName) || PIXI.Texture.WHITE;
+    marker.texture = markerStyle.markerTexture || textures.get(markerStyle.markerName) || PIXI.Texture.WHITE;
     marker.tint = markerStyle.markerTint;
     marker.zIndex = -coord[1];  // sort by latitude ascending
 
@@ -120,7 +121,7 @@ export class PixiFeaturePoint extends PixiFeature {
 
       // Replace pins with circles at lower zoom
       const textureName = isPin ? 'largeCircle' : markerStyle.markerName;
-      marker.texture = textures.get(textureName) || PIXI.Texture.WHITE;
+      marker.texture = markerStyle.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
       if (icon) {
         icon.position.set(0, 0);
@@ -134,7 +135,7 @@ export class PixiFeaturePoint extends PixiFeature {
       // Show the requested marker (circles OR pins)
       marker.renderable = true;
       marker.scale.set(1, 1);
-      marker.texture = textures.get(markerStyle.markerName) || PIXI.Texture.WHITE;
+      marker.texture = markerStyle.markerTexture || textures.get(markerStyle.markerName) || PIXI.Texture.WHITE;
       if (isPin) {
         marker.anchor.set(0.5, 1);  // middle, bottom
       } else {

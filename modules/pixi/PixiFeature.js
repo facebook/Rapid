@@ -5,13 +5,12 @@ import * as PIXI from 'pixi.js';
  * PixiFeature is the base class from which all features inherit
  * It contains properties that used to manage the feature in the scene graph
  *
- * properties you can access:
- *
- *  dirty
- *  displayObject
- *  k
- *  localBounds
- *  sceneBounds
+ * Properties you can access:
+ *  `dirty`
+ *  `displayObject`
+ *  `k`
+ *  `localBounds`
+ *  `sceneBounds`
  *
  * @class
  */
