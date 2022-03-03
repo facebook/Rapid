@@ -10,12 +10,11 @@ const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
 
-
 /**
- * PixiOsmNotes
+ * PixiLayerOsmNotes
  * @class
  */
-export class PixiOsmNotes extends PixiLayer {
+export class PixiLayerOsmNotes extends PixiLayer {
 
   /**
    * @constructor

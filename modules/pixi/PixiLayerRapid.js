@@ -17,10 +17,10 @@ const PARTIALFILLWIDTH = 32;
 
 
 /**
- * PixiRapidFeatures
+ * PixiLayerRapid
  * @class
  */
-export class PixiRapidFeatures extends PixiLayer {
+export class PixiLayerRapid extends PixiLayer {
 
   /**
    * @constructor

@@ -5,20 +5,21 @@ import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainer } from './helpers';
 
-const LAYERID = 'streetside';
+
+const LAYERID = 'mapillary';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 const MINMARKERZOOM = 16;
 const MINVIEWFIELDZOOM = 18;
 
-const STREETSIDE_TEAL = 0xfffc4;
+const MAPILLARY_GREEN = 0x55ff22;
 
 
 /**
- * PixiStreetsidePhotos
+ * PixiLayerMapillaryPhotos
  * @class
  */
-export class PixiStreetsidePhotos extends PixiLayer {
+export class PixiLayerMapillaryPhotos extends PixiLayer {
 
   /**
    * @constructor
@@ -39,7 +40,7 @@ export class PixiStreetsidePhotos extends PixiLayer {
     this.textures = {};
     const circle = new PIXI.Graphics()
       .lineStyle({ width: 1, color: 0x222222 })
-      .beginFill(STREETSIDE_TEAL)
+      .beginFill(MAPILLARY_GREEN)
       .drawCircle(6, 6, 6)
       .endFill();
 
@@ -54,55 +55,55 @@ export class PixiStreetsidePhotos extends PixiLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.streetside && !this._service) {
-      this._service = services.streetside;
+    if (services.mapillary && !this._service) {
+      this._service = services.mapillary;
       // this._service.event.on('loadedImages', throttledRedraw);
-    } else if (!services.streetside && this._service) {
+    } else if (!services.mapillary && this._service) {
       this._service = null;
     }
 
     return this._service;
   }
-
-
-  filterImages(images) {
-    const fromDate = this.context.photos().fromDate();
-    const toDate = this.context.photos().toDate();
-    const usernames = this.context.photos().usernames();
-
-    if (fromDate) {
-      const fromTimestamp = new Date(fromDate).getTime();
-      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
-    }
-    if (toDate) {
-      const toTimestamp = new Date(toDate).getTime();
-      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
-    }
-    if (usernames) {
-      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
-    }
-    return images;
-  }
-
-
-  filterSequences(sequences) {
-    const fromDate = this.context.photos().fromDate();
-    const toDate = this.context.photos().toDate();
-    const usernames = this.context.photos().usernames();
-
-    if (fromDate) {
-      const fromTimestamp = new Date(fromDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
-    }
-    if (toDate) {
-      const toTimestamp = new Date(toDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
-    }
-    if (usernames) {
-      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
-    }
-    return sequences;
-  }
+//
+//
+//  filterImages(images) {
+//    const fromDate = this.context.photos().fromDate();
+//    const toDate = this.context.photos().toDate();
+//    const usernames = this.context.photos().usernames();
+//
+//    if (fromDate) {
+//      const fromTimestamp = new Date(fromDate).getTime();
+//      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
+//    }
+//    if (toDate) {
+//      const toTimestamp = new Date(toDate).getTime();
+//      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
+//    }
+//    if (usernames) {
+//      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+//    }
+//    return images;
+//  }
+//
+//
+//  filterSequences(sequences) {
+//    const fromDate = this.context.photos().fromDate();
+//    const toDate = this.context.photos().toDate();
+//    const usernames = this.context.photos().usernames();
+//
+//    if (fromDate) {
+//      const fromTimestamp = new Date(fromDate).getTime();
+//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+//    }
+//    if (toDate) {
+//      const toTimestamp = new Date(toDate).getTime();
+//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+//    }
+//    if (usernames) {
+//      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+//    }
+//    return sequences;
+//  }
 
 
   /**
@@ -121,14 +122,14 @@ export class PixiStreetsidePhotos extends PixiLayer {
     const showMarkers = (zoom >= MINMARKERZOOM);
     const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
-    const images = (showMarkers ? service.bubbles(context.projection) : []);
+    const images = (showMarkers ? service.images(context.projection) : []);
     const sequences = service.sequences(context.projection);
 
-    const sequenceData = this.filterSequences(sequences);
-    const photoData = this.filterImages(images);
+    // const sequenceData = this.filterSequences(sequences);
+    // const photoData = this.filterImages(images);
 
-    sequenceData.forEach(d => {
-      const featureID = `${LAYERID}-sequence-${d.properties.key}`;
+    sequences.forEach(d => {
+      const featureID = `${LAYERID}-sequence-${d.properties.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
@@ -141,7 +142,7 @@ export class PixiStreetsidePhotos extends PixiLayer {
 
         feature = {
           displayObject: line,
-          coords: d.coordinates
+          coords: d.geometry.coordinates
         };
 
         featureCache.set(featureID, feature);
@@ -153,7 +154,7 @@ export class PixiStreetsidePhotos extends PixiLayer {
       const points = feature.coords.map(coord => projection.project(coord));
       const g = feature.displayObject
         .clear()
-        .lineStyle({ color: STREETSIDE_TEAL, width: 4 });
+        .lineStyle({ color: MAPILLARY_GREEN, width: 4 });
 
       points.forEach(([x, y], i) => {
         if (i === 0) {
@@ -165,8 +166,8 @@ export class PixiStreetsidePhotos extends PixiLayer {
     });
 
 
-    photoData.forEach(d => {
-      const featureID = `${LAYERID}-photo-${d.key}`;
+    images.forEach(d => {
+      const featureID = `${LAYERID}-photo-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
@@ -180,7 +181,7 @@ export class PixiStreetsidePhotos extends PixiLayer {
 
         // Get the capture angle, if any, and attach a viewfield to the point.
         if (d.ca) {
-          const vfContainer = getViewfieldContainer(this.context, [d.ca], STREETSIDE_TEAL);
+          const vfContainer = getViewfieldContainer(this.context, [d.ca], MAPILLARY_GREEN);
           marker.interactive = false;
           marker.addChild(vfContainer);
         }
@@ -224,7 +225,7 @@ export class PixiStreetsidePhotos extends PixiLayer {
 
     if (service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadBubbles(context.projection);  // note: context.projection !== pixi projection
+      service.loadImages(context.projection);  // note: context.projection !== pixi projection
       this.drawMarkers(projection, zoom);
     } else {
       this.visible = false;
@@ -241,4 +242,3 @@ export class PixiStreetsidePhotos extends PixiLayer {
   }
 
 }
-

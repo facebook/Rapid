@@ -11,10 +11,10 @@ const MINZOOM = 12;
 
 
 /**
- * PixiMapillarySigns
+ * PixiLayerMapillarySigns
  * @class
  */
-export class PixiMapillarySigns extends PixiLayer {
+export class PixiLayerMapillarySigns extends PixiLayer {
 
   /**
    * @constructor

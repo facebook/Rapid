@@ -3,48 +3,19 @@ import * as PIXI from 'pixi.js';
 
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
+import { getIconSprite } from './helpers';
 
 
-const LAYERID = 'keepRight';
+const LAYERID = 'osmose';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
-// A mapping of KeepRight rule numbers to their respective tint colors.
-const TINTS = new Map();
-
-['20', '40', '210', '270', '310', '320', '350'].forEach(key => TINTS.set(key, 0xffff99));
-
-TINTS.set('50', 0xffff99);
-
-['60', '70', '90', '100', '110', '150', '220', '380'].forEach(key => TINTS.set(key, 0x55dd00));
-
-TINTS.set('130', 0xffaa33);
-TINTS.set('170', 0xffff00);
-
-TINTS.set('190', 0xff3333);
-TINTS.set('200', 0xfdbf6f);
-
-TINTS.set('160', 0xbb6600);
-TINTS.set('230', 0xbb6600);
-
-TINTS.set('280', 0x5f47a0);
-TINTS.set('180', 0xaaccee);
-TINTS.set('290', 0xaaccee);
-
-TINTS.set('300', 0x009900);
-TINTS.set('390', 0x009900);
-
-['360', '370', '410'].forEach(key => TINTS.set(key, 0xff99bb));
-
-TINTS.set('120', 0xcc3355);
-TINTS.set('400', 0xcc3355);
-
 
 /**
- * PixiKeepRight
+ * PixiLayerOsmose
  * @class
  */
-export class PixiKeepRight extends PixiLayer {
+export class PixiLayerOsmose extends PixiLayer {
 
   /**
    * @constructor
@@ -63,28 +34,16 @@ export class PixiKeepRight extends PixiLayer {
 
     // Create marker texture
     this.textures = {};
-    const lightning = new PIXI.Graphics()
+    const marker = new PIXI.Graphics()
       .lineStyle(1, 0x33333)
       .beginFill(0xffffff)
-      .moveTo(15, 6.5)
-      .lineTo(10.8, 6.5)
-      .bezierCurveTo(12.2, 1.3, 11.7, 0.8, 11.2, 0.8)
-      .lineTo(6.2, 0.8)
-      .bezierCurveTo(5.8, 0.7, 5.4, 1, 5.4, 1.5)
-      .lineTo(4.2, 10.2)
-      .bezierCurveTo(4.1, 10.8, 4.6, 11.2, 5, 11.2)
-      .lineTo(9.3, 11.2)
-      .lineTo(7.6, 18.3)
-      .bezierCurveTo(7.5, 18.8, 8, 19.3, 8.5, 19.3)
-      .bezierCurveTo(8.8, 19.3, 9.1, 19.1, 9.2, 18.8)
-      .lineTo(15.6, 7.8)
-      .bezierCurveTo(16, 7.2, 15.6, 6.5, 15, 6.5)
+      .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
       .endFill()
       .closePath();
 
     const renderer = context.pixi.renderer;
     const options = { resolution: 2 };
-    this.textures.lightning = renderer.generateTexture(lightning, options);
+    this.textures.osmoseMarker = renderer.generateTexture(marker, options);
   }
 
 
@@ -93,10 +52,10 @@ export class PixiKeepRight extends PixiLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.keepRight && !this._service) {
-      this._service = services.keepRight;
+    if (services.osmose && !this._service) {
+      this._service = services.osmose;
       // this._service.event.on('loadedImages', throttledRedraw);
-    } else if (!services.keepRight && this._service) {
+    } else if (!services.osmose && this._service) {
       this._service = null;
     }
 
@@ -122,14 +81,28 @@ export class PixiKeepRight extends PixiLayer {
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const marker = new PIXI.Sprite(this.textures.lightning);
+        const marker = new PIXI.Sprite(this.textures.osmoseMarker);
         marker.name = featureID;
         marker.buttonMode = true;
         marker.interactive = true;
         marker.zIndex = -d.loc[1];   // sort by latitude ascending
         marker.anchor.set(0.5, 1);   // middle, bottom
-        marker.tint = TINTS.get(d.parentIssueType) || 0xffffff;
+        const color = service.getColor(d.item);
+        marker.tint = PIXI.utils.string2hex(color);
         this.container.addChild(marker);
+
+        if (d.icon) {
+          const ICONSIZE = 11;
+          const icon = getIconSprite(context, d.icon);
+          icon.buttonMode = false;
+          icon.interactive = false;
+          icon.interactiveChildren = false;
+          // mathematically 0,-15 is center of marker, move up slightly
+          icon.position.set(0, -16);
+          icon.width = ICONSIZE;
+          icon.height = ICONSIZE;
+          marker.addChild(icon);
+        }
 
         feature = {
           displayObject: marker,

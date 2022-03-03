@@ -5,21 +5,20 @@ import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainer } from './helpers';
 
-
-const LAYERID = 'openstreetcam';
+const LAYERID = 'streetside';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 const MINMARKERZOOM = 16;
 const MINVIEWFIELDZOOM = 18;
 
-const KARTA_BLUE = 0x20c4ff;
+const STREETSIDE_TEAL = 0xfffc4;
 
 
 /**
- * PixiKartaPhotos
+ * PixiLayerStreetsidePhotos
  * @class
  */
-export class PixiKartaPhotos extends PixiLayer {
+export class PixiLayerStreetsidePhotos extends PixiLayer {
 
   /**
    * @constructor
@@ -40,7 +39,7 @@ export class PixiKartaPhotos extends PixiLayer {
     this.textures = {};
     const circle = new PIXI.Graphics()
       .lineStyle({ width: 1, color: 0x222222 })
-      .beginFill(KARTA_BLUE)
+      .beginFill(STREETSIDE_TEAL)
       .drawCircle(6, 6, 6)
       .endFill();
 
@@ -55,10 +54,10 @@ export class PixiKartaPhotos extends PixiLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.openstreetcam && !this._service) {
-      this._service = services.openstreetcam;
+    if (services.streetside && !this._service) {
+      this._service = services.streetside;
       // this._service.event.on('loadedImages', throttledRedraw);
-    } else if (!services.openstreetcam && this._service) {
+    } else if (!services.streetside && this._service) {
       this._service = null;
     }
 
@@ -122,7 +121,7 @@ export class PixiKartaPhotos extends PixiLayer {
     const showMarkers = (zoom >= MINMARKERZOOM);
     const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
-    const images = (showMarkers ? service.images(context.projection) : []);
+    const images = (showMarkers ? service.bubbles(context.projection) : []);
     const sequences = service.sequences(context.projection);
 
     const sequenceData = this.filterSequences(sequences);
@@ -154,7 +153,7 @@ export class PixiKartaPhotos extends PixiLayer {
       const points = feature.coords.map(coord => projection.project(coord));
       const g = feature.displayObject
         .clear()
-        .lineStyle({ color: KARTA_BLUE, width: 4 });
+        .lineStyle({ color: STREETSIDE_TEAL, width: 4 });
 
       points.forEach(([x, y], i) => {
         if (i === 0) {
@@ -181,7 +180,7 @@ export class PixiKartaPhotos extends PixiLayer {
 
         // Get the capture angle, if any, and attach a viewfield to the point.
         if (d.ca) {
-          const vfContainer = getViewfieldContainer(this.context, [d.ca], KARTA_BLUE);
+          const vfContainer = getViewfieldContainer(this.context, [d.ca], STREETSIDE_TEAL);
           marker.interactive = false;
           marker.addChild(vfContainer);
         }
@@ -225,7 +224,7 @@ export class PixiKartaPhotos extends PixiLayer {
 
     if (service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadImages(context.projection);  // note: context.projection !== pixi projection
+      service.loadBubbles(context.projection);  // note: context.projection !== pixi projection
       this.drawMarkers(projection, zoom);
     } else {
       this.visible = false;
@@ -242,3 +241,4 @@ export class PixiKartaPhotos extends PixiLayer {
   }
 
 }
+

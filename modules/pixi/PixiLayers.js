@@ -1,17 +1,17 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilRebind } from '../util';
 
-import { PixiImproveOSM } from './PixiImproveOSM';
-import { PixiKartaPhotos } from './PixiKartaPhotos';
-import { PixiKeepRight } from './PixiKeepRight';
-import { PixiMapillaryPhotos } from './PixiMapillaryPhotos';
-import { PixiMapillaryMapFeatures } from './PixiMapillaryMapFeatures';
-import { PixiMapillarySigns } from './PixiMapillarySigns';
-import { PixiOsm } from './PixiOsm';
-import { PixiOsmNotes } from './PixiOsmNotes';
-import { PixiOsmose } from './PixiOsmose';
-import { PixiRapidFeatures } from './PixiRapidFeatures';
-import { PixiStreetsidePhotos } from './PixiStreetsidePhotos';
+import { PixiLayerImproveOsm } from './PixiLayerImproveOsm';
+import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos';
+import { PixiLayerKeepRight } from './PixiLayerKeepRight';
+import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures';
+import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos';
+import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns';
+import { PixiLayerOsm } from './PixiLayerOsm';
+import { PixiLayerOsmNotes } from './PixiLayerOsmNotes';
+import { PixiLayerOsmose } from './PixiLayerOsmose';
+import { PixiLayerRapid } from './PixiLayerRapid';
+import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos';
 
 
 /**
@@ -33,17 +33,17 @@ export class PixiLayers {
     utilRebind(this, this.dispatch, 'on');
 
     this._layers = [
-      new PixiImproveOSM(context, featureCache, this.dispatch),
-      new PixiKartaPhotos(context, featureCache, this.dispatch),
-      new PixiKeepRight(context, featureCache, this.dispatch),
-      new PixiMapillaryMapFeatures(context, featureCache, this.dispatch),
-      new PixiMapillaryPhotos(context, featureCache, this.dispatch),
-      new PixiMapillarySigns(context, featureCache, this.dispatch),
-      new PixiOsm(context, featureCache, this.dispatch),
-      new PixiOsmNotes(context, featureCache, this.dispatch),
-      new PixiOsmose(context, featureCache, this.dispatch),
-      new PixiRapidFeatures(context, featureCache, this.dispatch),
-      new PixiStreetsidePhotos(context, featureCache, this.dispatch)
+      new PixiLayerImproveOsm(context, featureCache, this.dispatch),
+      new PixiLayerKartaPhotos(context, featureCache, this.dispatch),
+      new PixiLayerKeepRight(context, featureCache, this.dispatch),
+      new PixiLayerMapillaryFeatures(context, featureCache, this.dispatch),
+      new PixiLayerMapillaryPhotos(context, featureCache, this.dispatch),
+      new PixiLayerMapillarySigns(context, featureCache, this.dispatch),
+      new PixiLayerOsm(context, featureCache, this.dispatch),
+      new PixiLayerOsmNotes(context, featureCache, this.dispatch),
+      new PixiLayerOsmose(context, featureCache, this.dispatch),
+      new PixiLayerRapid(context, featureCache, this.dispatch),
+      new PixiLayerStreetsidePhotos(context, featureCache, this.dispatch)
     ];
   }
 

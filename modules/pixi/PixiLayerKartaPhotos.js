@@ -6,20 +6,20 @@ import { PixiLayer } from './PixiLayer';
 import { getViewfieldContainer } from './helpers';
 
 
-const LAYERID = 'mapillary';
+const LAYERID = 'openstreetcam';
 const LAYERZINDEX = 10;
 const MINZOOM = 12;
 const MINMARKERZOOM = 16;
 const MINVIEWFIELDZOOM = 18;
 
-const MAPILLARY_GREEN = 0x55ff22;
+const KARTA_BLUE = 0x20c4ff;
 
 
 /**
- * PixiMapillaryPhotos
+ * PixiLayerKartaPhotos
  * @class
  */
-export class PixiMapillaryPhotos extends PixiLayer {
+export class PixiLayerKartaPhotos extends PixiLayer {
 
   /**
    * @constructor
@@ -40,7 +40,7 @@ export class PixiMapillaryPhotos extends PixiLayer {
     this.textures = {};
     const circle = new PIXI.Graphics()
       .lineStyle({ width: 1, color: 0x222222 })
-      .beginFill(MAPILLARY_GREEN)
+      .beginFill(KARTA_BLUE)
       .drawCircle(6, 6, 6)
       .endFill();
 
@@ -55,55 +55,55 @@ export class PixiMapillaryPhotos extends PixiLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.mapillary && !this._service) {
-      this._service = services.mapillary;
+    if (services.openstreetcam && !this._service) {
+      this._service = services.openstreetcam;
       // this._service.event.on('loadedImages', throttledRedraw);
-    } else if (!services.mapillary && this._service) {
+    } else if (!services.openstreetcam && this._service) {
       this._service = null;
     }
 
     return this._service;
   }
-//
-//
-//  filterImages(images) {
-//    const fromDate = this.context.photos().fromDate();
-//    const toDate = this.context.photos().toDate();
-//    const usernames = this.context.photos().usernames();
-//
-//    if (fromDate) {
-//      const fromTimestamp = new Date(fromDate).getTime();
-//      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
-//    }
-//    if (toDate) {
-//      const toTimestamp = new Date(toDate).getTime();
-//      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
-//    }
-//    if (usernames) {
-//      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
-//    }
-//    return images;
-//  }
-//
-//
-//  filterSequences(sequences) {
-//    const fromDate = this.context.photos().fromDate();
-//    const toDate = this.context.photos().toDate();
-//    const usernames = this.context.photos().usernames();
-//
-//    if (fromDate) {
-//      const fromTimestamp = new Date(fromDate).getTime();
-//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
-//    }
-//    if (toDate) {
-//      const toTimestamp = new Date(toDate).getTime();
-//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
-//    }
-//    if (usernames) {
-//      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
-//    }
-//    return sequences;
-//  }
+
+
+  filterImages(images) {
+    const fromDate = this.context.photos().fromDate();
+    const toDate = this.context.photos().toDate();
+    const usernames = this.context.photos().usernames();
+
+    if (fromDate) {
+      const fromTimestamp = new Date(fromDate).getTime();
+      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
+    }
+    if (toDate) {
+      const toTimestamp = new Date(toDate).getTime();
+      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
+    }
+    if (usernames) {
+      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+    }
+    return images;
+  }
+
+
+  filterSequences(sequences) {
+    const fromDate = this.context.photos().fromDate();
+    const toDate = this.context.photos().toDate();
+    const usernames = this.context.photos().usernames();
+
+    if (fromDate) {
+      const fromTimestamp = new Date(fromDate).getTime();
+      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+    }
+    if (toDate) {
+      const toTimestamp = new Date(toDate).getTime();
+      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+    }
+    if (usernames) {
+      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+    }
+    return sequences;
+  }
 
 
   /**
@@ -125,11 +125,11 @@ export class PixiMapillaryPhotos extends PixiLayer {
     const images = (showMarkers ? service.images(context.projection) : []);
     const sequences = service.sequences(context.projection);
 
-    // const sequenceData = this.filterSequences(sequences);
-    // const photoData = this.filterImages(images);
+    const sequenceData = this.filterSequences(sequences);
+    const photoData = this.filterImages(images);
 
-    sequences.forEach(d => {
-      const featureID = `${LAYERID}-sequence-${d.properties.id}`;
+    sequenceData.forEach(d => {
+      const featureID = `${LAYERID}-sequence-${d.properties.key}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
@@ -142,7 +142,7 @@ export class PixiMapillaryPhotos extends PixiLayer {
 
         feature = {
           displayObject: line,
-          coords: d.geometry.coordinates
+          coords: d.coordinates
         };
 
         featureCache.set(featureID, feature);
@@ -154,7 +154,7 @@ export class PixiMapillaryPhotos extends PixiLayer {
       const points = feature.coords.map(coord => projection.project(coord));
       const g = feature.displayObject
         .clear()
-        .lineStyle({ color: MAPILLARY_GREEN, width: 4 });
+        .lineStyle({ color: KARTA_BLUE, width: 4 });
 
       points.forEach(([x, y], i) => {
         if (i === 0) {
@@ -166,8 +166,8 @@ export class PixiMapillaryPhotos extends PixiLayer {
     });
 
 
-    images.forEach(d => {
-      const featureID = `${LAYERID}-photo-${d.id}`;
+    photoData.forEach(d => {
+      const featureID = `${LAYERID}-photo-${d.key}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
@@ -181,7 +181,7 @@ export class PixiMapillaryPhotos extends PixiLayer {
 
         // Get the capture angle, if any, and attach a viewfield to the point.
         if (d.ca) {
-          const vfContainer = getViewfieldContainer(this.context, [d.ca], MAPILLARY_GREEN);
+          const vfContainer = getViewfieldContainer(this.context, [d.ca], KARTA_BLUE);
           marker.interactive = false;
           marker.addChild(vfContainer);
         }
