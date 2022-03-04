@@ -155,7 +155,6 @@ export function prepareTextures(context, renderer) {
     .endFill()
     .closePath();
 
-
   // ImproveOsm
   const improveosm = new PIXI.Graphics()
     .lineStyle(1, 0x333333)
@@ -164,9 +163,37 @@ export function prepareTextures(context, renderer) {
     .endFill()
     .closePath();
 
+  // OSM note
+  const osmnote = new PIXI.Graphics()
+    .lineStyle(1.5, 0x333333)
+    .beginFill(0xffffff, 1)
+    .moveTo(17.5, 0)
+    .lineTo(2.5,0)
+    .bezierCurveTo(1.13, 0, 0, 1.12, 0, 2.5)
+    .lineTo(0, 13.75)
+    .bezierCurveTo(0, 15.12, 1.12, 16.25, 2.5, 16.25)
+    .lineTo(6.25, 16.25)
+    .lineTo(6.25, 19.53)
+    .bezierCurveTo(6.25, 19.91, 6.68, 20.13, 7, 19.9)
+    .lineTo(11.87, 16.25)
+    .lineTo(17.49, 16.25)
+    .bezierCurveTo(18.86, 16.25, 20, 15.12, 20, 13.75)
+    .lineTo(20, 2.5)
+    .bezierCurveTo(20, 1.13, 18.87, 0, 17.5, 0)
+    .closePath()
+    .endFill();
+
+  const osmose = new PIXI.Graphics()
+    .lineStyle(1, 0x333333)
+    .beginFill(0xffffff)
+    .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
+    .endFill()
+    .closePath();
 
   textures.set('keepright', renderer.generateTexture(keepright, options));
   textures.set('improveosm', renderer.generateTexture(improveosm, options));
+  textures.set('osmnote', renderer.generateTexture(osmnote, options));
+  textures.set('osmose', renderer.generateTexture(osmose, options));
 
 
   //

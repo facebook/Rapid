@@ -97,7 +97,7 @@ export class PixiLayerKeepRight extends PixiLayer {
       if (!feature) {
         const markerStyle = {
           markerName: 'keepright',
-          markerTint: TINTS.get(d.parentIssueType) || 0xffffff
+          markerTint: 0xff3300
         };
 
         feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);

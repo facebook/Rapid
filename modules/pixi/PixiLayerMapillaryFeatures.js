@@ -73,7 +73,6 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
   drawMarkers(projection, zoom) {
     const context = this.context;
     const featureCache = this.featureCache;
-    const k = projection.scale();
 
     const service = this.getService();
     if (!service) return;
@@ -95,7 +94,6 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
         feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
 
         const marker = feature.displayObject;
-        // // Replace default marker with the one we really want
         // const ICONSIZE = 24;
         // marker.width = ICONSIZE;
         // marker.height = ICONSIZE;

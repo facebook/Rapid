@@ -1,10 +1,7 @@
 import * as PIXI from 'pixi.js';
-// import _throttle from 'lodash-es/throttle';
-
 import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
-import { getIconSprite } from './helpers';
-
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'osmose';
 const LAYERZINDEX = 10;
@@ -31,19 +28,6 @@ export class PixiLayerOsmose extends PixiLayer {
 
     this._service = null;
     this.getService();
-
-    // Create marker texture
-    this.textures = {};
-    const marker = new PIXI.Graphics()
-      .lineStyle(1, 0x33333)
-      .beginFill(0xffffff)
-      .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
-      .endFill()
-      .closePath();
-
-    const renderer = context.pixi.renderer;
-    const options = { resolution: 2 };
-    this.textures.osmoseMarker = renderer.generateTexture(marker, options);
   }
 
 
@@ -66,58 +50,42 @@ export class PixiLayerOsmose extends PixiLayer {
   /**
    * drawMarkers
    * @param projection - a pixi projection
+   * @param zoom - the effective zoom to use for rendering
    */
-  drawMarkers(projection) {
+  drawMarkers(projection, zoom) {
     const context = this.context;
     const featureCache = this.featureCache;
-    const k = projection.scale();
 
     const service = this.getService();
     if (!service) return;
 
     const visibleData = service.getItems(context.projection);
+
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
       let feature = featureCache.get(featureID);
 
       if (!feature) {
-        const marker = new PIXI.Sprite(this.textures.osmoseMarker);
-        marker.name = featureID;
-        marker.buttonMode = true;
-        marker.interactive = true;
-        marker.zIndex = -d.loc[1];   // sort by latitude ascending
-        marker.anchor.set(0.5, 1);   // middle, bottom
         const color = service.getColor(d.item);
-        marker.tint = PIXI.utils.string2hex(color);
+        const markerStyle = {
+          markerName: 'osmose',
+          markerTint: PIXI.utils.string2hex(color),
+          iconName: d.icon
+        };
+        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+
+        // bind data and add to scene
+        const marker = feature.displayObject;
+        marker.__data__ = d;
         this.container.addChild(marker);
 
-        if (d.icon) {
-          const ICONSIZE = 11;
-          const icon = getIconSprite(context, d.icon);
-          icon.buttonMode = false;
-          icon.interactive = false;
-          icon.interactiveChildren = false;
-          // mathematically 0,-15 is center of marker, move up slightly
-          icon.position.set(0, -16);
-          icon.width = ICONSIZE;
-          icon.height = ICONSIZE;
-          marker.addChild(icon);
-        }
-
-        feature = {
-          displayObject: marker,
-          loc: d.loc,
-        };
+        // // mathematically 0,-15 is center of marker, move up slightly
+        // icon.position.set(0, -16);
 
         featureCache.set(featureID, feature);
       }
 
-      if (k === feature.k) return;
-      feature.k = k;
-
-      // Reproject and recalculate the bounding box
-      const [x, y] = projection.project(feature.loc);
-      feature.displayObject.position.set(x, y);
+      feature.update(projection, zoom);
     });
   }
 
@@ -137,7 +105,7 @@ export class PixiLayerOsmose extends PixiLayer {
     if (service && zoom >= MINZOOM) {
       this.visible = true;
       service.loadIssues(context.projection);  // note: context.projection !== pixi projection
-      this.drawMarkers(projection);
+      this.drawMarkers(projection, zoom);
     } else {
       this.visible = false;
     }
