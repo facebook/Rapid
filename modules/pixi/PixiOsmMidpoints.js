@@ -1,86 +1,94 @@
-import * as PIXI from 'pixi.js';
+import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { vecAngle, vecInterp } from '@id-sdk/math';
 
+/**
+ * PixiOsmMidpoints
+ * @class
+ */
+export class PixiOsmMidpoints {
 
-export function PixiOsmMidpoints(context, featureCache) {
+  /**
+   * @constructor
+   * @param context
+   * @param featureCache
+   */
+  constructor(context, featureCache) {
+    this.context = context;
+    this.featureCache = featureCache;
+  }
 
-  //
-  // render
-  //
-  function renderMidpoints(layer, projection, zoom, entities) {
+
+  /**
+   * render
+   * @param container   parent PIXI.Container
+   * @param projection  a pixi projection
+   * @param zoom        the effective zoom to use for rendering
+   * @param entities    Array of OSM entities
+   */
+  render(container, projection, zoom, entities) {
+    const context = this.context;
+    const featureCache = this.featureCache;
     const graph = context.graph();
-    const k = projection.scale();
 
     function isLine(entity) {
       return (entity.type === 'way' || entity.type === 'relation') &&
         (entity.geometry(graph) === 'line' || entity.geometry(graph) === 'area');
     }
 
-    const data = entities.filter(isLine);
-    const midpointTexture = context.pixi.rapidTextures.get('midpoint');
+    // Gather midpoints
+    const ways = entities.filter(isLine);
+    let midpoints = [];
 
+    ways.forEach(way => {
+      let nodeData = way.nodes.map(node => {
+        return {
+          id: node.id,
+          point: projection.project(node.loc)
+        };
+      });
 
-    // gather ids to keep
-    let visible = {};
-    data.forEach(way => visible[way.id] = true);
+      if (way.tags.oneway === '-1') {
+        nodeData.reverse();
+      }
 
-    // exit
-    [...featureCache.entries()].forEach(function cullMidpoints([id, feature]) {
-      feature.container.visible = !!visible[id];
-    });
+      nodeData.slice(0, -1).forEach((_, i) => {
+        const a = nodeData[i];
+        const b = nodeData[i + 1];
+        const id = [a.id, b.id].sort().join('-');
+        const pos = vecInterp(a.point, b.point, 0.5);
+        const rot = vecAngle(a.point, b.point);
 
-    // enter/update
-    data
-      .forEach(function prepareMidpoints(way) {
-        let feature = featureCache.get(way.id);
-
-        if (!feature) {
-          const container = new PIXI.Container();
-          container.name = way.id;
-          container.alpha = 0.5;
-          layer.addChild(container);
-
-          feature = {
-            nodes: graph.childNodes(way),
-            container: container
-          };
-
-          featureCache.set(way.id, feature);
-        }
-
-        // remember scale and reproject only when it changes
-        if (k === feature.k) return;
-        feature.k = k;
-
-        feature.container.removeChildren();
-
-        let nodeData = feature.nodes.map(node => {
-          return {
-            id: node.id,
-            point: projection.project(node.loc)
-          };
-        });
-
-        if (way.tags.oneway === '-1') {
-          nodeData.reverse();
-        }
-
-        nodeData.slice(0, -1).forEach((_, i) => {
-          const a = nodeData[i];
-          const b = nodeData[i + 1];
-          const pos = vecInterp(a.point, b.point, 0.5);
-          const rot = vecAngle(a.point, b.point);
-
-          const midpoint = new PIXI.Sprite(midpointTexture);
-          midpoint.name = [a.id, b.id].sort().join('-');
-          midpoint.anchor.set(0.5, 0.5);  // middle, middle
-          midpoint.position.set(pos[0], pos[1]);
-          midpoint.rotation = rot;
-
-          feature.container.addChild(midpoint);
+        midpoints.push({
+          id: id,
+          a: a,
+          b: b,
+          way: way,
+          loc: projection.invert(pos),
+          rot: rot
         });
       });
-  }
+    });
 
-  return renderMidpoints;
+
+    midpoints
+      .forEach(function prepareMidpoints(midpoint) {
+        let featureID = midpoint.id;
+        let feature = featureCache.get(featureID);
+
+        if (!feature) {
+          const markerStyle = { markerName: 'midpoint' };
+          feature = new PixiFeaturePoint(context, featureID, midpoint.loc, [], markerStyle);
+
+          // bind data and add to scene
+          const dObj = feature.displayObject;
+          dObj.__data__ = midpoint;
+          dObj.rotation = midpoint.rot;  // remember to apply rotation
+          container.addChild(dObj);
+
+          featureCache.set(featureID, feature);
+        }
+
+        feature.update(projection, zoom);
+      });
+  }
 }

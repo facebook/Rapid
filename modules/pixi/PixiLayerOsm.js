@@ -96,11 +96,11 @@ export class PixiLayerOsm extends PixiLayer {
 
     this.container.addChild(areas, lines, vertices, points, labels);
 
-    this.drawPoints = PixiOsmPoints(context, featureCache);
-    this.drawVertices = PixiOsmVertices(context, featureCache);
-    this.drawLines = PixiOsmLines(context, featureCache);
-    this.drawAreas = PixiOsmAreas(context, featureCache);
-    // this.drawMidpoints = PixiOsmMidpoints(context, featureCache);
+    this.drawPoints = new PixiOsmPoints(context, featureCache);
+    this.drawVertices = new PixiOsmVertices(context, featureCache);
+    this.drawLines = new PixiOsmLines(context, featureCache);
+    this.drawAreas = new PixiOsmAreas(context, featureCache);
+    // this.drawMidpoints = new PixiOsmMidpoints(context, featureCache);
     this.drawLabels = PixiLabels(context, featureCache);
   }
 
@@ -160,11 +160,11 @@ export class PixiLayerOsm extends PixiLayer {
       // const midpointsLayer = this.container.getChildByName('midpoints');
       const labelsLayer = this.container.getChildByName('labels');
 
-      this.drawAreas(areasLayer, projection, zoom, data);
-      this.drawLines(linesLayer, projection, zoom, data);
-      this.drawVertices(verticesLayer, projection, zoom, data);
-      this.drawPoints(pointsLayer, projection, zoom, data);
-      // this.drawMidpoints(midpointsLayer, projection, zoom, data);
+      this.drawAreas.render(areasLayer, projection, zoom, data);
+      this.drawLines.render(linesLayer, projection, zoom, data);
+      this.drawVertices.render(verticesLayer, projection, zoom, data);
+      this.drawPoints.render(pointsLayer, projection, zoom, data);
+      // this.drawMidpoints.render(midpointsLayer, projection, zoom, data);
       this.drawLabels(labelsLayer, projection, zoom, data);
 
     } else {

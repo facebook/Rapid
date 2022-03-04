@@ -1,23 +1,45 @@
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { presetManager } from '../presets';
 
+/**
+ * PixiOsmVertices
+ * @class
+ */
+export class PixiOsmVertices {
 
-export function PixiOsmVertices(context, featureCache) {
+  /**
+   * @constructor
+   * @param context
+   * @param featureCache
+   */
+  constructor(context, featureCache) {
+    this.context = context;
+    this.featureCache = featureCache;
+  }
 
-  //
-  // render
-  //
-  function renderVertices(layer, projection, zoom, entities) {
+
+  /**
+   * render
+   * @param container   parent PIXI.Container
+   * @param projection  a pixi projection
+   * @param zoom        the effective zoom to use for rendering
+   * @param entities    Array of OSM entities
+   */
+  render(container, projection, zoom, entities) {
+    const context = this.context;
+    const featureCache = this.featureCache;
     const graph = context.graph();
 
     function isLine(entity) {
       return entity.type === 'way' && entity.geometry(graph) === 'line';
     }
+
     function isInterestingVertex(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
         graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
       );
     }
+
     // Special style for Wikidata-tagged items
     function hasWikidata(entity) {
       return (
@@ -79,29 +101,14 @@ export function PixiOsmVertices(context, featureCache) {
           feature = new PixiFeaturePoint(context, node.id, node.loc, directions, markerStyle);
 
           // bind data and add to scene
-          const marker = feature.displayObject;
-          marker.__data__ = node;
-          layer.addChild(marker);
+          const dObj = feature.displayObject;
+          dObj.__data__ = node;
+          container.addChild(dObj);
 
           featureCache.set(node.id, feature);
         }
 
         feature.update(projection, zoom);
-
-//        if (SHOWBBOX) {
-//          feature.bbox
-//            .clear()
-//            .lineStyle({
-//              width: 1,
-//              color: 0x66ff66,
-//              alignment: 0   // inside
-//            })
-//            .drawShape(feature.localBounds);
-//        }
       });
   }
-
-
-  return renderVertices;
 }
-

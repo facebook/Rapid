@@ -4,12 +4,33 @@ import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 import { styleMatch } from './styles';
 
 
-export function PixiOsmAreas(context, featureCache) {
+/**
+ * PixiOsmAreas
+ * @class
+ */
+export class PixiOsmAreas {
 
-  //
-  // render
-  //
-  function renderAreas(layer, projection, zoom, entities) {
+  /**
+   * @constructor
+   * @param context
+   * @param featureCache
+   */
+  constructor(context, featureCache) {
+    this.context = context;
+    this.featureCache = featureCache;
+  }
+
+
+  /**
+   * render
+   * @param container       parent PIXI.Container
+   * @param projection  a pixi projection
+   * @param zoom        the effective zoom to use for rendering
+   * @param entities    Array of OSM entities
+   */
+  render(container, projection, zoom, entities) {
+    const context = this.context;
+    const featureCache = this.featureCache;
     const graph = context.graph();
 
     function isPolygon(entity) {
@@ -38,29 +59,16 @@ export function PixiOsmAreas(context, featureCache) {
           feature = new PixiFeaturePolygon(context, entity.id, polygons, style);
 
           // bind data and add to scene
-          const container = feature.displayObject;
+          const dObj = feature.displayObject;
           const area = entity.extent(graph).area();  // estimate area from extent for speed
-          container.zIndex = -area;                  // sort by area descending (small things above big things)
-          container.__data__ = entity;
-          layer.addChild(container);
+          dObj.zIndex = -area;                       // sort by area descending (small things above big things)
+          dObj.__data__ = entity;
+          container.addChild(dObj);
 
           featureCache.set(entity.id, feature);
         }
 
         feature.update(projection, zoom);
-
-//        if (SHOWBBOX) {
-//          feature.bbox
-//            .clear()
-//            .lineStyle({
-//              width: 1,
-//              color: 0x66ff66,
-//              alignment: 0   // inside
-//            })
-//            .drawShape(feature.localBounds);
-//        }
       });
   }
-
-  return renderAreas;
 }

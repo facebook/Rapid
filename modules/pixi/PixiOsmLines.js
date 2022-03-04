@@ -1,37 +1,56 @@
 import * as PIXI from 'pixi.js';
-// import { DashLine } from 'pixi-dashed-line';
-
-// import { getLineSegments, lineToPolygon } from './helpers';
 
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { styleMatch } from './styles';
 
+/**
+ * PixiOsmLines
+ * @class
+ */
+export class PixiOsmLines {
 
-export function PixiOsmLines(context, featureCache) {
-  let _didInit = false;
+  /**
+   * @constructor
+   * @param context
+   * @param featureCache
+   */
+  constructor(context, featureCache) {
+    this.context = context;
+    this.featureCache = featureCache;
+  }
 
-  // initialize levels (bridge/tunnel/etc)
-  function init(layer) {
-    for (let i = -10; i <= 10; i++) {
-      const lvl = new PIXI.Container();
-      lvl.name = i.toString();
-      lvl.interactive = false;
-      lvl.sortableChildren = true;
-      lvl.zIndex = i;
-      layer.addChild(lvl);
+  /**
+   * getLevelContainer
+   * @param container   parent PIXI.Container()
+   * @param level       numeric level that the feature should be on
+   */
+  getLevelContainer(container, level) {
+    let levelContainer = container.getChildByName(level);
+    if (!levelContainer) {
+      levelContainer = new PIXI.Container();
+      levelContainer.name = level.toString();
+      levelContainer.interactive = false;
+      levelContainer.interactiveChildren = true;
+      levelContainer.sortableChildren = true;
+      levelContainer.zIndex = level;
+      container.addChild(levelContainer);
     }
-    _didInit = true;
+    return levelContainer;
   }
 
 
-  //
-  // render
-  //
-  function renderLines(layer, projection, zoom, entities) {
-    if (!_didInit) init(layer);
-
+  /**
+   * render
+   * @param container   parent PIXI.Container
+   * @param projection  a pixi projection
+   * @param zoom        the effective zoom to use for rendering
+   * @param entities    Array of OSM entities
+   */
+  render(container, projection, zoom, entities) {
+    const context = this.context;
+    const featureCache = this.featureCache;
     const graph = context.graph();
-    // const SHOWBBOX = false;
+    const thiz = this;
 
     function isUntaggedMultipolygonRing(entity) {
       if (entity.hasInterestingTags()) return false;
@@ -48,10 +67,10 @@ export function PixiOsmLines(context, featureCache) {
     // enter/update
     entities
       .filter(isLine)
-      .forEach(function prepareLine(entity) {
+      .forEach(function prepareLines(entity) {
         let feature = featureCache.get(entity.id);
 
-        //This feature used to be part of the rapid layer... need to redraw it!
+        // This feature used to be part of the rapid layer... need to redraw it!
         if (feature && feature.rapidFeature) {
           feature.displayObject.visible = false;
           featureCache.delete(entity.id);
@@ -67,34 +86,22 @@ export function PixiOsmLines(context, featureCache) {
           const reversePoints = (entity.tags.oneway === '-1');
 
           feature = new PixiFeatureLine(context, entity.id, coords, style, showOneWay, reversePoints);
-          const container = feature.displayObject;
-          container.zIndex = getzIndex(entity.tags);
-          container.__data__ = entity;
 
-          // Place this line on the correct level (bridge/tunnel/etc)
+          const dObj = feature.displayObject;
+          dObj.zIndex = getzIndex(entity.tags);
+          dObj.__data__ = entity;
+
+          // Add this line to the correct level container (bridge/tunnel/etc)
           const lvl = entity.layer().toString();
-          const level = layer.getChildByName(lvl);
-          level.addChild(container);
+          const level = thiz.getLevelContainer(container, lvl);
+          level.addChild(dObj);
 
           featureCache.set(entity.id, feature);
         }
 
         feature.update(projection, zoom);
-
-//        if (SHOWBBOX) {
-//          feature.bbox
-//            .clear()
-//            .lineStyle({
-//              width: 1,
-//              color: 0x66ff66,
-//              alignment: 0   // inside
-//            })
-//            .drawShape(this.sceneBounds);
-//        }
      });
   }
-
-  return renderLines;
 }
 
 
