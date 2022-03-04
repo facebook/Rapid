@@ -241,19 +241,19 @@ export class PixiLayerRapid extends PixiLayer {
       this.container.addChild(datasetContainer);
 
       areas = new PIXI.Container();
-      areas.name = 'areas';
+      areas.name = `${dataset.id}-areas`;
       areas.interactive = true;
       areas.buttonMode = false;
       areas.sortableChildren = true;
 
       lines = new PIXI.Container();
-      lines.name = 'lines';
+      lines.name = `${dataset.id}-lines`;
       lines.interactive = true;
       lines.buttonMode = false;
       lines.sortableChildren = true;
 
       points = new PIXI.Container();
-      points.name = 'points';
+      points.name = `${dataset.id}-points`;
       points.interactive = true;
       points.buttonMode = false;
       points.sortableChildren = true;
@@ -261,9 +261,9 @@ export class PixiLayerRapid extends PixiLayer {
       datasetContainer.addChild(areas, lines, points);
 
     } else {
-      areas = datasetContainer.getChildByName('areas');
-      lines = datasetContainer.getChildByName('lines');
-      points = datasetContainer.getChildByName('points');
+      areas = datasetContainer.getChildByName(`${dataset.id}-areas`);
+      lines = datasetContainer.getChildByName(`${dataset.id}-lines`);
+      points = datasetContainer.getChildByName(`${dataset.id}-points`);
     }
 
     this.renderAreas(areas, dataset, datasetGraph, projection, zoom, geoData);
