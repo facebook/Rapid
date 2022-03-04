@@ -281,6 +281,7 @@ export class PixiLayerRapid extends PixiLayer {
     const color = PIXI.utils.string2hex(dataset.color);
     const style = {
       fill: { width: 2, color: color, alpha: 0.3 }
+      // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
     };
 
     geoData.areas.forEach(entity => {

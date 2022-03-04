@@ -215,6 +215,21 @@ export function prepareTextures(context, renderer) {
 
 
   //
+  // Stripe
+  // For drawing stripes on Rapid features
+  //
+  const stripe = new PIXI.Graphics()
+    .lineStyle(2, 0xffffff)
+    .moveTo(0, 0)
+    .lineTo(4, 0);
+
+  let t = renderer.generateTexture(stripe, {
+    region: new PIXI.Rectangle(0, 0, 4, 4),
+    resolution: 2
+  });
+  textures.set('stripe', t);
+
+  //
   // Low-res areas
   // We can replace areas with these sprites when they are very small
   // They are all sized to 10x10 (would look fine scaled down but not up)
@@ -227,7 +242,7 @@ export function prepareTextures(context, renderer) {
 
   const lowresEll = new PIXI.Graphics()
     .lineStyle(1, 0xffffff)
-    .beginFill(0xffffff, 0.5)
+    .beginFill(0xffffff, 0.3)
     .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
     .endFill();
 
