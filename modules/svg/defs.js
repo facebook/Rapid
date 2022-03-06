@@ -183,7 +183,6 @@ export function svgDefs(context) {
 
     function addSprites(ids, overrideColors) {
         _spritesheetIds = utilArrayUniq(_spritesheetIds.concat(ids));
-
         var spritesheets = _defsSelection
             .selectAll('.spritesheet')
             .data(_spritesheetIds);
@@ -195,15 +194,29 @@ export function svgDefs(context) {
             .each(function(d) {
                 var url = context.imagePath(d + '.svg');
                 var node = d3_select(this).node();
-
                 d3_svg(url)
                     .then(function(svg) {
                         node.appendChild(
                             d3_select(svg.documentElement).attr('id', 'ideditor-' + d).node()
                         );
                         if (overrideColors && d !== 'iD-sprite') {   // allow icon colors to be overridden..
+                            var currentColor = 'currentColor';
+
+                            //If RapiD, add '-rapid' to icon id and change current color to RapId color
+                            if(node.classList[1] === 'spritesheet-rapid-object-sprite') {
+                                d3_select(node)
+                                .selectAll('symbol')
+                                .attr('id', function(d) {
+                                    return d3_select(this).attr('id') + '-rapid'
+                                });
+                                currentColor = '#DA26D3';
+                            }
+                            
                             d3_select(node).selectAll('path')
-                                .attr('fill', 'currentColor');
+                                .filter(function() {
+                                    return d3_select(this).attr('fill') != null;
+                                })
+                                .attr('fill', currentColor);
                         }
                     })
                     .catch(function() {

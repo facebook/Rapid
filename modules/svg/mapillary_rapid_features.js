@@ -33,7 +33,7 @@ export function svgMapillaryRapidFeatures(projection, context, dispatch) {
     function showLayer() {
         const service = getService();
         if (!service) return;
-        service.loadObjectResources(context);
+        service.loadObjectResources(context, true);
         editOn();
         dispatch.call("turnOffMapillary");
         svgMapillaryMapFeatures.enabled = false;
@@ -138,7 +138,7 @@ export function svgMapillaryRapidFeatures(projection, context, dispatch) {
                     // no billboard icon right now, so use the advertisement icon
                     return '#object--sign--advertisement';
                 }
-                return '#' + d.value;
+                return '#' + d.value + '-rapid';
             });
 
         enter

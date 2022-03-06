@@ -407,8 +407,18 @@ export default {
 
 
     // Load map (point) feature image sprites
-    loadObjectResources: function(context) {
-        context.ui().svgDefs.addSprites(['mapillary-object-sprite'], false /* don't override colors */ );
+    loadObjectResources: function(context, isRapidOn) {
+        var sprites = 'mapillary-object-sprite';
+        if(isRapidOn) {
+            sprites = 'rapid-object-sprite';
+        }
+        context.ui().svgDefs.addSprites([sprites], isRapidOn /* don't override colors */ );
+        return this;
+    },
+
+    //Unload 
+    unLoadPrevObjectResources: function(context) {
+        context.ui().svgDefs
         return this;
     },
 

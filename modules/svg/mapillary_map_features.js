@@ -33,7 +33,7 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     function showLayer() {
         const service = getService();
         if (!service) return;
-        service.loadObjectResources(context);
+        service.loadObjectResources(context, false);
         editOn();
         dispatch.call("turnOffRapid");
         svgMapillaryRapidFeatures.enabled = false;
