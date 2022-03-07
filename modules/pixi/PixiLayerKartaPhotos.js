@@ -33,13 +33,13 @@ export class PixiLayerKartaPhotos extends PixiLayer {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    * @param dispatch
    */
-  constructor(context, featureCache, dispatch) {
+  constructor(context, scene, dispatch) {
     super(context, LAYERID, LAYERZINDEX);
 
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.dispatch = dispatch;
 
     this._service = null;
@@ -110,7 +110,7 @@ export class PixiLayerKartaPhotos extends PixiLayer {
    */
   drawMarkers(projection, zoom) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
 
     const service = this.getService();
     if (!service) return;
@@ -126,7 +126,7 @@ export class PixiLayerKartaPhotos extends PixiLayer {
 
     sequenceData.forEach(d => {
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
-      let feature = featureCache.get(featureID);
+      let feature = scene.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(context, featureID, d.coordinates, LINESTYLE);
@@ -136,7 +136,7 @@ export class PixiLayerKartaPhotos extends PixiLayer {
         container.__data__ = d;
         this.container.addChild(container);
 
-        featureCache.set(featureID, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);
@@ -145,7 +145,7 @@ export class PixiLayerKartaPhotos extends PixiLayer {
 
     photoData.forEach(d => {
       const featureID = `${LAYERID}-photo-${d.key}`;
-      let feature = featureCache.get(featureID);
+      let feature = scene.get(featureID);
 
       if (!feature) {
         const vfDirections = d.ca ? [d.ca] : [];  // ca = camera angle
@@ -156,7 +156,7 @@ export class PixiLayerKartaPhotos extends PixiLayer {
         marker.__data__ = d;
         this.container.addChild(marker);
 
-        featureCache.set(featureID, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);

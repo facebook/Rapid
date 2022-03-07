@@ -18,6 +18,7 @@ export { PixiOsmPoints } from './PixiOsmPoints.js';
 export { PixiOsmVertices } from './PixiOsmVertices.js';
 export { PixiRapidFeatures } from './PixiRapidFeatures.js';
 export { PixiRenderer } from './PixiRenderer.js';
+export { PixiScene } from './PixiScene.js';
 export { PixiStreetsidePhotos } from './PixiStreetsidePhotos.js';
 
 export { styleMatch } from './styles.js';

@@ -17,6 +17,7 @@ import { getIconSprite, getViewfieldContainer } from './helpers';
  * Inherited from PixiFeature:
  *   `dirty`
  *   `k`
+ *   `extent`
  *   `localBounds`
  *   `sceneBounds`
  *

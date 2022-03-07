@@ -13,11 +13,11 @@ export class PixiOsmAreas {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    */
-  constructor(context, featureCache) {
+  constructor(context, scene) {
     this.context = context;
-    this.featureCache = featureCache;
+    this.scene = scene;
   }
 
 
@@ -30,7 +30,7 @@ export class PixiOsmAreas {
    */
   render(container, projection, zoom, entities) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const graph = context.graph();
 
     function isPolygon(entity) {
@@ -41,12 +41,12 @@ export class PixiOsmAreas {
     entities
       .filter(isPolygon)
       .forEach(function prepareAreas(entity) {
-        let feature = featureCache.get(entity.id);
+        let feature = scene.get(entity.id);
 
         //This feature used to be part of the rapid layer... need to redraw it!
         if (feature && feature.rapidFeature) {
           feature.displayObject.visible = false;
-          featureCache.delete(entity.id);
+          scene.delete(entity.id);
           feature = null;
         }
 
@@ -65,7 +65,7 @@ export class PixiOsmAreas {
           dObj.__data__ = entity;
           container.addChild(dObj);
 
-          featureCache.set(entity.id, feature);
+          scene.add(feature);
         }
 
         feature.update(projection, zoom);

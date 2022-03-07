@@ -25,6 +25,7 @@ const PARTIALFILLWIDTH = 32;
  * Inherited from PixiFeature:
  *   `dirty`
  *   `k`
+ *   `extent`
  *   `localBounds`
  *   `sceneBounds`
  *

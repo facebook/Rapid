@@ -25,14 +25,14 @@ export class PixiLayerOsm extends PixiLayer {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    * @param dispatch
    */
-  constructor(context, featureCache, dispatch) {
+  constructor(context, scene, dispatch) {
     super(context, LAYERID, LAYERZINDEX);
     this._enabled = true;  // OSM layers should be enabled by default
     this.dispatch = dispatch;
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.dispatch = dispatch;
     this.touchContainer = null;
     this._service = null;
@@ -95,12 +95,12 @@ export class PixiLayerOsm extends PixiLayer {
 
     this.container.addChild(areas, lines, vertices, points, labels);
 
-    this.drawPoints = new PixiOsmPoints(context, featureCache);
-    this.drawVertices = new PixiOsmVertices(context, featureCache);
-    this.drawLines = new PixiOsmLines(context, featureCache);
-    this.drawAreas = new PixiOsmAreas(context, featureCache);
-    // this.drawMidpoints = new PixiOsmMidpoints(context, featureCache);
-    this.drawLabels = PixiLabels(context, featureCache);
+    this.drawPoints = new PixiOsmPoints(context, scene);
+    this.drawVertices = new PixiOsmVertices(context, scene);
+    this.drawLines = new PixiOsmLines(context, scene);
+    this.drawAreas = new PixiOsmAreas(context, scene);
+    // this.drawMidpoints = new PixiOsmMidpoints(context, scene);
+    this.drawLabels = PixiLabels(context, scene);
   }
 
 
@@ -142,7 +142,7 @@ export class PixiLayerOsm extends PixiLayer {
      // for now non-OSM features will have to cull themselves
      let visibleOSM = {};
      data.forEach(entity => visibleOSM[entity.id] = true);
-     [...this.featureCache.entries()].forEach(function cull([id, feature]) {
+     [...this.scene._features.entries()].forEach(function cull([id, feature]) {
        let isVisible = !!visibleOSM[id] || !context.graph().hasEntity(id);
 
        feature.displayObject.visible = isVisible;

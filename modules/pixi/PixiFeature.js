@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { Extent } from '@id-sdk/math';
 
 
 /**
@@ -6,11 +7,12 @@ import * as PIXI from 'pixi.js';
  * It contains properties that used to manage the feature in the scene graph
  *
  * Properties you can access:
- *  `dirty`
- *  `displayObject`
- *  `k`
- *  `localBounds`
- *  `sceneBounds`
+ *   `dirty`
+ *   `displayObject`
+ *   `k`
+ *   `extent`
+ *   `localBounds`
+ *   `sceneBounds`
  *
  * @class
  */
@@ -25,11 +27,12 @@ export class PixiFeature {
     this.displayObject = displayObject;
 
     this.type = 'unknown';
-    this.dirty = true;   // whether the feature's geometry needs to be rebuilt
-    this.k = null;       // the projection scale at which the feature was last computed
+    this.dirty = true;   // Whether the feature's geometry needs to be rebuilt
+    this.k = null;       // The projection scale at which the feature was last computed
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
+    this.extent = new Extent();                // in WGS84 coordinates (0,0 is null island)
     this.localBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the object
     this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
   }

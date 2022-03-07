@@ -19,7 +19,8 @@ export class PixiLayer {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param layerID
+   * @param layerZ
    */
   constructor(context, layerID, layerZ) {
     this.context = context;

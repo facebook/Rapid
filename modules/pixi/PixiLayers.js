@@ -22,28 +22,27 @@ export class PixiLayers {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    */
-  constructor(context, featureCache, dispatch) {
+  constructor(context, scene, dispatch) {
     this.context = context;
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.dispatch = dispatch;
-
 
     utilRebind(this, this.dispatch, 'on');
 
     this._layers = [
-      new PixiLayerImproveOsm(context, featureCache, this.dispatch),
-      new PixiLayerKartaPhotos(context, featureCache, this.dispatch),
-      new PixiLayerKeepRight(context, featureCache, this.dispatch),
-      new PixiLayerMapillaryFeatures(context, featureCache, this.dispatch),
-      new PixiLayerMapillaryPhotos(context, featureCache, this.dispatch),
-      new PixiLayerMapillarySigns(context, featureCache, this.dispatch),
-      new PixiLayerOsm(context, featureCache, this.dispatch),
-      new PixiLayerOsmNotes(context, featureCache, this.dispatch),
-      new PixiLayerOsmose(context, featureCache, this.dispatch),
-      new PixiLayerRapid(context, featureCache, this.dispatch),
-      new PixiLayerStreetsidePhotos(context, featureCache, this.dispatch)
+      new PixiLayerImproveOsm(context, scene, this.dispatch),
+      new PixiLayerKartaPhotos(context, scene, this.dispatch),
+      new PixiLayerKeepRight(context, scene, this.dispatch),
+      new PixiLayerMapillaryFeatures(context, scene, this.dispatch),
+      new PixiLayerMapillaryPhotos(context, scene, this.dispatch),
+      new PixiLayerMapillarySigns(context, scene, this.dispatch),
+      new PixiLayerOsm(context, scene, this.dispatch),
+      new PixiLayerOsmNotes(context, scene, this.dispatch),
+      new PixiLayerOsmose(context, scene, this.dispatch),
+      new PixiLayerRapid(context, scene, this.dispatch),
+      new PixiLayerStreetsidePhotos(context, scene, this.dispatch)
     ];
   }
 

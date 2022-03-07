@@ -10,11 +10,11 @@ export class PixiOsmMidpoints {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    */
-  constructor(context, featureCache) {
+  constructor(context, scene) {
     this.context = context;
-    this.featureCache = featureCache;
+    this.scene = scene;
   }
 
 
@@ -27,7 +27,7 @@ export class PixiOsmMidpoints {
    */
   render(container, projection, zoom, entities) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const graph = context.graph();
 
     function isLine(entity) {
@@ -73,7 +73,7 @@ export class PixiOsmMidpoints {
     midpoints
       .forEach(function prepareMidpoints(midpoint) {
         let featureID = midpoint.id;
-        let feature = featureCache.get(featureID);
+        let feature = scene.get(featureID);
 
         if (!feature) {
           const markerStyle = { markerName: 'midpoint' };
@@ -85,7 +85,7 @@ export class PixiOsmMidpoints {
           dObj.rotation = midpoint.rot;  // remember to apply rotation
           container.addChild(dObj);
 
-          featureCache.set(featureID, feature);
+          scene.add(feature);
         }
 
         feature.update(projection, zoom);

@@ -1,6 +1,7 @@
+import { GlowFilter } from '@pixi/filter-glow';
+
 import { modeBrowse, modeSelect } from '../modes';
 import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
-import {GlowFilter} from '@pixi/filter-glow';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 
@@ -21,11 +22,11 @@ export class PixiEventsHandler {
    * @param displayObject - root Pixi display object for the feature
    *    (can be a Graphic, Container, Sprite, etc)
    */
-  constructor(context, dispatch, projection, featureCache) {
+  constructor(context, dispatch, projection, scene) {
     this.context = context;
     this.dispatch = dispatch;
     this.projection = projection;
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.draggingState = false;
     this._selectedEntities = [];
     this.draggingEntity = null;
@@ -138,7 +139,7 @@ export class PixiEventsHandler {
       this.touchPosition.y = this.touchPosition.y + offsetY;
       let dest = this.projection.invert([movingContainer.x, movingContainer.y]);
 
-      let feature = this.featureCache.get(this.draggingEntity.id);
+      let feature = this.scene.get(this.draggingEntity.id);
       feature.coord = dest;
       feature.update(this.projection);
       this.context.replace(

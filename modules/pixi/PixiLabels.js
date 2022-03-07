@@ -8,7 +8,7 @@ import { utilDisplayName } from '../util';
 import { getLineSegments, getDebugBBox } from './helpers.js';
 
 
-export function PixiLabels(context, featureCache) {
+export function PixiLabels(context, scene) {
   let _strings = new Map();      // map of OSM ID -> label string
   let _texts = new Map();        // map of label -> Pixi Texture
   let _avoids = new Set();       // set of OSM ID we are avoiding
@@ -130,7 +130,7 @@ export function PixiLabels(context, featureCache) {
         if (_avoids.has(entityID)) return;  // seen it already
         _avoids.add(entityID);
 
-        const sourceFeature = featureCache.get(entityID);
+        const sourceFeature = scene.get(entityID);
         const rect = sourceFeature && sourceFeature.sceneBounds;
         if (!rect) return;
 
@@ -220,7 +220,7 @@ export function PixiLabels(context, featureCache) {
 
       points
         .forEach(function preparePointLabels(entity) {
-          let feature = featureCache.get(entity.id);
+          let feature = scene.get(entity.id);
           if (!feature) return;
 
           if (!feature.label) {
@@ -372,7 +372,7 @@ export function PixiLabels(context, featureCache) {
 
       lines
         .forEach(function prepareLineLabels(entity) {
-          let feature = featureCache.get(entity.id);
+          let feature = scene.get(entity.id);
           if (!feature) return;
 
           if (!feature.label) {

@@ -46,13 +46,13 @@ export class PixiLayerKeepRight extends PixiLayer {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    * @param dispatch
    */
-  constructor(context, featureCache, dispatch) {
+  constructor(context, scene, dispatch) {
     super(context, LAYERID, LAYERZINDEX);
 
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.dispatch = dispatch;
 
     this._service = null;
@@ -83,7 +83,7 @@ export class PixiLayerKeepRight extends PixiLayer {
    */
   drawMarkers(projection, zoom) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
 
     const service = this.getService();
     if (!service) return;
@@ -92,7 +92,7 @@ export class PixiLayerKeepRight extends PixiLayer {
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = featureCache.get(featureID);
+      let feature = scene.get(featureID);
 
       if (!feature) {
         const markerStyle = {
@@ -107,7 +107,7 @@ export class PixiLayerKeepRight extends PixiLayer {
         marker.__data__ = d;
         this.container.addChild(marker);
 
-        featureCache.set(featureID, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);

@@ -23,13 +23,13 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    * @param dispatch
    */
-  constructor(context, featureCache, dispatch) {
+  constructor(context, scene, dispatch) {
     super(context, LAYERID, LAYERZINDEX);
 
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.dispatch = dispatch;
 
     this._service = null;
@@ -112,7 +112,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
    */
   drawMarkers(projection, zoom) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const k = projection.scale();
 
     const service = this.getService();
@@ -129,7 +129,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
 
     sequenceData.forEach(d => {
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
-      let feature = featureCache.get(featureID);
+      let feature = scene.get(featureID);
 
       if (!feature) {
         const line = new PIXI.Graphics();
@@ -144,7 +144,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
           coords: d.coordinates
         };
 
-        featureCache.set(featureID, feature);
+        scene.add(feature);
       }
 
       if (k === feature.k) return;
@@ -167,7 +167,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
 
     photoData.forEach(d => {
       const featureID = `${LAYERID}-photo-${d.key}`;
-      let feature = featureCache.get(featureID);
+      let feature = scene.get(featureID);
 
       if (!feature) {
         const marker = new PIXI.Sprite(this.textures.circle);
@@ -190,7 +190,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
           loc: d.loc
         };
 
-        featureCache.set(featureID, feature);
+        scene.add(feature);
       }
 
       if (k === feature.k) return;

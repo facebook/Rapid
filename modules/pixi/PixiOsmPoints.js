@@ -10,11 +10,11 @@ export class PixiOsmPoints {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    */
-  constructor(context, featureCache) {
+  constructor(context, scene) {
     this.context = context;
-    this.featureCache = featureCache;
+    this.scene = scene;
   }
 
 
@@ -27,7 +27,7 @@ export class PixiOsmPoints {
    */
   render(container, projection, zoom, entities) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const graph = context.graph();
 
     function isPoint(entity) {
@@ -49,7 +49,7 @@ export class PixiOsmPoints {
     entities
       .filter(isPoint)
       .forEach(function preparePoints(node) {
-        let feature = featureCache.get(node.id);
+        let feature = scene.get(node.id);
 
         if (!feature) {
           const preset = presetManager.match(node, graph);
@@ -78,7 +78,7 @@ export class PixiOsmPoints {
           dObj.__data__ = node;
           container.addChild(dObj);
 
-          featureCache.set(node.id, feature);
+          scene.add(feature);
         }
 
         feature.update(projection, zoom);

@@ -12,11 +12,11 @@ export class PixiOsmLines {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    */
-  constructor(context, featureCache) {
+  constructor(context, scene) {
     this.context = context;
-    this.featureCache = featureCache;
+    this.scene = scene;
   }
 
   /**
@@ -48,7 +48,7 @@ export class PixiOsmLines {
    */
   render(container, projection, zoom, entities) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const graph = context.graph();
     const thiz = this;
 
@@ -68,12 +68,12 @@ export class PixiOsmLines {
     entities
       .filter(isLine)
       .forEach(function prepareLines(entity) {
-        let feature = featureCache.get(entity.id);
+        let feature = scene.get(entity.id);
 
         // This feature used to be part of the rapid layer... need to redraw it!
         if (feature && feature.rapidFeature) {
           feature.displayObject.visible = false;
-          featureCache.delete(entity.id);
+          scene.delete(entity.id);
           feature = null;
         }
 
@@ -96,7 +96,7 @@ export class PixiOsmLines {
           const level = thiz.getLevelContainer(container, lvl);
           level.addChild(dObj);
 
-          featureCache.set(entity.id, feature);
+          scene.add(feature);
         }
 
         feature.update(projection, zoom);

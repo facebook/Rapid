@@ -4,6 +4,7 @@ import { Projection, vecAdd } from '@id-sdk/math';
 
 import { PixiEventsHandler } from './PixiEventsHandler';
 import { PixiLayers } from './PixiLayers';
+import { PixiScene } from './PixiScene';
 import { prepareTextures } from './textures';
 
 const AUTOTICK = false;     // set to true to turn the ticker back on
@@ -27,13 +28,11 @@ export class PixiRenderer {
   constructor(context, parentElement) {
     this.context = context;
     this.parentElement = parentElement;
-    this.featureCache = new Map();            // map of OSM ID -> Pixi data
-    this.pixiProjection = new Projection();
     this.selectedEntities = [];
+
     this._redrawPending = false;
     this._hoverTarget = null;
     this.dispatch = d3_dispatch('change', 'dragstart', 'dragend');
-    this._eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.featureCache);
 
     this.pixi = new PIXI.Application({
       antialias: true,
@@ -76,15 +75,17 @@ export class PixiRenderer {
     // Add a big hit area to `stage` so that clicks on nothing will register
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
 
+    this.pixiProjection = new Projection();
+    this.scene = new PixiScene(context);
+    this.layers = new PixiLayers(context, this.scene, this.dispatch);
+    this.eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.scene);
+
     stage
-      .on('click', e => this._eventsHandler.onClickHandler(e))
-      // .on('pointermove', e => this._eventsHandler.onPointerMoveHandler(e))
-      .on('pointerdown', e => this._eventsHandler.onTouchStartHandler(e))
-      .on('pointermove', e => this._eventsHandler.onTouchMoveHandler(e))
-      .on('pointerup', e => this._eventsHandler.onTouchEndHandler(e));
-
-
-      this.layers = new PixiLayers(context, this.featureCache, this.dispatch);
+      .on('click', e => this.eventsHandler.onClickHandler(e))
+      // .on('pointermove', e => this.eventsHandler.onPointerMoveHandler(e))
+      .on('pointerdown', e => this.eventsHandler.onTouchStartHandler(e))
+      .on('pointermove', e => this.eventsHandler.onTouchMoveHandler(e))
+      .on('pointerup', e => this.eventsHandler.onTouchEndHandler(e));
   }
 
 
@@ -115,7 +116,7 @@ export class PixiRenderer {
 //   //
 //   // optimistically cull?
 //   //
-//   this.featureCache.forEach(feature => {
+//   this.scene.forEach(feature => {
 //     if (feature.displayObject) feature.displayObject.visible = false;
 //   });
 
@@ -131,7 +132,7 @@ export class PixiRenderer {
 //    const viewMin = vecAdd(offset, [screen.x, screen.y]);   // x,y should be 0,0
 //    const viewMax = vecAdd(offset, [screen.width, screen.height]);
 //
-//    this.featureCache.forEach(feature => {
+//    this.scene.forEach(feature => {
 //      const displayObject = feature.displayObject;
 //      const bounds = feature.sceneBounds;
 //      if (!bounds || !displayObject) return;

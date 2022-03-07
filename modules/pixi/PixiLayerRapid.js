@@ -21,15 +21,15 @@ export class PixiLayerRapid extends PixiLayer {
   /**
    * @constructor
    * @param context
-   * @param featureCache
+   * @param scene
    * @param dispatch
    */
-  constructor(context, featureCache, dispatch) {
+  constructor(context, scene, dispatch) {
     super(context, LAYERID, LAYERZINDEX);
 
     this._enabled = true;  // RapiD features should be enabled by default
 
-    this.featureCache = featureCache;
+    this.scene = scene;
     this.dispatch = dispatch;
 
     this._serviceFB = null;
@@ -277,7 +277,7 @@ export class PixiLayerRapid extends PixiLayer {
    */
   renderAreas(layer, dataset, graph, projection, zoom, geoData) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
     const style = {
       fill: { width: 2, color: color, alpha: 0.3 }
@@ -285,7 +285,7 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     geoData.areas.forEach(entity => {
-      let feature = featureCache.get(entity.id);
+      let feature = scene.get(entity.id);
 
       if (!feature) {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
@@ -302,7 +302,7 @@ export class PixiLayerRapid extends PixiLayer {
         container.__data__ = entity;
         layer.addChild(container);
 
-        featureCache.set(entity.id, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);
@@ -315,7 +315,7 @@ export class PixiLayerRapid extends PixiLayer {
    */
   renderLines(layer, dataset, graph, projection, zoom, geoData) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
     const style = {
       casing: { width: 5, color: 0x444444 },
@@ -323,7 +323,7 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     geoData.lines.forEach(entity => {
-      let feature = featureCache.get(entity.id);
+      let feature = scene.get(entity.id);
 
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
@@ -339,7 +339,7 @@ export class PixiLayerRapid extends PixiLayer {
         container.__data__ = entity;
         layer.addChild(container);
 
-        featureCache.set(entity.id, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);
@@ -352,7 +352,7 @@ export class PixiLayerRapid extends PixiLayer {
    */
   renderPoints(layer, dataset, graph, projection, zoom, geoData) {
     const context = this.context;
-    const featureCache = this.featureCache;
+    const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
     const pointStyle = {
@@ -366,7 +366,7 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     geoData.points.forEach(entity => {
-      let feature = featureCache.get(entity.id);
+      let feature = scene.get(entity.id);
 
       if (!feature) {
         feature = new PixiFeaturePoint(context, entity.id, entity.loc, [], pointStyle);
@@ -377,7 +377,7 @@ export class PixiLayerRapid extends PixiLayer {
         marker.__data__ = entity;
         layer.addChild(marker);
 
-        featureCache.set(entity.id, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);
@@ -385,7 +385,7 @@ export class PixiLayerRapid extends PixiLayer {
 
 
     geoData.vertices.forEach(entity => {
-      let feature = featureCache.get(entity.id);
+      let feature = scene.get(entity.id);
 
       if (!feature) {
         feature = new PixiFeaturePoint(context, entity.id, entity.loc, [], vertexStyle);
@@ -401,7 +401,7 @@ export class PixiLayerRapid extends PixiLayer {
         marker.__data__ = entity;
         layer.addChild(marker);
 
-        featureCache.set(entity.id, feature);
+        scene.add(feature);
       }
 
       feature.update(projection, zoom);
