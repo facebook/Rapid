@@ -51,7 +51,7 @@ export function rendererMap(context) {
   let _isTransformed = false;
   let _getMouseCoords;
   let _lastPointerEvent;
-
+  let _preDragTransform;
   // whether a pointerdown event started the zoom
   let _pointerDown = false;
 
@@ -67,10 +67,12 @@ export function rendererMap(context) {
 
   function handleDragStart() {
     _dragging = true;
+    _preDragTransform = _zoomerPanner._transform();
   }
 
   function handleDragEnd() {
     _dragging = false;
+    _zoomerPanner._transform(_preDragTransform);
   }
 
 
@@ -274,6 +276,7 @@ export function rendererMap(context) {
 
 
   function zoomPan(event, key, transform) {
+
     if (_dragging) return;
 
         var source = event && event.sourceEvent || event;

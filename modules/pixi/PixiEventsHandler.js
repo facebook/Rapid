@@ -1,6 +1,8 @@
 import { modeBrowse, modeSelect } from '../modes';
 import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 import {GlowFilter} from '@pixi/filter-glow';
+import { actionMoveNode } from '../actions/move_node';
+import { actionNoop } from '../actions/noop';
 
 /**
  * PixiEventsHandler contains event handlers for the various events/gestures
@@ -112,10 +114,12 @@ export class PixiEventsHandler {
     if (this.isPoint(entity)) {
     console.log(`point: touch started on ${name}, pos: ${e.target.x},${e.target.y}`);
       this.touchPosition = { x: e.data.global.x , y: e.data.global.y};
+      console.log(`touch position: ${this.touchPosition.x}, ${this.touchPosition.y}`);
       this.draggingState = true;
       this.draggingEntity = entity;
       this.draggingTarget = e.target;
       this.dispatch.call('dragstart');
+      this.context.perform(actionNoop());
     }
 
   }
@@ -134,7 +138,7 @@ export class PixiEventsHandler {
       // movingContainer.y = movingContainer.y + offsetY;
       movingContainer.x = this.touchPosition.x + offsetX;
       movingContainer.y = this.touchPosition.y + offsetY;
-      console.log(`New position: ${movingContainer.x}, ${movingContainer.y}`);
+      // console.log(`New position: ${movingContainer.x}, ${movingContainer.y}`);
       this.touchPosition.x = movingContainer.x;
       this.touchPosition.y = movingContainer.y;
       let dest = this.projection.invert([this.touchPosition.x, this.touchPosition.y]);
@@ -142,16 +146,26 @@ export class PixiEventsHandler {
       let feature = this.featureCache.get(this.draggingEntity.id);
       feature.coord = dest;
       feature.update(this.projection);
+      this.context.replace(
+        actionMoveNode(feature.id, feature.coord)
+
+        );
       this.dispatch.call('change');
     }
   }
 
   onTouchEndHandler(e) {
-    console.log('Points touch end');
+    if (this.touchPosition.x) {
+      console.log(`touch end, last touch position: ${this.touchPosition.x}, ${this.touchPosition.y}`);
+    }
+
+    if (this.draggingState) {
+     this.dispatch.call('dragend');
+    }
     this.draggingState = false;
     this.draggingEntity = null;
     this.draggingTarget = null;
-    this.dispatch.call('dragend');
+
     this.dispatch.call('change');
   }
 
