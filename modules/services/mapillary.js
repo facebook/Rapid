@@ -277,7 +277,7 @@ export default {
         const ret = searchLimited(limit, projection, _mlyCache.points.rtree);
         return ret;
     },
-    // Get filtered Map features (streetLihgts, pols, etc)
+    // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
     filteredMapFeatures: function(projection) {
         const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
         const mapFeatures = this.mapFeatures(projection);
@@ -409,16 +409,17 @@ export default {
     // Load map (point) feature image sprites
     loadObjectResources: function(context, isRapidOn) {
         var sprites = 'mapillary-object-sprite';
-        if(isRapidOn) {
+        if (isRapidOn) {
             sprites = 'rapid-object-sprite';
         }
         context.ui().svgDefs.addSprites([sprites], isRapidOn /* don't override colors */ );
         return this;
     },
 
-    //Unload 
+    //Unload map (point) feature image sprites
     unLoadPrevObjectResources: function(context) {
-        context.ui().svgDefs
+        // eslint-disable-next-line no-unused-expressions
+        context.ui().svgDefs;
         return this;
     },
 

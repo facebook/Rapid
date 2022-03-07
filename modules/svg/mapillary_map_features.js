@@ -9,11 +9,11 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     let layer = d3_select(null);
     let _mapillary;
 
-    dispatch.on("turnOffMapillary", () => {
-        hideLayer()
+    dispatch.on('turnOffMapillary', () => {
+        hideLayer();
         svgMapillaryMapFeatures.enabled = false;
         context.photos().on('change.mapillary_map_features', null);
-    })
+    });
 
     function init() {
         if (svgMapillaryMapFeatures.initialized) return;  // run once
@@ -39,7 +39,7 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
         service.loadObjectResources(context, false);
         editOn();
         //Turn off rapid features layer
-        dispatch.call("turnOffRapid");
+        dispatch.call('turnOffRapid');
     }
 
 
