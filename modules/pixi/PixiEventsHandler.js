@@ -112,9 +112,8 @@ export class PixiEventsHandler {
     if (!entity) return;
 
     if (this.isPoint(entity)) {
-    console.log(`point: touch started on ${name}, pos: ${e.target.x},${e.target.y}`);
-      this.touchPosition = { x: e.data.global.x , y: e.data.global.y};
-      console.log(`touch position: ${this.touchPosition.x}, ${this.touchPosition.y}`);
+
+      this.touchPosition = { x: e.data.global.x, y: e.data.global.y };
       this.draggingState = true;
       this.draggingEntity = entity;
       this.draggingTarget = e.target;
@@ -130,18 +129,14 @@ export class PixiEventsHandler {
     if (this.draggingEntity) {
       const movingContainer = this.draggingTarget;
       const currentPosition = { x: e.data.global.x, y: e.data.global.y };
+      const stageOffset = this.context.pixi.stage.position;
       const offsetX = currentPosition.x - this.touchPosition.x;
       const offsetY = currentPosition.y - this.touchPosition.y;
-      // console.log(`currentPosition: [${currentPosition.x},${currentPosition.y}]`);
-      // console.log(`[+x, +y]: [${offsetX},${offsetY}]`);
-      // movingContainer.x = movingContainer.x + offsetX;
-      // movingContainer.y = movingContainer.y + offsetY;
-      movingContainer.x = this.touchPosition.x + offsetX;
-      movingContainer.y = this.touchPosition.y + offsetY;
-      // console.log(`New position: ${movingContainer.x}, ${movingContainer.y}`);
-      this.touchPosition.x = movingContainer.x;
-      this.touchPosition.y = movingContainer.y;
-      let dest = this.projection.invert([this.touchPosition.x, this.touchPosition.y]);
+      movingContainer.x = this.touchPosition.x + offsetX - stageOffset.x;
+      movingContainer.y = this.touchPosition.y + offsetY - stageOffset.y;
+      this.touchPosition.x = this.touchPosition.x + offsetX;
+      this.touchPosition.y = this.touchPosition.y + offsetY;
+      let dest = this.projection.invert([movingContainer.x, movingContainer.y]);
 
       let feature = this.featureCache.get(this.draggingEntity.id);
       feature.coord = dest;
@@ -155,9 +150,6 @@ export class PixiEventsHandler {
   }
 
   onTouchEndHandler(e) {
-    if (this.touchPosition.x) {
-      console.log(`touch end, last touch position: ${this.touchPosition.x}, ${this.touchPosition.y}`);
-    }
 
     if (this.draggingState) {
      this.dispatch.call('dragend');
