@@ -160,7 +160,7 @@ export class PixiEventsHandler {
 
     if (this.draggingState) {
      this.dispatch.call('dragend');
-      let feature = this.featureCache.get(this.draggingEntity.id);
+      let feature = this.scene.get(this.draggingEntity.id);
 
       this.context.replace(
         actionMoveNode(feature.id, feature.coord),
