@@ -491,7 +491,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     _content.call(renderModalContent);
 
     context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
-    context.map().pan([0,0]);             // trigger a map redraw
+    context.map().immediateRedraw();
   }
 
 

@@ -33,13 +33,10 @@ export class PixiLayerKartaPhotos extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._service = null;
     this.getService();
@@ -53,7 +50,7 @@ export class PixiLayerKartaPhotos extends PixiLayer {
   getService() {
     if (services.openstreetcam && !this._service) {
       this._service = services.openstreetcam;
-      // this._service.event.on('loadedImages', throttledRedraw);
+      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
     } else if (!services.openstreetcam && this._service) {
       this._service = null;
     }

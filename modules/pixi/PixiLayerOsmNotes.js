@@ -17,13 +17,10 @@ export class PixiLayerOsmNotes extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._service = null;
     this.getService();
@@ -52,7 +49,7 @@ export class PixiLayerOsmNotes extends PixiLayer {
   getService() {
     if (services.osm && !this._service) {
       this._service = services.osm;
-      // this._service.on('loadedNotes', throttledRedraw);
+      this._service.on('loadedNotes', () => this.context.map().deferredRedraw());
     } else if (!services.osm && this._service) {
       this._service = null;
     }

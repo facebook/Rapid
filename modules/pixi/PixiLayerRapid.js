@@ -22,15 +22,11 @@ export class PixiLayerRapid extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this._enabled = true;  // RapiD features should be enabled by default
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._serviceFB = null;
     this._serviceEsri = null;
@@ -57,7 +53,7 @@ export class PixiLayerRapid extends PixiLayer {
       if (!wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.delete(annotation.id);
-      dispatch.call('change');   // redraw
+      this.context.map().immediateRedraw();
     }
 
 
@@ -66,7 +62,7 @@ export class PixiLayerRapid extends PixiLayer {
       if (!wasRapidEdit(annotation)) return;
 
       this._acceptedIDs.add(annotation.id);
-      this.dispatch.call('change');   // redraw
+      this.context.map().immediateRedraw();
     }
 
 
@@ -91,7 +87,7 @@ export class PixiLayerRapid extends PixiLayer {
         }
       });
 
-      this.dispatch.call('change');  // redraw
+      this.context.map().immediateRedraw();
     }
   }
 
@@ -103,7 +99,7 @@ export class PixiLayerRapid extends PixiLayer {
   getServiceFB() {
     if (services.fbMLRoads && !this._serviceFB) {
       this._serviceFB = services.fbMLRoads;
-      // this._serviceFB.event.on('loadedData', throttledRedraw);
+      this._serviceFB.on('loadedData', () => this.context.map().deferredRedraw());
     } else if (!services.fbMLRoads && this._serviceFB) {
       this._serviceFB = null;
     }
@@ -113,7 +109,7 @@ export class PixiLayerRapid extends PixiLayer {
   getServiceEsri() {
     if (services.esriData && !this._serviceEsri) {
       this._serviceEsri = services.esriData;
-      // this._serviceEsri.event.on('loadedData', throttledRedraw);
+      this._serviceEsri.on('loadedData', () => this.context.map().deferredRedraw());
     } else if (!services.esriData && this._serviceEsri) {
       this._serviceEsri = null;
     }

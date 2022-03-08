@@ -29,20 +29,20 @@ export class PixiLayers {
     this.scene = scene;
     this.dispatch = dispatch;
 
-    utilRebind(this, this.dispatch, 'on');
+    utilRebind(this, this.dispatch, 'on');  // very sus ??
 
     this._layers = [
-      new PixiLayerImproveOsm(context, scene, this.dispatch),
-      new PixiLayerKartaPhotos(context, scene, this.dispatch),
-      new PixiLayerKeepRight(context, scene, this.dispatch),
-      new PixiLayerMapillaryFeatures(context, scene, this.dispatch),
-      new PixiLayerMapillaryPhotos(context, scene, this.dispatch),
-      new PixiLayerMapillarySigns(context, scene, this.dispatch),
-      new PixiLayerOsm(context, scene, this.dispatch),
-      new PixiLayerOsmNotes(context, scene, this.dispatch),
-      new PixiLayerOsmose(context, scene, this.dispatch),
-      new PixiLayerRapid(context, scene, this.dispatch),
-      new PixiLayerStreetsidePhotos(context, scene, this.dispatch)
+      new PixiLayerImproveOsm(context, scene),
+      new PixiLayerKartaPhotos(context, scene),
+      new PixiLayerKeepRight(context, scene),
+      new PixiLayerMapillaryFeatures(context, scene),
+      new PixiLayerMapillaryPhotos(context, scene),
+      new PixiLayerMapillarySigns(context, scene),
+      new PixiLayerOsm(context, scene),
+      new PixiLayerOsmNotes(context, scene),
+      new PixiLayerOsmose(context, scene),
+      new PixiLayerRapid(context, scene),
+      new PixiLayerStreetsidePhotos(context, scene)
     ];
   }
 
@@ -75,7 +75,7 @@ export class PixiLayers {
         layer.enabled = true;
       }
     });
-    // this.dispatch.call('change');
+    this.dispatch.call('change');
     return this;
   }
 
@@ -87,7 +87,7 @@ export class PixiLayers {
         layer.enabled = false;
       }
     });
-    // this.dispatch.call('change');
+    this.dispatch.call('change');
     return this;
   }
 
@@ -97,7 +97,7 @@ export class PixiLayers {
     this._layers.forEach(layer => {
       layer.enabled = toEnable.has(layer.id);
     });
-    // this.dispatch.call('change');
+    this.dispatch.call('change');
     return this;
   }
 

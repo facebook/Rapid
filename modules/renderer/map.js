@@ -94,24 +94,15 @@ export function rendererMap(context) {
   const _doubleUpHandler = utilDoubleUp();
 
 
-  // var deferredRedraw = _throttle(redraw, 750);
-  let deferredRedraw = _throttle(redraw, 200);
-
-  function immediateRedraw() {
-    deferredRedraw.cancel();
-    redraw();
-  }
-
-
     function map(selection) {
       _selection = selection;
 
       context
-        .on('change.map', immediateRedraw);
+        .on('change.map', map.immediateRedraw);
 
       const osm = context.connection();
       if (osm) {
-        osm.on('change.map', immediateRedraw);
+        osm.on('change.map', map.immediateRedraw);
       }
 
       function didUndoOrRedo(targetTransform) {
@@ -123,16 +114,16 @@ export function rendererMap(context) {
       }
 
       context.history()
-        .on('merge.map', deferredRedraw)
-        .on('change.map', immediateRedraw)
+        .on('merge.map', map.deferredRedraw)
+        .on('change.map', map.immediateRedraw)
         .on('undone.map', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
         .on('redone.map', (stack) => didUndoOrRedo(stack.transform));
 
       context.background()
-        .on('change.map', immediateRedraw);
+        .on('change.map', map.immediateRedraw);
 
       // context.features()
-      //   .on('redraw.map', immediateRedraw);
+      //   .on('redraw.map', map.immediateRedraw);
 
       selection
         // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
@@ -161,7 +152,7 @@ export function rendererMap(context) {
       layers
         .on('change.map', function() {
           context.background().updateImagery();
-          immediateRedraw();
+          map.immediateRedraw();
         });
 
       layers.on('dragstart.feature', function () {
@@ -173,7 +164,7 @@ export function rendererMap(context) {
       });
 
       layers.on('change.feature', function () {
-        immediateRedraw();
+        map.immediateRedraw();
       });
 
       // END PIXI
@@ -193,7 +184,7 @@ export function rendererMap(context) {
 //        .on(POINTERPREFIX + 'up.zoom', d3_event => {
 //          _lastPointerEvent = d3_event;
 //          if (resetTransform()) {
-//            immediateRedraw();
+//            map.immediateRedraw();
 //          }
 //        })
 //        .on(POINTERPREFIX + 'move.map', d3_event => {
@@ -247,6 +238,13 @@ export function rendererMap(context) {
       /* noop */
     };
 
+    // var deferredRedraw = _throttle(redraw, 750);
+    map.deferredRedraw = _throttle(redraw, 200);
+
+    map.immediateRedraw = function() {
+      map.deferredRedraw.cancel();
+      redraw();
+    };
 
 
     function gestureChange(d3_event) {
@@ -431,7 +429,7 @@ export function rendererMap(context) {
         _transformLast = eventTransform;
 
         utilSetTransform(supersurface, tX, tY, scale);
-        deferredRedraw();
+        map.deferredRedraw();
         dispatch.call('move', this, map);
 
         function isInteger(val) {
@@ -568,7 +566,7 @@ export function rendererMap(context) {
         _transformStart = projection.transform();
         _selection.call(_zoomerPanner.transform, _transformStart);
         dispatch.call('move', this, map);
-        immediateRedraw();
+        map.immediateRedraw();
       }
 
       return map;
@@ -583,7 +581,7 @@ export function rendererMap(context) {
       projection.clipExtent([[0, 0], _dimensions]);
       _getMouseCoords = utilFastMouse(supersurface.node());
 
-      deferredRedraw();
+      map.deferredRedraw();
       return map;
     };
 
@@ -614,7 +612,7 @@ export function rendererMap(context) {
         dispatch.call('move', this, map);
       }
 
-      deferredRedraw();
+      map.deferredRedraw();
       return map;
     };
 
@@ -651,7 +649,7 @@ export function rendererMap(context) {
         dispatch.call('move', this, map);
       }
 
-      deferredRedraw();
+      map.deferredRedraw();
       return map;
     };
 
@@ -661,7 +659,7 @@ export function rendererMap(context) {
         dispatch.call('move', this, map);
       }
 
-      deferredRedraw();
+      map.deferredRedraw();
       return map;
     };
 
@@ -787,7 +785,7 @@ export function rendererMap(context) {
 
     map.toggleHighlightEdited = function() {
       surface.classed('highlight-edited', !surface.classed('highlight-edited'));
-      map.pan([0, 0]); // trigger a redraw
+      map.immediateRedraw();
       dispatch.call('changeHighlighting', this);
     };
 
@@ -802,7 +800,7 @@ export function rendererMap(context) {
       if (val !== 'wireframe') {
         prefs('area-fill-toggle', val);
       }
-      map.pan([0, 0]); // trigger a redraw
+      map.immediateRedraw();
       dispatch.call('changeAreaFill', this);
       return map;
     };

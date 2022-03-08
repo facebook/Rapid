@@ -195,7 +195,7 @@ export function uiOsmoseDetails(context) {
 
         // Don't hide entities related to this issue - #5880
         context.features().forceVisible(d.elems);
-        context.map().pan([0,0]);  // trigger a redraw
+        context.map().immediateRedraw();
       })
       .catch(err => {
         console.log(err); // eslint-disable-line no-console

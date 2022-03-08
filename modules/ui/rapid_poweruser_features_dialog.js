@@ -54,7 +54,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
         }
       });
       context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
-      context.map().pan([0,0]);             // trigger a map redraw
+      context.map().immediateRedraw();
     }
   }
 

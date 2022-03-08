@@ -33,13 +33,10 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._service = null;
     this.getService();
@@ -53,7 +50,7 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
   getService() {
     if (services.mapillary && !this._service) {
       this._service = services.mapillary;
-      // this._service.event.on('loadedImages', throttledRedraw);
+      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
     } else if (!services.mapillary && this._service) {
       this._service = null;
     }
@@ -124,7 +121,7 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
     // const photoData = this.filterImages(images);
 
     sequenceData.forEach(d => {
-      const featureID = `${LAYERID}-sequence-${d.properties.key}`;
+      const featureID = `${LAYERID}-sequence-${d.properties.id}`;
       let feature = scene.get(featureID);
 
       if (!feature) {
@@ -144,7 +141,7 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
 
 
     photoData.forEach(d => {
-      const featureID = `${LAYERID}-photo-${d.key}`;
+      const featureID = `${LAYERID}-photo-${d.id}`;
       let feature = scene.get(featureID);
 
       if (!feature) {

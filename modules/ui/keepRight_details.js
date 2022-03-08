@@ -113,7 +113,7 @@ export function uiKeepRightDetails(context) {
 
     // Don't hide entities related to this issue - #5880
     context.features().forceVisible(relatedEntities);
-    context.map().pan([0,0]);  // trigger a redraw
+    context.map().immediateRedraw();
   }
 
   keepRightDetails.issue = function(val) {

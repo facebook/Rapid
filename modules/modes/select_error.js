@@ -32,7 +32,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         case 'improveOSM':
             errorEditor = uiImproveOsmEditor(context)
             .on('change', function() {
-                context.map().pan([0,0]);  // trigger a redraw
+                context.map().immediateRedraw();
                 var error = checkSelectedID();
                 if (!error) return;
                 context.ui().sidebar
@@ -42,7 +42,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         case 'keepRight':
             errorEditor = uiKeepRightEditor(context)
             .on('change', function() {
-                context.map().pan([0,0]);  // trigger a redraw
+                context.map().immediateRedraw();
                 var error = checkSelectedID();
                 if (!error) return;
                 context.ui().sidebar
@@ -52,7 +52,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         case 'osmose':
             errorEditor = uiOsmoseEditor(context)
             .on('change', function() {
-                context.map().pan([0,0]);  // trigger a redraw
+                context.map().immediateRedraw();
                 var error = checkSelectedID();
                 if (!error) return;
                 context.ui().sidebar

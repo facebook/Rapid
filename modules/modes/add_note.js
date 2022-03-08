@@ -28,7 +28,7 @@ export function modeAddNote(context) {
         osm.replaceNote(note);
 
         // force a reraw (there is no history change that would otherwise do this)
-        context.map().pan([0,0]);
+        context.map().immediateRedraw();
 
         context
             .selectedNoteID(note.id)

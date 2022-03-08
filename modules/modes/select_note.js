@@ -26,7 +26,7 @@ export function modeSelectNote(context, selectedNoteID) {
     var _keybinding = utilKeybinding('select-note');
     var _noteEditor = uiNoteEditor(context)
         .on('change', function() {
-            context.map().pan([0,0]);  // trigger a redraw
+            context.map().immediateRedraw();
             var note = checkSelectedID();
             if (!note) return;
             context.ui().sidebar

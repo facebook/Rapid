@@ -18,13 +18,10 @@ export class PixiLayerOsmose extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._service = null;
     this.getService();
@@ -38,7 +35,7 @@ export class PixiLayerOsmose extends PixiLayer {
   getService() {
     if (services.osmose && !this._service) {
       this._service = services.osmose;
-      // this._service.event.on('loadedImages', throttledRedraw);
+      this._service.on('loaded', () => this.context.map().deferredRedraw());
     } else if (!services.osmose && this._service) {
       this._service = null;
     }

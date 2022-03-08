@@ -26,13 +26,10 @@ export class PixiLayerImproveOsm extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._service = null;
     this.getService();
@@ -46,7 +43,7 @@ export class PixiLayerImproveOsm extends PixiLayer {
   getService() {
     if (services.improveOSM && !this._service) {
       this._service = services.improveOSM;
-      // this._service.event.on('loaded', throttledRedraw);
+      this._service.on('loaded', () => this.context.map().deferredRedraw());
     } else if (!services.improveOSM && this._service) {
       this._service = null;
     }

@@ -33,13 +33,10 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
-
     this.scene = scene;
-    this.dispatch = dispatch;
 
     this._service = null;
     this.getService();
@@ -53,7 +50,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
   getService() {
     if (services.streetside && !this._service) {
       this._service = services.streetside;
-      // this._service.event.on('loadedImages', throttledRedraw);
+      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
     } else if (!services.streetside && this._service) {
       this._service = null;
     }
@@ -125,7 +122,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(context, featureID, d.geometry.coordinates, LINESTYLE);
+        feature = new PixiFeatureLine(context, featureID, d.coordinates, LINESTYLE);
 
         const dObj = feature.displayObject;
         dObj.zIndex = -100;  // beneath the markers (which should be [-90..90])

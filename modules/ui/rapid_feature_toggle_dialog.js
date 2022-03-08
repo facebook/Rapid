@@ -46,7 +46,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       }
 
       context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
-      context.map().pan([0,0]);             // trigger a map redraw
+      context.map().immediateRedraw();
     }
   }
 
@@ -55,7 +55,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     let dataset = datasets[datasetID];
     if (dataset) {
       dataset.color = color;
-      context.map().pan([0,0]);   // trigger a map redraw
+      context.map().immediateRedraw();
       _content.call(renderModalContent);
 
       // if a RapiD feature is selected, reselect it to update sidebar too

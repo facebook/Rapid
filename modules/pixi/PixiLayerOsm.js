@@ -26,15 +26,12 @@ export class PixiLayerOsm extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
-   * @param dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
     super(context, LAYERID, LAYERZINDEX);
     this._enabled = true;  // OSM layers should be enabled by default
-    this.dispatch = dispatch;
     this.scene = scene;
-    this.dispatch = dispatch;
-    this.touchContainer = null;
+
     this._service = null;
     this.getService();
 
