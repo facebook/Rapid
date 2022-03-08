@@ -1,13 +1,12 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
 import { behaviorHash } from '../behavior';
 import { modeBrowse } from '../modes/browse';
-import { svgDefs, svgIcon } from '../svg';
+import { svgDefs } from '../svg/defs';
+import { svgIcon } from '../svg/icon';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
 
@@ -23,7 +22,7 @@ import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
 import { uiLoading } from './loading';
-import { uiMapInMap } from './map_in_map';
+// import { uiMapInMap } from './map_in_map';
 import { uiPhotoviewer } from './photoviewer';
 import { uiRestore } from './restore';
 import { uiScale } from './scale';
@@ -168,8 +167,8 @@ export function uiInit(context) {
             .attr('class', 'select-trap')
             .text('t');
 
-        overMap
-            .call(uiMapInMap(context));
+//        overMap
+//            .call(uiMapInMap(context));
 
         overMap
             .append('div')

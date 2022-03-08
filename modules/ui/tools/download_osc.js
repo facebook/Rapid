@@ -4,7 +4,7 @@ import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
 import { actionDiscardTags } from '../../actions';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
 
 

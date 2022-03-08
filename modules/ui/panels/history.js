@@ -1,5 +1,5 @@
 import { t, localizer } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 
 
 export function uiPanelHistory(context) {

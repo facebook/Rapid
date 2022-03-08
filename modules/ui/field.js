@@ -6,7 +6,7 @@ import { t, localizer } from '../core/localizer';
 import { locationManager } from '../core/locations';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
-import { uiFieldHelp } from './field_help';
+// import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
 import { utilRebind, utilTotalExtent } from '../util';
@@ -193,10 +193,10 @@ export function uiField(context, presetField, entityIDs, options) {
 
                 var reference, help;
 
-                // instantiate field help
-                if (options.wrap && field.type === 'restrictions') {
-                    help = uiFieldHelp(context, 'restrictions');
-                }
+//                // instantiate field help
+//                if (options.wrap && field.type === 'restrictions') {
+//                    help = uiFieldHelp(context, 'restrictions');
+//                }
 
                 // instantiate tag reference
                 if (options.wrap && options.info) {

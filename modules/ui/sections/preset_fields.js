@@ -73,12 +73,12 @@ export function uiSectionPresetFields(context) {
                 }
             });
 
-            var singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
-            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetsManager.field('restrictions')) {
-                _fieldsArr.push(
-                    uiField(context, presetsManager.field('restrictions'), _entityIDs)
-                );
-            }
+//            var singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
+//            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetsManager.field('restrictions')) {
+//                _fieldsArr.push(
+//                    uiField(context, presetsManager.field('restrictions'), _entityIDs)
+//                );
+//            }
 
             var additionalFields = utilArrayUnion(sharedMoreFields, presetsManager.universal());
             additionalFields.sort(function(field1, field2) {

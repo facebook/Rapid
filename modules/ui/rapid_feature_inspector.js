@@ -4,7 +4,7 @@ import { t } from '../core/localizer';
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
 import { modeBrowse, modeSelect } from '../modes';
 import { services } from '../services';
-import { svgIcon } from '../svg';
+import { svgIcon } from '../svg/icon';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
 import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';

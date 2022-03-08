@@ -1,8 +1,0 @@
-{
-  "linters": {
-    "eslint-script-and-regex": {
-      "type": "script-and-regex",
-      "include": "(\\.js$)"
-    }
-  }
-}

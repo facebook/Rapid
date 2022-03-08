@@ -8,7 +8,7 @@ import { uiTooltip } from '../tooltip';
 import { svgIcon } from '../../svg/icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
-import { uiMapInMap } from '../map_in_map';
+// import { uiMapInMap } from '../map_in_map';
 import { uiSection } from '../section';
 
 export function uiSectionBackgroundList(context) {
@@ -51,27 +51,27 @@ export function uiSectionBackgroundList(context) {
       .append('ul')
       .attr('class', 'layer-list bg-extras-list');
 
-    const minimapLabelEnter = bgExtrasListEnter
-      .append('li')
-      .attr('class', 'minimap-toggle-item')
-      .append('label')
-      .call(uiTooltip()
-        .title(t('background.minimap.tooltip'))
-        .keys([t('background.minimap.key')])
-        .placement('top')
-      );
-
-    minimapLabelEnter
-      .append('input')
-      .attr('type', 'checkbox')
-      .on('change', (d3_event) => {
-        d3_event.preventDefault();
-        uiMapInMap.toggle();
-      });
-
-    minimapLabelEnter
-      .append('span')
-      .text(t('background.minimap.description'));
+//    const minimapLabelEnter = bgExtrasListEnter
+//      .append('li')
+//      .attr('class', 'minimap-toggle-item')
+//      .append('label')
+//      .call(uiTooltip()
+//        .title(t('background.minimap.tooltip'))
+//        .keys([t('background.minimap.key')])
+//        .placement('top')
+//      );
+//
+//    minimapLabelEnter
+//      .append('input')
+//      .attr('type', 'checkbox')
+//      .on('change', (d3_event) => {
+//        d3_event.preventDefault();
+//        uiMapInMap.toggle();
+//      });
+//
+//    minimapLabelEnter
+//      .append('span')
+//      .text(t('background.minimap.description'));
 
 
     const panelLabelEnter = bgExtrasListEnter

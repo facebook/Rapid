@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { modeAddArea, modeAddLine, modeAddPoint, modeBrowse } from '../../modes';
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
 
 

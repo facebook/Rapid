@@ -1,7 +1,0 @@
-{
-  "capabilities": [
-    "submit",
-    "land",
-  ],
-  "project_id": "openstreetmap-id",
-}

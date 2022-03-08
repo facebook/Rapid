@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { modeAddNote, modeBrowse } from '../../modes';
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
 
 

@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 

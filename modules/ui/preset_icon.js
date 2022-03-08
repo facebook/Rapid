@@ -2,7 +2,8 @@ import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../presets';
 import { prefs } from '../core/preferences';
-import { svgIcon, svgTagClasses } from '../svg';
+import { svgIcon } from '../svg/icon';
+import { svgTagClasses } from '../svg/tag_classes';
 import { utilFunctor } from '../util';
 
 

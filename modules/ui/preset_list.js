@@ -6,7 +6,7 @@ import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
-import { svgIcon } from '../svg/index';
+import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
 import { uiPresetIcon } from './preset_icon';
 import { uiTagReference } from './tag_reference';
