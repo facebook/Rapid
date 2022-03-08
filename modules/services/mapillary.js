@@ -410,7 +410,7 @@ export default {
     loadObjectResources: function(context, isRapidOn) {
         var sprites = 'mapillary-object-sprite';
         if (isRapidOn) {
-            sprites = 'rapid-object-sprite';
+            sprites = 'rapid-mapillary-object-sprite';
         }
         context.ui().svgDefs.addSprites([sprites], isRapidOn /* don't override colors */ );
         return this;

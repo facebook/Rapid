@@ -14,7 +14,7 @@ import { svgMapillaryPosition } from './mapillary_position';
 import { svgMapillarySigns } from './mapillary_signs';
 import { svgMapillaryMapFeatures } from './mapillary_map_features';
 import { svgOpenstreetcamImages } from './openstreetcam_images';
-import { svgMapillaryRapidFeatures } from './mapillary_rapid_features';
+import { svgRapidMapillaryFeatures } from './rapid_mapillary_features';
 import { svgOsm } from './osm';
 import { svgNotes } from './notes';
 import { svgTouch } from './touch';
@@ -41,7 +41,7 @@ export function svgLayers(projection, context) {
         { id: 'mapillary-map-features',  layer: svgMapillaryMapFeatures(projection, context, dispatch) },
         { id: 'mapillary-signs',  layer: svgMapillarySigns(projection, context, dispatch) },
         { id: 'openstreetcam', layer: svgOpenstreetcamImages(projection, context, dispatch) },
-        { id: 'rapid-mapillary-features',  layer: svgMapillaryRapidFeatures(projection, context, dispatch) },
+        { id: 'rapid-mapillary-features',  layer: svgRapidMapillaryFeatures(projection, context, dispatch) },
         { id: 'debug', layer: svgDebug(projection, context, dispatch) },
         { id: 'geolocate', layer: svgGeolocate(projection, context, dispatch) },
         { id: 'touch', layer: svgTouch(projection, context, dispatch) }

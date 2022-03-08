@@ -203,7 +203,7 @@ export function svgDefs(context) {
                             var currentColor = 'currentColor';
 
                             //If RapiD, add '-rapid' to icon id and change current color to RapId color
-                            if (node.classList[1] === 'spritesheet-rapid-object-sprite') {
+                            if (node.classList[1] === 'spritesheet-rapid-mapillary-object-sprite') {
                                 d3_select(node)
                                 .selectAll('symbol')
                                 .attr('id', function() {

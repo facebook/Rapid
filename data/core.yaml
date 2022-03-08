@@ -1426,8 +1426,8 @@ en:
     hires: "High resolution"
   mapillary_images:
     tooltip: "Street-level photos from Mapillary"
-  rapid_features: 
-    title: "RapiD Features"
+  rapid_mapillary_features: 
+    title: "RapiD Mapillary Features"
     tooltip: "Map features from RapiD"
   mapillary_map_features:
     title: "Map Features"

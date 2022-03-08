@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
 
-export function svgMapillaryRapidFeatures(projection, context, dispatch) {
+export function svgRapidMapillaryFeatures(projection, context, dispatch) {
     const throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
     let layer = d3_select(null);
@@ -11,14 +11,14 @@ export function svgMapillaryRapidFeatures(projection, context, dispatch) {
 
     dispatch.on('turnOffRapid', () => {
         hideLayer();
-        svgMapillaryRapidFeatures.enabled = false;
+        svgRapidMapillaryFeatures.enabled = false;
         context.photos().on('change.mapillary_rapid_features', null);
     });
 
     function init() {
-        if (svgMapillaryRapidFeatures.initialized) return;  // run once
-        svgMapillaryRapidFeatures.enabled = false;
-        svgMapillaryRapidFeatures.initialized = true;
+        if (svgRapidMapillaryFeatures.initialized) return;  // run once
+        svgRapidMapillaryFeatures.enabled = false;
+        svgRapidMapillaryFeatures.initialized = true;
     }
 
 
@@ -135,6 +135,7 @@ export function svgMapillaryRapidFeatures(projection, context, dispatch) {
             .attr('height', '24px')
             .attr('x', '-12px')
             .attr('y', '-12px')
+            .attr('fill', 'purple')
             .attr('xlink:href', function(d) {
                 if (d.value === 'object--billboard') {
                     // no billboard icon right now, so use the advertisement icon
@@ -158,7 +159,7 @@ export function svgMapillaryRapidFeatures(projection, context, dispatch) {
 
 
     function drawMapFeatures(selection) {
-        const enabled = svgMapillaryRapidFeatures.enabled;
+        const enabled = svgRapidMapillaryFeatures.enabled;
         const service = getService();
 
         layer = selection.selectAll('.layer-mapillary-map-features')
@@ -189,9 +190,9 @@ export function svgMapillaryRapidFeatures(projection, context, dispatch) {
 
 
     drawMapFeatures.enabled = function(_) {
-        if (!arguments.length) return svgMapillaryRapidFeatures.enabled;
-        svgMapillaryRapidFeatures.enabled = _;
-        if (svgMapillaryRapidFeatures.enabled) {
+        if (!arguments.length) return svgRapidMapillaryFeatures.enabled;
+        svgRapidMapillaryFeatures.enabled = _;
+        if (svgRapidMapillaryFeatures.enabled) {
             showLayer();
             context.photos().on('change.mapillary_rapid_features', update);
         } else {
