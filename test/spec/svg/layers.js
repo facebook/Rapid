@@ -40,7 +40,7 @@ describe('iD.svgLayers', function () {
         expect(d3.select(nodes[10]).classed('mapillary-map-features')).to.be.true;
         expect(d3.select(nodes[11]).classed('mapillary-signs')).to.be.true;
         expect(d3.select(nodes[12]).classed('openstreetcam')).to.be.true;
-        expect(d3.select(nodes[13]).classed('rapid-features')).to.be.true;
+        expect(d3.select(nodes[13]).classed('rapid-mapillary-features')).to.be.true;
         expect(d3.select(nodes[14]).classed('debug')).to.be.true;
         expect(d3.select(nodes[15]).classed('geolocate')).to.be.true;
         expect(d3.select(nodes[16]).classed('touch')).to.be.true;
