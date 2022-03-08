@@ -92,6 +92,18 @@ export class PixiLayers {
   }
 
 
+  toggle(ids) {
+    const toToggle = new Set([].concat(ids));  // coax ids into a Set
+    this._layers.forEach(layer => {
+      if (toToggle.has(layer.id)) {
+        layer.enabled = !layer.enabled;
+      }
+    });
+    this.dispatch.call('change');
+    return this;
+  }
+
+
   only(ids) {
     const toEnable = new Set([].concat(ids));  // coax ids into a Set
     this._layers.forEach(layer => {

@@ -404,13 +404,8 @@ export function uiInit(context) {
                 var mode = context.mode();
                 if (mode && /^draw/.test(mode.id)) return;
 
-                var layer = context.layers().getLayer('osm');
-                if (layer) {
-                    layer.enabled(!layer.enabled());
-                    if (!layer.enabled()) {
-                        context.enter(modeBrowse(context));
-                    }
-                }
+                var layer = context.layers().toggle('osm');
+                context.enter(modeBrowse(context));
             })
             .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
                 d3_event.preventDefault();

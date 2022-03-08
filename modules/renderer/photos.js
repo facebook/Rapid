@@ -192,11 +192,7 @@ export function rendererPhotos(context) {
     // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=openstreetcam;mapillary;streetside`
     if (hash.photo_overlay) {
       const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
-      hashOverlayIDs.forEach(layerID => {
-        const layer = context.layers().getLayer(layerID);
-        if (!layer) return;
-        layer.enabled = true;
-      });
+      context.layers().enable(hashOverlayIDs);
     }
 
     // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
@@ -212,9 +208,7 @@ export function rendererPhotos(context) {
         if (!service || !service.ensureViewerLoaded) return;
 
         // if we're showing a photo then make sure its layer is enabled too
-        const layer = context.layers().getLayer(serviceId);
-        if (!layer) return;
-        layer.enabled = true;
+        context.layers().enable(serviceId);
 
         const startTime = Date.now();
         service.on('loadedImages.rendererPhotos', () => {

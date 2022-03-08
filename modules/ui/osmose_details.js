@@ -159,11 +159,7 @@ export function uiOsmoseDetails(context) {
 
                   utilHighlightEntities([entityID], false, context);
 
-                  const osmlayer = context.layers().getLayer('osm');
-                  if (!osmlayer.enabled()) {
-                    osmlayer.enabled(true);
-                  }
-
+                  context.layers().enable('osm');  // make sure osm layer is even on
                   context.map().centerZoom(d.loc, 20);
 
                   if (entity) {

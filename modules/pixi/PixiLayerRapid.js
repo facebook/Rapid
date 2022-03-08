@@ -128,10 +128,7 @@ export class PixiLayerRapid extends PixiLayer {
     if (!this._enabled) return;
 
     const rapidContext = this.context.rapidContext();
-    const rapidDatasets = rapidContext.datasets();
-
-    const datasets = Object.values(rapidDatasets)
-      .filter(dataset => dataset.added && dataset.enabled);
+    const datasets = Object.values(rapidContext.datasets());
 
     if (datasets.length && zoom >= MINZOOM) {
       datasets.forEach(dataset => this.renderDataset(dataset, projection, zoom));
@@ -153,6 +150,7 @@ export class PixiLayerRapid extends PixiLayer {
   renderDataset(dataset, projection, zoom) {
     const context = this.context;
     const rapidContext = context.rapidContext();
+    const datasetEnabled = (dataset.added && dataset.enabled);
 
     const service = dataset.service === 'fbml' ? this.getServiceFB(): this.getServiceEsri();
     if (!service) return;
@@ -176,7 +174,7 @@ export class PixiLayerRapid extends PixiLayer {
 
 
     /* Facebook AI/ML */
-    if (dataset.service === 'fbml') {
+    if (datasetEnabled && dataset.service === 'fbml') {
       service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
 
       const visibleData = service
@@ -209,7 +207,7 @@ export class PixiLayerRapid extends PixiLayer {
       }
 
     /* ESRI ArcGIS */
-    } else if (dataset.service === 'esri') {
+    } else if (datasetEnabled && dataset.service === 'esri') {
       service.loadTiles(datasetID, context.projection);  // fetch more
 
       const visibleData = service
@@ -262,9 +260,14 @@ export class PixiLayerRapid extends PixiLayer {
       points = datasetContainer.getChildByName(`${dataset.id}-points`);
     }
 
-    this.renderAreas(areas, dataset, datasetGraph, projection, zoom, geoData);
-    this.renderLines(lines, dataset, datasetGraph, projection, zoom, geoData);
-    this.renderPoints(points, dataset, datasetGraph, projection, zoom, geoData);
+    if (datasetEnabled) {
+      datasetContainer.visible = true;
+      this.renderAreas(areas, dataset, datasetGraph, projection, zoom, geoData);
+      this.renderLines(lines, dataset, datasetGraph, projection, zoom, geoData);
+      this.renderPoints(points, dataset, datasetGraph, projection, zoom, geoData);
+    } else {
+      datasetContainer.visible = false;
+    }
   }
 
 

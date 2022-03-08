@@ -49,11 +49,11 @@ export function uiSectionDataLayers(context) {
     const mode = context.mode();
     if (mode && /^draw/.test(mode.id)) return;
 
-    const layer = layers.getLayer(layerID);
-    if (layer) {
-      layer.enabled = val;
-
-      if (!val && (layerID === 'osm' || layerID === 'notes')) {
+    if (val) {
+      layers.enable(layerID);
+    } else {
+      layers.disable(layerID);
+      if (layerID === 'osm' || layerID === 'notes') {
         context.enter(modeBrowse(context));
       }
     }
@@ -175,118 +175,7 @@ export function uiSectionDataLayers(context) {
       .property('checked', d => d.enabled);
   }
 
-//
-//    // Beta feature - sample vector layers to support Detroit Mapping Challenge
-//    // https://github.com/osmus/detroit-mapping-challenge
-//    function drawVectorItems(selection) {
-//        let dataLayer = layers.layer('data');
-//        let vtData = [
-//            {
-//                name: 'Detroit Neighborhoods/Parks',
-//                src: 'neighborhoods-parks',
-//                tooltip: 'Neighborhood boundaries and parks as compiled by City of Detroit in concert with community groups.',
-//                template: 'https://{switch:a,b,c,d}.tiles.mapbox.com/v4/jonahadkins.cjksmur6x34562qp9iv1u3ksf-54hev,jonahadkins.cjksmqxdx33jj2wp90xd9x2md-4e5y2/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoiam9uYWhhZGtpbnMiLCJhIjoiRlVVVkx3VSJ9.9sdVEK_B_VkEXPjssU5MqA'
-//            }, {
-//                name: 'Detroit Composite POIs',
-//                src: 'composite-poi',
-//                tooltip: 'Fire Inspections, Business Licenses, and other public location data collated from the City of Detroit.',
-//                template: 'https://{switch:a,b,c,d}.tiles.mapbox.com/v4/jonahadkins.cjksmm6a02sli31myxhsr7zf3-2sw8h/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoiam9uYWhhZGtpbnMiLCJhIjoiRlVVVkx3VSJ9.9sdVEK_B_VkEXPjssU5MqA'
-//            }, {
-//                name: 'Detroit All-The-Places POIs',
-//                src: 'alltheplaces-poi',
-//                tooltip: 'Public domain business location data created by web scrapers.',
-//                template: 'https://{switch:a,b,c,d}.tiles.mapbox.com/v4/jonahadkins.cjksmswgk340g2vo06p1w9w0j-8fjjc/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1Ijoiam9uYWhhZGtpbnMiLCJhIjoiRlVVVkx3VSJ9.9sdVEK_B_VkEXPjssU5MqA'
-//            }
-//        ];
-//
-//        // Only show this if the map is around Detroit..
-//        let detroit = new Extent([-83.5, 42.1], [-82.8, 42.5]);
-//        let mapCenter = new Extent(context.map().center());
-//        let showVectorItems = (context.map().zoom() > 9 && detroit.contains(mapCenter));
-//
-//        let container = selection.selectAll('.vectortile-container')
-//            .data(showVectorItems ? [0] : []);
-//
-//        container.exit()
-//            .remove();
-//
-//        let containerEnter = container.enter()
-//            .append('div')
-//            .attr('class', 'vectortile-container');
-//
-//        containerEnter
-//            .append('h4')
-//            .attr('class', 'vectortile-header')
-//            .html('Detroit Vector Tiles (Beta)');
-//
-//        containerEnter
-//            .append('ul')
-//            .attr('class', 'layer-list layer-list-vectortile');
-//
-//        containerEnter
-//            .append('div')
-//            .attr('class', 'vectortile-footer')
-//            .append('a')
-//            .attr('target', '_blank')
-//            .call(svgIcon('#iD-icon-out-link', 'inline'))
-//            .attr('href', 'https://github.com/osmus/detroit-mapping-challenge')
-//            .append('span')
-//            .html('About these layers');
-//
-//        container = container
-//            .merge(containerEnter);
-//
-//
-//        let ul = container.selectAll('.layer-list-vectortile');
-//
-//        let li = ul.selectAll('.list-item')
-//            .data(vtData);
-//
-//        li.exit()
-//            .remove();
-//
-//        let liEnter = li.enter()
-//            .append('li')
-//            .attr('class', function(d) { return 'list-item list-item-' + d.src; });
-//
-//        let labelEnter = liEnter
-//            .append('label')
-//            .each(function(d) {
-//                d3_select(this).call(
-//                    uiTooltip().title(d.tooltip).placement('top')
-//                );
-//            });
-//
-//        labelEnter
-//            .append('input')
-//            .attr('type', 'radio')
-//            .attr('name', 'vectortile')
-//            .on('change', selectVTLayer);
-//
-//        labelEnter
-//            .append('span')
-//            .html(function(d) { return d.name; });
-//
-//        // Update
-//        li
-//            .merge(liEnter)
-//            .classed('active', isVTLayerSelected)
-//            .selectAll('input')
-//            .property('checked', isVTLayerSelected);
-//
-//
-//        function isVTLayerSelected(d) {
-//            return dataLayer && dataLayer.template() === d.template;
-//        }
-//
-//        function selectVTLayer(d3_event, d) {
-//            prefs('settings-custom-data-url', d.template);
-//            if (dataLayer) {
-//                dataLayer.template(d.template, d.src);
-//                dataLayer.enabled(true);
-//            }
-//        }
-//    }
+
 
   function drawCustomDataItems(selection) {
     const dataLayer = layers.getLayer('data');

@@ -41,9 +41,10 @@ export function uiSectionPhotoOverlays(context) {
     const mode = context.mode();
     if (mode && /^draw/.test(mode.id)) return;
 
-    const layer = layers.getLayer(layerID);
-    if (layer) {
-      layer.enabled = val;
+    if (val) {
+      layers.enable(layerID);
+    } else {
+      layers.disable(layerID);
     }
   }
 
