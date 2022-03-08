@@ -20,8 +20,7 @@ export class PixiFeature {
 
   /**
    * @constructor
-   * @param displayObject - root Pixi display object for the feature
-   *    (can be a Graphic, Container, Sprite, etc)
+   * @param `displayObject` Root Pixi display object for the feature (can be a Graphic, Container, Sprite, etc)
    */
   constructor(displayObject) {
     this.displayObject = displayObject;
@@ -32,7 +31,7 @@ export class PixiFeature {
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
-    this.extent = new Extent();                // in WGS84 coordinates (0,0 is null island)
+    this.extent = new Extent();                // in WGS84 coordinates ([0,0] is null island)
     this.localBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the object
     this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
   }
@@ -53,6 +52,15 @@ export class PixiFeature {
 
     this.k = k;
     this.dirty = false;
+  }
+
+  /**
+   * needsUpdate
+   * @param projection - a pixi projection
+   */
+  needsUpdate(projection) {
+    const k = projection.scale();
+    return (this.dirty || this.k !== k);
   }
 
 

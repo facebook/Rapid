@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { Extent } from '@id-sdk/math';
 import { DashLine } from 'pixi-dashed-line';
 
 import { PixiFeature } from './PixiFeature';
@@ -39,7 +40,7 @@ export class PixiFeatureLine extends PixiFeature {
 
     this.context = context;
     this.type = 'line';
-    this._coords = coords;      // Array of [lon, lat] coordinate pairs
+    this.coords = coords;      // Array of [lon, lat] coordinate pairs
 
     this.style = style;
     this.showOneWay = showOneWay;
@@ -232,6 +233,13 @@ export class PixiFeatureLine extends PixiFeature {
   set coords(val) {
     this._coords = val;
     this.dirty = true;
+
+    this.extent = val.reduce((extent, coord) => {
+      // update extent in place
+      extent.min = [ Math.min(extent.min[0], coord[0]), Math.min(extent.min[1], coord[1]) ];
+      extent.max = [ Math.max(extent.max[0], coord[0]), Math.max(extent.max[1], coord[1]) ];
+      return extent;
+    }, new Extent());
   }
 
 }

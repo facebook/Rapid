@@ -138,18 +138,18 @@ export class PixiLayerOsm extends PixiLayer {
       // GATHER phase
       const data = context.history().intersects(map.extent());
 
-     // CULL phase (currently osm only)
-     // for now non-OSM features will have to cull themselves
-     let visibleOSM = {};
-     data.forEach(entity => visibleOSM[entity.id] = true);
-     [...this.scene._features.entries()].forEach(function cull([id, feature]) {
-       let isVisible = !!visibleOSM[id] || !context.graph().hasEntity(id);
+    // CULL phase (currently osm only)
+    // for now non-OSM features will have to cull themselves
+    let visibleOSM = {};
+    data.forEach(entity => visibleOSM[entity.id] = true);
+    [...this.scene._features.entries()].forEach(function cull([id, feature]) {
+      let isVisible = !!visibleOSM[id] || !context.graph().hasEntity(id);
 
-       feature.displayObject.visible = isVisible;
-       if (feature.label) {
-         feature.label.displayObject.visible = isVisible;
-       }
-     });
+      feature.displayObject.visible = isVisible;
+      if (feature.label) {
+        feature.label.displayObject.visible = isVisible;
+      }
+    });
 
       // DRAW phase
       const areasLayer = this.container.getChildByName('areas');

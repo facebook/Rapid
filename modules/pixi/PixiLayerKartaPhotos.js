@@ -23,7 +23,6 @@ const MARKERSTYLE = {
 };
 
 
-
 /**
  * PixiLayerKartaPhotos
  * @class
@@ -115,9 +114,6 @@ export class PixiLayerKartaPhotos extends PixiLayer {
     const service = this.getService();
     if (!service) return;
 
-    //const showMarkers = (zoom >= MINMARKERZOOM);
-    //const showViewfields = (zoom >= MINVIEWFIELDZOOM);
-
     const images = service.images(context.projection);
     const sequences = service.sequences(context.projection);
 
@@ -131,15 +127,16 @@ export class PixiLayerKartaPhotos extends PixiLayer {
       if (!feature) {
         feature = new PixiFeatureLine(context, featureID, d.coordinates, LINESTYLE);
 
-        const container = feature.displayObject;
-        container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        container.__data__ = d;
-        this.container.addChild(container);
-
-        scene.add(feature);
+        const dObj = feature.displayObject;
+        dObj.zIndex = -100;  // beneath the markers (which should be [-90..90])
+        dObj.__data__ = d;
+        this.container.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
 
 
@@ -152,14 +149,15 @@ export class PixiLayerKartaPhotos extends PixiLayer {
         feature = new PixiFeaturePoint(context, featureID, d.loc, vfDirections, MARKERSTYLE);
 
         // bind data and add to scene
-        const marker = feature.displayObject;
-        marker.__data__ = d;
-        this.container.addChild(marker);
-
-        scene.add(feature);
+        const dObj = feature.displayObject;
+        dObj.__data__ = d;
+        this.container.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
   }
 

@@ -93,19 +93,20 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
         };
         feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
 
-        const marker = feature.displayObject;
+        const dObj = feature.displayObject;
         // const ICONSIZE = 24;
-        // marker.width = ICONSIZE;
-        // marker.height = ICONSIZE;
+        // dObj.width = ICONSIZE;
+        // dObj.height = ICONSIZE;
 
         // bind data and add to scene
-        marker.__data__ = d;
-        this.container.addChild(marker);
-
-        scene.add(feature);
+        dObj.__data__ = d;
+        this.container.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
   }
 

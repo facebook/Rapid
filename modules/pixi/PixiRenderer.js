@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import * as PIXI from 'pixi.js';
-import { Projection, vecAdd } from '@id-sdk/math';
+import { Projection, Extent, vecAdd } from '@id-sdk/math';
 
 import { PixiEventsHandler } from './PixiEventsHandler';
 import { PixiLayers } from './PixiLayers';
@@ -97,59 +97,62 @@ export class PixiRenderer {
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
-    const currTransform = this.context.projection.transform();
-    const pixiTransform = this.pixiProjection.transform();
+    const context = this.context;
+    const pixiProjection = this.pixiProjection;
+    const currTransform = context.projection.transform();
+    const pixiTransform = pixiProjection.transform();
 
     let offset;
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset
       offset = [0, 0];
-      this.pixiProjection.transform(currTransform);
+      pixiProjection.transform(currTransform);
     } else {
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
 
-    const screen = this.pixi.screen;
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
-
-
-//   //
-//   // optimistically cull?
-//   //
-//   this.scene.forEach(feature => {
-//     if (feature.displayObject) feature.displayObject.visible = false;
-//   });
-
 
     //
     // DRAW phase (updates bounding boxes)
     //
-    this.layers.render(this.pixiProjection);
+    this.layers.render(pixiProjection);
 
 //    //
-//    // CULL phase (bounds must be updated for this to work)
+//    // CULL phase (feature positions in the rbush must be up to date for this to work)
 //    //
-//    const viewMin = vecAdd(offset, [screen.x, screen.y]);   // x,y should be 0,0
-//    const viewMax = vecAdd(offset, [screen.width, screen.height]);
+//    // const viewMin = vecAdd(offset, [screen.x, screen.y]);   // x,y should be 0,0
+//    // const viewMax = vecAdd(offset, [screen.width, screen.height]);
+//    // const screen = this.pixi.screen;
+//    const mapExtent = context.map().extent();
+//    const visible = this.scene._rbush.search(mapExtent.bbox());
 //
-//    this.scene.forEach(feature => {
-//      const displayObject = feature.displayObject;
-//      const bounds = feature.sceneBounds;
-//      if (!bounds || !displayObject) return;
+//    let isVisible = {};
+//    visible.forEach(box => isVisible[box.id] = true);
 //
-//      const featMin = [bounds.x, bounds.y];
-//      const featMax = [bounds.x + bounds.width, bounds.y + bounds.height];
-//
-//      const isVisible = (
-//        featMin[0] <= viewMax[0] &&
-//        featMin[1] <= viewMax[1] &&
-//        featMax[0] >= viewMin[0] &&
-//        featMax[1] >= viewMin[1]
-//      );
-//
-//      displayObject.visible = isVisible;
+//    [...this.scene._features.entries()].forEach(function cull([featureID, feature]) {
+//      feature.visible = !!isVisible[featureID];
 //    });
-//
+
+
+    // this.scene._features.forEach(feature => {
+    //   const displayObject = feature.displayObject;
+    //   const bounds = feature.sceneBounds;
+    //   if (!bounds || !displayObject) return;
+
+    //   const featMin = [bounds.x, bounds.y];
+    //   const featMax = [bounds.x + bounds.width, bounds.y + bounds.height];
+
+    //   const isVisible = (
+    //     featMin[0] <= viewMax[0] &&
+    //     featMin[1] <= viewMax[1] &&
+    //     featMax[0] >= viewMin[0] &&
+    //     featMax[1] >= viewMin[1]
+    //   );
+
+    //   displayObject.visible = isVisible;
+    // });
+
 
     if (!AUTOTICK) {    // tick manually
       this._redrawPending = true;

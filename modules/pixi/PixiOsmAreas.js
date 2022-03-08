@@ -64,11 +64,12 @@ export class PixiOsmAreas {
           dObj.zIndex = -area;                       // sort by area descending (small things above big things)
           dObj.__data__ = entity;
           container.addChild(dObj);
-
-          scene.add(feature);
         }
 
-        feature.update(projection, zoom);
+        if (feature.needsUpdate(projection)) {
+          feature.update(projection, zoom);
+          scene.update(feature);
+        }
       });
   }
 }

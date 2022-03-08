@@ -95,11 +95,12 @@ export class PixiOsmLines {
           const lvl = entity.layer().toString();
           const level = thiz.getLevelContainer(container, lvl);
           level.addChild(dObj);
-
-          scene.add(feature);
         }
 
-        feature.update(projection, zoom);
+        if (feature.needsUpdate(projection)) {
+          feature.update(projection, zoom);
+          scene.update(feature);
+        }
      });
   }
 }

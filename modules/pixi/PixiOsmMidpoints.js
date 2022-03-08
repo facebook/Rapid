@@ -84,11 +84,12 @@ export class PixiOsmMidpoints {
           dObj.__data__ = midpoint;
           dObj.rotation = midpoint.rot;  // remember to apply rotation
           container.addChild(dObj);
-
-          scene.add(feature);
         }
 
-        feature.update(projection, zoom);
+        if (feature.needsUpdate(projection)) {
+          feature.update(projection, zoom);
+          scene.update(feature);
+        }
       });
   }
 }

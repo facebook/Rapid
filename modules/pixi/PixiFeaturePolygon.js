@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { geomGetSmallestSurroundingRectangle, vecLength } from '@id-sdk/math';
+import { Extent, geomGetSmallestSurroundingRectangle, vecLength } from '@id-sdk/math';
 
 import { PixiFeature } from './PixiFeature';
 import { lineToPolygon } from './helpers';
@@ -306,6 +306,17 @@ export class PixiFeaturePolygon extends PixiFeature {
   set polygons(val) {
     this._polygons = val;
     this.dirty = true;
+
+    this.extent = new Extent();
+    val.forEach(rings => {
+      if (!rings.length) return;    // no rings?
+      rings[0].forEach(coord => {   // ring[0] is an outer ring
+        // update extent in place
+        this.extent.min = [ Math.min(this.extent.min[0], coord[0]), Math.min(this.extent.min[1], coord[1]) ];
+        this.extent.max = [ Math.max(this.extent.max[0], coord[0]), Math.max(this.extent.max[1], coord[1]) ];
+      });
+    });
+
   }
 
 }

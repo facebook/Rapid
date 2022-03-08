@@ -34,7 +34,7 @@ export class PixiFeaturePoint extends PixiFeature {
 
     this.context = context;
     this.type = 'point';
-    this._coord = coord;      // [lon, lat] coordinate pair
+    this.coord = coord;      // [lon, lat] coordinate pair
 
     // markerStyle can contatin:
     // `markerTexture`
@@ -177,6 +177,9 @@ export class PixiFeaturePoint extends PixiFeature {
     return this._coord;
   }
   set coord(val) {
+    this.extent.min = val;
+    this.extent.max = val;
+
     this._coord = val;
     this.dirty = true;
   }

@@ -99,14 +99,15 @@ export class PixiLayerOsmNotes extends PixiLayer {
         feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
 
         // bind data and add to scene
-        const marker = feature.displayObject;
-        marker.__data__ = d;
-        this.container.addChild(marker);
-
-        scene.add(feature);
+        const dObj = feature.displayObject;
+        dObj.__data__ = d;
+        this.container.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
   }
 

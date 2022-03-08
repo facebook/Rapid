@@ -42,9 +42,9 @@ export class PixiLayerRapid extends PixiLayer {
     this._acceptedIDs = new Set();
 
     this.context.history()
-      .on('undone.rapid', onHistoryUndone)
-      .on('change.rapid', onHistoryChange)
-      .on('restore.rapid', onHistoryRestore);
+      .on('undone.rapid', onHistoryUndone.bind(this))
+      .on('change.rapid', onHistoryChange.bind(this))
+      .on('restore.rapid', onHistoryRestore.bind(this));
 
 
     function wasRapidEdit(annotation) {
@@ -296,16 +296,17 @@ export class PixiLayerRapid extends PixiLayer {
         feature.rapidFeature = true;
 
         // bind data and add to scene
-        const container = feature.displayObject;
+        const dObj = feature.displayObject;
         const area = entity.extent(graph).area();  // estimate area from extent for speed
-        container.zIndex = -area;                  // sort by area descending (small things above big things)
-        container.__data__ = entity;
-        layer.addChild(container);
-
-        scene.add(feature);
+        dObj.zIndex = -area;                  // sort by area descending (small things above big things)
+        dObj.__data__ = entity;
+        layer.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
   }
 
@@ -335,14 +336,15 @@ export class PixiLayerRapid extends PixiLayer {
         feature.rapidFeature = true;
 
         // bind data and add to scene
-        const container = feature.displayObject;
-        container.__data__ = entity;
-        layer.addChild(container);
-
-        scene.add(feature);
+        const dObj = feature.displayObject;
+        dObj.__data__ = entity;
+        layer.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
   }
 
@@ -373,14 +375,15 @@ export class PixiLayerRapid extends PixiLayer {
         feature.rapidFeature = true;
 
         // bind data and add to scene
-        const marker = feature.displayObject;
-        marker.__data__ = entity;
-        layer.addChild(marker);
-
-        scene.add(feature);
+        const dObj = feature.displayObject;
+        dObj.__data__ = entity;
+        layer.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
 
 
@@ -392,19 +395,20 @@ export class PixiLayerRapid extends PixiLayer {
         feature.rapidFeature = true;
 
         // vertices in this layer don't actually need to be interactive
-        const marker = feature.displayObject;
-        marker.buttonMode = false;
-        marker.interactive = false;
-        marker.interactiveChildren = false;
+        const dObj = feature.displayObject;
+        dObj.buttonMode = false;
+        dObj.interactive = false;
+        dObj.interactiveChildren = false;
 
         // bind data and add to scene
-        marker.__data__ = entity;
-        layer.addChild(marker);
-
-        scene.add(feature);
+        dObj.__data__ = entity;
+        layer.addChild(dObj);
       }
 
-      feature.update(projection, zoom);
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
     });
 
   }
