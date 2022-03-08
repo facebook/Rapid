@@ -4,6 +4,7 @@ import { modeBrowse, modeSelect } from '../modes';
 import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
+import { t } from '../core/localizer';
 
 /**
  * PixiEventsHandler contains event handlers for the various events/gestures
@@ -150,14 +151,26 @@ export class PixiEventsHandler {
     }
   }
 
+
+    moveAnnotation(entity) {
+        return t('operations.move.annotation.' + entity.geometry(this.context.graph()));
+    }
+
   onTouchEndHandler(e) {
 
     if (this.draggingState) {
      this.dispatch.call('dragend');
+      let feature = this.featureCache.get(this.draggingEntity.id);
+
+      this.context.replace(
+        actionMoveNode(feature.id, feature.coord),
+        this.moveAnnotation(this.draggingEntity)
+        );
     }
     this.draggingState = false;
     this.draggingEntity = null;
     this.draggingTarget = null;
+
 
     this.dispatch.call('change');
   }
