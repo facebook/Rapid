@@ -31,7 +31,6 @@ export class PixiEventsHandler {
     this.draggingState = false;
     this._selectedEntities = [];
     this.draggingEntity = null;
-    this.draggingTarget = null;
   }
 
 
@@ -118,7 +117,6 @@ export class PixiEventsHandler {
       this.touchPosition = { x: e.data.global.x, y: e.data.global.y };
       this.draggingState = true;
       this.draggingEntity = entity;
-      this.draggingTarget = e.target;
       this.dispatch.call('dragstart');
       this.context.perform(actionNoop());
     }
@@ -129,24 +127,22 @@ export class PixiEventsHandler {
     if (!this.draggingState || !e.target) return;
 
     if (this.draggingEntity) {
-      const movingContainer = this.draggingTarget;
       const currentPosition = { x: e.data.global.x, y: e.data.global.y };
       const stageOffset = this.context.pixi.stage.position;
       const offsetX = currentPosition.x - this.touchPosition.x;
       const offsetY = currentPosition.y - this.touchPosition.y;
-      movingContainer.x = this.touchPosition.x + offsetX - stageOffset.x;
-      movingContainer.y = this.touchPosition.y + offsetY - stageOffset.y;
+      let newXCoord = this.touchPosition.x + offsetX - stageOffset.x;
+      let newYCoord = this.touchPosition.y + offsetY - stageOffset.y;
+      // movingContainer.y = this.touchPosition.y + offsetY - stageOffset.y;
       this.touchPosition.x = this.touchPosition.x + offsetX;
       this.touchPosition.y = this.touchPosition.y + offsetY;
-      let dest = this.projection.invert([movingContainer.x, movingContainer.y]);
+      let dest = this.projection.invert([newXCoord, newYCoord]);
 
       let feature = this.scene.get(this.draggingEntity.id);
-      feature.coord = dest;
-      feature.update(this.projection);
       this.context.replace(
-        actionMoveNode(feature.id, feature.coord)
-
-        );
+        actionMoveNode(feature.id, dest)
+      );
+      feature.dirty = true;
       this.dispatch.call('change');
     }
   }
@@ -169,7 +165,6 @@ export class PixiEventsHandler {
     }
     this.draggingState = false;
     this.draggingEntity = null;
-    this.draggingTarget = null;
 
 
     this.dispatch.call('change');
