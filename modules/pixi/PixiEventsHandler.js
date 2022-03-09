@@ -185,10 +185,15 @@ export class PixiEventsHandler {
 
     if (this.draggingState) {
      this.dispatch.call('dragend');
+      const currentPosition = { x: e.data.global.x, y: e.data.global.y };
+      const stageOffset = this.context.pixi.stage.position;
+      let newXCoord = this.touchPosition.x  - stageOffset.x;
+      let newYCoord = this.touchPosition.y - stageOffset.y;
+      let dest = this.projection.invert([newXCoord, newYCoord]);
       let feature = this.scene.get(this.draggingEntity.id);
 
       this.context.replace(
-        actionMoveNode(feature.id, feature.coord),
+        actionMoveNode(feature.id, dest),
         this.moveAnnotation(this.draggingEntity)
         );
     }
