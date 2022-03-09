@@ -123,48 +123,10 @@ export class PixiRenderer {
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 
-    //
-    // DRAW phase (updates bounding boxes)
-    //
+    // DRAW
     const timestamp = Date.now();
     const effectiveZoom = context.map().effectiveZoom();
-
     this.layers.render(timestamp, pixiProjection, effectiveZoom);
-
-//    //
-//    // CULL phase (feature positions in the rbush must be up to date for this to work)
-//    //
-//    // const viewMin = vecAdd(offset, [screen.x, screen.y]);   // x,y should be 0,0
-//    // const viewMax = vecAdd(offset, [screen.width, screen.height]);
-//    // const screen = this.pixi.screen;
-//    const mapExtent = context.map().extent();
-//    const visible = this.scene._rbush.search(mapExtent.bbox());
-//
-//    let isVisible = {};
-//    visible.forEach(box => isVisible[box.id] = true);
-//
-//    [...this.scene._features.entries()].forEach(function cull([featureID, feature]) {
-//      feature.visible = !!isVisible[featureID];
-//    });
-
-
-    // this.scene._features.forEach(feature => {
-    //   const displayObject = feature.displayObject;
-    //   const bounds = feature.sceneBounds;
-    //   if (!bounds || !displayObject) return;
-
-    //   const featMin = [bounds.x, bounds.y];
-    //   const featMax = [bounds.x + bounds.width, bounds.y + bounds.height];
-
-    //   const isVisible = (
-    //     featMin[0] <= viewMax[0] &&
-    //     featMin[1] <= viewMax[1] &&
-    //     featMax[0] >= viewMin[0] &&
-    //     featMax[1] >= viewMin[1]
-    //   );
-
-    //   displayObject.visible = isVisible;
-    // });
 
 
     if (!AUTOTICK) {    // tick manually

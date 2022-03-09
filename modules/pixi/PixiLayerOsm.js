@@ -1,15 +1,14 @@
 import * as PIXI from 'pixi.js';
+import geojsonRewind from '@mapbox/geojson-rewind';
 
 import { services } from '../services';
+import { presetManager } from '../presets';
+
 import { PixiLayer } from './PixiLayer';
-
-import { PixiOsmAreas } from './PixiOsmAreas';
-import { PixiOsmLines } from './PixiOsmLines';
-// import { PixiOsmMidpoints } from './PixiOsmMidpoints';
-import { PixiOsmPoints } from './PixiOsmPoints';
-import { PixiOsmVertices } from './PixiOsmVertices';
-import { PixiLabels } from './PixiLabels';
-
+import { PixiFeatureLine } from './PixiFeatureLine';
+import { PixiFeaturePoint } from './PixiFeaturePoint';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { styleMatch } from './styles';
 
 const LAYERID = 'osm';
 const LAYERZINDEX = 1;
@@ -53,51 +52,26 @@ export class PixiLayerOsm extends PixiLayer {
     //
 
     const areas = new PIXI.Container();
-    areas.name = 'areas';
+    areas.name = `${LAYERID}-areas`;
     areas.interactive = true;
     areas.sortableChildren = true;
 
     const lines = new PIXI.Container();
-    lines.name = 'lines';
+    lines.name = `${LAYERID}-lines`;
     lines.interactive = true;
     lines.sortableChildren = true;
 
     const vertices = new PIXI.Container();
-    vertices.name = 'vertices';
+    vertices.name = `${LAYERID}-vertices`;
     vertices.interactive = false;
     vertices.sortableChildren = true;
 
     const points = new PIXI.Container();
-    points.name = 'points';
+    points.name = `${LAYERID}-points`;
     points.interactive = true;
     points.sortableChildren = true;
 
-    // Points - moving experiment - move this up to the stage level,
-    // as 'pointermove' on a specific layer is janky as heck
-    // points.on('pointerdown', this.onPointTouchStart, this);
-    // points.on('pointermove', this.onPointTouchMove, this);
-    // points.on('pointerupoutside', this.onPointTouchEnd, this);
-    // points.on('pointerup', this.onPointTouchEnd, this);
-
-    // const midpoints = new PIXI.Container();
-    // midpoints.name = 'midpoints';
-    // midpoints.interactive = false;
-    // midpoints.sortableChildren = true;
-
-    const labels = new PIXI.Container();
-    labels.name = 'labels';
-    labels.interactive = false;
-    labels.interactiveChildren = false;
-    labels.sortableChildren = false;
-
-    this.container.addChild(areas, lines, vertices, points, labels);
-
-    this.drawPoints = new PixiOsmPoints(context, scene);
-    this.drawVertices = new PixiOsmVertices(context, scene);
-    this.drawLines = new PixiOsmLines(context, scene);
-    this.drawAreas = new PixiOsmAreas(context, scene);
-    // this.drawMidpoints = new PixiOsmMidpoints(context, scene);
-    this.drawLabels = PixiLabels(context, scene);
+    this.container.addChild(areas, lines, vertices, points);
   }
 
 
@@ -126,55 +100,295 @@ export class PixiLayerOsm extends PixiLayer {
   render(timestamp, projection, zoom) {
     const context = this.context;
     const service = this.getService();
+    const graph = context.graph();
+
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
 
-      // GATHER osm data
       const map = context.map();
-      const data = context.history().intersects(map.extent());
+      const entities = context.history().intersects(map.extent());
 
-//    // CULL phase (currently osm only)
-//    // for now non-OSM features will have to cull themselves
-//    let visibleOSM = {};
-//    data.forEach(entity => visibleOSM[entity.id] = true);
-//    [...this.scene._features.entries()].forEach(function cull([id, feature]) {
-//      let isVisible = !!visibleOSM[id] || !context.graph().hasEntity(id);
-//
-//      feature.displayObject.visible = isVisible;
-//      if (feature.label) {
-//        feature.label.displayObject.visible = isVisible;
-//      }
-//    });
+      // Gather data
+      let data = { points: [], vertices: [], lines: [], polygons: [] };
 
-      data.forEach(entity => {
-        const feature = this.scene.get(entity.id);
-        if (feature) {
-          this.seenFeature.set(feature, timestamp);
-          feature.visible = true;
+      entities.forEach(entity => {
+        const geom = entity.geometry(graph);
+        if (geom === 'point') {
+          data.points.push(entity);
+        } else if (geom === 'vertex') {
+          data.vertices.push(entity);
+        } else if (geom === 'line') {
+          data.lines.push(entity);
+        } else if (geom === 'area') {
+          data.polygons.push(entity);
         }
       });
 
-      // DRAW phase
-      const areasLayer = this.container.getChildByName('areas');
-      const linesLayer = this.container.getChildByName('lines');
-      const verticesLayer = this.container.getChildByName('vertices');
-      const pointsLayer = this.container.getChildByName('points');
-      // const midpointsLayer = this.container.getChildByName('midpoints');
-      // const labelsLayer = this.container.getChildByName('labels');
+      // // Gather all child nodes of visible lines
+      // data.lines.forEach(line => {
+      //   graph.childNodes(line).forEach(node => data.vertices.add(node));
+      // });
 
-      this.drawAreas.render(areasLayer, projection, zoom, data);
-      this.drawLines.render(linesLayer, projection, zoom, data);
-      this.drawVertices.render(verticesLayer, projection, zoom, data);
-      this.drawPoints.render(pointsLayer, projection, zoom, data);
-      // this.drawMidpoints.render(midpointsLayer, projection, zoom, data);
-      // this.drawLabels(labelsLayer, projection, zoom, data);
+      this.drawPolygons(timestamp, projection, zoom, data.polygons);
+      this.drawLines(timestamp, projection, zoom, data.lines);
+      this.drawVertices(timestamp, projection, zoom, data.vertices);
+      this.drawPoints(timestamp, projection, zoom, data.points);
 
       this.cull(timestamp);
 
     } else {
       this.visible = false;
     }
+  }
+
+
+  /**
+   * drawPolygons
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   a pixi projection
+   * @param zoom         the effective zoom to use for rendering
+   * @param entities     Array of OSM entities
+   */
+  drawPolygons(timestamp, projection, zoom, entities) {
+    const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
+    const context = this.context;
+    const scene = this.scene;
+    const graph = context.graph();
+
+    entities.forEach(entity => {
+      let feature = scene.get(entity.id);
+
+      if (!feature) {
+        const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+        const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
+          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+        const style = styleMatch(entity.tags);
+
+        feature = new PixiFeaturePolygon(context, entity.id, polygons, style);
+
+        // bind data and add to scene
+        const dObj = feature.displayObject;
+        const area = entity.extent(graph).area();  // estimate area from extent for speed
+        dObj.zIndex = -area;                       // sort by area descending (small things above big things)
+        dObj.__data__ = entity;
+        areaContainer.addChild(dObj);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
+    });
+  }
+
+
+  /**
+   * drawLines
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   a pixi projection
+   * @param zoom         the effective zoom to use for rendering
+   * @param entities     Array of OSM entities
+   */
+  drawLines(timestamp, projection, zoom, entities) {
+    const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
+    const context = this.context;
+    const scene = this.scene;
+    const graph = context.graph();
+
+    function getLevelContainer(level) {
+      let levelContainer = lineContainer.getChildByName(level);
+      if (!levelContainer) {
+        levelContainer = new PIXI.Container();
+        levelContainer.name = level.toString();
+        levelContainer.interactive = false;
+        levelContainer.interactiveChildren = true;
+        levelContainer.sortableChildren = true;
+        levelContainer.zIndex = level;
+        lineContainer.addChild(levelContainer);
+      }
+      return levelContainer;
+    }
+
+    function isUntaggedMultipolygonRing(entity) {
+      if (entity.hasInterestingTags()) return false;
+      return graph.parentRelations(entity).some(relation => relation.isMultipolygon());
+    }
+
+    entities.forEach(entity => {
+      // Skip untagged multipolygon rings for now, drawPolygons will render them as strokes.
+      // At some point we will want the user to be able to click on them though
+      if (isUntaggedMultipolygonRing(entity)) return;
+
+      let feature = scene.get(entity.id);
+
+      if (!feature) {   // make line if needed
+        const geojson = entity.asGeoJSON(graph);
+        const coords = geojson.coordinates;
+        const style = styleMatch(entity.tags);
+
+        const showOneWay = entity.isOneWay();
+        const reversePoints = (entity.tags.oneway === '-1');
+
+        feature = new PixiFeatureLine(context, entity.id, coords, style, showOneWay, reversePoints);
+
+        const dObj = feature.displayObject;
+        dObj.zIndex = getzIndex(entity.tags);
+        dObj.__data__ = entity;
+
+        // Add this line to the correct level container (bridge/tunnel/etc)
+        const lvl = entity.layer().toString();
+        const levelContainer = getLevelContainer(lvl);
+        levelContainer.addChild(dObj);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
+   });
+  }
+
+
+  /**
+   * drawVertices
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
+   * @param entities     Array of OSM entities
+   */
+  drawVertices(timestamp, projection, zoom, entities) {
+    const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
+    const context = this.context;
+    const scene = this.scene;
+    const graph = context.graph();
+
+    function isInterestingVertex(entity) {
+      return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
+        graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
+      );
+    }
+
+    entities.forEach(node => {
+      // Skip boring vertices for now..
+      // At some point we will want to render them if the line is selected or hovered
+      if (!isInterestingVertex(node)) return;
+
+      let feature = scene.get(node.id);
+
+      if (!feature) {
+        const preset = presetManager.match(node, graph);
+        const iconName = preset && preset.icon;
+        const directions = node.directions(graph, context.projection);
+
+        // set marker style
+        let markerStyle = {
+          markerName: 'smallCircle',
+          markerTint: 0xffffff,
+          viewfieldName: 'viewfieldDark',
+          viewfieldTint: 0xffffff,
+          iconName: iconName,
+          iconAlpha: 1
+        };
+
+        if (iconName) {
+          markerStyle.markerName = 'largeCircle';
+          markerStyle.iconName = iconName;
+        } else if (node.hasInterestingTags()) {
+          markerStyle.markerName = 'taggedCircle';
+        }
+
+        if (hasWikidata(node)) {
+          markerStyle.markerTint = 0xdddddd;
+          markerStyle.iconAlpha = 0.6;
+        }
+        if (graph.isShared(node)) {     // shared nodes / junctions are more grey
+          markerStyle.markerTint = 0xbbbbbb;
+        }
+
+        feature = new PixiFeaturePoint(context, node.id, node.loc, directions, markerStyle);
+
+        // bind data and add to scene
+        const dObj = feature.displayObject;
+        dObj.__data__ = node;
+        if (directions.length) {   // sort markers with viewfields above markers without viewfields
+          dObj.zIndex += 1000;     // (which should be [-90..90])
+        }
+        vertexContainer.addChild(dObj);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
+    });
+  }
+
+
+  /**
+   * drawPoints
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
+   * @param entities     Array of OSM entities
+   */
+  drawPoints(timestamp, projection, zoom, entities) {
+    const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
+    const context = this.context;
+    const scene = this.scene;
+    const graph = context.graph();
+
+    entities.forEach(node => {
+      let feature = scene.get(node.id);
+
+      if (!feature) {
+        const preset = presetManager.match(node, graph);
+        const iconName = preset && preset.icon;
+        const directions = node.directions(graph, context.projection);
+
+        // set marker style
+        let markerStyle = {
+          markerName: 'pin',
+          markerTint: 0xffffff,
+          viewfieldName: 'viewfieldDark',
+          viewfieldTint: 0xffffff,
+          iconName: iconName,
+          iconAlpha: 1
+        };
+        if (hasWikidata(node)) {
+          markerStyle.markerName = 'boldPin';
+          markerStyle.markerTint = 0xdddddd;
+          markerStyle.iconAlpha = 0.6;
+        }
+
+        feature = new PixiFeaturePoint(context, node.id, node.loc, directions, markerStyle);
+
+        // bind data and add to scene
+        const dObj = feature.displayObject;
+        dObj.__data__ = node;
+        if (directions.length) {   // sort markers with viewfields above markers without viewfields
+          dObj.zIndex += 1000;     // (which should be [-90..90])
+        }
+        pointContainer.addChild(dObj);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      if (feature.needsUpdate(projection)) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
+    });
   }
 
 
@@ -187,3 +401,35 @@ export class PixiLayerOsm extends PixiLayer {
   }
 }
 
+
+const HIGHWAYSTACK = {
+  motorway: 0,
+  motorway_link: -1,
+  trunk: -2,
+  trunk_link: -3,
+  primary: -4,
+  primary_link: -5,
+  secondary: -6,
+  tertiary: -7,
+  unclassified: -8,
+  residential: -9,
+  service: -10,
+  track: -11,
+  footway: -12
+};
+
+
+function getzIndex(tags) {
+  return HIGHWAYSTACK[tags.highway] || 0;
+}
+
+// Special style for Wikidata-tagged items
+function hasWikidata(entity) {
+  return (
+    entity.tags.wikidata ||
+    entity.tags['flag:wikidata'] ||
+    entity.tags['brand:wikidata'] ||
+    entity.tags['network:wikidata'] ||
+    entity.tags['operator:wikidata']
+  );
+}

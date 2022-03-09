@@ -160,68 +160,58 @@ export class PixiLayerRapid extends PixiLayer {
     const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');
     const dsGraph = service.graph(datasetID);
 
-    // Gather data
-    let geoData = {
-      points: [],
-      vertices: [],
-      lines: [],
-      areas: []
-    };
-
     let acceptedIDs = this._acceptedIDs;
     function isAccepted(entity) {
       return acceptedIDs.has(entity.id) || acceptedIDs.has(entity.__origid__);
     }
 
+    // Gather data
+    let data = { points: [], vertices: new Set(), lines: [], polygons: [] };
+    // let data = { polygons: [], lines: [], points: [], vertices: new Set() };
 
     /* Facebook AI/ML */
     if (dsEnabled && dataset.service === 'fbml') {
       service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
 
-      const visibleData = service
-        .intersects(datasetID, context.map().extent())
+      const entities = service.intersects(datasetID, context.map().extent())
         .filter(d => d.type === 'way' && !isAccepted(d));  // see onHistoryRestore()
 
       // fb_ai service gives us roads and buildings together,
       // so filter further according to which dataset we're drawing
       if (dataset.id === 'fbRoads' || dataset.id === 'rapid_intro_graph') {
-        geoData.lines = visibleData
-          .filter(d => d.geometry(dsGraph) === 'line' && !!d.tags.highway);
+        data.lines = entities.filter(d => d.geometry(dsGraph) === 'line' && !!d.tags.highway);
 
-        let seen = {};
-        geoData.lines.forEach(d => {
-          const first = d.first();
-          const last = d.last();
-          if (!seen[first]) {
-            seen[first] = true;
-            geoData.vertices.push(dsGraph.entity(first));
-          }
-          if (!seen[last]) {
-            seen[last] = true;
-            geoData.vertices.push(dsGraph.entity(last));
-          }
+        // Gather first and last vertices
+        data.lines.forEach(d => {
+          const first = dsGraph.entity(d.first());
+          const last = dsGraph.entity(d.last());
+          data.vertices.add(first);
+          data.vertices.add(last);
         });
 
       } else {  // ms buildings or esri buildings through conflation service
-        geoData.areas = visibleData
-          .filter(d => d.geometry(dsGraph) === 'area');
+        data.polygons = entities.filter(d => d.geometry(dsGraph) === 'area');
       }
 
     /* ESRI ArcGIS */
     } else if (dsEnabled && dataset.service === 'esri') {
       service.loadTiles(datasetID, context.projection);  // fetch more
 
-      const visibleData = service
-        .intersects(datasetID, context.map().extent())
-        .filter(d => !isAccepted(d));  // see onHistoryRestore()
+      const entities = service.intersects(datasetID, context.map().extent());
 
-      geoData.points = visibleData
-        .filter(d => d.geometry(dsGraph) === 'point' && !!d.__fbid__);  // standalone only (not vertices/childnodes)
-      geoData.lines = visibleData
-        .filter(d => d.geometry(dsGraph) === 'line');
-      geoData.areas = visibleData
-        .filter(d => d.geometry(dsGraph) === 'area');
+      entities.forEach(entity => {
+        if (isAccepted(entity)) return;   // skip features already accepted, see onHistoryRestore()
+        const geom = entity.geometry(dsGraph);
+        if (geom === 'point' && !!entity.__fbid__) {  // standalone points only (not vertices/childnodes)
+          data.points.push(entity);
+        } else if (geom === 'line') {
+          data.lines.push(entity);
+        } else if (geom === 'area') {
+          data.polygons.push(entity);
+        }
+      });
     }
+
 
     // If a container doesn't yet exist for this dataset, create it and add it to the main rapid layer.
     let dsContainer = this.container.getChildByName(dataset.id);
@@ -263,9 +253,9 @@ export class PixiLayerRapid extends PixiLayer {
 
     if (dsEnabled) {
       dsContainer.visible = true;
-      this.renderAreas(areas, dataset, dsGraph, timestamp, projection, zoom, geoData);
-      this.renderLines(lines, dataset, dsGraph, timestamp, projection, zoom, geoData);
-      this.renderPoints(points, dataset, dsGraph, timestamp, projection, zoom, geoData);
+      this.drawPolygons(areas, dataset, dsGraph, timestamp, projection, zoom, data);
+      this.drawLines(lines, dataset, dsGraph, timestamp, projection, zoom, data);
+      this.drawPoints(points, dataset, dsGraph, timestamp, projection, zoom, data);
     } else {
       dsContainer.visible = false;
     }
@@ -273,9 +263,9 @@ export class PixiLayerRapid extends PixiLayer {
 
 
   /**
-   * renderLines
+   * drawPolygons
    */
-  renderAreas(layer, dataset, graph, timestamp, projection, zoom, geoData) {
+  drawPolygons(layer, dataset, graph, timestamp, projection, zoom, data) {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
@@ -284,7 +274,7 @@ export class PixiLayerRapid extends PixiLayer {
       // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
     };
 
-    geoData.areas.forEach(entity => {
+    data.polygons.forEach(entity => {
       let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
@@ -315,9 +305,9 @@ export class PixiLayerRapid extends PixiLayer {
 
 
   /**
-   * renderLines
+   * drawLines
    */
-  renderLines(layer, dataset, graph, timestamp, projection, zoom, geoData) {
+  drawLines(layer, dataset, graph, timestamp, projection, zoom, data) {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
@@ -326,7 +316,7 @@ export class PixiLayerRapid extends PixiLayer {
       stroke: { width: 3, color: color }
     };
 
-    geoData.lines.forEach(entity => {
+    data.lines.forEach(entity => {
       let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
@@ -359,10 +349,11 @@ export class PixiLayerRapid extends PixiLayer {
     return 'rapid-' + entity.id;
   }
 
+
   /**
-   * renderPoints
+   * drawPoints
    */
-  renderPoints(layer, dataset, graph, timestamp, projection, zoom, geoData) {
+  drawPoints(layer, dataset, graph, timestamp, projection, zoom, data) {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
@@ -377,7 +368,7 @@ export class PixiLayerRapid extends PixiLayer {
       markerTint: color
     };
 
-    geoData.points.forEach(entity => {
+    data.points.forEach(entity => {
       let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
@@ -400,7 +391,7 @@ export class PixiLayerRapid extends PixiLayer {
     });
 
 
-    geoData.vertices.forEach(entity => {
+    data.vertices.forEach(entity => {
       let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
@@ -417,6 +408,9 @@ export class PixiLayerRapid extends PixiLayer {
         dObj.__data__ = entity;
         layer.addChild(dObj);
       }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
 
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
