@@ -126,7 +126,10 @@ export class PixiRenderer {
     //
     // DRAW phase (updates bounding boxes)
     //
-    this.layers.render(pixiProjection);
+    const timestamp = Date.now();
+    const effectiveZoom = context.map().effectiveZoom();
+
+    this.layers.render(timestamp, pixiProjection, effectiveZoom);
 
 //    //
 //    // CULL phase (feature positions in the rbush must be up to date for this to work)

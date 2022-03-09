@@ -37,6 +37,10 @@ export class PixiLayer {
     container.sortableChildren = true;
     context.pixi.stage.addChild(container);
     this.container = container;
+
+    // For now, layers will have to keep track of their own feature visiblity
+    // and implement their own feature culling and updating logic
+    this.seenFeature = new Map();  // Map (feature -> timestamp)
   }
 
   /**
@@ -44,12 +48,28 @@ export class PixiLayer {
    * Every layer should have a render function that manages the scene under its container
    * Override in a subclass with needed logic. It will be passed:
    *
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
   render() {
     return true;
   }
+
+  /**
+   * cull
+   * Make invisible any features that were not seen during this frame
+   *
+   * @param timestamp    timestamp in milliseconds
+   */
+  cull(timestamp) {
+    [...this.seenFeature.entries()].forEach(function cull([feature, ts]) {
+      if (ts !== timestamp) {
+        feature.visible = false;
+      }
+    });
+  }
+
 
   /**
    * layer id

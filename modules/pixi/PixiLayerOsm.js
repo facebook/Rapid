@@ -119,34 +119,41 @@ export class PixiLayerOsm extends PixiLayer {
   /**
    * render
    * Draw any data we have, and schedule fetching more of it to cover the view
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
-  render(projection, zoom) {
-    if (!this._enabled) return;
-
+  render(timestamp, projection, zoom) {
     const context = this.context;
-    const map = context.map();
     const service = this.getService();
 
-    if (service && zoom >= MINZOOM) {
+    if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
 
-      // GATHER phase
+      // GATHER osm data
+      const map = context.map();
       const data = context.history().intersects(map.extent());
 
-    // CULL phase (currently osm only)
-    // for now non-OSM features will have to cull themselves
-    let visibleOSM = {};
-    data.forEach(entity => visibleOSM[entity.id] = true);
-    [...this.scene._features.entries()].forEach(function cull([id, feature]) {
-      let isVisible = !!visibleOSM[id] || !context.graph().hasEntity(id);
+//    // CULL phase (currently osm only)
+//    // for now non-OSM features will have to cull themselves
+//    let visibleOSM = {};
+//    data.forEach(entity => visibleOSM[entity.id] = true);
+//    [...this.scene._features.entries()].forEach(function cull([id, feature]) {
+//      let isVisible = !!visibleOSM[id] || !context.graph().hasEntity(id);
+//
+//      feature.displayObject.visible = isVisible;
+//      if (feature.label) {
+//        feature.label.displayObject.visible = isVisible;
+//      }
+//    });
 
-      feature.displayObject.visible = isVisible;
-      if (feature.label) {
-        feature.label.displayObject.visible = isVisible;
-      }
-    });
+      data.forEach(entity => {
+        const feature = this.scene.get(entity.id);
+        if (feature) {
+          this.seenFeature.set(feature, timestamp);
+          feature.visible = true;
+        }
+      });
 
       // DRAW phase
       const areasLayer = this.container.getChildByName('areas');
@@ -154,14 +161,16 @@ export class PixiLayerOsm extends PixiLayer {
       const verticesLayer = this.container.getChildByName('vertices');
       const pointsLayer = this.container.getChildByName('points');
       // const midpointsLayer = this.container.getChildByName('midpoints');
-      const labelsLayer = this.container.getChildByName('labels');
+      // const labelsLayer = this.container.getChildByName('labels');
 
       this.drawAreas.render(areasLayer, projection, zoom, data);
       this.drawLines.render(linesLayer, projection, zoom, data);
       this.drawVertices.render(verticesLayer, projection, zoom, data);
       this.drawPoints.render(pointsLayer, projection, zoom, data);
       // this.drawMidpoints.render(midpointsLayer, projection, zoom, data);
-      this.drawLabels(labelsLayer, projection, zoom, data);
+      // this.drawLabels(labelsLayer, projection, zoom, data);
+
+      this.cull(timestamp);
 
     } else {
       this.visible = false;

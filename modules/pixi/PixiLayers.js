@@ -49,12 +49,12 @@ export class PixiLayers {
 
   /**
    * render
-   * @param projection - a pixi projection
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
-  render(projection) {
-    const map = this.context.map();
-    const effectiveZoom = map.effectiveZoom();
-    this._layers.forEach(layer => layer.render(projection, effectiveZoom));
+  render(timestamp, projection, zoom) {
+    this._layers.forEach(layer => layer.render(timestamp, projection, zoom));
   }
 
 

@@ -120,19 +120,19 @@ export class PixiLayerRapid extends PixiLayer {
   /**
    * render
    * Draw any data we have, and schedule fetching more of it to cover the view
-   *
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
-  render(projection, zoom) {
-    if (!this._enabled) return;
-
+  render(timestamp, projection, zoom) {
     const rapidContext = this.context.rapidContext();
     const datasets = Object.values(rapidContext.datasets());
 
-    if (datasets.length && zoom >= MINZOOM) {
-      datasets.forEach(dataset => this.renderDataset(dataset, projection, zoom));
+    if (this._enabled && datasets.length && zoom >= MINZOOM) {
       this.visible = true;
+      datasets.forEach(dataset => this.renderDataset(dataset, timestamp, projection, zoom));
+      this.cull(timestamp);
+
     } else {
       this.visible = false;
     }
@@ -144,20 +144,21 @@ export class PixiLayerRapid extends PixiLayer {
    * Draw any data we have, and schedule fetching more of it to cover the view
    *
    * @param dataset
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
-  renderDataset(dataset, projection, zoom) {
+  renderDataset(dataset, timestamp, projection, zoom) {
     const context = this.context;
     const rapidContext = context.rapidContext();
-    const datasetEnabled = (dataset.added && dataset.enabled);
+    const dsEnabled = (dataset.added && dataset.enabled);
 
     const service = dataset.service === 'fbml' ? this.getServiceFB(): this.getServiceEsri();
     if (!service) return;
 
     // Adjust the dataset id for whether we want the data conflated or not.
     const datasetID = dataset.id + (dataset.conflated ? '-conflated' : '');
-    const datasetGraph = service.graph(datasetID);
+    const dsGraph = service.graph(datasetID);
 
     // Gather data
     let geoData = {
@@ -174,7 +175,7 @@ export class PixiLayerRapid extends PixiLayer {
 
 
     /* Facebook AI/ML */
-    if (datasetEnabled && dataset.service === 'fbml') {
+    if (dsEnabled && dataset.service === 'fbml') {
       service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
 
       const visibleData = service
@@ -185,7 +186,7 @@ export class PixiLayerRapid extends PixiLayer {
       // so filter further according to which dataset we're drawing
       if (dataset.id === 'fbRoads' || dataset.id === 'rapid_intro_graph') {
         geoData.lines = visibleData
-          .filter(d => d.geometry(datasetGraph) === 'line' && !!d.tags.highway);
+          .filter(d => d.geometry(dsGraph) === 'line' && !!d.tags.highway);
 
         let seen = {};
         geoData.lines.forEach(d => {
@@ -193,21 +194,21 @@ export class PixiLayerRapid extends PixiLayer {
           const last = d.last();
           if (!seen[first]) {
             seen[first] = true;
-            geoData.vertices.push(datasetGraph.entity(first));
+            geoData.vertices.push(dsGraph.entity(first));
           }
           if (!seen[last]) {
             seen[last] = true;
-            geoData.vertices.push(datasetGraph.entity(last));
+            geoData.vertices.push(dsGraph.entity(last));
           }
         });
 
       } else {  // ms buildings or esri buildings through conflation service
         geoData.areas = visibleData
-          .filter(d => d.geometry(datasetGraph) === 'area');
+          .filter(d => d.geometry(dsGraph) === 'area');
       }
 
     /* ESRI ArcGIS */
-    } else if (datasetEnabled && dataset.service === 'esri') {
+    } else if (dsEnabled && dataset.service === 'esri') {
       service.loadTiles(datasetID, context.projection);  // fetch more
 
       const visibleData = service
@@ -215,24 +216,24 @@ export class PixiLayerRapid extends PixiLayer {
         .filter(d => !isAccepted(d));  // see onHistoryRestore()
 
       geoData.points = visibleData
-        .filter(d => d.geometry(datasetGraph) === 'point' && !!d.__fbid__);  // standalone only (not vertices/childnodes)
+        .filter(d => d.geometry(dsGraph) === 'point' && !!d.__fbid__);  // standalone only (not vertices/childnodes)
       geoData.lines = visibleData
-        .filter(d => d.geometry(datasetGraph) === 'line');
+        .filter(d => d.geometry(dsGraph) === 'line');
       geoData.areas = visibleData
-        .filter(d => d.geometry(datasetGraph) === 'area');
+        .filter(d => d.geometry(dsGraph) === 'area');
     }
 
     // If a container doesn't yet exist for this dataset, create it and add it to the main rapid layer.
-    let datasetContainer = this.container.getChildByName(dataset.id);
+    let dsContainer = this.container.getChildByName(dataset.id);
     let areas, lines, points;
 
-    if (!datasetContainer) {
-      datasetContainer = new PIXI.Container();
-      datasetContainer.name = dataset.id;
-      datasetContainer.interactive = true;
-      datasetContainer.buttonMode = false;
-      datasetContainer.sortableChildren = false;
-      this.container.addChild(datasetContainer);
+    if (!dsContainer) {
+      dsContainer = new PIXI.Container();
+      dsContainer.name = dataset.id;
+      dsContainer.interactive = true;
+      dsContainer.buttonMode = false;
+      dsContainer.sortableChildren = false;
+      this.container.addChild(dsContainer);
 
       areas = new PIXI.Container();
       areas.name = `${dataset.id}-areas`;
@@ -252,21 +253,21 @@ export class PixiLayerRapid extends PixiLayer {
       points.buttonMode = false;
       points.sortableChildren = true;
 
-      datasetContainer.addChild(areas, lines, points);
+      dsContainer.addChild(areas, lines, points);
 
     } else {
-      areas = datasetContainer.getChildByName(`${dataset.id}-areas`);
-      lines = datasetContainer.getChildByName(`${dataset.id}-lines`);
-      points = datasetContainer.getChildByName(`${dataset.id}-points`);
+      areas = dsContainer.getChildByName(`${dataset.id}-areas`);
+      lines = dsContainer.getChildByName(`${dataset.id}-lines`);
+      points = dsContainer.getChildByName(`${dataset.id}-points`);
     }
 
-    if (datasetEnabled) {
-      datasetContainer.visible = true;
-      this.renderAreas(areas, dataset, datasetGraph, projection, zoom, geoData);
-      this.renderLines(lines, dataset, datasetGraph, projection, zoom, geoData);
-      this.renderPoints(points, dataset, datasetGraph, projection, zoom, geoData);
+    if (dsEnabled) {
+      dsContainer.visible = true;
+      this.renderAreas(areas, dataset, dsGraph, timestamp, projection, zoom, geoData);
+      this.renderLines(lines, dataset, dsGraph, timestamp, projection, zoom, geoData);
+      this.renderPoints(points, dataset, dsGraph, timestamp, projection, zoom, geoData);
     } else {
-      datasetContainer.visible = false;
+      dsContainer.visible = false;
     }
   }
 
@@ -274,7 +275,7 @@ export class PixiLayerRapid extends PixiLayer {
   /**
    * renderLines
    */
-  renderAreas(layer, dataset, graph, projection, zoom, geoData) {
+  renderAreas(layer, dataset, graph, timestamp, projection, zoom, geoData) {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
@@ -302,6 +303,9 @@ export class PixiLayerRapid extends PixiLayer {
         layer.addChild(dObj);
       }
 
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
         scene.update(feature);
@@ -313,7 +317,7 @@ export class PixiLayerRapid extends PixiLayer {
   /**
    * renderLines
    */
-  renderLines(layer, dataset, graph, projection, zoom, geoData) {
+  renderLines(layer, dataset, graph, timestamp, projection, zoom, geoData) {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
@@ -340,6 +344,9 @@ export class PixiLayerRapid extends PixiLayer {
         layer.addChild(dObj);
       }
 
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
         scene.update(feature);
@@ -355,7 +362,7 @@ export class PixiLayerRapid extends PixiLayer {
   /**
    * renderPoints
    */
-  renderPoints(layer, dataset, graph, projection, zoom, geoData) {
+  renderPoints(layer, dataset, graph, timestamp, projection, zoom, geoData) {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
@@ -382,6 +389,9 @@ export class PixiLayerRapid extends PixiLayer {
         dObj.__data__ = entity;
         layer.addChild(dObj);
       }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
 
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);

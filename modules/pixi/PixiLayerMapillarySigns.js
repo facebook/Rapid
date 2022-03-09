@@ -64,10 +64,11 @@ export class PixiLayerMapillarySigns extends PixiLayer {
 
   /**
    * drawMarkers
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
-  drawMarkers(projection, zoom) {
+  drawMarkers(timestamp, projection, zoom) {
     const context = this.context;
     const scene = this.scene;
 
@@ -100,6 +101,9 @@ export class PixiLayerMapillarySigns extends PixiLayer {
         this.container.addChild(dObj);
       }
 
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
         scene.update(feature);
@@ -111,20 +115,22 @@ export class PixiLayerMapillarySigns extends PixiLayer {
   /**
    * render
    * Draw any data we have, and schedule fetching more of it to cover the view
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
-  render(projection, zoom) {
-    if (!this._enabled) return;
-
+  render(timestamp, projection, zoom) {
     const context = this.context;
     const service = this.getService();
 
-    if (service && zoom >= MINZOOM) {
+    if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
       service.loadSigns(context.projection);  // note: context.projection !== pixi projection
       service.showSignDetections(true);
-      this.drawMarkers(projection, zoom);
+
+      this.drawMarkers(timestamp, projection, zoom);
+      this.cull(timestamp);
+
     } else {
       this.visible = false;
       service.showSignDetections(false);
