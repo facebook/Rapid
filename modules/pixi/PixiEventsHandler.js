@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { GlowFilter } from '@pixi/filter-glow';
 
 import { modeBrowse, modeSelect } from '../modes';
@@ -24,6 +25,11 @@ export class PixiEventsHandler {
    *    (can be a Graphic, Container, Sprite, etc)
    */
   constructor(context, dispatch, projection, scene) {
+
+    // Suppress the native context menu from appearing on the canvas
+    let supersurface = context.container().select('div.supersurface');
+    supersurface.on('contextmenu', (e) => { e.preventDefault(); });
+
     this.context = context;
     this.dispatch = dispatch;
     this.projection = projection;
@@ -33,6 +39,21 @@ export class PixiEventsHandler {
     this.draggingEntity = null;
   }
 
+    /**
+   * onRightClickHandler
+   *
+   *
+   *
+   * @param e - a PIXI.Event
+   */
+  onRightClickHandler(e) {
+        if (!e.target) return;
+        const name = e.target.name || 'nothing';
+        console.log(`right clicked on ${name}`);
+        const entity = e.target.__data__;
+        const currentPosition = { x: e.data.global.x, y: e.data.global.y };
+      this.context.ui().showEditMenu([currentPosition.x, currentPosition.y], 'rightclick');
+    }
 
   /**
    * onClickHandler
@@ -44,7 +65,10 @@ export class PixiEventsHandler {
    *
    * @param e - a PIXI.Event
    */
-    onClickHandler(e) {
+  onClickHandler(e) {
+  this.context.map().supersurface
+            .select('.edit-menu').remove();
+
         if (!e.target) return;
         const name = e.target.name || 'nothing';
         console.log(`clicked on ${name}`);
@@ -62,6 +86,11 @@ export class PixiEventsHandler {
                 e.target.filters = [new GlowFilter({ distance: 15, outerStrength: 2, color: 0xff26db })];
                 this._selectedEntities.push(e.target);
             }
+
+          //Now process right-click!
+          if (e.data.button === 2) {
+            this.onRightClickHandler(e);
+          }
         } else {
             this.context.enter(modeBrowse(this.context));
         }

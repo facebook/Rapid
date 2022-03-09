@@ -82,7 +82,7 @@ export class PixiRenderer {
 
     stage
       .on('click', e => this.eventsHandler.onClickHandler(e))
-      // .on('pointermove', e => this.eventsHandler.onPointerMoveHandler(e))
+      .on('rightdown', e => this.eventsHandler.onClickHandler(e))
       .on('pointerdown', e => this.eventsHandler.onTouchStartHandler(e))
       .on('pointermove', e => this.eventsHandler.onTouchMoveHandler(e))
       .on('pointerup', e => this.eventsHandler.onTouchEndHandler(e));
