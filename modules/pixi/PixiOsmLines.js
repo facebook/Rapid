@@ -70,13 +70,6 @@ export class PixiOsmLines {
       .forEach(function prepareLines(entity) {
         let feature = scene.get(entity.id);
 
-        // This feature used to be part of the rapid layer... need to redraw it!
-        if (feature && feature.rapidFeature) {
-          feature.displayObject.visible = false;
-          scene.delete(entity.id);
-          feature = null;
-        }
-
         if (!feature) {   // make line if needed
           const geojson = entity.asGeoJSON(graph);
           const coords = geojson.coordinates;

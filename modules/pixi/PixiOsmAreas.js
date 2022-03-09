@@ -43,13 +43,6 @@ export class PixiOsmAreas {
       .forEach(function prepareAreas(entity) {
         let feature = scene.get(entity.id);
 
-        //This feature used to be part of the rapid layer... need to redraw it!
-        if (feature && feature.rapidFeature) {
-          feature.displayObject.visible = false;
-          scene.delete(entity.id);
-          feature = null;
-        }
-
         if (!feature) {   // make poly if needed
           const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
           const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]

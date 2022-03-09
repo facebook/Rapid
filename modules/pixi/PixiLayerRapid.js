@@ -284,14 +284,14 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     geoData.areas.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
         const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeaturePolygon(context, entity.id, polygons, style);
+        feature = new PixiFeaturePolygon(context, this.idAccessor(entity), polygons, style);
         feature.rapidFeature = true;
 
         // bind data and add to scene
@@ -323,7 +323,7 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     geoData.lines.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
@@ -331,7 +331,7 @@ export class PixiLayerRapid extends PixiLayer {
         const showOneWay = entity.isOneWay();
         const reversePoints = (entity.tags.oneway === '-1');
 
-        feature = new PixiFeatureLine(context, entity.id, coords, style, showOneWay, reversePoints);
+        feature = new PixiFeatureLine(context, this.idAccessor(entity), coords, style, showOneWay, reversePoints);
         feature.rapidFeature = true;
 
         // bind data and add to scene
@@ -347,6 +347,10 @@ export class PixiLayerRapid extends PixiLayer {
     });
   }
 
+  // Use something besides the entity id so that we don't collide features with the OSM renderer
+  idAccessor(entity) {
+    return 'rapid-' + entity.id;
+  }
 
   /**
    * renderPoints
@@ -367,10 +371,10 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     geoData.points.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, entity.id, entity.loc, [], pointStyle);
+        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, [], pointStyle);
         feature.rapidFeature = true;
 
         // bind data and add to scene
@@ -387,10 +391,10 @@ export class PixiLayerRapid extends PixiLayer {
 
 
     geoData.vertices.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, entity.id, entity.loc, [], vertexStyle);
+        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, [], vertexStyle);
         feature.rapidFeature = true;
 
         // vertices in this layer don't actually need to be interactive
