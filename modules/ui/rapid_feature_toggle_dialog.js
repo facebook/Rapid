@@ -64,7 +64,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleRapid() {
-    const rapidLayer = context.layers().toggle('rapid');
+    context.layers().toggle('rapid');
     _content.call(renderModalContent);
   }
 

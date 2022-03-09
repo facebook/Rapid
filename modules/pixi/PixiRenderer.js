@@ -91,9 +91,19 @@ export class PixiRenderer {
 
   /**
    * render
+   * @param entityIDs - optional `Array` of entity IDs to dirty
    */
-  render() {
+  render(entityIDs) {
     if (this._redrawPending) return;
+
+    // If we were passed entity IDs,
+    // flag these features as `dirty` if they are in the scene
+    if (entityIDs) {
+      entityIDs.forEach(osmID => {
+        const feature = this.scene.get(osmID);
+        if (feature) feature.dirty = true;
+      });
+    }
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes

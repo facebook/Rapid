@@ -114,8 +114,20 @@ export function rendererMap(context) {
       }
 
       context.history()
-        .on('merge.map', map.deferredRedraw)
-        .on('change.map', map.immediateRedraw)
+        .on('merge.map', entities => {
+          let entityIDs;
+          if (entities) {
+            entityIDs = entities.map(entity => entity.id);
+          }
+          map.deferredRedraw(entityIDs);
+        })
+        .on('change.map', difference => {
+          let entityIDs;
+          if (difference) {
+            entityIDs = Object.keys(difference.complete());
+          }
+          map.immediateRedraw(entityIDs);
+        })
         .on('undone.map', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
         .on('redone.map', (stack) => didUndoOrRedo(stack.transform));
 
@@ -241,9 +253,9 @@ export function rendererMap(context) {
     // var deferredRedraw = _throttle(redraw, 750);
     map.deferredRedraw = _throttle(redraw, 200);
 
-    map.immediateRedraw = function() {
+    map.immediateRedraw = function(entityIDs) {
       map.deferredRedraw.cancel();
-      redraw();
+      redraw(entityIDs);
     };
 
 
@@ -450,18 +462,14 @@ export function rendererMap(context) {
     }
 
 
-    function redrawPixi() {
-      if (!pixiRenderer || !_redrawEnabled) return;
-      pixiRenderer.render();
-    }
-
-
-    function redraw() {
+    function redraw(entityIDs) {
       if (surface.empty() || !_redrawEnabled) return;
 
       resetTransform();
       supersurface.call(context.background());
-      redrawPixi();
+      if (pixiRenderer) {
+        pixiRenderer.render(entityIDs);
+      }
       context.loadTiles(projection);  // load OSM data that covers the view
       _transformStart = projection.transform();
     }
