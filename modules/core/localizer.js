@@ -262,7 +262,6 @@ const fullCoverageIndex = _localeCodes.length - 1;  // load them all
         // US English is the default
         if (stringsKey.toLowerCase() === 'en-us') stringsKey = 'en';
         let result = _localeStrings && _localeStrings[scopeId] && _localeStrings[scopeId][stringsKey];
-
         while (result !== undefined && path.length) {
           result = result[path.pop()];
         }
@@ -336,7 +335,6 @@ const fullCoverageIndex = _localeCodes.length - 1;  // load them all
 
         const missing = `Missing ${locale} translation: ${origStringId}`;
         if (typeof console !== 'undefined') console.error(missing);  // eslint-disable-line
-
         return {
             text: missing,
             locale: 'en'

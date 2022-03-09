@@ -3,22 +3,22 @@ import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
 
-export function svgMapillaryMapFeatures(projection, context, dispatch) {
+export function svgRapidMapillaryFeatures(projection, context, dispatch) {
     const throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
     let layer = d3_select(null);
     let _mapillary;
 
-    dispatch.on('turnOffMapillary', () => {
+    dispatch.on('turnOffRapid', () => {
         hideLayer();
-        svgMapillaryMapFeatures.enabled = false;
-        context.photos().on('change.mapillary_map_features', null);
+        svgRapidMapillaryFeatures.enabled = false;
+        context.photos().on('change.mapillary_rapid_features', null);
     });
 
     function init() {
-        if (svgMapillaryMapFeatures.initialized) return;  // run once
-        svgMapillaryMapFeatures.enabled = false;
-        svgMapillaryMapFeatures.initialized = true;
+        if (svgRapidMapillaryFeatures.initialized) return;  // run once
+        svgRapidMapillaryFeatures.enabled = false;
+        svgRapidMapillaryFeatures.initialized = true;
     }
 
 
@@ -36,10 +36,10 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     function showLayer() {
         const service = getService();
         if (!service) return;
-        service.loadObjectResources(context, false);
+        service.loadObjectResources(context, true);
         editOn();
-        //Turn off rapid features layer
-        dispatch.call('turnOffRapid');
+        //Turn off mapillary features layer
+        dispatch.call('turnOffMapillary');
     }
 
 
@@ -110,8 +110,9 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
     function update() {
         const service = getService();
-        let data = (service ? service.mapFeatures(projection) : []);
+        let data = (service ? service.filteredMapFeatures(projection) : []);
         data = filterData(data);
+
 
         const transform = svgPointTransform(projection);
 
@@ -134,12 +135,13 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
             .attr('height', '24px')
             .attr('x', '-12px')
             .attr('y', '-12px')
+            .attr('fill', 'purple')
             .attr('xlink:href', function(d) {
                 if (d.value === 'object--billboard') {
                     // no billboard icon right now, so use the advertisement icon
                     return '#object--sign--advertisement';
                 }
-                return '#' + d.value;
+                return '#' + d.value + '-rapid';
             });
 
         enter
@@ -157,7 +159,7 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     function drawMapFeatures(selection) {
-        const enabled = svgMapillaryMapFeatures.enabled;
+        const enabled = svgRapidMapillaryFeatures.enabled;
         const service = getService();
 
         layer = selection.selectAll('.layer-mapillary-map-features')
@@ -188,14 +190,14 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     drawMapFeatures.enabled = function(_) {
-        if (!arguments.length) return svgMapillaryMapFeatures.enabled;
-        svgMapillaryMapFeatures.enabled = _;
-        if (svgMapillaryMapFeatures.enabled) {
+        if (!arguments.length) return svgRapidMapillaryFeatures.enabled;
+        svgRapidMapillaryFeatures.enabled = _;
+        if (svgRapidMapillaryFeatures.enabled) {
             showLayer();
-            context.photos().on('change.mapillary_map_features', update);
+            context.photos().on('change.mapillary_rapid_features', update);
         } else {
             hideLayer();
-            context.photos().on('change.mapillary_map_features', null);
+            context.photos().on('change.mapillary_rapid_features', null);
         }
         dispatch.call('change');
         return this;

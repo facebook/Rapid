@@ -274,7 +274,14 @@ export default {
     // Get visible map (point) features
     mapFeatures: function(projection) {
         const limit = 5;
-        return searchLimited(limit, projection, _mlyCache.points.rtree);
+        const ret = searchLimited(limit, projection, _mlyCache.points.rtree);
+        return ret;
+    },
+    // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
+    filteredMapFeatures: function(projection) {
+        const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
+        const mapFeatures = this.mapFeatures(projection);
+        return mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
     },
 
     // Get cached image by id
@@ -400,8 +407,19 @@ export default {
 
 
     // Load map (point) feature image sprites
-    loadObjectResources: function(context) {
-        context.ui().svgDefs.addSprites(['mapillary-object-sprite'], false /* don't override colors */ );
+    loadObjectResources: function(context, isRapidOn) {
+        var sprites = 'mapillary-object-sprite';
+        if (isRapidOn) {
+            sprites = 'rapid-mapillary-object-sprite';
+        }
+        context.ui().svgDefs.addSprites([sprites], isRapidOn /* don't override colors */ );
+        return this;
+    },
+
+    //Unload map (point) feature image sprites
+    unLoadPrevObjectResources: function(context) {
+        // eslint-disable-next-line no-unused-expressions
+        context.ui().svgDefs;
         return this;
     },
 
