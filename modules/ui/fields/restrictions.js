@@ -1,6 +1,6 @@
 //import { dispatch as d3_dispatch } from 'd3-dispatch';
 //import { select as d3_select } from 'd3-selection';
-//import { Extent, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
+//import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
 //import { utilEntitySelector } from '@id-sdk/util';
 //
 //import { presetManager } from '../../presets';
@@ -9,7 +9,6 @@
 //import { actionRestrictTurn } from '../../actions/restrict_turn';
 //import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
 //import { behaviorBreathe } from '../../behavior/breathe';
-//import { geoRawMercator } from '../../geo';
 //import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 //import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
 //import { utilDisplayName, utilDisplayType, utilFunctor, utilRebind } from '../../util';
@@ -204,7 +203,7 @@
 //
 //        var vgraph = _intersection.graph;
 //        var filter = utilFunctor(true);
-//        var projection = geoRawMercator();
+//        var projection = new Projection();
 //
 //        // Reflow warning: `utilGetDimensions` calls `getBoundingClientRect`
 //        // Instead of asking the restriction-container for its dimensions,
@@ -230,8 +229,8 @@
 //        // If this is a large intersection, adjust zoom to fit extent
 //        if (_intersection.vertices.length > 1) {
 //            var padding = 180;   // in z22 pixels
-//            var tl = projection([extent.min[0], extent.max[1]]);
-//            var br = projection([extent.max[0], extent.min[1]]);
+//            var tl = projection.project([extent.min[0], extent.max[1]]);
+//            var br = projection.project([extent.max[0], extent.min[1]]);
 //            var hFactor = (br[0] - tl[0]) / (d[0] - padding);
 //            var vFactor = (br[1] - tl[1]) / (d[1] - padding);
 //            var hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
@@ -241,12 +240,12 @@
 //        }
 //
 //        var padTop = 35;   // reserve top space for hint text
-//        var extentCenter = projection(extent.center());
+//        var extentCenter = projection.project(extent.center());
 //        extentCenter[1] = extentCenter[1] - padTop;
 //
 //        projection
 //            .translate(vecSubtract(c, extentCenter))
-//            .clipExtent([[0, 0], d]);
+//            .dimensions([[0, 0], d]);
 //
 //        var drawLayers = svgLayers(projection, context).only(['osm','touch']).dimensions(d);
 //        var drawVertices = svgVertices(projection, context);

@@ -1,9 +1,9 @@
 describe('iD.actionCircularize', function () {
-    var projection = d3.geoMercator().scale(150);
+    var projection = new sdk.Projection().scale(150);
 
     function isCircular(id, graph) {
         var points = graph.childNodes(graph.entity(id))
-                .map(function (n) { return projection(n.loc); }),
+                .map(function (n) { return projection.project(n.loc); }),
             centroid = d3.polygonCentroid(points),
             radius = sdk.vecLength(centroid, points[0]),
             estArea = Math.PI * radius * radius,
@@ -126,7 +126,7 @@ describe('iD.actionCircularize', function () {
 
         expect(isCircular('-', graph)).to.be.ok;
         points = graph.childNodes(graph.entity('-'))
-            .map(function (n) { return projection(n.loc); });
+            .map(function (n) { return projection.project(n.loc); });
         centroid = d3.polygonCentroid(points);
 
         for (var i = 0; i < points.length - 1; i++) {

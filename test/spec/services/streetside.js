@@ -17,7 +17,7 @@ describe('iD.serviceStreetside', function () {
         context.projection
             .scale(sdk.geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0
-            .clipExtent([[0,0], dimensions]);
+            .dimensions([[0,0], dimensions]);
 
         server = window.fakeFetch().create();
         streetside = iD.services.streetside;
@@ -57,7 +57,7 @@ describe('iD.serviceStreetside', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(18))
                 .translate([-1863988.9381333336, 762.8270222954452])  // 10.002,0.002
-                .clipExtent([[0,0], dimensions]);
+                .dimensions([[0,0], dimensions]);
 
             var spy = sinon.spy();
             streetside.on('loadedImages', spy);
@@ -92,7 +92,7 @@ describe('iD.serviceStreetside', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(18))
                 .translate([0, 0])
-                .clipExtent([[0,0], dimensions]);
+                .dimensions([[0,0], dimensions]);
 
             var spy = sinon.spy();
             streetside.on('loadedImages', spy);

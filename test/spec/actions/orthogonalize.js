@@ -1,6 +1,8 @@
 describe('iD.actionOrthogonalize', function () {
-    var projection = function (l) { return l; };
-    projection.invert = projection;
+    var projection = {
+        project: function (val) { return val; },
+        invert: function (val) { return val; }
+    };
 
     describe('closed paths', function () {
         it('orthogonalizes a perfect quad', function () {
@@ -129,7 +131,7 @@ describe('iD.actionOrthogonalize', function () {
         });
 
         it('preserves the shape of skinny quads', function () {
-            var projection = d3.geoMercator();
+            var projection = new sdk.Projection();
             var tests = [[
                 [-77.0339864831478, 38.8616391227204],
                 [-77.0209775298677, 38.8613609264884],

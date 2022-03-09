@@ -26,8 +26,6 @@ export let debug = false;
 import * as D3 from 'd3';
 export const d3 = {
   dispatch:  D3.dispatch,
-  geoMercator: D3.geoMercator,
-  geoProjection: D3.geoProjection,
   polygonArea: D3.polygonArea,
   polygonCentroid: D3.polygonCentroid,
   select: D3.select,
@@ -39,6 +37,7 @@ export const d3 = {
 import * as SDKMATH from '@id-sdk/math';
 import * as SDKUTIL from '@id-sdk/util';
 export const sdk = {
+  Projection: SDKMATH.Projection,
   Extent: SDKMATH.Extent,
   geoSphericalDistance: SDKMATH.geoSphericalDistance,
   geoZoomToScale: SDKMATH.geoZoomToScale,

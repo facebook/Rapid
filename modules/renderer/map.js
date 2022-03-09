@@ -578,7 +578,7 @@ export function rendererMap(context) {
 
       _dimensions = val;
       context.background().dimensions(_dimensions);
-      projection.clipExtent([[0, 0], _dimensions]);
+      projection.dimensions([[0, 0], _dimensions]);
       _getMouseCoords = utilFastMouse(supersurface.node());
 
       map.deferredRedraw();
@@ -755,8 +755,8 @@ export function rendererMap(context) {
 
 
     function calcExtentZoom(extent, dim) {
-      const tl = projection([extent.min[0], extent.max[1]]);
-      const br = projection([extent.max[0], extent.min[1]]);
+      const tl = projection.project([extent.min[0], extent.max[1]]);
+      const br = projection.project([extent.max[0], extent.min[1]]);
 
       // Calculate maximum zoom that fits extent
       const hFactor = (br[0] - tl[0]) / dim[0];

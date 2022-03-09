@@ -52,8 +52,8 @@ export function operationPaste(context) {
 
         // Use the location of the copy operation to offset the paste location,
         // or else use the center of the pasted extent
-        var copyPoint = (context.copyLonLat() && projection(context.copyLonLat())) ||
-            projection(extent.center());
+        var copyPoint = (context.copyLonLat() && projection.project(context.copyLonLat())) ||
+            projection.project(extent.center());
         var delta = vecSubtract(_pastePoint, copyPoint);
 
         // Move the pasted objects to be anchored at the paste location

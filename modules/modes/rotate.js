@@ -65,7 +65,7 @@ export function modeRotate(context, entityIDs) {
             currTransform.y !== _prevTransform.y) {
 
             var nodes = utilGetAllNodes(entityIDs, context.graph());
-            var points = nodes.map(function(n) { return projection(n.loc); });
+            var points = nodes.map(function(n) { return projection.project(n.loc); });
             _pivot = getPivot(points);
             _prevAngle = undefined;
         }

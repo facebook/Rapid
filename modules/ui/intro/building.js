@@ -140,7 +140,7 @@ export function uiIntroBuilding(context, reveal) {
                 var way = context.entity(context.selectedIDs()[0]);
                 var nodes = graph.childNodes(way);
                 var points = utilArrayUniq(nodes)
-                    .map(function(n) { return context.projection(n.loc); });
+                    .map(function(n) { return context.projection.project(n.loc); });
 
                 if (isMostlySquare(points)) {
                     _houseID = way.id;

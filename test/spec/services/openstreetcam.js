@@ -17,7 +17,7 @@ describe('iD.serviceOpenstreetcam', function () {
         context.projection
             .scale(sdk.geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0
-            .clipExtent([[0,0], dimensions]);
+            .dimensions([[0,0], dimensions]);
 
         server = window.fakeFetch().create();
         openstreetcam = iD.services.openstreetcam;

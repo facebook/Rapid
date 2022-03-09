@@ -385,7 +385,7 @@ export function modeSelect(context, selectedIDs) {
                         .iconClass('operation disabled')
                         .label(t('operations.scale.' + disabled + '.' + multi))();
                 } else {
-                    const pivot = context.projection(extent.center());
+                    const pivot = context.projection.project(extent.center());
                     const annotation = t('operations.scale.annotation.' + (isUp ? 'up' : 'down') + '.feature', { n: selectedIDs.length });
                     context.perform(actionScale(selectedIDs, pivot, factor, context.projection), annotation);
                     context.validator().validate();

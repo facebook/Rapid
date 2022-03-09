@@ -263,7 +263,7 @@ describe('iD.serviceOsm', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(20))
                 .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
-                .clipExtent([[0,0], dimensions]);
+                .dimensions([[0,0], dimensions]);
         });
 
         it('calls callback when data tiles are loaded', function(done) {
@@ -601,7 +601,7 @@ describe('iD.serviceOsm', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(14))
                 .translate([-116508, 0])  // 10,0
-                .clipExtent([[0,0], dimensions]);
+                .dimensions([[0,0], dimensions]);
         });
 
         it('fires loadedNotes when notes are loaded', function(done) {
@@ -626,7 +626,7 @@ describe('iD.serviceOsm', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(14))
                 .translate([-116508, 0])  // 10,0
-                .clipExtent([[0,0], dimensions]);
+                .dimensions([[0,0], dimensions]);
         });
 
         it('returns notes in the visible map area', function() {

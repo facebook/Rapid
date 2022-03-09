@@ -1,11 +1,9 @@
 //import { geoPath as d3_geoPath } from 'd3-geo';
 //import { select as d3_select } from 'd3-selection';
 //import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+//import { Projection, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
 //
 //import { t } from '../core/localizer';
-//import { geoRawMercator, } from '../geo';
-//import { geoScaleToZoom, geoZoomToScale } from '@id-sdk/geo';
-//import { vecScale, vecSubtract } from '@id-sdk/vector';
 //import { rendererTileLayer } from '../renderer';
 //import { svgDebug, svgData } from '../svg';
 //import { utilSetTransform } from '../util';
@@ -17,7 +15,7 @@
 //    function mapInMap(selection) {
 //        var backgroundLayer = rendererTileLayer(context);
 //        var overlayLayers = {};
-//        var projection = geoRawMercator();
+//        var projection = new Projection();
 //        var dataLayer = svgData(projection, context).showLabels(false);
 //        var debugLayer = svgDebug(projection, context);
 //        var zoom = d3_zoom()
@@ -99,13 +97,13 @@
 //            if (_skipEvents) return;
 //            if (_gesture !== 'pan') return;
 //
-//            updateProjection();
+//            updateprojection.project();
 //            _gesture = null;
 //            context.map().center(projection.invert(_cMini));   // recenter main map..
 //        }
 //
 //
-//        function updateProjection() {
+//        function updateprojection.project() {
 //            var loc = context.map().center();
 //            var tMain = context.projection.transform();
 //            var zMain = geoScaleToZoom(tMain.k);
@@ -116,14 +114,14 @@
 //                .translate([tMain.x, tMain.y])
 //                .scale(kMini);
 //
-//            var point = projection(loc);
+//            var point = projection.project(loc);
 //            var mouse = (_gesture === 'pan') ? vecSubtract([_tCurr.x, _tCurr.y], [_tStart.x, _tStart.y]) : [0, 0];
 //            var xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
 //            var yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
 //
 //            projection
 //                .translate([xMini, yMini])
-//                .clipExtent([[0, 0], _dMini]);
+//                .dimensions([[0, 0], _dMini]);
 //
 //            _tCurr = projection.transform();
 //
@@ -146,7 +144,7 @@
 //            clearTimeout(_timeoutID);
 //            if (_isHidden) return;
 //
-//            updateProjection();
+//            updateprojection.project();
 //            var zMini = geoScaleToZoom(projection.scale());
 //
 //            // setup tile container
@@ -162,7 +160,7 @@
 //            // redraw background
 //            backgroundLayer
 //                .source(context.background().baseLayerSource())
-//                .projection(projection)
+//                .projection.project(projection)
 //                .dimensions(_dMini);
 //
 //            var background = tiles
@@ -184,7 +182,7 @@
 //                    if (!overlayLayers[i]) overlayLayers[i] = rendererTileLayer(context);
 //                    activeOverlayLayers.push(overlayLayers[i]
 //                        .source(overlaySources[i])
-//                        .projection(projection)
+//                        .projection.project(projection)
 //                        .dimensions(_dMini));
 //                }
 //            }

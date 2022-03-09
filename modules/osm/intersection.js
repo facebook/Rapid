@@ -606,8 +606,8 @@ export function osmInferRestriction(graph, turn, projection) {
     var toOneWay = (toWay.tags.oneway === 'yes');
 
     var angle = (
-        vecAngle(projection(fromVertex.loc), projection(fromNode.loc)) -
-        vecAngle(projection(toVertex.loc), projection(toNode.loc))
+        vecAngle(projection.project(fromVertex.loc), projection.project(fromNode.loc)) -
+        vecAngle(projection.project(toVertex.loc), projection.project(toNode.loc))
     ) * (180 / Math.PI);
 
     while (angle < 0) {

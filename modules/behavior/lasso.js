@@ -61,7 +61,7 @@ export function behaviorLasso(context) {
 
             var intersects = context.history().intersects(wgs84Extent).filter(function(entity) {
                 return entity.type === 'node' &&
-                    geomPointInPolygon(context.projection(entity.loc), lasso.coordinates) &&
+                    geomPointInPolygon(context.projection.project(entity.loc), lasso.coordinates) &&
                     !context.features().isHidden(entity, graph, entity.geometry(graph));
             });
 

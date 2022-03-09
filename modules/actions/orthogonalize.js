@@ -51,7 +51,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
             nodeCount[node.id] = (nodeCount[node.id] || 0) + 1;
-            points.push({ id: node.id, coord: projection(node.loc) });
+            points.push({ id: node.id, coord: projection.project(node.loc) });
         }
 
 
@@ -229,7 +229,7 @@ export function actionOrthogonalize(wayID, projection, vertexID, degThresh, ep) 
             if (nodes.length !== 3) return 'end_vertex';
         }
 
-        var coords = nodes.map(function(n) { return projection(n.loc); });
+        var coords = nodes.map(function(n) { return projection.project(n.loc); });
         var score = geoOrthoCanOrthogonalize(coords, isClosed, epsilon, threshold, allowStraightAngles);
 
         if (score === null) {

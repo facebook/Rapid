@@ -1,5 +1,5 @@
 describe('iD.actionReflect', function() {
-    var projection = d3.geoMercator();
+    var projection = new sdk.Projection();
 
     it('does not create or remove nodes', function () {
         var graph = iD.coreGraph([

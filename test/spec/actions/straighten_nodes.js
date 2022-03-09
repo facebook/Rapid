@@ -1,6 +1,8 @@
 describe('iD.actionStraightenNodes', function () {
-    var projection = function (l) { return l; };
-    projection.invert = projection;
+    var projection = {
+        project: function (val) { return val; },
+        invert: function (val) { return val; }
+    };
 
     it('straightens points', function() {
         var graph = iD.coreGraph([

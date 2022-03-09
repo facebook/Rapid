@@ -1572,7 +1572,7 @@ describe('iD.osmIntersection', function() {
 
 
 describe('iD.osmInferRestriction', function() {
-    var projection = d3.geoMercator().scale(250 / Math.PI);
+    var projection = new sdk.Projection().scale(250 / Math.PI);
 
     it('infers the restriction type based on the turn angle', function() {
         //

@@ -1,8 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
-
-import { Projection, Tiler } from '@id-sdk/math';
+import { Tiler } from '@id-sdk/math';
 
 import { coreGraph, coreTree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
@@ -245,8 +244,7 @@ export default {
     const cache = ds.cache;
     const tree = ds.tree;
     const graph = ds.graph;
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.getTiles(proj).tiles;
+    const tiles = tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
     Object.keys(cache.inflight).forEach(k => {

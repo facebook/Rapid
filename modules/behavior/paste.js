@@ -15,7 +15,7 @@ export function behaviorPaste(context) {
         var startGraph = context.graph();
         var mouse = context.map().mouse();
         var projection = context.projection;
-        var dimensions = projection.clipExtent();
+        var dimensions = projection.dimensions();
         var viewport = new Extent(dimensions[0], dimensions[1]).polygon();
 
         if (!geomPointInPolygon(mouse, viewport)) return;
@@ -52,7 +52,7 @@ export function behaviorPaste(context) {
         }
 
         // Put pasted objects where mouse pointer is..
-        var copyPoint = (context.copyLonLat() && projection(context.copyLonLat())) || projection(extent.center());
+        var copyPoint = (context.copyLonLat() && projection.project(context.copyLonLat())) || projection.project(extent.center());
         var delta = vecSubtract(mouse, copyPoint);
 
         context.perform(actionMove(newIDs, delta, projection));

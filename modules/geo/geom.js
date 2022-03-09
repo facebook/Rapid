@@ -7,7 +7,7 @@ import { geomLineIntersection, vecDot, vecEqual, vecLength, vecSubtract } from '
 // chosen edge, the chosen `loc` on that edge, and the `distance` to to it.
 export function geoChooseEdge(nodes, point, projection, activeID) {
     var dist = vecLength;
-    var points = nodes.map(function(n) { return projection(n.loc); });
+    var points = nodes.map(function(n) { return projection.project(n.loc); });
     var ids = nodes.map(function(n) { return n.id; });
     var min = Infinity;
     var idx;

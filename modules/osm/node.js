@@ -132,8 +132,8 @@ Object.assign(osmNode.prototype, {
 
             Object.keys(nodeIds).forEach(function(nodeId) {
                 // +90 because vecAngle returns angle from X axis, not Y (north)
-                var a = projection(this.loc);
-                var b = projection(resolver.entity(nodeId).loc);
+                var a = projection.project(this.loc);
+                var b = projection.project(resolver.entity(nodeId).loc);
                 results.push( (vecAngle(a, b) * 180 / Math.PI) + 90 );
             }, this);
 

@@ -231,9 +231,9 @@ export function validationAlmostJunction(context) {
 
       // Checks midNode -> tipNode -> endNode for collinearity
       endNodes.forEach(endNode => {
-        const mid = context.projection(midNode.loc);
-        const tip = context.projection(tipNode.loc);
-        const end = context.projection(endNode.loc);
+        const mid = context.projection.project(midNode.loc);
+        const tip = context.projection.project(tipNode.loc);
+        const end = context.projection.project(endNode.loc);
 
         const a1 = vecAngle(mid, tip) + Math.PI;
         const a2 = vecAngle(mid, end) + Math.PI;

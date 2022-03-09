@@ -159,16 +159,16 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
 
         var start, end;
         if (delta) {
-            start = projection(cache.startLoc[nodeId]);
+            start = projection.project(cache.startLoc[nodeId]);
             end = projection.invert(vecAdd(start, delta));
         } else {
             end = cache.startLoc[nodeId];
         }
         orig = orig.move(end);
 
-        var o = projection(orig.loc);
-        var a = projection(prev.loc);
-        var b = projection(next.loc);
+        var o = projection.project(orig.loc);
+        var a = projection.project(prev.loc);
+        var b = projection.project(next.loc);
         var angle = Math.abs(vecAngle(o, a) - vecAngle(o, b)) * (180 / Math.PI);
 
         // Don't add orig vertex if it would just make a straight line..
@@ -255,8 +255,8 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
         if (way1.isClosed() && way1.first() === vertex.id) nodes1.push(nodes1[0]);
         if (way2.isClosed() && way2.first() === vertex.id) nodes2.push(nodes2[0]);
 
-        var edge1 = !isEP1 && geoChooseEdge(nodes1, projection(vertex.loc), projection);
-        var edge2 = !isEP2 && geoChooseEdge(nodes2, projection(vertex.loc), projection);
+        var edge1 = !isEP1 && geoChooseEdge(nodes1, projection.project(vertex.loc), projection);
+        var edge2 = !isEP2 && geoChooseEdge(nodes2, projection.project(vertex.loc), projection);
         var loc;
 
         // snap vertex to nearest edge (or some point between them)..
@@ -264,8 +264,8 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
             var epsilon = 1e-6, maxIter = 10;
             for (var i = 0; i < maxIter; i++) {
                 loc = vecInterp(edge1.loc, edge2.loc, 0.5);
-                edge1 = geoChooseEdge(nodes1, projection(loc), projection);
-                edge2 = geoChooseEdge(nodes2, projection(loc), projection);
+                edge1 = geoChooseEdge(nodes1, projection.project(loc), projection);
+                edge2 = geoChooseEdge(nodes2, projection.project(loc), projection);
                 if (Math.abs(edge1.distance - edge2.distance) < epsilon) break;
             }
         } else if (!isEP1) {
@@ -307,7 +307,7 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
     // check if moving way endpoint can cross an unmoved way, if so limit delta..
     function limitDelta(graph) {
         function moveNode(loc) {
-            return vecAdd(projection(loc), _delta);
+            return vecAdd(projection.project(loc), _delta);
         }
 
         for (var i = 0; i < cache.intersections.length; i++) {
@@ -319,18 +319,18 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
             if (!obj.movedIsEP) continue;
 
             var node = graph.entity(obj.nodeId);
-            var start = projection(node.loc);
+            var start = projection.project(node.loc);
             var end = vecAdd(start, _delta);
             var movedNodes = graph.childNodes(graph.entity(obj.movedId));
             var movedPath = movedNodes.map(function(n) { return moveNode(n.loc); });
             var unmovedNodes = graph.childNodes(graph.entity(obj.unmovedId));
-            var unmovedPath = unmovedNodes.map(function(n) { return projection(n.loc); });
+            var unmovedPath = unmovedNodes.map(function(n) { return projection.project(n.loc); });
             var hits = geomPathIntersections(movedPath, unmovedPath);
 
             for (var j = 0; i < hits.length; i++) {
                 if (vecEqual(hits[j], end)) continue;
                 var edge = geoChooseEdge(unmovedNodes, end, projection);
-                _delta = vecSubtract(projection(edge.loc), start);
+                _delta = vecSubtract(projection.project(edge.loc), start);
             }
         }
     }
@@ -347,7 +347,7 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
 
         for (var i = 0; i < cache.nodes.length; i++) {
             var node = graph.entity(cache.nodes[i]);
-            var start = projection(node.loc);
+            var start = projection.project(node.loc);
             var end = vecAdd(start, _delta);
             graph = graph.replace(node.move(projection.invert(end)));
         }

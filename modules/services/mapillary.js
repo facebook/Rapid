@@ -1,7 +1,7 @@
 /* global mapillary:false */
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { Extent, Projection, Tiler, geoScaleToZoom } from '@id-sdk/math';
+import { Extent, Tiler, geoScaleToZoom } from '@id-sdk/math';
 import { utilQsString, utilStringQs } from '@id-sdk/util';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
@@ -36,8 +36,7 @@ let _mlyViewerFilter = ['all'];
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
     // determine the needed tiles to cover the view
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(proj).tiles;
+    const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(projection).tiles;
 
     tiles.forEach(function(tile) {
         loadTile(which, url, tile);
@@ -213,8 +212,7 @@ function loadData(url) {
 function partitionViewport(projection) {
     const z = geoScaleToZoom(projection.scale());
     const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.zoomRange(z2).getTiles(proj).tiles;
+    const tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
     return tiles.map(tile => tile.wgs84Extent);
 }
 
@@ -284,7 +282,7 @@ export default {
 
     // Get visible sequences
     sequences: function(projection) {
-        const viewport = projection.clipExtent();
+        const viewport = projection.dimensions();
         const min = [viewport[0][0], viewport[1][1]];
         const max = [viewport[1][0], viewport[0][1]];
         const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();

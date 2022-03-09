@@ -94,7 +94,7 @@ export function actionStraightenWay(selectedIDs, projection) {
         t = Math.min(Math.max(+t, 0), 1);
 
         var nodes = allNodes(graph);
-        var points = nodes.map(function(n) { return projection(n.loc); });
+        var points = nodes.map(function(n) { return projection.project(n.loc); });
         var startPoint = points[0];
         var endPoint = points[points.length-1];
         var toDelete = [];
@@ -129,7 +129,7 @@ export function actionStraightenWay(selectedIDs, projection) {
     action.disabled = function(graph) {
         // check way isn't too bendy
         var nodes = allNodes(graph);
-        var points = nodes.map(function(n) { return projection(n.loc); });
+        var points = nodes.map(function(n) { return projection.project(n.loc); });
         var startPoint = points[0];
         var endPoint = points[points.length-1];
         var threshold = 0.2 * vecLength(startPoint, endPoint);

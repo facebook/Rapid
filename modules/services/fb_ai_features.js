@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
-import { Projection, Tiler } from '@id-sdk/math';
+import { Tiler } from '@id-sdk/math';
 import { utilStringQs } from '@id-sdk/util';
 
 import { coreGraph, coreTree } from '../core';
@@ -306,8 +306,7 @@ export default {
             _datasets[datasetID] = ds;
         }
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.getTiles(proj).tiles;
+        var tiles = tiler.getTiles(projection).tiles;
 
         // abort inflight requests that are no longer needed
         Object.keys(cache.inflight).forEach(k => {

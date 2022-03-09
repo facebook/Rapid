@@ -1049,11 +1049,10 @@ export default {
         if (_off) return;
 
         // determine the needed tiles to cover the view
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
         var tiles = tiler
             .zoomRange(_tileZoom)
             .margin(1)       // prefetch offscreen tiles as well
-            .getTiles(proj)
+            .getTiles(projection)
             .tiles;
 
         // abort inflight requests that are no longer needed
@@ -1150,11 +1149,10 @@ export default {
         }, 750);
 
         // determine the needed tiles to cover the view
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
         var tiles = tiler
             .zoomRange(_noteZoom)
             .margin(1)       // prefetch offscreen tiles as well
-            .getTiles(proj)
+            .getTiles(projection)
             .tiles;
 
         // abort inflight requests that are no longer needed
@@ -1410,7 +1408,7 @@ export default {
 
     // get all cached notes covering the viewport
     notes: function(projection) {
-        var viewport = projection.clipExtent();
+        var viewport = projection.dimensions();
         var min = [viewport[0][0], viewport[1][1]];
         var max = [viewport[1][0], viewport[0][1]];
         var bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();

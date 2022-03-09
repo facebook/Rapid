@@ -84,7 +84,7 @@ export function modeDragNode(context) {
 
 
     function origin(entity) {
-        return context.projection(entity.loc);
+        return context.projection.project(entity.loc);
     }
 
 
@@ -173,7 +173,7 @@ export function modeDragNode(context) {
     function doMove(d3_event, entity, nudge) {
         nudge = nudge || [0, 0];
 
-        var currPoint = (d3_event && d3_event.point) || context.projection(_lastLoc);
+        var currPoint = (d3_event && d3_event.point) || context.projection.project(_lastLoc);
         var currMouse = vecSubtract(currPoint, nudge);
         var loc = context.projection.invert(currMouse);
 

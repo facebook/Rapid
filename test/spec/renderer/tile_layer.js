@@ -4,7 +4,7 @@ describe('iD.rendererTileLayer', function() {
     beforeEach(function() {
         context = iD.coreContext().assetPath('../dist/').init();
         d = d3.select(document.createElement('div'));
-        c = iD.rendererTileLayer(context).projection(d3.geoMercator());
+        c = iD.rendererTileLayer(context).projection(new sdk.Projection());
     });
 
     afterEach(function() {

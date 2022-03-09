@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Extent, Projection, Tiler, geoScaleToZoom } from '@id-sdk/math';
+import { Extent, Tiler, geoScaleToZoom } from '@id-sdk/math';
 import { utilArrayUnion, utilQsString, utilStringQs } from '@id-sdk/util';
 import RBush from 'rbush';
 
@@ -41,8 +41,7 @@ function maxPageAtZoom(z) {
 function loadTiles(which, url, projection) {
     var currZoom = Math.floor(geoScaleToZoom(projection.scale()));
     // determine the needed tiles to cover the view
-    var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    var tiles = tiler.zoomRange(tileZoom).getTiles(proj).tiles;
+    var tiles = tiler.zoomRange(tileZoom).getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
     var cache = _oscCache[which];
@@ -152,8 +151,7 @@ function partitionViewport(projection) {
     var z = geoScaleToZoom(projection.scale());
     var z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
 
-    var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    var tiles = tiler.zoomRange(z2).getTiles(proj).tiles;
+    var tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
     return tiles.map(function(tile) { return tile.wgs84Extent; });
 }
 
@@ -204,7 +202,7 @@ export default {
 
 
     sequences: function(projection) {
-        var viewport = projection.clipExtent();
+        var viewport = projection.dimensions();
         var min = [viewport[0][0], viewport[1][1]];
         var max = [viewport[1][0], viewport[0][1]];
         var bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();

@@ -1,5 +1,5 @@
 describe('iD.actionMove', function() {
-    var projection = d3.geoMercator().scale(250 / Math.PI);
+    var projection = new sdk.Projection().scale(250 / Math.PI);
 
     // This was moved to operationMove.  We should test operations and move this test there.
     // describe('#disabled', function() {

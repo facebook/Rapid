@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
-import { geoScaleToZoom } from '@id-sdk/math';
+import { Projection, geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
@@ -13,7 +13,6 @@ import { prefs } from './preferences';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
-import { geoRawMercator } from '../geo/raw_mercator';
 import { modeSelect } from '../modes/select';
 import { presetManager } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
@@ -491,8 +490,8 @@ export function coreContext() {
 
 
   /* Projections */
-  context.projection = geoRawMercator();
-  context.curtainProjection = geoRawMercator();
+  context.projection = new Projection();
+  context.curtainProjection = new Projection();
 
   /* RapiD */
   let _rapidContext;
