@@ -144,7 +144,6 @@ export class PixiEventsHandler {
     if (this.isPoint(entity)) {
 
       this.touchPosition = { x: e.data.global.x, y: e.data.global.y };
-      this.draggingState = true;
       this.draggingEntity = entity;
       this.dispatch.call('dragstart');
       this.context.perform(actionNoop());
@@ -156,6 +155,7 @@ export class PixiEventsHandler {
     if (!this.draggingState || !e.target) return;
 
     if (this.draggingEntity) {
+      this.draggingState = true;
       const currentPosition = { x: e.data.global.x, y: e.data.global.y };
       const stageOffset = this.context.pixi.stage.position;
       const offsetX = currentPosition.x - this.touchPosition.x;
@@ -195,13 +195,13 @@ export class PixiEventsHandler {
       this.context.replace(
         actionMoveNode(feature.id, dest),
         this.moveAnnotation(this.draggingEntity)
-        );
+      );
+
+     this.dispatch.call('change');
     }
     this.draggingState = false;
     this.draggingEntity = null;
-
-
-    this.dispatch.call('change');
+    this.touchPosition = null;
   }
 
   /**
