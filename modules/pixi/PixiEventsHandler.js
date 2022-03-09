@@ -72,7 +72,9 @@ export class PixiEventsHandler {
         if (!e.target) return;
         const name = e.target.name || 'nothing';
         console.log(`clicked on ${name}`);
-        const entity = e.target.__data__;
+    const entity = e.target.__data__;
+     this._selectedEntities.forEach(entity => entity.filters = []);
+     this._selectedEntities = [];
         if (entity) {
             if (entity.__fbid__) {    // clicked a RapiD feature ..
               this.context
@@ -80,13 +82,11 @@ export class PixiEventsHandler {
                   .selectedErrorID(null)
                 .enter(modeRapidSelectFeatures(this.context, entity));
             } else {
-                this._selectedEntities.forEach(entity => entity.filters = []);
-                this._selectedEntities = [];
+
                 this.context.enter(modeSelect(this.context, [entity.id]));
+            }
                 e.target.filters = [new GlowFilter({ distance: 15, outerStrength: 2, color: 0xff26db })];
                 this._selectedEntities.push(e.target);
-            }
-
           //Now process right-click!
           if (e.data.button === 2) {
             this.onRightClickHandler(e);
@@ -94,7 +94,7 @@ export class PixiEventsHandler {
         } else {
             this.context.enter(modeBrowse(this.context));
         }
-                this.dispatch.call('change');
+        this.dispatch.call('change');
 
     }
 
