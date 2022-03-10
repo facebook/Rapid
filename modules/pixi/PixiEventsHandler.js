@@ -152,7 +152,7 @@ export class PixiEventsHandler {
   }
 
   onTouchMoveHandler(e) {
-    if (!this.draggingState || !e.target) return;
+    if (!e.target) return;
 
     if (this.draggingEntity) {
       this.draggingState = true;
@@ -187,16 +187,15 @@ export class PixiEventsHandler {
      this.dispatch.call('dragend');
       const currentPosition = { x: e.data.global.x, y: e.data.global.y };
       const stageOffset = this.context.pixi.stage.position;
-      let newXCoord = this.touchPosition.x  - stageOffset.x;
-      let newYCoord = this.touchPosition.y - stageOffset.y;
+      let newXCoord = currentPosition.x  - stageOffset.x;
+      let newYCoord = currentPosition.y - stageOffset.y;
       let dest = this.projection.invert([newXCoord, newYCoord]);
       let feature = this.scene.get(this.draggingEntity.id);
-
+      feature.dirty = true;
       this.context.replace(
         actionMoveNode(feature.id, dest),
         this.moveAnnotation(this.draggingEntity)
       );
-
      this.dispatch.call('change');
     }
     this.draggingState = false;
