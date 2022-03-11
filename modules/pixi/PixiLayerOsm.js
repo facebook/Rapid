@@ -106,6 +106,8 @@ export class PixiLayerOsm extends PixiLayer {
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
 
+      context.loadTiles(context.projection);  // load OSM data that covers the view
+
       const map = context.map();
       const entities = context.history().intersects(map.extent());
 

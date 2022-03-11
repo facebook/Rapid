@@ -90,22 +90,24 @@ export class PixiRenderer {
 
 
   /**
-   * render
-   * @param entityIDs - optional `Array` of entity IDs to dirty
+   * dirty
+   * flag these features as `dirty` if they are in the scene
+   * @param entityIDs - `Array` or `Set` of entity IDs to dirty
    */
-  render(entityIDs) {
+  dirty(entityIDs) {
+    entityIDs.forEach(osmID => {
+      const feature = this.scene.get(osmID);
+      if (feature) {
+        feature.dirty = true;
+      }
+    });
+  }
 
-    // If we were passed entity IDs,
-    // flag these features as `dirty` if they are in the scene
-    if (entityIDs) {
-      entityIDs.forEach(osmID => {
-        const feature = this.scene.get(osmID);
-        if (feature) {
-          feature.dirty = true;
-        }
-      });
-    }
 
+  /**
+   * render
+   */
+  render() {
     if (this._redrawPending) return;
 
     // UPDATE TRANSFORM

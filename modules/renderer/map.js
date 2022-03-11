@@ -465,11 +465,13 @@ export function rendererMap(context) {
 
       resetTransform();
       supersurface.call(context.background());
+
       if (pixiRenderer) {
-        pixiRenderer.render(Array.from(_dirtyIDs));
+        pixiRenderer.dirty(_dirtyIDs);
         _dirtyIDs.clear();
+        pixiRenderer.render();
       }
-      context.loadTiles(projection);  // load OSM data that covers the view
+
       _transformStart = projection.transform();
     }
 
