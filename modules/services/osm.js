@@ -251,84 +251,117 @@ var jsonparsers = {
     }
 };
 
+
+/**
+ * parseJSON
+ * @param payload
+ * @param callback
+ * @param options
+ */
 function parseJSON(payload, callback, options) {
-    options = Object.assign({ skipSeen: true }, options);
-    if (!payload)  {
-        return callback({ message: 'No JSON', status: -1 });
+  options = Object.assign({ skipSeen: true }, options);
+
+  if (!payload)  {
+    return callback({ message: 'No JSON', status: -1 });
+  }
+
+  let json = payload;
+  if (typeof json !== 'object') {
+    json = JSON.parse(payload);
+  }
+  if (!json.elements) {
+    return callback({ message: 'No JSON', status: -1 });
+  }
+
+  const children = json.elements;
+
+  const handle = window.requestIdleCallback(() => {
+    _deferred.delete(handle);
+
+    let results = { data: [], seenIDs: new Set() };
+
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const parser = jsonparsers[child.type];
+      if (!parser) continue;
+
+      const uid = osmEntity.id.fromOSM(child.type, child.id);
+      results.seenIDs.add(uid);
+
+      if (options.skipSeen) {
+        if (_tileCache.seen[uid]) continue;  // avoid reparsing a "seen" entity
+        _tileCache.seen[uid] = true;
+      }
+
+      const parsed = parser(child, uid);
+      if (parsed) {
+        results.data.push(parsed);
+      }
     }
 
-    var json = payload;
-    if (typeof json !== 'object') json = JSON.parse(payload);
+    callback(null, results);
+  });
 
-    if (!json.elements) return callback({ message: 'No JSON', status: -1 });
-
-    var children = json.elements;
-
-    var handle = window.requestIdleCallback(function() {
-        _deferred.delete(handle);
-        var results = [];
-        var result;
-        for (var i = 0; i < children.length; i++) {
-            result = parseChild(children[i]);
-            if (result) results.push(result);
-        }
-        callback(null, results);
-    });
-    _deferred.add(handle);
-
-    function parseChild(child) {
-        var parser = jsonparsers[child.type];
-        if (!parser) return null;
-
-        var uid;
-
-        uid = osmEntity.id.fromOSM(child.type, child.id);
-        if (options.skipSeen) {
-            if (_tileCache.seen[uid]) return null;  // avoid reparsing a "seen" entity
-            _tileCache.seen[uid] = true;
-        }
-
-        return parser(child, uid);
-    }
+  _deferred.add(handle);
 }
 
+
+/**
+ * parseUserJSON
+ * @param payload
+ * @param callback
+ * @param options
+ */
 function parseUserJSON(payload, callback, options) {
-    options = Object.assign({ skipSeen: true }, options);
-    if (!payload)  {
-        return callback({ message: 'No JSON', status: -1 });
-    }
+  options = Object.assign({ skipSeen: true }, options);
 
-    var json = payload;
-    if (typeof json !== 'object') json = JSON.parse(payload);
+  if (!payload)  {
+    return callback({ message: 'No JSON', status: -1 });
+  }
 
-    if (!json.users && !json.user) return callback({ message: 'No JSON', status: -1 });
+  let json = payload;
+  if (typeof json !== 'object') {
+    json = JSON.parse(payload);
+  }
 
-    var objs = json.users || [json];
+  if (!json.users && !json.user) {
+    return callback({ message: 'No JSON', status: -1 });
+  }
 
-    var handle = window.requestIdleCallback(function() {
-        _deferred.delete(handle);
-        var results = [];
-        var result;
-        for (var i = 0; i < objs.length; i++) {
-            result = parseObj(objs[i]);
-            if (result) results.push(result);
-        }
-        callback(null, results);
-    });
-    _deferred.add(handle);
+  const objects = json.users || [json];
 
-    function parseObj(obj) {
-        var uid = obj.user.id && obj.user.id.toString();
-        if (options.skipSeen && _userCache.user[uid]) {
-            delete _userCache.toLoad[uid];
-            return null;
-        }
-        var user = jsonparsers.user(obj.user, uid);
-        _userCache.user[uid] = user;
+  const handle = window.requestIdleCallback(() => {
+    _deferred.delete(handle);
+
+    let results = { data: [], seenIDs: new Set() };
+
+    for (let i = 0; i < objects.length; i++) {
+      const obj = objects[i];
+      const uid = obj.user.id && obj.user.id.toString();
+      results.seenIDs.add(uid);
+
+      if (options.skipSeen && _userCache.user[uid]) {  // avoid reparsing a "seen" entity
         delete _userCache.toLoad[uid];
-        return user;
+        continue;
+      }
+
+      const user = jsonparsers.user(obj.user, uid);
+      if (user) {
+        delete _userCache.toLoad[uid];
+        _userCache.user[uid] = user;
+        results.data.push(user);
+      }
     }
+
+    callback(null, results);
+
+  });
+
+  _deferred.add(handle);
 }
+
+
+
 
 var parsers = {
     node: function nodeData(obj, uid) {
@@ -452,53 +485,66 @@ var parsers = {
 };
 
 
+/**
+ * parseXML
+ * @param xml
+ * @param callback
+ * @param options
+ */
 function parseXML(xml, callback, options) {
-    options = Object.assign({ skipSeen: true }, options);
-    if (!xml || !xml.childNodes) {
-        return callback({ message: 'No XML', status: -1 });
-    }
+  options = Object.assign({ skipSeen: true }, options);
 
-    var root = xml.childNodes[0];
-    var children = root.childNodes;
+  if (!xml || !xml.childNodes) {
+    return callback({ message: 'No XML', status: -1 });
+  }
 
-    var handle = window.requestIdleCallback(function() {
-        _deferred.delete(handle);
-        var results = [];
-        var result;
-        for (var i = 0; i < children.length; i++) {
-            result = parseChild(children[i]);
-            if (result) results.push(result);
-        }
-        callback(null, results);
-    });
-    _deferred.add(handle);
+  const root = xml.childNodes[0];
+  const children = root.childNodes;
 
+  const handle = window.requestIdleCallback(() => {
+    _deferred.delete(handle);
 
-    function parseChild(child) {
-        var parser = parsers[child.nodeName];
-        if (!parser) return null;
+    let results = { data: [], seenIDs: new Set() };
 
-        var uid;
-        if (child.nodeName === 'user') {
-            uid = child.attributes.id.value;
-            if (options.skipSeen && _userCache.user[uid]) {
-                delete _userCache.toLoad[uid];
-                return null;
-            }
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      const parser = parsers[child.nodeName];
+      if (!parser) continue;
 
-        } else if (child.nodeName === 'note') {
-            uid = child.getElementsByTagName('id')[0].textContent;
+      let uid;
+      if (child.nodeName === 'user') {
+        uid = child.attributes.id.value;
+        results.seenIDs.add(uid);
 
-        } else {
-            uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
-            if (options.skipSeen) {
-                if (_tileCache.seen[uid]) return null;  // avoid reparsing a "seen" entity
-                _tileCache.seen[uid] = true;
-            }
+        if (options.skipSeen && _userCache.user[uid]) {  // avoid reparsing a "seen" entity
+          delete _userCache.toLoad[uid];
+          continue;
         }
 
-        return parser(child, uid);
+      } else if (child.nodeName === 'note') {
+        uid = child.getElementsByTagName('id')[0].textContent;
+        results.seenIDs.add(uid);
+
+      } else {
+        uid = osmEntity.id.fromOSM(child.nodeName, child.attributes.id.value);
+        results.seenIDs.add(uid);
+
+        if (options.skipSeen) {
+          if (_tileCache.seen[uid]) continue;  // avoid reparsing a "seen" entity
+          _tileCache.seen[uid] = true;
+        }
+      }
+
+      const parsed = parser(child, uid);
+      if (parsed) {
+        results.data.push(parsed);
+      }
     }
+
+    callback(null, results);
+  });
+
+  _deferred.add(handle);
 }
 
 
@@ -705,9 +751,7 @@ export default {
 
         this.loadFromAPI(
             '/api/0.6/' + type + '/' + osmID + (type !== 'node' ? '/full' : '') + '.json',
-            function(err, entities) {
-                if (callback) callback(err, { data: entities });
-            },
+            callback,
             options
         );
     },
@@ -722,9 +766,7 @@ export default {
 
         this.loadFromAPI(
             '/api/0.6/' + type + '/' + osmID + '/' + version + '.json',
-            function(err, entities) {
-                if (callback) callback(err, { data: entities });
-            },
+            callback,
             options
         );
     },
@@ -739,9 +781,7 @@ export default {
 
         this.loadFromAPI(
             '/api/0.6/' + type + '/' + osmID + '/relations.json',
-            function(err, entities) {
-                if (callback) callback(err, { data: entities });
-            },
+            callback,
             options
         );
     },
@@ -763,9 +803,7 @@ export default {
             utilArrayChunk(osmIDs, 150).forEach(function(arr) {
                 that.loadFromAPI(
                     '/api/0.6/' + type + '.json?' + type + '=' + arr.join(),
-                    function(err, entities) {
-                        if (callback) callback(err, { data: entities });
-                    },
+                    callback,
                     options
                 );
             });
@@ -878,7 +916,7 @@ export default {
             var options = { skipSeen: true };
             return parseUserJSON(payload, function(err, results) {
                 if (err) return callback(err);
-                return callback(undefined, results);
+                return callback(undefined, results.data);
             }, options);
         }
     },
@@ -903,7 +941,7 @@ export default {
             var options = { skipSeen: true };
             return parseUserJSON(payload, function(err, results) {
                 if (err) return callback(err);
-                return callback(undefined, results[0]);
+                return callback(undefined, results.data[0]);
             }, options);
         }
     },
@@ -927,7 +965,7 @@ export default {
             var options = { skipSeen: false };
             return parseUserJSON(payload, function(err, results) {
                 if (err) return callback(err);
-                _userDetails = results[0];
+                _userDetails = results.data[0];
                 return callback(undefined, _userDetails);
             }, options);
         }
@@ -1088,7 +1126,7 @@ export default {
             options
         );
 
-        function tileCallback(err, parsed) {
+        function tileCallback(err, result) {
             delete _tileCache.inflight[tile.id];
             if (!err) {
                 delete _tileCache.toLoad[tile.id];
@@ -1098,7 +1136,7 @@ export default {
                 _tileCache.rtree.insert(bbox);
             }
             if (callback) {
-                callback(err, Object.assign({ data: parsed }, tile));
+                callback(err, Object.assign({}, result, { tile: tile }));
             }
             if (!hasInflightRequests(_tileCache)) {
                 dispatch.call('loaded');     // stop the spinner
@@ -1214,7 +1252,7 @@ export default {
                 if (err) {
                     return callback(err);
                 } else {
-                    return callback(undefined, results[0]);
+                    return callback(undefined, results.data[0]);
                 }
             }, options);
         }
@@ -1273,7 +1311,7 @@ export default {
                 if (err) {
                     return callback(err);
                 } else {
-                    return callback(undefined, results[0]);
+                    return callback(undefined, results.data[0]);
                 }
             }, options);
         }

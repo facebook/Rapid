@@ -139,12 +139,15 @@ export function coreHistory(context) {
         },
 
 
-        merge: function(entities/*, extent*/) {
+        merge: function(entities, seenIDs) {
             var stack = _stack.map(function(state) { return state.graph; });
             _stack[0].graph.rebase(entities, stack, false);
             _tree.rebase(entities, false);
 
-            dispatch.call('merge', this, entities);
+            if (!seenIDs) {
+                seenIDs = entities.map(entity => entity.id);
+            }
+            dispatch.call('merge', this, seenIDs);
         },
 
 

@@ -151,9 +151,9 @@ describe('iD.serviceOsm', function () {
             '}';
 
         it('returns an object', function(done) {
-            connection.loadFromAPI(path, function (err, payload) {
+            connection.loadFromAPI(path, function (err, result) {
                 expect(err).to.not.be.ok;
-                expect(typeof payload).to.eql('object');
+                expect(typeof result).to.eql('object');
                 done();
             });
 
@@ -165,9 +165,9 @@ describe('iD.serviceOsm', function () {
         it('retries an authenticated call unauthenticated if 400 Bad Request', function (done) {
             login();
 
-            connection.loadFromAPI(path, function (err, xml) {
+            connection.loadFromAPI(path, function (err, result) {
                 expect(err).to.be.not.ok;
-                expect(typeof xml).to.eql('object');
+                expect(typeof result).to.eql('object');
                 expect(connection.authenticated()).to.be.not.ok;
                 done();
             });
@@ -183,9 +183,9 @@ describe('iD.serviceOsm', function () {
 
         it('retries an authenticated call unauthenticated if 401 Unauthorized', function (done) {
             login();
-            connection.loadFromAPI(path, function (err, xml) {
+            connection.loadFromAPI(path, function (err, result) {
                 expect(err).to.be.not.ok;
-                expect(typeof xml).to.eql('object');
+                expect(typeof result).to.eql('object');
                 expect(connection.authenticated()).to.be.not.ok;
                 done();
             });
@@ -201,9 +201,9 @@ describe('iD.serviceOsm', function () {
 
         it('retries an authenticated call unauthenticated if 403 Forbidden', function (done) {
             login();
-            connection.loadFromAPI(path, function (err, xml) {
+            connection.loadFromAPI(path, function (err, result) {
                 expect(err).to.be.not.ok;
-                expect(typeof xml).to.eql('object');
+                expect(typeof result).to.eql('object');
                 expect(connection.authenticated()).to.be.not.ok;
                 done();
             });

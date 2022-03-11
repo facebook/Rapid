@@ -538,8 +538,8 @@ export function coreValidator(context) {
 
   // When merging fetched data, validate base graph:
   context.history()
-    .on('merge.validator', entities => {
-      if (!entities) return;
+    .on('merge.validator', entityIDs => {
+      if (!entityIDs) return;
 
       // Make sure the caches have graphs assigned to them.
       // (we don't do this in `reset` because context is still resetting things and `history.base()` is unstable then)
@@ -547,7 +547,6 @@ export function coreValidator(context) {
       if (!_headCache.graph) _headCache.graph = baseGraph;
       if (!_baseCache.graph) _baseCache.graph = baseGraph;
 
-      let entityIDs = entities.map(entity => entity.id);
       entityIDs = _baseCache.withAllRelatedEntities(entityIDs);  // expand set
       validateEntitiesAsync(entityIDs, _baseCache);
     });

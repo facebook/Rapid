@@ -144,7 +144,7 @@ export function coreContext() {
         return;
 
       } else {
-        _history.merge(result.data, result.extent);
+        _history.merge(result.data, result.seenIDs);
         if (typeof callback === 'function') {
           callback(err, result);
         }

@@ -114,9 +114,9 @@ export function rendererMap(context) {
       }
 
       context.history()
-        .on('merge.map', entities => {
-          if (entities) {
-            entities.forEach(entity => _dirtyIDs.add(entity.id));
+        .on('merge.map', entityIDs => {
+          if (entityIDs) {
+            entityIDs.forEach(entityID => _dirtyIDs.add(entityID));
           }
           map.deferredRedraw();
         })
