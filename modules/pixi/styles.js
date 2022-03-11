@@ -234,22 +234,22 @@ const STYLE_SELECTORS = {
     taxiway: 'taxiway'
   },
   amenity: {
-    fountain: 'blue',
     childcare: 'yellow',
-    kindergarten: 'yellow',
-    school: 'yellow',
     college: 'yellow',
-    university: 'yellow',
+    fountain: 'blue',
+    kindergarten: 'yellow',
+    parking: 'darkgray',
     research_institute: 'yellow',
-    parking: 'darkgray'
+    school: 'yellow',
+    university: 'yellow'
   },
   building: {
     '*': 'red'
   },
   barrier: {
+    city_wall: 'barrier_wall',
     hedge: 'barrier_hedge',
     retaining_wall: 'barrier_wall',
-    city_wall: 'barrier_wall',
     wall: 'barrier_wall',
     '*': 'barrier'
   },
@@ -258,66 +258,64 @@ const STYLE_SELECTORS = {
     national_park: 'boundary_park',
     '*': 'boundary'
   },
-  construction: {
-    '*': 'gold'
-  },
   crossing: {
     marked: 'crossing_marked',
     zebra: 'crossing_marked',
     '*': 'crossing_unmarked'
   },
   golf: {
-    'green': 'lightgreen'
+    green: 'lightgreen'
   },
   highway: {
-    motorway: 'motorway',
-    motorway_link: 'motorway',
-    trunk: 'trunk',
-    trunk_link: 'trunk',
-    primary: 'primary',
-    primary_link: 'primary',
-    secondary: 'secondary',
-    secondary_link: 'secondary',
-    tertiary: 'tertiary',
-    tertiary_link: 'tertiary',
-    unclassified: 'unclassified',
-    unclassified_link: 'unclassified',
-    residential: 'residential',
-    residential_link: 'residential',
+    bridleway: 'bridleway',
+    bus_guideway: 'special_service',
+    corridor: 'corridor',
+    cycleway: 'cycleway',
+    footway: 'footway',
     living_street: 'living_street',
     living_street_link: 'living_street',
+    motorway: 'motorway',
+    motorway_link: 'motorway',
+    path: 'path',
+    pedestrian: 'pedestrian',
+    primary: 'primary',
+    primary_link: 'primary',
+    residential: 'residential',
+    residential_link: 'residential',
+    secondary: 'secondary',
+    secondary_link: 'secondary',
     service: 'service',
     service_link: 'service',
-    bus_guideway: 'special_service',
+    steps: 'steps',
+    tertiary: 'tertiary',
+    tertiary_link: 'tertiary',
     track: 'track',
-    pedestrian: 'pedestrian',
-    path: 'path',
-    footway: 'footway',
-    cycleway: 'cycleway',
-    bridleway: 'bridleway',
-    corridor: 'corridor',
-    steps: 'steps'
+    trunk: 'trunk',
+    trunk_link: 'trunk',
+    unclassified: 'unclassified',
+    unclassified_link: 'unclassified'
   },
   landuse: {
+    cemetery: 'lightgreen',
+    commercial: 'orange',
+    construction: 'gold',
+    farmland: 'lightgreen',
+    farmyard: 'tan',
     flowerbed: 'green',
     forest: 'green',
     grass: 'green',
+    industrial: 'pink',
+    landfill: 'orange',
+    meadow: 'lightgreen',
+    military: 'orange',
+    orchard: 'lightgreen',
+    quarry: 'darkgray',
+    railway: 'darkgray',
     recreation_ground: 'green',
-    village_green: 'green',
     residential: 'gold',
     retail: 'orange',
-    commercial: 'orange',
-    landfill: 'orange',
-    military: 'orange',
-    industrial: 'pink',
-    cemetery: 'lightgreen',
-    farmland: 'lightgreen',
-    meadow: 'lightgreen',
-    orchard: 'lightgreen',
-    vineyard: 'lightgreen',
-    farmyard: 'tan',
-    railway: 'darkgray',
-    quarry: 'darkgray'
+    village_green: 'green',
+    vineyard: 'lightgreen'
   },
   leisure: {
     garden: 'green',
@@ -325,32 +323,32 @@ const STYLE_SELECTORS = {
     nature_reserve: 'green',
     park: 'green',
     pitch: 'green',
-    track: 'yellow',
-    swimming_pool: 'blue'
+    swimming_pool: 'blue',
+    track: 'yellow'
   },
   man_made: {
     adit: 'darkgray',
-    groyne: 'barrier_wall',
-    breakwater: 'barrier_wall'
+    breakwater: 'barrier_wall',
+    groyne: 'barrier_wall'
   },
   military: {
     '*': 'orange'
   },
   natural: {
-    bay: 'blue',
-    water: 'blue',
-    beach: 'yellow',
-    sand: 'yellow',
-    scrub: 'yellow',
-    wetland: 'teal',
     bare_rock: 'darkgray',
+    bay: 'blue',
+    beach: 'yellow',
     cave_entrance: 'darkgray',
     cliff: 'darkgray',
-    rock: 'darkgray',
-    scree: 'darkgray',
-    stone: 'darkgray',
-    shingle: 'darkgray',
     glacier: 'lightgray',
+    rock: 'darkgray',
+    sand: 'yellow',
+    scree: 'darkgray',
+    scrub: 'yellow',
+    shingle: 'darkgray',
+    stone: 'darkgray',
+    water: 'blue',
+    wetland: 'teal',
     '*': 'green'
   },
   power: {
@@ -363,11 +361,11 @@ const STYLE_SELECTORS = {
     'ferry': 'ferry'
   },
   sport: {
-    beachvolleyball: 'yellow',
     baseball: 'yellow',
-    softball: 'yellow',
     basketball: 'darkgray',
-    skateboard: 'darkgray'
+    beachvolleyball: 'yellow',
+    skateboard: 'darkgray',
+    softball: 'yellow'
   },
   waterway: {
     river: 'river',
@@ -404,8 +402,8 @@ const PATTERN_SELECTORS = {
     farmland: 'farmland',
     farmyard: 'farmyard',
     forest: 'forest',
-    grave_yard: 'cemetery',
     grass: 'grass',
+    grave_yard: 'cemetery',
     landfill: 'landfill',
     meadow: 'grass',
     military: 'construction',

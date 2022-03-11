@@ -6,6 +6,33 @@ import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
 * Generates a icon sprite for the given texture name
 * @returns {PIXI.Sprite}
 */
+export function getIconTexture(context, iconName) {
+  const isMaki = /^maki-/.test(iconName);
+  const isTemaki = /^temaki-/.test(iconName);
+
+  let spritesheet;
+  let spriteName;
+  if (isMaki) {
+    spritesheet = context._makiSheet;
+    spriteName = iconName.slice('maki-'.length);
+  } else if (isTemaki) {
+    spritesheet = context._temakiSheet;
+    spriteName = iconName.slice('temaki-'.length);
+  } else {
+    spritesheet = context._fontAwesomeSheet;
+    spriteName = iconName;
+  }
+
+  spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
+
+  return spritesheet.textures[spriteName];
+}
+
+
+/**
+* Generates a icon sprite for the given texture name
+* @returns {PIXI.Sprite}
+*/
 export function getIconSprite(context, iconName) {
   const isMaki = /^maki-/.test(iconName);
   const isTemaki = /^temaki-/.test(iconName);

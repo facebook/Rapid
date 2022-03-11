@@ -4,7 +4,6 @@ import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
-import { utilArrayFlatten, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
@@ -33,6 +32,7 @@ function clamp(num, min, max) {
 
 export function rendererMap(context) {
   let pixiRenderer;
+  let _dirtyIDs = new Set();  // ids that we will mark as dirty on next render
 
   const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
   let projection = context.projection;
@@ -115,18 +115,16 @@ export function rendererMap(context) {
 
       context.history()
         .on('merge.map', entities => {
-          let entityIDs;
           if (entities) {
-            entityIDs = entities.map(entity => entity.id);
+            entities.forEach(entity => _dirtyIDs.add(entity.id));
           }
-          map.deferredRedraw(entityIDs);
+          map.deferredRedraw();
         })
         .on('change.map', difference => {
-          let entityIDs;
           if (difference) {
-            entityIDs = Object.keys(difference.complete());
+            Object.keys(difference.complete()).forEach(entityID => _dirtyIDs.add(entityID));
           }
-          map.immediateRedraw(entityIDs);
+          map.immediateRedraw();
         })
         .on('undone.map', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
         .on('redone.map', (stack) => didUndoOrRedo(stack.transform));
@@ -253,9 +251,9 @@ export function rendererMap(context) {
     // var deferredRedraw = _throttle(redraw, 750);
     map.deferredRedraw = _throttle(redraw, 200);
 
-    map.immediateRedraw = function(entityIDs) {
+    map.immediateRedraw = function() {
       map.deferredRedraw.cancel();
-      redraw(entityIDs);
+      redraw();
     };
 
 
@@ -462,13 +460,14 @@ export function rendererMap(context) {
     }
 
 
-    function redraw(entityIDs) {
+    function redraw() {
       if (surface.empty() || !_redrawEnabled) return;
 
       resetTransform();
       supersurface.call(context.background());
       if (pixiRenderer) {
-        pixiRenderer.render(entityIDs);
+        pixiRenderer.render(Array.from(_dirtyIDs));
+        _dirtyIDs.clear();
       }
       context.loadTiles(projection);  // load OSM data that covers the view
       _transformStart = projection.transform();

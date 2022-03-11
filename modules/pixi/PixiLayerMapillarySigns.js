@@ -89,7 +89,7 @@ export class PixiLayerMapillarySigns extends PixiLayer {
         const markerStyle = {
           markerTexture: spritesheet.textures[d.value + '.svg']
         };
-        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
         const dObj = feature.displayObject;
         // const ICONSIZE = 24;

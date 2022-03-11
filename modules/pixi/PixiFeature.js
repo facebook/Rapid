@@ -9,7 +9,8 @@ import { Extent } from '@id-sdk/math';
  * Properties you can access:
  *   `dirty`
  *   `displayObject`
- *   `k`
+ *   `geometry`
+ *   `style`
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
@@ -26,8 +27,11 @@ export class PixiFeature {
     this.displayObject = displayObject;
 
     this.type = 'unknown';
-    this.dirty = true;   // Whether the feature's geometry needs to be rebuilt
-    this.k = null;       // The projection scale at which the feature was last computed
+    this._k = null;          // The projection scale at which the feature was last computed
+    this._geometry = null;
+    this._geometryDirty = true;
+    this._style = null;
+    this._styleDirty = true;
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
@@ -47,11 +51,17 @@ export class PixiFeature {
    * @param zoom - the effective zoom to use for rendering
    */
   update(projection) {
+    // when scale changes, geometry must be reprojected
     const k = projection.scale();
-    if (!this.dirty && this.k === k) return;  // no change
+    if (this._k !== k) {
+      this._geometryDirty = true;
+    }
 
-    this.k = k;
-    this.dirty = false;
+    if (!this._geometryDirty && !this._styleDirty && this._k === k) return;  // no change
+
+    this._geometryDirty = false;
+    this._styleDirty = false;
+    this._k = k;
   }
 
   /**
@@ -60,7 +70,7 @@ export class PixiFeature {
    */
   needsUpdate(projection) {
     const k = projection.scale();
-    return (this.dirty || this.k !== k);
+    return (this._geometryDirty || this._styleDirty || this._k !== k);
   }
 
 
@@ -80,6 +90,68 @@ export class PixiFeature {
   }
   set visible(val) {
     this.displayObject.visible = val;
+  }
+
+
+  /**
+   * dirty
+   * Whether the feature needs to be rebuilt
+   */
+  get dirty() {
+    return this._geometryDirty || this._styleDirty;
+  }
+  set dirty(val) {
+    this._geometryDirty = val;
+    this._styleDirty = val;
+  }
+
+
+  /**
+   * geometry
+   * @param arr   Geometry `Array` (contents depends on the feature type)
+   *
+   * 'point' - Single wgs84 coordinate
+   *    [lon, lat]
+   *
+   * 'line' - Array of coordinates
+   *    [ [lon, lat], [lon, lat],  … ]
+   *
+   * 'multipolygon' - Array of Arrays of Arrays
+   *   [
+   *     [                                  // polygon 1
+   *       [ [lon, lat], [lon, lat], … ],   // outer ring
+   *       [ [lon, lat], [lon, lat], … ],   // inner rings
+   *       …
+   *     ],
+   *     [                                  // polygon 2
+   *       [ [lon, lat], [lon, lat], … ],   // outer ring
+   *       [ [lon, lat], [lon, lat], … ],   // inner rings
+   *       …
+   *     ],
+   *     …
+   *   ]
+   */
+  get geometry() {
+    return this._geometry;
+  }
+  set geometry(arr) {
+    this._geometry = arr;
+    this._geometryDirty = true;
+  }
+
+  /**
+   * style
+   * @param obj   Style `Object` (contents depends on the feature type)
+   *
+   * 'point' - see PixiFeaturePoint.js
+   * 'line'/'multipolygon' - see styles.js
+   */
+  get style() {
+    return this._style;
+  }
+  set style(obj) {
+    this._style = obj;
+    this._styleDirty = true;
   }
 
 }

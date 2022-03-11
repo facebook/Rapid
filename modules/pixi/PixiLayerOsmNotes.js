@@ -94,7 +94,7 @@ export class PixiLayerOsmNotes extends PixiLayer {
           markerTint: color
           // iconName: iconName
         };
-        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
         // bind data and add to scene
         const dObj = feature.displayObject;

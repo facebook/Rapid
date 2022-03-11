@@ -143,8 +143,11 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        const vfDirections = d.ca ? [d.ca] : [];  // ca = camera angle
-        feature = new PixiFeaturePoint(context, featureID, d.loc, vfDirections, MARKERSTYLE);
+        const style = Object.assign({}, MARKERSTYLE);
+        if (d.ca) {
+          style.viewfieldAngles = [d.ca];   // ca = camera angle
+        }
+        feature = new PixiFeaturePoint(context, featureID, d.loc, style);
 
         // bind data and add to scene
         const dObj = feature.displayObject;

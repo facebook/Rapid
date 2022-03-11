@@ -78,7 +78,7 @@ export class PixiLayerImproveOsm extends PixiLayer {
           iconName: d.icon
         };
 
-        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
         // was here before
         // if (feature.icon) {

@@ -98,7 +98,7 @@ export class PixiLayerKeepRight extends PixiLayer {
           markerTint: TINTS.get(d.parentIssueType) || 0xffffff
         };
 
-        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
         // bind data and add to scene
         const dObj = feature.displayObject;

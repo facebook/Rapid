@@ -22,7 +22,6 @@ const ONEWAY_SPACING = 35;
  *
  * Inherited from PixiFeature:
  *   `dirty`
- *   `k`
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
@@ -91,7 +90,7 @@ export class PixiFeatureLine extends PixiFeature {
    */
   update(projection, zoom) {
     const k = projection.scale();
-    if (!this.dirty && this.k === k) return;  // no change
+    if (!this.dirty && this._k === k) return;  // no change
 
     //
     // Reproject and recalculate the bounding box
@@ -170,7 +169,7 @@ export class PixiFeatureLine extends PixiFeature {
       });
     }
 
-    this.scale = k;
+    this._k = k;
     this.dirty = false;
 
 

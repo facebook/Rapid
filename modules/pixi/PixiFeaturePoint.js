@@ -1,15 +1,15 @@
 import * as PIXI from 'pixi.js';
 
 import { PixiFeature } from './PixiFeature';
-import { getIconSprite, getViewfieldContainer } from './helpers';
+import { getIconTexture } from './helpers';
 
 
 /**
  * PixiFeaturePoint
  *
  * Properties you can access:
- *   `coord`          Single wgs84 coordinate [lon, lat]
- *   `markerStyle`    Object containing styling data
+ *   `geometry`       Single wgs84 coordinate [lon, lat]
+ *   `style`    Object containing styling data
  *   `displayObject`  PIXI.Sprite() for the marker
  *   `icon`           PIXI.Sprite() for the icon (if any)
  *   `vfContainer`    PIXI.Container() for the viewfields (if any)
@@ -28,85 +28,172 @@ export class PixiFeaturePoint extends PixiFeature {
   /**
    * @constructor
    */
-  constructor(context, id, coord, vfDirections, markerStyle) {
+  constructor(context, id, geometry, style) {
     const marker = new PIXI.Sprite();
     super(marker);
 
     this.context = context;
     this.type = 'point';
-    this.coord = coord;      // [lon, lat] coordinate pair
+    this.geometry = geometry;
+    this.style = (style || {});
 
-    // markerStyle can contatin:
-    // `markerTexture`
-    // `markerName`
-    // `markerTint`
-    // `viewfieldName`
-    // `viewfieldTint`
-    // `iconName`
-    // `iconTint`
-    markerStyle.markerName = markerStyle.markerName || 'smallCircle';
-    markerStyle.markerTint = markerStyle.markerTint || 0xffffff;
-    markerStyle.viewfieldName = markerStyle.viewfieldName || 'viewfield';
-    markerStyle.viewfieldTint = markerStyle.viewfieldTint || 0xffffff;
-    markerStyle.iconName = markerStyle.iconName || '';
-    markerStyle.iconAlpha = markerStyle.iconAlpha || 1;
-    this.markerStyle = markerStyle;
-
-    const textures = this.context.pixi.rapidTextures;
+    this._oldvfLength = 0;  // to watch for change in # of viewfield sprites
 
     marker.name = id;
     marker.buttonMode = true;
     marker.interactive = true;
     marker.interactiveChildren = true;
     marker.sortableChildren = false;
-    marker.texture = markerStyle.markerTexture || textures.get(markerStyle.markerName) || PIXI.Texture.WHITE;
-    marker.tint = markerStyle.markerTint;
-    marker.zIndex = -coord[1];  // sort by latitude ascending
-
-    // Add viewfields, if any
-    if (vfDirections && vfDirections.length > 0) {
-      const vfTexture = textures.get(markerStyle.viewfieldName) || PIXI.Texture.WHITE;
-      const vfColor =  markerStyle.viewfieldTint;
-      const vfContainer = getViewfieldContainer(vfTexture, vfDirections, vfColor);
-      marker.addChild(vfContainer);
-      this.vfContainer = vfContainer;
-    }
-
-    // Add icon, if any
-    if (markerStyle.iconName) {
-      const icon = getIconSprite(context, markerStyle.iconName);
-      const ICONSIZE = 11;
-      icon.width = ICONSIZE;
-      icon.height = ICONSIZE;
-      icon.alpha = markerStyle.iconAlpha;
-      marker.addChild(icon);
-      this.icon = icon;
-    }
   }
 
 
   /**
    * update
-   *
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
   update(projection, zoom) {
+    // When scale changes, both geometry and style must be recomputed
     const k = projection.scale();
-    if (!this.dirty && this.k === k) return;  // no change
+    if (this._k !== k) {
+      this._geometryDirty = true;
+      this._styleDirty = true;
+      this._k = k;
+    }
 
-    const textures = this.context.pixi.rapidTextures;
-    const markerStyle = this.markerStyle;
-    const isPin = (markerStyle.markerName === 'pin' || markerStyle.markerName === 'boldPin');
+    if (!this._geometryDirty && !this._styleDirty) return;  // no change
+
+    this.updateGeometry(projection);
+    this.updateStyle(zoom);
+
+    // Recalculate local and scene bounds
     const marker = this.displayObject;
-    const vfContainer = this.vfContainer;
-    const icon = this.icon;
+    const position = marker.position;
+    marker.getLocalBounds(this.localBounds);        // where 0,0 is the origin of the object
+    this.sceneBounds = this.localBounds.clone();    // where 0,0 is the origin of the scene
+    this.sceneBounds.x += position.x;
+    this.sceneBounds.y += position.y;
+  }
+
+
+  /**
+   * updateGeometry
+   * @param projection   pixi projection to use for rendering
+   */
+  updateGeometry(projection) {
+    if (!this._geometryDirty) return;
+
+    const marker = this.displayObject;
+
+    // Reproject
+    const [x, y] = projection.project(this._geometry);
+    marker.position.set(x, y);
+
+    // sort markers by latitude ascending
+    // sort markers with viewfields above markers without viewfields
+    const z = -this._geometry[1];
+    marker.zIndex = (this._oldvfLength > 0) ? (z + 1000) : z;
+
+    this._geometryDirty = false;
+  }
+
+
+  /**
+   * updateStyle
+   * @param zoom  effective zoom to use for rendering
+   */
+  updateStyle(zoom) {
+    if (!this._styleDirty) return;
+
+    const context = this.context;
+    const textures = context.pixi.rapidTextures;
+    const marker = this.displayObject;
+
+    const style = this._style;
+    const isPin = (style.markerName === 'pin' || style.markerName === 'boldPin');
 
     //
-    // Reproject
+    // Update marker style
     //
-    const [x, y] = projection.project(this._coord);
-    marker.position.set(x, y);
+    marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
+    marker.tint = style.markerTint;
+
+    //
+    // Update viewfields, if any..
+    //
+    const vfAngles = style.viewfieldAngles || [];
+    let vfContainer = marker.getChildByName('viewfields');
+
+    if (vfAngles.length) {
+      const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
+
+      // Create viewfield container, if necessary
+      if (!vfContainer) {
+        vfContainer = new PIXI.Container();
+        vfContainer.name = 'viewfields';
+        vfContainer.interactive = false;
+        vfContainer.interactiveChildren = false;
+        // sort markers with viewfields above markers without viewfields
+        marker.zIndex = -this._geometry[1] + 1000;
+        marker.addChild(vfContainer);
+      }
+
+      // If # of viewfields has changed from before, replace them.
+      if (vfAngles.length !== this._oldvfLength) {
+        vfContainer.removeChildren();
+        vfAngles.forEach(() => {
+          const sprite = new PIXI.Sprite(vfTexture);
+          sprite.interactive = false;
+          sprite.interactiveChildren = false;
+          sprite.anchor.set(0.5, 1);  // middle, top
+          vfContainer.addChild(sprite);
+        });
+        this._oldvfLength = vfAngles.length;
+      }
+
+      // Update viewfield angles and style
+      vfAngles.forEach((vfAngle, index) => {
+        const sprite = vfContainer.getChildAt(index);
+        sprite.tint = style.viewfieldTint || 0x333333;
+        sprite.angle = vfAngle;
+      });
+
+    } else if (vfContainer) {  // No viewfields, destroy the container if it exists
+      // sort markers with viewfields above markers without viewfields
+      marker.zIndex = -this._geometry[1];
+      marker.removeChild(vfContainer);
+      vfContainer.destroy({ children: true });
+    }
+
+    //
+    // Update icon, if any..
+    //
+    let iconSprite = marker.getChildByName('icon');
+
+    if (style.iconTexture || style.iconName) {
+      const iconTexture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
+
+      // Create icon sprite, if necessary
+      if (!iconSprite) {
+        iconSprite = new PIXI.Sprite();
+        iconSprite.name = 'icon';
+        iconSprite.interactive = false;
+        iconSprite.interactiveChildren = false;
+        iconSprite.anchor.set(0.5, 0.5);   // middle, middle
+        marker.addChild(iconSprite);
+      }
+
+      // Update texture and style, if necessary
+      iconSprite.texture = iconTexture;
+      const ICONSIZE = 11;
+      iconSprite.width = ICONSIZE;
+      iconSprite.height = ICONSIZE;
+      iconSprite.alpha = style.iconAlpha;
+
+    } else if (iconSprite) {  // No icon, remove if it exists
+      marker.removeChild(iconSprite);
+      iconSprite.destroy({ children: true });
+    }
 
 
     //
@@ -121,11 +208,11 @@ export class PixiFeaturePoint extends PixiFeature {
       marker.scale.set(0.8, 0.8);
 
       // Replace pins with circles at lower zoom
-      const textureName = isPin ? 'largeCircle' : markerStyle.markerName;
-      marker.texture = markerStyle.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
+      const textureName = isPin ? 'largeCircle' : style.markerName;
+      marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
-      if (icon) {
-        icon.position.set(0, 0);
+      if (iconSprite) {
+        iconSprite.position.set(0, 0);
       }
       // Hide viewfields
       if (vfContainer) {
@@ -136,7 +223,7 @@ export class PixiFeaturePoint extends PixiFeature {
       // Show the requested marker (circles OR pins)
       marker.renderable = true;
       marker.scale.set(1, 1);
-      marker.texture = markerStyle.markerTexture || textures.get(markerStyle.markerName) || PIXI.Texture.WHITE;
+      marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
       if (isPin) {
         marker.anchor.set(0.5, 1);  // middle, bottom
       } else {
@@ -144,11 +231,11 @@ export class PixiFeaturePoint extends PixiFeature {
       }
 
       // Show requested icon
-      if (icon) {
+      if (iconSprite) {
         if (isPin) {
-          icon.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
+          iconSprite.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
         } else {
-          icon.position.set(0, 0);  // middle, middle
+          iconSprite.position.set(0, 0);  // middle, middle
         }
       }
       // Show viewfields
@@ -157,31 +244,51 @@ export class PixiFeaturePoint extends PixiFeature {
       }
     }
 
-    //
-    // Recalculate local and scene bounds
-    //
-    marker.getLocalBounds(this.localBounds);        // where 0,0 is the origin of the object
-    this.sceneBounds = this.localBounds.clone();    // where 0,0 is the origin of the scene
-    this.sceneBounds.x += x;
-    this.sceneBounds.y += y;
-
-    this.scale = k;
-    this.dirty = false;
+    this._styleDirty = false;
   }
 
 
   /**
-   * coord
+   * geometry
+   * @param arr geometry `Array` (contents depends on the feature type)
+   *
+   * 'point' - Single wgs84 coordinate
+   *    [lon, lat]
    */
-  get coord() {
-    return this._coord;
+  get geometry() {
+    return this._geometry;
   }
-  set coord(val) {
-    this.extent.min = val;
-    this.extent.max = val;
+  set geometry(arr) {
+    this.extent.min = arr;
+    this.extent.max = arr;
 
-    this._coord = val;
-    this.dirty = true;
+    this._geometry = arr;
+    this._geometryDirty = true;
   }
 
+
+  /**
+   * style
+   * @param obj style `Object` (contents depends on the feature type)
+   *
+   * 'point' - see PixiFeaturePoint.js
+   * 'line'/'multipolygon' - see styles.js
+   */
+  get style() {
+    return this._style;
+  }
+  set style(obj) {
+    this._style = Object.assign({}, STYLE_DEFAULTS, obj);
+    this._styleDirty = true;
+  }
 }
+
+const STYLE_DEFAULTS = {
+  markerName: 'smallCircle',
+  markerTint: 0xffffff,
+  viewfieldAngles: [],
+  viewfieldName: 'viewfield',
+  viewfieldTint: 0xffffff,
+  iconName: '',
+  iconAlpha: 1
+};

@@ -7,7 +7,7 @@ import { presetManager } from '../presets';
 import { PixiLayer } from './PixiLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { styleMatch } from './styles';
 
 const LAYERID = 'osm';
@@ -165,7 +165,7 @@ export class PixiLayerOsm extends PixiLayer {
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
         const style = styleMatch(entity.tags);
 
-        feature = new PixiFeaturePolygon(context, entity.id, polygons, style);
+        feature = new PixiFeatureMultipolygon(context, entity.id, polygons, style);
 
         // bind data and add to scene
         const dObj = feature.displayObject;
@@ -282,7 +282,21 @@ export class PixiLayerOsm extends PixiLayer {
 
       let feature = scene.get(node.id);
 
+      // Create a new point if this vertex is entering the scene.
       if (!feature) {
+        feature = new PixiFeaturePoint(context, node.id, node.loc);
+        vertexContainer.addChild(feature.displayObject);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      // Something has changed since the last time we've styled this feature.
+      const version = (node.v || 0);
+      if (feature.v !== version || feature.dirty) {
+        feature.v = version;
+        feature.displayObject.__data__ = node;    // rebind data
+
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
         const directions = node.directions(graph, context.projection);
@@ -291,6 +305,7 @@ export class PixiLayerOsm extends PixiLayer {
         let markerStyle = {
           markerName: 'smallCircle',
           markerTint: 0xffffff,
+          viewfieldAngles: directions,
           viewfieldName: 'viewfieldDark',
           viewfieldTint: 0xffffff,
           iconName: iconName,
@@ -312,19 +327,8 @@ export class PixiLayerOsm extends PixiLayer {
           markerStyle.markerTint = 0xbbbbbb;
         }
 
-        feature = new PixiFeaturePoint(context, node.id, node.loc, directions, markerStyle);
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = node;
-        if (directions.length) {   // sort markers with viewfields above markers without viewfields
-          dObj.zIndex += 1000;     // (which should be [-90..90])
-        }
-        vertexContainer.addChild(dObj);
+        feature.style = markerStyle;
       }
-
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
 
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
@@ -350,7 +354,21 @@ export class PixiLayerOsm extends PixiLayer {
     entities.forEach(node => {
       let feature = scene.get(node.id);
 
+      // Create a new point if this point is entering the scene.
       if (!feature) {
+        feature = new PixiFeaturePoint(context, node.id, node.loc);
+        pointContainer.addChild(feature.displayObject);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      // Something has changed since the last time we've styled this feature.
+      const version = (node.v || 0);
+      if (feature.v !== version) {
+        feature.v = version;
+        feature.displayObject.__data__ = node;    // rebind data
+
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
         const directions = node.directions(graph, context.projection);
@@ -359,30 +377,21 @@ export class PixiLayerOsm extends PixiLayer {
         let markerStyle = {
           markerName: 'pin',
           markerTint: 0xffffff,
+          viewfieldAngles: directions,
           viewfieldName: 'viewfieldDark',
           viewfieldTint: 0xffffff,
           iconName: iconName,
           iconAlpha: 1
         };
+
         if (hasWikidata(node)) {
           markerStyle.markerName = 'boldPin';
           markerStyle.markerTint = 0xdddddd;
           markerStyle.iconAlpha = 0.6;
         }
 
-        feature = new PixiFeaturePoint(context, node.id, node.loc, directions, markerStyle);
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = node;
-        if (directions.length) {   // sort markers with viewfields above markers without viewfields
-          dObj.zIndex += 1000;     // (which should be [-90..90])
-        }
-        pointContainer.addChild(dObj);
+        feature.style = markerStyle;
       }
-
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
 
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);

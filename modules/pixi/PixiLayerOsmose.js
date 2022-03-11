@@ -70,7 +70,7 @@ export class PixiLayerOsmose extends PixiLayer {
           markerTint: PIXI.utils.string2hex(color),
           iconName: d.icon
         };
-        feature = new PixiFeaturePoint(context, featureID, d.loc, [], markerStyle);
+        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
         // bind data and add to scene
         const dObj = feature.displayObject;

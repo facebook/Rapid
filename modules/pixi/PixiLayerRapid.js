@@ -5,7 +5,7 @@ import { services } from '../services';
 import { PixiLayer } from './PixiLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
-import { PixiFeaturePolygon } from './PixiFeaturePolygon';
+import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 
 const LAYERID = 'rapid';
 const LAYERZINDEX = 2;
@@ -282,7 +282,7 @@ export class PixiLayerRapid extends PixiLayer {
         const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeaturePolygon(context, this.idAccessor(entity), polygons, style);
+        feature = new PixiFeatureMultipolygon(context, this.idAccessor(entity), polygons, style);
         feature.rapidFeature = true;
 
         // bind data and add to scene
@@ -372,7 +372,7 @@ export class PixiLayerRapid extends PixiLayer {
       let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, [], pointStyle);
+        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, pointStyle);
         feature.rapidFeature = true;
 
         // bind data and add to scene
@@ -395,7 +395,7 @@ export class PixiLayerRapid extends PixiLayer {
       let feature = scene.get(this.idAccessor(entity));
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, [], vertexStyle);
+        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, vertexStyle);
         feature.rapidFeature = true;
 
         // vertices in this layer don't actually need to be interactive

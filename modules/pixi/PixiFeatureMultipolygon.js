@@ -9,7 +9,7 @@ const PARTIALFILLWIDTH = 32;
 
 
 /**
- * PixiFeaturePolygon
+ * PixiFeatureMultipolygon
  *
  * Properties you can access:
  *   `polygons`       Treat like multipolygon (Array of polygons wgs84 [lon, lat])
@@ -24,14 +24,13 @@ const PARTIALFILLWIDTH = 32;
  *
  * Inherited from PixiFeature:
  *   `dirty`
- *   `k`
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
  *
  * @class
  */
-export class PixiFeaturePolygon extends PixiFeature {
+export class PixiFeatureMultipolygon extends PixiFeature {
 
   /**
    * @constructor
@@ -41,7 +40,7 @@ export class PixiFeaturePolygon extends PixiFeature {
     super(container);
 
     this.context = context;
-    this.type = 'area';
+    this.type = 'multipolygon';
     this._polygons = polygons;   // treat everything as a multipolygon
     this.style = style;
 
@@ -98,7 +97,7 @@ export class PixiFeaturePolygon extends PixiFeature {
    */
   update(projection) {
     const k = projection.scale();
-    if (!this.dirty && this.k === k) return;  // no change
+    if (!this.dirty && this._k === k) return;  // no change
 
     // Reproject and recalculate the bounding box
     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
@@ -292,7 +291,7 @@ export class PixiFeaturePolygon extends PixiFeature {
       }
     }
 
-    this.scale = k;
+    this._k = k;
     this.dirty = false;
   }
 

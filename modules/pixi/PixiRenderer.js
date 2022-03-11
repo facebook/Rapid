@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import * as PIXI from 'pixi.js';
-import { Projection, Extent, vecAdd } from '@id-sdk/math';
+import { Projection } from '@id-sdk/math';
 
 import { PixiEventsHandler } from './PixiEventsHandler';
 import { PixiLayers } from './PixiLayers';
@@ -94,16 +94,19 @@ export class PixiRenderer {
    * @param entityIDs - optional `Array` of entity IDs to dirty
    */
   render(entityIDs) {
-    if (this._redrawPending) return;
 
     // If we were passed entity IDs,
     // flag these features as `dirty` if they are in the scene
     if (entityIDs) {
       entityIDs.forEach(osmID => {
         const feature = this.scene.get(osmID);
-        if (feature) feature.dirty = true;
+        if (feature) {
+          feature.dirty = true;
+        }
       });
     }
+
+    if (this._redrawPending) return;
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
