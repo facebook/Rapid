@@ -227,21 +227,13 @@ export class PixiLayerOsm extends PixiLayer {
 
       let feature = scene.get(entity.id);
 
-      if (!feature) {   // make line if needed
-        const geojson = entity.asGeoJSON(graph);
-        const coords = geojson.coordinates;
-        const style = styleMatch(entity.tags);
+      // Create a new line if this entity is entering the scene.
+      if (!feature) {
+        feature = new PixiFeatureLine(context, entity.id);
 
-        const showOneWay = entity.isOneWay();
-        const reversePoints = (entity.tags.oneway === '-1');
-
-        feature = new PixiFeatureLine(context, entity.id, coords, style, showOneWay, reversePoints);
-
-        const dObj = feature.displayObject;
-        dObj.zIndex = getzIndex(entity.tags);
-        dObj.__data__ = entity;
-
+        // TODO make this dynamic too
         // Add this line to the correct level container (bridge/tunnel/etc)
+        const dObj = feature.displayObject;
         const lvl = entity.layer().toString();
         const levelContainer = getLevelContainer(lvl);
         levelContainer.addChild(dObj);
@@ -250,11 +242,31 @@ export class PixiLayerOsm extends PixiLayer {
       this.seenFeature.set(feature, timestamp);
       feature.visible = true;
 
+      // Something has changed since the last time we've styled this feature.
+      const version = (entity.v || 0);
+      if (feature.v !== version || feature.dirty) {
+        feature.v = version;
+        const dObj = feature.displayObject;
+        dObj.zIndex = getzIndex(entity.tags);
+        dObj.__data__ = entity;    // rebind data
+
+        const geojson = entity.asGeoJSON(graph);
+        const geometry = geojson.coordinates;
+        feature.geometry = geometry;
+
+        const style = styleMatch(entity.tags);
+        style.reversePoints = (entity.tags.oneway === '-1');
+
+        // Todo: handle alternating/two-way case too
+        style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
+        feature.style = style;
+      }
+
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
-   });
+    });
   }
 
 

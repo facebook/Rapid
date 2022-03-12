@@ -9,7 +9,7 @@ import { getIconTexture } from './helpers';
  *
  * Properties you can access:
  *   `geometry`       Single wgs84 coordinate [lon, lat]
- *   `style`    Object containing styling data
+ *   `style`          Object containing styling data
  *   `displayObject`  PIXI.Sprite() for the marker
  *   `icon`           PIXI.Sprite() for the icon (if any)
  *   `vfContainer`    PIXI.Container() for the viewfields (if any)
@@ -35,7 +35,7 @@ export class PixiFeaturePoint extends PixiFeature {
     this.context = context;
     this.type = 'point';
     this.geometry = geometry;
-    this.style = (style || {});
+    this.style = style || {};
 
     this._oldvfLength = 0;  // to watch for change in # of viewfield sprites
 
@@ -171,7 +171,6 @@ export class PixiFeaturePoint extends PixiFeature {
     let iconSprite = marker.getChildByName('icon');
 
     if (style.iconTexture || style.iconName) {
-      const iconTexture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
 
       // Create icon sprite, if necessary
       if (!iconSprite) {
@@ -184,7 +183,7 @@ export class PixiFeaturePoint extends PixiFeature {
       }
 
       // Update texture and style, if necessary
-      iconSprite.texture = iconTexture;
+      iconSprite.texture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
       const ICONSIZE = 11;
       iconSprite.width = ICONSIZE;
       iconSprite.height = ICONSIZE;

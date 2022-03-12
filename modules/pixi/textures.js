@@ -91,7 +91,7 @@ export function prepareTextures(context, renderer) {
     .endFill();                                //                `+`        |
                                                //               [0,0]       +-- +x
   const boldPin = new PIXI.Graphics()
-    .lineStyle(2, 0x666666)        // same pin, bolder line stroke
+    .lineStyle(1.5, 0x666666)        // same pin, bolder line stroke
     .beginFill(0xdddddd, 1)
     .moveTo(0, 0)
     .bezierCurveTo(-2,-2, -8,-10, -8,-15)
@@ -206,7 +206,7 @@ export function prepareTextures(context, renderer) {
     .endFill();                             // [-3,-4]  '
 
   const oneway = new PIXI.Graphics()
-    .beginFill(0x030303, 1)
+    .beginFill(0xffffff, 1)
     .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
     .endFill();
 
