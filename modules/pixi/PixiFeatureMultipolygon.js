@@ -35,14 +35,15 @@ export class PixiFeatureMultipolygon extends PixiFeature {
   /**
    * @constructor
    */
-  constructor(context, id, polygons, style) {
+  constructor(context, id, geometry, style) {
     const container = new PIXI.Container();
     super(container);
 
     this.context = context;
     this.type = 'multipolygon';
-    this._polygons = polygons;   // treat everything as a multipolygon
-    this.style = style;
+    this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]
+    this.style = style || {};
+    this.ssrdata = null;
 
     container.name = id;
     container.buttonMode = true;
@@ -82,29 +83,38 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     this.mask = mask;
 
     container.addChild(lowRes, fill, stroke, mask);
-
-    const pattern = style.fill.pattern;
-    const texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;
-    this.texture = texture;
   }
 
 
   /**
    * update
-   *
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
   update(projection) {
+    // When scale changes, both geometry and style must be recomputed
     const k = projection.scale();
-    if (!this.dirty && this._k === k) return;  // no change
+    if (this._k !== k) {
+      this._geometryDirty = true;
+      this._styleDirty = true;
+      this._k = k;
+    }
+
+    if (!this._geometryDirty && !this._styleDirty) return;  // no change
+
+
+    // For now, if either geometry or style is dirty, we just update the whole multipolygon
+
+    //
+    // GEOMETRY
+    //
 
     // Reproject and recalculate the bounding box
     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
     let shapes = [];
 
     // Convert the GeoJSON style multipolygons to array of Pixi polygons with inner/outer
-    this._polygons.forEach(rings => {
+    this._geometry.forEach(rings => {
       if (!rings.length) return;  // no rings?
 
       let shape = { outer: undefined, holes: [] };
@@ -129,7 +139,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
         // Calculate Smallest Surrounding Rectangle (SSR):
         // If this is a simple polygon (no multiple outers), perform a one-time
         // calculation SSR to use as a replacement geometry at low zooms.
-        if (isOuter && !this.ssrdata && this._polygons.length === 1) {
+        if (isOuter && !this.ssrdata && this._geometry.length === 1) {
           let ssr = geomGetSmallestSurroundingRectangle(outerPoints);   // compute SSR in projected coordinates
           if (ssr && ssr.poly) {
             // Calculate axes of symmetry to determine width, height
@@ -177,12 +187,21 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     this.localBounds.height = h;
     this.sceneBounds = this.localBounds.clone();  // for polygons, they are the same
 
+    this._geometryDirty = false;
 
-    // Determine style info
+
+    //
+    // STYLE
+    //
+
+    const style = this._style;
+    const textures = this.context.pixi.rapidTextures;
+    const color = style.fill.color || 0xaaaaaa;
+    const alpha = style.fill.alpha || 0.3;
+    const pattern = style.fill.pattern;
+    let texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
+
     const fillstyle = prefs('area-fill') || 'partial';
-    let color = this.style.fill.color || 0xaaaaaa;
-    let alpha = this.style.fill.alpha || 0.3;
-    let texture = this.texture || PIXI.Texture.WHITE;  // WHITE turns off the texture
     let doPartialFill = (fillstyle === 'partial');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)
@@ -233,7 +252,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
         .clear()
         .lineStyle({
           alpha: 1,
-          width: this.style.fill.width || 2,
+          width: style.fill.width || 2,
           color: color
         });
 
@@ -291,23 +310,37 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       }
     }
 
-    this._k = k;
-    this.dirty = false;
+    this._styleDirty = false;
+
   }
+
 
 
   /**
-   * coord
+   * geometry
+   * @param arr geometry `Array` (contents depends on the feature type)
+   *
+   * 'multipolygon' - Array of Arrays of Arrays
+   *   [
+   *     [                                  // polygon 1
+   *       [ [lon, lat], [lon, lat], … ],   // outer ring
+   *       [ [lon, lat], [lon, lat], … ],   // inner rings
+   *       …
+   *     ],
+   *     [                                  // polygon 2
+   *       [ [lon, lat], [lon, lat], … ],   // outer ring
+   *       [ [lon, lat], [lon, lat], … ],   // inner rings
+   *       …
+   *     ],
+   *     …
+   *   ]
    */
-  get polygons() {
-    return this._polygons;
+  get geometry() {
+    return this._geometry;
   }
-  set polygons(val) {
-    this._polygons = val;
-    this.dirty = true;
-
+  set geometry(arr) {
     this.extent = new Extent();
-    val.forEach(rings => {
+    arr.forEach(rings => {
       if (!rings.length) return;    // no rings?
       rings[0].forEach(coord => {   // ring[0] is an outer ring
         // update extent in place
@@ -316,6 +349,34 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       });
     });
 
+    this._geometry = arr;
+    this._geometryDirty = true;
   }
 
+
+  /**
+   * style
+   * @param obj style `Object` (contents depends on the feature type)
+   *
+   * 'point' - see PixiFeaturePoint.js
+   * 'line'/'multipolygon' - see styles.js
+   */
+  get style() {
+    return this._style;
+  }
+  set style(obj) {
+    this._style = Object.assign({}, STYLE_DEFAULTS, obj);
+    this._styleDirty = true;
+  }
 }
+
+
+const STYLE_DEFAULTS = {
+  reversePoints: false,
+  lineMarkerName: '',
+  lineMarkerTint: 0x000000,
+
+  fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
+  casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
+  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+};

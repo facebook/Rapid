@@ -70,8 +70,8 @@ export class PixiFeatureLine extends PixiFeature {
   /**
    * update
    *
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
    */
   update(projection, zoom) {
     // When scale changes, both geometry and style must be recomputed
@@ -84,7 +84,7 @@ export class PixiFeatureLine extends PixiFeature {
 
     if (!this._geometryDirty && !this._styleDirty) return;  // no change
 
-    // For lines, if either geometry or style is dirty, we just update the whole line
+    // For now, if either geometry or style is dirty, we just update the whole line
     const context = this.context;
     const textures = context.pixi.rapidTextures;
     const container = this.displayObject;
@@ -191,9 +191,7 @@ export class PixiFeatureLine extends PixiFeature {
       updateGraphic('stroke', this.stroke, this.points, style);
     }
 
-
-    this._k = k;
-    this.dirty = false;
+    this._styleDirty = false;
 
 
     function updateGraphic(which, graphic, points, style) {

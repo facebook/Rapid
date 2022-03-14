@@ -162,23 +162,31 @@ export class PixiLayerOsm extends PixiLayer {
       let feature = scene.get(entity.id);
 
       if (!feature) {
-        const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
-          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
-        const style = styleMatch(entity.tags);
-
-        feature = new PixiFeatureMultipolygon(context, entity.id, polygons, style);
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        const area = entity.extent(graph).area();  // estimate area from extent for speed
-        dObj.zIndex = -area;                       // sort by area descending (small things above big things)
-        dObj.__data__ = entity;
-        areaContainer.addChild(dObj);
+        feature = new PixiFeatureMultipolygon(context, entity.id);
+        areaContainer.addChild(feature.displayObject);
       }
 
       this.seenFeature.set(feature, timestamp);
       feature.visible = true;
+
+      // Something has changed since the last time we've styled this feature.
+      const version = (entity.v || 0);
+      if (feature.v !== version || feature.dirty) {
+        feature.v = version;
+
+        const dObj = feature.displayObject;
+        const area = entity.extent(graph).area();  // estimate area from extent for speed
+        dObj.zIndex = -area;                       // sort by area descending (small things above big things)
+        dObj.__data__ = entity;                    // rebind data
+
+        const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+        const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
+          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+        feature.geometry = geometry;
+
+        const style = styleMatch(entity.tags);
+        feature.style = style;
+      }
 
       if (feature.needsUpdate(projection)) {
         feature.update(projection, zoom);
@@ -233,10 +241,9 @@ export class PixiLayerOsm extends PixiLayer {
 
         // TODO make this dynamic too
         // Add this line to the correct level container (bridge/tunnel/etc)
-        const dObj = feature.displayObject;
         const lvl = entity.layer().toString();
         const levelContainer = getLevelContainer(lvl);
-        levelContainer.addChild(dObj);
+        levelContainer.addChild(feature.displayObject);
       }
 
       this.seenFeature.set(feature, timestamp);
