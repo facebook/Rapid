@@ -28,10 +28,8 @@ export class PixiRenderer {
   constructor(context, parentElement) {
     this.context = context;
     this.parentElement = parentElement;
-    this.selectedEntities = [];
 
     this._redrawPending = false;
-    this._hoverTarget = null;
     this.dispatch = d3_dispatch('change', 'dragstart', 'dragend');
 
     this.pixi = new PIXI.Application({
@@ -78,14 +76,8 @@ export class PixiRenderer {
     this.pixiProjection = new Projection();
     this.scene = new PixiScene(context);
     this.layers = new PixiLayers(context, this.scene, this.dispatch);
-    this.eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.scene);
 
-    stage
-      .on('click', e => this.eventsHandler.onClickHandler(e))
-      .on('rightdown', e => this.eventsHandler.onClickHandler(e))
-      .on('pointerdown', e => this.eventsHandler.onTouchStartHandler(e))
-      .on('pointermove', e => this.eventsHandler.onTouchMoveHandler(e))
-      .on('pointerup', e => this.eventsHandler.onTouchEndHandler(e));
+    this.eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.scene);
   }
 
 

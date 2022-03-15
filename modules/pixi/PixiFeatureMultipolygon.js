@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 import { Extent, geomGetSmallestSurroundingRectangle, vecLength } from '@id-sdk/math';
 
 import { PixiFeature } from './PixiFeature';
-import { lineToPolygon } from './helpers';
 import { prefs } from '../core/preferences';
 
 const PARTIALFILLWIDTH = 32;
@@ -58,13 +57,12 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     lowRes.name = `${id}-lowRes`;
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
-    lowRes.interactive = false;
+    lowRes.interactive = true;
     this.lowRes = lowRes;
 
     const fill = new PIXI.Graphics();
     fill.name = `${id}-fill`;
-    fill.interactive = false;
-    fill.interactiveChildren = true;
+    fill.interactive = true;
     fill.sortableChildren = false;
     this.fill = fill;
 
@@ -75,11 +73,18 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     stroke.sortableChildren = false;
     this.stroke = stroke;
 
-    const mask = new PIXI.Graphics();
+    // When partially filling areas: we really want to define the mask as a line
+    // drawn within the inside of the area shape.  Graphics defined as a line
+    // _can_ be used as a mask, but they do not participate in his testing!
+    // So we'll create the mask graphic and then copy its attributes into a mesh
+    // which _does_ hit test properly.
+    // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
+    const mask = new PIXI.Mesh(null, new PIXI.MeshMaterial(PIXI.Texture.WHITE));
     mask.name = `${id}-mask`;
-    mask.interactive = false;
-    mask.interactiveChildren = false;
-    mask.sortableChildren = false;
+    mask.buttonMode = true;
+    mask.interactive = true;
+    mask.interactiveChildren = true;
+    mask.visible = false;
     this.mask = mask;
 
     container.addChild(lowRes, fill, stroke, mask);
@@ -223,7 +228,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       this.lowRes.visible = true;
 
       const [x, y] = projection.project(ssrdata.centroid);
-      const poly = ssrdata.poly.map(coord => projection.project(coord));
+      // const poly = ssrdata.poly.map(coord => projection.project(coord));
       const axis1 = ssrdata.axis1.map(coord => projection.project(coord));
       const axis2 = ssrdata.axis2.map(coord => projection.project(coord));
       const w = vecLength(axis1[0], axis1[1]);
@@ -233,13 +238,11 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
       this.lowRes.rotation = ssrdata.angle;
       this.lowRes.tint = color;
-      this.displayObject.hitArea = new PIXI.Polygon(poly);
 
     } else {
       this.fill.visible = true;
       this.stroke.visible = true;
       this.lowRes.visible = false;
-      this.displayObject.hitArea = null;
     }
 
     //
@@ -285,7 +288,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       });
 
       if (doPartialFill) {   // mask around the edges of the fill
-        this.mask
+        const maskSource = new PIXI.Graphics()
           .clear()
           .lineTextureStyle({
             alpha: 1,
@@ -296,22 +299,28 @@ export class PixiFeatureMultipolygon extends PixiFeature {
           });
 
         shapes.forEach(shape => {
-          this.mask.drawShape(shape.outer);
-          shape.holes.forEach(hole => this.mask.drawShape(hole));
+          maskSource.drawShape(shape.outer);
+          shape.holes.forEach(hole => maskSource.drawShape(hole));
         });
+
+        // Compute the mask's geometry, then copy its attributes into the mesh's geometry
+        // This lets us use the Mesh as the mask and properly hit test against it.
+        maskSource.geometry.updateBatches(true);
+        this.mask.geometry = new PIXI.Geometry()
+          .addAttribute('aVertexPosition', maskSource.geometry.points, 2)
+          .addAttribute('aTextureCoord', maskSource.geometry.uvs, 2)
+          .addIndex(maskSource.geometry.indices);
 
         this.mask.visible = true;
         this.fill.mask = this.mask;
-        this.displayObject.hitArea = lineToPolygon(10, shapes[0].outer.points);
+
       } else {  // full fill - no mask
         this.mask.visible = false;
         this.fill.mask = null;
-        this.displayObject.hitArea = shapes[0].outer;
       }
     }
 
     this._styleDirty = false;
-
   }
 
 
