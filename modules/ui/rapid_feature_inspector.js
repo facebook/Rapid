@@ -52,15 +52,14 @@ export function uiRapidFeatureInspector(context, keybinding) {
       id: _datum.id,
       origid: _datum.__origid__
     };
-
     const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
     const graph = service.graph(_datum.__datasetid__);
+    console.log(graph)
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
 
     context.perform(actionRapidAcceptFeature(_datum.id, graph), annotation);
     context.enter(modeSelect(context, [_datum.id]));
-
     if (context.inIntro()) return;
 
     // remember sources for later when we prepare the changeset
@@ -112,7 +111,6 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const datasetID = _datum.__datasetid__.replace('-conflated', '');
     const dataset = rapidContext.datasets()[datasetID];
     const color = dataset.color;
-
     let featureInfo = selection.selectAll('.feature-info')
       .data([color]);
 

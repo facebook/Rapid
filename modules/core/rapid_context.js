@@ -131,6 +131,17 @@ export function coreRapidContext(context) {
             color: RAPID_MAGENTA,
             label: t('rapid_feature_toggle.msBuildings.label'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
+          },
+          'rapidMapFeatures': {
+            id: 'rapidMapFeatures',
+            beta: false,
+            added: true,         // whether it should appear in the list
+            enabled: false,      // whether the user has checked it on
+            conflated: true,
+            service: 'fbml',
+            color: RAPID_MAGENTA,
+            label: 'Rapid Map Features',
+            license_markdown: '[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)'
           }
         };
 

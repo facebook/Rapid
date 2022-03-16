@@ -8,6 +8,7 @@ import Protobuf from 'pbf';
 import RBush from 'rbush';
 
 import { utilRebind } from '../util';
+import { osmTagSuggestingArea } from '../osm';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -281,7 +282,17 @@ export default {
     filteredMapFeatures: function(projection) {
         const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
         const mapFeatures = this.mapFeatures(projection);
-        return mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
+        const rawData = mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
+        rawData.map(each => {
+            each.__fbid__ = -each.id
+            each.__datasetid__ = "rapidMapFeatures-conflated"
+            each.tags = {
+                tag: 'sample tag',
+                rapid: 'hello world'
+            }
+            return each
+        });
+        return rawData;
     },
 
     // Get cached image by id
