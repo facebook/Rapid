@@ -82,21 +82,6 @@ export class PixiRenderer {
 
 
   /**
-   * dirty
-   * flag these features as `dirty` if they are in the scene
-   * @param entityIDs - `Array` or `Set` of entity IDs to dirty
-   */
-  dirty(entityIDs) {
-    entityIDs.forEach(osmID => {
-      const feature = this.scene.get(osmID);
-      if (feature) {
-        feature.dirty = true;
-      }
-    });
-  }
-
-
-  /**
    * render
    */
   render() {
@@ -113,6 +98,7 @@ export class PixiRenderer {
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset
       offset = [0, 0];
       pixiProjection.transform(currTransform);
+      this.dirtyScene();
     } else {
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
@@ -141,7 +127,31 @@ export class PixiRenderer {
           this._redrawPending = false;
       });
     }
+  }
 
+
+  /**
+   * dirtyEntities
+   * flag these features as `dirty` if they are in the scene
+   * @param entityIDs - `Array` or `Set` of entity IDs to dirty
+   */
+  dirtyEntities(entityIDs) {
+    entityIDs.forEach(osmID => {
+      const feature = this.scene.get(osmID);
+      if (feature) {
+        feature.dirty = true;
+      }
+    });
+  }
+
+
+  /**
+   * dirtyScene
+   * flag the whole scene as dirty
+   * (when changing zooms)
+   */
+  dirtyScene() {
+    this.scene._features.forEach(feature => feature._geometryDirty = true);
   }
 
 }

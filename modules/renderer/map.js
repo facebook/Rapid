@@ -467,7 +467,7 @@ export function rendererMap(context) {
       supersurface.call(context.background());
 
       if (pixiRenderer) {
-        pixiRenderer.dirty(_dirtyIDs);
+        pixiRenderer.dirtyEntities(_dirtyIDs);
         _dirtyIDs.clear();
         pixiRenderer.render();
       }
