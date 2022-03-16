@@ -19,7 +19,7 @@ describe('iD.serviceNominatim', function() {
         fetchMock.reset();
     });
 
-    function query(url) {
+    function parseQueryString(url) {
         return sdk.utilStringQs(url.substring(url.indexOf('?')));
     }
 
