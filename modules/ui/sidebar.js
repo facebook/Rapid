@@ -414,7 +414,8 @@ export function uiSidebar(context) {
                         // hide the sidebar's content after it transitions offscreen
                         selection.classed('collapsed', isCollapsing);
                     }
-
+                    const resizeNode = context.pixi.view.parentNode;
+                    context.pixi.resize(resizeNode.clientWidth, resizeNode.clientHeight);
                     // switch back from px to %
                     if (!isCollapsing) {
                         var containerWidth = container.node().getBoundingClientRect().width;
