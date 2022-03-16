@@ -39,6 +39,7 @@ export class PixiEventsHandler {
     const stage = context.pixi.stage;
     stage
       .on('click', e => this.onClickHandler(e))
+      .on('tap', e => this.onClickHandler(e))
       .on('rightdown', e => this.onClickHandler(e))
       .on('pointermove', e => this.onPointerMoveHandler(e));
       // .on('pointerdown', e => this.onTouchStartHandler(e))
