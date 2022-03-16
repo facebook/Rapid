@@ -162,8 +162,7 @@ export class PixiLayerOsm extends PixiLayer {
       let feature = scene.get(entity.id);
 
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(context, entity.id);
-        areaContainer.addChild(feature.displayObject);
+        feature = new PixiFeatureMultipolygon(context, entity.id, areaContainer, entity);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -237,13 +236,12 @@ export class PixiLayerOsm extends PixiLayer {
 
       // Create a new line if this entity is entering the scene.
       if (!feature) {
-        feature = new PixiFeatureLine(context, entity.id);
-
         // TODO make this dynamic too
         // Add this line to the correct level container (bridge/tunnel/etc)
         const lvl = entity.layer().toString();
         const levelContainer = getLevelContainer(lvl);
-        levelContainer.addChild(feature.displayObject);
+
+        feature = new PixiFeatureLine(context, entity.id, levelContainer, entity);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -305,8 +303,7 @@ export class PixiLayerOsm extends PixiLayer {
 
       // Create a new point if this vertex is entering the scene.
       if (!feature) {
-        feature = new PixiFeaturePoint(context, node.id, node.loc);
-        vertexContainer.addChild(feature.displayObject);
+        feature = new PixiFeaturePoint(context, node.id, vertexContainer, node, node.loc);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -377,8 +374,7 @@ export class PixiLayerOsm extends PixiLayer {
 
       // Create a new point if this point is entering the scene.
       if (!feature) {
-        feature = new PixiFeaturePoint(context, node.id, node.loc);
-        pointContainer.addChild(feature.displayObject);
+        feature = new PixiFeaturePoint(context, node.id, pointContainer, node, node.loc);
       }
 
       this.seenFeature.set(feature, timestamp);

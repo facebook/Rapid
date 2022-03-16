@@ -76,14 +76,9 @@ export class PixiOsmMidpoints {
         let feature = scene.get(featureID);
 
         if (!feature) {
-          const markerStyle = { markerName: 'midpoint' };
-          feature = new PixiFeaturePoint(context, featureID, midpoint.loc, [], markerStyle);
-
-          // bind data and add to scene
-          const dObj = feature.displayObject;
-          dObj.__data__ = midpoint;
-          dObj.rotation = midpoint.rot;  // remember to apply rotation
-          container.addChild(dObj);
+          const style = { markerName: 'midpoint' };
+          feature = new PixiFeaturePoint(context, featureID, this.container, midpoint, midpoint.loc, style);
+          feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
         }
 
         if (feature.needsUpdate(projection)) {

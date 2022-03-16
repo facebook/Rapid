@@ -18,7 +18,6 @@ const ONEWAY_SPACING = 35;
  *   `displayObject`  PIXI.Container() holds the line parts
  *   `casing`         PIXI.Graphic() for the casing (below)
  *   `stroke`         PIXI.Graphic() for the stroke (above)
- *   `markers`        PIXI.ParticleContainer() holds oneway arrows (if any)
  *
  * Inherited from PixiFeature:
  *   `dirty`
@@ -32,22 +31,21 @@ export class PixiFeatureLine extends PixiFeature {
 
   /**
    * @constructor
+   * @param  `context`        Global shared context for iD
+   * @param  `id`             Unique string to use for the name of this feature
+   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
+   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  `geometry`       `Array` containing geometry data
+   * @param  `style`          `Object` containing style data
    */
-  constructor(context, id, geometry, style) {
+  constructor(context, id, parent, data, geometry, style) {
     const container = new PIXI.Container();
-    super(container);
+    super(context, container, id, parent, data);
 
-    this.context = context;
     this.type = 'line';
     this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]
     this.style = style || {};
     this.points = [];
-
-    container.name = id;
-    container.buttonMode = true;
-    container.interactive = true;
-    container.interactiveChildren = true;
-    container.sortableChildren = false;
 
     const casing = new PIXI.Graphics();
     casing.name = `${id}-casing`;
@@ -64,6 +62,18 @@ export class PixiFeatureLine extends PixiFeature {
     stroke.sortableChildren = false;
     this.stroke = stroke;
     container.addChild(stroke);
+  }
+
+
+  /**
+   * destroy
+   * Every feature should have a destroy function that frees all the resources
+   * and removes the display object from the scene.
+   * Do not use the feature after calling `destroy()`.
+   */
+  destroy() {
+    this.points = null;
+    super.destroy();
   }
 
 

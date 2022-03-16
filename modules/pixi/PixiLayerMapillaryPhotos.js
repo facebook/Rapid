@@ -126,12 +126,8 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(context, featureID, d.geometry.coordinates, LINESTYLE);
-
-        const dObj = feature.displayObject;
-        dObj.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
+        feature = new PixiFeatureLine(context, featureID, this.container, d, d.geometry.coordinates, LINESTYLE);
+        feature.displayObject.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -154,12 +150,7 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
 
-        feature = new PixiFeaturePoint(context, featureID, d.loc, style);
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
+        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
       }
 
       this.seenFeature.set(feature, timestamp);

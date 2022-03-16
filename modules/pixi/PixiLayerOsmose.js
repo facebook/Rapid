@@ -65,17 +65,13 @@ export class PixiLayerOsmose extends PixiLayer {
 
       if (!feature) {
         const color = service.getColor(d.item);
-        const markerStyle = {
+        const style = {
           markerName: 'osmose',
           markerTint: PIXI.utils.string2hex(color),
           iconName: d.icon
         };
-        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
+        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
 
         // // mathematically 0,-15 is center of marker, move up slightly
         // icon.position.set(0, -16);

@@ -11,14 +11,13 @@ const PARTIALFILLWIDTH = 32;
  * PixiFeatureMultipolygon
  *
  * Properties you can access:
- *   `polygons`       Treat like multipolygon (Array of polygons wgs84 [lon, lat])
+ *   `geometry`       Treat like multipolygon (Array of polygons wgs84 [lon, lat])
  *   `style`          Object containing styling data
  *   `displayObject`  PIXI.Container() holds the polygon parts
  *   `lowRes`         PIXI.Sprite() for a replacement graphic to display at low resolution
  *   `fill`           PIXI.Graphic() for the fill (below)
  *   `stroke`         PIXI.Graphic() for the stroke (above)
- *   `mask`           PIXI.Graphic() for the mask (applied to fill)
- *   `texture`        PIXI.Texture() for the pattern (applied to the fill)
+ *   `mask`           PIXI.Mesh() for the mask (applied to fill)
  *   `ssrdata`        Object containing SSR data (computed one time for simple polygons)
  *
  * Inherited from PixiFeature:
@@ -26,29 +25,26 @@ const PARTIALFILLWIDTH = 32;
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
- *
- * @class
  */
 export class PixiFeatureMultipolygon extends PixiFeature {
 
   /**
    * @constructor
+   * @param  `context`        Global shared context for iD
+   * @param  `id`             Unique string to use for the name of this feature
+   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
+   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  `geometry`       `Array` containing geometry data
+   * @param  `style`          `Object` containing style data
    */
-  constructor(context, id, geometry, style) {
+  constructor(context, id, parent, data, geometry, style) {
     const container = new PIXI.Container();
-    super(container);
+    super(context, container, id, parent, data);
 
-    this.context = context;
     this.type = 'multipolygon';
     this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]
     this.style = style || {};
     this.ssrdata = null;
-
-    container.name = id;
-    container.buttonMode = true;
-    container.interactive = true;
-    container.interactiveChildren = true;
-    container.sortableChildren = false;
 
     const textures = context.pixi.rapidTextures;
     const square = textures.get('lowres-square') || PIXI.Texture.WHITE;
@@ -88,6 +84,18 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     this.mask = mask;
 
     container.addChild(lowRes, fill, stroke, mask);
+  }
+
+
+  /**
+   * destroy
+   * Every feature should have a destroy function that frees all the resources
+   * and removes the display object from the scene.
+   * Do not use the feature after calling `destroy()`.
+   */
+  destroy() {
+    this.ssrdata = null;
+    super.destroy();
   }
 
 

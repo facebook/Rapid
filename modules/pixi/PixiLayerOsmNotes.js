@@ -89,17 +89,13 @@ export class PixiLayerOsmNotes extends PixiLayer {
           // iconName = '#iD-icon-plus'
         }
 
-        const markerStyle = {
+        const style = {
           markerName: 'osmnote',
           markerTint: color
           // iconName: iconName
         };
-        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
+        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
       }
 
       this.seenFeature.set(feature, timestamp);

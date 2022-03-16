@@ -275,22 +275,16 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     data.polygons.forEach(entity => {
-      let feature = scene.get(this.idAccessor(entity));
+      const featureID = `${LAYERID}-${entity.id}`;
+      let feature = scene.get(featureID);
 
       if (!feature) {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        const polygons = (geojson.type === 'Polygon') ? [geojson.coordinates]
+        const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(context, this.idAccessor(entity), polygons, style);
+        feature = new PixiFeatureMultipolygon(context, featureID, layer, entity, geometry, style);
         feature.rapidFeature = true;
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        const area = entity.extent(graph).area();  // estimate area from extent for speed
-        dObj.zIndex = -area;                  // sort by area descending (small things above big things)
-        dObj.__data__ = entity;
-        layer.addChild(dObj);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -311,27 +305,23 @@ export class PixiLayerRapid extends PixiLayer {
     const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
-    const style = {
-      casing: { width: 5, color: 0x444444 },
-      stroke: { width: 3, color: color }
-    };
 
     data.lines.forEach(entity => {
-      let feature = scene.get(this.idAccessor(entity));
+      const featureID = `${LAYERID}-${entity.id}`;
+      let feature = scene.get(featureID);
 
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
-        const coords = geojson.coordinates;
-        const showOneWay = entity.isOneWay();
-        const reversePoints = (entity.tags.oneway === '-1');
+        const geometry = geojson.coordinates;
+        const style = {
+          casing: { width: 5, color: 0x444444 },
+          stroke: { width: 3, color: color }
+        };
+        style.reversePoints = (entity.tags.oneway === '-1');
+        style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
 
-        feature = new PixiFeatureLine(context, this.idAccessor(entity), coords, style, showOneWay, reversePoints);
+        feature = new PixiFeatureLine(context, featureID, layer, entity, geometry, style);
         feature.rapidFeature = true;
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = entity;
-        layer.addChild(dObj);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -342,11 +332,6 @@ export class PixiLayerRapid extends PixiLayer {
         scene.update(feature);
       }
     });
-  }
-
-  // Use something besides the entity id so that we don't collide features with the OSM renderer
-  idAccessor(entity) {
-    return 'rapid-' + entity.id;
   }
 
 
@@ -369,16 +354,12 @@ export class PixiLayerRapid extends PixiLayer {
     };
 
     data.points.forEach(entity => {
-      let feature = scene.get(this.idAccessor(entity));
+      const featureID = `${LAYERID}-${entity.id}`;
+      let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, pointStyle);
+        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc, pointStyle);
         feature.rapidFeature = true;
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = entity;
-        layer.addChild(dObj);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -392,10 +373,11 @@ export class PixiLayerRapid extends PixiLayer {
 
 
     data.vertices.forEach(entity => {
-      let feature = scene.get(this.idAccessor(entity));
+      const featureID = `${LAYERID}-${entity.id}`;
+      let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, this.idAccessor(entity), entity.loc, vertexStyle);
+        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc, vertexStyle);
         feature.rapidFeature = true;
 
         // vertices in this layer don't actually need to be interactive
@@ -403,10 +385,6 @@ export class PixiLayerRapid extends PixiLayer {
         dObj.buttonMode = false;
         dObj.interactive = false;
         dObj.interactiveChildren = false;
-
-        // bind data and add to scene
-        dObj.__data__ = entity;
-        layer.addChild(dObj);
       }
 
       this.seenFeature.set(feature, timestamp);

@@ -7,26 +7,44 @@ import { Extent } from '@id-sdk/math';
  * It contains properties that used to manage the feature in the scene graph
  *
  * Properties you can access:
- *   `dirty`
+ *   `context`
  *   `displayObject`
+ *   `parent`
+ *   `data`
  *   `geometry`
  *   `style`
+ *   `dirty`
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
- *
- * @class
  */
 export class PixiFeature {
 
   /**
    * @constructor
-   * @param `displayObject` Root Pixi display object for the feature (can be a Graphic, Container, Sprite, etc)
+   * @param  `context`        Global shared context for iD
+   * @param  `displayObject`  Root Pixi display object for this feature (can be a Graphic, Container, Sprite, etc)
+   * @param  `id`             Unique string to use for the name of this feature
+   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
+   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
    */
-  constructor(displayObject) {
-    this.displayObject = displayObject;
-
+  constructor(context, displayObject, id, parent, data) {
     this.type = 'unknown';
+    this.context = context;
+    this.displayObject = displayObject;
+    this.parent = parent;
+    this.data = data;
+
+    if (parent) displayObject.setParent(parent);
+    if (data)   displayObject.__data__ = data;
+
+    // By default, make the display object interactive
+    displayObject.name = id;
+    displayObject.buttonMode = true;
+    displayObject.interactive = true;
+    displayObject.interactiveChildren = true;
+    displayObject.sortableChildren = false;
+
     this._k = null;          // The projection scale at which the feature was last computed
     this._geometry = null;
     this._geometryDirty = true;
@@ -38,6 +56,32 @@ export class PixiFeature {
     this.extent = new Extent();                // in WGS84 coordinates ([0,0] is null island)
     this.localBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the object
     this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
+  }
+
+
+  /**
+   * destroy
+   * Every feature should have a destroy function that frees all the resources
+   * and removes the display object from the scene.
+   * Do not use the feature after calling `destroy()`.
+   */
+  destroy() {
+    // Destroying a display object removes it from its parent automatically
+    // We also remove the children too
+    this.displayObject.__data__ = null;
+    this.displayObject.destroy({ children: true });
+
+    this.context = null;
+    this.displayObject = null;
+    this.parent = null;
+    this.data = null;
+
+    this._geometry = null;
+    this._style = null;
+
+    this.extent = null;
+    this.localBounds = null;
+    this.sceneBounds = null;
   }
 
 

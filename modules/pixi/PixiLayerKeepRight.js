@@ -93,17 +93,12 @@ export class PixiLayerKeepRight extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        const markerStyle = {
+        const style = {
           markerName: 'keepright',
           markerTint: TINTS.get(d.parentIssueType) || 0xffffff
         };
 
-        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
+        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
       }
 
       this.seenFeature.set(feature, timestamp);

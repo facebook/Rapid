@@ -78,18 +78,12 @@ export class PixiLayerImproveOsm extends PixiLayer {
           iconName: d.icon
         };
 
-        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
-
+        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, markerStyle);
         // was here before
         // if (feature.icon) {
         //  // mathematically 0,-15 is center of marker, move up slightly
         //  feature.icon.position.set(0, -16);
         // }
-
-        // bind data and add to scene
-        const dObj = feature.displayObject;
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
       }
 
       this.seenFeature.set(feature, timestamp);

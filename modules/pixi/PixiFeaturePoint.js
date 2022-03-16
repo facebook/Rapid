@@ -11,8 +11,6 @@ import { getIconTexture } from './helpers';
  *   `geometry`       Single wgs84 coordinate [lon, lat]
  *   `style`          Object containing styling data
  *   `displayObject`  PIXI.Sprite() for the marker
- *   `icon`           PIXI.Sprite() for the icon (if any)
- *   `vfContainer`    PIXI.Container() for the viewfields (if any)
  *
  * Inherited from PixiFeature:
  *   `dirty`
@@ -20,30 +18,38 @@ import { getIconTexture } from './helpers';
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
- *
- * @class
  */
 export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * @constructor
+   * @param  `context`        Global shared context for iD
+   * @param  `id`             Unique string to use for the name of this feature
+   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
+   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  `geometry`       `Array` containing geometry data
+   * @param  `style`          `Object` containing style data
    */
-  constructor(context, id, geometry, style) {
+  constructor(context, id, parent, data, geometry, style) {
     const marker = new PIXI.Sprite();
-    super(marker);
+    super(context, marker, id, parent, data);
 
-    this.context = context;
     this.type = 'point';
     this.geometry = geometry;
     this.style = style || {};
 
     this._oldvfLength = 0;  // to watch for change in # of viewfield sprites
+  }
 
-    marker.name = id;
-    marker.buttonMode = true;
-    marker.interactive = true;
-    marker.interactiveChildren = true;
-    marker.sortableChildren = false;
+
+  /**
+   * destroy
+   * Every feature should have a destroy function that frees all the resources
+   * and removes the display object from the scene.
+   * Do not use the feature after calling `destroy()`.
+   */
+  destroy() {
+    super.destroy();
   }
 
 

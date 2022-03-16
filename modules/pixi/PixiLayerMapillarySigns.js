@@ -86,19 +86,16 @@ export class PixiLayerMapillarySigns extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        const markerStyle = {
+        const style = {
           markerTexture: spritesheet.textures[d.value + '.svg']
         };
-        feature = new PixiFeaturePoint(context, featureID, d.loc, markerStyle);
 
-        const dObj = feature.displayObject;
+        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+
+        // const dObj = feature.displayObject;
         // const ICONSIZE = 24;
         // dObj.width = ICONSIZE;
         // dObj.height = ICONSIZE;
-
-        // bind data and add to scene
-        dObj.__data__ = d;
-        this.container.addChild(dObj);
       }
 
       this.seenFeature.set(feature, timestamp);
