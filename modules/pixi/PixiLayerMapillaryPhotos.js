@@ -4,10 +4,7 @@ import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'mapillary';
-const LAYERZINDEX = 10;
 const MINZOOM = 12;
-// const MINMARKERZOOM = 16;
-// const MINVIEWFIELDZOOM = 18;
 const MAPILLARY_GREEN = 0x55ff22;
 
 const LINESTYLE = {
@@ -33,9 +30,10 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
+   * @param layerZ
    */
-  constructor(context, scene) {
-    super(context, LAYERID, LAYERZINDEX);
+  constructor(context, scene, layerZ) {
+    super(context, LAYERID, layerZ);
     this.scene = scene;
 
     this._service = null;

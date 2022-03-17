@@ -8,7 +8,6 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 
 const LAYERID = 'rapid';
-const LAYERZINDEX = 2;
 const MINZOOM = 12;
 
 
@@ -22,9 +21,10 @@ export class PixiLayerRapid extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
+   * @param layerZ
    */
-  constructor(context, scene) {
-    super(context, LAYERID, LAYERZINDEX);
+  constructor(context, scene, layerZ) {
+    super(context, LAYERID, layerZ);
     this._enabled = true;  // RapiD features should be enabled by default
     this.scene = scene;
 

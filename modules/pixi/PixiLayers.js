@@ -32,17 +32,19 @@ export class PixiLayers {
     utilRebind(this, this.dispatch, 'on');  // very sus ??
 
     this._layers = [
-      new PixiLayerImproveOsm(context, scene),
-      new PixiLayerKartaPhotos(context, scene),
-      new PixiLayerKeepRight(context, scene),
-      new PixiLayerMapillaryFeatures(context, scene),
-      new PixiLayerMapillaryPhotos(context, scene),
-      new PixiLayerMapillarySigns(context, scene),
-      new PixiLayerOsm(context, scene),
-      new PixiLayerOsmNotes(context, scene),
-      new PixiLayerOsmose(context, scene),
-      new PixiLayerRapid(context, scene),
-      new PixiLayerStreetsidePhotos(context, scene)
+      new PixiLayerOsm(context, scene, 1),
+      new PixiLayerRapid(context, scene, 2),
+
+      new PixiLayerOsmNotes(context, scene, 10),
+      new PixiLayerImproveOsm(context, scene, 11),
+      new PixiLayerKeepRight(context, scene, 12),
+      new PixiLayerOsmose(context, scene, 13),
+
+      new PixiLayerMapillaryFeatures(context, scene, 20),
+      new PixiLayerMapillaryPhotos(context, scene, 21),
+      new PixiLayerMapillarySigns(context, scene, 22),
+      new PixiLayerKartaPhotos(context, scene, 25),
+      new PixiLayerStreetsidePhotos(context, scene, 26)
     ];
   }
 

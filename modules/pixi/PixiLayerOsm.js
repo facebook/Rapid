@@ -11,7 +11,6 @@ import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { styleMatch } from './styles';
 
 const LAYERID = 'osm';
-const LAYERZINDEX = 1;
 const MINZOOM = 12;
 
 
@@ -25,9 +24,10 @@ export class PixiLayerOsm extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
+   * @param layerZ
    */
-  constructor(context, scene) {
-    super(context, LAYERID, LAYERZINDEX);
+  constructor(context, scene, layerZ) {
+    super(context, LAYERID, layerZ);
     this._enabled = true;  // OSM layers should be enabled by default
     this.scene = scene;
 

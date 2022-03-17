@@ -3,7 +3,6 @@ import { PixiLayer } from './PixiLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'notes';
-const LAYERZINDEX = 10;
 const MINZOOM = 12;
 
 
@@ -17,9 +16,10 @@ export class PixiLayerOsmNotes extends PixiLayer {
    * @constructor
    * @param context
    * @param scene
+   * @param layerZ
    */
-  constructor(context, scene) {
-    super(context, LAYERID, LAYERZINDEX);
+  constructor(context, scene, layerZ) {
+    super(context, LAYERID, layerZ);
     this.scene = scene;
 
     this._service = null;
