@@ -32,7 +32,6 @@ function clamp(num, min, max) {
 
 export function rendererMap(context) {
   let pixiRenderer;
-  let _dirtyIDs = new Set();  // ids that we will mark as dirty on next render
 
   const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
   let projection = context.projection;
@@ -116,13 +115,13 @@ export function rendererMap(context) {
       context.history()
         .on('merge.map', entityIDs => {
           if (entityIDs) {
-            entityIDs.forEach(entityID => _dirtyIDs.add(entityID));
+            pixiRenderer.dirtyEntities(entityIDs);
           }
           map.deferredRedraw();
         })
         .on('change.map', difference => {
           if (difference) {
-            Object.keys(difference.complete()).forEach(entityID => _dirtyIDs.add(entityID));
+            pixiRenderer.dirtyEntities(Object.keys(difference.complete()));
           }
           map.immediateRedraw();
         })
@@ -467,8 +466,6 @@ export function rendererMap(context) {
       supersurface.call(context.background());
 
       if (pixiRenderer) {
-        pixiRenderer.dirtyEntities(_dirtyIDs);
-        _dirtyIDs.clear();
         pixiRenderer.render();
       }
 
