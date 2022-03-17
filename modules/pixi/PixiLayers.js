@@ -3,6 +3,7 @@ import { utilRebind } from '../util';
 import { PixiLayerImproveOsm } from './PixiLayerImproveOsm';
 import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos';
 import { PixiLayerKeepRight } from './PixiLayerKeepRight';
+import { PixiLayerLabels } from './PixiLayerLabels';
 import { PixiLayerMapillaryFeatures } from './PixiLayerMapillaryFeatures';
 import { PixiLayerMapillaryPhotos } from './PixiLayerMapillaryPhotos';
 import { PixiLayerMapillarySigns } from './PixiLayerMapillarySigns';
@@ -44,7 +45,9 @@ export class PixiLayers {
       new PixiLayerMapillaryPhotos(context, scene, 21),
       new PixiLayerMapillarySigns(context, scene, 22),
       new PixiLayerKartaPhotos(context, scene, 25),
-      new PixiLayerStreetsidePhotos(context, scene, 26)
+      new PixiLayerStreetsidePhotos(context, scene, 26),
+
+      new PixiLayerLabels(context, scene, 30)
     ];
   }
 

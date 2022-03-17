@@ -3,30 +3,50 @@ import * as PIXI from 'pixi.js';
 import RBush from 'rbush';
 import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
+import { PixiLayer } from './PixiLayer';
 import { localizer } from '../core/localizer';
 import { utilDisplayName } from '../util';
 import { getLineSegments, getDebugBBox } from './helpers.js';
 
+const LAYERID = 'labels';
+const MINZOOM = 12;
 
-export function PixiLabels(context, scene) {
-  let _strings = new Map();      // map of OSM ID -> label string
-  let _texts = new Map();        // map of label -> Pixi Texture
-  let _avoids = new Set();       // set of OSM ID we are avoiding
 
-  // let _drawn = new RBush();
-  // let _skipped = new RBush();
-  let _placement = new RBush();
-  let _lastk = 0;
+/**
+ * PixiLayerLabels
+ * @class
+ */
+export class PixiLayerLabels extends PixiLayer {
 
-  let _didInit = false;
-  let _textStyle;
+  /**
+   * @constructor
+   * @param context
+   * @param scene
+   * @param layerZ
+   */
+  constructor(context, scene, layerZ) {
+    super(context, LAYERID, layerZ);
+    this.scene = scene;
+    this._enabled = true;   // labels should be enabled by default
 
-  // Create a render-texture allocator to create an on-the-fly texture atlas for
-  // all our label rendering needs.
-  // const _allocator = new CanvasTextureAllocator();
+    // labels in this layer don't actually need to be interactive
+    const layer = this.container;
+    layer.buttonMode = false;
+    layer.interactive = false;
+    layer.interactiveChildren = false;
 
-  function initLabels(context, layer) {
-    _textStyle = new PIXI.TextStyle({
+    this._strings = new Map();      // Map of OSM ID -> label string
+    this._texts = new Map();        // Map of label -> Pixi Texture
+    this._avoidIDs = new Set();     // Set of OSM ID we are avoiding
+    this._featureIDs = new Set();   // Set of OSM ID we are labeling
+    this._placement = new RBush();
+    this._oldk = 0;
+
+    // Create a render-texture allocator to create an on-the-fly texture atlas for
+    // all our label rendering needs.
+    // const _allocator = new CanvasTextureAllocator();
+
+    this._textstyle = new PIXI.TextStyle({
       fill: 0x333333,
       fontSize: 11,
       fontWeight: 600,
@@ -35,31 +55,129 @@ export function PixiLabels(context, scene) {
       strokeThickness: 3
     });
 
-    const debugContainer = new PIXI.ParticleContainer(50000);
-    debugContainer.interactiveChildren = false;
-    debugContainer.sortableChildren = false;
-    debugContainer.roundPixels = false;
-    debugContainer.name = 'label-debug';
-    layer.addChild(debugContainer);
+    const debug = new PIXI.ParticleContainer(50000);
+    debug.name = 'debug';
+    debug.interactiveChildren = false;
+    debug.sortableChildren = false;
+    debug.roundPixels = false;
 
-    _didInit = true;
+    const labels = new PIXI.Container();
+    labels.name = 'labels';
+    labels.interactiveChildren = false;
+    labels.sortableChildren = false;
+    labels.roundPixels = false;
+
+    this.container.addChild(debug, labels);
+  }
+
+
+  /**
+   * render
+   * @param timestamp    timestamp in milliseconds
+   * @param projection   pixi projection to use for rendering
+   * @param zoom         effective zoom to use for rendering
+   */
+  render(timestamp, projection, zoom) {
+    if (this._enabled && zoom >= MINZOOM) {
+      this.visible = true;
+
+      const context = this.context;
+      const map = context.map();
+      const entities = context.history().intersects(map.extent());
+
+      this.renderLabels(projection, zoom, entities);
+
+    } else {
+      this.visible = false;
+    }
   }
 
 
 
-  function renderLabels(layer, projection, zoom, entities) {
-    if (!_didInit) initLabels(context, layer);
+  getLabelSprite(str) {
+// OLD just make more textures
+    let sprite;
+    let existing = this._texts.get(str);
+    if (existing) {
+      sprite = new PIXI.Sprite(existing.texture);
+    } else {
+      sprite = new PIXI.Text(str, this._textstyle);
+      sprite.resolution = 2;
+      sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
+      this._texts.set(str, sprite);
+    }
+    sprite.name = str;
+    sprite.anchor.set(0.5, 0.5);   // middle, middle
+    return sprite;
 
+// NEW with allocator
+//    let sprite;
+//    let texture = this._textures.get(str);
+//
+//    if (!texture) {
+//      const text = new PIXI.Text(str, this._textstyle);
+//      text.resolution = 2;
+//      text.updateText(false);  // force update it so the texture is prepared
+//
+//      const srcBaseTexture = text.texture.baseTexture;
+//      const srcCanvas = srcBaseTexture.resource.source;
+//      const [w, h] = [srcBaseTexture.realWidth, srcBaseTexture.realHeight];
+//
+//      // Allocate space in the texture atlas
+//      const padding = 0;
+//      texture = _allocator.allocate(w, h, padding);
+//
+//      // The allocator automatically creates internal BaseTextures in "slabs".
+//      // Now is the time change anything about the BaseTexture that got created
+//      texture.baseTexture.resolution = 2;
+//      texture.baseTexture.mipmap = false;
+//
+//      // copy the texture from source canvas -> destination canvas
+//      const frame = texture.frame;
+//      const destCanvas = texture.baseTexture.resource.source;
+//      const destContext = destCanvas.getContext('2d');
+//      destContext.drawImage(srcCanvas, frame.x, frame.y, frame.width, frame.height);
+//
+//      this._textures.set(str, texture);
+//      text.destroy();  //?
+//    }
+//
+//    sprite = new PIXI.Sprite(texture);
+//    sprite.name = str;
+//    // sprite.scale.set(0.5, 0.5);
+//    sprite.anchor.set(0.5, 0.5);   // middle, middle
+//    return sprite;
+  }
+
+  renderLabels(projection, zoom, entities) {
     const textDirection = localizer.textDirection();
     const SHOWBBOX = false;
-    const debugContainer = layer.getChildByName('label-debug');
+    const debugContainer = this.container.getChildByName('debug');
+    const labelContainer = this.container.getChildByName('labels');
 
+    const context = this.context;
     const graph = context.graph();
+
+    // fix later: make some closure variables for now to avoid dealing with `this`
+    let thiz = this;
+    let _scene = this.scene;
+    let _strings = this._strings;
+    let _avoidIDs = this._avoidIDs;
+    let _featureIDs = this._featureIDs;
+    let _placement = this._placement;
+
+    // we'll redo all the labels when scale changes
     const k = projection.scale();
-    let redoPlacement = false;   // we'll redo all the labels when scale changes
+    if (k !== this._oldk) {   // reset
+      _avoidIDs.clear();
+      _featureIDs.clear();
+      _placement.clear();
+      debugContainer.removeChildren();
+      labelContainer.removeChildren();
+      this._oldk = k;
+    }
 
-
-//// // debug
+// DEBUG - show the allocator spritesheet
 //let stage = context.pixi.stage;
 //let sprite = stage.getChildByName('allocator');
 //if (!sprite) {
@@ -74,19 +192,10 @@ export function PixiLabels(context, scene) {
 //  sprite.texture = new PIXI.Texture(baseTexture);
 //}
 
-
-    if (k !== _lastk) {   // reset
-      _avoids.clear();
-      _placement.clear();
-      debugContainer.removeChildren();
-      redoPlacement = true;
-      _lastk = k;
-    }
-
     gatherAvoids();
     placePointLabels();
     placeLineLabels();
-    placeAreaLabels();
+//    placeAreaLabels();
 
 
     function getLabel(entity) {
@@ -115,29 +224,28 @@ export function PixiLabels(context, scene) {
     //
     function gatherAvoids() {
       const stage = context.pixi.stage;
-      let avoids = [];
+      let avoidBoxes = [];
+
       const osmLayer = stage.getChildByName('osm');
-      osmLayer.getChildByName('vertices').children.forEach(checkAvoid);
-      osmLayer.getChildByName('points').children.forEach(checkAvoid);
-      if (avoids.length) {
-        _placement.load(avoids);  // bulk insert
+      osmLayer.getChildByName('osm-vertices').children.forEach(checkAvoid);
+      osmLayer.getChildByName('osm-points').children.forEach(checkAvoid);
+      if (avoidBoxes.length) {
+        _placement.load(avoidBoxes);  // bulk insert
       }
 
       function checkAvoid(sourceObject) {
-        // if (!sourceObject.visible) return;
+        const featureID = sourceObject.name;
+        if (_avoidIDs.has(featureID)) return;  // seen it already
+        _avoidIDs.add(featureID);
 
-        const entityID = sourceObject.name;
-        if (_avoids.has(entityID)) return;  // seen it already
-        _avoids.add(entityID);
-
-        const sourceFeature = scene.get(entityID);
-        const rect = sourceFeature && sourceFeature.sceneBounds;
+        const feature = _scene.get(featureID);
+        const rect = feature && feature.sceneBounds;
         if (!rect) return;
 
         // boxes here are in "scene" coordinates
         const fuzz = 0.01;
-        avoids.push({
-          id: entityID,
+        avoidBoxes.push({
+          id: featureID,
           minX: rect.x + fuzz,
           minY: rect.y + fuzz,
           maxX: rect.x + rect.width - fuzz,
@@ -145,69 +253,12 @@ export function PixiLabels(context, scene) {
         });
 
         if (SHOWBBOX) {
-          const bbox = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, `avoid-${entityID}`);
+          const bbox = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, `avoid-${featureID}`);
           debugContainer.addChild(bbox);
         }
       }
     }
 
-
-    function createLabelSprite(str) {
-
-// OLD just make more textures
-      let sprite;
-      let existing = _texts.get(str);
-      if (existing) {
-        sprite = new PIXI.Sprite(existing.texture);
-      } else {
-        sprite = new PIXI.Text(str, _textStyle);
-        sprite.resolution = 2;
-        sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
-        _texts.set(str, sprite);
-      }
-      sprite.name = str;
-      sprite.anchor.set(0.5, 0.5);   // middle, middle
-      return sprite;
-
-// NEW with allocator
-//
-//      let sprite;
-//      let texture = _texts.get(str);
-//
-//      if (!texture) {
-//        const text = new PIXI.Text(str, _textStyle);
-//        text.resolution = 2;
-//        text.updateText(false);  // force update it so the texture is prepared
-//
-//        const srcBaseTexture = text.texture.baseTexture;
-//        const srcCanvas = srcBaseTexture.resource.source;
-//        const [w, h] = [srcBaseTexture.realWidth, srcBaseTexture.realHeight];
-//
-//        // Allocate space in the texture atlas
-//        const padding = 0;
-//        texture = _allocator.allocate(w, h, padding);
-//
-//        // The allocator automatically creates internal BaseTextures in "slabs".
-//        // Now is the time change anything about the BaseTexture that got created
-//        texture.baseTexture.resolution = 2;
-//        texture.baseTexture.mipmap = false;
-//
-//        // copy the texture from source canvas -> destination canvas
-//        const frame = texture.frame;
-//        const destCanvas = texture.baseTexture.resource.source;
-//        const destContext = destCanvas.getContext('2d');
-//        destContext.drawImage(srcCanvas, frame.x, frame.y, frame.width, frame.height);
-//
-//        _texts.set(str, texture);
-//        text.destroy();  //?
-//      }
-//
-//      sprite = new PIXI.Sprite(texture);
-//      sprite.name = str;
-//      // sprite.scale.set(0.5, 0.5);
-//      sprite.anchor.set(0.5, 0.5);   // middle, middle
-//      return sprite;
-    }
 
 
     //
@@ -219,29 +270,19 @@ export function PixiLabels(context, scene) {
         .sort((a, b) => b.loc[1] - a.loc[1]);
 
       points
-        .forEach(function preparePointLabels(entity) {
-          let feature = scene.get(entity.id);
+        .forEach(entity => {
+          const featureID = entity.id;
+          if (_featureIDs.has(featureID)) return;  // processed it already
+
+          const feature = _scene.get(featureID);
           if (!feature) return;
 
-          if (!feature.label) {
-            const str = _strings.get(entity.id);
+          _featureIDs.add(featureID);
 
-            const sprite = createLabelSprite(str);
-            layer.addChild(sprite);
+          const str = _strings.get(entity.id);
+          const sprite = thiz.getLabelSprite(str);
 
-            feature.label = {
-              displayObject: sprite,
-              localBounds: sprite.getLocalBounds(),
-              string: str
-            };
-          }
-
-          // Remember scale and reproject only when it changes
-          if (!redoPlacement && k === feature.label.k) return;
-          feature.label.k = k;
-
-          feature.label.displayObject.visible = false;
-          placePointLabel(feature, entity.id);
+          placePointLabel(feature, sprite);
         });
     }
 
@@ -251,10 +292,11 @@ export function PixiLabels(context, scene) {
     // We generate several placement regions around the marker,
     // try them until we find one that doesn't collide with something.
     //
-    function placePointLabel(feature, entityID) {
+    function placePointLabel(feature, sprite) {
       if (!feature || !feature.sceneBounds) return;
 
       // `f` - feature, these bounds are in "scene" coordinates
+      const featureID = feature.id;
       const fRect = feature.sceneBounds.clone().pad(1, 0);
       const fLeft = fRect.x;
       const fTop = fRect.y;
@@ -269,7 +311,7 @@ export function PixiLabels(context, scene) {
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
       // (padY -1, because for some reason, calculated height seems higher than necessary)
-      const lRect = feature.label.localBounds.clone().pad(0, -1);
+      const lRect = sprite.getLocalBounds().clone().pad(0, -1);
       const some = 5;
       const more = 10;
       const lWidth = lRect.width;
@@ -334,7 +376,7 @@ export function PixiLabels(context, scene) {
         const [x, y] = placements[where];
         const fuzz = 0.01;
         const box = {
-          id: `${entityID}-${where}`,
+          id: `${featureID}-${where}`,
           minX: x - lWidthHalf + fuzz,
           minY: y - lHeightHalf + fuzz,
           maxX: x + lWidthHalf - fuzz,
@@ -343,19 +385,23 @@ export function PixiLabels(context, scene) {
 
         if (!_placement.collides(box)) {
           _placement.insert(box);
-          feature.label.displayObject.position.set(x, y);
+          sprite.position.set(x, y);
+          sprite.visible = true;
+          labelContainer.addChild(sprite);
           picked = where;
           break;
         }
       }
 
-      feature.label.displayObject.visible = !!picked;
+      // if (!picked) {
+      //   sprite.destroy();  // didn't place it
+      // }
 
       if (SHOWBBOX) {
         // const arr = Object.values(placements);         // show all possible boxes, or
         const arr = picked ? [placements[picked]] : [];   // show the one we picked
         arr.forEach(([x,y]) => {
-          const bbox = getDebugBBox(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight, 0xffff33, 0.75, `${entityID}-${picked}`);
+          const bbox = getDebugBBox(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight, 0xffff33, 0.75, `${featureID}-${picked}`);
           debugContainer.addChild(bbox);
         });
       }
@@ -371,34 +417,19 @@ export function PixiLabels(context, scene) {
         .sort((a, b) => b.layer() - a.layer());
 
       lines
-        .forEach(function prepareLineLabels(entity) {
-          let feature = scene.get(entity.id);
+        .forEach(entity => {
+          const featureID = entity.id;
+          if (_featureIDs.has(featureID)) return;  // processed it already
+
+          const feature = _scene.get(featureID);
           if (!feature) return;
 
-          if (!feature.label) {
-            const str = _strings.get(entity.id);
-            const sprite = createLabelSprite(str);
-            // note: we won't add it to container,
-            // we just need its size and texture
+          _featureIDs.add(featureID);
 
-            const container = new PIXI.Container();
-            container.name = str;
-            layer.addChild(container);
+          const str = _strings.get(entity.id);
+          const sprite = thiz.getLabelSprite(str);
 
-            feature.label = {
-              displayObject: container,
-              sprite: sprite,
-              localBounds: sprite.getLocalBounds(),
-              str: str
-            };
-          }
-
-          // Remember scale and reproject only when it changes
-          if (!redoPlacement && k === feature.label.k) return;
-          feature.label.k = k;
-
-          feature.label.displayObject.visible = false;
-          placeLineLabel(feature, entity.id);
+          placeLineLabel(feature, sprite);
         });
     }
 
@@ -408,12 +439,13 @@ export function PixiLabels(context, scene) {
     // We generate chains of bounding boxes along the line,
     // then add the labels in spaces along the line wherever they fit
     //
-    function placeLineLabel(feature, entityID) {
-      feature.label.displayObject.removeChildren();   // start fresh
+    function placeLineLabel(feature, sprite) {
+      if (!feature || !feature.points) return;
+      const featureID = feature.id;
 
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
-      const lRect = feature.label.localBounds;
+      const lRect = sprite.getLocalBounds();
       const lWidth = lRect.width;
       const lHeight = lRect.height;
       const BENDLIMIT = Math.PI / 8;
@@ -467,7 +499,7 @@ export function PixiLabels(context, scene) {
           const [x,y] = coord;
           const fuzz = 0.01;
           const box = {
-            id: `${entityID}-${segindex}-${coordindex}`,
+            id: `${featureID}-${segindex}-${coordindex}`,
             minX: x - boxhalf + fuzz,
             minY: y - boxhalf + fuzz,
             maxX: x + boxhalf - fuzz,
@@ -505,10 +537,6 @@ export function PixiLabels(context, scene) {
       finishChain();
 
 
-      if (candidates.length) {  // we will label this line
-        feature.label.displayObject.visible = true;
-      }
-
       // Compute a label in the middle of each chain,
       // and insert into the `_placement` rbush.
       candidates.forEach(function addLabelToChain(chain, chainIndex) {
@@ -543,14 +571,17 @@ export function PixiLabels(context, scene) {
 
         // make a rope
         const points = coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.SimpleRope(feature.label.sprite.texture, points);
-        rope.name = `${entityID}-rope-${chainIndex}`;
+        const rope = new PIXI.SimpleRope(sprite.texture, points);
+        rope.name = `${featureID}-rope-${chainIndex}`;
         rope.autoUpdate = false;
         rope.interactiveChildren = false;
         rope.sortableChildren = false;
-        feature.label.displayObject.addChild(rope);
+        rope.visible = true;
+        labelContainer.addChild(rope);
       });
 
+      // we can destroy the sprite now, it's texture will remain on the rope
+      // sprite.destroy();
 
       if (SHOWBBOX) {
         boxes.forEach(function makeBBox(box) {
@@ -574,28 +605,25 @@ export function PixiLabels(context, scene) {
 
 
 
-    //
-    // Place area labels
-    //
-    function placeAreaLabels() {
-      return;  // not yet
-    }
-
-
-    //
-    // Area labels are placed at the centroid along with an icon.
-    // Can also consider:
-    //   placing at pole-of-inaccessability instead of centroid?
-    //   placing label along edge of area stroke?
-    //
-    function placeAreaLabel(feature, entityID) {
-      return;  // not yet
-    }
-
+//    //
+//    // Place area labels
+//    //
+//    function placeAreaLabels() {
+//      return;  // not yet
+//    }
+//
+//
+//    //
+//    // Area labels are placed at the centroid along with an icon.
+//    // Can also consider:
+//    //   placing at pole-of-inaccessability instead of centroid?
+//    //   placing label along edge of area stroke?
+//    //
+//    function placeAreaLabel(feature, sprite) {
+//      return;  // not yet
+//    }
 
   }
-
-  return renderLabels;
 }
 
 
