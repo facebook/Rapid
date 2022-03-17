@@ -84,22 +84,13 @@ export class PixiFeatureLine extends PixiFeature {
    * @param zoom         effective zoom to use for rendering
    */
   update(projection, zoom) {
-    // When scale changes, both geometry and style must be recomputed
-    const k = projection.scale();
-    if (this._k !== k) {
-      this._geometryDirty = true;
-      this._styleDirty = true;
-      this._k = k;
-    }
-
-    if (!this._geometryDirty && !this._styleDirty) return;  // no change
+    if (!this.dirty) return;  // no change
 
     // For now, if either geometry or style is dirty, we just update the whole line
     const context = this.context;
     const textures = context.pixi.rapidTextures;
     const container = this.displayObject;
     const style = this._style;
-
 
     //
     // GEOMETRY

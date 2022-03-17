@@ -45,7 +45,6 @@ export class PixiFeature {
     displayObject.interactiveChildren = true;
     displayObject.sortableChildren = false;
 
-    this._k = null;          // The projection scale at which the feature was last computed
     this._geometry = null;
     this._geometryDirty = true;
     this._style = null;
@@ -88,35 +87,18 @@ export class PixiFeature {
   /**
    * update
    * Every feature should have an update function that redraws the feature at the given projection and zoom.
-   * When the feature is updated, its `dirty` flag should be set to `false`.
+   * When the feature is updated, its `dirty` flags should be set to `false`.
    * Override in a subclass with needed logic. It will be passed:
    *
    * @param projection - a pixi projection
    * @param zoom - the effective zoom to use for rendering
    */
-  update(projection) {
-    // when scale changes, geometry must be reprojected
-    const k = projection.scale();
-    if (this._k !== k) {
-      this._geometryDirty = true;
-    }
-
-    if (!this._geometryDirty && !this._styleDirty && this._k === k) return;  // no change
+  update() {
+    if (!this.dirty) return;  // no change
 
     this._geometryDirty = false;
     this._styleDirty = false;
-    this._k = k;
   }
-
-  /**
-   * needsUpdate
-   * @param projection - a pixi projection
-   */
-  needsUpdate(projection) {
-    const k = projection.scale();
-    return (this._geometryDirty || this._styleDirty || this._k !== k);
-  }
-
 
   /**
    * feature id

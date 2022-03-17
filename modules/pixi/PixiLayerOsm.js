@@ -187,7 +187,7 @@ export class PixiLayerOsm extends PixiLayer {
         feature.style = style;
       }
 
-      if (feature.needsUpdate(projection)) {
+      if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -267,7 +267,7 @@ export class PixiLayerOsm extends PixiLayer {
         feature.style = style;
       }
 
-      if (feature.needsUpdate(projection)) {
+      if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -348,7 +348,7 @@ export class PixiLayerOsm extends PixiLayer {
         feature.style = markerStyle;
       }
 
-      if (feature.needsUpdate(projection)) {
+      if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -410,7 +410,7 @@ export class PixiLayerOsm extends PixiLayer {
         feature.style = markerStyle;
       }
 
-      if (feature.needsUpdate(projection)) {
+      if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }

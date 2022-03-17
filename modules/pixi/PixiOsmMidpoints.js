@@ -81,7 +81,7 @@ export class PixiOsmMidpoints {
           feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
         }
 
-        if (feature.needsUpdate(projection)) {
+        if (feature.dirty) {
           feature.update(projection, zoom);
           scene.update(feature);
         }

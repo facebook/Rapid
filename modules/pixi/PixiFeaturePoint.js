@@ -14,7 +14,6 @@ import { getIconTexture } from './helpers';
  *
  * Inherited from PixiFeature:
  *   `dirty`
- *   `k`
  *   `extent`
  *   `localBounds`
  *   `sceneBounds`
@@ -59,15 +58,7 @@ export class PixiFeaturePoint extends PixiFeature {
    * @param zoom         effective zoom to use for rendering
    */
   update(projection, zoom) {
-    // When scale changes, both geometry and style must be recomputed
-    const k = projection.scale();
-    if (this._k !== k) {
-      this._geometryDirty = true;
-      this._styleDirty = true;
-      this._k = k;
-    }
-
-    if (!this._geometryDirty && !this._styleDirty) return;  // no change
+    if (!this.dirty) return;  // no change
 
     this.updateGeometry(projection);
     this.updateStyle(zoom);

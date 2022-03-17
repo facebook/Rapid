@@ -130,7 +130,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
       this.seenFeature.set(feature, timestamp);
       feature.visible = true;
 
-      if (feature.needsUpdate(projection)) {
+      if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -152,7 +152,7 @@ export class PixiLayerStreetsidePhotos extends PixiLayer {
       this.seenFeature.set(feature, timestamp);
       feature.visible = true;
 
-      if (feature.needsUpdate(projection)) {
+      if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
