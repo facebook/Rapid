@@ -219,7 +219,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     }
 
     // If this shape is very small, swap with lowRes sprite
-    if (this.ssrdata && (w < 20 || h < 20)) {
+    if (this.ssrdata && (w < 20 && h < 20)) {
       const ssrdata = this.ssrdata;
       this.fill.visible = false;
       this.stroke.visible = false;
