@@ -136,6 +136,6 @@
     "> 0.2%, last 6 major versions, Firefox ESR, IE 11, maintained node versions"
   ],
   "volta": {
-    "node": "14.19.0"
+    "node": "16.14.1"
   }
 }
