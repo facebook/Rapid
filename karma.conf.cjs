@@ -8,7 +8,6 @@ module.exports = function (config) {
     basePath: '',
 
     plugins: [
-      'karma-remap-istanbul',
       'karma-coverage',
       'karma-mocha',
       'karma-chrome-launcher'
@@ -56,7 +55,7 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress', 'coverage', 'karma-remap-istanbul'],
+    reporters: ['progress', 'coverage'],
 
 
     // web server port
