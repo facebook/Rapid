@@ -182,6 +182,7 @@ describe('iD.osmNode', function () {
 
     describe('#directions', function () {
         var projection = function (_) { return _; };
+        projection.project = function (_) { return _; };
         it('returns empty array if no direction tag', function () {
             var node1 = iD.osmNode({ loc: [0, 0], tags: {}});
             var graph = iD.coreGraph([node1]);

@@ -26,7 +26,7 @@ export let services = {
   osmose: serviceOsmose,
   mapillary: serviceMapillary,
   nsi: serviceNsi,
-  openstreetcam: serviceOpenstreetcam,
+  kartaview: serviceOpenstreetcam,
   osm: serviceOsm,
   osmWikibase: serviceOsmWikibase,
   maprules: serviceMapRules,
