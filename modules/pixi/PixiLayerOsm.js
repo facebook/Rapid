@@ -290,7 +290,7 @@ export class PixiLayerOsm extends PixiLayer {
 
     function isInterestingVertex(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
-        graph.isShared(entity) || entity.hasInterestingTags() || entity.isEndpoint(graph)
+        entity.hasInterestingTags() || entity.isEndpoint(graph) || entity.isIntersection(graph)
       );
     }
 
