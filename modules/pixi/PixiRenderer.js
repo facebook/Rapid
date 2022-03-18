@@ -151,7 +151,7 @@ export class PixiRenderer {
    * (when changing zooms)
    */
   dirtyScene() {
-    this.scene._features.forEach(feature => feature._geometryDirty = true);
+    this.scene._features.forEach(feature => feature.dirty = true);
   }
 
 }
