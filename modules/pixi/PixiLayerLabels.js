@@ -35,10 +35,11 @@ export class PixiLayerLabels extends PixiLayer {
     layer.interactive = false;
     layer.interactiveChildren = false;
 
-    this._strings = new Map();      // Map of OSM ID -> label string
+    this._strings = new Map();      // Map of featureID -> label string
     this._texts = new Map();        // Map of label -> Pixi Texture
-    this._avoidIDs = new Set();     // Set of OSM ID we are avoiding
-    this._featureIDs = new Set();   // Set of OSM ID we are labeling
+    this._avoidBoxes = new Map();   // Map of featureID -> avoid boxes
+    this._labelBoxes = new Map();   // Map of featureID -> label boxes
+    this._labelDObjs = new Map();   // Map of featureID -> Pixi displayObjects
     this._placement = new RBush();
     this._oldk = 0;
 
@@ -151,7 +152,7 @@ export class PixiLayerLabels extends PixiLayer {
 
   renderLabels(projection, zoom, entities) {
     const textDirection = localizer.textDirection();
-    const SHOWBBOX = false;
+    const SHOWDEBUG = false;
     const debugContainer = this.container.getChildByName('debug');
     const labelContainer = this.container.getChildByName('labels');
 
@@ -162,15 +163,17 @@ export class PixiLayerLabels extends PixiLayer {
     let thiz = this;
     let _scene = this.scene;
     let _strings = this._strings;
-    let _avoidIDs = this._avoidIDs;
-    let _featureIDs = this._featureIDs;
+    let _avoidBoxes = this._avoidBoxes;
+    let _labelBoxes = this._labelBoxes;
+    let _labelDObjs = this._labelDObjs;
     let _placement = this._placement;
 
     // we'll redo all the labels when scale changes
     const k = projection.scale();
     if (k !== this._oldk) {   // reset
-      _avoidIDs.clear();
-      _featureIDs.clear();
+      _avoidBoxes.clear();
+      _labelBoxes.clear();
+      _labelDObjs.clear();
       _placement.clear();
       debugContainer.removeChildren();
       labelContainer.removeChildren();
@@ -210,9 +213,9 @@ export class PixiLayerLabels extends PixiLayer {
     function hasLineLabel(entity) {
       return (entity.geometry(graph) === 'line' && getLabel(entity));
     }
-    function hasAreaLabel(entity) {
-      return (entity.geometry(graph) === 'area' && getLabel(entity));
-    }
+//    function hasAreaLabel(entity) {
+//      return (entity.geometry(graph) === 'area' && getLabel(entity));
+//    }
     function hasPointLabel(entity) {
       const geom = entity.geometry(graph);
       return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
@@ -224,36 +227,64 @@ export class PixiLayerLabels extends PixiLayer {
     //
     function gatherAvoids() {
       const stage = context.pixi.stage;
-      let avoidBoxes = [];
+      let toInsert = [];
 
       const osmLayer = stage.getChildByName('osm');
       osmLayer.getChildByName('osm-vertices').children.forEach(checkAvoid);
       osmLayer.getChildByName('osm-points').children.forEach(checkAvoid);
-      if (avoidBoxes.length) {
-        _placement.load(avoidBoxes);  // bulk insert
+      if (toInsert.length) {
+        _placement.load(toInsert);  // bulk insert
       }
 
       function checkAvoid(sourceObject) {
         const featureID = sourceObject.name;
-        if (_avoidIDs.has(featureID)) return;  // seen it already
-        _avoidIDs.add(featureID);
+
+        if (_avoidBoxes.has(featureID)) return;  // we've processed this avoid box already
 
         const feature = _scene.get(featureID);
         const rect = feature && feature.sceneBounds;
         if (!rect) return;
 
         // boxes here are in "scene" coordinates
+        const boxID = `${featureID}-avoid`;
         const fuzz = 0.01;
-        avoidBoxes.push({
-          id: featureID,
+        const box = {
+          type: 'avoid',
+          boxID: boxID,
+          featureID: featureID,
           minX: rect.x + fuzz,
           minY: rect.y + fuzz,
           maxX: rect.x + rect.width - fuzz,
           maxY: rect.y + rect.height - fuzz
+        };
+
+        _avoidBoxes.set(featureID, box);
+        toInsert.push(box);
+
+        // If there is already a label where this avoid box is, we will need to redo that label.
+        // This is somewhat common that a label will be placed somewhere, then as more map loads,
+        // we learn that some of those junctions become important and we need to avoid them.
+        const existingBoxes = _placement.search(box);
+        existingBoxes.forEach(existingBox => {
+          if (existingBox.type !== 'label') return;
+
+          const existingFeatureID = existingBox.featureID;
+          // Note that as we iterate through these existing boxes, we might hit the same existing
+          // feature several times, so make sure to `|| []` in case it was already removed.
+
+          // remove any boxes related to that feature
+          const removeBoxes = (_labelBoxes.get(existingFeatureID) || []);
+          removeBoxes.forEach(box => _placement.remove(box));
+          _labelBoxes.delete(existingFeatureID);
+
+          // remove from the scene any display objects for these labels
+          const removeDObjs = (_labelDObjs.get(existingFeatureID) || []);
+          removeDObjs.forEach(dObj => dObj.destroy({ children: true }));
+          _labelDObjs.delete(existingFeatureID);
         });
 
-        if (SHOWBBOX) {
-          const bbox = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, `avoid-${featureID}`);
+        if (SHOWDEBUG) {
+          const bbox = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, boxID);
           debugContainer.addChild(bbox);
         }
       }
@@ -272,12 +303,13 @@ export class PixiLayerLabels extends PixiLayer {
       points
         .forEach(entity => {
           const featureID = entity.id;
-          if (_featureIDs.has(featureID)) return;  // processed it already
+          if (_labelBoxes.has(featureID)) return;  // processed it already
 
           const feature = _scene.get(featureID);
           if (!feature) return;
 
-          _featureIDs.add(featureID);
+          _labelBoxes.set(featureID, []);
+          _labelDObjs.set(featureID, []);
 
           const str = _strings.get(entity.id);
           const sprite = thiz.getLabelSprite(str);
@@ -374,9 +406,12 @@ export class PixiLayerLabels extends PixiLayer {
       for (let i = 0; i < preferences.length; i++) {
         const where = preferences[i];
         const [x, y] = placements[where];
+        const boxID = `${featureID}-${where}`;
         const fuzz = 0.01;
         const box = {
-          id: `${featureID}-${where}`,
+          type: 'label',
+          boxID: boxID,
+          featureID: featureID,
           minX: x - lWidthHalf + fuzz,
           minY: y - lHeightHalf + fuzz,
           maxX: x + lWidthHalf - fuzz,
@@ -384,6 +419,8 @@ export class PixiLayerLabels extends PixiLayer {
         };
 
         if (!_placement.collides(box)) {
+          _labelBoxes.get(featureID).push(box);
+          _labelDObjs.get(featureID).push(sprite);
           _placement.insert(box);
           sprite.position.set(x, y);
           sprite.visible = true;
@@ -394,10 +431,10 @@ export class PixiLayerLabels extends PixiLayer {
       }
 
       // if (!picked) {
-      //   sprite.destroy();  // didn't place it
+      //   sprite.destroy({ children: true });  // didn't place it
       // }
 
-      if (SHOWBBOX) {
+      if (SHOWDEBUG) {
         // const arr = Object.values(placements);         // show all possible boxes, or
         const arr = picked ? [placements[picked]] : [];   // show the one we picked
         arr.forEach(([x,y]) => {
@@ -419,12 +456,13 @@ export class PixiLayerLabels extends PixiLayer {
       lines
         .forEach(entity => {
           const featureID = entity.id;
-          if (_featureIDs.has(featureID)) return;  // processed it already
+          if (_labelBoxes.has(featureID)) return;  // processed it already
 
           const feature = _scene.get(featureID);
           if (!feature) return;
 
-          _featureIDs.add(featureID);
+          _labelBoxes.set(featureID, []);
+          _labelDObjs.set(featureID, []);
 
           const str = _strings.get(entity.id);
           const sprite = thiz.getLabelSprite(str);
@@ -497,9 +535,12 @@ export class PixiLayerLabels extends PixiLayer {
 
         segment.coords.forEach(function nextCoord(coord, coordindex) {
           const [x,y] = coord;
+          const boxID = `${featureID}-${segindex}-${coordindex}`;
           const fuzz = 0.01;
           const box = {
-            id: `${featureID}-${segindex}-${coordindex}`,
+            type: 'label',
+            boxID: boxID,
+            featureID: featureID,
             minX: x - boxhalf + fuzz,
             minY: y - boxhalf + fuzz,
             maxX: x + boxhalf - fuzz,
@@ -548,6 +589,7 @@ export class PixiLayerLabels extends PixiLayer {
         for (let i = startIndex; i < startIndex + numBoxes; i++) {
           coords.push(chain[i].coord);
           _placement.insert(chain[i].box);
+          _labelBoxes.get(featureID).push(chain[i].box);
         }
 
         if (!coords.length) return;  // shouldn't happen, min numBoxes is 2 boxes
@@ -578,12 +620,13 @@ export class PixiLayerLabels extends PixiLayer {
         rope.sortableChildren = false;
         rope.visible = true;
         labelContainer.addChild(rope);
+        _labelDObjs.get(featureID).push(rope);
       });
 
       // we can destroy the sprite now, it's texture will remain on the rope
-      // sprite.destroy();
+      // sprite.destroy({ children: true });
 
-      if (SHOWBBOX) {
+      if (SHOWDEBUG) {
         boxes.forEach(function makeBBox(box) {
           const alpha = 0.75;
           let color;
