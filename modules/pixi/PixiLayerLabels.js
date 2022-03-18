@@ -175,8 +175,8 @@ export class PixiLayerLabels extends PixiLayer {
       _labelBoxes.clear();
       _labelDObjs.clear();
       _placement.clear();
-      debugContainer.removeChildren();
-      labelContainer.removeChildren();
+      debugContainer.removeChildren().forEach(child => child.destroy());
+      labelContainer.removeChildren();  //.forEach(child => child.destroy());
       this._oldk = k;
     }
 
@@ -237,6 +237,7 @@ export class PixiLayerLabels extends PixiLayer {
       }
 
       function checkAvoid(sourceObject) {
+        if (!sourceObject.visible || !sourceObject.renderable) return;
         const featureID = sourceObject.name;
 
         if (_avoidBoxes.has(featureID)) return;  // we've processed this avoid box already
@@ -279,7 +280,10 @@ export class PixiLayerLabels extends PixiLayer {
 
           // remove from the scene any display objects for these labels
           const removeDObjs = (_labelDObjs.get(existingFeatureID) || []);
-          removeDObjs.forEach(dObj => dObj.destroy({ children: true }));
+          // removeDObjs.forEach(dObj => dObj.destroy({ children: true }));
+          removeDObjs.forEach(dObj => {
+            if (dObj.parent) dObj.parent.removeChild(dObj);
+          });
           _labelDObjs.delete(existingFeatureID);
         });
 
@@ -326,6 +330,9 @@ export class PixiLayerLabels extends PixiLayer {
     //
     function placePointLabel(feature, sprite) {
       if (!feature || !feature.sceneBounds) return;
+
+      const dObj = feature.displayObject;
+      if (!dObj.visible || !dObj.renderable) return;
 
       // `f` - feature, these bounds are in "scene" coordinates
       const featureID = feature.id;
@@ -404,9 +411,9 @@ export class PixiLayerLabels extends PixiLayer {
 
       let picked = null;
       for (let i = 0; i < preferences.length; i++) {
-        const where = preferences[i];
-        const [x, y] = placements[where];
-        const boxID = `${featureID}-${where}`;
+        const placement = preferences[i];
+        const [x, y] = placements[placement];
+        const boxID = `${featureID}-${placement}`;
         const fuzz = 0.01;
         const box = {
           type: 'label',
@@ -425,7 +432,7 @@ export class PixiLayerLabels extends PixiLayer {
           sprite.position.set(x, y);
           sprite.visible = true;
           labelContainer.addChild(sprite);
-          picked = where;
+          picked = placement;
           break;
         }
       }
@@ -435,11 +442,14 @@ export class PixiLayerLabels extends PixiLayer {
       // }
 
       if (SHOWDEBUG) {
-        // const arr = Object.values(placements);         // show all possible boxes, or
-        const arr = picked ? [placements[picked]] : [];   // show the one we picked
-        arr.forEach(([x,y]) => {
-          const bbox = getDebugBBox(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight, 0xffff33, 0.75, `${featureID}-${picked}`);
-          debugContainer.addChild(bbox);
+        Object.entries(placements).forEach(([placement, coord]) => {
+          if (placement !== picked) return;   // comment this line to show all placements around the point
+
+          const [x, y] = coord;
+          const color = (placement === picked ? 0xff3333 : 0xffff33);
+          const debugbox = getDebugBBox(x - lWidthHalf, y - lHeightHalf, lWidth, lHeight, color, 0.75, `${featureID}-${placement}`);
+          _labelDObjs.get(featureID).push(debugbox);
+          debugContainer.addChild(debugbox);
         });
       }
     }
@@ -479,7 +489,16 @@ export class PixiLayerLabels extends PixiLayer {
     //
     function placeLineLabel(feature, sprite) {
       if (!feature || !feature.points) return;
+
+      const dObj = feature.displayObject;
+      if (!dObj.visible || !dObj.renderable) return;
+
+      // `f` - feature, these bounds are in "scene" coordinates
       const featureID = feature.id;
+      const fRect = feature.sceneBounds;
+      const fWidth = fRect.width;
+      const fHeight = fRect.height;
+      if (fWidth < 40 || fHeight < 40) return;  // this line is too small to even waste time labeling
 
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
@@ -640,8 +659,9 @@ export class PixiLayerLabels extends PixiLayer {
             color = 0xffff33;
           }
 
-          const bbox = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.id);
-          debugContainer.addChild(bbox);
+          const debugBox = getDebugBBox(box.minX, box.minY, boxsize, boxsize, color, alpha, box.boxID);
+          debugContainer.addChild(debugBox);
+          _labelDObjs.get(featureID).push(debugBox);
         });
       }
     }
