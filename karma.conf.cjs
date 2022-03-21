@@ -37,7 +37,6 @@ module.exports = function (config) {
       'test/spec/services/osm.js',
       'test/spec/renderer/map.js',
       'test/spec/renderer/features.js',
-      'test/spec/core/history.js',
     ],
 
     proxies: {
