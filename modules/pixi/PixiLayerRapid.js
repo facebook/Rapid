@@ -33,6 +33,44 @@ export class PixiLayerRapid extends PixiLayer {
     this.getServiceFB();
     this.getServiceEsri();
 
+//// shader experiment:
+//
+//const uniforms = {
+//  tint: new Float32Array([1, 1, 1, 1]),
+//  translationMatrix: new PIXI.Matrix(),
+//  default: context.pixi.renderer.plugins['batch']._shader.uniformGroup
+//};
+//
+//    this._customshader = new PIXI.Shader.from(`
+//precision highp float;
+//attribute vec2 aVertexPosition;
+//attribute vec2 aTextureCoord;
+//attribute vec4 aColor;
+//attribute float aTextureId;
+//
+//uniform mat3 projectionMatrix;
+//uniform mat3 translationMatrix;
+//uniform vec4 tint;
+//
+//varying vec2 vTextureCoord;
+//varying vec4 vColor;
+//varying float vTextureId;
+//
+//void main(void){
+//  gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
+//  vTextureCoord = aTextureCoord;
+//  vTextureId = aTextureId;
+//  vColor = aColor * tint;
+//}
+//`, `
+//varying vec2 vTextureCoord;
+//uniform sampler2D uSampler;
+//void main() {
+//   // gl_FragColor *= texture2D(uSampler, vTextureCoord);
+//  gl_FragColor = vec4(gl_FragCoord.x/1000.0, gl_FragCoord.y/1000.0, 0.0, 1.0);
+//}
+//`, uniforms);
+
     // Watch history to keep track of which features have been accepted by the user
     // These features will be filtered out when drawing
     this._acceptedIDs = new Set();
@@ -285,6 +323,16 @@ export class PixiLayerRapid extends PixiLayer {
 
         feature = new PixiFeatureMultipolygon(context, featureID, layer, entity, geometry, style);
         feature.rapidFeature = true;
+
+// shader experiment:
+// check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
+// we are fighting with the batch system which is unfortunate
+        // feature.fill.geometry.isBatchable = () => { return false };
+        // feature.fill.shader = this._customshader;
+
+// also custom `.shader` dont work on sprites at all, and so we'd have to switch to meshes maybe?
+        // feature.lowRes.geometry.isBatchable = () => { return false };
+        // feature.lowRes.shader = this._customshader;
       }
 
       this.seenFeature.set(feature, timestamp);

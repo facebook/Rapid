@@ -50,20 +50,20 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     const square = textures.get('lowres-square') || PIXI.Texture.WHITE;
     const lowRes = new PIXI.Sprite(square);
     // const lowRes = new PIXI.Sprite(textures.ell);
-    lowRes.name = `${id}-lowRes`;
+    lowRes.name = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
     lowRes.interactive = true;
     this.lowRes = lowRes;
 
     const fill = new PIXI.Graphics();
-    fill.name = `${id}-fill`;
+    fill.name = 'fill';
     fill.interactive = true;
     fill.sortableChildren = false;
     this.fill = fill;
 
     const stroke = new PIXI.Graphics();
-    stroke.name = `${id}-stroke`;
+    stroke.name = 'stroke';
     stroke.interactive = false;
     stroke.interactiveChildren = false;
     stroke.sortableChildren = false;
@@ -76,7 +76,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     // which _does_ hit test properly.
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
     const mask = new PIXI.Mesh(null, new PIXI.MeshMaterial(PIXI.Texture.WHITE));
-    mask.name = `${id}-mask`;
+    mask.name = 'mask';
     mask.buttonMode = true;
     mask.interactive = true;
     mask.interactiveChildren = true;

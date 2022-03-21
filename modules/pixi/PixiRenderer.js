@@ -104,6 +104,8 @@ export class PixiRenderer {
     }
 
     const stage = this.pixi.stage;
+
+// this?
     stage.position.set(-offset[0], -offset[1]);
 
     // DRAW
@@ -115,17 +117,19 @@ export class PixiRenderer {
     if (!AUTOTICK) {    // tick manually
       this._redrawPending = true;
       window.requestAnimationFrame(timestamp => {
+// this?
         this.pixi.ticker.update(timestamp);
 
-        // ...or this?
-        // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
-        // const options = {
-        //   transform: m
-        //   // skipUpdateTransform: true
-        // };
-        // pixi.renderer.render(pixi.stage, options);
-          this._redrawPending = false;
-      });
+//...or this?
+//        const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
+//        const options = {
+//          transform: m,
+//          // skipUpdateTransform: true
+//        };
+//        this.pixi.renderer.render(stage, options);
+
+       this._redrawPending = false;
+     });
     }
   }
 

@@ -48,7 +48,7 @@ export class PixiFeatureLine extends PixiFeature {
     this.points = [];
 
     const casing = new PIXI.Graphics();
-    casing.name = `${id}-casing`;
+    casing.name = 'casing';
     casing.interactive = false;
     casing.interactiveChildren = false;
     casing.sortableChildren = false;
@@ -56,7 +56,7 @@ export class PixiFeatureLine extends PixiFeature {
     container.addChild(casing);
 
     const stroke = new PIXI.Graphics();
-    stroke.name = `${id}-stroke`;
+    stroke.name = 'stroke';
     stroke.interactive = false;
     stroke.interactiveChildren = false;
     stroke.sortableChildren = false;

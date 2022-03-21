@@ -103,7 +103,9 @@ export class PixiEventsHandler {
         this.context.enter(modeSelect(this.context, [entity.id]));
       }
 
-      dObj.filters = [ new GlowFilter({ distance: 15, outerStrength: 2, color: 0xff26db }) ];
+      let glow = new GlowFilter({ distance: 15, outerStrength: 2, color: 0xff26db });
+      glow.resolution = 2;
+      dObj.filters = [ glow ];
       this._selectedObjects.push(dObj);
 
       // Now process right-click!
