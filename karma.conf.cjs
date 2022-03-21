@@ -3,21 +3,14 @@
 
 module.exports = function (config) {
   config.set({
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-    plugins: [
-      'karma-coverage',
-      'karma-mocha',
-      'karma-chrome-launcher'
-    ],
+    plugins: ['karma-coverage', 'karma-mocha', 'karma-chrome-launcher'],
 
     // frameworks to use
     // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
     frameworks: ['mocha'],
-
-
 
     // list of files / patterns to load in the browser
     files: [
@@ -30,9 +23,8 @@ module.exports = function (config) {
       { pattern: 'dist/iD.css', included: true },
       { pattern: 'dist/**/*', included: false },
       'test/spec/spec_helpers.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
     ],
-
 
     // list of files / patterns to exclude
     exclude: [
@@ -45,44 +37,38 @@ module.exports = function (config) {
       'test/spec/services/osm.js',
       'test/spec/renderer/map.js',
       'test/spec/renderer/features.js',
-      'test/spec/core/history.js'
+      'test/spec/core/history.js',
     ],
 
     proxies: {
       '/dist/': 'http://localhost:9876/base/dist/',
       '/data/': 'http://localhost:9876/base/dist/data/',
-      '/img/': 'http://localhost:9876/base/dist/img/'
+      '/img/': 'http://localhost:9876/base/dist/img/',
     },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
     preprocessors: {
-      'dist/iD.js': ['coverage']
+      'dist/iD.js': ['coverage'],
     },
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
     reporters: ['progress', 'coverage'],
 
-
     // web server port
     port: 9876,
 
-
     // enable / disable colors in the output (reporters and logs)
     colors: true,
-
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
-
 
     // start these browsers
     // available browser launchers: https://www.npmjs.com/search?q=keywords:karma-launcher
@@ -100,17 +86,15 @@ module.exports = function (config) {
 
     remapIstanbulReporter: {
       remapOptions: {
-        exclude: [
-          'node_modules'
-        ]
+        exclude: ['node_modules'],
       }, //additional remap options
       reportOptions: {
-        basePath: 'modules'
+        basePath: 'modules',
       }, //additional report options
       reports: {
         lcovonly: 'coverage/lcof.info',
-        html: 'coverage'
-      }
-    }
+        html: 'coverage',
+      },
+    },
   });
 };
