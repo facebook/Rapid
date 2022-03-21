@@ -1,22 +1,17 @@
 import { select as d3_select } from 'd3-selection';
-import { geoMetersToLat, geoMetersToLon  } from '@id-sdk/math';
 import {
     utilArrayIntersection, utilArrayUnion, utilDeepMemberSelector,
-    utilEntityOrDeepMemberSelector, utilEntitySelector, utilGetAllNodes
+    utilEntityOrDeepMemberSelector, utilEntitySelector
 } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
-import { actionMove } from '../actions/move';
-import { actionScale } from '../actions/scale';
 import { behaviorBreathe } from '../behavior/breathe';
 import { behaviorHover } from '../behavior/hover';
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorPaste } from '../behavior/paste';
 import { behaviorSelect } from '../behavior/select';
-import { operationMove } from '../operations/move';
-import { prefs } from '../core/preferences';
 import { geoChooseEdge } from '../geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
@@ -255,18 +250,6 @@ export function modeSelect(context, selectedIDs) {
             .on([']', 'pgdown'], nextVertex)
             .on(['{', uiCmd('⌘['), 'home'], firstVertex)
             .on(['}', uiCmd('⌘]'), 'end'], lastVertex)
-            .on(uiCmd('⇧←'), nudgeSelection([-10, 0]))
-            .on(uiCmd('⇧↑'), nudgeSelection([0, -10]))
-            .on(uiCmd('⇧→'), nudgeSelection([10, 0]))
-            .on(uiCmd('⇧↓'), nudgeSelection([0, 10]))
-            .on(uiCmd('⇧⌥←'), nudgeSelection([-100, 0]))
-            .on(uiCmd('⇧⌥↑'), nudgeSelection([0, -100]))
-            .on(uiCmd('⇧⌥→'), nudgeSelection([100, 0]))
-            .on(uiCmd('⇧⌥↓'), nudgeSelection([0, 100]))
-            .on(utilKeybinding.plusKeys.map((key) => uiCmd('⇧' + key)), scaleSelection(1.05))
-            .on(utilKeybinding.plusKeys.map((key) => uiCmd('⇧⌥' + key)), scaleSelection(Math.pow(1.05, 5)))
-            .on(utilKeybinding.minusKeys.map((key) => uiCmd('⇧' + key)), scaleSelection(1/1.05))
-            .on(utilKeybinding.minusKeys.map((key) => uiCmd('⇧⌥' + key)), scaleSelection(1/Math.pow(1.05, 5)))
             .on(['\\', 'pause'], focusNextParent)
             .on(uiCmd('⌘↑'), selectParent)
             .on(uiCmd('⌘↓'), selectChild)
@@ -302,95 +285,6 @@ export function modeSelect(context, selectedIDs) {
             context.map().centerEase(loc);
             // we could enter the mode multiple times, so reset follow for next time
             _follow = false;
-        }
-
-
-        function nudgeSelection(delta) {
-            return function() {
-                var moveOp = operationMove(context, selectedIDs);
-                if (moveOp.disabled()) {
-                    context.ui().flash
-                        .duration(4000)
-                        .iconName('#iD-operation-' + moveOp.id)
-                        .iconClass('operation disabled')
-                        .label(moveOp.tooltip)();
-                } else {
-                    context.perform(actionMove(selectedIDs, delta, context.projection), moveOp.annotation());
-                    context.validator().validate();
-                }
-            };
-        }
-
-        function scaleSelection(factor) {
-            return function() {
-                let nodes = utilGetAllNodes(selectedIDs, context.graph());
-                let isUp = factor > 1;
-
-                // can only scale if multiple nodes are selected
-                if (nodes.length <= 1) return;
-
-                let extent = utilTotalExtent(selectedIDs, context.graph());
-
-                // These disabled checks would normally be handled by an operation
-                // object, but we don't want an actual scale operation at this point.
-                function scalingDisabled() {
-                    const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-
-                    if (tooSmall()) {
-                        return 'too_small';
-                    } else if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
-                        return 'too_large';
-                    } else if (someMissing() || selectedIDs.some(incompleteRelation)) {
-                        return 'not_downloaded';
-                    } else if (selectedIDs.some(context.hasHiddenConnections)) {
-                        return 'connected_to_hidden';
-                    }
-
-                    return false;
-
-                    function tooSmall() {
-                        if (isUp) return false;
-                        let dLon = Math.abs(extent.max[0] - extent.min[0]);
-                        let dLat = Math.abs(extent.max[1] - extent.min[1]);
-                        return dLon < geoMetersToLon(1, extent.max[1]) &&
-                            dLat < geoMetersToLat(1);
-                    }
-
-                    function someMissing() {
-                        if (context.inIntro()) return false;
-                        let osm = context.connection();
-                        if (osm) {
-                            let missing = nodes.filter(function(n) { return !osm.isDataLoaded(n.loc); });
-                            if (missing.length) {
-                                missing.forEach(function(loc) { context.loadTileAtLoc(loc); });
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    function incompleteRelation(id) {
-                        let entity = context.entity(id);
-                        return entity.type === 'relation' && !entity.isComplete(context.graph());
-                    }
-                }
-
-                const disabled = scalingDisabled();
-
-                if (disabled) {
-                    let multi = (selectedIDs.length === 1 ? 'single' : 'multiple');
-                    context.ui().flash
-                        .duration(4000)
-                        .iconName('#iD-icon-no')
-                        .iconClass('operation disabled')
-                        .label(t('operations.scale.' + disabled + '.' + multi))();
-                } else {
-                    const pivot = context.projection.project(extent.center());
-                    const annotation = t('operations.scale.annotation.' + (isUp ? 'up' : 'down') + '.feature', { n: selectedIDs.length });
-                    context.perform(actionScale(selectedIDs, pivot, factor, context.projection), annotation);
-                    context.validator().validate();
-                }
-            };
         }
 
 
