@@ -212,21 +212,6 @@ export function utilFastMouse(container) {
 }
 
 
-export function utilAsyncMap(inputs, func, callback) {
-    var remaining = inputs.length;
-    var results = [];
-    var errors = [];
-
-    inputs.forEach(function(d, i) {
-        func(d, function done(err, data) {
-            errors[i] = err;
-            results[i] = data;
-            remaining--;
-            if (!remaining) callback(errors, results);
-        });
-    });
-}
-
 
 // wraps an index to an interval [0..length-1]
 export function utilWrap(index, length) {

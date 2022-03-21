@@ -1,4 +1,3 @@
-export { utilAsyncMap } from './util';
 export { utilDetect } from './detect';
 export { utilDisplayName } from './util';
 export { utilDisplayNameForPath } from './util';
