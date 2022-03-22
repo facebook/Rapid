@@ -32,7 +32,6 @@ module.exports = function (config) {
       'test/spec/svg/*.js',
       'test/spec/behavior/*.js',
       'test/spec/actions/circularize.js',
-      'test/spec/services/mapillary.js',
       'test/spec/renderer/map.js',
       'test/spec/renderer/features.js',
     ],

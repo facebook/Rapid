@@ -20,6 +20,11 @@ describe('iD.serviceMapillary', function() {
             .translate([-116508, 0])  // 10,0
             .dimensions([[0,0], dimensions]);
 
+        //Just for the image filtering tests, hard code these methods
+        //So we don't bring the pixi layers' existence into the mix. 
+        context.photos().showsPanoramic = () => true;
+        context.photos().showsFlat = () => true;
+
         mapillary = iD.services.mapillary;
         mapillary.reset();
     });
