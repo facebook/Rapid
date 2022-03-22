@@ -3,7 +3,7 @@ import { utilArrayDifference, utilGetAllNodes } from '@id-sdk/util';
 import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/index';
 
@@ -141,7 +141,7 @@ export function operationStraighten(context, selectedIDs) {
     operation.id = 'straighten';
     operation.keys = [t('operations.straighten.key')];
     operation.title = t('operations.straighten.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

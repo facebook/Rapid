@@ -3,7 +3,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { prefs } from '../core/preferences';
@@ -150,7 +150,7 @@ export function operationDelete(context, selectedIDs) {
     operation.id = 'delete';
     operation.keys = [uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦')];
     operation.title = t('operations.delete.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

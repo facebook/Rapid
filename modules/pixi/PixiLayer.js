@@ -112,7 +112,7 @@ export class PixiLayer {
 
   /**
    * enabled
-   * Whether the the user has chosen to see the layer
+   * Whether the user has chosen to see the layer
    */
   get enabled() {
     return this._enabled;

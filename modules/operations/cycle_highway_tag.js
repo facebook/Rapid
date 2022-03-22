@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionChangeTags } from '../actions/index';
-import { behaviorOperation } from '../behavior/index';
+import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {
@@ -76,7 +76,7 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     operation.id = 'cycle_highway_tag';
     operation.keys = ['⇧' + t('operations.cycle_highway_tag.key')];
     operation.title = t('operations.cycle_highway_tag.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

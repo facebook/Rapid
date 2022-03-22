@@ -1,7 +1,7 @@
 import { utilArrayGroupBy } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
@@ -138,7 +138,7 @@ export function operationCopy(context, selectedIDs) {
     operation.id = 'copy';
     operation.keys = [uiCmd('⌘C')];
     operation.title = t('operations.copy.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

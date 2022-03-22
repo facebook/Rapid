@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionSplit } from '../actions/split';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 
 
@@ -81,7 +81,7 @@ export function operationSplit(context, selectedIDs) {
     operation.id = 'split';
     operation.keys = [t('operations.split.key')];
     operation.title = t('operations.split.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

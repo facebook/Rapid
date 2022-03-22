@@ -337,8 +337,20 @@ export function coreContext() {
 
 
   /* Behaviors */
-  context.install = (behavior) =>  { return; }; // context.surface().call(behavior);
-  context.uninstall = (behavior) => { return; }; // context.surface().call(behavior.off);
+  // context.install = (behavior) => context.surface().call(behavior);
+  // context.uninstall = (behavior) => context.surface().call(behavior.off);
+  context.install = (behavior) => {
+    if (typeof behavior.enable === 'function') {
+      behavior.enable();
+    }
+  }
+  context.uninstall = (behavior) => {
+    if (typeof behavior.disable === 'function') {
+      behavior.disable();
+    }
+  }
+  // context.install = (behavior) =>  { return; };
+  // context.uninstall = (behavior) => { return; };
 
 
   /* Copy/Paste */
