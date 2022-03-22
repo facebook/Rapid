@@ -160,7 +160,7 @@ describe('iD.serviceOsm', function () {
 
             connection.loadFromAPI(path, function (err, payload) {
                 expect(err).to.not.be.ok;
-                expect(typeof result).to.eql('object');
+                expect(typeof payload).to.eql('object');
                 done();
             });
         });
@@ -296,7 +296,8 @@ describe('iD.serviceOsm', function () {
             connection.loadTiles(context.projection, spy);
 
             window.setTimeout(function() {
-                expect(spy).to.have.been.calledOnce;
+                //We preload 9 tiles' worth of information now- the current tile and 8 surrounding.
+                expect(spy).to.have.callCount(9);
                 done();
             }, 500);
         });
@@ -660,8 +661,9 @@ describe('iD.serviceOsm', function () {
             connection.on('loadedNotes', spy);
             connection.loadNotes(context.projection, {});
 
-            window.setTimeout(function() {
-                expect(spy).to.have.been.calledOnce;
+            window.setTimeout(function () {
+                //We preload 9 tiles' worth of information now- the current tile and 8 surrounding.
+                expect(spy).to.have.callCount(9);
                 done();
             }, 500);
         });
