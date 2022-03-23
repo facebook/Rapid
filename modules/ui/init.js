@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
-import { behaviorHash } from '../behavior';
+import { BehaviorHash } from '../behavior/BehaviorHash';
 import { modeBrowse } from '../modes/browse';
 import { svgDefs } from '../svg/defs';
 import { svgIcon } from '../svg/icon';
@@ -345,9 +345,10 @@ export function uiInit(context) {
         ui.onResize();
         map.redrawEnable(true);
 
-        ui.hash = behaviorHash(context);
-        ui.hash();
-        if (!ui.hash.hadHash) {
+        ui.hash = new BehaviorHash(context);
+        ui.hash.enable();
+
+        if (!context.initialHashParams.map) {  // no `map=` param, go to default location
             map.centerZoom([0, 0], 2);
         }
 
@@ -425,8 +426,10 @@ export function uiInit(context) {
 
         var osm = context.connection();
 
+        let startWalkthrough = (_initCounter === 0 && context.initialHashParams.startWalkthrough === 'true');
+
         if (!_initCounter++) {
-            if (!ui.hash.startWalkthrough) {
+            if (!startWalkthrough) {
                 if (context.history().lock() && context.history().hasRestorableChanges()) {
                     context.container()
                         .call(uiRestore(context));
@@ -459,10 +462,7 @@ export function uiInit(context) {
                 });
         }
 
-        _initCounter++;
-
-        if (ui.hash.startWalkthrough) {
-            ui.hash.startWalkthrough = false;
+        if (startWalkthrough) {
             context.container().call(uiIntro(context));
         }
 
