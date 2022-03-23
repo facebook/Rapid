@@ -13,18 +13,22 @@ export function prepareTextures(context, renderer) {
 
   // load spritesheets
   const loader = PIXI.Loader.shared;
-  loader.add('dist/img/icons/maki-spritesheet.json');
-  loader.add('dist/img/icons/temaki-spritesheet.json');
-  loader.add('dist/img/icons/fontawesome-spritesheet.json');
-  loader.add('dist/img/icons/mapillary-features-spritesheet.json');
-  loader.add('dist/img/icons/mapillary-signs-spritesheet.json');
-  loader.load(loader => {
-    context._makiSheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
-    context._temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
-    context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
-    context._mapillarySheet = loader.resources['dist/img/icons/mapillary-features-spritesheet.json'];
-    context._mapillarySignSheet = loader.resources['dist/img/icons/mapillary-signs-spritesheet.json'];
-  });
+
+  // During tests we might be reloading the map several times. If so, don't reload the resource spritesheets.
+  if (!loader.resources['dist/img/icons/maki-spritesheet.json']) {
+    loader.add('dist/img/icons/maki-spritesheet.json');
+    loader.add('dist/img/icons/temaki-spritesheet.json');
+    loader.add('dist/img/icons/fontawesome-spritesheet.json');
+    loader.add('dist/img/icons/mapillary-features-spritesheet.json');
+    loader.add('dist/img/icons/mapillary-signs-spritesheet.json');
+    loader.load(loader => {
+      context._makiSheet = loader.resources['dist/img/icons/maki-spritesheet.json'];
+      context._temakiSheet = loader.resources['dist/img/icons/temaki-spritesheet.json'];
+      context._fontAwesomeSheet = loader.resources['dist/img/icons/fontawesome-spritesheet.json'];
+      context._mapillarySheet = loader.resources['dist/img/icons/mapillary-features-spritesheet.json'];
+      context._mapillarySignSheet = loader.resources['dist/img/icons/mapillary-signs-spritesheet.json'];
+    });
+  }
 
   // load patterns
   context.pixi.rapidTextureKeys = [

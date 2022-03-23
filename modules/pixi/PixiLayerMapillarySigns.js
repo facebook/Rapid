@@ -130,7 +130,7 @@ export class PixiLayerMapillarySigns extends PixiLayer {
 
     } else {
       this.visible = false;
-      service.showSignDetections(false);
+      if (service) service.showSignDetections(false);
     }
   }
 

@@ -130,7 +130,7 @@ export class PixiLayerMapillaryFeatures extends PixiLayer {
 
     } else {
       this.visible = false;
-      service.showFeatureDetections(false);
+      if (service) service.showFeatureDetections(false);
     }
   }
 
