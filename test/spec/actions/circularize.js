@@ -1,6 +1,10 @@
 describe('iD.actionCircularize', function () {
     var projection = new sdk.Projection().scale(150);
 
+    // This makes our projection operate like the d3 default of [480,250].
+    // https://github.com/d3/d3-geo#projection_translate
+    projection.translate([480, 250]);
+
     function isCircular(id, graph) {
         var points = graph.childNodes(graph.entity(id))
                 .map(function (n) { return projection.project(n.loc); }),

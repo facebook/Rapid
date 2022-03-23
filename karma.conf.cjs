@@ -31,7 +31,6 @@ module.exports = function (config) {
       '**/*.js.map',
       'test/spec/svg/*.js',
       'test/spec/behavior/*.js',
-      'test/spec/actions/circularize.js',
       'test/spec/renderer/map.js',
       'test/spec/renderer/features.js',
     ],
