@@ -29,7 +29,6 @@ module.exports = function (config) {
     // list of files / patterns to exclude
     exclude: [
       '**/*.js.map',
-      'test/spec/svg/*.js',
       'test/spec/behavior/*.js',
       'test/spec/renderer/features.js',
     ],
