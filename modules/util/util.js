@@ -1,7 +1,6 @@
 import { Extent } from '@id-sdk/math';
 import { utilEntityOrDeepMemberSelector } from '@id-sdk/util';
 
-import { fixRTLTextForSvg, rtlRegex } from './svg_paths_rtl_fix';
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { utilDetect } from './detect';
@@ -96,17 +95,6 @@ export function utilDisplayName(entity, hideNetwork) {
 }
 
 
-export function utilDisplayNameForPath(entity) {
-    var name = utilDisplayName(entity);
-    var isFirefox = utilDetect().browser.toLowerCase().indexOf('firefox') > -1;
-    var isNewChromium = Number(utilDetect().version.split('.')[0]) >= 96.0;
-
-    if (!isFirefox && !isNewChromium && name && rtlRegex.test(name)) {
-        name = fixRTLTextForSvg(name);
-    }
-
-    return name;
-}
 
 
 export function utilDisplayType(id) {
