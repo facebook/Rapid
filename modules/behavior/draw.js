@@ -25,9 +25,6 @@ export function behaviorDraw(context) {
 
     var _downPointer;
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
 
     // related code
     // - `mode/drag_node.js` `datum()`
@@ -49,8 +46,8 @@ export function behaviorDraw(context) {
         return (d && d.properties && d.properties.target) ? d : {};
     }
 
-    function pointerdown(d3_event) {
 
+    function pointerdown(d3_event) {
         if (_downPointer) return;
 
         var pointerLocGetter = utilFastMouse(this);
@@ -64,8 +61,8 @@ export function behaviorDraw(context) {
         dispatch.call('down', this, d3_event, datum(d3_event));
     }
 
-    function pointerup(d3_event) {
 
+    function pointerup(d3_event) {
         if (!_downPointer || _downPointer.id !== (d3_event.pointerId || 'mouse')) return;
 
         var downPointer = _downPointer;
@@ -97,6 +94,7 @@ export function behaviorDraw(context) {
         }
     }
 
+
     function pointermove(d3_event) {
         if (_downPointer &&
             _downPointer.id === (d3_event.pointerId || 'mouse') &&
@@ -123,6 +121,7 @@ export function behaviorDraw(context) {
         dispatch.call('move', this, d3_event, datum(d3_event));
     }
 
+
     function pointercancel(d3_event) {
         if (_downPointer &&
             _downPointer.id === (d3_event.pointerId || 'mouse')) {
@@ -134,17 +133,21 @@ export function behaviorDraw(context) {
         }
     }
 
+
     function mouseenter() {
         _mouseLeave = false;
     }
+
 
     function mouseleave() {
         _mouseLeave = true;
     }
 
+
     function allowsVertex(d) {
         return d.geometry(context.graph()) === 'vertex' || presetManager.allowsVertex(d, context.graph());
     }
+
 
     // related code
     // - `mode/drag_node.js`     `doMove()`
@@ -173,8 +176,8 @@ export function behaviorDraw(context) {
             var locLatLng = context.projection.invert(loc);
             dispatch.call('click', this, locLatLng, d);
         }
-
     }
+
 
     // treat a spacebar press like a click
     function space(d3_event) {
@@ -242,11 +245,11 @@ export function behaviorDraw(context) {
         selection
             .on('mouseenter.draw', mouseenter)
             .on('mouseleave.draw', mouseleave)
-            .on(_pointerPrefix + 'down.draw', pointerdown)
-            .on(_pointerPrefix + 'move.draw', pointermove);
+            .on('pointerdown.draw', pointerdown)
+            .on('pointermove.draw', pointermove);
 
         d3_select(window)
-            .on(_pointerPrefix + 'up.draw', pointerup, true)
+            .on('pointerup.draw', pointerup, true)
             .on('pointercancel.draw', pointercancel, true);
 
         d3_select(document)
@@ -260,11 +263,11 @@ export function behaviorDraw(context) {
         selection
             .on('mouseenter.draw', null)
             .on('mouseleave.draw', null)
-            .on(_pointerPrefix + 'down.draw', null)
-            .on(_pointerPrefix + 'move.draw', null);
+            .on('pointerdown.draw', null)
+            .on('pointermove.draw', null);
 
         d3_select(window)
-            .on(_pointerPrefix + 'up.draw', null)
+            .on('pointerup.draw', null)
             .on('pointercancel.draw', null);
             // note: keyup.space-block, click.draw-block should remain
 

@@ -10,7 +10,6 @@ import { modeSelect } from './select';
 import { utilKeybinding } from '../util';
 import { utilFastMouse } from '../util/util';
 
-
 import { operationCircularize } from '../operations/circularize';
 import { operationDelete } from '../operations/delete';
 import { operationOrthogonalize } from '../operations/orthogonalize';
@@ -19,7 +18,6 @@ import { operationRotate } from '../operations/rotate';
 
 
 export function modeMove(context, entityIDs, baseGraph) {
-
     var _tolerancePx = 4; // see also behaviorDrag, behaviorSelect, modeRotate
 
     var mode = {
@@ -44,9 +42,6 @@ export function modeMove(context, entityIDs, baseGraph) {
     var _cache;
     var _origin;
     var _nudgeInterval;
-
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
 
     function doMove(nudge) {
@@ -135,13 +130,13 @@ export function modeMove(context, entityIDs, baseGraph) {
         var downEvent;
 
         context.surface()
-            .on(_pointerPrefix + 'down.modeMove', function(d3_event) {
+            .on('pointerdown.modeMove', function(d3_event) {
                 downEvent = d3_event;
             });
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.modeMove', move, true)
-            .on(_pointerPrefix + 'up.modeMove', function(d3_event) {
+            .on('pointermove.modeMove', move, true)
+            .on('pointerup.modeMove', function(d3_event) {
                 if (!downEvent) return;
                 var mapNode = context.container().select('.main-map').node();
                 var pointGetter = utilFastMouse(mapNode);
@@ -173,11 +168,11 @@ export function modeMove(context, entityIDs, baseGraph) {
         });
 
         context.surface()
-            .on(_pointerPrefix + 'down.modeMove', null);
+            .on('pointerdown.modeMove', null);
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.modeMove', null, true)
-            .on(_pointerPrefix + 'up.modeMove', null, true);
+            .on('pointermove.modeMove', null, true)
+            .on('pointerup.modeMove', null, true);
 
         context.history()
             .on('undone.modeMove', null);

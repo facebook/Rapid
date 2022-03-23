@@ -1,6 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-
-import { Extent } from '@id-sdk/extent';
+import { Extent } from '@id-sdk/math';
 
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorSelect } from '../behavior/select';

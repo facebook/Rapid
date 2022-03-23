@@ -33,9 +33,6 @@ export function uiSidebar(context) {
     var _wasNote = false;
     var _wasQaItem = false;
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
 
     function sidebar(selection) {
         var container = context.container();
@@ -53,7 +50,7 @@ export function uiSidebar(context) {
         var resizer = selection
             .append('div')
             .attr('class', 'sidebar-resizer')
-            .on(_pointerPrefix + 'down.sidebar-resizer', pointerdown);
+            .on('pointerdown.sidebar-resizer', pointerdown);
 
         var downPointerId, lastClientX, containerLocGetter;
 
@@ -85,8 +82,8 @@ export function uiSidebar(context) {
                     // disable page scrolling while resizing on touch input
                     d3_event.preventDefault();
                 }, { passive: false })
-                .on(_pointerPrefix + 'move.sidebar-resizer', pointermove)
-                .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', pointerup);
+                .on('pointermove.sidebar-resizer', pointermove)
+                .on('pointerup.sidebar-resizer pointercancel.sidebar-resizer', pointerup);
         }
 
         function pointermove(d3_event) {
@@ -143,8 +140,8 @@ export function uiSidebar(context) {
 
             d3_select(window)
                 .on('touchmove.sidebar-resizer', null)
-                .on(_pointerPrefix + 'move.sidebar-resizer', null)
-                .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', null);
+                .on('pointermove.sidebar-resizer', null)
+                .on('pointerup.sidebar-resizer pointercancel.sidebar-resizer', null);
         }
 
         var featureListWrap = selection

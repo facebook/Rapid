@@ -1,9 +1,7 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
+import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
 
 import { t, localizer } from '../../core/localizer';
-import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/geo';
 import { svgIcon } from '../../svg/icon';
 import { uiSection } from '../section';
 
@@ -14,8 +12,6 @@ export function uiSectionBackgroundOffset(context) {
         .label(t.html('background.fix_misalignment'))
         .disclosureContent(renderDisclosureContent)
         .expandedByDefault(false);
-
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
     var _directions = [
         ['top', [0, -0.5]],
@@ -87,13 +83,10 @@ export function uiSectionBackgroundOffset(context) {
             .attr('class', 'nudge-surface');
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.drag-bg-offset', pointermove)
-            .on(_pointerPrefix + 'up.drag-bg-offset', pointerup);
+            .on('pointermove.drag-bg-offset', pointermove)
+            .on('pointerup.drag-bg-offset', pointerup)
+            .on('pointercancel.drag-bg-offset', pointerup);
 
-        if (_pointerPrefix === 'pointer') {
-            d3_select(window)
-                .on('pointercancel.drag-bg-offset', pointerup);
-        }
 
         function pointermove(d3_event) {
             if (pointerId !== (d3_event.pointerId || 'mouse')) return;
@@ -141,7 +134,7 @@ export function uiSectionBackgroundOffset(context) {
         var nudgeEnter = nudgeWrapEnter
             .append('div')
             .attr('class', 'nudge-outer-rect')
-            .on(_pointerPrefix + 'down', dragOffset);
+            .on('pointerdown', dragOffset);
 
         nudgeEnter
             .append('div')

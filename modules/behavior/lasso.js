@@ -8,9 +8,6 @@ import { uiLasso } from '../ui/lasso';
 
 export function behaviorLasso(context) {
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
     var behavior = function(selection) {
         var lasso;
 
@@ -21,8 +18,8 @@ export function behaviorLasso(context) {
                 lasso = null;
 
                 d3_select(window)
-                    .on(_pointerPrefix + 'move.lasso', pointermove)
-                    .on(_pointerPrefix + 'up.lasso', pointerup);
+                    .on('pointermove.lasso', pointermove)
+                    .on('pointerup.lasso', pointerup);
 
                 d3_event.stopPropagation();
             }
@@ -98,8 +95,8 @@ export function behaviorLasso(context) {
 
         function pointerup() {
             d3_select(window)
-                .on(_pointerPrefix + 'move.lasso', null)
-                .on(_pointerPrefix + 'up.lasso', null);
+                .on('pointermove.lasso', null)
+                .on('pointerup.lasso', null);
 
             if (!lasso) return;
 
@@ -112,12 +109,12 @@ export function behaviorLasso(context) {
         }
 
         selection
-            .on(_pointerPrefix + 'down.lasso', pointerdown);
+            .on('pointerdown.lasso', pointerdown);
     };
 
 
     behavior.off = function(selection) {
-        selection.on(_pointerPrefix + 'down.lasso', null);
+        selection.on('pointerdown.lasso', null);
     };
 
 

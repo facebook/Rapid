@@ -36,9 +36,6 @@ export function behaviorDrag() {
     var _surface;
     var _pointerId;
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
     var d3_event_userSelectProperty = utilPrefixCSSProperty('UserSelect');
     var d3_event_userSelectSuppress = function() {
             var selection = d3_selection();
@@ -51,7 +48,6 @@ export function behaviorDrag() {
 
 
     function pointerdown(d3_event) {
-
         if (_pointerId) return;
 
         _pointerId = d3_event.pointerId || 'mouse';
@@ -67,8 +63,8 @@ export function behaviorDrag() {
         var selectEnable = d3_event_userSelectSuppress();
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.drag', pointermove)
-            .on(_pointerPrefix + 'up.drag pointercancel.drag', pointerup, true);
+            .on('pointermove.drag', pointermove)
+            .on('pointerup.drag pointercancel.drag', pointerup, true);
 
         if (_origin) {
             offset = _origin.call(_targetNode, _targetEntity);
@@ -121,8 +117,8 @@ export function behaviorDrag() {
             }
 
             d3_select(window)
-                .on(_pointerPrefix + 'move.drag', null)
-                .on(_pointerPrefix + 'up.drag pointercancel.drag', null);
+                .on('pointermove.drag', null)
+                .on('pointerup.drag pointercancel.drag', null);
 
             selectEnable();
         }
@@ -151,13 +147,13 @@ export function behaviorDrag() {
         }
 
         selection
-            .on(_pointerPrefix + 'down.drag' + _selector, delegate);
+            .on('pointerdown.drag' + _selector, delegate);
     }
 
 
     behavior.off = function(selection) {
         selection
-            .on(_pointerPrefix + 'down.drag' + _selector, null);
+            .on('pointerdown.drag' + _selector, null);
     };
 
 
@@ -177,8 +173,8 @@ export function behaviorDrag() {
 
     behavior.cancel = function() {
         d3_select(window)
-            .on(_pointerPrefix + 'move.drag', null)
-            .on(_pointerPrefix + 'up.drag pointercancel.drag', null);
+            .on('pointermove.drag', null)
+            .on('pointerup.drag pointercancel.drag', null);
         return behavior;
     };
 

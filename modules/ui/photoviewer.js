@@ -1,6 +1,4 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { svgIcon } from '../svg/icon';
@@ -8,11 +6,10 @@ import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util';
 import { services } from '../services';
 
-export function uiPhotoviewer(context) {
 
+export function uiPhotoviewer(context) {
     var dispatch = d3_dispatch('resize');
 
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
     function photoviewer(selection) {
         selection
@@ -35,7 +32,7 @@ export function uiPhotoviewer(context) {
             .attr('class', 'resize-handle-xy')
             .on('touchstart touchdown touchend', preventDefault)
             .on(
-                _pointerPrefix + 'down',
+                'pointerdown',
                 buildResizeListener(selection, 'resize', dispatch, { resizeOnX: true, resizeOnY: true })
             );
 
@@ -44,7 +41,7 @@ export function uiPhotoviewer(context) {
             .attr('class', 'resize-handle-x')
             .on('touchstart touchdown touchend', preventDefault)
             .on(
-                _pointerPrefix + 'down',
+                'pointerdown',
                 buildResizeListener(selection, 'resize', dispatch, { resizeOnX: true })
             );
 
@@ -53,7 +50,7 @@ export function uiPhotoviewer(context) {
             .attr('class', 'resize-handle-y')
             .on('touchstart touchdown touchend', preventDefault)
             .on(
-                _pointerPrefix + 'down',
+                'pointerdown',
                 buildResizeListener(selection, 'resize', dispatch, { resizeOnY: true })
             );
 
@@ -120,13 +117,9 @@ export function uiPhotoviewer(context) {
                 startHeight = targetRect.height;
 
                 d3_select(window)
-                    .on(_pointerPrefix + 'move.' + eventName, startResize, false)
-                    .on(_pointerPrefix + 'up.' + eventName, stopResize, false);
-
-                if (_pointerPrefix === 'pointer') {
-                    d3_select(window)
-                        .on('pointercancel.' + eventName, stopResize, false);
-                }
+                    .on('pointermove.' + eventName, startResize, false)
+                    .on('pointerup.' + eventName, stopResize, false)
+                    .on('pointercancel.' + eventName, stopResize, false);
             };
         }
     }

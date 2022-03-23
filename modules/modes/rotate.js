@@ -44,9 +44,6 @@ export function modeRotate(context, entityIDs) {
     var _prevTransform;
     var _pivot;
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
 
     function doRotate(d3_event) {
         var fn;
@@ -129,13 +126,13 @@ export function modeRotate(context, entityIDs) {
         var downEvent;
 
         context.surface()
-            .on(_pointerPrefix + 'down.modeRotate', function(d3_event) {
+            .on('pointerdown.modeRotate', function(d3_event) {
                 downEvent = d3_event;
             });
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.modeRotate', doRotate, true)
-            .on(_pointerPrefix + 'up.modeRotate', function(d3_event) {
+            .on('pointermove.modeRotate', doRotate, true)
+            .on('pointerup.modeRotate', function(d3_event) {
                 if (!downEvent) return;
                 var mapNode = context.container().select('.main-map').node();
                 var pointGetter = utilFastMouse(mapNode);
@@ -163,11 +160,11 @@ export function modeRotate(context, entityIDs) {
         behaviors.forEach(context.uninstall);
 
         context.surface()
-            .on(_pointerPrefix + 'down.modeRotate', null);
+            .on('pointerdown.modeRotate', null);
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.modeRotate', null, true)
-            .on(_pointerPrefix + 'up.modeRotate', null, true);
+            .on('pointermove.modeRotate', null, true)
+            .on('pointerup.modeRotate', null, true);
 
         context.history()
             .on('undone.modeRotate', null);

@@ -23,12 +23,8 @@ export function behaviorSelect(context) {
     var _multiselectionPointerId = null;
     var _initialized = false;
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
 
     function keydown(d3_event) {
-
         if (d3_event.keyCode === 32) {
             // don't react to spacebar events during text input
             var activeNode = document.activeElement;
@@ -328,8 +324,8 @@ export function behaviorSelect(context) {
         // d3_select(window)
         //     .on('keydown.select', keydown)
         //     .on('keyup.select', keyup)
-        //     .on(_pointerPrefix + 'move.select', pointermove, true)
-        //     .on(_pointerPrefix + 'up.select', pointerup, true)
+        //     .on('pointermove.select', pointermove, true)
+        //     .on('pointerup.select', pointerup, true)
         //     .on('pointercancel.select', pointercancel, true)
         //     .on('contextmenu.select-window', function(d3_event) {
         //         // Edge and IE really like to show the contextmenu on the
@@ -342,7 +338,7 @@ export function behaviorSelect(context) {
         //     });
 
         // selection
-        //     .on(_pointerPrefix + 'down.select', pointerdown)
+        //     .on('pointerdown.select', pointerdown)
         //     .on('contextmenu.select', contextmenu);
 
         /*if (d3_event && d3_event.shiftKey) {
@@ -359,12 +355,12 @@ export function behaviorSelect(context) {
             .on('keydown.select', null)
             .on('keyup.select', null)
             .on('contextmenu.select-window', null)
-            .on(_pointerPrefix + 'move.select', null, true)
-            .on(_pointerPrefix + 'up.select', null, true)
+            .on('pointermove.select', null, true)
+            .on('pointerup.select', null, true)
             .on('pointercancel.select', null, true);
 
         selection
-            .on(_pointerPrefix + 'down.select', null)
+            .on('pointerdown.select', null)
             .on('contextmenu.select', null);
 
         context.surface()
