@@ -15,7 +15,7 @@ export function uiGeolocate(context) {
         timeout: 6000 // 6sec
     };
     var _locating = uiLoading(context).message(t.html('geolocate.locating')).blocking(true);
-    var _layer = context.layers().getLayer('geolocate');
+    var _layer = context.layers().getLayer('pixiMapUI');
     var _position;
     var _extent;
     var _timeoutID;
@@ -23,7 +23,7 @@ export function uiGeolocate(context) {
 
     function click() {
         if (context.inIntro()) return;
-        if (!_layer.enabled() && !_locating.isShown()) {
+        if (!_layer.enabled && !_locating.isShown()) {
 
             // This timeout ensures that we still call finish() even if
             // the user declines to share their location in Firefox
@@ -34,7 +34,7 @@ export function uiGeolocate(context) {
             navigator.geolocation.getCurrentPosition(success, error, _geolocationOptions);
         } else {
             _locating.close();
-            _layer.enabled(null, false);
+            _layer.enabled = false;
             updateButtonState();
         }
     }
@@ -43,7 +43,7 @@ export function uiGeolocate(context) {
         context.enter(modeBrowse(context));
 
         var map = context.map();
-        _layer.enabled(_position, true);
+        _layer.enabled = true;
         updateButtonState();
         map.centerZoomEase(_extent.center(), Math.min(20, map.extentZoom(_extent)));
     }
@@ -76,7 +76,7 @@ export function uiGeolocate(context) {
     }
 
     function updateButtonState() {
-        _button.classed('active', _layer.enabled());
+        _button.classed('active', _layer.enabled);
     }
 
     return function(selection) {

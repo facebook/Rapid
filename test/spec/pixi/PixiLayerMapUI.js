@@ -16,6 +16,12 @@ describe('iD.pixiMapUILayer', function () {
             expect(map.layers().getLayer('pixiMapUI')).not.to.be.an('undefined');
         });
 
+
+        it('is not enabled by default', function () {
+            expect(map.layers().getLayer('pixiMapUI').enabled).not.to.be.true;
+        });
+
+
         it('has the highest z-index of any other layer', function () {
             let zIndex = map.layers().getLayer('pixiMapUI').zIndex;
             expect(map.layers().getLayers().every(layer => layer.zIndex <= zIndex)).to.be.true;

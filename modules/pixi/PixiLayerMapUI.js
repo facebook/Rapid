@@ -19,7 +19,7 @@ export class PixiLayerMapUI extends PixiLayer {
   constructor(context, scene, layerZ) {
     super(context, LAYERID, layerZ);
     this.scene = scene;
-    this._enabled = true;   // this UI layer should be enabled by default
+    this._enabled = false;   // this UI layer should be enabled by default
 
     // this layer doesn't actually need to be interactive
     const layer = this.container;
