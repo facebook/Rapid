@@ -11,6 +11,7 @@ import { PixiLayerOsm } from './PixiLayerOsm';
 import { PixiLayerOsmNotes } from './PixiLayerOsmNotes';
 import { PixiLayerOsmose } from './PixiLayerOsmose';
 import { PixiLayerRapid } from './PixiLayerRapid';
+import { PixiLayerMapUI } from './PixiLayerMapUI';
 import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos';
 
 
@@ -47,7 +48,8 @@ export class PixiLayers {
       new PixiLayerKartaPhotos(context, scene, 25),
       new PixiLayerStreetsidePhotos(context, scene, 26),
 
-      new PixiLayerLabels(context, scene, 30)
+      new PixiLayerLabels(context, scene, 30),
+      new PixiLayerMapUI(context, scene, 99),
     ];
   }
 
@@ -72,6 +74,9 @@ export class PixiLayers {
     return this._layers.find(layer => layer.id === id);
   }
 
+  getLayers() {
+    return this._layers;
+  }
 
   enable(ids) {
     const toEnable = new Set([].concat(ids));  // coax ids into a Set
