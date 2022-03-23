@@ -2,7 +2,7 @@ import { AbstractBehavior } from './AbstractBehavior';
 
 
 /**
- * BehaviorKeyOperation binds whatever keystroke events trigger an "operation"
+ * `BehaviorKeyOperation` binds whatever keystroke events trigger an "operation"
  * ("operations" are the things that go on the editing menu)
  */
 export class BehaviorKeyOperation extends AbstractBehavior {

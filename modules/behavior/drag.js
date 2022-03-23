@@ -1,9 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select,
-    selection as d3_selection
-} from 'd3-selection';
+import { select as d3_select, selection as d3_selection } from 'd3-selection';
 
 import { vecLength } from '@id-sdk/math';
 import { osmNote } from '../osm';

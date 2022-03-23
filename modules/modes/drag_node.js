@@ -7,7 +7,6 @@ import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { behaviorDrag } from '../behavior/drag';
-import { behaviorHover } from '../behavior/hover';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
@@ -22,9 +21,6 @@ export function modeDragNode(context) {
         id: 'drag-node',
         button: 'browse'
     };
-    var hover = behaviorHover(context).altDisables(true)
-        .on('hover', context.ui().sidebar.hover);
-
     var _nudgeInterval;
     var _restoreSelectedIDs = [];
     var _wasMidpoint = false;
@@ -146,8 +142,6 @@ export function modeDragNode(context) {
 
         _activeEntity = entity;
         _startLoc = entity.loc;
-
-        hover.ignoreVertex(entity.geometry(context.graph()) === 'vertex');
 
         context.surface().selectAll('.' + _activeEntity.id)
             .classed('active', true);
@@ -443,7 +437,6 @@ export function modeDragNode(context) {
 
 
     mode.enter = function() {
-        context.install(hover);
         d3_select(window)
             .on('keydown.dragNode', keydown)
             .on('keyup.dragNode', keyup);
@@ -454,8 +447,6 @@ export function modeDragNode(context) {
 
 
     mode.exit = function() {
-        context.ui().sidebar.hover.cancel();
-        context.uninstall(hover);
         d3_select(window)
             .on('keydown.dragNode', null)
             .on('keyup.dragNode', null);

@@ -8,7 +8,6 @@
 //import { t, localizer } from '../../core/localizer';
 //import { actionRestrictTurn } from '../../actions/restrict_turn';
 //import { actionUnrestrictTurn } from '../../actions/unrestrict_turn';
-//import { behaviorBreathe } from '../../behavior/breathe';
 //import { osmIntersection, osmInferRestriction, osmTurn, osmWay } from '../../osm';
 //import { svgLayers, svgLines, svgTurns, svgVertices } from '../../svg';
 //import { utilDisplayName, utilDisplayType, utilFunctor, utilRebind } from '../../util';
@@ -17,7 +16,6 @@
 //
 //export function uiFieldRestrictions(field, context) {
 //    var dispatch = d3_dispatch('change');
-//    var breathe = behaviorBreathe(context);
 //
 //    prefs('turn-restriction-via-way', null);                 // remove old key
 //    var storedViaWay = prefs('turn-restriction-via-way0');   // use new key #6922
@@ -262,9 +260,6 @@
 //
 //        if (firstTime) {
 //            _initialized = true;
-//
-//            surface
-//                .call(breathe);
 //        }
 //
 //        // This can happen if we've lowered the detail while a FROM way
@@ -310,10 +305,6 @@
 //
 //
 //        function click(d3_event) {
-//            surface
-//                .call(breathe.off)
-//                .call(breathe);
-//
 //            var datum = d3_event.target.__data__;
 //            var entity = datum && datum.properties && datum.properties.entity;
 //            if (entity) {
@@ -638,7 +629,6 @@
 //        if (!_initialized) return;
 //
 //        selection.selectAll('.surface')
-//            .call(breathe.off)
 //            .on('click.restrictions', null)
 //            .on('mouseover.restrictions', null);
 //

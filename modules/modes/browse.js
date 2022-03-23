@@ -1,6 +1,5 @@
 import { t } from '../core/localizer';
 
-import { behaviorHover } from '../behavior/hover';
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorPaste } from '../behavior/paste';
 import { behaviorSelect } from '../behavior/select';
@@ -35,7 +34,6 @@ export function modeBrowse(context) {
             if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
             _behaviors = [
                 behaviorPaste(context),
-                behaviorHover(context).on('hover', context.ui().sidebar.hover),
                 _selectBehavior,
                 behaviorLasso(context),
                 modeDragNode(context).behavior,
@@ -58,7 +56,6 @@ export function modeBrowse(context) {
 
 
     mode.exit = function() {
-        context.ui().sidebar.hover.cancel();
         _behaviors.forEach(context.uninstall);
 
         if (sidebar) {

@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { vecLength } from '@id-sdk/math';
 
 import { presetManager } from '../presets';
-import { behaviorHover } from './hover';
 import { geoChooseEdge } from '../geo';
 import { utilFastMouse, utilKeybinding, utilRebind } from '../util';
 
@@ -17,11 +16,6 @@ export function behaviorDraw(context) {
     );
 
     var keybinding = utilKeybinding('draw');
-
-    var _hover = behaviorHover(context)
-        .altDisables(true)
-        .ignoreVertex(true)
-        .on('hover', context.ui().sidebar.hover);
 
     var _closeTolerance = 4;
     var _tolerance = 12;
@@ -235,8 +229,6 @@ export function behaviorDraw(context) {
 
 
     function behavior(selection) {
-        context.install(_hover);
-
         _downPointer = null;
 
         keybinding
@@ -265,9 +257,6 @@ export function behaviorDraw(context) {
 
 
     behavior.off = function(selection) {
-        context.ui().sidebar.hover.cancel();
-        context.uninstall(_hover);
-
         selection
             .on('mouseenter.draw', null)
             .on('mouseleave.draw', null)
@@ -281,11 +270,6 @@ export function behaviorDraw(context) {
 
         d3_select(document)
             .call(keybinding.unbind);
-    };
-
-
-    behavior.hover = function() {
-        return _hover;
     };
 
 

@@ -1,6 +1,9 @@
 
 /**
- * AbstractBehavior is the base class from which all behaviors inherit
+ * "Behaviors" are nothing more than bundles of event handlers that we can
+ * enable and disable depending on what the user is doing.
+ *
+ * `AbstractBehavior` is the base class from which all behaviors inherit.
  * It contains enable/disable methods which manage the event handlers for the behavior
  */
 export class AbstractBehavior {

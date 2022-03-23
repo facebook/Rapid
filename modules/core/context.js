@@ -327,7 +327,6 @@ export function coreContext() {
     return context;
   };
 
-  // NOTE: Don't change the name of this until UI v3 is merged
   let _selectedErrorID;
   context.selectedErrorID = function(errorID) {
     if (!arguments.length) return _selectedErrorID;
@@ -337,20 +336,20 @@ export function coreContext() {
 
 
   /* Behaviors */
-  // context.install = (behavior) => context.surface().call(behavior);
-  // context.uninstall = (behavior) => context.surface().call(behavior.off);
   context.install = (behavior) => {
     if (typeof behavior.enable === 'function') {
       behavior.enable();
     }
-  }
+  };
   context.uninstall = (behavior) => {
     if (typeof behavior.disable === 'function') {
       behavior.disable();
     }
-  }
+  };
   // context.install = (behavior) =>  { return; };
   // context.uninstall = (behavior) => { return; };
+  // context.install = (behavior) => context.surface().call(behavior);
+  // context.uninstall = (behavior) => context.surface().call(behavior.off);
 
 
   /* Copy/Paste */

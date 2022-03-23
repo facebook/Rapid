@@ -139,7 +139,6 @@ export function uiOsmoseEditor(context) {
       });
   }
 
-  // NOTE: Don't change method name until UI v3 is merged
   osmoseEditor.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;

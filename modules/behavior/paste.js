@@ -1,10 +1,10 @@
+import { Extent, geomPointInPolygon, vecSubtract } from '@id-sdk/math';
+
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
-import { vecSubtract } from '@id-sdk/math';
-import { geomPointInPolygon } from '@id-sdk/geom';
-import { Extent } from '@id-sdk/extent';
 import { modeMove } from '../modes/move';
 import { uiCmd } from '../ui/cmd';
+
 
 // see also `operationPaste`
 export function behaviorPaste(context) {

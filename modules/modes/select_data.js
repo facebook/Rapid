@@ -2,13 +2,9 @@ import { geoBounds as d3_geoBounds } from 'd3-geo';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
 
-import { behaviorBreathe } from '../behavior/breathe';
-import { behaviorHover } from '../behavior/hover';
+import { t } from '../core/localizer';
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorSelect } from '../behavior/select';
-
-import { t } from '../core/localizer';
-
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -26,8 +22,6 @@ export function modeSelectData(context, selectedDatum) {
     var dataEditor = uiDataEditor(context);
 
     var behaviors = [
-        behaviorBreathe(context),
-        behaviorHover(context),
         behaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
@@ -95,10 +89,6 @@ export function modeSelectData(context, selectedDatum) {
 
         d3_select(document)
             .call(keybinding.unbind);
-
-        context.surface()
-            .selectAll('.layer-mapdata .selected')
-            .classed('selected hover', false);
 
         context.map()
             .on('drawn.select-data', null);

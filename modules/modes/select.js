@@ -7,8 +7,6 @@ import {
 import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
-import { behaviorBreathe } from '../behavior/breathe';
-import { behaviorHover } from '../behavior/hover';
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorPaste } from '../behavior/paste';
 import { behaviorSelect } from '../behavior/select';
@@ -30,7 +28,6 @@ export function modeSelect(context, selectedIDs) {
 
     var keybinding = utilKeybinding('select');
 
-    var _breatheBehavior = behaviorBreathe(context);
     var _modeDragNode = modeDragNode(context);
     var _selectBehavior;
     var _behaviors = [];
@@ -234,8 +231,6 @@ export function modeSelect(context, selectedIDs) {
 
             _behaviors = [
                 behaviorPaste(context),
-                _breatheBehavior,
-                behaviorHover(context).on('hover', context.ui().sidebar.hoverModeSelect),
                 _selectBehavior,
                 behaviorLasso(context),
                 _modeDragNode.behavior,

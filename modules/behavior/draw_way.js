@@ -1,8 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../presets';
 import { t } from '../core/localizer';
@@ -17,10 +14,9 @@ import { osmNode } from '../osm/node';
 import { utilRebind } from '../util/rebind';
 import { utilKeybinding } from '../util';
 
+
 export function behaviorDrawWay(context, wayID, mode, startGraph) {
-
     var dispatch = d3_dispatch('rejectedSelfIntersection');
-
     var behavior = behaviorDraw(context);
 
     // Must be set by `drawWay.nodeIndex` before each install of this behavior.
@@ -39,6 +35,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
     var _didResolveTempEdit = false;
 
+
     function createDrawNode(loc) {
         // don't make the draw node until we actually need it
         _drawNode = osmNode({ loc: loc });
@@ -56,8 +53,8 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
         setActiveElements();
     }
 
-    function removeDrawNode() {
 
+    function removeDrawNode() {
         context.pauseChangeDispatch();
         context.replace(
             function actionDeleteDrawNode(graph) {
@@ -109,7 +106,6 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
     // - `behavior/draw.js`      `click()`
     // - `behavior/draw_way.js`  `move()`
     function move(d3_event, datum) {
-
         var loc = context.map().mouseCoordinates();
 
         if (!_drawNode) createDrawNode(loc);
@@ -156,7 +152,6 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
 
     function isInvalidGeometry(includeDrawNode) {
-
         var testNode = _drawNode;
 
         // we only need to test the single way we're drawing
@@ -186,9 +181,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
 
     function undone() {
-
-        // undoing removed the temp edit
-        _didResolveTempEdit = true;
+        _didResolveTempEdit = true;   // undoing removed the temp edit
 
         context.pauseChangeDispatch();
 
@@ -299,7 +292,6 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
 
     drawWay.off = function(surface) {
-
         if (!_didResolveTempEdit) {
             // Drawing was interrupted unexpectedly.
             // This can happen if the user changes modes,
@@ -335,7 +327,6 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
 
     function attemptAdd(d, loc, doAdd) {
-
         if (_drawNode) {
             // move the node to the final loc in case move wasn't called
             // consistently (e.g. on touch devices)

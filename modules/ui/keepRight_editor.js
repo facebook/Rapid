@@ -199,7 +199,6 @@ export function uiKeepRightEditor(context) {
       });
   }
 
-  // NOTE: Don't change method name until UI v3 is merged
   keepRightEditor.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;

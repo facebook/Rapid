@@ -2,8 +2,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { Extent } from '@id-sdk/extent';
 
-import { behaviorBreathe } from '../behavior/breathe';
-import { behaviorHover } from '../behavior/hover';
 import { behaviorLasso } from '../behavior/lasso';
 import { behaviorSelect } from '../behavior/select';
 
@@ -17,7 +15,7 @@ import { uiKeepRightEditor } from '../ui/keepRight_editor';
 import { uiOsmoseEditor } from '../ui/osmose_editor';
 import { utilKeybinding } from '../util';
 
-// NOTE: Don't change name of this until UI v3 is merged
+
 export function modeSelectError(context, selectedErrorID, selectedErrorService) {
     var mode = {
         id: 'select-error',
@@ -63,8 +61,6 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
 
     var behaviors = [
-        behaviorBreathe(context),
-        behaviorHover(context),
         behaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
@@ -150,10 +146,6 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
         d3_select(document)
             .call(keybinding.unbind);
-
-        context.surface()
-            .selectAll('.qaItem.selected')
-            .classed('selected hover', false);
 
         context.map()
             .on('drawn.select-error', null);

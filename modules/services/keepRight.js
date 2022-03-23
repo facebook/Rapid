@@ -468,7 +468,6 @@ export default {
   },
 
   // Get a QAItem from cache
-  // NOTE: Don't change method name until UI v3 is merged
   getError(id) {
     return _cache.data[id];
   },

@@ -1,14 +1,8 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
-import { behaviorBreathe } from '../behavior/breathe';
-import { behaviorHover } from '../behavior/hover';
-import { behaviorLasso } from '../behavior/lasso';
-import { behaviorSelect } from '../behavior/select';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-
+import { behaviorLasso } from '../behavior/lasso';
+import { behaviorSelect } from '../behavior/select';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -34,8 +28,6 @@ export function modeSelectNote(context, selectedNoteID) {
         });
 
     var _behaviors = [
-        behaviorBreathe(context),
-        behaviorHover(context),
         behaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
@@ -131,10 +123,6 @@ export function modeSelectNote(context, selectedNoteID) {
 
         d3_select(document)
             .call(_keybinding.unbind);
-
-        context.surface()
-            .selectAll('.layer-notes .selected')
-            .classed('selected hover', false);
 
         context.map()
             .on('drawn.select', null);
