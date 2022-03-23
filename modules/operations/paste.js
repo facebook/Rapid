@@ -1,20 +1,19 @@
+import { Extent, vecSubtract } from '@id-sdk/math';
+
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
 import { modeSelect } from '../modes/select';
-import { vecSubtract } from '@id-sdk/math';
-import { Extent } from '@id-sdk/extent';
 
 import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
 import { utilDisplayLabel } from '../util/util';
 
-// see also `behaviorPaste`
-export function operationPaste(context) {
 
+// see also `BehaviorPaste`
+export function operationPaste(context) {
     var _pastePoint;
 
     var operation = function() {
-
         if (!_pastePoint) return;
 
         var oldIDs = context.copyIDs();

@@ -8,7 +8,7 @@ import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { behaviorLasso } from '../behavior/lasso';
-import { behaviorPaste } from '../behavior/paste';
+import { BehaviorPaste } from '../behavior/BehaviorPaste';
 import { behaviorSelect } from '../behavior/select';
 import { geoChooseEdge } from '../geo';
 import { modeBrowse } from './browse';
@@ -230,7 +230,7 @@ export function modeSelect(context, selectedIDs) {
             if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
 
             _behaviors = [
-                behaviorPaste(context),
+                new BehaviorPaste(context),
                 _selectBehavior,
                 behaviorLasso(context),
                 _modeDragNode.behavior,

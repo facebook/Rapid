@@ -1,7 +1,7 @@
 import { t } from '../core/localizer';
 
 import { behaviorLasso } from '../behavior/lasso';
-import { behaviorPaste } from '../behavior/paste';
+import { BehaviorPaste } from '../behavior/BehaviorPaste';
 import { behaviorSelect } from '../behavior/select';
 
 import { modeDragNode } from './drag_node';
@@ -33,7 +33,7 @@ export function modeBrowse(context) {
         if (!_behaviors.length) {
             if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
             _behaviors = [
-                behaviorPaste(context),
+                new BehaviorPaste(context),
                 _selectBehavior,
                 behaviorLasso(context),
                 modeDragNode(context).behavior,
