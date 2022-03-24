@@ -90,7 +90,7 @@
         "no-useless-call": "warn",
         "no-useless-computed-key": "warn",
         "no-useless-concat": "warn",
-        "no-useless-constructor": "warn",
+        "no-useless-constructor": "off",
         "no-useless-escape": "off",
         "no-useless-rename": "warn",
         "no-void": "error",

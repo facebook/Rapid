@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { behaviorDraw } from '../behavior/draw';
+import { BehaviorDraw } from '../behavior/BehaviorDraw';
 import { modeBrowse } from './browse';
 import { modeSelectNote } from './select_note';
 import { osmNote } from '../osm';
@@ -14,7 +14,7 @@ export function modeAddNote(context) {
         key: t('modes.add_note.key')
     };
 
-    var behavior = behaviorDraw(context)
+    var behavior = new BehaviorDraw(context)
         .on('click', add)
         .on('cancel', cancel)
         .on('finish', cancel);

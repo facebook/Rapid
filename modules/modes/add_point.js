@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { behaviorDraw } from '../behavior/draw';
+import { BehaviorDraw } from '../behavior/BehaviorDraw';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmNode } from '../osm/node';
@@ -12,7 +12,7 @@ export function modeAddPoint(context, mode) {
 
     mode.id = 'add-point';
 
-    var behavior = behaviorDraw(context)
+    var behavior = new BehaviorDraw(context)
         .on('click', add)
         .on('clickWay', addWay)
         .on('clickNode', addNode)

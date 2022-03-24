@@ -19,43 +19,6 @@ export class BehaviorKeyOperation extends AbstractBehavior {
 
 
   /**
-   * _onKeypress
-   * Handles the keypress event
-   */
-  _onKeypress(e) {
-    const context = this._context;
-    const operation = this._operation;
-
-    if (operation.availableForKeypress && !operation.availableForKeypress()) return;  // copy paste detail 😕
-
-    e.preventDefault();
-
-    const disabled = operation.disabled();
-
-    if (disabled) {
-      context.ui().flash
-        .duration(4000)
-        .iconName(`#iD-operation-${operation.id}`)
-        .iconClass('operation disabled')
-        .label(operation.tooltip)();
-
-    } else {
-      context.ui().flash
-        .duration(2000)
-        .iconName(`#iD-operation-${operation.id}`)
-        .iconClass('operation')
-        .label(operation.annotation() || operation.title)();
-
-      if (operation.point) {
-        operation.point(null);  // copy-paste detail 😕
-      }
-
-      operation();  // do the thing
-    }
-  }
-
-
-  /**
    * destroy
    * Every behavior should have a destroy function
    * to free all the resources and refrences held by the behavior
@@ -96,6 +59,43 @@ export class BehaviorKeyOperation extends AbstractBehavior {
     if (this._enabled && operation.keys) {
       context.keybinding().off(operation.keys);
       this._enabled = false;
+    }
+  }
+
+
+  /**
+   * _onKeypress
+   * Handles the keypress event
+   */
+  _onKeypress(e) {
+    const context = this._context;
+    const operation = this._operation;
+
+    if (operation.availableForKeypress && !operation.availableForKeypress()) return;  // copy paste detail 😕
+
+    e.preventDefault();
+
+    const disabled = operation.disabled();
+
+    if (disabled) {
+      context.ui().flash
+        .duration(4000)
+        .iconName(`#iD-operation-${operation.id}`)
+        .iconClass('operation disabled')
+        .label(operation.tooltip)();
+
+    } else {
+      context.ui().flash
+        .duration(2000)
+        .iconName(`#iD-operation-${operation.id}`)
+        .iconClass('operation')
+        .label(operation.annotation() || operation.title)();
+
+      if (operation.point) {
+        operation.point(null);  // copy-paste detail 😕
+      }
+
+      operation();  // do the thing
     }
   }
 

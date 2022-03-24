@@ -6,7 +6,7 @@ import { t } from '../core/localizer';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-import { behaviorDraw } from './draw';
+import { BehaviorDraw } from './BehaviorDraw';
 import { geoChooseEdge, geoHasSelfIntersections } from '../geo';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
@@ -17,7 +17,7 @@ import { utilKeybinding } from '../util';
 
 export function behaviorDrawWay(context, wayID, mode, startGraph) {
     var dispatch = d3_dispatch('rejectedSelfIntersection');
-    var behavior = behaviorDraw(context);
+    var behavior = new BehaviorDraw(context);
 
     // Must be set by `drawWay.nodeIndex` before each install of this behavior.
     var _nodeIndex;
