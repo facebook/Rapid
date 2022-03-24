@@ -35,6 +35,8 @@ export function uiGeolocate(context) {
         } else {
             _locating.close();
             _layer.enabled = false;
+            // force a redraw to hide the layer.
+            context.map().immediateRedraw();
             updateButtonState();
         }
     }
@@ -43,6 +45,7 @@ export function uiGeolocate(context) {
         context.enter(modeBrowse(context));
 
         var map = context.map();
+        _layer.geoLocation = _position.coords;
         _layer.enabled = true;
         updateButtonState();
         map.centerZoomEase(_extent.center(), Math.min(20, map.extentZoom(_extent)));
