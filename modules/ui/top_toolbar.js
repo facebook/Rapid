@@ -12,7 +12,7 @@ export function uiTopToolbar(context) {
   const sidebarToggle = uiToolSidebarToggle(context);
   const rapidFeatures = uiToolRapidFeatures(context);
   const modes = uiToolDrawModes(context);
-  const notes = uiToolNotes(context);
+  // const notes = uiToolNotes(context);
   const undoRedo = uiToolUndoRedo(context);
   const save = uiToolSave(context);
   const downloadOsc = uiToolDownloadOsc(context);

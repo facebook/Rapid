@@ -77,7 +77,7 @@ export class PixiRenderer {
     this.scene = new PixiScene(context);
     this.layers = new PixiLayers(context, this.scene, this.dispatch);
 
-    this.eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.scene);
+    // this.eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.scene);
   }
 
 

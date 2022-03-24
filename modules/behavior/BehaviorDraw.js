@@ -4,12 +4,14 @@ import { vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { presetManager } from '../presets';
+import { osmEntity } from '../osm/entity';
 import { geoChooseEdge } from '../geo';
-import { utilFastMouse, utilKeybinding, utilRebind } from '../util';
+import { utilKeybinding, utilRebind } from '../util';
 
 
 const CLOSETOLERANCE = 4;
 const TOLERANCE = 12;
+
 
 
 /**
@@ -36,6 +38,13 @@ export class BehaviorDraw extends AbstractBehavior {
     this._lastMouseEvent = null;
     this._lastPointerUpEvent = null;
     this._downData = null;
+
+    this.pointerenterFn = () => this._mouseOverSurface = true;
+    this.pointerleaveFn = () => this._mouseOverSurface = false;
+    this.pointerdownFn = (e) => this._pointerdown(e);
+    this.pointermoveFn = (e) => this._pointermove(e);
+    this.pointerupFn = (e) => this._pointerup(e);
+    this.pointercancelFn = (e) => this._pointercancel(e);
   }
 
 
@@ -46,6 +55,9 @@ export class BehaviorDraw extends AbstractBehavior {
   enable() {
     this._downData = null;
 
+    if (!this._context.pixi) return;
+    const stage = this._context.pixi.stage;
+
     this._keybinding
       .on('⌫', (e) => this._backspace(e))
       .on('⌦', (e) => this._del(e))
@@ -54,16 +66,24 @@ export class BehaviorDraw extends AbstractBehavior {
       .on('space', (e) => this._space(e))
       .on('⌥space', (e) => this._space(e));
 
-    this._context.surface()
-      .on('mouseenter.draw', () => this._mouseOverSurface = true)
-      .on('mouseleave.draw', () => this._mouseOverSurface = false)
-      .on('pointerdown.draw', (e) => this._pointerdown(e))
-      .on('pointermove.draw', (e) => this._pointermove(e))
-      .on('pointerup.draw', (e) => this._pointerup(e));
+    stage
+      .on('pointerenter', this.pointerenterFn)
+      .on('pointerleave', this.pointerleaveFn)
+      .on('pointerdown', this.pointerdownFn)
+      .on('pointermove', this.pointermoveFn)
+      .on('pointerup', this.pointerupFn)
+      .on('pointercancel', this.pointercancelFn)
 
-    d3_select(window)
-      // .on('pointerup.draw', (e) => this._pointerup(e), true)
-      .on('pointercancel.draw', (e) => this._pointercancel(e), true);
+//    this._context.surface()
+//      .on('mouseenter.draw', () => this._mouseOverSurface = true)
+//      .on('mouseleave.draw', () => this._mouseOverSurface = false)
+//      .on('pointerdown.draw', (e) => this._pointerdown(e))
+//      .on('pointermove.draw', (e) => this._pointermove(e))
+//      .on('pointerup.draw', (e) => this._pointerup(e));
+//
+//    d3_select(window)
+//      .on('pointerup.draw', (e) => this._pointerup(e), true)
+//      .on('pointercancel.draw', (e) => this._pointercancel(e), true);
 
     d3_select(document)
       .call(this._keybinding);
@@ -79,16 +99,27 @@ export class BehaviorDraw extends AbstractBehavior {
   disable() {
     if (!this._enabled) return;
 
-    this._context.surface()
-      .on('mouseenter.draw', null)
-      .on('mouseleave.draw', null)
-      .on('pointerdown.draw', null)
-      .on('pointermove.draw', null);
+    if (!this._context.pixi) return;
+    const stage = this._context.pixi.stage;
 
-    d3_select(window)
-      .on('pointerup.draw', null)
-      .on('pointercancel.draw', null);
-      // note: keyup.space-block, click.draw-block should remain
+    stage
+      .off('pointerenter', this.pointerenterFn)
+      .off('pointerleave', this.pointerleaveFn)
+      .off('pointerdown', this.pointerdownFn)
+      .off('pointermove', this.pointermoveFn)
+      .off('pointerup', this.pointerupFn)
+      .off('pointercancel', this.pointercancelFn)
+
+//    this._context.surface()
+//      .on('mouseenter.draw', null)
+//      .on('mouseleave.draw', null)
+//      .on('pointerdown.draw', null)
+//      .on('pointermove.draw', null);
+//
+//    d3_select(window)
+//      .on('pointerup.draw', null)
+//      .on('pointercancel.draw', null);
+//      // note: keyup.space-block, click.draw-block should remain
 
     d3_select(document)
       .call(this._keybinding.unbind);
@@ -97,29 +128,56 @@ export class BehaviorDraw extends AbstractBehavior {
   }
 
 
-  /**
-   * _datum
-   * gets the datum (__data__) associated with this event
-   *  related code
-   *  - `mode/drag_node.js` `datum()`
-   */
-  _datum(e) {
-// some of this won't work yet
-    const mode = this._context.mode();
-    const isNoteMode = mode && mode.id.includes('note');
-    if (e.altKey || isNoteMode) return {};
+//  /**
+//   * _datum
+//   * gets the datum (__data__) associated with this event
+//   *  related code
+//   *  - `mode/drag_node.js` `datum()`
+//   */
+//  _datum(e) {
+//// some of this won't work yet
+//    const mode = this._context.mode();
+//    const isNoteMode = mode && mode.id.includes('note');
+//    if (e.altKey || isNoteMode) return {};
+//
+//    let element;
+//    if (e.type === 'keydown') {
+//      element = this._lastMouseEvent && this._lastMouseEvent.target;
+//    } else {
+//      element = e.target;
+//    }
+//
+//    // When drawing, snap only to touch targets..
+//    // (this excludes area fills and active drawing elements)
+//    let d = element.__data__;
+//    return (d && d.properties && d.properties.target) ? d : {};
+//  }
 
-    let element;
-    if (e.type === 'keydown') {
-      element = this._lastMouseEvent && this._lastMouseEvent.target;
-    } else {
-      element = e.target;
+
+  /**
+   * _getTarget
+   * returns the target displayobject and data to use for this event
+   */
+  _getTarget(e) {
+    if (!e.target) return null;
+
+    let obj = e.target;
+    let data = obj && obj.__data__;
+
+    // Data is here, use this target
+    if (data) {
+      return { obj: obj, data: data };
     }
 
-    // When drawing, snap only to touch targets..
-    // (this excludes area fills and active drawing elements)
-    let d = element.__data__;
-    return (d && d.properties && d.properties.target) ? d : {};
+    // No data in target, look in parent
+    obj = e.target.parent;
+    data = obj && obj.__data__;
+    if (data) {
+      return { obj: obj, data: data };
+    }
+
+    // No data there either, just use the original target
+    return { obj: e.target, data: null };
   }
 
 
@@ -129,10 +187,19 @@ export class BehaviorDraw extends AbstractBehavior {
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
    */
   _pointerdown(e) {
+
+const target = this._getTarget(e);
+const dObj = target.obj;
+console.log(`pointerdown ${dObj.name}`);
+
     if (this._downData) return;  // pointer is already down
 
     const pointerId = e.pointerId || 'mouse';
-    let pointerLocGetter = utilFastMouse(e.target);
+    // let pointerLocGetter = utilFastMouse(e.target);
+
+    const pointerLocGetter = (e) => {
+      return [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY];
+    }
 
     this._downData = {
       id: pointerId,
@@ -141,7 +208,7 @@ export class BehaviorDraw extends AbstractBehavior {
       downLoc: pointerLocGetter(e)
     };
 
-    this._dispatch.call('down', this, e, this._datum(e));
+    this._dispatch.call('down', this, e, target.data);
   }
 
 
@@ -151,6 +218,11 @@ export class BehaviorDraw extends AbstractBehavior {
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
    */
   _pointerup(e) {
+
+const target = this._getTarget(e);
+const dObj = target.obj;
+console.log(`pointerup ${dObj.name}`);
+
     const pointerId = e.pointerId || 'mouse';
     if (!this._downData || this._downData.id !== pointerId) return;  // not down, or different pointer
 
@@ -189,6 +261,10 @@ export class BehaviorDraw extends AbstractBehavior {
   _pointermove(e) {
     const pointerId = e.pointerId || 'mouse';
 
+const target = this._getTarget(e);
+const dObj = target.obj;
+console.log(`pointermove ${dObj.name}`);
+
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
     if (this._downData && this._downData.id === pointerId && !this._downData.isCancelled) {
       const p2 = this._downData.pointerLocGetter(e);
@@ -211,7 +287,7 @@ export class BehaviorDraw extends AbstractBehavior {
     }
 
     this._lastMouseEvent = e;
-    this._dispatch.call('move', this, e, this._datum(e));
+    this._dispatch.call('move', this, e, target.data);
   }
 
 
@@ -222,6 +298,10 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   _pointercancel(e) {
     const pointerId = e.pointerId || 'mouse';
+
+const target = this._getTarget(e);
+const dObj = target.obj;
+console.log(`pointercancel ${dObj.name}`);
 
     if (this._downData && this._downData.id === pointerId) {
       if (!this._downData.isCancelled) {
@@ -285,11 +365,18 @@ export class BehaviorDraw extends AbstractBehavior {
    * @param  `coord`  Map location in screen space where the click occurred
    */
   _click(e, coord) {
+
+const target = this._getTarget(e);
+const dObj = target.obj;
+const datum = target.data;
+const entity = datum instanceof osmEntity && datum;
+console.log(`click ${dObj.name}`);
+
     const context = this._context;
     const graph = context.graph();
     const projection = context.projection;
-    const d = this._datum(e);
-    const target = d && d.properties && d.properties.entity;
+    // const d = this._datum(e);
+    // const target = d && d.properties && d.properties.entity;
     const mode = context.mode();
 
     function allowsVertex(d) {
@@ -297,22 +384,25 @@ export class BehaviorDraw extends AbstractBehavior {
     }
 
     // Snap to a node
-    if (target && target.type === 'node' && allowsVertex(target)) {
-      this._dispatch.call('clickNode', this, target, d);
+    if (entity && entity.type === 'node' && allowsVertex(entity)) {
+      // this._dispatch.call('clickNode', this, datum, target.data);
+      this._dispatch.call('clickNode', this, entity);
       return;
 
     // Snap to a way
-    } else if (target && target.type === 'way' && (mode.id !== 'add-point' || mode.preset.matchGeometry('vertex'))) {
-      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, context.activeID());
+    } else if (entity && entity.type === 'way' && (mode.id !== 'add-point' || mode.preset.matchGeometry('vertex'))) {
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, context.activeID());
       if (choice) {
-        const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
-        this._dispatch.call('clickWay', this, choice.loc, edge, d);
+        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
+        // this._dispatch.call('clickWay', this, choice.loc, edge, target.data);
+        this._dispatch.call('clickWay', this, choice.loc, edge);
         return;
       }
 
-    } else if (mode.id !== 'add-point' || mode.preset.matchGeometry('point')) {
+    } else { // else if (mode.id !== 'add-point' || mode.preset.matchGeometry('point')) {
       const loc = projection.invert(coord);
-      this._dispatch.call('click', this, loc, d);
+      // this._dispatch.call('click', this, loc, target.data);
+      this._dispatch.call('click', this, loc);
     }
   }
 
