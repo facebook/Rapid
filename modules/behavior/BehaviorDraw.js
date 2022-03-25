@@ -3,14 +3,13 @@ import { select as d3_select } from 'd3-selection';
 import { vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { presetManager } from '../presets';
 import { osmEntity } from '../osm/entity';
 import { geoChooseEdge } from '../geo';
 import { utilKeybinding, utilRebind } from '../util';
 
 
-const CLOSETOLERANCE = 4;
-const TOLERANCE = 12;
+const NEAR_TOLERANCE = 4;
+const FAR_TOLERANCE = 12;
 
 
 
@@ -30,17 +29,18 @@ export class BehaviorDraw extends AbstractBehavior {
     this._dispatch = d3_dispatch('move', 'down', 'downcancel', 'click', 'clickWay', 'clickNode', 'undo', 'cancel', 'finish');
     utilRebind(this, this._dispatch, 'on');
 
-    this._keybinding = utilKeybinding('draw');
-    this._disableSpace = false;
-    this._mouseOverSurface = true;
+    this._spaceClickDisabled = false;
+    this._pointerOverSurface = true;
 
     this._lastSpaceCoord = null;
-    this._lastMouseEvent = null;
-    this._lastPointerUpEvent = null;
+    this._lastPointerMove = null;
     this._downData = null;
 
-    this.pointerenterFn = () => this._mouseOverSurface = true;
-    this.pointerleaveFn = () => this._mouseOverSurface = false;
+    this._keybinding = utilKeybinding('draw');
+
+    // We keep references to the handlers so we can add them in enable() and remove them later in disable()
+    this.pointerenterFn = () => this._pointerOverSurface = true;
+    this.pointerleaveFn = () => this._pointerOverSurface = false;
     this.pointerdownFn = (e) => this._pointerdown(e);
     this.pointermoveFn = (e) => this._pointermove(e);
     this.pointerupFn = (e) => this._pointerup(e);
@@ -60,11 +60,11 @@ export class BehaviorDraw extends AbstractBehavior {
 
     this._keybinding
       .on('⌫', (e) => this._backspace(e))
-      .on('⌦', (e) => this._del(e))
-      .on('⎋', (e) => this._ret(e))
-      .on('↩', (e) => this._ret(e))
-      .on('space', (e) => this._space(e))
-      .on('⌥space', (e) => this._space(e));
+      .on('⌦', (e) => this._delete(e))
+      .on('⎋', (e) => this._return(e))
+      .on('↩', (e) => this._return(e))
+      .on('space', (e) => this._spacebar(e))
+      .on('⌥space', (e) => this._spacebar(e));
 
     stage
       .on('pointerenter', this.pointerenterFn)
@@ -72,18 +72,8 @@ export class BehaviorDraw extends AbstractBehavior {
       .on('pointerdown', this.pointerdownFn)
       .on('pointermove', this.pointermoveFn)
       .on('pointerup', this.pointerupFn)
-      .on('pointercancel', this.pointercancelFn)
-
-//    this._context.surface()
-//      .on('mouseenter.draw', () => this._mouseOverSurface = true)
-//      .on('mouseleave.draw', () => this._mouseOverSurface = false)
-//      .on('pointerdown.draw', (e) => this._pointerdown(e))
-//      .on('pointermove.draw', (e) => this._pointermove(e))
-//      .on('pointerup.draw', (e) => this._pointerup(e));
-//
-//    d3_select(window)
-//      .on('pointerup.draw', (e) => this._pointerup(e), true)
-//      .on('pointercancel.draw', (e) => this._pointercancel(e), true);
+      .on('pointerupoutside', this.pointercancelFn)  // if up outide, just cancel
+      .on('pointercancel', this.pointercancelFn);
 
     d3_select(document)
       .call(this._keybinding);
@@ -108,18 +98,8 @@ export class BehaviorDraw extends AbstractBehavior {
       .off('pointerdown', this.pointerdownFn)
       .off('pointermove', this.pointermoveFn)
       .off('pointerup', this.pointerupFn)
-      .off('pointercancel', this.pointercancelFn)
-
-//    this._context.surface()
-//      .on('mouseenter.draw', null)
-//      .on('mouseleave.draw', null)
-//      .on('pointerdown.draw', null)
-//      .on('pointermove.draw', null);
-//
-//    d3_select(window)
-//      .on('pointerup.draw', null)
-//      .on('pointercancel.draw', null);
-//      // note: keyup.space-block, click.draw-block should remain
+      .off('pointerupoutside', this.pointercancelFn)  // if up outide, just cancel
+      .off('pointercancel', this.pointercancelFn);
 
     d3_select(document)
       .call(this._keybinding.unbind);
@@ -128,56 +108,49 @@ export class BehaviorDraw extends AbstractBehavior {
   }
 
 
-//  /**
-//   * _datum
-//   * gets the datum (__data__) associated with this event
-//   *  related code
-//   *  - `mode/drag_node.js` `datum()`
-//   */
-//  _datum(e) {
-//// some of this won't work yet
-//    const mode = this._context.mode();
-//    const isNoteMode = mode && mode.id.includes('note');
-//    if (e.altKey || isNoteMode) return {};
-//
-//    let element;
-//    if (e.type === 'keydown') {
-//      element = this._lastMouseEvent && this._lastMouseEvent.target;
-//    } else {
-//      element = e.target;
-//    }
-//
-//    // When drawing, snap only to touch targets..
-//    // (this excludes area fills and active drawing elements)
-//    let d = element.__data__;
-//    return (d && d.properties && d.properties.target) ? d : {};
-//  }
-
-
   /**
-   * _getTarget
-   * returns the target displayobject and data to use for this event
+   * _getEventData
+   * Returns an object containing the important details about this Pixi event
+   * @param  `e`    A Pixi InteractionEvent
    */
-  _getTarget(e) {
-    if (!e.target) return null;
+  _getEventData(e) {
+    const result = {
+      id: e.data.originalEvent.pointerId || 'mouse',
+      event: e,
+      origEvent: e.data.originalEvent,
+      coord: [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY],
+      time: e.data.originalEvent.timeStamp,
+      isCancelled: false,
+      target: null,
+      data: null
+    };
 
-    let obj = e.target;
-    let data = obj && obj.__data__;
+    if (!e.target) {   // e.target is the displayObject that triggered this event
+      return result;
+    }
+
+    let target = e.target;
+    let data = target && target.__data__;
 
     // Data is here, use this target
     if (data) {
-      return { obj: obj, data: data };
+      result.target = target;
+      result.data = data;
+      return result;
     }
 
     // No data in target, look in parent
-    obj = e.target.parent;
-    data = obj && obj.__data__;
+    target = e.target.parent;
+    data = target && target.__data__;
     if (data) {
-      return { obj: obj, data: data };
+      result.target = target;
+      result.data = data;
+      return result;
     }
 
     // No data there either, just use the original target
-    return { obj: e.target, data: null };
+    result.target = e.target;
+    return result;
   }
 
 
@@ -185,30 +158,17 @@ export class BehaviorDraw extends AbstractBehavior {
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * @param  `e`    A Pixi InteractionEvent
    */
   _pointerdown(e) {
+    if (this._downData) return;  // a pointer is already down
 
-const target = this._getTarget(e);
-const dObj = target.obj;
-console.log(`pointerdown ${dObj.name}`);
+    const down = this._getEventData(e);
+    // const name = (down.target && down.target.name) || 'no target';
+    // console.log(`pointerdown ${name}`);
 
-    if (this._downData) return;  // pointer is already down
-
-    const pointerId = e.pointerId || 'mouse';
-    // let pointerLocGetter = utilFastMouse(e.target);
-
-    const pointerLocGetter = (e) => {
-      return [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY];
-    }
-
-    this._downData = {
-      id: pointerId,
-      pointerLocGetter: pointerLocGetter,
-      downTime: +new Date(),
-      downLoc: pointerLocGetter(e)
-    };
-
-    this._dispatch.call('down', this, e, target.data);
+    this._downData = down;
+    this._dispatch.call('down', this, e, down);
   }
 
 
@@ -216,39 +176,35 @@ console.log(`pointerdown ${dObj.name}`);
    * _pointerup
    * Handler for pointerup events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * @param  `e`    A Pixi InteractionEvent
    */
   _pointerup(e) {
+    const up = this._getEventData(e);
+    const down = this._downData;
+    // const name = (up.target && up.target.name) || 'no target';
+    // console.log(`pointerup ${name}`);
 
-const target = this._getTarget(e);
-const dObj = target.obj;
-console.log(`pointerup ${dObj.name}`);
+    if (!down || down.id !== up.id) return;  // not down, or different pointer
 
-    const pointerId = e.pointerId || 'mouse';
-    if (!this._downData || this._downData.id !== pointerId) return;  // not down, or different pointer
-
-    const downData = this._downData;
     this._downData = null;
-    this._lastPointerUpEvent = e;
 
-    if (downData.isCancelled) return;
+    if (down.isCancelled) return;   // was cancelled already by moving too much
 
     const context = this._context;
-    const t2 = +new Date();
-    const p2 = downData.pointerLocGetter(e);
-    const dist = vecLength(downData.downLoc, p2);
+    const dist = vecLength(down.coord, up.coord);
 
-    if (dist < CLOSETOLERANCE || (dist < TOLERANCE && (t2 - downData.downTime) < 500)) {
+    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
       // Prevent a quick second click
-      d3_select(window).on('click.draw-block', () => e.stopPropagation(), true);
-
       context.map().dblclickZoomEnable(false);
+      d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
 
       window.setTimeout(() => {
         context.map().dblclickZoomEnable(true);
         d3_select(window).on('click.draw-block', null);
       }, 500);
 
-      this._click(e, p2);
+      // trigger a click
+      this._click(up);
     }
   }
 
@@ -257,37 +213,29 @@ console.log(`pointerup ${dObj.name}`);
    * _pointermove
    * Handler for pointermove events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * @param  `e`    A Pixi InteractionEvent
    */
   _pointermove(e) {
-    const pointerId = e.pointerId || 'mouse';
+    const move = this._getEventData(e);
+    const down = this._downData;
+    // const name = (move.target && move.target.name) || 'no target';
+    // console.log(`pointermove ${name}`);
 
-const target = this._getTarget(e);
-const dObj = target.obj;
-console.log(`pointermove ${dObj.name}`);
+    // Remember these in case we need them later if the user presses the spacebar
+    this._lastPointerMove = e;
+
+    if (!down || down.id !== move.id) return;  // not down, or different pointer
 
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
-    if (this._downData && this._downData.id === pointerId && !this._downData.isCancelled) {
-      const p2 = this._downData.pointerLocGetter(e);
-      const dist = vecLength(this._downData.downLoc, p2);
-      if (dist >= CLOSETOLERANCE) {
-        this._downData.isCancelled = true;
+    if (!down.isCancelled) {
+      const dist = vecLength(down.coord, move.coord);
+      if (dist >= NEAR_TOLERANCE) {
+        down.isCancelled = true;
         this._dispatch.call('downcancel', this);
       }
+    } else {
+      this._dispatch.call('move', this, move);
     }
-
-    if ((e.pointerType && e.pointerType !== 'mouse') || e.buttons || this._downData) return;
-
-    // HACK: Mobile Safari likes to send one or more `mouse` type pointermove
-    // events immediately after non-mouse pointerup events; detect and ignore them.
-    if (this._lastPointerUpEvent &&
-      this._lastPointerUpEvent.pointerType !== 'mouse' &&
-      e.timeStamp - this._lastPointerUpEvent.timeStamp < 100
-    ) {
-      return;
-    }
-
-    this._lastMouseEvent = e;
-    this._dispatch.call('move', this, e, target.data);
   }
 
 
@@ -297,113 +245,103 @@ console.log(`pointermove ${dObj.name}`);
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
    */
   _pointercancel(e) {
-    const pointerId = e.pointerId || 'mouse';
+    const cancel = this._getEventData(e);
+    const down = this._downData;
+    // const name = (cancel.target && cancel.target.name) || 'no target';
+    // console.log(`pointercancel ${name}`);
 
-const target = this._getTarget(e);
-const dObj = target.obj;
-console.log(`pointercancel ${dObj.name}`);
-
-    if (this._downData && this._downData.id === pointerId) {
-      if (!this._downData.isCancelled) {
-        this._dispatch.call('downcancel', this);
-      }
-      this._downData = null;   // throw it away
+    if (down && !down.isCancelled) {
+      this._dispatch.call('downcancel', this);
     }
+
+    // Here we can throw away the down data to prepare for another `pointerdown`.
+    // After pointercancel, there should be no more `pointermove` or `pointerup` events.
+    this._downData = null;
   }
 
 
-
   /**
-   * _space
-   * Handler for keypress events of the spacebar
+   * _spacebar
+   * Handler for `keydown` events of the spacebar
+   * We use these to simulate clicks
    */
-  _space(e) {
+  _spacebar(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    const context = this._context;
+    // For this we will instead use the last pointermove event
+    e = this._lastPointerMove;
+    if (!e || !this._pointerOverSurface) return;
+    const move = this._getEventData(e);
 
-    const currSpaceCoord = context.map().mouse();
-    if (this._disableSpace && this._lastSpaceCoord) {
-      const dist = vecLength(this._lastSpaceCoord, currSpaceCoord);
-      if (dist > TOLERANCE) {
-        this._disableSpace = false;
+    // User must move pointer or lift spacebar to allow another spacebar click
+    if (this._spaceClickDisabled && this._lastSpaceCoord) {
+      const dist = vecLength(this._lastSpaceCoord, move.coord);
+      if (dist > FAR_TOLERANCE) {
+        this._spaceClickDisabled = false;
       }
     }
 
-    if (this._disableSpace || !this._mouseOverSurface || !this._lastMouseEvent) return;
+    if (!this._spaceClickDisabled) {
+      this._spaceClickDisabled = true;
+      this._lastSpaceCoord = move.coord;
 
-    // user must move mouse or release space bar to allow another click
-    this._lastSpaceCoord = currSpaceCoord;
-    this._disableSpace = true;
+      d3_select(window).on('keyup.space-block', (e) => {
+        if (e.code !== 'Space') return;  // only spacebar
+        e.preventDefault();
+        e.stopPropagation();
+        this._spaceClickDisabled = false;
+        d3_select(window).on('keyup.space-block', null);
+      });
 
-    d3_select(window).on('keyup.space-block', () => {
-      e.preventDefault();
-      e.stopPropagation();
-      this._disableSpace = false;
-      d3_select(window).on('keyup.space-block', null);
-    });
-
-    // get the current mouse position
-    // or the map center if the mouse has never entered the map
-    const coord = currSpaceCoord || context.projection.project(context.map().center());
-    this._click(e, coord);
+      // simulate a click
+      this._click(move);
+    }
   }
 
 
   /**
    * _click
    * Once we have determined that the user has clicked, this is where we handle that click.
-   * Note this is not a `click` event handler - we get into here from `pointerup` or `space`.
+   * Note this is not a true `click` event handler - we get into here from `_pointerup` or `_spacebar`.
    *
    * related code
    * - `mode/drag_node.js`     `doMove()`
    * - `behavior/draw.js`      `click()`
    * - `behavior/draw_way.js`  `move()`
    *
-   * @param  `e`      The Event
-   * @param  `coord`  Map location in screen space where the click occurred
+   * @param  `eventData`  event data
    */
-  _click(e, coord) {
-
-const target = this._getTarget(e);
-const dObj = target.obj;
-const datum = target.data;
-const entity = datum instanceof osmEntity && datum;
-console.log(`click ${dObj.name}`);
+  _click(eventData) {
+    const coord = eventData.coord;
+    const datum = eventData.data;
+    const entity = datum instanceof osmEntity && datum;
+    // const name = (eventData.target && eventData.target.name) || 'no target';
+    // console.log(`click ${name}`);
 
     const context = this._context;
-    const graph = context.graph();
     const projection = context.projection;
-    // const d = this._datum(e);
-    // const target = d && d.properties && d.properties.entity;
-    const mode = context.mode();
-
-    function allowsVertex(d) {
-      return d.geometry(graph) === 'vertex' || presetManager.allowsVertex(d, graph);
-    }
 
     // Snap to a node
-    if (entity && entity.type === 'node' && allowsVertex(entity)) {
-      // this._dispatch.call('clickNode', this, datum, target.data);
-      this._dispatch.call('clickNode', this, entity);
+    if (entity && entity.type === 'node') {
+      this._dispatch.call('clickNode', this, entity.loc, entity);
       return;
+    }
 
     // Snap to a way
-    } else if (entity && entity.type === 'way' && (mode.id !== 'add-point' || mode.preset.matchGeometry('vertex'))) {
+    if (entity && entity.type === 'way') {
+      const graph = context.graph();
       const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, context.activeID());
       if (choice) {
         const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
-        // this._dispatch.call('clickWay', this, choice.loc, edge, target.data);
         this._dispatch.call('clickWay', this, choice.loc, edge);
         return;
       }
-
-    } else { // else if (mode.id !== 'add-point' || mode.preset.matchGeometry('point')) {
-      const loc = projection.invert(coord);
-      // this._dispatch.call('click', this, loc, target.data);
-      this._dispatch.call('click', this, loc);
     }
+
+    // Just a click on the map
+    const loc = projection.invert(coord);
+    this._dispatch.call('click', this, loc);
   }
 
 
@@ -417,18 +355,18 @@ console.log(`click ${dObj.name}`);
 
 
   /**
-   * _del
+   * _delete
    */
-  _del(e) {
+  _delete(e) {
     e.preventDefault();
     this._dispatch.call('cancel');
   }
 
 
   /**
-   * _ret
+   * _return
    */
-  _ret(e) {
+  _return(e) {
     e.preventDefault();
     this._dispatch.call('finish');
   }

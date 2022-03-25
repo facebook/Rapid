@@ -59,7 +59,7 @@ export function modeAddLine(context, mode) {
     }
 
 
-    function startFromNode(node) {
+    function startFromNode(loc, node) {
         var startGraph = context.graph();
         var way = osmWay({ tags: defaultTags });
 

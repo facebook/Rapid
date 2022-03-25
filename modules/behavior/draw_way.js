@@ -376,7 +376,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
 
     // Connect the way to an existing node
-    drawWay.addNode = function(node, d) {
+    drawWay.addNode = function(loc, node, d) {
 
         // finish drawing if the mapper targets the prior node
         if (node.id === _headNodeID ||

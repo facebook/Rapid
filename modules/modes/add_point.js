@@ -53,7 +53,7 @@ export function modeAddPoint(context, mode) {
     }
 
 
-    function addNode(node) {
+    function addNode(loc, node) {
         if (Object.keys(defaultTags).length === 0) {
             enterSelectMode(node);
             return;
