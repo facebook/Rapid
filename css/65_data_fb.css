@@ -7,18 +7,18 @@
 }
 
 /* Lines */
-.layer-ai-features path.stroke {
+.layer-ai-features path.line.stroke {
     stroke: currentColor;
     stroke-width: 5;
     fill: none;
 }
-.layer-ai-features path.casing {
+.layer-ai-features path.line.casing {
     stroke: #111;
     stroke-width: 7;
     stroke-opacity: 0;
     fill: none;
 }
-.layer-ai-features path.shadow {
+.layer-ai-features path.line.shadow {
     pointer-events: stroke;
     stroke: #fff;
     stroke-width: 20;
@@ -116,5 +116,3 @@
 .ideditor .fill-wireframe  .layer-ai-features .point {
     display : inline !important;
 }
-
-
