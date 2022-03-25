@@ -8,7 +8,8 @@ import Protobuf from 'pbf';
 import RBush from 'rbush';
 
 import { utilRebind } from '../util';
-import { osmTagSuggestingArea } from '../osm';
+import { osmNode } from '../osm/node';
+import { coreGraph, coreTree } from '../core';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -32,10 +33,26 @@ let _mlyShowFeatureDetections = false;
 let _mlyShowSignDetections = false;
 let _mlyViewer;
 let _mlyViewerFilter = ['all'];
+let _datasets = {}
 
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
+    // var ds = _datasets[datasetID];
+    // var graph, tree, cache;
+    // if (ds) {
+    //     graph = ds.graph;
+    //     tree = ds.tree;
+    //     cache = ds.cache;
+    // } else {
+    //     // as tile requests arrive, setup the resources needed to hold the results
+    //     graph = coreGraph();
+    //     tree = coreTree(graph);
+    //     cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+    //     ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+    //     _datasets[datasetID] = ds;
+    // }
+
     // determine the needed tiles to cover the view
     const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
     const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(proj).tiles;
@@ -240,6 +257,13 @@ export default {
         }
 
         this.event = utilRebind(this, dispatch, 'on');
+
+        var datasetID = 'rapidMapFeatures';
+        var graph = coreGraph();
+        var tree = coreTree(graph);
+        var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+        _datasets[datasetID] = ds;
     },
 
     // Reset cache and state
@@ -258,6 +282,15 @@ export default {
         };
 
         _mlyActiveImage = null;
+
+        Object.values(_datasets).forEach(function(ds) {
+            if (ds.cache.inflight) {
+                Object.values(ds.cache.inflight).forEach(abortRequest);
+            }
+            ds.graph = coreGraph();
+            ds.tree = coreTree(ds.graph);
+            ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        });
     },
 
     // Get visible images
@@ -275,24 +308,52 @@ export default {
     // Get visible map (point) features
     mapFeatures: function(projection) {
         const limit = 5;
-        const ret = searchLimited(limit, projection, _mlyCache.points.rtree);
-        return ret;
+        return searchLimited(limit, projection, _mlyCache.points.rtree);
     },
     // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
     filteredMapFeatures: function(projection) {
         const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
         const mapFeatures = this.mapFeatures(projection);
         const rawData = mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
-        rawData.map(each => {
-            each.__fbid__ = -each.id
-            each.__datasetid__ = "rapidMapFeatures-conflated"
-            each.tags = {
-                tag: 'sample tag',
-                rapid: 'hello world'
+        const data = this.rapidData(rawData);
+        var datasetID = 'rapidMapFeatures';
+        var ds = _datasets[datasetID];
+        var graph, tree, cache;
+        if (ds) {
+            graph = ds.graph;
+            tree = ds.tree;
+            cache = ds.cache;
+        } else {
+            // as tile requests arrive, setup the resources needed to hold the results
+            graph = coreGraph();
+            tree = coreTree(graph);
+            cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+            ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+            _datasets[datasetID] = ds;
+        }
+        graph.rebase(data, [graph], true);
+        return data;
+    },
+
+    // Convert to osmNode
+    rapidData: function(data) {
+        return data.map(function(d) {
+            var meta = {
+                __fbid__ : -d.id,
+                __datasetid__ : "rapidMapFeatures",
+                __service__: "mapillary",
+                tags : {
+                    tag: 'sample tag',
+                    rapid: 'hello world'
+                }
             }
-            return each
-        });
-        return rawData;
+            return Object.assign(osmNode(d), meta);
+        })
+    },
+
+    graph: function (datasetID) {
+        var ds = _datasets[datasetID];
+        return ds && ds.graph;
     },
 
     // Get cached image by id

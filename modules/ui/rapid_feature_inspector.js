@@ -52,7 +52,22 @@ export function uiRapidFeatureInspector(context, keybinding) {
       id: _datum.id,
       origid: _datum.__origid__
     };
-    const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+    let service = null;
+    switch(_datum.__service__) {
+      case 'esri':
+        service = services.esriData;
+        break;
+      case 'fbml':
+        service = services.fbMLRoads;
+        break;
+      case 'mapillary':
+        service = services.mapillary;
+        break;
+      default:
+        service = services.fbMLRoads;
+    }
+    // const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+    console.log(service)
     const graph = service.graph(_datum.__datasetid__);
     console.log(graph)
     const sourceTag = _datum.tags && _datum.tags.source;

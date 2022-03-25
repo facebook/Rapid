@@ -71,7 +71,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
   function onHistoryChange(/* difference */) {
     const annotation = context.history().peekAnnotation();
     if (!wasRapidEdit(annotation)) return;
-
+    console.log("hello")
     _actioned.add(annotation.id);
     if (_enabled) { dispatch.call('change'); }  // redraw
   }
