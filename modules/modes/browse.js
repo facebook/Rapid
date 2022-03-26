@@ -2,7 +2,7 @@ import { t } from '../core/localizer';
 
 import { behaviorLasso } from '../behavior/lasso';
 import { BehaviorPaste } from '../behavior/BehaviorPaste';
-import { behaviorSelect } from '../behavior/select';
+import { BehaviorSelect } from '../behavior/BehaviorSelect';
 
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -31,7 +31,7 @@ export function modeBrowse(context) {
 
     mode.enter = function() {
         if (!_behaviors.length) {
-            if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
+            if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
             _behaviors = [
                 new BehaviorPaste(context),
                 _selectBehavior,

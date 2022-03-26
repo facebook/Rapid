@@ -9,7 +9,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { behaviorLasso } from '../behavior/lasso';
 import { BehaviorPaste } from '../behavior/BehaviorPaste';
-import { behaviorSelect } from '../behavior/select';
+import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
@@ -227,7 +227,7 @@ export function modeSelect(context, selectedIDs) {
         loadOperations();
 
         if (!_behaviors.length) {
-            if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
+            if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
 
             _behaviors = [
                 new BehaviorPaste(context),

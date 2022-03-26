@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { behaviorLasso } from '../behavior/lasso';
-import { behaviorSelect } from '../behavior/select';
+import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -28,7 +28,7 @@ export function modeSelectNote(context, selectedNoteID) {
         });
 
     var _behaviors = [
-        behaviorSelect(context),
+        new BehaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
         modeDragNote(context).behavior

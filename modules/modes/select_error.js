@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
 
 import { behaviorLasso } from '../behavior/lasso';
-import { behaviorSelect } from '../behavior/select';
+import { BehaviorSelect } from '../behavior/BehaviorSelect';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
@@ -60,7 +60,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
 
     var behaviors = [
-        behaviorSelect(context),
+        new BehaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
         modeDragNote(context).behavior

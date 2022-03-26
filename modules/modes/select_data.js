@@ -4,7 +4,7 @@ import { Extent } from '@id-sdk/math';
 
 import { t } from '../core/localizer';
 import { behaviorLasso } from '../behavior/lasso';
-import { behaviorSelect } from '../behavior/select';
+import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -22,7 +22,7 @@ export function modeSelectData(context, selectedDatum) {
     var dataEditor = uiDataEditor(context);
 
     var behaviors = [
-        behaviorSelect(context),
+        new BehaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
         modeDragNote(context).behavior

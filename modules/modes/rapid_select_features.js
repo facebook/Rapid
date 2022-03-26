@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { behaviorLasso, behaviorSelect } from '../behavior';
+import { behaviorLasso, BehaviorSelect } from '../behavior';
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
 import { services } from '../services';
 import { uiRapidFeatureInspector } from '../ui';
@@ -20,7 +20,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
   const rapidGraph = service.graph(selectedDatum.__datasetid__);
 
   let behaviors = [
-    behaviorSelect(context),
+    new BehaviorSelect(context),
     behaviorLasso(context),
     modeDragNode(context).behavior,
     modeDragNote(context).behavior
