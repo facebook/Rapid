@@ -7,10 +7,8 @@ import { osmEntity } from '../osm/entity';
 import { geoChooseEdge } from '../geo';
 import { utilKeybinding, utilRebind } from '../util';
 
-
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
-
 
 
 /**
@@ -21,7 +19,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`    Global shared context for iD
+   * @param  `context`  Global shared context for iD
    */
   constructor(context) {
     super(context);
@@ -30,21 +28,16 @@ export class BehaviorDraw extends AbstractBehavior {
     utilRebind(this, this._dispatch, 'on');
 
     this._spaceClickDisabled = false;
-    this._pointerOverSurface = true;
-
     this._lastSpaceCoord = null;
-    this._lastPointerMove = null;
     this._downData = null;
 
-    this._keybinding = utilKeybinding('draw');
+    this._keybinding = utilKeybinding('drawbehavior');
 
-    // We keep references to the handlers so we can add them in enable() and remove them later in disable()
-    this.pointerenterFn = () => this._pointerOverSurface = true;
-    this.pointerleaveFn = () => this._pointerOverSurface = false;
-    this.pointerdownFn = (e) => this._pointerdown(e);
-    this.pointermoveFn = (e) => this._pointermove(e);
-    this.pointerupFn = (e) => this._pointerup(e);
-    this.pointercancelFn = (e) => this._pointercancel(e);
+    // Make sure the event handlers have `this` bound correctly
+    this._pointerdown = this._pointerdown.bind(this);
+    this._pointermove = this._pointermove.bind(this);
+    this._pointerup = this._pointerup.bind(this);
+    this._pointercancel = this._pointercancel.bind(this);
   }
 
 
@@ -67,13 +60,11 @@ export class BehaviorDraw extends AbstractBehavior {
       .on('⌥space', (e) => this._spacebar(e));
 
     stage
-      .on('pointerenter', this.pointerenterFn)
-      .on('pointerleave', this.pointerleaveFn)
-      .on('pointerdown', this.pointerdownFn)
-      .on('pointermove', this.pointermoveFn)
-      .on('pointerup', this.pointerupFn)
-      .on('pointerupoutside', this.pointercancelFn)  // if up outide, just cancel
-      .on('pointercancel', this.pointercancelFn);
+      .on('pointerdown', this._pointerdown)
+      .on('pointermove', this._pointermove)
+      .on('pointerup', this._pointerup)
+      .on('pointerupoutside', this._pointercancel)  // if up outide, just cancel
+      .on('pointercancel', this._pointercancel);
 
     d3_select(document)
       .call(this._keybinding);
@@ -93,13 +84,11 @@ export class BehaviorDraw extends AbstractBehavior {
     const stage = this._context.pixi.stage;
 
     stage
-      .off('pointerenter', this.pointerenterFn)
-      .off('pointerleave', this.pointerleaveFn)
-      .off('pointerdown', this.pointerdownFn)
-      .off('pointermove', this.pointermoveFn)
-      .off('pointerup', this.pointerupFn)
-      .off('pointerupoutside', this.pointercancelFn)  // if up outide, just cancel
-      .off('pointercancel', this.pointercancelFn);
+      .off('pointerdown', this._pointerdown)
+      .off('pointermove', this._pointermove)
+      .off('pointerup', this._pointerup)
+      .off('pointerupoutside', this._pointercancel)  // if up outide, just cancel
+      .off('pointercancel', this._pointercancel);
 
     d3_select(document)
       .call(this._keybinding.unbind);
@@ -111,7 +100,7 @@ export class BehaviorDraw extends AbstractBehavior {
   /**
    * _getEventData
    * Returns an object containing the important details about this Pixi event
-   * @param  `e`    A Pixi InteractionEvent
+   * @param  `e`  A Pixi InteractionEvent
    */
   _getEventData(e) {
     const result = {
@@ -158,7 +147,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
-   * @param  `e`    A Pixi InteractionEvent
+   * @param  `e`  A Pixi InteractionEvent
    */
   _pointerdown(e) {
     if (this._downData) return;  // a pointer is already down
@@ -176,7 +165,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * _pointerup
    * Handler for pointerup events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
-   * @param  `e`    A Pixi InteractionEvent
+   * @param  `e`  A Pixi InteractionEvent
    */
   _pointerup(e) {
     const up = this._getEventData(e);
@@ -213,16 +202,13 @@ export class BehaviorDraw extends AbstractBehavior {
    * _pointermove
    * Handler for pointermove events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
-   * @param  `e`    A Pixi InteractionEvent
+   * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
     const move = this._getEventData(e);
     const down = this._downData;
     // const name = (move.target && move.target.name) || 'no target';
     // console.log(`pointermove ${name}`);
-
-    // Remember these in case we need them later if the user presses the spacebar
-    this._lastPointerMove = e;
 
     if (!down || down.id !== move.id) return;  // not down, or different pointer
 
@@ -243,6 +229,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * _pointercancel
    * Handler for pointercancel events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * @param  `e`  A Pixi InteractionEvent
    */
   _pointercancel(e) {
     const cancel = this._getEventData(e);
@@ -264,19 +251,24 @@ export class BehaviorDraw extends AbstractBehavior {
    * _spacebar
    * Handler for `keydown` events of the spacebar
    * We use these to simulate clicks
+   * @param  `e`  A d3 keydown event
    */
   _spacebar(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    // For this we will instead use the last pointermove event
-    e = this._lastPointerMove;
-    if (!e || !this._pointerOverSurface) return;
-    const move = this._getEventData(e);
+    // For spacebar clicks we will instead use the last pointer event
+    // Get these from Pixi's interaction manager
+    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    const pointerEvent = interactionManager.mouse;
+    if (!pointerEvent || !pointerOverRenderer) return;
+
+    const pointer = this._getEventData({ data: pointerEvent });
 
     // User must move pointer or lift spacebar to allow another spacebar click
     if (this._spaceClickDisabled && this._lastSpaceCoord) {
-      const dist = vecLength(this._lastSpaceCoord, move.coord);
+      const dist = vecLength(this._lastSpaceCoord, pointer.coord);
       if (dist > FAR_TOLERANCE) {
         this._spaceClickDisabled = false;
       }
@@ -284,7 +276,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
     if (!this._spaceClickDisabled) {
       this._spaceClickDisabled = true;
-      this._lastSpaceCoord = move.coord;
+      this._lastSpaceCoord = pointer.coord;
 
       d3_select(window).on('keyup.space-block', (e) => {
         if (e.code !== 'Space') return;  // only spacebar
@@ -295,7 +287,7 @@ export class BehaviorDraw extends AbstractBehavior {
       });
 
       // simulate a click
-      this._click(move);
+      this._click(pointer);
     }
   }
 
@@ -347,6 +339,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * _backspace
+   * @param  `e`  A d3 keydown event
    */
   _backspace(e) {
     e.preventDefault();
@@ -356,6 +349,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * _delete
+   * @param  `e`  A d3 keydown event
    */
   _delete(e) {
     e.preventDefault();
@@ -365,6 +359,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * _return
+   * @param  `e`  A d3 keydown event
    */
   _return(e) {
     e.preventDefault();
