@@ -268,8 +268,8 @@ export function modeSelect(context, selectedIDs) {
         context.map()
             .on('drawn.select', selectElements);
 
-        context.map().doubleUpHandler()
-            .on('doubleUp.modeSelect', didDoubleUp);
+//        context.map().doubleUpHandler()
+//            .on('doubleUp.modeSelect', didDoubleUp);
 
 
         selectElements();
@@ -283,32 +283,32 @@ export function modeSelect(context, selectedIDs) {
         }
 
 
-        function didDoubleUp(d3_event, loc) {
-            var target = d3_select(d3_event.target);
-
-            var datum = target.datum();
-            var entity = datum && datum.properties && datum.properties.entity;
-            if (!entity) return;
-
-            if (entity instanceof osmWay && target.classed('target')) {
-                var choice = geoChooseEdge(context.graph().childNodes(entity), loc, context.projection);
-                var prev = entity.nodes[choice.index - 1];
-                var next = entity.nodes[choice.index];
-
-                context.perform(
-                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
-                    t('operations.add.annotation.vertex')
-                );
-                context.validator().validate();
-
-            } else if (entity.type === 'midpoint') {
-                context.perform(
-                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
-                    t('operations.add.annotation.vertex')
-                );
-                context.validator().validate();
-            }
-        }
+//        function didDoubleUp(d3_event, loc) {
+//            var target = d3_select(d3_event.target);
+//
+//            var datum = target.datum();
+//            var entity = datum && datum.properties && datum.properties.entity;
+//            if (!entity) return;
+//
+//            if (entity instanceof osmWay && target.classed('target')) {
+//                var choice = geoChooseEdge(context.graph().childNodes(entity), loc, context.projection);
+//                var prev = entity.nodes[choice.index - 1];
+//                var next = entity.nodes[choice.index];
+//
+//                context.perform(
+//                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
+//                    t('operations.add.annotation.vertex')
+//                );
+//                context.validator().validate();
+//
+//            } else if (entity.type === 'midpoint') {
+//                context.perform(
+//                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
+//                    t('operations.add.annotation.vertex')
+//                );
+//                context.validator().validate();
+//            }
+//        }
 
 
         function selectElements() {

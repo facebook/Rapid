@@ -1,10 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
-import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
 import _throttle from 'lodash-es/throttle';
+import _debounce from 'lodash-es/debounce';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
 
@@ -49,39 +50,94 @@ export function rendererMap(context) {
   let _transformLast;
   let _isTransformed = false;
   let _getMouseCoords;
-  let _preDragTransform;
+
+  // let _preDragTransform;
   // whether a pointerdown event started the zoom
-  let _pointerDown = false;
+//  let _pointerDown = false;
 
   // whether a sub-feature of the map is currently being dragged around. We should stop zooming/panning if so.
-  let _dragging = false;
+  // let _dragging = false;
 
-  // use pointer event interaction if supported; fallback to touch/mouse events in d3-zoom
-  const _zoomerPannerFunction = 'PointerEvent' in window ? utilZoomPan : d3_zoom;
-
-
-  const _zoomerPanner = _zoomerPannerFunction()
+  const _zoomPanHandler = utilZoomPan()
     .scaleExtent([MINK, MAXK])
-    .interpolate(d3_interpolate)
+    // .interpolate(d3_interpolate)
     // .filter(zoomEventFilter)
-    .on('zoom.map', zoomPan)
-    .on('start.map', d3_event => {
-      _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
-        (d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown'));
-    })
-    .on('end.map', () => {
-      _pointerDown = false;
-    });
+    .on('zoom.map', zoomPan);
+//    .on('start.map', d3_event => {
+//      _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
+//        (d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown'));
+//    })
+//    .on('end.map', () => {
+//      _pointerDown = false;
+//    });
+
+  // const _doubleTapHandler = utilDoubleUp();
 
 
-  const _doubleUpHandler = utilDoubleUp();
+  /**
+   *  map
+   */
+  function map(selection) {
+    _selection = selection;
+
+    // Selection here contains a D3 selection for the `main-map` div that the map gets added to
+    // It's an absolutely positioned div that takes up as much space as it's allowed to.
+    selection
+      // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+      .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
+      .call(_zoomPanHandler);
+      // .call(_doubleTapHandler)
+      // .call(_zoomPanHandler.transform, projection.transform())
+      // .on('dblclick.zoom', null); // override d3-zoom dblclick handling
+
+    // The supersurface is a wrapper div that we temporarily transform as the user zooms and pans.
+    // This allows us to defer actual rendering until the browser has more time to do it.
+    // At regular intervals we reset this root transform and actually redraw the map.
+    map.supersurface = supersurface = selection.append('div')
+      .attr('class', 'supersurface')
+      .call(utilSetTransform, 0, 0);
+
+    // Content beneath the supersurface may be transformed and will need to rerender sometimes.
+    // This includes the background tile layer, the overlay tile layer, and the Pixi WebGL canvas.
+    let pixiContainer = map.supersurface
+      .append('div')
+      .attr('class', 'layer pixi-data')
+      .style('z-index', '3');   // above background and overlay
+
+    _renderer = new PixiRenderer(context, pixiContainer.node());
+
+    // Historically `surface` was the root of the SVG DOM - Now it's the Pixi WebGL canvas.
+    // Things that will not work anymore:
+    //  - d3 selecting surface's child stuff
+    //  - css classing surface's child stuff
+    //  - listening to events on the surface
+    map.surface = surface = pixiContainer.selectAll('canvas');
+
+//     surface
+//       .call(_doubleTapHandler);
+//        .on('pointerdown.zoom', d3_event => {
+//          if (d3_event.button === 2) {
+//            d3_event.stopPropagation();
+//          }
+//        }, true)
+//        .on('pointerup.zoom', d3_event => {
+//          if (resetTransform()) {
+//            map.immediateRedraw();
+//          }
+//        })
+
+      map.dimensions(utilGetDimensions(selection));
 
 
-    function map(selection) {
-      _selection = selection;
+      //
+      // Setup events that cause the map to redraw
+      //
 
       context
         .on('change.map', map.immediateRedraw);
+
+      // context.features()
+      //   .on('redraw.map', map.immediateRedraw);
 
       const osm = context.connection();
       if (osm) {
@@ -115,58 +171,12 @@ export function rendererMap(context) {
       context.background()
         .on('change.map', map.immediateRedraw);
 
-      // context.features()
-      //   .on('redraw.map', map.immediateRedraw);
-
-      selection
-        // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-        .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
-        .call(_zoomerPanner)
-        .call(_zoomerPanner.transform, projection.transform())
-        .on('dblclick.zoom', null); // override d3-zoom dblclick handling
-
-      map.supersurface = supersurface = selection.append('div')
-        .attr('class', 'supersurface')
-        .call(utilSetTransform, 0, 0);
-
-      ///////////////////////
-      // BEGIN PIXI
-      //
-
-      // Add pixi as child of supersurface
-      let pixiContainer = map.supersurface
-        .append('div')
-        .attr('class', 'layer pixi-data')
-        .style('z-index', '3');
-
-      _renderer = new PixiRenderer(context, pixiContainer.node());
-
-      const layers = _renderer.layers;
-      layers
+      _renderer.layers
         .on('change.map', function() {
           context.background().updateImagery();
           map.immediateRedraw();
-        });
+      });
 
-      // END PIXI
-      ///////////////////////
-
-      map.surface = surface = pixiContainer.selectAll('canvas');
-
-//      surface
-//        .call(_doubleUpHandler)
-//        .on('pointerdown.zoom', d3_event => {
-//          if (d3_event.button === 2) {
-//            d3_event.stopPropagation();
-//          }
-//        }, true)
-//        .on('pointerup.zoom', d3_event => {
-//          if (resetTransform()) {
-//            map.immediateRedraw();
-//          }
-//        })
-
-        map.dimensions(utilGetDimensions(selection));
     }
 
 
@@ -213,43 +223,58 @@ export function rendererMap(context) {
       /* noop */
     };
 
-    // var deferredRedraw = _throttle(redraw, 750);
-    map.deferredRedraw = _throttle(redraw, 200);
+    // Throttled redraw - Redraw no more than once every n milliseconds.
+    const throttledRedraw = _throttle(redraw, 200);
 
+    // Debounced redraw - Wait n milliseconds after these calls stop to draw again.
+    const debouncedRedraw = _debounce(redraw, 100);
+
+    // Our deferral strategy is to use debounce if we are zooming and throttle otherwise
+    map.deferredRedraw = function() {
+      if (_isTransformed && _transformLast.k !== _transformStart.k) {
+        throttledRedraw.cancel();
+        debouncedRedraw();
+      } else {
+        throttledRedraw();
+      }
+    };
+
+    // Immediate redraw
     map.immediateRedraw = function() {
-      map.deferredRedraw.cancel();
+      throttledRedraw.cancel();
+      debouncedRedraw.cancel();
       redraw();
     };
 
 
-    function gestureChange(d3_event) {
-      // Remap Safari gesture events to wheel events - #5492
-      // We want these disabled most places, but enabled for zoom/unzoom on map surface
-      // https://developer.mozilla.org/en-US/docs/Web/API/GestureEvent
-      const e = d3_event;
-      e.preventDefault();
-
-      const props = {
-        deltaMode: 0,    // dummy values to ignore in zoomPan
-        deltaY: 1,       // dummy values to ignore in zoomPan
-        clientX: e.clientX,
-        clientY: e.clientY,
-        screenX: e.screenX,
-        screenY: e.screenY,
-        x: e.x,
-        y: e.y
-      };
-
-      let e2 = new WheelEvent('wheel', props);
-      e2._scale = e.scale;          // preserve the original scale
-      e2._rotation = e.rotation;    // preserve the original rotation
-
-      _selection.node().dispatchEvent(e2);
-    }
+//    function gestureChange(d3_event) {
+//      // Remap Safari gesture events to wheel events - #5492
+//      // We want these disabled most places, but enabled for zoom/unzoom on map surface
+//      // https://developer.mozilla.org/en-US/docs/Web/API/GestureEvent
+//      const e = d3_event;
+//      e.preventDefault();
+//
+//      const props = {
+//        deltaMode: 0,    // dummy values to ignore in zoomPan
+//        deltaY: 1,       // dummy values to ignore in zoomPan
+//        clientX: e.clientX,
+//        clientY: e.clientY,
+//        screenX: e.screenX,
+//        screenY: e.screenY,
+//        x: e.x,
+//        y: e.y
+//      };
+//
+//      let e2 = new WheelEvent('wheel', props);
+//      e2._scale = e.scale;          // preserve the original scale
+//      e2._rotation = e.rotation;    // preserve the original rotation
+//
+//      _selection.node().dispatchEvent(e2);
+//    }
 
 
   function zoomPan(event, key, transform) {
-    if (_dragging) return;
+    // if (_dragging) return;
 
         var source = event && event.sourceEvent || event;
         var eventTransform = transform || (event && event.transform);
@@ -262,8 +287,8 @@ export function rendererMap(context) {
         // or 2-finger pinch/zoom gestures, the transform may need adjustment.
         if (source && source.type === 'wheel') {
 
-            // assume that the gesture is already handled by pointer events
-            if (_pointerDown) return;
+//            // assume that the gesture is already handled by pointer events
+//            if (_pointerDown) return;
 
             var detected = utilDetect();
             var dX = source.deltaX;
@@ -364,9 +389,9 @@ export function rendererMap(context) {
                 y = y2;
                 k = k2;
                 eventTransform = d3_zoomIdentity.translate(x2, y2).scale(k2);
-                if (_zoomerPanner._transform) {
+                if (_zoomPanHandler._transform) {
                     // utilZoomPan interface
-                    _zoomerPanner._transform(eventTransform);
+                    _zoomPanHandler._transform(eventTransform);
                 } else {
                     // d3_zoom interface
                     _selection.node().__zoom = eventTransform;
@@ -401,6 +426,7 @@ export function rendererMap(context) {
 
         utilSetTransform(supersurface, tX, tY, scale);
         map.deferredRedraw();
+
         dispatch.call('move', this, map);
 
         function isInteger(val) {
@@ -453,37 +479,6 @@ export function rendererMap(context) {
     };
 
 
-    map.dblclickZoomEnable = function(val) {
-      if (!arguments.length) return _dblClickZoomEnabled;
-      _dblClickZoomEnabled = val;
-      return map;
-    };
-
-
-    map.handleDragStart = () => {
-      _dragging = true;
-      _preDragTransform = _zoomerPanner._transform();
-    };
-
-
-    map.handleDragEnd = () => {
-      _dragging = false;
-      _zoomerPanner._transform(_preDragTransform);
-    };
-
-
-    map.redrawEnable = function(val) {
-      if (!arguments.length) return _redrawEnabled;
-      _redrawEnabled = val;
-      return map;
-    };
-
-
-    map.isTransformed = function() {
-      return _isTransformed;
-    };
-
-
     function setTransform(t2, duration, force) {
       const t = projection.transform();
       if (!force && t2.k === t.k && t2.x === t.x && t2.y === t.y) return false;
@@ -493,11 +488,11 @@ export function rendererMap(context) {
           .transition()
           .duration(duration)
           .on('start', () => map.startEase())
-          .call(_zoomerPanner.transform, d3_zoomIdentity.translate(t2.x, t2.y).scale(t2.k));
+          .call(_zoomPanHandler.transform, d3_zoomIdentity.translate(t2.x, t2.y).scale(t2.k));
       } else {
         projection.transform(t2);
         _transformStart = t2;
-        _selection.call(_zoomerPanner.transform, _transformStart);
+        _selection.call(_zoomPanHandler.transform, _transformStart);
       }
 
       return true;
@@ -535,11 +530,11 @@ export function rendererMap(context) {
           .transition()
           .duration(duration)
           .on('start', () => map.startEase())
-          .call(_zoomerPanner.transform, d3_zoomIdentity.translate(t[0], t[1]).scale(k));
+          .call(_zoomPanHandler.transform, d3_zoomIdentity.translate(t[0], t[1]).scale(k));
       } else {
         projection.translate(t);
         _transformStart = projection.transform();
-        _selection.call(_zoomerPanner.transform, _transformStart);
+        _selection.call(_zoomPanHandler.transform, _transformStart);
         dispatch.call('move', this, map);
         map.immediateRedraw();
       }
@@ -803,9 +798,35 @@ export function rendererMap(context) {
       return _renderer;
     };
 
-    map.doubleUpHandler = function() {
-      return _doubleUpHandler;
+    map.dblclickZoomEnable = function(val) {
+      if (!arguments.length) return _dblClickZoomEnabled;
+      _dblClickZoomEnabled = val;
+      return map;
     };
+
+    // map.handleDragStart = () => {
+    //   _dragging = true;
+    //   _preDragTransform = _zoomPanHandler._transform();
+    // };
+
+    // map.handleDragEnd = () => {
+    //   _dragging = false;
+    //   _zoomPanHandler._transform(_preDragTransform);
+    // };
+
+    map.redrawEnable = function(val) {
+      if (!arguments.length) return _redrawEnabled;
+      _redrawEnabled = val;
+      return map;
+    };
+
+//    map.isTransformed = function() {
+//      return _isTransformed;
+//    };
+
+//    map.doubleUpHandler = function() {
+//      return _doubleTapHandler;
+//    };
 
     return utilRebind(map, dispatch, 'on');
 }
