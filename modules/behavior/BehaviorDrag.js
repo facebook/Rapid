@@ -41,7 +41,6 @@ export class BehaviorDrag extends AbstractBehavior {
     this._dispatch = d3_dispatch('start', 'move', 'end');
     utilRebind(this, this._dispatch, 'on');
 
-
     this._origin = null;
     this._selector = '';
     this._targetNode = null;
@@ -67,10 +66,10 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!this._context.pixi) return;
     const stage = this._context.pixi.stage;
 
-    stage
-      .on('pointerdown', this.pointerdownFn)
-      .on('pointermove', this.pointermoveFn)
-      .on('pointerup', this.pointerupFn);
+    // stage
+    //   .on('pointerdown', this.pointerdownFn)
+    //   .on('pointermove', this.pointermoveFn)
+    //   .on('pointerup', this.pointerupFn);
 
 
     this._enabled = true;
@@ -87,10 +86,10 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!this._context.pixi) return;
     const stage = this._context.pixi.stage;
 
-    stage
-      .off('pointerdown', this.pointerdownFn)
-      .off('pointermove', this.pointermoveFn)
-      .off('pointerup', this.pointerupFn);
+    // stage
+    //   .off('pointerdown', this.pointerdownFn)
+    //   .off('pointermove', this.pointermoveFn)
+    //   .off('pointerup', this.pointerupFn);
 
     this._enabled = false;
   }

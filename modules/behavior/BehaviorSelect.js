@@ -330,6 +330,12 @@ export class BehaviorSelect extends AbstractBehavior {
 
 context.ui().closeEditMenu();   //?
 
+// highlight
+const target = eventData.target;
+const renderer = context.map().renderer();
+const ids = datum ? [target.name] : [];
+renderer.highlight(ids);
+
     //
     // What did we click on?
     //
@@ -369,6 +375,7 @@ let newMode = null;
 let alsoSelectId = null;
 const showMenu = false;
 const isMultiselect = false;
+
 
       if (!isMultiselect) {
         // don't change the selection if we're toggling the menu atop a multiselection

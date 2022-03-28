@@ -1,5 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+
 import * as PIXI from 'pixi.js';
+import { GlowFilter } from '@pixi/filter-glow';
 import { Projection } from '@id-sdk/math';
 
 import { PixiEventsHandler } from './PixiEventsHandler';
@@ -26,11 +28,9 @@ export class PixiRenderer {
    * @param parentElement
    */
   constructor(context, parentElement) {
-    this.context = context;
-    this.parentElement = parentElement;
-
+    this._context = context;
+    this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     this._redrawPending = false;
-    this.dispatch = d3_dispatch('change', 'dragstart', 'dragend');
 
     this.pixi = new PIXI.Application({
       antialias: true,
@@ -75,9 +75,15 @@ export class PixiRenderer {
 
     this.pixiProjection = new Projection();
     this.scene = new PixiScene(context);
-    this.layers = new PixiLayers(context, this.scene, this.dispatch);
+    this.layers = new PixiLayers(context, this.scene, this._dispatch);
 
-    // this.eventsHandler = new PixiEventsHandler(context, this.dispatch, this.pixiProjection, this.scene);
+    // this.eventsHandler = new PixiEventsHandler(context, this._dispatch, this.pixiProjection, this.scene);
+
+    // used for highlighting:
+    this._highlightedIDs = new Set();
+    const glow = new GlowFilter({ distance: 15, outerStrength: 2, color: 0xffffff });
+    glow.resolution = 2;
+    this.glow = glow;
   }
 
 
@@ -89,7 +95,7 @@ export class PixiRenderer {
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
-    const context = this.context;
+    const context = this._context;
     const pixiProjection = this.pixiProjection;
     const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
@@ -137,11 +143,11 @@ export class PixiRenderer {
   /**
    * dirtyEntities
    * flag these features as `dirty` if they are in the scene
-   * @param entityIDs - `Array` or `Set` of entity IDs to dirty
+   * @param  featureIDs   `Array` or `Set` of feature IDs to dirty
    */
-  dirtyEntities(entityIDs) {
-    entityIDs.forEach(osmID => {
-      const feature = this.scene.get(osmID);
+  dirtyEntities(featureIDs) {
+    (featureIDs || []).forEach(featureID => {
+      const feature = this.scene.get(featureID);
       if (feature) {
         feature.dirty = true;
       }
@@ -156,6 +162,41 @@ export class PixiRenderer {
    */
   dirtyScene() {
     this.scene._features.forEach(feature => feature.dirty = true);
+  }
+
+
+  /**
+   * highlight
+   * @param  featureIDs   `Array` or `Set` of feature IDs to highlight
+   */
+  highlight(featureIDs) {
+    const toHighlight = new Set([].concat(featureIDs));  // coax ids into a Set
+
+    // remove highlighting where not needed
+    this._highlightedIDs.forEach(featureID => {
+      if (toHighlight.has(featureID)) return;  // it should stay highlighted
+
+      this._highlightedIDs.delete(featureID);
+      const feature = this.scene.get(featureID);
+      if (feature) {
+        feature.displayObject.filters = [];
+        feature.dirty = true;
+      }
+    });
+
+    // add highlighting where needed
+    toHighlight.forEach(featureID => {
+      const feature = this.scene.get(featureID);
+      if (!feature) return;
+
+      if (this._highlightedIDs.has(feature.id)) return;  // it's already highlighted
+
+      this._highlightedIDs.add(feature.id);
+      feature.displayObject.filters = [ this.glow ];
+      feature.dirty = true;
+    });
+
+    this.render();  //  now
   }
 
 }

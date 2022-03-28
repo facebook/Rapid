@@ -31,8 +31,6 @@ function clamp(num, min, max) {
 }
 
 export function rendererMap(context) {
-  let pixiRenderer;
-
   const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
   let projection = context.projection;
   let curtainProjection = context.curtainProjection;
@@ -40,6 +38,8 @@ export function rendererMap(context) {
   let _selection = d3_select(null);
   let supersurface = d3_select(null);
   let surface = d3_select(null);
+
+  let _renderer;
 
   let _dimensions = [1, 1];
   let _dblClickZoomEnabled = true;
@@ -49,7 +49,6 @@ export function rendererMap(context) {
   let _transformLast;
   let _isTransformed = false;
   let _getMouseCoords;
-  let _lastPointerEvent;
   let _preDragTransform;
   // whether a pointerdown event started the zoom
   let _pointerDown = false;
@@ -57,12 +56,8 @@ export function rendererMap(context) {
   // whether a sub-feature of the map is currently being dragged around. We should stop zooming/panning if so.
   let _dragging = false;
 
-  // use pointer events on supported platforms; fallback to mouse events
-  const POINTERPREFIX = 'PointerEvent' in window ? 'pointer' : 'mouse';
-
   // use pointer event interaction if supported; fallback to touch/mouse events in d3-zoom
   const _zoomerPannerFunction = 'PointerEvent' in window ? utilZoomPan : d3_zoom;
-
 
 
   const _zoomerPanner = _zoomerPannerFunction()
@@ -70,7 +65,7 @@ export function rendererMap(context) {
     .interpolate(d3_interpolate)
     // .filter(zoomEventFilter)
     .on('zoom.map', zoomPan)
-    .on('start.map', (d3_event) => {
+    .on('start.map', d3_event => {
       _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
         (d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown'));
     })
@@ -104,13 +99,13 @@ export function rendererMap(context) {
       context.history()
         .on('merge.map', entityIDs => {
           if (entityIDs) {
-            pixiRenderer.dirtyEntities(entityIDs);
+            _renderer.dirtyEntities(entityIDs);
           }
           map.deferredRedraw();
         })
         .on('change.map', difference => {
           if (difference) {
-            pixiRenderer.dirtyEntities(Object.keys(difference.complete()));
+            _renderer.dirtyEntities(Object.keys(difference.complete()));
           }
           map.immediateRedraw();
         })
@@ -144,26 +139,14 @@ export function rendererMap(context) {
         .attr('class', 'layer pixi-data')
         .style('z-index', '3');
 
-      pixiRenderer = new PixiRenderer(context, pixiContainer.node());
+      _renderer = new PixiRenderer(context, pixiContainer.node());
 
-      const layers = pixiRenderer.layers;
+      const layers = _renderer.layers;
       layers
         .on('change.map', function() {
           context.background().updateImagery();
           map.immediateRedraw();
         });
-
-      // layers.on('dragstart.feature', function () {
-      //   map.handleDragStart();
-      // });
-
-      // layers.on('dragend.feature', function () {
-      //   map.handleDragEnd();
-      // });
-
-      layers.on('change.feature', function () {
-        map.immediateRedraw();
-      });
 
       // END PIXI
       ///////////////////////
@@ -172,21 +155,16 @@ export function rendererMap(context) {
 
 //      surface
 //        .call(_doubleUpHandler)
-//        .on(POINTERPREFIX + 'down.zoom', d3_event => {
-//          _lastPointerEvent = d3_event;
+//        .on('pointerdown.zoom', d3_event => {
 //          if (d3_event.button === 2) {
 //            d3_event.stopPropagation();
 //          }
 //        }, true)
-//        .on(POINTERPREFIX + 'up.zoom', d3_event => {
-//          _lastPointerEvent = d3_event;
+//        .on('pointerup.zoom', d3_event => {
 //          if (resetTransform()) {
 //            map.immediateRedraw();
 //          }
 //        })
-//        .on(POINTERPREFIX + 'move.map', d3_event => {
-//          _lastPointerEvent = d3_event;
-//        });
 
         map.dimensions(utilGetDimensions(selection));
     }
@@ -271,7 +249,6 @@ export function rendererMap(context) {
 
 
   function zoomPan(event, key, transform) {
-
     if (_dragging) return;
 
         var source = event && event.sourceEvent || event;
@@ -419,9 +396,6 @@ export function rendererMap(context) {
             });
         }
 
-        if (source) {
-            _lastPointerEvent = event;
-        }
         _isTransformed = true;
         _transformLast = eventTransform;
 
@@ -453,21 +427,16 @@ export function rendererMap(context) {
       resetTransform();
       supersurface.call(context.background());
 
-      if (pixiRenderer) {
-        pixiRenderer.render();
+      if (_renderer) {
+        _renderer.render();
       }
 
       _transformStart = projection.transform();
     }
 
 
-    map.lastPointerEvent = function() {
-      return _lastPointerEvent;
-    };
-
-
     map.mouse = function(d3_event) {
-      let event = d3_event || _lastPointerEvent;
+      let event = d3_event;
       if (event) {
         let s;
         while ((s = event.sourceEvent)) { event = s; }
@@ -722,7 +691,7 @@ export function rendererMap(context) {
 
 
     map.startEase = function() {
-      utilBindOnce(surface, POINTERPREFIX + 'down.ease', () => map.cancelEase());
+      utilBindOnce(surface, 'pointerdown.ease', () => map.cancelEase());
       return map;
     };
 
@@ -827,7 +796,11 @@ export function rendererMap(context) {
 
 
     map.layers = function() {
-      return pixiRenderer && pixiRenderer.layers;
+      return _renderer && _renderer.layers;
+    };
+
+    map.renderer = function() {
+      return _renderer;
     };
 
     map.doubleUpHandler = function() {
