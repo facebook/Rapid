@@ -81,7 +81,7 @@ export class PixiRenderer {
 
     // used for highlighting:
     this._highlightedIDs = new Set();
-    const glow = new GlowFilter({ distance: 15, outerStrength: 2, color: 0xffffff });
+    const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
     glow.resolution = 2;
     this.glow = glow;
   }
