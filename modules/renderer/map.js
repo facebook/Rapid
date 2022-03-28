@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
-import { zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
 import _throttle from 'lodash-es/throttle';
@@ -58,7 +58,7 @@ export function rendererMap(context) {
   // whether a sub-feature of the map is currently being dragged around. We should stop zooming/panning if so.
   // let _dragging = false;
 
-  const _zoomPanHandler = utilZoomPan()
+  const _zoomPanHandler = d3_zoom()    //utilZoomPan()
     .scaleExtent([MINK, MAXK])
     // .interpolate(d3_interpolate)
     // .filter(zoomEventFilter)
@@ -73,7 +73,6 @@ export function rendererMap(context) {
 
   // const _doubleTapHandler = utilDoubleUp();
 
-
   /**
    *  map
    */
@@ -83,10 +82,12 @@ export function rendererMap(context) {
     // Selection here contains a D3 selection for the `main-map` div that the map gets added to
     // It's an absolutely positioned div that takes up as much space as it's allowed to.
     selection
-      // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-      .on('wheel.map mousewheel.map', d3_event => d3_event.preventDefault())
+      // Suppress the native right-click context menu
+      .on('contextmenu', e => e.preventDefault())
+      // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – #5552
+      .on('wheel.map mousewheel.map', e => e.preventDefault())
       .call(_zoomPanHandler);
-      // .call(_doubleTapHandler)
+      // .call(_doubleTapHandler);
       // .call(_zoomPanHandler.transform, projection.transform())
       // .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 
@@ -126,58 +127,77 @@ export function rendererMap(context) {
 //          }
 //        })
 
-      map.dimensions(utilGetDimensions(selection));
+    map.dimensions(utilGetDimensions(selection));
 
 
-      //
-      // Setup events that cause the map to redraw
-      //
+//
+//    _doubleTapHandler
+//      .on('doubleUp.map', (d3_event, p0) => {
+//        if (!_dblClickZoomEnabled) return;
+//
+////      // don't zoom if targeting something other than the map itself
+////      if (typeof d3_event.target.__data__ === 'object' &&
+////          // or area fills
+////          !d3_select(d3_event.target).classed('fill')) return;
+//
+//        const zoomOut = d3_event.shiftKey;
+//        let t = projection.transform();
+//        let p1 = t.invert(p0);
+//        t = t.scale(zoomOut ? 0.5 : 2);
+//        t.x = p0[0] - p1[0] * t.k;
+//        t.y = p0[1] - p1[1] * t.k;
+//        map.transformEase(t);
+//      });
 
-      context
-        .on('change.map', map.immediateRedraw);
+    //
+    // Setup events that cause the map to redraw
+    //
 
-      // context.features()
-      //   .on('redraw.map', map.immediateRedraw);
+    context
+      .on('change.map', map.immediateRedraw);
 
-      const osm = context.connection();
-      if (osm) {
-        osm.on('change.map', map.immediateRedraw);
-      }
+    // context.features()
+    //   .on('redraw.map', map.immediateRedraw);
 
-      function didUndoOrRedo(targetTransform) {
-        const mode = context.mode().id;
-        if (mode !== 'browse' && mode !== 'select') return;
-        if (targetTransform) {
-          map.transformEase(targetTransform);
-        }
-      }
-
-      context.history()
-        .on('merge.map', entityIDs => {
-          if (entityIDs) {
-            _renderer.dirtyEntities(entityIDs);
-          }
-          map.deferredRedraw();
-        })
-        .on('change.map', difference => {
-          if (difference) {
-            _renderer.dirtyEntities(Object.keys(difference.complete()));
-          }
-          map.immediateRedraw();
-        })
-        .on('undone.map', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
-        .on('redone.map', (stack) => didUndoOrRedo(stack.transform));
-
-      context.background()
-        .on('change.map', map.immediateRedraw);
-
-      _renderer.layers
-        .on('change.map', function() {
-          context.background().updateImagery();
-          map.immediateRedraw();
-      });
-
+    const osm = context.connection();
+    if (osm) {
+      osm.on('change.map', map.immediateRedraw);
     }
+
+    function didUndoOrRedo(targetTransform) {
+      const mode = context.mode().id;
+      if (mode !== 'browse' && mode !== 'select') return;
+      if (targetTransform) {
+        map.transformEase(targetTransform);
+      }
+    }
+
+    context.history()
+      .on('merge.map', entityIDs => {
+        if (entityIDs) {
+          _renderer.dirtyEntities(entityIDs);
+        }
+        map.deferredRedraw();
+      })
+      .on('change.map', difference => {
+        if (difference) {
+          _renderer.dirtyEntities(Object.keys(difference.complete()));
+        }
+        map.immediateRedraw();
+      })
+      .on('undone.map', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
+      .on('redone.map', (stack) => didUndoOrRedo(stack.transform));
+
+    context.background()
+      .on('change.map', map.immediateRedraw);
+
+    _renderer.layers
+      .on('change.map', function() {
+        context.background().updateImagery();
+        map.immediateRedraw();
+    });
+
+  }
 
 
 //    function zoomEventFilter(d3_event) {
