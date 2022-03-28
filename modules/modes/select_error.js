@@ -63,7 +63,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         new BehaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
-        modeDragNote(context).behavior
+        // modeDragNote(context).behavior
     ];
 
 

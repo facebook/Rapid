@@ -6,7 +6,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-import { behaviorDrag } from '../behavior/drag';
+import { BehaviorDrag } from '../behavior/BehaviorDrag';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
@@ -21,6 +21,7 @@ export function modeDragNode(context) {
         id: 'drag-node',
         button: 'browse'
     };
+    var behavior = new BehaviorDrag(context);
     var _nudgeInterval;
     var _restoreSelectedIDs = [];
     var _wasMidpoint = false;
@@ -143,10 +144,10 @@ export function modeDragNode(context) {
         _activeEntity = entity;
         _startLoc = entity.loc;
 
-        context.surface().selectAll('.' + _activeEntity.id)
-            .classed('active', true);
-
-        context.enter(mode);
+        // context.surface().selectAll('.' + _activeEntity.id)
+        //     .classed('active', true);
+        //TODO: Select the node
+        // context.enter(mode);
     }
 
 
@@ -164,12 +165,12 @@ export function modeDragNode(context) {
     }
 
 
-    function doMove(d3_event, entity, nudge) {
+    function doMove(e, entity, nudge) {
         nudge = nudge || [0, 0];
 
-        var currPoint = (d3_event && d3_event.point) || context.projection.project(_lastLoc);
-        var currMouse = vecSubtract(currPoint, nudge);
-        var loc = context.projection.invert(currMouse);
+        var currPoint = [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY] || context.projection.project(_lastLoc);
+        // var currMouse = vecSubtract(currPoint, nudge);
+        var loc = context.projection.invert(currPoint);
 
         var target, edge;
 
@@ -178,7 +179,7 @@ export function modeDragNode(context) {
             // - `mode/drag_node.js`     `doMove()`
             // - `behavior/draw.js`      `click()`
             // - `behavior/draw_way.js`  `move()`
-            var d = datum(d3_event);
+            var d = datum(e);
             target = d && d.properties && d.properties.entity;
             var targetLoc = target && target.loc;
             var targetNodes = d && d.properties && d.properties.nodes;
@@ -199,6 +200,7 @@ export function modeDragNode(context) {
         context.replace(
             actionMoveNode(entity.id, loc)
         );
+        console.log(`location b: ${loc[0]}, ${loc[1]}`);
 
         // Below here: validations
         var isInvalid = false;
@@ -335,10 +337,10 @@ export function modeDragNode(context) {
         if (_isCancelled) return;
         d3_event.stopPropagation();
 
-        context.surface().classed('nope-disabled', d3_event.altKey);
+        // context.surface().classed('nope-disabled', d3_event.altKey);
 
         _lastLoc = context.projection.invert(point);
-
+        // console.log(`point: ${point[0]}, ${point[1]}`);
         doMove(d3_event, entity);
         var nudge = geomViewportNudge(point, context.map().dimensions());
         if (nudge) {
@@ -362,7 +364,8 @@ export function modeDragNode(context) {
                 _actionBounceBack(entity.id, _startLoc)
             );
 
-        } else if (target && target.type === 'way') {
+        } else
+            if (target && target.type === 'way') {
             var choice = geoChooseEdge(context.graph().childNodes(target), context.map().mouse(), context.projection, entity.id);
             context.replace(
                 actionAddMidpoint({
@@ -427,10 +430,7 @@ export function modeDragNode(context) {
     }
 
 
-    var drag = behaviorDrag()
-        .selector('.layer-touch.points .target')
-        .surface(context.container().select('.main-map').node())
-        .origin(origin)
+    var drag = behavior
         .on('start', start)
         .on('move', move)
         .on('end', end);

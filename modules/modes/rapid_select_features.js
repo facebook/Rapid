@@ -23,7 +23,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
     new BehaviorSelect(context),
     behaviorLasso(context),
     modeDragNode(context).behavior,
-    modeDragNote(context).behavior
+    // modeDragNote(context).behavior
   ];
 
 

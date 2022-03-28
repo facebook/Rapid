@@ -2,7 +2,7 @@ import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
-import { behaviorDrag } from '../behavior/drag';
+import { BehaviorDrag } from '../behavior/BehaviorDrag';
 import { modeSelectNote } from './select_note';
 
 
@@ -12,6 +12,7 @@ export function modeDragNote(context) {
         button: 'browse'
     };
 
+    var behavior = new BehaviorDrag(context);
     var _nudgeInterval;
     var _lastLoc;
     var _note;    // most current note.. dragged note may have stale datum.
@@ -47,6 +48,7 @@ export function modeDragNote(context) {
             // and dragging it around can sometimes delete the users note comment.
             _note = osm.getNote(_note.id);
         }
+        if (!_note.id) return;
 
         context.surface().selectAll('.note-' + _note.id)
             .classed('active', true);
@@ -98,10 +100,7 @@ export function modeDragNote(context) {
     }
 
 
-    var drag = behaviorDrag()
-        .selector('.layer-touch.markers .target.note.new')
-        .surface(context.container().select('.main-map').node())
-        .origin(origin)
+    var drag = behavior
         .on('start', start)
         .on('move', move)
         .on('end', end);

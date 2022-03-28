@@ -234,7 +234,7 @@ export function modeSelect(context, selectedIDs) {
                 _selectBehavior,
                 behaviorLasso(context),
                 _modeDragNode.behavior,
-                modeDragNote(context).behavior
+                // modeDragNote(context).behavior
             ];
         }
         _behaviors.forEach(context.install);

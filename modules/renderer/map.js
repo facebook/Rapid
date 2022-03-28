@@ -64,17 +64,6 @@ export function rendererMap(context) {
   const _zoomerPannerFunction = 'PointerEvent' in window ? utilZoomPan : d3_zoom;
 
 
-  function handleDragStart() {
-    _dragging = true;
-    _preDragTransform = _zoomerPanner._transform();
-  }
-
-  function handleDragEnd() {
-    _dragging = false;
-    _zoomerPanner._transform(_preDragTransform);
-  }
-
-
 
   const _zoomerPanner = _zoomerPannerFunction()
     .scaleExtent([MINK, MAXK])
@@ -164,13 +153,13 @@ export function rendererMap(context) {
           map.immediateRedraw();
         });
 
-      layers.on('dragstart.feature', function () {
-        handleDragStart();
-      });
+      // layers.on('dragstart.feature', function () {
+      //   map.handleDragStart();
+      // });
 
-      layers.on('dragend.feature', function () {
-        handleDragEnd();
-      });
+      // layers.on('dragend.feature', function () {
+      //   map.handleDragEnd();
+      // });
 
       layers.on('change.feature', function () {
         map.immediateRedraw();
@@ -178,7 +167,6 @@ export function rendererMap(context) {
 
       // END PIXI
       ///////////////////////
-
 
       map.surface = surface = pixiContainer.selectAll('canvas');
 
@@ -500,6 +488,18 @@ export function rendererMap(context) {
       if (!arguments.length) return _dblClickZoomEnabled;
       _dblClickZoomEnabled = val;
       return map;
+    };
+
+
+    map.handleDragStart = () => {
+      _dragging = true;
+      _preDragTransform = _zoomerPanner._transform();
+    };
+
+
+    map.handleDragEnd = () => {
+      _dragging = false;
+      _zoomerPanner._transform(_preDragTransform);
     };
 
 

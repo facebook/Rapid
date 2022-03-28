@@ -31,7 +31,7 @@ export function modeSelectNote(context, selectedNoteID) {
         new BehaviorSelect(context),
         behaviorLasso(context),
         modeDragNode(context).behavior,
-        modeDragNote(context).behavior
+        // modeDragNote(context).behavior
     ];
 
     var _newFeature = false;

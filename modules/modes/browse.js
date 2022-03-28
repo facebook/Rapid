@@ -37,7 +37,7 @@ export function modeBrowse(context) {
                 _selectBehavior,
                 behaviorLasso(context),
                 modeDragNode(context).behavior,
-                modeDragNote(context).behavior
+                // modeDragNote(context).behavior
             ];
         }
         _behaviors.forEach(context.install);
