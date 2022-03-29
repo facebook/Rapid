@@ -41,6 +41,8 @@ export function uiEditMenu(context) {
 
     var editMenu = function(selection) {
 
+        if (_triggerType === 'undefined') _triggerType ='rightclick';
+
         var isTouchMenu = _triggerType.includes('touch') || _triggerType.includes('pen');
 
         var ops = _operations.filter(function(op) {

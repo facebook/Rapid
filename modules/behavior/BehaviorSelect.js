@@ -41,6 +41,8 @@ export class BehaviorSelect extends AbstractBehavior {
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
+    this._showMenu = false;
+    this._lastInteractionType = null;
   }
 
   /**
@@ -154,7 +156,6 @@ export class BehaviorSelect extends AbstractBehavior {
     const down = this._getEventData(e);
     // const name = (down.target && down.target.name) || 'no target';
     // console.log(`pointerdown ${name}`);
-
     this._downData = down;
   }
 
@@ -192,6 +193,13 @@ export class BehaviorSelect extends AbstractBehavior {
 
       // trigger a click
       this._click(up);
+
+
+    if (down.origEvent.button === 2) {
+      //right click means context menu
+      this.contextmenu(e);
+    }
+
     }
   }
 
@@ -254,7 +262,8 @@ export class BehaviorSelect extends AbstractBehavior {
     }
 
     if (e.keyCode === 93) {   // contextmenu key
-       // ?
+      this._lastInteractionType = 'menukey';
+      this.contextmenu(e);
        return;
     }
 
@@ -328,13 +337,13 @@ export class BehaviorSelect extends AbstractBehavior {
     // const showMenu = _showMenu;
     // const interactionType = _lastInteractionType;
 
-context.ui().closeEditMenu();   //?
+    // context.ui().closeEditMenu();   //?
 
-// highlight
-const target = eventData.target;
-const renderer = context.map().renderer();
-const ids = datum ? [target.name] : [];
-renderer.highlight(ids);
+    // highlight
+    const target = eventData.target;
+    const renderer = context.map().renderer();
+    const ids = datum ? [target.name] : [];
+    renderer.highlight(ids);
 
     //
     // What did we click on?
@@ -369,12 +378,12 @@ renderer.highlight(ids);
       context.selectedNoteID(null);
       context.selectedErrorID(null);
 
-// figure it out
-let selectedIDs = context.selectedIDs();
-let newMode = null;
-let alsoSelectId = null;
-const showMenu = false;
-const isMultiselect = false;
+    // figure it out
+    let selectedIDs = context.selectedIDs();
+    let newMode = null;
+    let alsoSelectId = null;
+    const showMenu = false;
+    const isMultiselect = false;
 
 
       if (!isMultiselect) {
@@ -433,7 +442,44 @@ const isMultiselect = false;
       context.enter(modeSelectError(context, datum.id, datum.service));
       return;
     }
+
+//    context.ui().closeEditMenu();
+    // always request to show the edit menu in case the mode needs it
+    if (this._showMenu) {
+        const pointer = this._getEventData(eventData);
+
+      context.ui().showEditMenu(pointer.coord, this._lastInteractionType);
+    }
   }
+
+   contextmenu(e) {
+      //  e.preventDefault();
+
+      //  if (!+e.clientX && !+e.clientY) {
+      //      if (this._lastMouseEvent) {
+      //          e.sourceEvent = this._lastMouseEvent;
+      //      } else {
+      //          return;
+      //      }
+      //  } else {
+      //      this._lastMouseEvent = e;
+      //      this._lastInteractionType = 'rightclick';
+      //  }
+      this._lastMouseEvent = e;
+      this._lastInteractionType = 'rightclick';
+
+       this._showMenu = true;
+       this._click(e);
+   }
+
+
+     resetProperties() {
+        // cancelLongPress();
+        this._showMenu = false;
+        this._lastInteractionType = null;
+        // don't reset _lastMouseEvent since it might still be useful
+    }
+
 
 
 }
