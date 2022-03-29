@@ -280,6 +280,11 @@ export class PixiFeatureLine extends PixiFeature {
     this._style = Object.assign({}, STYLE_DEFAULTS, obj);
     this._styleDirty = true;
   }
+
+  rebind(data, geometry) {
+    super.rebind(data);
+    this.geometry = geometry;
+  }
 }
 
 

@@ -66,10 +66,10 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!this._context.pixi) return;
     const stage = this._context.pixi.stage;
 
-    // stage
-    //   .on('pointerdown', this.pointerdownFn)
-    //   .on('pointermove', this.pointermoveFn)
-    //   .on('pointerup', this.pointerupFn);
+    stage
+      .on('pointerdown', this.pointerdownFn)
+      .on('pointermove', this.pointermoveFn)
+      .on('pointerup', this.pointerupFn);
 
 
     this._enabled = true;
@@ -86,10 +86,10 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!this._context.pixi) return;
     const stage = this._context.pixi.stage;
 
-    // stage
-    //   .off('pointerdown', this.pointerdownFn)
-    //   .off('pointermove', this.pointermoveFn)
-    //   .off('pointerup', this.pointerupFn);
+    stage
+      .off('pointerdown', this.pointerdownFn)
+      .off('pointermove', this.pointermoveFn)
+      .off('pointerup', this.pointerupFn);
 
     this._enabled = false;
   }
@@ -138,7 +138,6 @@ export class BehaviorDrag extends AbstractBehavior {
 
     const pointerLocGetter = (e) =>
       [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY];
-        console.log('drag pointermove initial click');
 
     this._downData = {
       id: pointerId,
@@ -180,7 +179,6 @@ export class BehaviorDrag extends AbstractBehavior {
       //It's not a drag gesture if we haven't clicked, and if the thing we clicked on is just the background stage.
     if (this._downData && this._downData.targetEntity) {
       if (!this._started) {
-        console.log('drag pointermove start');
         var dist = vecLength(this._startOrigin,  p);
         var tolerance = e.pointerType === 'pen' ? PENTOLERANCEPX : TOLERANCEPX;
         // don't start until the drag has actually moved somewhat
@@ -188,14 +186,12 @@ export class BehaviorDrag extends AbstractBehavior {
 
         this._started = true;
         const mode = this._context.mode();
-        mode.selectedIDs(this._downData.targetEntity.data.id);
 
         this._dispatch.call('start', this, e, this._downData.targetEntity.data);
 
       // Don't send a `move` event in the same cycle as `start` since dragging
       // a midpoint will convert the target to a node.
       } else {
-        console.log('drag pointermove continue');
         this._startOrigin = p;
         // e.stopPropagation();
         // e.preventDefault();
@@ -215,7 +211,6 @@ export class BehaviorDrag extends AbstractBehavior {
    *
    */
   _pointerup(e) {
-    console.log('drag pointerup');
     const pointerId = e.pointerId || 'mouse';
     if (!this._downData || this._downData.id !== pointerId) return;  // not down, or different pointer
 

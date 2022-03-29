@@ -180,4 +180,13 @@ export class PixiFeature {
     this._styleDirty = true;
   }
 
+/**
+ *
+ * @param {*} data d3-style 'datum' bound to this feature.
+ * Call this method when you need to update the data attached to a feature, such as after an edit is made.
+ */
+  rebind(data) {
+    this.displayObject.__data__ = data;    // rebind data
+    this.data = data;
+  }
 }

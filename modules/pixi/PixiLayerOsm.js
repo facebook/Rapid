@@ -181,7 +181,7 @@ export class PixiLayerOsm extends PixiLayer {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
-        feature.geometry = geometry;
+        feature.rebind(entity, geometry);
 
         const style = styleMatch(entity.tags);
         feature.style = style;
@@ -253,11 +253,11 @@ export class PixiLayerOsm extends PixiLayer {
         feature.v = version;
         const dObj = feature.displayObject;
         dObj.zIndex = getzIndex(entity.tags);
-        dObj.__data__ = entity;    // rebind data
 
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
-        feature.geometry = geometry;
+        feature.rebind(entity, geometry); //rebind data
+
 
         const style = styleMatch(entity.tags);
         style.reversePoints = (entity.tags.oneway === '-1');
@@ -313,8 +313,7 @@ export class PixiLayerOsm extends PixiLayer {
       const version = (node.v || 0);
       if (feature.v !== version || feature.dirty) {
         feature.v = version;
-        feature.displayObject.__data__ = node;    // rebind data
-
+        feature.rebind(node);
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
         const directions = node.directions(graph, context.projection);
@@ -384,7 +383,7 @@ export class PixiLayerOsm extends PixiLayer {
       const version = (node.v || 0);
       if (feature.v !== version) {
         feature.v = version;
-        feature.displayObject.__data__ = node;    // rebind data
+        feature.rebind(node);
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;

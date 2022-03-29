@@ -200,7 +200,6 @@ export function modeDragNode(context) {
         context.replace(
             actionMoveNode(entity.id, loc)
         );
-        console.log(`location b: ${loc[0]}, ${loc[1]}`);
 
         // Below here: validations
         var isInvalid = false;

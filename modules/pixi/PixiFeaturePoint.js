@@ -277,6 +277,11 @@ export class PixiFeaturePoint extends PixiFeature {
     this._style = Object.assign({}, STYLE_DEFAULTS, obj);
     this._styleDirty = true;
   }
+
+  rebind(data) {
+    super.rebind(data);
+    this.geometry = data.loc;
+  }
 }
 
 const STYLE_DEFAULTS = {
