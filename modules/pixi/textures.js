@@ -39,7 +39,7 @@ export function prepareTextures(context, renderer) {
     'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
   ];
   context.pixi.rapidTextureKeys.forEach(key => {
-    textures.set(key, new PIXI.Texture.from(`dist/img/pattern/${key}.png`));
+    textures.set(key, new PIXI.Texture.from(`${distPath}img/pattern/${key}.png`));
   });
 
 
