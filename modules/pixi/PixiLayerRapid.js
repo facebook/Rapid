@@ -209,7 +209,9 @@ export class PixiLayerRapid extends PixiLayer {
 
     /* Facebook AI/ML */
     if (dsEnabled && dataset.service === 'fbml') {
-      service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
+      if (zoom >= 15) { // avoid firing off too many API requests
+        service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
+      }
 
       const entities = service.intersects(datasetID, context.map().extent())
         .filter(d => d.type === 'way' && !isAccepted(d));  // see onHistoryRestore()
@@ -233,7 +235,9 @@ export class PixiLayerRapid extends PixiLayer {
 
     /* ESRI ArcGIS */
     } else if (dsEnabled && dataset.service === 'esri') {
-      service.loadTiles(datasetID, context.projection);  // fetch more
+      if (zoom >= 14) { // avoid firing off too many API requests
+        service.loadTiles(datasetID, context.projection);  // fetch more
+      }
 
       const entities = service.intersects(datasetID, context.map().extent());
 

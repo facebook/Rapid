@@ -465,8 +465,9 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
       // Test running building layers through FBML conflation service
       if (isBuildings) {
-        dataset.conflated = true;
-        dataset.service = 'fbml';
+// bhousel 3/29/22 - for demo and testing purposes, skip conflation (direct is faster)
+//        dataset.conflated = true;
+//        dataset.service = 'fbml';
 
         // and disable the Microsoft buildings to avoid clutter
         if (datasets.msBuildings) {
