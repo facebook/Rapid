@@ -63,12 +63,20 @@ export class PixiLayer {
    * @param timestamp    timestamp in milliseconds
    */
   cull(timestamp) {
-    [...this.seenFeature.entries()].forEach(function cull([feature, ts]) {
+    this.seenFeature.forEach((ts, feature) => {
       if (ts !== timestamp) {
         feature.visible = false;
         feature._labelDirty = true;
       }
     });
+  }
+
+  /**
+   * makeDirty
+   * An easy way to make all the features on this layer dirty
+   */
+  makeDirty() {
+    this.seenFeature.forEach((ts, feature) => feature.dirty = true);
   }
 
 
@@ -121,6 +129,9 @@ export class PixiLayer {
   set enabled(val) {
     this._enabled = val;
     this.visible = val;
+    if (val) {
+      this.makeDirty();
+    }
   }
 
 }

@@ -325,7 +325,7 @@ export class PixiLayerRapid extends PixiLayer {
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(context, featureID, layer, entity, geometry, style);
+        feature = new PixiFeatureMultipolygon(context, featureID, layer, entity, geometry);
         feature.rapidFeature = true;
 
 // shader experiment:
@@ -343,6 +343,7 @@ export class PixiLayerRapid extends PixiLayer {
       feature.visible = true;
 
       if (feature.dirty) {
+        feature.style = style;
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -365,14 +366,8 @@ export class PixiLayerRapid extends PixiLayer {
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
-        const style = {
-          casing: { width: 5, color: 0x444444 },
-          stroke: { width: 3, color: color }
-        };
-        style.reversePoints = (entity.tags.oneway === '-1');
-        style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
 
-        feature = new PixiFeatureLine(context, featureID, layer, entity, geometry, style);
+        feature = new PixiFeatureLine(context, featureID, layer, entity, geometry);
         feature.rapidFeature = true;
       }
 
@@ -380,6 +375,13 @@ export class PixiLayerRapid extends PixiLayer {
       feature.visible = true;
 
       if (feature.dirty) {
+        const style = {
+          casing: { width: 5, color: 0x444444 },
+          stroke: { width: 3, color: color }
+        };
+        style.reversePoints = (entity.tags.oneway === '-1');
+        style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
+        feature.style = style;
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -412,7 +414,7 @@ export class PixiLayerRapid extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc, pointStyle);
+        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc);
         feature.rapidFeature = true;
       }
 
@@ -425,7 +427,7 @@ export class PixiLayerRapid extends PixiLayer {
         if (housenumber) {
           feature.label = housenumber;
         }
-
+        feature.style = pointStyle;
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -437,7 +439,7 @@ export class PixiLayerRapid extends PixiLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc, vertexStyle);
+        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc);
         feature.rapidFeature = true;
 
         // vertices in this layer don't actually need to be interactive
@@ -451,6 +453,7 @@ export class PixiLayerRapid extends PixiLayer {
       feature.visible = true;
 
       if (feature.dirty) {
+        feature.style = vertexStyle;
         feature.update(projection, zoom);
         scene.update(feature);
       }

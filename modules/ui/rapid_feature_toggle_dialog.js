@@ -42,6 +42,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         window.location.replace('#' + utilQsString(hash, true));  // update hash
       }
 
+      const rapidLayer = context.layers().getLayer('rapid');
+      rapidLayer.makeDirty();
+
       context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
       context.map().immediateRedraw();
     }
@@ -51,6 +54,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     let datasets = rapidContext.datasets();
     let dataset = datasets[datasetID];
     if (dataset) {
+      const rapidLayer = context.layers().getLayer('rapid');
+      rapidLayer.makeDirty();
+
       dataset.color = color;
       context.map().immediateRedraw();
       _content.call(renderModalContent);
