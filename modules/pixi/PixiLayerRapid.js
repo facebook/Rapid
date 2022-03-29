@@ -410,18 +410,18 @@ export class PixiLayerRapid extends PixiLayer {
       if (!feature) {
         feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc, pointStyle);
         feature.rapidFeature = true;
-
-        // experiment: label addresses
-        const housenumber = entity.tags['addr:housenumber'];
-        if (housenumber) {
-          feature.label = housenumber;
-        }
       }
 
       this.seenFeature.set(feature, timestamp);
       feature.visible = true;
 
       if (feature.dirty) {
+        // experiment: label addresses
+        const housenumber = entity.tags['addr:housenumber'];
+        if (housenumber) {
+          feature.label = housenumber;
+        }
+
         feature.update(projection, zoom);
         scene.update(feature);
       }

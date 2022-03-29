@@ -66,6 +66,7 @@ export class PixiLayer {
     [...this.seenFeature.entries()].forEach(function cull([feature, ts]) {
       if (ts !== timestamp) {
         feature.visible = false;
+        feature._labelDirty = true;
       }
     });
   }

@@ -226,6 +226,8 @@ export class PixiLayerLabels extends PixiLayer {
         } else if (feature.type === 'line') {
           lines.push(feature);
         }
+      } else {
+        feature._labelDirty = false;
       }
     });
 
