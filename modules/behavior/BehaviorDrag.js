@@ -2,6 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { Extent, geomPointInPolygon, vecSubtract } from '@id-sdk/math';
 import { vecLength } from '@id-sdk/math';
+import { osmNode } from '../osm';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { actionCopyEntities } from '../actions/copy_entities';
@@ -131,7 +132,7 @@ export class BehaviorDrag extends AbstractBehavior {
     const target = this._getTarget(e);
     const dObj = target.obj;
 
-    if (target.obj === null) return; //clicked on the stage, nothing to drag
+    if (!(target.obj.__data__ instanceof osmNode)) return; //clicked on the stage, an area, or a way nothing to drag
     if (this._downData) return; // Pointer already down
 
     const pointerId = e.pointerId || 'mouse';
