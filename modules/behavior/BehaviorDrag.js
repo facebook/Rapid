@@ -132,7 +132,8 @@ export class BehaviorDrag extends AbstractBehavior {
     const target = this._getTarget(e);
     const dObj = target.obj;
 
-    if (!(target.obj.__data__ instanceof osmNode)) return; //clicked on the stage, an area, or a way nothing to drag
+    if (!(target && target.obj && target.obj.__data__ instanceof osmNode)) return; //clicked on the stage, an area, or a way nothing to drag
+    if (e.data.originalEvent.button === 2) return; //Right-click should not cause a drag event.
     if (this._downData) return; // Pointer already down
 
     const pointerId = e.pointerId || 'mouse';
