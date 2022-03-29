@@ -56,7 +56,7 @@ export function rendererMap(context) {
 //  let _pointerDown = false;
 
   // whether a sub-feature of the map is currently being dragged around. We should stop zooming/panning if so.
-  // let _dragging = false;
+   let _dragging = false;
 
   const _zoomPanHandler = d3_zoom()    //utilZoomPan()
     .scaleExtent([MINK, MAXK])
@@ -294,7 +294,7 @@ export function rendererMap(context) {
 
 
   function zoomPan(event, key, transform) {
-    // if (_dragging) return;
+     if (_dragging) return;
 
         var source = event && event.sourceEvent || event;
         var eventTransform = transform || (event && event.transform);
@@ -824,15 +824,15 @@ export function rendererMap(context) {
       return map;
     };
 
-    // map.handleDragStart = () => {
-    //   _dragging = true;
-    //   _preDragTransform = _zoomPanHandler._transform();
-    // };
+    map.handleDragStart = () => {
+      _dragging = true;
+      // _preDragTransform = _zoomPanHandler._transform();
+    };
 
-    // map.handleDragEnd = () => {
-    //   _dragging = false;
-    //   _zoomPanHandler._transform(_preDragTransform);
-    // };
+    map.handleDragEnd = () => {
+      _dragging = false;
+      // _zoomPanHandler._transform(_preDragTransform);
+    };
 
     map.redrawEnable = function(val) {
       if (!arguments.length) return _redrawEnabled;
