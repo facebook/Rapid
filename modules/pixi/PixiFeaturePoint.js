@@ -15,6 +15,7 @@ import { getIconTexture } from './helpers';
  * Inherited from PixiFeature:
  *   `dirty`
  *   `extent`
+ *   `label`
  *   `localBounds`
  *   `sceneBounds`
  */
@@ -291,5 +292,6 @@ const STYLE_DEFAULTS = {
   viewfieldName: 'viewfield',
   viewfieldTint: 0xffffff,
   iconName: '',
-  iconAlpha: 1
+  iconAlpha: 1,
+  labelTint: 0xffffff
 };

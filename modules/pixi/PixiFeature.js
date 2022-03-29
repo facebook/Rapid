@@ -13,6 +13,7 @@ import { Extent } from '@id-sdk/math';
  *   `data`
  *   `geometry`
  *   `style`
+ *   `label`
  *   `dirty`
  *   `extent`
  *   `localBounds`
@@ -49,6 +50,8 @@ export class PixiFeature {
     this._geometryDirty = true;
     this._style = null;
     this._styleDirty = true;
+    this._label = null;
+    this._labelDirty = true;
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
@@ -77,6 +80,7 @@ export class PixiFeature {
 
     this._geometry = null;
     this._style = null;
+    this._label = null;
 
     this.extent = null;
     this.localBounds = null;
@@ -98,6 +102,7 @@ export class PixiFeature {
 
     this._geometryDirty = false;
     this._styleDirty = false;
+    // for now, the labeling code will decide what to do with the _labelDirty flag
   }
 
   /**
@@ -129,6 +134,7 @@ export class PixiFeature {
   set dirty(val) {
     this._geometryDirty = val;
     this._styleDirty = val;
+    this._labelDirty = val;
   }
 
 
@@ -165,6 +171,7 @@ export class PixiFeature {
     this._geometryDirty = true;
   }
 
+
   /**
    * style
    * @param obj   Style `Object` (contents depends on the feature type)
@@ -180,11 +187,25 @@ export class PixiFeature {
     this._styleDirty = true;
   }
 
-/**
- *
- * @param {*} data d3-style 'datum' bound to this feature.
- * Call this method when you need to update the data attached to a feature, such as after an edit is made.
- */
+
+  /**
+   * label
+   * @param str   String containing the label to use
+   */
+  get label() {
+    return this._label;
+  }
+  set label(str) {
+    this._label = str;
+    this._labelDirty = true;
+  }
+
+
+  /**
+   * rebind
+   * @param {*} data d3-style 'datum' bound to this feature.
+   * Call this method when you need to update the data attached to a feature, such as after an edit is made.
+   */
   rebind(data) {
     this.displayObject.__data__ = data;    // rebind data
     this.data = data;

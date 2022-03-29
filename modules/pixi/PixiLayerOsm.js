@@ -8,6 +8,7 @@ import { PixiLayer } from './PixiLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
+import { utilDisplayName } from '../util';
 import { styleMatch } from './styles';
 
 const LAYERID = 'osm';
@@ -264,7 +265,9 @@ export class PixiLayerOsm extends PixiLayer {
 
         // Todo: handle alternating/two-way case too
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
+
         feature.style = style;
+        feature.label = utilDisplayName(entity);
       }
 
       if (feature.dirty) {
@@ -345,6 +348,7 @@ export class PixiLayerOsm extends PixiLayer {
         }
 
         feature.style = markerStyle;
+        feature.label = utilDisplayName(node);
       }
 
       if (feature.dirty) {
@@ -407,6 +411,7 @@ export class PixiLayerOsm extends PixiLayer {
         }
 
         feature.style = markerStyle;
+        feature.label = utilDisplayName(node);
       }
 
       if (feature.dirty) {

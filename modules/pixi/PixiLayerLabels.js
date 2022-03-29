@@ -5,7 +5,7 @@ import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-s
 
 import { PixiLayer } from './PixiLayer';
 import { localizer } from '../core/localizer';
-import { utilDisplayName } from '../util';
+// import { utilDisplayName } from '../util';
 import { getLineSegments, getDebugBBox } from './helpers.js';
 
 const LAYERID = 'labels';
@@ -35,7 +35,7 @@ export class PixiLayerLabels extends PixiLayer {
     layer.interactive = false;
     layer.interactiveChildren = false;
 
-    this._strings = new Map();      // Map of featureID -> label string
+//     this._strings = new Map();      // Map of featureID -> label string
     this._texts = new Map();        // Map of label -> Pixi Texture
     this._avoidBoxes = new Map();   // Map of featureID -> avoid boxes
     this._labelBoxes = new Map();   // Map of featureID -> label boxes
@@ -82,11 +82,11 @@ export class PixiLayerLabels extends PixiLayer {
     if (this._enabled && zoom >= MINZOOM) {
       this.visible = true;
 
-      const context = this.context;
-      const map = context.map();
-      const entities = context.history().intersects(map.extent());
+      // const context = this.context;
+      // const map = context.map();
+      // const entities = context.history().intersects(map.extent());
 
-      this.renderLabels(projection, zoom, entities);
+      this.renderLabels(projection);
 
     } else {
       this.visible = false;
@@ -96,7 +96,7 @@ export class PixiLayerLabels extends PixiLayer {
 
 
   getLabelSprite(str) {
-// OLD just make more textures
+// BAD just make more textures
     let sprite;
     let existing = this._texts.get(str);
     if (existing) {
@@ -111,7 +111,7 @@ export class PixiLayerLabels extends PixiLayer {
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
 
-// NEW with allocator
+// BETTER with texture allocator
 //    let sprite;
 //    let texture = this._textures.get(str);
 //
@@ -150,35 +150,23 @@ export class PixiLayerLabels extends PixiLayer {
 //    return sprite;
   }
 
-  renderLabels(projection, zoom, entities) {
+  renderLabels(projection) {
     const textDirection = localizer.textDirection();
     const SHOWDEBUG = false;
     const debugContainer = this.container.getChildByName('debug');
     const labelContainer = this.container.getChildByName('labels');
 
     const context = this.context;
-    const graph = context.graph();
+//    const graph = context.graph();
 
     // fix later: make some closure variables for now to avoid dealing with `this`
     let thiz = this;
     let _scene = this.scene;
-    let _strings = this._strings;
+//    let _strings = this._strings;
     let _avoidBoxes = this._avoidBoxes;
     let _labelBoxes = this._labelBoxes;
     let _labelDObjs = this._labelDObjs;
     let _placement = this._placement;
-
-    // we'll redo all the labels when scale changes
-    const k = projection.scale();
-    if (k !== this._oldk) {   // reset
-      _avoidBoxes.clear();
-      _labelBoxes.clear();
-      _labelDObjs.clear();
-      _placement.clear();
-      debugContainer.removeChildren().forEach(child => child.destroy());
-      labelContainer.removeChildren();  //.forEach(child => child.destroy());
-      this._oldk = k;
-    }
 
 // DEBUG - show the allocator spritesheet
 //let stage = context.pixi.stage;
@@ -195,31 +183,77 @@ export class PixiLayerLabels extends PixiLayer {
 //  sprite.texture = new PIXI.Texture(baseTexture);
 //}
 
+
+//// this bunch of code may be redundant now that we have `_labelDirty` to look at
+    // we'll redo all the labels when scale changes
+    const k = projection.scale();
+    if (k !== this._oldk) {   // reset
+      _avoidBoxes.clear();
+      _labelBoxes.clear();
+      _labelDObjs.clear();
+      _placement.clear();
+      debugContainer.removeChildren().forEach(child => child.destroy());
+      labelContainer.removeChildren();  //.forEach(child => child.destroy());
+      this._oldk = k;
+    }
+////
+
+    // Collect labelable features
+    let points = [];
+    let lines = [];
+
+    this.scene._features.forEach(feature => {
+      if (!feature._labelDirty) return;
+
+      // Remove any existing labeling data for this feature.
+      const featureID = feature.id;
+      const removeBoxes = (_labelBoxes.get(featureID) || []);
+      removeBoxes.forEach(box => _placement.remove(box));
+      _labelBoxes.delete(featureID);
+
+      // remove from the scene any display objects for these labels
+      const removeDObjs = (_labelDObjs.get(featureID) || []);
+      // removeDObjs.forEach(dObj => dObj.destroy({ children: true }));
+      removeDObjs.forEach(dObj => {
+        if (dObj.parent) dObj.parent.removeChild(dObj);
+      });
+      _labelDObjs.delete(featureID);
+
+      // If the feature can be labeled, add it to the list.
+      if (feature.label) {
+        if (feature.type === 'point') {
+          points.push(feature);
+        } else if (feature.type === 'line') {
+          lines.push(feature);
+        }
+      }
+    });
+
     gatherAvoids();
-    placePointLabels();
-    placeLineLabels();
+    placePointLabels(points);
+    placeLineLabels(lines);
 //    placeAreaLabels();
 
 
-    function getLabel(entity) {
-      if (!_strings.has(entity.id)) {
-        const str = utilDisplayName(entity);
-        _strings.set(entity.id, str);   // save display name in `_strings` cache
-        return str;
-      }
-      return _strings.get(entity.id);
-    }
+//    function getLabel(entity) {
+//      if (!_strings.has(entity.id)) {
+//        const str = utilDisplayName(entity);
+//        _strings.set(entity.id, str);   // save display name in `_strings` cache
+//        return str;
+//      }
+//      return _strings.get(entity.id);
+//    }
 
-    function hasLineLabel(entity) {
-      return (entity.geometry(graph) === 'line' && getLabel(entity));
-    }
+//    function hasLineLabel(feature) {
+//      return (feature.type === 'point'.geometry(graph) === 'line' && getLabel(entity));
+//    }
 //    function hasAreaLabel(entity) {
 //      return (entity.geometry(graph) === 'area' && getLabel(entity));
 //    }
-    function hasPointLabel(entity) {
-      const geom = entity.geometry(graph);
-      return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
-    }
+//    function hasPointLabel(feature) {
+//      const geom = entity.geometry(graph);
+//      return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
+//    }
 
 
     //
@@ -229,9 +263,32 @@ export class PixiLayerLabels extends PixiLayer {
       const stage = context.pixi.stage;
       let toInsert = [];
 
+      const avoidLayers = [];
+
+      // gather the layers that have avoidable stuff on them
       const osmLayer = stage.getChildByName('osm');
-      osmLayer.getChildByName('osm-vertices').children.forEach(checkAvoid);
-      osmLayer.getChildByName('osm-points').children.forEach(checkAvoid);
+      if (osmLayer) {
+        osmLayer.children.forEach(layer => {
+          if (layer.name === 'osm-points' || layer.name === 'osm-vertices') {
+            avoidLayers.push(layer);
+          }
+        });
+      }
+      const rapidLayer = stage.getChildByName('rapid');
+      if (rapidLayer) {
+        rapidLayer.children.forEach(dataset => {
+          const dsname = dataset.name;
+          dataset.children.forEach(layer => {
+            if (layer.name === `${dsname}-points` || layer.name === `${dsname}-vertices`) {
+              avoidLayers.push(layer);
+            }
+          });
+        });
+      }
+
+      // Check the features on this layer
+      avoidLayers.forEach(layer => layer.children.forEach(checkAvoid));
+
       if (toInsert.length) {
         _placement.load(toInsert);  // bulk insert
       }
@@ -299,25 +356,21 @@ export class PixiLayerLabels extends PixiLayer {
     //
     // Place point labels
     //
-    function placePointLabels() {
-      const points = entities
-        .filter(hasPointLabel)
-        .sort((a, b) => b.loc[1] - a.loc[1]);
+    function placePointLabels(features) {
+      features.sort((a, b) => b.geometry[1] - a.geometry[1]);
 
-      points
-        .forEach(entity => {
-          const featureID = entity.id;
+      features
+        .forEach(feature => {
+          feature._labelDirty = false;
+
+          const featureID = feature.id;
+
           if (_labelBoxes.has(featureID)) return;  // processed it already
-
-          const feature = _scene.get(featureID);
-          if (!feature) return;
-
           _labelBoxes.set(featureID, []);
           _labelDObjs.set(featureID, []);
 
-          const str = _strings.get(entity.id);
-          const sprite = thiz.getLabelSprite(str);
-
+          if (!feature.label) return;
+          const sprite = thiz.getLabelSprite(feature.label);
           placePointLabel(feature, sprite);
         });
     }
@@ -429,6 +482,7 @@ export class PixiLayerLabels extends PixiLayer {
           _labelBoxes.get(featureID).push(box);
           _labelDObjs.get(featureID).push(sprite);
           _placement.insert(box);
+          sprite.tint = feature.style.labelTint || 0xffffff;
           sprite.position.set(x, y);
           sprite.visible = true;
           labelContainer.addChild(sprite);
@@ -458,25 +512,30 @@ export class PixiLayerLabels extends PixiLayer {
     //
     // Place line labels
     //
-    function placeLineLabels() {
-      const lines = entities
-        .filter(hasLineLabel)
-        .sort((a, b) => b.layer() - a.layer());
+    function placeLineLabels(features) {
 
-      lines
-        .forEach(entity => {
-          const featureID = entity.id;
+      // This is hacky, but we can sort the line labels by their parent container name.
+      // It might be a level container with a name like "1", "-1", or just a name like "lines"
+      // If `parseInt` fails, just sort the label above everything.
+      function level(feature) {
+        const lvl = parseInt(feature.displayObject.parent.name, 10);
+        return isNaN(lvl) ? 999 : lvl;
+      }
+
+      features.sort((a, b) => level(b) - level(a));
+
+      features
+        .forEach(feature => {
+          feature._labelDirty = false;
+
+          const featureID = feature.id;
+
           if (_labelBoxes.has(featureID)) return;  // processed it already
-
-          const feature = _scene.get(featureID);
-          if (!feature) return;
-
           _labelBoxes.set(featureID, []);
           _labelDObjs.set(featureID, []);
 
-          const str = _strings.get(entity.id);
-          const sprite = thiz.getLabelSprite(str);
-
+          if (!feature.label) return;
+          const sprite = thiz.getLabelSprite(feature.label);
           placeLineLabel(feature, sprite);
         });
     }
@@ -637,6 +696,7 @@ export class PixiLayerLabels extends PixiLayer {
         rope.autoUpdate = false;
         rope.interactiveChildren = false;
         rope.sortableChildren = false;
+        rope.tint = feature.style.labelTint || 0xffffff;
         rope.visible = true;
         labelContainer.addChild(rope);
         _labelDObjs.get(featureID).push(rope);

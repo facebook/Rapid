@@ -394,11 +394,13 @@ export class PixiLayerRapid extends PixiLayer {
     const pointStyle = {
       markerName: 'largeCircle',
       markerTint: color,
-      iconName: 'maki-circle-stroked'
+      iconName: 'maki-circle-stroked',
+      labelTint: color
     };
     const vertexStyle = {
       markerName: 'smallCircle',
-      markerTint: color
+      markerTint: color,
+      labelTint: color
     };
 
     data.points.forEach(entity => {
@@ -408,6 +410,12 @@ export class PixiLayerRapid extends PixiLayer {
       if (!feature) {
         feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc, pointStyle);
         feature.rapidFeature = true;
+
+        // experiment: label addresses
+        const housenumber = entity.tags['addr:housenumber'];
+        if (housenumber) {
+          feature.label = housenumber;
+        }
       }
 
       this.seenFeature.set(feature, timestamp);
