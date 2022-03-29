@@ -66,7 +66,6 @@ export class PixiLayer {
     this.seenFeature.forEach((ts, feature) => {
       if (ts !== timestamp) {
         feature.visible = false;
-        feature._labelDirty = true;
       }
     });
   }
@@ -129,9 +128,7 @@ export class PixiLayer {
   set enabled(val) {
     this._enabled = val;
     this.visible = val;
-    if (val) {
-      this.makeDirty();
-    }
+    this.makeDirty();
   }
 
 }

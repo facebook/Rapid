@@ -121,6 +121,7 @@ export class PixiFeature {
   }
   set visible(val) {
     this.displayObject.visible = val;
+    this._labelDirty = true;
   }
 
 

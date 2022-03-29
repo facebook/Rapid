@@ -220,7 +220,7 @@ export class PixiLayerLabels extends PixiLayer {
       _labelDObjs.delete(featureID);
 
       // If the feature can be labeled, add it to the list.
-      if (feature.label) {
+      if (feature.label && feature.visible) {
         if (feature.type === 'point') {
           points.push(feature);
         } else if (feature.type === 'line') {
