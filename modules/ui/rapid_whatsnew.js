@@ -10,7 +10,7 @@ export function uiRapidWhatsNew(context) {
 
 
   return function(selection) {
-    if (prefs('sawWhatsNew') === 'true') return;
+    if (prefs('sawWhatsNewGL') === 'true') return;
 
     const modalSelection = uiModal(selection);
 
@@ -35,7 +35,7 @@ export function uiRapidWhatsNew(context) {
     body
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/rapid-esri-splash.jpg'));
+      .attr('src', context.asset('img/tucson_icon_logo.png'));
 
     body.select('p a')
       .attr('target', '_blank');
@@ -72,17 +72,17 @@ export function uiRapidWhatsNew(context) {
     .append('div')
     .attr('class', 'modal-actions');
 
-    let nothanks = buttonWrap
-      .append('button')
-      .attr('class', 'whats-new-nothanks')
-      .on('click', () => {
-        prefs('sawWhatsNew', _dontShowAgain);
-        modalSelection.close();
-      });
+    // let nothanks = buttonWrap
+    //   .append('button')
+    //   .attr('class', 'whats-new-nothanks')
+    //   .on('click', () => {
+    //     prefs('sawWhatsNewGL', _dontShowAgain);
+    //     modalSelection.close();
+    //   });
 
-    nothanks
-      .append('div')
-      .text(t('rapid_whats_new.nope'));
+    // nothanks
+    //   .append('div')
+    //   .text(t('rapid_whats_new.nope'));
 
     let okayButton = buttonWrap
       .append('button')
@@ -92,9 +92,8 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .text(t('rapid_whats_new.ok'))
       .on('click', () => {
-        prefs('sawWhatsNew', _dontShowAgain);
+        prefs('sawWhatsNewGL', _dontShowAgain);
         modalSelection.close();
-        window.open('https://mapwith.ai/rapid-esri', '_blank');
       });
 
     modalSelection.select('button.close')

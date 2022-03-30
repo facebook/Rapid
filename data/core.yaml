@@ -1049,9 +1049,9 @@ en:
     skip_to_rapid: "Learn about RapiD!"
     start: "No thanks, just start mapping"
   rapid_whats_new:
-    welcome: What's New- Esri Datasets in {rapidicon}
-    text: "Come check out our latest experimental feature - Esri datasets that are useable from within {rapidicon}!\nLearn more about it [here](https://tech.fb.com/osm-ready-data-sets/)."
-    ok: Okay, let's go
+    welcome: What's New- a webGL-based {rapidicon}
+    text: "Enjoy this tech preview of a *completely rewritten* {rapidicon} rendering pipeline! You should be able to browse, enable different datasets, and add rapid features to the map. Some editing capability is buggy/broken; don't worry, we're on it."
+    ok: Okay
     nope: No thanks, just take me to RapiD
     dontshowagain: Don't show this again
   rapid_first_edit:

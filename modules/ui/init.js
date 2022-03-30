@@ -45,7 +45,7 @@ import { uiPaneMapData } from './panes/map_data';
 import { uiPanePreferences } from './panes/preferences';
 
 import { uiRapidServiceLicense } from './rapid_service_license';
-// import { uiRapidWhatsNew } from './rapid_whatsnew';
+import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
 
 
@@ -434,11 +434,11 @@ export function uiInit(context) {
                     context.container()
                         .call(uiRestore(context));
 
-//                // If users have already seen the 'welcome to RapiD' splash screen, don't also
-//                // show them the what's new screen
-//               } else if (prefs('sawRapidSplash')) {
-//                    context.container()
-//                        .call(uiRapidWhatsNew(context));
+               // If users have already seen the 'welcome to RapiD' splash screen, don't also
+               // show them the what's new screen
+              } else if (prefs('sawRapidSplash')) {
+                   context.container()
+                       .call(uiRapidWhatsNew(context));
                 } else if (osm && osm.authenticated()) {
                     context.container()
                         .call(uiRapidSplash(context));

@@ -424,6 +424,16 @@ button.rapid-features.layer-off use {
     height: unset;  /* big buttons */
     padding: 10px;
 }
+.modal-splash.modal-whatsnew div.modal-actions {
+    justify-content: flex-end;
+}
+
+.modal.rapid-modal.modal-whatsnew .modal-actions > button {
+    height: 50px;
+    width:25%;
+    min-height: unset;
+}
+
 .modal.rapid-modal .modal-actions > button.whats-new-nothanks,
 .modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
     background: #eee;
@@ -436,8 +446,9 @@ button.rapid-features.layer-off use {
 }
 
 .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
-    width: 100%;
+    width: 30%;
     margin-top: 20px;
+    align-items: center;
 }
 .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
     font-size: 16px;
@@ -458,6 +469,13 @@ button.rapid-features.layer-off use {
     display: flex;
     flex: 0 0 36px;
 }
+
+.modal.rapid-modal.modal-whatsnew div.body.modal-section {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+}
+
 
 /* dark scrollbars */
 .modal.rapid-modal {
