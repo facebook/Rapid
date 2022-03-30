@@ -391,7 +391,7 @@ export function rendererBackground(context) {
 
     layer = rendererTileLayer(context)
       .source(d)
-      .projection.project(context.projection)
+      .projection(context.projection)
       .dimensions(baseLayer.dimensions()
     );
 

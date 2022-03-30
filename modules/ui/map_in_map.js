@@ -160,7 +160,7 @@
 //            // redraw background
 //            backgroundLayer
 //                .source(context.background().baseLayerSource())
-//                .projection.project(projection)
+//                .projection(projection)
 //                .dimensions(_dMini);
 //
 //            var background = tiles

@@ -67,6 +67,7 @@ export function rendererTileLayer(context) {
         if (!_source) return;
         var tiles = [];
         var showDebug = context.getDebug('tile') && !_source.overlay;
+var osm = context.connection();
 
         var maxZoom = Math.round(_zoom);             // the zoom we want
         var minZoom = Math.max(0, maxZoom - 5);      // the mininimum zoom we'll accept for filling holes
@@ -88,6 +89,12 @@ export function rendererTileLayer(context) {
             var holes = false;
             for (var i = 0; i < result.tiles.length; i++) {
                 var tile = result.tiles[i];
+
+// skip overlay tiles where we have osm data loaded there
+if (osm && _source.id === 'mapbox_locator_overlay') {
+const loc = tile.wgs84Extent.center();
+if (osm.isDataLoaded(loc)) continue;
+}
                 tile.url = _source.url(tile.xyz);
                 if (!tile.url || typeof tile.url !== 'string' || _failures[tile.url]) {
                     holes = true;   // url invalid or has failed in the past
