@@ -3,6 +3,8 @@ import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
 
+let _actioned;
+
 export function svgRapidMapillaryFeatures(projection, context, dispatch) {
     const throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
@@ -19,8 +21,59 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
         if (svgRapidMapillaryFeatures.initialized) return;  // run once
         svgRapidMapillaryFeatures.enabled = false;
         svgRapidMapillaryFeatures.initialized = true;
+
+        _actioned = new Set();
+    
+        // Watch history to synchronize the displayed layer with features
+        // that have been accepted or rejected by the user.
+        context.history().on('undone.mapfeatures', onHistoryUndone);
+        context.history().on('change.mapfeatures', onHistoryChange);
+        context.history().on('restore.mapfeatures', onHistoryRestore);
     }
 
+    function wasRapidEdit(annotation) {
+        return annotation && annotation.type && /^rapid/.test(annotation.type);
+    }
+
+    function onHistoryUndone(currentStack, previousStack) {
+        const annotation = previousStack.annotation;
+        if (!wasRapidEdit(annotation)) return;
+    
+        _actioned.delete(annotation.id);
+        if (svgRapidMapillaryFeatures.enabled) { dispatch.call('change'); }  // redraw
+      }
+    
+    
+    function onHistoryChange(/* difference */) {
+        const annotation = context.history().peekAnnotation();
+        if (!wasRapidEdit(annotation)) return;
+        _actioned.add(annotation.id);
+        if (svgRapidMapillaryFeatures.enabled) { dispatch.call('change'); }  // redraw
+    }
+    
+    
+    function onHistoryRestore() {
+        _actioned = new Set();
+        context.history().peekAllAnnotations().forEach(annotation => {
+            if (wasRapidEdit(annotation)) {
+            _actioned.add(annotation.id);
+            // origid (the original entity ID), a.k.a. datum.__origid__,
+            // is a hack used to deal with non-deterministic way-splitting
+            // in the roads service. Each way "split" will have an origid
+            // attribute for the original way it was derived from. In this
+            // particular case, restoring from history on page reload, we
+            // prevent new splits (possibly different from before the page
+            // reload) from being displayed by storing the origid and
+            // checking against it in render().
+            if (annotation.origid) {
+                _actioned.add(annotation.origid);
+            }
+            }
+        });
+        if (_actioned.size && _enabled) {
+            dispatch.call('change');  // redraw
+        }
+    }
 
     function getService() {
         if (services.mapillary && !_mapillary) {

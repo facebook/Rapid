@@ -55,6 +55,7 @@ export function svgRapidFeatures(projection, context, dispatch) {
 
 
   function wasRapidEdit(annotation) {
+    console.log(annotation)
     return annotation && annotation.type && /^rapid/.test(annotation.type);
   }
 
