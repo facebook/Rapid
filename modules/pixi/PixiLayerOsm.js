@@ -325,6 +325,7 @@ export class PixiLayerOsm extends PixiLayer {
         let markerStyle = {
           markerName: 'smallCircle',
           markerTint: 0xffffff,
+          labelTint: 0xffffff,
           viewfieldAngles: directions,
           viewfieldName: 'viewfieldDark',
           viewfieldTint: 0xffffff,
@@ -341,10 +342,12 @@ export class PixiLayerOsm extends PixiLayer {
 
         if (hasWikidata(node)) {
           markerStyle.markerTint = 0xdddddd;
+          markerStyle.labelTint = 0xdddddd;
           markerStyle.iconAlpha = 0.6;
         }
         if (graph.isShared(node)) {     // shared nodes / junctions are more grey
           markerStyle.markerTint = 0xbbbbbb;
+          markerStyle.labelTint = 0xbbbbbb;
         }
 
         feature.style = markerStyle;
@@ -407,6 +410,7 @@ export class PixiLayerOsm extends PixiLayer {
         if (hasWikidata(node)) {
           markerStyle.markerName = 'boldPin';
           markerStyle.markerTint = 0xdddddd;
+          markerStyle.labelTint = 0xdddddd;
           markerStyle.iconAlpha = 0.6;
         }
 
