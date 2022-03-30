@@ -52,25 +52,16 @@ export function uiRapidFeatureInspector(context, keybinding) {
       id: _datum.id,
       origid: _datum.__origid__
     };
-    let service = null;
-    switch(_datum.__service__) {
-      case 'esri':
+    let service = [];
+    if (_datum.__service__ === 'esri') {
         service = services.esriData;
-        break;
-      case 'fbml':
-        service = services.fbMLRoads;
-        break;
-      case 'mapillary':
+    } else if (_datum.__service__ === 'mapillary') {
         annotation.type = 'mapillary_accept_feature';
         service = services.mapillary;
-        break;
-      default:
+    } else {
         service = services.fbMLRoads;
     }
-    // const service = _datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
-    console.log(service)
     const graph = service.graph(_datum.__datasetid__);
-    console.log(graph)
     const sourceTag = _datum.tags && _datum.tags.source;
     if (sourceTag) annotation.source = sourceTag;
 
