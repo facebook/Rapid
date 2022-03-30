@@ -71,7 +71,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
   function onHistoryChange(/* difference */) {
     const annotation = context.history().peekAnnotation();
     if (!wasRapidEdit(annotation)) return;
-    console.log("hello")
     _actioned.add(annotation.id);
     if (_enabled) { dispatch.call('change'); }  // redraw
   }
@@ -281,7 +280,6 @@ export function svgRapidFeatures(projection, context, dispatch) {
         let visibleData = service
           .intersects(internalID, context.map().extent())
           .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
-
         geoData.points = visibleData
           .filter(d => d.type === 'node' && !!d.__fbid__);  // standalone only (not vertices/childnodes)
 

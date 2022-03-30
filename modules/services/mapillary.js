@@ -313,40 +313,37 @@ export default {
     // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
     filteredMapFeatures: function(projection) {
         const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
-        const mapFeatures = this.mapFeatures(projection);
-        const rawData = mapFeatures.filter((feature) =>  filterObjects.includes(feature.value));
-        const data = this.rapidData(rawData);
-        var datasetID = 'rapidMapFeatures';
+        const filteredMapFeatures = this.mapFeatures(projection).filter((feature) =>  filterObjects.includes(feature.value));
+        const rapidData = this.rapidData(filteredMapFeatures);
+        const datasetID = 'rapidMapFeatures';
         var ds = _datasets[datasetID];
+
+        //Construct graph
         var graph, tree, cache;
-        if (ds) {
-            graph = ds.graph;
-            tree = ds.tree;
-            cache = ds.cache;
-        } else {
-            // as tile requests arrive, setup the resources needed to hold the results
-            graph = coreGraph();
-            tree = coreTree(graph);
-            cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-            ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-            _datasets[datasetID] = ds;
-        }
-        graph.rebase(data, [graph], true);
-        return data;
+        graph = coreGraph();
+        tree = coreTree(graph);
+        cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+        _datasets[datasetID] = ds;
+        graph.rebase(rapidData, [graph], true);
+
+        return rapidData;
     },
 
     // Convert to osmNode
     rapidData: function(data) {
         return data.map(function(d) {
-            var meta = {
-                __fbid__ : -d.id,
-                __datasetid__ : "rapidMapFeatures",
-                __service__: "mapillary",
+            d.id = d.id.toString();
+            const meta = {
+                __fbid__: -d.id,
+                __origid__: d.id,
+                __service__: 'mapillary',
+                __datasetid__: 'rapidMapFeatures',
                 tags : {
                     tag: 'sample tag',
                     rapid: 'hello world'
-                }
-            }
+                }                
+             }
             return Object.assign(osmNode(d), meta);
         })
     },
