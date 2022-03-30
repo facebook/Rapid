@@ -116,6 +116,9 @@ export class PixiLayer {
   }
   set visible(val) {
     this.container.visible = val;
+    if (!val) {
+      this.seenFeature.forEach((ts, feature) => feature.visible = false);
+    }
   }
 
   /**
