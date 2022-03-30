@@ -61,6 +61,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
         service = services.fbMLRoads;
         break;
       case 'mapillary':
+        annotation.type = 'mapillary_accept_feature';
         service = services.mapillary;
         break;
       default:

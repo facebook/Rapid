@@ -23,35 +23,35 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
         svgRapidMapillaryFeatures.initialized = true;
 
         _actioned = new Set();
-    
         // Watch history to synchronize the displayed layer with features
         // that have been accepted or rejected by the user.
-        context.history().on('undone.mapfeatures', onHistoryUndone);
-        context.history().on('change.mapfeatures', onHistoryChange);
-        context.history().on('restore.mapfeatures', onHistoryRestore);
+        context.history().on('undone.mapillaryFeatures', onHistoryUndone);
+        context.history().on('change.mapillaryFeatures', onHistoryChange);
+        context.history().on('restore.mapillaryFeatures', onHistoryRestore);
     }
 
     function wasRapidEdit(annotation) {
-        return annotation && annotation.type && /^rapid/.test(annotation.type);
+        return annotation && annotation.type && /^mapillary/.test(annotation.type);
     }
 
     function onHistoryUndone(currentStack, previousStack) {
         const annotation = previousStack.annotation;
         if (!wasRapidEdit(annotation)) return;
-    
+
         _actioned.delete(annotation.id);
         if (svgRapidMapillaryFeatures.enabled) { dispatch.call('change'); }  // redraw
       }
-    
-    
+
+
     function onHistoryChange(/* difference */) {
+        console.log('at onHistoryChange');
         const annotation = context.history().peekAnnotation();
         if (!wasRapidEdit(annotation)) return;
         _actioned.add(annotation.id);
         if (svgRapidMapillaryFeatures.enabled) { dispatch.call('change'); }  // redraw
     }
-    
-    
+
+
     function onHistoryRestore() {
         _actioned = new Set();
         context.history().peekAllAnnotations().forEach(annotation => {
