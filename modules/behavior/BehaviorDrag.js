@@ -134,6 +134,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
     if (!(target && target.obj && target.obj.__data__ instanceof osmNode)) return; //clicked on the stage, an area, or a way nothing to drag
     if (e.data.originalEvent.button === 2) return; //Right-click should not cause a drag event.
+    if (!e.data.originalEvent.offsetY) return; //offset vars seem to only exist on desktop browsers- prevent this code from firing on mobile.
     if (this._downData) return; // Pointer already down
 
     const pointerId = e.pointerId || 'mouse';
