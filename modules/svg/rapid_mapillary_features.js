@@ -44,7 +44,6 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
 
 
     function onHistoryChange(/* difference */) {
-        console.log('at onHistoryChange');
         const annotation = context.history().peekAnnotation();
         if (!wasRapidEdit(annotation)) return;
         _actioned.add(annotation.id);
@@ -163,7 +162,8 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
 
     function update() {
         const service = getService();
-        let data = (service ? service.filteredMapFeatures(projection) : []);
+        let data = (service ? service.filteredMapFeatures(projection) : [])
+            .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
         data = filterData(data);
 
 

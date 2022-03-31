@@ -90,9 +90,7 @@ export function actionRapidAcceptFeature(entityID, extGraph) {
             var node = osmNode(extNode);
             node.tags = Object.assign({}, node.tags);
             removeMetadata(node);
-            console.log(graph)
             graph = graph.replace(node);
-            console.log(graph)
             return node;
         }
 

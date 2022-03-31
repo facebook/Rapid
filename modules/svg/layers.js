@@ -76,7 +76,7 @@ export function svgLayers(projection, context) {
 
         groups.enter()
             .append('g')
-            .attr('class', function(d) {console.log(d); return 'data-layer ' + d.id; })
+            .attr('class', function(d) { return 'data-layer ' + d.id; })
             .merge(groups)
             .each(function(d) { d3_select(this).call(d.layer); });
     }
