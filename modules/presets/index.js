@@ -113,6 +113,10 @@ export function presetIndex() {
 
         if (p) {   // add or replace
           const isAddable = !_addablePresetIDs || _addablePresetIDs.has(presetID);
+
+// hack - give Address preset the circular icon
+if (presetID === 'address') p.icon ='maki-circle-stroked';
+
           p = presetPreset(presetID, p, isAddable, _fields, _presets);
           if (p.locationSet) newLocationSets.push(p);
           _presets[presetID] = p;

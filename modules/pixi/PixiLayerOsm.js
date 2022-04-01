@@ -413,6 +413,10 @@ export class PixiLayerOsm extends PixiLayer {
           markerStyle.labelTint = 0xdddddd;
           markerStyle.iconAlpha = 0.6;
         }
+        if (preset.id === 'address') {
+          markerStyle.markerName = 'largeCircle';
+          markerStyle.iconName = 'maki-circle-stroked';
+        }
 
         feature.style = markerStyle;
         feature.label = utilDisplayName(node);
