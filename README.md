@@ -6,6 +6,11 @@ RapiD is an extension of the [iD editor](https://github.com/openstreetmap/iD) fo
 
 For basic information about the iD editor (architecture, build and installation instructions, etc.), please refer to the [iD github repo](https://github.com/openstreetmap/iD). RapiD shares the same building and installation process as iD.
 
+## Start mapping
+
+* Use [mapwith.ai/rapid](https://mapwith.ai/rapid#background=Maxar-FB&disable_features=boundaries&map=16/2.248562199999995/32.873861600000055) for the current release.
+* Learn more at [mapwith.ai](https://mapwith.ai/).
+
 ## Participate!
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
