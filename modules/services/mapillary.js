@@ -33,13 +33,30 @@ let _mlyShowFeatureDetections = false;
 let _mlyShowSignDetections = false;
 let _mlyViewer;
 let _mlyViewerFilter = ['all'];
-let _datasets = {}
+let _dataset;
 
+const rapidTypes = ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
+
+
+// Convert mapillary point data to rapid feature that can also be an osmNode
+function rapidData(datum) {
+    let d = {};
+        d.id = 'n' + datum.id.toString();
+        const meta = {
+            __fbid__: '-' + d.id,
+            __origid__: d.id,
+            __service__: 'mapillary',
+            __datasetid__: 'rapidMapFeatures',
+            tags: {
+                tag: 'sample tag',
+                rapid: 'hello world'
+            }
+        };
+        return Object.assign(osmNode(d), meta);
+}
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
-    // var ds = _datasets[datasetID];
-    // var graph, tree, cache;
     // if (ds) {
     //     graph = ds.graph;
     //     tree = ds.tree;
@@ -50,7 +67,7 @@ function loadTiles(which, url, maxZoom, projection) {
     //     tree = coreTree(graph);
     //     cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
     //     ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-    //     _datasets[datasetID] = ds;
+    //     _dataset = ds;
     // }
 
     // determine the needed tiles to cover the view
@@ -109,6 +126,7 @@ function loadTile(which, url, tile) {
 function loadTileDataToCache(data, tile, which) {
     const vectorTile = new VectorTile(new Protobuf(data));
     let features,
+        rapidCandidateFeatures,
         cache,
         layer,
         i,
@@ -159,6 +177,7 @@ function loadTileDataToCache(data, tile, which) {
 
     if (vectorTile.layers.hasOwnProperty('point')) {
         features = [];
+        rapidCandidateFeatures = [];
         cache = _mlyCache[which];
         layer = vectorTile.layers.point;
 
@@ -173,12 +192,26 @@ function loadTileDataToCache(data, tile, which) {
                 last_seen_at: feature.properties.last_seen_at,
                 value: feature.properties.value
             };
+
+            let j = 0;
+            //If the current feature is of the appropriate type to be a rapid 'addable' feature
+            if (rapidTypes.includes(feature.properties.value)) {
+                //Ensure that we record it to the list of new graph nodes.
+                let graphNode = rapidData(d);
+                rapidCandidateFeatures.push(graphNode);
+                console.log(j);
+                j++;
+            }
             features.push({
                 minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
             });
         }
         if (cache.rtree) {
             cache.rtree.load(features);
+        }
+        if (rapidCandidateFeatures.length > 0) {
+            _dataset.graph.rebase(rapidCandidateFeatures, [_dataset.graph], true);
+            _dataset.tree.rebase(rapidCandidateFeatures, true);
         }
     }
 
@@ -262,8 +295,7 @@ export default {
         var graph = coreGraph();
         var tree = coreTree(graph);
         var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-        var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-        _datasets[datasetID] = ds;
+        _dataset = { id: datasetID, graph: graph, tree: tree, cache: cache };
     },
 
     // Reset cache and state
@@ -283,14 +315,11 @@ export default {
 
         _mlyActiveImage = null;
 
-        Object.values(_datasets).forEach(function(ds) {
-            if (ds.cache.inflight) {
-                Object.values(ds.cache.inflight).forEach(abortRequest);
-            }
-            ds.graph = coreGraph();
-            ds.tree = coreTree(ds.graph);
-            ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-        });
+        if (_dataset) {
+            _dataset.graph = coreGraph();
+            _dataset.tree = coreTree(_dataset.graph);
+            _dataset.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        }
     },
 
     // Get visible images
@@ -314,43 +343,30 @@ export default {
     filteredMapFeatures: function(projection) {
         const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
         const filteredMapFeatures = this.mapFeatures(projection).filter((feature) =>  filterObjects.includes(feature.value));
-        const rapidData = this.rapidData(filteredMapFeatures);
-        const datasetID = 'rapidMapFeatures';
-        var ds = _datasets[datasetID];
+//        const rapidData = this.rapidData(filteredMapFeatures);
+//        const datasetID = 'rapidMapFeatures';
+//        var ds = _datasets[datasetID];
 
         //Construct graph
-        var graph, tree, cache;
-        graph = coreGraph();
-        tree = coreTree(graph);
-        cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-        ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-        _datasets[datasetID] = ds;
-        graph.rebase(rapidData, [graph], true);
+        // var graph, tree, cache;
+        // graph = coreGraph();
+        // tree = coreTree(graph);
+        // cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+//        ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
+//        _datasets[datasetID] = ds;
+//        graph.rebase(rapidData, [graph], true);
 
-        return rapidData;
+        return filteredMapFeatures;
     },
 
-    // Convert to osmNode
-    rapidData: function(data) {
-        return data.map(function(d) {
-            d.id = d.id.toString();
-            const meta = {
-                __fbid__: -d.id,
-                __origid__: d.id,
-                __service__: 'mapillary',
-                __datasetid__: 'rapidMapFeatures',
-                tags : {
-                    tag: 'sample tag',
-                    rapid: 'hello world'
-                }                
-             }
-            return Object.assign(osmNode(d), meta);
-        })
+    graph: function () {
+        return _dataset && _dataset.graph;
     },
 
-    graph: function (datasetID) {
-        var ds = _datasets[datasetID];
-        return ds && ds.graph;
+    intersects: function (extent) {
+        const ds = _dataset;
+        if (!ds || !ds.tree || !ds.graph) return [];
+        return ds.tree.intersects(extent, ds.graph);
     },
 
     // Get cached image by id

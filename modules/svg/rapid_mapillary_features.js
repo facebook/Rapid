@@ -162,7 +162,7 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
 
     function update() {
         const service = getService();
-        let data = (service ? service.filteredMapFeatures(projection) : [])
+        let data = (service ? service.intersects(context.map().extent()) : [])
             .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
         data = filterData(data);
 
