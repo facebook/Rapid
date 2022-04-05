@@ -95,6 +95,9 @@ export function uiRapidFeatureInspector(context, keybinding) {
       id: _datum.id,
       origid: _datum.__origid__
     };
+    if (_datum.__service__ === 'mapillary') {
+      annotation.type = 'mapillary_ignore_feature';
+    }
     context.perform(actionNoop(), annotation);
     context.enter(modeBrowse(context));
   }

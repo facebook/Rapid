@@ -56,20 +56,12 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
         context.history().peekAllAnnotations().forEach(annotation => {
             if (wasRapidEdit(annotation)) {
             _actioned.add(annotation.id);
-            // origid (the original entity ID), a.k.a. datum.__origid__,
-            // is a hack used to deal with non-deterministic way-splitting
-            // in the roads service. Each way "split" will have an origid
-            // attribute for the original way it was derived from. In this
-            // particular case, restoring from history on page reload, we
-            // prevent new splits (possibly different from before the page
-            // reload) from being displayed by storing the origid and
-            // checking against it in render().
             if (annotation.origid) {
                 _actioned.add(annotation.origid);
             }
             }
         });
-        if (_actioned.size && _enabled) {
+        if (_actioned.size && svgRapidMapillaryFeatures.enabled) {
             dispatch.call('change');  // redraw
         }
     }
@@ -119,8 +111,11 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
         context.map().centerEase(d.loc);
 
         const selectedImageId = service.getActiveImage() && service.getActiveImage().id;
-
-        service.getDetections(d.id).then(detections => {
+        var id = d.id;
+        if(d.value !== undefined) {
+            id = id.substring(1);
+        }
+        service.getDetections(id).then(detections => {
             if (detections.length) {
                 const imageId = detections[0].image.id;
                 if (imageId === selectedImageId) {

@@ -41,18 +41,19 @@ const rapidTypes = ['object--support--utility-pole', 'object--street-light', 'ob
 // Convert mapillary point data to rapid feature that can also be an osmNode
 function rapidData(datum) {
     let d = {};
-        d.id = 'n' + datum.id.toString();
-        const meta = {
-            __fbid__: '-' + d.id,
-            __origid__: d.id,
-            __service__: 'mapillary',
-            __datasetid__: 'rapidMapFeatures',
-            tags: {
-                tag: 'sample tag',
-                rapid: 'hello world'
-            }
-        };
-        return Object.assign(osmNode(d), meta);
+    Object.assign(d, datum);
+    d.id = 'n' + d.id;
+    const meta = {
+        __fbid__: '-' + d.id,
+        __origid__: d.id,
+        __service__: 'mapillary',
+        __datasetid__: 'rapidMapFeatures',
+        tags: {
+            tag: 'sample tag',
+            rapid: 'hello world'
+        }
+    };
+    return Object.assign(osmNode(d), meta);
 }
 
 // Load all data for the specified type from Mapillary vector tiles
