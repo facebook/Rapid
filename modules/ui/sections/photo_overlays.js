@@ -6,6 +6,7 @@ import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 import { utilGetSetValue, utilNoAuto } from '../../util';
+import { icon } from '../intro/helper';
 
 export function uiSectionPhotoOverlays(context) {
 
@@ -91,7 +92,7 @@ export function uiSectionPhotoOverlays(context) {
             .html(function(d) {
                 var id = d.id;
                 if (id === 'mapillary-signs') id = 'photo_overlays.traffic_signs';
-                return t.html(id.replace(/-/g, '_') + '.title');
+                return t.html(id.replace(/-/g, '_') + '.title', { rapidicon: icon('#iD-logo-rapid', 'logo-rapid') } );
             });
 
         // Update
