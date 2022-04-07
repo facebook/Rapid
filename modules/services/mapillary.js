@@ -48,12 +48,34 @@ function rapidData(datum) {
         __origid__: d.id,
         __service__: 'mapillary',
         __datasetid__: 'rapidMapFeatures',
-        tags: {
-            tag: 'sample tag',
-            rapid: 'hello world'
-        }
+        tags:setTags(d)
+
     };
     return Object.assign(osmNode(d), meta);
+}
+
+function setTags(node) {
+    if (node.value === 'object--fire-hydrant') {
+        return {
+            emergency: 'fire_hydrant'
+        };
+    } else if (node.value === 'object--support--utility-pole') {
+        return {
+            power: 'pole'
+        };
+    } else if (node.value === 'object--street-light') {
+        return {
+            highway: 'street_lamp'
+        };
+    } else if (node.value === 'object--bench') {
+        return {
+            amenity: 'bench'
+        };
+    } else if (node.value === 'object--bike-rack') {
+        return {
+            amenity: 'bicycle_parking'
+        };
+    }
 }
 
 // Load all data for the specified type from Mapillary vector tiles
