@@ -140,8 +140,8 @@ export function coreRapidContext(context) {
             conflated: true,
             service: 'fbml',
             color: RAPID_MAGENTA,
-            label: 'Rapid Map Features',
-            license_markdown: '[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)'
+            label: t('rapid_feature_toggle.rapidMapillaryFeatures.label'),
+            license_markdown: t('rapid_feature_toggle.rapidMapillaryFeatures.license_markdown')
           }
         };
 

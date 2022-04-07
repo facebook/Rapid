@@ -80,19 +80,6 @@ function setTags(node) {
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
-    // if (ds) {
-    //     graph = ds.graph;
-    //     tree = ds.tree;
-    //     cache = ds.cache;
-    // } else {
-    //     // as tile requests arrive, setup the resources needed to hold the results
-    //     graph = coreGraph();
-    //     tree = coreTree(graph);
-    //     cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-    //     ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-    //     _dataset = ds;
-    // }
-
     // determine the needed tiles to cover the view
     const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
     const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(proj).tiles;
@@ -216,14 +203,11 @@ function loadTileDataToCache(data, tile, which) {
                 value: feature.properties.value
             };
 
-            let j = 0;
             //If the current feature is of the appropriate type to be a rapid 'addable' feature
             if (rapidTypes.includes(feature.properties.value)) {
                 //Ensure that we record it to the list of new graph nodes.
                 let graphNode = rapidData(d);
                 rapidCandidateFeatures.push(graphNode);
-                console.log(j);
-                j++;
             }
             features.push({
                 minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
@@ -362,24 +346,10 @@ export default {
         const limit = 5;
         return searchLimited(limit, projection, _mlyCache.points.rtree);
     },
+    
     // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
     filteredMapFeatures: function(projection) {
-        const filterObjects= ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
-        const filteredMapFeatures = this.mapFeatures(projection).filter((feature) =>  filterObjects.includes(feature.value));
-//        const rapidData = this.rapidData(filteredMapFeatures);
-//        const datasetID = 'rapidMapFeatures';
-//        var ds = _datasets[datasetID];
-
-        //Construct graph
-        // var graph, tree, cache;
-        // graph = coreGraph();
-        // tree = coreTree(graph);
-        // cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
-//        ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
-//        _datasets[datasetID] = ds;
-//        graph.rebase(rapidData, [graph], true);
-
-        return filteredMapFeatures;
+        return mapFeatures(projection).filter((feature) =>  rapidTypes.includes(feature.value));
     },
 
     graph: function () {
