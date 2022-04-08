@@ -36,8 +36,24 @@ let _mlyViewerFilter = ['all'];
 let _dataset;
 
 const rapidTypes = ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
-
-
+const tag_dict = {
+    'object--fire-hydrant': {
+        emergency: 'fire_hydrant'
+    },
+    'object--support--utility-pole': {
+        power: 'pole',
+        'man_made': 'utility_pole'
+    },
+    'object--street-light': {
+        highway: 'street_lamp'
+    },
+    'object--bench': {
+        amenity: 'bench'
+    },
+    'object--bike-rack': {
+        amenity: 'bicycle_parking'
+    }
+};
 // Convert mapillary point data to rapid feature that can also be an osmNode
 function rapidData(datum) {
     let d = {};
@@ -49,33 +65,12 @@ function rapidData(datum) {
         __service__: 'mapillary',
         __datasetid__: 'rapidMapFeatures',
         tags:setTags(d)
-
     };
     return Object.assign(osmNode(d), meta);
 }
 
 function setTags(node) {
-    if (node.value === 'object--fire-hydrant') {
-        return {
-            emergency: 'fire_hydrant'
-        };
-    } else if (node.value === 'object--support--utility-pole') {
-        return {
-            power: 'pole'
-        };
-    } else if (node.value === 'object--street-light') {
-        return {
-            highway: 'street_lamp'
-        };
-    } else if (node.value === 'object--bench') {
-        return {
-            amenity: 'bench'
-        };
-    } else if (node.value === 'object--bike-rack') {
-        return {
-            amenity: 'bicycle_parking'
-        };
-    }
+    return tag_dict[node.value];
 }
 
 // Load all data for the specified type from Mapillary vector tiles
@@ -346,7 +341,7 @@ export default {
         const limit = 5;
         return searchLimited(limit, projection, _mlyCache.points.rtree);
     },
-    
+
     // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
     filteredMapFeatures: function(projection) {
         return mapFeatures(projection).filter((feature) =>  rapidTypes.includes(feature.value));
