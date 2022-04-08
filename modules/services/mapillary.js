@@ -58,6 +58,7 @@ const tag_dict = {
 function rapidData(datum) {
     let d = {};
     Object.assign(d, datum);
+    d.mapillaryId = d.id;
     d.id = 'n' + d.id;
     const meta = {
         __fbid__: '-' + d.id,
@@ -70,7 +71,8 @@ function rapidData(datum) {
 }
 
 function setTags(node) {
-    return tag_dict[node.value];
+
+    return {...tag_dict[node.value] , mapillary: node.mapillaryId};
 }
 
 // Load all data for the specified type from Mapillary vector tiles
