@@ -38,20 +38,20 @@ let _dataset;
 const rapidTypes = ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
 const tag_dict = {
     'object--fire-hydrant': {
-        emergency: 'fire_hydrant'
+        'emergency': 'fire_hydrant'
     },
     'object--support--utility-pole': {
-        power: 'pole',
+        'power': 'pole',
         'man_made': 'utility_pole'
     },
     'object--street-light': {
-        highway: 'street_lamp'
+        'highway': 'street_lamp'
     },
     'object--bench': {
-        amenity: 'bench'
+        'amenity': 'bench'
     },
     'object--bike-rack': {
-        amenity: 'bicycle_parking'
+        'amenity': 'bicycle_parking'
     }
 };
 // Convert mapillary point data to rapid feature that can also be an osmNode
@@ -71,7 +71,7 @@ function rapidData(datum) {
 }
 
 function setTags(node) {
-    return Object.assign(tag_dict[node.value], {mapillary: node.mapillaryId});
+    return Object.assign(tag_dict[node.value], {'mapillary': node.mapillaryId});
 }
 
 // Load all data for the specified type from Mapillary vector tiles
