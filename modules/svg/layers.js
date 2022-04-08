@@ -25,7 +25,8 @@ import { svgRapidFeatures } from './rapid_features';
 
 
 export function svgLayers(projection, context) {
-    var dispatch = d3_dispatch('change', 'turnOffMapillary', 'turnOffRapid');
+    var dispatch = d3_dispatch('change', 'turnOffMapillary', 'turnOffRapid', 'turnOnRapid');
+    context.layerDispatch = dispatch;
     var svg = d3_select(null);
     var _layers = [
         { id: 'ai-features', layer: svgRapidFeatures(projection, context, dispatch) },

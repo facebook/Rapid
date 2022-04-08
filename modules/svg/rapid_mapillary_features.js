@@ -17,6 +17,12 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
         context.photos().on('change.mapillary_rapid_features', null);
     });
 
+    dispatch.on('turnOnRapid', () => {
+        showLayer();
+        svgRapidMapillaryFeatures.enabled = true;
+        context.photos().on('change.mapillary_rapid_features', update);
+    })
+
     function init() {
         if (svgRapidMapillaryFeatures.initialized) return;  // run once
         svgRapidMapillaryFeatures.enabled = false;
