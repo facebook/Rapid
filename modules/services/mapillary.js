@@ -35,8 +35,7 @@ let _mlyViewer;
 let _mlyViewerFilter = ['all'];
 let _dataset;
 
-const rapidTypes = ['object--support--utility-pole', 'object--street-light', 'object--bench' ,'object--bike-rack', 'object--fire-hydrant' ];
-const tag_dict = {
+const rapidTypes = {
     'object--fire-hydrant': {
         'emergency': 'fire_hydrant'
     },
@@ -65,13 +64,13 @@ function rapidData(datum) {
         __origid__: d.id,
         __service__: 'mapillary',
         __datasetid__: 'rapidMapFeatures',
-        tags:setTags(d)
+        tags: setTags(d)
     };
     return Object.assign(osmNode(d), meta);
 }
 
 function setTags(node) {
-    return Object.assign(tag_dict[node.value], {'mapillary': node.mapillaryId});
+    return Object.assign(rapidTypes[node.value], {'mapillary': node.mapillaryId});
 }
 
 // Load all data for the specified type from Mapillary vector tiles
@@ -200,7 +199,7 @@ function loadTileDataToCache(data, tile, which) {
             };
 
             //If the current feature is of the appropriate type to be a rapid 'addable' feature
-            if (rapidTypes.includes(feature.properties.value)) {
+            if (rapidTypes.hasOwnProperty(feature.properties.value)) {
                 //Ensure that we record it to the list of new graph nodes.
                 let graphNode = rapidData(d);
                 rapidCandidateFeatures.push(graphNode);
@@ -345,7 +344,7 @@ export default {
 
     // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
     filteredMapFeatures: function(projection) {
-        return mapFeatures(projection).filter((feature) =>  rapidTypes.includes(feature.value));
+        return mapFeatures(projection).filter((feature) =>  rapidTypes.hasOwnProperty(feature.value));
     },
 
     graph: function () {
