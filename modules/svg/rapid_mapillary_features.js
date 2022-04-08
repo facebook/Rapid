@@ -21,7 +21,7 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
         showLayer();
         svgRapidMapillaryFeatures.enabled = true;
         context.photos().on('change.mapillary_rapid_features', update);
-    })
+    });
 
     function init() {
         if (svgRapidMapillaryFeatures.initialized) return;  // run once
@@ -118,7 +118,7 @@ export function svgRapidMapillaryFeatures(projection, context, dispatch) {
 
         const selectedImageId = service.getActiveImage() && service.getActiveImage().id;
         var id = d.id;
-        if(d.value !== undefined) {
+        if (d.value !== undefined) {
             id = id.substring(1);
         }
         service.getDetections(id).then(detections => {

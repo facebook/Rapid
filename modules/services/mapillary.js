@@ -71,8 +71,7 @@ function rapidData(datum) {
 }
 
 function setTags(node) {
-
-    return {...tag_dict[node.value] , mapillary: node.mapillaryId};
+    return Object.assign(tag_dict[node.value], {mapillary: node.mapillaryId});
 }
 
 // Load all data for the specified type from Mapillary vector tiles

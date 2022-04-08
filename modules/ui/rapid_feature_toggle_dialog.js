@@ -40,24 +40,20 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         .map(ds => ds.id)
         .join(',');
 
-      if(dataset.id === 'rapidMapFeatures') {
+      if (dataset.id === 'rapidMapFeatures') {
         var enabled = context.layers().all()
           .filter((d) => _layerIDs.indexOf(d.id) !== -1 && d.layer && d.layer.supported() && d.layer.enabled())
           .map((d) => d.id)
-          .filter((id) => dataset.enabled ? id : id != 'rapid-mapillary-features');
-        console.log(enabled)
+          .filter((id) => dataset.enabled ? id : id !== 'rapid-mapillary-features');
         if (enabled.length) {
             hash.photo_overlay = enabled.join(',');
         } else {
             delete hash.photo_overlay;
-        } 
+        }
       }
-      console.log(context.layerDispatch)
-      if(dataset.enabled) {
-        console.log('on');
+      if (dataset.enabled) {
         context.layerDispatch.call('turnOnRapid');
       } else {
-        console.log('off');
         context.layerDispatch.call('turnOffRapid');
       }
 
