@@ -342,11 +342,6 @@ export default {
         return searchLimited(limit, projection, _mlyCache.points.rtree);
     },
 
-    // Get filtered Map (points) features (utility-pole, street-light, bench, bike-rack, fire-hydrant)
-    filteredMapFeatures: function(projection) {
-        return mapFeatures(projection).filter((feature) =>  rapidTypes.hasOwnProperty(feature.value));
-    },
-
     graph: function () {
         return _dataset && _dataset.graph;
     },
