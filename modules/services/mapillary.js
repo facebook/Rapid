@@ -37,20 +37,20 @@ let _dataset;
 
 const rapidTypes = {
     'object--fire-hydrant': {
-        'emergency': 'fire_hydrant'
+        emergency: 'fire_hydrant'
     },
     'object--support--utility-pole': {
-        'power': 'pole',
-        'man_made': 'utility_pole'
+        power: 'pole',
+        man_made: 'utility_pole'
     },
     'object--street-light': {
-        'highway': 'street_lamp'
+        highway: 'street_lamp'
     },
     'object--bench': {
-        'amenity': 'bench'
+        amenity: 'bench'
     },
     'object--bike-rack': {
-        'amenity': 'bicycle_parking'
+        amenity: 'bicycle_parking'
     }
 };
 // Convert mapillary point data to rapid feature that can also be an osmNode
