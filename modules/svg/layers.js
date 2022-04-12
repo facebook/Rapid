@@ -15,6 +15,7 @@ import { svgMapillaryPosition } from './mapillary_position';
 import { svgMapillarySigns } from './mapillary_signs';
 import { svgMapillaryMapFeatures } from './mapillary_map_features';
 import { svgOpenstreetcamImages } from './openstreetcam_images';
+import { svgRapidMapillaryFeatures } from './rapid_mapillary_features';
 import { svgOsm } from './osm';
 import { svgNotes } from './notes';
 import { svgTouch } from './touch';
@@ -25,7 +26,8 @@ import { svgRapidFeatures } from './rapid_features';
 
 
 export function svgLayers(projection, context) {
-    var dispatch = d3_dispatch('change');
+    var dispatch = d3_dispatch('change', 'turnOffMapillary', 'turnOffRapid', 'turnOnRapid');
+    context.layerDispatch = dispatch;
     var svg = d3_select(null);
     var _layers = [
         { id: 'ai-features', layer: svgRapidFeatures(projection, context, dispatch) },
@@ -41,6 +43,7 @@ export function svgLayers(projection, context) {
         { id: 'mapillary-map-features',  layer: svgMapillaryMapFeatures(projection, context, dispatch) },
         { id: 'mapillary-signs',  layer: svgMapillarySigns(projection, context, dispatch) },
         { id: 'openstreetcam', layer: svgOpenstreetcamImages(projection, context, dispatch) },
+        { id: 'rapid-mapillary-features',  layer: svgRapidMapillaryFeatures(projection, context, dispatch) },
         { id: 'debug', layer: svgDebug(projection, context, dispatch) },
         { id: 'geolocate', layer: svgGeolocate(projection, context, dispatch) },
         { id: 'touch', layer: svgTouch(projection, context, dispatch) },

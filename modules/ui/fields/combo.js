@@ -309,7 +309,6 @@ export function uiFieldCombo(field, context) {
         d3_event.stopPropagation();
 
         // don't move source=digitalglobe or source=maxar on ML road
-        // TODO: switch to check on __fbid__
         if (field.key === 'source' && _entityIDs[0] && isFbRoadId(_entityIDs[0]) && (d.value === 'digitalglobe' || d.value === 'maxar')) return;
         var t = {};
         if (_isMulti) {
@@ -548,7 +547,6 @@ export function uiFieldCombo(field, context) {
                 .attr('class', 'remove')
                 .text(function(d) {
                     // don't show 'x' on the digitalglobe/maxar label on ML road
-                    // TODO: switch to check on __fbid__
                     return _entityIDs[0] && isFbRoadId(_entityIDs[0]) && field.key === 'source' && (d.value === 'digitalglobe' || d.value === 'maxar') ? '' : '×';
                 });
 

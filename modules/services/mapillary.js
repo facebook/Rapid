@@ -8,6 +8,8 @@ import Protobuf from 'pbf';
 import RBush from 'rbush';
 
 import { utilRebind } from '../util';
+import { osmNode } from '../osm/node';
+import { coreGraph, coreTree } from '../core';
 
 const accessToken = 'MLY|3376030635833192|f13ab0bdf6b2f7b99e0d8bd5868e1d88';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -31,7 +33,45 @@ let _mlyShowFeatureDetections = false;
 let _mlyShowSignDetections = false;
 let _mlyViewer;
 let _mlyViewerFilter = ['all'];
+let _dataset;
 
+const rapidTypes = {
+    'object--fire-hydrant': {
+        emergency: 'fire_hydrant'
+    },
+    'object--support--utility-pole': {
+        power: 'pole',
+        man_made: 'utility_pole'
+    },
+    'object--street-light': {
+        highway: 'street_lamp'
+    },
+    'object--bench': {
+        amenity: 'bench'
+    },
+    'object--bike-rack': {
+        amenity: 'bicycle_parking'
+    }
+};
+// Convert mapillary point data to rapid feature that can also be an osmNode
+function rapidData(datum) {
+    let d = {};
+    Object.assign(d, datum);
+    d.mapillaryId = d.id;
+    d.id = 'n' + d.id;
+    const meta = {
+        __fbid__: '-' + d.id,
+        __origid__: d.id,
+        __service__: 'mapillary',
+        __datasetid__: 'rapidMapFeatures',
+        tags: setTags(d)
+    };
+    return Object.assign(osmNode(d), meta);
+}
+
+function setTags(node) {
+    return Object.assign(rapidTypes[node.value], {'mapillary': node.mapillaryId});
+}
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
@@ -91,6 +131,7 @@ function loadTile(which, url, tile) {
 function loadTileDataToCache(data, tile, which) {
     const vectorTile = new VectorTile(new Protobuf(data));
     let features,
+        rapidCandidateFeatures,
         cache,
         layer,
         i,
@@ -141,6 +182,7 @@ function loadTileDataToCache(data, tile, which) {
 
     if (vectorTile.layers.hasOwnProperty('point')) {
         features = [];
+        rapidCandidateFeatures = [];
         cache = _mlyCache[which];
         layer = vectorTile.layers.point;
 
@@ -155,12 +197,23 @@ function loadTileDataToCache(data, tile, which) {
                 last_seen_at: feature.properties.last_seen_at,
                 value: feature.properties.value
             };
+
+            //If the current feature is of the appropriate type to be a rapid 'addable' feature
+            if (rapidTypes.hasOwnProperty(feature.properties.value)) {
+                //Ensure that we record it to the list of new graph nodes.
+                let graphNode = rapidData(d);
+                rapidCandidateFeatures.push(graphNode);
+            }
             features.push({
                 minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
             });
         }
         if (cache.rtree) {
             cache.rtree.load(features);
+        }
+        if (rapidCandidateFeatures.length > 0) {
+            _dataset.graph.rebase(rapidCandidateFeatures, [_dataset.graph], true);
+            _dataset.tree.rebase(rapidCandidateFeatures, true);
         }
     }
 
@@ -239,6 +292,12 @@ export default {
         }
 
         this.event = utilRebind(this, dispatch, 'on');
+
+        var datasetID = 'rapidMapFeatures';
+        var graph = coreGraph();
+        var tree = coreTree(graph);
+        var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        _dataset = { id: datasetID, graph: graph, tree: tree, cache: cache };
     },
 
     // Reset cache and state
@@ -257,6 +316,12 @@ export default {
         };
 
         _mlyActiveImage = null;
+
+        if (_dataset) {
+            _dataset.graph = coreGraph();
+            _dataset.tree = coreTree(_dataset.graph);
+            _dataset.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        }
     },
 
     // Get visible images
@@ -275,6 +340,16 @@ export default {
     mapFeatures: function(projection) {
         const limit = 5;
         return searchLimited(limit, projection, _mlyCache.points.rtree);
+    },
+
+    graph: function () {
+        return _dataset && _dataset.graph;
+    },
+
+    intersects: function (extent) {
+        const ds = _dataset;
+        if (!ds || !ds.tree || !ds.graph) return [];
+        return ds.tree.intersects(extent, ds.graph);
     },
 
     // Get cached image by id
@@ -400,8 +475,19 @@ export default {
 
 
     // Load map (point) feature image sprites
-    loadObjectResources: function(context) {
-        context.ui().svgDefs.addSprites(['mapillary-object-sprite'], false /* don't override colors */ );
+    loadObjectResources: function(context, isRapidOn) {
+        var sprites = 'mapillary-object-sprite';
+        if (isRapidOn) {
+            sprites = 'rapid-mapillary-object-sprite';
+        }
+        context.ui().svgDefs.addSprites([sprites], isRapidOn /* don't override colors */ );
+        return this;
+    },
+
+    //Unload map (point) feature image sprites
+    unLoadPrevObjectResources: function(context) {
+        // eslint-disable-next-line no-unused-expressions
+        context.ui().svgDefs;
         return this;
     },
 

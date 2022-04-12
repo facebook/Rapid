@@ -381,7 +381,6 @@ export default {
           tagmap[f.name] = f.alias;  // 2. field `name` -> OSM tag (stored in `alias`)
         });
         ds.layer.tagmap = tagmap;
-
         return ds.layer;
       })
       .catch(() => { /* ignore */ });

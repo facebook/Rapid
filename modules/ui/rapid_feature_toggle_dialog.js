@@ -11,6 +11,7 @@ import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
+var _layerIDs = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam', 'rapid-mapillary-features'];
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
@@ -38,6 +39,23 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
         .join(',');
+
+      if (dataset.id === 'rapidMapFeatures') {
+        var enabled = context.layers().all()
+          .filter((d) => _layerIDs.indexOf(d.id) !== -1 && d.layer && d.layer.supported() && d.layer.enabled())
+          .map((d) => d.id)
+          .filter((id) => dataset.enabled ? id : id !== 'rapid-mapillary-features');
+        if (enabled.length) {
+            hash.photo_overlay = enabled.join(',');
+        } else {
+            delete hash.photo_overlay;
+        }
+      }
+      if (dataset.enabled) {
+        context.layerDispatch.call('turnOnRapid');
+      } else {
+        context.layerDispatch.call('turnOffRapid');
+      }
 
       if (!window.mocha) {
         window.location.replace('#' + utilQsString(hash, true));  // update hash

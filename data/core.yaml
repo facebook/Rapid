@@ -1088,6 +1088,9 @@ en:
     msBuildings:
       label: Microsoft Buildings
       license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
+    rapidMapillaryFeatures:
+      label: RapiD Mapillary Features
+      license_markdown: "[license](https://mapwith.ai/doc/license/MapWithAILicense.pdf)"
     esri:
       title: ArcGIS Datasets
       about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
@@ -1426,6 +1429,9 @@ en:
     hires: "High resolution"
   mapillary_images:
     tooltip: "Street-level photos from Mapillary"
+  rapid_mapillary_features:
+    title: "RapiD Mapillary Features {rapidicon}"
+    tooltip: "Mapillary Object detections ready to add to the map"
   mapillary_map_features:
     title: "Map Features"
     tooltip: "Map features from Mapillary"
