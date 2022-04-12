@@ -38439,7 +38439,7 @@
   function coreRapidContext(context) {
     var dispatch = dispatch$a('task_extent_set');
     var _rapidContext = {};
-    _rapidContext.version = '1.1.8';
+    _rapidContext.version = '1.1.8-tm.1';
     _rapidContext.showPowerUser = context.initialHashParams.poweruser === 'true';
 
     function distinct(value, index, self) {
