@@ -217,7 +217,6 @@ export default {
         var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
         _datasets[datasetID] = ds;
-        console.log(_datasets)
     },
 
     reset: function() {
@@ -306,7 +305,6 @@ export default {
             ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
             _datasets[datasetID] = ds;
         }
-
         var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
         var tiles = tiler.getTiles(proj).tiles;
 
@@ -318,7 +316,6 @@ export default {
                 delete cache.inflight[k];
             }
         });
-
         tiles.forEach(function(tile) {
             if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
 
@@ -334,7 +331,6 @@ export default {
                         cache.loaded[tile.id] = true;
                         dispatch.call('loadedData');
                     });
-                    console.log(dom)
                 })
                 .catch(function() {});
             cache.inflight[tile.id] = controller;
