@@ -3,24 +3,74 @@ import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
 
-export function svgMapillaryMapFeatures(projection, context, dispatch) {
+let _actioned;
+
+export function svgRapidMapillaryFeatures(projection, context, dispatch) {
     const throttledRedraw = _throttle(function () { dispatch.call('change'); }, 1000);
     const minZoom = 12;
     let layer = d3_select(null);
     let _mapillary;
 
-    dispatch.on('turnOffMapillary', () => {
+    dispatch.on('turnOffRapid', () => {
         hideLayer();
-        svgMapillaryMapFeatures.enabled = false;
-        context.photos().on('change.mapillary_map_features', null);
+        svgRapidMapillaryFeatures.enabled = false;
+        context.photos().on('change.mapillary_rapid_features', null);
+    });
+
+    dispatch.on('turnOnRapid', () => {
+        showLayer();
+        svgRapidMapillaryFeatures.enabled = true;
+        context.photos().on('change.mapillary_rapid_features', update);
     });
 
     function init() {
-        if (svgMapillaryMapFeatures.initialized) return;  // run once
-        svgMapillaryMapFeatures.enabled = false;
-        svgMapillaryMapFeatures.initialized = true;
+        if (svgRapidMapillaryFeatures.initialized) return;  // run once
+        svgRapidMapillaryFeatures.enabled = false;
+        svgRapidMapillaryFeatures.initialized = true;
+
+        _actioned = new Set();
+        // Watch history to synchronize the displayed layer with features
+        // that have been accepted or rejected by the user.
+        context.history().on('undone.mapillaryFeatures', onHistoryUndone);
+        context.history().on('change.mapillaryFeatures', onHistoryChange);
+        context.history().on('restore.mapillaryFeatures', onHistoryRestore);
     }
 
+    function wasRapidEdit(annotation) {
+        return annotation && annotation.type && /^mapillary/.test(annotation.type);
+    }
+
+    function onHistoryUndone(currentStack, previousStack) {
+        const annotation = previousStack.annotation;
+        if (!wasRapidEdit(annotation)) return;
+
+        _actioned.delete(annotation.id);
+        if (svgRapidMapillaryFeatures.enabled) { dispatch.call('change'); }  // redraw
+      }
+
+
+    function onHistoryChange(/* difference */) {
+        const annotation = context.history().peekAnnotation();
+        if (!wasRapidEdit(annotation)) return;
+        _actioned.add(annotation.id);
+        if (svgRapidMapillaryFeatures.enabled) { dispatch.call('change'); }  // redraw
+    }
+
+
+    function onHistoryRestore() {
+        _actioned = new Set();
+        context.history().peekAllAnnotations().forEach(annotation => {
+            if (wasRapidEdit(annotation)) {
+            _actioned.add(annotation.id);
+            if (annotation.origid) {
+                _actioned.add(annotation.origid);
+            }
+            }
+        });
+        if (_actioned.size && svgRapidMapillaryFeatures.enabled) {
+            dispatch.call('change');  // redraw
+        }
+    }
 
     function getService() {
         if (services.mapillary && !_mapillary) {
@@ -36,10 +86,10 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
     function showLayer() {
         const service = getService();
         if (!service) return;
-        service.loadObjectResources(context, false);
+        service.loadObjectResources(context, true);
         editOn();
-        //Turn off rapid features layer
-        dispatch.call('turnOffRapid');
+        //Turn off mapillary features layer
+        dispatch.call('turnOffMapillary');
     }
 
 
@@ -67,8 +117,11 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
         context.map().centerEase(d.loc);
 
         const selectedImageId = service.getActiveImage() && service.getActiveImage().id;
-
-        service.getDetections(d.id).then(detections => {
+        var id = d.id;
+        if (d.value !== undefined) {
+            id = id.substring(1);
+        }
+        service.getDetections(id).then(detections => {
             if (detections.length) {
                 const imageId = detections[0].image.id;
                 if (imageId === selectedImageId) {
@@ -110,8 +163,10 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
     function update() {
         const service = getService();
-        let data = (service ? service.mapFeatures(projection) : []);
+        let data = (service ? service.intersects(context.map().extent()) : [])
+            .filter(d => !_actioned.has(d.id) && !_actioned.has(d.__origid__) );  // see onHistoryRestore()
         data = filterData(data);
+
 
         const transform = svgPointTransform(projection);
 
@@ -134,12 +189,13 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
             .attr('height', '24px')
             .attr('x', '-12px')
             .attr('y', '-12px')
+            .attr('fill', 'purple')
             .attr('xlink:href', function(d) {
                 if (d.value === 'object--billboard') {
                     // no billboard icon right now, so use the advertisement icon
                     return '#object--sign--advertisement';
                 }
-                return '#' + d.value;
+                return '#' + d.value + '-rapid';
             });
 
         enter
@@ -157,7 +213,7 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     function drawMapFeatures(selection) {
-        const enabled = svgMapillaryMapFeatures.enabled;
+        const enabled = svgRapidMapillaryFeatures.enabled;
         const service = getService();
 
         layer = selection.selectAll('.layer-mapillary-map-features')
@@ -188,14 +244,14 @@ export function svgMapillaryMapFeatures(projection, context, dispatch) {
 
 
     drawMapFeatures.enabled = function(_) {
-        if (!arguments.length) return svgMapillaryMapFeatures.enabled;
-        svgMapillaryMapFeatures.enabled = _;
-        if (svgMapillaryMapFeatures.enabled) {
+        if (!arguments.length) return svgRapidMapillaryFeatures.enabled;
+        svgRapidMapillaryFeatures.enabled = _;
+        if (svgRapidMapillaryFeatures.enabled) {
             showLayer();
-            context.photos().on('change.mapillary_map_features', update);
+            context.photos().on('change.mapillary_rapid_features', update);
         } else {
             hideLayer();
-            context.photos().on('change.mapillary_map_features', null);
+            context.photos().on('change.mapillary_rapid_features', null);
         }
         dispatch.call('change');
         return this;

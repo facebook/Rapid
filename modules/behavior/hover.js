@@ -29,7 +29,6 @@ export function behaviorHover(context) {
     // use pointer events on supported platforms; fallback to mouse events
     var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
-
     function keydown(d3_event) {
         if (_altDisables && d3_event.keyCode === utilKeybinding.modifierCodes.alt) {
             _selection.selectAll('.hover')
@@ -189,7 +188,6 @@ export function behaviorHover(context) {
                 _selection.selectAll(selector)
                     .classed(suppressed ? 'hover-suppressed' : 'hover', true);
             }
-
             dispatch.call('hover', this, !suppressed && targets);
         }
     }

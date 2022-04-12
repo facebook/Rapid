@@ -72,7 +72,6 @@ export function actionRapidAcceptFeature(entityID, extGraph) {
     return function(graph) {
         var seenRelations = {};    // keep track of seen relations to avoid infinite recursion
         var extEntity = extGraph.entity(entityID);
-
         if (extEntity.type === 'node') {
             acceptNode(extEntity);
         } else if (extEntity.type === 'way') {
@@ -80,7 +79,6 @@ export function actionRapidAcceptFeature(entityID, extGraph) {
         } else if (extEntity.type === 'relation') {
             acceptRelation(extEntity);
         }
-
         return graph;
 
 
@@ -92,7 +90,6 @@ export function actionRapidAcceptFeature(entityID, extGraph) {
             var node = osmNode(extNode);
             node.tags = Object.assign({}, node.tags);
             removeMetadata(node);
-
             graph = graph.replace(node);
             return node;
         }
