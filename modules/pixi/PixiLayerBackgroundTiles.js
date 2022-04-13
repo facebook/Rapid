@@ -31,7 +31,6 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this._tiles = new Map();     // Map of tileURL -> Tile Object
     this._failed = new Set();    // Set of failed tileURLs
     this._tiler = new Tiler();
-    this._oldz = 0;
   }
 
 
@@ -48,14 +47,13 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     const k = projection.scale();
     const z = geoScaleToZoom(k, tileSize);  // use actual zoom for this, not effective zoom
 
-    if (!source || (z !== this._oldz)) {   // reset
+    if (!source || source.id === 'none') {   // no source, just clear everything
       this._tiles.forEach(tile => tile.sprite.destroy());
       this._tiles.clear();
       this.container.position.set(0, 0);  // reset imagery offset
-      this._oldz = z;
+      return;
     }
 
-    if (!source) return;
 
     // Apply imagery offset (in pixels) to the layer
     const offset = vecScale(source.offset(), Math.pow(2, z));
@@ -122,15 +120,20 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
     // update or remove the existing tiles
     this._tiles.forEach((tile, tileURL) => {
-      if (needTiles.has(tileURL)) {  // update position and scale
+      if (needTiles.has(tileURL)) {   // still want to keep this tile
+        tile.timestamp = timestamp;
+      }
+
+      if (timestamp - tile.timestamp > 5000) {  // havent needed it for 5 seconds, cull from scene
+        tile.sprite.destroy();
+        this._tiles.delete(tileURL);
+
+      } else {   // tile is visible - update position and scale
         const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
         tile.sprite.position.set(x, y);
         const size = tileSize * Math.pow(2, z - tile.xyz[2]);
         tile.sprite.width = size;
         tile.sprite.height = size;
-      } else {   // remove
-        tile.sprite.destroy();
-        this._tiles.delete(tileURL);
       }
     });
 
