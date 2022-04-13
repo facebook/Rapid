@@ -144,12 +144,14 @@ export function rendererBackground(context) {
     let imagery = base.selectAll('.layer-imagery')
       .data([0]);
 
-    imagery.enter()
-      .append('div')
-      .attr('class', 'layer layer-imagery')
-      .merge(imagery)
-      .call(baseLayer);
 
+// try letting pixi do this
+//    imagery.enter()
+//      .append('div')
+//      .attr('class', 'layer layer-imagery')
+//      .merge(imagery)
+//      .call(baseLayer);
+//
 
     let maskFilter = '';
     let mixBlendMode = '';
@@ -170,13 +172,14 @@ export function rendererBackground(context) {
     mask.exit()
       .remove();
 
-    mask.enter()
-      .append('div')
-      .attr('class', 'layer layer-mask layer-unsharp-mask')
-      .merge(mask)
-      .call(baseLayer)
-      .style('filter', maskFilter || null)
-      .style('mix-blend-mode', mixBlendMode || null);
+// not yet
+//    mask.enter()
+//      .append('div')
+//      .attr('class', 'layer layer-mask layer-unsharp-mask')
+//      .merge(mask)
+//      .call(baseLayer)
+//      .style('filter', maskFilter || null)
+//      .style('mix-blend-mode', mixBlendMode || null);
 
 
     let overlays = selection.selectAll('.layer-overlay')
@@ -185,11 +188,12 @@ export function rendererBackground(context) {
     overlays.exit()
       .remove();
 
-    overlays.enter()
-      .insert('div', '.layer-data')
-      .attr('class', 'layer layer-overlay')
-      .merge(overlays)
-      .each((layer, i, nodes) => d3_select(nodes[i]).call(layer));
+// not yet
+//    overlays.enter()
+//      .insert('div', '.layer-data')
+//      .attr('class', 'layer layer-overlay')
+//      .merge(overlays)
+//      .each((layer, i, nodes) => d3_select(nodes[i]).call(layer));
   }
 
   background.numGridSplits = function(_) {

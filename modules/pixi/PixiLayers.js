@@ -1,5 +1,6 @@
 import { utilRebind } from '../util';
 
+import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles';
 import { PixiLayerImproveOsm } from './PixiLayerImproveOsm';
 import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos';
 import { PixiLayerKeepRight } from './PixiLayerKeepRight';
@@ -34,8 +35,10 @@ export class PixiLayers {
     utilRebind(this, this.dispatch, 'on');  // very sus ??
 
     this._layers = [
-      new PixiLayerOsm(context, scene, 1),
-      new PixiLayerRapid(context, scene, 2),
+      new PixiLayerBackgroundTiles(context, scene, 1),
+
+      new PixiLayerOsm(context, scene, 5),
+      new PixiLayerRapid(context, scene, 6),
 
       new PixiLayerOsmNotes(context, scene, 10),
       new PixiLayerImproveOsm(context, scene, 11),
