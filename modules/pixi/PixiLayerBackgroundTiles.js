@@ -28,7 +28,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     layer.interactive = false;
     layer.interactiveChildren = false;
 
-    this._sprites = new Map();    // Map of tile.url -> Pixi Sprite
+    this._tiles = new Map();    // Map of tile.url -> Pixi Sprite
     this._failed = new Set();     // Set of failed tile urls
     this._tiler = new Tiler();
     this._oldz = 0;
@@ -49,15 +49,15 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     const z = geoScaleToZoom(k, tileSize);  // use actual zoom for this, not effective zoom
 
     if (!source || (z !== this._oldz)) {   // reset
-      this._sprites.clear();
-      this.container.removeChildren();
+      this._tiles.forEach(tile => tile.sprite.destroy());
+      this._tiles.clear();
       this.container.position.set(0, 0);
       this._oldz = z;
     }
 
     if (!source) return;
 
-    // Apply imagery offset in pixels
+    // Apply imagery offset (pixels) to the layer
     const offset = vecScale(source.offset(), Math.pow(2, z));
     this.container.position.set(offset[0], offset[1]);
 
@@ -66,14 +66,14 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     // including any zoomed out tiles if this field contains any holes
     let needTiles = new Map();
     let maxZoom = Math.round(z);                // the zoom we want
-    let minZoom = Math.max(0, maxZoom - 5);     // the mininimum zoom we'll accept for filling holes
+    let minZoom = Math.max(0, maxZoom - 5);     // the mininimum zoom we'll accept
     if (!source.overzoom) {
       maxZoom = minZoom = Math.floor(z);        // try no zooms outside the one we're at
     }
 
     let covered = false;
     for (let tryz = maxZoom; !covered && tryz >= minZoom; tryz--) {
-      if (!source.validZoom(tryz)) continue;  // zoom out
+      if (!source.validZoom(tryz)) continue;  // not valid here, zoom out
 
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
@@ -81,43 +81,48 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         .margin(2)  // prefetch offscreen tiles as well
         .getTiles(context.projection);
 
-      let holes = false;
+      let hasHoles = false;
       for (let i = 0; i < result.tiles.length; i++) {
         const tile = result.tiles[i];
         tile.url = source.url(tile.xyz);
 
         if (!tile.url || this._failed.has(tile.url)) {
-          holes = true;   // url invalid or has failed in the past
+          hasHoles = true;   // url invalid or has failed in the past
         } else {
           needTiles.set(tile.url, tile);
         }
       }
-      covered = !holes;
+      covered = !hasHoles;
     }
 
     // Create a Sprite for each tile
-    needTiles.forEach((needTile, tileURL) => {
-      if (this._sprites.has(tileURL)) return;  // we have it already
+    needTiles.forEach((tile, tileURL) => {
+      if (this._tiles.has(tileURL)) return;  // we made it already
 
-      const [x, y] = projection.project(needTile.wgs84Extent.min);   // left, bottom
       const sprite = new PIXI.Sprite.from(tileURL);
-      sprite.name = `${source.id}-${needTile.id}`;
-      sprite.position.set(x, y);
+      sprite.name = `${source.id}-${tile.id}`;
       sprite.anchor.set(0, 1);    // left, bottom
-      sprite.width = tileSize;
-      sprite.height = tileSize;
-      sprite.zIndex = needTile.xyz[2];   // draw zoomed tiles above unzoomed tiles
-
+      sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
       this.container.addChild(sprite);
-      this._sprites.set(tileURL, sprite);
+
+      tile.sprite = sprite;
+      this._tiles.set(tileURL, tile);
     });
 
-    // cull
-    this._sprites.forEach((sprite, tileURL) => {
-      if (needTiles.has(tileURL)) return;   // still need it
-      this.container.removeChild(sprite);
-      // sprite.destroy();
+    // update or remove the existing tiles
+    this._tiles.forEach((tile, tileURL) => {
+      if (needTiles.has(tileURL)) {  // update position and scale
+        const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
+        tile.sprite.position.set(x, y);
+        const size = tileSize * Math.pow(2, z - tile.xyz[2]);
+        tile.sprite.width = size;
+        tile.sprite.height = size;
+      } else {   // remove
+        tile.sprite.destroy();
+        this._tiles.delete(tileURL);
+      }
     });
+
   }
 
 }
