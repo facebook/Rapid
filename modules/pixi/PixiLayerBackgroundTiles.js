@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Projection, Tiler, geoScaleToZoom, vecScale, vecLength } from '@id-sdk/math';
+import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 import { PixiLayer } from './PixiLayer';
 
 const LAYERID = 'background';
@@ -22,13 +22,13 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.scene = scene;
     this.enabled = true;   // background imagery should be enabled by default
 
-    // tiles in this layer don't actually need to be interactive
+    // items in this layer don't need to be interactive
     const layer = this.container;
     layer.buttonMode = false;
     layer.interactive = false;
     layer.interactiveChildren = false;
 
-    this._tiles = new Map();     // Map of tileURL -> Tile Object
+    this._tileMaps = new Map();  // Map (sourceID -> Map(tileURL -> Tile Object))
     this._failed = new Set();    // Set of failed tileURLs
     this._tiler = new Tiler();
   }
@@ -40,25 +40,75 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    * @param projection   pixi projection to use for rendering
    */
   render(timestamp, projection) {
+    const background = this.context.background();
+
+    // Collect tile sources - baselayer and overlays
+    let tileSources = new Map();   // Map (tilesource Object -> zIndex)
+    let tileSourceIDs = new Set();
+    const base = background.baseLayerSource();
+    if (base && base.id !== 'none') {
+      tileSources.set(base, -1);
+      tileSourceIDs.add(base.id);
+    }
+    background.overlayLayerSources().forEach((overlay, index) => {
+      if (overlay.id === 'mapbox_locator_overlay') {
+        index = 999;  // render the locator labels above all other overlays
+      }
+      tileSources.set(overlay, index);
+      tileSourceIDs.add(overlay.id);
+    });
+
+
+
+    // Render each tile source
+    tileSources.forEach((zIndex, source) => {
+      if (!source || source.id === 'none') return;
+
+      let tileMap = this._tileMaps.get(source.id);
+      if (!tileMap) {
+        tileMap = new Map();
+        this._tileMaps.set(source.id, tileMap);
+      }
+
+      // Get a container for the tiles (create if needed)
+      const sourceContainer = this.getSourceContainer(source.id);
+      sourceContainer.zIndex = zIndex;
+
+      this.renderTileSource(timestamp, projection, source, sourceContainer, tileMap);
+    });
+
+
+    // Remove any tile sources containers and data not needed anymore
+    this.container.children.forEach(sourceContainer => {
+      const sourceID = sourceContainer.name;
+      if (!tileSourceIDs.has(sourceID)) {
+        sourceContainer.destroy({ children: true, texture: true, baseTexture: true });
+        this._tileMaps.delete(sourceID);
+      }
+    });
+
+  }
+
+
+  /**
+   * renderTileSource
+   * @param timestamp          timestamp in milliseconds
+   * @param projection         pixi projection to use for rendering
+   * @param source             imagery tile source Object
+   * @param sourcecontainer    Pixi container to render the tiles to
+   * @param tileMap            Map(tileURL -> Tile) for this tile source
+   */
+  renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const thiz = this;
     const context = this.context;
-    const source = context.background().baseLayerSource();
-    const tileSize = (source && source.tileSize) || 256;
+
+    const tileSize = source.tileSize || 256;
     const k = projection.scale();
     const z = geoScaleToZoom(k, tileSize);  // use actual zoom for this, not effective zoom
 
-    if (!source || source.id === 'none') {   // no source, just clear everything
-      this._tiles.forEach(tile => tile.sprite.destroy());
-      this._tiles.clear();
-      this.container.position.set(0, 0);  // reset imagery offset
-      return;
-    }
-
-
-    // Apply imagery offset (in pixels) to the layer
+    // Apply imagery offset (in pixels) to the source container
     const offset = vecScale(source.offset(), Math.pow(2, z));
-    this.container.position.set(offset[0], offset[1]);
-
+    sourceContainer.position.set(offset[0], offset[1]);
 
     // Determine tiles needed to cover the view,
     // including any zoomed out tiles if this field contains any holes
@@ -95,13 +145,13 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
     // Create a Sprite for each tile
     needTiles.forEach((tile, tileURL) => {
-      if (this._tiles.has(tileURL)) return;  // we made it already
+      if (tileMap.has(tileURL)) return;  // we made it already
 
       const sprite = new PIXI.Sprite.from(tileURL);
       sprite.name = `${source.id}-${tile.id}`;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
-      this.container.addChild(sprite);
+      sourceContainer.addChild(sprite);
 
       const baseTexture = sprite.texture.baseTexture;
       baseTexture
@@ -115,18 +165,18 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       }
 
       tile.sprite = sprite;
-      this._tiles.set(tileURL, tile);
+      tileMap.set(tileURL, tile);
     });
 
-    // update or remove the existing tiles
-    this._tiles.forEach((tile, tileURL) => {
+    // Update or remove the existing tiles
+    tileMap.forEach((tile, tileURL) => {
       if (needTiles.has(tileURL)) {   // still want to keep this tile
         tile.timestamp = timestamp;
       }
 
       if (timestamp - tile.timestamp > 5000) {  // havent needed it for 5 seconds, cull from scene
-        tile.sprite.destroy();
-        this._tiles.delete(tileURL);
+        tile.sprite.destroy({ children: true, texture: true, baseTexture: true });
+        tileMap.delete(tileURL);
 
       } else {   // tile is visible - update position and scale
         const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
@@ -149,6 +199,25 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     }
 
   }
+
+
+  /**
+   * getSourceContainer
+   * @param sourceID
+   */
+  getSourceContainer(sourceID) {
+    let sourceContainer = this.container.getChildByName(sourceID);
+    if (!sourceContainer) {
+      sourceContainer = new PIXI.Container();
+      sourceContainer.name = sourceID;
+      sourceContainer.interactive = false;
+      sourceContainer.interactiveChildren = false;
+      sourceContainer.sortableChildren = true;
+      this.container.addChild(sourceContainer);
+    }
+    return sourceContainer;
+  }
+
 
 }
 
