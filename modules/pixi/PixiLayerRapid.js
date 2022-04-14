@@ -6,6 +6,7 @@ import { PixiLayer } from './PixiLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
+import { utilDisplayName } from '../util';
 
 const LAYERID = 'rapid';
 const MINZOOM = 12;
@@ -312,6 +313,7 @@ export class PixiLayerRapid extends PixiLayer {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
     const style = {
+      labelTint: color,
       fill: { width: 2, color: color, alpha: 0.3 }
       // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
     };
@@ -344,6 +346,7 @@ export class PixiLayerRapid extends PixiLayer {
 
       if (feature.dirty) {
         feature.style = style;
+        feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -376,12 +379,14 @@ export class PixiLayerRapid extends PixiLayer {
 
       if (feature.dirty) {
         const style = {
+          labelTint: color,
           casing: { width: 5, color: 0x444444 },
           stroke: { width: 3, color: color }
         };
         style.reversePoints = (entity.tags.oneway === '-1');
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
+        feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -422,12 +427,15 @@ export class PixiLayerRapid extends PixiLayer {
       feature.visible = true;
 
       if (feature.dirty) {
+        feature.style = pointStyle;
+
+        feature.label = utilDisplayName(entity);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
-        if (housenumber) {
+        if (!feature.label && housenumber) {
           feature.label = housenumber;
         }
-        feature.style = pointStyle;
+
         feature.update(projection, zoom);
         scene.update(feature);
       }
@@ -454,6 +462,14 @@ export class PixiLayerRapid extends PixiLayer {
 
       if (feature.dirty) {
         feature.style = vertexStyle;
+
+        feature.label = utilDisplayName(entity);
+        // experiment: label addresses
+        const housenumber = entity.tags['addr:housenumber'];
+        if (!feature.label && housenumber) {
+          feature.label = housenumber;
+        }
+
         feature.update(projection, zoom);
         scene.update(feature);
       }
