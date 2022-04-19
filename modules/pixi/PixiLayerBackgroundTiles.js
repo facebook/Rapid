@@ -28,7 +28,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     layer.interactive = false;
     layer.interactiveChildren = false;
 
-    this._tileMaps = new Map();  // Map (sourceID -> Map(tileURL -> Tile Object))
+    this._tileMaps = new Map();  // Map (sourceID -> Map(tile.id -> Tile))
     this._failed = new Set();    // Set of failed tileURLs
     this._tiler = new Tiler();
   }
@@ -66,7 +66,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
       let tileMap = this._tileMaps.get(source.id);
       if (!tileMap) {
-        tileMap = new Map();
+        tileMap = new Map();   // Map (tile.id -> Tile)
         this._tileMaps.set(source.id, tileMap);
       }
 
@@ -96,11 +96,13 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    * @param projection         pixi projection to use for rendering
    * @param source             imagery tile source Object
    * @param sourcecontainer    Pixi container to render the tiles to
-   * @param tileMap            Map(tileURL -> Tile) for this tile source
+   * @param tileMap            Map(tile.id -> Tile) for this tile source
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const thiz = this;
     const context = this.context;
+    const SHOWDEBUG = !source.overlay && context.getDebug('tile');
+    const osm = context.connection();
 
     const tileSize = source.tileSize || 256;
     const k = projection.scale();
@@ -110,9 +112,9 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     const offset = vecScale(source.offset(), Math.pow(2, z));
     sourceContainer.position.set(offset[0], offset[1]);
 
-    // Determine tiles needed to cover the view,
+    // Determine tiles needed to cover the view at the zoom we want,
     // including any zoomed out tiles if this field contains any holes
-    let needTiles = new Map();
+    let needTiles = new Map();                  // Map(tile.id -> tile)
     let maxZoom = Math.round(z);                // the zoom we want
     let minZoom = Math.max(0, maxZoom - 5);     // the mininimum zoom we'll accept
     if (!source.overzoom) {
@@ -120,34 +122,41 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     }
 
     let covered = false;
-    for (let tryz = maxZoom; !covered && tryz >= minZoom; tryz--) {
-      if (!source.validZoom(tryz)) continue;  // not valid here, zoom out
+    for (let tryZoom = maxZoom; !covered && tryZoom >= minZoom; tryZoom--) {
+      if (!source.validZoom(tryZoom)) continue;  // not valid here, zoom out
 
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
-        .zoomRange(tryz)
-        .margin(2)  // prefetch offscreen tiles as well
+        .zoomRange(tryZoom)
+        .margin(2)  // prefetch some rows of offscreen tiles as well
         .getTiles(context.projection);
 
       let hasHoles = false;
       for (let i = 0; i < result.tiles.length; i++) {
         const tile = result.tiles[i];
-        tile.url = source.url(tile.xyz);
 
+        // skip locator overlay tiles where we have osm data loaded there
+        if (osm && source.id === 'mapbox_locator_overlay') {
+          const loc = tile.wgs84Extent.center();
+          if (osm.isDataLoaded(loc)) continue;
+        }
+
+        tile.url = source.url(tile.xyz);
         if (!tile.url || this._failed.has(tile.url)) {
           hasHoles = true;   // url invalid or has failed in the past
         } else {
-          needTiles.set(tile.url, tile);
+          needTiles.set(tile.id, tile);
         }
       }
       covered = !hasHoles;
     }
 
-    // Create a Sprite for each tile
-    needTiles.forEach((tile, tileURL) => {
-      if (tileMap.has(tileURL)) return;  // we made it already
 
-      const sprite = new PIXI.Sprite.from(tileURL);
+    // Create a Sprite for each tile
+    needTiles.forEach(tile => {
+      if (tileMap.has(tile.id)) return;   // we made it already
+
+      const sprite = new PIXI.Sprite.from(tile.url);
       sprite.name = `${source.id}-${tile.id}`;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
@@ -155,8 +164,15 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
       const baseTexture = sprite.texture.baseTexture;
       baseTexture
-        .on('error', () => error(tileURL))
-        .on('loaded', () => loaded(tileURL));
+        .on('error', () => {
+          thiz._failed.add(tile.url);
+          thiz.context.map().deferredRedraw();
+        })
+        .on('loaded', () => {
+          thiz._failed.delete(tile.url);
+          tile.loaded = true;
+          thiz.context.map().deferredRedraw();
+        });
 
       // Workaround for "uncaught promise" errors (Pixi never catches the Promise rejection, but we can)
       const prom = baseTexture.resource && baseTexture.resource._load;
@@ -165,38 +181,38 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       }
 
       tile.sprite = sprite;
-      tileMap.set(tileURL, tile);
+      tileMap.set(tile.id, tile);
     });
 
+
     // Update or remove the existing tiles
-    tileMap.forEach((tile, tileURL) => {
-      if (needTiles.has(tileURL)) {   // still want to keep this tile
+    tileMap.forEach(tile => {
+      let keepTile = false;
+
+      // Keep this tile if it is in the `needTiles` map.
+      if (needTiles.has(tile.id)) {
+        keepTile = true;
         tile.timestamp = timestamp;
+
+      // Keep base (not overlay) tiles around a little while longer,
+      // so they can stand in for a needed tile that has not loaded yet.
+      } else if (!source.overlay) {
+        keepTile = (timestamp - tile.timestamp < 3000);
       }
 
-      if (timestamp - tile.timestamp > 5000) {  // havent needed it for 5 seconds, cull from scene
-        tile.sprite.destroy({ children: true, texture: true, baseTexture: true });
-        tileMap.delete(tileURL);
-
-      } else {   // tile is visible - update position and scale
+      if (keepTile) {   // tile may be visible - update position and scale
         const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
         tile.sprite.position.set(x, y);
         const size = tileSize * Math.pow(2, z - tile.xyz[2]);
         tile.sprite.width = size;
         tile.sprite.height = size;
+
+      } else {
+        tile.sprite.destroy({ children: true, texture: true, baseTexture: true });
+        tile.sprite = null;
+        tileMap.delete(tile.id);
       }
     });
-
-
-    function loaded(tileURL) {
-      thiz._failed.delete(tileURL);
-      thiz.context.map().deferredRedraw();
-    }
-
-    function error(tileURL) {
-      thiz._failed.add(tileURL);
-      thiz.context.map().deferredRedraw();
-    }
 
   }
 
@@ -218,6 +234,4 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     return sourceContainer;
   }
 
-
 }
-
