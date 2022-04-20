@@ -52,6 +52,18 @@ export class PixiRenderer {
     // Prepare textures
     prepareTextures(context, this.pixi.renderer);
 
+    // Prepare a basic bitmap font that we can use for things like debug messages
+    PIXI.BitmapFont.from('bitmap', {
+      fill: 0xffffff,
+      fontSize: 14,
+      stroke: 0x333333,
+      strokeThickness: 2
+    },{
+      chars: PIXI.BitmapFont.ASCII,
+      padding: 0,
+      resolution: 2
+    });
+
     // Setup the Ticker
     const ticker = this.pixi.ticker;
     if (AUTOTICK) {       // redraw automatically every frame

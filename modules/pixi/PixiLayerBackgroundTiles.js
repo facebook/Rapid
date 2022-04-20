@@ -23,10 +23,28 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.enabled = true;   // background imagery should be enabled by default
 
     // items in this layer don't need to be interactive
-    const layer = this.container;
-    layer.buttonMode = false;
-    layer.interactive = false;
-    layer.interactiveChildren = false;
+    const layerContainer = this.container;
+    layerContainer.buttonMode = false;
+    layerContainer.interactive = false;
+    layerContainer.interactiveChildren = false;
+
+    const debugContainer = new PIXI.Container();
+    debugContainer.name = 'debug';
+    debugContainer.buttonMode = false;
+    debugContainer.interactive = false;
+    debugContainer.interactiveChildren = false;
+    debugContainer.sortableChildren = false;
+    this.debugContainer = debugContainer;
+
+    const tileContainer = new PIXI.Container();
+    tileContainer.name = 'tiles';
+    tileContainer.buttonMode = false;
+    tileContainer.interactive = false;
+    tileContainer.interactiveChildren = false;
+    tileContainer.sortableChildren = true;
+    this.tileContainer = tileContainer;
+
+    layerContainer.addChild(tileContainer, debugContainer);
 
     this._tileMaps = new Map();  // Map (sourceID -> Map(tile.id -> Tile))
     this._failed = new Set();    // Set of failed tileURLs
@@ -79,7 +97,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
 
     // Remove any tile sources containers and data not needed anymore
-    this.container.children.forEach(sourceContainer => {
+    this.tileContainer.children.forEach(sourceContainer => {
       const sourceID = sourceContainer.name;
       if (!tileSourceIDs.has(sourceID)) {
         sourceContainer.destroy({ children: true, texture: true, baseTexture: true });
@@ -208,20 +226,29 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         tile.sprite.height = size;
 
         if (SHOWDEBUG) {
+          const DEBUGCOLOR = 0xffff00;
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
             tile.debug.name = `debug-${tile.id}`;
             tile.debug.interactive = false;
             tile.debug.interactiveChildren = false;
             tile.debug.sortableChildren = false;
-            tile.debug.zIndex = 100;  // above tiles
-            sourceContainer.addChild(tile.debug);
+            this.debugContainer.addChild(tile.debug);
+
+            const label = new PIXI.BitmapText(tile.id, { fontName: 'bitmap' });
+            label.name = `label-${tile.id}`;
+            label.tint = DEBUGCOLOR;
+            label.position.set(2, 2);
+            tile.debug.addChild(label);
           }
+
           tile.debug.visible = true;
+          tile.debug.position.set(x, y-size);  // left, top
           tile.debug
             .clear()
-            .lineStyle(2, 0xffff00)
-            .drawRect(x, y-size, size, size);
+            .lineStyle(2, DEBUGCOLOR)
+            .drawRect(0, 0, size, size);
+
         } else {
           if (tile.debug) {
             tile.debug.visible = false;
@@ -249,14 +276,15 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    * @param sourceID
    */
   getSourceContainer(sourceID) {
-    let sourceContainer = this.container.getChildByName(sourceID);
+    let sourceContainer = this.tileContainer.getChildByName(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
       sourceContainer.name = sourceID;
+      sourceContainer.buttonMode = false;
       sourceContainer.interactive = false;
       sourceContainer.interactiveChildren = false;
       sourceContainer.sortableChildren = true;
-      this.container.addChild(sourceContainer);
+      this.tileContainer.addChild(sourceContainer);
     }
     return sourceContainer;
   }
