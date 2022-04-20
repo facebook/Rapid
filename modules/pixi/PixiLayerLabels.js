@@ -5,7 +5,6 @@ import { vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-s
 
 import { PixiLayer } from './PixiLayer';
 import { localizer } from '../core/localizer';
-// import { utilDisplayName } from '../util';
 import { getLineSegments, getDebugBBox } from './helpers.js';
 
 const LAYERID = 'labels';
@@ -29,13 +28,32 @@ export class PixiLayerLabels extends PixiLayer {
     this.scene = scene;
     this._enabled = true;   // labels should be enabled by default
 
-    // labels in this layer don't actually need to be interactive
-    const layer = this.container;
-    layer.buttonMode = false;
-    layer.interactive = false;
-    layer.interactiveChildren = false;
+    // Items in this layer don't actually need to be interactive
+    const layerContainer = this.container;
+    layerContainer.buttonMode = false;
+    layerContainer.interactive = false;
+    layerContainer.interactiveChildren = false;
 
-//     this._strings = new Map();      // Map of featureID -> label string
+    const debugContainer = new PIXI.ParticleContainer(50000);
+    debugContainer.name = 'debug';
+    debugContainer.roundPixels = false;
+    debugContainer.buttonMode = false;
+    debugContainer.interactive = false;
+    debugContainer.interactiveChildren = false;
+    debugContainer.sortableChildren = false;
+    this.debugContainer = debugContainer;
+
+    const labelContainer = new PIXI.Container();
+    labelContainer.name = 'labels';
+    labelContainer.buttonMode = false;
+    labelContainer.interactive = false;
+    labelContainer.interactiveChildren = false;
+    labelContainer.sortableChildren = true;
+    this.labelContainer = labelContainer;
+
+    layerContainer.addChild(debugContainer, labelContainer);
+
+
     this._texts = new Map();        // Map of label -> Pixi Texture
     this._avoidBoxes = new Map();   // Map of featureID -> avoid boxes
     this._labelBoxes = new Map();   // Map of featureID -> label boxes
@@ -56,19 +74,6 @@ export class PixiLayerLabels extends PixiLayer {
       strokeThickness: 3
     });
 
-    const debug = new PIXI.ParticleContainer(50000);
-    debug.name = 'debug';
-    debug.interactiveChildren = false;
-    debug.sortableChildren = false;
-    debug.roundPixels = false;
-
-    const labels = new PIXI.Container();
-    labels.name = 'labels';
-    labels.interactiveChildren = false;
-    labels.sortableChildren = false;
-    labels.roundPixels = false;
-
-    this.container.addChild(debug, labels);
   }
 
 
@@ -81,11 +86,6 @@ export class PixiLayerLabels extends PixiLayer {
   render(timestamp, projection, zoom) {
     if (this._enabled && zoom >= MINZOOM) {
       this.visible = true;
-
-      // const context = this.context;
-      // const map = context.map();
-      // const entities = context.history().intersects(map.extent());
-
       this.renderLabels(projection);
 
     } else {
@@ -153,16 +153,14 @@ export class PixiLayerLabels extends PixiLayer {
   renderLabels(projection) {
     const textDirection = localizer.textDirection();
     const SHOWDEBUG = false;
-    const debugContainer = this.container.getChildByName('debug');
-    const labelContainer = this.container.getChildByName('labels');
+    const debugContainer = this.debugContainer;
+    const labelContainer = this.labelContainer;
 
     const context = this.context;
-//    const graph = context.graph();
 
     // fix later: make some closure variables for now to avoid dealing with `this`
     let thiz = this;
     let _scene = this.scene;
-//    let _strings = this._strings;
     let _avoidBoxes = this._avoidBoxes;
     let _labelBoxes = this._labelBoxes;
     let _labelDObjs = this._labelDObjs;
@@ -235,27 +233,6 @@ export class PixiLayerLabels extends PixiLayer {
     placePointLabels(points);
     placeLineLabels(lines);
 //    placeAreaLabels();
-
-
-//    function getLabel(entity) {
-//      if (!_strings.has(entity.id)) {
-//        const str = utilDisplayName(entity);
-//        _strings.set(entity.id, str);   // save display name in `_strings` cache
-//        return str;
-//      }
-//      return _strings.get(entity.id);
-//    }
-
-//    function hasLineLabel(feature) {
-//      return (feature.type === 'point'.geometry(graph) === 'line' && getLabel(entity));
-//    }
-//    function hasAreaLabel(entity) {
-//      return (entity.geometry(graph) === 'area' && getLabel(entity));
-//    }
-//    function hasPointLabel(feature) {
-//      const geom = entity.geometry(graph);
-//      return ((geom === 'vertex' || geom === 'point') && getLabel(entity));
-//    }
 
 
     //
@@ -352,7 +329,6 @@ export class PixiLayerLabels extends PixiLayer {
         }
       }
     }
-
 
 
     //
@@ -750,40 +726,3 @@ export class PixiLayerLabels extends PixiLayer {
 
   }
 }
-
-
-//// Listed from highest to lowest priority
-//const LABELSTACK = [
-//  ['line', 'aeroway', '*', 12],
-//  ['line', 'highway', 'motorway', 12],
-//  ['line', 'highway', 'trunk', 12],
-//  ['line', 'highway', 'primary', 12],
-//  ['line', 'highway', 'secondary', 12],
-//  ['line', 'highway', 'tertiary', 12],
-//  ['line', 'highway', '*', 12],
-//  ['line', 'railway', '*', 12],
-//  ['line', 'waterway', '*', 12],
-//  ['area', 'aeroway', '*', 12],
-//  ['area', 'amenity', '*', 12],
-//  ['area', 'building', '*', 12],
-//  ['area', 'historic', '*', 12],
-//  ['area', 'leisure', '*', 12],
-//  ['area', 'man_made', '*', 12],
-//  ['area', 'natural', '*', 12],
-//  ['area', 'shop', '*', 12],
-//  ['area', 'tourism', '*', 12],
-//  ['area', 'camp_site', '*', 12],
-//  ['point', 'aeroway', '*', 10],
-//  ['point', 'amenity', '*', 10],
-//  ['point', 'building', '*', 10],
-//  ['point', 'historic', '*', 10],
-//  ['point', 'leisure', '*', 10],
-//  ['point', 'man_made', '*', 10],
-//  ['point', 'natural', '*', 10],
-//  ['point', 'shop', '*', 10],
-//  ['point', 'tourism', '*', 10],
-//  ['point', 'camp_site', '*', 10],
-//  ['line', 'name', '*', 12],
-//  ['area', 'name', '*', 12],
-//  ['point', 'name', '*', 10]
-//];
