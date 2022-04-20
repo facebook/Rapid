@@ -50,6 +50,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       tileSources.set(base, -1);
       tileSourceIDs.add(base.id);
     }
+
     background.overlayLayerSources().forEach((overlay, index) => {
       if (overlay.id === 'mapbox_locator_overlay') {
         index = 999;  // render the locator labels above all other overlays
@@ -57,7 +58,6 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       tileSources.set(overlay, index);
       tileSourceIDs.add(overlay.id);
     });
-
 
 
     // Render each tile source
@@ -207,9 +207,36 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-      } else {
-        tile.sprite.destroy({ children: true, texture: true, baseTexture: true });
-        tile.sprite = null;
+        if (SHOWDEBUG) {
+          if (!tile.debug) {
+            tile.debug = new PIXI.Graphics();
+            tile.debug.name = `debug-${tile.id}`;
+            tile.debug.interactive = false;
+            tile.debug.interactiveChildren = false;
+            tile.debug.sortableChildren = false;
+            tile.debug.zIndex = 100;  // above tiles
+            sourceContainer.addChild(tile.debug);
+          }
+          tile.debug.visible = true;
+          tile.debug
+            .clear()
+            .lineStyle(2, 0xffff00)
+            .drawRect(x, y-size, size, size);
+        } else {
+          if (tile.debug) {
+            tile.debug.visible = false;
+          }
+        }
+
+      } else {   // tile not needed, can destroy it
+        if (tile.sprite) {
+          tile.sprite.destroy({ children: true, texture: true, baseTexture: true });
+          tile.sprite = null;
+        }
+        if (tile.debug) {
+          tile.debug.destroy();
+          tile.debug = null;
+        }
         tileMap.delete(tile.id);
       }
     });
