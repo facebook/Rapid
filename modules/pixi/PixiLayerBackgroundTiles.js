@@ -3,6 +3,7 @@ import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 import { PixiLayer } from './PixiLayer';
 
 const LAYERID = 'background';
+const DEBUGCOLOR = 0xffff00;
 
 
 /**
@@ -59,6 +60,8 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    */
   render(timestamp, projection) {
     const background = this.context.background();
+    const SHOWDEBUG = this.context.getDebug('tile');
+    this.debugContainer.visible = SHOWDEBUG;
 
     // Collect tile sources - baselayer and overlays
     let tileSources = new Map();   // Map (tilesource Object -> zIndex)
@@ -96,15 +99,20 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     });
 
 
-    // Remove any tile sources containers and data not needed anymore
+    // Remove any tile sources containers and data not needed anymore.
+    // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
+    let toDestroy = [];
     this.tileContainer.children.forEach(sourceContainer => {
       const sourceID = sourceContainer.name;
       if (!tileSourceIDs.has(sourceID)) {
-        sourceContainer.destroy({ children: true, texture: true, baseTexture: true });
-        this._tileMaps.delete(sourceID);
+        toDestroy.push(sourceContainer);
       }
     });
-
+    toDestroy.forEach(sourceContainer => {
+      const sourceID = sourceContainer.name;
+      sourceContainer.destroy({ children: true, texture: true, baseTexture: true });
+      this._tileMaps.delete(sourceID);
+    })
   }
 
 
@@ -119,7 +127,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const thiz = this;
     const context = this.context;
-    const SHOWDEBUG = !source.overlay && context.getDebug('tile');
+    const SHOWDEBUG = context.getDebug('tile');
     const osm = context.connection();
 
     const tileSize = source.tileSize || 256;
@@ -215,7 +223,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       // Keep base (not overlay) tiles around a little while longer,
       // so they can stand in for a needed tile that has not loaded yet.
       } else if (!source.overlay) {
-        keepTile = (timestamp - tile.timestamp < 3000);
+        keepTile = (timestamp - tile.timestamp < 3000);  // 3 sec
       }
 
       if (keepTile) {   // tile may be visible - update position and scale
@@ -225,8 +233,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-        if (SHOWDEBUG) {
-          const DEBUGCOLOR = 0xffff00;
+        if (SHOWDEBUG && !source.overlay) {  // display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
             tile.debug.name = `debug-${tile.id}`;
@@ -242,17 +249,11 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
             tile.debug.addChild(label);
           }
 
-          tile.debug.visible = true;
-          tile.debug.position.set(x, y-size);  // left, top
+          tile.debug.position.set(x, y - size);  // left, top
           tile.debug
             .clear()
             .lineStyle(2, DEBUGCOLOR)
             .drawRect(0, 0, size, size);
-
-        } else {
-          if (tile.debug) {
-            tile.debug.visible = false;
-          }
         }
 
       } else {   // tile not needed, can destroy it
@@ -261,7 +262,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
           tile.sprite = null;
         }
         if (tile.debug) {
-          tile.debug.destroy();
+          tile.debug.destroy({ children: true });
           tile.debug = null;
         }
         tileMap.delete(tile.id);

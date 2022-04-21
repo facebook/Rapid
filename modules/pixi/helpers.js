@@ -178,15 +178,15 @@ export function getLineSegments(points, spacing) {
 
 
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
-  const bbox = new PIXI.Sprite(PIXI.Texture.WHITE);
-  bbox.interactive = false;
-  bbox.interactiveChildren = false;
-  bbox.anchor.set(0, 0);  // top, left
-  bbox.position.set(x, y);
-  bbox.width = width;
-  bbox.height = height;
-  bbox.tint = color || 0xffff33;  // yellow
-  bbox.alpha = alpha || 0.75;
-  if (name) bbox.name = name;
-  return bbox;
+  const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+  sprite.interactive = false;
+  sprite.interactiveChildren = false;
+  sprite.anchor.set(0, 0);  // top, left
+  sprite.position.set(x, y);
+  sprite.width = width;
+  sprite.height = height;
+  sprite.tint = color || 0xffff33;  // yellow
+  sprite.alpha = alpha || 0.75;
+  if (name) sprite.name = name;
+  return sprite;
 }

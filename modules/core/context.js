@@ -408,7 +408,7 @@ export function coreContext() {
   /* Debug */
   let _debugFlags = {
     tile: false,        // tile boundaries
-    collision: false,   // label collision bounding boxes
+    label: false,       // label placement
     imagery: false,     // imagery bounding polygons
     target: false,      // touch targets
     downloaded: false   // downloaded data from osm

@@ -79,6 +79,7 @@ export class PixiLayerLabels extends PixiLayer {
 
   /**
    * render
+   * Draw all the labels
    * @param timestamp    timestamp in milliseconds
    * @param projection   pixi projection to use for rendering
    * @param zoom         effective zoom to use for rendering
@@ -87,14 +88,16 @@ export class PixiLayerLabels extends PixiLayer {
     if (this._enabled && zoom >= MINZOOM) {
       this.visible = true;
       this.renderLabels(projection);
-
     } else {
       this.visible = false;
     }
   }
 
 
-
+  /**
+   * getLabelSprite
+   * @param  str  String for the label
+   */
   getLabelSprite(str) {
 // BAD just make more textures
     let sprite;
@@ -150,18 +153,146 @@ export class PixiLayerLabels extends PixiLayer {
 //    return sprite;
   }
 
-  renderLabels(projection) {
-    const textDirection = localizer.textDirection();
-    const SHOWDEBUG = false;
-    const debugContainer = this.debugContainer;
-    const labelContainer = this.labelContainer;
 
+  /**
+   * removeLabels
+   * If this feature has any existing labels, remove them and any data related to them
+   * @param  featureID  the feature ID to remove the labels
+   */
+  removeLabels(featureID) {
+    // Remove any existing labeling data for this feature.
+    const removeBoxes = this._labelBoxes.get(featureID) || [];
+    removeBoxes.forEach(box => this._placement.remove(box));
+    this._labelBoxes.delete(featureID);
+
+    // Destroy any display objects for these labels
+    const removeDObjs = this._labelDObjs.get(featureID) || [];
+    removeDObjs.forEach(dObj => dObj.destroy({ children: true, texture: false, baseTexture: false }));
+    this._labelDObjs.delete(featureID);
+  }
+
+  /**
+   * Do we need a removeAvoids function?
+   * I think if an avoidable object gets changed, we would need to handle that change in our _avoidBoxes
+   * structure, however by the time we've reached the labeling code, that changed object isn't dirty anyhmore.
+   * An idea I've been considering is to just have the scene hold all the avoidables, so that objects or layers
+   * are responsible for adding themselves to a different rbush, rather than having the labeling code
+   * deal with the problem of collecting all the avoidables.
+   */
+
+
+
+  /**
+   * gatherAvoidables
+   * Gather the avoidable features, create boxes for them,
+   * and insert them into the placement Rbush.
+   * If a new avoidable collides with an already placed label,
+   * destroy the label and flag the feature as labeldirty for relabeling
+   */
+  gatherAvoidables() {
+    const SHOWDEBUG = this.context.getDebug('label');
+    const stage = this.context.pixi.stage;
+    const avoidObjectFn = avoidObject.bind(this);
+
+    // Gather the layers that have avoidable stuff on them
+    const avoidLayers = [];
+    const osmLayer = stage.getChildByName('osm');
+    if (osmLayer) {
+      osmLayer.children.forEach(layer => {
+        if (layer.name === 'osm-points' || layer.name === 'osm-vertices') {
+          avoidLayers.push(layer);
+        }
+      });
+    }
+    const rapidLayer = stage.getChildByName('rapid');
+    if (rapidLayer) {
+      rapidLayer.children.forEach(dataset => {
+        const dsname = dataset.name;
+        dataset.children.forEach(layer => {
+          if (layer.name === `${dsname}-points` || layer.name === `${dsname}-vertices`) {
+            avoidLayers.push(layer);
+          }
+        });
+      });
+    }
+
+    // For each layer, gather the avoid boxes
+    let toInsert = [];
+    avoidLayers.forEach(layer => layer.children.forEach(avoidObjectFn));
+
+    if (toInsert.length) {
+      this._placement.load(toInsert);  // bulk insert
+    }
+
+
+    // Adds the given object as an avoidable
+    function avoidObject(sourceObject) {
+      if (!sourceObject.visible || !sourceObject.renderable) return;
+      const featureID = sourceObject.name;
+
+      if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
+
+      const feature = this.scene.get(featureID);
+      const rect = feature && feature.sceneBounds;
+      if (!rect) return;
+
+      // boxes here are in "scene" coordinates
+      const boxID = `${featureID}-avoid`;
+      const EPSILON = 0.01;
+      const box = {
+        type: 'avoid',
+        boxID: boxID,
+        featureID: featureID,
+        minX: rect.x + EPSILON,
+        minY: rect.y + EPSILON,
+        maxX: rect.x + rect.width - EPSILON,
+        maxY: rect.y + rect.height - EPSILON
+      };
+
+      this._avoidBoxes.set(featureID, box);
+      toInsert.push(box);
+
+      if (SHOWDEBUG) {
+        const sprite = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, boxID);
+        this.debugContainer.addChild(sprite);
+      }
+
+      // If there is already a label where this avoid box is, we will need to redo that label.
+      // This is somewhat common that a label will be placed somewhere, then as more map loads,
+      // we learn that some of those junctions become important and we need to avoid them.
+      const existingBoxes = this._placement.search(box);
+      existingBoxes.forEach(existingBox => {
+        if (existingBox.type !== 'label') return;
+
+        this.removeLabels(existingBox.featureID);
+
+        const existingFeature = this.scene.get(existingBox.featureID);
+        if (existingFeature) {
+          existingFeature._labelDirty = true;
+        }
+      });
+
+    }
+  }
+
+
+
+  /**
+   * renderLabels
+   * @param  projection  The Pixi projection
+   */
+  renderLabels(projection) {
     const context = this.context;
+    const textDirection = localizer.textDirection();
+
+    const labelContainer = this.labelContainer;
+    const debugContainer = this.debugContainer;
+
+    const SHOWDEBUG = context.getDebug('label');
+    debugContainer.visible = SHOWDEBUG;
 
     // fix later: make some closure variables for now to avoid dealing with `this`
     let thiz = this;
-    let _scene = this.scene;
-    let _avoidBoxes = this._avoidBoxes;
     let _labelBoxes = this._labelBoxes;
     let _labelDObjs = this._labelDObjs;
     let _placement = this._placement;
@@ -182,40 +313,37 @@ export class PixiLayerLabels extends PixiLayer {
 //}
 
 
-//// this bunch of code may be redundant now that we have `_labelDirty` to look at
-    // we'll redo all the labels when scale changes
+    // Reset all labels and avoidables when scale changes
     const k = projection.scale();
-    if (k !== this._oldk) {   // reset
-      _avoidBoxes.clear();
-      _labelBoxes.clear();
-      _labelDObjs.clear();
-      _placement.clear();
-      debugContainer.removeChildren().forEach(child => child.destroy());
-      labelContainer.removeChildren();  //.forEach(child => child.destroy());
+    if (k !== this._oldk) {
+      this._avoidBoxes.clear();
+      this._labelBoxes.clear();
+      this._labelDObjs.clear();
+      this._placement.clear();
+
+      // important gotcha:
+      // Can not iterate over `.children` to destroy them because this changes them during iteration
+      // Need to `.removeChildren()` first and then iterate to destroy.
+      this.debugContainer.removeChildren()
+        .forEach(child => child.destroy({ children: true }));
+      this.labelContainer.removeChildren()
+        .forEach(child => child.destroy({ children: true, texture: false, baseTexture: false }));
       this._oldk = k;
     }
-////
 
-    // Collect labelable features
+    // Collect features to avoid..
+    this.gatherAvoidables();
+
+    // Collect features to label..
     let points = [];
     let lines = [];
 
+    // Remove any labeling data for dirty features
     this.scene._features.forEach(feature => {
       if (!feature._labelDirty) return;
 
-      // Remove any existing labeling data for this feature.
       const featureID = feature.id;
-      const removeBoxes = (_labelBoxes.get(featureID) || []);
-      removeBoxes.forEach(box => _placement.remove(box));
-      _labelBoxes.delete(featureID);
-
-      // remove from the scene any display objects for these labels
-      const removeDObjs = (_labelDObjs.get(featureID) || []);
-      // removeDObjs.forEach(dObj => dObj.destroy({ children: true }));
-      removeDObjs.forEach(dObj => {
-        if (dObj.parent) dObj.parent.removeChild(dObj);
-      });
-      _labelDObjs.delete(featureID);
+      this.removeLabels(featureID);
 
       // If the feature can be labeled, add it to the list.
       if (feature.label && feature.visible) {
@@ -223,112 +351,20 @@ export class PixiLayerLabels extends PixiLayer {
           points.push(feature);
         } else if (feature.type === 'line') {
           lines.push(feature);
+        } else {
+          // no label for now
+          feature._labelDirty = false;
         }
       } else {
         feature._labelDirty = false;
       }
     });
 
-    gatherAvoids();
+    // Points first, then lines (so line labels can avoid point labels)
     placePointLabels(points);
     placeLineLabels(lines);
 //    placeAreaLabels();
 
-
-    //
-    // Gather bounding boxes to avoid
-    //
-    function gatherAvoids() {
-      const stage = context.pixi.stage;
-      let toInsert = [];
-
-      const avoidLayers = [];
-
-      // gather the layers that have avoidable stuff on them
-      const osmLayer = stage.getChildByName('osm');
-      if (osmLayer) {
-        osmLayer.children.forEach(layer => {
-          if (layer.name === 'osm-points' || layer.name === 'osm-vertices') {
-            avoidLayers.push(layer);
-          }
-        });
-      }
-      const rapidLayer = stage.getChildByName('rapid');
-      if (rapidLayer) {
-        rapidLayer.children.forEach(dataset => {
-          const dsname = dataset.name;
-          dataset.children.forEach(layer => {
-            if (layer.name === `${dsname}-points` || layer.name === `${dsname}-vertices`) {
-              avoidLayers.push(layer);
-            }
-          });
-        });
-      }
-
-      // Check the features on this layer
-      avoidLayers.forEach(layer => layer.children.forEach(checkAvoid));
-
-      if (toInsert.length) {
-        _placement.load(toInsert);  // bulk insert
-      }
-
-      function checkAvoid(sourceObject) {
-        if (!sourceObject.visible || !sourceObject.renderable) return;
-        const featureID = sourceObject.name;
-
-        if (_avoidBoxes.has(featureID)) return;  // we've processed this avoid box already
-
-        const feature = _scene.get(featureID);
-        const rect = feature && feature.sceneBounds;
-        if (!rect) return;
-
-        // boxes here are in "scene" coordinates
-        const boxID = `${featureID}-avoid`;
-        const fuzz = 0.01;
-        const box = {
-          type: 'avoid',
-          boxID: boxID,
-          featureID: featureID,
-          minX: rect.x + fuzz,
-          minY: rect.y + fuzz,
-          maxX: rect.x + rect.width - fuzz,
-          maxY: rect.y + rect.height - fuzz
-        };
-
-        _avoidBoxes.set(featureID, box);
-        toInsert.push(box);
-
-        // If there is already a label where this avoid box is, we will need to redo that label.
-        // This is somewhat common that a label will be placed somewhere, then as more map loads,
-        // we learn that some of those junctions become important and we need to avoid them.
-        const existingBoxes = _placement.search(box);
-        existingBoxes.forEach(existingBox => {
-          if (existingBox.type !== 'label') return;
-
-          const existingFeatureID = existingBox.featureID;
-          // Note that as we iterate through these existing boxes, we might hit the same existing
-          // feature several times, so make sure to `|| []` in case it was already removed.
-
-          // remove any boxes related to that feature
-          const removeBoxes = (_labelBoxes.get(existingFeatureID) || []);
-          removeBoxes.forEach(box => _placement.remove(box));
-          _labelBoxes.delete(existingFeatureID);
-
-          // remove from the scene any display objects for these labels
-          const removeDObjs = (_labelDObjs.get(existingFeatureID) || []);
-          // removeDObjs.forEach(dObj => dObj.destroy({ children: true }));
-          removeDObjs.forEach(dObj => {
-            if (dObj.parent) dObj.parent.removeChild(dObj);
-          });
-          _labelDObjs.delete(existingFeatureID);
-        });
-
-        if (SHOWDEBUG) {
-          const bbox = getDebugBBox(rect.x, rect.y, rect.width, rect.height, 0xbb3333, 0.75, boxID);
-          debugContainer.addChild(bbox);
-        }
-      }
-    }
 
 
     //
@@ -339,9 +375,8 @@ export class PixiLayerLabels extends PixiLayer {
 
       features
         .forEach(feature => {
-          feature._labelDirty = false;
-
           const featureID = feature.id;
+          feature._labelDirty = false;
 
           if (_labelBoxes.has(featureID)) return;  // processed it already
           _labelBoxes.set(featureID, []);
@@ -445,15 +480,15 @@ export class PixiLayerLabels extends PixiLayer {
         const placement = preferences[i];
         const [x, y] = placements[placement];
         const boxID = `${featureID}-${placement}`;
-        const fuzz = 0.01;
+        const EPSILON = 0.01;
         const box = {
           type: 'label',
           boxID: boxID,
           featureID: featureID,
-          minX: x - lWidthHalf + fuzz,
-          minY: y - lHeightHalf + fuzz,
-          maxX: x + lWidthHalf - fuzz,
-          maxY: y + lHeightHalf - fuzz
+          minX: x - lWidthHalf + EPSILON,
+          minY: y - lHeightHalf + EPSILON,
+          maxX: x + lWidthHalf - EPSILON,
+          maxY: y + lHeightHalf - EPSILON
         };
 
         if (!_placement.collides(box)) {
@@ -504,9 +539,8 @@ export class PixiLayerLabels extends PixiLayer {
 
       features
         .forEach(feature => {
-          feature._labelDirty = false;
-
           const featureID = feature.id;
+          feature._labelDirty = false;
 
           if (_labelBoxes.has(featureID)) return;  // processed it already
           _labelBoxes.set(featureID, []);
@@ -535,7 +569,7 @@ export class PixiLayerLabels extends PixiLayer {
       const fRect = feature.sceneBounds;
       const fWidth = fRect.width;
       const fHeight = fRect.height;
-      if (fWidth < 40 || fHeight < 40) return;  // this line is too small to even waste time labeling
+      if (fWidth < 40 && fHeight < 40) return;  // too small in both dimensions to even waste time labeling
 
       // `l` = label, these bounds are in "local" coordinates to the label,
       // 0,0 is the center of the label
@@ -592,15 +626,15 @@ export class PixiLayerLabels extends PixiLayer {
         segment.coords.forEach(function nextCoord(coord, coordindex) {
           const [x,y] = coord;
           const boxID = `${featureID}-${segindex}-${coordindex}`;
-          const fuzz = 0.01;
+          const EPSILON = 0.01;
           const box = {
             type: 'label',
             boxID: boxID,
             featureID: featureID,
-            minX: x - boxhalf + fuzz,
-            minY: y - boxhalf + fuzz,
-            maxX: x + boxhalf - fuzz,
-            maxY: y + boxhalf - fuzz
+            minX: x - boxhalf + EPSILON,
+            minY: y - boxhalf + EPSILON,
+            maxX: x + boxhalf - EPSILON,
+            maxY: y + boxhalf - EPSILON
           };
 
           // Check bend angle and avoid placing labels where the line bends too much..

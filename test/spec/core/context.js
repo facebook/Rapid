@@ -60,7 +60,7 @@ describe('iD.coreContext', function() {
             var context = iD.coreContext();
             var flags = {
                 tile: false,
-                collision: false,
+                label: false,
                 imagery: false,
                 target: false,
                 downloaded: false
@@ -71,8 +71,8 @@ describe('iD.coreContext', function() {
             context.setDebug('tile', true);
             expect(context.getDebug('tile')).to.be.true;
 
-            context.setDebug('collision');
-            expect(context.getDebug('collision')).to.be.true;
+            context.setDebug('label');
+            expect(context.getDebug('label')).to.be.true;
 
             context.setDebug('tile', false);
             expect(context.getDebug('tile')).to.be.false;
