@@ -112,7 +112,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       const sourceID = sourceContainer.name;
       sourceContainer.destroy({ children: true, texture: true, baseTexture: true });
       this._tileMaps.delete(sourceID);
-    })
+    });
   }
 
 
