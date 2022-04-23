@@ -120,8 +120,10 @@ export class PixiFeature {
     return this.displayObject.visible;
   }
   set visible(val) {
-    this.displayObject.visible = val;
-    this._labelDirty = true;
+    if (this.displayObject.visible !== val) {  // visibility value changed
+      this.displayObject.visible = val;
+      this._labelDirty = true;
+    }
   }
 
 
