@@ -2,6 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference } from '@id-sdk/util';
 
+import { svgBlocks } from './blocks';
 import { svgData } from './data';
 import { svgDebug } from './debug';
 import { svgGeolocate } from './geolocate';
@@ -42,7 +43,8 @@ export function svgLayers(projection, context) {
         { id: 'openstreetcam', layer: svgOpenstreetcamImages(projection, context, dispatch) },
         { id: 'debug', layer: svgDebug(projection, context, dispatch) },
         { id: 'geolocate', layer: svgGeolocate(projection, context, dispatch) },
-        { id: 'touch', layer: svgTouch(projection, context, dispatch) }
+        { id: 'touch', layer: svgTouch(projection, context, dispatch) },
+        { id: 'blocks', layer: svgBlocks(projection, context, dispatch) }
     ];
 
 

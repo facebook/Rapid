@@ -1,15 +1,13 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { select as d3_select } from 'd3-selection';
+import { vecLength } from '@id-sdk/math';
 
-import {
-    select as d3_select
-} from 'd3-selection';
-
+import { locationManager } from '../core/locations';
 import { presetManager } from '../presets';
 import { behaviorEdit } from './edit';
 import { behaviorHover } from './hover';
 import { geoChooseEdge } from '../geo';
 import { utilFastMouse, utilKeybinding, utilRebind } from '../util';
-import { vecLength } from '@id-sdk/vector';
 
 var _disableSpace = false;
 var _lastSpace = null;
@@ -161,7 +159,10 @@ export function behaviorDraw(context) {
     // - `mode/drag_node.js`     `doMove()`
     // - `behavior/draw.js`      `click()`
     // - `behavior/draw_way.js`  `move()`
-    function click(d3_event, loc) {
+    function click(d3_event, coord) {
+        var loc = context.projection.invert(coord);
+        if (locationManager.blocksAt(loc).length) return;  // editing is blocked here
+
         var d = datum(d3_event);
         var target = d && d.properties && d.properties.entity;
 
@@ -173,7 +174,7 @@ export function behaviorDraw(context) {
 
         } else if (target && target.type === 'way' && (mode.id !== 'add-point' || mode.preset.matchGeometry('vertex'))) {   // Snap to a way
             var choice = geoChooseEdge(
-                context.graph().childNodes(target), loc, context.projection, context.activeID()
+                context.graph().childNodes(target), coord, context.projection, context.activeID()
             );
             if (choice) {
                 var edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
@@ -181,8 +182,7 @@ export function behaviorDraw(context) {
                 return;
             }
         } else if (mode.id !== 'add-point' || mode.preset.matchGeometry('point')) {
-            var locLatLng = context.projection.invert(loc);
-            dispatch.call('click', this, locLatLng, d);
+            dispatch.call('click', this, loc, d);
         }
 
     }

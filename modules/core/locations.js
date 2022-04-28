@@ -25,6 +25,29 @@ export function coreLocations() {
   let _resolvedFeatures = {};              // cache of *resolved* locationSet features
   let _loco = new LocationConflation();    // instance of a location-conflation resolver
   let _wp;                                 // instance of a which-polygon index
+  let _wpblocks;                           // separate (faster) which-polygon index just for the blocks
+
+
+  // BLOCKED REGIONS
+  const ukrainewar2022 = {
+    locationSet: { include: ['Q7835', 'ua'] },
+    text: 'Editing has been blocked in this region per request of the OSM Ukrainian community.',
+    url: 'https://wiki.openstreetmap.org/wiki/Russian%E2%80%93Ukrainian_war'
+  };
+
+  // pre-resolve the blocked regions locationSets -> geojson features
+  let _blocks = [ukrainewar2022];
+  _blocks.forEach(block => resolveLocationSet(block));
+
+  // merge the data about the block into the resolved feature properties
+  const blockedFeatures = _blocks.map(block => {
+    let feature = _resolvedFeatures[block.locationSetID];
+    Object.assign(feature.properties, block);
+    return feature;
+  });
+  // make a separate which-polygon just for these (static, very few features, very frequent lookups)
+  _wpblocks = whichPolygon({ type: 'FeatureCollection', features: blockedFeatures });
+
 
   // pre-resolve the worldwide locationSet
   const world = { locationSet: { include: ['Q2'] } };
@@ -246,6 +269,22 @@ export function coreLocations() {
     return result;
   };
 
+
+  //
+  // `blocksAt`
+  // Returns any blocks that exist for the given location
+  //
+  // Arguments
+  //   `loc`: the [lon,lat] location to query, e.g. `[-74.4813, 40.7967]`
+  // Returns
+  //   Array of blocks (empty array if none)
+  //
+  _this.blocksAt = (loc) => {
+    if (!_blocks.length) return [];
+    return _wpblocks(loc, true) || [];
+  };
+
+
   //
   // `query`
   // Execute a query directly against which-polygon
@@ -265,6 +304,8 @@ export function coreLocations() {
   // Direct access to the which-polygon index
   _this.wp = () => _wp;
 
+  // Direct access to the blocked regions
+  _this.blocks = () => _blocks;
 
   return _this;
 }

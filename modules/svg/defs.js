@@ -111,6 +111,7 @@ export function svgDefs(context) {
             .data([
                 // pattern name, pattern image name
                 ['beach', 'dots'],
+                ['blocked', 'construction'],
                 ['construction', 'construction'],
                 ['cemetery', 'cemetery'],
                 ['cemetery_christian', 'cemetery_christian'],
