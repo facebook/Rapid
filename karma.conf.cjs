@@ -30,19 +30,19 @@ module.exports = function (config) {
     exclude: [
       '**/*.js.map',
       'test/spec/behavior/*.js',
-      'test/spec/renderer/features.js',
+      'test/spec/renderer/features.js'
     ],
 
     proxies: {
       '/dist/': 'http://localhost:9876/base/dist/',
       '/data/': 'http://localhost:9876/base/dist/data/',
-      '/img/': 'http://localhost:9876/base/dist/img/',
+      '/img/': 'http://localhost:9876/base/dist/img/'
     },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
     preprocessors: {
-      'dist/iD.js': ['coverage'],
+      'dist/iD.js': ['coverage']
     },
 
     // test results reporter to use
@@ -79,15 +79,17 @@ module.exports = function (config) {
 
     remapIstanbulReporter: {
       remapOptions: {
-        exclude: ['node_modules'],
+        exclude: [
+          'node_modules'
+        ]
       }, //additional remap options
       reportOptions: {
-        basePath: 'modules',
+        basePath: 'modules'
       }, //additional report options
       reports: {
         lcovonly: 'coverage/lcof.info',
-        html: 'coverage',
-      },
-    },
+        html: 'coverage'
+      }
+    }
   });
 };

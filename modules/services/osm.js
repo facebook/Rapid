@@ -1,9 +1,9 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json, xml as d3_xml } from 'd3-fetch';
 import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@id-sdk/math';
-import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilQsString, utilStringQs } from '@id-sdk/util';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
-import osmAuth from 'osm-auth';
+import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
@@ -13,6 +13,7 @@ import { utilRebind } from '../util';
 
 var tiler = new Tiler();
 var dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
+
 var urlroot = 'https://www.openstreetmap.org';
 var q = utilStringQs(window.location.hash);
 var credentialsMode = 'omit';
@@ -20,13 +21,18 @@ if (q.hasOwnProperty('osm_api_url')) {
     urlroot = q.osm_api_url;
     credentialsMode = 'include';
 }
+
+var redirectPath = window.location.origin + window.location.pathname;
 var oauth = osmAuth({
     url: urlroot,
-    oauth_consumer_key: 'MlAcABGGdqadlgrjpmG6qSQu3bwbAgxC7hW0vRwm',
-    oauth_secret: 'M0g3lCJTvpnwMic0HYYwwTMpVvugNRlkycQL7so5',
+    client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
+    client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
+    scope: 'read_prefs write_prefs write_api read_gpx write_notes',
+    redirect_uri: redirectPath + 'land.html',
     loading: authLoading,
     done: authDone
 });
+
 // hardcode default block of Google Maps
 var _imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
 var _tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
@@ -615,6 +621,11 @@ export default {
     },
 
 
+    getUrlRoot: function() {
+        return urlroot;
+    },
+
+
     changesetURL: function(changesetID) {
         return urlroot + '/changeset/' + changesetID;
     },
@@ -828,7 +839,7 @@ export default {
             var options = {
                 method: 'PUT',
                 path: '/api/0.6/changeset/create',
-                options: { header: { 'Content-Type': 'text/xml' } },
+                headers: { 'Content-Type': 'text/xml' },
                 content: JXON.stringify(changeset.asJXON())
             };
             _changeset.inflight = oauth.xhr(
@@ -849,7 +860,7 @@ export default {
             var options = {
                 method: 'POST',
                 path: '/api/0.6/changeset/' + changesetID + '/upload',
-                options: { header: { 'Content-Type': 'text/xml' } },
+                headers: { 'Content-Type': 'text/xml' },
                 content: JXON.stringify(changeset.osmChangeJXON(changes))
             };
             _changeset.inflight = oauth.xhr(
@@ -875,7 +886,7 @@ export default {
                 oauth.xhr({
                     method: 'PUT',
                     path: '/api/0.6/changeset/' + changeset.id + '/close',
-                    options: { header: { 'Content-Type': 'text/xml' } }
+                    headers: { 'Content-Type': 'text/xml' }
                 }, function() { return true; });
             }
         }
@@ -1318,14 +1329,13 @@ export default {
     },
 
 
-    switch: function(options) {
-        urlroot = options.urlroot;
+    switch: function(newOptions) {
+        urlroot = newOptions.url;
 
-        oauth.options(Object.assign({
-            url: urlroot,
-            loading: authLoading,
-            done: authDone
-        }, options));
+        // Copy the existing options, but omit 'access_token'.
+        // (if we did preauth, access_token won't work on a different server)
+        var oldOptions = utilObjectOmit(oauth.options(), 'access_token');
+        oauth.options(Object.assign(oldOptions, newOptions));
 
         this.reset();
         this.userChangesets(function() {});  // eagerly load user details/changesets
@@ -1435,7 +1445,7 @@ export default {
             that.userChangesets(function() {});  // eagerly load user details/changesets
         }
 
-        return oauth.authenticate(done);
+        oauth.authenticate(done);
     },
 
 
