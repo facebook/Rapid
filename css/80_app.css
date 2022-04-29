@@ -4224,6 +4224,21 @@ img.tile-debug {
 }
 
 
+/* Edit blocks
+------------------------------------------------------- */
+.blocked {
+  stroke: rgb(0, 0, 0);
+  cursor: not-allowed !important;
+}
+.pattern-color-blocked {
+  fill: rgba(0, 0, 0, 0.6);
+}
+
+.explanation-item {
+  padding:  10px;
+}
+
+
 /* Debug Data
 ------------------------------------------------------- */
 .debug {

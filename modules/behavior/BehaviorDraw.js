@@ -3,6 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
+import { locationManager } from '../core/locations';
 import { osmEntity } from '../osm/entity';
 import { geoChooseEdge } from '../geo';
 import { utilKeybinding, utilRebind } from '../util';
@@ -306,6 +307,10 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   _click(eventData) {
     const coord = eventData.coord;
+    const loc = projection.invert(coord);
+
+    if (locationManager.blocksAt(loc).length) return;  // editing is blocked here
+
     const datum = eventData.data;
     const entity = datum instanceof osmEntity && datum;
     // const name = (eventData.target && eventData.target.name) || 'no target';
@@ -332,7 +337,6 @@ export class BehaviorDraw extends AbstractBehavior {
     }
 
     // Just a click on the map
-    const loc = projection.invert(coord);
     this._dispatch.call('click', this, loc);
   }
 

@@ -5,6 +5,7 @@ import {
 } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
+import { locationManager } from '../core/locations';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { behaviorLasso } from '../behavior/lasso';
@@ -59,15 +60,17 @@ export function modeSelect(context, selectedIDs) {
         var ids = [];
         if (Array.isArray(selectedIDs)) {
             ids = selectedIDs.filter(function(id) {
-                return context.hasEntity(id);
+                var entity = context.hasEntity(id);
+                if (!entity) return false;
+                if (entity.type === 'node' && locationManager.blocksAt(entity.loc).length) return false;
+                return true;
             });
         }
 
         if (!ids.length) {
             context.enter(modeBrowse(context));
             return false;
-        } else if ((selectedIDs.length > 1 && ids.length === 1) ||
-            (selectedIDs.length === 1 && ids.length > 1)) {
+        } else if ((selectedIDs.length > 1 && ids.length === 1) || (selectedIDs.length === 1 && ids.length > 1)) {
             // switch between single- and multi-select UI
             context.enter(modeSelect(context, ids));
             return false;

@@ -22,6 +22,8 @@
   </head>
 
   <body>
+    <script>var $buoop={required:{i:15,e:-4,f:-3,o:-3,s:-1,c:-3},reminder:0,noclose:true,no_permanent_hide:true,insecure:true,api:2021.06};</script>
+    <script src='https://browser-update.org/update.js'></script>
     <div id='id-container'></div>
 
     <script>
@@ -30,16 +32,13 @@
       newScript.type = 'text/javascript';
       newScript.onload = checkScript;
       newScript.onerror = checkScript;
-
-      var isIE11 = !!(navigator.userAgent.match(/Trident/) && !navigator.userAgent.match(/MSIE/));
-      newScript.src = isIE11 ? 'iD.legacy.min.js' : 'iD.min.js';
+      newScript.src = 'iD.min.js';
 
       document.getElementsByTagName('head')[0].appendChild(newScript);
 
-
       function checkScript() {
         if (typeof iD === 'undefined' || !iD.utilDetect().support) {
-          container.innerHTML = 'Sorry, your browser is not currently supported. Please use Potlatch 2 to edit the map.';
+          container.innerHTML = 'Sorry, your browser is not currently supported.';
           container.style.padding = '20px';
 
         } else {

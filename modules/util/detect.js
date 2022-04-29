@@ -50,11 +50,8 @@ export function utilDetect(refresh) {
   _detected.opera = (_detected.browser.toLowerCase() === 'opera' && parseFloat(_detected.version) < 15 );
 
   if (_detected.browser.toLowerCase() === 'msie') {
-    _detected.ie = true;
-    _detected.browser = 'Internet Explorer';
-    _detected.support = parseFloat(_detected.version) >= 11;
+    _detected.support = false;
   } else {
-    _detected.ie = false;
     _detected.support = true;
   }
 

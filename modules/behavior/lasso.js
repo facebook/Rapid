@@ -2,6 +2,7 @@ import { select as d3_select } from 'd3-selection';
 import { Extent, geomPointInPolygon } from '@id-sdk/math';
 import { utilArrayIntersection } from '@id-sdk/util';
 
+import { locationManager } from '../core/locations';
 import { modeSelect } from '../modes/select';
 import { uiLasso } from '../ui/lasso';
 
@@ -59,7 +60,8 @@ export function behaviorLasso(context) {
             var intersects = context.history().intersects(wgs84Extent).filter(function(entity) {
                 return entity.type === 'node' &&
                     geomPointInPolygon(context.projection.project(entity.loc), lasso.coordinates) &&
-                    !context.features().isHidden(entity, graph, entity.geometry(graph));
+                    !context.features().isHidden(entity, graph, entity.geometry(graph)) &&
+                    !locationManager.blocksAt(entity.loc).length;
             });
 
             // sort the lassoed nodes as best we can

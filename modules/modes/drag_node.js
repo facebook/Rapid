@@ -8,6 +8,7 @@ import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { BehaviorDrag } from '../behavior/BehaviorDrag';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
+import { locationManager } from '../core/locations';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
@@ -171,6 +172,11 @@ export function modeDragNode(context) {
         var currPoint = [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY] || context.projection.project(_lastLoc);
         // var currMouse = vecSubtract(currPoint, nudge);
         var loc = context.projection.invert(currPoint);
+
+        if (locationManager.blocksAt(loc).length) {  // editing is blocked here
+            cancel();
+            return;
+        }
 
         var target, edge;
 

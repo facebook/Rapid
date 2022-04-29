@@ -3,6 +3,7 @@ import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@id-sdk/math';
 
+import { locationManager } from '../core/locations';
 import { coreGraph, coreTree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
@@ -257,6 +258,14 @@ export default {
 
     tiles.forEach(tile => {
       if (cache.loaded[tile.id] || cache.inflight[tile.id]) return;
+
+      // exit if this tile covers a blocked region (all corners are blocked)
+      const corners = tile.wgs84Extent.polygon().slice(0, 4);
+      const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
+      if (tileBlocked) {
+          cache.loaded[tile.id] = true;  // don't try again
+          return;
+      }
 
       const controller = new AbortController();
       const url = tileURL(ds, tile.wgs84Extent);

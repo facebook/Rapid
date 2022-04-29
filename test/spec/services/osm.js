@@ -68,11 +68,6 @@ describe('iD.serviceOsm', function () {
             connection.switch({ url: 'https://www.openstreetmap.org' });
             expect(connection.changesetURL(2)).to.eql('https://www.openstreetmap.org/changeset/2');
         });
-
-        it('allows secure connections', function() {
-            connection.switch({ urlroot: 'https://www.openstreetmap.org' });
-            expect(connection.changesetURL(2)).to.eql('https://www.openstreetmap.org/changeset/2');
-        });
     });
 
     describe('#changesetsURL', function() {
@@ -180,9 +175,9 @@ describe('iD.serviceOsm', function () {
 
             login();
 
-            connection.loadFromAPI(path, function (err, result) {
+            connection.loadFromAPI(path, function (err, xml) {
                 expect(err).to.be.not.ok;
-                expect(typeof result).to.eql('object');
+                expect(typeof xml).to.eql('object');
                 expect(connection.authenticated()).to.be.not.ok;
                 expect(fetchMock.called()).to.be.true;
 
@@ -202,9 +197,9 @@ describe('iD.serviceOsm', function () {
                 [401, { 'Content-Type': 'text/plain' }, 'Unauthorized']);
 
             login();
-            connection.loadFromAPI(path, function (err, result) {
+            connection.loadFromAPI(path, function (err, xml) {
                 expect(err).to.be.not.ok;
-                expect(typeof result).to.eql('object');
+                expect(typeof xml).to.eql('object');
                 expect(connection.authenticated()).to.be.not.ok;
                 expect(fetchMock.called()).to.be.true;
 
@@ -224,9 +219,9 @@ describe('iD.serviceOsm', function () {
                 [403, { 'Content-Type': 'text/plain' }, 'Forbidden']);
 
             login();
-            connection.loadFromAPI(path, function (err, result) {
+            connection.loadFromAPI(path, function (err, xml) {
                 expect(err).to.be.not.ok;
-                expect(typeof result).to.eql('object');
+                expect(typeof xml).to.eql('object');
                 expect(connection.authenticated()).to.be.not.ok;
                 expect(fetchMock.called()).to.be.true;
 
@@ -286,7 +281,7 @@ describe('iD.serviceOsm', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(20))
                 .translate([55212042.434589595, 33248879.510193843])  // -74.0444216, 40.6694299
-                .dimensions([[0,0], dimensions]);
+                .clipExtent([[0,0], dimensions]);
         });
 
         it('calls callback when data tiles are loaded', function(done) {
@@ -300,8 +295,7 @@ describe('iD.serviceOsm', function () {
             connection.loadTiles(context.projection, spy);
 
             window.setTimeout(function() {
-                //We preload 9 tiles' worth of information now- the current tile and 8 surrounding.
-                expect(spy).to.have.callCount(9);
+                expect(spy).to.have.been.calledOnce;
                 done();
             }, 500);
         });
@@ -652,7 +646,7 @@ describe('iD.serviceOsm', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(14))
                 .translate([-116508, 0])  // 10,0
-                .dimensions([[0,0], dimensions]);
+                .clipExtent([[0,0], dimensions]);
         });
 
         it('fires loadedNotes when notes are loaded', function(done) {
@@ -665,9 +659,8 @@ describe('iD.serviceOsm', function () {
             connection.on('loadedNotes', spy);
             connection.loadNotes(context.projection, {});
 
-            window.setTimeout(function () {
-                //We preload 9 tiles' worth of information now- the current tile and 8 surrounding.
-                expect(spy).to.have.callCount(9);
+            window.setTimeout(function() {
+                expect(spy).to.have.been.calledOnce;
                 done();
             }, 500);
         });
@@ -680,7 +673,7 @@ describe('iD.serviceOsm', function () {
             context.projection
                 .scale(sdk.geoZoomToScale(14))
                 .translate([-116508, 0])  // 10,0
-                .dimensions([[0,0], dimensions]);
+                .clipExtent([[0,0], dimensions]);
         });
 
         it('returns notes in the visible map area', function() {
@@ -809,4 +802,3 @@ describe('iD.serviceOsm', function () {
 
     });
 });
-
