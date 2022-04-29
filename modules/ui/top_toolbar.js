@@ -18,11 +18,11 @@ export function uiTopToolbar(context) {
   const downloadOsc = uiToolDownloadOsc(context);
 
 
-  function notesEnabled() {
-    const layers = context.layers();
-    const noteLayer = layers && layers.getLayer('notes');
-    return noteLayer && noteLayer.enabled();
-  }
+//  function notesEnabled() {
+//    const layers = context.layers();
+//    const noteLayer = layers && layers.getLayer('notes');
+//    return noteLayer && noteLayer.enabled();
+//  }
 
   function topToolbar(selection) {
     // const debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
@@ -35,9 +35,9 @@ export function uiTopToolbar(context) {
     function update() {
       let tools = [sidebarToggle, 'spacer', modes, rapidFeatures];
 
-      if (notesEnabled()) {
-        tools.push('spacer', notes);
-      }
+//      if (notesEnabled()) {
+//        tools.push('spacer', notes);
+//      }
 
       tools.push('spacer', undoRedo, save);
 
