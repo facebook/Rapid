@@ -57,6 +57,7 @@
     "esbuild": "^0.14.38",
     "fast-deep-equal": "~3.1.1",
     "fast-json-stable-stringify": "2.1.0",
+    "karma-json-fixtures-preprocessor": "^0.0.6",
     "lodash-es": "~4.17.15",
     "marked": "~4.0.15",
     "node-diff3": "~3.1.0",
