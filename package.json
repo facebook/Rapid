@@ -1,6 +1,10 @@
 {
   "name": "RapiD",
+<<<<<<< HEAD
   "version": "2.0.0-alpha",
+=======
+  "version": "2.0.0",
+>>>>>>> f310f7542 (Get a basic OSM renderer test to fire with some prepackaged data.)
   "description": "An AI-enhanced editor for OpenStreetMap",
   "main": "dist/iD.min.js",
   "repository": "github:facebookincubator/RapiD",
