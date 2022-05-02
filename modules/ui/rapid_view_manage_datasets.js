@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
 import { utilQsString, utilStringQs } from '@id-sdk/util';
-import marked from 'marked';
+import { marked } from 'marked';
 
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
@@ -118,7 +118,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     line2
       .append('div')
       .attr('class', 'rapid-view-manage-header-about')
-      .html(marked(t('rapid_feature_toggle.esri.about')));
+      .html(marked.parse(t('rapid_feature_toggle.esri.about')));
 
     line2.selectAll('a')
       .attr('target', '_blank');
