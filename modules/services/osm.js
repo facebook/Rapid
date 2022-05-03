@@ -23,13 +23,19 @@ if (q.hasOwnProperty('osm_api_url')) {
     credentialsMode = 'include';
 }
 
-var redirectPath = window.location.origin + window.location.pathname;
+// We expect `land.html` to exist either at the root '/' or under a '/rapid/' path: e.g.
+// https://mapwith.ai/rapid/land.html
+// http://127.0.0.1:8000/land.html
+var pathname = window.location.pathname;
+if (pathname !== '/') pathname = '/rapid/';
+var redirectURI = window.location.origin + pathname + 'land.html';
+
 var oauth = osmAuth({
     url: urlroot,
     client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
     client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
     scope: 'read_prefs write_prefs write_api read_gpx write_notes',
-    redirect_uri: redirectPath + 'land.html',
+    redirect_uri: redirectURI,
     loading: authLoading,
     done: authDone
 });
