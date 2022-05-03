@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import marked from 'marked';
+import { marked } from 'marked';
 
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
@@ -54,7 +54,7 @@ export function uiSettingsCustomBackground() {
         textSection
             .append('div')
             .attr('class', 'instructions-template')
-            .html(marked(instructions));
+            .html(marked.parse(instructions));
 
         textSection
             .append('textarea')

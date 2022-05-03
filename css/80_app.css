@@ -495,6 +495,7 @@ button.disabled .icon.operation use,
 
 .icon-annotation {
     color: #333;
+    vertical-align: baseline;
 }
 
 
@@ -3139,6 +3140,7 @@ div.full-screen > button:focus {
 .layer-list li.best > div.best {
     padding: 5px;
     flex: 0 0 auto;
+    align-self: center;
 }
 
 .ideditor[dir='rtl'] .list-item-data-browse svg {
@@ -3157,7 +3159,6 @@ div.full-screen > button:focus {
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    overflow: hidden;
 }
 
 .ideditor[dir='ltr'] .layer-list .indented label {
@@ -3167,12 +3168,10 @@ div.full-screen > button:focus {
     padding-right: 24px;
 }
 
-.layer-list label > span {
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    flex-grow: 1;
+.layer-list label > span.background-name {
+    display: flex;
+    flex: 1;
+    padding: 0 5px;
 }
 
 .layer-list input.list-item-input {
@@ -3958,10 +3957,10 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
     border: 1px solid #ccc;
 }
 
-/* no scrollbars */
+/* scrollbars only when necessary*/
 .inspector-hover div {
     overflow-x: visible;
-    overflow-y: visible;
+    overflow-y: auto;
 }
 
 /* hide and remove from layout */
@@ -5488,7 +5487,6 @@ li.hide + li.version .badge .tooltip .popover-arrow {
     height: 20px;
     overflow: visible;
     width: 10px;
-    background: #fff;
     border-left: 1px solid #DDD;
 }
 

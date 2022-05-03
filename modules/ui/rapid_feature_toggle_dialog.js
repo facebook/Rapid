@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { utilQsString, utilStringQs } from '@id-sdk/util';
-import marked from 'marked';
+import { marked } from 'marked';
 
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
@@ -275,7 +275,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
           labelEnter
             .append('div')
             .attr('class', 'rapid-feature-license')
-            .html(marked(d.license_markdown));
+            .html(marked.parse(d.license_markdown));
 
           labelEnter.select('p a')
             .attr('target', '_blank');

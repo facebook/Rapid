@@ -55,7 +55,7 @@ export function rendererPhotos(context) {
     // validate the date
     let date = val && new Date(val);
     if (date && !isNaN(date)) {
-      val = date.toISOString().substr(0, 10);
+      val = date.toISOString().slice(0, 10);
     } else {
       val = null;
     }
@@ -80,6 +80,7 @@ export function rendererPhotos(context) {
       setUrlFilterValue('photo_dates', rangeString);
     }
   };
+
 
   photos.setUsernameFilter = function(val, updateUrl) {
     if (val && typeof val === 'string') {

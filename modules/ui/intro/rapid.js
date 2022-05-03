@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import marked from 'marked';
+import { marked } from 'marked';
 import { t } from '../../core/localizer';
 import { modeBrowse} from '../../modes';
 import { utilRebind } from '../../util/rebind';
@@ -232,7 +232,7 @@ export function uiIntroRapid(context, reveal) {
 
     dispatch.call('done');
     reveal('.intro-nav-wrap .chapter-startEditing',
-      marked(t('intro.rapid.done', { next: t('intro.startediting.title') }))
+      marked.parse(t('intro.rapid.done', { next: t('intro.startediting.title') }))
     );
   }
 

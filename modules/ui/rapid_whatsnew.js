@@ -2,7 +2,7 @@ import { t } from '../core/localizer';
 import { icon } from './intro/helper';
 import { uiModal } from './modal';
 import { prefs } from '../core/preferences';
-import marked from 'marked';
+import { marked } from 'marked';
 
 
 export function uiRapidWhatsNew(context) {
@@ -29,7 +29,7 @@ export function uiRapidWhatsNew(context) {
     let body = whatsNewModal
       .append('div')
       .attr('class','modal-section body')
-      .html(marked(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid') })));
+      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid') })));
 
 
     body

@@ -2,6 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@id-sdk/math';
+import { utilQsString } from '@id-sdk/util';
 
 import { locationManager } from '../core/locations';
 import { coreGraph, coreTree } from '../core';
@@ -29,7 +30,14 @@ function abortRequest(controller) {
 // API
 //https://developers.arcgis.com/rest/users-groups-and-items/search.htm
 function searchURL(start) {
-  return `${APIROOT}/groups/${GROUPID}/search?num=100&start=${start}&sortField=title&sortOrder=asc&f=json`;
+  const params = {
+    f: 'json',
+    sortField: 'title',
+    sortOrder: 'asc',
+    num: 100,
+    start: start
+  };
+  return `${APIROOT}/groups/${GROUPID}/search?` + utilQsString(params);
   // use to get
   // .results[]
   //   .extent
@@ -53,10 +61,21 @@ function itemURL(itemID) {
   return `${HOMEROOT}/item.html?id=${itemID}`;
 }
 
-function tileURL(dataset, extent) {
-  const layerId = dataset.layer.id;
-  const bbox = extent.toParam();
-  return `${dataset.url}/${layerId}/query?f=geojson&outfields=*&outSR=4326&geometryType=esriGeometryEnvelope&geometry=${bbox}`;
+function tileURL(ds, extent, page) {
+  page = page || 0;
+  const layerID = ds.layer.id;
+  const maxRecordCount = ds.layer.maxRecordCount || 2000;
+  const resultOffset = maxRecordCount * page;
+  const params = {
+    f: 'geojson',
+    outfields: '*',
+    outSR: 4326,
+    geometryType: 'esriGeometryEnvelope',
+    geometry: extent.toParam(),
+    resultOffset: resultOffset,
+    resultRecordCount: maxRecordCount
+  };
+  return `${ds.url}/${layerID}/query?` + utilQsString(params);
 }
 
 
@@ -79,6 +98,39 @@ function parseDataset(ds) {
 
   // generate public link to this item
   ds.itemURL = itemURL(ds.id);
+}
+
+
+function loadTilePage(ds, tile, page) {
+  const cache = ds.cache;
+  if (cache.loaded[tile.id]) return;
+
+  const controller = new AbortController();
+  const url = tileURL(ds, tile.wgs84Extent, page);
+
+  d3_json(url, { signal: controller.signal })
+    .then(geojson => {
+      if (!geojson) throw new Error('no geojson');
+
+      parseTile(ds, tile, geojson, (err, results) => {
+        if (err) throw new Error(err);
+        ds.graph.rebase(results, [ds.graph], true);
+        ds.tree.rebase(results, true);
+      });
+      return (geojson.properties && geojson.properties.exceededTransferLimit);
+    })
+    .then(morePages => {
+      if (morePages) {
+        loadTilePage(ds, tile, ++page);
+      } else {
+        cache.loaded[tile.id] = true;
+        dispatch.call('loadedData');
+        delete cache.inflight[tile.id];
+      }
+    })
+    .catch(() => { /* ignore */ });
+
+  cache.inflight[tile.id] = controller;
 }
 
 
@@ -243,8 +295,6 @@ export default {
     if (!ds || !ds.layer) return;
 
     const cache = ds.cache;
-    const tree = ds.tree;
-    const graph = ds.graph;
     const tiles = tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
@@ -263,28 +313,11 @@ export default {
       const corners = tile.wgs84Extent.polygon().slice(0, 4);
       const tileBlocked = corners.every(loc => locationManager.blocksAt(loc).length);
       if (tileBlocked) {
-          cache.loaded[tile.id] = true;  // don't try again
-          return;
+        cache.loaded[tile.id] = true;  // don't try again
+        return;
       }
 
-      const controller = new AbortController();
-      const url = tileURL(ds, tile.wgs84Extent);
-
-      d3_json(url, { signal: controller.signal })
-        .then(geojson => {
-          delete cache.inflight[tile.id];
-          if (!geojson) throw new Error('no geojson');
-          parseTile(ds, tile, geojson, (err, results) => {
-            if (err) throw new Error(err);
-            graph.rebase(results, [graph], true);
-            tree.rebase(results, true);
-            cache.loaded[tile.id] = true;
-            dispatch.call('loadedData');
-          });
-        })
-        .catch(() => { /* ignore */ });
-
-      cache.inflight[tile.id] = controller;
+      loadTilePage(ds, tile, 0);
     });
   },
 

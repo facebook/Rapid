@@ -1,6 +1,6 @@
 //import { select as d3_select } from 'd3-selection';
 //
-//import marked from 'marked';
+//import { marked } from 'marked';
 //import { t, localizer } from '../core/localizer';
 //import { svgIcon } from '../svg/icon';
 //import { icon } from './intro/helper';
@@ -77,7 +77,7 @@
 //        return {
 //            key: helpkey,
 //            title: t.html(helpkey + '.title'),
-//            html: marked(text.trim())
+//            html: marked.parse(text.trim())
 //        };
 //    });
 //
