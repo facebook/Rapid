@@ -117,11 +117,7 @@
           {
             "shortcuts": ["shortcuts.toggle.key", "?"],
             "text": "shortcuts.browsing.help.keyboard"
-          }
-        ]
-      },
-      {
-        "rows": [
+          },
           {
             "section": "selecting",
             "text": "shortcuts.browsing.selecting.title"
