@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Benchmark.js test</title>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <!-- <script src='../node_modules/benchmark/benchmark.js'></script> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/benchmark@2.1.4/benchmark.min.js"></script>
+    <!-- <script src="bench.js"></script> -->
+
+<script>
+    var scripts = [
+        'tests/bench.js',
+    ];
+
+    window.executionErrors = [];
+
+    window.onerror = function (message, source, line, col) {
+        window.executionErrors.push("message" + message + " source" + source + " line" + line + " col" + col);
+    };
+
+    // Prepend scripts to run at the beginning.
+
+    // Second Script:  Always run benchmark helpers
+    scripts.unshift('bench_helpers.js');
+
+    // First script: Choose either modern or legacy iD build..
+    scripts.unshift('../../dist/iD.js');
+
+
+    // Create and execute all scripts in specified order..
+    (function nextScript() {
+        if (!scripts.length) {
+
+            if (window.executionErrors.length > 0) {
+                console.log('\n\n[Execution errors exist] Please resolve the following: \n');
+                for (var i = 0; i < window.executionErrors.length; i++) {
+                    console.log('[Execution error] ' + window.executionErrors[i]);
+                }
+                console.log('\n Disposing mocha. Expect mocha dispose log like: \'Uncaught error outside test suite\'... \n');
+            }
+            return;
+        }
+        var src = scripts.shift();
+        var newScript;
+        newScript = document.createElement('script');
+        newScript.type = 'text/javascript';
+        if (src.substr(0, 5) === 'spec/') {
+            src = '../test/' + src;
+        }
+        newScript.src = src;
+        newScript.onload = nextScript;
+        document.getElementsByTagName('body')[0].appendChild(newScript);
+    })();
+</script>
+
+</body>
+
+</html>

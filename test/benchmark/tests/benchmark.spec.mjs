@@ -12,5 +12,5 @@ test('Run benchmarks', async ({ page }) => {
       });
     });
 
-  await page.goto(`file://${process.cwd()}/test/benchmark/tests/bench.html`);
+  await page.goto(`file://${process.cwd()}/test/benchmark/bench.html`);
 });
