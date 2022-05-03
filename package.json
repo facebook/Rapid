@@ -1,10 +1,6 @@
 {
   "name": "RapiD",
-<<<<<<< HEAD
   "version": "2.0.0-alpha",
-=======
-  "version": "2.0.0",
->>>>>>> f310f7542 (Get a basic OSM renderer test to fire with some prepackaged data.)
   "description": "An AI-enhanced editor for OpenStreetMap",
   "main": "dist/iD.min.js",
   "repository": "github:facebookincubator/RapiD",
@@ -17,6 +13,7 @@
   "license": "ISC",
   "scripts": {
     "all": "run-s clean build dist",
+    "benchmark": "npx playwright test --browser=all --workers=1 --config=test/benchmark/playwright.config.mjs",
     "build": "run-s build:css build:data build:modern",
     "build:css": "node scripts/build_css.js",
     "build:data": "shx mkdir -p dist/data && node scripts/build_data.js",
@@ -58,6 +55,8 @@
     "@pixi/filter-glow": "^4.1.5",
     "@tmcw/togeojson": "^5.1.2",
     "@turf/bbox-clip": "^6.0.0",
+    "abortcontroller-polyfill": "^1.4.0",
+    "benchmark": "^2.1.4",
     "esbuild": "^0.14.38",
     "fast-deep-equal": "~3.1.1",
     "fast-json-stable-stringify": "2.1.0",
@@ -84,7 +83,9 @@
     "@fortawesome/free-solid-svg-icons": "~5.15.1",
     "@ideditor/temaki": "~5.1.0",
     "@mapbox/maki": "^6.0.0",
+    "@playwright/test": "^1.21.1",
     "autoprefixer": "^10.4.7",
+    "babel-plugin-inline-json-import": "^0.3.2",
     "btoa": "^1.2.1",
     "chai": "^4.3.6",
     "chalk": "^5.0.1",
