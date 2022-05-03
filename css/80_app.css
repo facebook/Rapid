@@ -3159,7 +3159,6 @@ div.full-screen > button:focus {
     flex: 1 1 auto;
     display: flex;
     align-items: center;
-    overflow: hidden;
 }
 
 .ideditor[dir='ltr'] .layer-list .indented label {
@@ -3169,14 +3168,10 @@ div.full-screen > button:focus {
     padding-right: 24px;
 }
 
-.layer-list label > span {
-    display: block;
-    overflow: hidden;
-    width: calc(100% - 20px); /* Ensures radio input width within flexbox */
-}
-
-.layer-list label span.localized-text {
-    line-height: 0.95rem;
+.layer-list label > span.background-name {
+    display: flex;
+    flex: 1;
+    padding: 0 5px;
 }
 
 .layer-list input.list-item-input {
