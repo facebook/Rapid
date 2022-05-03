@@ -37,6 +37,42 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [1.1.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.9)
+##### 2022-May-05
+
+#### :tada: New Features
+* Use OAuth2 for authentication with OSM API ([#458])
+
+#### :bug: Bugfixes
+* Fix selectors in RapiD section of walkthrough
+* Fix keyboard shortcuts screen layout ([#456])
+* Fix missing data from Esri feature layers when exceeding the max records limit ([#404],[#469])
+* Add extra css specificity for lines in RapiD (for use in HOT Task Manager) ([#435])
+* Ignore Memorial stolpersteins in close node validation ([iD#9089])
+* Consider lifecycle prefixes in tag and preset matching ([iD#8881])
+* Improve Background imagery list styling ([iD#8975])
+* Replace deprecated `String.prototype.substr()` ([iD#8988])
+* Fix Note icon alignment in sidebar ([iD#9019])
+* Fix comments in notes overflowing upon hovering ([iD#9074])
+* Fix Wikidata field displays `[object Object]` ([iD#9080])
+* Fix deferred promise cleanup in validator ([iD#9021])
+
+[#404]: https://github.com/facebookincubator/RapiD/issues/404
+[#435]: https://github.com/facebookincubator/RapiD/issues/435
+[#456]: https://github.com/facebookincubator/RapiD/issues/456
+[#458]: https://github.com/facebookincubator/RapiD/issues/458
+[#469]: https://github.com/facebookincubator/RapiD/issues/469
+[iD#8881]: https://github.com/openstreetmap/iD/issues/8881
+[iD#8975]: https://github.com/openstreetmap/iD/issues/8975
+[iD#8988]: https://github.com/openstreetmap/iD/issues/8988
+[iD#9019]: https://github.com/openstreetmap/iD/issues/9019
+[iD#9021]: https://github.com/openstreetmap/iD/issues/9021
+[iD#9074]: https://github.com/openstreetmap/iD/issues/9074
+[iD#9080]: https://github.com/openstreetmap/iD/issues/9080
+[iD#9089]: https://github.com/openstreetmap/iD/issues/9089
+
+
+
 # [1.1.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.8)
 ##### 2021-Oct-25
 
@@ -238,7 +274,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 
 # [1.1.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.0)
-##### 2020-Dec-7
+##### 2020-Dec-07
 #### :trumpet: New Features!
 * This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to RapiD!
 
