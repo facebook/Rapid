@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '@id-sdk/util';
 
 import { prefs } from '../core/preferences';
-import { osmEntity } from '../osm';
+import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
 
 
@@ -40,17 +40,6 @@ export function rendererFeatures(context) {
         'bridleway': true,
         'steps': true,
         'pedestrian': true
-    };
-
-    var past_futures = {
-        'proposed': true,
-        'construction': true,
-        'abandoned': true,
-        'dismantled': true,
-        'disused': true,
-        'razed': true,
-        'demolished': true,
-        'obliterated': true
     };
 
     var _cullFactor = 1;
@@ -210,7 +199,7 @@ export function rendererFeatures(context) {
 
         for (var i = 0; i < strings.length; i++) {
             var s = strings[i];
-            if (past_futures[s] || past_futures[tags[s]]) { return true; }
+            if (osmLifecyclePrefixes[s] || osmLifecyclePrefixes[tags[s]]) return true;
         }
         return false;
     });
