@@ -6,12 +6,14 @@ test('Run benchmarks', async ({ page }) => {
         if (message.text() === "Benchmark suite complete.") {
           // if the suite has finished, we're done
           resolve();
+        } else if (message.text().includes('sampled') || message.text().toLowerCase().includes('benchmark')) {
+          console.log(message);
         } else {
           // pipe through any other console output
-          console.log(message);
+         //console.warn(message);
         }
       });
     });
 
-  await page.goto(`file://${process.cwd()}/test/benchmark/bench.html`);
+  await page.goto(`http://127.0.0.1:5500/test/benchmark/bench.html`);
 });
