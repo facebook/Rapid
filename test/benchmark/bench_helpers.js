@@ -2,7 +2,8 @@
 /* eslint no-extend-native:off */
 iD.debug = true;
 
-// Disable things that use the network
+console.log('zoom from JSON: ' + staticData.zoom);
+    ;// Disable things that use the network
 for (var k in iD.services) { delete iD.services[k]; }
 
 // Try not to load imagery

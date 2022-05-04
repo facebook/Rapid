@@ -1,4 +1,5 @@
 import test from '@playwright/test';
+
 test('Run benchmarks', async ({ page }) => {
     let benchmarkPromise = new Promise((resolve) => {
       page.on("console", async (message) => {
@@ -7,7 +8,7 @@ test('Run benchmarks', async ({ page }) => {
           resolve();
         } else {
           // pipe through any other console output
-          console[message.type()](message);
+          console.log(message);
         }
       });
     });
