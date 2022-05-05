@@ -306,6 +306,8 @@ export class BehaviorDraw extends AbstractBehavior {
    * @param  `eventData`  event data
    */
   _click(eventData) {
+    const context = this._context;
+    const projection = context.projection;
     const coord = eventData.coord;
     const loc = projection.invert(coord);
 
@@ -315,9 +317,6 @@ export class BehaviorDraw extends AbstractBehavior {
     const entity = datum instanceof osmEntity && datum;
     // const name = (eventData.target && eventData.target.name) || 'no target';
     // console.log(`click ${name}`);
-
-    const context = this._context;
-    const projection = context.projection;
 
     // Snap to a node
     if (entity && entity.type === 'node') {
