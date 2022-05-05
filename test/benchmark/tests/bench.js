@@ -90,20 +90,7 @@ function cycle(event) {
 function complete() {
     console.log('Benchmark suite complete.');
 }
-// suite
-//     .add('PixiLayerOsm Renderer Benchmark with canned OSM Data', renderTest)
-//     .on('start', () => setup(staticData))
-//     .on('cycle', event => cycle(event))
-//     .on('complete', complete)
-//     .run();
 
-suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with canned OSM Data',
-    'fn': renderTest,
-    'onStart': () => setup(staticData),
-    'onCycle': event => cycle(event),
-    'onComplete': complete,
-});
 suite.add({
     'name': 'PixiLayerOsm Renderer Benchmark with zoom 19 Tokyo data',
     'fn': renderTest,
@@ -119,7 +106,7 @@ suite.add({
     'onComplete': complete,
 });
 suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
+    'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
     'fn': renderTest,
     'onStart': () => setup(tokyo_15),
     'onCycle': event => cycle(event),
