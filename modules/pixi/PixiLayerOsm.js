@@ -156,9 +156,22 @@ export class PixiLayerOsm extends PixiLayer {
       //continuing will fire off the download of the data into a file called 'canned_data.json'.
       //move the data into the test/spec/renderer directory.
       if (this._saveCannedData && !this._alreadyDownloaded) {
-        let viewData = { 'zoom': zoom, 'projection': projection, 'data': data , 'entities': context.graph().base().entities};
+        const map = context.map();
+        const [lng, lat] = map.center();
+
+        let viewData = {
+          'lng': lng,
+          'lat': lat,
+          'zoom': zoom,
+          'width': window.innerWidth,
+          'height': window.innerHeight,
+          'projection': projection,
+          'data': data,
+          'entities': context.graph().base().entities
+        };
+
           let cannedData = JSON.stringify(viewData);
-          this.downloadFile(cannedData,'canned_osm_data.json');
+          this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
 
         this._alreadyDownloaded = true;
       }

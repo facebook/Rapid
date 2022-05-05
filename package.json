@@ -13,7 +13,7 @@
   "license": "ISC",
   "scripts": {
     "all": "run-s clean build dist",
-    "benchmark": "npx playwright test --browser=all --workers=1 --config=test/benchmark/playwright.config.mjs",
+    "benchmark": "run-s start:server & run-s test:benchmark",
     "build": "run-s build:css build:data build:modern",
     "build:css": "node scripts/build_css.js",
     "build:data": "shx mkdir -p dist/data && node scripts/build_data.js",
@@ -39,6 +39,9 @@
     "quickstart": "npm run start",
     "start:server": "node scripts/server.js",
     "test": "npm-run-all -s lint build test:spec",
+    "test:benchmark": "npm run test:unzip-benchmark-data && npx playwright test --browser=all --workers=1 --config=test/benchmark/playwright.config.mjs && npm run test:cleanup-benchmark-data",
+    "test:unzip-benchmark-data": "tar -xvf test/benchmark/tokyo_canned_data.zip -C test/benchmark",
+    "test:cleanup-benchmark-data": "rm test/benchmark/tokyo_*_canned_osm_data.js",
     "test:spec": "karma start karma.conf.cjs",
     "translations": "node scripts/update_locales.js"
   },
