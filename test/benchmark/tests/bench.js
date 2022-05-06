@@ -72,7 +72,6 @@ function renderTest() {
 }
 
 function setup(dataBlob) {
-    console.log('starting benchmark suite!');
     //This dataBlob variable should be the json blob exported in bench.html from a <script src='canned_osm_data.js'> declaration
     renderData = jsonToOSM(dataBlob.data);
     graphEntities = castEntities(dataBlob.entities);
@@ -82,35 +81,37 @@ function setup(dataBlob) {
     graph.rebase(graphEntities, [graph], false);
 }
 
-function cycle(event) {
+// Enable the cycle event if and only if we really need to print stuff every run.
+// function cycle(event) {
+//     const benchmark = event.target;
+//     console.log(benchmark.toString());
+// }
+
+function complete(event) {
     const benchmark = event.target;
     console.log(benchmark.toString());
-}
-
-function complete() {
-    console.log('Benchmark suite complete.');
 }
 
 suite.add({
     'name': 'PixiLayerOsm Renderer Benchmark with zoom 19 Tokyo data',
     'fn': renderTest,
     'onStart': () => setup(tokyo_19),
-    'onCycle': event => cycle(event),
-    'onComplete': complete,
+    // 'onCycle': event => cycle(event),
+    'onComplete': event => complete(event),
 });
 suite.add({
     'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
     'fn': renderTest,
     'onStart': () => setup(tokyo_17),
-    'onCycle': event => cycle(event),
-    'onComplete': complete,
+    // 'onCycle': event => cycle(event),
+    'onComplete': event => complete(event),
 });
 suite.add({
     'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
     'fn': renderTest,
     'onStart': () => setup(tokyo_15),
-    'onCycle': event => cycle(event),
-    'onComplete': complete,
+    // 'onCycle': event => cycle(event),
+    'onComplete': event => complete(event),
 });
 
 suite.run();
