@@ -40,6 +40,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 # [1.1.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.9)
 ##### 2022-May-05
 
+#### :newspaper: News
+* We've restricted the use of RapiD and MapWithAI around Ukraine per [request of the OSM Ukrainian Community](https://wiki.openstreetmap.org/wiki/Russian%E2%80%93Ukrainian_war).
+
 #### :tada: New Features
 * Use OAuth2 for authentication with OSM API ([#458])
 
