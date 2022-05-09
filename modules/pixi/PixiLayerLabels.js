@@ -89,14 +89,24 @@ export class PixiLayerLabels extends PixiLayer {
     // all our label rendering needs.
     // const _allocator = new CanvasTextureAllocator();
 
-    this._textstyle = new PIXI.TextStyle({
+    const fontOptions = {
       fill: 0x333333,
       fontSize: 11,
       fontWeight: 600,
       miterLimit: 1,
       stroke: 0xeeeeee,
       strokeThickness: 3
+    };
+
+    // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
+    PIXI.BitmapFont.from('label', fontOptions, {
+      chars: PIXI.BitmapFont.ASCII,
+      padding: 0,
+      resolution: 2
     });
+
+    // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
+    this._textstyle = new PIXI.TextStyle(fontOptions);
   }
 
 
@@ -394,9 +404,21 @@ export class PixiLayerLabels extends PixiLayer {
         this._labelBoxes.set(feature.id, []);
 
         if (!feature.label) return;  // nothing to do
-        const sprite = this.getLabelSprite(feature.label);
 
-        this.placePointLabel(feature, sprite);
+        let labelObj;
+        if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
+          labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label' });
+          labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
+          labelObj.name = feature.label;
+          // labelObj.anchor.set(0.5, 0.5);   // middle, middle
+          labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
+          labelObj.letterSpacing = -0.5;   // to adjust for lack of kerning
+
+        } else {
+          labelObj = this.getLabelSprite(feature.label);
+        }
+
+        this.placePointLabel(feature, labelObj);
       });
   }
 
@@ -423,9 +445,9 @@ export class PixiLayerLabels extends PixiLayer {
         this._labelBoxes.set(feature.id, []);
 
         if (!feature.label) return;  // nothing to do
-        const sprite = this.getLabelSprite(feature.label);
 
-        this.placeLineLabel(feature, sprite);
+        const labelObj = this.getLabelSprite(feature.label);
+        this.placeLineLabel(feature, labelObj);
       });
   }
 
@@ -436,10 +458,10 @@ export class PixiLayerLabels extends PixiLayer {
    * We generate several placement regions around the marker,
    * try them until we find one that doesn't collide with something.
    *
-   * @param  feature  The feature to place point labels on
-   * @param  sprite   a Pixi Sprite to use as the label
+   * @param  feature   The feature to place point labels on
+   * @param  labelObj  a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText to use as the label
    */
-  placePointLabel(feature, sprite) {
+  placePointLabel(feature, labelObj) {
     if (!feature || !feature.sceneBounds) return;
 
     const dObj = feature.displayObject;
@@ -463,7 +485,7 @@ export class PixiLayerLabels extends PixiLayer {
     // `l` = label, these bounds are in "local" coordinates to the label,
     // 0,0 is the center of the label
     // (padY -1, because for some reason, calculated height seems higher than necessary)
-    const lRect = sprite.getLocalBounds().clone().pad(0, -1);
+    const lRect = labelObj.getLocalBounds().clone().pad(0, -1);
     const some = 5;
     const more = 10;
     const lWidth = lRect.width;
@@ -539,9 +561,9 @@ export class PixiLayerLabels extends PixiLayer {
       };
 
       if (!this._rbush.collides(box)) {
-        // We can render a label sprite in this box..
-        const label = new Label(featureID, 'sprite', {
-          sprite: sprite,
+        // We can render the label in this box..
+        const label = new Label(featureID, 'text', {
+          labelObj: labelObj,
           x: x,
           y: y,
           tint: feature.style.labelTint || 0xffffff
@@ -554,7 +576,7 @@ export class PixiLayerLabels extends PixiLayer {
     }
 
     // if (!picked) {
-    //   sprite.destroy({ children: true });  // didn't place it
+    //   labelObj.destroy({ children: true });  // didn't place it
     // }
   }
 
@@ -565,10 +587,10 @@ export class PixiLayerLabels extends PixiLayer {
    * We generate chains of bounding boxes along the line,
    * then add the labels in spaces along the line wherever they fit
    *
-   * @param  feature  The feature to place point labels on
-   * @param  sprite   a Pixi Sprite to use as the label
+   * @param  feature   The feature to place point labels on
+   * @param  labelObj  a PIXI.Sprite to use as the label
    */
-  placeLineLabel(feature, sprite) {
+  placeLineLabel(feature, labelObj) {
     if (!feature || !feature.points) return;
 
     const dObj = feature.displayObject;
@@ -583,7 +605,7 @@ export class PixiLayerLabels extends PixiLayer {
 
     // `l` = label, these bounds are in "local" coordinates to the label,
     // 0,0 is the center of the label
-    const lRect = sprite.getLocalBounds();
+    const lRect = labelObj.getLocalBounds();
     const lWidth = lRect.width;
     const lHeight = lRect.height;
     const BENDLIMIT = Math.PI / 8;
@@ -715,7 +737,7 @@ export class PixiLayerLabels extends PixiLayer {
 
       const label = new Label(labelID, 'rope', {
         coords: coords,
-        sprite: sprite,
+        labelObj: labelObj,
         tint: feature.style.labelTint || 0xffffff
       });
       this._labels.set(labelID, label);
@@ -762,7 +784,7 @@ export class PixiLayerLabels extends PixiLayer {
 //    //   placing at pole-of-inaccessability instead of centroid?
 //    //   placing label along edge of area stroke?
 //    //
-//    placeAreaLabel(feature, sprite) {
+//    placeAreaLabel(feature, labelObj) {
 //      return;  // not yet
 //    }
 
@@ -803,17 +825,18 @@ export class PixiLayerLabels extends PixiLayer {
 
       if (label.displayObject) return;   // done already
 
-      if (label.type === 'sprite') {
-        const sprite = options.sprite;
-        sprite.tint = options.tint || 0xffffff;
-        sprite.position.set(options.x, options.y);
+      if (label.type === 'text') {
+        const labelObj = options.labelObj;  // a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText
+        labelObj.tint = options.tint || 0xffffff;
+        labelObj.position.set(options.x, options.y);
 
-        label.displayObject = sprite;
-        this.labelContainer.addChild(sprite);
+        label.displayObject = labelObj;
+        this.labelContainer.addChild(labelObj);
 
       } else if (label.type === 'rope') {
+        const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
         const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
-        const rope = new PIXI.SimpleRope(options.sprite.texture, points);
+        const rope = new PIXI.SimpleRope(labelObj.texture, points);
         rope.name = labelID;
         rope.autoUpdate = false;
         rope.interactiveChildren = false;

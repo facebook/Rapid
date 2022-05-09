@@ -242,7 +242,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
             tile.debug.sortableChildren = false;
             this.debugContainer.addChild(tile.debug);
 
-            const label = new PIXI.BitmapText(tile.id, { fontName: 'bitmap' });
+            const label = new PIXI.BitmapText(tile.id, { fontName: 'debug' });
             label.name = `label-${tile.id}`;
             label.tint = DEBUGCOLOR;
             label.position.set(2, 2);

@@ -53,7 +53,7 @@ export class PixiRenderer {
     prepareTextures(context, this.pixi.renderer);
 
     // Prepare a basic bitmap font that we can use for things like debug messages
-    PIXI.BitmapFont.from('bitmap', {
+    PIXI.BitmapFont.from('debug', {
       fill: 0xffffff,
       fontSize: 14,
       stroke: 0x333333,
