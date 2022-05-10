@@ -1,12 +1,19 @@
 import * as PIXI from 'pixi.js';
+import { geoMetersToLon } from '@id-sdk/math';
+
 import { PixiLayer } from './PixiLayer';
 
-const LAYERID = 'pixiMapUI';
+const LAYERID = 'map-ui';
 
 
 /**
  * PixiLayerMapUI
- * this class contains any UI elements to be 'drawn over' the map canvas, glass-panel style.
+ * This class contains any UI elements to be 'drawn over' the map canvas, glass-panel style.
+ *
+ * - geolocation aura
+ * - tile debugging lines
+ * - others?
+ *
  * @class
  */
 export class PixiLayerMapUI extends PixiLayer {
@@ -20,62 +27,139 @@ export class PixiLayerMapUI extends PixiLayer {
   constructor(context, scene, layerZ) {
     super(context, LAYERID, layerZ);
     this.scene = scene;
-    this._enabled = false;   // this UI layer should be enabled by default
-    this._loc = [];
-    // this layer shouldn't be interactive out of the box-
-    // in fact, The geolocate button on the right sidebar won't work if it starts out enabled!
-    const layer = this.container;
-    layer.buttonMode = false;
-    layer.interactive = false;
-    layer.interactiveChildren = false;
+    this._enabled = true;            // this layer should always be enabled
+    this.container.visible = true;   // this layer should always be visible
+    this._oldk = 0;
+
+    // setup the child containers
+    // these only go visible if they have something to show
+
+    // TILE DEBUGGING
+    const tileDebugContainer = new PIXI.Container();
+    tileDebugContainer.name = 'tile-debug';
+    tileDebugContainer.buttonMode = false;
+    tileDebugContainer.interactive = false;
+    tileDebugContainer.interactiveChildren = false;
+    tileDebugContainer.sortableChildren = false;
+    tileDebugContainer.visible = false;
+    this.tileDebugContainer = tileDebugContainer;
+
+    // GEOLOCATION
+    this._geolocationData = null;
+    this._geolocationDirty = false;
+    const geolocationContainer = new PIXI.Container();
+    geolocationContainer.name = 'geolocation';
+    geolocationContainer.buttonMode = false;
+    geolocationContainer.interactive = false;
+    geolocationContainer.interactiveChildren = false;
+    geolocationContainer.sortableChildren = false;
+    geolocationContainer.visible = false;
+    this.geolocationContainer = geolocationContainer;
+
+    this.container.addChild(tileDebugContainer, geolocationContainer);
   }
 
 
-  get geoLocation() {
-    return this._location;
+  /**
+   * enabled
+   * This layer should always be enabled - it contains important UI stuff
+   */
+  get enabled() {
+    return this._enabled;
   }
-
-  // This setter allows the geolocate UI to set the coordinate we need to draw.
-  set geoLocation(loc) {
-    this._location = loc;
+  set enabled(val) {
+    // noop
   }
 
   /**
-   * render
-   * Draw the circle on the map for geolocation
+   * visible
+   * This layer should always be visible - it contains important UI stuff
    */
+  get visible() {
+    return this.container.visible;
+  }
+  set visible(val) {
+    // noop
+  }
 
-  render(_, projection) {
-    if (this._enabled) {
-      this.visible = true;
 
-      let container = this.container.getChildByName('locator');
+  /**
+   * geolocationData
+   * see:  https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPosition
+   */
+  get geolocationData() {
+    return this._geolocationData;
+  }
+  set geolocationData(val) {
+    this._geolocationData = val;
+    this._geolocationDirty = true;
+  }
 
-      if (!container) {
-        container = new PIXI.Container();
-        container.name = 'locator';
-        const locatorCircle = new PIXI.Graphics()
-          .lineStyle(1.5, 0xffffff, 1.0)
-          .beginFill(0x0e60ff, 1.0)
-          .drawCircle(0, 0, 6.5)
-          .endFill();
+
+  /**
+   * render
+   * Draw any of the child containers for UI that should float over the map.
+   *
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   */
+  render(timestamp, projection) {
+    // redraw if zoom changes
+    const k = projection.scale();
+    if (k !== this._oldk) {
+      this._geolocationDirty = true;
+      this._oldk = k;
+    }
+
+    // GEOLOCATION
+    if (this._geolocationDirty) {
+      this._geolocationDirty = false;
+      this.geolocationContainer.removeChildren();
+
+      if (this.geolocationData && this.geolocationData.coords) {
+        const d = this.geolocationData.coords;
+        const coord = [d.longitude, d.latitude];
+        const [x, y] = projection.project(coord);
+
+        // Calculate the radius of the accuracy aura (convert meters -> pixels)
+        const dLon = geoMetersToLon(d.accuracy, coord[1]);  // coord[1] = at this latitude
+        const edge = [d.longitude + dLon, d.latitude];
+        const x2 = projection.project(edge)[0];
+        const r = Math.max(Math.abs(x2 - x), 15);
+        const BLUE = 0xe60ff;
 
         const locatorAura = new PIXI.Graphics()
-          .beginFill(0xe60ff, 0.3)
-          .drawCircle(0, 0, 120)
+          .beginFill(BLUE, 0.4)
+          .drawCircle(x, y, r)
           .endFill();
+        locatorAura.name = 'aura';
+        this.geolocationContainer.addChild(locatorAura);
 
-        container.addChild(locatorAura, locatorCircle);
-        this.container.addChild(container);
+        // Show a viewfield for the heading if we have it
+        if (d.heading !== null && !isNaN(d.heading)) {
+          const textures = this.context.pixi.rapidTextures;
+          const locatorHeading = new PIXI.Sprite(textures.get('viewfieldDark'));
+          locatorHeading.anchor.set(0.5, 1);  // middle, top
+          locatorHeading.angle = d.heading;
+          locatorHeading.name = 'heading';
+          locatorHeading.position.set(x, y);
+          this.geolocationContainer.addChild(locatorHeading);
+        }
+
+        const locatorPosition = new PIXI.Graphics()
+          .lineStyle(1.5, 0xffffff, 1.0)
+          .beginFill(BLUE, 1.0)
+          .drawCircle(x, y, 6.5)
+          .endFill();
+        locatorPosition.name = 'position';
+        this.geolocationContainer.addChild(locatorPosition);
+
+        this.geolocationContainer.visible = true;
+
+      } else {
+        this.geolocationContainer.visible = false;
       }
-      const [x, y] = projection.project([this._location.longitude, this._location.latitude]);
-
-
-
-      this.container.x = x;
-      this.container.y = y;
-    } else {
-      this.visible = false;
     }
+
   }
 }
