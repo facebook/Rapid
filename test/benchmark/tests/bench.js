@@ -67,8 +67,7 @@ function renderTest() {
         osmLayer.drawLines(timestamp, projection, zoom, renderData.lines);
         osmLayer.drawPolygons(timestamp, projection, zoom, renderData.polygons);
         let renderer = map.renderer();
-        renderer.dirtyScene(); //Dirty the scene so that subsequent runs of this same test don't operate at warp speed
-        renderer.render();
+        renderer.dirtyScene();  //Dirty the scene so that subsequent runs of this same test don't operate at warp speed
 }
 
 function setup(dataBlob) {
