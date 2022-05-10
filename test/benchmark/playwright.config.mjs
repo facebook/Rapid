@@ -21,9 +21,9 @@ const config = {
   retries: 2,
 
   // Limit the number of workers on CI, use default locally
-  workers: process.env.CI ? 2 : undefined,
+  workers: 1,
 
-  reporter: [["list"], ["json", { outputFile: "test/benchmark/test-results.json" }]],
+  reporter: process.env.CI ? 'github' :  ["json", { outputFile: "test/benchmark/test-results.json" }],
   // reporter: './OsmReporter.mjs',
   projects: [
     {

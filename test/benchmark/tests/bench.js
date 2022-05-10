@@ -98,19 +98,19 @@ suite.add({
     // 'onCycle': event => cycle(event),
     'onComplete': event => complete(event),
 });
-suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
-    'fn': renderTest,
-    'onStart': () => setup(tokyo_17),
-    // 'onCycle': event => cycle(event),
-    'onComplete': event => complete(event),
-});
-suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
-    'fn': renderTest,
-    'onStart': () => setup(tokyo_15),
-    // 'onCycle': event => cycle(event),
-    'onComplete': event => complete(event),
-});
+// suite.add({
+//     'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
+//     'fn': renderTest,
+//     'onStart': () => setup(tokyo_17),
+//     // 'onCycle': event => cycle(event),
+//     'onComplete': event => complete(event),
+// });
+// suite.add({
+//     'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
+//     'fn': renderTest,
+//     'onStart': () => setup(tokyo_15),
+//     // 'onCycle': event => cycle(event),
+//     'onComplete': event => complete(event),
+// });
 
 suite.run();
