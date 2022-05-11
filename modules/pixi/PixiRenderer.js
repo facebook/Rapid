@@ -32,6 +32,11 @@ export class PixiRenderer {
     this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     this._redrawPending = false;
 
+    // Default to retina resolution for rendertextures, text generation, etc
+    PIXI.settings.RESOLUTION = 2;
+    // Disable mipmapping, we always want textures at the resolution they are at.
+    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
+
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
