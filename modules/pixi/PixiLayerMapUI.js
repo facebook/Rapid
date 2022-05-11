@@ -10,8 +10,9 @@ const LAYERID = 'map-ui';
  * PixiLayerMapUI
  * This class contains any UI elements to be 'drawn over' the map canvas, glass-panel style.
  *
+ * - debugging info
  * - geolocation aura
- * - tile debugging lines
+ * - tile debugging grid
  * - others?
  *
  * @class
@@ -34,16 +35,6 @@ export class PixiLayerMapUI extends PixiLayer {
     // setup the child containers
     // these only go visible if they have something to show
 
-    // TILE DEBUGGING
-    const tileDebugContainer = new PIXI.Container();
-    tileDebugContainer.name = 'tile-debug';
-    tileDebugContainer.buttonMode = false;
-    tileDebugContainer.interactive = false;
-    tileDebugContainer.interactiveChildren = false;
-    tileDebugContainer.sortableChildren = false;
-    tileDebugContainer.visible = false;
-    this.tileDebugContainer = tileDebugContainer;
-
     // GEOLOCATION
     this._geolocationData = null;
     this._geolocationDirty = false;
@@ -56,7 +47,17 @@ export class PixiLayerMapUI extends PixiLayer {
     geolocationContainer.visible = false;
     this.geolocationContainer = geolocationContainer;
 
-    this.container.addChild(tileDebugContainer, geolocationContainer);
+    // TILE DEBUGGING
+    const tileDebugContainer = new PIXI.Container();
+    tileDebugContainer.name = 'tile-debug';
+    tileDebugContainer.buttonMode = false;
+    tileDebugContainer.interactive = false;
+    tileDebugContainer.interactiveChildren = false;
+    tileDebugContainer.sortableChildren = false;
+    tileDebugContainer.visible = false;
+    this.tileDebugContainer = tileDebugContainer;
+
+    this.container.addChild(geolocationContainer, tileDebugContainer);
   }
 
 
@@ -111,7 +112,20 @@ export class PixiLayerMapUI extends PixiLayer {
       this._oldk = k;
     }
 
-    // GEOLOCATION
+    if (this._geolocationDirty) {
+      this.drawGeolocation(timestamp, projection);
+    }
+  }
+
+
+  /**
+   * drawGeolocation
+   * Draw the geoloation data
+   *
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   */
+  drawGeolocation(timestamp, projection) {
     if (this._geolocationDirty) {
       this._geolocationDirty = false;
       this.geolocationContainer.removeChildren();
@@ -160,6 +174,6 @@ export class PixiLayerMapUI extends PixiLayer {
         this.geolocationContainer.visible = false;
       }
     }
-
   }
+
 }

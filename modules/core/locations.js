@@ -301,8 +301,11 @@ export function coreLocations() {
   // Direct access to the location-conflation resolver
   _this.loco = () => _loco;
 
-  // Direct access to the which-polygon index
+  // Direct access to the "main" which-polygon index
   _this.wp = () => _wp;
+
+  // Direct access to the "blocks" which-polygon index
+  _this.wpblocks = () => _wpblocks;
 
   // Direct access to the blocked regions
   _this.blocks = () => _blocks;

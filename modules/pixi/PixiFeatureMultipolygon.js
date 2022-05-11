@@ -218,7 +218,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     let texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
 
     const fillstyle = prefs('area-fill') || 'partial';
-    let doPartialFill = (fillstyle === 'partial');
+    let doPartialFill = !style.requireFill && (fillstyle === 'partial');
 
     // If this shape is so small that partial filling makes no sense, fill fully (faster?)
     const cutoff = (2 * PARTIALFILLWIDTH) + 5;
@@ -398,6 +398,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
 
 
 const STYLE_DEFAULTS = {
+  requireFill: false,      // allow partial fill or wireframe styles
   reversePoints: false,
   lineMarkerName: '',
   lineMarkerTint: 0x000000,

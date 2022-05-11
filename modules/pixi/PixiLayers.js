@@ -1,6 +1,7 @@
 import { utilRebind } from '../util';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles';
+import { PixiLayerEditBlocks } from './PixiLayerEditBlocks';
 import { PixiLayerImproveOsm } from './PixiLayerImproveOsm';
 import { PixiLayerKartaPhotos } from './PixiLayerKartaPhotos';
 import { PixiLayerKeepRight } from './PixiLayerKeepRight';
@@ -52,6 +53,8 @@ export class PixiLayers {
       new PixiLayerStreetsidePhotos(context, scene, 26),
 
       new PixiLayerLabels(context, scene, 30),
+
+      new PixiLayerEditBlocks(context, scene, 90),
       new PixiLayerMapUI(context, scene, 99),
     ];
   }
