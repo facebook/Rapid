@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { Extent, geomGetSmallestSurroundingRectangle, vecLength } from '@id-sdk/math';
+import { Extent, geomGetSmallestSurroundingRectangle, vecEqual, vecLength } from '@id-sdk/math';
 
 import { PixiFeature } from './PixiFeature';
 import { prefs } from '../core/preferences';
@@ -47,10 +47,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     this.style = style || {};
     this.ssrdata = null;
 
-    const textures = context.pixi.rapidTextures;
-    const square = textures.get('lowres-square') || PIXI.Texture.WHITE;
-    const lowRes = new PIXI.Sprite(square);
-    // const lowRes = new PIXI.Sprite(textures.ell);
+    const lowRes = new PIXI.Sprite();
     lowRes.name = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
@@ -166,12 +163,26 @@ export class PixiFeatureMultipolygon extends PixiFeature {
             const axis1 = [p1, q1];
             const axis2 = [p2, q2];
             const centroid = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
+
+            // Pick an appropriate lowRes sprite for this shape
+            // Are the SSR corners part of the shape?
+            const EPSILON = 0.1;
+            let c0in, c1in, c2in, c3in;
+            outerPoints.forEach(point => {
+              if (!c0in) c0in = vecEqual(point, ssr.poly[0], EPSILON);
+              if (!c1in) c1in = vecEqual(point, ssr.poly[1], EPSILON);
+              if (!c2in) c2in = vecEqual(point, ssr.poly[2], EPSILON);
+              if (!c3in) c3in = vecEqual(point, ssr.poly[3], EPSILON);
+            });
+            const cornersInSSR = c0in || c1in || c2in || c3in;
+
             this.ssrdata = {
               poly: ssr.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
               axis1: axis1.map(coord => projection.invert(coord)),
               axis2: axis2.map(coord => projection.invert(coord)),
               centroid: projection.invert(centroid),
-              angle: ssr.angle
+              angle: ssr.angle,
+              texture: cornersInSSR ? 'lowres-square' : 'lowres-circle'
             };
           }
         }
@@ -234,6 +245,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
+      this.lowRes.texture = textures.get(ssrdata.texture) || PIXI.Texture.WHITE;
       this.lowRes.position.set(x, y);
       this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
       this.lowRes.rotation = ssrdata.angle;

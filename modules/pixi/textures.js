@@ -251,7 +251,7 @@ export function prepareTextures(context, renderer) {
     .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
     .endFill();
 
-  const lowresCircle = new PIXI.Graphics()    // suitable to display an icon inside
+  const lowresCircle = new PIXI.Graphics()
     .lineStyle(1, 0xffffff)
     .beginFill(0xffffff, 0.3)
     .drawCircle(0, 0, 5)
