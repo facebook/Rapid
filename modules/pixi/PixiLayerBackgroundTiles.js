@@ -24,28 +24,9 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.enabled = true;   // background imagery should be enabled by default
 
     // items in this layer don't need to be interactive
-    const layerContainer = this.container;
-    layerContainer.buttonMode = false;
-    layerContainer.interactive = false;
-    layerContainer.interactiveChildren = false;
-
-    const debugContainer = new PIXI.Container();
-    debugContainer.name = 'debug';
-    debugContainer.buttonMode = false;
-    debugContainer.interactive = false;
-    debugContainer.interactiveChildren = false;
-    debugContainer.sortableChildren = false;
-    this.debugContainer = debugContainer;
-
-    const tileContainer = new PIXI.Container();
-    tileContainer.name = 'tiles';
-    tileContainer.buttonMode = false;
-    tileContainer.interactive = false;
-    tileContainer.interactiveChildren = false;
-    tileContainer.sortableChildren = true;
-    this.tileContainer = tileContainer;
-
-    layerContainer.addChild(tileContainer, debugContainer);
+    this.container.buttonMode = false;
+    this.container.interactive = false;
+    this.container.interactiveChildren = false;
 
     this._tileMaps = new Map();  // Map (sourceID -> Map(tile.id -> Tile))
     this._failed = new Set();    // Set of failed tileURLs
@@ -60,8 +41,6 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    */
   render(timestamp, projection) {
     const background = this.context.background();
-    const SHOWDEBUG = this.context.getDebug('tile');
-    this.debugContainer.visible = SHOWDEBUG;
 
     // Collect tile sources - baselayer and overlays
     let tileSources = new Map();   // Map (tilesource Object -> zIndex)
@@ -74,7 +53,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
     background.overlayLayerSources().forEach((overlay, index) => {
       if (overlay.id === 'mapbox_locator_overlay') {
-        index = 999;  // render the locator labels above all other overlays
+        index = 999;  // render locator overlay above all other overlays
       }
       tileSources.set(overlay, index);
       tileSourceIDs.add(overlay.id);
@@ -99,10 +78,10 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     });
 
 
-    // Remove any tile sources containers and data not needed anymore.
+    // Remove any tile sourceContainers and data not needed anymore (not in `tileSourceIDs`)
     // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
     let toDestroy = [];
-    this.tileContainer.children.forEach(sourceContainer => {
+    this.container.children.forEach(sourceContainer => {
       const sourceID = sourceContainer.name;
       if (!tileSourceIDs.has(sourceID)) {
         toDestroy.push(sourceContainer);
@@ -127,8 +106,13 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const thiz = this;
     const context = this.context;
-    const SHOWDEBUG = context.getDebug('tile');
     const osm = context.connection();
+
+    // The tile debug container lives on the `map-ui` layer so it is drawn over everything
+    const SHOWDEBUG = this.context.getDebug('tile');
+    const mapUIContainer = context.layers().getLayer('map-ui').container;
+    const debugContainer = mapUIContainer.getChildByName('tile-debug');
+    debugContainer.visible = SHOWDEBUG;
 
     const tileSize = source.tileSize || 256;
     const k = projection.scale();
@@ -240,7 +224,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
             tile.debug.interactive = false;
             tile.debug.interactiveChildren = false;
             tile.debug.sortableChildren = false;
-            this.debugContainer.addChild(tile.debug);
+            debugContainer.addChild(tile.debug);
 
             const label = new PIXI.BitmapText(tile.id, { fontName: 'debug' });
             label.name = `label-${tile.id}`;
@@ -277,7 +261,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    * @param sourceID
    */
   getSourceContainer(sourceID) {
-    let sourceContainer = this.tileContainer.getChildByName(sourceID);
+    let sourceContainer = this.container.getChildByName(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
       sourceContainer.name = sourceID;
@@ -285,7 +269,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       sourceContainer.interactive = false;
       sourceContainer.interactiveChildren = false;
       sourceContainer.sortableChildren = true;
-      this.tileContainer.addChild(sourceContainer);
+      this.container.addChild(sourceContainer);
     }
     return sourceContainer;
   }
