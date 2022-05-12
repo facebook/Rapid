@@ -2,6 +2,9 @@ import * as PIXI from 'pixi.js';
 import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 import { PixiLayer } from './PixiLayer';
 
+// experiment
+// import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+
 const LAYERID = 'background';
 const DEBUGCOLOR = 0xffff00;
 
@@ -31,6 +34,9 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this._tileMaps = new Map();  // Map (sourceID -> Map(tile.id -> Tile))
     this._failed = new Set();    // Set of failed tileURLs
     this._tiler = new Tiler();
+
+// experiment
+// this._tileAllocator = new AtlasAllocator();
   }
 
 
@@ -167,10 +173,31 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       if (tileMap.has(tile.id)) return;   // we made it already
 
       const sprite = new PIXI.Sprite.from(tile.url);
+//      const sprite = new PIXI.Sprite();
       sprite.name = `${source.id}-${tile.id}`;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
       sourceContainer.addChild(sprite);
+
+//// experiment
+//const image = document.createElement('img');
+//image.src = tile.url;
+//
+//// After the image loads, create the texture. You must do this *after* the image is loaded so you know the
+//// width and height needed. Also, the atlas resource requires the image to be loaded; otherwise, it will
+//// forget to re-upload once it does load.
+//image.onload = () => {
+//  const { naturalWidth, naturalHeight } = image;
+//  const texture = thiz._tileAllocator.allocate(naturalWidth, naturalHeight, 0);
+//  sprite.texture = texture;
+//  tile.loaded = true;
+//  thiz.context.map().deferredRedraw();
+//};
+//image.onerror = () => {
+//  thiz._failed.delete(tile.url);
+//  tile.loaded = true;
+//  thiz.context.map().deferredRedraw();
+//};
 
       const baseTexture = sprite.texture.baseTexture;
       baseTexture

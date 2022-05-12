@@ -7,10 +7,9 @@ import { Projection } from '@id-sdk/math';
 import { PixiEventsHandler } from './PixiEventsHandler';
 import { PixiLayers } from './PixiLayers';
 import { PixiScene } from './PixiScene';
-import { prepareTextures } from './textures';
+import { PixiTextures } from './PixiTextures';
 
 const AUTOTICK = false;     // set to true to turn the ticker back on
-
 
 
 /**
@@ -24,19 +23,26 @@ export class PixiRenderer {
    * Create a Pixi application and add it to the given parentElement.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
    *
-   * @param context
-   * @param parentElement
+   * @param  context
+   * @param  parentElement
    */
   constructor(context, parentElement) {
     this._context = context;
     this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     this._redrawPending = false;
 
+    // Register Pixi with the pixi-inspector extension if it is installed
+    // https://github.com/bfanger/pixi-inspector
+    if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
+      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
+    }
+
     // Default to retina resolution for rendertextures, text generation, etc
     PIXI.settings.RESOLUTION = 2;
     // Disable mipmapping, we always want textures at the resolution they are at.
     PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
+    // Create a Pixi application and add it to the parent container
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
@@ -48,14 +54,8 @@ export class PixiRenderer {
     context.pixi = this.pixi;
     parentElement.appendChild(this.pixi.view);
 
-    // Register Pixi with the pixi-inspector extension if it is installed
-    // https://github.com/bfanger/pixi-inspector
-    if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
-      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
-    }
-
     // Prepare textures
-    prepareTextures(context, this.pixi.renderer);
+    this.textures = new PixiTextures(context);
 
     // Prepare a basic bitmap font that we can use for things like debug messages
     PIXI.BitmapFont.from('debug', {
