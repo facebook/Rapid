@@ -88,29 +88,39 @@ function setup(dataBlob) {
 
 function complete(event) {
     const benchmark = event.target;
-    console.log(benchmark.toString());
+    let hz = benchmark.hz.toFixed(benchmark.hz < 100 ? 2 : 0);
+    console.log(`benchmark placename: ${benchmark.placename}`);
+    console.log(`benchmark zoom: ${benchmark.zoom}`);
+    console.log(`benchmark ops/sec: ${hz}`);
+
 }
 
 suite.add({
     'name': 'PixiLayerOsm Renderer Benchmark with zoom 19 Tokyo data',
     'fn': renderTest,
+    'placename': 'tokyo',
+    'zoom': '19',
     'onStart': () => setup(tokyo_19),
     // 'onCycle': event => cycle(event),
     'onComplete': event => complete(event),
 });
-// suite.add({
-//     'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
-//     'fn': renderTest,
-//     'onStart': () => setup(tokyo_17),
-//     // 'onCycle': event => cycle(event),
-//     'onComplete': event => complete(event),
-// });
-// suite.add({
-//     'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
-//     'fn': renderTest,
-//     'onStart': () => setup(tokyo_15),
-//     // 'onCycle': event => cycle(event),
-//     'onComplete': event => complete(event),
-// });
+suite.add({
+    'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
+    'fn': renderTest,
+    'placename': 'tokyo',
+    'zoom': '17',
+    'onStart': () => setup(tokyo_17),
+    // 'onCycle': event => cycle(event),
+    'onComplete': event => complete(event),
+});
+suite.add({
+    'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
+    'fn': renderTest,
+    'placename': 'tokyo',
+    'zoom': '15',
+    'onStart': () => setup(tokyo_15),
+    // 'onCycle': event => cycle(event),
+    'onComplete': event => complete(event),
+});
 
 suite.run();

@@ -23,8 +23,7 @@ const config = {
   // Limit the number of workers on CI, use default locally
   workers: 1,
 
-  reporter: process.env.CI ? 'github' :  ["json", { outputFile: "test/benchmark/test-results.json" }],
-  // reporter: './OsmReporter.mjs',
+  reporter:  [['github'], [ 'json', { outputFile: "test/benchmark/test-results.json" }]],
   projects: [
     {
       name: "chromium",
