@@ -3,7 +3,7 @@ import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 import { PixiLayer } from './PixiLayer';
 
 // experiment
-// import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
 
 const LAYERID = 'background';
 const DEBUGCOLOR = 0xffff00;
@@ -36,7 +36,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this._tiler = new Tiler();
 
 // experiment
-// this._tileAllocator = new AtlasAllocator();
+this._tileAllocator = new AtlasAllocator();
   }
 
 
@@ -65,7 +65,6 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       tileSourceIDs.add(overlay.id);
     });
 
-
     // Render each tile source
     tileSources.forEach((zIndex, source) => {
       if (!source || source.id === 'none') return;
@@ -93,10 +92,30 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         toDestroy.push(sourceContainer);
       }
     });
+
     toDestroy.forEach(sourceContainer => {
       const sourceID = sourceContainer.name;
-      sourceContainer.destroy({ children: true, texture: true, baseTexture: true });
+
+      let tileMap = this._tileMaps.get(sourceID);
+      tileMap.forEach(tile => {
+        if (tile.sprite) {
+          if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
+            this._tileAllocator.free(tile.sprite.texture);
+          }
+          tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
+          tile.sprite = null;
+          tile.image = null;
+        }
+        if (tile.debug) {
+          tile.debug.destroy({ children: true });
+          tile.debug = null;
+        }
+        tileMap.delete(tile.id);
+      });
+
       this._tileMaps.delete(sourceID);
+
+      sourceContainer.destroy({ children: true });
     });
   }
 
@@ -144,7 +163,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
-        .margin(2)  // prefetch some rows of offscreen tiles as well
+//        .margin(2)  // prefetch some rows of offscreen tiles as well
         .getTiles(context.projection);
 
       let hasHoles = false;
@@ -152,7 +171,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         const tile = result.tiles[i];
 
         // skip locator overlay tiles where we have osm data loaded there
-        if (osm && source.id === 'mapbox_locator_overlay') {
+        if (tryZoom >= 10 && osm && source.id === 'mapbox_locator_overlay') {
           const loc = tile.wgs84Extent.center();
           if (osm.isDataLoaded(loc)) continue;
         }
@@ -172,53 +191,66 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     needTiles.forEach(tile => {
       if (tileMap.has(tile.id)) return;   // we made it already
 
-      const sprite = new PIXI.Sprite.from(tile.url);
-//      const sprite = new PIXI.Sprite();
-      sprite.name = `${source.id}-${tile.id}`;
+//      const sprite = new PIXI.Sprite.from(tile.url);
+      const tileName = `${source.id}-${tile.id}`;
+      const sprite = new PIXI.Sprite();
+      sprite.name = tileName;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
       sourceContainer.addChild(sprite);
-
-//// experiment
-//const image = document.createElement('img');
-//image.src = tile.url;
-//
-//// After the image loads, create the texture. You must do this *after* the image is loaded so you know the
-//// width and height needed. Also, the atlas resource requires the image to be loaded; otherwise, it will
-//// forget to re-upload once it does load.
-//image.onload = () => {
-//  const { naturalWidth, naturalHeight } = image;
-//  const texture = thiz._tileAllocator.allocate(naturalWidth, naturalHeight, 0);
-//  sprite.texture = texture;
-//  tile.loaded = true;
-//  thiz.context.map().deferredRedraw();
-//};
-//image.onerror = () => {
-//  thiz._failed.delete(tile.url);
-//  tile.loaded = true;
-//  thiz.context.map().deferredRedraw();
-//};
-
-      const baseTexture = sprite.texture.baseTexture;
-      baseTexture
-        .on('error', () => {
-          thiz._failed.add(tile.url);
-          thiz.context.map().deferredRedraw();
-        })
-        .on('loaded', () => {
-          thiz._failed.delete(tile.url);
-          tile.loaded = true;
-          thiz.context.map().deferredRedraw();
-        });
-
-      // Workaround for "uncaught promise" errors (Pixi never catches the Promise rejection, but we can)
-      const prom = baseTexture.resource && baseTexture.resource._load;
-      if (prom && typeof prom.catch === 'function' ) {
-        prom.catch(() => { /* ignore */ });
-      }
-
       tile.sprite = sprite;
       tileMap.set(tile.id, tile);
+
+// experiment
+const image = document.createElement('img');
+image.crossOrigin = 'anonymous';
+image.src = tile.url;
+tile.image = image;
+
+// After the image loads, create the texture. You must do this *after* the image is loaded so you know the
+// width and height needed. Also, the atlas resource requires the image to be loaded; otherwise, it will
+// forget to re-upload once it does load.
+image.onload = () => {
+  thiz._failed.delete(tile.url);
+  if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
+
+  tile.loaded = true;
+  const { naturalWidth, naturalHeight } = tile.image;
+  const texture = thiz._tileAllocator.allocate(naturalWidth, naturalHeight, 0, tile.image);
+  sprite.texture = texture;
+  tile.image = null;
+  thiz.context.map().deferredRedraw();
+};
+
+image.onerror = () => {
+  tile.image = null;
+  thiz._failed.add(tile.url);
+  thiz.context.map().deferredRedraw();
+};
+
+//      let t = PIXI.Texture.from(tile.url);
+//      // const baseTexture = sprite.texture.baseTexture;
+//      const baseTexture = t.baseTexture;
+//      baseTexture
+//        .on('error', () => {
+//          thiz._failed.add(tile.url);
+//          thiz.context.map().deferredRedraw();
+//        })
+//        .on('loaded', () => {
+//          thiz._failed.delete(tile.url);
+//          tile.loaded = true;
+// const managedTexture = thiz._tileAllocator.allocate(t.width, t.height, 0);
+// // sprite.texture = managedTexture;
+// sprite.texture = t;
+//          thiz.context.map().deferredRedraw();
+//        });
+//
+//      // Workaround for "uncaught promise" errors (Pixi never catches the Promise rejection, but we can)
+//      const prom = baseTexture.resource && baseTexture.resource._load;
+//      if (prom && typeof prom.catch === 'function' ) {
+//        prom.catch(() => { /* ignore */ });
+//      }
+
     });
 
 
@@ -240,7 +272,8 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       if (keepTile) {   // tile may be visible - update position and scale
         const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
         tile.sprite.position.set(x, y);
-        const size = tileSize * Math.pow(2, z - tile.xyz[2]);
+        const EPSILON = 0;  // close seams between tiles caused by textures in the atlas
+        const size = tileSize * Math.pow(2, z - tile.xyz[2]) + EPSILON;
         tile.sprite.width = size;
         tile.sprite.height = size;
 
@@ -269,8 +302,12 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
       } else {   // tile not needed, can destroy it
         if (tile.sprite) {
-          tile.sprite.destroy({ children: true, texture: true, baseTexture: true });
+          if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
+            thiz._tileAllocator.free(tile.sprite.texture);
+          }
+          tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
           tile.sprite = null;
+          tile.image = null;
         }
         if (tile.debug) {
           tile.debug.destroy({ children: true });
