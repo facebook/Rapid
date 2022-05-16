@@ -98,18 +98,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
       let tileMap = this._tileMaps.get(sourceID);
       tileMap.forEach(tile => {
-        if (tile.sprite) {
-          if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
-            this._tileAllocator.free(tile.sprite.texture);
-          }
-          tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
-          tile.sprite = null;
-          tile.image = null;
-        }
-        if (tile.debug) {
-          tile.debug.destroy({ children: true });
-          tile.debug = null;
-        }
+        this.destroyTile(tile);
         tileMap.delete(tile.id);
       });
 
@@ -278,18 +267,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         }
 
       } else {   // tile not needed, can destroy it
-        if (tile.sprite) {
-          if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
-            this._tileAllocator.free(tile.sprite.texture);
-          }
-          tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
-          tile.sprite = null;
-          tile.image = null;
-        }
-        if (tile.debug) {
-          tile.debug.destroy({ children: true });
-          tile.debug = null;
-        }
+        this.destroyTile(tile);
         tileMap.delete(tile.id);
       }
     });
@@ -298,8 +276,29 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
 
   /**
+   * destroyTile
+   * Frees all the resources used by a tile
+   * @param  tile  Tile object
+   */
+  destroyTile(tile) {
+    if (tile.sprite) {
+      if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
+        this._tileAllocator.free(tile.sprite.texture);
+      }
+      tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
+      tile.sprite = null;
+      tile.image = null;
+    }
+    if (tile.debug) {
+      tile.debug.destroy({ children: true });
+      tile.debug = null;
+    }
+  }
+
+
+  /**
    * getSourceContainer
-   * @param sourceID
+   * @param  sourceID
    */
   getSourceContainer(sourceID) {
     let sourceContainer = this.container.getChildByName(sourceID);
