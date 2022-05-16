@@ -5,7 +5,7 @@ name: Build
 
 on:
   push:
-    branches: [ main, develop, pixi_playground, benchmarking, '*staging*' ]
+    branches: [ pixi_playground, benchmarking ]
   pull_request:
 
 jobs:
