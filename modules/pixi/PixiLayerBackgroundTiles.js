@@ -35,8 +35,8 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this._failed = new Set();    // Set of failed tileURLs
     this._tiler = new Tiler();
 
-// experiment
-this._tileAllocator = new AtlasAllocator();
+    // experiment
+    this._tileAllocator = new AtlasAllocator();
   }
 
 
@@ -129,19 +129,18 @@ this._tileAllocator = new AtlasAllocator();
    * @param tileMap            Map(tile.id -> Tile) for this tile source
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
-    const thiz = this;
     const context = this.context;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
-    const SHOWDEBUG = this.context.getDebug('tile');
+    const SHOWDEBUG = context.getDebug('tile');
     const mapUIContainer = context.layers().getLayer('map-ui').container;
     const debugContainer = mapUIContainer.getChildByName('tile-debug');
     debugContainer.visible = SHOWDEBUG;
 
     const tileSize = source.tileSize || 256;
     const k = projection.scale();
-    const z = geoScaleToZoom(k, tileSize);  // use actual zoom for this, not effective zoom
+    const z = geoScaleToZoom(k, tileSize);  // Use actual zoom for this, not effective zoom
 
     // Apply imagery offset (in pixels) to the source container
     const offset = vecScale(source.offset(), Math.pow(2, z));
@@ -163,7 +162,6 @@ this._tileAllocator = new AtlasAllocator();
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
-//        .margin(2)  // prefetch some rows of offscreen tiles as well
         .getTiles(context.projection);
 
       let hasHoles = false;
@@ -191,7 +189,6 @@ this._tileAllocator = new AtlasAllocator();
     needTiles.forEach(tile => {
       if (tileMap.has(tile.id)) return;   // we made it already
 
-//      const sprite = new PIXI.Sprite.from(tile.url);
       const tileName = `${source.id}-${tile.id}`;
       const sprite = new PIXI.Sprite();
       sprite.name = tileName;
@@ -201,55 +198,36 @@ this._tileAllocator = new AtlasAllocator();
       tile.sprite = sprite;
       tileMap.set(tile.id, tile);
 
-// experiment
-const image = document.createElement('img');
-image.crossOrigin = 'anonymous';
-image.src = tile.url;
-tile.image = image;
+      // Start loading the image
+      const image = document.createElement('img');
+      image.crossOrigin = 'anonymous';
+      image.src = tile.url;
+      tile.image = image;
 
-// After the image loads, create the texture. You must do this *after* the image is loaded so you know the
-// width and height needed. Also, the atlas resource requires the image to be loaded; otherwise, it will
-// forget to re-upload once it does load.
-image.onload = () => {
-  thiz._failed.delete(tile.url);
-  if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
+      // After the image loads, allocate space for it in the texture atlas
+      image.onload = () => {
+        this._failed.delete(tile.url);
+        if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
 
-  tile.loaded = true;
-  const { naturalWidth, naturalHeight } = tile.image;
-  const texture = thiz._tileAllocator.allocate(naturalWidth, naturalHeight, 0, tile.image);
-  sprite.texture = texture;
-  tile.image = null;
-  thiz.context.map().deferredRedraw();
-};
+        tile.loaded = true;
+        const { naturalWidth, naturalHeight } = tile.image;
+        const texture = this._tileAllocator.allocate(naturalWidth, naturalHeight, 0, tile.image);
 
-image.onerror = () => {
-  tile.image = null;
-  thiz._failed.add(tile.url);
-  thiz.context.map().deferredRedraw();
-};
+        // Shrink texture coords by half pixel to avoid colors spilling over from adjacent tile.
+        // https://gamedev.stackexchange.com/a/49585
+        const rect = texture.frame.clone().pad(-0.5);
+        texture.frame = rect;  // `.frame` setter will call updateUVs() automatically
 
-//      let t = PIXI.Texture.from(tile.url);
-//      // const baseTexture = sprite.texture.baseTexture;
-//      const baseTexture = t.baseTexture;
-//      baseTexture
-//        .on('error', () => {
-//          thiz._failed.add(tile.url);
-//          thiz.context.map().deferredRedraw();
-//        })
-//        .on('loaded', () => {
-//          thiz._failed.delete(tile.url);
-//          tile.loaded = true;
-// const managedTexture = thiz._tileAllocator.allocate(t.width, t.height, 0);
-// // sprite.texture = managedTexture;
-// sprite.texture = t;
-//          thiz.context.map().deferredRedraw();
-//        });
-//
-//      // Workaround for "uncaught promise" errors (Pixi never catches the Promise rejection, but we can)
-//      const prom = baseTexture.resource && baseTexture.resource._load;
-//      if (prom && typeof prom.catch === 'function' ) {
-//        prom.catch(() => { /* ignore */ });
-//      }
+        sprite.texture = texture;
+        tile.image = null;
+        context.map().deferredRedraw();
+      };
+
+      image.onerror = () => {
+        tile.image = null;
+        this._failed.add(tile.url);
+        context.map().deferredRedraw();
+      };
 
     });
 
@@ -269,15 +247,14 @@ image.onerror = () => {
         keepTile = (timestamp - tile.timestamp < 3000);  // 3 sec
       }
 
-      if (keepTile) {   // tile may be visible - update position and scale
+      if (keepTile) {   // Tile may be visible - update position and scale
         const [x, y] = projection.project(tile.wgs84Extent.min);   // left, bottom
         tile.sprite.position.set(x, y);
-        const EPSILON = 0;  // close seams between tiles caused by textures in the atlas
-        const size = tileSize * Math.pow(2, z - tile.xyz[2]) + EPSILON;
+        const size = tileSize * Math.pow(2, z - tile.xyz[2]);
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-        if (SHOWDEBUG && !source.overlay) {  // display debug tile info
+        if (SHOWDEBUG && !source.overlay) {  // Display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
             tile.debug.name = `debug-${tile.id}`;
@@ -303,7 +280,7 @@ image.onerror = () => {
       } else {   // tile not needed, can destroy it
         if (tile.sprite) {
           if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
-            thiz._tileAllocator.free(tile.sprite.texture);
+            this._tileAllocator.free(tile.sprite.texture);
           }
           tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
           tile.sprite = null;
