@@ -32,7 +32,11 @@ module.exports = function (config) {
     exclude: [
       '**/*.js.map',
       'test/spec/behavior/*.js',
-      'test/spec/renderer/features.js'
+      'test/spec/renderer/features.js',
+
+      // Comment the next line to run the OSM renderer-specific unit test, which right now merely exercise the code.
+      // These tests don't actually make any assertions and therefore always succeed.
+      'test/spec/renderer/PixiRenderer.js'
     ],
 
     proxies: {
