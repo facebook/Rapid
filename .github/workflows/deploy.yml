@@ -7,6 +7,10 @@ on:
   push:
     branches: [ main, develop, '*staging*', aws_roles ]
 
+permissions:
+  id-token: write # required to use OIDC authentication
+  contents: read # required to checkout the code from the repo
+
 jobs:
   build:
     name: Build
@@ -27,8 +31,8 @@ jobs:
     - name: Run 🏃
       run: npm run all
 
-    - name: Test 🧪
-      run: npm run test
+    # - name: Test 🧪
+    #   run: npm run test
 
     - name: Upload artifacts 📤
       uses: actions/upload-artifact@v2
