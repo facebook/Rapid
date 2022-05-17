@@ -1,8 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 import { PixiLayer } from './PixiLayer';
-
-// experiment
 import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
 
 const LAYERID = 'background';
@@ -31,12 +29,10 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.container.interactive = false;
     this.container.interactiveChildren = false;
 
-    this._tileMaps = new Map();  // Map (sourceID -> Map(tile.id -> Tile))
-    this._failed = new Set();    // Set of failed tileURLs
-    this._tiler = new Tiler();
-
-    // experiment
     this._tileAllocator = new AtlasAllocator();
+    this._tileMaps = new Map();    // Map (sourceID -> Map(tile.id -> Tile))
+    this._failed = new Set();      // Set of failed tileURLs
+    this._tiler = new Tiler();
   }
 
 

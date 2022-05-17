@@ -5,9 +5,6 @@ import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
 /**
  * PixiTextureManager does the work of managing the textures.
  * The goal is to use common spritesheets to avoid extensive texture swapping
- * - imagery tiles
- * - text
- * - icons
  *
  * @class
  */
@@ -19,15 +16,10 @@ export class PixiTextures {
    */
   constructor(context) {
     this.context = context;
-    const renderer = context.pixi.renderer;
-
-    // Create allocators for the types of textures we'll be managing.
-    // this.spriteAllocator = new CanvasTextureAllocator();
-    // this.textAllocator = new CanvasTextureAllocator();
-    this._tileAllocator = new AtlasAllocator();
+    this._atlasAllocator = new AtlasAllocator();
 
     // Map(String key -> PIXI.Texture)
-    // important to make sure the keys don't conflict
+    // important to make sure these keys don't conflict
     this.textures = new Map();
     // make it accessable this way (for now)
     context.pixi.rapidTextures = this.textures;
@@ -64,7 +56,7 @@ export class PixiTextures {
     });
 
 
-    // convert graphics to textures/sprites for performance
+    // Convert frequently used graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
     const options = { resolution: 2 };
 
@@ -92,14 +84,16 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
-    this.textures.set('viewfield', renderer.generateTexture(viewfield, {
+    this.textures.set('viewfield', this.toAtlasTexture(viewfield, {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     }));
-    this.textures.set('viewfieldDark', renderer.generateTexture(viewfieldDark, {
+
+    this.textures.set('viewfieldDark', this.toAtlasTexture(viewfieldDark, {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     }));
+
 
 
     //
@@ -153,12 +147,12 @@ export class PixiTextures {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    this.textures.set('pin', renderer.generateTexture(pin, options));
-    this.textures.set('boldPin', renderer.generateTexture(boldPin, options));
-    this.textures.set('largeCircle', renderer.generateTexture(largeCircle, options));
-    this.textures.set('mediumCircle', renderer.generateTexture(mediumCircle, options));
-    this.textures.set('smallCircle', renderer.generateTexture(smallCircle, options));
-    this.textures.set('taggedCircle', renderer.generateTexture(taggedCircle, options));
+    this.textures.set('pin', this.toAtlasTexture(pin, options));
+    this.textures.set('boldPin', this.toAtlasTexture(boldPin, options));
+    this.textures.set('largeCircle', this.toAtlasTexture(largeCircle, options));
+    this.textures.set('mediumCircle', this.toAtlasTexture(mediumCircle, options));
+    this.textures.set('smallCircle', this.toAtlasTexture(smallCircle, options));
+    this.textures.set('taggedCircle', this.toAtlasTexture(taggedCircle, options));
 
 
     // KeepRight
@@ -216,10 +210,10 @@ export class PixiTextures {
       .endFill()
       .closePath();
 
-    this.textures.set('keepright', renderer.generateTexture(keepright, options));
-    this.textures.set('improveosm', renderer.generateTexture(improveosm, options));
-    this.textures.set('osmnote', renderer.generateTexture(osmnote, options));
-    this.textures.set('osmose', renderer.generateTexture(osmose, options));
+    this.textures.set('keepright', this.toAtlasTexture(keepright, options));
+    this.textures.set('improveosm', this.toAtlasTexture(improveosm, options));
+    this.textures.set('osmnote', this.toAtlasTexture(osmnote, options));
+    this.textures.set('osmose', this.toAtlasTexture(osmose, options));
 
 
     //
@@ -236,8 +230,8 @@ export class PixiTextures {
       .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
       .endFill();
 
-    this.textures.set('midpoint', renderer.generateTexture(midpoint, options));
-    this.textures.set('oneway', renderer.generateTexture(oneway, options));
+    this.textures.set('midpoint', this.toAtlasTexture(midpoint, options));
+    this.textures.set('oneway', this.toAtlasTexture(oneway, options));
 
 
     //
@@ -248,12 +242,10 @@ export class PixiTextures {
       .lineStyle(2, 0xffffff)
       .moveTo(0, 0)
       .lineTo(4, 0);
-
-    let t = renderer.generateTexture(stripe, {
+    this.textures.set('stripe', this.toAtlasTexture(stripe, {
       region: new PIXI.Rectangle(0, 0, 4, 4),
       resolution: 2
-    });
-    this.textures.set('stripe', t);
+    }));
 
 
     //
@@ -263,34 +255,57 @@ export class PixiTextures {
     //
     const lowresSquare = new PIXI.Graphics()
       .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.3)
+      .beginFill(0xffffff, 0.6)
       .drawRect(-5, -5, 10, 10)
       .endFill();
 
     const lowresEll = new PIXI.Graphics()
       .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.3)
+      .beginFill(0xffffff, 0.6)
       .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
       .endFill();
 
     const lowresCircle = new PIXI.Graphics()
       .lineStyle(1, 0xffffff)
-      .beginFill(0xffffff, 0.3)
+      .beginFill(0xffffff, 0.6)
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this.textures.set('lowres-square', renderer.generateTexture(lowresSquare, options));
-    this.textures.set('lowres-ell', renderer.generateTexture(lowresEll, options));
-    this.textures.set('lowres-circle', renderer.generateTexture(lowresCircle, options));
+    this.textures.set('lowres-square', this.toAtlasTexture(lowresSquare, options));
+    this.textures.set('lowres-ell', this.toAtlasTexture(lowresEll, options));
+    this.textures.set('lowres-circle', this.toAtlasTexture(lowresCircle, options));
   }
 
 
   /**
-   * @allocateTile
-   * @param  tileSize
-   * @param  renderer  a Pixi renderer
+   * toAtlasTexture
+   * @param  graphic   The graphic to turn into a texture
+   * @param  options   Options passed to `renderer.generateTexture`
    */
-  allocateTile(tileSize, url) {
+  toAtlasTexture(graphic, options) {
+    const renderer = this.context.pixi.renderer;
+    const renderTexture = renderer.generateTexture(graphic, options);
+    const baseTexture = renderTexture.baseTexture;
+
+    if (baseTexture.format !== PIXI.FORMATS.RGBA) return;       // we could handle other values
+    if (baseTexture.type !== PIXI.TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
+
+    const framebuffer = baseTexture.framebuffer;
+    const w = framebuffer.width;
+    const h = framebuffer.height;
+    const pixels = new Uint8Array(w * h * 4);
+
+    const gl = renderer.context.gl;
+    const fb = framebuffer.glFramebuffers[1].framebuffer;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
+    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
+
+    const PADDING = 1;
+    const texture = this._atlasAllocator.allocate(w, h, PADDING, pixels);
+    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+    texture.orig = renderTexture.orig.clone();
+    return texture;
   }
 
 }
