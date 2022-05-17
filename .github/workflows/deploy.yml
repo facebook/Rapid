@@ -5,7 +5,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ main, develop, '*staging*', aws_roles ]
+    branches: [ main, develop, '*staging*' ]
 
 permissions:
   id-token: write # required to use OIDC authentication
