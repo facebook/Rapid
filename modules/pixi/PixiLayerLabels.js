@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-// import { CanvasTextureAllocator } from '@pixi-essentials/texture-allocator';
+import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
@@ -66,8 +66,10 @@ export class PixiLayerLabels extends PixiLayer {
 
     layerContainer.addChild(debugContainer, labelContainer);
 
+    this._atlasAllocator = new AtlasAllocator();
+
     // Map of strings to Pixi textures
-    this._texts = new Map();   // Map (String -> Pixi Texture)
+    this._textures = new Map();   // Map (String -> Pixi Texture)
 
     // A RBush spatial index that stores all the placement boxes
     this._rbush = new RBush();
@@ -84,10 +86,6 @@ export class PixiLayerLabels extends PixiLayer {
 
     // Old map scale (aka zoom) - we reset the labeling when the scale changes.
     this._oldk = 0;
-
-    // Create a render-texture allocator to create an on-the-fly texture atlas for
-    // all our label rendering needs.
-    // const _allocator = new CanvasTextureAllocator();
 
     const fontOptions = {
       fill: 0x333333,
@@ -182,21 +180,6 @@ export class PixiLayerLabels extends PixiLayer {
       const SHOWDEBUG = this.context.getDebug('label');
       this.debugContainer.visible = SHOWDEBUG;
 
-  // DEBUG - show the allocator spritesheet
-  //let stage = context.pixi.stage;
-  //let sprite = stage.getChildByName('allocator');
-  //if (!sprite) {
-  //  sprite = new PIXI.Sprite();
-  //  sprite.width = 1024;
-  //  sprite.height = 1024;
-  //  sprite.name = 'allocator';
-  //  stage.addChild(sprite);
-  //}
-  //if (_allocator.textureSlabs.length) {
-  //  let baseTexture = _allocator.textureSlabs[0].slab.castToBaseTexture();
-  //  sprite.texture = new PIXI.Texture(baseTexture);
-  //}
-
       // Reset all labels and avoids when scale changes
       const k = projection.scale();
       if (k !== this._oldk) {
@@ -249,58 +232,31 @@ export class PixiLayerLabels extends PixiLayer {
    * @param  str  String for the label
    */
   getLabelSprite(str) {
-// BAD just make more textures
     let sprite;
-    let existing = this._texts.get(str);
-    if (existing) {
-      sprite = new PIXI.Sprite(existing.texture);
-    } else {
-      sprite = new PIXI.Text(str, this._textstyle);
-      sprite.resolution = 2;
-      sprite.updateText(false);  // force update it so its texture is ready to be reused on a sprite
-      this._texts.set(str, sprite);
+    let texture = this._textures.get(str);
+
+    if (!texture) {
+      const text = new PIXI.Text(str, this._textstyle);
+      text.resolution = 2;
+      text.updateText(false);  // force update it so the texture is prepared
+
+      const [w, h] = [text.canvas.width, text.canvas.height];
+      const data = text.context.getImageData(0, 0, w, h);
+
+      const PADDING = 0;
+      texture = this._atlasAllocator.allocate(w, h, PADDING, data);
+      // These textures are overscaled, but `orig` Rectangle stores the original width/height
+      // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+      texture.orig = text.texture.orig.clone();
+
+      this._textures.set(str, texture);
+      text.destroy();  // safe to destroy, the texture is copied to the atlas
     }
+
+    sprite = new PIXI.Sprite(texture);
     sprite.name = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
-
-// BETTER with texture allocator
-//    let sprite;
-//    let texture = this._textures.get(str);
-//
-//    if (!texture) {
-//      const text = new PIXI.Text(str, this._textstyle);
-//      text.resolution = 2;
-//      text.updateText(false);  // force update it so the texture is prepared
-//
-//      const srcBaseTexture = text.texture.baseTexture;
-//      const srcCanvas = srcBaseTexture.resource.source;
-//      const [w, h] = [srcBaseTexture.realWidth, srcBaseTexture.realHeight];
-//
-//      // Allocate space in the texture atlas
-//      const padding = 0;
-//      texture = _allocator.allocate(w, h, padding);
-//
-//      // The allocator automatically creates internal BaseTextures in "slabs".
-//      // Now is the time change anything about the BaseTexture that got created
-//      texture.baseTexture.resolution = 2;
-//      texture.baseTexture.mipmap = false;
-//
-//      // copy the texture from source canvas -> destination canvas
-//      const frame = texture.frame;
-//      const destCanvas = texture.baseTexture.resource.source;
-//      const destContext = destCanvas.getContext('2d');
-//      destContext.drawImage(srcCanvas, frame.x, frame.y, frame.width, frame.height);
-//
-//      this._textures.set(str, texture);
-//      text.destroy();  //?
-//    }
-//
-//    sprite = new PIXI.Sprite(texture);
-//    sprite.name = str;
-//    // sprite.scale.set(0.5, 0.5);
-//    sprite.anchor.set(0.5, 0.5);   // middle, middle
-//    return sprite;
   }
 
 
