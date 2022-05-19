@@ -291,20 +291,34 @@ export class PixiTextures {
     if (baseTexture.type !== PIXI.TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
 
     const framebuffer = baseTexture.framebuffer;
+    // If we can't get framebuffer, just return the rendertexture
+    // Maybe we are running in a test/ci environment?
+    if (!framebuffer) return renderTexture;
+
     const w = framebuffer.width;
     const h = framebuffer.height;
     const pixels = new Uint8Array(w * h * 4);
 
     const gl = renderer.context.gl;
-    const fb = framebuffer.glFramebuffers[1].framebuffer;
+    const glfb = framebuffer.glFramebuffers[1];
+    const fb = glfb && glfb.framebuffer;
+
+    // If we can't get glcontext or glframebuffer, just return the rendertexture
+    // Maybe we are running in a test/ci environment?
+    if (!gl || !fb) return renderTexture;
+
     gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
     gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
 
+    // Copy the texture to the atlas
     const PADDING = 1;
     const texture = this._atlasAllocator.allocate(w, h, PADDING, pixels);
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
     // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
     texture.orig = renderTexture.orig.clone();
+
+    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
+
     return texture;
   }
 

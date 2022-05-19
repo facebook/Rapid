@@ -2,6 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import * as PIXI from 'pixi.js';
 import { GlowFilter } from '@pixi/filter-glow';
+import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
 import { PixiEventsHandler } from './PixiEventsHandler';
@@ -37,9 +38,11 @@ export class PixiRenderer {
       window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
     }
 
-    // Default to retina resolution for rendertextures, text generation, etc
-//    PIXI.settings.RESOLUTION = 2;
-    // Disable mipmapping, we always want textures at the resolution they are at.
+    if (window.mocha) {
+      skipHello();
+    }
+
+    // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
     // Create a Pixi application and add it to the parent container
