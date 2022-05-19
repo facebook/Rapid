@@ -25,8 +25,8 @@ export class PixiLayers {
 
   /**
    * @constructor
-   * @param context
-   * @param scene
+   * @param  context
+   * @param  scene
    */
   constructor(context, scene, dispatch) {
     this.context = context;
@@ -55,16 +55,16 @@ export class PixiLayers {
       new PixiLayerLabels(context, scene, 30),
 
       new PixiLayerEditBlocks(context, scene, 90),
-      new PixiLayerMapUI(context, scene, 99),
+      new PixiLayerMapUI(context, scene, 99)
     ];
   }
 
 
   /**
    * render
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
     this._layers.forEach(layer => layer.render(timestamp, projection, zoom));

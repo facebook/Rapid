@@ -8,9 +8,10 @@ const LAYERID = 'map-ui';
 
 /**
  * PixiLayerMapUI
- * This class contains any UI elements to be 'drawn over' the map canvas, glass-panel style.
+ * This class contains any UI elements to be 'drawn over' the map.
+ * Some of these containers will contain data managed by other layers.
  *
- * - debugging info
+ * - selected / hovered vertices and other elements
  * - geolocation aura
  * - tile debugging grid
  * - others?
@@ -21,9 +22,9 @@ export class PixiLayerMapUI extends PixiLayer {
 
   /**
    * @constructor
-   * @param context
-   * @param scene
-   * @param layerZ
+   * @param  context
+   * @param  scene
+   * @param  layerZ
    */
   constructor(context, scene, layerZ) {
     super(context, LAYERID, layerZ);
@@ -34,6 +35,13 @@ export class PixiLayerMapUI extends PixiLayer {
 
     // setup the child containers
     // these only go visible if they have something to show
+
+    // SELECTED
+    const selectedContainer = new PIXI.Container();
+    selectedContainer.name = 'selected';
+    selectedContainer.sortableChildren = true;
+    selectedContainer.visible = true;
+    this.selectedContainer = selectedContainer;
 
     // GEOLOCATION
     this._geolocationData = null;

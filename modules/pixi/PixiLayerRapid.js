@@ -263,27 +263,19 @@ export class PixiLayerRapid extends PixiLayer {
     if (!dsContainer) {
       dsContainer = new PIXI.Container();
       dsContainer.name = dataset.id;
-      dsContainer.interactive = true;
-      dsContainer.buttonMode = false;
       dsContainer.sortableChildren = false;
       this.container.addChild(dsContainer);
 
       areas = new PIXI.Container();
       areas.name = `${dataset.id}-areas`;
-      areas.interactive = true;
-      areas.buttonMode = false;
       areas.sortableChildren = true;
 
       lines = new PIXI.Container();
       lines.name = `${dataset.id}-lines`;
-      lines.interactive = true;
-      lines.buttonMode = false;
       lines.sortableChildren = true;
 
       points = new PIXI.Container();
       points.name = `${dataset.id}-points`;
-      points.interactive = true;
-      points.buttonMode = false;
       points.sortableChildren = true;
 
       dsContainer.addChild(areas, lines, points);

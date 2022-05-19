@@ -18,22 +18,20 @@ export class PixiLayer {
 
   /**
    * @constructor
-   * @param context
-   * @param layerID
-   * @param layerZ
+   * @param  context
+   * @param  layerID
+   * @param  layerZ
    */
   constructor(context, layerID, layerZ) {
     this.context = context;
 
-    this._enabled = false;  // whether the user has chosen to see the layer
+    this._enabled = false;  // Whether the user has chosen to see the layer
 
     // Create layer container
     const container = new PIXI.Container();
     container.name = layerID;
     container.zIndex = layerZ;
     container.visible = false;
-    container.interactive = true;
-    container.buttonMode = true;
     container.sortableChildren = true;
     context.pixi.stage.addChild(container);
     this.container = container;
@@ -48,9 +46,9 @@ export class PixiLayer {
    * Every layer should have a render function that manages the scene under its container
    * Override in a subclass with needed logic. It will be passed:
    *
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
    */
   render() {
     return true;
@@ -60,7 +58,7 @@ export class PixiLayer {
    * cull
    * Make invisible any features that were not seen during this frame
    *
-   * @param timestamp    timestamp in milliseconds
+   * @param  timestamp    timestamp in milliseconds
    */
   cull(timestamp) {
     this.seenFeature.forEach((ts, feature) => {

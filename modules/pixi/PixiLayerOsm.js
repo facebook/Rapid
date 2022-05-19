@@ -3,7 +3,6 @@ import geojsonRewind from '@mapbox/geojson-rewind';
 
 import { services } from '../services';
 import { presetManager } from '../presets';
-import { JXON } from '../util/jxon';
 
 import { PixiLayer } from './PixiLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
@@ -24,9 +23,9 @@ export class PixiLayerOsm extends PixiLayer {
 
   /**
    * @constructor
-   * @param context
-   * @param scene
-   * @param layerZ
+   * @param  context
+   * @param  scene
+   * @param  layerZ
    */
   constructor(context, scene, layerZ) {
     super(context, LAYERID, layerZ);
@@ -58,22 +57,18 @@ export class PixiLayerOsm extends PixiLayer {
 
     const areas = new PIXI.Container();
     areas.name = `${LAYERID}-areas`;
-    areas.interactive = true;
     areas.sortableChildren = true;
 
     const lines = new PIXI.Container();
     lines.name = `${LAYERID}-lines`;
-    lines.interactive = true;
     lines.sortableChildren = true;
 
     const vertices = new PIXI.Container();
     vertices.name = `${LAYERID}-vertices`;
-    vertices.interactive = false;
     vertices.sortableChildren = true;
 
     const points = new PIXI.Container();
     points.name = `${LAYERID}-points`;
-    points.interactive = true;
     points.sortableChildren = true;
 
     this.container.addChild(areas, lines, vertices, points);
@@ -94,31 +89,45 @@ export class PixiLayerOsm extends PixiLayer {
     return this._service;
   }
 
+
+  /**
+   * supported
+   * Whether the layer's service exists
+   */
+  get supported() {
+    return !!this.getService();
+  }
+
+
+  /**
+   *
+   */
   downloadFile(data, fileName) {
-      let a = document.createElement('a');   // Create an invisible A element
-      a.style.display = 'none';
-      document.body.appendChild(a);
+    let a = document.createElement('a');   // Create an invisible A element
+    a.style.display = 'none';
+    document.body.appendChild(a);
 
-      // Set the HREF to a Blob representation of the data to be downloaded
-      a.href = window.URL.createObjectURL(new Blob([data]));
+    // Set the HREF to a Blob representation of the data to be downloaded
+    a.href = window.URL.createObjectURL(new Blob([data]));
 
-      // Use download attribute to set set desired file name
-      a.setAttribute('download', fileName);
+    // Use download attribute to set set desired file name
+    a.setAttribute('download', fileName);
 
-      // Trigger the download by simulating click
-      a.click();
+    // Trigger the download by simulating click
+    a.click();
 
-      // Cleanup
-      window.URL.revokeObjectURL(a.href);
-      document.body.removeChild(a);
-    }
+    // Cleanup
+    window.URL.revokeObjectURL(a.href);
+    document.body.removeChild(a);
+  }
+
 
   /**
    * render
    * Draw any data we have, and schedule fetching more of it to cover the view
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
     const context = this.context;
@@ -177,11 +186,6 @@ export class PixiLayerOsm extends PixiLayer {
       }
 
 
-      // // Gather all child nodes of visible lines
-      // data.lines.forEach(line => {
-      //   graph.childNodes(line).forEach(node => data.vertices.add(node));
-      // });
-
       this.drawPolygons(timestamp, projection, zoom, data.polygons);
       this.drawLines(timestamp, projection, zoom, data.lines);
       this.drawVertices(timestamp, projection, zoom, data.vertices);
@@ -197,10 +201,10 @@ export class PixiLayerOsm extends PixiLayer {
 
   /**
    * drawPolygons
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   a pixi projection
-   * @param zoom         the effective zoom to use for rendering
-   * @param entities     Array of OSM entities
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   a pixi projection
+   * @param  zoom         the effective zoom to use for rendering
+   * @param  entities     Array of OSM entities
    */
   drawPolygons(timestamp, projection, zoom, entities) {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
@@ -247,10 +251,10 @@ export class PixiLayerOsm extends PixiLayer {
 
   /**
    * drawLines
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   a pixi projection
-   * @param zoom         the effective zoom to use for rendering
-   * @param entities     Array of OSM entities
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   a pixi projection
+   * @param  zoom         the effective zoom to use for rendering
+   * @param  entities     Array of OSM entities
    */
   drawLines(timestamp, projection, zoom, entities) {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
@@ -263,8 +267,6 @@ export class PixiLayerOsm extends PixiLayer {
       if (!levelContainer) {
         levelContainer = new PIXI.Container();
         levelContainer.name = level.toString();
-        levelContainer.interactive = false;
-        levelContainer.interactiveChildren = true;
         levelContainer.sortableChildren = true;
         levelContainer.zIndex = level;
         lineContainer.addChild(levelContainer);
@@ -329,10 +331,10 @@ export class PixiLayerOsm extends PixiLayer {
 
   /**
    * drawVertices
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
-   * @param entities     Array of OSM entities
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   * @param  entities     Array of OSM entities
    */
   drawVertices(timestamp, projection, zoom, entities) {
     const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
@@ -413,10 +415,10 @@ export class PixiLayerOsm extends PixiLayer {
 
   /**
    * drawPoints
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
-   * @param entities     Array of OSM entities
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   * @param  entities     Array of OSM entities
    */
   drawPoints(timestamp, projection, zoom, entities) {
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
@@ -478,14 +480,6 @@ export class PixiLayerOsm extends PixiLayer {
     });
   }
 
-
-  /**
-   * supported
-   * Whether the layer's service exists
-   */
-  get supported() {
-    return !!this.getService();
-  }
 }
 
 
