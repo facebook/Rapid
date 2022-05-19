@@ -6,7 +6,7 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-    plugins: ['karma-coverage', 'karma-mocha', 'karma-chrome-launcher'],
+    plugins: ['karma-coverage', 'karma-mocha', 'karma-chrome-launcher', 'karma-json-fixtures-preprocessor'],
 
     // frameworks to use
     // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
@@ -22,15 +22,21 @@ module.exports = function (config) {
       { pattern: 'dist/iD.js', included: true },
       { pattern: 'dist/iD.css', included: true },
       { pattern: 'dist/**/*', included: false },
+      { pattern: 'test/spec/renderer/*.json', included: true, served: true},
       'test/spec/spec_helpers.js',
-      'test/spec/**/*.js',
+      // 'test/spec/**/*.js',
+      'test/spec/renderer/*.js',
     ],
 
     // list of files / patterns to exclude
     exclude: [
       '**/*.js.map',
       'test/spec/behavior/*.js',
-      'test/spec/renderer/features.js'
+      'test/spec/renderer/features.js',
+
+      // Comment the next line to run the OSM renderer-specific unit test, which right now merely exercise the code.
+      // These tests don't actually make any assertions and therefore always succeed.
+      'test/spec/renderer/PixiRenderer.js'
     ],
 
     proxies: {
@@ -42,7 +48,8 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
     preprocessors: {
-      'dist/iD.js': ['coverage']
+      'dist/iD.js': ['coverage'],
+      'test/spec/renderer/*.json': ['json_fixtures']
     },
 
     // test results reporter to use

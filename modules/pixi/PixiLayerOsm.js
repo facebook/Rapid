@@ -3,6 +3,7 @@ import geojsonRewind from '@mapbox/geojson-rewind';
 
 import { services } from '../services';
 import { presetManager } from '../presets';
+import { JXON } from '../util/jxon';
 
 import { PixiLayer } from './PixiLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
@@ -34,6 +35,9 @@ export class PixiLayerOsm extends PixiLayer {
 
     this._service = null;
     this.getService();
+
+    this._alreadyDownloaded = false;
+    this._saveCannedData = false;
 
     // Setup Scene
     //
@@ -90,6 +94,24 @@ export class PixiLayerOsm extends PixiLayer {
     return this._service;
   }
 
+  downloadFile(data, fileName) {
+      let a = document.createElement('a');   // Create an invisible A element
+      a.style.display = 'none';
+      document.body.appendChild(a);
+
+      // Set the HREF to a Blob representation of the data to be downloaded
+      a.href = window.URL.createObjectURL(new Blob([data]));
+
+      // Use download attribute to set set desired file name
+      a.setAttribute('download', fileName);
+
+      // Trigger the download by simulating click
+      a.click();
+
+      // Cleanup
+      window.URL.revokeObjectURL(a.href);
+      document.body.removeChild(a);
+    }
 
   /**
    * render
@@ -127,6 +149,33 @@ export class PixiLayerOsm extends PixiLayer {
           data.polygons.push(entity);
         }
       });
+
+
+      //Instructions to save 'canned' entity data for use in the renderer test suite:
+      //Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
+      //continuing will fire off the download of the data into a file called 'canned_data.json'.
+      //move the data into the test/spec/renderer directory.
+      if (this._saveCannedData && !this._alreadyDownloaded) {
+        const map = context.map();
+        const [lng, lat] = map.center();
+
+        let viewData = {
+          'lng': lng,
+          'lat': lat,
+          'zoom': zoom,
+          'width': window.innerWidth,
+          'height': window.innerHeight,
+          'projection': projection,
+          'data': data,
+          'entities': context.graph().base().entities
+        };
+
+          let cannedData = JSON.stringify(viewData);
+          this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
+
+        this._alreadyDownloaded = true;
+      }
+
 
       // // Gather all child nodes of visible lines
       // data.lines.forEach(line => {
