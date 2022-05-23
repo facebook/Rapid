@@ -36,13 +36,6 @@ export class PixiLayerMapUI extends PixiLayer {
     // setup the child containers
     // these only go visible if they have something to show
 
-    // SELECTED
-    const selectedContainer = new PIXI.Container();
-    selectedContainer.name = 'selected';
-    selectedContainer.sortableChildren = true;
-    selectedContainer.visible = true;
-    this.selectedContainer = selectedContainer;
-
     // GEOLOCATION
     this._geolocationData = null;
     this._geolocationDirty = false;
@@ -65,7 +58,14 @@ export class PixiLayerMapUI extends PixiLayer {
     tileDebugContainer.visible = false;
     this.tileDebugContainer = tileDebugContainer;
 
-    this.container.addChild(geolocationContainer, tileDebugContainer);
+    // SELECTED
+    const selectedContainer = new PIXI.Container();
+    selectedContainer.name = 'selected';
+    selectedContainer.sortableChildren = true;
+    selectedContainer.visible = true;
+    this.selectedContainer = selectedContainer;
+
+    this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer);
   }
 
 

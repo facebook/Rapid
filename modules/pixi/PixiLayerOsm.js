@@ -35,6 +35,11 @@ export class PixiLayerOsm extends PixiLayer {
     this._service = null;
     this.getService();
 
+    // On hover or selection, draw related vertices (above everything)
+    this._relatedIDs = new Set();
+    this._seenHighlightTick = null;
+
+    // experiment for benchmarking
     this._alreadyDownloaded = false;
     this._saveCannedData = false;
 
@@ -100,7 +105,62 @@ export class PixiLayerOsm extends PixiLayer {
 
 
   /**
-   *
+   * _updateRelatedIDs
+   * On any change in selection or hovering, we should check for which vertices
+   * become interesting enough to render
+   * @param  ids   Set of current ids that are selected or hovered
+   */
+  _updateRelatedIDs(ids) {
+    const context = this.context;
+    const graph = context.graph();
+    let seen = new Set();   // avoid infinite recursion, handle circular relations
+    let result = new Set();
+
+    function addChildVertices(entity) {
+      if (seen.has(entity.id)) return;
+      seen.add(entity.id);
+
+      if (entity.type === 'way') {
+        for (let i = 0; i < entity.nodes.length; i++) {
+          const child = graph.hasEntity(entity.nodes[i]);
+          if (child) {
+            addChildVertices(child);
+          }
+        }
+      } else if (entity.type === 'relation') {
+        for (let i = 0; i < entity.members.length; i++) {
+          const member = graph.hasEntity(entity.members[i].id);
+          if (member) {
+            addChildVertices(member);
+          }
+        }
+      } else {  // a node
+        result.add(entity.id);
+      }
+    }
+
+    ids.forEach(id => {
+      const entity = graph.hasEntity(id);
+      if (!entity) return;
+
+      if (entity.type === 'node') {
+        result.add(entity.id);
+        graph.parentWays(entity).forEach(entity => addChildVertices(entity));
+      } else {  // way, relation
+        addChildVertices(entity);
+      }
+    });
+
+    this._relatedIDs = result;
+    return this._relatedIDs;
+  }
+
+
+  /**
+   * downloadFile
+   * experiment for benchmarking
+   * @param  data
+   * @param  fileName
    */
   downloadFile(data, fileName) {
     let a = document.createElement('a');   // Create an invisible A element
@@ -133,7 +193,6 @@ export class PixiLayerOsm extends PixiLayer {
     const context = this.context;
     const service = this.getService();
     const graph = context.graph();
-
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
@@ -185,11 +244,21 @@ export class PixiLayerOsm extends PixiLayer {
         this._alreadyDownloaded = true;
       }
 
+      // Has select/hover highlighting chagned?
+      const renderer = context.map().renderer();
+      const currHighlightedIDs = renderer._highlightedIDs;
+      if (this._seenHighlightTick !== renderer._highlightTick) {
+        this._seenHighlightTick = renderer._highlightTick;
+        this._updateRelatedIDs(currHighlightedIDs);
+      }
 
       this.drawPolygons(timestamp, projection, zoom, data.polygons);
       this.drawLines(timestamp, projection, zoom, data.lines);
       this.drawVertices(timestamp, projection, zoom, data.vertices);
       this.drawPoints(timestamp, projection, zoom, data.points);
+
+      // todo
+      // this.drawMidpoints(timestamp, projection, zoom, currHighlightedIDs)?
 
       this.cull(timestamp);
 
@@ -337,10 +406,15 @@ export class PixiLayerOsm extends PixiLayer {
    * @param  entities     Array of OSM entities
    */
   drawVertices(timestamp, projection, zoom, entities) {
-    const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
     const context = this.context;
     const scene = this.scene;
     const graph = context.graph();
+
+    // Most vertices should be children of the vertex container
+    const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
+    // Vertices related to the selection/hover should be drawn above everything
+    const mapUIContainer = context.layers().getLayer('map-ui').container;
+    const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
@@ -348,16 +422,22 @@ export class PixiLayerOsm extends PixiLayer {
       );
     }
 
+
     entities.forEach(node => {
-      // Skip boring vertices for now..
-      // At some point we will want to render them if the line is selected or hovered
-      if (!isInterestingVertex(node)) return;
+      let parentContainer = null;
+      if (isInterestingVertex(node)) {
+        parentContainer = vertexContainer;
+      }
+      if (this._relatedIDs.has(node.id)) {
+        parentContainer = selectedContainer;
+      }
+      if (!parentContainer) return;   // this vertex isn't interesting enough to render
 
       let feature = scene.get(node.id);
 
       // Create a new point if this vertex is entering the scene.
       if (!feature) {
-        feature = new PixiFeaturePoint(context, node.id, vertexContainer, node, node.loc);
+        feature = new PixiFeaturePoint(context, node.id, parentContainer, node, node.loc);
       }
 
       this.seenFeature.set(feature, timestamp);
@@ -403,6 +483,11 @@ export class PixiLayerOsm extends PixiLayer {
 
         feature.style = markerStyle;
         feature.label = utilDisplayName(node);
+      }
+
+      // change parent if necessary
+      if (feature.displayObject.parent !== parentContainer) {
+        feature.displayObject.setParent(parentContainer);
       }
 
       if (feature.dirty) {
