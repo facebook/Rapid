@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
+import { vecAngle, vecLength, vecInterp } from '@id-sdk/math';
 
 import { services } from '../services';
 import { presetManager } from '../presets';
@@ -193,17 +194,25 @@ export class PixiLayerOsm extends PixiLayer {
     const context = this.context;
     const service = this.getService();
     const graph = context.graph();
+    const map = context.map();
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
 
       context.loadTiles(context.projection);  // load OSM data that covers the view
 
-      const map = context.map();
+      // Has select/hover highlighting chagned?
+      const renderer = map.renderer();
+      const currHighlightedIDs = renderer._highlightedIDs;
+      if (this._seenHighlightTick !== renderer._highlightTick) {
+        this._seenHighlightTick = renderer._highlightTick;
+        this._updateRelatedIDs(currHighlightedIDs);
+      }
+
       const entities = context.history().intersects(map.extent());
 
       // Gather data
-      let data = { points: [], vertices: [], lines: [], polygons: [] };
+      let data = { points: [], vertices: [], lines: [], polygons: [], highlighted: [] };
 
       entities.forEach(entity => {
         const geom = entity.geometry(graph);
@@ -213,16 +222,22 @@ export class PixiLayerOsm extends PixiLayer {
           data.vertices.push(entity);
         } else if (geom === 'line') {
           data.lines.push(entity);
+          if (currHighlightedIDs.has(entity.id)) {
+            data.highlighted.push(entity);
+          }
         } else if (geom === 'area') {
           data.polygons.push(entity);
+          if (currHighlightedIDs.has(entity.id)) {
+            data.highlighted.push(entity);
+          }
         }
       });
 
 
-      //Instructions to save 'canned' entity data for use in the renderer test suite:
-      //Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
-      //continuing will fire off the download of the data into a file called 'canned_data.json'.
-      //move the data into the test/spec/renderer directory.
+      // Instructions to save 'canned' entity data for use in the renderer test suite:
+      // Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
+      // continuing will fire off the download of the data into a file called 'canned_data.json'.
+      // move the data into the test/spec/renderer directory.
       if (this._saveCannedData && !this._alreadyDownloaded) {
         const map = context.map();
         const [lng, lat] = map.center();
@@ -244,21 +259,12 @@ export class PixiLayerOsm extends PixiLayer {
         this._alreadyDownloaded = true;
       }
 
-      // Has select/hover highlighting chagned?
-      const renderer = context.map().renderer();
-      const currHighlightedIDs = renderer._highlightedIDs;
-      if (this._seenHighlightTick !== renderer._highlightTick) {
-        this._seenHighlightTick = renderer._highlightTick;
-        this._updateRelatedIDs(currHighlightedIDs);
-      }
 
       this.drawPolygons(timestamp, projection, zoom, data.polygons);
       this.drawLines(timestamp, projection, zoom, data.lines);
       this.drawVertices(timestamp, projection, zoom, data.vertices);
       this.drawPoints(timestamp, projection, zoom, data.points);
-
-      // todo
-      // this.drawMidpoints(timestamp, projection, zoom, currHighlightedIDs)?
+      this.drawMidpoints(timestamp, projection, zoom, data.highlighted);
 
       this.cull(timestamp);
 
@@ -273,7 +279,7 @@ export class PixiLayerOsm extends PixiLayer {
    * @param  timestamp    timestamp in milliseconds
    * @param  projection   a pixi projection
    * @param  zoom         the effective zoom to use for rendering
-   * @param  entities     Array of OSM entities
+   * @param  entities     Array of OSM entities (ways/relations with area geometry)
    */
   drawPolygons(timestamp, projection, zoom, entities) {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
@@ -323,7 +329,7 @@ export class PixiLayerOsm extends PixiLayer {
    * @param  timestamp    timestamp in milliseconds
    * @param  projection   a pixi projection
    * @param  zoom         the effective zoom to use for rendering
-   * @param  entities     Array of OSM entities
+   * @param  entities     Array of OSM entities (ways/relations with line geometry)
    */
   drawLines(timestamp, projection, zoom, entities) {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
@@ -403,7 +409,7 @@ export class PixiLayerOsm extends PixiLayer {
    * @param  timestamp    timestamp in milliseconds
    * @param  projection   pixi projection to use for rendering
    * @param  zoom         effective zoom to use for rendering
-   * @param  entities     Array of OSM entities
+   * @param  entities     Array of OSM entities (nodes with vertex geometry)
    */
   drawVertices(timestamp, projection, zoom, entities) {
     const context = this.context;
@@ -503,7 +509,7 @@ export class PixiLayerOsm extends PixiLayer {
    * @param  timestamp    timestamp in milliseconds
    * @param  projection   pixi projection to use for rendering
    * @param  zoom         effective zoom to use for rendering
-   * @param  entities     Array of OSM entities
+   * @param  entities     Array of OSM entities (nodes with point geometry)
    */
   drawPoints(timestamp, projection, zoom, entities) {
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
@@ -565,7 +571,116 @@ export class PixiLayerOsm extends PixiLayer {
     });
   }
 
+
+  /**
+   * drawMidpoints
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   * @param  entities     Array of OSM entities (ways with highlight)
+   */
+  drawMidpoints(timestamp, projection, zoom, entities) {
+    const MIN_DIST = 40;   // distance in pixels
+    const context = this.context;
+    const scene = this.scene;
+    const graph = context.graph();
+
+    // Midpoints should be drawn above everything
+    const mapUIContainer = context.layers().getLayer('map-ui').container;
+    const selectedContainer = mapUIContainer.getChildByName('selected');
+
+    // Generate midpoints from all the highlighted ways
+    let midpoints = new Map();
+
+    entities.forEach(way => {
+      const nodes = graph.childNodes(way);
+      if (!nodes.length) return;  // maybe a relation?
+
+      // Compute midpoints in projected coordinates
+      let nodeData = nodes.map(node => {
+        return {
+          id: node.id,
+          point: projection.project(node.loc)
+        };
+      });
+
+      if (way.tags.oneway === '-1') {
+        nodeData.reverse();
+      }
+
+      nodeData.slice(0, -1).forEach((_, i) => {
+        const a = nodeData[i];
+        const b = nodeData[i + 1];
+        const id = [a.id, b.id].sort().join('-');
+        const dist = vecLength(a.point, b.point);
+        if (dist < MIN_DIST) return;
+
+        const pos = vecInterp(a.point, b.point, 0.5);
+        const rot = vecAngle(a.point, b.point);
+        const loc = projection.invert(pos);  // store as wgs84 lon/lat
+        const midpoint = {
+          id: id,
+          a: a,
+          b: b,
+          way: way,
+          loc: loc,
+          rot: rot
+        };
+
+        if (!midpoints.has(id)) {
+          midpoints.set(id, midpoint);
+        }
+      });
+    });
+
+
+/*    midpoints
+      .forEach(function prepareMidpoints(midpoint) {
+        let featureID = midpoint.id;
+        let feature = scene.get(featureID);
+
+        if (!feature) {
+          const style = { markerName: 'midpoint' };
+          feature = new PixiFeaturePoint(context, featureID, this.container, midpoint, midpoint.loc, style);
+          feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
+        }
+
+        if (feature.dirty) {
+          feature.update(projection, zoom);
+          scene.update(feature);
+        }
+      });
+*/
+    midpoints.forEach(midpoint => {
+      let feature = scene.get(midpoint.id);
+
+      // Create a new midpoint if entering the scene
+      if (!feature) {
+        const style = { markerName: 'midpoint' };
+        feature = new PixiFeaturePoint(context, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
+      }
+
+      this.seenFeature.set(feature, timestamp);
+      feature.visible = true;
+
+      // Something about the midpoint has changed
+      // Here we use the midpoint location as it's "version"
+      if (feature.v !== midpoint.loc || feature.dirty) {
+        feature.v = midpoint.loc;
+        feature.rebind(midpoint);
+        feature.geometry = midpoint.loc;
+        feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
+      }
+
+      if (feature.dirty) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
+    });
+  }
+
 }
+
 
 
 const HIGHWAYSTACK = {

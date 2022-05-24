@@ -221,8 +221,8 @@ export class PixiTextures {
     //
     const midpoint = new PIXI.Graphics()      // [-3, 4]  ._                +y
       .lineStyle(1, 0x000000)                 //          | "-._             |
-      .beginFill(0xffffff, 1)                 //          |    _:>  [5,0]    +-- +x
-      .drawPolygon([-3,4, 5,0, -3,-4])        //          |_,-"
+      .beginFill(0xffffff, 1)                 //          |    _:>  [7,0]    +-- +x
+      .drawPolygon([-3,4, 7,0, -3,-4])        //          |_,-"
       .endFill();                             // [-3,-4]  '
 
     const oneway = new PIXI.Graphics()
