@@ -274,6 +274,14 @@ export class PixiLayerLabels extends PixiLayer {
 
     // Gather the layers that have avoidable stuff on them
     const avoidLayers = [];
+    const mapUILayer = stage.getChildByName('map-ui');
+    if (mapUILayer) {
+      mapUILayer.children.forEach(layer => {
+        if (layer.name === 'selected') {
+          avoidLayers.push(layer);
+        }
+      });
+    }
     const osmLayer = stage.getChildByName('osm');
     if (osmLayer) {
       osmLayer.children.forEach(layer => {
