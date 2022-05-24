@@ -1,5 +1,6 @@
 import { t } from '../core/localizer';
 
+import { BehaviorHover } from '../behavior/BehaviorHover';
 import { behaviorLasso } from '../behavior/lasso';
 import { BehaviorPaste } from '../behavior/BehaviorPaste';
 import { BehaviorSelect } from '../behavior/BehaviorSelect';
@@ -33,6 +34,7 @@ export function modeBrowse(context) {
         if (!_behaviors.length) {
             if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
             _behaviors = [
+                new BehaviorHover(context),
                 new BehaviorPaste(context),
                 _selectBehavior,
                 behaviorLasso(context),

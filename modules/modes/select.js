@@ -9,6 +9,7 @@ import { locationManager } from '../core/locations';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { behaviorLasso } from '../behavior/lasso';
+import { BehaviorHover } from '../behavior/BehaviorHover';
 import { BehaviorPaste } from '../behavior/BehaviorPaste';
 import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
@@ -233,6 +234,7 @@ export function modeSelect(context, selectedIDs) {
             if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
 
             _behaviors = [
+                new BehaviorHover(context),
                 new BehaviorPaste(context),
                 _selectBehavior,
                 behaviorLasso(context),
