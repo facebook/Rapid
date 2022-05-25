@@ -29,7 +29,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.container.interactive = false;
     this.container.interactiveChildren = false;
 
-    this._tileAllocator = new AtlasAllocator();
+    this._atlasAllocator = new AtlasAllocator();
     this._tileMaps = new Map();    // Map (sourceID -> Map(tile.id -> Tile))
     this._failed = new Set();      // Set of failed tileURLs
     this._tiler = new Tiler();
@@ -184,7 +184,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       tileMap.set(tile.id, tile);
 
       // Start loading the image
-      const image = document.createElement('img');
+      const image = new Image();
       image.crossOrigin = 'anonymous';
       image.src = tile.url;
       tile.image = image;
@@ -195,8 +195,19 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
 
         tile.loaded = true;
-        const { naturalWidth, naturalHeight } = tile.image;
-        const texture = this._tileAllocator.allocate(naturalWidth, naturalHeight, 0, tile.image);
+        const w = tile.image.naturalWidth;
+        const h = tile.image.naturalHeight;
+
+        // Convert to pixels in case it will be used in a WebGL1 environment - #478
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(image, 0, 0);
+        const pixels = ctx.getImageData(0, 0, w, h);
+
+        const PADDING = 0;
+        const texture = this._atlasAllocator.allocate(w, h, PADDING, pixels);
 
         // Shrink texture coords by half pixel to avoid colors spilling over from adjacent tile.
         // https://gamedev.stackexchange.com/a/49585
@@ -279,7 +290,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
   destroyTile(tile) {
     if (tile.sprite) {
       if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
-        this._tileAllocator.free(tile.sprite.texture);
+        this._atlasAllocator.free(tile.sprite.texture);
       }
       tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
       tile.sprite = null;
