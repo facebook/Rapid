@@ -430,7 +430,10 @@ export function rendererBackground(context) {
   };
 
 
-  background.brightness = function(d) {
+  background.brightness = function (d) {
+
+    context.layers().getLayer('background').setBrightness(d);
+
     if (!arguments.length) return _brightness;
     _brightness = d;
     if (context.mode()) dispatch.call('change');
@@ -439,6 +442,9 @@ export function rendererBackground(context) {
 
 
   background.contrast = function(d) {
+
+    context.layers().getLayer('background').setContrast(d);
+
     if (!arguments.length) return _contrast;
     _contrast = d;
     if (context.mode()) dispatch.call('change');
@@ -447,6 +453,7 @@ export function rendererBackground(context) {
 
 
   background.saturation = function(d) {
+      context.layers().getLayer('background').setSaturation(d);
     if (!arguments.length) return _saturation;
     _saturation = d;
     if (context.mode()) dispatch.call('change');
@@ -454,7 +461,9 @@ export function rendererBackground(context) {
   };
 
 
-  background.sharpness = function(d) {
+  background.sharpness = function (d) {
+    context.layers().getLayer('background').setSharpness(d);
+
     if (!arguments.length) return _sharpness;
     _sharpness = d;
     if (context.mode()) dispatch.call('change');

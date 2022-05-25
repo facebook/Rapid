@@ -1,7 +1,9 @@
 import * as PIXI from 'pixi.js';
+import {AdjustmentFilter} from '@pixi/filter-adjustment';
 import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 import { PixiLayer } from './PixiLayer';
 import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+import { faThList } from '@fortawesome/free-solid-svg-icons';
 
 const LAYERID = 'background';
 const DEBUGCOLOR = 0xffff00;
@@ -28,6 +30,12 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.container.buttonMode = false;
     this.container.interactive = false;
     this.container.interactiveChildren = false;
+    this.filters = {
+      brightness: 1,
+      contrast: 1,
+      saturation: 1,
+      sharpness: 1,
+    };
 
     this._atlasAllocator = new AtlasAllocator();
     this._tileMaps = new Map();    // Map (sourceID -> Map(tile.id -> Tile))
@@ -44,6 +52,13 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
   render(timestamp, projection) {
     const background = this.context.background();
 
+    this.adjustmentFilter = new AdjustmentFilter({
+      brightness: this.filters.brightness,
+      contrast: this.filters.contrast,
+      saturation: this.filters.saturation,
+    });
+
+    this.container.filters = [this.adjustmentFilter];
     // Collect tile sources - baselayer and overlays
     let tileSources = new Map();   // Map (tilesource Object -> zIndex)
     let tileSourceIDs = new Set();
@@ -323,6 +338,22 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       this.container.addChild(sourceContainer);
     }
     return sourceContainer;
+  }
+
+  setBrightness(val) {
+    this.filters.brightness = val;
+  }
+
+  setContrast(val) {
+    this.filters.contrast = val;
+  }
+
+  setSaturation(val) {
+    this.filters.saturation = val;
+  }
+
+  setSharpness(val) {
+    this.filters.sharpness = val;
   }
 
 }
