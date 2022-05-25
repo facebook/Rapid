@@ -65,7 +65,7 @@ export class PixiTextures {
     //
     const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 26);
     const viewfield = new PIXI.Graphics()
-      .lineStyle(1, 0xcccccc)                    //  [-6,21]  ,-___-,  [6,21]
+      .lineStyle(1, 0x444444)                    //  [-6,21]  ,-___-,  [6,21]
       .beginFill(0xffffff, 0.75)                 //          /       \
       .moveTo(-6, 21)                            //         /         \
       .bezierCurveTo(-5,19, 5,19, 6,21)          //        /           \
@@ -122,25 +122,25 @@ export class PixiTextures {
       .endFill();
 
     const largeCircle = new PIXI.Graphics()    // suitable to display an icon inside
-      .lineStyle(1, 0x666666)
+      .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 8)
       .endFill();
 
     const mediumCircle = new PIXI.Graphics()   // suitable for a streetview photo marker
-      .lineStyle(1, 0x666666)
+      .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 6)
       .endFill();
 
     const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
-      .lineStyle(1, 0x666666)
+      .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
     const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
-      .lineStyle(1, 0x666666)
+      .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
       .beginFill(0x000000, 1)
@@ -220,7 +220,7 @@ export class PixiTextures {
     // Line markers
     //
     const midpoint = new PIXI.Graphics()      // [-3, 4]  ._                +y
-      .lineStyle(1, 0x000000)                 //          | "-._             |
+      .lineStyle(1, 0x444444)                 //          | "-._             |
       .beginFill(0xffffff, 1)                 //          |    _:>  [7,0]    +-- +x
       .drawPolygon([-3,4, 7,0, -3,-4])        //          |_,-"
       .endFill();                             // [-3,-4]  '
