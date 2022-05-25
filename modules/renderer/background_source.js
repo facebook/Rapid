@@ -264,26 +264,24 @@ export function rendererBackgroundSource(data) {
 }
 
 
-rendererBackgroundSource.Bing = function(data, dispatch) {
-    // https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
-    // https://docs.microsoft.com/en-us/bingmaps/rest-services/directly-accessing-the-bing-maps-tiles
 
-    //fallback url template
-    data.template = 'https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=587&n=z';
+// https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
+// https://docs.microsoft.com/en-us/bingmaps/rest-services/directly-accessing-the-bing-maps-tiles
+// See also https://github.com/openstreetmap/iD/pull/9133
+rendererBackgroundSource.Bing = function(data, dispatch) {
+    // missing tile image strictness param (n=)
+    // * n=f -> (Fail) returns a 404
+    // * n=z -> (Empty) returns a 200 with 0 bytes (no content)
+    // * n=t -> (Transparent) returns a 200 with a transparent (png) tile
+    data.template = 'https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=1&pr=odbl&n=z';
 
     var bing = rendererBackgroundSource(data);
-    //var key = 'Arzdiw4nlOJzRwOz__qailc8NiR31Tt51dN2D7cm57NrnceZnCpgOkmJhNpGoppU'; // P2, JOSM, etc
-    var key = 'Ak5oTE46TUbjRp08OFVcGpkARErDobfpuyNKa-W2mQ8wbt1K1KL8p1bIRwWwcF-Q';    // iD
-
-    /*
-    missing tile image strictness param (n=)
-    •	n=f -> (Fail) returns a 404
-    •	n=z -> (Empty) returns a 200 with 0 bytes (no content)
-    •	n=t -> (Transparent) returns a 200 with a transparent (png) tile
-    */
+    var key = utilAesDecrypt('5c875730b09c6b422433e807e1ff060b6536c791dbfffcffc4c6b18a1bdba1f14593d151adb50e19e1be1ab19aef813bf135d0f103475e5c724dec94389e45d0');
     const strictParam = 'n';
 
 // AFAICT Bing Metadata endpoints dont work anymore
+// note: see https://github.com/openstreetmap/iD/pull/9133 for details on restoring this
+//
 //    var url = 'https://dev.virtualearth.net/REST/v1/Imagery/Metadata/Aerial?include=ImageryProviders&uriScheme=https&key=' + key;
 //    var cache = {};
 //    var inflight = {};
@@ -381,7 +379,6 @@ return;
 
 
     bing.terms_url = 'https://blog.openstreetmap.org/2010/11/30/microsoft-imagery-details';
-
 
     return bing;
 };
