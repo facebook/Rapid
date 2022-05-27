@@ -343,7 +343,7 @@ export class BehaviorSelect extends AbstractBehavior {
     const target = eventData.target;
     const renderer = context.map().renderer();
     const ids = datum ? [target.name] : [];
-    renderer.highlight(ids);
+    renderer.select(ids);
 
     //
     // What did we click on?

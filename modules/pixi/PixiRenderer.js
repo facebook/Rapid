@@ -100,11 +100,18 @@ export class PixiRenderer {
     // this.eventsHandler = new PixiEventsHandler(context, this._dispatch, this.pixiProjection, this.scene);
 
     // used for highlighting:
+    this._hoveredIDs = new Set();
+    this._selectedIDs = new Set();
     this._highlightedIDs = new Set();
     this._highlightTick = 0;
-    const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
-    glow.resolution = 2;
-    this.glow = glow;
+
+    const selectglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
+    selectglow.resolution = 2;
+    this.selectglow = selectglow;
+
+    const hoverglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffffff });
+    hoverglow.resolution = 2;
+    this.hoverglow = hoverglow;
   }
 
 
@@ -186,39 +193,128 @@ export class PixiRenderer {
   }
 
 
+
   /**
-   * highlight
-   * @param  featureIDs   `Array` or `Set` of feature IDs to highlight
+   * select
+   * @param  featureIDs   `Array` or `Set` of feature IDs to select
    */
-  highlight(featureIDs) {
-    const toHighlight = new Set([].concat(featureIDs));  // coax ids into a Set
+  select(featureIDs) {
+    const toSelect = new Set([].concat(featureIDs));  // coax ids into a Set
+    let selectChanged = false;
 
-    // remove highlighting where not needed
-    this._highlightedIDs.forEach(featureID => {
-      if (toHighlight.has(featureID)) return;  // it should stay highlighted
+    // remove select where not needed
+    this._selectedIDs.forEach(featureID => {
+      if (toSelect.has(featureID)) return;   // it should stay selected
 
-      this._highlightedIDs.delete(featureID);
+      this._selectedIDs.delete(featureID);
       const feature = this.scene.get(featureID);
       if (feature) {
+        selectChanged = true;
         feature.displayObject.filters = [];
+        feature.selected = false;
         feature.dirty = true;
       }
     });
 
-    // add highlighting where needed
-    toHighlight.forEach(featureID => {
+    // add select where needed
+    toSelect.forEach(featureID => {
       const feature = this.scene.get(featureID);
       if (!feature) return;
 
-      if (this._highlightedIDs.has(feature.id)) return;  // it's already highlighted
+      if (this._selectedIDs.has(feature.id)) return;  // it's already selected
 
-      this._highlightedIDs.add(feature.id);
-      feature.displayObject.filters = [ this.glow ];
+      this._selectedIDs.add(feature.id);
+      selectChanged = true;
+      feature.displayObject.filters = [ this.selectglow ];
+      feature.selected = true;
       feature.dirty = true;
     });
 
-    this._highlightTick++;
-    this.render();  //  now
+    if (selectChanged) {
+      this._highlightTick++;
+      this.render();  //  now
+    }
   }
+
+
+
+  /**
+   * hover
+   * @param  featureIDs   `Array` or `Set` of feature IDs to hover
+   */
+  hover(featureIDs) {
+    const toHover = new Set([].concat(featureIDs));  // coax ids into a Set
+    let hoverChanged = false;
+
+    // remove hover where not needed
+    this._hoveredIDs.forEach(featureID => {
+      if (toHover.has(featureID)) return;  // it should stay hovered
+
+      this._hoveredIDs.delete(featureID);
+      const feature = this.scene.get(featureID);
+      if (feature) {
+        hoverChanged = true;
+        feature.displayObject.filters = [];
+        feature.hovered = false;
+        feature.dirty = true;
+      }
+    });
+
+    // add hover where needed
+    toHover.forEach(featureID => {
+      const feature = this.scene.get(featureID);
+      if (!feature) return;
+
+      if (this._hoveredIDs.has(feature.id)) return;  // it's already hovered
+
+      this._hoveredIDs.add(feature.id);
+      hoverChanged = true;
+      feature.displayObject.filters = [ this.hoverglow ];
+      feature.hovered = true;
+      feature.dirty = true;
+    });
+
+    if (hoverChanged) {
+      this._highlightTick++;
+      this.render();  //  now
+    }
+  }
+
+
+
+  // /**
+  //  * highlight
+  //  * @param  featureIDs   `Array` or `Set` of feature IDs to highlight
+  //  */
+  // highlight(featureIDs) {
+  //   const toHighlight = new Set([].concat(featureIDs));  // coax ids into a Set
+
+  //   // remove highlighting where not needed
+  //   this._highlightedIDs.forEach(featureID => {
+  //     if (toHighlight.has(featureID)) return;  // it should stay highlighted
+
+  //     this._highlightedIDs.delete(featureID);
+  //     const feature = this.scene.get(featureID);
+  //     if (feature) {
+  //       feature.displayObject.filters = [];
+  //       feature.dirty = true;
+  //     }
+  //   });
+
+  //   // add highlighting where needed
+  //   toHighlight.forEach(featureID => {
+  //     const feature = this.scene.get(featureID);
+  //     if (!feature) return;
+
+  //     if (this._highlightedIDs.has(feature.id)) return;  // it's already highlighted
+
+  //     this._highlightedIDs.add(feature.id);
+  //     feature.displayObject.filters = [ this.selectglow ];
+  //     feature.dirty = true;
+  //   });
+
+  //   this._highlightTick++;
+  //   this.render();  //  now
+  // }
 
 }
