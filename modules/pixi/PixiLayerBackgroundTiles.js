@@ -115,6 +115,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
+    const renderer = context.pixi.renderer;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
@@ -198,16 +199,19 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
         const w = tile.image.naturalWidth;
         const h = tile.image.naturalHeight;
 
-        // Convert to pixels in case it will be used in a WebGL1 environment - #478
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(image, 0, 0);
-        const pixels = ctx.getImageData(0, 0, w, h);
+        let source = tile.image;
+        if (renderer.context.webGLVersion === 1) {
+          // Convert to ArrayBufferView of pixels when used in a WebGL1 environment - #478
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(image, 0, 0);
+          source = ctx.getImageData(0, 0, w, h);
+        }
 
         const PADDING = 0;
-        const texture = this._atlasAllocator.allocate(w, h, PADDING, pixels);
+        const texture = this._atlasAllocator.allocate(w, h, PADDING, source);
 
         // Shrink texture coords by half pixel to avoid colors spilling over from adjacent tile.
         // https://gamedev.stackexchange.com/a/49585
