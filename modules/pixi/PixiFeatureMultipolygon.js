@@ -30,13 +30,12 @@ const PARTIALFILLWIDTH = 32;
 export class PixiFeatureMultipolygon extends PixiFeature {
 
   /**
-   * @constructor
-   * @param  `context`        Global shared context for iD
-   * @param  `id`             Unique string to use for the name of this feature
-   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
-   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
-   * @param  `geometry`       `Array` containing geometry data
-   * @param  `style`          `Object` containing style data
+   * @param  context    Global shared iD application context
+   * @param  id         Unique string to use for the name of this feature
+   * @param  parent     Parent container for this feature.  The display object will be added to it.
+   * @param  data       Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  geometry   `Array` containing geometry data
+   * @param  style      `Object` containing style data
    */
   constructor(context, id, parent, data, geometry, style) {
     const container = new PIXI.Container();
@@ -99,8 +98,8 @@ export class PixiFeatureMultipolygon extends PixiFeature {
 
   /**
    * update
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  projection  Pixi projection to use for rendering
+   * @param  zoom        Effective zoom to use for rendering
    */
   update(projection) {
     if (!this.dirty) return;  // no change
@@ -216,6 +215,9 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
     let texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
+// bhousel update 5/27/22:
+// I've noticed that we can't use textures from a spritesheet for patterns,
+// and it would be nice to figure out why
 
     const fillstyle = prefs('area-fill') || 'partial';
     let doPartialFill = !style.requireFill && (fillstyle === 'partial');
@@ -226,12 +228,28 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       doPartialFill = false;
     }
     // If this shape is so small that texture filling makes no sense, skip it (faster?)
+// bhousel update 5/27/22:
+// I actually now think this doesn't matter and, if anything, using different
+// textures may break up the batches.  Eventually we'll introduce some containers
+// so that the scene is sorted by style, and we'll try to just keep similarly
+// textured things together to improve batching performance.
     if (w < PARTIALFILLWIDTH || h < PARTIALFILLWIDTH) {
       texture = PIXI.Texture.WHITE;
     }
 
-    // If this shape is very small, swap with lowRes sprite
-    if (this.ssrdata && (w < 20 && h < 20)) {
+    // Cull really tiny shapes
+    if (w < 4 && h < 4) {  // so tiny
+      this.lod = 0;  // off
+      this.visible = false;
+      this.fill.visible = false;
+      this.stroke.visible = false;
+      this.mask.visible = false;
+      this.lowRes.visible = false;
+
+    // Very small, swap with lowRes sprite
+    } else if (this.ssrdata && (w < 20 && h < 20)) {
+      this.lod = 1;  // simplified
+      this.visible = true;
       const ssrdata = this.ssrdata;
       this.fill.visible = false;
       this.stroke.visible = false;
@@ -252,6 +270,8 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       this.lowRes.tint = color;
 
     } else {
+      this.lod = 2;  // full
+      this.visible = true;
       this.fill.visible = true;
       this.stroke.visible = true;
       this.lowRes.visible = false;
@@ -339,7 +359,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
 
   /**
    * geometry
-   * @param arr geometry `Array` (contents depends on the feature type)
+   * @param  arr  Geometry `Array` (contents depends on the feature type)
    *
    * 'multipolygon' - Array of Arrays of Arrays
    *   [
@@ -377,7 +397,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
 
   /**
    * style
-   * @param obj style `Object` (contents depends on the feature type)
+   * @param  obj  Style `Object` (contents depends on the feature type)
    *
    * 'point' - see PixiFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js
@@ -390,10 +410,6 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     this._styleDirty = true;
   }
 
-  rebind(data, geometry) {
-    super.rebind(data);
-    this.geometry = geometry;
-  }
 }
 
 

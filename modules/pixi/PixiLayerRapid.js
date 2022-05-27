@@ -333,14 +333,16 @@ export class PixiLayerRapid extends PixiLayer {
         // feature.lowRes.shader = this._customshader;
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         feature.style = style;
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
   }
@@ -366,9 +368,6 @@ export class PixiLayerRapid extends PixiLayer {
         feature.rapidFeature = true;
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         const style = {
           labelTint: color,
@@ -381,6 +380,11 @@ export class PixiLayerRapid extends PixiLayer {
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
   }
@@ -415,9 +419,6 @@ export class PixiLayerRapid extends PixiLayer {
         feature.rapidFeature = true;
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         feature.style = pointStyle;
 
@@ -430,6 +431,11 @@ export class PixiLayerRapid extends PixiLayer {
 
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
 
@@ -449,9 +455,6 @@ export class PixiLayerRapid extends PixiLayer {
         dObj.interactiveChildren = false;
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         feature.style = vertexStyle;
 
@@ -464,6 +467,11 @@ export class PixiLayerRapid extends PixiLayer {
 
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
 

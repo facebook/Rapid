@@ -23,12 +23,12 @@ export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * @constructor
-   * @param  `context`        Global shared context for iD
-   * @param  `id`             Unique string to use for the name of this feature
-   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
-   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
-   * @param  `geometry`       `Array` containing geometry data
-   * @param  `style`          `Object` containing style data
+   * @param  context    Global shared iD application context
+   * @param  id         Unique string to use for the name of this feature
+   * @param  parent     Parent container for this feature.  The display object will be added to it.
+   * @param  data       Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  geometry   `Array` containing geometry data
+   * @param  style      `Object` containing style data
    */
   constructor(context, id, parent, data, geometry, style) {
     const marker = new PIXI.Sprite();
@@ -55,8 +55,8 @@ export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * update
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  projection  Pixi projection to use for rendering
+   * @param  zoom        Effective zoom to use for rendering
    */
   update(projection, zoom) {
     if (!this.dirty) return;  // no change
@@ -76,7 +76,7 @@ export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * updateGeometry
-   * @param projection   pixi projection to use for rendering
+   * @param  projection   Pixi projection to use for rendering
    */
   updateGeometry(projection) {
     if (!this._geometryDirty) return;
@@ -98,7 +98,7 @@ export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * updateStyle
-   * @param zoom  effective zoom to use for rendering
+   * @param  zoom  Effective zoom to use for rendering
    */
   updateStyle(zoom) {
     if (!this._styleDirty) return;
@@ -197,10 +197,12 @@ export class PixiFeaturePoint extends PixiFeature {
     // Apply effectiveZoom style adjustments
     //
     if (zoom < 16) {  // Hide marker and everything under it
-      marker.renderable = false;
+      this.lod = 0;   // off
+      this.visible = false;
 
-    } else if (zoom < 17) {
-      // Markers drawn but smaller
+    } else if (zoom < 17) {  // Markers drawn but smaller
+      this.lod = 1;  // simplified
+      this.visible = true;
       marker.renderable = true;
       marker.scale.set(0.8, 0.8);
 
@@ -216,8 +218,9 @@ export class PixiFeaturePoint extends PixiFeature {
         vfContainer.renderable = false;
       }
 
-    } else {  // z >= 17
-      // Show the requested marker (circles OR pins)
+    } else {  // z >= 17 - Show the requested marker (circles OR pins)
+      this.lod = 2;  // full
+      this.visible = true;
       marker.renderable = true;
       marker.scale.set(1, 1);
       marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
@@ -247,7 +250,7 @@ export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * geometry
-   * @param arr geometry `Array` (contents depends on the feature type)
+   * @param  arr  Geometry `Array` (contents depends on the feature type)
    *
    * 'point' - Single wgs84 coordinate
    *    [lon, lat]
@@ -266,7 +269,7 @@ export class PixiFeaturePoint extends PixiFeature {
 
   /**
    * style
-   * @param obj style `Object` (contents depends on the feature type)
+   * @param  obj  Style `Object` (contents depends on the feature type)
    *
    * 'point' - see PixiFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js
@@ -279,11 +282,8 @@ export class PixiFeaturePoint extends PixiFeature {
     this._styleDirty = true;
   }
 
-  rebind(data) {
-    super.rebind(data);
-    this.geometry = data.loc;
-  }
 }
+
 
 const STYLE_DEFAULTS = {
   markerName: 'smallCircle',

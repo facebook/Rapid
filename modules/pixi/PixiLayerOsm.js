@@ -289,28 +289,23 @@ export class PixiLayerOsm extends PixiLayer {
 
     entities.forEach(entity => {
       let feature = scene.get(entity.id);
-
       if (!feature) {
         feature = new PixiFeatureMultipolygon(context, entity.id, areaContainer, entity);
       }
-
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
 
       // Something has changed since the last time we've styled this feature.
       const version = (entity.v || 0);
       if (feature.v !== version || feature.dirty) {
         feature.v = version;
+        feature.data = entity;   // rebind data
 
-        const dObj = feature.displayObject;
         const area = entity.extent(graph).area();  // estimate area from extent for speed
-        dObj.zIndex = -area;                       // sort by area descending (small things above big things)
-        dObj.__data__ = entity;                    // rebind data
+        feature.displayObject.zIndex = -area;      // sort by area descending (small things above big things)
 
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
-        feature.rebind(entity, geometry);
+        feature.geometry = geometry;
 
         const style = styleMatch(entity.tags);
         feature.style = style;
@@ -319,6 +314,11 @@ export class PixiLayerOsm extends PixiLayer {
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
   }
@@ -354,51 +354,54 @@ export class PixiLayerOsm extends PixiLayer {
       return graph.parentRelations(entity).some(relation => relation.isMultipolygon());
     }
 
+
     entities.forEach(entity => {
       // Skip untagged multipolygon rings for now, drawPolygons will render them as strokes.
       // At some point we will want the user to be able to click on them though
       if (isUntaggedMultipolygonRing(entity)) return;
 
+      // Make sure this line is on the correct level container (bridge/tunnel/etc)
+      const lvl = entity.layer().toString();
+      const levelContainer = getLevelContainer(lvl);
+
       let feature = scene.get(entity.id);
-
-      // Create a new line if this entity is entering the scene.
       if (!feature) {
-        // TODO make this dynamic too
-        // Add this line to the correct level container (bridge/tunnel/etc)
-        const lvl = entity.layer().toString();
-        const levelContainer = getLevelContainer(lvl);
-
         feature = new PixiFeatureLine(context, entity.id, levelContainer, entity);
       }
-
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
 
       // Something has changed since the last time we've styled this feature.
       const version = (entity.v || 0);
       if (feature.v !== version || feature.dirty) {
         feature.v = version;
-        const dObj = feature.displayObject;
-        dObj.zIndex = getzIndex(entity.tags);
+        feature.data = entity;  // rebind data
+        feature.displayObject.zIndex = getzIndex(entity.tags);
 
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
-        feature.rebind(entity, geometry); //rebind data
-
+        feature.geometry = geometry;
 
         const style = styleMatch(entity.tags);
         style.reversePoints = (entity.tags.oneway === '-1');
-
         // Todo: handle alternating/two-way case too
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
-
         feature.style = style;
+
         feature.label = utilDisplayName(entity);
+      }
+
+      // Change parent if necessary
+      if (feature.displayObject.parent !== levelContainer) {
+        feature.displayObject.setParent(levelContainer);
       }
 
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
   }
@@ -431,7 +434,7 @@ export class PixiLayerOsm extends PixiLayer {
 
     entities.forEach(node => {
       let parentContainer = null;
-      if (isInterestingVertex(node)) {
+      if (zoom >= 16 && isInterestingVertex(node)) {
         parentContainer = vertexContainer;
       }
       if (this._relatedIDs.has(node.id)) {
@@ -440,20 +443,17 @@ export class PixiLayerOsm extends PixiLayer {
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
 
       let feature = scene.get(node.id);
-
-      // Create a new point if this vertex is entering the scene.
       if (!feature) {
         feature = new PixiFeaturePoint(context, node.id, parentContainer, node, node.loc);
       }
-
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
 
       // Something has changed since the last time we've styled this feature.
       const version = (node.v || 0);
       if (feature.v !== version || feature.dirty) {
         feature.v = version;
-        feature.rebind(node);
+        feature.data = node;   // rebind data
+        feature.geometry = node.loc;
+
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
         const directions = node.directions(graph, context.projection);
@@ -500,6 +500,11 @@ export class PixiLayerOsm extends PixiLayer {
         feature.update(projection, zoom);
         scene.update(feature);
       }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
+      }
     });
   }
 
@@ -519,20 +524,16 @@ export class PixiLayerOsm extends PixiLayer {
 
     entities.forEach(node => {
       let feature = scene.get(node.id);
-
-      // Create a new point if this point is entering the scene.
       if (!feature) {
         feature = new PixiFeaturePoint(context, node.id, pointContainer, node, node.loc);
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       // Something has changed since the last time we've styled this feature.
       const version = (node.v || 0);
-      if (feature.v !== version) {
+      if (feature.v !== version || feature.dirty) {
         feature.v = version;
-        feature.rebind(node);
+        feature.data = node;   // rebind data
+        feature.geometry = node.loc;
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
@@ -568,6 +569,11 @@ export class PixiLayerOsm extends PixiLayer {
         feature.update(projection, zoom);
         scene.update(feature);
       }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
+      }
     });
   }
 
@@ -580,7 +586,7 @@ export class PixiLayerOsm extends PixiLayer {
    * @param  entities     Array of OSM entities (ways with highlight)
    */
   drawMidpoints(timestamp, projection, zoom, entities) {
-    const MIN_DIST = 40;   // distance in pixels
+    const MIN_MIDPOINT_DIST = 40;   // distance in pixels
     const context = this.context;
     const scene = this.scene;
     const graph = context.graph();
@@ -613,7 +619,7 @@ export class PixiLayerOsm extends PixiLayer {
         const b = nodeData[i + 1];
         const id = [a.id, b.id].sort().join('-');
         const dist = vecLength(a.point, b.point);
-        if (dist < MIN_DIST) return;
+        if (dist < MIN_MIDPOINT_DIST) return;
 
         const pos = vecInterp(a.point, b.point, 0.5);
         const rot = vecAngle(a.point, b.point);
@@ -633,41 +639,18 @@ export class PixiLayerOsm extends PixiLayer {
       });
     });
 
-
-/*    midpoints
-      .forEach(function prepareMidpoints(midpoint) {
-        let featureID = midpoint.id;
-        let feature = scene.get(featureID);
-
-        if (!feature) {
-          const style = { markerName: 'midpoint' };
-          feature = new PixiFeaturePoint(context, featureID, this.container, midpoint, midpoint.loc, style);
-          feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
-        }
-
-        if (feature.dirty) {
-          feature.update(projection, zoom);
-          scene.update(feature);
-        }
-      });
-*/
     midpoints.forEach(midpoint => {
       let feature = scene.get(midpoint.id);
-
-      // Create a new midpoint if entering the scene
       if (!feature) {
         const style = { markerName: 'midpoint' };
         feature = new PixiFeaturePoint(context, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       // Something about the midpoint has changed
       // Here we use the midpoint location as it's "version"
       if (feature.v !== midpoint.loc || feature.dirty) {
         feature.v = midpoint.loc;
-        feature.rebind(midpoint);
+        feature.data = midpoint;
         feature.geometry = midpoint.loc;
         feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
       }
@@ -675,6 +658,11 @@ export class PixiLayerOsm extends PixiLayer {
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
   }

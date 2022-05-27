@@ -121,13 +121,16 @@ export class PixiLayerEditBlocks extends PixiLayer {
         feature.displayObject.cursor = 'not-allowed';
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
       }
+
+      if (feature.lod > 0) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
+      }
+
     });
   }
 }

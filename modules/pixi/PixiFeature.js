@@ -7,34 +7,43 @@ import { Extent } from '@id-sdk/math';
  * It contains properties that used to manage the feature in the scene graph
  *
  * Properties you can access:
- *   `context`
- *   `displayObject`
- *   `parent`
- *   `data`
- *   `geometry`
- *   `style`
- *   `label`
- *   `dirty`
- *   `extent`
- *   `localBounds`
- *   `sceneBounds`
+ *   `context`        Global shared iD application context
+ *   `displayObject`  Root Pixi display object for this feature (can be a Graphic, Container, Sprite, etc)
+ *   `id`             Unique string to use for the name of this feature
+ *   `type`           String describing what kind of feature this is ('point', 'line', 'multipolygon')
+ *   `geometry`       Array containing geometry info
+ *   `style`          Object containing style info
+ *   `label`          String containing the feature's label
+ *   `data`           Data to associate with this feature (like `__data__` from the D3.js days)
+ *   `visible`        `true` if the feature is visible (`false` if it is culled)
+ *   `dirty`          `true` if the feature needs to be rebuilt
+ *   `selected`       `true` if the feature is selected
+ *   `hovered`        `true` if the feature is hovered
+ *   `v`              Version of the feature, can be used to detect changes
+ *   `lod`            Level of detail for the feature last time it was styled (0 = off, 1 = simplified, 2 = full)
+ *   `extent`         Bounds of the feature (in WGS84 long/lat)
+ *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the feature
+ *   `sceneBounds`    PIXI.Rectangle() where 0,0 is the origin of the scane
  */
 export class PixiFeature {
 
   /**
    * @constructor
-   * @param  `context`        Global shared context for iD
-   * @param  `displayObject`  Root Pixi display object for this feature (can be a Graphic, Container, Sprite, etc)
-   * @param  `id`             Unique string to use for the name of this feature
-   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
-   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  context        Global shared iD application context
+   * @param  displayObject  Root Pixi display object for this feature (can be a Graphic, Container, Sprite, etc)
+   * @param  id             Unique string to use for the name of this feature
+   * @param  parent         Parent container for this feature.  The display object will be added to it.
+   * @param  data           Data to associate with this feature (like `__data__` from the D3.js days)
    */
   constructor(context, displayObject, id, parent, data) {
     this.type = 'unknown';
     this.context = context;
     this.displayObject = displayObject;
-    this.parent = parent;
-    this.data = data;
+    this.visible = false;
+    this.selected = false;
+    this.hovered = false;
+    this.v = -1;
+    this.lod = 2;   // full detail
 
     if (parent) displayObject.setParent(parent);
     if (data)   displayObject.__data__ = data;
@@ -75,8 +84,6 @@ export class PixiFeature {
 
     this.context = null;
     this.displayObject = null;
-    this.parent = null;
-    this.data = null;
 
     this._geometry = null;
     this._style = null;
@@ -94,19 +101,19 @@ export class PixiFeature {
    * When the feature is updated, its `dirty` flags should be set to `false`.
    * Override in a subclass with needed logic. It will be passed:
    *
-   * @param projection - a pixi projection
-   * @param zoom - the effective zoom to use for rendering
+   * @param  projection  Pixi projection to use for rendering
+   * @param  zoom        Effective zoom to use for rendering
    */
   update() {
     if (!this.dirty) return;  // no change
 
     this._geometryDirty = false;
     this._styleDirty = false;
-    // for now, the labeling code will decide what to do with the _labelDirty flag
+    // The labeling code will decide what to do with the `_labelDirty` flag
   }
 
   /**
-   * feature id
+   * Feature id
    */
   get id() {
     return this.displayObject.name;
@@ -132,6 +139,7 @@ export class PixiFeature {
    * Whether the feature needs to be rebuilt
    */
   get dirty() {
+    // The labeling code will decide what to do with the `_labelDirty` flag
     return this._geometryDirty || this._styleDirty;
   }
   set dirty(val) {
@@ -143,7 +151,7 @@ export class PixiFeature {
 
   /**
    * geometry
-   * @param arr   Geometry `Array` (contents depends on the feature type)
+   * @param  arr  Geometry `Array` (contents depends on the feature type)
    *
    * 'point' - Single wgs84 coordinate
    *    [lon, lat]
@@ -177,7 +185,7 @@ export class PixiFeature {
 
   /**
    * style
-   * @param obj   Style `Object` (contents depends on the feature type)
+   * @param  obj  Style `Object` (contents depends on the feature type)
    *
    * 'point' - see PixiFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js
@@ -193,7 +201,7 @@ export class PixiFeature {
 
   /**
    * label
-   * @param str   String containing the label to use
+   * @param  str  String containing the label to use
    */
   get label() {
     return this._label;
@@ -205,12 +213,15 @@ export class PixiFeature {
 
 
   /**
-   * rebind
-   * @param {*} data d3-style 'datum' bound to this feature.
+   * data
    * Call this method when you need to update the data attached to a feature, such as after an edit is made.
+   * @param  d  D3.js-style 'datum' to bind to this feature.
    */
-  rebind(data) {
-    this.displayObject.__data__ = data;    // rebind data
-    this.data = data;
+  get data() {
+    return this.displayObject.__data__;
   }
+  set data(d) {
+    this.displayObject.__data__ = d;
+  }
+
 }

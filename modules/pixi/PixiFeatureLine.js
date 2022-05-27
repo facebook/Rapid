@@ -25,19 +25,17 @@ const ONEWAY_SPACING = 35;
  *   `label`
  *   `localBounds`
  *   `sceneBounds`
- *
- * @class
  */
 export class PixiFeatureLine extends PixiFeature {
 
   /**
    * @constructor
-   * @param  `context`        Global shared context for iD
-   * @param  `id`             Unique string to use for the name of this feature
-   * @param  `parent`         Parent container for this feature.  The display object will be added to it.
-   * @param  `data`           Data to associate with this feature (like `__data__` from the D3.js days)
-   * @param  `geometry`       `Array` containing geometry data
-   * @param  `style`          `Object` containing style data
+   * @param  context    Global shared iD application context
+   * @param  id         Unique string to use for the name of this feature
+   * @param  parent     Parent container for this feature.  The display object will be added to it.
+   * @param  data       Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  geometry   `Array` containing geometry data
+   * @param  style      `Object` containing style data
    */
   constructor(context, id, parent, data, geometry, style) {
     const container = new PIXI.Container();
@@ -80,9 +78,8 @@ export class PixiFeatureLine extends PixiFeature {
 
   /**
    * update
-   *
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  projection  Pixi projection to use for rendering
+   * @param  zoom        Effective zoom to use for rendering
    */
   update(projection, zoom) {
     if (!this.dirty) return;  // no change
@@ -122,26 +119,41 @@ export class PixiFeatureLine extends PixiFeature {
 
     this._geometryDirty = false;
 
-
     //
     // STYLE
     //
 
-    // Calculate hit area
-    let hitPath = [];
-    const hitWidth = style.casing.width;
-    this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
-    container.hitArea = lineToPolygon(hitWidth, hitPath);
-
-
     // Apply effectiveZoom style adjustments
     let showMarkers = true;
-    if (zoom < 16) {
+
+    // Cull really tiny shapes
+    if (w < 4 && h < 4) {  // so tiny
+      this.lod = 0;  // off
+      this.visible = false;
+      this.stroke.renderable = false;
       this.casing.renderable = false;
       showMarkers = false;
+
     } else {
-      this.casing.renderable = true;
-      showMarkers = true;
+      this.visible = true;
+      this.stroke.renderable = true;
+
+      // Update hit area
+      let hitPath = [];
+      const hitWidth = style.casing.width;
+      this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
+      container.hitArea = lineToPolygon(hitWidth, hitPath);
+
+      if (zoom < 16) {
+        this.lod = 1;  // simplified
+        this.casing.renderable = false;
+        showMarkers = false;
+
+      } else {
+        this.lod = 2;  // full
+        this.casing.renderable = true;
+        showMarkers = true;
+      }
     }
 
     //
@@ -246,7 +258,7 @@ export class PixiFeatureLine extends PixiFeature {
 
   /**
    * geometry
-   * @param arr geometry `Array` (contents depends on the feature type)
+   * @param  arr  Geometry `Array` (contents depends on the feature type)
    *
    * 'line' - Array of coordinates
    *    [ [lon, lat], [lon, lat],  … ]
@@ -269,7 +281,7 @@ export class PixiFeatureLine extends PixiFeature {
 
   /**
    * style
-   * @param obj style `Object` (contents depends on the feature type)
+   * @param  obj  Style `Object` (contents depends on the feature type)
    *
    * 'point' - see PixiFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js
@@ -282,10 +294,6 @@ export class PixiFeatureLine extends PixiFeature {
     this._styleDirty = true;
   }
 
-  rebind(data, geometry) {
-    super.rebind(data);
-    this.geometry = geometry;
-  }
 }
 
 

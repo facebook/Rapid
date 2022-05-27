@@ -128,12 +128,14 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
         feature.displayObject.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
 
@@ -151,12 +153,14 @@ export class PixiLayerMapillaryPhotos extends PixiLayer {
         feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
       }
 
-      this.seenFeature.set(feature, timestamp);
-      feature.visible = true;
-
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
+      }
+
+      if (feature.lod > 0 || feature.selected) {
+        feature.visible = true;
+        this.seenFeature.set(feature, timestamp);
       }
     });
 
