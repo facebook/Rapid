@@ -57,6 +57,7 @@
     "@mapbox/vector-tile": "^1.3.1",
     "@pixi-essentials/texture-allocator": "^1.0.9",
     "@pixi/filter-adjustment": "^4.1.3",
+    "@pixi/filter-convolution": "^4.1.5",
     "@pixi/filter-glow": "^4.1.5",
     "@tmcw/togeojson": "^5.1.2",
     "@turf/bbox-clip": "^6.0.0",
