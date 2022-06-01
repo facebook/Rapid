@@ -1,3 +1,4 @@
+import { vecEqual } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 
 
@@ -14,6 +15,8 @@ export class BehaviorHover extends AbstractBehavior {
   constructor(context) {
     super(context);
 
+    this._lastmove = null;
+
     // Make sure the event handlers have `this` bound correctly
     this._pointermove = this._pointermove.bind(this);
   }
@@ -26,10 +29,11 @@ export class BehaviorHover extends AbstractBehavior {
   enable() {
     if (!this._context.pixi) return;
 
+    this._enabled = true;
+    this._lastmove = null;
+
     const stage = this._context.pixi.stage;
     stage.on('pointermove', this._pointermove);
-
-    this._enabled = true;
   }
 
 
@@ -41,56 +45,11 @@ export class BehaviorHover extends AbstractBehavior {
     if (!this._enabled) return;
     if (!this._context.pixi) return;
 
+    this._enabled = false;
+    this._lastmove = null;
+
     const stage = this._context.pixi.stage;
     stage.off('pointermove', this._pointermove);
-
-    this._enabled = false;
-  }
-
-
-  /**
-   * _getEventData
-   * Returns an object containing the important details about this Pixi event
-   * @param  `e`  A Pixi InteractionEvent
-   */
-  _getEventData(e) {
-    const result = {
-      id: e.data.originalEvent.pointerId || 'mouse',
-      event: e,
-      origEvent: e.data.originalEvent,
-      coord: [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY],
-      time: e.data.originalEvent.timeStamp,
-      isCancelled: false,
-      target: null,
-      data: null
-    };
-
-    if (!e.target) {   // e.target is the displayObject that triggered this event
-      return result;
-    }
-
-    let target = e.target;
-    let data = target && target.__data__;
-
-    // Data is here, use this target
-    if (data) {
-      result.target = target;
-      result.data = data;
-      return result;
-    }
-
-    // No data in target, look in parent
-    target = e.target.parent;
-    data = target && target.__data__;
-    if (data) {
-      result.target = target;
-      result.data = data;
-      return result;
-    }
-
-    // No data there either, just use the original target
-    result.target = e.target;
-    return result;
   }
 
 
@@ -102,13 +61,27 @@ export class BehaviorHover extends AbstractBehavior {
    */
   _pointermove(e) {
     const context = this._context;
+
+    // If pointer is not over the renderer, just discard
+    const interactionManager = context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    if (!pointerOverRenderer) return;
+
     const move = this._getEventData(e);
+
+    // We get a lot more move events than we need,
+    // so discard ones where it hasn't actually moved much
+    if (this._lastmove) {
+      if (vecEqual(move.coord, this._lastmove.coord, 0.9)) return;
+    }
+    this._lastmove = move;
+
     // const name = (move.target && move.target.name) || 'no target';
     // console.log(`pointermove ${name}`);
 
-    const renderer = context.map().renderer();
     const ids = move.data ? [move.target.name] : [];
 
+    const renderer = context.map().renderer();
     renderer.hover(ids);
     // context.ui().sidebar.hover([move.data]);
   }

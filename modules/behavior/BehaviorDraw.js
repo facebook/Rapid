@@ -98,51 +98,6 @@ export class BehaviorDraw extends AbstractBehavior {
   }
 
 
-  /**
-   * _getEventData
-   * Returns an object containing the important details about this Pixi event
-   * @param  `e`  A Pixi InteractionEvent
-   */
-  _getEventData(e) {
-    const result = {
-      id: e.data.originalEvent.pointerId || 'mouse',
-      event: e,
-      origEvent: e.data.originalEvent,
-      coord: [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY],
-      time: e.data.originalEvent.timeStamp,
-      isCancelled: false,
-      target: null,
-      data: null
-    };
-
-    if (!e.target) {   // e.target is the displayObject that triggered this event
-      return result;
-    }
-
-    let target = e.target;
-    let data = target && target.__data__;
-
-    // Data is here, use this target
-    if (data) {
-      result.target = target;
-      result.data = data;
-      return result;
-    }
-
-    // No data in target, look in parent
-    target = e.target.parent;
-    data = target && target.__data__;
-    if (data) {
-      result.target = target;
-      result.data = data;
-      return result;
-    }
-
-    // No data there either, just use the original target
-    result.target = e.target;
-    return result;
-  }
-
 
   /**
    * _pointerdown
