@@ -110,7 +110,7 @@ export class BehaviorHover extends AbstractBehavior {
     const ids = move.data ? [move.target.name] : [];
 
     renderer.hover(ids);
-    context.ui().sidebar.hover([move.data]);
+    // context.ui().sidebar.hover([move.data]);
   }
 
 }

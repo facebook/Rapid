@@ -30,7 +30,8 @@ export class PixiRenderer {
   constructor(context, parentElement) {
     this._context = context;
     this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
-    this._redrawPending = false;
+    this._frame = 0;
+    this._drawPending = false;
 
     // Register Pixi with the pixi-inspector extension if it is installed
     // https://github.com/bfanger/pixi-inspector
@@ -85,6 +86,7 @@ export class PixiRenderer {
     // Setup the Interaction Manager
     // const interactionManager = this.pixi.renderer.plugins.interaction;
     // interactionManager.interactionFrequency = 100;    // default 10ms, slow it down?  doesn't do what I thought
+    // interactionManager.useSystemTicker = false;
 
     const stage = this.pixi.stage;
     stage.name = 'stage';
@@ -117,9 +119,17 @@ export class PixiRenderer {
 
   /**
    * render
+   * The "RapiD" part of the drawing
+   * Where we set up the scene graph and tell Pixi what needs to be drawn
    */
   render() {
-    if (this._redrawPending) return;
+    if (this._drawPending) return;
+
+const frame = this._frame;
+const markStart = `app-${frame}-start`;
+const markEnd = `app-${frame}-end`;
+const m1 = window.performance.mark(markStart);
+const timestamp = m1.startTime;
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
@@ -137,22 +147,43 @@ export class PixiRenderer {
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
 
+    // this?
     const stage = this.pixi.stage;
-
-// this?
     stage.position.set(-offset[0], -offset[1]);
 
-    // DRAW
-    const timestamp = Date.now();
     const effectiveZoom = context.map().effectiveZoom();
     this.layers.render(timestamp, pixiProjection, effectiveZoom);
 
 
+const m2 = window.performance.mark(markEnd);
+const measure = window.performance.measure(`app-${frame}`, markStart, markEnd);
+const duration = measure.duration.toFixed(1);
+console.log(`app ${frame} - ${duration} ms`);
+
     if (!AUTOTICK) {    // tick manually
-      this._redrawPending = true;
-      window.requestAnimationFrame(timestamp => {
+      this._drawPending = true;
+      // window.requestAnimationFrame(() => {
+        this.draw();
+     // });
+    }
+  }
+
+
+  /**
+   * draw
+   * The "Pixi" part of the drawing
+   * Where it converts Pixi geometries into WebGL instructions
+   */
+  draw() {
+
+const frame = this._frame;
+const markStart = `draw-${frame}-start`;
+const markEnd = `draw-${frame}-end`;
+const m1 = window.performance.mark(markStart);
+const timestamp = m1.startTime;
+
 // this?
-        this.pixi.ticker.update(timestamp);
+    this.pixi.ticker.update(timestamp);
 
 //...or this?
 //        const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
@@ -162,9 +193,12 @@ export class PixiRenderer {
 //        };
 //        this.pixi.renderer.render(stage, options);
 
-       this._redrawPending = false;
-     });
-    }
+    this._drawPending = false;
+    this._frame++;
+const m2 = window.performance.mark(markEnd);
+const measure = window.performance.measure(`draw-${frame}`, markStart, markEnd);
+const duration = measure.duration.toFixed(1);
+console.log(`draw ${frame} - ${duration} ms`);
   }
 
 
@@ -232,7 +266,9 @@ export class PixiRenderer {
 
     if (selectChanged) {
       this._highlightTick++;
-      this.render();  //  now
+      // this._context.map().deferredRedraw();
+      // this.render();  //  now
+      this.draw();
     }
   }
 
@@ -276,45 +312,10 @@ export class PixiRenderer {
 
     if (hoverChanged) {
       this._highlightTick++;
-      this.render();  //  now
+      // this._context.map().deferredRedraw();
+      // this.render();  //  now
+      this.draw();
     }
   }
-
-
-
-  // /**
-  //  * highlight
-  //  * @param  featureIDs   `Array` or `Set` of feature IDs to highlight
-  //  */
-  // highlight(featureIDs) {
-  //   const toHighlight = new Set([].concat(featureIDs));  // coax ids into a Set
-
-  //   // remove highlighting where not needed
-  //   this._highlightedIDs.forEach(featureID => {
-  //     if (toHighlight.has(featureID)) return;  // it should stay highlighted
-
-  //     this._highlightedIDs.delete(featureID);
-  //     const feature = this.scene.get(featureID);
-  //     if (feature) {
-  //       feature.displayObject.filters = [];
-  //       feature.dirty = true;
-  //     }
-  //   });
-
-  //   // add highlighting where needed
-  //   toHighlight.forEach(featureID => {
-  //     const feature = this.scene.get(featureID);
-  //     if (!feature) return;
-
-  //     if (this._highlightedIDs.has(feature.id)) return;  // it's already highlighted
-
-  //     this._highlightedIDs.add(feature.id);
-  //     feature.displayObject.filters = [ this.selectglow ];
-  //     feature.dirty = true;
-  //   });
-
-  //   this._highlightTick++;
-  //   this.render();  //  now
-  // }
 
 }

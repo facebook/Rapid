@@ -50,6 +50,7 @@ export class BehaviorSelect extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
+return;
     this._downData = null;
     this._multiSelection.clear();
 
