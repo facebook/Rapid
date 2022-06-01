@@ -84,9 +84,9 @@ export class PixiRenderer {
     }
 
     // Setup the Interaction Manager
-    // const interactionManager = this.pixi.renderer.plugins.interaction;
+    const interactionManager = this.pixi.renderer.plugins.interaction;
     // interactionManager.interactionFrequency = 100;    // default 10ms, slow it down?  doesn't do what I thought
-    // interactionManager.useSystemTicker = false;
+    interactionManager.useSystemTicker = false;
 
     const stage = this.pixi.stage;
     stage.name = 'stage';

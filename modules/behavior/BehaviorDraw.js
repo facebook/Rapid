@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { vecLength } from '@id-sdk/math';
+import { vecEqual, vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { locationManager } from '../core/locations';
@@ -30,7 +30,8 @@ export class BehaviorDraw extends AbstractBehavior {
 
     this._spaceClickDisabled = false;
     this._lastSpaceCoord = null;
-    this._downData = null;
+    this._lastdown = null;
+    this._lastmove = null;
 
     this._keybinding = utilKeybinding('drawbehavior');
 
@@ -47,10 +48,11 @@ export class BehaviorDraw extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
-    this._downData = null;
-
     if (!this._context.pixi) return;
-    const stage = this._context.pixi.stage;
+
+    this._enabled = true;
+    this._lastdown = null;
+    this._lastmove = null;
 
     this._keybinding
       .on('⌫', (e) => this._backspace(e))
@@ -60,6 +62,7 @@ export class BehaviorDraw extends AbstractBehavior {
       .on('space', (e) => this._spacebar(e))
       .on('⌥space', (e) => this._spacebar(e));
 
+    const stage = this._context.pixi.stage;
     stage
       .on('pointerdown', this._pointerdown)
       .on('pointermove', this._pointermove)
@@ -69,8 +72,6 @@ export class BehaviorDraw extends AbstractBehavior {
 
     d3_select(document)
       .call(this._keybinding);
-
-    this._enabled = true;
   }
 
 
@@ -80,10 +81,13 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-
     if (!this._context.pixi) return;
-    const stage = this._context.pixi.stage;
 
+    this._enabled = false;
+    this._lastdown = null;
+    this._lastmove = null;
+
+    const stage = this._context.pixi.stage;
     stage
       .off('pointerdown', this._pointerdown)
       .off('pointermove', this._pointermove)
@@ -93,8 +97,6 @@ export class BehaviorDraw extends AbstractBehavior {
 
     d3_select(document)
       .call(this._keybinding.unbind);
-
-    this._enabled = false;
   }
 
 
@@ -102,17 +104,17 @@ export class BehaviorDraw extends AbstractBehavior {
   /**
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerdown(e) {
-    if (this._downData) return;  // a pointer is already down
+    if (this._lastdown) return;  // a pointer is already down
 
     const down = this._getEventData(e);
     // const name = (down.target && down.target.name) || 'no target';
     // console.log(`pointerdown ${name}`);
 
-    this._downData = down;
+    this._lastdown = down;
     this._dispatch.call('down', this, e, down);
   }
 
@@ -120,18 +122,18 @@ export class BehaviorDraw extends AbstractBehavior {
   /**
    * _pointerup
    * Handler for pointerup events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerup(e) {
     const up = this._getEventData(e);
-    const down = this._downData;
+    const down = this._lastdown;
     // const name = (up.target && up.target.name) || 'no target';
     // console.log(`pointerup ${name}`);
 
     if (!down || down.id !== up.id) return;  // not down, or different pointer
 
-    this._downData = null;
+    this._lastdown = null;
 
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
@@ -157,16 +159,28 @@ export class BehaviorDraw extends AbstractBehavior {
   /**
    * _pointermove
    * Handler for pointermove events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
+    // If pointer is not over the renderer, just discard
+    const context = this._context;
+    const interactionManager = context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    if (!pointerOverRenderer) return;
+
     const move = this._getEventData(e);
-    const down = this._downData;
+
+    // We get a lot more move events than we need,
+    // so discard ones where it hasn't actually moved much
+    if (this._lastmove && vecEqual(move.coord, this._lastmove.coord, 0.9)) return;
+    this._lastmove = move;
+
+    const down = this._lastdown;
+    if (!down || down.id !== move.id) return;  // not down, or different pointer
+
     // const name = (move.target && move.target.name) || 'no target';
     // console.log(`pointermove ${name}`);
-
-    if (!down || down.id !== move.id) return;  // not down, or different pointer
 
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
     if (!down.isCancelled) {
@@ -184,12 +198,12 @@ export class BehaviorDraw extends AbstractBehavior {
   /**
    * _pointercancel
    * Handler for pointercancel events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointercancel(e) {
     const cancel = this._getEventData(e);
-    const down = this._downData;
+    const down = this._lastdown;
     // const name = (cancel.target && cancel.target.name) || 'no target';
     // console.log(`pointercancel ${name}`);
 
@@ -199,7 +213,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
     // Here we can throw away the down data to prepare for another `pointerdown`.
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
-    this._downData = null;
+    this._lastdown = null;
   }
 
 

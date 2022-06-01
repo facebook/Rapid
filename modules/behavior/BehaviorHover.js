@@ -60,9 +60,8 @@ export class BehaviorHover extends AbstractBehavior {
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
-    const context = this._context;
-
     // If pointer is not over the renderer, just discard
+    const context = this._context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
@@ -71,9 +70,7 @@ export class BehaviorHover extends AbstractBehavior {
 
     // We get a lot more move events than we need,
     // so discard ones where it hasn't actually moved much
-    if (this._lastmove) {
-      if (vecEqual(move.coord, this._lastmove.coord, 0.9)) return;
-    }
+    if (this._lastmove && vecEqual(move.coord, this._lastmove.coord, 0.9)) return;
     this._lastmove = move;
 
     // const name = (move.target && move.target.name) || 'no target';
