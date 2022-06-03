@@ -294,6 +294,53 @@ export class PixiFeatureLine extends PixiFeature {
     this._styleDirty = true;
   }
 
+
+  /**
+   * hovered
+   * Each feature type can do whatever it needs to make features hovered
+   * @param  val  `true` to make the feature hovered
+   */
+  get hovered() {
+    return this._hovered;
+  }
+  set hovered(val) {
+    this._hovered = val;
+
+    // draw a halo
+    const mapUIContainer = this.context.layers().getLayer('map-ui').container;
+    const haloName = this.id + '-halo';
+
+    if (val) {  // draw a halo
+      const dObj = this.displayObject;
+      const shape = dObj.hitArea || dObj.getLocalBounds().clone().pad(1);
+      const halo = new PIXI.Graphics()
+        .lineStyle(3, 0xffff00)
+        .drawShape(shape);
+
+      halo.name = haloName;
+      mapUIContainer.addChild(halo);
+
+    } else {
+      const halo = mapUIContainer.getChildByName(haloName);
+      if (halo) {
+        mapUIContainer.removeChild(halo);
+      }
+    }
+  }
+
+
+  /**
+   * selected
+   * Each feature type can do whatever it needs to make features selected
+   * @param  val  `true` to make the feature selected
+   */
+  get selected() {
+    return this._selected;
+  }
+  set selected(val) {
+    this._selected = val;
+  }
+
 }
 
 

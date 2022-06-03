@@ -156,15 +156,16 @@ const timestamp = m1.startTime;
 
 
 const m2 = window.performance.mark(markEnd);
-const measure = window.performance.measure(`app-${frame}`, markStart, markEnd);
+window.performance.measure(`app-${frame}`, markStart, markEnd);
+const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
 const duration = measure.duration.toFixed(1);
-console.log(`app ${frame} - ${duration} ms`);
+// console.log(`app-${frame} : ${duration} ms`);
 
     if (!AUTOTICK) {    // tick manually
       this._drawPending = true;
-      // window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
         this.draw();
-     // });
+     });
     }
   }
 
@@ -196,9 +197,10 @@ const timestamp = m1.startTime;
     this._drawPending = false;
     this._frame++;
 const m2 = window.performance.mark(markEnd);
-const measure = window.performance.measure(`draw-${frame}`, markStart, markEnd);
+window.performance.measure(`draw-${frame}`, markStart, markEnd);
+const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
 const duration = measure.duration.toFixed(1);
-console.log(`draw ${frame} - ${duration} ms`);
+// console.log(`draw-${frame} : ${duration} ms`);
   }
 
 
@@ -244,9 +246,8 @@ console.log(`draw ${frame} - ${duration} ms`);
       const feature = this.scene.get(featureID);
       if (feature) {
         selectChanged = true;
-        feature.displayObject.filters = [];
+        // feature.displayObject.filters = [];
         feature.selected = false;
-        feature.dirty = true;
       }
     });
 
@@ -259,9 +260,8 @@ console.log(`draw ${frame} - ${duration} ms`);
 
       this._selectedIDs.add(feature.id);
       selectChanged = true;
-      feature.displayObject.filters = [ this.selectglow ];
+      // feature.displayObject.filters = [ this.selectglow ];
       feature.selected = true;
-      feature.dirty = true;
     });
 
     if (selectChanged) {
@@ -290,9 +290,8 @@ console.log(`draw ${frame} - ${duration} ms`);
       const feature = this.scene.get(featureID);
       if (feature) {
         hoverChanged = true;
-        feature.displayObject.filters = [];
+        // feature.displayObject.filters = [];
         feature.hovered = false;
-        feature.dirty = true;
       }
     });
 
@@ -305,9 +304,8 @@ console.log(`draw ${frame} - ${duration} ms`);
 
       this._hoveredIDs.add(feature.id);
       hoverChanged = true;
-      feature.displayObject.filters = [ this.hoverglow ];
+      // feature.displayObject.filters = [ this.hoverglow ];
       feature.hovered = true;
-      feature.dirty = true;
     });
 
     if (hoverChanged) {

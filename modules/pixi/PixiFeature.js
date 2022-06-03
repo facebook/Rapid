@@ -40,8 +40,6 @@ export class PixiFeature {
     this.context = context;
     this.displayObject = displayObject;
     this.visible = false;
-    this.selected = false;
-    this.hovered = false;
     this.v = -1;
     this.lod = 2;   // full detail
 
@@ -61,6 +59,9 @@ export class PixiFeature {
     this._styleDirty = true;
     this._label = null;
     this._labelDirty = true;
+
+    this._selected = false;
+    this._hovered = false;
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
@@ -112,6 +113,7 @@ export class PixiFeature {
     // The labeling code will decide what to do with the `_labelDirty` flag
   }
 
+
   /**
    * Feature id
    */
@@ -146,6 +148,32 @@ export class PixiFeature {
     this._geometryDirty = val;
     this._styleDirty = val;
     this._labelDirty = val;
+  }
+
+
+  /**
+   * hovered
+   * Override in a subclass with needed logic to make the feature hovered
+   * @param  val  `true` to make the feature hovered
+   */
+  get hovered() {
+    return this._hovered;
+  }
+  set hovered(val) {
+    this._hovered = val;
+  }
+
+
+  /**
+   * selected
+   * Override in a subclass with needed logic to make the feature selected
+   * @param  val  `true` to make the feature selected
+   */
+  get selected() {
+    return this._selected;
+  }
+  set selected(val) {
+    this._selected = val;
   }
 
 
