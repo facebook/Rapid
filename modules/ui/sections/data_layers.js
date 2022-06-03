@@ -1,4 +1,4 @@
-// import _debounce from 'lodash-es/debounce';
+import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 // import { Extent } from '@id-sdk/math';
 
@@ -178,9 +178,9 @@ export function uiSectionDataLayers(context) {
 
 
   function drawCustomDataItems(selection) {
-    const dataLayer = layers.getLayer('data');
+    const dataLayer = layers.getLayer('custom-data');
     const hasData = dataLayer && dataLayer.hasData();
-    const showsData = hasData && dataLayer.enabled();
+    const showsData = hasData && dataLayer.enabled;
 
     let ul = selection
       .selectAll('.layer-list-data')
@@ -209,7 +209,7 @@ export function uiSectionDataLayers(context) {
     labelEnter
       .append('input')
       .attr('type', 'checkbox')
-      .on('change', (d3_event, d) => toggleLayer(d.id));
+      .on('change', () => toggleLayer('custom-data'));
 
     labelEnter
       .append('span')
@@ -267,7 +267,7 @@ export function uiSectionDataLayers(context) {
   }
 
   function customChanged(d) {
-    let dataLayer = layers.getLayer('data');
+    let dataLayer = layers.getLayer('custom-data');
 
     if (d && d.url) {
       dataLayer.url(d.url);
@@ -332,13 +332,13 @@ export function uiSectionDataLayers(context) {
   context.layers()
     .on('change.uiSectionDataLayers', section.reRender);
 
-//  context.map()
-//    .on('move.uiSectionDataLayers',
-//      _debounce(function() {
-//        // Detroit layers may have moved in or out of view
-//        window.requestIdleCallback(section.reRender);
-//      }, 1000)
-//    );
+ context.map()
+   .on('move.uiSectionDataLayers',
+     _debounce(function() {
+       // Detroit layers may have moved in or out of view
+       window.requestIdleCallback(section.reRender);
+     }, 1000)
+   );
 
   return section;
 }

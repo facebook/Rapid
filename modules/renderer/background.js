@@ -8,7 +8,6 @@ import whichPolygon from 'which-polygon';
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
 import { rendererBackgroundSource } from './background_source';
-import { rendererTileLayer } from './tile_layer';
 import { utilDetect } from '../util/detect';
 import { utilRebind } from '../util/rebind';
 
@@ -18,15 +17,17 @@ let _imageryIndex = null;
 export function rendererBackground(context) {
   const dispatch = d3_dispatch('change');
   const detected = utilDetect();
-  const baseLayer = rendererTileLayer(context).projection(context.projection);
+  let _source;
   let _checkedBlocklists = [];
   let _isValid = true;
+  let _initialized = false;
   let _overlayLayers = [];
   let _brightness = 1;
   let _contrast = 1;
   let _saturation = 1;
   let _sharpness = 1;
   var _numGridSplits = 0; // No grid by default.
+
 
 
   function ensureImageryIndex() {
@@ -88,7 +89,7 @@ export function rendererBackground(context) {
 
 
   function background(selection) {
-    const currSource = baseLayer.source();
+    const currSource = _source;
 
     // If we are displaying an Esri basemap at high zoom,
     // check its tilemap to see how high the zoom can go
@@ -141,59 +142,11 @@ export function rendererBackground(context) {
     }
 
 
-    let imagery = base.selectAll('.layer-imagery')
-      .data([0]);
-
-
-// try letting pixi do this
-//    imagery.enter()
-//      .append('div')
-//      .attr('class', 'layer layer-imagery')
-//      .merge(imagery)
-//      .call(baseLayer);
-//
-
-    let maskFilter = '';
-    let mixBlendMode = '';
-    if (detected.cssfilters && _sharpness > 1) {  // apply unsharp mask
-      mixBlendMode = 'overlay';
-      maskFilter = 'saturate(0) blur(3px) invert(1)';
-
-      let contrast = _sharpness - 1;
-      maskFilter += ` contrast(${contrast})`;
-
-      let brightness = d3_interpolateNumber(1, 0.85)(_sharpness - 1);
-      maskFilter += ` brightness(${brightness})`;
-    }
-
-    let mask = base.selectAll('.layer-unsharp-mask')
-      .data(detected.cssfilters && _sharpness > 1 ? [0] : []);
-
-    mask.exit()
-      .remove();
-
-// not yet
-//    mask.enter()
-//      .append('div')
-//      .attr('class', 'layer layer-mask layer-unsharp-mask')
-//      .merge(mask)
-//      .call(baseLayer)
-//      .style('filter', maskFilter || null)
-//      .style('mix-blend-mode', mixBlendMode || null);
-
-
     let overlays = selection.selectAll('.layer-overlay')
-      .data(_overlayLayers, d => d.source().name());
+      .data(_overlayLayers, d => d.name());
 
     overlays.exit()
       .remove();
-
-// not yet
-//    overlays.enter()
-//      .insert('div', '.layer-data')
-//      .attr('class', 'layer layer-overlay')
-//      .merge(overlays)
-//      .each((layer, i, nodes) => d3_select(nodes[i]).call(layer));
   }
 
   background.numGridSplits = function(_) {
@@ -203,13 +156,46 @@ export function rendererBackground(context) {
       return background;
   };
 
+
+  background.initDragAndDrop = function (_) {
+    if (_initialized) return;  // run once
+
+
+    function over(d3_event) {
+      d3_event.stopPropagation();
+      d3_event.preventDefault();
+      d3_event.dataTransfer.dropEffect = 'copy';
+    }
+
+    let customDataLayer = context.layers().getLayer('custom-data');
+
+    //Keep trying till the layers are instantiated.
+    if (!customDataLayer) return;
+
+    context.container()
+      .attr('dropzone', 'copy')
+      .on('drop.svgData', function (d3_event) {
+        d3_event.stopPropagation();
+        d3_event.preventDefault();
+        if (!detected.filedrop) return;
+        customDataLayer.fileList(d3_event.dataTransfer.files);
+      })
+      .on('dragenter.svgData', over)
+      .on('dragexit.svgData', over)
+      .on('dragover.svgData', over);
+
+    _initialized = true;
+  };
+
+
+
   background.updateImagery = function() {
-    let currSource = baseLayer.source();
+    let currSource = _source;
     if (context.inIntro() || !currSource) return;
 
     let o = _overlayLayers
-      .filter(d => !d.source().isLocatorOverlay() && !d.source().isHidden())
-      .map(d => d.source().id)
+      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
+      .map(d => d.id)
       .join(',');
 
     const meters = geoOffsetToMeters(currSource.offset());
@@ -254,32 +240,8 @@ export function rendererBackground(context) {
     }
 
     _overlayLayers
-      .filter(d => !d.source().isLocatorOverlay() && !d.source().isHidden())
-      .forEach(d => imageryUsed.push(d.source().imageryUsed()));
-
-// find a better way to determine what layers are enabled than
-// `context.layers().getLayer().enabled()`
-
-//    const dataLayer = context.layers().getLayer('data');
-//    if (dataLayer && dataLayer.enabled() && dataLayer.hasData()) {
-//      imageryUsed.push(dataLayer.getSrc());
-//    }
-//
-//    const photoOverlayLayers = {
-//      streetside: 'Bing Streetside',
-//      mapillary: 'Mapillary Images',
-//      'mapillary-map-features': 'Mapillary Map Features',
-//      'mapillary-signs': 'Mapillary Signs',
-//      openstreetcam: 'OpenStreetCam Images'
-//    };
-//
-//    for (let layerID in photoOverlayLayers) {
-//      const layer = context.layers().getLayer(layerID);
-//      if (layer && layer.enabled()) {
-//        photoOverlaysUsed.push(layerID);
-//        imageryUsed.push(photoOverlayLayers[layerID]);
-//      }
-//    }
+      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
+      .forEach(d => imageryUsed.push(d.imageryUsed()));
 
     context.history().imageryUsed(imageryUsed);
     context.history().photoOverlaysUsed(photoOverlaysUsed);
@@ -293,7 +255,7 @@ export function rendererBackground(context) {
     (_imageryIndex.query.bbox(extent.rectangle(), true) || [])
       .forEach(d => visible[d.id] = true);
 
-    const currSource = baseLayer.source();
+    const currSource = _source;
 
     // Recheck blocked sources only if we detect new blocklists pulled from the OSM API.
     const osm = context.connection();
@@ -317,16 +279,8 @@ export function rendererBackground(context) {
     });
   };
 
-
-  background.dimensions = (val) => {
-    if (!val) return;
-    baseLayer.dimensions(val);
-    _overlayLayers.forEach(layer => layer.dimensions(val));
-  };
-
-
   background.baseLayerSource = function(d) {
-    if (!arguments.length) return baseLayer.source();
+    if (!arguments.length) return _source;
 
     // test source against OSM imagery blocklists..
     const osm = context.connection();
@@ -351,7 +305,7 @@ export function rendererBackground(context) {
       fail = regex.test(template);
     }
 
-    baseLayer.source(!fail ? d : background.findSource('none'));
+    _source = (!fail ? d : background.findSource('none'));
     dispatch.call('change');
     background.updateImagery();
     return background;
@@ -370,14 +324,14 @@ export function rendererBackground(context) {
 
 
   background.showsLayer = (d) => {
-    const currSource = baseLayer.source();
+    const currSource = _source;
     if (!d || !currSource) return false;
-    return d.id === currSource.id || _overlayLayers.some(layer => d.id === layer.source().id);
+    return d.id === currSource.id || _overlayLayers.some(layer => d.id === layer.id);
   };
 
 
   background.overlayLayerSources = () => {
-    return _overlayLayers.map(layer => layer.source());
+    return _overlayLayers;
   };
 
 
@@ -385,7 +339,7 @@ export function rendererBackground(context) {
     let layer;
     for (let i = 0; i < _overlayLayers.length; i++) {
       layer = _overlayLayers[i];
-      if (layer.source() === d) {
+      if (layer === d) {
         _overlayLayers.splice(i, 1);
         dispatch.call('change');
         background.updateImagery();
@@ -393,11 +347,7 @@ export function rendererBackground(context) {
       }
     }
 
-    layer = rendererTileLayer(context)
-      .source(d)
-      .projection(context.projection)
-      .dimensions(baseLayer.dimensions()
-    );
+    layer = d;
 
     _overlayLayers.push(layer);
     dispatch.call('change');
@@ -406,7 +356,7 @@ export function rendererBackground(context) {
 
 
   background.nudge = (d, zoom) => {
-    const currSource = baseLayer.source();
+    const currSource = _source;
     if (currSource) {
       currSource.nudge(d, zoom);
       dispatch.call('change');
@@ -417,7 +367,7 @@ export function rendererBackground(context) {
 
 
   background.offset = function(d) {
-    const currSource = baseLayer.source();
+    const currSource = _source;
     if (!arguments.length) {
       return (currSource && currSource.offset()) || [0, 0];
     }
@@ -528,7 +478,7 @@ export function rendererBackground(context) {
         });
 
         if (hash.gpx) {
-          const gpx = context.layers().getLayer('data');
+          const gpx = context.layers().getLayer('custom-data');
           if (gpx) {
             gpx.url(hash.gpx, '.gpx');
           }
@@ -547,7 +497,6 @@ export function rendererBackground(context) {
       })
       .catch(() => { /* ignore */ });
   };
-
 
     return utilRebind(background, dispatch, 'on');
   }

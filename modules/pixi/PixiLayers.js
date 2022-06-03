@@ -15,6 +15,7 @@ import { PixiLayerOsmose } from './PixiLayerOsmose';
 import { PixiLayerRapid } from './PixiLayerRapid';
 import { PixiLayerMapUI } from './PixiLayerMapUI';
 import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos';
+import { PixiLayerCustomData } from './PixiLayerCustomData';
 
 
 /**
@@ -41,6 +42,7 @@ export class PixiLayers {
       new PixiLayerOsm(context, scene, 5),
       new PixiLayerRapid(context, scene, 6),
 
+      new PixiLayerCustomData(context, scene, 8),
       new PixiLayerOsmNotes(context, scene, 10),
       new PixiLayerImproveOsm(context, scene, 11),
       new PixiLayerKeepRight(context, scene, 12),

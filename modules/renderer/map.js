@@ -1,5 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { interpolate as d3_interpolate } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
@@ -10,14 +9,11 @@ import _debounce from 'lodash-es/debounce';
 import { PixiRenderer } from '../pixi/PixiRenderer';
 
 import { prefs } from '../core/preferences';
-import { modeBrowse } from '../modes/browse';
 import { utilFastMouse, utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilBindOnce } from '../util/bind_once';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util/rebind';
-import { utilZoomPan } from '../util/zoom_pan';
-import { utilDoubleUp } from '../util/double_up';
 
 // constants
 var TILESIZE = 256;
@@ -129,6 +125,7 @@ export function rendererMap(context) {
 
     map.dimensions(utilGetDimensions(selection));
 
+    context.background().initDragAndDrop();
 
 //
 //    _doubleTapHandler
@@ -458,8 +455,6 @@ export function rendererMap(context) {
     function redraw() {
       if (surface.empty() || !_redrawEnabled) return;
 
-      supersurface.call(context.background());  // todo: get rid of this
-
       if (_renderer) {
         _renderer.render();
       }
@@ -567,7 +562,7 @@ export function rendererMap(context) {
       if (!arguments.length) return _dimensions;
 
       _dimensions = val;
-      context.background().dimensions(_dimensions);
+      // context.background().dimensions(_dimensions);
       projection.dimensions([[0, 0], _dimensions]);
       _getMouseCoords = utilFastMouse(supersurface.node());
 
