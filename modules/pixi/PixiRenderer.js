@@ -10,8 +10,6 @@ import { PixiLayers } from './PixiLayers';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
 
-const AUTOTICK = false;     // set to true to turn the ticker back on
-
 
 /**
  * PixiRenderer
@@ -31,6 +29,7 @@ export class PixiRenderer {
     this._context = context;
     this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     this._frame = 0;
+    this._appPending = false;
     this._drawPending = false;
 
     // Register Pixi with the pixi-inspector extension if it is installed
@@ -50,9 +49,12 @@ export class PixiRenderer {
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
-      backgroundAlpha: 0.0,
+      autoStart: false,        // don't start the ticker yet
+      backgroundAlpha: 0.0,    // transparent
       resizeTo: parentElement,
-      resolution: window.devicePixelRatio
+      resolution: window.devicePixelRatio,
+      sharedLoader: true,
+      sharedTicker: true
     });
 
     context.pixi = this.pixi;
@@ -74,19 +76,22 @@ export class PixiRenderer {
     });
 
     // Setup the Ticker
+    // Replace the default Ticker listener (which just renders the scene each frame)
+    // with our own listener that gathers statistics and renders only as needed
     const ticker = this.pixi.ticker;
-    if (AUTOTICK) {       // redraw automatically every frame
-      ticker.maxFPS = 30;
-      ticker.autoStart = true;
-    } else {              // redraw only on zoom/pan
-      ticker.autoStart = false;
-      ticker.stop();
-    }
+    const defaultListener = ticker._head.next;
+    ticker.remove(defaultListener.fn, defaultListener.context);
+
+    // Make sure our tick handler has `this` bound correctly
+    this.tick = this.tick.bind(this);
+    ticker.add(this.tick, this);
+    ticker.maxFPS = 30;
+    ticker.start();
 
     // Setup the Interaction Manager
     const interactionManager = this.pixi.renderer.plugins.interaction;
     // interactionManager.interactionFrequency = 100;    // default 10ms, slow it down?  doesn't do what I thought
-    interactionManager.useSystemTicker = false;
+    interactionManager.useSystemTicker = true;
 
     const stage = this.pixi.stage;
     stage.name = 'stage';
@@ -117,13 +122,42 @@ export class PixiRenderer {
   }
 
 
+
+  /**
+   * tick
+   * This is a Pixi.Ticker listener that runs in a `requestAnimationFrame` game loop.
+   * We can use this to determine the true frame rate that we're running at,
+   * and schedule work to happen at opportune times (within animation frame boundaries)
+   */
+  tick(time) {
+    let t = time;
+    const ticker = this.pixi.ticker;
+    // console.log('FPS=' + ticker.FPS.toFixed(1));
+
+    // do one or the other for now
+    if (this._appPending) {
+      this.app();
+    } else if (this._drawPending) {
+      this.draw();
+    }
+  }
+
+
   /**
    * render
+   * Schedules a render on the next tick
+   */
+  render() {
+    this._appPending = true;
+  }
+
+
+  /**
+   * app
    * The "RapiD" part of the drawing
    * Where we set up the scene graph and tell Pixi what needs to be drawn
    */
-  render() {
-    if (this._drawPending) return;
+  app() {
 
 const frame = this._frame;
 const markStart = `app-${frame}-start`;
@@ -147,7 +181,7 @@ const timestamp = m1.startTime;
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
 
-    // this?
+    // this? (offset in stage)
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 
@@ -161,12 +195,8 @@ const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0
 const duration = measure.duration.toFixed(1);
 // console.log(`app-${frame} : ${duration} ms`);
 
-    if (!AUTOTICK) {    // tick manually
-      this._drawPending = true;
-      window.requestAnimationFrame(() => {
-        this.draw();
-     });
-    }
+    this._appPending = false;
+    this._drawPending = true;
   }
 
 
@@ -183,24 +213,27 @@ const markEnd = `draw-${frame}-end`;
 const m1 = window.performance.mark(markStart);
 const timestamp = m1.startTime;
 
-// this?
-    this.pixi.ticker.update(timestamp);
+// this? (offset in stage)
+    this.pixi.render();
 
-//...or this?
-//        const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
-//        const options = {
-//          transform: m,
-//          // skipUpdateTransform: true
-//        };
-//        this.pixi.renderer.render(stage, options);
+//...or this (offset in matrix)?
+    // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
+    // const options = {
+    //   transform: m,
+    //   // skipUpdateTransform: true
+    // };
+    // this.pixi.renderer.render(stage, options);
 
-    this._drawPending = false;
-    this._frame++;
+    this._context.map().resetTransform();
+
 const m2 = window.performance.mark(markEnd);
 window.performance.measure(`draw-${frame}`, markStart, markEnd);
 const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
 const duration = measure.duration.toFixed(1);
 // console.log(`draw-${frame} : ${duration} ms`);
+
+    this._drawPending = false;
+    this._frame++;
   }
 
 
@@ -227,7 +260,6 @@ const duration = measure.duration.toFixed(1);
   dirtyScene() {
     this.scene._features.forEach(feature => feature.dirty = true);
   }
-
 
 
   /**
@@ -266,9 +298,10 @@ const duration = measure.duration.toFixed(1);
 
     if (selectChanged) {
       this._highlightTick++;
-      // this._context.map().deferredRedraw();
-      // this.render();  //  now
-      this.draw();
+// this.draw();    // draw now
+if (!this._context.map().isTransformed()) {
+  this._drawPending = true;   // draw asap
+}
     }
   }
 
@@ -310,9 +343,10 @@ const duration = measure.duration.toFixed(1);
 
     if (hoverChanged) {
       this._highlightTick++;
-      // this._context.map().deferredRedraw();
-      // this.render();  //  now
-      this.draw();
+// this.draw();    // draw now
+if (!this._context.map().isTransformed()) {
+  this._drawPending = true;   // draw asap
+}
     }
   }
 

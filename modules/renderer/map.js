@@ -122,7 +122,7 @@ export function rendererMap(context) {
 //          }
 //        }, true)
 //        .on('pointerup.zoom', d3_event => {
-//          if (resetTransform()) {
+//          if (map.resetTransform()) {
 //            map.immediateRedraw();
 //          }
 //        })
@@ -455,30 +455,30 @@ export function rendererMap(context) {
     }
 
 
-    function resetTransform() {
-      if (!_isTransformed) return false;
-
-      utilSetTransform(supersurface, 0, 0);
-      _isTransformed = false;
-      if (context.inIntro()) {
-          curtainProjection.transform(projection.transform());
-      }
-      return true;
-    }
-
-
     function redraw() {
       if (surface.empty() || !_redrawEnabled) return;
 
-      resetTransform();
-      supersurface.call(context.background());
+      supersurface.call(context.background());  // todo: get rid of this
 
       if (_renderer) {
         _renderer.render();
       }
-
-      _transformStart = projection.transform();
     }
+
+
+    map.resetTransform = function() {
+      if (!_isTransformed) return false;
+
+      utilSetTransform(supersurface, 0, 0);
+
+      _isTransformed = false;
+      _transformStart = projection.transform();
+
+      if (context.inIntro()) {
+        curtainProjection.transform(projection.transform());
+      }
+      return true;
+    };
 
 
     map.mouse = function(d3_event) {
@@ -840,9 +840,9 @@ export function rendererMap(context) {
       return map;
     };
 
-//    map.isTransformed = function() {
-//      return _isTransformed;
-//    };
+    map.isTransformed = function() {
+      return _isTransformed;
+    };
 
 //    map.doubleUpHandler = function() {
 //      return _doubleTapHandler;
