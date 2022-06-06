@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { Extent, geomGetSmallestSurroundingRectangle, vecEqual, vecLength } from '@id-sdk/math';
+import { DashLine } from 'pixi-dashed-line';
+import { Extent, geomGetSmallestSurroundingRectangle, geomRotatePoints, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
 import { PixiFeature } from './PixiFeature';
 import { prefs } from '../core/preferences';
@@ -176,11 +177,11 @@ export class PixiFeatureMultipolygon extends PixiFeature {
             const cornersInSSR = c0in || c1in || c2in || c3in;
 
             this.ssrdata = {
-              poly: ssr.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
+              angle: ssr.angle,
+              wgs84polygon: ssr.poly.map(coord => projection.invert(coord)),   // but store in raw wgsr84 coordinates
               axis1: axis1.map(coord => projection.invert(coord)),
               axis2: axis2.map(coord => projection.invert(coord)),
               centroid: projection.invert(centroid),
-              angle: ssr.angle,
               texture: cornersInSSR ? 'lowres-square' : 'lowres-circle'
             };
           }
@@ -194,6 +195,27 @@ export class PixiFeatureMultipolygon extends PixiFeature {
         }
       });
     });
+
+
+    // Project the ssr polygon too, for use as a halo
+    // Add some padding too
+    if (this.ssrdata) {
+      const PADDING = 8;  // in pixels
+      const centroid = projection.project(this.ssrdata.centroid);
+      let coords = this.ssrdata.wgs84polygon.map(coord => projection.project(coord));
+
+      coords = coords.map(coord => vecSubtract(coord, centroid));     // to local coords
+      coords = geomRotatePoints(coords, -this.ssrdata.angle, [0,0]);  // rotate to x axis
+      coords = coords.map(([x,y]) => {
+        const x2 = (x > 0) ? (x + PADDING) : (x < 0) ? (x - PADDING) : x;
+        const y2 = (y > 0) ? (y + PADDING) : (y < 0) ? (y - PADDING) : y;
+        return [x2, y2];
+      });
+      coords = geomRotatePoints(coords, this.ssrdata.angle, [0,0]);   // rotate back
+
+      this.ssrdata.localCentroid = new PIXI.Point(centroid[0], centroid[1]);
+      this.ssrdata.localPolygon = new PIXI.Polygon(coords.map(([x,y]) => new PIXI.Point(x, y)));
+    }
 
     const [w, h] = [maxX - minX, maxY - minY];
     this.localBounds.x = minX;
@@ -257,7 +279,6 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       this.lowRes.visible = true;
 
       const [x, y] = projection.project(ssrdata.centroid);
-      // const poly = ssrdata.poly.map(coord => projection.project(coord));
       const axis1 = ssrdata.axis1.map(coord => projection.project(coord));
       const axis2 = ssrdata.axis2.map(coord => projection.project(coord));
       const w = vecLength(axis1[0], axis1[1]);
@@ -319,7 +340,7 @@ export class PixiFeatureMultipolygon extends PixiFeature {
         this.fill.endFill();
       });
 
-      if (doPartialFill) {   // mask around the edges of the fill
+      if (doPartialFill) {   // mask around the inside edges of the fill with a line
         const maskSource = new PIXI.Graphics()
           .clear()
           .lineTextureStyle({
@@ -353,8 +374,35 @@ export class PixiFeatureMultipolygon extends PixiFeature {
     }
 
     this._styleDirty = false;
+    this.updateHalo();
   }
 
+
+// experiment
+// Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
+  updateHalo() {
+    if (this.ssrdata && (this.hovered || this.selected)) {
+      const haloColor = 0xffff00;
+      if (!this.halo) {
+        this.halo = new PIXI.Graphics();
+        this.halo.name = this.id + `${this.id}-halo`;
+
+        const mapUIContainer = this.context.layers().getLayer('map-ui').container;
+        mapUIContainer.addChild(this.halo);
+      }
+
+      const haloProps = { dash: [6, 3], width: 2, color: 0xffff00 };
+      this.halo.clear();
+      new DashLine(this.halo, haloProps).drawPolygon(this.ssrdata.localPolygon.points);
+      this.halo.position = this.ssrdata.localCentroid;
+
+    } else {
+      if (this.halo) {
+        this.halo.destroy();
+        this.halo = null;
+      }
+    }
+  }
 
 
   /**
@@ -408,52 +456,6 @@ export class PixiFeatureMultipolygon extends PixiFeature {
   set style(obj) {
     this._style = Object.assign({}, STYLE_DEFAULTS, obj);
     this._styleDirty = true;
-  }
-
-
-  /**
-   * hovered
-   * Each feature type can do whatever it needs to make features hovered
-   * @param  val  `true` to make the feature hovered
-   */
-  get hovered() {
-    return this._hovered;
-  }
-  set hovered(val) {
-    this._hovered = val;
-
-    // draw a halo
-    const mapUIContainer = this.context.layers().getLayer('map-ui').container;
-    const haloName = this.id + '-halo';
-
-    if (val) {  // draw a halo
-      const shape = this.sceneBounds;
-      const halo = new PIXI.Graphics()
-        .lineStyle(3, 0xffff00)
-        .drawShape(shape);
-
-      halo.name = haloName;
-      mapUIContainer.addChild(halo);
-
-    } else {
-      const halo = mapUIContainer.getChildByName(haloName);
-      if (halo) {
-        mapUIContainer.removeChild(halo);
-      }
-    }
-  }
-
-
-  /**
-   * selected
-   * Each feature type can do whatever it needs to make features selected
-   * @param  val  `true` to make the feature selected
-   */
-  get selected() {
-    return this._selected;
-  }
-  set selected(val) {
-    this._selected = val;
   }
 
 }

@@ -116,7 +116,7 @@ export class PixiRenderer {
     selectglow.resolution = 2;
     this.selectglow = selectglow;
 
-    const hoverglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffffff });
+    const hoverglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
     hoverglow.resolution = 2;
     this.hoverglow = hoverglow;
   }
@@ -278,7 +278,7 @@ const duration = measure.duration.toFixed(1);
       const feature = this.scene.get(featureID);
       if (feature) {
         selectChanged = true;
-        // feature.displayObject.filters = [];
+        feature.displayObject.filters = [];
         feature.selected = false;
       }
     });
@@ -292,7 +292,7 @@ const duration = measure.duration.toFixed(1);
 
       this._selectedIDs.add(feature.id);
       selectChanged = true;
-      // feature.displayObject.filters = [ this.selectglow ];
+      feature.displayObject.filters = [ this.selectglow ];
       feature.selected = true;
     });
 
@@ -323,7 +323,7 @@ if (!this._context.map().isTransformed()) {
       const feature = this.scene.get(featureID);
       if (feature) {
         hoverChanged = true;
-        // feature.displayObject.filters = [];
+        feature.displayObject.filters = [];
         feature.hovered = false;
       }
     });
@@ -337,7 +337,7 @@ if (!this._context.map().isTransformed()) {
 
       this._hoveredIDs.add(feature.id);
       hoverChanged = true;
-      // feature.displayObject.filters = [ this.hoverglow ];
+      feature.displayObject.filters = [ this.hoverglow ];
       feature.hovered = true;
     });
 

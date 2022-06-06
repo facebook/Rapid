@@ -115,6 +115,15 @@ export class PixiFeature {
 
 
   /**
+   * updateHalo
+   * Every feature should have an update function that redraws the features halo when selected or hovered
+   * Override in a subclass with needed logic.
+   */
+  updateHalo() {
+  }
+
+
+  /**
    * Feature id
    */
   get id() {
@@ -129,7 +138,7 @@ export class PixiFeature {
     return this.displayObject.visible;
   }
   set visible(val) {
-    if (this.displayObject.visible !== val) {  // visibility value changed
+    if (this.displayObject.visible !== val) {
       this.displayObject.visible = val;
       this._labelDirty = true;
     }
@@ -153,27 +162,31 @@ export class PixiFeature {
 
   /**
    * hovered
-   * Override in a subclass with needed logic to make the feature hovered
    * @param  val  `true` to make the feature hovered
    */
   get hovered() {
     return this._hovered;
   }
   set hovered(val) {
-    this._hovered = val;
+    if (this._hovered !== val) {
+      this._hovered = val;
+      this.updateHalo();
+    }
   }
 
 
   /**
    * selected
-   * Override in a subclass with needed logic to make the feature selected
    * @param  val  `true` to make the feature selected
    */
   get selected() {
     return this._selected;
   }
   set selected(val) {
-    this._selected = val;
+    if (this._selected !== val) {
+      this._selected = val;
+      this.updateHalo();
+    }
   }
 
 
@@ -235,8 +248,10 @@ export class PixiFeature {
     return this._label;
   }
   set label(str) {
-    this._label = str;
-    this._labelDirty = true;
+    if (this._label !== str) {
+      this._label = str;
+      this._labelDirty = true;
+    }
   }
 
 

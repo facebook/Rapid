@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { Extent } from '@id-sdk/math';
 import { DashLine } from 'pixi-dashed-line';
+import { Extent } from '@id-sdk/math';
 
 import { PixiFeature } from './PixiFeature';
 import { getLineSegments, lineToPolygon } from './helpers';
@@ -206,6 +206,7 @@ export class PixiFeatureLine extends PixiFeature {
     }
 
     this._styleDirty = false;
+    this.updateHalo();
 
 
     function updateGraphic(which, graphic, points, style) {
@@ -256,6 +257,32 @@ export class PixiFeatureLine extends PixiFeature {
   }
 
 
+// experiment
+// Show/Hide halo (requires `this.displayObject.hitArea` to be already set up as a PIXI.Polygon)
+  updateHalo() {
+    if (this.hovered || this.selected) {
+      const haloColor = 0xffff00;
+      if (!this.halo) {
+        this.halo = new PIXI.Graphics();
+        this.halo.name = this.id + `${this.id}-halo`;
+
+        const mapUIContainer = this.context.layers().getLayer('map-ui').container;
+        mapUIContainer.addChild(this.halo);
+      }
+
+      const haloProps = { dash: [6, 3], width: 2, color: 0xffff00 };
+      this.halo.clear();
+      new DashLine(this.halo, haloProps).drawPolygon(this.displayObject.hitArea.points);
+
+    } else {
+      if (this.halo) {
+        this.halo.destroy();
+        this.halo = null;
+      }
+    }
+  }
+
+
   /**
    * geometry
    * @param  arr  Geometry `Array` (contents depends on the feature type)
@@ -292,53 +319,6 @@ export class PixiFeatureLine extends PixiFeature {
   set style(obj) {
     this._style = Object.assign({}, STYLE_DEFAULTS, obj);
     this._styleDirty = true;
-  }
-
-
-  /**
-   * hovered
-   * Each feature type can do whatever it needs to make features hovered
-   * @param  val  `true` to make the feature hovered
-   */
-  get hovered() {
-    return this._hovered;
-  }
-  set hovered(val) {
-    this._hovered = val;
-
-    // draw a halo
-    const mapUIContainer = this.context.layers().getLayer('map-ui').container;
-    const haloName = this.id + '-halo';
-
-    if (val) {  // draw a halo
-      const dObj = this.displayObject;
-      const shape = dObj.hitArea || dObj.getLocalBounds().clone().pad(1);
-      const halo = new PIXI.Graphics()
-        .lineStyle(3, 0xffff00)
-        .drawShape(shape);
-
-      halo.name = haloName;
-      mapUIContainer.addChild(halo);
-
-    } else {
-      const halo = mapUIContainer.getChildByName(haloName);
-      if (halo) {
-        mapUIContainer.removeChild(halo);
-      }
-    }
-  }
-
-
-  /**
-   * selected
-   * Each feature type can do whatever it needs to make features selected
-   * @param  val  `true` to make the feature selected
-   */
-  get selected() {
-    return this._selected;
-  }
-  set selected(val) {
-    this._selected = val;
   }
 
 }

@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { DashLine } from 'pixi-dashed-line';
 
 import { PixiFeature } from './PixiFeature';
 import { getIconTexture } from './helpers';
@@ -38,6 +39,8 @@ export class PixiFeaturePoint extends PixiFeature {
     this.geometry = geometry;
     this.style = style || {};
 
+    this.halo = null;
+
     this._oldvfLength = 0;  // to watch for change in # of viewfield sprites
   }
 
@@ -65,12 +68,36 @@ export class PixiFeaturePoint extends PixiFeature {
     this.updateStyle(zoom);
 
     // Recalculate local and scene bounds
+    // (note that the local bounds automatically includes children like viewfields too)
     const marker = this.displayObject;
     const position = marker.position;
     marker.getLocalBounds(this.localBounds);        // where 0,0 is the origin of the object
     this.sceneBounds = this.localBounds.clone();    // where 0,0 is the origin of the scene
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
+
+    // Recalculate hitArea, grow it if too small
+    const MINSIZE = 20;
+    const rect = marker.getLocalBounds().clone();
+    if (rect.width < MINSIZE) {
+      rect.pad((MINSIZE - rect.width) / 2, 0);
+    }
+    if (rect.height < MINSIZE) {
+      rect.pad(0, (MINSIZE - rect.height) / 2);
+    }
+    rect.pad(4); // then pad a bit more
+
+    const poly = new PIXI.Polygon([
+      rect.left, rect.top,
+      rect.right, rect.top,
+      rect.right, rect.bottom,
+      rect.left, rect.bottom,
+      rect.left, rect.top
+    ]);
+
+    this.displayObject.hitArea = poly;
+
+    this.updateHalo();
   }
 
 
@@ -248,6 +275,32 @@ export class PixiFeaturePoint extends PixiFeature {
   }
 
 
+// experiment
+// Show/Hide halo (requires `this.displayObject.hitArea` to be already set up as a PIXI.Polygon)
+  updateHalo() {
+    if (this.hovered || this.selected) {
+      if (!this.halo) {
+        this.halo = new PIXI.Graphics();
+        this.halo.name = this.id + `${this.id}-halo`;
+
+        const mapUIContainer = this.context.layers().getLayer('map-ui').container;
+        mapUIContainer.addChild(this.halo);
+      }
+
+      const haloProps = { dash: [6, 3], width: 2, color: 0xffff00 };
+      this.halo.clear();
+      new DashLine(this.halo, haloProps).drawPolygon(this.displayObject.hitArea.points);
+      this.halo.position = this.displayObject.position;
+
+    } else {
+      if (this.halo) {
+        this.halo.destroy();
+        this.halo = null;
+      }
+    }
+  }
+
+
   /**
    * geometry
    * @param  arr  Geometry `Array` (contents depends on the feature type)
@@ -280,52 +333,6 @@ export class PixiFeaturePoint extends PixiFeature {
   set style(obj) {
     this._style = Object.assign({}, STYLE_DEFAULTS, obj);
     this._styleDirty = true;
-  }
-
-
-  /**
-   * hovered
-   * Each feature type can do whatever it needs to make features hovered
-   * @param  val  `true` to make the feature hovered
-   */
-  get hovered() {
-    return this._hovered;
-  }
-  set hovered(val) {
-    this._hovered = val;
-
-    // draw a halo
-    const mapUIContainer = this.context.layers().getLayer('map-ui').container;
-    const haloName = this.id + '-halo';
-
-    if (val) {  // draw a halo
-      const shape = this.sceneBounds;
-      const halo = new PIXI.Graphics()
-        .lineStyle(3, 0xffff00)
-        .drawShape(shape);
-
-      halo.name = haloName;
-      mapUIContainer.addChild(halo);
-
-    } else {
-      const halo = mapUIContainer.getChildByName(haloName);
-      if (halo) {
-        mapUIContainer.removeChild(halo);
-      }
-    }
-  }
-
-
-  /**
-   * selected
-   * Each feature type can do whatever it needs to make features selected
-   * @param  val  `true` to make the feature selected
-   */
-  get selected() {
-    return this._selected;
-  }
-  set selected(val) {
-    this._selected = val;
   }
 
 }
