@@ -1,18 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
+import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
 import { ConvolutionFilter } from '@pixi/filter-convolution';
 import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
+
 import { PixiLayer } from './PixiLayer';
-import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
-import { faThList } from '@fortawesome/free-solid-svg-icons';
 
 const LAYERID = 'background';
 const DEBUGCOLOR = 0xffff00;
 
-//scalars for use by the convolution filter to sharpen the imagery
-
-
+// scalars for use by the convolution filter to sharpen the imagery
 const sharpenMatrix = [
      0,      -0.0125,      0,
   -0.0125,    0.5,      -0.0125,
@@ -60,7 +58,6 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    * a sharpen/blur filter, depending on the UI slider settings.
    *
    */
-
   applyFilters() {
     this.adjustmentFilter = new AdjustmentFilter({
       brightness: this.filters.brightness,
@@ -71,13 +68,12 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     this.container.filters = [this.adjustmentFilter];
 
     if (this.filters.sharpness > 1) {
-
       // The convolution filter consists of adjacent pixels with a negative factor and the central pixel being at least one.
       // The central pixel (at index 4 of our 3x3 array) starts at 1 and increases
-      let convolutionArray = sharpenMatrix.map((n, i) => {
+      const convolutionArray = sharpenMatrix.map((n, i) => {
         if (i === 4) {
-          let interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
-          let result = n * interp;
+          const interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
+          const result = n * interp;
           return result;
         } else {
           return n;
@@ -85,10 +81,10 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       });
 
       this.convolutionFilter = new ConvolutionFilter(convolutionArray);
-
       this.container.filters.push(this.convolutionFilter);
+
     } else if (this.filters.sharpness < 1) {
-      let blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
+      const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
       this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
       this.container.filters.push(this.blurFilter);
     }

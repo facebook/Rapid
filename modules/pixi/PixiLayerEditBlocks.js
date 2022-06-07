@@ -1,5 +1,3 @@
-import * as PIXI from 'pixi.js';
-
 import { PixiLayer } from './PixiLayer';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { locationManager } from '../core/locations';
@@ -48,13 +46,12 @@ export class PixiLayerEditBlocks extends PixiLayer {
    * @param  zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
-    const context = this.context;
     let blocks;
 
     if (zoom >= MINZOOM) {
       this.visible = true;
 
-      const viewport = context.map().extent().rectangle();
+      const viewport = this.context.map().extent().rectangle();
       blocks = locationManager.wpblocks().bbox(viewport);
       this.drawBlocks(timestamp, projection, zoom, blocks);
       this.cull(timestamp);
@@ -64,18 +61,16 @@ export class PixiLayerEditBlocks extends PixiLayer {
       blocks = [];
     }
 
-    //
     // setup the explanation
     // add a special 'api-status' line to the map footer explain the block
-    //
-    let explanationRow = this.context.container().select('.main-content > .map-footer')
+    const explanationRow = this.context.container().select('.main-content > .map-footer')
       .selectAll('.api-status.blocks')
       .data(blocks, d => d.id);
 
     explanationRow.exit()
       .remove();
 
-    let explanationRowEnter = explanationRow.enter()
+    const explanationRowEnter = explanationRow.enter()
       .insert('div', '.api-status')   // before any existing
       .attr('class', 'api-status blocks error');
 
@@ -100,7 +95,6 @@ export class PixiLayerEditBlocks extends PixiLayer {
    * @param  blocks       blocks visible in the view
    */
   drawBlocks(timestamp, projection, zoom, blocks) {
-    const context = this.context;
     const scene = this.scene;
 
     blocks.forEach(block => {

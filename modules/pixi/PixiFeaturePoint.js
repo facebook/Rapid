@@ -279,22 +279,26 @@ export class PixiFeaturePoint extends PixiFeature {
 // Show/Hide halo (requires `this.displayObject.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
     if (this.hovered || this.selected) {
+      const HALO_COLOR = 0xffff00;
+      const HALO_DASH = [6, 3];
+      const HALO_WIDTH = 2;  // px
+
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = this.id + `${this.id}-halo`;
+        this.halo.name = `${this.id}-halo`;
 
         const mapUIContainer = this.context.layers().getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 
-      const haloProps = { dash: [6, 3], width: 2, color: 0xffff00 };
+      const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
       this.halo.clear();
       new DashLine(this.halo, haloProps).drawPolygon(this.displayObject.hitArea.points);
       this.halo.position = this.displayObject.position;
 
     } else {
       if (this.halo) {
-        this.halo.destroy();
+        this.halo.destroy({ children: true });
         this.halo = null;
       }
     }

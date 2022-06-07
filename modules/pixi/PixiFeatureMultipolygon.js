@@ -381,22 +381,25 @@ export class PixiFeatureMultipolygon extends PixiFeature {
 // Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
   updateHalo() {
     if (this.ssrdata && (this.hovered || this.selected)) {
-      const haloColor = 0xffff00;
+      const HALO_COLOR = 0xffff00;
+      const HALO_DASH = [6, 3];
+      const HALO_WIDTH = 2;  // px
+
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
-        this.halo.name = this.id + `${this.id}-halo`;
+        this.halo.name = `${this.id}-halo`;
 
         this.centroid = new PIXI.Graphics()
-          .lineStyle({ width: 2, color: 0xffff00 })
+          .lineStyle({ width: HALO_WIDTH, color: HALO_COLOR })
           .moveTo(-6, 0).lineTo(6, 0).moveTo(0, -6).lineTo(0, 6);  // draw a + at centroid
-        this.centroid.name = this.id + `${this.id}-centroid`;
+        this.centroid.name = `${this.id}-centroid`;
         this.halo.addChild(this.centroid);
 
         const mapUIContainer = this.context.layers().getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 
-      const haloProps = { dash: [6, 3], width: 2, color: 0xffff00 };
+      const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
       this.halo.clear();
       new DashLine(this.halo, haloProps).drawPolygon(this.ssrdata.localPolygon.points);
       this.halo.position = this.ssrdata.localCentroid;
