@@ -211,7 +211,6 @@ export class PixiFeatureMultipolygon extends PixiFeature {
         const y2 = (y > 0) ? (y + PADDING) : (y < 0) ? (y - PADDING) : y;
         return [x2, y2];
       });
-      coords = geomRotatePoints(coords, this.ssrdata.angle, [0,0]);   // rotate back
 
       this.ssrdata.localCentroid = new PIXI.Point(centroid[0], centroid[1]);
       this.ssrdata.localPolygon = new PIXI.Polygon(coords.map(([x,y]) => new PIXI.Point(x, y)));
@@ -387,6 +386,12 @@ export class PixiFeatureMultipolygon extends PixiFeature {
         this.halo = new PIXI.Graphics();
         this.halo.name = this.id + `${this.id}-halo`;
 
+        this.centroid = new PIXI.Graphics()
+          .lineStyle({ width: 2, color: 0xffff00 })
+          .moveTo(-6, 0).lineTo(6, 0).moveTo(0, -6).lineTo(0, 6);  // draw a + at centroid
+        this.centroid.name = this.id + `${this.id}-centroid`;
+        this.halo.addChild(this.centroid);
+
         const mapUIContainer = this.context.layers().getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
@@ -395,10 +400,11 @@ export class PixiFeatureMultipolygon extends PixiFeature {
       this.halo.clear();
       new DashLine(this.halo, haloProps).drawPolygon(this.ssrdata.localPolygon.points);
       this.halo.position = this.ssrdata.localCentroid;
+      this.halo.rotation = this.ssrdata.angle;
 
     } else {
       if (this.halo) {
-        this.halo.destroy();
+        this.halo.destroy({ children: true });
         this.halo = null;
       }
     }
