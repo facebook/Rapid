@@ -25,9 +25,7 @@ export class AbstractBehavior {
    * Do not use the behavior after calling `destroy()`.
    */
   destroy() {
-    if (this._enabled) {
-      this.disable();
-    }
+    this.disable();
     this._context = null;
   }
 
@@ -44,7 +42,7 @@ export class AbstractBehavior {
 
   /**
    * disable
-   * Every behavior should have a `enable` function
+   * Every behavior should have a `disable` function
    * to teardown whatever event handlers this behavior needs
    */
   disable() {
@@ -71,7 +69,7 @@ export class AbstractBehavior {
     const result = {
       id: e.data.originalEvent.pointerId || 'mouse',
       event: e,
-      origEvent: e.data.originalEvent,
+      originalEvent: e.data.originalEvent,
       coord: [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY],
       time: e.data.originalEvent.timeStamp,
       isCancelled: false,

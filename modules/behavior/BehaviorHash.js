@@ -33,22 +33,11 @@ export class BehaviorHash extends AbstractBehavior {
       context.zoomToEntity(initialID.split(',')[0], !initialMap);
     }
 
+    // Make sure the event handlers have `this` bound correctly
+    this._hashchange = this._hashchange.bind(this);
+
     this._throttledUpdateHash = _throttle(() => this._updateHash(), 500);
     this._throttledUpdateTitle = _throttle(() => this._updateTitle(true), 500);  // withChangeCount = true
-  }
-
-
-  /**
-   * destroy
-   * Every behavior should have a destroy function
-   * to free all the resources and refrences held by the behavior
-   * Do not use the behavior after calling `destroy()`.
-   */
-  destroy() {
-    if (this._enabled) {
-      this.disable();
-    }
-    this._context = null;
   }
 
 
@@ -57,6 +46,11 @@ export class BehaviorHash extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
+    if (this._enabled) return;
+
+    this._enabled = true;
+    this._cachedHash = null;
+
     const context = this._context;
 
     context.map()
@@ -69,12 +63,10 @@ export class BehaviorHash extends AbstractBehavior {
       .on('enter.behaviorHash', this._throttledUpdateHash);
 
     d3_select(window)
-      .on('hashchange.behaviorHash', () => this._onHashChange());
+      .on('hashchange.behaviorHash', () => this._hashchange());
 
-    this._onHashChange();
+    this._hashchange();
     this._updateTitle(false);
-
-    this._enabled = true;
   }
 
 
@@ -85,10 +77,12 @@ export class BehaviorHash extends AbstractBehavior {
   disable() {
     if (!this._enabled) return;
 
-    const context = this._context;
-
+    this._enabled = false;
+    this._cachedHash = null;
     this._throttledUpdateHash.cancel();
     this._throttledUpdateTitle.cancel();
+
+    const context = this._context;
 
     context.map()
       .on('move.behaviorHash', null);
@@ -103,8 +97,6 @@ export class BehaviorHash extends AbstractBehavior {
       .on('hashchange.behaviorHash', null);
 
     window.location.hash = '';
-    this._cachedHash = null;
-    this._enabled = false;
   }
 
 
@@ -212,11 +204,11 @@ export class BehaviorHash extends AbstractBehavior {
 
 
   /**
-   * _onHashChange
+   * _hashchange
    * Called when enabling the hash behavior and whenever
    * the user tries changing the hash in the browser url manually
    */
-  _onHashChange() {
+  _hashchange() {
     const context = this._context;
     if (window.location.hash === this._cachedHash) return;   // nothing changed
 

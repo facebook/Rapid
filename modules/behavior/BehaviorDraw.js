@@ -40,6 +40,11 @@ export class BehaviorDraw extends AbstractBehavior {
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
+
+    this._backspace = this._backspace.bind(this);
+    this._delete = this._delete.bind(this);
+    this._return = this._return.bind(this);
+    this._spacebar = this._spacebar.bind(this);
   }
 
 
@@ -48,6 +53,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
+    if (this._enabled) return;
     if (!this._context.pixi) return;
 
     this._enabled = true;
@@ -55,12 +61,12 @@ export class BehaviorDraw extends AbstractBehavior {
     this._lastmove = null;
 
     this._keybinding
-      .on('⌫', (e) => this._backspace(e))
-      .on('⌦', (e) => this._delete(e))
-      .on('⎋', (e) => this._return(e))
-      .on('↩', (e) => this._return(e))
-      .on('space', (e) => this._spacebar(e))
-      .on('⌥space', (e) => this._spacebar(e));
+      .on('⌫', this._backspace)
+      .on('⌦', this._delete)
+      .on('⎋', this._return)
+      .on('↩', this._return)
+      .on('space', this._spacebar)
+      .on('⌥space', this._spacebar);
 
     const stage = this._context.pixi.stage;
     stage
@@ -115,6 +121,7 @@ export class BehaviorDraw extends AbstractBehavior {
     // console.log(`pointerdown ${name}`);
 
     this._lastdown = down;
+    this._lastmove = null;
     this._dispatch.call('down', this, e, down);
   }
 

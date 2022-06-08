@@ -18,6 +18,10 @@ export class BehaviorPaste extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
+    this._keybinding = this._context.keybinding();  // "global" keybinding (on document)
+
+    // Make sure the event handlers have `this` bound correctly
+    this._keydown = this._keydown.bind(this);
   }
 
 
@@ -26,9 +30,10 @@ export class BehaviorPaste extends AbstractBehavior {
    * Bind keypress event handler
    */
   enable() {
-    this._context.keybinding()
-      .on(uiCmd('⌘V'), (e) => this._onKeypress(e));
+    if (this._enabled) return;
+
     this._enabled = true;
+    this._keybinding.on(uiCmd('⌘V'), this._keydown);
   }
 
 
@@ -37,18 +42,19 @@ export class BehaviorPaste extends AbstractBehavior {
    * Unbind keypress event handler
    */
   disable() {
-    if (this._enabled) {
-      this._context.keybinding().off(uiCmd('⌘V'));
-      this._enabled = false;
-    }
+    if (!this._enabled) return;
+
+    this._enabled = false;
+    this._keybinding.off(uiCmd('⌘V'));
   }
 
 
   /**
-   * _onKeypress
-   * Handles the keypress event
+   * _keydown
+   * Handles the keydown event
+   * @param  `e`  A d3 keydown event
    */
-  _onKeypress(e) {
+  _keydown(e) {
     e.preventDefault();
 
     const context = this._context;

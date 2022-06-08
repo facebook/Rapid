@@ -34,6 +34,8 @@ export class BehaviorSelect extends AbstractBehavior {
     this._lastSpaceCoord = null;
     this._lastdown = null;
     this._lastmove = null;
+    this._showMenu = false;
+    this._lastInteractionType = null;
 
     this._keybinding = utilKeybinding('selectbehavior');
 
@@ -42,8 +44,8 @@ export class BehaviorSelect extends AbstractBehavior {
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
-    this._showMenu = false;
-    this._lastInteractionType = null;
+
+    this._spacebar = this._spacebar.bind(this);
   }
 
   /**
@@ -51,6 +53,7 @@ export class BehaviorSelect extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
+    if (this._enabled) return;
     if (!this._context.pixi) return;
 
     this._enabled = true;
@@ -59,8 +62,8 @@ export class BehaviorSelect extends AbstractBehavior {
     this._multiSelection.clear();
 
     this._keybinding
-      .on('space', (e) => this._spacebar(e))
-      .on('⌥space', (e) => this._spacebar(e));
+      .on('space', this._spacebar)
+      .on('⌥space', this._spacebar);
 
     const stage = this._context.pixi.stage;
     stage
@@ -115,48 +118,7 @@ export class BehaviorSelect extends AbstractBehavior {
     // const name = (down.target && down.target.name) || 'no target';
     // console.log(`pointerdown ${name}`);
     this._lastdown = down;
-  }
-
-
-  /**
-   * _pointerup
-   * Handler for pointerup events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
-   * @param  `e`  A Pixi InteractionEvent
-   */
-  _pointerup(e) {
-    const up = this._getEventData(e);
-    const down = this._lastdown;
-    // const name = (up.target && up.target.name) || 'no target';
-    // console.log(`pointerup ${name}`);
-
-    if (!down || down.id !== up.id) return;  // not down, or different pointer
-
-    this._lastdown = null;
-
-    if (down.isCancelled) return;   // was cancelled already by moving too much
-
-    const context = this._context;
-    const dist = vecLength(down.coord, up.coord);
-
-    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
-      // Prevent a quick second click
-      context.map().dblclickZoomEnable(false);
-      d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
-
-      window.setTimeout(() => {
-        context.map().dblclickZoomEnable(true);
-        d3_select(window).on('click.draw-block', null);
-      }, 500);
-
-      // trigger a click
-      this._click(up);
-
-      if (down.origEvent.button === 2) {  //right click
-        this.contextmenu(e);
-      }
-
-    }
+    this._lastmove = null;
   }
 
 
@@ -197,6 +159,48 @@ export class BehaviorSelect extends AbstractBehavior {
 
 
   /**
+   * _pointerup
+   * Handler for pointerup events.  Note that you can get multiples of these
+   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
+   * @param  `e`  A Pixi InteractionEvent
+   */
+  _pointerup(e) {
+    const up = this._getEventData(e);
+    const down = this._lastdown;
+    // const name = (up.target && up.target.name) || 'no target';
+    // console.log(`pointerup ${name}`);
+
+    if (!down || down.id !== up.id) return;  // not down, or different pointer
+
+    this._lastdown = null;
+
+    if (down.isCancelled) return;   // was cancelled already by moving too much
+
+    const context = this._context;
+    const dist = vecLength(down.coord, up.coord);
+
+    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
+      // Prevent a quick second click
+      context.map().dblclickZoomEnable(false);
+      d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
+
+      window.setTimeout(() => {
+        context.map().dblclickZoomEnable(true);
+        d3_select(window).on('click.draw-block', null);
+      }, 500);
+
+      // trigger a click
+      this._click(up);
+
+      if (down.originalEvent.button === 2) {  //right click
+        this.contextmenu(e);
+      }
+
+    }
+  }
+
+
+  /**
    * _pointercancel
    * Handler for pointercancel events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
@@ -217,7 +221,7 @@ export class BehaviorSelect extends AbstractBehavior {
   /**
    * _keydown
    * Handler for keydown events.
-   * @param  `e`  A d3 event
+   * @param  `e`  A d3 keydown event
    */
   _keydown(e) {
     if (e.keyCode === 32) {   // spacebar

@@ -15,6 +15,10 @@ export class BehaviorKeyOperation extends AbstractBehavior {
   constructor(context, operation) {
     super(context);
     this._operation = operation;
+    this._keybinding = this._context.keybinding();  // "global" keybinding (on document)
+
+    // Make sure the event handlers have `this` bound correctly
+    this._keydown = this._keydown.bind(this);
   }
 
 
@@ -25,24 +29,21 @@ export class BehaviorKeyOperation extends AbstractBehavior {
    * Do not use the behavior after calling `destroy()`.
    */
   destroy() {
-    if (this._enabled) {
-      this.disable();
-    }
+    super.destroy();
     this._operation = null;
-    this._context = null;
   }
 
 
   /**
    * enable
-   * Bind keypress event handler
+   * Bind keydown event handler
    */
   enable() {
-    const context = this._context;
-    const operation = this._operation;
+    if (this._enabled) return;
 
+    const operation = this._operation;
     if (operation.available() && operation.keys) {
-      context.keybinding().on(operation.keys, (e) => this._onKeypress(e));
+      this._keybinding.on(operation.keys, this._keydown);
       this._enabled = true;
     }
   }
@@ -50,24 +51,25 @@ export class BehaviorKeyOperation extends AbstractBehavior {
 
   /**
    * disable
-   * Unbind keypress event handler
+   * Unbind keydown event handler
    */
   disable() {
-    const context = this._context;
-    const operation = this._operation;
+    if (!this._enabled) return;
+    this._enabled = false;
 
-    if (this._enabled && operation.keys) {
-      context.keybinding().off(operation.keys);
-      this._enabled = false;
+    const operation = this._operation;
+    if (operation.keys) {
+      this._keybinding.off(operation.keys);
     }
   }
 
 
   /**
-   * _onKeypress
-   * Handles the keypress event
+   * _keydown
+   * Handles the keydown event
+   * @param  `e`  A d3 keydown event
    */
-  _onKeypress(e) {
+  _keydown(e) {
     const context = this._context;
     const operation = this._operation;
 

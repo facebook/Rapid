@@ -2,7 +2,7 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 
-import { behaviorAddWay } from '../behavior/add_way';
+import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
 import { modeDrawLine } from './draw_line';
 import { osmNode, osmWay } from '../osm';
 
@@ -13,7 +13,7 @@ import { prefs } from '../core/preferences';
 export function modeAddLine(context, mode) {
     mode.id = 'add-line';
 
-    var behavior = behaviorAddWay(context)
+    var behavior = new BehaviorAddWay(context)
         .on('start', start)
         .on('startFromWay', startFromWay)
         .on('startFromNode', startFromNode);

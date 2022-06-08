@@ -27,6 +27,7 @@ export class BehaviorHover extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
+    if (this._enabled) return;
     if (!this._context.pixi) return;
 
     this._enabled = true;
@@ -77,7 +78,6 @@ export class BehaviorHover extends AbstractBehavior {
     // console.log(`pointermove ${name}`);
 
     const ids = move.data ? [move.target.name] : [];
-
     const renderer = context.map().renderer();
     renderer.hover(ids);
     // context.ui().sidebar.hover([move.data]);

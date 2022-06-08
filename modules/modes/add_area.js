@@ -2,7 +2,7 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 
-import { behaviorAddWay } from '../behavior/add_way';
+import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
 import { modeDrawArea } from './draw_area';
 import { osmNode, osmWay } from '../osm';
 
@@ -10,7 +10,7 @@ import { osmNode, osmWay } from '../osm';
 export function modeAddArea(context, mode) {
     mode.id = 'add-area';
 
-    var behavior = behaviorAddWay(context)
+    var behavior = new BehaviorAddWay(context)
         .on('start', start)
         .on('startFromWay', startFromWay)
         .on('startFromNode', startFromNode);
