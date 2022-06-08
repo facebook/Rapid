@@ -1,10 +1,18 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { vecEqual } from '@id-sdk/math';
+
 import { AbstractBehavior } from './AbstractBehavior';
+import { utilRebind } from '../util';
 
 
 /**
  * `BehaviorHover` listens to pointer events
  * and hovers items that are hovered over
+ *
+ * Properties you can access:
+ *   `enabled`      `true` if the event handlers are enabled, `false` if not.
+ *   `lastMove`     `eventData` Object for the most recent move event
+ *   `hoverTarget`  Current hover target (a PIXI DisplayObject), or null
  */
 export class BehaviorHover extends AbstractBehavior {
 
@@ -15,7 +23,11 @@ export class BehaviorHover extends AbstractBehavior {
   constructor(context) {
     super(context);
 
-    this._lastmove = null;
+    this._dispatch = d3_dispatch('hoverchanged');
+    utilRebind(this, this._dispatch, 'on');
+
+    this.lastMove = null;
+    this.hoverTarget = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._pointermove = this._pointermove.bind(this);
@@ -31,10 +43,13 @@ export class BehaviorHover extends AbstractBehavior {
     if (!this._context.pixi) return;
 
     this._enabled = true;
-    this._lastmove = null;
+    this.lastMove = null;
+    this.hoverTarget = null;
 
-    const stage = this._context.pixi.stage;
-    stage.on('pointermove', this._pointermove);
+    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    interactionManager
+      .on('pointermove', this._pointermove)
+      .on('pointerout', this._pointermove);   // or leaves the canvas
   }
 
 
@@ -47,40 +62,54 @@ export class BehaviorHover extends AbstractBehavior {
     if (!this._context.pixi) return;
 
     this._enabled = false;
-    this._lastmove = null;
+    this.lastMove = null;
+    this.hoverTarget = null;
 
-    const stage = this._context.pixi.stage;
-    stage.off('pointermove', this._pointermove);
+    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    interactionManager
+      .off('pointermove', this._pointermove)
+      .off('pointerout', this._pointermove);
   }
 
 
   /**
    * _pointermove
-   * Handler for pointermove events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_downData`.
+   * Handler for pointermove, pointerout events.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
-    // If pointer is not over the renderer, just discard
-    const context = this._context;
-    const interactionManager = context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
-
     const move = this._getEventData(e);
 
     // We get a lot more move events than we need,
     // so discard ones where it hasn't actually moved much
-    if (this._lastmove && vecEqual(move.coord, this._lastmove.coord, 0.9)) return;
-    this._lastmove = move;
+    if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
+    this.lastMove = move;
+
+    // If pointer is not over the renderer, consider it a null target..
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    if (!pointerOverRenderer) {
+      move.target = null;
+      move.data = null;
+    }
 
     // const name = (move.target && move.target.name) || 'no target';
     // console.log(`pointermove ${name}`);
 
-    const ids = move.data ? [move.target.name] : [];
-    const renderer = context.map().renderer();
-    renderer.hover(ids);
-    // context.ui().sidebar.hover([move.data]);
+    // Hover target has changed
+    if (this.hoverTarget !== move.target) {
+      this._dispatch.call('hoverchanged', this, move);
+      this.hoverTarget = move.target;
+
+      let ids = [];
+      if (move.target && move.data) {
+        ids = [move.target.name];  // the featureID is here (e.g. osm id)
+      }
+
+      this._context.map().renderer().hover(ids);
+      // this._context.ui().sidebar.hover([move.data]);
+    }
   }
 
 }
