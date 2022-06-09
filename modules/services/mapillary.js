@@ -57,20 +57,25 @@ const rapidTypes = {
 function rapidData(datum) {
     let d = {};
     Object.assign(d, datum);
-    d.mapillaryId = d.id;
-    d.id = 'n' + d.id;
+    d.id = 'n-' + d.id;
     const meta = {
         __fbid__: '-' + d.id,
         __origid__: d.id,
         __service__: 'mapillary',
         __datasetid__: 'rapidMapFeatures',
-        tags: setTags(d)
+        tags: setTags(d, d.id)
     };
-    return Object.assign(osmNode(d), meta);
+
+
+    let returnObj = Object.assign(osmNode(d), meta);
+
+
+
+    return returnObj;
 }
 
-function setTags(node) {
-    return Object.assign(rapidTypes[node.value], {'mapillary': node.mapillaryId});
+function setTags(node, mapillaryId) {
+    return Object.assign(rapidTypes[node.value], {'mapillary': mapillaryId.toString()});
 }
 
 // Load all data for the specified type from Mapillary vector tiles

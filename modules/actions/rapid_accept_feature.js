@@ -65,6 +65,11 @@ function removeMetadata(entity) {
     delete entity.__datasetid__;
     delete entity.tags.conn;
     delete entity.tags.dupe;
+
+    //These three new values are specific to the mapillary objects
+    delete entity.value;
+    delete entity.last_seen_at;
+    delete entity.first_seen_at;
 }
 
 
