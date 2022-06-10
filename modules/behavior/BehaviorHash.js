@@ -14,16 +14,17 @@ const MAXLAT = 90 - 1e-8;   // allowable latitude range
 
 /**
  * `BehaviorHash` binds to the hashchange event and
- *  updates the window.location.hash and document title
+ *  updates the `window.location.hash` and document title
  */
 export class BehaviorHash extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`    Global shared context for iD
+   * @param  `context`  Global shared context for iD
    */
   constructor(context) {
     super(context);
+    this.id = 'hash';
 
     this._cachedHash = null;   // cached window.location.hash
 
@@ -35,9 +36,11 @@ export class BehaviorHash extends AbstractBehavior {
 
     // Make sure the event handlers have `this` bound correctly
     this._hashchange = this._hashchange.bind(this);
+    this._updateHash = this._updateHash.bind(this);
+    this._updateTitle = this._updateTitle.bind(this);
 
-    this._throttledUpdateHash = _throttle(() => this._updateHash(), 500);
-    this._throttledUpdateTitle = _throttle(() => this._updateTitle(true), 500);  // withChangeCount = true
+    this._throttledUpdateHash = _throttle(this._updateHash, 500);
+    this._throttledUpdateTitle = _throttle(this._updateTitle, 500);
   }
 
 
@@ -63,10 +66,10 @@ export class BehaviorHash extends AbstractBehavior {
       .on('enter.behaviorHash', this._throttledUpdateHash);
 
     d3_select(window)
-      .on('hashchange.behaviorHash', () => this._hashchange());
+      .on('hashchange.behaviorHash', this._hashchange);
 
     this._hashchange();
-    this._updateTitle(false);
+    this._updateTitle(true);  // skipChangeCount = true
   }
 
 
@@ -142,7 +145,7 @@ export class BehaviorHash extends AbstractBehavior {
     this._cachedHash = currHash;
 
     // `title` param to replaceState is currently only used by Safari, and is deprecated
-    const title = this._computeTitle(false);  // withChangeCount = false
+    const title = this._computeTitle(true);  // skipChangeCount = true
     // Update the URL hash without affecting the browser navigation stack,
     window.history.replaceState(null, title, currHash);
   }
@@ -151,9 +154,9 @@ export class BehaviorHash extends AbstractBehavior {
   /**
    * _computeTitle
    * Returns the value we think the title should be, but doesn't change anything
-   * @param  `withChangeCount`    true/false whether to inclue the change count in the title
+   * @param  `skipChangeCount`    true/false whether to inclue the change count in the title
    */
-  _computeTitle(withChangeCount) {
+  _computeTitle(skipChangeCount) {
     const context = this._context;
 
     const baseTitle = context.documentTitleBase() || 'RapiD';
@@ -173,7 +176,7 @@ export class BehaviorHash extends AbstractBehavior {
       titleType = 'context';
     }
 
-    if (withChangeCount) {
+    if (!skipChangeCount) {
       changeCount = context.history().difference().summary().length;
       if (changeCount > 0) {
         titleType = contextual ? 'changes_context' : 'changes';
@@ -181,7 +184,7 @@ export class BehaviorHash extends AbstractBehavior {
     }
 
     if (titleType) {
-      return t('title.format.' + titleType, { changes: changeCount, base: baseTitle, context: contextual });
+      return t(`title.format.${titleType}`, { changes: changeCount, base: baseTitle, context: contextual });
     }
 
     return baseTitle;
@@ -191,12 +194,12 @@ export class BehaviorHash extends AbstractBehavior {
   /**
    * _updateTitle
    * Updates the title of the tab (by setting `document.title`)
-   * @param  `withChangeCount`    true/false whether to inclue the change count in the title
+   * @param  `skipChangeCount`    true/false whether to inclue the change count in the title
    */
-  _updateTitle(withChangeCount) {
+  _updateTitle(skipChangeCount) {
     if (!this._context.setsDocumentTitle()) return;
 
-    const title = this._computeTitle(withChangeCount);
+    const title = this._computeTitle(skipChangeCount);
     if (document.title !== title) {
       document.title = title;
     }

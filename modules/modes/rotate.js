@@ -27,14 +27,14 @@ export function modeRotate(context, entityIDs) {
     };
 
     var keybinding = utilKeybinding('rotate');
-    var behaviors = [
-        operationCircularize(context, entityIDs).behavior,
-        operationDelete(context, entityIDs).behavior,
-        operationMove(context, entityIDs).behavior,
-        operationOrthogonalize(context, entityIDs).behavior,
-        operationReflectLong(context, entityIDs).behavior,
-        operationReflectShort(context, entityIDs).behavior
-    ];
+//    var behaviors = [
+//        operationCircularize(context, entityIDs).behavior,
+//        operationDelete(context, entityIDs).behavior,
+//        operationMove(context, entityIDs).behavior,
+//        operationOrthogonalize(context, entityIDs).behavior,
+//        operationReflectLong(context, entityIDs).behavior,
+//        operationReflectShort(context, entityIDs).behavior
+//    ];
     var annotation = entityIDs.length === 1 ?
         t('operations.rotate.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.rotate.annotation.feature', { n: entityIDs.length });
@@ -121,7 +121,7 @@ export function modeRotate(context, entityIDs) {
         _prevGraph = null;
         context.features().forceVisible(entityIDs);
 
-        behaviors.forEach(context.install);
+        // behaviors.forEach(context.install);
 
         var downEvent;
 
@@ -157,7 +157,7 @@ export function modeRotate(context, entityIDs) {
 
 
     mode.exit = function() {
-        behaviors.forEach(context.uninstall);
+        // behaviors.forEach(context.uninstall);
 
         context.surface()
             .on('pointerdown.modeRotate', null);

@@ -26,14 +26,14 @@ export function modeMove(context, entityIDs, baseGraph) {
     };
 
     var keybinding = utilKeybinding('move');
-    var behaviors = [
-        operationCircularize(context, entityIDs).behavior,
-        operationDelete(context, entityIDs).behavior,
-        operationOrthogonalize(context, entityIDs).behavior,
-        operationReflectLong(context, entityIDs).behavior,
-        operationReflectShort(context, entityIDs).behavior,
-        operationRotate(context, entityIDs).behavior
-    ];
+//    var behaviors = [
+//        operationCircularize(context, entityIDs).behavior,
+//        operationDelete(context, entityIDs).behavior,
+//        operationOrthogonalize(context, entityIDs).behavior,
+//        operationReflectLong(context, entityIDs).behavior,
+//        operationReflectShort(context, entityIDs).behavior,
+//        operationRotate(context, entityIDs).behavior
+//    ];
     var annotation = entityIDs.length === 1 ?
         t('operations.move.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.move.annotation.feature', { n: entityIDs.length });
@@ -131,7 +131,7 @@ export function modeMove(context, entityIDs, baseGraph) {
 
         context.features().forceVisible(entityIDs);
 
-        behaviors.forEach(context.install);
+        // behaviors.forEach(context.install);
 
         var downEvent;
 
@@ -169,9 +169,9 @@ export function modeMove(context, entityIDs, baseGraph) {
     mode.exit = function() {
         stopNudge();
 
-        behaviors.forEach(function(behavior) {
-            context.uninstall(behavior);
-        });
+//        behaviors.forEach(function(behavior) {
+//            context.uninstall(behavior);
+//        });
 
         context.surface()
             .on('pointerdown.modeMove', null);

@@ -8,10 +8,10 @@ import { t } from '../core/localizer';
 import { locationManager } from '../core/locations';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
-import { behaviorLasso } from '../behavior/lasso';
-import { BehaviorHover } from '../behavior/BehaviorHover';
-import { BehaviorPaste } from '../behavior/BehaviorPaste';
-import { BehaviorSelect } from '../behavior/BehaviorSelect';
+//import { behaviorLasso } from '../behavior/lasso';
+//import { BehaviorHover } from '../behavior/BehaviorHover';
+//import { BehaviorPaste } from '../behavior/BehaviorPaste';
+//import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
@@ -31,8 +31,8 @@ export function modeSelect(context, selectedIDs) {
     var keybinding = utilKeybinding('select');
 
     var _modeDragNode = modeDragNode(context);
-    var _selectBehavior;
-    var _behaviors = [];
+    // var _selectBehavior;
+    // var _behaviors = [];
 
     var _operations = [];
     var _newFeature = false;
@@ -173,11 +173,12 @@ export function modeSelect(context, selectedIDs) {
     };
 
 
-    mode.selectBehavior = function(val) {
-        if (!arguments.length) return _selectBehavior;
-        _selectBehavior = val;
-        return mode;
-    };
+    mode.selectBehavior = () =>  { console.error('error: do not call modeSelect.selectBehavior anymore'); };
+    // mode.selectBehavior = function(val) {
+    //     if (!arguments.length) return _selectBehavior;
+    //     _selectBehavior = val;
+    //     return mode;
+    // };
 
 
     mode.follow = function(val) {
@@ -186,34 +187,33 @@ export function modeSelect(context, selectedIDs) {
         return mode;
     };
 
+
     function loadOperations() {
+      _operations.forEach(o => {
+        if (o.behavior) {
+          o.behavior.disable();
+        }
+      });
 
-        _operations.forEach(function(operation) {
-            if (operation.behavior) {
-                context.uninstall(operation.behavior);
-            }
-        });
+      _operations = Object.values(Operations)
+        .map(o => o(context, selectedIDs))
+        .filter(o => (o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'))
+        .concat([
+            // group copy/downgrade/delete operation together at the end of the list
+            Operations.operationCopy(context, selectedIDs),
+            Operations.operationDowngrade(context, selectedIDs),
+            Operations.operationDelete(context, selectedIDs)
+          ])
+        .filter(o => o.available());
 
-        _operations = Object.values(Operations)
-            .map(function(o) { return o(context, selectedIDs); })
-            .filter(function(o) { return o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'; })
-            .concat([
-                // group copy/downgrade/delete operation together at the end of the list
-                Operations.operationCopy(context, selectedIDs),
-                Operations.operationDowngrade(context, selectedIDs),
-                Operations.operationDelete(context, selectedIDs)
-            ]).filter(function(operation) {
-                return operation.available();
-            });
+      _operations.forEach(o => {
+        if (o.behavior) {
+          o.behavior.enable();
+        }
+      });
 
-        _operations.forEach(function(operation) {
-            if (operation.behavior) {
-                context.install(operation.behavior);
-            }
-        });
-
-        // remove any displayed menu
-        context.ui().closeEditMenu();
+      // remove any displayed menu
+      context.ui().closeEditMenu();
     }
 
     mode.operations = function() {
@@ -230,19 +230,21 @@ export function modeSelect(context, selectedIDs) {
 
         loadOperations();
 
-        if (!_behaviors.length) {
-            if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
+      context.enableBehaviors(['hover', 'select', 'drag']);
 
-            _behaviors = [
-                new BehaviorHover(context),
-                new BehaviorPaste(context),
-                _selectBehavior,
-                behaviorLasso(context),
-                _modeDragNode.behavior,
-                // modeDragNote(context).behavior
-            ];
-        }
-        _behaviors.forEach(context.install);
+        // if (!_behaviors.length) {
+        //     if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
+
+        //     _behaviors = [
+        //         new BehaviorHover(context),
+        //         new BehaviorPaste(context),
+        //         _selectBehavior,
+        //         behaviorLasso(context),
+        //         _modeDragNode.behavior,
+        //         // modeDragNote(context).behavior
+        //     ];
+        // }
+        // _behaviors.forEach(context.install);
 
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -513,14 +515,15 @@ export function modeSelect(context, selectedIDs) {
 
         _focusedVertexIds = null;
 
-        _operations.forEach(function(operation) {
-            if (operation.behavior) {
-                context.uninstall(operation.behavior);
-            }
+        _operations.forEach(o => {
+          if (o.behavior) {
+            o.behavior.disable();
+          }
         });
         _operations = [];
 
-        _behaviors.forEach(context.uninstall);
+
+        // _behaviors.forEach(context.uninstall);
 
         d3_select(document)
             .call(keybinding.unbind);

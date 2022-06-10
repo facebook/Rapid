@@ -36,7 +36,7 @@ export class BehaviorKeyOperation extends AbstractBehavior {
 
   /**
    * enable
-   * Bind keydown event handler
+   * Bind event handlers
    */
   enable() {
     if (this._enabled) return;
@@ -51,7 +51,7 @@ export class BehaviorKeyOperation extends AbstractBehavior {
 
   /**
    * disable
-   * Unbind keydown event handler
+   * Unbind event handlers
    */
   disable() {
     if (!this._enabled) return;

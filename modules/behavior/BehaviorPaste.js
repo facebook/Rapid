@@ -27,7 +27,7 @@ export class BehaviorPaste extends AbstractBehavior {
 
   /**
    * enable
-   * Bind keypress event handler
+   * Bind event handlers
    */
   enable() {
     if (this._enabled) return;
@@ -39,7 +39,7 @@ export class BehaviorPaste extends AbstractBehavior {
 
   /**
    * disable
-   * Unbind keypress event handler
+   * Unbind event handlers
    */
   disable() {
     if (!this._enabled) return;

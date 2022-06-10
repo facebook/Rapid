@@ -2,7 +2,7 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 
-import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
+// import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
 import { modeDrawLine } from './draw_line';
 import { osmNode, osmWay } from '../osm';
 
@@ -13,10 +13,13 @@ import { prefs } from '../core/preferences';
 export function modeAddLine(context, mode) {
     mode.id = 'add-line';
 
-    var behavior = new BehaviorAddWay(context)
-        .on('start', start)
-        .on('startFromWay', startFromWay)
-        .on('startFromNode', startFromNode);
+    // var behavior = new BehaviorAddWay(context)
+    var behavior = context.behaviors.get('add-way');
+    behavior
+      .on('start', start)
+      .on('startFromWay', startFromWay)
+      .on('startFromNode', startFromNode);
+
 
     var defaultTags = {};
     if (mode.preset) defaultTags = mode.preset.setTags(defaultTags, 'line');
@@ -73,12 +76,13 @@ export function modeAddLine(context, mode) {
 
 
     mode.enter = function() {
-        context.install(behavior);
+      context.enableBehaviors(['add-way', 'hover']);
+      // context.install(behavior);
     };
 
 
     mode.exit = function() {
-        context.uninstall(behavior);
+      // context.uninstall(behavior);
     };
 
     return mode;

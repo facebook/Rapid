@@ -5,6 +5,9 @@
  *
  * `AbstractBehavior` is the base class from which all behaviors inherit.
  * It contains enable/disable methods which manage the event handlers for the behavior
+*
+ * Properties you can access:
+ *   `enabled`     `true` if the event handlers are enabled, `false` if not.
  */
 export class AbstractBehavior {
 

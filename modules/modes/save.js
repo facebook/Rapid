@@ -22,15 +22,11 @@ export function modeSave(context) {
     var _success;
 
     var uploader = context.uploader()
-        .on('saveStarted.modeSave', function() {
-            keybindingOff();
-        })
+        .on('saveStarted.modeSave', function() { keybindingOff(); })
         // fire off some async work that we want to be ready later
         .on('willAttemptUpload.modeSave', prepareForSuccess)
         .on('progressChanged.modeSave', showProgress)
-        .on('resultNoChanges.modeSave', function() {
-            cancel();
-        })
+        .on('resultNoChanges.modeSave', function() { cancel(); })
         .on('resultErrors.modeSave', showErrors)
         .on('resultConflicts.modeSave', showConflicts)
         .on('resultSuccess.modeSave', showSuccess);
@@ -206,6 +202,8 @@ export function modeSave(context) {
 
 
     mode.enter = function() {
+context.enableBehaviors([]);  // none
+
         // Show sidebar
         context.ui().sidebar.expand();
 

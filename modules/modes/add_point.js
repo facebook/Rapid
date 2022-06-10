@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { BehaviorDraw } from '../behavior/BehaviorDraw';
+// import { BehaviorDraw } from '../behavior/BehaviorDraw';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmNode } from '../osm/node';
@@ -12,12 +12,14 @@ export function modeAddPoint(context, mode) {
 
     mode.id = 'add-point';
 
-    var behavior = new BehaviorDraw(context)
-        .on('click', add)
-        .on('clickWay', addWay)
-        .on('clickNode', addNode)
-        .on('cancel', cancel)
-        .on('finish', cancel);
+    // var behavior = new BehaviorDraw(context)
+    var behavior = context.behaviors.get('draw');
+    behavior
+      .on('click', add)
+      .on('clickWay', addWay)
+      .on('clickNode', addNode)
+      .on('cancel', cancel)
+      .on('finish', cancel);
 
     var defaultTags = {};
     if (mode.preset) defaultTags = mode.preset.setTags(defaultTags, 'point');
@@ -79,12 +81,13 @@ export function modeAddPoint(context, mode) {
 
 
     mode.enter = function() {
-        context.install(behavior);
+      context.enableBehaviors(['draw', 'hover']);
+      // context.install(behavior);
     };
 
 
     mode.exit = function() {
-        context.uninstall(behavior);
+      // context.uninstall(behavior);
     };
 
 

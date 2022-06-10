@@ -1,14 +1,14 @@
 import { t } from '../core/localizer';
 
-import { BehaviorHover } from '../behavior/BehaviorHover';
-import { behaviorLasso } from '../behavior/lasso';
-import { BehaviorPaste } from '../behavior/BehaviorPaste';
-import { BehaviorSelect } from '../behavior/BehaviorSelect';
+// import { BehaviorHover } from '../behavior/BehaviorHover';
+// import { behaviorLasso } from '../behavior/lasso';
+// import { BehaviorPaste } from '../behavior/BehaviorPaste';
+// import { BehaviorSelect } from '../behavior/BehaviorSelect';
 
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
-
 import { operationPaste } from '../operations/paste';
+
 
 export function modeBrowse(context) {
     var mode = {
@@ -19,30 +19,36 @@ export function modeBrowse(context) {
     };
     var sidebar;
 
-    var _selectBehavior;
-    var _behaviors = [];
+    // var _selectBehavior;
+    // var _behaviors = [];
 
+    // var behavior = context.behaviors.get('select');
 
-    mode.selectBehavior = function(val) {
-        if (!arguments.length) return _selectBehavior;
-        _selectBehavior = val;
-        return mode;
-    };
+    mode.selectBehavior = () =>  { console.error('error: do not call modeBrowse.selectBehavior anymore'); };
+    // mode.selectBehavior = function() {
+    //   if (!arguments.length) return behavior;
+    //   /* no value set, keep it around */
+    //   else return mode;
+    //     // if (!arguments.length) return _selectBehavior;
+    //     // _selectBehavior = val;
+    //     // return mode;
+    // };
 
 
     mode.enter = function() {
-        if (!_behaviors.length) {
-            if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
-            _behaviors = [
-                new BehaviorHover(context),
-                new BehaviorPaste(context),
-                _selectBehavior,
-                behaviorLasso(context),
-                modeDragNode(context).behavior,
-                // modeDragNote(context).behavior
-            ];
-        }
-        _behaviors.forEach(context.install);
+      context.enableBehaviors(['hover', 'select', 'drag']);
+        // if (!_behaviors.length) {
+        //     if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
+        //     _behaviors = [
+        //         new BehaviorHover(context),
+        //         new BehaviorPaste(context),
+        //         _selectBehavior,
+        //         behaviorLasso(context),
+        //         modeDragNode(context).behavior,
+        //         // modeDragNote(context).behavior
+        //     ];
+        // }
+        // _behaviors.forEach(context.install);
 
         // Get focus on the body.
         if (document.activeElement && document.activeElement.blur) {
@@ -58,17 +64,16 @@ export function modeBrowse(context) {
 
 
     mode.exit = function() {
-        _behaviors.forEach(context.uninstall);
-
+        // _behaviors.forEach(context.uninstall);
         if (sidebar) {
             context.ui().sidebar.hide();
         }
     };
 
 
-    mode.sidebar = function(_) {
+    mode.sidebar = function(val) {
         if (!arguments.length) return sidebar;
-        sidebar = _;
+        sidebar = val;
         return mode;
     };
 

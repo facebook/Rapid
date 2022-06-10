@@ -3,8 +3,8 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
 
 import { t } from '../core/localizer';
-import { behaviorLasso } from '../behavior/lasso';
-import { BehaviorSelect } from '../behavior/BehaviorSelect';
+// import { behaviorLasso } from '../behavior/lasso';
+// import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -21,12 +21,12 @@ export function modeSelectData(context, selectedDatum) {
     var keybinding = utilKeybinding('select-data');
     var dataEditor = uiDataEditor(context);
 
-    var behaviors = [
-        new BehaviorSelect(context),
-        behaviorLasso(context),
-        modeDragNode(context).behavior,
-        // modeDragNote(context).behavior
-    ];
+//    var behaviors = [
+//        new BehaviorSelect(context),
+//        behaviorLasso(context),
+//        modeDragNode(context).behavior,
+//        // modeDragNote(context).behavior
+//    ];
 
 
     // class the data as selected, or return to browse mode if the data is gone
@@ -60,7 +60,8 @@ export function modeSelectData(context, selectedDatum) {
 
 
     mode.enter = function() {
-        behaviors.forEach(context.install);
+      context.enableBehaviors(['hover', 'select', 'drag']);
+        // behaviors.forEach(context.install);
 
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -85,7 +86,7 @@ export function modeSelectData(context, selectedDatum) {
 
 
     mode.exit = function() {
-        behaviors.forEach(context.uninstall);
+        // behaviors.forEach(context.uninstall);
 
         d3_select(document)
             .call(keybinding.unbind);

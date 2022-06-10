@@ -13,6 +13,13 @@ import { prefs } from './preferences';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
+
+import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
+import { BehaviorDrag } from '../behavior/BehaviorDrag';
+import { BehaviorDraw } from '../behavior/BehaviorDraw';
+import { BehaviorHover } from '../behavior/BehaviorHover';
+import { BehaviorSelect } from '../behavior/BehaviorSelect';
+
 import { modeSelect } from '../modes/select';
 import { presetManager } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
@@ -79,7 +86,9 @@ export function coreContext() {
   /* User interface and keybinding */
   let _ui;
   context.ui = () => _ui;
-  context.lastPointerType = () => _ui.lastPointerType();
+  // AFAICT this is just used to localize the intro? for now - instead get this from pixi?
+  // context.lastPointerType = () => _ui.lastPointerType();
+  context.lastPointerType = () => 'mouse';
 
   let _keybinding = utilKeybinding('context');
   context.keybinding = () => _keybinding;
@@ -309,11 +318,13 @@ export function coreContext() {
   context.enter = (newMode) => {
     if (_mode) {
       _mode.exit();
+      _container.classed(`mode-${_mode.id}`, false);
       dispatch.call('exit', this, _mode);
     }
 
     _mode = newMode;
     _mode.enter();
+    _container.classed(`mode-${_mode.id}`, true);
     dispatch.call('enter', this, _mode);
   };
 
@@ -335,21 +346,46 @@ export function coreContext() {
   };
 
 
-  /* Behaviors */
-  context.install = (behavior) => {
-    if (typeof behavior.enable === 'function') {
-      behavior.enable();
+  // Behaviors
+  // "Behaviors" are bundles of event handlers that we can
+  // enable and disable depending on what the user is doing.
+  context.behaviors = new Map();  // Map (behaviorID -> behavior)
+
+  context.enableBehaviors = function(enableIDs) {
+    if (!(enableIDs instanceof Set)) {
+      enableIDs = new Set([].concat(enableIDs));  // coax ids into a Set
     }
+
+    context.behaviors.forEach((behavior, behaviorID) => {
+      if (enableIDs.has(behaviorID)) {  // should be enabled
+        if (!behavior.enabled) {
+          behavior.enable();
+        }
+      } else {  // should be disabled
+        if (behavior.enabled) {
+          behavior.disable();
+        }
+      }
+    });
   };
-  context.uninstall = (behavior) => {
-    if (typeof behavior.disable === 'function') {
-      behavior.disable();
-    }
-  };
-  // context.install = (behavior) =>  { return; };
-  // context.uninstall = (behavior) => { return; };
-  // context.install = (behavior) => context.surface().call(behavior);
-  // context.uninstall = (behavior) => context.surface().call(behavior.off);
+
+ context.install = (behavior) =>  { console.error('error: do not call context.install anymore'); };
+ context.uninstall = (behavior) =>  { console.error('error: do not call context.uninstall anymore'); };
+//old redo on every mode change
+//  context.install = (behavior) => {
+//    if (typeof behavior.enable === 'function') {
+//      behavior.enable();
+//    }
+//  };
+//  context.uninstall = (behavior) => {
+//    if (typeof behavior.disable === 'function') {
+//      behavior.disable();
+//    }
+//  };
+//  // context.install = (behavior) =>  { return; };
+//  // context.uninstall = (behavior) => { return; };
+//  // context.install = (behavior) => context.surface().call(behavior);
+//  // context.uninstall = (behavior) => context.surface().call(behavior.off);
 
 
   /* Copy/Paste */
@@ -511,18 +547,14 @@ export function coreContext() {
 
   /* Init */
   context.init = () => {
-
     instantiateInternal();
-
     initializeDependents();
-
     return context;
 
     // Load variables and properties. No property of `context` should be accessed
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
     function instantiateInternal() {
-
       _history = coreHistory(context);
       context.graph = _history.graph;
       context.pauseChangeDispatch = _history.pauseChangeDispatch;
@@ -544,16 +576,23 @@ export function coreContext() {
       _photos = rendererPhotos(context);
 
       _ui = uiInit(context);
+
+      // Initialize "core" behaviors
+      [
+        new BehaviorAddWay(context),
+        new BehaviorDrag(context),
+        new BehaviorDraw(context),
+        new BehaviorHover(context),
+        new BehaviorSelect(context)
+      ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
     }
 
     // Set up objects that might need to access properties of `context`. The order
     // might matter if dependents make calls to each other. Be wary of async calls.
     function initializeDependents() {
-
       if (context.initialHashParams.presets) {
         presetManager.addablePresetIDs(new Set(context.initialHashParams.presets.split(',')));
       }
-
       if (context.initialHashParams.locale) {
         localizer.preferredLocaleCodes(context.initialHashParams.locale);
       }
@@ -574,16 +613,17 @@ export function coreContext() {
       _features.init();
       _rapidContext.init();
 
-      if (services.maprules && context.initialHashParams.maprules) {
-        d3_json(context.initialHashParams.maprules)
-          .then(mapcss => {
-            services.maprules.init();
-            mapcss.forEach(mapcssSelector => services.maprules.addRule(mapcssSelector));
-          })
-          .catch(() => { /* ignore */ });
-      }
 
-      // if the container isn't available, e.g. when testing, don't load the UI
+//      if (services.maprules && context.initialHashParams.maprules) {
+//        d3_json(context.initialHashParams.maprules)
+//          .then(mapcss => {
+//            services.maprules.init();
+//            mapcss.forEach(mapcssSelector => services.maprules.addRule(mapcssSelector));
+//          })
+//          .catch(() => { /* ignore */ });
+//      }
+
+      // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {
         _ui.ensureLoaded()
           .then(() => {

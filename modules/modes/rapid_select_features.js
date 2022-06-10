@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { BehaviorHover, behaviorLasso, BehaviorSelect } from '../behavior';
+// import { BehaviorHover, behaviorLasso, BehaviorSelect } from '../behavior';
 import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
 import { services } from '../services';
 import { uiRapidFeatureInspector } from '../ui';
@@ -19,13 +19,13 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
   const service = selectedDatum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
   const rapidGraph = service.graph(selectedDatum.__datasetid__);
 
-  let behaviors = [
-    new BehaviorHover(context),
-    new BehaviorSelect(context),
-    behaviorLasso(context),
-    modeDragNode(context).behavior,
-    // modeDragNote(context).behavior
-  ];
+//  let behaviors = [
+//    new BehaviorHover(context),
+//    new BehaviorSelect(context),
+//    behaviorLasso(context),
+//    modeDragNode(context).behavior,
+//    // modeDragNote(context).behavior
+//  ];
 
 
   // class the data as selected, or return to browse mode if the data is gone
@@ -68,7 +68,8 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
 
   mode.enter = function() {
-    behaviors.forEach(context.install);
+    // behaviors.forEach(context.install);
+    context.enableBehaviors(['hover', 'select', 'drag']);
 
     keybinding
       .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -92,7 +93,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
 
   mode.exit = function() {
-    behaviors.forEach(context.uninstall);
+    // behaviors.forEach(context.uninstall);
 
     d3_select(document)
       .call(keybinding.unbind);

@@ -6,7 +6,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-import { BehaviorDrag } from '../behavior/BehaviorDrag';
+// import { BehaviorDrag } from '../behavior/BehaviorDrag';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
 import { locationManager } from '../core/locations';
 import { modeBrowse } from './browse';
@@ -23,11 +23,14 @@ export function modeDragNode(context) {
     button: 'browse'
   };
 
-  const behavior = new BehaviorDrag(context)
+  // const behavior = new BehaviorDrag(context)
+  const behavior = context.behaviors.get('drag')
     .on('start', start)
     .on('move', move)
     .on('end', end)
     .on('cancel', cancel);
+
+  // behavior.enable();  // start listening
 
   let _nudgeInterval;
   let _restoreSelectedIDs = [];
@@ -181,7 +184,7 @@ export function modeDragNode(context) {
 //    // context.surface().selectAll('.' + _activeEntity.id)
 //    //     .classed('active', true);
 //    //TODO: Select the node
-//    // context.enter(mode);
+    context.enter(mode);
   }
 
 
@@ -189,14 +192,18 @@ export function modeDragNode(context) {
    * move
    */
   function move(eventData) {
-    const entity = eventData.data;
+    if (_isCancelled) return;
+
     const event = eventData.originalEvent;
     const point = eventData.coord;
+    const target = behavior.dragTarget;
 
-    if (_isCancelled) return;
-    event.stopPropagation();
+    // event.stopPropagation();  // why?
 //    context.surface().classed('nope-disabled', event.altKey);
     _lastLoc = context.projection.invert(point);
+
+   const entity = target.data;
+   if (!(entity instanceof osmNode)) return;  // sanity check
     doMove(event, entity);
 
 //    var nudge = geomViewportNudge(point, context.map().dimensions());
@@ -462,6 +469,8 @@ const target = false;
 
 
   mode.enter = function() {
+context.enableBehaviors(['hover', 'drag']);
+
     d3_select(window)
       .on('keydown.dragNode', keydown)
       .on('keyup.dragNode', keyup);
@@ -511,7 +520,7 @@ const target = false;
   };
 
 
-  mode.behavior = behavior;
+  // mode.behavior = behavior;
 
   return mode;
 }

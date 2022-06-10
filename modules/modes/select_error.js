@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
 
-import { behaviorLasso } from '../behavior/lasso';
-import { BehaviorSelect } from '../behavior/BehaviorSelect';
+// import { behaviorLasso } from '../behavior/lasso';
+// import { BehaviorSelect } from '../behavior/BehaviorSelect';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
@@ -59,12 +59,12 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
     }
 
 
-    var behaviors = [
-        new BehaviorSelect(context),
-        behaviorLasso(context),
-        modeDragNode(context).behavior,
-        // modeDragNote(context).behavior
-    ];
+    // var behaviors = [
+    //     new BehaviorSelect(context),
+    //     behaviorLasso(context),
+    //     modeDragNode(context).behavior,
+    //     // modeDragNote(context).behavior
+    // ];
 
 
     function checkSelectedID() {
@@ -90,7 +90,8 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         var error = checkSelectedID();
         if (!error) return;
 
-        behaviors.forEach(context.install);
+      context.enableBehaviors(['hover', 'select', 'drag']);
+        // behaviors.forEach(context.install);
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
             .on('⎋', esc, true);
@@ -141,7 +142,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
 
     mode.exit = function() {
-        behaviors.forEach(context.uninstall);
+        // behaviors.forEach(context.uninstall);
 
         d3_select(document)
             .call(keybinding.unbind);

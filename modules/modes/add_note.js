@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { BehaviorDraw } from '../behavior/BehaviorDraw';
+// import { BehaviorDraw } from '../behavior/BehaviorDraw';
 import { modeBrowse } from './browse';
 import { modeSelectNote } from './select_note';
 import { osmNote } from '../osm';
@@ -14,10 +14,12 @@ export function modeAddNote(context) {
         key: t('modes.add_note.key')
     };
 
-    var behavior = new BehaviorDraw(context)
-        .on('click', add)
-        .on('cancel', cancel)
-        .on('finish', cancel);
+    // var behavior = new BehaviorDraw(context)
+    var behavior = context.behaviors.get('draw');
+    behavior
+      .on('click', add)
+      .on('cancel', cancel)
+      .on('finish', cancel);
 
 
     function add(loc) {
@@ -42,12 +44,13 @@ export function modeAddNote(context) {
 
 
     mode.enter = function() {
-        context.install(behavior);
+      context.enableBehaviors(['draw', 'hover']);
+        // context.install(behavior);
     };
 
 
     mode.exit = function() {
-        context.uninstall(behavior);
+      // context.uninstall(behavior);
     };
 
 

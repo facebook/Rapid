@@ -2,7 +2,7 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 
-import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
+// import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
 import { modeDrawArea } from './draw_area';
 import { osmNode, osmWay } from '../osm';
 
@@ -10,10 +10,13 @@ import { osmNode, osmWay } from '../osm';
 export function modeAddArea(context, mode) {
     mode.id = 'add-area';
 
-    var behavior = new BehaviorAddWay(context)
-        .on('start', start)
-        .on('startFromWay', startFromWay)
-        .on('startFromNode', startFromNode);
+    // var behavior = new BehaviorAddWay(context)
+    var behavior = context.behaviors.get('add-way');
+    behavior
+      .on('start', start)
+      .on('startFromWay', startFromWay)
+      .on('startFromNode', startFromNode);
+
 
     var defaultTags = { area: 'yes' };
     if (mode.preset) defaultTags = mode.preset.setTags(defaultTags, 'area');
@@ -74,12 +77,13 @@ export function modeAddArea(context, mode) {
 
 
     mode.enter = function() {
-        context.install(behavior);
+      context.enableBehaviors(['add-way', 'hover']);
+      // context.install(behavior);
     };
 
 
     mode.exit = function() {
-        context.uninstall(behavior);
+      // context.uninstall(behavior);
     };
 
 

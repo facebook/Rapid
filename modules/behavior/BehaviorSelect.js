@@ -1,3 +1,4 @@
+import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { vecEqual, vecLength } from '@id-sdk/math';
 
@@ -8,17 +9,27 @@ import { modeSelectData } from '../modes/select_data';
 import { modeSelectNote } from '../modes/select_note';
 import { modeSelectError } from '../modes/select_error';
 import { osmEntity, osmNote, QAItem } from '../osm';
-import { utilKeybinding } from '../util';
+import { utilKeybinding, utilRebind } from '../util';
 
 import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
+const DEBUG = true;
 
 
 /**
- * `BehaviorSelect` listens to pointer events
- * and selects items that are clicked on.
+ * `BehaviorSelect` listens to pointer events and selects items that are clicked on.
+ *
+ * Properties available:
+ *   `enabled`      `true` if the event handlers are enabled, `false` if not.
+ *   `selectTarget`  Current select target (a PIXI DisplayObject), or null
+ *   `lastDown`     `eventData` Object for the most recent down event
+ *   `lastMove`     `eventData` Object for the most recent move event
+ *   `lastSpace`    `eventData` Object for the most recent move event used to trigger a spacebar click
+ *
+ * Events available:
+ *   `selectchanged`  Fires whenever the hover target has changed, receives `eventData` Object
  */
 export class BehaviorSelect extends AbstractBehavior {
 
@@ -28,14 +39,20 @@ export class BehaviorSelect extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
+    this.id = 'select';
+
+    this._dispatch = d3_dispatch('selectchanged');
+    utilRebind(this, this._dispatch, 'on');
 
     this._multiSelection = new Set();
     this._spaceClickDisabled = false;
-    this._lastSpaceCoord = null;
-    this._lastdown = null;
-    this._lastmove = null;
     this._showMenu = false;
-    this._lastInteractionType = null;
+    // this._lastInteractionType = null;
+
+    this.selectTarget = null;   // the displayObject being selected
+    this.lastDown = null;
+    this.lastMove = null;
+    this.lastSpace = null;
 
     this._keybinding = utilKeybinding('selectbehavior');
 
@@ -45,6 +62,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
 
+    this._keydown = this._keydown.bind(this);
     this._spacebar = this._spacebar.bind(this);
   }
 
@@ -56,17 +74,23 @@ export class BehaviorSelect extends AbstractBehavior {
     if (this._enabled) return;
     if (!this._context.pixi) return;
 
+    if (DEBUG) {
+      console.log('BehaviorSelect: enabling listeners');  // eslint-disable-line no-console
+    }
+
     this._enabled = true;
-    this._lastdown = null;
-    this._lastmove = null;
+    this.selectTarget = null;   // the displayObject being selected
+    this.lastDown = null;
+    this.lastMove = null;
+    this.lastSpace = null;
     this._multiSelection.clear();
 
     this._keybinding
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
-    const stage = this._context.pixi.stage;
-    stage
+    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    interactionManager
       .on('pointerdown', this._pointerdown)
       .on('pointermove', this._pointermove)
       .on('pointerup', this._pointerup)
@@ -87,13 +111,19 @@ export class BehaviorSelect extends AbstractBehavior {
     if (!this._enabled) return;
     if (!this._context.pixi) return;
 
+    if (DEBUG) {
+      console.log('BehaviorSelect: disabling listeners');  // eslint-disable-line no-console
+    }
+
     this._enabled = false;
-    this._lastdown = null;
-    this._lastmove = null;
+    this.selectTarget = null;   // the displayObject being selected
+    this.lastDown = null;
+    this.lastMove = null;
+    this.lastSpace = null;
     this._multiSelection.clear();
 
-    const stage = this._context.pixi.stage;
-    stage
+    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    interactionManager
       .off('pointerdown', this._pointerdown)
       .off('pointermove', this._pointermove)
       .off('pointerup', this._pointerup)
@@ -108,45 +138,47 @@ export class BehaviorSelect extends AbstractBehavior {
   /**
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
+   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerdown(e) {
-    if (this._lastdown) return;  // a pointer is already down
+    if (this.lastDown) return;  // a pointer is already down
+
+    // If pointer is not over the renderer, just discard
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const context = this._context;
+    const interactionManager = context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    if (!pointerOverRenderer) return;
 
     const down = this._getEventData(e);
-    // const name = (down.target && down.target.name) || 'no target';
-    // console.log(`pointerdown ${name}`);
-    this._lastdown = down;
-    this._lastmove = null;
+    this.lastDown = down;
+    this.lastMove = null;
   }
 
 
   /**
    * _pointermove
    * Handler for pointermove events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
+   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
     // If pointer is not over the renderer, just discard
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this._context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
 
+    const down = this.lastDown;
     const move = this._getEventData(e);
+    if (!down || down.id !== move.id) return;  // not down, or different pointer
 
     // We get a lot more move events than we need,
     // so discard ones where it hasn't actually moved much
-    if (this._lastmove && vecEqual(move.coord, this._lastmove.coord, 0.9)) return;
-    this._lastmove = move;
-
-    const down = this._lastdown;
-    if (!down || down.id !== move.id) return;  // not down, or different pointer
-
-    // const name = (move.target && move.target.name) || 'no target';
-    // console.log(`pointermove ${name}`);
+    if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
+    this.lastMove = move;
 
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
     if (!down.isCancelled) {
@@ -161,18 +193,15 @@ export class BehaviorSelect extends AbstractBehavior {
   /**
    * _pointerup
    * Handler for pointerup events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
+   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerup(e) {
+    const down = this.lastDown;
     const up = this._getEventData(e);
-    const down = this._lastdown;
-    // const name = (up.target && up.target.name) || 'no target';
-    // console.log(`pointerup ${name}`);
-
     if (!down || down.id !== up.id) return;  // not down, or different pointer
 
-    this._lastdown = null;
+    this.lastDown = null;
 
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
@@ -192,9 +221,9 @@ export class BehaviorSelect extends AbstractBehavior {
       // trigger a click
       this._click(up);
 
-      if (down.originalEvent.button === 2) {  //right click
-        this.contextmenu(e);
-      }
+//      if (down.originalEvent.button === 2) {  //right click
+//        this._contextmenu(up);
+//      }
 
     }
   }
@@ -202,19 +231,13 @@ export class BehaviorSelect extends AbstractBehavior {
 
   /**
    * _pointercancel
-   * Handler for pointercancel events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `_lastdown`.
+   * Handler for pointercancel events.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointercancel() {
-    // const cancel = this._getEventData(e);
-    // const down = this._lastdown;
-    // const name = (cancel.target && cancel.target.name) || 'no target';
-    // console.log(`pointercancel ${name}`);
-
     // Here we can throw away the down data to prepare for another `pointerdown`.
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
-    this._lastdown = null;
+    this.lastDown = null;
   }
 
 
@@ -233,18 +256,17 @@ export class BehaviorSelect extends AbstractBehavior {
       return;
     }
 
-    if (e.keyCode === 93) {   // contextmenu key
-      this._lastInteractionType = 'menukey';
-      this.contextmenu(e);
-       return;
-    }
+//    if (e.keyCode === 93) {   // contextmenu key
+//      // this._lastInteractionType = 'menukey';
+//      this._contextmenu(e);
+//      return;
+//    }
 
     if (e.shiftKey) {
       // ?
       return;
     }
   }
-
 
 
   /**
@@ -266,19 +288,25 @@ export class BehaviorSelect extends AbstractBehavior {
 
     const pointer = this._getEventData({ data: pointerEvent });
 
-    // User must move pointer or lift spacebar to allow another spacebar click
-    if (this._spaceClickDisabled && this._lastSpaceCoord) {
-      const dist = vecLength(this._lastSpaceCoord, pointer.coord);
-      if (dist > FAR_TOLERANCE) {
+  console.log(`!!! pointer.target = ${pointer.target}`);
+  if (this.lastMove) {
+   console.log(`!!! lastMove.target = ${this.lastMove.target}`);
+  }
+
+    // Becase spacebar events will repeat if you keep it held down,
+    // user must move pointer or lift spacebar to allow another spacebar click
+    if (this._spaceClickDisabled && this.lastSpace) {
+      const dist = vecLength(pointer.coord, this.lastSpace.coord);
+      if (dist > FAR_TOLERANCE) {     // pointer moved far enough
         this._spaceClickDisabled = false;
       }
     }
 
     if (!this._spaceClickDisabled) {
       this._spaceClickDisabled = true;
-      this._lastSpaceCoord = pointer.coord;
+      this.lastSpace = pointer;
 
-      d3_select(window).on('keyup.space-block', (e) => {
+      d3_select(window).on('keyup.space-block', (e) => {   // user lifted spacebar up
         if (e.code !== 'Space') return;  // only spacebar
         e.preventDefault();
         e.stopPropagation();
@@ -299,27 +327,33 @@ export class BehaviorSelect extends AbstractBehavior {
    * @param  `eventData`  event data
    */
   _click(eventData) {
-    // const name = (eventData.target && eventData.target.name) || 'no target';
-    // console.log(`click ${name}`);
-
     const context = this._context;
     const mode = context.mode();
     let datum = eventData.data;
 
-    // const showMenu = _showMenu;
-    // const interactionType = _lastInteractionType;
+    // Select target has changed
+    if (this.selectTarget !== eventData.target) {
+      this.selectTarget = eventData.target;
 
-    // context.ui().closeEditMenu();   //?
+      if (DEBUG) {
+        const name = (eventData.target && eventData.target.name) || 'no target';
+        console.log(`BehaviorSelect: dispatching 'selectchanged', selectTarget = ${name}`);  // eslint-disable-line no-console
+      }
+      this._dispatch.call('selectchanged', this, eventData);
+    } else {
+      return;   // no change
+    }
 
+// vvv---- listen to selectchanged instead?
     // highlight
     const target = eventData.target;
     const renderer = context.map().renderer();
     const ids = datum ? [target.name] : [];
     renderer.select(ids);
+///
 
-    //
     // What did we click on?
-    //
+    // switch modes
 
     // Clicked on nothing
     if (!datum) {
@@ -349,101 +383,123 @@ export class BehaviorSelect extends AbstractBehavior {
     if (datum instanceof osmEntity) {
       context.selectedNoteID(null);
       context.selectedErrorID(null);
-
-    // figure it out
-    let selectedIDs = context.selectedIDs();
-    let newMode = null;
-    let alsoSelectId = null;
-    const showMenu = false;
-    const isMultiselect = false;
-
-
-      if (!isMultiselect) {
-        // don't change the selection if we're toggling the menu atop a multiselection
-        if (!showMenu || selectedIDs.length <= 1 || selectedIDs.indexOf(datum.id) === -1) {
-          if (alsoSelectId === datum.id) alsoSelectId = null;
-
-          selectedIDs = (alsoSelectId ? [alsoSelectId] : []).concat([datum.id]);
-          // always enter modeSelect even if the entity is already
-          // selected since listeners may expect `context.enter` events,
-          // e.g. in the walkthrough
-          newMode = mode.id === 'select' ? mode.selectedIDs(selectedIDs) : modeSelect(context, selectedIDs).selectBehavior(this);
-          context.enter(newMode);
-        }
-
-      } else {
-        if (selectedIDs.indexOf(datum.id) !== -1) {
-          // clicked entity is already in the selectedIDs list..
-          if (!showMenu) {
-            // deselect clicked entity, then reenter select mode or return to browse mode..
-            selectedIDs = selectedIDs.filter(function(id) { return id !== datum.id; });
-            newMode = selectedIDs.length ? mode.selectedIDs(selectedIDs) : modeBrowse(context).selectBehavior(this);
-            context.enter(newMode);
-          }
-        } else {
-          // clicked entity is not in the selected list, add it..
-          selectedIDs = selectedIDs.concat([datum.id]);
-          newMode = mode.selectedIDs(selectedIDs);
-          context.enter(newMode);
-        }
-      }
-      return;
+// keep it really simple for now
+      context.enter(modeSelect(context, [datum.id]));
     }
 
-
-    // Clicked custom data (e.g. gpx track)
-    if (datum && datum.__featurehash__) {
-      context.selectedNoteID(null);
-      context.selectedErrorID(null);
-      context.enter(modeSelectData(context, datum));
-      return;
-    }
-
-    // Clicked an OSM Note
-    if (datum instanceof osmNote) {
-      context.selectedNoteID(datum.id);
-      context.selectedErrorID(null);
-      context.enter(modeSelectNote(context, datum.id));
-      return;
-    }
-
-    // Clicked a QA Issue (keepright, osmose, etc)
-    if (datum instanceof QAItem) {
-      context.selectedNoteID(null);
-      context.selectedErrorID(datum.id);
-      context.enter(modeSelectError(context, datum.id, datum.service));
-      return;
-    }
-
-//    context.ui().closeEditMenu();
-    // always request to show the edit menu in case the mode needs it
-    if (this._showMenu) {
-        const pointer = this._getEventData(eventData);
-
-      context.ui().showEditMenu(pointer.coord, this._lastInteractionType);
-    }
   }
-
-
-  contextmenu(e) {
-    //  e.preventDefault();
-    this._lastMouseEvent = e;
-    this._lastInteractionType = 'rightclick';
-    this._showMenu = true;
-    this._click(e);
-  }
-
-
-  resetProperties() {
-    // cancelLongPress();
-    this._showMenu = false;
-    this._lastInteractionType = null;
-    // don't reset _lastMouseEvent since it might still be useful
-  }
-
-
 
 }
+//
+//    // figure it out
+//    let selectedIDs = context.selectedIDs();
+//    let newMode = null;
+//    let alsoSelectId = null;
+//    const showMenu = false;
+//    const isMultiselect = false;
+//
+//
+//    if (!isMultiselect) {
+//      // don't change the selection if we're toggling the menu atop a multiselection
+//      if (!showMenu || selectedIDs.length <= 1 || selectedIDs.indexOf(datum.id) === -1) {
+//        if (alsoSelectId === datum.id) alsoSelectId = null;
+//
+//        selectedIDs = (alsoSelectId ? [alsoSelectId] : []).concat([datum.id]);
+//        // always enter modeSelect even if the entity is already
+//        // selected since listeners may expect `context.enter` events,
+//        // e.g. in the walkthrough
+//       newMode = mode.id === 'select' ? mode.selectedIDs(selectedIDs) : modeSelect(context, selectedIDs).selectBehavior(this);
+//        context.enter(newMode);
+//      }
+//    }
+//  }
+
+//      } else {
+//        if (selectedIDs.indexOf(datum.id) !== -1) {
+//          // clicked entity is already in the selectedIDs list..
+//          if (!showMenu) {
+//            // deselect clicked entity, then reenter select mode or return to browse mode..
+//            selectedIDs = selectedIDs.filter(function(id) { return id !== datum.id; });
+//            newMode = selectedIDs.length ? mode.selectedIDs(selectedIDs) : modeBrowse(context).selectBehavior(this);
+//            context.enter(newMode);
+//          }
+//        } else {
+//          // clicked entity is not in the selected list, add it..
+//          selectedIDs = selectedIDs.concat([datum.id]);
+//          newMode = mode.selectedIDs(selectedIDs);
+//          context.enter(newMode);
+//        }
+//      }
+//      return;
+//    }
+//
+//    // Clicked custom data (e.g. gpx track)
+//    if (datum && datum.__featurehash__) {
+//      context.selectedNoteID(null);
+//      context.selectedErrorID(null);
+//      context.enter(modeSelectData(context, datum));
+//      return;
+//    }
+//
+//    // Clicked an OSM Note
+//    if (datum instanceof osmNote) {
+//      context.selectedNoteID(datum.id);
+//      context.selectedErrorID(null);
+//      context.enter(modeSelectNote(context, datum.id));
+//      return;
+//    }
+//
+//    // Clicked a QA Issue (keepright, osmose, etc)
+//    if (datum instanceof QAItem) {
+//      context.selectedNoteID(null);
+//      context.selectedErrorID(datum.id);
+//      context.enter(modeSelectError(context, datum.id, datum.service));
+//      return;
+//    }
+//
+////    context.ui().closeEditMenu();
+//    // always request to show the edit menu in case the mode needs it
+//    if (this._showMenu) {
+//        const pointer = this._getEventData(eventData);
+//
+//      // context.ui().showEditMenu(pointer.coord, this._lastInteractionType);
+//      context.ui().showEditMenu(pointer.coord);
+//    }
+//  }
+
+
+//  /**
+//   * _contextmenu
+//   * Handler for `contextmenu` events, will be either a pointer event
+//   * for the right button, or a dedicated keydown event for a contextmenu button
+//   * @param  `e`  A d3 keydown event
+//   */
+//  _contextmenu(e) {
+//    //  e.preventDefault();
+//    // this._lastMouseEvent = e;
+//    // this._lastInteractionType = 'rightclick';
+//    // this._showMenu = true;
+//
+//    // For contextmenu key events we will instead use the last pointer event
+//    // Get these from Pixi's interaction manager
+//    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+//    const pointerEvent = interactionManager.mouse;
+//    if (!pointerEvent || !pointerOverRenderer) return;
+//
+//    const pointer = this._getEventData({ data: pointerEvent });
+//
+//    this._click(pointer);
+//  }
+//
+
+  // resetProperties() {
+  //   // cancelLongPress();
+  //   this._showMenu = false;
+  //   this._lastInteractionType = null;
+  //   // don't reset _lastMouseEvent since it might still be useful
+  // }
+
 
 //
 //

@@ -8,6 +8,16 @@ import { utilRebind } from '../util/rebind';
 /**
  * `BehaviorAddWay` is a special `BehaviorDraw` for starting a new way
  *  It rewires some of the events, and adjusts the cancel/finish behavior
+ *
+ * Properties available:
+ *   `enabled`    `true` if the event handlers are enabled, `false` if not.
+ *   `lastDown`   `eventData` Object for the most recent down event
+ *   `lastMove`   `eventData` Object for the most recent move event
+ *
+ * Events available:
+ *   `start`          Fires on click on nothing, receives `loc` ([lon,lat])
+ *   `startFromWay`   Fires on click on a Way, receives `loc` ([lon,lat]) and `edge` Object
+ *   `startFromNode`  Fires on click on a Node, receives `loc` ([lon,lat]) and `entity` (the node)
  */
 export class BehaviorAddWay extends BehaviorDraw {
 
@@ -17,6 +27,7 @@ export class BehaviorAddWay extends BehaviorDraw {
    */
   constructor(context) {
     super(context);
+    this.id = 'add-way';
 
     // Make sure the event handlers have `this` bound correctly
     this._cancel = this._cancel.bind(this);
@@ -41,6 +52,15 @@ export class BehaviorAddWay extends BehaviorDraw {
   enable() {
     super.enable();
     this._context.map().dblclickZoomEnable(false);
+  }
+
+
+  /**
+   * disable
+   */
+  disable() {
+    super.disable();
+    this._context.map().dblclickZoomEnable(true);
   }
 
 

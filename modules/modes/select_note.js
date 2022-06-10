@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { behaviorLasso } from '../behavior/lasso';
-import { BehaviorSelect } from '../behavior/BehaviorSelect';
+// import { behaviorLasso } from '../behavior/lasso';
+// import { BehaviorSelect } from '../behavior/BehaviorSelect';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
@@ -27,12 +27,12 @@ export function modeSelectNote(context, selectedNoteID) {
                 .show(_noteEditor.note(note));
         });
 
-    var _behaviors = [
-        new BehaviorSelect(context),
-        behaviorLasso(context),
-        modeDragNode(context).behavior,
-        // modeDragNote(context).behavior
-    ];
+    // var _behaviors = [
+    //     new BehaviorSelect(context),
+    //     behaviorLasso(context),
+    //     modeDragNode(context).behavior,
+    //     // modeDragNote(context).behavior
+    // ];
 
     var _newFeature = false;
 
@@ -96,7 +96,8 @@ export function modeSelectNote(context, selectedNoteID) {
         var note = checkSelectedID();
         if (!note) return;
 
-        _behaviors.forEach(context.install);
+      context.enableBehaviors(['hover', 'select', 'drag']);
+        // _behaviors.forEach(context.install);
 
         _keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -119,7 +120,7 @@ export function modeSelectNote(context, selectedNoteID) {
 
 
     mode.exit = function() {
-        _behaviors.forEach(context.uninstall);
+        // _behaviors.forEach(context.uninstall);
 
         d3_select(document)
             .call(_keybinding.unbind);

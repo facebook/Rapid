@@ -2,7 +2,7 @@ import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
-import { BehaviorDrag } from '../behavior/BehaviorDrag';
+// import { BehaviorDrag } from '../behavior/BehaviorDrag';
 import { modeSelectNote } from './select_note';
 
 
@@ -12,7 +12,13 @@ export function modeDragNote(context) {
         button: 'browse'
     };
 
-    var behavior = new BehaviorDrag(context);
+    const behavior = context.behaviors.get('drag')
+      .on('start', start)
+      .on('move', move)
+      .on('end', end);
+    // var behavior = new BehaviorDrag(context);
+    // var drag = behavior
+
     var _nudgeInterval;
     var _lastLoc;
     var _note;    // most current note.. dragged note may have stale datum.
@@ -100,13 +106,10 @@ export function modeDragNote(context) {
     }
 
 
-    var drag = behavior
-        .on('start', start)
-        .on('move', move)
-        .on('end', end);
 
-
-    mode.enter = function() {};
+    mode.enter = function() {
+context.enableBehaviors(['hover', 'drag']);
+    };
 
 
     mode.exit = function() {
@@ -119,7 +122,7 @@ export function modeDragNote(context) {
         stopNudge();
     };
 
-    mode.behavior = drag;
+    // mode.behavior = drag;
 
     return mode;
 }

@@ -4,15 +4,19 @@ import { vecEqual } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 import { utilRebind } from '../util';
 
+const DEBUG = true;
+
 
 /**
- * `BehaviorHover` listens to pointer events
- * and hovers items that are hovered over
+ * `BehaviorHover` listens to pointer events and hovers items that are hovered over
  *
- * Properties you can access:
+ * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
  *   `lastMove`     `eventData` Object for the most recent move event
- *   `hoverTarget`  Current hover target (a PIXI DisplayObject), or null
+ *   `hoverTarget`   Current hover target (a PIXI DisplayObject), or null
+ *
+ * Events available:
+ *   `hoverchanged`  Fires whenever the hover target has changed, receives `eventData` Object
  */
 export class BehaviorHover extends AbstractBehavior {
 
@@ -22,6 +26,7 @@ export class BehaviorHover extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
+    this.id = 'hover';
 
     this._dispatch = d3_dispatch('hoverchanged');
     utilRebind(this, this._dispatch, 'on');
@@ -42,6 +47,10 @@ export class BehaviorHover extends AbstractBehavior {
     if (this._enabled) return;
     if (!this._context.pixi) return;
 
+    if (DEBUG) {
+      console.log('BehaviorHover: enabling listeners');  // eslint-disable-line no-console
+    }
+
     this._enabled = true;
     this.lastMove = null;
     this.hoverTarget = null;
@@ -60,6 +69,10 @@ export class BehaviorHover extends AbstractBehavior {
   disable() {
     if (!this._enabled) return;
     if (!this._context.pixi) return;
+
+    if (DEBUG) {
+      console.log('BehaviorHover: disabling listeners');  // eslint-disable-line no-console
+    }
 
     this._enabled = false;
     this.lastMove = null;
@@ -94,14 +107,18 @@ export class BehaviorHover extends AbstractBehavior {
       move.data = null;
     }
 
-    // const name = (move.target && move.target.name) || 'no target';
-    // console.log(`pointermove ${name}`);
-
     // Hover target has changed
     if (this.hoverTarget !== move.target) {
-      this._dispatch.call('hoverchanged', this, move);
       this.hoverTarget = move.target;
 
+      if (DEBUG) {
+        const name = (move.target && move.target.name) || 'no target';
+        console.log(`BehaviorHover: dispatching 'hoverchanged', hoverTarget = ${name}`);  // eslint-disable-line no-console
+      }
+      this._dispatch.call('hoverchanged', this, move);
+
+
+// vvv---- everything below here should be listening instead
       let ids = [];
       if (move.target && move.data) {
         ids = [move.target.name];  // the featureID is here (e.g. osm id)
