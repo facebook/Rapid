@@ -10,7 +10,7 @@ import { utilKeybinding, utilRebind } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
-const DEBUG = true;
+const DEBUG = false;
 
 
 /**
@@ -319,8 +319,8 @@ export class BehaviorDraw extends AbstractBehavior {
    *
    * related code
    * - `mode/drag_node.js`     `doMove()`
-   * - `behavior/draw.js`      `click()`
-   * - `behavior/draw_way.js`  `move()`
+   * - `behaviors/draw.js`      `click()`
+   * - `behaviors/draw_way.js`  `move()`
    *
    * @param  `eventData`  Object for the event that triggered the click
    */

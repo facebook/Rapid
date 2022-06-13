@@ -1,7 +1,7 @@
 import { utilArrayUniq } from '@id-sdk/util';
 
 import { actionExtract } from '../actions/extract';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';

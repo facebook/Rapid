@@ -1,7 +1,7 @@
 import { utilArrayGroupBy } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';

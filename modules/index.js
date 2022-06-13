@@ -1,5 +1,5 @@
 export * from './actions/index';
-export * from './behavior/index';
+export * from './behaviors/index';
 export * from './core/index';
 export * from './geo/index';
 export * from './modes/index';

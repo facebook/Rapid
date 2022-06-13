@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionSplit } from '../actions/split';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 
 

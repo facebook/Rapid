@@ -3,7 +3,7 @@ import { utilArrayDifference, utilGetAllNodes } from '@id-sdk/util';
 import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';
 import { actionStraightenWay } from '../actions/straighten_way';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/index';
 

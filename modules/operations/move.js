@@ -1,7 +1,7 @@
 import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { modeMove } from '../modes/move';
 import { utilTotalExtent } from '../util/util';

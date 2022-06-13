@@ -103,8 +103,8 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
 
     // related code
     // - `mode/drag_node.js`     `doMove()`
-    // - `behavior/draw.js`      `click()`
-    // - `behavior/draw_way.js`  `move()`
+    // - `behaviors/draw.js`      `click()`
+    // - `behaviors/draw_way.js`  `move()`
     function move(d3_event, datum) {
         var loc = context.map().mouseCoordinates();
 

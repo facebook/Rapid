@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionChangeTags } from '../actions/index';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {

@@ -3,8 +3,8 @@ import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
 
 import { t } from '../core/localizer';
-// import { behaviorLasso } from '../behavior/lasso';
-// import { BehaviorSelect } from '../behavior/BehaviorSelect';
+// import { behaviorLasso } from '../behaviors/lasso';
+// import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';

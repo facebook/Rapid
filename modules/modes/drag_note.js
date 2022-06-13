@@ -2,7 +2,7 @@ import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
-// import { BehaviorDrag } from '../behavior/BehaviorDrag';
+// import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { modeSelectNote } from './select_note';
 
 

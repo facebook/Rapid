@@ -31,7 +31,7 @@ module.exports = function (config) {
     // list of files / patterns to exclude
     exclude: [
       '**/*.js.map',
-      'test/spec/behavior/*.js',
+      'test/spec/behaviors/*.js',
       'test/spec/renderer/features.js',
 
       // Comment the next line to run the OSM renderer-specific unit test, which right now merely exercise the code.

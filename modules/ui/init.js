@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
-import { BehaviorHash } from '../behavior/BehaviorHash';
+import { BehaviorHash } from '../behaviors/BehaviorHash';
 import { modeBrowse } from '../modes/browse';
 import { svgDefs } from '../svg/defs';
 import { svgIcon } from '../svg/icon';

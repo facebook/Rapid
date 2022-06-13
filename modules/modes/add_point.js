@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-// import { BehaviorDraw } from '../behavior/BehaviorDraw';
+// import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmNode } from '../osm/node';

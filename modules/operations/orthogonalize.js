@@ -2,7 +2,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 
 

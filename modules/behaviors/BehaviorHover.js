@@ -4,7 +4,7 @@ import { vecEqual } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 import { utilRebind } from '../util';
 
-const DEBUG = true;
+const DEBUG = false;
 
 
 /**

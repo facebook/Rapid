@@ -5,7 +5,7 @@ import { actionMerge } from '../actions/merge';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionMergePolygon } from '../actions/merge_polygon';
 
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { presetManager } from '../presets';
 

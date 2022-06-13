@@ -15,7 +15,7 @@ import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
-const DEBUG = true;
+const DEBUG = false;
 
 
 /**

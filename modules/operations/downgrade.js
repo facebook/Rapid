@@ -1,5 +1,5 @@
 import { actionChangeTags } from '../actions/change_tags';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';

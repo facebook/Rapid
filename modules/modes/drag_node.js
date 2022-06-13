@@ -6,7 +6,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-// import { BehaviorDrag } from '../behavior/BehaviorDrag';
+// import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
 import { locationManager } from '../core/locations';
 import { modeBrowse } from './browse';
@@ -281,7 +281,7 @@ const target = false;
 //  /**
 //   * datum
 //   * related code
-//   * - `behavior/draw.js` `datum()`
+//   * - `behaviors/draw.js` `datum()`
 //   */
 //  function datum(d3_event) {
 //    if (!d3_event || d3_event.altKey) {
@@ -313,8 +313,8 @@ const target = false;
 //     if (!_nudgeInterval) {   // If not nudging at the edge of the viewport, try to snap..
 //         // related code
 //         // - `mode/drag_node.js`     `doMove()`
-//         // - `behavior/draw.js`      `click()`
-//         // - `behavior/draw_way.js`  `move()`
+//         // - `behaviors/draw.js`      `click()`
+//         // - `behaviors/draw_way.js`  `move()`
 //         var d = datum(e);
 //         target = d && d.properties && d.properties.entity;
 //         var targetLoc = target && target.loc;

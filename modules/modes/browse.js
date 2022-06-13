@@ -1,9 +1,9 @@
 import { t } from '../core/localizer';
 
-// import { BehaviorHover } from '../behavior/BehaviorHover';
-// import { behaviorLasso } from '../behavior/lasso';
-// import { BehaviorPaste } from '../behavior/BehaviorPaste';
-// import { BehaviorSelect } from '../behavior/BehaviorSelect';
+// import { BehaviorHover } from '../behaviors/BehaviorHover';
+// import { behaviorLasso } from '../behaviors/lasso';
+// import { BehaviorPaste } from '../behaviors/BehaviorPaste';
+// import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';

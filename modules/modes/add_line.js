@@ -2,7 +2,7 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 
-// import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
+// import { BehaviorAddWay } from '../behaviors/BehaviorAddWay';
 import { modeDrawLine } from './draw_line';
 import { osmNode, osmWay } from '../osm';
 

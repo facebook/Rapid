@@ -14,6 +14,8 @@ export class BehaviorKeyOperation extends AbstractBehavior {
    */
   constructor(context, operation) {
     super(context);
+    this.id = `key-${operation.id}`;
+
     this._operation = operation;
     this._keybinding = this._context.keybinding();  // "global" keybinding (on document)
 

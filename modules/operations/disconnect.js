@@ -2,7 +2,7 @@ import { utilArrayUniq, utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
 

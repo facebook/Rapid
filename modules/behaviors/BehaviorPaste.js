@@ -18,6 +18,7 @@ export class BehaviorPaste extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
+    this.id = 'paste';
     this._keybinding = this._context.keybinding();  // "global" keybinding (on document)
 
     // Make sure the event handlers have `this` bound correctly

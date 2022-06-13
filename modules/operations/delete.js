@@ -3,7 +3,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { prefs } from '../core/preferences';

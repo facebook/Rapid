@@ -7,7 +7,7 @@ import { utilRebind } from '../util';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
-const DEBUG = true;
+const DEBUG = false;
 
 /**
  * `BehaviorDrag` listens to pointer events and converts those into start/move/end drag events

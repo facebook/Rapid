@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-// import { behaviorDrawWay } from '../behavior/draw_way';
+// import { behaviorDrawWay } from '../behaviors/draw_way';
 
 
 export function modeDrawLine(context, wayID, startGraph, button, affix, continuing) {

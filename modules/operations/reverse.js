@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionReverse } from '../actions/reverse';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
 export function operationReverse(context, selectedIDs) {

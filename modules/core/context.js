@@ -14,11 +14,11 @@ import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
 
-import { BehaviorAddWay } from '../behavior/BehaviorAddWay';
-import { BehaviorDrag } from '../behavior/BehaviorDrag';
-import { BehaviorDraw } from '../behavior/BehaviorDraw';
-import { BehaviorHover } from '../behavior/BehaviorHover';
-import { BehaviorSelect } from '../behavior/BehaviorSelect';
+import { BehaviorAddWay } from '../behaviors/BehaviorAddWay';
+import { BehaviorDrag } from '../behaviors/BehaviorDrag';
+import { BehaviorDraw } from '../behaviors/BehaviorDraw';
+import { BehaviorHover } from '../behaviors/BehaviorHover';
+import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
 import { modeSelect } from '../modes/select';
 import { presetManager } from '../presets';

@@ -2,7 +2,7 @@ import { utilArrayGroupBy } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { modeDrawLine } from '../modes/draw_line';
-import { BehaviorKeyOperation } from '../behavior/BehaviorKeyOperation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
 export function operationContinue(context, selectedIDs) {
