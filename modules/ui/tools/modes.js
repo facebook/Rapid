@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { modeAddArea, modeAddLine, modeAddPoint } from '../../modes';
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { svgIcon } from '../../svg/icon';
@@ -16,27 +15,33 @@ export function uiToolDrawModes(context) {
   };
 
   const modes = [
-    modeAddPoint(context, {
+    {
+      id: 'add-point',
+      updated: true, // todo: remove this hack
       title: t.html('modes.add_point.title'),
       button: 'point',
       description: t.html('modes.add_point.description'),
       preset: presetManager.item('point'),
       key: '1'
-    }),
-    modeAddLine(context, {
+    },
+    {
+      id: 'add-line',
+      updated: true, // todo: remove this hack
       title: t.html('modes.add_line.title'),
       button: 'line',
       description: t.html('modes.add_line.description'),
       preset: presetManager.item('line'),
       key: '2'
-    }),
-    modeAddArea(context, {
+    },
+    {
+      id: 'add-area',
+      updated: true, // todo: remove this hack
       title: t.html('modes.add_area.title'),
       button: 'area',
       description: t.html('modes.add_area.description'),
       preset: presetManager.item('area'),
       key: '3'
-    })
+    }
   ];
 
 
@@ -48,14 +53,21 @@ export function uiToolDrawModes(context) {
 
     const debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
-    modes.forEach(mode => {
-      context.keybinding().on(mode.key, () => {
+    modes.forEach(d => {
+      context.keybinding().on(d.key, () => {
         if (!context.editable()) return;
 
-        if (mode.id === context.mode().id) {
+        if (d.id === context.mode().id) {
           context.enter('browse');
         } else {
-          context.enter(mode);
+// todo: remove - handle old or new way of using the mode
+          if (d.updated) {
+            context.enter(d.id);
+            // context.mode().defaultTags = d.preset.setTags({}, 'point');
+ // this.defaultTags = d.preset.setTags(this.defaultTags, 'point');
+          } else {
+            context.enter(d);
+          }
         }
       });
     });
@@ -92,7 +104,14 @@ export function uiToolDrawModes(context) {
           if (d.id === currMode) {
             context.enter('browse');
           } else {
-            context.enter(d);
+// todo: remove - handle old or new way of using the mode
+            if (d.updated) {
+              context.enter(d.id);
+              // context.mode().defaultTags = d.preset.setTags({}, 'point');
+ // this.defaultTags = d.preset.setTags(this.defaultTags, 'point');
+            } else {
+              context.enter(d);
+            }
           }
         })
         .call(uiTooltip()
@@ -122,14 +141,14 @@ export function uiToolDrawModes(context) {
       buttons = buttons
         .merge(buttonsEnter)
         .classed('disabled', () => !context.editable())
-        .classed('active', d => (context.mode() && context.mode().button === d.button));
+        .classed('active', d => (context.mode() && context.mode().id === d.id));
     }
   };
 
 
   tool.uninstall = function () {
-    modes.forEach(mode => {
-      context.keybinding().off(mode.key);
+    modes.forEach(d => {
+      context.keybinding().off(d.key);
     });
 
     context.map()

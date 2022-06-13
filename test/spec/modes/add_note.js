@@ -1,4 +1,4 @@
-describe('iD.modeAddNote', function() {
+describe.skip('iD.ModeAddNote', function() {
     var context;
 
     before(function() {
@@ -21,7 +21,7 @@ describe('iD.modeAddNote', function() {
             .attr('class', 'inspector-wrap');
 
         context.map().centerZoom([-77.02271, 38.90085], 20);
-        context.enter(iD.modeAddNote(context));
+        context.enter('add-note');
     });
 
     describe('clicking the map', function () {

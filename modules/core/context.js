@@ -20,6 +20,10 @@ import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
+import { ModeAddArea } from '../modes/ModeAddArea';
+import { ModeAddLine } from '../modes/ModeAddLine';
+import { ModeAddNote } from '../modes/ModeAddNote';
+import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
 import { modeSelect } from '../modes/select';
 
@@ -609,6 +613,10 @@ export function coreContext() {
 
       // Initialize modes
       [
+        new ModeAddArea(context),
+        new ModeAddLine(context),
+        new ModeAddNote(context),
+        new ModeAddPoint(context),
         new ModeBrowse(context)
       ].forEach(mode => context.modes.set(mode.id, mode));
     }

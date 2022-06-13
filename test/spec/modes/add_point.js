@@ -1,4 +1,4 @@
-describe.skip('iD.modeAddPoint', function() {
+describe.skip('iD.ModeAddPoint', function() {
     var context;
 
     beforeEach(function() {
@@ -11,7 +11,7 @@ describe.skip('iD.modeAddPoint', function() {
             .attr('class', 'inspector-wrap');
 
         context.map().centerZoom([-77.02271, 38.90085], 20);
-        context.enter(iD.modeAddPoint(context));
+        context.enter('add-point');
     });
 
     describe('clicking the map', function () {

@@ -1,6 +1,5 @@
 import { AbstractMode } from './AbstractMode';
 import { operationPaste } from '../operations/paste';
-import { t } from '../core/localizer';
 
 const DEBUG = false;
 
@@ -36,7 +35,6 @@ export class ModeBrowse extends AbstractMode {
     this._active = true;
     this._context.enableBehaviors(['hover', 'select', 'drag']);
 
-// does this work or do anything?
     // Get focus on the body.
     if (document.activeElement && document.activeElement.blur) {
       document.activeElement.blur();

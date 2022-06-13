@@ -1,9 +1,9 @@
+export { ModeAddArea } from './ModeAddArea';
+export { ModeAddLine } from './ModeAddLine';
+export { ModeAddNote } from './ModeAddNote';
+export { ModeAddPoint } from './ModeAddPoint';
 export { ModeBrowse } from './ModeBrowse';
 
-export { modeAddArea } from './add_area';
-export { modeAddLine } from './add_line';
-export { modeAddPoint } from './add_point';
-export { modeAddNote } from './add_note';
 export { modeDragNode } from './drag_node';
 export { modeDragNote } from './drag_note';
 export { modeDrawArea } from './draw_area';

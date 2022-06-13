@@ -1,7 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { modeAddNote } from '../../modes';
 import { t } from '../../core/localizer';
 import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
@@ -13,7 +12,14 @@ export function uiToolNotes(context) {
     label: t.html('modes.add_note.label')
   };
 
-  const mode = modeAddNote(context);
+  const mode = {
+    id: 'add-note',
+    title: t.html('modes.add_note.title'),
+    button: 'note',
+    description: t.html('modes.add_note.description'),
+    key: '4'
+  };
+
 
   function notesEnabled() {
     const noteLayer = context.layers().getLayer('notes');
@@ -35,7 +41,7 @@ export function uiToolNotes(context) {
       if (mode.id === context.mode().id) {
         context.enter('browse');
       } else {
-        context.enter(mode);
+        context.enter(mode.id);
       }
     });
 
@@ -72,7 +78,7 @@ export function uiToolNotes(context) {
           if (d.id === currMode) {
             context.enter('browse');
           } else {
-            context.enter(d);
+            context.enter(d.id);
           }
         })
         .call(uiTooltip()
@@ -97,7 +103,7 @@ export function uiToolNotes(context) {
       buttons = buttons
         .merge(buttonsEnter)
         .classed('disabled', () => !notesEnabled())
-        .classed('active', d => context.mode() && context.mode().button === d.button);
+        .classed('active', d => context.mode() && context.mode().id === d.id);
     }
   };
 
