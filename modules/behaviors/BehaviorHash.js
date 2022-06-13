@@ -5,7 +5,6 @@ import _throttle from 'lodash-es/throttle';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { t } from '../core/localizer';
-import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { utilDisplayLabel } from '../util';
 
@@ -245,7 +244,7 @@ export class BehaviorHash extends AbstractBehavior {
       const MAXDIST = 500;
 
       if (mode && mode.id.match(/^draw/) !== null && dist > MAXDIST) {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         return;
       }
     }

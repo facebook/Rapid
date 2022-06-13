@@ -9,7 +9,6 @@ import { actionNoop } from '../actions/noop';
 // import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
 import { locationManager } from '../core/locations';
-import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
 import { presetManager } from '../presets';
@@ -264,7 +263,7 @@ const target = false;
       if (reselection.length) {
         context.enter(modeSelect(context, reselection));
       } else {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       }
     }
   }
@@ -275,7 +274,7 @@ const target = false;
    */
   function cancel() {
     // drag.cancel();
-    context.enter(modeBrowse(context));
+    context.enter('browse');
   }
 
 //  /**

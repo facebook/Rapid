@@ -1,7 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 
-import { modeBrowse } from './browse';
 import { services } from '../services';
 import { uiConflicts } from '../ui/conflicts';
 import { uiConfirm } from '../ui/confirm';
@@ -33,7 +32,7 @@ export function modeSave(context) {
 
 
     function cancel() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 
@@ -153,12 +152,13 @@ export function modeSave(context) {
     function showSuccess(changeset) {
         commit.reset();
 
-        var ui = _success
+        var content = _success
             .changeset(changeset)
             .location(_location)
             .on('cancel', function() { context.ui().sidebar.hide(); });
 
-        context.enter(modeBrowse(context).sidebar(ui));
+        context.enter('browse');
+        context.ui().sidebar.show(content);
     }
 
 

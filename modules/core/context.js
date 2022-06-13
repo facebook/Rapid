@@ -20,7 +20,9 @@ import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
+import { ModeBrowse } from '../modes/ModeBrowse';
 import { modeSelect } from '../modes/select';
+
 import { presetManager } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
 import { services } from '../services';
@@ -313,9 +315,23 @@ export function coreContext() {
 
 
   /* Modes */
-  let _mode;
+  // "Modes" are editing tasks that the user are allowed to perform.
+  // Each mode is exclusive, i.e only one mode can be active at a time.
+  context.modes = new Map();  // Map (mode.id -> mode)
+  let _mode;  // the current mode
+
   context.mode = () => _mode;
-  context.enter = (newMode) => {
+  context.enter = (modeOrModeID) => {
+    let newMode;
+    if (typeof modeOrModeID === 'string') {
+      newMode = context.modes.get(modeOrModeID);
+    } else {
+      newMode = modeOrModeID;
+    }
+    if (!newMode) {
+      console.error(`context.enter: no such mode: ${modeOrModeID}`);  // eslint-disable-line no-console
+    }
+
     if (_mode) {
       _mode.exit();
       _container.classed(`mode-${_mode.id}`, false);
@@ -327,6 +343,7 @@ export function coreContext() {
     _container.classed(`mode-${_mode.id}`, true);
     dispatch.call('enter', this, _mode);
   };
+
 
   context.selectedIDs = () => (_mode && _mode.selectedIDs && _mode.selectedIDs()) || [];
   context.activeID = () => _mode && _mode.activeID && _mode.activeID();
@@ -346,10 +363,10 @@ export function coreContext() {
   };
 
 
-  // Behaviors
+  /* Behaviors */
   // "Behaviors" are bundles of event handlers that we can
   // enable and disable depending on what the user is doing.
-  context.behaviors = new Map();  // Map (behaviorID -> behavior)
+  context.behaviors = new Map();  // Map (behavior.id -> behavior)
 
   context.enableBehaviors = function(enableIDs) {
     if (!(enableIDs instanceof Set)) {
@@ -369,8 +386,12 @@ export function coreContext() {
     });
   };
 
- context.install = (behavior) =>  { console.error('error: do not call context.install anymore'); };
- context.uninstall = (behavior) =>  { console.error('error: do not call context.uninstall anymore'); };
+ context.install = (behavior) => {
+   console.error('error: do not call context.install anymore');   // eslint-disable-line no-console
+ };
+ context.uninstall = (behavior) => {
+   console.error('error: do not call context.uninstall anymore');   // eslint-disable-line no-console
+ };
 //old redo on every mode change
 //  context.install = (behavior) => {
 //    if (typeof behavior.enable === 'function') {
@@ -585,6 +606,11 @@ export function coreContext() {
         new BehaviorHover(context),
         new BehaviorSelect(context)
       ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
+
+      // Initialize modes
+      [
+        new ModeBrowse(context)
+      ].forEach(mode => context.modes.set(mode.id, mode));
     }
 
     // Set up objects that might need to access properties of `context`. The order

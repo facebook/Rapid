@@ -2,7 +2,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
-import { modeBrowse } from '../modes';
 import { uiModal } from './modal';
 
 
@@ -53,7 +52,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
           ds.enabled = false;
         }
       });
-      context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+      context.enter('browse');   // return to browse mode (in case something was selected)
       context.map().immediateRedraw();
     }
   }

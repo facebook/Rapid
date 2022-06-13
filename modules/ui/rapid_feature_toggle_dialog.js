@@ -5,7 +5,6 @@ import { marked } from 'marked';
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
-import { modeBrowse } from '../modes';
 import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
@@ -45,7 +44,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       const rapidLayer = context.layers().getLayer('rapid');
       rapidLayer.makeDirty();
 
-      context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+      context.enter('browse');   // return to browse mode (in case something was selected)
       context.map().immediateRedraw();
     }
   }

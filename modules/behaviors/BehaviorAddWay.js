@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { BehaviorDraw } from './BehaviorDraw';
-import { modeBrowse } from '../modes/browse';
 import { utilRebind } from '../util/rebind';
 
 
@@ -72,7 +71,7 @@ export class BehaviorAddWay extends BehaviorDraw {
       this._context.map().dblclickZoomEnable(true);
     }, 1000);
 
-    this._context.enter(modeBrowse(this._context));
+    this._context.enter('browse');
   }
 
 }

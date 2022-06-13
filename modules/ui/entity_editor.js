@@ -5,7 +5,6 @@ import deepEqual from 'fast-deep-equal';
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { actionChangeTags } from '../actions/change_tags';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 import { utilRebind } from '../util';
 
@@ -137,7 +136,7 @@ export function uiEntityEditor(context) {
         headerEnter
             .append('button')
             .attr('class', 'close')
-            .on('click', function() { context.enter(modeBrowse(context)); })
+            .on('click', function() { context.enter('browse'); })
             .call(svgIcon(_modified ? '#iD-icon-apply' : '#iD-icon-close'));
 
         headerEnter

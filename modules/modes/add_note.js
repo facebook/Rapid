@@ -1,6 +1,5 @@
 import { t } from '../core/localizer';
 // import { BehaviorDraw } from '../behaviors/BehaviorDraw';
-import { modeBrowse } from './browse';
 import { modeSelectNote } from './select_note';
 import { osmNote } from '../osm';
 import { services } from '../services';
@@ -39,7 +38,7 @@ export function modeAddNote(context) {
 
 
     function cancel() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 

@@ -1,11 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 
 // import { uiField } from './field';
@@ -15,11 +12,7 @@ import { uiNoteComments } from './note_comments';
 import { uiNoteHeader } from './note_header';
 import { uiNoteReport } from './note_report';
 import { uiViewOnOSM } from './view_on_osm';
-
-import {
-    utilNoAuto,
-    utilRebind
-} from '../util';
+import { utilNoAuto, utilRebind } from '../util';
 
 
 export function uiNoteEditor(context) {
@@ -47,7 +40,7 @@ export function uiNoteEditor(context) {
             .append('button')
             .attr('class', 'close')
             .on('click', function() {
-                context.enter(modeBrowse(context));
+                context.enter('browse');
             })
             .call(svgIcon('#iD-icon-close'));
 
@@ -390,7 +383,7 @@ export function uiNoteEditor(context) {
         if (osm) {
             osm.removeNote(d);
         }
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         dispatch.call('change');
     }
 

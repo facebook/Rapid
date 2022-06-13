@@ -3,7 +3,6 @@ import { utilArrayIdentical, utilArrayUnion } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
-import { modeBrowse } from '../../modes/browse';
 import { uiField } from '../field';
 import { uiFormFields } from '../form_fields';
 import { uiSection } from '../section';
@@ -126,7 +125,7 @@ export function uiSectionPresetFields(context) {
                 if (d3_event.keyCode === 13 && // ↩ Return
                     context.container().select('.combobox').empty()) {
 
-                    context.enter(modeBrowse(context));
+                    context.enter('browse');
                 }
             });
     }

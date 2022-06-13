@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { Extent } from '@id-sdk/extent';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 import { uiLoading } from './loading';
 
@@ -48,7 +47,7 @@ export function uiGeolocate(context) {
 
   function success(result) {
     if (_enabled) {    // user may have disabled it before the callback fires
-      context.enter(modeBrowse(context));
+      context.enter('browse');
 
       const coords = result.coords;
       const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);

@@ -1,12 +1,9 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, pointBox, pad, selectMenuItem, transitionTime } from './helper';
@@ -38,7 +35,7 @@ export function uiIntroPoint(context, reveal) {
 
 
     function addPoint() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
 
         var msec = transitionTime(intersection, context.map().center());
@@ -272,7 +269,7 @@ export function uiIntroPoint(context, reveal) {
         var oldPreset = presetManager.match(entity, context.graph());
         context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         var msec = transitionTime(entity.loc, context.map().center());
         if (msec) { reveal(null, null, { duration: 0 }); }
@@ -366,7 +363,7 @@ export function uiIntroPoint(context, reveal) {
         var entity = context.hasEntity(_pointID);
         if (!entity) return chapter.restart();
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         var box = pointBox(entity.loc, context);
         var textId = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';

@@ -31,7 +31,7 @@ describe('iD.behaviorSelect', function() {
             .enter().append('circle')
             .attr('class', function(d) { return d.id; });
 
-        context.enter(iD.modeBrowse(context));
+        context.enter('browse');
 
         behavior = iD.behaviorSelect(context);
         context.install(behavior);

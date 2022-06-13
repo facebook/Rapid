@@ -8,7 +8,6 @@ import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { BehaviorDraw } from './BehaviorDraw';
 import { geoChooseEdge, geoHasSelfIntersections } from '../geo';
-import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
 import { utilRebind } from '../util/rebind';
@@ -450,7 +449,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
             .classed('nope-disabled', false)
             .classed('nope-suppressed', false);
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     };
 
 

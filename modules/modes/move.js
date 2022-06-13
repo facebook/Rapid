@@ -5,7 +5,6 @@ import { t } from '../core/localizer';
 import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
 import { locationManager } from '../core/locations';
-import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { utilKeybinding } from '../util';
 import { utilFastMouse } from '../util/util';
@@ -110,7 +109,7 @@ export function modeMove(context, entityIDs, baseGraph) {
     function cancel() {
         if (baseGraph) {
             while (context.graph() !== baseGraph) context.pop();  // reset to baseGraph
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         } else {
             if (_prevGraph) context.pop();   // remove the move
             context.enter(modeSelect(context, entityIDs));
@@ -120,7 +119,7 @@ export function modeMove(context, entityIDs, baseGraph) {
 
 
     function undone() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 

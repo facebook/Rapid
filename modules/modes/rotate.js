@@ -6,7 +6,6 @@ import { utilGetAllNodes } from '@id-sdk/util';
 import { t } from '../core/localizer';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
-import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { operationCircularize } from '../operations/circularize';
 import { operationDelete } from '../operations/delete';
@@ -113,7 +112,7 @@ export function modeRotate(context, entityIDs) {
 
 
     function undone() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 

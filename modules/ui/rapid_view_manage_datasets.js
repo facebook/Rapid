@@ -6,7 +6,6 @@ import { marked } from 'marked';
 
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
-import { modeBrowse } from '../modes';
 import { services } from '../services';
 import { svgIcon } from '../svg/icon';
 import { uiCombobox} from './combobox';
@@ -491,7 +490,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     _content.call(renderModalContent);
 
-    context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
+    context.enter('browse');   // return to browse mode (in case something was selected)
     context.map().immediateRedraw();
   }
 

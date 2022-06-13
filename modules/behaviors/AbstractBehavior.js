@@ -24,7 +24,7 @@ export class AbstractBehavior {
   /**
    * destroy
    * Every behavior should have a destroy function
-   * to frees all the resources and refrences held by the behavior
+   * to free all the resources and refrences held by the behavior
    * Do not use the behavior after calling `destroy()`.
    */
   destroy() {

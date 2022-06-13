@@ -2,14 +2,13 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 
 import { uiOsmoseDetails } from './osmose_details';
 import { uiOsmoseHeader } from './osmose_header';
 import { uiViewOnOsmose } from './view_on_osmose';
-
 import { utilRebind } from '../util';
+
 
 export function uiOsmoseEditor(context) {
   const dispatch = d3_dispatch('change');
@@ -30,7 +29,7 @@ export function uiOsmoseEditor(context) {
     headerEnter
       .append('button')
         .attr('class', 'close')
-        .on('click', () => context.enter(modeBrowse(context)))
+        .on('click', () => context.enter('browse'))
         .call(svgIcon('#iD-icon-close'));
 
     headerEnter

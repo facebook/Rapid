@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { vecEqual, vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { modeBrowse } from '../modes/browse';
 import { modeSelect } from '../modes/select';
 import { modeSelectData } from '../modes/select_data';
 import { modeSelectNote } from '../modes/select_note';
@@ -360,7 +359,7 @@ export class BehaviorSelect extends AbstractBehavior {
       context.selectedNoteID(null);
       context.selectedErrorID(null);
       if (mode.id !== 'browse' && !this._multiSelection.size) {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       }
       return;
     }
@@ -772,7 +771,7 @@ export class BehaviorSelect extends AbstractBehavior {
 //            context.selectedNoteID(null);
 //            context.selectedErrorID(null);
 //            if (!isMultiselect && mode.id !== 'browse') {
-//                context.enter(modeBrowse(context));
+//                context.enter('browse');
 //            }
 //        }
 //

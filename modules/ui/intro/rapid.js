@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { marked } from 'marked';
 import { t } from '../../core/localizer';
-import { modeBrowse} from '../../modes';
 import { utilRebind } from '../../util/rebind';
 import { icon, pad, transitionTime } from './helper';
 
@@ -48,7 +47,7 @@ export function uiIntroRapid(context, reveal) {
 
   function welcome() {
     context.layers().enable('rapid');
-    context.enter(modeBrowse(context));
+    context.enter('browse');
     context.history().reset('initial');
     reveal('.intro-nav-wrap .chapter-rapid',
       t('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),

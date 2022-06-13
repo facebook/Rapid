@@ -6,7 +6,6 @@ import { select as d3_select } from 'd3-selection';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { svgIcon } from '../../svg/icon';
-import { modeBrowse } from '../../modes/browse';
 import { uiCmd } from '../cmd';
 import { uiSection } from '../section';
 import { uiSettingsCustomData } from '../settings/custom_data';
@@ -54,7 +53,7 @@ export function uiSectionDataLayers(context) {
     } else {
       layers.disable(layerID);
       if (layerID === 'osm' || layerID === 'notes') {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       }
     }
   }

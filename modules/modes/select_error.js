@@ -6,7 +6,6 @@ import { Extent } from '@id-sdk/math';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
@@ -71,7 +70,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         if (!errorService) return;
         var error = errorService.getError(selectedErrorID);
         if (!error) {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         }
         return error;
     }
@@ -123,7 +122,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
                 // disappeared because the user moved them out of view..
                 var source = d3_event && d3_event.type === 'zoom' && d3_event.sourceEvent;
                 if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
-                    context.enter(modeBrowse(context));
+                    context.enter('browse');
                 }
 
             } else {
@@ -136,7 +135,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
         function esc() {
             if (context.container().select('.combobox').size()) return;
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         }
     };
 

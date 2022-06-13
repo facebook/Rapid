@@ -1,13 +1,9 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { geoSphericalDistance } from '@id-sdk/geo';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, pad, selectMenuItem, transitionTime } from './helper';
@@ -56,7 +52,7 @@ export function uiIntroLine(context, reveal) {
 
 
     function addLine() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
 
         var msec = transitionTime(tulipRoadStart, context.map().center());
@@ -592,7 +588,7 @@ export function uiIntroLine(context, reveal) {
 
     function deleteLines() {
         context.history().reset('doneUpdateLine');
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         if (!context.hasEntity(washingtonStreetID) ||
             !context.hasEntity(twelfthAvenueID) ||
@@ -643,7 +639,7 @@ export function uiIntroLine(context, reveal) {
 
     function rightClickIntersection() {
         context.history().reset('doneUpdateLine');
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         context.map().centerZoomEase(eleventhAvenueEnd, 18, 500);
 
@@ -745,7 +741,7 @@ export function uiIntroLine(context, reveal) {
 
 
     function retrySplit() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.map().centerZoomEase(eleventhAvenueEnd, 18, 500);
         var advance = function() { continueTo(rightClickIntersection); };
 
@@ -1030,7 +1026,7 @@ export function uiIntroLine(context, reveal) {
 
 
     function retryDelete() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         var padding = 200 * Math.pow(2, context.map().zoom() - 18);
         var box = pad(twelfthAvenue, padding, context);

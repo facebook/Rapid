@@ -5,7 +5,6 @@ import { localize } from './helper';
 import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
 import { coreGraph } from '../../core/graph';
-import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
@@ -76,7 +75,7 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
-    context.enter(modeBrowse(context));
+    context.enter('browse');
 
     // Save current map state
     let osm = context.connection();
@@ -240,7 +239,7 @@ export function uiIntro(context, skipToRapid) {
 
     function enterChapter(d3_event, newChapter) {
       if (_currChapter) _currChapter.exit();
-      context.enter(modeBrowse(context));
+      context.enter('browse');
 
       _currChapter = newChapter;
       _currChapter.enter();

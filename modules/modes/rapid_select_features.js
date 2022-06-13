@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 // import { BehaviorHover, behaviorLasso, BehaviorSelect } from '../behavior';
-import { modeBrowse, modeDragNode, modeDragNote } from '../modes';
+import { modeDragNode, modeDragNote } from '../modes';
 import { services } from '../services';
 import { uiRapidFeatureInspector } from '../ui';
 import { utilKeybinding } from '../util';
@@ -37,7 +37,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
       // disappeared because the user moved them out of view..
       const source = d3_event && d3_event.type === 'zoom' && d3_event.sourceEvent;
       if (drawn && source && (source.type === 'mousemove' || source.type === 'touchmove')) {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       }
     } else {
       selection.classed('selected', true);
@@ -47,7 +47,7 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
   function esc() {
     if (d3_select('.combobox').size()) return;
-    context.enter(modeBrowse(context));
+    context.enter('browse');
   }
 
 

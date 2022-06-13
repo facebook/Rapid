@@ -3,7 +3,6 @@ import { utilArrayUniq } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
 import { helpHtml, icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
@@ -52,7 +51,7 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function addHouse() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
         _houseID = null;
 
@@ -311,7 +310,7 @@ export function uiIntroBuilding(context, reveal) {
     function rightClickHouse() {
         if (!_houseID) return chapter.restart();
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('hasHouse');
         var zoom = context.map().zoom();
         if (zoom < 20) {
@@ -406,7 +405,7 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function retryClickSquare() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         revealHouse(house, helpHtml('intro.buildings.retry_square'), {
             buttonText: t.html('intro.ok'),
@@ -434,7 +433,7 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function addTank() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('doneSquare');
         _tankID = null;
 
@@ -639,7 +638,7 @@ export function uiIntroBuilding(context, reveal) {
     function rightClickTank() {
         if (!_tankID) return continueTo(addTank);
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('hasTank');
         context.map().centerEase(tank, 500);
 
@@ -736,7 +735,7 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function retryClickCircle() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         revealTank(tank, helpHtml('intro.buildings.retry_circle'), {
             buttonText: t.html('intro.ok'),

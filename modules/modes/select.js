@@ -13,7 +13,6 @@ import { actionDeleteRelation } from '../actions/delete_relation';
 //import { BehaviorPaste } from '../behaviors/BehaviorPaste';
 //import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
-import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
 import { osmNode, osmWay } from '../osm';
@@ -69,7 +68,7 @@ export function modeSelect(context, selectedIDs) {
         }
 
         if (!ids.length) {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
             return false;
         } else if ((selectedIDs.length > 1 && ids.length === 1) || (selectedIDs.length === 1 && ids.length > 1)) {
             // switch between single- and multi-select UI
@@ -355,7 +354,7 @@ export function modeSelect(context, selectedIDs) {
 
         function esc() {
             if (context.container().select('.combobox').size()) return;
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         }
 
 

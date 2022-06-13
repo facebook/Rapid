@@ -5,7 +5,6 @@ import { Extent } from '@id-sdk/math';
 import { t } from '../core/localizer';
 // import { behaviorLasso } from '../behaviors/lasso';
 // import { BehaviorSelect } from '../behaviors/BehaviorSelect';
-import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
 import { uiDataEditor } from '../ui/data_editor';
@@ -38,7 +37,7 @@ export function modeSelectData(context, selectedDatum) {
             // disappeared because the user moved them out of view..
             var source = d3_event && d3_event.type === 'zoom' && d3_event.sourceEvent;
             if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
-                context.enter(modeBrowse(context));
+                context.enter('browse');
             }
         } else {
             selection.classed('selected', true);
@@ -48,7 +47,7 @@ export function modeSelectData(context, selectedDatum) {
 
     function esc() {
         if (context.container().select('.combobox').size()) return;
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 

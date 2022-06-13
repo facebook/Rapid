@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 // import { behaviorLasso } from '../behaviors/lasso';
 // import { BehaviorSelect } from '../behaviors/BehaviorSelect';
-import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
 import { services } from '../services';
@@ -41,7 +40,7 @@ export function modeSelectNote(context, selectedNoteID) {
         if (!services.osm) return;
         var note = services.osm.getNote(selectedNoteID);
         if (!note) {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         }
         return note;
     }
@@ -58,7 +57,7 @@ export function modeSelectNote(context, selectedNoteID) {
             // disappeared because the user moved them out of view..
             var source = d3_event && d3_event.type === 'zoom' && d3_event.sourceEvent;
             if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
-                context.enter(modeBrowse(context));
+                context.enter('browse');
             }
 
         } else {
@@ -72,7 +71,7 @@ export function modeSelectNote(context, selectedNoteID) {
 
     function esc() {
         if (context.container().select('.combobox').size()) return;
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 

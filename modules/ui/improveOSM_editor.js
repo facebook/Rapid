@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 
 import { uiImproveOsmComments } from './improveOSM_comments';
@@ -31,7 +30,7 @@ export function uiImproveOsmEditor(context) {
     headerEnter
       .append('button')
         .attr('class', 'close')
-        .on('click', () => context.enter(modeBrowse(context)))
+        .on('click', () => context.enter('browse'))
         .call(svgIcon('#iD-icon-close'));
 
     headerEnter

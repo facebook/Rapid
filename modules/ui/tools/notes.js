@@ -1,7 +1,7 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { modeAddNote, modeBrowse } from '../../modes';
+import { modeAddNote } from '../../modes';
 import { t } from '../../core/localizer';
 import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
@@ -33,7 +33,7 @@ export function uiToolNotes(context) {
       if (!notesEditable()) return;
 
       if (mode.id === context.mode().id) {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       } else {
         context.enter(mode);
       }
@@ -70,7 +70,7 @@ export function uiToolNotes(context) {
           if (/^draw/.test(currMode)) return;
 
           if (d.id === currMode) {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
           } else {
             context.enter(d);
           }

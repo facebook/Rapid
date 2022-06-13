@@ -1,12 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, pointBox, transitionTime } from './helper';
@@ -47,7 +43,7 @@ export function uiIntroNavigation(context, reveal) {
 
 
     function dragMap() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
 
         var msec = transitionTime(townHall, context.map().center());
@@ -165,7 +161,7 @@ export function uiIntroNavigation(context, reveal) {
     }
 
     function clickTownHall() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
 
         var entity = context.hasEntity(hallId);
@@ -382,7 +378,7 @@ export function uiIntroNavigation(context, reveal) {
 
 
     function searchStreet() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');  // ensure spring street exists
 
         var msec = transitionTime(springStreet, context.map().center());

@@ -1,6 +1,6 @@
 import { GlowFilter } from '@pixi/filter-glow';
 
-import { modeBrowse, modeSelect, modeRapidSelectFeatures } from '../modes';
+import { modeSelect, modeRapidSelectFeatures } from '../modes';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 import { t } from '../core/localizer';
@@ -113,7 +113,7 @@ export class PixiEventsHandler {
         this.onRightClickHandler(e);
       }
     } else {
-      this.context.enter(modeBrowse(this.context));
+      this.context.enter('browse');
     }
 
     this.dispatch.call('change');

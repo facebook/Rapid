@@ -1,6 +1,5 @@
 import { t } from '../core/localizer';
 // import { BehaviorDraw } from '../behaviors/BehaviorDraw';
-import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmNode } from '../osm/node';
 import { actionAddEntity } from '../actions/add_entity';
@@ -76,7 +75,7 @@ export function modeAddPoint(context, mode) {
 
 
     function cancel() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 

@@ -1,7 +1,7 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
-import { modeAddArea, modeAddLine, modeAddPoint, modeBrowse } from '../../modes';
+import { modeAddArea, modeAddLine, modeAddPoint } from '../../modes';
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { svgIcon } from '../../svg/icon';
@@ -53,7 +53,7 @@ export function uiToolDrawModes(context) {
         if (!context.editable()) return;
 
         if (mode.id === context.mode().id) {
-          context.enter(modeBrowse(context));
+          context.enter('browse');
         } else {
           context.enter(mode);
         }
@@ -90,7 +90,7 @@ export function uiToolDrawModes(context) {
           if (/^draw/.test(currMode)) return;
 
           if (d.id === currMode) {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
           } else {
             context.enter(d);
           }

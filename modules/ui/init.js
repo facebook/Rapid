@@ -4,7 +4,6 @@ import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
 import { BehaviorHash } from '../behaviors/BehaviorHash';
-import { modeBrowse } from '../modes/browse';
 import { svgDefs } from '../svg/defs';
 import { svgIcon } from '../svg/icon';
 import { utilDetect } from '../util/detect';
@@ -384,7 +383,7 @@ export function uiInit(context) {
         if (mode && /^draw/.test(mode.id)) return;
 
         const layer = context.layers().toggle('osm');
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       })
       .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
         d3_event.preventDefault();
@@ -392,7 +391,7 @@ export function uiInit(context) {
       });
 
 
-    context.enter(modeBrowse(context));
+    context.enter('browse');
 
     const osm = context.connection();
     const startWalkthrough = (_initCounter === 0 && context.initialHashParams.startWalkthrough === 'true');
@@ -599,7 +598,7 @@ export function uiInit(context) {
 
     let surfaceNode = context.surface().node();
     if (surfaceNode.focus) {   // FF doesn't support it
-      // focus the surface or else clicking off the menu may not trigger modeBrowse
+      // focus the surface or else clicking off the menu may not trigger browse mode
       surfaceNode.focus();
     }
 

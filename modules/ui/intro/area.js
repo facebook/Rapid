@@ -1,12 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-
-import {
-    interpolateNumber as d3_interpolateNumber
-} from 'd3-interpolate';
+import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, pad, transitionTime } from './helper';
@@ -46,7 +42,7 @@ export function uiIntroArea(context, reveal) {
 
 
     function addArea() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
         _areaID = null;
 
