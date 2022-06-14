@@ -224,7 +224,7 @@ export function uiMapInMap(context) {
                 bboxContainer.addChild(bboxGraphic);
            } else {
                const bboxPolyGraphic = bboxContainer.children[0];
-                bboxPolyGraphic.clear().drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight).lineStyle(2, 0x00ffff);
+                bboxPolyGraphic.clear().lineStyle(2, 0x00ffff).drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
             }
        }
 
