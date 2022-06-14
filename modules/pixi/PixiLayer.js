@@ -21,8 +21,9 @@ export class PixiLayer {
    * @param  context
    * @param  layerID
    * @param  layerZ
+   * @param pixiInstance the particular instance of pixi that we should bind to. Currently just context.pixi and context.minipixi (for the minimap)
    */
-  constructor(context, layerID, layerZ) {
+  constructor(context, layerID, layerZ, pixiInstance) {
     this.context = context;
 
     this._enabled = false;  // Whether the user has chosen to see the layer
@@ -33,7 +34,13 @@ export class PixiLayer {
     container.zIndex = layerZ;
     container.visible = false;
     container.sortableChildren = true;
-    context.pixi.stage.addChild(container);
+
+    if (pixiInstance) {
+      pixiInstance.stage.addChild(container);
+    } else {
+      context.pixi.stage.addChild(container);
+    }
+
     this.container = container;
 
     // For now, layers will have to keep track of their own feature visiblity

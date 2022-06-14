@@ -30,10 +30,18 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    * @param scene
    * @param layerZ
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
+  constructor(context, scene, layerZ, minimapMode) {
+    if (minimapMode) {
+      super(context, `minimap-${LAYERID}`, layerZ, context.minipixi);
+    } else {
+      super(context, LAYERID, layerZ);
+    }
     this.scene = scene;
     this.enabled = true;   // background imagery should be enabled by default
+
+    if (minimapMode) {
+      this.minimapMode = minimapMode;
+    }
 
     // items in this layer don't need to be interactive
     this.container.buttonMode = false;
@@ -90,6 +98,16 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
     }
   }
 
+  getPixi(context) {
+    let pixi;
+    if (this.minimapMode) {
+      pixi = context.minipixi;
+    } else {
+      pixi = context.pixi;
+    }
+
+    return pixi;
+  }
 
   /**
    * render
@@ -99,7 +117,9 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
   render(timestamp, projection) {
     const background = this.context.background();
 
-    this.applyFilters();
+    if (!this.minimapMode) {
+      this.applyFilters();
+    }
 
     // Collect tile sources - baselayer and overlays
     let tileSources = new Map();   // Map (tilesource Object -> zIndex)
@@ -172,7 +192,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
-    const renderer = context.pixi.renderer;
+    const renderer = this.getPixi(context).renderer;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
@@ -277,13 +297,19 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
 
         sprite.texture = texture;
         tile.image = null;
-        context.map().deferredRedraw();
+        if (!this.minimapMode) {
+          //Only redraw the main map when appropriate.
+          context.map().deferredRedraw();
+        }
       };
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        context.map().deferredRedraw();
+        if (!this.minimapMode) {
+          //Only redraw the main map when appropriate.
+          context.map().deferredRedraw();
+        }
       };
 
     });
