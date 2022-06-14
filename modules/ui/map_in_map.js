@@ -202,22 +202,29 @@ export function uiMapInMap(context) {
        function drawBoundingBox() {
             var bbox = context.map().extent().bbox();
 
-            const topLeftPoint = projection.project([bbox.minX, bbox.minY]);
-            const bottomRightPoint = projection.project([bbox.maxX, bbox.maxY]);
-            const boxWidth = bottomRightPoint[0] - topLeftPoint[0];
-            const boxHeight = bottomRightPoint[1] - topLeftPoint[1];
+            const topLeftPoint = projection.project([bbox.minX, bbox.maxY]);
+            const bottomRightPoint = projection.project([bbox.maxX, bbox.minY]);
+           const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
+           const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
 
 
            let container = context.minipixi.stage;
-
-            if (!bboxPoly) {
-                bboxPoly = new PIXI.Polygon(bbox);
+           const bboxContainer = container.getChildByName('bbox');
+           if (!bboxContainer) {
+                const bboxContainer = new PIXI.Container();
+                bboxContainer.name = 'bbox';
+                bboxContainer.interactiveChildren = false;
+                bboxContainer.buttonMode = false;
+                bboxContainer.interactive = false;
+               container.addChild(bboxContainer);
 
                 const bboxGraphic = new PIXI.Graphics().clear()
                     .lineStyle(2, 0x00ffff)
                     .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
-                container.addChild(bboxGraphic);
-
+                bboxContainer.addChild(bboxGraphic);
+           } else {
+               const bboxPolyGraphic = bboxContainer.children[0];
+                bboxPolyGraphic.clear().drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight).lineStyle(2, 0x00ffff);
             }
        }
 
