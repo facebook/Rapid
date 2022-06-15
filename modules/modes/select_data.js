@@ -60,27 +60,29 @@ export function modeSelectData(context, selectedDatum) {
 
     mode.enter = function() {
       context.enableBehaviors(['hover', 'select', 'drag']);
-        // behaviors.forEach(context.install);
+      // behaviors.forEach(context.install);
 
-        keybinding
-            .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
-            .on('⎋', esc, true);
+      keybinding
+        .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
+        .on('⎋', esc, true);
 
-        d3_select(document)
-            .call(keybinding);
+      d3_select(document)
+        .call(keybinding);
 
-        selectData();
+      selectData();
 
-        var sidebar = context.ui().sidebar;
-        sidebar.show(dataEditor.datum(selectedDatum));
+      var sidebar = context.ui().sidebar;
+      sidebar.show(dataEditor.datum(selectedDatum));
 
-        // expand the sidebar, avoid obscuring the data if needed
-        var bounds = d3_geoBounds(selectedDatum);
-        var extent = new Extent(bounds[0], bounds[1]);
-        sidebar.expand(sidebar.intersects(extent));
+      // expand the sidebar, avoid obscuring the data if needed
+      var bounds = d3_geoBounds(selectedDatum);
+      var extent = new Extent(bounds[0], bounds[1]);
+      sidebar.expand(sidebar.intersects(extent));
 
-        context.map()
-            .on('drawn.select-data', selectData);
+      context.map()
+        .on('drawn.select-data', selectData);
+
+      return true;
     };
 
 

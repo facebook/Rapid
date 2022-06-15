@@ -184,6 +184,7 @@ export function modeDragNode(context) {
 //    //     .classed('active', true);
 //    //TODO: Select the node
     context.enter(mode);
+    return true;
   }
 
 

@@ -202,7 +202,7 @@ export function modeSave(context) {
 
 
     mode.enter = function() {
-context.enableBehaviors([]);  // none
+        context.enableBehaviors([]);  // none
 
         // Show sidebar
         context.ui().sidebar.expand();
@@ -234,6 +234,7 @@ context.enableBehaviors([]);  // none
                 }
             });
         }
+        return true;
     };
 
 

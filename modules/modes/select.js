@@ -221,7 +221,7 @@ export function modeSelect(context, selectedIDs) {
 
 
     mode.enter = function() {
-        if (!checkSelectedIDs()) return;
+        if (!checkSelectedIDs()) return false;
 
         context.features().forceVisible(selectedIDs);
 
@@ -288,6 +288,7 @@ export function modeSelect(context, selectedIDs) {
             _follow = false;
         }
 
+        return true;
 
 //        function didDoubleUp(d3_event, loc) {
 //            var target = d3_select(d3_event.target);

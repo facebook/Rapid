@@ -51,7 +51,6 @@ export class ModeSelectNote extends AbstractMode {
 
     const sidebar = context.ui().sidebar;
     sidebar.show(noteEditor.note(note)); //.newNote(_newFeature));
-
     // Expand the sidebar, avoid obscuring the note if needed
     sidebar.expand(sidebar.intersects(note.extent()));
 

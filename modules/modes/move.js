@@ -162,6 +162,7 @@ export function modeMove(context, entityIDs, baseGraph) {
 
         d3_select(document)
             .call(keybinding);
+    return true;
     };
 
 

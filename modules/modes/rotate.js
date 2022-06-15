@@ -150,8 +150,8 @@ export function modeRotate(context, entityIDs) {
             .on('⎋', cancel)
             .on('↩', finish);
 
-        d3_select(document)
-            .call(keybinding);
+        d3_select(document).call(keybinding);
+        return true;
     };
 
 

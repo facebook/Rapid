@@ -20,11 +20,11 @@ export function modeDrawLine(context, wayID, startGraph, button, affix, continui
     mode.isContinuing = continuing;
 
     mode.enter = function() {
-context.enableBehaviors(['hover', 'select']);
-        // behavior
-            // .nodeIndex(affix === 'prefix' ? 0 : undefined);
-
-        // context.install(behavior);
+      context.enableBehaviors(['hover', 'select']);
+      // behavior
+      //   .nodeIndex(affix === 'prefix' ? 0 : undefined);
+      // context.install(behavior);
+      return true;
     };
 
     mode.exit = function() {

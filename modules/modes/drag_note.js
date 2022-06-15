@@ -110,7 +110,8 @@ export function modeDragNote(context) {
 
 
     mode.enter = function() {
-context.enableBehaviors(['hover', 'drag']);
+      context.enableBehaviors(['hover', 'drag']);
+      return true;
     };
 
 

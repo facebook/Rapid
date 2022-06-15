@@ -89,7 +89,7 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
         var error = checkSelectedID();
         if (!error) return;
 
-      context.enableBehaviors(['hover', 'select', 'drag']);
+        context.enableBehaviors(['hover', 'select', 'drag']);
         // behaviors.forEach(context.install);
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -108,6 +108,8 @@ export function modeSelectError(context, selectedErrorID, selectedErrorService) 
 
         context.map()
             .on('drawn.select-error', selectError);
+
+        return true;
 
 
         // class the error as selected, or return to browse mode if the error is gone

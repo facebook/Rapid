@@ -89,6 +89,8 @@ export function modeRapidSelectFeatures(context, selectedDatum) {
 
     context.map()
       .on('drawn.select-ai-features', selectData);
+
+    return true;
   };
 
 
