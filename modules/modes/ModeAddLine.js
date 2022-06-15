@@ -50,13 +50,13 @@ export class ModeAddLine extends AbstractMode {
       .on('startFromWay', this._startFromWay)
       .on('startFromNode', this._startFromNode);
 
-
 // figure out how this needs to happen - `this.defaultTags` maybe not ready yet?
 //    // RapiD tagSources
 //    const tagSources = prefs('rapid-internal-feature.tagSources') === 'true';
 //    if (tagSources && this.defaultTags.highway) {
 //      this.defaultTags.source = 'maxar';
 //    }
+    return true;
   }
 
 

@@ -49,6 +49,8 @@ export class ModeAddArea extends AbstractMode {
       .on('start', this._start)
       .on('startFromWay', this._startFromWay)
       .on('startFromNode', this._startFromNode);
+
+    return true;
   }
 
 

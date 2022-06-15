@@ -51,6 +51,8 @@ export class ModeAddPoint extends AbstractMode {
       .on('clickNode', this._clickNode)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
+
+    return true;
   }
 
 
@@ -75,14 +77,6 @@ export class ModeAddPoint extends AbstractMode {
 
 
   /**
-   * _enterSelectMode
-   */
-  _enterSelectMode(node) {
-    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
-  }
-
-
-  /**
    * _click
    * Clicked on nothing, create the point at given `loc`
    */
@@ -90,7 +84,7 @@ export class ModeAddPoint extends AbstractMode {
     const node = osmNode({ loc: loc, tags: this.defaultTags });
     const annotation = t('operations.add.annotation.point');
     this._context.perform(actionAddEntity(node), annotation);
-    this._enterSelectMode(node);
+    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
   }
 
 
@@ -102,7 +96,7 @@ export class ModeAddPoint extends AbstractMode {
     const node = osmNode({ tags: this.defaultTags });
     const annotation = t('operations.add.annotation.vertex');
     this._context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
-    this._enterSelectMode(node);
+    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
   }
 
 
@@ -112,7 +106,7 @@ export class ModeAddPoint extends AbstractMode {
    */
   _clickNode(loc, node) {
     if (Object.keys(this.defaultTags).length === 0) {
-      this._enterSelectMode(node);
+      this._context.enter(modeSelect(this._context, [node.id]));
       return;
     }
 
@@ -123,7 +117,7 @@ export class ModeAddPoint extends AbstractMode {
 
     const annotation = t('operations.add.annotation.point');
     this._context.perform(actionChangeTags(node.id, tags), annotation);
-    this._enterSelectMode(node);
+    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
   }
 
 

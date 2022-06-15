@@ -3,6 +3,7 @@ export { ModeAddLine } from './ModeAddLine';
 export { ModeAddNote } from './ModeAddNote';
 export { ModeAddPoint } from './ModeAddPoint';
 export { ModeBrowse } from './ModeBrowse';
+export { ModeSelectNote } from './ModeSelectNote';
 
 export { modeDragNode } from './drag_node';
 export { modeDragNote } from './drag_note';
@@ -14,6 +15,5 @@ export { modeSave } from './save';
 export { modeSelect } from './select';
 export { modeSelectData } from './select_data';
 export { modeSelectError} from './select_error';
-export { modeSelectNote } from './select_note';
 
 export { modeRapidSelectFeatures } from './rapid_select_features';

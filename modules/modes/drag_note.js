@@ -3,7 +3,7 @@ import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
 // import { BehaviorDrag } from '../behaviors/BehaviorDrag';
-import { modeSelectNote } from './select_note';
+// import { modeSelectNote } from './select_note';
 
 
 export function modeDragNote(context) {
@@ -100,9 +100,11 @@ export function modeDragNote(context) {
     function end() {
         context.replace(actionNoop());   // trigger redraw
 
+        // context
+        //     .selectedNoteID(_note.id)
+        //     .enter(modeSelectNote(context, _note.id));
         context
-            .selectedNoteID(_note.id)
-            .enter(modeSelectNote(context, _note.id));
+          .enter('select-note', [_note.id]);
     }
 
 

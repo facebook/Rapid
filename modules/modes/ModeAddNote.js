@@ -1,6 +1,4 @@
 import { AbstractMode } from './AbstractMode';
-
-import { modeSelectNote } from './select_note';
 import { osmNote } from '../osm/note';
 import { services } from '../services';
 
@@ -45,6 +43,8 @@ export class ModeAddNote extends AbstractMode {
       .on('clickNode', this._click)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
+
+    return true;
   }
 
 
@@ -80,11 +80,11 @@ export class ModeAddNote extends AbstractMode {
     osm.replaceNote(note);
 
     // force a redraw (there is no history change that would otherwise do this)
-    this._context.map().immediateRedraw();
+    // this._context.map().immediateRedraw();
 
     this._context
-      .selectedNoteID(note.id)
-      .enter(modeSelectNote(this._context, note.id).newFeature(true));
+      // .selectedNoteID(note.id)
+      .enter('select-note', [note.id]);  //.newFeature(true));
   }
 
 

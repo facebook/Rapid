@@ -36,9 +36,12 @@ export class ModeBrowse extends AbstractMode {
     this._context.enableBehaviors(['hover', 'select', 'drag']);
 
     // Get focus on the body.
+    // does this do anything?
     if (document.activeElement && document.activeElement.blur) {
       document.activeElement.blur();
     }
+
+    return true;
   }
 
 

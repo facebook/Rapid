@@ -5,7 +5,9 @@
  * `AbstractMode` is the base class from which all modes inherit.
 *
  * Properties you can access:
- *   `active`  `true` if the mode is active, `false` if not.
+ *   `active`       `true` if the mode is active, `false` if not.
+ *   `selectedIDs`  `Set` of selected IDs for this mode
+ *   `operations`   `Array` of operations allowed on the right-click edit menu
  */
 export class AbstractMode {
 
@@ -16,15 +18,21 @@ export class AbstractMode {
   constructor(context) {
     this._context = context;
     this._active = false;
+    this.selectedIDs = [];
+    this.operations = [];
   }
 
 
   /**
    * enter
    * Every mode should have an `enter` function to peform any necessary setup tasks
+   * @param  `selectedIDs`   Optional array of selected IDs
+   * @return `true` if mode could be entered, `false` it not
    */
-  enter() {
+  enter(selectedIDs) {
     this._active = true;
+    this.selectedIDs = selectedIDs || [];
+    return true;
   }
 
 
@@ -40,10 +48,11 @@ export class AbstractMode {
   /**
    * active
    * Whether the mode is active
+   * @return `true` if active, `false` if not.
    * @readonly
    */
   get active() {
     return this._active;
   }
-
 }
+

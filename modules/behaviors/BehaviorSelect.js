@@ -5,7 +5,7 @@ import { vecEqual, vecLength } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
 import { modeSelectData } from '../modes/select_data';
-import { modeSelectNote } from '../modes/select_note';
+// import { ModeSelectNote } from '../modes/ModeSelectNote';
 import { modeSelectError } from '../modes/select_error';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { utilKeybinding, utilRebind } from '../util';
@@ -375,6 +375,14 @@ export class BehaviorSelect extends AbstractBehavior {
       context.selectedNoteID(null);
       context.selectedErrorID(null);
       context.enter(modeRapidSelectFeatures(context, datum));
+      return;
+    }
+
+    // Clicked an OSM Note..
+    if (datum instanceof osmNote) {
+      context.selectedNoteID(datum.id);
+      context.selectedErrorID(null);
+      context.enter('select-note', [datum.id]);
       return;
     }
 

@@ -25,6 +25,7 @@ import { ModeAddLine } from '../modes/ModeAddLine';
 import { ModeAddNote } from '../modes/ModeAddNote';
 import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
+import { ModeSelectNote } from '../modes/ModeSelectNote';
 import { modeSelect } from '../modes/select';
 
 import { presetManager } from '../presets';
@@ -270,7 +271,7 @@ export function coreContext() {
   };
 
   // Immediately save the user's history to localstorage, if possible
-  // This is called someteimes, but also on the `window.onbeforeunload` handler
+  // This is called sometimes, but also on the `window.onbeforeunload` handler
   context.save = () => {
     // no history save, no message onbeforeunload
     if (_inIntro || context.container().select('.modal').size()) return;
@@ -325,7 +326,8 @@ export function coreContext() {
   let _mode;  // the current mode
 
   context.mode = () => _mode;
-  context.enter = (modeOrModeID) => {
+
+  context.enter = (modeOrModeID, selectedIDs) => {
     let newMode;
     if (typeof modeOrModeID === 'string') {
       newMode = context.modes.get(modeOrModeID);
@@ -334,22 +336,36 @@ export function coreContext() {
     }
     if (!newMode) {
       console.error(`context.enter: no such mode: ${modeOrModeID}`);  // eslint-disable-line no-console
+      newMode = context.modes.get('browse');  // fallback
     }
 
+    // Exit current mode
     if (_mode) {
       _mode.exit();
       _container.classed(`mode-${_mode.id}`, false);
       dispatch.call('exit', this, _mode);
     }
 
+    // Try to enter the new mode, fallback to 'browse' mode
     _mode = newMode;
-    _mode.enter();
+    const didEnter = _mode.enter(selectedIDs);  // optionally pass selectedIDs
+    if (!didEnter) {
+      _mode = context.modes.get('browse');
+      _mode.enter();
+    }
     _container.classed(`mode-${_mode.id}`, true);
     dispatch.call('enter', this, _mode);
+    return _mode;
   };
 
-
-  context.selectedIDs = () => (_mode && _mode.selectedIDs && _mode.selectedIDs()) || [];
+  context.selectedIDs = () => {
+    if (!_mode) return [];
+    if (typeof _mode.selectedIDs === 'function') {
+      return _mode.selectedIDs();         // legacy function
+    } else {
+      return _mode.selectedIDs || [];     // class property
+    }
+  };
   context.activeID = () => _mode && _mode.activeID && _mode.activeID();
 
   let _selectedNoteID;
@@ -617,7 +633,8 @@ export function coreContext() {
         new ModeAddLine(context),
         new ModeAddNote(context),
         new ModeAddPoint(context),
-        new ModeBrowse(context)
+        new ModeBrowse(context),
+        new ModeSelectNote(context)
       ].forEach(mode => context.modes.set(mode.id, mode));
     }
 
