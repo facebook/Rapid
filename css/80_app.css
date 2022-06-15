@@ -4170,7 +4170,8 @@ img.tile-debug {
     z-index: 2;
     background: #000;
     border: #aaa 1px solid;
-    box-shadow: 0 0 2em black;
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 42%) 0px 0px 0px 3px;
 }
 .ideditor[dir='ltr'] .map-in-map {
     left: 10px;

@@ -80,17 +80,8 @@ export function uiMapInMap(context) {
       }
 
       if (_gesture === 'pan') {
-        let tileContainer = miniMapTileLayer.container;
-        let x = tileContainer.position.x;
-        let y = tileContainer.position.y;
-
-        x = x + tX;
-        y = y + tY;
-
-        tileContainer.position.x = x;
-        tileContainer.position.y = y;
-
-//        utilSetTransform(tiles, tX, tY, scale);
+       miniMapTileLayer.container.position.x += tX;
+       miniMapTileLayer.container.position.y += tY;
       } else {
         utilSetTransform(tiles, 0, 0, scale);
       }
