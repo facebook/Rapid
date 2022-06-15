@@ -140,8 +140,8 @@ export function uiInit(context) {
       .attr('class', 'select-trap')
       .text('t');
 
-    // overMap
-    //   .call(uiMapInMap(context));
+    overMap
+      .call(uiMapInMap(context));
 
     overMap
       .append('div')
