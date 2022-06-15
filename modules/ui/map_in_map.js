@@ -82,8 +82,12 @@ export function uiMapInMap(context) {
                tY = y - tMini.y;
            }
 
-           utilSetTransform(tiles, tX, tY, scale);
-           utilSetTransform(viewport, 0, 0, scale);
+           if (_gesture === 'pan') {
+               utilSetTransform(tiles, tX, tY, scale);
+           } else {
+               utilSetTransform(tiles, 0, 0, scale);
+           }
+        //    utilSetTransform(viewport, 0, 0, scale);
            _isTransformed = true;
            _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
 
@@ -144,59 +148,11 @@ export function uiMapInMap(context) {
 
 
        function redraw() {
-           clearTimeout(_timeoutID);
-           if (_isHidden) return;
+        clearTimeout(_timeoutID);
+        if (_isHidden) return;
 
-           updateprojection();
-           var zMini = geoScaleToZoom(projection.scale());
-
-           // setup tile container
-        //    tiles = wrap
-        //        .selectAll('.map-in-map-tiles')
-        //        .data([0]);
-
-        //    tiles = tiles.enter()
-        //        .append('div')
-        //        .attr('class', 'map-in-map-tiles')
-        //        .merge(tiles);
-
-        //    // redraw background
-        //    backgroundLayer
-        //        .source(context.background().baseLayerSource())
-        //        .projection(projection)
-        //        .dimensions(_dMini);
-
-        //    var background = tiles
-        //        .selectAll('.map-in-map-background')
-        //        .data([0]);
-
-        //    background.enter()
-        //        .append('div')
-        //        .attr('class', 'map-in-map-background')
-        //        .merge(background)
-        //        .call(backgroundLayer);
-
-
-        //    // redraw overlay
-        //    var overlaySources = context.background().overlayLayerSources();
-        //    var activeOverlayLayers = [];
-        //    for (var i = 0; i < overlaySources.length; i++) {
-        //        if (overlaySources[i].validZoom(zMini)) {
-        //            if (!overlayLayers[i]) overlayLayers[i] = rendererTileLayer(context);
-        //            activeOverlayLayers.push(overlayLayers[i]
-        //                .source(overlaySources[i])
-        //                .projection.project(projection)
-        //                .dimensions(_dMini));
-        //        }
-        //    }
-
-
-           // redraw viewport bounding box
-           if (_gesture !== 'pan') {
-               drawBoundingBox();
-
-
-           }
+        updateprojection();
+        drawBoundingBox();
        }
 
        function drawBoundingBox() {
@@ -269,7 +225,6 @@ export function uiMapInMap(context) {
            }
        }
 
-
        uiMapInMap.toggle = toggle;
 
        wrap = selection.selectAll('.map-in-map')
@@ -283,8 +238,6 @@ export function uiMapInMap(context) {
            .on('dblclick.zoom', null)
            .merge(wrap);
 
-
-
         this.minipixi = new PIXI.Application({
             antialias: true,
             autoDensity: true,
@@ -296,7 +249,7 @@ export function uiMapInMap(context) {
        });
 
        wrap.node().appendChild(this.minipixi.view);
-
+       tiles = wrap.selectAll('canvas');
 
        const width = 200;
        const height = 150;
@@ -306,47 +259,14 @@ export function uiMapInMap(context) {
        context.minipixi = this.minipixi;
        const miniMapTileLayer = new PixiLayerBackgroundTiles(this.context, miniMapScene, 1, true);
 
-// Change flight speed every 5 seconds
-// setInterval(() => {
-//     warpSpeed = warpSpeed > 0 ? 0 : 1;
-// }, 5000);
-
-// Listen for animate update
        this.minipixi.ticker.add((delta) => {
-//           if (!_tCurr) return;
 
-           const markStart = 'minimap-start';
+        const markStart = 'minimap-start';
         const m1 = window.performance.mark(markStart);
         const timestamp = m1.startTime;
 
         miniMapTileLayer.render(timestamp, projection, 10);
-    // // Simple easing. This should be changed to proper easing function when used for real.
-    // speed += (warpSpeed - speed) / 20;
-    // cameraZ += delta * 10 * (speed + baseSpeed);
-    // for (let i = 0; i < starAmount; i++) {
-    //     const star = stars[i];
-    //     if (star.z < cameraZ) randomizeStar(star);
-
-    //     // Map star 3d position to 2d with really simple projection
-    //     const z = star.z - cameraZ;
-    //     star.sprite.x = star.x * (fov / z) * width + width / 2;
-    //     star.sprite.y = star.y * (fov / z) * width + height / 2;
-
-    //     // Calculate star scale & rotation.
-    //     const dxCenter = star.sprite.x - width / 2;
-    //     const dyCenter = star.sprite.y - height / 2;
-    //     const distanceCenter = Math.sqrt(dxCenter * dxCenter + dyCenter * dyCenter);
-    //     const distanceScale = Math.max(0, (2000 - z) / 2000);
-    //     star.sprite.scale.x = distanceScale * starBaseSize;
-    //     // Star is looking towards center so that y axis is towards center.
-    //     // Scale the star depending on how fast we are moving, what the stretchfactor is and depending on how far away it is from the center.
-    //     star.sprite.scale.y = distanceScale * starBaseSize + distanceScale * speed * starStretch * distanceCenter / width;
-    //     star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
-    // }
 });
-
-
-
 
        // reflow warning: Hardcode dimensions - currently can't resize it anyway..
        _dMini = [200,150]; //utilGetDimensions(wrap);

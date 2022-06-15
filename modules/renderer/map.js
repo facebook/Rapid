@@ -456,7 +456,9 @@ export function rendererMap(context) {
 
       if (_renderer) {
         _renderer.render();
+        dispatch.call('drawn', this, {full: true});
       }
+
     }
 
 

@@ -225,7 +225,7 @@ export class PixiLayerBackgroundTiles extends PixiLayer {
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
-        .getTiles(context.projection);
+        .getTiles(this.minimapMode ? projection : context.projection);
 
       let hasHoles = false;
       for (let i = 0; i < result.tiles.length; i++) {
