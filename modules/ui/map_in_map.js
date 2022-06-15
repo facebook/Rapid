@@ -26,6 +26,7 @@ export function uiMapInMap(context) {
     var wrap = d3_select(null);
     var tiles = d3_select(null);
     var viewport = d3_select(null);
+    var miniMapTileLayer = null;
 
     var _isTransformed = false;
     var _isHidden = true;
@@ -79,7 +80,17 @@ export function uiMapInMap(context) {
       }
 
       if (_gesture === 'pan') {
-        utilSetTransform(tiles, tX, tY, scale);
+        let tileContainer = miniMapTileLayer.container;
+        let x = tileContainer.position.x;
+        let y = tileContainer.position.y;
+
+        x = x + tX;
+        y = y + tY;
+
+        tileContainer.position.x = x;
+        tileContainer.position.y = y;
+
+//        utilSetTransform(tiles, tX, tY, scale);
       } else {
         utilSetTransform(tiles, 0, 0, scale);
       }
@@ -91,7 +102,7 @@ export function uiMapInMap(context) {
 
       _zDiff = zMain - zMini;
 
-      queueRedraw();
+      redraw();
     }
 
 
@@ -127,8 +138,11 @@ export function uiMapInMap(context) {
       _tCurr = projection.transform();
 
       if (_isTransformed) {
+         let tileContainer = miniMapTileLayer.container;
+        tileContainer.position.x = 0;
+        tileContainer.position.y = 0;
+
         utilSetTransform(tiles, 0, 0);
-        utilSetTransform(viewport, 0, 0);
         _isTransformed = false;
       }
 
@@ -185,14 +199,6 @@ export function uiMapInMap(context) {
           .lineStyle(2, 0x00ffff)
           .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
       }
-    }
-
-
-    function queueRedraw() {
-      clearTimeout(_timeoutID);
-      _timeoutID = setTimeout(function () {
-        redraw();
-      }, 750);
     }
 
 
@@ -263,12 +269,12 @@ export function uiMapInMap(context) {
 
     const miniMapScene = new PixiScene(this.context);
     context.minipixi = this.minipixi;
-    const miniMapTileLayer = new PixiLayerBackgroundTiles(
-      this.context,
-      miniMapScene,
-      1,
-      true
-    );
+    miniMapTileLayer = new PixiLayerBackgroundTiles(
+     this.context,
+     miniMapScene,
+     1,
+     true
+   );
 
     this.minipixi.ticker.add(() => {
       const markStart = 'minimap-start';
