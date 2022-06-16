@@ -21,7 +21,7 @@ import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
 import { uiLoading } from './loading';
-// import { uiMapInMap } from './map_in_map';
+ import { uiMapInMap } from './map_in_map';
 import { uiPhotoviewer } from './photoviewer';
 import { uiRestore } from './restore';
 import { uiScale } from './scale';
@@ -140,8 +140,8 @@ export function uiInit(context) {
       .attr('class', 'select-trap')
       .text('t');
 
-    // overMap
-    //   .call(uiMapInMap(context));
+    overMap
+      .call(uiMapInMap(context));
 
     overMap
       .append('div')
