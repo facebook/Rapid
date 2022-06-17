@@ -2,7 +2,6 @@ import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
-import { modeSave } from '../../modes';
 import { svgIcon } from '../../svg/icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
@@ -31,7 +30,7 @@ export function uiToolSave(context) {
   function save(d3_event) {
     d3_event.preventDefault();
     if (!context.inIntro() && !isSaving() && context.history().hasChanges()) {
-      context.enter(modeSave(context));
+      context.enter('save');
     }
   }
 

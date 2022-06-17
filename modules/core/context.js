@@ -25,6 +25,7 @@ import { ModeAddLine } from '../modes/ModeAddLine';
 import { ModeAddNote } from '../modes/ModeAddNote';
 import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
+import { ModeSave } from '../modes/ModeSave';
 import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
 
@@ -672,6 +673,7 @@ export function coreContext() {
         new ModeAddNote(context),
         new ModeAddPoint(context),
         new ModeBrowse(context),
+        new ModeSave(context),
         new ModeSelect(context)
       ].forEach(mode => context.modes.set(mode.id, mode));
     }
