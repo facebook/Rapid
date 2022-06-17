@@ -1,5 +1,6 @@
 import { AbstractMode } from './AbstractMode';
 import { services } from '../services';
+import { osmNote } from '../osm';
 import { uiNoteEditor } from '../ui/note_editor';
 
 const DEBUG = false;
@@ -22,30 +23,37 @@ export class ModeSelectNote extends AbstractMode {
 
   /**
    * enter
+   * FOR NOW: The selection here is expected to contain a single OSM note.
+   * @param   `selectedData`  `Map(dataID -> data)`
    */
-  enter(selectedIDs) {
-    if (this._active) return;
+  enter(selectedData) {
 
-    this.selectedIDs = selectedIDs || [];
-    const noteID = this.selectedIDs[0];            // for now consider the first ID only
-    const note = noteID && this._getNote(noteID);  // verify that it's really a note
-    if (!note) return false;
+// FOR NOW
+if (!(selectedData instanceof Map)) return false;
+if (selectedData.size !== 1) return false;
+const [[noteID, note]] = selectedData.entries();
+if (!(note instanceof osmNote)) return false;
 
     if (DEBUG) {
       console.log('ModeSelectNote: entering');  // eslint-disable-line no-console
     }
 
+    this.selectedData = selectedData;
     this._active = true;
     const context = this._context;
     context.enableBehaviors(['hover', 'select', 'drag']);
-    context.selectedNoteID(noteID);
 
+// some of this feels like it should live with the noteEditor, not here
     const noteEditor = uiNoteEditor(context)
       .on('change', () => {
         // force a redraw (there is no history change that would otherwise do this)
         context.map().immediateRedraw();
         const note = this._getNote(noteID);
-        if (!note) return;
+
+// verify and update selectedData?
+if (!(note instanceof osmNote)) return false;  // back to browse mode if the note is gone?
+this.selectedData.set(noteID, note);
+
         context.ui().sidebar.show(noteEditor.note(note));
       });
 
@@ -71,7 +79,6 @@ export class ModeSelectNote extends AbstractMode {
 
     const context = this._context;
     context.ui().sidebar.hide();
-    context.selectedNoteID(null);
   }
 
 

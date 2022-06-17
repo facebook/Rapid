@@ -35,8 +35,6 @@ export class ModeAddArea extends AbstractMode {
    * enter
    */
   enter() {
-    if (this._active) return;
-
     if (DEBUG) {
       console.log('ModeAddArea: entering');  // eslint-disable-line no-console
     }

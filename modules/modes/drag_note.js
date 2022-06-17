@@ -61,7 +61,7 @@ export function modeDragNote(context) {
 
         context.perform(actionNoop());
         context.enter(mode);
-        context.selectedNoteID(_note.id);
+        // context.selectedNoteID(_note.id);
     }
 
 

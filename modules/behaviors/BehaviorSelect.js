@@ -4,13 +4,13 @@ import { vecEqual, vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
-import { modeSelectData } from '../modes/select_data';
+// import { modeSelectData } from '../modes/select_data';
 // import { ModeSelectNote } from '../modes/ModeSelectNote';
 import { modeSelectError } from '../modes/select_error';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { utilKeybinding, utilRebind } from '../util';
 
-import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
+// import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -356,8 +356,6 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked on nothing
     if (!datum) {
-      context.selectedNoteID(null);
-      context.selectedErrorID(null);
       if (mode.id !== 'browse' && !this._multiSelection.size) {
         context.enter('browse');
       }
@@ -372,25 +370,28 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked a RapiD feature..
     if (datum.__fbid__) {
-      context.selectedNoteID(null);
-      context.selectedErrorID(null);
-      context.enter(modeRapidSelectFeatures(context, datum));
+      const selectedData = new Map().set(datum.id, datum);
+      context.enter('select', selectedData);
+      return;
+    }
+
+    // Clicked custom data (e.g. gpx track)
+    if (datum.__featurehash__) {
+      const selectedData = new Map().set(datum.id, datum);
+      context.enter('select', selectedData);
       return;
     }
 
     // Clicked an OSM Note..
     if (datum instanceof osmNote) {
-      context.selectedNoteID(datum.id);
-      context.selectedErrorID(null);
-      context.enter('select-note', [datum.id]);
+      const selectedData = new Map().set(datum.id, datum);
+      context.enter('select', selectedData);
       return;
     }
 
     // Clicked an OSM feature..
     if (datum instanceof osmEntity) {
-      context.selectedNoteID(null);
-      context.selectedErrorID(null);
-// keep it really simple for now
+// keep it really simple for now - legacy Select mode
       context.enter(modeSelect(context, [datum.id]));
     }
 

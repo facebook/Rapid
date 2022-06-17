@@ -1,4 +1,4 @@
-import { t } from '../core/localizer';
+// import { t } from '../core/localizer';
 // import { behaviorDrawWay } from '../behaviors/draw_way';
 
 

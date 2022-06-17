@@ -6,7 +6,7 @@
 *
  * Properties you can access:
  *   `active`       `true` if the mode is active, `false` if not.
- *   `selectedIDs`  `Set` of selected IDs for this mode
+ *   `selectedData`    `Map(dataID -> data)` containing selected features
  *   `operations`   `Array` of operations allowed on the right-click edit menu
  */
 export class AbstractMode {
@@ -18,7 +18,7 @@ export class AbstractMode {
   constructor(context) {
     this._context = context;
     this._active = false;
-    this.selectedIDs = [];
+    this.selectedData = new Map();
     this.operations = [];
   }
 
@@ -26,12 +26,12 @@ export class AbstractMode {
   /**
    * enter
    * Every mode should have an `enter` function to peform any necessary setup tasks
-   * @param  `selectedIDs`   Optional array of selected IDs
-   * @return `true` if mode could be entered, `false` it not
+   * @param   `selectedData`  Optional `Map(dataID -> data)` passed to the new mode
+   * @return  `true` if mode could be entered, `false` it not
    */
-  enter(selectedIDs) {
+  enter(selectedData) {
     this._active = true;
-    this.selectedIDs = selectedIDs || [];
+    this.selectedData = selectedData || new Map();
     return true;
   }
 

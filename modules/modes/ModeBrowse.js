@@ -26,8 +26,6 @@ export class ModeBrowse extends AbstractMode {
    * enter
    */
   enter() {
-    if (this._active) return;
-
     if (DEBUG) {
       console.log('ModeBrowse: entering');  // eslint-disable-line no-console
     }

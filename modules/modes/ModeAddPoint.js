@@ -37,8 +37,6 @@ export class ModeAddPoint extends AbstractMode {
    * enter
    */
   enter() {
-    if (this._active) return;
-
     if (DEBUG) {
       console.log('ModeAddPoint: entering');  // eslint-disable-line no-console
     }

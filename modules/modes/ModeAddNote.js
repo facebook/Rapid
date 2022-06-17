@@ -29,8 +29,6 @@ export class ModeAddNote extends AbstractMode {
    * enter
    */
   enter() {
-    if (this._active) return;
-
     if (DEBUG) {
       console.log('ModeAddNote: entering');  // eslint-disable-line no-console
     }

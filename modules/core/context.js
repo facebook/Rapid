@@ -25,8 +25,8 @@ import { ModeAddLine } from '../modes/ModeAddLine';
 import { ModeAddNote } from '../modes/ModeAddNote';
 import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
-import { ModeSelectNote } from '../modes/ModeSelectNote';
-import { modeSelect } from '../modes/select';
+import { ModeSelect } from '../modes/ModeSelect';  // new
+import { modeSelect } from '../modes/select';      // legacy
 
 import { presetManager } from '../presets';
 import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
@@ -207,7 +207,6 @@ export function coreContext() {
   };
 
   context.zoomToEntity = (entityID, zoomTo) => {
-
     // be sure to load the entity even if we're not going to zoom to it
     context.loadEntity(entityID, (err, result) => {
       if (err) return;
@@ -227,7 +226,7 @@ export function coreContext() {
     });
 
     context.on('enter.zoomToEntity', () => {
-      if (_mode.id !== 'browse') {
+      if (context._currMode.id !== 'browse') {
         _map.on('drawn.zoomToEntity', null);
         context.on('enter.zoomToEntity', null);
       }
@@ -277,7 +276,7 @@ export function coreContext() {
     if (_inIntro || context.container().select('.modal').size()) return;
 
     let canSave;
-    if (_mode && _mode.id === 'save') {
+    if (context._currMode && context._currMode.id === 'save') {
       canSave = false;
 
       // Attempt to prevent user from creating duplicate changes - see #5200
@@ -323,11 +322,21 @@ export function coreContext() {
   // "Modes" are editing tasks that the user are allowed to perform.
   // Each mode is exclusive, i.e only one mode can be active at a time.
   context.modes = new Map();  // Map (mode.id -> mode)
-  let _mode;  // the current mode
 
-  context.mode = () => _mode;
+  // The current mode (`null` until ui.render initializes the map and enters browse mode)
+  context._currMode = null;
+  context.mode = () => context._currMode;
 
-  context.enter = (modeOrModeID, selectedIDs) => {
+  /**
+   * `enter`
+   * Enters the given mode, with an optional bunch of features selected.
+   * If the mode could not be entered for whatever reason, falls back to entering browse mode.
+   *
+   * @param   `modeOrModeID`  `Object` or `String` identifying the mode to enter
+   * @param   `selectedData`   Optional `Map(dataID -> data)` passed to the new mode
+   * @return  The mode that got entered
+   */
+  context.enter = (modeOrModeID, selectedData) => {
     let newMode;
     if (typeof modeOrModeID === 'string') {
       newMode = context.modes.get(modeOrModeID);
@@ -339,47 +348,71 @@ export function coreContext() {
       newMode = context.modes.get('browse');  // fallback
     }
 
-    // Exit current mode
-    if (_mode) {
-      _mode.exit();
-      _container.classed(`mode-${_mode.id}`, false);
-      dispatch.call('exit', this, _mode);
+    // Exit current mode, if any
+    if (context._currMode) {
+      context._currMode.exit();
+      _container.classed(`mode-${context._currMode.id}`, false);
+      dispatch.call('exit', this, context._currMode);
     }
 
     // Try to enter the new mode, fallback to 'browse' mode
-    _mode = newMode;
-    const didEnter = _mode.enter(selectedIDs);  // optionally pass selectedIDs
+    context._currMode = newMode;
+    const didEnter = context._currMode.enter(selectedData);
     if (!didEnter) {
-      _mode = context.modes.get('browse');
-      _mode.enter();
+      context._currMode = context.modes.get('browse');
+      context._currMode.enter();
     }
-    _container.classed(`mode-${_mode.id}`, true);
-    dispatch.call('enter', this, _mode);
-    return _mode;
+    _container.classed(`mode-${context._currMode.id}`, true);
+    dispatch.call('enter', this, context._currMode);
+    return context._currMode;
   };
 
+  /**
+   * `selectedData`
+   * Returns a Map containing the current selected features.  It can contain
+   * multiple items of various types (e.g. some OSM data, some RapiD data etc)
+   *
+   * @return  The current selection, as a `Map(dataID -> data)`
+   */
+  context.selectedData = () => {
+    if (!context._currMode) return new Map();
+    return context._currMode.selectedData || new Map();
+  };
+
+// ...over this
+// (when iD was just for working with OSM data, it was ok to assume that a selected ID was an OSM id)
   context.selectedIDs = () => {
-    if (!_mode) return [];
-    if (typeof _mode.selectedIDs === 'function') {
-      return _mode.selectedIDs();         // legacy function
+    if (!context._currMode) return [];
+    if (typeof context._currMode.selectedIDs === 'function') {
+      return context._currMode.selectedIDs();         // legacy function
     } else {
-      return _mode.selectedIDs || [];     // class property
+      return context._currMode.selectedIDs || [];     // class property
     }
   };
-  context.activeID = () => _mode && _mode.activeID && _mode.activeID();
 
-  let _selectedNoteID;
-  context.selectedNoteID = function(noteID) {
-    if (!arguments.length) return _selectedNoteID;
-    _selectedNoteID = noteID;
-    return context;
+  // ID of the object currently dragging / drawing
+  context.activeID = () => context._currMode && context._currMode.activeID && context._currMode.activeID();
+
+// ...and definitely stop doing this...
+//  let _selectedNoteID;
+//  context.selectedNoteID = function(noteID) {
+//    if (!arguments.length) return _selectedNoteID;
+//    _selectedNoteID = noteID;
+//    return context;
+//  };
+//  let _selectedErrorID;
+//  context.selectedErrorID = function(errorID) {
+//    if (!arguments.length) return _selectedErrorID;
+//    _selectedErrorID = errorID;
+//    return context;
+//  };
+  context.selectedNoteID = () => {
+    console.error('error: do not call context.selectedNoteID anymore');   // eslint-disable-line no-console
+    return null;
   };
-
-  let _selectedErrorID;
-  context.selectedErrorID = function(errorID) {
-    if (!arguments.length) return _selectedErrorID;
-    _selectedErrorID = errorID;
-    return context;
+  context.selectedErrorID = () => {
+    console.error('error: do not call context.selectedErrorID anymore');   // eslint-disable-line no-console
+    return null;
   };
 
 
@@ -388,6 +421,11 @@ export function coreContext() {
   // enable and disable depending on what the user is doing.
   context.behaviors = new Map();  // Map (behavior.id -> behavior)
 
+  /**
+   * `enableBehaviors`
+   * The given behaviorIDs will be enabled, all others will be disabled
+   * @param   `enableIDs`  `Array` or `Set` containing behaviorIDs to keep enabled
+   */
   context.enableBehaviors = function(enableIDs) {
     if (!(enableIDs instanceof Set)) {
       enableIDs = new Set([].concat(enableIDs));  // coax ids into a Set
@@ -406,12 +444,12 @@ export function coreContext() {
     });
   };
 
- context.install = (behavior) => {
-   console.error('error: do not call context.install anymore');   // eslint-disable-line no-console
- };
- context.uninstall = (behavior) => {
-   console.error('error: do not call context.uninstall anymore');   // eslint-disable-line no-console
- };
+  context.install = (behavior) => {
+    console.error('error: do not call context.install anymore');   // eslint-disable-line no-console
+  };
+  context.uninstall = (behavior) => {
+    console.error('error: do not call context.uninstall anymore');   // eslint-disable-line no-console
+  };
 //old redo on every mode change
 //  context.install = (behavior) => {
 //    if (typeof behavior.enable === 'function') {
@@ -634,7 +672,7 @@ export function coreContext() {
         new ModeAddNote(context),
         new ModeAddPoint(context),
         new ModeBrowse(context),
-        new ModeSelectNote(context)
+        new ModeSelect(context)
       ].forEach(mode => context.modes.set(mode.id, mode));
     }
 
