@@ -11,6 +11,7 @@ const DEBUG = false;
 
 /**
  * `ModeAddArea`
+ * In this mode, we are waiting for the user to place the initial point of an area
  */
 export class ModeAddArea extends AbstractMode {
 

@@ -1,18 +1,23 @@
 import { AbstractMode } from './AbstractMode';
 import { services } from '../services';
-import { osmNote } from '../osm';
+import { osmNote, QAItem } from '../osm';
 
 import { uiDataEditor } from '../ui/data_editor';
+import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
+import { uiKeepRightEditor } from '../ui/keepRight_editor';
 import { uiNoteEditor } from '../ui/note_editor';
+import { uiOsmoseEditor } from '../ui/osmose_editor';
 import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector';
 
-const DEBUG = true;
+const DEBUG = false;
 
 
 /**
  * `ModeSelect`
- * In this mode, users have one or more things selected.
- * The sidebar shows something depending on what the selection contains.
+ * In this mode, the user has selected one or more things.
+ * - `this.selectedData` contains the information about what is selected.
+ * - The sidebar shows something depending on what the selection contains.
+ * - We also can set up the "operations" allowed (right click edit menu)
  */
 export class ModeSelect extends AbstractMode {
 
@@ -48,22 +53,54 @@ export class ModeSelect extends AbstractMode {
     const sidebar = context.ui().sidebar;
     let sidebarContent = null;
 
+ // The update handlers feel like they should live with the noteEditor/errorEditor, not here
     // Selected a note...
     if (datum instanceof osmNote) {
-      const noteEditor = uiNoteEditor(context).note(datum);
-      sidebarContent = noteEditor;
-
-      // This feels like it should live with the noteEditor, not here
-      noteEditor
+      sidebarContent = uiNoteEditor(context).note(datum);
+      sidebarContent
         .on('change', () => {
-          // force a redraw (there is no history change that would otherwise do this)
-          context.map().immediateRedraw();
+          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
           if (!services.osm) return;
           const note = services.osm.getNote(datumID);
-          if (!(note instanceof osmNote)) return;
-          context.ui().sidebar.show(noteEditor.note(note));
-          // not sure whether we should update selectedData after a change happens?
-          this.selectedData.set(datumID, note);
+          if (!(note instanceof osmNote)) return;   // or - go to browse mode
+          context.ui().sidebar.show(sidebarContent.note(note));
+          this.selectedData.set(datumID, note);  // update selectedData after a change happens?
+        });
+
+    } else if (datum instanceof QAItem && datum.service === 'improveOSM') {
+      sidebarContent = uiImproveOsmEditor(context).error(datum);
+      sidebarContent
+        .on('change', () => {
+          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          if (!services.improveOSM) return;
+          const error = services.improveOSM.getError(datumID);
+          if (!(error instanceof QAItem)) return;  // or - go to browse mode?
+          context.ui().sidebar.show(sidebarContent.error(error));
+          this.selectedData.set(datumID, error);  // update selectedData after a change happens?
+        });
+
+    } else if (datum instanceof QAItem && datum.service === 'keepRight') {
+      sidebarContent = uiKeepRightEditor(context).error(datum);
+      sidebarContent
+        .on('change', () => {
+          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          if (!services.keepRight) return;
+          const error = services.keepRight.getError(datumID);
+          if (!(error instanceof QAItem)) return;  // or - go to browse mode?
+          context.ui().sidebar.show(sidebarContent.error(error));
+          this.selectedData.set(datumID, error);  // update selectedData after a change happens?
+        });
+
+    } else if (datum instanceof QAItem && datum.service === 'osmose') {
+      sidebarContent = uiOsmoseEditor(context).error(datum);
+      sidebarContent
+        .on('change', () => {
+          context.map().immediateRedraw();  // force a redraw (there is no history change that would otherwise do this)
+          if (!services.osmose) return;
+          const error = services.osmose.getError(datumID);
+          if (!(error instanceof QAItem)) return;  // or - go to browse mode?
+          context.ui().sidebar.show(sidebarContent.error(error));
+          this.selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
     // Selected custom data (e.g. gpx track)...
@@ -77,7 +114,10 @@ export class ModeSelect extends AbstractMode {
       sidebarContent = rapidInspector;
     }
 
-    // need to bail out if selected thing is unrecognizable
+
+    // Todo: build a sidebar UI for:
+    //  multi selections - (support merge between types) or
+    //  selections that are unrecognizable?
 
     // setup the sidebar
     if (sidebarContent) {

@@ -7,6 +7,7 @@ const DEBUG = false;
 
 /**
  * `ModeAddNote`
+ * In this mode, we are waiting for the user to place a Note somewhere
  */
 export class ModeAddNote extends AbstractMode {
 

@@ -4,13 +4,8 @@ import { vecEqual, vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
-// import { modeSelectData } from '../modes/select_data';
-// import { ModeSelectNote } from '../modes/ModeSelectNote';
-import { modeSelectError } from '../modes/select_error';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { utilKeybinding, utilRebind } from '../util';
-
-// import { modeRapidSelectFeatures } from '../modes/rapid_select_features';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -368,22 +363,12 @@ export class BehaviorSelect extends AbstractBehavior {
       datum = datum.parents[0];
     }
 
-    // Clicked a RapiD feature..
-    if (datum.__fbid__) {
-      const selectedData = new Map().set(datum.id, datum);
-      context.enter('select', selectedData);
-      return;
-    }
-
-    // Clicked custom data (e.g. gpx track)
-    if (datum.__featurehash__) {
-      const selectedData = new Map().set(datum.id, datum);
-      context.enter('select', selectedData);
-      return;
-    }
-
-    // Clicked an OSM Note..
-    if (datum instanceof osmNote) {
+    if (
+      datum.__fbid__ ||              // Clicked a RapiD feature..
+      datum.__featurehash__ ||       // Clicked Custom Data (e.g. gpx track)
+      datum instanceof osmNote ||    // Clicked an OSM Note...
+      datum instanceof QAItem        // Clicked a QA Item (keepright, osmose, improveosm)...
+    ) {
       const selectedData = new Map().set(datum.id, datum);
       context.enter('select', selectedData);
       return;

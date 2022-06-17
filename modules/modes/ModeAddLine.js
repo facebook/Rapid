@@ -12,6 +12,7 @@ const DEBUG = false;
 
 /**
  * `ModeAddLine`
+ * In this mode, we are waiting for the user to place the initial point of a line
  */
 export class ModeAddLine extends AbstractMode {
 

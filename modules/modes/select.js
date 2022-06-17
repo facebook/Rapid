@@ -172,7 +172,9 @@ export function modeSelect(context, selectedIDs) {
     };
 
 
-    mode.selectBehavior = () =>  { console.error('error: do not call modeSelect.selectBehavior anymore'); };
+    mode.selectBehavior = () =>  {
+      console.error('error: do not call modeSelect.selectBehavior anymore'); // eslint-disable-line no-console
+    };
     // mode.selectBehavior = function(val) {
     //     if (!arguments.length) return _selectBehavior;
     //     _selectBehavior = val;

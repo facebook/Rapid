@@ -2,8 +2,6 @@ import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
-// import { BehaviorDrag } from '../behaviors/BehaviorDrag';
-// import { modeSelectNote } from './select_note';
 
 
 export function modeDragNote(context) {
@@ -16,8 +14,6 @@ export function modeDragNote(context) {
       .on('start', start)
       .on('move', move)
       .on('end', end);
-    // var behavior = new BehaviorDrag(context);
-    // var drag = behavior
 
     var _nudgeInterval;
     var _lastLoc;
@@ -100,11 +96,8 @@ export function modeDragNote(context) {
     function end() {
         context.replace(actionNoop());   // trigger redraw
 
-        // context
-        //     .selectedNoteID(_note.id)
-        //     .enter(modeSelectNote(context, _note.id));
-        context
-          .enter('select-note', [_note.id]);
+        const selectedData = new Map().set(_note.id, _note);
+        context.enter('select', selectedData);
     }
 
 

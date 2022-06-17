@@ -12,6 +12,7 @@ const DEBUG = false;
 
 /**
  * `ModeAddPoint`
+ * In this mode, we are waiting for the user to place a point somewhere
  */
 export class ModeAddPoint extends AbstractMode {
 

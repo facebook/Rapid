@@ -7,6 +7,7 @@ const DEBUG = false;
 /**
  * `ModeBrowse` is the default mode that the editor is in.
  *  Nothing selected but users can hover or click on things.
+ *  - "operations" allowed (right click edit menu) includes Paste only
  */
 export class ModeBrowse extends AbstractMode {
 

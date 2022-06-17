@@ -5,7 +5,6 @@ import { GlowFilter } from '@pixi/filter-glow';
 import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
-import { PixiEventsHandler } from './PixiEventsHandler';
 import { PixiLayers } from './PixiLayers';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
@@ -103,8 +102,6 @@ export class PixiRenderer {
     this.pixiProjection = new Projection();
     this.scene = new PixiScene(context);
     this.layers = new PixiLayers(context, this.scene, this._dispatch);
-
-    // this.eventsHandler = new PixiEventsHandler(context, this._dispatch, this.pixiProjection, this.scene);
 
     // used for highlighting:
     this._hoveredIDs = new Set();
