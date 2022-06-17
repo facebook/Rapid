@@ -230,8 +230,14 @@ export class PixiTextures {
       .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
       .endFill();
 
+    const sided = new PIXI.Graphics()
+      .beginFill(0xffffff, 1)
+      .drawPolygon([0,5, 5,0, 0,-5])
+      .endFill();
+
     this.textures.set('midpoint', this.toAtlasTexture(midpoint, options));
     this.textures.set('oneway', this.toAtlasTexture(oneway, options));
+    this.textures.set('sided', this.toAtlasTexture(sided, options));
 
 
     //

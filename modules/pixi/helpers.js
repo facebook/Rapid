@@ -133,8 +133,19 @@ export function lineToPolygon(width, points) {
 }
 
 
+/**
+ *
+ * @param {*} points the series of Vec[2] arrays delineating each waypoint
+ * @param {*} spacing Number indicating the distance between segments (arrows, sided arrows, etc)
+ * @param {*} sided optional Boolean for applying a 'sided' style to the line, arrows will be drawn perpendicular to the line segments.
+ * @returns
+ */
+export function getLineSegments(points, spacing, sided) {
+  let sidedMode = false;
+  const sidedOffset = 7;
 
-export function getLineSegments(points, spacing) {
+  if (sided) sidedMode = sided;
+
   let offset = spacing;
   let a;
 
@@ -149,9 +160,18 @@ export function getLineSegments(points, spacing) {
         const heading = vecAngle(a, b);
         const dx = spacing * Math.cos(heading);
         const dy = spacing * Math.sin(heading);
+
+        let sided_dx = 0;
+        let sided_dy = 0;
+        // For 'sided' segments, we want to offset the arrows so that they are not centered on the line segment's path
+        if (sidedMode) {
+          sided_dx = sidedOffset * Math.cos(heading + Math.PI / 2);
+          sided_dy = sidedOffset * Math.sin(heading + Math.PI / 2);
+        }
+
         let p = [
-          a[0] + offset * Math.cos(heading),
-          a[1] + offset * Math.sin(heading)
+          a[0] + offset * Math.cos(heading) + sided_dx,
+          a[1] + offset * Math.sin(heading) + sided_dy
         ];
 
         // generate coordinates between `a` and `b`, spaced `spacing` apart
@@ -164,7 +184,7 @@ export function getLineSegments(points, spacing) {
 
         segments.push({
           coords: coords.slice(1,-1),   // skip first and last
-          angle: heading
+          angle: heading + (sidedMode? Math.PI/2 : 0)
         });
       }
 

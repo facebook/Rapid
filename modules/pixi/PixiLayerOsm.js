@@ -383,7 +383,9 @@ export class PixiLayerOsm extends PixiLayer {
         const style = styleMatch(entity.tags);
         style.reversePoints = (entity.tags.oneway === '-1');
         // Todo: handle alternating/two-way case too
+
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
+        style.sidedMarkerName = entity.isSided() ? 'sided' : '';
         feature.style = style;
 
         feature.label = utilDisplayName(entity);

@@ -6,6 +6,7 @@ import { PixiFeature } from './PixiFeature';
 import { getLineSegments, lineToPolygon } from './helpers';
 
 const ONEWAY_SPACING = 35;
+const SIDED_SPACING = 30;
 
 
 /**
@@ -162,7 +163,7 @@ export class PixiFeatureLine extends PixiFeature {
     //
     let lineMarkers = container.getChildByName('lineMarkers');
 
-    if (showMarkers && (style.lineMarkerTexture || style.lineMarkerName)) {
+    if (showMarkers && ((style.lineMarkerTexture || style.lineMarkerName) || (style.sidedMarkerTexture || style.sidedMarkerName))) {
       // Create line marker container, if necessary
       if (!lineMarkers) {
         lineMarkers = new PIXI.Container();
@@ -173,24 +174,50 @@ export class PixiFeatureLine extends PixiFeature {
         container.addChild(lineMarkers);
       }
 
-      const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
 
-      const segments = getLineSegments(this.points, ONEWAY_SPACING);
+      const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
+      const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || PIXI.Texture.GREEN;
+      const sided = style.sidedMarkerName === 'sided';
+      const oneway = style.lineMarkerName === 'oneway';
       lineMarkers.removeChildren();
 
-      segments.forEach(segment => {
-        segment.coords.forEach(([x, y]) => {
-          const arrow = new PIXI.Sprite(lineMarkerTexture);
-          arrow.interactive = false;
-          arrow.interactiveChildren = false;
-          arrow.sortableChildren = false;
-          arrow.anchor.set(0.5, 0.5);  // middle, middle
-          arrow.position.set(x, y);
-          arrow.rotation = segment.angle;
-          arrow.tint = style.lineMarkerTint;
-          lineMarkers.addChild(arrow);
+      if (oneway) {
+        const segments = getLineSegments(this.points, ONEWAY_SPACING);
+
+        segments.forEach(segment => {
+          segment.coords.forEach(([x, y]) => {
+            const arrow = new PIXI.Sprite(lineMarkerTexture);
+            arrow.interactive = false;
+            arrow.interactiveChildren = false;
+            arrow.sortableChildren = false;
+            arrow.anchor.set(0.5, 0.5); // middle, middle
+            arrow.position.set(x, y);
+            //segments with directional 'sides' get rotated 90 degrees
+            arrow.rotation = segment.angle;
+            // arrow.rotation = segment.angle;
+            arrow.tint = style.lineMarkerTint;
+            lineMarkers.addChild(arrow);
+          });
         });
-      });
+      }
+
+      if (sided) {
+        const segments = getLineSegments(this.points, SIDED_SPACING, sided);
+
+        segments.forEach(segment => {
+          segment.coords.forEach(([x, y]) => {
+            const arrow = new PIXI.Sprite(sidedMarkerTexture);
+            arrow.interactive = false;
+            arrow.interactiveChildren = false;
+            arrow.sortableChildren = false;
+            arrow.anchor.set(0.5, 0.5); // middle, middle
+            arrow.position.set(x, y);
+            arrow.rotation = segment.angle;
+            arrow.tint = style.stroke.color;
+            lineMarkers.addChild(arrow);
+          });
+        });
+      }
 
     } else if (lineMarkers) {  // No line markers, remove if it exists
       container.removeChild(lineMarkers);
