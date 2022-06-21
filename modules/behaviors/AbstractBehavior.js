@@ -22,18 +22,6 @@ export class AbstractBehavior {
 
 
   /**
-   * destroy
-   * Every behavior should have a destroy function
-   * to free all the resources and refrences held by the behavior
-   * Do not use the behavior after calling `destroy()`.
-   */
-  destroy() {
-    this.disable();
-    this._context = null;
-  }
-
-
-  /**
    * enable
    * Every behavior should have an `enable` function
    * to setup whatever event handlers this behavior needs

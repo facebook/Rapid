@@ -25,18 +25,6 @@ export class BehaviorKeyOperation extends AbstractBehavior {
 
 
   /**
-   * destroy
-   * Every behavior should have a destroy function
-   * to free all the resources and refrences held by the behavior
-   * Do not use the behavior after calling `destroy()`.
-   */
-  destroy() {
-    super.destroy();
-    this._operation = null;
-  }
-
-
-  /**
    * enable
    * Bind event handlers
    */
