@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { json as d3_json } from 'd3-fetch';
+// import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
@@ -14,7 +14,6 @@ import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
 
-import { BehaviorAddWay } from '../behaviors/BehaviorAddWay';
 import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
@@ -445,10 +444,10 @@ export function coreContext() {
     });
   };
 
-  context.install = (behavior) => {
+  context.install = () => {
     console.error('error: do not call context.install anymore');   // eslint-disable-line no-console
   };
-  context.uninstall = (behavior) => {
+  context.uninstall = () => {
     console.error('error: do not call context.uninstall anymore');   // eslint-disable-line no-console
   };
 //old redo on every mode change
@@ -659,7 +658,6 @@ export function coreContext() {
 
       // Initialize "core" behaviors
       [
-        new BehaviorAddWay(context),
         new BehaviorDrag(context),
         new BehaviorDraw(context),
         new BehaviorHover(context),

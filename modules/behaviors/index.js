@@ -1,4 +1,3 @@
-export { BehaviorAddWay } from './BehaviorAddWay';
 export { BehaviorDraw } from './BehaviorDraw';
 export { BehaviorHash } from './BehaviorHash';
 export { BehaviorHover } from './BehaviorHover';

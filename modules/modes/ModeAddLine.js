@@ -30,6 +30,7 @@ export class ModeAddLine extends AbstractMode {
     this._start = this._start.bind(this);
     this._startFromWay = this._startFromWay.bind(this);
     this._startFromNode = this._startFromNode.bind(this);
+    this._cancel = this._cancel.bind(this);
   }
 
 
@@ -41,13 +42,8 @@ export class ModeAddLine extends AbstractMode {
       console.log('ModeAddLine: entering');  // eslint-disable-line no-console
     }
 
+    const context = this._context;
     this._active = true;
-    this._context.enableBehaviors(['hover', 'add-way']);
-
-    this._context.behaviors.get('add-way')
-      .on('start', this._start)
-      .on('startFromWay', this._startFromWay)
-      .on('startFromNode', this._startFromNode);
 
 // figure out how this needs to happen - `this.defaultTags` maybe not ready yet?
 //    // RapiD tagSources
@@ -55,6 +51,16 @@ export class ModeAddLine extends AbstractMode {
 //    if (tagSources && this.defaultTags.highway) {
 //      this.defaultTags.source = 'maxar';
 //    }
+
+    context.enableBehaviors(['hover', 'draw']);
+    context.map().dblclickZoomEnable(false);
+    context.behaviors.get('draw')
+      .on('click', this._start)
+      .on('clickWay', this._startFromWay)
+      .on('clickNode', this._startFromNode)
+      .on('cancel', this._cancel)
+      .on('finish', this._cancel);
+
     return true;
   }
 
@@ -69,11 +75,17 @@ export class ModeAddLine extends AbstractMode {
       console.log('ModeAddLine: exiting');  // eslint-disable-line no-console
     }
 
+    const context = this._context;
     this._active = false;
-    this._context.behaviors.get('add-way')
-      .on('start', null)
-      .on('startFromWay', null)
-      .on('startFromNode', null);
+
+    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
+
+    context.behaviors.get('draw')
+      .on('click', null)
+      .on('clickWay', null)
+      .on('clickNode', null)
+      .on('cancel', null)
+      .on('finish', null);
   }
 
 
@@ -133,6 +145,15 @@ export class ModeAddLine extends AbstractMode {
     );
 
     context.enter(modeDrawLine(context, way.id, startGraph, 'line'));
+  }
+
+
+  /**
+   * _cancel
+   * Return to browse mode immediately, `exit()` will handle cleanup
+   */
+  _cancel() {
+    this._context.enter('browse');
   }
 
 }

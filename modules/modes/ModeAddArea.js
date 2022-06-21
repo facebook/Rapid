@@ -29,6 +29,7 @@ export class ModeAddArea extends AbstractMode {
     this._start = this._start.bind(this);
     this._startFromWay = this._startFromWay.bind(this);
     this._startFromNode = this._startFromNode.bind(this);
+    this._cancel = this._cancel.bind(this);
   }
 
 
@@ -40,14 +41,18 @@ export class ModeAddArea extends AbstractMode {
       console.log('ModeAddArea: entering');  // eslint-disable-line no-console
     }
 
+    const context = this._context;
     this._active = true;
-    this._context.enableBehaviors(['hover', 'add-way']);
     this.defaultTags = { area: 'yes' };
 
-    this._context.behaviors.get('add-way')
-      .on('start', this._start)
-      .on('startFromWay', this._startFromWay)
-      .on('startFromNode', this._startFromNode);
+    context.enableBehaviors(['hover', 'draw']);
+    context.map().dblclickZoomEnable(false);
+    context.behaviors.get('draw')
+      .on('click', this._start)
+      .on('clickWay', this._startFromWay)
+      .on('clickNode', this._startFromNode)
+      .on('cancel', this._cancel)
+      .on('finish', this._cancel);
 
     return true;
   }
@@ -63,11 +68,17 @@ export class ModeAddArea extends AbstractMode {
       console.log('ModeAddArea: exiting');  // eslint-disable-line no-console
     }
 
+    const context = this._context;
     this._active = false;
-    this._context.behaviors.get('add-way')
-      .on('start', null)
-      .on('startFromWay', null)
-      .on('startFromNode', null);
+
+    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
+
+    context.behaviors.get('draw')
+      .on('click', null)
+      .on('clickWay', null)
+      .on('clickNode', null)
+      .on('cancel', null)
+      .on('finish', null);
   }
 
 
@@ -142,4 +153,14 @@ export class ModeAddArea extends AbstractMode {
 
     context.enter(modeDrawArea(context, way.id, startGraph, 'area'));
   }
+
+
+  /**
+   * _cancel
+   * Return to browse mode immediately, `exit()` will handle cleanup
+   */
+  _cancel() {
+    this._context.enter('browse');
+  }
+
 }
