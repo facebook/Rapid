@@ -5,7 +5,7 @@ import { vecAngle, vecLength, vecInterp } from '@id-sdk/math';
 import { services } from '../services';
 import { presetManager } from '../presets';
 
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
@@ -20,7 +20,7 @@ const MINZOOM = 12;
  * PixiLayerOsm
  * @class
  */
-export class PixiLayerOsm extends PixiLayer {
+export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * @constructor

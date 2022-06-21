@@ -5,7 +5,7 @@ import { AdjustmentFilter } from '@pixi/filter-adjustment';
 import { ConvolutionFilter } from '@pixi/filter-convolution';
 import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 
 const LAYERID = 'background';
 const DEBUGCOLOR = 0xffff00;
@@ -22,7 +22,7 @@ const sharpenMatrix = [
  * PixiLayerBackgroundTiles
  * @class
  */
-export class PixiLayerBackgroundTiles extends PixiLayer {
+export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * @constructor

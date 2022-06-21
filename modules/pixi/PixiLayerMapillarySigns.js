@@ -1,5 +1,5 @@
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'mapillary-signs';
@@ -10,7 +10,7 @@ const MINZOOM = 12;
  * PixiLayerMapillarySigns
  * @class
  */
-export class PixiLayerMapillarySigns extends PixiLayer {
+export class PixiLayerMapillarySigns extends AbstractLayer {
 
   /**
    * @constructor

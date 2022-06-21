@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
@@ -16,7 +16,7 @@ const MINZOOM = 12;
  * PixiLayerRapid
  * @class
  */
-export class PixiLayerRapid extends PixiLayer {
+export class PixiLayerRapid extends AbstractLayer {
 
   /**
    * @constructor

@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 
 
 /**
- * PixiLayer is the base class from which all layers inherit
+ * AbstractLayer is the base class from which all layers inherit.
  * It creates a container to hold the layer data.
  *
  * Properties you can access:
@@ -14,7 +14,7 @@ import * as PIXI from 'pixi.js';
  *
  * @class
  */
-export class PixiLayer {
+export class AbstractLayer {
 
   /**
    * @constructor

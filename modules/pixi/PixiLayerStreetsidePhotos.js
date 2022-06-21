@@ -1,5 +1,5 @@
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -24,7 +24,7 @@ const MARKERSTYLE = {
  * PixiLayerStreetsidePhotos
  * @class
  */
-export class PixiLayerStreetsidePhotos extends PixiLayer {
+export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
   /**
    * @constructor

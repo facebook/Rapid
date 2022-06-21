@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 
-import { PixiFeature } from './PixiFeature';
+import { AbstractFeature } from './AbstractFeature';
 import { getIconTexture } from './helpers';
 
 
@@ -20,7 +20,7 @@ import { getIconTexture } from './helpers';
  *   `localBounds`
  *   `sceneBounds`
  */
-export class PixiFeaturePoint extends PixiFeature {
+export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * @constructor

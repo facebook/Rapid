@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { Extent, geomGetSmallestSurroundingRectangle, geomRotatePoints, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
-import { PixiFeature } from './PixiFeature';
+import { AbstractFeature } from './AbstractFeature';
 import { prefs } from '../core/preferences';
 
 const PARTIALFILLWIDTH = 32;
@@ -28,7 +28,7 @@ const PARTIALFILLWIDTH = 32;
  *   `localBounds`
  *   `sceneBounds`
  */
-export class PixiFeatureMultipolygon extends PixiFeature {
+export class PixiFeatureMultipolygon extends AbstractFeature {
 
   /**
    * @param  context    Global shared iD application context

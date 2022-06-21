@@ -1,5 +1,5 @@
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'improveOSM';
@@ -19,7 +19,7 @@ TINTS.set('mr-both', 0xffa500);    // missing road + parking
  * PixiLayerImproveOsm
  * @class
  */
-export class PixiLayerImproveOsm extends PixiLayer {
+export class PixiLayerImproveOsm extends AbstractLayer {
 
   /**
    * @constructor

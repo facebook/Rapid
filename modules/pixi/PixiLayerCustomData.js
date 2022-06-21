@@ -9,7 +9,7 @@ import { utilArrayFlatten, utilArrayUnion, utilHashcode, utilStringQs } from '@i
 import { services } from '../services';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
@@ -23,7 +23,7 @@ const LAYERID = 'custom-data';
  * *
  * @class
  */
-export class PixiLayerCustomData extends PixiLayer {
+export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * @constructor

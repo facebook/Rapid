@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { geoMetersToLon } from '@id-sdk/math';
 
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 
 const LAYERID = 'map-ui';
 
@@ -18,7 +18,7 @@ const LAYERID = 'map-ui';
  *
  * @class
  */
-export class PixiLayerMapUI extends PixiLayer {
+export class PixiLayerMapUI extends AbstractLayer {
 
   /**
    * @constructor

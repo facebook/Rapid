@@ -3,7 +3,7 @@ import { Extent } from '@id-sdk/math';
 
 
 /**
- * PixiFeature is the base class from which all features inherit
+ * AbstractFeature is the base class from which all features inherit.
  * It contains properties that used to manage the feature in the scene graph
  *
  * Properties you can access:
@@ -25,7 +25,7 @@ import { Extent } from '@id-sdk/math';
  *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the feature
  *   `sceneBounds`    PIXI.Rectangle() where 0,0 is the origin of the scane
  */
-export class PixiFeature {
+export class AbstractFeature {
 
   /**
    * @constructor
@@ -228,7 +228,7 @@ export class PixiFeature {
    * style
    * @param  obj  Style `Object` (contents depends on the feature type)
    *
-   * 'point' - see PixiFeaturePoint.js
+   * 'point' - see AbstractFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js
    */
   get style() {

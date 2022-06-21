@@ -1,5 +1,5 @@
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'notes';
@@ -10,7 +10,7 @@ const MINZOOM = 12;
  * PixiLayerOsmNotes
  * @class
  */
-export class PixiLayerOsmNotes extends PixiLayer {
+export class PixiLayerOsmNotes extends AbstractLayer {
 
   /**
    * @constructor

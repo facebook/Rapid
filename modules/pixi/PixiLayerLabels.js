@@ -3,7 +3,7 @@ import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { localizer } from '../core/localizer';
 import { getLineSegments, getDebugBBox } from './helpers.js';
 
@@ -28,7 +28,7 @@ class Label {
  * PixiLayerLabels
  * @class
  */
-export class PixiLayerLabels extends PixiLayer {
+export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * @constructor

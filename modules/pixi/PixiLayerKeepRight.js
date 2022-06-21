@@ -1,5 +1,5 @@
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'keepRight';
@@ -40,7 +40,7 @@ TINTS.set('400', 0xcc3355);
  * PixiLayerKeepRight
  * @class
  */
-export class PixiLayerKeepRight extends PixiLayer {
+export class PixiLayerKeepRight extends AbstractLayer {
 
   /**
    * @constructor

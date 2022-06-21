@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { Extent } from '@id-sdk/math';
 
-import { PixiFeature } from './PixiFeature';
+import { AbstractFeature } from './AbstractFeature';
 import { getLineSegments, lineToPolygon } from './helpers';
 
 const ONEWAY_SPACING = 35;
@@ -27,7 +27,7 @@ const SIDED_SPACING = 30;
  *   `localBounds`
  *   `sceneBounds`
  */
-export class PixiFeatureLine extends PixiFeature {
+export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * @constructor

@@ -1,4 +1,4 @@
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { locationManager } from '../core/locations';
 
@@ -10,7 +10,7 @@ const MINZOOM = 4;
  * PixiLayerEditBlocks
  * @class
  */
-export class PixiLayerEditBlocks extends PixiLayer {
+export class PixiLayerEditBlocks extends AbstractLayer {
 
   /**
    * @constructor

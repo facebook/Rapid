@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { services } from '../services';
-import { PixiLayer } from './PixiLayer';
+import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const LAYERID = 'osmose';
@@ -11,7 +11,7 @@ const MINZOOM = 12;
  * PixiLayerOsmose
  * @class
  */
-export class PixiLayerOsmose extends PixiLayer {
+export class PixiLayerOsmose extends AbstractLayer {
 
   /**
    * @constructor
