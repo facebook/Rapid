@@ -37,13 +37,11 @@ export function uiToolUndoRedo(context) {
         // should include "type" and "description" keys, where
         // "description" is used in place of a string-style annotation.
         // See ui/rapid_feature_inspector.js for the motivating use case.
-        return (d.annotation() ?
-          t(d.id + '.tooltip', {
-            action: d.annotation().description
-              ? d.annotation().description
-              : d.annotation(),
-          }) :
-          t(d.id + '.nothing'), d.key);
+        let str = d.annotation();
+        if (str && str.description) {
+          str = str.description;
+        }
+        return str ? t(`${d.id}.tooltip`, { action: str }) : t(`${d.id}.nothing`);
       })
       .keys(d => [d.key])
       .scrollContainer(context.container().select('.top-toolbar'));
