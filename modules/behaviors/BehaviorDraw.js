@@ -24,14 +24,14 @@ const DEBUG = false;
  *
  * Events available:
  *   `down`        Fires on initial pointerdown, receives down `eventData` Object
- *   `move`        Fires on pointermove after pointer is down, receives move `eventData` Object
+ *   `move`        Fires on any pointermove, receives move `eventData` Object
  *   `downcancel`  Fires on pointercancel -or- if the pointer has moved too much for it to be a click, receives `eventData`
  *   `click`       Fires on click on nothing, receives `loc` ([lon,lat])
  *   `clickWay`    Fires on click on a Way, receives `loc` ([lon,lat]) and `edge` Object
  *   `clickNode`   Fires on click on a Node, receives `loc` ([lon,lat]) and `entity` (the node)
  *   `undo`        Fires if user presses backspace
  *   `cancel`      Fires if user presses delete
- *   `finish`      Fires if user presses enter or return
+ *   `finish`      Fires if user presses escape or return
  */
 export class BehaviorDraw extends AbstractBehavior {
 
@@ -153,7 +153,6 @@ export class BehaviorDraw extends AbstractBehavior {
 
     const down = this._getEventData(e);
     this.lastDown = down;
-    this.lastMove = null;
 
     if (DEBUG) {
       console.log(`BehaviorDraw: dispatching 'down'`);  // eslint-disable-line no-console
@@ -164,8 +163,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * _pointermove
-   * Handler for pointermove events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
+   * Handler for pointermove events.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
@@ -176,9 +174,8 @@ export class BehaviorDraw extends AbstractBehavior {
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
 
-    const down = this.lastDown;
     const move = this._getEventData(e);
-    if (!down || down.id !== move.id) return;  // not down, or different pointer
+    if (!move) return;
 
     // We get a lot more move events than we need,
     // so discard ones where it hasn't actually moved much
@@ -186,7 +183,8 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastMove = move;
 
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
-    if (!down.isCancelled) {
+    const down = this._getEventData(e);
+    if (down && down.id === move.id && !down.isCancelled) {
       const dist = vecLength(down.coord, move.coord);
       if (dist >= NEAR_TOLERANCE) {
         down.isCancelled = true;

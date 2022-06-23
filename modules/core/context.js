@@ -391,7 +391,16 @@ export function coreContext() {
   };
 
   // ID of the object currently dragging / drawing
-  context.activeID = () => context._currMode && context._currMode.activeID && context._currMode.activeID();
+  // (This feature should not participate in hit testing)
+  context.activeID = () => {
+    if (!context._currMode) return null;
+    if (typeof context._currMode.activeID === 'function') {
+      return context._currMode.activeID();
+    } else {
+      return context._currMode.activeID;
+    }
+  };
+
 
 // ...and definitely stop doing this...
 //  let _selectedNoteID;

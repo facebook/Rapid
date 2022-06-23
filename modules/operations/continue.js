@@ -1,7 +1,6 @@
 import { utilArrayGroupBy } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { modeDrawLine } from '../modes/draw_line';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
@@ -29,9 +28,15 @@ export function operationContinue(context, selectedIDs) {
 
     var operation = function() {
         var candidate = _candidates[0];
-        context.enter(
-            modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(_vertex.id), true)
-        );
+
+      const selectedData = new Map();
+      selectedData.set(candidate.id, candidate);  // the Way
+      selectedData.set(_vertex.id, _vertex);      // the Node
+      context.enter('add-line', selectedData);
+
+        // context.enter(
+        //     modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(_vertex.id), true)
+        // );
     };
 
 
