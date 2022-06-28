@@ -397,7 +397,7 @@ export class PixiLayerLabels extends AbstractLayer {
     // It might be a level container with a name like "1", "-1", or just a name like "lines"
     // If `parseInt` fails, just sort the label above everything.
     function level(feature) {
-      const lvl = parseInt(feature.displayObject.parent.name, 10);
+      const lvl = parseInt(feature.container.parent.name, 10);
       return isNaN(lvl) ? 999 : lvl;
     }
 
@@ -428,8 +428,8 @@ export class PixiLayerLabels extends AbstractLayer {
   placePointLabel(feature, labelObj) {
     if (!feature || !feature.sceneBounds) return;
 
-    const dObj = feature.displayObject;
-    if (!dObj.visible || !dObj.renderable) return;
+    const container = feature.container;
+    if (!container.visible || !container.renderable) return;
 
     const TEXTDIRECTION = localizer.textDirection();
 
@@ -557,7 +557,7 @@ export class PixiLayerLabels extends AbstractLayer {
   placeLineLabel(feature, labelObj) {
     if (!feature || !feature.points) return;
 
-    const dObj = feature.displayObject;
+    const dObj = feature.container;
     if (!dObj.visible || !dObj.renderable) return;
 
     // `f` - feature, these bounds are in "scene" coordinates

@@ -9,46 +9,65 @@ import { getIconTexture } from './helpers';
  * PixiFeaturePoint
  *
  * Properties you can access:
- *   `geometry`       Single wgs84 coordinate [lon, lat]
- *   `style`          Object containing styling data
- *   `displayObject`  PIXI.Sprite() for the marker
+ *   `geometry`   Single wgs84 coordinate [lon, lat]
+ *   `style`      Object containing styling data
+ *   `container`  PIXI.Sprite() for the marker
  *
- * Inherited from PixiFeature:
- *   `dirty`
- *   `extent`
- *   `label`
- *   `localBounds`
- *   `sceneBounds`
+ *   (also all properties inherited from `AbstractFeature`)
  */
 export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  context    Global shared iD application context
-   * @param  id         Unique string to use for the name of this feature
-   * @param  parent     Parent container for this feature.  The display object will be added to it.
-   * @param  data       Data to associate with this feature (like `__data__` from the D3.js days)
-   * @param  geometry   `Array` containing geometry data
-   * @param  style      `Object` containing style data
+   * @param  context   Global shared iD application context
+   * @param  id        Unique string to use for the name of this feature
+   * @param  parent    Parent container for this feature.  The feature will be added to it.
+   * @param  data      Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  geometry  `Array` containing geometry data
+   * @param  style     `Object` containing style data
    */
   constructor(context, id, parent, data, geometry, style) {
-    const marker = new PIXI.Sprite();
-    super(context, marker, id, parent, data);
+    super(context, id, parent, data);
 
     this.type = 'point';
     this.geometry = geometry;
     this.style = style || {};
-
-    this.halo = null;
-
     this._oldvfLength = 0;  // to watch for change in # of viewfield sprites
+
+    const viewfields = new PIXI.Container();
+    viewfields.name = 'viewfields';
+    viewfields.interactive = false;
+    viewfields.interactiveChildren = false;
+    viewfields.sortableChildren = false;
+    viewfields.visible = false;
+    this.viewfields = viewfields;
+
+    const marker = new PIXI.Sprite();
+    marker.name = 'marker';
+    marker.interactive = false;
+    marker.interactiveChildren = false;
+    marker.sortableChildren = false;
+    marker.visible = true;
+    this.marker = marker;
+
+    const icon = new PIXI.Sprite();
+    icon.name = 'icon';
+    icon.interactive = false;
+    icon.interactiveChildren = false;
+    icon.sortableChildren = false;
+    icon.visible = false;
+    this.icon = icon;
+
+    this.container.addChild(viewfields, marker, icon);
+
+// experiment
+    this.halo = null;
   }
 
 
   /**
    * destroy
    * Every feature should have a destroy function that frees all the resources
-   * and removes the display object from the scene.
    * Do not use the feature after calling `destroy()`.
    */
   destroy() {
@@ -69,16 +88,15 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     // Recalculate local and scene bounds
     // (note that the local bounds automatically includes children like viewfields too)
-    const marker = this.displayObject;
-    const position = marker.position;
-    marker.getLocalBounds(this.localBounds);        // where 0,0 is the origin of the object
+    const position = this.container.position;
+    this.container.getLocalBounds(this.localBounds);     // where 0,0 is the origin of the object
     this.sceneBounds = this.localBounds.clone();    // where 0,0 is the origin of the scene
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
 
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
-    const rect = marker.getLocalBounds().clone();
+    const rect = this.container.getLocalBounds().clone();
     if (rect.width < MINSIZE) {
       rect.pad((MINSIZE - rect.width) / 2, 0);
     }
@@ -95,7 +113,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       rect.left, rect.top
     ]);
 
-    this.displayObject.hitArea = poly;
+    this.container.hitArea = poly;
 
     this.updateHalo();
   }
@@ -108,16 +126,14 @@ export class PixiFeaturePoint extends AbstractFeature {
   updateGeometry(projection) {
     if (!this._geometryDirty) return;
 
-    const marker = this.displayObject;
-
     // Reproject
     const [x, y] = projection.project(this._geometry);
-    marker.position.set(x, y);
+    this.container.position.set(x, y);
 
     // sort markers by latitude ascending
     // sort markers with viewfields above markers without viewfields
     const z = -this._geometry[1];
-    marker.zIndex = (this._oldvfLength > 0) ? (z + 1000) : z;
+    this.container.zIndex = (this._oldvfLength > 0) ? (z + 1000) : z;
 
     this._geometryDirty = false;
   }
@@ -132,10 +148,12 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     const context = this.context;
     const textures = context.pixi.rapidTextures;
-    const marker = this.displayObject;
-
     const style = this._style;
     const isPin = (style.markerName === 'pin' || style.markerName === 'boldPin');
+
+    const viewfields = this.viewfields;
+    const marker = this.marker;
+    const icon = this.icon;
 
     //
     // Update marker style
@@ -147,76 +165,55 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Update viewfields, if any..
     //
     const vfAngles = style.viewfieldAngles || [];
-    let vfContainer = marker.getChildByName('viewfields');
-
     if (vfAngles.length) {
       const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
 
-      // Create viewfield container, if necessary
-      if (!vfContainer) {
-        vfContainer = new PIXI.Container();
-        vfContainer.name = 'viewfields';
-        vfContainer.interactive = false;
-        vfContainer.interactiveChildren = false;
-        // sort markers with viewfields above markers without viewfields
-        marker.zIndex = -this._geometry[1] + 1000;
-        marker.addChild(vfContainer);
-      }
+      // sort markers with viewfields above markers without viewfields
+      this.container.zIndex = -this._geometry[1] + 1000;
 
       // If # of viewfields has changed from before, replace them.
       if (vfAngles.length !== this._oldvfLength) {
-        vfContainer.removeChildren();
+        viewfields.removeChildren();
         vfAngles.forEach(() => {
-          const sprite = new PIXI.Sprite(vfTexture);
-          sprite.interactive = false;
-          sprite.interactiveChildren = false;
-          sprite.anchor.set(0.5, 1);  // middle, top
-          vfContainer.addChild(sprite);
+          const vfSprite = new PIXI.Sprite(vfTexture);
+          vfSprite.interactive = false;
+          vfSprite.interactiveChildren = false;
+          vfSprite.anchor.set(0.5, 1);  // middle, top
+          viewfields.addChild(vfSprite);
         });
         this._oldvfLength = vfAngles.length;
       }
 
       // Update viewfield angles and style
       vfAngles.forEach((vfAngle, index) => {
-        const sprite = vfContainer.getChildAt(index);
-        sprite.tint = style.viewfieldTint || 0x333333;
-        sprite.angle = vfAngle;
+        const vfSprite = viewfields.getChildAt(index);
+        vfSprite.tint = style.viewfieldTint || 0x333333;
+        vfSprite.angle = vfAngle;
       });
 
-    } else if (vfContainer) {  // No viewfields, destroy the container if it exists
-      // sort markers with viewfields above markers without viewfields
-      marker.zIndex = -this._geometry[1];
-      marker.removeChild(vfContainer);
-      vfContainer.destroy({ children: true });
+      viewfields.visible = true;
+
+    } else {  // No viewfields
+      this.container.zIndex = -this._geometry[1];   // restore default marker sorting
+      viewfields.removeChildren();
+      viewfields.visible = false;
     }
 
     //
     // Update icon, if any..
     //
-    let iconSprite = marker.getChildByName('icon');
-
     if (style.iconTexture || style.iconName) {
-
-      // Create icon sprite, if necessary
-      if (!iconSprite) {
-        iconSprite = new PIXI.Sprite();
-        iconSprite.name = 'icon';
-        iconSprite.interactive = false;
-        iconSprite.interactiveChildren = false;
-        iconSprite.anchor.set(0.5, 0.5);   // middle, middle
-        marker.addChild(iconSprite);
-      }
-
       // Update texture and style, if necessary
-      iconSprite.texture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
+      icon.texture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
       const ICONSIZE = 11;
-      iconSprite.width = ICONSIZE;
-      iconSprite.height = ICONSIZE;
-      iconSprite.alpha = style.iconAlpha;
+      icon.anchor.set(0.5, 0.5);   // middle, middle
+      icon.width = ICONSIZE;
+      icon.height = ICONSIZE;
+      icon.alpha = style.iconAlpha;
+      icon.visible = true;
 
-    } else if (iconSprite) {  // No icon, remove if it exists
-      marker.removeChild(iconSprite);
-      iconSprite.destroy({ children: true });
+    } else {  // No icon
+      icon.visible = false;
     }
 
 
@@ -230,6 +227,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     } else if (zoom < 17) {  // Markers drawn but smaller
       this.lod = 1;  // simplified
       this.visible = true;
+      viewfields.renderable = false;
       marker.renderable = true;
       marker.scale.set(0.8, 0.8);
 
@@ -237,37 +235,22 @@ export class PixiFeaturePoint extends AbstractFeature {
       const textureName = isPin ? 'largeCircle' : style.markerName;
       marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
-      if (iconSprite) {
-        iconSprite.position.set(0, 0);
-      }
-      // Hide viewfields
-      if (vfContainer) {
-        vfContainer.renderable = false;
-      }
+      icon.position.set(0, 0);      // middle, middle
 
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
       this.visible = true;
+      viewfields.renderable = true;
       marker.renderable = true;
       marker.scale.set(1, 1);
+
       marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
       if (isPin) {
         marker.anchor.set(0.5, 1);  // middle, bottom
+        icon.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
       } else {
         marker.anchor.set(0.5, 0.5);  // middle, middle
-      }
-
-      // Show requested icon
-      if (iconSprite) {
-        if (isPin) {
-          iconSprite.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
-        } else {
-          iconSprite.position.set(0, 0);  // middle, middle
-        }
-      }
-      // Show viewfields
-      if (vfContainer) {
-        vfContainer.renderable = true;
+        icon.position.set(0, 0);      // middle, middle
       }
     }
 
@@ -276,7 +259,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
 
 // experiment
-// Show/Hide halo (requires `this.displayObject.hitArea` to be already set up as a PIXI.Polygon)
+// Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
     if (this.hovered || this.selected) {
       const HALO_COLOR = 0xffff00;
@@ -293,8 +276,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
       const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
       this.halo.clear();
-      new DashLine(this.halo, haloProps).drawPolygon(this.displayObject.hitArea.points);
-      this.halo.position = this.displayObject.position;
+      new DashLine(this.halo, haloProps).drawPolygon(this.container.hitArea.points);
+      this.halo.position = this.container.position;
 
     } else {
       if (this.halo) {

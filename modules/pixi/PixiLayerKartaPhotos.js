@@ -122,7 +122,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeatureLine(context, featureID, this.container, d, d.coordinates, LINESTYLE);
-        feature.displayObject.zIndex = -100;  // beneath the markers (which should be [-90..90])
+        feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
       if (feature.dirty) {

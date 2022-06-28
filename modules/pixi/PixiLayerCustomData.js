@@ -283,7 +283,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeatureMultipolygon(context, entity.id, this.container, null, geometry, polyStyle );
-        feature.displayObject.cursor = 'not-allowed';
+        feature.container.cursor = 'not-allowed';
       }
 
       if (feature.dirty) {
@@ -309,7 +309,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeatureLine(context, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
-        feature.displayObject.cursor = 'not-allowed';
+        feature.container.cursor = 'not-allowed';
       }
 
       if (feature.dirty) {
@@ -337,7 +337,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         let pointCoords = [entity.geometry.coordinates[0], entity.geometry.coordinates[1]]; //leave off any elevation or other data.
 
         feature = new PixiFeaturePoint(context, entity.id, this.container, entity, pointCoords, pointStyle );
-        feature.displayObject.cursor = 'not-allowed';
+        feature.container.cursor = 'not-allowed';
       }
 
       if (feature.dirty) {

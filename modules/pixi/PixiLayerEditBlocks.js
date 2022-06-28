@@ -112,7 +112,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         };
 
         feature = new PixiFeatureMultipolygon(this.context, featureID, this.container, null, geometry, style);
-        feature.displayObject.cursor = 'not-allowed';
+        feature.container.cursor = 'not-allowed';
       }
 
       if (feature.dirty) {

@@ -277,7 +277,7 @@ const duration = measure.duration.toFixed(1);
       const feature = this.scene.get(featureID);
       if (feature) {
         selectChanged = true;
-        feature.displayObject.filters = [];
+        feature.container.filters = [];
         feature.selected = false;
       }
     });
@@ -291,7 +291,7 @@ const duration = measure.duration.toFixed(1);
 
       this._selectedIDs.add(feature.id);
       selectChanged = true;
-      feature.displayObject.filters = [ this.selectglow ];
+      feature.container.filters = [ this.selectglow ];
       feature.selected = true;
     });
 
@@ -322,7 +322,7 @@ if (!this._context.map().isTransformed()) {
       const feature = this.scene.get(featureID);
       if (feature) {
         hoverChanged = true;
-        feature.displayObject.filters = [];
+        feature.container.filters = [];
         feature.hovered = false;
       }
     });
@@ -336,7 +336,7 @@ if (!this._context.map().isTransformed()) {
 
       this._hoveredIDs.add(feature.id);
       hoverChanged = true;
-      feature.displayObject.filters = [ this.hoverglow ];
+      feature.container.filters = [ this.hoverglow ];
       feature.hovered = true;
     });
 

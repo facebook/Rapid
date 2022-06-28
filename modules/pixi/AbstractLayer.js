@@ -6,7 +6,7 @@ import * as PIXI from 'pixi.js';
  * It creates a container to hold the layer data.
  *
  * Properties you can access:
- *  `container`  PIXI.Container() contains the display objects for this layer
+ *  `container`  PIXI.Container() contains the features on this layer
  *  `supported`  Is this layer supported? (i.e. do we even show it in lists?)
  *  `zIndex`     Where this layer sits compared to other layers
  *  `enabled`    Whether the the user has chosen to see the layer

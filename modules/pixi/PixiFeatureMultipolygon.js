@@ -12,35 +12,29 @@ const PARTIALFILLWIDTH = 32;
  * PixiFeatureMultipolygon
  *
  * Properties you can access:
- *   `geometry`       Treat like multipolygon (Array of polygons wgs84 [lon, lat])
- *   `style`          Object containing styling data
- *   `displayObject`  PIXI.Container() holds the polygon parts
- *   `lowRes`         PIXI.Sprite() for a replacement graphic to display at low resolution
- *   `fill`           PIXI.Graphic() for the fill (below)
- *   `stroke`         PIXI.Graphic() for the stroke (above)
- *   `mask`           PIXI.Mesh() for the mask (applied to fill)
- *   `ssrdata`        Object containing SSR data (computed one time for simple polygons)
+ *   `geometry`   Treat like multipolygon (Array of polygons wgs84 [lon, lat])
+ *   `style`      Object containing styling data
+ *   `container`  PIXI.Container() holds the polygon parts
+ *   `lowRes`     PIXI.Sprite() for a replacement graphic to display at low resolution
+ *   `fill`       PIXI.Graphic() for the fill (below)
+ *   `stroke`     PIXI.Graphic() for the stroke (above)
+ *   `mask`       PIXI.Mesh() for the mask (applied to fill)
+ *   `ssrdata`    Object containing SSR data (computed one time for simple polygons)
  *
- * Inherited from PixiFeature:
- *   `dirty`
- *   `extent`
- *   `label`
- *   `localBounds`
- *   `sceneBounds`
+ *   (also all properties inherited from `AbstractFeature`)
  */
 export class PixiFeatureMultipolygon extends AbstractFeature {
 
   /**
-   * @param  context    Global shared iD application context
-   * @param  id         Unique string to use for the name of this feature
-   * @param  parent     Parent container for this feature.  The display object will be added to it.
-   * @param  data       Data to associate with this feature (like `__data__` from the D3.js days)
-   * @param  geometry   `Array` containing geometry data
-   * @param  style      `Object` containing style data
+   * @param  context   Global shared iD application context
+   * @param  id        Unique string to use for the name of this feature
+   * @param  parent    Parent container for this feature.  The feature will be added to it.
+   * @param  data      Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  geometry  `Array` containing geometry data
+   * @param  style     `Object` containing style data
    */
   constructor(context, id, parent, data, geometry, style) {
-    const container = new PIXI.Container();
-    super(context, container, id, parent, data);
+    super(context, id, parent, data);
 
     this.type = 'multipolygon';
     this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]
@@ -81,14 +75,13 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     mask.visible = false;
     this.mask = mask;
 
-    container.addChild(lowRes, fill, stroke, mask);
+    this.container.addChild(lowRes, fill, stroke, mask);
   }
 
 
   /**
    * destroy
    * Every feature should have a destroy function that frees all the resources
-   * and removes the display object from the scene.
    * Do not use the feature after calling `destroy()`.
    */
   destroy() {

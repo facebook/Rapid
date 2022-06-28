@@ -92,10 +92,10 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
         feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
 
-        // const dObj = feature.displayObject;
+        // const marker = feature.marker;
         // const ICONSIZE = 24;
-        // dObj.width = ICONSIZE;
-        // dObj.height = ICONSIZE;
+        // marker.width = ICONSIZE;
+        // marker.height = ICONSIZE;
       }
 
       if (feature.dirty) {

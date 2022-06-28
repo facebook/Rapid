@@ -283,7 +283,7 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.data = entity;   // rebind data
 
         const area = entity.extent(graph).area();  // estimate area from extent for speed
-        feature.displayObject.zIndex = -area;      // sort by area descending (small things above big things)
+        feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
@@ -357,7 +357,7 @@ export class PixiLayerOsm extends AbstractLayer {
       if (feature.v !== version || feature.dirty) {
         feature.v = version;
         feature.data = entity;  // rebind data
-        feature.displayObject.zIndex = getzIndex(entity.tags);
+        feature.container.zIndex = getzIndex(entity.tags);
 
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
@@ -375,8 +375,8 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // Change parent if necessary
-      if (feature.displayObject.parent !== levelContainer) {
-        feature.displayObject.setParent(levelContainer);
+      if (feature.container.parent !== levelContainer) {
+        feature.container.setParent(levelContainer);
       }
 
       if (feature.dirty) {
@@ -485,8 +485,8 @@ if (activeData.has(feature.id)) {
       }
 
       // change parent if necessary
-      if (feature.displayObject.parent !== parentContainer) {
-        feature.displayObject.setParent(parentContainer);
+      if (feature.container.parent !== parentContainer) {
+        feature.container.setParent(parentContainer);
       }
 
       if (feature.dirty) {
@@ -645,7 +645,7 @@ if (activeData.has(feature.id)) {
         feature.v = midpoint.loc;
         feature.data = midpoint;
         feature.geometry = midpoint.loc;
-        feature.displayObject.rotation = midpoint.rot;  // remember to apply rotation
+        feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }
 
       if (feature.dirty) {

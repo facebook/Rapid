@@ -8,7 +8,7 @@ import { Extent } from '@id-sdk/math';
  *
  * Properties you can access:
  *   `context`        Global shared iD application context
- *   `displayObject`  Root Pixi display object for this feature (can be a Graphic, Container, Sprite, etc)
+ *   `container`      PIXI.Container() that contains all the graphics for this feature
  *   `id`             Unique string to use for the name of this feature
  *   `type`           String describing what kind of feature this is ('point', 'line', 'multipolygon')
  *   `geometry`       Array containing geometry info
@@ -30,31 +30,31 @@ export class AbstractFeature {
 
   /**
    * @constructor
-   * @param  context        Global shared iD application context
-   * @param  displayObject  Root Pixi display object for this feature (can be a Graphic, Container, Sprite, etc)
-   * @param  id             Unique string to use for the name of this feature
-   * @param  parent         Parent container for this feature.  The display object will be added to it.
-   * @param  data           Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  context  Global shared iD application context
+   * @param  id       Unique string to use for the name of this feature
+   * @param  parent   Parent container for this feature.  The feature's container will be added to it.
+   * @param  data     Data to associate with this feature (like `__data__` from the D3.js days)
    */
-  constructor(context, displayObject, id, parent, data) {
+  constructor(context, id, parent, data) {
+    const container = new PIXI.Container();
+    this.container = container;
+
+    container.__feature__ = this;   // Link the container back to `this`
+    container.name = id;
+    container.sortableChildren = false;
+    container.visible = true;
+    if (parent) container.setParent(parent);
+
+    // By default, make the feature interactive
+    container.buttonMode = true;
+    container.interactive = true;
+    container.interactiveChildren = true;
+
     this.type = 'unknown';
     this.context = context;
     this.data = data;
-    this.displayObject = displayObject;
-    this.visible = false;
     this.v = -1;
     this.lod = 2;   // full detail
-
-    if (parent) displayObject.setParent(parent);
-    displayObject.__feature__ = this;   // Link the displayObject back to `this`
-
-    displayObject.name = id;
-    displayObject.sortableChildren = false;
-
-    // By default, make the display object interactive
-    displayObject.buttonMode = true;
-    displayObject.interactive = true;
-    displayObject.interactiveChildren = true;
 
     this._geometry = null;
     this._geometryDirty = true;
@@ -77,17 +77,16 @@ export class AbstractFeature {
   /**
    * destroy
    * Every feature should have a destroy function that frees all the resources
-   * and removes the display object from the scene.
    * Do not use the feature after calling `destroy()`.
    */
   destroy() {
-    // Destroying a display object removes it from its parent automatically
+    // Destroying a container removes it from its parent automatically
     // We also remove the children too
-    this.displayObject.__feature__ = null;
-    this.displayObject.destroy({ children: true });
+    this.container.__feature__ = null;
+    this.container.destroy({ children: true });
 
     this.context = null;
-    this.displayObject = null;
+    this.container = null;
 
     this._geometry = null;
     this._style = null;
@@ -130,19 +129,19 @@ export class AbstractFeature {
    * Feature id
    */
   get id() {
-    return this.displayObject.name;
+    return this.container.name;
   }
 
   /**
    * visible
-   * Whether the displayObject is currently visible
+   * Whether the feature is currently visible
    */
   get visible() {
-    return this.displayObject.visible;
+    return this.container.visible;
   }
   set visible(val) {
-    if (this.displayObject.visible !== val) {
-      this.displayObject.visible = val;
+    if (this.container.visible !== val) {
+      this.container.visible = val;
       this._labelDirty = true;
     }
   }
@@ -150,16 +149,16 @@ export class AbstractFeature {
 
   /**
    * interactive
-   * Whether the displayObject is currently interactive
+   * Whether the feature is currently interactive
    */
   get interactive() {
-    return this.displayObject.interactive;
+    return this.container.interactive;
   }
   set interactive(val) {
-    if (this.displayObject.interactive !== val) {
-      this.displayObject.buttonMode = val;
-      this.displayObject.interactive = val;
-      this.displayObject.interactiveChildren = val;
+    if (this.container.interactive !== val) {
+      this.container.buttonMode = val;
+      this.container.interactive = val;
+      this.container.interactiveChildren = val;
     }
   }
 

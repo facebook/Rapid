@@ -13,34 +13,28 @@ const SIDED_SPACING = 30;
  * PixiFeatureLine
  *
  * Properties you can access:
- *   `geometry`       Array of wgs84 coordinates [lon, lat]
- *   `points`         Array of projected points in scene coordinates
- *   `style`          Object containing styling data
- *   `displayObject`  PIXI.Container() holds the line parts
- *   `casing`         PIXI.Graphic() for the casing (below)
- *   `stroke`         PIXI.Graphic() for the stroke (above)
+ *   `geometry`   Array of wgs84 coordinates [lon, lat]
+ *   `points`     Array of projected points in scene coordinates
+ *   `style`      Object containing styling data
+ *   `container`  PIXI.Container() holds the line parts
+ *   `casing`     PIXI.Graphic() for the casing (below)
+ *   `stroke`     PIXI.Graphic() for the stroke (above)
  *
- * Inherited from PixiFeature:
- *   `dirty`
- *   `extent`
- *   `label`
- *   `localBounds`
- *   `sceneBounds`
+ *   (also all properties inherited from `AbstractFeature`)
  */
 export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  context    Global shared iD application context
-   * @param  id         Unique string to use for the name of this feature
-   * @param  parent     Parent container for this feature.  The display object will be added to it.
-   * @param  data       Data to associate with this feature (like `__data__` from the D3.js days)
-   * @param  geometry   `Array` containing geometry data
-   * @param  style      `Object` containing style data
+   * @param  context   Global shared iD application context
+   * @param  id        Unique string to use for the name of this feature
+   * @param  parent    Parent container for this feature.  The feature will be added to it.
+   * @param  data      Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  geometry  `Array` containing geometry data
+   * @param  style     `Object` containing style data
    */
   constructor(context, id, parent, data, geometry, style) {
-    const container = new PIXI.Container();
-    super(context, container, id, parent, data);
+    super(context, id, parent, data);
 
     this.type = 'line';
     this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]
@@ -53,7 +47,6 @@ export class PixiFeatureLine extends AbstractFeature {
     casing.interactiveChildren = false;
     casing.sortableChildren = false;
     this.casing = casing;
-    container.addChild(casing);
 
     const stroke = new PIXI.Graphics();
     stroke.name = 'stroke';
@@ -61,14 +54,14 @@ export class PixiFeatureLine extends AbstractFeature {
     stroke.interactiveChildren = false;
     stroke.sortableChildren = false;
     this.stroke = stroke;
-    container.addChild(stroke);
+
+    this.container.addChild(casing, stroke);
   }
 
 
   /**
    * destroy
    * Every feature should have a destroy function that frees all the resources
-   * and removes the display object from the scene.
    * Do not use the feature after calling `destroy()`.
    */
   destroy() {
@@ -88,7 +81,7 @@ export class PixiFeatureLine extends AbstractFeature {
     // For now, if either geometry or style is dirty, we just update the whole line
     const context = this.context;
     const textures = context.pixi.rapidTextures;
-    const container = this.displayObject;
+    const container = this.container;
     const style = this._style;
 
     //
@@ -285,7 +278,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
 // experiment
-// Show/Hide halo (requires `this.displayObject.hitArea` to be already set up as a PIXI.Polygon)
+// Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
     if (this.hovered || this.selected) {
       const HALO_COLOR = 0xffff00;
@@ -302,7 +295,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
       const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
       this.halo.clear();
-      new DashLine(this.halo, haloProps).drawPolygon(this.displayObject.hitArea.points);
+      new DashLine(this.halo, haloProps).drawPolygon(this.container.hitArea.points);
 
     } else {
       if (this.halo) {
