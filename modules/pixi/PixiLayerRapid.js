@@ -447,12 +447,7 @@ export class PixiLayerRapid extends AbstractLayer {
       if (!feature) {
         feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc);
         feature.rapidFeature = true;
-
-        // vertices in this layer don't actually need to be interactive
-        const dObj = feature.displayObject;
-        dObj.buttonMode = false;
-        dObj.interactive = false;
-        dObj.interactiveChildren = false;
+        feature.interactive = false;   // vertices in this layer don't actually need to be interactive
       }
 
       if (feature.dirty) {

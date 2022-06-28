@@ -79,11 +79,11 @@ export class ModeAddNote extends AbstractMode {
     osm.replaceNote(note);
 
     // force a redraw (there is no history change that would otherwise do this)
+// why? should the mode change trigger a redraw?
     // this._context.map().immediateRedraw();
 
-    this._context
-      // .selectedNoteID(note.id)
-      .enter('select-note', [note.id]);  //.newFeature(true));
+    const selection = new Map().set(note.id, note);
+    this._context.enter('select', { selection: selection });  //.newFeature(true));
   }
 
 

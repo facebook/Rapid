@@ -60,7 +60,7 @@ export function uiIntroLine(context, reveal) {
         context.map().centerZoomEase(tulipRoadStart, 18.5, msec);
 
         timeout(function() {
-            var tooltip = reveal('button.add-line',
+            var tooltip = reveal('button.draw-line',
                 helpHtml('intro.lines.add_line'));
 
             tooltip.selectAll('.popover-inner')
@@ -70,7 +70,7 @@ export function uiIntroLine(context, reveal) {
                 .attr('xlink:href', '#iD-graphic-lines');
 
             context.on('enter.intro', function(mode) {
-                if (mode.id !== 'add-line') return;
+                if (mode.id !== 'draw-line') return;
                 continueTo(startLine);
             });
         }, msec + 100);
@@ -83,7 +83,7 @@ export function uiIntroLine(context, reveal) {
 
 
     function startLine() {
-        if (context.mode().id !== 'add-line') return chapter.restart();
+        if (context.mode().id !== 'draw-line') return chapter.restart();
 
         _tulipRoadID = null;
 

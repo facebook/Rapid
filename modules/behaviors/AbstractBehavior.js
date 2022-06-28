@@ -53,7 +53,7 @@ export class AbstractBehavior {
 
   /**
    * _getEventData
-   * Returns an object containing the important details about this Pixi event
+   * Returns an object containing the important details about this Pixi event.
    * @param  `e`  A Pixi InteractionEvent (or something that looks like one)
    */
   _getEventData(e) {
@@ -65,33 +65,36 @@ export class AbstractBehavior {
       time: e.data.originalEvent.timeStamp,
       isCancelled: false,
       target: null,
+      feature: null,
       data: null
     };
 
-    if (!e.target) {   // e.target is the displayObject that triggered this event
+    if (!e.target) {   // `e.target` is the Pixi DisplayObject that triggered this event.
       return result;
     }
 
     let target = e.target;
-    let data = target && target.__data__;
+    let feature = target && target.__feature__;
 
-    // Data is here, use this target
-    if (data) {
+    // __feature__ is here, use this target
+    if (feature) {
       result.target = target;
-      result.data = data;
+      result.feature = feature;
+      result.data = feature.data;
       return result;
     }
 
-    // No data in target, look in parent
+    // No __feature__ in target, look in parent
     target = e.target.parent;
-    data = target && target.__data__;
-    if (data) {
+    feature = target && target.__feature__;
+    if (feature) {
       result.target = target;
-      result.data = data;
+      result.feature = feature;
+      result.data = feature.data;
       return result;
     }
 
-    // No data there either, just use the original target
+    // No __feature__ there either, just use the original target
     result.target = e.target;
     return result;
   }

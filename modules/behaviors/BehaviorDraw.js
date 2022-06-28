@@ -331,7 +331,7 @@ export class BehaviorDraw extends AbstractBehavior {
     if (locationManager.blocksAt(loc).length) return;  // editing is blocked here
 
     const datum = eventData.data;
-    const entity = datum instanceof osmEntity && datum;
+    const entity = (datum instanceof osmEntity) && datum;
 
     // Snap to a node
     if (entity && entity.type === 'node') {
@@ -345,7 +345,10 @@ export class BehaviorDraw extends AbstractBehavior {
     // Snap to a way
     if (entity && entity.type === 'way') {
       const graph = context.graph();
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, context.activeID());
+      const activeIDs = context.activeIDs();
+      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
+
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
       if (choice) {
         const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
         if (DEBUG) {

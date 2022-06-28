@@ -44,23 +44,6 @@ export class PixiLayerOsm extends AbstractLayer {
     this._alreadyDownloaded = false;
     this._saveCannedData = false;
 
-    // Setup Scene
-    //
-    // A few definitions:
-    //
-    // - `buttonMode = true`    this displayObject will turn the cursor to a pointer when hovering over
-    // - `buttonMode = false`   this displayObject will NOT turn the cursor to a pointer when hovering over (default)
-    //
-    // - `interactive = true`   this displayObject can emit events
-    // - `interactive = false`  this displayObject can NOT emit events (default)
-    //
-    // - `interactiveChildren = true`   this container and its children will be checked for hits (default)
-    // - `interactiveChildren = false`  this container and its children will NOT be checked for hits
-    //
-    // - `sortableChildren = true`   we will set a zIndex property on children and they will be sorted according to it
-    // - `sortableChildren = false`  children will be drawn in the ordrer they are added to `children` array (default)
-    //
-
     const areas = new PIXI.Container();
     areas.name = `${LAYERID}-areas`;
     areas.sortableChildren = true;
@@ -433,6 +416,8 @@ export class PixiLayerOsm extends AbstractLayer {
       );
     }
 
+// deal with "active" here?
+const activeData = context.activeData();
 
     entities.forEach(node => {
       let parentContainer = null;
@@ -455,6 +440,12 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.v = version;
         feature.data = node;   // rebind data
         feature.geometry = node.loc;
+
+feature.interactive = !activeData.has(feature.id);
+if (activeData.has(feature.id)) {
+  console.log(`${feature.id} IS ACTIVE`);
+}
+
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;

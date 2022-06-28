@@ -20,10 +20,10 @@ import { BehaviorHover } from '../behaviors/BehaviorHover';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
 import { ModeAddArea } from '../modes/ModeAddArea';
-import { ModeAddLine } from '../modes/ModeAddLine';
 import { ModeAddNote } from '../modes/ModeAddNote';
 import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
+import { ModeDrawLine } from '../modes/ModeDrawLine';
 import { ModeSave } from '../modes/ModeSave';
 import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
@@ -333,11 +333,13 @@ export function coreContext() {
    * If the mode could not be entered for whatever reason, falls back to entering browse mode.
    *
    * @param   `modeOrModeID`  `Object` or `String` identifying the mode to enter
-   * @param   `selectedData`   Optional `Map(dataID -> data)` passed to the new mode
+   * @param   `options`        Optional `Object` of options passed to the new mode
    * @return  The mode that got entered
    */
-  context.enter = (modeOrModeID, selectedData) => {
+  context.enter = (modeOrModeID, options) => {
+    const currMode = context._currMode;
     let newMode;
+
     if (typeof modeOrModeID === 'string') {
       newMode = context.modes.get(modeOrModeID);
     } else {
@@ -349,15 +351,15 @@ export function coreContext() {
     }
 
     // Exit current mode, if any
-    if (context._currMode) {
-      context._currMode.exit();
-      _container.classed(`mode-${context._currMode.id}`, false);
-      dispatch.call('exit', this, context._currMode);
+    if (currMode) {
+      currMode.exit();
+      _container.classed(`mode-${currMode.id}`, false);
+      dispatch.call('exit', this, currMode);
     }
 
     // Try to enter the new mode, fallback to 'browse' mode
     context._currMode = newMode;
-    const didEnter = context._currMode.enter(selectedData);
+    const didEnter = context._currMode.enter(options);
     if (!didEnter) {
       context._currMode = context.modes.get('browse');
       context._currMode.enter();
@@ -372,35 +374,56 @@ export function coreContext() {
    * Returns a Map containing the current selected features.  It can contain
    * multiple items of various types (e.g. some OSM data, some RapiD data etc)
    *
-   * @return  The current selection, as a `Map(dataID -> data)`
+   * @return  The current selected features, as a `Map(datumID -> datum)`
    */
   context.selectedData = () => {
     if (!context._currMode) return new Map();
     return context._currMode.selectedData || new Map();
   };
 
-// ...over this
-// (when iD was just for working with OSM data, it was ok to assume that a selected ID was an OSM id)
+  /**
+   * `selectedIDs`
+   * @return  Just the keys of the `selectedData`
+   */
   context.selectedIDs = () => {
     if (!context._currMode) return [];
     if (typeof context._currMode.selectedIDs === 'function') {
-      return context._currMode.selectedIDs();         // legacy function
+      return context._currMode.selectedIDs();         // class function
     } else {
       return context._currMode.selectedIDs || [];     // class property
     }
   };
 
-  // ID of the object currently dragging / drawing
-  // (This feature should not participate in hit testing)
-  context.activeID = () => {
-    if (!context._currMode) return null;
-    if (typeof context._currMode.activeID === 'function') {
-      return context._currMode.activeID();
+  /**
+   * `activeData`
+   * Returns a Map containing the current "active" features.
+   * These are features currently being interacted with, e.g. dragged or drawing
+   * These are features that should not generate interaction events
+   *
+   * @return  The current active features, as a `Map(datumID -> datum)`
+   */
+  context.activeData = () => {
+    if (!context._currMode) return new Map();
+    return context._currMode.activeData || new Map();
+  };
+
+  /**
+   * `activeIDs`
+   * @return  Just the keys of the `activeData`
+   */
+  context.activeIDs = () => {
+    if (!context._currMode) return [];
+    if (typeof context._currMode.activeIDs === 'function') {
+      return context._currMode.activeIDs();         // class function
     } else {
-      return context._currMode.activeID;
+      return context._currMode.activeIDs || [];     // class property
     }
   };
 
+  context.activeID = () => {
+    console.error('error: do not call context.activeID anymore');   // eslint-disable-line no-console
+    return null;
+  };
 
 // ...and definitely stop doing this...
 //  let _selectedNoteID;
@@ -676,10 +699,10 @@ export function coreContext() {
       // Initialize modes
       [
         new ModeAddArea(context),
-        new ModeAddLine(context),
         new ModeAddNote(context),
         new ModeAddPoint(context),
         new ModeBrowse(context),
+        new ModeDrawLine(context),
         new ModeSave(context),
         new ModeSelect(context)
       ].forEach(mode => context.modes.set(mode.id, mode));

@@ -105,12 +105,6 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
   update(projection) {
     if (!this.dirty) return;  // no change
 
-    // If this feature is currently being dragged around,
-    // it should not generate interactivity events.
-    const isActive = (this.context.activeID() === this.id);
-    this.displayObject.interactive = !isActive;
-    this.displayObject.interactiveChildren = !isActive;
-
     // For now, if either geometry or style is dirty, we just update the whole multipolygon
 
     //

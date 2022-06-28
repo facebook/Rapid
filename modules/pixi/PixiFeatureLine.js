@@ -91,12 +91,6 @@ export class PixiFeatureLine extends AbstractFeature {
     const container = this.displayObject;
     const style = this._style;
 
-    // If this feature is currently being dragged around,
-    // it should not generate interactivity events.
-    const isActive = (this.context.activeID() === this.id);
-    this.displayObject.interactive = !isActive;
-    this.displayObject.interactiveChildren = !isActive;
-
     //
     // GEOMETRY
     //

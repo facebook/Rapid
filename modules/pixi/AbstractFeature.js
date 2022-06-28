@@ -16,6 +16,7 @@ import { Extent } from '@id-sdk/math';
  *   `label`          String containing the feature's label
  *   `data`           Data to associate with this feature (like `__data__` from the D3.js days)
  *   `visible`        `true` if the feature is visible (`false` if it is culled)
+ *   `interactive`    `true` if the feature is interactive (emits Pixi events)
  *   `dirty`          `true` if the feature needs to be rebuilt
  *   `selected`       `true` if the feature is selected
  *   `hovered`        `true` if the feature is hovered
@@ -38,20 +39,22 @@ export class AbstractFeature {
   constructor(context, displayObject, id, parent, data) {
     this.type = 'unknown';
     this.context = context;
+    this.data = data;
     this.displayObject = displayObject;
     this.visible = false;
     this.v = -1;
     this.lod = 2;   // full detail
 
     if (parent) displayObject.setParent(parent);
-    if (data)   displayObject.__data__ = data;
+    displayObject.__feature__ = this;   // Link the displayObject back to `this`
+
+    displayObject.name = id;
+    displayObject.sortableChildren = false;
 
     // By default, make the display object interactive
-    displayObject.name = id;
     displayObject.buttonMode = true;
     displayObject.interactive = true;
     displayObject.interactiveChildren = true;
-    displayObject.sortableChildren = false;
 
     this._geometry = null;
     this._geometryDirty = true;
@@ -80,7 +83,7 @@ export class AbstractFeature {
   destroy() {
     // Destroying a display object removes it from its parent automatically
     // We also remove the children too
-    this.displayObject.__data__ = null;
+    this.displayObject.__feature__ = null;
     this.displayObject.destroy({ children: true });
 
     this.context = null;
@@ -144,6 +147,21 @@ export class AbstractFeature {
     }
   }
 
+
+  /**
+   * interactive
+   * Whether the displayObject is currently interactive
+   */
+  get interactive() {
+    return this.displayObject.interactive;
+  }
+  set interactive(val) {
+    if (this.displayObject.interactive !== val) {
+      this.displayObject.buttonMode = val;
+      this.displayObject.interactive = val;
+      this.displayObject.interactiveChildren = val;
+    }
+  }
 
   /**
    * dirty
@@ -252,19 +270,6 @@ export class AbstractFeature {
       this._label = str;
       this._labelDirty = true;
     }
-  }
-
-
-  /**
-   * data
-   * Call this method when you need to update the data attached to a feature, such as after an edit is made.
-   * @param  d  D3.js-style 'datum' to bind to this feature.
-   */
-  get data() {
-    return this.displayObject.__data__;
-  }
-  set data(d) {
-    this.displayObject.__data__ = d;
   }
 
 }

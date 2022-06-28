@@ -15,6 +15,7 @@ import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles';
 
 
 export function uiMapInMap(context) {
+
   function mapInMap(selection) {
     var projection = new Projection();
     var zoom = d3_zoom()

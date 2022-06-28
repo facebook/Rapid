@@ -15,7 +15,7 @@ const DEBUG = false;
 /**
  * `ModeSelect`
  * In this mode, the user has selected one or more things.
- * - `this.selectedData` contains the information about what is selected.
+ * - `selectedData` contains the information about what is selected.
  * - The sidebar shows something depending on what the selection contains.
  * - We also can set up the "operations" allowed (right click edit menu)
  */
@@ -33,18 +33,21 @@ export class ModeSelect extends AbstractMode {
 
   /**
    * enter
-   * @param   `selectedData`  `Map(dataID -> data)`
+   * Expects a `selection` property in the options argument as a `Map(datumID -> datum)`
+   *
+   * @param  `options`  Optional `Object` of options passed to the new mode
    */
-  enter(selectedData) {
-    if (!(selectedData instanceof Map)) return false;
-    if (!selectedData.size) return false;
-    const [[datumID, datum]] = selectedData.entries();   // the first thing in the selection
+  enter(options = {}) {
+    const selection = options.selection;
+    if (!(selection instanceof Map)) return false;
+    if (!selection.size) return false;
+    const [[datumID, datum]] = selection.entries();   // the first thing in the selection
 
     if (DEBUG) {
       console.log(`ModeSelect: entering, selected ${datumID}`);  // eslint-disable-line no-console
     }
 
-    this.selectedData = selectedData;
+    this._selectedData = selection;
     this._active = true;
 
     const context = this._context;
@@ -64,7 +67,7 @@ export class ModeSelect extends AbstractMode {
           const note = services.osm.getNote(datumID);
           if (!(note instanceof osmNote)) return;   // or - go to browse mode
           context.ui().sidebar.show(sidebarContent.note(note));
-          this.selectedData.set(datumID, note);  // update selectedData after a change happens?
+          this._selectedData.set(datumID, note);  // update selectedData after a change happens?
         });
 
     } else if (datum instanceof QAItem && datum.service === 'improveOSM') {
@@ -76,7 +79,7 @@ export class ModeSelect extends AbstractMode {
           const error = services.improveOSM.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
-          this.selectedData.set(datumID, error);  // update selectedData after a change happens?
+          this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
     } else if (datum instanceof QAItem && datum.service === 'keepRight') {
@@ -88,7 +91,7 @@ export class ModeSelect extends AbstractMode {
           const error = services.keepRight.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
-          this.selectedData.set(datumID, error);  // update selectedData after a change happens?
+          this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
     } else if (datum instanceof QAItem && datum.service === 'osmose') {
@@ -100,7 +103,7 @@ export class ModeSelect extends AbstractMode {
           const error = services.osmose.getError(datumID);
           if (!(error instanceof QAItem)) return;  // or - go to browse mode?
           context.ui().sidebar.show(sidebarContent.error(error));
-          this.selectedData.set(datumID, error);  // update selectedData after a change happens?
+          this._selectedData.set(datumID, error);  // update selectedData after a change happens?
         });
 
     // Selected custom data (e.g. gpx track)...
@@ -142,8 +145,8 @@ export class ModeSelect extends AbstractMode {
       console.log('ModeSelect: exiting');  // eslint-disable-line no-console
     }
 
-    const context = this._context;
-    context.ui().sidebar.hide();
+    this._selectedData.clear();
+    this._context.ui().sidebar.hide();
   }
 
 }

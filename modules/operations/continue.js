@@ -29,10 +29,8 @@ export function operationContinue(context, selectedIDs) {
     var operation = function() {
         var candidate = _candidates[0];
 
-      const selectedData = new Map();
-      selectedData.set(candidate.id, candidate);  // the Way
-      selectedData.set(_vertex.id, _vertex);      // the Node
-      context.enter('add-line', selectedData);
+        const options = { continueWay:  candidate, continueNode: _vertex };
+        context.enter('draw-line', options);
 
         // context.enter(
         //     modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(_vertex.id), true)

@@ -1,6 +1,4 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
@@ -9,13 +7,13 @@ import { uiInfoPanels } from './panels';
 
 
 export function uiInfo(context) {
-    var ids = Object.keys(uiInfoPanels);
+    var panelIDs = Object.keys(uiInfoPanels);
     var wasActive = ['measurement'];
     var panels = {};
     var active = {};
 
     // create panels
-    ids.forEach(function(k) {
+    panelIDs.forEach(function(k) {
         if (!panels[k]) {
             panels[k] = uiInfoPanels[k](context);
             active[k] = false;
@@ -26,10 +24,10 @@ export function uiInfo(context) {
     function info(selection) {
 
         function redraw() {
-            var activeids = ids.filter(function(k) { return active[k]; }).sort();
+            var activePanelIDs = panelIDs.filter(function(k) { return active[k]; }).sort();
 
             var containers = infoPanels.selectAll('.panel-container')
-                .data(activeids, function(k) { return k; });
+                .data(activePanelIDs, function(k) { return k; });
 
             containers.exit()
                 .style('opacity', 1)
@@ -84,11 +82,11 @@ export function uiInfo(context) {
 
 
         info.toggle = function(which) {
-            var activeids = ids.filter(function(k) { return active[k]; });
+            var activePanelIDs = panelIDs.filter(function(k) { return active[k]; });
 
             if (which) {  // toggle one
                 active[which] = !active[which];
-                if (activeids.length === 1 && activeids[0] === which) {  // none active anymore
+                if (activePanelIDs.length === 1 && activePanelIDs[0] === which) {  // none active anymore
                     wasActive = [which];
                 }
 
@@ -98,9 +96,9 @@ export function uiInfo(context) {
                     .property('checked', active[which]);
 
             } else {      // toggle all
-                if (activeids.length) {
-                    wasActive = activeids;
-                    activeids.forEach(function(k) { active[k] = false; });
+                if (activePanelIDs.length) {
+                    wasActive = activePanelIDs;
+                    activePanelIDs.forEach(function(k) { active[k] = false; });
                 } else {
                     wasActive.forEach(function(k) { active[k] = true; });
                 }
@@ -127,7 +125,7 @@ export function uiInfo(context) {
                 info.toggle();
             });
 
-        ids.forEach(function(k) {
+        panelIDs.forEach(function(k) {
             var key = t('info_panels.' + k + '.key', { default: null });
             if (!key) return;
             context.keybinding()

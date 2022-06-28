@@ -17,7 +17,6 @@ export function uiToolDrawModes(context) {
   const modes = [
     {
       id: 'add-point',
-      updated: true, // todo: remove this hack
       title: t.html('modes.add_point.title'),
       button: 'point',
       description: t.html('modes.add_point.description'),
@@ -25,8 +24,7 @@ export function uiToolDrawModes(context) {
       key: '1'
     },
     {
-      id: 'add-line',
-      updated: true, // todo: remove this hack
+      id: 'draw-line',
       title: t.html('modes.add_line.title'),
       button: 'line',
       description: t.html('modes.add_line.description'),
@@ -35,7 +33,6 @@ export function uiToolDrawModes(context) {
     },
     {
       id: 'add-area',
-      updated: true, // todo: remove this hack
       title: t.html('modes.add_area.title'),
       button: 'area',
       description: t.html('modes.add_area.description'),
@@ -60,14 +57,7 @@ export function uiToolDrawModes(context) {
         if (d.id === context.mode().id) {
           context.enter('browse');
         } else {
-// todo: remove - handle old or new way of using the mode
-          if (d.updated) {
-            context.enter(d.id);
-            // context.mode().defaultTags = d.preset.setTags({}, 'point');
- // this.defaultTags = d.preset.setTags(this.defaultTags, 'point');
-          } else {
-            context.enter(d);
-          }
+          context.enter(d.id);
         }
       });
     });

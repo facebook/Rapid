@@ -54,14 +54,18 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * Services are loosely coupled in iD, so we use a `getService` function
+   * to gain access to them, and bind any event handlers a single time.
+   */
   getService() {
-      if (services.vectorTile && !this._vtService) {
-          this._vtService = services.vectorTile;
-      } else if (!services.vectorTile && this._vtService) {
-          this._vtService = null;
-      }
+    if (services.vectorTile && !this._vtService) {
+      this._vtService = services.vectorTile;
+    } else if (!services.vectorTile && this._vtService) {
+      this._vtService = null;
+    }
 
-      return this._vtService;
+    return this._vtService;
   }
 
 
@@ -86,18 +90,16 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-  // ensure that all geojson features in a collection have IDs
-    ensureIDs(gj) {
-      if (!gj) return null;
+  // Ensure that all geojson features in a collection have IDs
+  ensureIDs(geojson) {
+    if (!geojson) return null;
 
-      if (gj.type === 'FeatureCollection') {
-          for (var i = 0; i < gj.features.length; i++) {
-             this.ensureFeatureID(gj.features[i]);
-          }
-      } else {
-          this.ensureFeatureID(gj);
-      }
-      return gj;
+    if (geojson.type === 'FeatureCollection') {
+      (geojson.features || []).forEach(feature => this.ensureFeatureID(feature));
+    } else {
+      this.ensureFeatureID(geojson);
+    }
+    return geojson;
   }
 
   // ensure that each single Feature object has a unique ID
@@ -115,21 +117,20 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   // Prefer an array of Features instead of a FeatureCollection
-  getFeatures(gj) {
-    if (!gj) return [];
+  getFeatures(geojson) {
+    if (!geojson) return [];
 
-    if (gj.type === 'FeatureCollection') {
-        return gj.features;
+    if (geojson.type === 'FeatureCollection') {
+      return geojson.features;
     } else {
-        return [gj];
+      return [geojson];
     }
   }
 
 
-    featureKey(d) {
-      return d.__featurehash__;
+  featureKey(d) {
+    return d.__featurehash__;
   }
-
 
   isLine(d) {
     return d.geometry.type === 'LineString';
@@ -139,49 +140,49 @@ export class PixiLayerCustomData extends AbstractLayer {
     return d.geometry.type === 'Point';
   }
 
-
   isPolygon(d) {
     return d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon';
   }
 
 
-    getExtension(fileName) {
-      if (!fileName) return;
+  getExtension(fileName) {
+    if (!fileName) return;
 
-      var re = /\.(gpx|kml|(geo)?json)$/i;
-      var match = fileName.toLowerCase().match(re);
-      return match && match.length && match[0];
+    const re = /\.(gpx|kml|(geo)?json)$/i;
+    const match = fileName.toLowerCase().match(re);
+    return match && match.length && match[0];
   }
 
 
   xmlToDom(textdata) {
-      return (new DOMParser()).parseFromString(textdata, 'text/xml');
+    return (new DOMParser()).parseFromString(textdata, 'text/xml');
   }
 
-  setFile (extension, data) {
+  setFile(extension, data) {
     this._template = null;
     this._fileList = null;
     this._geojson = null;
     this._src = null;
-    var gj;
+    let gj;
+
     switch (extension) {
-        case '.gpx':
-            gj = gpx(this.xmlToDom(data));
-            break;
-        case '.kml':
-            gj = kml(this.xmlToDom(data));
-            break;
-        case '.geojson':
-        case '.json':
-            gj = JSON.parse(data);
-            break;
+      case '.gpx':
+        gj = gpx(this.xmlToDom(data));
+        break;
+      case '.kml':
+        gj = kml(this.xmlToDom(data));
+        break;
+      case '.geojson':
+      case '.json':
+        gj = JSON.parse(data);
+        break;
     }
 
     gj = gj || {};
     if (Object.keys(gj).length) {
-        this._geojson = this.ensureIDs(gj);
-        this._src = extension + ' data file';
-        this.fitZoom();
+      this._geojson = this.ensureIDs(gj);
+      this._src = extension + ' data file';
+      this.fitZoom();
     }
 
     this._dirty = true;
@@ -190,10 +191,9 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-
   hasData () {
-      var gj = this._geojson || {};
-      return !!(this._template || Object.keys(gj).length);
+    var gj = this._geojson || {};
+    return !!(this._template || Object.keys(gj).length);
   }
 
 
@@ -252,7 +252,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     if (this.hasData()) {
-
       polygons = geoData.filter(this.isPolygon);
       lines = geoData.filter(this.isLine);
       points = geoData.filter(this.isPoint);
@@ -265,14 +264,15 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
   }
 
+
   drawPolygons(timestamp, projection, zoom, polygons) {
     const context = this.context;
     const scene = this.scene;
 
     const polyStyle = {
-        requireFill: true,    // no partial fill option - must fill fully
-        fill: { color: 0x00ffff, alpha: 0.3, },
-        stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+      requireFill: true,    // no partial fill option - must fill fully
+      fill: { color: 0x00ffff, alpha: 0.3, },
+      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     polygons.forEach(entity => {
@@ -300,41 +300,38 @@ export class PixiLayerCustomData extends AbstractLayer {
     const context = this.context;
     const scene = this.scene;
 
-      const lineStyle = {
-        stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
-      };
+    const lineStyle = {
+      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+    };
 
-      lines.forEach(entity => {
-        let feature = scene.get(entity.id);
+    lines.forEach(entity => {
+      let feature = scene.get(entity.id);
 
+      if (!feature) {
+        feature = new PixiFeatureLine(context, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
+        feature.displayObject.cursor = 'not-allowed';
+      }
 
-        if (!feature) {
-          feature = new PixiFeatureLine(context, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
-          feature.displayObject.cursor = 'not-allowed';
-        }
+      if (feature.dirty) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
 
-        if (feature.dirty) {
-          feature.update(projection, zoom);
-          scene.update(feature);
-        }
-
-        this.seenFeature.set(feature, timestamp);
-      });
-    }
+      this.seenFeature.set(feature, timestamp);
+    });
+  }
 
 
   drawPoints(timestamp, projection, zoom, points) {
     const context = this.context;
     const scene = this.scene;
 
-
-      const pointStyle = {
-          markerTint: 0x00ffff,
-      };
+    const pointStyle = {
+      markerTint: 0x00ffff
+    };
 
     points.forEach(entity => {
-        let feature = scene.get(entity.id);
-
+      let feature = scene.get(entity.id);
 
       if (!feature) {
         let pointCoords = [entity.geometry.coordinates[0], entity.geometry.coordinates[1]]; //leave off any elevation or other data.
@@ -343,32 +340,32 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature.displayObject.cursor = 'not-allowed';
       }
 
-        if (feature.dirty) {
-          feature.update(projection, zoom);
-          scene.update(feature);
-        }
+      if (feature.dirty) {
+        feature.update(projection, zoom);
+        scene.update(feature);
+      }
 
-        this.seenFeature.set(feature, timestamp);
-      });
+      this.seenFeature.set(feature, timestamp);
+    });
   }
 
 
   geojson (gj, src) {
-      if (!arguments.length) return this._geojson;
+    if (!arguments.length) return this._geojson;
 
-      this._template = null;
-      this._fileList = null;
-      this._geojson = null;
-      this._src = null;
+    this._template = null;
+    this._fileList = null;
+    this._geojson = null;
+    this._src = null;
 
-      gj = gj || {};
-      if (Object.keys(gj).length) {
-          this._geojson = this.ensureIDs(gj);
-          this._src = src || 'unknown.geojson';
-      }
+    gj = gj || {};
+    if (Object.keys(gj).length) {
+      this._geojson = this.ensureIDs(gj);
+      this._src = src || 'unknown.geojson';
+    }
 
-      // dispatch.call('change');
-      return this;
+    // dispatch.call('change');
+    return this;
   }
 
 
@@ -387,10 +384,10 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     var reader = new FileReader();
     reader.onload = (function() {
-                return function(e) {
-                    setFile(extension, e.target.result);
-                };
-            })(f);
+      return function(e) {
+        setFile(extension, e.target.result);
+      };
+    })(f);
     reader.readAsText(f);
 
     return this;
@@ -398,82 +395,82 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   url(url, defaultExtension) {
+    this._template = null;
+    this._fileList = null;
+    this._geojson = null;
+    this._src = null;
+
+    // strip off any querystring/hash from the url before checking extension
+    var testUrl = url.split(/[?#]/)[0];
+    var extension = this.getExtension(testUrl) || defaultExtension;
+    if (extension) {
       this._template = null;
-      this._fileList = null;
-      this._geojson = null;
-      this._src = null;
+      let setFile = this.setFile;
+        d3_text(url)
+            .then(function(data) {
+                setFile(extension, data);
+                var isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
+                if (isTaskBoundsUrl) {
+                    this.context.rapidContext().setTaskExtentByGpxData(data);
+                }
+            })
+            .catch(function() {
+                /* ignore */
+            });
+    } else {
+      this.template(url);
+    }
 
-      // strip off any querystring/hash from the url before checking extension
-      var testUrl = url.split(/[?#]/)[0];
-      var extension = this.getExtension(testUrl) || defaultExtension;
-      if (extension) {
-        this._template = null;
-        let setFile = this.setFile;
-          d3_text(url)
-              .then(function(data) {
-                  setFile(extension, data);
-                  var isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
-                  if (isTaskBoundsUrl) {
-                      this.context.rapidContext().setTaskExtentByGpxData(data);
-                  }
-              })
-              .catch(function() {
-                  /* ignore */
-              });
-      } else {
-          this.template(url);
-      }
-
-      return this;
+    return this;
   }
 
 
   getSrc(){
-      return this._src || '';
+    return this._src || '';
   }
 
 
   fitZoom(){
-      var features = this.getFeatures(this._geojson);
-      if (!features.length) return;
+    const features = this.getFeatures(this._geojson);
+    if (!features.length) return;
 
-      var map = this.context.map();
-      var viewport = map.trimmedExtent().polygon();
-      var coords = features.reduce(function(coords, feature) {
-          var geom = feature.geometry;
-          if (!geom) return coords;
+    const map = this.context.map();
+    const viewport = map.trimmedExtent().polygon();
 
-          var c = geom.coordinates;
+    const coords = features.reduce(function(coords, feature) {
+      var geom = feature.geometry;
+      if (!geom) return coords;
 
-          /* eslint-disable no-fallthrough */
-          switch (geom.type) {
-              case 'Point':
-                  c = [c];
-              case 'MultiPoint':
-              case 'LineString':
-                  break;
+      var c = geom.coordinates;
 
-              case 'MultiPolygon':
-                  c = utilArrayFlatten(c);
-              case 'Polygon':
-              case 'MultiLineString':
-                  c = utilArrayFlatten(c);
-                  break;
-          }
-          /* eslint-enable no-fallthrough */
+      /* eslint-disable no-fallthrough */
+      switch (geom.type) {
+        case 'Point':
+          c = [c];
+        case 'MultiPoint':
+        case 'LineString':
+          break;
 
-          return utilArrayUnion(coords, c);
-      }, []);
-
-      if (!geomPolygonIntersectsPolygon(viewport, coords, true)) {
-          var bounds = d3_geoBounds({ type: 'LineString', coordinates: coords });
-          var extent = new Extent(bounds[0], bounds[1]);
-
-          map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
+        case 'MultiPolygon':
+          c = utilArrayFlatten(c);
+        case 'Polygon':
+        case 'MultiLineString':
+          c = utilArrayFlatten(c);
+          break;
       }
+      /* eslint-enable no-fallthrough */
 
-      return this;
+      return utilArrayUnion(coords, c);
+    }, []);
+
+    if (!geomPolygonIntersectsPolygon(viewport, coords, true)) {
+      var bounds = d3_geoBounds({ type: 'LineString', coordinates: coords });
+      var extent = new Extent(bounds[0], bounds[1]);
+
+      map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
+    }
+
+    return this;
   }
-
 
 }

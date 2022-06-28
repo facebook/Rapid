@@ -76,12 +76,6 @@ export class PixiFeaturePoint extends AbstractFeature {
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
 
-    // If this feature is currently being dragged around,
-    // it should not generate interactivity events.
-    const isActive = (this.context.activeID() === this.id);
-    this.displayObject.interactive = !isActive;
-    this.displayObject.interactiveChildren = !isActive;
-
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
     const rect = marker.getLocalBounds().clone();

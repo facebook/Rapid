@@ -357,21 +357,22 @@ export class BehaviorSelect extends AbstractBehavior {
       return;
     }
 
-    // Clicked a midpoint..
-    // Treat midpoints as if targeting the parent way, and continue matching.
-    if (datum.type === 'midpoint') {
-      datum = datum.parents[0];
-    }
-
+    // Clicked a non-OSM feature..
     if (
       datum.__fbid__ ||              // Clicked a RapiD feature..
       datum.__featurehash__ ||       // Clicked Custom Data (e.g. gpx track)
       datum instanceof osmNote ||    // Clicked an OSM Note...
       datum instanceof QAItem        // Clicked a QA Item (keepright, osmose, improveosm)...
     ) {
-      const selectedData = new Map().set(datum.id, datum);
-      context.enter('select', selectedData);
+      const selection = new Map().set(datum.id, datum);
+      context.enter('select', { selection: selection });
       return;
+    }
+
+    // Clicked a midpoint..
+    // Treat midpoints as if targeting the parent way, and continue matching.
+    if (datum.type === 'midpoint') {
+      datum = datum.parents[0];
     }
 
     // Clicked an OSM feature..

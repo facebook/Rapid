@@ -145,6 +145,8 @@ export class PixiRenderer {
    * Schedules a render on the next tick
    */
   render() {
+if (this._drawPending) return;
+
     this._appPending = true;
   }
 
