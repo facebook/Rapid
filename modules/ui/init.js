@@ -199,6 +199,7 @@ export function uiInit(context) {
         .call(pane.renderPane);
     });
 
+    ui.info = uiInfo(context);
 
     // Info Panels
     overMap
@@ -437,8 +438,6 @@ export function uiInit(context) {
   let ui = {};
 
   ui.svgDefs = svgDefs(context);
-
-  ui.info = uiInfo(context);
 
   ui.flash = uiFlash(context);
 
