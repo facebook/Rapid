@@ -473,16 +473,21 @@ export class BehaviorSelect extends AbstractBehavior {
      // this._lastInteractionType = 'rightclick';
      this._showMenu = true;
 
-     // For contextmenu key events we will instead use the last pointer event
-     // Get these from Pixi's interaction manager
-     const interactionManager = this._context.pixi.renderer.plugins.interaction;
-     const pointerOverRenderer = interactionManager.mouseOverRenderer;
-     const pointerEvent = interactionManager.mouse;
-     if (!pointerEvent || !pointerOverRenderer) return;
-     const pointer = this._getEventData({ data: pointerEvent });
+     let datum = e.data;
 
-    this._context.ui().showEditMenu(pointer.coord);
+     //Only attempt to display the context menu if we're clicking on a non-rapid OSM Entity.
+     if (datum && datum instanceof osmEntity && !datum.__fbid__) {
+       // For contextmenu key events we will instead use the last pointer event
+       // Get these from Pixi's interaction manager
+       const interactionManager =
+         this._context.pixi.renderer.plugins.interaction;
+       const pointerOverRenderer = interactionManager.mouseOverRenderer;
+       const pointerEvent = interactionManager.mouse;
+       if (!pointerEvent || !pointerOverRenderer) return;
+       const pointer = this._getEventData({ data: pointerEvent });
 
+       this._context.ui().showEditMenu(pointer.coord);
+     }
    }
 
 
