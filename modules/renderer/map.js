@@ -477,14 +477,12 @@ export function rendererMap(context) {
     };
 
 
-    map.mouse = function(d3_event) {
-      let event = d3_event;
-      if (event) {
-        let s;
-        while ((s = event.sourceEvent)) { event = s; }
-        return _getMouseCoords(event);
-      }
-      return null;
+    map.mouse = function() {
+      const interactionManager = context.pixi.renderer.plugins.interaction;
+      const pointerEvent = interactionManager.mouse;
+      if (!pointerEvent) return null;
+
+      return [pointerEvent.global.x, pointerEvent.global.y];
     };
 
 
