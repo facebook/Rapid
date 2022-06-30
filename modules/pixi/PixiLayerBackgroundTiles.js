@@ -337,7 +337,8 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-        if (SHOWDEBUG && !source.overlay) {  // Display debug tile info
+        if (SHOWDEBUG && !source.overlay && !this.minimapMode) {
+          // Display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
             tile.debug.name = `debug-${tile.id}`;
