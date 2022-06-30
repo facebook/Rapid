@@ -215,9 +215,9 @@ export class BehaviorSelect extends AbstractBehavior {
       // trigger a click
       this._click(up);
 
-//      if (down.originalEvent.button === 2) {  //right click
-//        this._contextmenu(up);
-//      }
+      if (down.originalEvent.button === 2) {  //right click
+        this._contextmenu(up);
+      }
 
     }
   }
@@ -250,11 +250,11 @@ export class BehaviorSelect extends AbstractBehavior {
       return;
     }
 
-//    if (e.keyCode === 93) {   // contextmenu key
-//      // this._lastInteractionType = 'menukey';
-//      this._contextmenu(e);
-//      return;
-//    }
+       if (e.keyCode === 93) {   // contextmenu key
+         // this._lastInteractionType = 'menukey';
+         this._contextmenu( this._getEventData(e));
+         return;
+       }
 
     if (e.shiftKey) {
       // ?
@@ -377,13 +377,12 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked an OSM feature..
     if (datum instanceof osmEntity) {
-// keep it really simple for now - legacy Select mode
+      // keep it really simple for now - legacy Select mode
       context.enter(modeSelect(context, [datum.id]));
     }
 
   }
 
-}
 //
 //    // figure it out
 //    let selectedIDs = context.selectedIDs();
@@ -462,39 +461,39 @@ export class BehaviorSelect extends AbstractBehavior {
 //  }
 
 
-//  /**
-//   * _contextmenu
-//   * Handler for `contextmenu` events, will be either a pointer event
-//   * for the right button, or a dedicated keydown event for a contextmenu button
-//   * @param  `e`  A d3 keydown event
-//   */
-//  _contextmenu(e) {
-//    //  e.preventDefault();
-//    // this._lastMouseEvent = e;
-//    // this._lastInteractionType = 'rightclick';
-//    // this._showMenu = true;
-//
-//    // For contextmenu key events we will instead use the last pointer event
-//    // Get these from Pixi's interaction manager
-//    const interactionManager = this._context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    const pointerEvent = interactionManager.mouse;
-//    if (!pointerEvent || !pointerOverRenderer) return;
-//
-//    const pointer = this._getEventData({ data: pointerEvent });
-//
-//    this._click(pointer);
-//  }
-//
+   /**
+    * _contextmenu
+    * Handler for `contextmenu` events, will be either a pointer event
+    * for the right button, or a dedicated keydown event for a contextmenu button
+    * @param  `e`  A d3 keydown event
+    */
+   _contextmenu(e) {
+     //  e.preventDefault();
+     // this._lastMouseEvent = e;
+     // this._lastInteractionType = 'rightclick';
+     this._showMenu = true;
 
-  // resetProperties() {
-  //   // cancelLongPress();
-  //   this._showMenu = false;
-  //   this._lastInteractionType = null;
-  //   // don't reset _lastMouseEvent since it might still be useful
-  // }
+     // For contextmenu key events we will instead use the last pointer event
+     // Get these from Pixi's interaction manager
+     const interactionManager = this._context.pixi.renderer.plugins.interaction;
+     const pointerOverRenderer = interactionManager.mouseOverRenderer;
+     const pointerEvent = interactionManager.mouse;
+     if (!pointerEvent || !pointerOverRenderer) return;
+     const pointer = this._getEventData({ data: pointerEvent });
+
+    this._context.ui().showEditMenu(pointer.coord);
+
+   }
 
 
+  resetProperties() {
+    // cancelLongPress();
+    this._showMenu = false;
+    this._lastInteractionType = null;
+    // don't reset _lastMouseEvent since it might still be useful
+  }
+
+}
 //
 //
 //
