@@ -14,12 +14,12 @@ export class BehaviorPaste extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
     this.id = 'paste';
-    this._keybinding = this._context.keybinding();  // "global" keybinding (on document)
+    this._keybinding = this.context.keybinding();  // "global" keybinding (on document)
 
     // Make sure the event handlers have `this` bound correctly
     this._keydown = this._keydown.bind(this);
@@ -58,7 +58,7 @@ export class BehaviorPaste extends AbstractBehavior {
   _keydown(e) {
     e.preventDefault();
 
-    const context = this._context;
+    const context = this.context;
     const startGraph = context.graph();
     const copyGraph = context.copyGraph();
     const mouse = context.map().mouse();

@@ -20,7 +20,7 @@ export class ModeSave extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -65,7 +65,7 @@ export class ModeSave extends AbstractMode {
     }
 
     // Show sidebar
-    const context = this._context;
+    const context = this.context;
     context.ui().sidebar.expand();
 
     const thiz = this;
@@ -94,7 +94,7 @@ export class ModeSave extends AbstractMode {
       .classed('inactive', true);
 
     this._keybindingOn();
-    this._context.enableBehaviors([]);   // no behaviors
+    this.context.enableBehaviors([]);   // no behaviors
     return true;
   }
 
@@ -112,11 +112,11 @@ export class ModeSave extends AbstractMode {
 
     this._keybindingOff();
 
-    this._context.container().selectAll('.main-content')
+    this.context.container().selectAll('.main-content')
       .classed('active', true)
       .classed('inactive', false);
 
-    this._context.ui().sidebar.hide();
+    this.context.ui().sidebar.hide();
   }
 
 
@@ -124,7 +124,7 @@ export class ModeSave extends AbstractMode {
    * cancel handler
    */
   _cancel() {
-    this._context.enter('browse');
+    this.context.enter('browse');
   }
 
 
@@ -132,7 +132,7 @@ export class ModeSave extends AbstractMode {
    * showProgress handler
    */
   _showProgress(num, total) {
-    const modal = this._context.container().select('.loading-modal .modal-section');
+    const modal = this.context.container().select('.loading-modal .modal-section');
     const progress = modal.selectAll('.progress')
       .data([0]);
 
@@ -149,17 +149,17 @@ export class ModeSave extends AbstractMode {
    * showConflicts handler
    */
   _showConflicts(changeset, conflicts, origChanges) {
-    const selection = this._context.container().select('.sidebar')
+    const selection = this.context.container().select('.sidebar')
       .append('div')
       .attr('class','sidebar-component');
 
-    const mainContent = this._context.container().selectAll('.main-content');
+    const mainContent = this.context.container().selectAll('.main-content');
 
     mainContent
       .classed('active', true)
       .classed('inactive', false);
 
-    this._conflictsUI = uiConflicts(this._context)
+    this._conflictsUI = uiConflicts(this.context)
       .conflictList(conflicts)
       .origChanges(origChanges)
       .on('cancel', () => {
@@ -188,7 +188,7 @@ export class ModeSave extends AbstractMode {
   _showErrors(errors) {
     this._keybindingOn();
 
-    const selection = uiConfirm(this._context.container());
+    const selection = uiConfirm(this.context.container());
     selection
       .select('.modal-section.header')
       .append('h3')
@@ -261,11 +261,11 @@ export class ModeSave extends AbstractMode {
       .changeset(changeset)
       .location(this._location)
       .on('cancel', () => {
-        this._context.ui().sidebar.hide();
+        this.context.ui().sidebar.hide();
       });
 
-    this._context.enter('browse');
-    this._context.ui().sidebar.show(successContent);
+    this.context.enter('browse');
+    this.context.ui().sidebar.show(successContent);
   }
 
 
@@ -287,11 +287,11 @@ export class ModeSave extends AbstractMode {
   // Reverse geocode current map location so we can display a message on
   // the success screen like "Thank you for editing around place, region."
   _prepareForSuccess() {
-    this._successUI = uiSuccess(this._context);
+    this._successUI = uiSuccess(this.context);
     this._location = null;
     if (!services.geocoder) return;
 
-    services.geocoder.reverse(this._context.map().center(), (err, result) => {
+    services.geocoder.reverse(this.context.map().center(), (err, result) => {
       if (err || !result || !result.address) return;
 
       const addr = result.address;

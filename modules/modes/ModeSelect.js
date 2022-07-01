@@ -23,7 +23,7 @@ export class ModeSelect extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -50,7 +50,7 @@ export class ModeSelect extends AbstractMode {
     this._selectedData = selection;
     this._active = true;
 
-    const context = this._context;
+    const context = this.context;
     context.enableBehaviors(['hover', 'select', 'drag']);
 
     const sidebar = context.ui().sidebar;
@@ -146,7 +146,7 @@ export class ModeSelect extends AbstractMode {
     }
 
     this._selectedData.clear();
-    this._context.ui().sidebar.hide();
+    this.context.ui().sidebar.hide();
   }
 
 }

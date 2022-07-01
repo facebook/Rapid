@@ -22,7 +22,7 @@ export class BehaviorHover extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -45,7 +45,7 @@ export class BehaviorHover extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-    if (!this._context.pixi) return;
+    if (!this.context.pixi) return;
 
     if (DEBUG) {
       console.log('BehaviorHover: enabling listeners');  // eslint-disable-line no-console
@@ -55,7 +55,7 @@ export class BehaviorHover extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .on('pointermove', this._pointermove)
       .on('pointerout', this._pointermove);   // or leaves the canvas
@@ -68,7 +68,7 @@ export class BehaviorHover extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-    if (!this._context.pixi) return;
+    if (!this.context.pixi) return;
 
     if (DEBUG) {
       console.log('BehaviorHover: disabling listeners');  // eslint-disable-line no-console
@@ -78,7 +78,7 @@ export class BehaviorHover extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .off('pointermove', this._pointermove)
       .off('pointerout', this._pointermove);
@@ -100,7 +100,7 @@ export class BehaviorHover extends AbstractBehavior {
 
     // If pointer is not over the renderer, consider it a null target..
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) {
       move.target = null;
@@ -124,8 +124,8 @@ export class BehaviorHover extends AbstractBehavior {
         ids = [move.target.name];  // the featureID is here (e.g. osm id)
       }
 
-      this._context.map().renderer().hover(ids);
-      // this._context.ui().sidebar.hover([move.data]);
+      this.context.map().renderer().hover(ids);
+      // this.context.ui().sidebar.hover([move.data]);
     }
   }
 

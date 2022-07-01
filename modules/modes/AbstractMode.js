@@ -14,10 +14,10 @@ export class AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`   Global shared context for iD
+   * @param  `context`   Global shared application context
    */
   constructor(context) {
-    this._context = context;
+    this.context = context;
     this._active = false;
     this._selectedData = new Map();
     this._activeData = new Map();

@@ -28,7 +28,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -55,7 +55,7 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-    if (!this._context.pixi) return;
+    if (!this.context.pixi) return;
 
     if (DEBUG) {
       console.log('BehaviorDrag: enabling listeners');  // eslint-disable-line no-console
@@ -66,7 +66,7 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .on('pointerdown', this._pointerdown)
       .on('pointermove', this._pointermove)
@@ -82,7 +82,7 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-    if (!this._context.pixi) return;
+    if (!this.context.pixi) return;
 
     if (DEBUG) {
       console.log('BehaviorDrag: disabling listeners');  // eslint-disable-line no-console
@@ -93,7 +93,7 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .off('pointerdown', this._pointerdown)
       .off('pointermove', this._pointermove)
@@ -114,7 +114,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this._context;
+    const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
@@ -123,7 +123,7 @@ export class BehaviorDrag extends AbstractBehavior {
     const draggable = (down.data instanceof osmNode);
     if (!draggable) return;
 
-    this._context.map().zoomPanEnable(false);
+    this.context.map().zoomPanEnable(false);
     this.lastDown = down;
     this.lastMove = null;
     this.dragTarget = null;
@@ -148,7 +148,7 @@ export class BehaviorDrag extends AbstractBehavior {
   _pointermove(e) {
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this._context;
+    const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
@@ -204,7 +204,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
     this.lastDown = null;
     this.lastMove = null;
-    this._context.map().zoomPanEnable(true);
+    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
       const name = this.dragTarget.name;
@@ -234,7 +234,7 @@ export class BehaviorDrag extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.lastMove = null;
-    this._context.map().zoomPanEnable(true);
+    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
       const name = this.dragTarget.name;

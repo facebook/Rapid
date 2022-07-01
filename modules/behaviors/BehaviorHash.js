@@ -19,7 +19,7 @@ export class BehaviorHash extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -53,7 +53,7 @@ export class BehaviorHash extends AbstractBehavior {
     this._enabled = true;
     this._cachedHash = null;
 
-    const context = this._context;
+    const context = this.context;
 
     context.map()
       .on('move.behaviorHash', this._throttledUpdateHash);
@@ -84,7 +84,7 @@ export class BehaviorHash extends AbstractBehavior {
     this._throttledUpdateHash.cancel();
     this._throttledUpdateTitle.cancel();
 
-    const context = this._context;
+    const context = this.context;
 
     context.map()
       .on('move.behaviorHash', null);
@@ -107,7 +107,7 @@ export class BehaviorHash extends AbstractBehavior {
    * Returns the value we think the hash should be, but doesn't change anything
    */
   _computeHash() {
-    const context = this._context;
+    const context = this.context;
     const map = context.map();
     const [lng, lat] = map.center();
     const zoom = map.zoom();
@@ -136,7 +136,7 @@ export class BehaviorHash extends AbstractBehavior {
    * Updates the hash (by calling `window.history.replaceState()`)
    */
   _updateHash() {
-    if (this._context.inIntro()) return;   // no updates while doing the walkthrough
+    if (this.context.inIntro()) return;   // no updates while doing the walkthrough
 
     const currHash = this._computeHash();
     if (this._cachedHash === currHash) return;  // no change
@@ -156,7 +156,7 @@ export class BehaviorHash extends AbstractBehavior {
    * @param  `skipChangeCount`    true/false whether to inclue the change count in the title
    */
   _computeTitle(skipChangeCount) {
-    const context = this._context;
+    const context = this.context;
 
     const baseTitle = context.documentTitleBase() || 'RapiD';
     let contextual;
@@ -196,7 +196,7 @@ export class BehaviorHash extends AbstractBehavior {
    * @param  `skipChangeCount`    true/false whether to inclue the change count in the title
    */
   _updateTitle(skipChangeCount) {
-    if (!this._context.setsDocumentTitle()) return;
+    if (!this.context.setsDocumentTitle()) return;
 
     const title = this._computeTitle(skipChangeCount);
     if (document.title !== title) {
@@ -211,7 +211,7 @@ export class BehaviorHash extends AbstractBehavior {
    * the user tries changing the hash in the browser url manually
    */
   _hashchange() {
-    const context = this._context;
+    const context = this.context;
     if (window.location.hash === this._cachedHash) return;   // nothing changed
 
     this._cachedHash = window.location.hash;

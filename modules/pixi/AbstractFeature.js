@@ -29,7 +29,7 @@ export class AbstractFeature {
 
   /**
    * @constructor
-   * @param  context  Global shared iD application context
+   * @param  context  Global shared application context
    * @param  id       Unique string to use for the name of this feature
    * @param  parent   Parent container for this feature.  The feature's container will be added to it.
    * @param  data     Data to associate with this feature (like `__data__` from the D3.js days)

@@ -22,7 +22,7 @@ export class ModeDrawLine extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -76,7 +76,7 @@ export class ModeDrawLine extends AbstractMode {
       }
     }
 
-    const context = this._context;
+    const context = this.context;
     this._active = true;
 
     this.drawWay = null;
@@ -131,7 +131,7 @@ export class ModeDrawLine extends AbstractMode {
       console.log('ModeDrawLine: exiting');  // eslint-disable-line no-console
     }
 
-    const context = this._context;
+    const context = this.context;
     this._active = false;
 
     // If there is a temporary draw node, remove it.
@@ -198,7 +198,7 @@ export class ModeDrawLine extends AbstractMode {
   _move(eventData) {
     if (!this.drawWay) return;
 
-    const context = this._context;
+    const context = this.context;
     const loc = context.projection.invert(eventData.coord);
 
     if (DEBUG) {
@@ -235,7 +235,7 @@ export class ModeDrawLine extends AbstractMode {
    * Clicked on nothing, create a point at given `loc`.
    */
   _click(loc) {
-    const context = this._context;
+    const context = this.context;
 
     // Extend line by adding vertex at `loc`...
     if (this.drawWay) {
@@ -297,7 +297,7 @@ export class ModeDrawLine extends AbstractMode {
    * Clicked on an target way, add a midpoint along the `edge` at given `loc`.
    */
   _clickWay(loc, edge) {
-    const context = this._context;
+    const context = this.context;
     const midpoint = { loc: loc, edge: edge };
 
     // Extend line by adding vertex at midpoint on target edge...
@@ -362,7 +362,7 @@ export class ModeDrawLine extends AbstractMode {
    * Clicked on a target node, include that node in the line we are drawing.
    */
   _clickNode(loc, targetNode) {
-    const context = this._context;
+    const context = this.context;
 
     // Extend line by reuse target node as a vertex...
     // (Note that we don't need to replace the draw node in this scenerio)
@@ -423,7 +423,7 @@ export class ModeDrawLine extends AbstractMode {
    * i.e. Continuing from the start or end of an existing way
    */
   _continueFromNode(targetNode) {
-    const context = this._context;
+    const context = this.context;
 
     if (DEBUG) {
       console.log(`ModeDrawLine: _continueFromNode, continuing line at ${targetNode.id}`);  // eslint-disable-line no-console
@@ -452,7 +452,7 @@ export class ModeDrawLine extends AbstractMode {
    * Note that `exit()` will be called immediately after this to perform cleanup.
    */
   _finish() {
-    const context = this._context;
+    const context = this.context;
 
     if (this.drawWay) {
       if (DEBUG) {
@@ -479,7 +479,7 @@ export class ModeDrawLine extends AbstractMode {
       console.log(`ModeDrawLine: _cancel`);  // eslint-disable-line no-console
     }
     this.drawWay = null;   // this will trigger a rollback
-    this._context.enter('browse');
+    this.context.enter('browse');
   }
 
 }

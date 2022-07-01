@@ -32,7 +32,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared iD application context
+   * @param  context  Global shared application context
    * @param  scene
    * @param  layerZ   z-index to assign to this layer's container
    */

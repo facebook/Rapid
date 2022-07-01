@@ -13,7 +13,7 @@ export class ModeAddNote extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -35,8 +35,8 @@ export class ModeAddNote extends AbstractMode {
     }
 
     this._active = true;
-    this._context.enableBehaviors(['hover', 'draw']);
-    this._context.behaviors.get('draw')
+    this.context.enableBehaviors(['hover', 'draw']);
+    this.context.behaviors.get('draw')
       .on('click', this._click)
       .on('clickWay', this._click)
       .on('clickNode', this._click)
@@ -58,7 +58,7 @@ export class ModeAddNote extends AbstractMode {
     }
 
     this._active = false;
-    this._context.behaviors.get('draw')
+    this.context.behaviors.get('draw')
       .on('click', null)
       .on('clickWay', null)
       .on('clickNode', null)
@@ -80,10 +80,10 @@ export class ModeAddNote extends AbstractMode {
 
     // force a redraw (there is no history change that would otherwise do this)
 // why? should the mode change trigger a redraw?
-    // this._context.map().immediateRedraw();
+    // this.context.map().immediateRedraw();
 
     const selection = new Map().set(note.id, note);
-    this._context.enter('select', { selection: selection });  //.newFeature(true));
+    this.context.enter('select', { selection: selection });  //.newFeature(true));
   }
 
 
@@ -92,6 +92,6 @@ export class ModeAddNote extends AbstractMode {
    * Return to browse mode without doing anything
    */
   _cancel() {
-    this._context.enter('browse');
+    this.context.enter('browse');
   }
 }

@@ -21,11 +21,11 @@ export class PixiRenderer {
    * Create a Pixi application and add it to the given parentElement.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
    *
-   * @param  context  Global shared iD application context
+   * @param  context  Global shared application context
    * @param  parentElement
    */
   constructor(context, parentElement) {
-    this._context = context;
+    this.context = context;
     this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     this._frame = 0;
     this._appPending = false;
@@ -166,7 +166,7 @@ const timestamp = m1.startTime;
 
     // UPDATE TRANSFORM
     // Reproject the pixi geometries only whenever zoom changes
-    const context = this._context;
+    const context = this.context;
     const pixiProjection = this.pixiProjection;
     const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
@@ -223,7 +223,7 @@ const timestamp = m1.startTime;
     // };
     // this.pixi.renderer.render(stage, options);
 
-    this._context.map().resetTransform();
+    this.context.map().resetTransform();
 
 const m2 = window.performance.mark(markEnd);
 window.performance.measure(`draw-${frame}`, markStart, markEnd);
@@ -298,7 +298,7 @@ const duration = measure.duration.toFixed(1);
     if (selectChanged) {
       this._highlightTick++;
 // this.draw();    // draw now
-if (!this._context.map().isTransformed()) {
+if (!this.context.map().isTransformed()) {
   this._drawPending = true;   // draw asap
 }
     }
@@ -343,7 +343,7 @@ if (!this._context.map().isTransformed()) {
     if (hoverChanged) {
       this._highlightTick++;
 // this.draw();    // draw now
-if (!this._context.map().isTransformed()) {
+if (!this.context.map().isTransformed()) {
   this._drawPending = true;   // draw asap
 }
     }

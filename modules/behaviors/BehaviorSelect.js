@@ -29,7 +29,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -66,7 +66,7 @@ export class BehaviorSelect extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-    if (!this._context.pixi) return;
+    if (!this.context.pixi) return;
 
     if (DEBUG) {
       console.log('BehaviorSelect: enabling listeners');  // eslint-disable-line no-console
@@ -83,7 +83,7 @@ export class BehaviorSelect extends AbstractBehavior {
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .on('pointerdown', this._pointerdown)
       .on('pointermove', this._pointermove)
@@ -103,7 +103,7 @@ export class BehaviorSelect extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-    if (!this._context.pixi) return;
+    if (!this.context.pixi) return;
 
     if (DEBUG) {
       console.log('BehaviorSelect: disabling listeners');  // eslint-disable-line no-console
@@ -116,7 +116,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this.lastSpace = null;
     this._multiSelection.clear();
 
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .off('pointerdown', this._pointerdown)
       .off('pointermove', this._pointermove)
@@ -140,7 +140,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this._context;
+    const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
@@ -160,7 +160,7 @@ export class BehaviorSelect extends AbstractBehavior {
   _pointermove(e) {
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this._context;
+    const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) return;
@@ -199,7 +199,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
-    const context = this._context;
+    const context = this.context;
     const dist = vecLength(down.coord, up.coord);
 
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
@@ -216,7 +216,7 @@ export class BehaviorSelect extends AbstractBehavior {
       this._click(up);
 
       if (down.originalEvent.button === 2) {  //right click
-        this._contextmenu(up);
+        this.contextmenu(up);
       }
 
     }
@@ -252,7 +252,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
        if (e.keyCode === 93) {   // contextmenu key
          // this._lastInteractionType = 'menukey';
-         this._contextmenu( this._getEventData(e));
+         this.contextmenu( this._getEventData(e));
          return;
        }
 
@@ -275,7 +275,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // For spacebar clicks we will instead use the last pointer event
     // Get these from Pixi's interaction manager
-    const interactionManager = this._context.pixi.renderer.plugins.interaction;
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     const pointerEvent = interactionManager.mouse;
     if (!pointerEvent || !pointerOverRenderer) return;
@@ -321,7 +321,7 @@ export class BehaviorSelect extends AbstractBehavior {
    * @param  `eventData`  event data
    */
   _click(eventData) {
-    const context = this._context;
+    const context = this.context;
     const mode = context.mode();
     let datum = eventData.data;
 
@@ -480,13 +480,13 @@ export class BehaviorSelect extends AbstractBehavior {
        // For contextmenu key events we will instead use the last pointer event
        // Get these from Pixi's interaction manager
        const interactionManager =
-         this._context.pixi.renderer.plugins.interaction;
+         this.context.pixi.renderer.plugins.interaction;
        const pointerOverRenderer = interactionManager.mouseOverRenderer;
        const pointerEvent = interactionManager.mouse;
        if (!pointerEvent || !pointerOverRenderer) return;
        const pointer = this._getEventData({ data: pointerEvent });
 
-       this._context.ui().showEditMenu(pointer.coord);
+       this.context.ui().showEditMenu(pointer.coord);
      }
    }
 

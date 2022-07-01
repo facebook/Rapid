@@ -9,7 +9,7 @@ export class BehaviorKeyOperation extends AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`    Global shared context for iD
+   * @param  `context`    Global shared application context
    * @param  `operation`  The operation this behavior is associated with
    */
   constructor(context, operation) {
@@ -17,7 +17,7 @@ export class BehaviorKeyOperation extends AbstractBehavior {
     this.id = `key-${operation.id}`;
 
     this._operation = operation;
-    this._keybinding = this._context.keybinding();  // "global" keybinding (on document)
+    this._keybinding = this.context.keybinding();  // "global" keybinding (on document)
 
     // Make sure the event handlers have `this` bound correctly
     this._keydown = this._keydown.bind(this);
@@ -60,7 +60,7 @@ export class BehaviorKeyOperation extends AbstractBehavior {
    * @param  `e`  A d3 keydown event
    */
   _keydown(e) {
-    const context = this._context;
+    const context = this.context;
     const operation = this._operation;
 
     if (operation.availableForKeypress && !operation.availableForKeypress()) return;  // copy paste detail 😕

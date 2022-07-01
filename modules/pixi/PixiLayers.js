@@ -26,7 +26,7 @@ export class PixiLayers {
 
   /**
    * @constructor
-   * @param  context   Global shared iD application context
+   * @param  context   Global shared application context
    * @param  scene
    * @param  dispatch
    */

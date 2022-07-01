@@ -17,7 +17,7 @@ export class ModeAddArea extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -41,7 +41,7 @@ export class ModeAddArea extends AbstractMode {
       console.log('ModeAddArea: entering');  // eslint-disable-line no-console
     }
 
-    const context = this._context;
+    const context = this.context;
     this._active = true;
     this.defaultTags = { area: 'yes' };
 
@@ -68,7 +68,7 @@ export class ModeAddArea extends AbstractMode {
       console.log('ModeAddArea: exiting');  // eslint-disable-line no-console
     }
 
-    const context = this._context;
+    const context = this.context;
     this._active = false;
 
     window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
@@ -98,7 +98,7 @@ export class ModeAddArea extends AbstractMode {
    * Clicked on nothing, create the point at given `loc` and start area from there
    */
   _start(loc) {
-    const context = this._context;
+    const context = this.context;
     const startGraph = context.graph();
     const node = osmNode({ loc: loc });
     const way = osmWay({ tags: this.defaultTags });
@@ -119,7 +119,7 @@ export class ModeAddArea extends AbstractMode {
    * Clicked on an existing way, add a midpoint along the `edge` at given `loc` and start area from there
    */
   _startFromWay(loc, edge) {
-    const context = this._context;
+    const context = this.context;
     const startGraph = context.graph();
     const node = osmNode({ loc: loc });
     const way = osmWay({ tags: this.defaultTags });
@@ -141,7 +141,7 @@ export class ModeAddArea extends AbstractMode {
    * Clicked on an existing node, start new area from there.
    */
   _startFromNode(loc, node) {
-    const context = this._context;
+    const context = this.context;
     const startGraph = context.graph();
     const way = osmWay({ tags: this.defaultTags });
 
@@ -160,7 +160,7 @@ export class ModeAddArea extends AbstractMode {
    * Return to browse mode immediately, `exit()` will handle cleanup
    */
   _cancel() {
-    this._context.enter('browse');
+    this.context.enter('browse');
   }
 
 }

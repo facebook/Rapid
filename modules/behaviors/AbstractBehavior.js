@@ -13,10 +13,10 @@ export class AbstractBehavior {
 
   /**
    * @constructor
-   * @param  `context`   Global shared context for iD
+   * @param  `context`   Global shared application context
    */
   constructor(context) {
-    this._context = context;
+    this.context = context;
     this._enabled = false;
   }
 

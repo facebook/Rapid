@@ -18,7 +18,7 @@ export class ModeAddPoint extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -43,8 +43,8 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     this._active = true;
-    this._context.enableBehaviors(['hover', 'draw']);
-    this._context.behaviors.get('draw')
+    this.context.enableBehaviors(['hover', 'draw']);
+    this.context.behaviors.get('draw')
       .on('click', this._click)
       .on('clickWay', this._clickWay)
       .on('clickNode', this._clickNode)
@@ -66,7 +66,7 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     this._active = false;
-    this._context.behaviors.get('draw')
+    this.context.behaviors.get('draw')
       .on('click', null)
       .on('clickWay', null)
       .on('clickNode', null)
@@ -82,8 +82,8 @@ export class ModeAddPoint extends AbstractMode {
   _click(loc) {
     const node = osmNode({ loc: loc, tags: this.defaultTags });
     const annotation = t('operations.add.annotation.point');
-    this._context.perform(actionAddEntity(node), annotation);
-    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
+    this.context.perform(actionAddEntity(node), annotation);
+    this.context.enter(modeSelect(this.context, [node.id]).newFeature(true));
   }
 
 
@@ -94,8 +94,8 @@ export class ModeAddPoint extends AbstractMode {
   _clickWay(loc, edge) {
     const node = osmNode({ tags: this.defaultTags });
     const annotation = t('operations.add.annotation.vertex');
-    this._context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
-    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
+    this.context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
+    this.context.enter(modeSelect(this.context, [node.id]).newFeature(true));
   }
 
 
@@ -105,7 +105,7 @@ export class ModeAddPoint extends AbstractMode {
    */
   _clickNode(loc, node) {
     if (Object.keys(this.defaultTags).length === 0) {
-      this._context.enter(modeSelect(this._context, [node.id]));
+      this.context.enter(modeSelect(this.context, [node.id]));
       return;
     }
 
@@ -115,8 +115,8 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     const annotation = t('operations.add.annotation.point');
-    this._context.perform(actionChangeTags(node.id, tags), annotation);
-    this._context.enter(modeSelect(this._context, [node.id]).newFeature(true));
+    this.context.perform(actionChangeTags(node.id, tags), annotation);
+    this.context.enter(modeSelect(this.context, [node.id]).newFeature(true));
   }
 
 
@@ -125,7 +125,7 @@ export class ModeAddPoint extends AbstractMode {
    * Return to browse mode without doing anything
    */
   _cancel() {
-    this._context.enter('browse');
+    this.context.enter('browse');
   }
 
 }

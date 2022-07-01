@@ -17,7 +17,7 @@ export class AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared iD application context
+   * @param  context  Global shared application context
    * @param  id       Unique string to use for the name of this layer
    * @param  layerZ   z-index to assign to this layer's container
    * @param  parent   Optional parent container for this feature.  Should be a Pixi Stage, defaults to the main stage

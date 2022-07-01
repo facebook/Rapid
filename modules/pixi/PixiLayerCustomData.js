@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { text as d3_text } from 'd3-fetch';
-import { geoBounds as d3_geoBounds, geoPath as d3_geoPath } from 'd3-geo';
+import { geoBounds as d3_geoBounds } from 'd3-geo';
 
 import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
@@ -26,7 +26,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared iD application context
+   * @param  context  Global shared application context
    * @param  scene
    * @param  layerZ   z-index to assign to this layer's container
    */
@@ -191,7 +191,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   hasData () {
-    var gj = this._geojson || {};
+    const gj = this._geojson || {};
     return !!(this._template || Object.keys(gj).length);
   }
 
@@ -205,11 +205,10 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
-
     if (!this._loadedUrlData) {
       const hash = utilStringQs(window.location.hash);
 
-      //GPX data
+      // GPX data
       if (hash.gpx) {
         this.url(hash.gpx, '.gpx');
       }
@@ -236,10 +235,15 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * drawCustomData
+   * Draw the geojson custom data
+   *
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   */
   drawCustomData(timestamp, projection, zoom) {
-    const context = this.context;
-    const scene = this.scene;
-
     // Gather data
     let geoData, polygons, lines, points;
     if (this._template && this.vtService) {   // fetch data from vector tile service
@@ -264,6 +268,13 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * drawPolygons
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   * @param  polygons     Array of polygon data
+   */
   drawPolygons(timestamp, projection, zoom, polygons) {
     const context = this.context;
     const scene = this.scene;
@@ -295,6 +306,13 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * drawLines
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   * @param  lines        Array of line data
+   */
   drawLines(timestamp, projection, zoom, lines) {
     const context = this.context;
     const scene = this.scene;
@@ -321,6 +339,13 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * drawPoints
+   * @param  timestamp    timestamp in milliseconds
+   * @param  projection   pixi projection to use for rendering
+   * @param  zoom         effective zoom to use for rendering
+   * @param  lines        Array of point data
+   */
   drawPoints(timestamp, projection, zoom, points) {
     const context = this.context;
     const scene = this.scene;
@@ -349,6 +374,11 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * geojson
+   * @param  gj
+   * @param  src
+   */
   geojson (gj, src) {
     if (!arguments.length) return this._geojson;
 
@@ -368,6 +398,10 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * fileList
+   * @param  fileList
+   */
   fileList(fileList) {
     if (!arguments.length) return this._fileList;
 
@@ -377,11 +411,11 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._src = null;
 
     if (!fileList || !fileList.length) return this;
-    var f = fileList[0];
-    var extension = this.getExtension(f.name);
+    const f = fileList[0];
+    const extension = this.getExtension(f.name);
     let setFile = this.setFile;
 
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = (function() {
       return function(e) {
         setFile(extension, e.target.result);
@@ -393,6 +427,11 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
+  /**
+   * url
+   * @param  url
+   * @param  defaultExtension
+   */
   url(url, defaultExtension) {
     this._template = null;
     this._fileList = null;
@@ -400,22 +439,20 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._src = null;
 
     // strip off any querystring/hash from the url before checking extension
-    var testUrl = url.split(/[?#]/)[0];
-    var extension = this.getExtension(testUrl) || defaultExtension;
+    const testUrl = url.split(/[?#]/)[0];
+    const extension = this.getExtension(testUrl) || defaultExtension;
     if (extension) {
       this._template = null;
       let setFile = this.setFile;
-        d3_text(url)
-            .then(function(data) {
-                setFile(extension, data);
-                var isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
-                if (isTaskBoundsUrl) {
-                    this.context.rapidContext().setTaskExtentByGpxData(data);
-                }
-            })
-            .catch(function() {
-                /* ignore */
-            });
+      d3_text(url)
+        .then(function(data) {
+          setFile(extension, data);
+          const isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
+          if (isTaskBoundsUrl) {
+            this.context.rapidContext().setTaskExtentByGpxData(data);
+          }
+        })
+        .catch(function() { /* ignore */ });
     } else {
       this.template(url);
     }
@@ -424,23 +461,29 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-  getSrc(){
+  /**
+   * getSrc
+   */
+  getSrc() {
     return this._src || '';
   }
 
 
-  fitZoom(){
+  /**
+   * fitZoom
+   */
+  fitZoom() {
     const features = this.getFeatures(this._geojson);
     if (!features.length) return;
 
     const map = this.context.map();
     const viewport = map.trimmedExtent().polygon();
 
-    const coords = features.reduce(function(coords, feature) {
-      var geom = feature.geometry;
+    const coords = features.reduce((coords, feature) => {
+      const geom = feature.geometry;
       if (!geom) return coords;
 
-      var c = geom.coordinates;
+      let c = geom.coordinates;
 
       /* eslint-disable no-fallthrough */
       switch (geom.type) {
@@ -463,9 +506,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     }, []);
 
     if (!geomPolygonIntersectsPolygon(viewport, coords, true)) {
-      var bounds = d3_geoBounds({ type: 'LineString', coordinates: coords });
-      var extent = new Extent(bounds[0], bounds[1]);
-
+      const bounds = d3_geoBounds({ type: 'LineString', coordinates: coords });
+      const extent = new Extent(bounds[0], bounds[1]);
       map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
     }
 

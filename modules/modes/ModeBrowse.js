@@ -13,7 +13,7 @@ export class ModeBrowse extends AbstractMode {
 
   /**
    * @constructor
-   * @param  `context`  Global shared context for iD
+   * @param  `context`  Global shared application context
    */
   constructor(context) {
     super(context);
@@ -32,7 +32,7 @@ export class ModeBrowse extends AbstractMode {
     }
 
     this._active = true;
-    this._context.enableBehaviors(['hover', 'select', 'drag']);
+    this.context.enableBehaviors(['hover', 'select', 'drag']);
 
     // Get focus on the body.
     // does this do anything?
