@@ -24,9 +24,9 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context
+   * @param  context  Global shared iD application context
    * @param  scene
-   * @param  layerZ
+   * @param  layerZ   z-index to assign to this layer's container
    */
   constructor(context, scene, layerZ) {
     super(context, LAYERID, layerZ);

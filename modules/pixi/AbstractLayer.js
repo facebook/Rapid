@@ -6,47 +6,46 @@ import * as PIXI from 'pixi.js';
  * It creates a container to hold the layer data.
  *
  * Properties you can access:
- *  `container`  PIXI.Container() contains the features on this layer
- *  `supported`  Is this layer supported? (i.e. do we even show it in lists?)
- *  `zIndex`     Where this layer sits compared to other layers
- *  `enabled`    Whether the the user has chosen to see the layer
- *  `visible`    Whether the layer's data is currently visible  (many layers become invisible at lower zooms)
- *
- * @class
+ *   `container`    PIXI.Container() that contains all the features for this layer
+ *   `id`           Unique string to use for the name of this layer
+ *   `supported`    Is this layer supported? (i.e. do we even show it in lists?)
+ *   `zIndex`       Where this layer sits compared to other layers
+ *   `enabled`      Whether the the user has chosen to see the layer
+ *   `visible`      Whether the layer's data is currently visible  (many layers become invisible at lower zooms)
  */
 export class AbstractLayer {
 
   /**
    * @constructor
-   * @param  context
-   * @param  layerID
-   * @param  layerZ
-   * @param pixiInstance the particular instance of pixi that we should bind to. Currently just context.pixi and context.minipixi (for the minimap)
+   * @param  context  Global shared iD application context
+   * @param  id       Unique string to use for the name of this layer
+   * @param  layerZ   z-index to assign to this layer's container
+   * @param  parent   Optional parent container for this feature.  Should be a Pixi Stage, defaults to the main stage
    */
-  constructor(context, layerID, layerZ, pixiInstance) {
+  constructor(context, id, layerZ, parent) {
     this.context = context;
 
     this._enabled = false;  // Whether the user has chosen to see the layer
 
     // Create layer container
     const container = new PIXI.Container();
-    container.name = layerID;
+    container.name = id;
     container.zIndex = layerZ;
     container.visible = false;
     container.sortableChildren = true;
+    this.container = container;
 
-    if (pixiInstance) {
-      pixiInstance.stage.addChild(container);
+    if (parent) {
+      parent.addChild(container);
     } else {
       context.pixi.stage.addChild(container);
     }
-
-    this.container = container;
 
     // For now, layers will have to keep track of their own feature visiblity
     // and implement their own feature culling and updating logic
     this.seenFeature = new Map();  // Map (feature -> timestamp)
   }
+
 
   /**
    * render
@@ -61,6 +60,7 @@ export class AbstractLayer {
     return true;
   }
 
+
   /**
    * cull
    * Make invisible any features that were not seen during this frame
@@ -74,6 +74,7 @@ export class AbstractLayer {
       }
     });
   }
+
 
   /**
    * makeDirty

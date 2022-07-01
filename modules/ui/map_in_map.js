@@ -1,13 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import {
-  Projection,
-  geoScaleToZoom,
-  geoZoomToScale,
-  vecScale,
-  vecSubtract,
-} from '@id-sdk/math';
+import { Projection, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
+
 import { t } from '../core/localizer';
 import { utilSetTransform } from '../util';
 import { PixiScene } from '../pixi/PixiScene';
@@ -25,8 +20,7 @@ export function uiMapInMap(context) {
       .on('end', zoomEnded);
 
     var wrap = d3_select(null);
-    var tiles = d3_select(null);
-    var viewport = d3_select(null);
+    var canvas = d3_select(null);
     var miniMapTileLayer = null;
 
     var _isTransformed = false;
@@ -38,7 +32,6 @@ export function uiMapInMap(context) {
     var _cMini; // center pixel of minimap
     var _tStart; // transform at start of gesture
     var _tCurr; // transform at most recent event
-    var _timeoutID;
 
 
     function zoomStarted() {
@@ -84,7 +77,7 @@ export function uiMapInMap(context) {
        miniMapTileLayer.container.position.x += tX;
        miniMapTileLayer.container.position.y += tY;
       } else {
-        utilSetTransform(tiles, 0, 0, scale);
+        utilSetTransform(canvas, 0, 0, scale);
       }
       _isTransformed = true;
       _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
@@ -130,11 +123,11 @@ export function uiMapInMap(context) {
       _tCurr = projection.transform();
 
       if (_isTransformed) {
-         let tileContainer = miniMapTileLayer.container;
+        let tileContainer = miniMapTileLayer.container;
         tileContainer.position.x = 0;
         tileContainer.position.y = 0;
 
-        utilSetTransform(tiles, 0, 0);
+        utilSetTransform(canvas, 0, 0);
         _isTransformed = false;
       }
 
@@ -147,9 +140,7 @@ export function uiMapInMap(context) {
 
 
     function redraw() {
-      clearTimeout(_timeoutID);
       if (_isHidden) return;
-
       updateprojection();
       drawBoundingBox();
     }
@@ -170,6 +161,7 @@ export function uiMapInMap(context) {
 
       let container = context.minipixi.stage;
       container.name = 'minimap-stage';
+
       const bboxContainer = container.getChildByName('bbox');
       if (!bboxContainer) {
         const bboxContainer = new PIXI.Container();
@@ -184,6 +176,7 @@ export function uiMapInMap(context) {
           .lineStyle(2, 0x00ffff)
           .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
         bboxContainer.addChild(bboxGraphic);
+
       } else {
         const bboxPolyGraphic = bboxContainer.children[0];
         bboxPolyGraphic
@@ -231,10 +224,10 @@ export function uiMapInMap(context) {
 
     uiMapInMap.toggle = toggle;
 
-    wrap = selection.selectAll('.map-in-map').data([0]);
+    wrap = selection.selectAll('.map-in-map')
+      .data([0]);
 
-    wrap = wrap
-      .enter()
+    wrap = wrap.enter()
       .append('div')
       .attr('class', 'map-in-map')
       .style('display', _isHidden ? 'none' : 'block')
@@ -253,7 +246,7 @@ export function uiMapInMap(context) {
     });
 
     wrap.node().appendChild(this.minipixi.view);
-    tiles = wrap.selectAll('canvas');
+    canvas = wrap.selectAll('canvas');
 
     const width = 200;
     const height = 150;
@@ -261,18 +254,10 @@ export function uiMapInMap(context) {
 
     const miniMapScene = new PixiScene(this.context);
     context.minipixi = this.minipixi;
-    miniMapTileLayer = new PixiLayerBackgroundTiles(
-     this.context,
-     miniMapScene,
-     1,
-     true
-   );
 
-    this.minipixi.ticker.add(() => {
-      const markStart = 'minimap-start';
-      const m1 = window.performance.mark(markStart);
-      const timestamp = m1.startTime;
+    miniMapTileLayer = new PixiLayerBackgroundTiles(this.context, miniMapScene, 1, true);  // isMinimap = true
 
+    this.minipixi.ticker.add((timestamp) => {
       miniMapTileLayer.render(timestamp, projection, 10);
     });
 
@@ -280,7 +265,7 @@ export function uiMapInMap(context) {
     _dMini = [200, 150]; //utilGetDimensions(wrap);
     _cMini = vecScale(_dMini, 0.5);
 
-    context.map().on('drawn.map-in-map', function (drawn) {
+    context.map().on('drawn.map-in-map', function(drawn) {
       if (drawn.full === true) {
         redraw();
       }

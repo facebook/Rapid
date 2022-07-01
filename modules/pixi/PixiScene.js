@@ -10,7 +10,7 @@ export class PixiScene {
 
   /**
    * @constructor
-   * @param context
+   * @param  context  Global shared iD application context
    */
   constructor(context) {
     this.context = context;

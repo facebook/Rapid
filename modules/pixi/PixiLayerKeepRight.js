@@ -44,9 +44,9 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
   /**
    * @constructor
-   * @param context
-   * @param scene
-   * @param layerZ
+   * @param  context  Global shared iD application context
+   * @param  scene
+   * @param  layerZ   z-index to assign to this layer's container
    */
   constructor(context, scene, layerZ) {
     super(context, LAYERID, layerZ);

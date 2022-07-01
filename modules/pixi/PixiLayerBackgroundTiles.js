@@ -26,22 +26,21 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * @constructor
-   * @param context
-   * @param scene
-   * @param layerZ
+   * @param  context    Global shared iD application context
+   * @param  scene
+   * @param  layerZ     z-index to assign to this layer's container
+   * @param  isMinimap  Pass `true` if this layer should be attached to the minimap
    */
-  constructor(context, scene, layerZ, minimapMode) {
-    if (minimapMode) {
-      super(context, `minimap-${LAYERID}`, layerZ, context.minipixi);
+  constructor(context, scene, layerZ, isMinimap) {
+    if (isMinimap) {
+      const stage = context.minipixi.stage;
+      super(context, `minimap-${LAYERID}`, layerZ, stage);
     } else {
       super(context, LAYERID, layerZ);
     }
     this.scene = scene;
     this.enabled = true;   // background imagery should be enabled by default
-
-    if (minimapMode) {
-      this.minimapMode = minimapMode;
-    }
+    this.isMinimap = isMinimap;
 
     // items in this layer don't need to be interactive
     this.container.buttonMode = false;
@@ -62,9 +61,9 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
 
   /**
-   * applyFilters adds an adjustment filter for brightness/contrast/saturation and
+   * applyFilters
+   * Adds an adjustment filter for brightness/contrast/saturation and
    * a sharpen/blur filter, depending on the UI slider settings.
-   *
    */
   applyFilters() {
     this.adjustmentFilter = new AdjustmentFilter({
@@ -98,16 +97,6 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     }
   }
 
-  getPixi(context) {
-    let pixi;
-    if (this.minimapMode) {
-      pixi = context.minipixi;
-    } else {
-      pixi = context.pixi;
-    }
-
-    return pixi;
-  }
 
   /**
    * render
@@ -117,7 +106,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   render(timestamp, projection) {
     const background = this.context.background();
 
-    if (!this.minimapMode) {
+    if (!this.isMinimap) {
       this.applyFilters();
     }
 
@@ -192,7 +181,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
-    const renderer = this.getPixi(context).renderer;
+    const renderer = this.isMinimap ? this.context.minipixi.renderer : this.context.pixi.renderer;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
@@ -225,7 +214,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
-        .getTiles(this.minimapMode ? projection : context.projection);
+        .getTiles(this.isMinimap ? projection : context.projection);
 
       let hasHoles = false;
       for (let i = 0; i < result.tiles.length; i++) {
@@ -297,7 +286,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
         sprite.texture = texture;
         tile.image = null;
-        if (!this.minimapMode) {
+        if (!this.isMinimap) {
           //Only redraw the main map when appropriate.
           context.map().deferredRedraw();
         }
@@ -306,7 +295,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        if (!this.minimapMode) {
+        if (!this.isMinimap) {
           //Only redraw the main map when appropriate.
           context.map().deferredRedraw();
         }
@@ -337,7 +326,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-        if (SHOWDEBUG && !source.overlay && !this.minimapMode) {
+        if (SHOWDEBUG && !source.overlay && !this.isMinimap) {
           // Display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();

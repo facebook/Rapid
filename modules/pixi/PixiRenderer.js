@@ -21,7 +21,7 @@ export class PixiRenderer {
    * Create a Pixi application and add it to the given parentElement.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
    *
-   * @param  context
+   * @param  context  Global shared iD application context
    * @param  parentElement
    */
   constructor(context, parentElement) {

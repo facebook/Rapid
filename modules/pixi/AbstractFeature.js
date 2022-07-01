@@ -7,7 +7,6 @@ import { Extent } from '@id-sdk/math';
  * It contains properties that used to manage the feature in the scene graph
  *
  * Properties you can access:
- *   `context`        Global shared iD application context
  *   `container`      PIXI.Container() that contains all the graphics for this feature
  *   `id`             Unique string to use for the name of this feature
  *   `type`           String describing what kind of feature this is ('point', 'line', 'multipolygon')
@@ -43,7 +42,10 @@ export class AbstractFeature {
     container.name = id;
     container.sortableChildren = false;
     container.visible = true;
-    if (parent) container.setParent(parent);
+
+    if (parent) {
+      container.setParent(parent);
+    }
 
     // By default, make the feature interactive
     container.buttonMode = true;

@@ -26,8 +26,9 @@ export class PixiLayers {
 
   /**
    * @constructor
-   * @param  context
+   * @param  context   Global shared iD application context
    * @param  scene
+   * @param  dispatch
    */
   constructor(context, scene, dispatch) {
     this.context = context;
