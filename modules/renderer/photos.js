@@ -7,7 +7,7 @@ import { utilRebind } from '../util/rebind';
 
 export function rendererPhotos(context) {
   const dispatch = d3_dispatch('change');
-  const LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam'];
+  const LAYERIDS = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
   const PHOTOTYPES = ['flat', 'panoramic'];
 
   let _shownPhotoTypes = PHOTOTYPES.slice();   // shallow copy
@@ -18,22 +18,22 @@ export function rendererPhotos(context) {
 
   function photos() {}
 
-//    function updateStorage() {
-//        if (window.mocha) return;
-//
-//        let hash = utilStringQs(window.location.hash);
-//        let enabled = context.layers().all().filter(function(d) {
-//            return LAYERIDS.indexOf(d.id) !== -1 && d.layer && d.layer.supported() && d.layer.enabled();
-//        }).map(function(d) {
-//            return d.id;
-//        });
-//        if (enabled.length) {
-//            hash.photo_overlay = enabled.join(',');
-//        } else {
-//            delete hash.photo_overlay;
-//        }
-//        window.location.replace('#' + utilQsString(hash, true));
-//    }
+   function updateStorage() {
+       if (window.mocha) return;
+
+       let hash = utilStringQs(window.location.hash);
+       let enabled = context.layers().all().filter(function(d) {
+           return LAYERIDS.indexOf(d.id) !== -1 && d.supported && d.enabled;
+       }).map(function(d) {
+           return d.id;
+       });
+       if (enabled.length) {
+           hash.photo_overlay = enabled.join(',');
+       } else {
+           delete hash.photo_overlay;
+       }
+       window.location.replace('#' + utilQsString(hash, true));
+   }
 
   photos.overlayLayerIDs = function() {
     return LAYERIDS;
@@ -126,15 +126,15 @@ export function rendererPhotos(context) {
   }
 
   photos.shouldFilterByDate = function() {
-    return showsLayer('mapillary') || showsLayer('openstreetcam') || showsLayer('streetside');
+    return showsLayer('mapillary') || showsLayer('kartaview') || showsLayer('streetside');
   };
 
   photos.shouldFilterByPhotoType = function() {
-    return showsLayer('mapillary') || (showsLayer('streetside') && showsLayer('openstreetcam'));
+    return showsLayer('mapillary') || (showsLayer('streetside') && showsLayer('kartaview'));
   };
 
   photos.shouldFilterByUsername = function() {
-    return !showsLayer('mapillary') && showsLayer('openstreetcam') && !showsLayer('streetside');
+    return !showsLayer('mapillary') && showsLayer('kartaview') && !showsLayer('streetside');
   };
 
   photos.showsPhotoType = function(val) {
@@ -190,7 +190,7 @@ export function rendererPhotos(context) {
       this.setUsernameFilter(hash.photo_username, false);
     }
 
-    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=openstreetcam;mapillary;streetside`
+    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
     if (hash.photo_overlay) {
       const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
       context.layers().enable(hashOverlayIDs);
@@ -232,7 +232,7 @@ export function rendererPhotos(context) {
       }
     }
 
-    // context.layers().on('change.rendererPhotos', updateStorage);
+    context.layers().on('change.rendererPhotos', updateStorage);
   };
 
   return utilRebind(photos, dispatch, 'on');

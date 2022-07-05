@@ -127,7 +127,7 @@ export function uiCommit(context) {
 
         // Sync up the the used photo sources with `sources`
         var usedPhotos = new Set(context.history().photoOverlaysUsed());
-        var allPhotos = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'openstreetcam'];
+        var allPhotos = ['streetside', 'mapillary', 'mapillary-map-features', 'mapillary-signs', 'kartaview'];
         allPhotos.forEach(function(val) { sources.delete(val); });   // reset all
         if (usedPhotos.size) {
             sources.add('streetlevel imagery');

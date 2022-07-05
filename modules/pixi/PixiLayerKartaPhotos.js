@@ -3,7 +3,7 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
-const LAYERID = 'openstreetcam';
+const LAYERID = 'kartaview';
 const MINZOOM = 12;
 const KARTA_BLUE = 0x20c4ff;
 
@@ -46,10 +46,10 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
-    if (services.openstreetcam && !this._service) {
-      this._service = services.openstreetcam;
+    if (services.kartaview && !this._service) {
+      this._service = services.kartaview;
       this._service.on('loadedImages', () => this.context.map().deferredRedraw());
-    } else if (!services.openstreetcam && this._service) {
+    } else if (!services.kartaview && this._service) {
       this._service = null;
     }
 
@@ -111,7 +111,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     if (!service) return;
 
     const images = service.images(context.projection);
-    const sequences = service.sequences(context.projection);
+    const sequences = service. sequences(context.projection);
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);

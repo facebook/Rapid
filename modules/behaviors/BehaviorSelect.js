@@ -5,6 +5,7 @@ import { vecEqual, vecLength } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
 import { osmEntity, osmNote, QAItem } from '../osm';
+import { services } from '../services';
 import { utilKeybinding, utilRebind } from '../util';
 
 const NEAR_TOLERANCE = 4;
@@ -380,6 +381,36 @@ export class BehaviorSelect extends AbstractBehavior {
       // keep it really simple for now - legacy Select mode
       context.enter(modeSelect(context, [datum.id]));
     }
+
+    // Clicked on a photo, so open / refresh the viewer's pic
+    if (datum.captured_at) {
+      //Now, determine the layer that was clicked on.
+      let photoLayerName = eventData.target.parent.name;
+      let service = null;
+
+      //The 'ID' of the photo varies by layer. Streetside uses 'key', others use 'id'.
+      let photoId = (photoLayerName === 'mapillary') ? datum.id : datum.key;
+
+      switch (photoLayerName) {
+        case 'mapillary':
+          service = services.mapillary;
+          break;
+        case 'streetside':
+          service = services.streetside;
+          break;
+        case 'kartaview':
+          service = services.kartaview;
+          break;
+      }
+
+      service.ensureViewerLoaded(context).then(function () {
+        service.selectImage(context, photoId).showViewer(context);
+      });
+
+      context.map().centerEase(datum.loc);
+
+    }
+
 
   }
 

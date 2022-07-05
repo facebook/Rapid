@@ -60,10 +60,10 @@ export function uiSectionPhotoOverlays(context) {
     const data = photoLayers.filter(layer => layer.supported);
 
     function layerSupported(d) {
-      return d.layer && d.layer.supported;
+      return d && d.supported;
     }
     function layerEnabled(d) {
-      return layerSupported(d) && d.layer.enabled;
+      return layerSupported(d) && d.enabled;
     }
 
     let ul = selection
@@ -91,7 +91,7 @@ export function uiSectionPhotoOverlays(context) {
         let titleID;
         if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
         else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
-        else if (d.id === 'openstreetcam') titleID = 'openstreetcam_images.tooltip';
+        else if (d.id === 'kartaview') titleID = 'kartaview_images.tooltip';
         else titleID = d.id.replace(/-/g, '_') + '.tooltip';
         d3_select(nodes[i])
           .call(uiTooltip()
