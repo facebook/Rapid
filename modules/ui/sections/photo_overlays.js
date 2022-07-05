@@ -83,7 +83,13 @@ export function uiSectionPhotoOverlays(context) {
 
     let liEnter = li.enter()
       .append('li')
-      .attr('class', d => `list-item-photos list-item-${d.id}`);
+      .attr('class', function (d) {
+        var classes = 'list-item-photos list-item-' + d.id;
+        if (d.id === 'mapillary-signs' || d.id === 'mapillary-map-features') {
+          classes += ' indented';
+        }
+        return classes;
+      });
 
     let labelEnter = liEnter
       .append('label')

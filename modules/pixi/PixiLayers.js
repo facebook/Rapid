@@ -49,8 +49,8 @@ export class PixiLayers {
       new PixiLayerKeepRight(context, scene, 12),
       new PixiLayerOsmose(context, scene, 13),
 
-      new PixiLayerMapillaryFeatures(context, scene, 20),
-      new PixiLayerMapillaryPhotos(context, scene, 21),
+      new PixiLayerMapillaryPhotos(context, scene, 20),
+      new PixiLayerMapillaryFeatures(context, scene, 21),
       new PixiLayerMapillarySigns(context, scene, 22),
       new PixiLayerKartaPhotos(context, scene, 25),
       new PixiLayerStreetsidePhotos(context, scene, 26),

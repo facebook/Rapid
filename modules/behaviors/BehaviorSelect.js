@@ -384,24 +384,13 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked on a photo, so open / refresh the viewer's pic
     if (datum.captured_at) {
-      //Now, determine the layer that was clicked on.
+      //Now, determine the layer that was clicked on, obtain its service.
       let photoLayerName = eventData.target.parent.name;
-      let service = null;
+      let service = services[photoLayerName];
+
 
       //The 'ID' of the photo varies by layer. Streetside uses 'key', others use 'id'.
       let photoId = (photoLayerName === 'mapillary') ? datum.id : datum.key;
-
-      switch (photoLayerName) {
-        case 'mapillary':
-          service = services.mapillary;
-          break;
-        case 'streetside':
-          service = services.streetside;
-          break;
-        case 'kartaview':
-          service = services.kartaview;
-          break;
-      }
 
       service.ensureViewerLoaded(context).then(function () {
         service.selectImage(context, photoId).showViewer(context);
