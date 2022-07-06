@@ -217,7 +217,7 @@ export class BehaviorSelect extends AbstractBehavior {
       this._click(up);
 
       if (down.originalEvent.button === 2) {  //right click
-        this.contextmenu(up);
+        this._contextmenu(up);
       }
 
     }
@@ -253,7 +253,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
        if (e.keyCode === 93) {   // contextmenu key
          // this._lastInteractionType = 'menukey';
-         this.contextmenu( this._getEventData(e));
+         this._contextmenu( this._getEventData(e));
          return;
        }
 
