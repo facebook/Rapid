@@ -38,7 +38,8 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // On hover or selection, draw related vertices (above everything)
     this._relatedIDs = new Set();
-    this._seenHighlightTick = null;
+    this._prevSelectTick = -1;
+    this._prevHoverTick = -1;
 
     // experiment for benchmarking
     this._alreadyDownloaded = false;
@@ -92,7 +93,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * _updateRelatedIDs
    * On any change in selection or hovering, we should check for which vertices
    * become interesting enough to render
-   * @param  ids   Set of current ids that are selected or hovered
+   * @param  ids   `Set` of ids that are selected or hovered
    */
   _updateRelatedIDs(ids) {
     const context = this.context;
@@ -175,6 +176,7 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   render(timestamp, projection, zoom) {
     const context = this.context;
+    const scene = this.scene;
     const service = this.getService();
     const graph = context.graph();
     const map = context.map();
@@ -182,14 +184,14 @@ export class PixiLayerOsm extends AbstractLayer {
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
 
-      context.loadTiles(context.projection);  // load OSM data that covers the view
+      context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
       // Has select/hover highlighting chagned?
-      const renderer = map.renderer();
-      const currHighlightedIDs = renderer._highlightedIDs;
-      if (this._seenHighlightTick !== renderer._highlightTick) {
-        this._seenHighlightTick = renderer._highlightTick;
-        this._updateRelatedIDs(currHighlightedIDs);
+      const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
+      if (this._prevSelectTick !== scene.selectTick || this._prevHoverTick !== scene.hoverTick) {
+        this._prevSelectTick = scene.selectTick;
+        this._prevHoverTick = scene.hoverTick;
+        this._updateRelatedIDs(highlightedIDs);
       }
 
       const entities = context.history().intersects(map.extent());
@@ -205,12 +207,12 @@ export class PixiLayerOsm extends AbstractLayer {
           data.vertices.push(entity);
         } else if (geom === 'line') {
           data.lines.push(entity);
-          if (currHighlightedIDs.has(entity.id)) {
+          if (highlightedIDs.has(entity.id)) {
             data.highlighted.push(entity);
           }
         } else if (geom === 'area') {
           data.polygons.push(entity);
-          if (currHighlightedIDs.has(entity.id)) {
+          if (highlightedIDs.has(entity.id)) {
             data.highlighted.push(entity);
           }
         }
@@ -236,9 +238,8 @@ export class PixiLayerOsm extends AbstractLayer {
           'entities': context.graph().base().entities
         };
 
-          let cannedData = JSON.stringify(viewData);
-          this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
-
+        let cannedData = JSON.stringify(viewData);
+        this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
         this._alreadyDownloaded = true;
       }
 

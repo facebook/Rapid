@@ -9,9 +9,12 @@ import { getIconTexture } from './helpers';
  * PixiFeaturePoint
  *
  * Properties you can access:
- *   `geometry`   Single wgs84 coordinate [lon, lat]
- *   `style`      Object containing styling data
- *   `container`  PIXI.Sprite() for the marker
+ *   `geometry`    Single wgs84 coordinate [lon, lat]
+ *   `style`       Object containing styling data
+ *   `container`   Toplevel PIXI.Container containing the display objects used to draw the point
+ *   `viewfields`  PIXI.Container that contains viewfields
+ *   `marker`      PIXI.Sprite for the marker
+ *   `icon`        PIXI.Sprite for the icon
  *
  *   (also all properties inherited from `AbstractFeature`)
  */

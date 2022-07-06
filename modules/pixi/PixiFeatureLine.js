@@ -16,9 +16,9 @@ const SIDED_SPACING = 30;
  *   `geometry`   Array of wgs84 coordinates [lon, lat]
  *   `points`     Array of projected points in scene coordinates
  *   `style`      Object containing styling data
- *   `container`  PIXI.Container() holds the line parts
- *   `casing`     PIXI.Graphic() for the casing (below)
- *   `stroke`     PIXI.Graphic() for the stroke (above)
+ *   `container`  Toplevel PIXI.Container containing the display objects used to draw the line
+ *   `casing`     PIXI.Graphic for the casing (below)
+ *   `stroke`     PIXI.Graphic for the stroke (above)
  *
  *   (also all properties inherited from `AbstractFeature`)
  */

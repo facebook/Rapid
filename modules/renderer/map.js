@@ -171,13 +171,13 @@ export function rendererMap(context) {
     context.history()
       .on('merge.map', entityIDs => {
         if (entityIDs) {
-          _renderer.dirtyEntities(entityIDs);
+          _renderer.dirtyFeatures(entityIDs);
         }
         map.deferredRedraw();
       })
       .on('change.map', difference => {
         if (difference) {
-          _renderer.dirtyEntities(Object.keys(difference.complete()));
+          _renderer.dirtyFeatures(Object.keys(difference.complete()));
         }
         map.immediateRedraw();
       })
@@ -456,7 +456,7 @@ export function rendererMap(context) {
 
       if (_renderer) {
         _renderer.render();
-        dispatch.call('drawn', this, {full: true});
+        dispatch.call('drawn', this, { full: true });
       }
 
     }

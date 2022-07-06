@@ -64,8 +64,7 @@ export class AbstractLayer {
   /**
    * cull
    * Make invisible any features that were not seen during this frame
-   *
-   * @param  timestamp    timestamp in milliseconds
+   * @param  timestamp   timestamp in milliseconds
    */
   cull(timestamp) {
     this.seenFeature.forEach((ts, feature) => {

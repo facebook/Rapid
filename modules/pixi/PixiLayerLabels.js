@@ -188,7 +188,7 @@ export class PixiLayerLabels extends AbstractLayer {
       }
 
       // Check for any features which have changed and need recalculation.
-      this.scene._features.forEach(feature => {
+      this.scene.features.forEach(feature => {
         if (feature._labelDirty) {
           this.resetFeature(feature.id);
           feature._labelDirty = false;
@@ -201,7 +201,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // Collect features to place labels on.
       let points = [];
       let lines = [];
-      this.scene._features.forEach(feature => {
+      this.scene.features.forEach(feature => {
         // If the feature can be labeled, and hasn't yet been, add it to the list for placement.
         if (feature.label && feature.visible && !this._labelBoxes.has(feature.id)) {
           if (feature.type === 'point') {

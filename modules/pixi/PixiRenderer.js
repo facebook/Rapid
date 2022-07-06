@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import * as PIXI from 'pixi.js';
-import { GlowFilter } from '@pixi/filter-glow';
 import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
@@ -12,7 +11,12 @@ import { PixiTextures } from './PixiTextures';
 
 /**
  * PixiRenderer
- * @class
+ * The renderer implements a game loop and manages when rendering tasks happen.
+ *
+ * Properties you can access:
+ *   `pixiProjection`  To avoid frequent reprojection, the Pixi projection may be offset from the main map
+ *   `scene`           The "scene" object manages collections of the features in the scene
+ *   `layers`          The "layers" object manages all the layers - which are visible/hidden, etc
  */
 export class PixiRenderer {
 
@@ -21,8 +25,8 @@ export class PixiRenderer {
    * Create a Pixi application and add it to the given parentElement.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
    *
-   * @param  context  Global shared application context
-   * @param  parentElement
+   * @param  context         Global shared application context
+   * @param  parentElement   Parent `div` element to add Pixi
    */
   constructor(context, parentElement) {
     this.context = context;
@@ -44,7 +48,7 @@ export class PixiRenderer {
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
-    // Create a Pixi application and add it to the parent container
+    // Create a Pixi application and add Pixi's canvas to the parent `div`.
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
@@ -102,22 +106,7 @@ export class PixiRenderer {
     this.pixiProjection = new Projection();
     this.scene = new PixiScene(context);
     this.layers = new PixiLayers(context, this.scene, this._dispatch);
-
-    // used for highlighting:
-    this._hoveredIDs = new Set();
-    this._selectedIDs = new Set();
-    this._highlightedIDs = new Set();
-    this._highlightTick = 0;
-
-    const selectglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
-    selectglow.resolution = 2;
-    this.selectglow = selectglow;
-
-    const hoverglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
-    hoverglow.resolution = 2;
-    this.hoverglow = hoverglow;
   }
-
 
 
   /**
@@ -127,49 +116,90 @@ export class PixiRenderer {
    * and schedule work to happen at opportune times (within animation frame boundaries)
    */
   tick(time) {
-    let t = time;
-    const ticker = this.pixi.ticker;
+    // const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
-    // do one or the other for now
-    if (this._appPending) {
-      this.app();
-    } else if (this._drawPending) {
-      this.draw();
+    // First, clear out any pending DRAW of current frame.
+    // This is so that a pending APP does not sneak in front of DRAW in a race condition.
+    if (this._drawPending) {
+      const frame = this._frame;
+      const drawStart = `draw-${frame}-start`;
+      const drawEnd = `draw-${frame}-end`;
+      const m1 = window.performance.mark(drawStart);
+      const timestamp = m1.startTime;
+
+      this.draw(timestamp);  // note that this increments the frame count
+
+      const m2 = window.performance.mark(drawEnd);
+      window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
+      const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
+      const duration = measure.duration.toFixed(1);
+      // console.log(`draw-${frame} : ${duration} ms`);
+      return;
     }
+
+    // Do APP to prepare the next frame..
+    let elapsed = 0;
+    if (this._appPending) {
+      const frame = this._frame;
+      const appStart = `app-${frame}-start`;
+      const appEnd = `app-${frame}-end`;
+      const m1 = window.performance.mark(appStart);
+      const timestamp = m1.startTime;
+
+      this.app(timestamp);
+
+      const m2 = window.performance.mark(appEnd);
+      window.performance.measure(`app-${frame}`, appStart, appEnd);
+      const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
+      const duration = measure.duration.toFixed(1);
+      elapsed += measure.duration;
+      // console.log(`app-${frame} : ${duration} ms`);
+    }
+
+    // Do DRAW right now if we time for it..
+    if (elapsed < 8) return;  // 8 milliseconds
+
+    if (this._drawPending) {
+      const frame = this._frame;
+      const drawStart = `draw-${frame}-start`;
+      const drawEnd = `draw-${frame}-end`;
+      const m1 = window.performance.mark(drawStart);
+      const timestamp = m1.startTime;
+
+      this.draw(timestamp);  // note that this increments the frame count
+
+      const m2 = window.performance.mark(drawEnd);
+      window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
+      const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
+      const duration = measure.duration.toFixed(1);
+      // console.log(`draw-${frame} : ${duration} ms`);
+    }
+
   }
 
 
   /**
    * render
-   * Schedules a render on the next tick
+   * Schedules an "app" pass on the next available tick
    */
   render() {
-if (this._drawPending) return;
-
     this._appPending = true;
   }
 
 
   /**
    * app
-   * The "RapiD" part of the drawing
-   * Where we set up the scene graph and tell Pixi what needs to be drawn
+   * The "RapiD" part of the drawing.
+   * Where we set up the scene graph and tell Pixi what needs to be drawn.
    */
-  app() {
-
-const frame = this._frame;
-const markStart = `app-${frame}-start`;
-const markEnd = `app-${frame}-end`;
-const m1 = window.performance.mark(markStart);
-const timestamp = m1.startTime;
-
-    // UPDATE TRANSFORM
+  app(timestamp) {
     // Reproject the pixi geometries only whenever zoom changes
     const context = this.context;
     const pixiProjection = this.pixiProjection;
     const currTransform = context.projection.transform();
     const pixiTransform = pixiProjection.transform();
+    const effectiveZoom = context.map().effectiveZoom();
 
     let offset;
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset
@@ -180,19 +210,12 @@ const timestamp = m1.startTime;
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
 
-    // this? (offset in stage)
+// like this? (offset in stage)
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
+//
 
-    const effectiveZoom = context.map().effectiveZoom();
     this.layers.render(timestamp, pixiProjection, effectiveZoom);
-
-
-const m2 = window.performance.mark(markEnd);
-window.performance.measure(`app-${frame}`, markStart, markEnd);
-const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
-const duration = measure.duration.toFixed(1);
-// console.log(`app-${frame} : ${duration} ms`);
 
     this._appPending = false;
     this._drawPending = true;
@@ -202,151 +225,49 @@ const duration = measure.duration.toFixed(1);
   /**
    * draw
    * The "Pixi" part of the drawing
-   * Where it converts Pixi geometries into WebGL instructions
+   * Where it converts Pixi geometries into WebGL instructions.
    */
   draw() {
-
-const frame = this._frame;
-const markStart = `draw-${frame}-start`;
-const markEnd = `draw-${frame}-end`;
-const m1 = window.performance.mark(markStart);
-const timestamp = m1.startTime;
-
-// this? (offset in stage)
+// like this? (offset in stage)
     this.pixi.render();
-
-//...or this (offset in matrix)?
+//...or like this (offset in matrix)?
     // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
     // const options = {
     //   transform: m,
     //   // skipUpdateTransform: true
     // };
     // this.pixi.renderer.render(stage, options);
+//
 
     this.context.map().resetTransform();
-
-const m2 = window.performance.mark(markEnd);
-window.performance.measure(`draw-${frame}`, markStart, markEnd);
-const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
-const duration = measure.duration.toFixed(1);
-// console.log(`draw-${frame} : ${duration} ms`);
 
     this._drawPending = false;
     this._frame++;
   }
 
 
-  /**
-   * dirtyEntities
-   * flag these features as `dirty` if they are in the scene
-   * @param  featureIDs   `Array` or `Set` of feature IDs to dirty
-   */
-  dirtyEntities(featureIDs) {
-    (featureIDs || []).forEach(featureID => {
-      const feature = this.scene.get(featureID);
-      if (feature) {
-        feature.dirty = true;
-      }
-    });
-  }
+  // pass through calls to other objects
 
-
-  /**
-   * dirtyScene
-   * flag the whole scene as dirty
-   * (when changing zooms)
-   */
   dirtyScene() {
-    this.scene._features.forEach(feature => feature.dirty = true);
+    this.scene.dirtyScene();
   }
-
-
-  /**
-   * select
-   * @param  featureIDs   `Array` or `Set` of feature IDs to select
-   */
+  dirtyFeatures(featureIDs) {
+    this.scene.dirtyFeatures(featureIDs);
+  }
   select(featureIDs) {
-    const toSelect = new Set([].concat(featureIDs));  // coax ids into a Set
-    let selectChanged = false;
-
-    // remove select where not needed
-    this._selectedIDs.forEach(featureID => {
-      if (toSelect.has(featureID)) return;   // it should stay selected
-
-      this._selectedIDs.delete(featureID);
-      const feature = this.scene.get(featureID);
-      if (feature) {
-        selectChanged = true;
-        feature.container.filters = [];
-        feature.selected = false;
-      }
-    });
-
-    // add select where needed
-    toSelect.forEach(featureID => {
-      const feature = this.scene.get(featureID);
-      if (!feature) return;
-
-      if (this._selectedIDs.has(feature.id)) return;  // it's already selected
-
-      this._selectedIDs.add(feature.id);
-      selectChanged = true;
-      feature.container.filters = [ this.selectglow ];
-      feature.selected = true;
-    });
-
-    if (selectChanged) {
-      this._highlightTick++;
-// this.draw();    // draw now
-if (!this.context.map().isTransformed()) {
-  this._drawPending = true;   // draw asap
-}
-    }
+    this.scene.select(featureIDs);
+    this._appPending = true;
   }
-
-
-
-  /**
-   * hover
-   * @param  featureIDs   `Array` or `Set` of feature IDs to hover
-   */
   hover(featureIDs) {
-    const toHover = new Set([].concat(featureIDs));  // coax ids into a Set
-    let hoverChanged = false;
-
-    // remove hover where not needed
-    this._hoveredIDs.forEach(featureID => {
-      if (toHover.has(featureID)) return;  // it should stay hovered
-
-      this._hoveredIDs.delete(featureID);
-      const feature = this.scene.get(featureID);
-      if (feature) {
-        hoverChanged = true;
-        feature.container.filters = [];
-        feature.hovered = false;
-      }
-    });
-
-    // add hover where needed
-    toHover.forEach(featureID => {
-      const feature = this.scene.get(featureID);
-      if (!feature) return;
-
-      if (this._hoveredIDs.has(feature.id)) return;  // it's already hovered
-
-      this._hoveredIDs.add(feature.id);
-      hoverChanged = true;
-      feature.container.filters = [ this.hoverglow ];
-      feature.hovered = true;
-    });
-
-    if (hoverChanged) {
-      this._highlightTick++;
-// this.draw();    // draw now
-if (!this.context.map().isTransformed()) {
-  this._drawPending = true;   // draw asap
-}
-    }
+    this.scene.hover(featureIDs);
+    this._appPending = true;
   }
+
+// // if select or hover changed..
+// // this.draw();    // draw now
+// if (!this.context.map().isTransformed()) {
+//   this._drawPending = true;   // draw asap
+// }
+
 
 }
