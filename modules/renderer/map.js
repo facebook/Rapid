@@ -150,14 +150,14 @@ export function rendererMap(context) {
     //
 
     context
-      .on('change.map', map.immediateRedraw);
+      .on('change', map.immediateRedraw);
 
     // context.features()
     //   .on('redraw.map', map.immediateRedraw);
 
     const osm = context.connection();
     if (osm) {
-      osm.on('change.map', map.immediateRedraw);
+      osm.on('change', map.immediateRedraw);
     }
 
     function didUndoOrRedo(targetTransform) {
@@ -169,26 +169,26 @@ export function rendererMap(context) {
     }
 
     context.history()
-      .on('merge.map', entityIDs => {
+      .on('merge', entityIDs => {
         if (entityIDs) {
           _renderer.dirtyFeatures(entityIDs);
         }
         map.deferredRedraw();
       })
-      .on('change.map', difference => {
+      .on('change', difference => {
         if (difference) {
           _renderer.dirtyFeatures(Object.keys(difference.complete()));
         }
         map.immediateRedraw();
       })
-      .on('undone.map', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
-      .on('redone.map', (stack) => didUndoOrRedo(stack.transform));
+      .on('undone', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
+      .on('redone', (stack) => didUndoOrRedo(stack.transform));
 
     context.background()
-      .on('change.map', map.immediateRedraw);
+      .on('change', map.immediateRedraw);
 
     _renderer.layers
-      .on('change.map', function() {
+      .on('layerchange', () => {
         context.background().updateImagery();
         map.immediateRedraw();
     });
