@@ -232,7 +232,7 @@ export function rendererPhotos(context) {
       }
     }
 
-    context.layers().on('change.rendererPhotos', updateStorage);
+    context.layers().on('layerchange', updateStorage);
   };
 
   return utilRebind(photos, dispatch, 'on');

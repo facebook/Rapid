@@ -1,8 +1,5 @@
-import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
-// import { Extent } from '@id-sdk/math';
 
-// import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { svgIcon } from '../../svg/icon';
@@ -33,9 +30,9 @@ export function uiSectionDataLayers(context) {
       .call(drawOsmItems)
       .call(drawQAItems)
       .call(drawCustomDataItems)
-      // .call(drawVectorItems)      // Beta - Detroit mapping challenge
       .call(drawPanelItems);
   }
+
 
   function showsLayer(layerID) {
     const layer = layers.getLayer(layerID);
@@ -265,6 +262,7 @@ export function uiSectionDataLayers(context) {
       .call(settingsCustomData);
   }
 
+
   function customChanged(d) {
     let dataLayer = layers.getLayer('custom-data');
 
@@ -328,16 +326,7 @@ export function uiSectionDataLayers(context) {
       .html(t.html('map_data.measurement_panel.title'));
   }
 
-  context.layers()
-    .on('change.uiSectionDataLayers', section.reRender);
-
- context.map()
-   .on('move.uiSectionDataLayers',
-     _debounce(function() {
-       // Detroit layers may have moved in or out of view
-       window.requestIdleCallback(section.reRender);
-     }, 1000)
-   );
+  context.layers().on('layerchange', section.reRender);
 
   return section;
 }

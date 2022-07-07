@@ -110,6 +110,12 @@ export function uiInit(context) {
       .append('div')
       .attr('class', 'main-content active');
 
+    // The map
+    content
+      .append('div')
+      .attr('class', 'main-map')
+      .attr('dir', 'ltr')
+      .call(map);
 
     // Top toolbar
     content
@@ -118,12 +124,6 @@ export function uiInit(context) {
       .append('div')
       .attr('class', 'top-toolbar fillD')
       .call(uiTopToolbar(context));
-
-    content
-      .append('div')
-      .attr('class', 'main-map')
-      .attr('dir', 'ltr')
-      .call(map);
 
 
     // Over Map

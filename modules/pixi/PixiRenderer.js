@@ -1,5 +1,3 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
-
 import * as PIXI from 'pixi.js';
 import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
@@ -16,7 +14,7 @@ import { PixiTextures } from './PixiTextures';
  * Properties you can access:
  *   `pixiProjection`  To avoid frequent reprojection, the Pixi projection may be offset from the main map
  *   `scene`           The "scene" object manages collections of the features in the scene
- *   `layers`          The "layers" object manages all the layers - which are visible/hidden, etc
+ *   `layers`          The "layers" object manages all the layers - visible/hidden, etc
  */
 export class PixiRenderer {
 
@@ -30,7 +28,6 @@ export class PixiRenderer {
    */
   constructor(context, parentElement) {
     this.context = context;
-    this._dispatch = d3_dispatch('change', 'dragstart', 'dragend');
     this._frame = 0;
     this._appPending = false;
     this._drawPending = false;
@@ -93,7 +90,6 @@ export class PixiRenderer {
 
     // Setup the Interaction Manager
     const interactionManager = this.pixi.renderer.plugins.interaction;
-    // interactionManager.interactionFrequency = 100;    // default 10ms, slow it down?  doesn't do what I thought
     interactionManager.useSystemTicker = true;
 
     const stage = this.pixi.stage;
@@ -105,7 +101,7 @@ export class PixiRenderer {
 
     this.pixiProjection = new Projection();
     this.scene = new PixiScene(context);
-    this.layers = new PixiLayers(context, this.scene, this._dispatch);
+    this.layers = new PixiLayers(context, this.scene);
   }
 
 
@@ -128,18 +124,19 @@ export class PixiRenderer {
       const m1 = window.performance.mark(drawStart);
       const timestamp = m1.startTime;
 
-      this.draw(timestamp);  // note that this increments the frame count
+      this.draw(timestamp);  // note that DRAW increments the frame counter
 
       const m2 = window.performance.mark(drawEnd);
       window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
       const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
       const duration = measure.duration.toFixed(1);
       // console.log(`draw-${frame} : ${duration} ms`);
+
+      // Always take a break after DRAW to give the GPU a chance to work.
       return;
     }
 
     // Do APP to prepare the next frame..
-    let elapsed = 0;
     if (this._appPending) {
       const frame = this._frame;
       const appStart = `app-${frame}-start`;
@@ -153,13 +150,15 @@ export class PixiRenderer {
       window.performance.measure(`app-${frame}`, appStart, appEnd);
       const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
       const duration = measure.duration.toFixed(1);
-      elapsed += measure.duration;
       // console.log(`app-${frame} : ${duration} ms`);
+
+      // A 60fps frame is 16.6ms, so take a break if APP took >10ms.
+      // A browser animation frame may be coming soon, and we'd like
+      // to avoid the browser dropping the frame if we can help it
+      if (duration > 10) return;
     }
 
     // Do DRAW right now if we time for it..
-    if (elapsed < 8) return;  // 8 milliseconds
-
     if (this._drawPending) {
       const frame = this._frame;
       const drawStart = `draw-${frame}-start`;
@@ -167,13 +166,16 @@ export class PixiRenderer {
       const m1 = window.performance.mark(drawStart);
       const timestamp = m1.startTime;
 
-      this.draw(timestamp);  // note that this increments the frame count
+      this.draw(timestamp);  // note that DRAW increments the frame counter
 
       const m2 = window.performance.mark(drawEnd);
       window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
       const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
       const duration = measure.duration.toFixed(1);
       // console.log(`draw-${frame} : ${duration} ms`);
+
+      // Always take a break after DRAW to give the GPU a chance to work.
+      return;
     }
 
   }

@@ -1,4 +1,4 @@
-import { utilRebind } from '../util';
+import { EventEmitter } from '@pixi/utils';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles';
 import { PixiLayerEditBlocks } from './PixiLayerEditBlocks';
@@ -20,22 +20,21 @@ import { PixiLayerCustomData } from './PixiLayerCustomData';
 
 /**
  * PixiLayers
- * @class
+
+ * Events available:
+ *   `layerchange`   Fires when layers are toggled from enabled/disabled
  */
-export class PixiLayers {
+export class PixiLayers extends EventEmitter {
 
   /**
    * @constructor
    * @param  context   Global shared application context
    * @param  scene
-   * @param  dispatch
    */
-  constructor(context, scene, dispatch) {
+  constructor(context, scene) {
+    super();
     this.context = context;
     this.scene = scene;
-    this.dispatch = dispatch;
-
-    utilRebind(this, this.dispatch, 'on');  // very sus ??
 
     this._layers = [
       new PixiLayerBackgroundTiles(context, scene, 1),
@@ -94,7 +93,7 @@ export class PixiLayers {
         layer.enabled = true;
       }
     });
-    this.dispatch.call('change');
+    this.emit('layerchange');
     return this;
   }
 
@@ -106,7 +105,7 @@ export class PixiLayers {
         layer.enabled = false;
       }
     });
-    this.dispatch.call('change');
+    this.emit('layerchange');
     return this;
   }
 
@@ -118,7 +117,7 @@ export class PixiLayers {
         layer.enabled = !layer.enabled;
       }
     });
-    this.dispatch.call('change');
+    this.emit('layerchange');
     return this;
   }
 
@@ -128,13 +127,8 @@ export class PixiLayers {
     this._layers.forEach(layer => {
       layer.enabled = toEnable.has(layer.id);
     });
-    this.dispatch.call('change');
+    this.emit('layerchange');
     return this;
-  }
-
-
-  dimensions() {
-    return this;  /* noop */
   }
 
 }
