@@ -1,9 +1,8 @@
-
 /**
  * "Modes" are editing tasks that the user are allowed to perform.
  * Each mode is exclusive, i.e only one mode should be active at a time.
  * `AbstractMode` is the base class from which all modes inherit.
-*
+ *
  * Properties you can access:
  *   `active`       `true` if the mode is active, `false` if not.
  *   `operations`   `Array` of operations allowed on the right-click edit menu

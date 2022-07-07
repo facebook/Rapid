@@ -1,4 +1,3 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { vecEqual, vecLength } from '@id-sdk/math';
 
@@ -6,7 +5,7 @@ import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { services } from '../services';
-import { utilKeybinding, utilRebind } from '../util';
+import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -35,9 +34,6 @@ export class BehaviorSelect extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'select';
-
-    this._dispatch = d3_dispatch('selectchanged');
-    utilRebind(this, this._dispatch, 'on');
 
     this._multiSelection = new Set();
     this._spaceClickDisabled = false;
@@ -249,13 +245,12 @@ export class BehaviorSelect extends AbstractBehavior {
 
       this._spacebar(e);
       return;
-    }
 
-       if (e.keyCode === 93) {   // contextmenu key
-         // this._lastInteractionType = 'menukey';
-         this._contextmenu( this._getEventData(e));
-         return;
-       }
+    } else if (e.keyCode === 93) {   // contextmenu key
+      // this._lastInteractionType = 'menukey';
+      this._contextmenu(this._getEventData(e));
+      return;
+    }
 
     if (e.shiftKey) {
       // ?
@@ -332,9 +327,9 @@ export class BehaviorSelect extends AbstractBehavior {
 
       if (DEBUG) {
         const name = (eventData.target && eventData.target.name) || 'no target';
-        console.log(`BehaviorSelect: dispatching 'selectchanged', selectTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorSelect: emitting 'selectchanged', selectTarget = ${name}`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('selectchanged', this, eventData);
+      this.emit('selectchanged', eventData);
     } else {
       return;   // no change
     }
@@ -485,30 +480,29 @@ export class BehaviorSelect extends AbstractBehavior {
     * _contextmenu
     * Handler for `contextmenu` events, will be either a pointer event
     * for the right button, or a dedicated keydown event for a contextmenu button
-    * @param  `e`  A d3 keydown event
+    * @param  `eventData`  event data
     */
-   _contextmenu(e) {
+   _contextmenu(eventData) {
      //  e.preventDefault();
      // this._lastMouseEvent = e;
      // this._lastInteractionType = 'rightclick';
      this._showMenu = true;
 
-     let datum = e.data;
+     const datum = eventData.data;
 
-     //Only attempt to display the context menu if we're clicking on a non-rapid OSM Entity.
+     // Only attempt to display the context menu if we're clicking on a non-rapid OSM Entity.
      if (datum && datum instanceof osmEntity && !datum.__fbid__) {
-       // For contextmenu key events we will instead use the last pointer event
-       // Get these from Pixi's interaction manager
-       const interactionManager =
-         this.context.pixi.renderer.plugins.interaction;
-       const pointerOverRenderer = interactionManager.mouseOverRenderer;
-       const pointerEvent = interactionManager.mouse;
-       if (!pointerEvent || !pointerOverRenderer) return;
-       const pointer = this._getEventData({ data: pointerEvent });
+      // For contextmenu key events we will instead use the last pointer event
+      // Get these from Pixi's interaction manager
+      const interactionManager = this.context.pixi.renderer.plugins.interaction;
+      const pointerOverRenderer = interactionManager.mouseOverRenderer;
+      const pointerEvent = interactionManager.mouse;
+      if (!pointerEvent || !pointerOverRenderer) return;
 
-       this.context.ui().showEditMenu(pointer.coord);
-     }
-   }
+      const pointer = this._getEventData({ data: pointerEvent });
+      this.context.ui().showEditMenu(pointer.coord);
+    }
+  }
 
 
   resetProperties() {

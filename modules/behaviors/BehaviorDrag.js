@@ -1,9 +1,7 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { vecEqual, vecLength } from '@id-sdk/math';
-import { osmNode } from '../osm';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { utilRebind } from '../util';
+import { osmNode } from '../osm';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
@@ -33,9 +31,6 @@ export class BehaviorDrag extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'drag';
-
-    this._dispatch = d3_dispatch('start', 'move', 'end', 'cancel');
-    utilRebind(this, this._dispatch, 'on');
 
     this.dragTarget = null;   // the displayObject being dragged
     this.lastDown = null;
@@ -168,9 +163,9 @@ export class BehaviorDrag extends AbstractBehavior {
     if (this.dragTarget) {   // already dragging
       if (DEBUG) {
         const name = this.dragTarget.name;
-        console.log(`BehaviorDrag: dispatching 'move', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorDrag: emitting 'move', dragTarget = ${name}`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('move', this, move);
+      this.emit('move', move);
 
     } else {  // start dragging?
       const dist = vecLength(down.coord, move.coord);
@@ -183,9 +178,9 @@ export class BehaviorDrag extends AbstractBehavior {
 
         if (DEBUG) {
           const name = this.dragTarget.name;
-          console.log(`BehaviorDrag: dispatching 'start', dragTarget = ${name}`);  // eslint-disable-line no-console
+          console.log(`BehaviorDrag: emitting 'start', dragTarget = ${name}`);  // eslint-disable-line no-console
         }
-        this._dispatch.call('start', this, down);
+        this.emit('start', down);
       }
     }
   }
@@ -212,9 +207,9 @@ export class BehaviorDrag extends AbstractBehavior {
       this.dragTarget = null;
 
       if (DEBUG) {
-        console.log(`BehaviorDrag: dispatching 'end', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorDrag: emitting 'end', dragTarget = ${name}`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('end', this, up);
+      this.emit('end', up);
     }
   }
 
@@ -242,9 +237,9 @@ export class BehaviorDrag extends AbstractBehavior {
       this.dragTarget = null;
 
       if (DEBUG) {
-        console.log(`BehaviorDrag: dispatching 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorDrag: emitting 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('cancel', this, cancel);
+      this.emit('cancel', cancel);
     }
   }
 

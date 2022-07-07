@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
-import { select as d3_select } from 'd3-selection';
 import { Extent, geoMetersToOffset, geoOffsetToMeters} from '@id-sdk/math';
 import { utilQsString, utilStringQs } from '@id-sdk/util';
 import whichPolygon from 'which-polygon';
@@ -27,7 +26,6 @@ export function rendererBackground(context) {
   let _saturation = 1;
   let _sharpness = 1;
   var _numGridSplits = 0; // No grid by default.
-
 
 
   function ensureImageryIndex() {
@@ -141,7 +139,6 @@ export function rendererBackground(context) {
       base.style('opacity', _brightness);
     }
 
-
     let overlays = selection.selectAll('.layer-overlay')
       .data(_overlayLayers, d => d.name());
 
@@ -149,17 +146,17 @@ export function rendererBackground(context) {
       .remove();
   }
 
-  background.numGridSplits = function(_) {
-      if (!arguments.length) return _numGridSplits;
-      _numGridSplits = _;
-      dispatch.call('change');
-      return background;
+
+  background.numGridSplits = function(val) {
+    if (!arguments.length) return _numGridSplits;
+    _numGridSplits = val;
+    dispatch.call('change');
+    return background;
   };
 
 
-  background.initDragAndDrop = function (_) {
+  background.initDragAndDrop = function () {
     if (_initialized) return;  // run once
-
 
     function over(d3_event) {
       d3_event.stopPropagation();
@@ -186,7 +183,6 @@ export function rendererBackground(context) {
 
     _initialized = true;
   };
-
 
 
   background.updateImagery = function() {

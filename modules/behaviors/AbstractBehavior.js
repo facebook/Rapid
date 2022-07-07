@@ -1,3 +1,4 @@
+import { EventEmitter } from '@pixi/utils';
 
 /**
  * "Behaviors" are nothing more than bundles of event handlers that we can
@@ -9,13 +10,14 @@
  * Properties you can access:
  *   `enabled`     `true` if the event handlers are enabled, `false` if not.
  */
-export class AbstractBehavior {
+export class AbstractBehavior extends EventEmitter {
 
   /**
    * @constructor
    * @param  `context`   Global shared application context
    */
   constructor(context) {
+    super();
     this.context = context;
     this._enabled = false;
   }

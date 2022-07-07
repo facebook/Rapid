@@ -1,4 +1,3 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { vecEqual, vecLength } from '@id-sdk/math';
 
@@ -6,7 +5,7 @@ import { AbstractBehavior } from './AbstractBehavior';
 import { locationManager } from '../core/locations';
 import { osmEntity } from '../osm/entity';
 import { geoChooseEdge } from '../geo';
-import { utilKeybinding, utilRebind } from '../util';
+import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -42,9 +41,6 @@ export class BehaviorDraw extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'draw';
-
-    this._dispatch = d3_dispatch('down', 'move', 'downcancel', 'click', 'clickWay', 'clickNode', 'undo', 'cancel', 'finish');
-    utilRebind(this, this._dispatch, 'on');
 
     this._spaceClickDisabled = false;
     this.lastDown = null;
@@ -155,9 +151,9 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastDown = down;
 
     if (DEBUG) {
-      console.log(`BehaviorDraw: dispatching 'down'`);  // eslint-disable-line no-console
+      console.log(`BehaviorDraw: emitting 'down'`);  // eslint-disable-line no-console
     }
-    this._dispatch.call('down', this, down);
+    this.emit('down', down);
   }
 
 
@@ -190,16 +186,16 @@ export class BehaviorDraw extends AbstractBehavior {
         down.isCancelled = true;
 
         if (DEBUG) {
-          console.log(`BehaviorDraw: dispatching 'downcancel'`);  // eslint-disable-line no-console
+          console.log(`BehaviorDraw: emitting 'downcancel'`);  // eslint-disable-line no-console
         }
-        this._dispatch.call('downcancel', this, move);
+        this.emit('downcancel', move);
       }
     }
 
     if (DEBUG) {
-      console.log(`BehaviorDraw: dispatching 'move'`);  // eslint-disable-line no-console
+      console.log(`BehaviorDraw: emitting 'move'`);  // eslint-disable-line no-console
     }
-    this._dispatch.call('move', this, move);
+    this.emit('move', move);
   }
 
 
@@ -253,9 +249,9 @@ export class BehaviorDraw extends AbstractBehavior {
 
     if (down && !down.isCancelled) {
       if (DEBUG) {
-        console.log(`BehaviorDraw: dispatching 'downcancel'`);  // eslint-disable-line no-console
+        console.log(`BehaviorDraw: emitting 'downcancel'`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('downcancel', this, cancel);
+      this.emit('downcancel', cancel);
     }
 
     // Here we can throw away the down data to prepare for another `pointerdown`.
@@ -316,7 +312,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * Note this is not a true `click` event handler - we get into here from `_pointerup` or `_spacebar`.
    *
    * related code
-   * - `mode/drag_node.js`     `doMove()`
+   * - `mode/drag_node.js`      `doMove()`
    * - `behaviors/draw.js`      `click()`
    * - `behaviors/draw_way.js`  `move()`
    *
@@ -336,9 +332,9 @@ export class BehaviorDraw extends AbstractBehavior {
     // Snap to a node
     if (entity && entity.type === 'node') {
       if (DEBUG) {
-        console.log(`BehaviorDraw: dispatching 'clickNode', target = ${entity.id}`);  // eslint-disable-line no-console
+        console.log(`BehaviorDraw: emitting 'clickNode', target = ${entity.id}`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('clickNode', this, entity.loc, entity);
+      this.emit('clickNode', entity.loc, entity);
       return;
     }
 
@@ -352,18 +348,18 @@ export class BehaviorDraw extends AbstractBehavior {
       if (choice) {
         const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
         if (DEBUG) {
-          console.log(`BehaviorDraw: dispatching 'clickWay', target = ${entity.id}`);  // eslint-disable-line no-console
+          console.log(`BehaviorDraw: emitting 'clickWay', target = ${entity.id}`);  // eslint-disable-line no-console
         }
-        this._dispatch.call('clickWay', this, choice.loc, edge);
+        this.emit('clickWay', choice.loc, edge);
         return;
       }
     }
 
     // Just a click on the map
     if (DEBUG) {
-      console.log(`BehaviorDraw: dispatching 'click'`);  // eslint-disable-line no-console
+      console.log(`BehaviorDraw: emitting 'click'`);  // eslint-disable-line no-console
     }
-    this._dispatch.call('click', this, loc);
+    this.emit('click', loc);
   }
 
 
@@ -374,9 +370,9 @@ export class BehaviorDraw extends AbstractBehavior {
   _backspace(e) {
     e.preventDefault();
     if (DEBUG) {
-      console.log(`BehaviorDraw: dispatching 'undo'`);  // eslint-disable-line no-console
+      console.log(`BehaviorDraw: emitting 'undo'`);  // eslint-disable-line no-console
     }
-    this._dispatch.call('undo');
+    this.emit('undo');
   }
 
 
@@ -387,9 +383,9 @@ export class BehaviorDraw extends AbstractBehavior {
   _delete(e) {
     e.preventDefault();
     if (DEBUG) {
-      console.log(`BehaviorDraw: dispatching 'cancel'`);  // eslint-disable-line no-console
+      console.log(`BehaviorDraw: emitting 'cancel'`);  // eslint-disable-line no-console
     }
-    this._dispatch.call('cancel');
+    this.emit('cancel');
   }
 
 
@@ -400,9 +396,9 @@ export class BehaviorDraw extends AbstractBehavior {
   _return(e) {
     e.preventDefault();
     if (DEBUG) {
-      console.log(`BehaviorDraw: dispatching 'finish'`);  // eslint-disable-line no-console
+      console.log(`BehaviorDraw: emitting 'finish'`);  // eslint-disable-line no-console
     }
-    this._dispatch.call('finish');
+    this.emit('finish');
   }
 
 }

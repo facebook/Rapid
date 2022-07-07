@@ -1,8 +1,6 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { vecEqual } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { utilRebind } from '../util';
 
 const DEBUG = false;
 
@@ -27,9 +25,6 @@ export class BehaviorHover extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'hover';
-
-    this._dispatch = d3_dispatch('hoverchanged');
-    utilRebind(this, this._dispatch, 'on');
 
     this.lastMove = null;
     this.hoverTarget = null;
@@ -113,9 +108,9 @@ export class BehaviorHover extends AbstractBehavior {
 
       if (DEBUG) {
         const name = (move.target && move.target.name) || 'no target';
-        console.log(`BehaviorHover: dispatching 'hoverchanged', hoverTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorHover: emitting 'hoverchanged', hoverTarget = ${name}`);  // eslint-disable-line no-console
       }
-      this._dispatch.call('hoverchanged', this, move);
+      this.emit('hoverchanged', move);
 
 
 // vvv---- everything below here should be listening instead
