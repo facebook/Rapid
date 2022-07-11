@@ -116,8 +116,17 @@ export class PixiRenderer {
     // const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
-    // First, clear out any pending DRAW of current frame.
-    // This is so that a pending APP does not sneak in front of DRAW in a race condition.
+    // For now, we will perform either APP (RapiD prepares scene graph) or DRAW (Pixi render) during a tick.
+    // The ticker is configured to run at 30fps to allow time for other work to happen on the main thread.
+    // But the browser will still fire events like pointer/wheel faster than that, and other code
+    // that runs on requestAnimationFrame will happen faster than that too (e.g. d3-zoom, for now)
+    // GPU work will happen in its own thread, and we don't have direct insight into its timing.
+    // For reference:
+    //   16.7ms = 60fps
+    //   33.3ms = 30fps
+
+    // Process a pending DRAW before a pending APP.
+    // This is so pending APP does not sneak in front of DRAW causing a race condition.
     if (this._drawPending) {
       const frame = this._frame;
       const drawStart = `draw-${frame}-start`;
@@ -132,8 +141,6 @@ export class PixiRenderer {
       const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
       const duration = measure.duration.toFixed(1);
       // console.log(`draw-${frame} : ${duration} ms`);
-
-      // Always take a break after DRAW to give the GPU a chance to work.
       return;
     }
 
@@ -152,30 +159,6 @@ export class PixiRenderer {
       const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
       const duration = measure.duration.toFixed(1);
       // console.log(`app-${frame} : ${duration} ms`);
-
-      // A 60fps frame is 16.6ms, so take a break if APP took >10ms.
-      // A browser animation frame may be coming soon, and we'd like
-      // to avoid the browser dropping the frame if we can help it
-      if (duration > 10) return;
-    }
-
-    // Do DRAW right now if we time for it..
-    if (this._drawPending) {
-      const frame = this._frame;
-      const drawStart = `draw-${frame}-start`;
-      const drawEnd = `draw-${frame}-end`;
-      const m1 = window.performance.mark(drawStart);
-      const timestamp = m1.startTime;
-
-      this.draw(timestamp);  // note that DRAW increments the frame counter
-
-      const m2 = window.performance.mark(drawEnd);
-      window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
-      const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
-      const duration = measure.duration.toFixed(1);
-      // console.log(`draw-${frame} : ${duration} ms`);
-
-      // Always take a break after DRAW to give the GPU a chance to work.
       return;
     }
 
