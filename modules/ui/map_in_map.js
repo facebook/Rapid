@@ -12,26 +12,26 @@ import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles';
 export function uiMapInMap(context) {
 
   function mapInMap(selection) {
-    var projection = new Projection();
-    var zoom = d3_zoom()
+    let projection = new Projection();
+    let zoom = d3_zoom()
       .scaleExtent([geoZoomToScale(0.5), geoZoomToScale(24)])
       .on('start', zoomStarted)
       .on('zoom', zoomed)
       .on('end', zoomEnded);
 
-    var wrap = d3_select(null);
-    var canvas = d3_select(null);
-    var miniMapTileLayer = null;
+    let wrap = d3_select(null);
+    let canvas = d3_select(null);
+    let miniMapTileLayer = null;
 
-    var _isTransformed = false;
-    var _isHidden = true;
-    var _skipEvents = false;
-    var _gesture = null;
-    var _zDiff = 6; // by default, minimap renders at (main zoom - 6)
-    var _dMini; // dimensions of minimap
-    var _cMini; // center pixel of minimap
-    var _tStart; // transform at start of gesture
-    var _tCurr; // transform at most recent event
+    let _isTransformed = false;
+    let _isHidden = true;
+    let _skipEvents = false;
+    let _gesture = null;
+    let _zDiff = 6;  // by default, minimap renders at (main zoom - 6)
+    let _dMini;      // dimensions of minimap
+    let _cMini;      // center pixel of minimap
+    let _tStart;     // transform at start of gesture
+    let _tCurr;      // transform at most recent event
 
 
     function zoomStarted() {
@@ -44,23 +44,21 @@ export function uiMapInMap(context) {
     function zoomed(d3_event) {
       if (_skipEvents) return;
 
-      var x = d3_event.transform.x;
-      var y = d3_event.transform.y;
-      var k = d3_event.transform.k;
-      var isZooming = k !== _tStart.k;
-      var isPanning = x !== _tStart.x || y !== _tStart.y;
+      let x = d3_event.transform.x;
+      let y = d3_event.transform.y;
+      let k = d3_event.transform.k;
+      const isZooming = (k !== _tStart.k);
+      const isPanning = (x !== _tStart.x || y !== _tStart.y);
 
-      if (!isZooming && !isPanning) {
-        return; // no change
-      }
+      if (!isZooming && !isPanning) return;   // no change
 
       // lock in either zooming or panning, don't allow both in minimap.
       if (!_gesture) {
         _gesture = isZooming ? 'zoom' : 'pan';
       }
 
-      var tMini = projection.transform();
-      var tX, tY, scale;
+      const tMini = projection.transform();
+      let tX, tY, scale;
 
       if (_gesture === 'zoom') {
         scale = k / tMini.k;
@@ -82,8 +80,8 @@ export function uiMapInMap(context) {
       _isTransformed = true;
       _tCurr = d3_zoomIdentity.translate(x, y).scale(k);
 
-      var zMain = geoScaleToZoom(context.projection.scale());
-      var zMini = geoScaleToZoom(k);
+      const zMain = geoScaleToZoom(context.projection.scale());
+      const zMini = geoScaleToZoom(k);
 
       _zDiff = zMain - zMini;
 
@@ -102,28 +100,25 @@ export function uiMapInMap(context) {
 
 
     function updateprojection() {
-      var loc = context.map().center();
-      var tMain = context.projection.transform();
-      var zMain = geoScaleToZoom(tMain.k);
-      var zMini = Math.max(zMain - _zDiff, 0.5);
-      var kMini = geoZoomToScale(zMini);
+      const loc = context.map().center();
+      const tMain = context.projection.transform();
+      const zMain = geoScaleToZoom(tMain.k);
+      const zMini = Math.max(zMain - _zDiff, 0.5);
+      const kMini = geoZoomToScale(zMini);
 
       projection.translate([tMain.x, tMain.y]).scale(kMini);
 
-      var point = projection.project(loc);
-      var mouse =
-        _gesture === 'pan'
-          ? vecSubtract([_tCurr.x, _tCurr.y], [_tStart.x, _tStart.y])
-          : [0, 0];
-      var xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
-      var yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
+      const point = projection.project(loc);
+      const mouse = (_gesture === 'pan') ? vecSubtract([_tCurr.x, _tCurr.y], [_tStart.x, _tStart.y]) : [0, 0];
+      const xMini = _cMini[0] - point[0] + tMain.x + mouse[0];
+      const yMini = _cMini[1] - point[1] + tMain.y + mouse[1];
 
       projection.translate([xMini, yMini]).dimensions([[0, 0], _dMini]);
 
       _tCurr = projection.transform();
 
       if (_isTransformed) {
-        let tileContainer = miniMapTileLayer.container;
+        const tileContainer = miniMapTileLayer.container;
         tileContainer.position.x = 0;
         tileContainer.position.y = 0;
 
@@ -152,14 +147,13 @@ export function uiMapInMap(context) {
      * inside the 'bbox' container. If there is no 'bbox' container on the minimap stage, it will create one.
      */
     function drawBoundingBox() {
-      var bbox = context.map().extent().bbox();
-
+      const bbox = context.map().extent().bbox();
       const topLeftPoint = projection.project([bbox.minX, bbox.maxY]);
       const bottomRightPoint = projection.project([bbox.maxX, bbox.minY]);
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
       const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
 
-      let container = context.minipixi.stage;
+      const container = context.minipixi.stage;
       container.name = 'minimap-stage';
 
       const bboxContainer = container.getChildByName('bbox');
@@ -175,6 +169,7 @@ export function uiMapInMap(context) {
           .clear()
           .lineStyle(2, 0x00ffff)
           .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
+
         bboxContainer.addChild(bboxGraphic);
 
       } else {
@@ -206,9 +201,7 @@ export function uiMapInMap(context) {
           .transition()
           .duration(200)
           .style('opacity', '0')
-          .on('end', function () {
-            selection.selectAll('.map-in-map').style('display', 'none');
-          });
+          .on('end', () => selection.selectAll('.map-in-map').style('display', 'none'));
       } else {
         wrap
           .style('display', 'block')
@@ -216,9 +209,7 @@ export function uiMapInMap(context) {
           .transition()
           .duration(200)
           .style('opacity', '1')
-          .on('end', function () {
-            redraw();
-          });
+          .on('end', ()  => redraw());
       }
     }
 
@@ -238,8 +229,8 @@ export function uiMapInMap(context) {
     this.minipixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
-      autoStart: true, // don't start the ticker yet
-      backgroundAlpha: 0.0, // transparent
+      autoStart: true,        // don't start the ticker yet
+      backgroundAlpha: 0.0,   // transparent
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
@@ -257,8 +248,10 @@ export function uiMapInMap(context) {
 
     miniMapTileLayer = new PixiLayerBackgroundTiles(this.context, miniMapScene, 1, true);  // isMinimap = true
 
-    this.minipixi.ticker.add((timestamp) => {
+    this.minipixi.ticker.add(timestamp => {
+      window.performance.mark('minimap-start');
       miniMapTileLayer.render(timestamp, projection, 10);
+      window.performance.mark('minimap-end');
     });
 
     // reflow warning: Hardcode dimensions - currently can't resize it anyway..
