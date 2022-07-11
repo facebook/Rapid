@@ -1,5 +1,13 @@
 import * as PIXI from 'pixi.js';
+import { GlowFilter } from '@pixi/filter-glow';
 import { Extent } from '@id-sdk/math';
+
+const SELECTGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
+SELECTGLOW.resolution = 2;
+
+const HOVERGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+HOVERGLOW.resolution = 2;
+
 
 
 /**
@@ -25,8 +33,9 @@ import { Extent } from '@id-sdk/math';
  *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the feature
  *   `sceneBounds`    PIXI.Rectangle() where 0,0 is the origin of the scane
  */
-export class AbstractFeature {
 
+
+export class AbstractFeature {
   /**
    * @constructor
    * @param  context  Global shared application context
@@ -124,6 +133,14 @@ export class AbstractFeature {
    * Override in a subclass with needed logic.
    */
   updateHalo() {
+    let filters = [];
+    if (this._hovered) {
+      filters.push(HOVERGLOW);
+    }
+    if (this._selected) {
+      filters.push(SELECTGLOW);
+    }
+    this.container.filters = filters;
   }
 
 
@@ -133,6 +150,7 @@ export class AbstractFeature {
   get id() {
     return this.container.name;
   }
+
 
   /**
    * visible

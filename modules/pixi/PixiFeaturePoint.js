@@ -264,6 +264,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 // experiment
 // Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
+    super.updateHalo();
     if (this.hovered || this.selected) {
       const HALO_COLOR = 0xffff00;
       const HALO_DASH = [6, 3];

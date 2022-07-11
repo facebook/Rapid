@@ -1,5 +1,4 @@
 import RBush from 'rbush';
-import { GlowFilter } from '@pixi/filter-glow';
 
 /**
  * PixiScene
@@ -31,15 +30,6 @@ export class PixiScene {
 
     this.hovered = new Set();      // Set of hovered featureIDs
     this.hoverTick = 0;
-
-
-// this stuff likely belongs elsewhere
-const selectglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
-selectglow.resolution = 2;
-this.selectglow = selectglow;
-const hoverglow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
-hoverglow.resolution = 2;
-this.hoverglow = hoverglow;
   }
 
 
@@ -154,7 +144,6 @@ this.hoverglow = hoverglow;
 
       this.selected.delete(featureID);
       feature.selected = false;
-feature.container.filters = [];  // belongs with the feature, not here
       didChange = true;
     }
 
@@ -166,7 +155,6 @@ feature.container.filters = [];  // belongs with the feature, not here
 
       this.selected.add(featureID);
       feature.selected = true;
-feature.container.filters = [this.selectglow];  // belongs with the feature, not here
       didChange = true;
     }
 
@@ -195,7 +183,6 @@ feature.container.filters = [this.selectglow];  // belongs with the feature, not
 
       this.hovered.delete(featureID);
       feature.hovered = false;
-feature.container.filters = [];  // belongs with the feature, not here
       didChange = true;
     }
 
@@ -207,7 +194,6 @@ feature.container.filters = [];  // belongs with the feature, not here
 
       this.hovered.add(featureID);
       feature.hovered = true;
-feature.container.filters = [this.hoverglow];  // belongs with the feature, not here
       didChange = true;
     }
 

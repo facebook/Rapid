@@ -60,8 +60,6 @@ export class PixiRenderer {
     context.pixi = this.pixi;
     parentElement.appendChild(this.pixi.view);
 
-    // Prepare textures
-    this.textures = new PixiTextures(context);
 
     // Prepare a basic bitmap font that we can use for things like debug messages
     PIXI.BitmapFont.from('debug', {
@@ -92,14 +90,17 @@ export class PixiRenderer {
     const interactionManager = this.pixi.renderer.plugins.interaction;
     interactionManager.useSystemTicker = true;
 
+    // Setup the stage
     const stage = this.pixi.stage;
     stage.name = 'stage';
     stage.sortableChildren = true;
     stage.interactive = true;
-    // Add a big hit area to `stage` so that clicks on nothing will register
+    // Add a big hit area to `stage` so that clicks on nothing will generate events
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
 
+    // Setup other classes
     this.pixiProjection = new Projection();
+    this.textures = new PixiTextures(context);
     this.scene = new PixiScene(context);
     this.layers = new PixiLayers(context, this.scene);
   }

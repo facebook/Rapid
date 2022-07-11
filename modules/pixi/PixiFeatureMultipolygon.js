@@ -373,6 +373,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 // experiment
 // Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
   updateHalo() {
+    super.updateHalo();
     if (this.ssrdata && (this.hovered || this.selected)) {
       const HALO_COLOR = 0xffff00;
       const HALO_DASH = [6, 3];

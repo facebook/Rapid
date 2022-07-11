@@ -111,7 +111,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
     if (!service) return;
 
     const images = service.images(context.projection);
-    const sequences = service. sequences(context.projection);
+    const sequences = service.sequences(context.projection);
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
