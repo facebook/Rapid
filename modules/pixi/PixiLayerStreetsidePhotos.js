@@ -143,7 +143,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);
-        if (d.ca) {
+        if (Number.isFinite(d.ca)) {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
         feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);

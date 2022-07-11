@@ -146,7 +146,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);
-        if (d.ca) {
+        if (Number.isFinite(d.ca)) {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
 
