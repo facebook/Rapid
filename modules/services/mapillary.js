@@ -208,25 +208,25 @@ function loadData(url) {
 }
 
 
-// Partition viewport into higher zoom tiles
-function partitionViewport(projection) {
-    const z = geoScaleToZoom(projection.scale());
-    const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-    const tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
-    return tiles.map(tile => tile.wgs84Extent);
-}
-
-
-// Return no more than `limit` results per partition.
-function searchLimited(limit, projection, rtree) {
-    limit = limit || 5;
-
-    return partitionViewport(projection)
-        .reduce(function(result, extent) {
-            const found = rtree.search(extent.bbox()).slice(0, limit).map(d => d.data);
-            return (found.length ? result.concat(found) : result);
-        }, []);
-}
+// // Partition viewport into higher zoom tiles
+// function partitionViewport(projection) {
+//     const z = geoScaleToZoom(projection.scale());
+//     const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
+//     const tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
+//     return tiles.map(tile => tile.wgs84Extent);
+// }
+//
+//
+// // Return no more than `limit` results per partition.
+// function searchLimited(limit, projection, rtree) {
+//     limit = limit || 5;
+//
+//     return partitionViewport(projection)
+//         .reduce(function(result, extent) {
+//             const found = rtree.search(extent.bbox()).slice(0, limit).map(d => d.data);
+//             return (found.length ? result.concat(found) : result);
+//         }, []);
+// }
 
 
 export default {
@@ -259,20 +259,35 @@ export default {
 
     // Get visible images
     images: function(projection) {
-        const limit = 5;
-        return searchLimited(limit, projection, _mlyCache.images.rtree);
+        // const limit = 5;
+        // return searchLimited(limit, projection, _mlyCache.images.rtree);
+        const viewport = projection.dimensions();
+        const min = [viewport[0][0], viewport[1][1]];
+        const max = [viewport[1][0], viewport[0][1]];
+        const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
+        return _mlyCache.images.rtree.search(box).map(d => d.data);
     },
 
     // Get visible traffic signs
     signs: function(projection) {
-        const limit = 5;
-        return searchLimited(limit, projection, _mlyCache.signs.rtree);
+        // const limit = 5;
+        // return searchLimited(limit, projection, _mlyCache.signs.rtree);
+        const viewport = projection.dimensions();
+        const min = [viewport[0][0], viewport[1][1]];
+        const max = [viewport[1][0], viewport[0][1]];
+        const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
+        return _mlyCache.signs.rtree.search(box).map(d => d.data);
     },
 
     // Get visible map (point) features
     mapFeatures: function(projection) {
-        const limit = 5;
-        return searchLimited(limit, projection, _mlyCache.points.rtree);
+        // const limit = 5;
+        // return searchLimited(limit, projection, _mlyCache.points.rtree);
+        const viewport = projection.dimensions();
+        const min = [viewport[0][0], viewport[1][1]];
+        const max = [viewport[1][0], viewport[0][1]];
+        const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
+        return _mlyCache.points.rtree.search(box).map(d => d.data);
     },
 
     // Get cached image by id

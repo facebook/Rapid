@@ -146,29 +146,29 @@ function loadNextTilePage(which, currZoom, url, tile) {
 }
 
 
-// partition viewport into higher zoom tiles
-function partitionViewport(projection) {
-    var z = geoScaleToZoom(projection.scale());
-    var z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-
-    var tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
-    return tiles.map(function(tile) { return tile.wgs84Extent; });
-}
-
-
-// no more than `limit` results per partition.
-function searchLimited(limit, projection, rtree) {
-    limit = limit || 5;
-
-    return partitionViewport(projection)
-        .reduce(function(result, extent) {
-            var found = rtree.search(extent.bbox())
-                .slice(0, limit)
-                .map(function(d) { return d.data; });
-
-            return (found.length ? result.concat(found) : result);
-        }, []);
-}
+// // partition viewport into higher zoom tiles
+// function partitionViewport(projection) {
+//     var z = geoScaleToZoom(projection.scale());
+//     var z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
+//
+//     var tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
+//     return tiles.map(function(tile) { return tile.wgs84Extent; });
+// }
+//
+//
+// // no more than `limit` results per partition.
+// function searchLimited(limit, projection, rtree) {
+//     limit = limit || 5;
+//
+//     return partitionViewport(projection)
+//         .reduce(function(result, extent) {
+//             var found = rtree.search(extent.bbox())
+//                 .slice(0, limit)
+//                 .map(function(d) { return d.data; });
+//
+//             return (found.length ? result.concat(found) : result);
+//         }, []);
+// }
 
 
 export default {
@@ -196,8 +196,13 @@ export default {
 
 
     images: function(projection) {
-        var limit = 5;
-        return searchLimited(limit, projection, _oscCache.images.rtree);
+        // var limit = 5;
+        // return searchLimited(limit, projection, _oscCache.images.rtree);
+        const viewport = projection.dimensions();
+        const min = [viewport[0][0], viewport[1][1]];
+        const max = [viewport[1][0], viewport[0][1]];
+        const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
+        return _oscCache.images.rtree.search(box).map(d => d.data);
     },
 
 
