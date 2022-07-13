@@ -155,6 +155,10 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
             const q2 = [(ssr.poly[1][0] + ssr.poly[2][0]) / 2, (ssr.poly[1][1] + ssr.poly[2][1]) / 2 ];
             const axis1 = [p1, q1];
             const axis2 = [p2, q2];
+
+// TODO:  The centroid of the SSR is NOT the centroid of the shape.
+// We need to use d3-polygon's centroid (same as used in circularize or rotation code)
+// not just average the SSR points.
             const centroid = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
 
             // Pick an appropriate lowRes sprite for this shape

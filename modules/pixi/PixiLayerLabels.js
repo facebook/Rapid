@@ -691,13 +691,13 @@ export class PixiLayerLabels extends AbstractLayer {
       // Here we will scale the points down to the desired label width.
       const angle = vecAngle(coords[0], coords[coords.length-1]);
       const sum = coords.reduce((acc, coord) => vecAdd(acc, coord), [0,0]);
-      const centroid = vecScale(sum, 1 / coords.length);   // aka "average" the points
+      const origin = vecScale(sum, 1 / coords.length);  // pick local origin as the average of the points
 
-      coords = coords.map(coord => vecSubtract(coord, centroid));  // to local coords
-      coords = geomRotatePoints(coords, -angle, [0,0]);            // rotate to x axis
-      coords = coords.map(([x,y]) => [x * scaleX, y]);             // apply `scaleX`
-      coords = geomRotatePoints(coords, angle, [0,0]);             // rotate back
-      coords = coords.map(coord => vecAdd(coord, centroid));       // back to scene coords
+      coords = coords.map(coord => vecSubtract(coord, origin));  // to local coords
+      coords = geomRotatePoints(coords, -angle, [0,0]);          // rotate to x axis
+      coords = coords.map(([x,y]) => [x * scaleX, y]);           // apply `scaleX`
+      coords = geomRotatePoints(coords, angle, [0,0]);           // rotate back
+      coords = coords.map(coord => vecAdd(coord, origin));       // back to scene coords
 
       const label = new Label(labelID, 'rope', {
         coords: coords,
