@@ -6,71 +6,70 @@ import { services } from '../../services';
 
 
 export function uiPanelLocation(context) {
-    var currLocation = '';
+  let _currLocation = '';
+
+  const debouncedGetLocation = _debounce(getLocation, 250);
 
 
-    function redraw(selection) {
-        selection.html('');
+  function getLocation(selection, coord) {
+    if (!services.geocoder) {
+      _currLocation = t('info_panels.location.unknown_location');
+      selection.selectAll('.location-info')
+        .html(_currLocation);
+    } else {
+      services.geocoder.reverse(coord, (err, result) => {
+        _currLocation = result ? result.display_name : t('info_panels.location.unknown_location');
+        selection.selectAll('.location-info')
+          .html(_currLocation);
+      });
+    }
+  }
 
-        var list = selection
-            .append('ul');
 
-        // Mouse coordinates
-        var coord = context.map().mouseCoordinates();
-        if (coord.some(isNaN)) {
-            coord = context.map().center();
-        }
+  function redraw(selection) {
+    selection.html('');
 
-        list
-            .append('li')
-            .html(dmsCoordinatePair(coord))
-            .append('li')
-            .html(decimalCoordinatePair(coord));
+    let list = selection
+      .append('ul');
 
-        // Location Info
-        selection
-            .append('div')
-            .attr('class', 'location-info')
-            .html(currLocation || ' ');
-
-        debouncedGetLocation(selection, coord);
+    // Mouse coordinates
+    let coord = context.map().mouseCoordinates();
+    if (coord.some(isNaN)) {
+      coord = context.map().center();
     }
 
+    list
+      .append('li')
+      .html(dmsCoordinatePair(coord))
+      .append('li')
+      .html(decimalCoordinatePair(coord));
 
-    var debouncedGetLocation = _debounce(getLocation, 250);
-    function getLocation(selection, coord) {
-        if (!services.geocoder) {
-            currLocation = t('info_panels.location.unknown_location');
-            selection.selectAll('.location-info')
-                .html(currLocation);
-        } else {
-            services.geocoder.reverse(coord, function(err, result) {
-                currLocation = result ? result.display_name : t('info_panels.location.unknown_location');
-                selection.selectAll('.location-info')
-                    .html(currLocation);
-            });
-        }
-    }
+    // Location Info
+    selection
+      .append('div')
+      .attr('class', 'location-info')
+      .html(_currLocation || ' ');
 
-
-    var panel = function(selection) {
-        selection.call(redraw);
-
-        context.surface()
-            .on(('PointerEvent' in window ? 'pointer' : 'mouse') + 'move.info-location', function() {
-                selection.call(redraw);
-            });
-    };
-
-    panel.off = function() {
-        context.surface()
-            .on('.info-location', null);
-    };
-
-    panel.id = 'location';
-    panel.label = t.html('info_panels.location.title');
-    panel.key = t('info_panels.location.key');
+    debouncedGetLocation(selection, coord);
+  }
 
 
-    return panel;
+  let panel = function(selection) {
+    selection.call(redraw);
+
+    context.surface()
+      .on('pointermove.info-location', () => selection.call(redraw));
+  };
+
+  panel.off = function() {
+    debouncedGetLocation.cancel();
+    context.surface().on('pointermove.info-location', null);
+  };
+
+  panel.id = 'location';
+  panel.label = t.html('info_panels.location.title');
+  panel.key = t('info_panels.location.key');
+
+
+  return panel;
 }
