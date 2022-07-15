@@ -27,8 +27,13 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._currSourceID = null;
     this._metadata = {};
 
-    this._deferredRender = _debounce(() => this.render(), 250);
-    this._deferredUpdateMetadata = _debounce(() => this.updateMetadata(), 250);
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.render = this.render.bind(this);
+    this.updateMetadata = this.updateMetadata.bind(this);
+
+    this._deferredRender = _debounce(this.render, 250);
+    this._deferredUpdateMetadata = _debounce(this.updateMetadata, 250);
   }
 
 
@@ -47,8 +52,6 @@ export class UiPanelBackground extends AbstractUiPanel {
     this.context.map()
       .on('drawn.info-background', this._deferredRender)
       .on('move.info-background', this._deferredUpdateMetadata);
-
-    this.render();
   }
 
 

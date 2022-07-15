@@ -1,4 +1,4 @@
 export * from './UiPanelBackground';
-export * from './history';
-export * from './location';
-export * from './measurement';
+export * from './UiPanelHistory';
+export * from './UiPanelLocation';
+export * from './UiPanelMeasurement';

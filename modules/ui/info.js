@@ -5,9 +5,9 @@ import { svgIcon } from '../svg/icon';
 import { uiCmd } from './cmd';
 
 import { UiPanelBackground } from './panels/UiPanelBackground';
-import { uiPanelHistory } from './panels/history';
-import { uiPanelLocation } from './panels/location';
-import { uiPanelMeasurement } from './panels/measurement';
+import { UiPanelHistory } from './panels/UiPanelHistory';
+import { UiPanelLocation } from './panels/UiPanelLocation';
+import { UiPanelMeasurement } from './panels/UiPanelMeasurement';
 
 
 /**
@@ -19,9 +19,9 @@ import { uiPanelMeasurement } from './panels/measurement';
 export function uiInfo(context) {
   const panels = {
     background:   new UiPanelBackground(context),
-    history:      uiPanelHistory(context),
-    location:     uiPanelLocation(context),
-    measurement:  uiPanelMeasurement(context)
+    history:      new UiPanelHistory(context),
+    location:     new UiPanelLocation(context),
+    measurement:  new UiPanelMeasurement(context)
   };
 
   const panelIDs = Object.keys(panels);
@@ -43,14 +43,8 @@ export function uiInfo(context) {
         .style('opacity', 0)
         .on('end', (d, i, nodes) => {
           const selection = d3_select(nodes[i]);
-          if (d === 'background') {
-            panels[d].disable();
-            selection.remove();  // empty DOM
-          } else {
-            selection
-              .call(panels[d].off)
-              .remove();
-          }
+          panels[d].disable();
+          selection.remove();  // empty DOM
         });
 
       let panelEnter = panelContainer.enter()
@@ -85,23 +79,14 @@ export function uiInfo(context) {
         .append('div')
         .attr('class', d => `panel-content panel-content-${d}`)
         .each((d, i, nodes) => {
-          if (d === 'background') {
-            const selection = d3_select(nodes[i]);
-            panels[d].enable(selection);
-          }
+          const selection = d3_select(nodes[i]);
+          panels[d].enable(selection);
         });
 
 
       // Render each panel's content
       infoPanels.selectAll('.panel-content')
-        .each((d, i, nodes) => {
-          if (d === 'background') {
-            panels[d].render();
-          } else {
-            const selection = d3_select(nodes[i]);
-            selection.call(panels[d]);
-          }
-        });
+        .each(d => panels[d].render());
     }
 
 
