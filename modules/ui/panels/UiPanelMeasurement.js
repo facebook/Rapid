@@ -1,12 +1,15 @@
 import { select as d3_select } from 'd3-selection';
-import { geoLength as d3_geoLength, geoPath as d3_geoPath } from 'd3-geo';
+import {
+  geoLength as d3_geoLength,
+  geoCentroid as d3_geoCentroid
+} from 'd3-geo';
 import { Extent, geoSphericalDistance } from '@id-sdk/math';
 import { utilGetAllNodes } from '@id-sdk/util';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 import { t, localizer } from '../../core/localizer';
+import { osmNote, osmEntity } from '../../osm';
 import { displayArea, displayLength, decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
-import { services } from '../../services';
 
 
 // using WGS84 authalic radius (6371007.1809 m)
@@ -20,7 +23,7 @@ function steradiansToSqmeters(r) {
 }
 
 
-function toLineString(feature) {
+function asLineString(feature) {
   if (feature.type === 'LineString') return feature;
 
   const result = { type: 'LineString', coordinates: [] };
@@ -99,13 +102,10 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     const selection = this._selection;
     const context = this.context;
     const graph = context.graph();
-    const osm = services.osm;
     const localeCode = localizer.localeCode();
 
     // Empty out the DOM content and rebuild from scratch..
     selection.html('');
-
-//    let selectedNoteID = context.selectedNoteID();
 
     let heading;
     let center, location, centroid;
@@ -115,65 +115,71 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     let area = 0;
     let distance;
 
-// select only OSM entities for now
+    const selectedIDs = context.selectedIDs();
+    const selectedData = context.selectedData();
+    const [selectedItem] = selectedData.values();  // first item
 
-//    if (selectedNoteID && osm) {       // selected 1 note
-//      let note = osm.getNote(selectedNoteID);
-//      heading = t('note.note') + ' ' + selectedNoteID;
-//      location = note.loc;
-//      geometry = 'note';
-//
-//    } else {    // selected 1..n entities
+    if (selectedData.size === 1 && (selectedItem instanceof osmNote)) {   // selected 1 OSM Note
+      const note = selectedItem;
+      heading = t('note.note') + ' ' + note.id;
+      location = note.loc;
+      geometry = 'note';
 
-    let selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
-    let selected = selectedIDs.map(id => context.entity(id));
+    } else {  // selected 0…n OSM Entities
+      const selected = selectedIDs.map(id => context.hasEntity(id)).filter(Boolean);
 
-    heading = selected.length === 1 ? selected[0].id : t('info_panels.selected', { n: selected.length });
+      if (selected.length === 1) {
+        heading = selected[0].id;
+      } else {
+        heading = t('info_panels.selected', { n: selected.length });
+      }
 
-    if (selected.length) {
-      let extent = new Extent();
-      for (let i in selected) {
-        let entity = selected[i];
-        extent = extent.extend(entity.extent(graph));
-        geometry = entity.geometry(graph);
+      if (selected.length > 0) {    // 1…n
+        let allExtent = new Extent();
 
-        if (geometry === 'line' || geometry === 'area') {
-          closed = (entity.type === 'relation') || (entity.isClosed() && !entity.isDegenerate());
-          let feature = entity.asGeoJSON(graph);
-          length += radiansToMeters(d3_geoLength(toLineString(feature)));
-// there are bugs in here
-          centroid = d3_geoPath(context.projection).centroid(entity.asGeoJSON(graph));
-          centroid = centroid && context.projection.invert(centroid);
-          if (!centroid  || !isFinite(centroid[0]) || !isFinite(centroid[1])) {
-            centroid = entity.extent(graph).center();
+        selected.forEach(entity => {
+          let extent = entity.extent(graph);
+          let geojson = entity.asGeoJSON(graph);
+          allExtent = allExtent.extend(extent);
+
+          geometry = entity.geometry(graph);
+          if (geometry === 'line' || geometry === 'area') {
+            closed = (entity.type === 'relation') || (entity.isClosed() && !entity.isDegenerate());
+
+            length += radiansToMeters(d3_geoLength(asLineString(geojson)));
+
+            centroid = d3_geoCentroid(geojson);
+            if (!centroid  || !isFinite(centroid[0]) || !isFinite(centroid[1])) {
+              centroid = extent.center();
+            }
+
+            if (closed) {
+              area += steradiansToSqmeters(entity.area(graph));
+            }
           }
-          if (closed) {
-            area += steradiansToSqmeters(entity.area(graph));
-          }
+        });
+
+        if (selected.length > 1) {  // 2…n
+          geometry = null;
+          closed = null;
+          centroid = null;
+        }
+
+        if (selected.length === 2 && selected[0].type === 'node' && selected[1].type === 'node') {
+          distance = geoSphericalDistance(selected[0].loc, selected[1].loc);
+        }
+
+        if (selected.length === 1 && selected[0].type === 'node') {
+          location = selected[0].loc;
+        } else {
+          totalNodeCount = utilGetAllNodes(selectedIDs, context.graph()).length;
+        }
+
+        if (!location && !centroid) {
+          center = allExtent.center();
         }
       }
-
-      if (selected.length > 1) {
-        geometry = null;
-        closed = null;
-        centroid = null;
-      }
-
-      if (selected.length === 2 && selected[0].type === 'node' && selected[1].type === 'node') {
-        distance = geoSphericalDistance(selected[0].loc, selected[1].loc);
-      }
-
-      if (selected.length === 1 && selected[0].type === 'node') {
-        location = selected[0].loc;
-      } else {
-        totalNodeCount = utilGetAllNodes(selectedIDs, context.graph()).length;
-      }
-
-      if (!location && !centroid) {
-        center = extent.center();
-      }
     }
-//    }
 
 
     if (heading) {
