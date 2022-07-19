@@ -19,57 +19,81 @@ export {
 export function coreLocalizer() {
 
   let localizer = {};
-  let _knownLanguages = {};
 
-  // `_supportedLocales` is an object containing all _supported_ locale codes -> language info.
+  // `_supportedLanguages`
+  // All known language codes and their local name. This is used for the language pickers.
+  // {
+  //   "ar": { "nativeName": "العربية" },
+  //   "de": { "nativeName": "Deutsch" },
+  //   "en": { "nativeName": "English" },
+  //   …
+  // }
+  let _supportedLanguages = {};
+
+  // `_supportedLocales`
+  // All supported locale codes that we can fetch translated strings for.
+  // We generate this based on the data that we fetch from Transifex.
+  //
   // * `rtl` - right-to-left or left-to-right text direction
   // * `pct` - the percent of strings translated; 1 = 100%, full coverage
   //
   // {
-  // en: { rtl: false, pct: {…} },
-  // de: { rtl: false, pct: {…} },
-  // …
+  //   "ar":    { "rtl": true, "pct": 0 },
+  //   "ar-AA": { "rtl": true, "pct": 0 },
+  //   "en":    { "rtl": false, "pct": 1 },
+  //   "en-AU": { "rtl": false, "pct": 0 },
+  //   "en-GB": { "rtl": false, "pct": 0 },
+  //   "de":    { "rtl": false, "pct": 0 },
+  //   …
   // }
   let _supportedLocales = {};
 
-  // `localeStrings` is an object containing all _loaded_ locale codes -> string data.
+  // `_cache`
+  // Where we keep all loaded localized string data, organized by "scope" and "locale":
   // {
-  // en: { icons: {…}, toolbar: {…}, modes: {…}, operations: {…}, … },
-  // de: { icons: {…}, toolbar: {…}, modes: {…}, operations: {…}, … },
-  // …
+  //   general: {
+  //     en: { icons: {…}, toolbar: {…}, modes: {…}, operations: {…}, … },
+  //     de: { icons: {…}, toolbar: {…}, modes: {…}, operations: {…}, … },
+  //     …
+  //   },
+  //   tagging: {
+  //     en: { presets: {…}, fields: {…}, … },
+  //     de: { presets: {…}, fields: {…}, … },
+  //     …
+  //   },
   // }
-  let _localeStrings = {};
+  let _cache = {};
 
-  // the current locale
-  let _localeCode = 'en-US';
-  // `_localeCodes` must contain `_localeCode` first, optionally followed by fallbacks
-  let _localeCodes = ['en-US', 'en'];
-  let _languageCode = 'en';
-  let _textDirection = 'ltr';
-  let _usesMetric = false;
+  let _preferredLocaleCodes = [];
+  let _currLocaleCode = 'en-US';            // The current locale
+  let _currLocaleCodes = ['en-US', 'en'];   // Must contain `_currLocaleCode` first, followed by fallbacks
+  let _currLanguageCode = 'en';
+  let _currTextDirection = 'ltr';
+  let _currIsMetric = false;
   let _languageNames = {};
   let _scriptNames = {};
 
   // getters for the current locale parameters
-  localizer.localeCode = () => _localeCode;
-  localizer.localeCodes = () => _localeCodes;
-  localizer.languageCode = () => _languageCode;
-  localizer.textDirection = () => _textDirection;
-  localizer.usesMetric = () => _usesMetric;
+  localizer.localeCode = () => _currLocaleCode;
+  localizer.localeCodes = () => _currLocaleCodes;
+  localizer.languageCode = () => _currLanguageCode;
+  localizer.textDirection = () => _currTextDirection;
+  localizer.usesMetric = () => _currIsMetric;
   localizer.languageNames = () => _languageNames;
   localizer.scriptNames = () => _scriptNames;
 
-
-  // The client app may want to manually set the locale, regardless of the
-  // settings provided by the browser
-  let _preferredLocaleCodes = [];
+  /**
+   * preferredLocaleCodes
+   * Allows the user to manually set the locale, overriding the locales specified by the browser
+   * If you're going to use this, you must call it before `ensureLoaded` starts fetching data.
+   * @param   codes  Array or String of preferred locales
+   */
   localizer.preferredLocaleCodes = function(codes) {
-    if (!arguments.length) return _preferredLocaleCodes;
     if (typeof codes === 'string') {
-      // be generous and accept delimited strings as input
+      // Be generous and accept delimited strings as input
       _preferredLocaleCodes = codes.split(/,|;| /gi).filter(Boolean);
     } else {
-      _preferredLocaleCodes = codes;
+      _preferredLocaleCodes = codes || [];
     }
     return localizer;
   };
@@ -77,36 +101,32 @@ export function coreLocalizer() {
 
   /**
    * ensureLoaded
-   * Call this before doing anything with the localizer
-   * to ensure that necessary files have been loaded
+   * Call this before doing anything with the localizer to ensure that necessary files have been loaded
    * @return {Promise}   A Promise resolved after the files have been loaded
    */
   let _loadPromise;
   localizer.ensureLoaded = () => {
     if (_loadPromise) return _loadPromise;
 
-    let filesToFetch = [
-      'languages',  // load the list of languages
-      'locales'     // load the list of supported locales
-    ];
+    let filesToFetch = ['languages', 'locales'];
 
-    const localeDirs = {
+    const scopes = {
       general: 'locales',
       tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/translations'
     };
 
     let fileMap = fileFetcher.fileMap();
-    for (let scopeId in localeDirs) {
-      const key = `locales_index_${scopeId}`;
+    for (let scope in scopes) {
+      const key = `locales_index_${scope}`;
       if (!fileMap[key]) {
-        fileMap[key] = localeDirs[scopeId] + '/index.min.json';
+        fileMap[key] = scopes[scope] + '/index.min.json';
       }
       filesToFetch.push(key);
     }
 
     return _loadPromise = Promise.all(filesToFetch.map(key => fileFetcher.get(key)))
       .then(results => {
-        _knownLanguages = results[0];
+        _supportedLanguages = results[0];
         _supportedLocales = results[1];
 
         let indexes = results.slice(2);
@@ -114,25 +134,27 @@ export function coreLocalizer() {
           .concat(utilDetect().browserLocales)   // List of locales preferred by the browser in priority order.
           .concat(['en']);   // fallback to English since it's the only guaranteed complete language
 
-        _localeCodes = localesToUseFrom(requestedLocales);
-        _localeCode = _localeCodes[0];   // Run iD in the highest-priority locale; the rest are fallbacks
+        _currLocaleCodes = localesToUseFrom(requestedLocales);
+        _currLocaleCode = _currLocaleCodes[0];   // First is highest priority locale; the rest are fallbacks
 
         let loadStringsPromises = [];
 
         indexes.forEach((index, i) => {
 //          // Will always return the index for `en` if nothing else
-//          const fullCoverageIndex = _localeCodes.findIndex(function(locale) {
+//          const fullCoverageIndex = _currLocaleCodes.findIndex(function(locale) {
 //            return index[locale] && index[locale].pct === 1;
 //          });
 //          // We only need to load locales up until we find one with full coverage
-//          // _localeCodes.slice(0, fullCoverageIndex + 1).forEach(code => {
+//          // _currLocaleCodes.slice(0, fullCoverageIndex + 1).forEach(code => {
 // RapiD note:
 // We always need `en` because it contains RapiD strings that are not localized to other languages.
 // This means we can't assume that a language with 100% coverage is an alternative for `en`.
-          _localeCodes.forEach(code => {
-            let scopeId = Object.keys(localeDirs)[i];
-            let directory = Object.values(localeDirs)[i];
-            if (index[code]) loadStringsPromises.push(localizer.loadLocale(code, scopeId, directory));
+          _currLocaleCodes.forEach(code => {
+            const scope = Object.keys(scopes)[i];
+            const directory = Object.values(scopes)[i];
+            if (index[code]) {
+              loadStringsPromises.push(localizer.loadLocale(code, scope, directory));
+            }
           });
         });
 
@@ -145,9 +167,9 @@ export function coreLocalizer() {
 
   /**
    * localesToUseFrom
-   * Returns the locales from `requestedLocales` supported by iD that we should use
-   * @param  {Array}   requestedLocales  Array or Set of locale codes to consider
-   * @return {Array}   The locales that we can actually support
+   * Returns the locales from `requestedLocales` that are actually supported
+   * @param  {Array}  requestedLocales  Array or Set of locale codes to consider
+   * @return {Array}  The locales that we can actually support
    */
   function localesToUseFrom(requestedLocales) {
     let toUse = new Set();
@@ -169,59 +191,65 @@ export function coreLocalizer() {
 
   /**
    * updateForCurrentLocale
-   * Called after all locales files have been fetched to finalize the current state
+   * Called after all locale files have been fetched to finalize the current state
    */
   function updateForCurrentLocale() {
-    if (!_localeCode) return;
+    if (!_currLocaleCode) return;
 
-    _languageCode = _localeCode.split('-')[0];
+    const [language, culture] = _currLocaleCode.toLowerCase().split('-', 2);
+    _currLanguageCode = language;
+    _currIsMetric = (culture !== 'us');
 
-    const currentData = _supportedLocales[_localeCode] || _supportedLocales[_languageCode];
+    // Allow hash parameter to override the locale 'rtl' setting - useful for testing
     const hash = utilStringQs(window.location.hash);
-
     if (hash.rtl === 'true') {
-      _textDirection = 'rtl';
+      _currTextDirection = 'rtl';
     } else if (hash.rtl === 'false') {
-      _textDirection = 'ltr';
-    }  else {
-      _textDirection = currentData && currentData.rtl ? 'rtl' : 'ltr';
+      _currTextDirection = 'ltr';
+    } else {
+      const supported = _supportedLocales[_currLocaleCode] || _supportedLocales[_currLanguageCode];
+      _currTextDirection = supported && supported.rtl ? 'rtl' : 'ltr';
     }
 
-    let locale = _localeCode;
-    if (locale.toLowerCase() === 'en-us') locale = 'en';
-    _languageNames = _localeStrings.general[locale].languageNames;
-    _scriptNames = _localeStrings.general[locale].scriptNames;
-
-    _usesMetric = _localeCode.slice(-3).toLowerCase() !== '-us';
+    // Language and Script names will appear in the local language
+    let locale = _currLocaleCode;
+    if (locale.toLowerCase() === 'en-us') {
+      locale = 'en';
+    }
+    _languageNames = _cache.general[locale].languageNames;
+    _scriptNames = _cache.general[locale].scriptNames;
   }
 
 
   /**
    * loadLocale
    * Returns a Promise to load the strings for the requested locale
-   * @param  {string}  locale     locale to load
-   * @param  {string}  scropeId   one of `general`, `tagging`, etc (not clear whether this is actually used?)
+   * @param  {string}  locale     locale code to load
+   * @param  {string}  scope      one of `general`, `tagging`, etc (not clear whether this is actually used?)
    * @param  {string}  directory  directory to include in the filename
    * @return {Promise}
    */
-  localizer.loadLocale = (locale, scopeId, directory) => {
-    // US English is the default
-    if (locale.toLowerCase() === 'en-us') locale = 'en';
+  localizer.loadLocale = (locale, scope, directory) => {
+    if (locale.toLowerCase() === 'en-us') {   // US English is the default
+      locale = 'en';
+    }
 
-    if (_localeStrings[scopeId] && _localeStrings[scopeId][locale]) {    // already loaded
+    if (_cache[scope] && _cache[scope][locale]) {    // already loaded
       return Promise.resolve(locale);
     }
 
     let fileMap = fileFetcher.fileMap();
-    const key = `locale_${scopeId}_${locale}`;
+    const key = `locale_${scope}_${locale}`;
     if (!fileMap[key]) {
       fileMap[key] = `${directory}/${locale}.min.json`;
     }
 
     return fileFetcher.get(key)
       .then(d => {
-        if (!_localeStrings[scopeId]) _localeStrings[scopeId] = {};
-        _localeStrings[scopeId][locale] = d[locale];
+        if (!_cache[scope]) {
+          _cache[scope] = {};
+        }
+        _cache[scope][locale] = d[locale];
         return locale;
       });
   };
@@ -236,7 +264,7 @@ export function coreLocalizer() {
    * @param  {string?}  locale      locale to use (defaults to currentLocale)
    * @return {string}   One of: `zero`, `one`, `two`, `few`, `many`, `other`
    */
-  localizer.pluralRule = function(number, locale = _localeCode) {
+  localizer.pluralRule = function(number, locale = _currLocaleCode) {
     // modern browsers have this functionality built-in
     const rules = 'Intl' in window && Intl.PluralRules && new Intl.PluralRules(locale);
     if (rules) {
@@ -249,9 +277,9 @@ export function coreLocalizer() {
 
   /**
    * _getString
-   * Try to find that string in `locale` or the current `_localeCode` matching
+   * Try to find that string in `locale` or the current `_currLocaleCode` matching
    * the given `stringId`. If no string can be found in the requested locale,
-   * we'll recurse down all the `_localeCodes` until one is found.
+   * we'll recurse through all the `_currLocaleCodes` until one is found.
    *
    * @param  {string}   stringId      string identifier
    * @param  {object?}  replacements  token replacements and default string
@@ -260,15 +288,15 @@ export function coreLocalizer() {
    */
   localizer._getString = function(origStringId, replacements, locale) {
     let stringId = origStringId.trim();
-    let scopeId = 'general';
+    let scope = 'general';
 
     if (stringId[0] === '_') {
       const split = stringId.split('.');
-      scopeId = split[0].slice(1);
+      scope = split[0].slice(1);
       stringId = split.slice(1).join('.');
     }
 
-    locale = locale || _localeCode;
+    locale = locale || _currLocaleCode;
 
     let path = stringId
       .split('.')
@@ -278,7 +306,7 @@ export function coreLocalizer() {
     let stringsKey = locale;
     // US English is the default
     if (stringsKey.toLowerCase() === 'en-us') stringsKey = 'en';
-    let result = _localeStrings && _localeStrings[scopeId] && _localeStrings[scopeId][stringsKey];
+    let result = _cache[scope] && _cache[scope][stringsKey];
 
     while (result !== undefined && path.length) {
       result = result[path.pop()];
@@ -331,10 +359,9 @@ export function coreLocalizer() {
     // no localized string found...
 
     // attempt to fallback to a lower-priority language
-    let index = _localeCodes.indexOf(locale);
-    if (index >= 0 && index < _localeCodes.length - 1) {
-      // eventually this will be 'en' or another locale with 100% coverage
-      const fallback = _localeCodes[index + 1];
+    let index = _currLocaleCodes.indexOf(locale);
+    if (index >= 0 && index < _currLocaleCodes.length - 1) {
+      const fallback = _currLocaleCodes[index + 1];
       return localizer._getString(origStringId, replacements, fallback);
     }
 
@@ -418,7 +445,7 @@ export function coreLocalizer() {
     // sometimes we only want the local name
     if (options && options.localOnly) return null;
 
-    const langInfo = _knownLanguages[code];
+    const langInfo = _supportedLanguages[code];
     if (langInfo) {
       if (langInfo.nativeName) {  // name in native language
         // e.g. "Deutsch (de)"
@@ -433,9 +460,9 @@ export function coreLocalizer() {
           // e.g. "Serbian (Cyrillic)"
           return localizer.t('translate.language_and_code', { language: _languageNames[base], code: script });
 
-        } else if (_knownLanguages[base] && _knownLanguages[base].nativeName) {
+        } else if (_supportedLanguages[base] && _supportedLanguages[base].nativeName) {
           // e.g. "српски (sr-Cyrl)"
-          return localizer.t('translate.language_and_code', { language: _knownLanguages[base].nativeName, code: code });
+          return localizer.t('translate.language_and_code', { language: _supportedLanguages[base].nativeName, code: code });
         }
       }
     }
