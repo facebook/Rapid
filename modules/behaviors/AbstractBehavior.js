@@ -60,15 +60,21 @@ export class AbstractBehavior extends EventEmitter {
    */
   _getEventData(e) {
     const result = {
-      id: e.data.originalEvent.pointerId || 'mouse',
+      //      mouse event id                touch event id        default
+      id: e.data.originalEvent.pointerId || e.data.pointerType || 'mouse',
       event: e,
       originalEvent: e.data.originalEvent,
-      coord: [e.data.originalEvent.offsetX, e.data.originalEvent.offsetY],
+      // mouse original events contain offsets, touch events contain 'layerX/Y'.
+      coord: [
+        //       mouse coord                   touch coord
+        e.data.originalEvent.offsetX || e.data.originalEvent.layerX,
+        e.data.originalEvent.offsetY || e.data.originalEvent.layerY,
+      ],
       time: e.data.originalEvent.timeStamp,
       isCancelled: false,
       target: null,
       feature: null,
-      data: null
+      data: null,
     };
 
     if (!e.target) {   // `e.target` is the Pixi DisplayObject that triggered this event.

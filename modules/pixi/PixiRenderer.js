@@ -45,6 +45,9 @@ export class PixiRenderer {
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
+    //Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
+    PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
+
     // Create a Pixi application and add Pixi's canvas to the parent `div`.
     this.pixi = new PIXI.Application({
       antialias: true,
@@ -200,8 +203,10 @@ export class PixiRenderer {
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 //
-
-    this.layers.render(timestamp, pixiProjection, effectiveZoom);
+    // If textures aren't loaded, we can't render. Wait for the textures to load before attempting.
+    if (context._texturesLoaded) {
+      this.layers.render(timestamp, pixiProjection, effectiveZoom);
+    }
 
     this._appPending = false;
     this._drawPending = true;

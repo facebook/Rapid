@@ -41,6 +41,7 @@ export class PixiTextures {
         context._fontAwesomeSheet = loader.resources[`${distPath}img/icons/fontawesome-spritesheet.json`];
         context._mapillarySheet = loader.resources[`${distPath}img/icons/mapillary-features-spritesheet.json`];
         context._mapillarySignSheet = loader.resources[`${distPath}img/icons/mapillary-signs-spritesheet.json`];
+        context._texturesLoaded = true;
       });
     }
 

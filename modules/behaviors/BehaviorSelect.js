@@ -88,6 +88,14 @@ export class BehaviorSelect extends AbstractBehavior {
       .on('pointerupoutside', this._pointercancel)  // if up outide, just cancel
       .on('pointercancel', this._pointercancel);
 
+    if (interactionManager.supportsTouchEvents) {
+      interactionManager.on('touchstart', this._pointerdown);
+      interactionManager.on('touchmove', this._pointermove);
+      interactionManager.on('touchend', this._pointerup);
+      interactionManager.on('touchendoutside', this._pointercancel);
+      interactionManager.on('touchcancel', this._pointercancel);
+    }
+
     d3_select(document)
       .call(this._keybinding);
 
@@ -140,7 +148,9 @@ export class BehaviorSelect extends AbstractBehavior {
     const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
+
+    // However, do not discard if the event was a touch event.
+    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
     this.lastDown = down;
