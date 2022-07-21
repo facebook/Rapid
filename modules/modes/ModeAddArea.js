@@ -74,11 +74,11 @@ export class ModeAddArea extends AbstractMode {
     window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
 
     context.behaviors.get('draw')
-      .on('click', null)
-      .on('clickWay', null)
-      .on('clickNode', null)
-      .on('cancel', null)
-      .on('finish', null);
+      .off('click', this._start)
+      .off('clickWay', this._startFromWay)
+      .off('clickNode', this._startFromNode)
+      .off('cancel', this._cancel)
+      .off('finish', this._cancel);
   }
 
 

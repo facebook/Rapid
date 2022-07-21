@@ -59,11 +59,11 @@ export class ModeAddNote extends AbstractMode {
 
     this._active = false;
     this.context.behaviors.get('draw')
-      .on('click', null)
-      .on('clickWay', null)
-      .on('clickNode', null)
-      .on('cancel', null)
-      .on('finish', null);
+      .off('click', this._click)
+      .off('clickWay', this._click)
+      .off('clickNode', this._click)
+      .off('cancel', this._cancel)
+      .off('finish', this._cancel);
   }
 
 

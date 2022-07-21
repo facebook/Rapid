@@ -157,12 +157,12 @@ export class ModeDrawLine extends AbstractMode {
     window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
 
     context.behaviors.get('draw')
-      .on('move', null)
-      .on('click', null)
-      .on('clickWay', null)
-      .on('clickNode', null)
-      .on('cancel', null)
-      .on('finish', null);
+      .off('move', this._move)
+      .off('click', this._click)
+      .off('clickWay', this._clickWay)
+      .off('clickNode', this._clickNode)
+      .off('cancel', this._cancel)
+      .off('finish', this._finish);
   }
 
 
