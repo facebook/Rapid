@@ -5,7 +5,7 @@ import { osmNode } from '../osm';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
-const DEBUG = false;
+const DEBUG = true;
 
 /**
  * `BehaviorDrag` listens to pointer events and converts those into start/move/end drag events
@@ -68,6 +68,16 @@ export class BehaviorDrag extends AbstractBehavior {
       .on('pointerup', this._pointerup)
       .on('pointerupoutside', this._pointercancel)  // if up outide, just cancel
       .on('pointercancel', this._pointercancel);
+
+
+    if (interactionManager.supportsTouchEvents) {
+      interactionManager.on('touchstart', this._pointerdown);
+      interactionManager.on('touchmove', this._pointermove);
+      interactionManager.on('touchend', this._pointerup);
+      interactionManager.on('touchendoutside', this._pointercancel);
+      interactionManager.on('touchcancel', this._pointercancel);
+    }
+
   }
 
 
@@ -105,17 +115,19 @@ export class BehaviorDrag extends AbstractBehavior {
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerdown(e) {
-    if (this.lastDown) return;  // a pointer is already down
+    if (this.lastDown) return; // a pointer is already down
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
+
+    // However, do not discard if the event was a touch event.
+    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
-    const draggable = (down.data instanceof osmNode);
+    const draggable = down.data instanceof osmNode;
     if (!draggable) return;
 
     this.context.map().zoomPanEnable(false);
@@ -123,7 +135,7 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
-// I _think_ this handles - where on the pin the user grabbed it
+    // I _think_ this handles - where on the pin the user grabbed it
     // this._startOrigin = pointerLocGetter(e);
     // if (this._origin) {
     //     this._offset = this._origin.call(this._targetNode, this._downData.targetEntity);
@@ -146,7 +158,7 @@ export class BehaviorDrag extends AbstractBehavior {
     const context = this.context;
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
+    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this.lastDown;
     const move = this._getEventData(e);
@@ -195,7 +207,10 @@ export class BehaviorDrag extends AbstractBehavior {
   _pointerup(e) {
     const down = this.lastDown;
     const up = this._getEventData(e);
-    if (!down || down.id !== up.id) return;  // not down, or different pointer
+    if (!down || down.id !== up.id) return; // not down, or different pointer
+
+    //Before emitting the 'up' event, attach the drag target data to the event data.
+    if (this.dragTarget) up.data = this.dragTarget.__feature__.data;
 
     this.lastDown = null;
     this.lastMove = null;
@@ -207,7 +222,7 @@ export class BehaviorDrag extends AbstractBehavior {
       this.dragTarget = null;
 
       if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'end', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorDrag: emitting 'end', dragTarget = ${name}`); // eslint-disable-line no-console
       }
       this.emit('end', up);
     }

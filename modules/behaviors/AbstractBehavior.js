@@ -52,6 +52,31 @@ export class AbstractBehavior extends EventEmitter {
     return this._enabled;
   }
 
+  /**
+   * _getEventCoord
+   * Returns a the [x,y] coords that are of interest for the supplied event.
+   * This can get pretty hairy given the touch and mouse event interactions have different formats.
+   */
+  _getEventCoord(e) {
+    let coord;
+    const oe = e.data.originalEvent;
+    if (oe.offsetX) {
+      // mouse coords
+      coord = [oe.offsetX, oe.offsetY];
+    } else if (oe.layerX) {
+      // ipad coords, seemingly?
+      coord = [oe.layerX, oe.layerY];
+    } else if (oe.touches && oe.touches[0]) {
+      //initial touch
+      coord = [oe.touches[0].clientX, oe.touches[0].clientY]
+    } else {
+      //updated touch
+      coord = [oe.changedTouches.clientX, oe.changedTouches.clientY];
+    }
+
+    return coord;
+  }
+
 
   /**
    * _getEventData
@@ -59,17 +84,14 @@ export class AbstractBehavior extends EventEmitter {
    * @param  `e`  A Pixi InteractionEvent (or something that looks like one)
    */
   _getEventData(e) {
+
     const result = {
       //      mouse event id                touch event id        default
       id: e.data.originalEvent.pointerId || e.data.pointerType || 'mouse',
       event: e,
       originalEvent: e.data.originalEvent,
       // mouse original events contain offsets, touch events contain 'layerX/Y'.
-      coord: [
-        //       mouse coord                   touch coord
-        e.data.originalEvent.offsetX || e.data.originalEvent.layerX,
-        e.data.originalEvent.offsetY || e.data.originalEvent.layerY,
-      ],
+      coord: this._getEventCoord(e),
       time: e.data.originalEvent.timeStamp,
       isCancelled: false,
       target: null,

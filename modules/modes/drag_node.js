@@ -69,7 +69,7 @@ export function modeDragNode(context) {
     return t('operations.move.annotation.' + entity.geometry(context.graph()));
   }
 
-  /**
+/**
    * connectAnnotation
    */
   function connectAnnotation(nodeEntity, targetEntity) {
@@ -202,9 +202,9 @@ export function modeDragNode(context) {
 //    context.surface().classed('nope-disabled', event.altKey);
     _lastLoc = context.projection.invert(point);
 
-   const entity = target.data;
+   const entity = target.__feature__.data;
    if (!(entity instanceof osmNode)) return;  // sanity check
-    doMove(event, entity);
+    doMove(point, entity);
 
 //    var nudge = geomViewportNudge(point, context.map().dimensions());
 //    if (nudge) {
@@ -298,10 +298,10 @@ const target = false;
   /**
    * doMove
    */
-  function doMove(event, entity, nudge) {
+  function doMove(point, entity, nudge) {
     nudge = nudge || [0, 0];
 
-    const currPoint = [event.offsetX, event.offsetY] || context.projection.project(_lastLoc);
+    const currPoint = [point[0], point[1]] || context.projection.project(_lastLoc);
     // var currMouse = vecSubtract(currPoint, nudge);
     const loc = context.projection.invert(currPoint);
 
@@ -330,7 +330,7 @@ const target = false;
 //             }
 //         }
 //     }
-//     context.replace(actionMoveNode(entity.id, loc));
+    context.replace(actionMoveNode(entity.id, loc));
 //     // Below here: validations
 //     var isInvalid = false;
 //     // Check if this connection to `target` could cause relations to break..
