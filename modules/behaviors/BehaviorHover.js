@@ -69,6 +69,18 @@ export class BehaviorHover extends AbstractBehavior {
       console.log('BehaviorHover: disabling listeners');  // eslint-disable-line no-console
     }
 
+    // Something is currently hovered, so un-hover it first.
+    const eventData = this.lastMove;
+    if (eventData && this.hoverTarget) {
+      eventData.target = null;
+      eventData.feature = null;
+      eventData.data = null;
+      if (DEBUG) {
+        console.log(`BehaviorHover: emitting 'hoverchanged', hoverTarget = none`);  // eslint-disable-line no-console
+      }
+      this.emit('hoverchanged', eventData);
+    }
+
     this._enabled = false;
     this.lastMove = null;
     this.hoverTarget = null;
@@ -99,6 +111,7 @@ export class BehaviorHover extends AbstractBehavior {
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer) {
       move.target = null;
+      move.feature = null;
       move.data = null;
     }
 
@@ -107,7 +120,7 @@ export class BehaviorHover extends AbstractBehavior {
       this.hoverTarget = move.target;
 
       if (DEBUG) {
-        const name = (move.target && move.target.name) || 'no target';
+        const name = (move.target && move.target.name) || 'none';
         console.log(`BehaviorHover: emitting 'hoverchanged', hoverTarget = ${name}`);  // eslint-disable-line no-console
       }
       this.emit('hoverchanged', move);

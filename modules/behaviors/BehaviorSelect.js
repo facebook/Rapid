@@ -89,16 +89,16 @@ export class BehaviorSelect extends AbstractBehavior {
       .on('pointercancel', this._pointercancel);
 
     if (interactionManager.supportsTouchEvents) {
-      interactionManager.on('touchstart', this._pointerdown);
-      interactionManager.on('touchmove', this._pointermove);
-      interactionManager.on('touchend', this._pointerup);
-      interactionManager.on('touchendoutside', this._pointercancel);
-      interactionManager.on('touchcancel', this._pointercancel);
+      interactionManager
+        .on('touchstart', this._pointerdown)
+        .on('touchmove', this._pointermove)
+        .on('touchend', this._pointerup)
+        .on('touchendoutside', this._pointercancel)
+        .on('touchcancel', this._pointercancel);
     }
 
     d3_select(document)
       .call(this._keybinding);
-
   }
 
 
@@ -112,6 +112,18 @@ export class BehaviorSelect extends AbstractBehavior {
 
     if (DEBUG) {
       console.log('BehaviorSelect: disabling listeners');  // eslint-disable-line no-console
+    }
+
+    // Something is currently selected, so un-select it first.
+    const eventData = this.lastMove;
+    if (eventData && this.selectTarget) {
+      eventData.target = null;
+      eventData.feature = null;
+      eventData.data = null;
+      if (DEBUG) {
+        console.log(`BehaviorSelect: emitting 'selectchanged', selectTarget = none`);  // eslint-disable-line no-console
+      }
+      this.emit('selectchanged', eventData);
     }
 
     this._enabled = false;
@@ -128,6 +140,15 @@ export class BehaviorSelect extends AbstractBehavior {
       .off('pointerup', this._pointerup)
       .off('pointerupoutside', this._pointercancel)  // if up outide, just cancel
       .off('pointercancel', this._pointercancel);
+
+    if (interactionManager.supportsTouchEvents) {
+      interactionManager
+        .off('touchstart', this._pointerdown)
+        .off('touchmove', this._pointermove)
+        .off('touchend', this._pointerup)
+        .off('touchendoutside', this._pointercancel)
+        .off('touchcancel', this._pointercancel);
+    }
 
     d3_select(document)
       .call(this._keybinding.unbind);
@@ -336,7 +357,7 @@ export class BehaviorSelect extends AbstractBehavior {
       this.selectTarget = eventData.target;
 
       if (DEBUG) {
-        const name = (eventData.target && eventData.target.name) || 'no target';
+        const name = (eventData.target && eventData.target.name) || 'none';
         console.log(`BehaviorSelect: emitting 'selectchanged', selectTarget = ${name}`);  // eslint-disable-line no-console
       }
       this.emit('selectchanged', eventData);

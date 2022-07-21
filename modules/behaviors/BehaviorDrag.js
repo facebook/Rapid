@@ -69,15 +69,14 @@ export class BehaviorDrag extends AbstractBehavior {
       .on('pointerupoutside', this._pointercancel)  // if up outide, just cancel
       .on('pointercancel', this._pointercancel);
 
-
     if (interactionManager.supportsTouchEvents) {
-      interactionManager.on('touchstart', this._pointerdown);
-      interactionManager.on('touchmove', this._pointermove);
-      interactionManager.on('touchend', this._pointerup);
-      interactionManager.on('touchendoutside', this._pointercancel);
-      interactionManager.on('touchcancel', this._pointercancel);
+      interactionManager
+        .on('touchstart', this._pointerdown)
+        .on('touchmove', this._pointermove)
+        .on('touchend', this._pointerup)
+        .on('touchendoutside', this._pointercancel)
+        .on('touchcancel', this._pointercancel);
     }
-
   }
 
 
@@ -93,6 +92,21 @@ export class BehaviorDrag extends AbstractBehavior {
       console.log('BehaviorDrag: disabling listeners');  // eslint-disable-line no-console
     }
 
+    // Something is currently dragging, so cancel the drag first.
+    const eventData = this.lastMove;
+    if (eventData && this.dragTarget) {
+      eventData.target = null;
+      eventData.feature = null;
+      eventData.data = null;
+      const name = this.dragTarget.name;
+      this.dragTarget.interactive = true;
+
+      if (DEBUG) {
+        console.log(`BehaviorDrag: emitting 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
+      }
+      this.emit('cancel', eventData);
+    }
+
     this._enabled = false;
     this.lastDown = null;
     this.lastMove = null;
@@ -105,6 +119,15 @@ export class BehaviorDrag extends AbstractBehavior {
       .off('pointerup', this._pointerup)
       .off('pointerupoutside', this._pointercancel)  // if up outide, just cancel
       .off('pointercancel', this._pointercancel);
+
+    if (interactionManager.supportsTouchEvents) {
+      interactionManager
+        .off('touchstart', this._pointerdown)
+        .off('touchmove', this._pointermove)
+        .off('touchend', this._pointerup)
+        .off('touchendoutside', this._pointercancel)
+        .off('touchcancel', this._pointercancel);
+    }
   }
 
 
