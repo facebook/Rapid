@@ -41,6 +41,6 @@ body:
     id: URL
     attributes:
       label: The browser URL at the time you encountered the bug
-      description: Please copy and paste the contents of the URL bar. ex: `https://mapwith.ai/rapid#background=none&datasets=fbRoads,msBuildings&map=2.00/0.0/0.0`   
+      description: Please copy and paste the contents of the URL bar. ex: 'https://mapwith.ai/rapid#background=none&datasets=fbRoads,msBuildings&map=2.00/0.0/0.0'   
       validations:
         required: true
