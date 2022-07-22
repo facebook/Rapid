@@ -47,17 +47,27 @@ import { uiRapidServiceLicense } from './rapid_service_license';
 import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
 
-
 export function uiInit(context) {
   let _initCounter = 0;
   let _needWidth = {};
 
+  let generateBugLink = () => {
+    let link = new URL('https://github.com/facebookincubator/RapiD/issues/new');
 
-  function render(container) {
-
+    // From the template we set up at https://github.com/facebookincubator/RapiD/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
+    link.searchParams.append('template', 'bug_report.yml');
     const detected = utilDetect();
 
+    let browser = `${detected.browser} v${detected.version}`;
 
+    link.searchParams.append('browser', browser);
+    link.searchParams.append('URL', window.location.href);
+    link.searchParams.append('version', context.rapidContext().version);
+
+    window.open(link.toString(), '_blank');
+  };
+
+  function render(container) {
 //    container.on('click.ui', d3_event => {
 //      if (d3_event.button !== 0) return;  // we're only concerned with the primary mouse button
 //      if (!d3_event.composedPath) return;
@@ -285,10 +295,9 @@ export function uiInit(context) {
       .append('li');
 
     issueLinks
-      .append('a')
-      .attr('target', '_blank')
+      .append('button')
       .attr('tabindex', -1)
-      .attr('href', 'https://github.com/facebookincubator/RapiD/issues')
+      .on('click', generateBugLink)
       .call(svgIcon('#iD-icon-bug', 'light'))
       .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
 
