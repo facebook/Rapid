@@ -94,14 +94,7 @@ export function uiToolDrawModes(context) {
           if (d.id === currMode) {
             context.enter('browse');
           } else {
-// todo: remove - handle old or new way of using the mode
-            if (d.updated) {
-              context.enter(d.id);
-              // context.mode().defaultTags = d.preset.setTags({}, 'point');
- // this.defaultTags = d.preset.setTags(this.defaultTags, 'point');
-            } else {
-              context.enter(d);
-            }
+            context.enter(d.id);
           }
         })
         .call(uiTooltip()
