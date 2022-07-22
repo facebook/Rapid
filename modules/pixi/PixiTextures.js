@@ -6,7 +6,8 @@ import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
  * PixiTextureManager does the work of managing the textures.
  * The goal is to use common spritesheets to avoid extensive texture swapping
  *
- * @class
+ * Properties you can access:
+ *   `loaded`   `true` after the spritesheets have finished loading
  */
 export class PixiTextures {
 
@@ -16,6 +17,8 @@ export class PixiTextures {
    */
   constructor(context) {
     this.context = context;
+    this.loaded = false;
+
     this._atlasAllocator = new AtlasAllocator();
 
     // Map(String key -> PIXI.Texture)
@@ -24,28 +27,24 @@ export class PixiTextures {
     // make it accessable this way (for now)
     context.pixi.rapidTextures = this.textures;
 
-    // load spritesheets
+    // Load spritesheets
     const loader = PIXI.Loader.shared;
+    const assetPath = context.assetPath();
+    loader.add(`${assetPath}img/icons/maki-spritesheet.json`);
+    loader.add(`${assetPath}img/icons/temaki-spritesheet.json`);
+    loader.add(`${assetPath}img/icons/fontawesome-spritesheet.json`);
+    loader.add(`${assetPath}img/icons/mapillary-features-spritesheet.json`);
+    loader.add(`${assetPath}img/icons/mapillary-signs-spritesheet.json`);
+    loader.load(loader => {
+      context._makiSheet = loader.resources[`${assetPath}img/icons/maki-spritesheet.json`];
+      context._temakiSheet = loader.resources[`${assetPath}img/icons/temaki-spritesheet.json`];
+      context._fontAwesomeSheet = loader.resources[`${assetPath}img/icons/fontawesome-spritesheet.json`];
+      context._mapillarySheet = loader.resources[`${assetPath}img/icons/mapillary-features-spritesheet.json`];
+      context._mapillarySignSheet = loader.resources[`${assetPath}img/icons/mapillary-signs-spritesheet.json`];
+      this.loaded = true;
+    });
 
-    const distPath = context.assetPath();
-    // During tests we might be reloading the map several times. If so, don't reload the resource spritesheets.
-    if (!loader.resources[`${distPath}img/icons/maki-spritesheet.json`]) {
-      loader.add(`${distPath}img/icons/maki-spritesheet.json`);
-      loader.add(`${distPath}img/icons/temaki-spritesheet.json`);
-      loader.add(`${distPath}img/icons/fontawesome-spritesheet.json`);
-      loader.add(`${distPath}img/icons/mapillary-features-spritesheet.json`);
-      loader.add(`${distPath}img/icons/mapillary-signs-spritesheet.json`);
-      loader.load(loader => {
-        context._makiSheet = loader.resources[`${distPath}img/icons/maki-spritesheet.json`];
-        context._temakiSheet = loader.resources[`${distPath}img/icons/temaki-spritesheet.json`];
-        context._fontAwesomeSheet = loader.resources[`${distPath}img/icons/fontawesome-spritesheet.json`];
-        context._mapillarySheet = loader.resources[`${distPath}img/icons/mapillary-features-spritesheet.json`];
-        context._mapillarySignSheet = loader.resources[`${distPath}img/icons/mapillary-signs-spritesheet.json`];
-        context._texturesLoaded = true;
-      });
-    }
-
-    // load patterns
+    // Load patterns
     context.pixi.rapidTextureKeys = [
       'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
       'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
@@ -53,7 +52,7 @@ export class PixiTextures {
       'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
     ];
     context.pixi.rapidTextureKeys.forEach(key => {
-      this.textures.set(key, new PIXI.Texture.from(`${distPath}img/pattern/${key}.png`));
+      this.textures.set(key, new PIXI.Texture.from(`${assetPath}img/pattern/${key}.png`));
     });
 
 
@@ -94,7 +93,6 @@ export class PixiTextures {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     }));
-
 
 
     //

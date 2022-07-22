@@ -183,6 +183,9 @@ export class PixiRenderer {
    * Where we set up the scene graph and tell Pixi what needs to be drawn.
    */
   app(timestamp) {
+    // Wait for textures to be loaded before attempting rendering.
+    if (!this.textures.loaded) return;
+
     // Reproject the pixi geometries only whenever zoom changes
     const context = this.context;
     const pixiProjection = this.pixiProjection;
@@ -203,10 +206,7 @@ export class PixiRenderer {
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 //
-    // If textures aren't loaded, we can't render. Wait for the textures to load before attempting.
-    if (context._texturesLoaded) {
-      this.layers.render(timestamp, pixiProjection, effectiveZoom);
-    }
+    this.layers.render(timestamp, pixiProjection, effectiveZoom);
 
     this._appPending = false;
     this._drawPending = true;
