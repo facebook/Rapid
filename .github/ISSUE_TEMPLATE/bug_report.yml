@@ -21,17 +21,11 @@ body:
       placeholder: ex. 1.1.8, 2.0.0-beta
     validations:
       required: true
-  - type: dropdown
-    id: browsers
+  - type: input
+    id: browser
     attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: false
-      options:
-        - Chrome
-        - Firefox
-        - Edge
-        - Safari
-        - Other
+      label: What browser are you seeing the problem on? What version are you running?
+      placeholder: ex. Chrome v103, Safari v15.3, Edge v102, Firefox 100, etc.
   - type: textarea
     id: reproduction
     attributes:
