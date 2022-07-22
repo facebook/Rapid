@@ -18,7 +18,7 @@ body:
     attributes:
       label: Version
       description: What version of RapiD does this appear on? *(The version is located in the lower-right of the screen next to your OSM username/icon)*
-      placeholder: ex. 2.0.0-beta
+      placeholder: ex. 1.1.8, 2.0.0-beta
     validations:
       required: true
   - type: dropdown
@@ -37,5 +37,10 @@ body:
     attributes:
       label: Steps to reproduce
       description: Provide a detailed list of steps that reproduce the issue.
-    validations:
-      required: true
+  - type: textarea
+    id: URL
+    attributes:
+      label: The browser URL at the time you encountered the bug
+      description: Please copy and paste the contents of the URL bar. ex: `https://mapwith.ai/rapid#background=none&datasets=fbRoads,msBuildings&map=2.00/0.0/0.0`   
+      validations:
+        required: true
