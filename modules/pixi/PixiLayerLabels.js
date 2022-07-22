@@ -32,13 +32,11 @@ export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
     this._enabled = true;   // labels should be enabled by default
 
     // Items in this layer don't actually need to be interactive

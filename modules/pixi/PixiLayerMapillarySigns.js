@@ -14,13 +14,11 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
     this._service = null;
     this.getService();
@@ -69,16 +67,15 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   drawMarkers(timestamp, projection, zoom) {
-    const context = this.context;
     const scene = this.scene;
 
     const service = this.getService();
     if (!service) return;
 
-    const spritesheet = context._mapillarySignSheet;
+    const spritesheet = this.context._mapillarySignSheet;
     if (!spritesheet) return;  // wait for spritesheet to load
 
-    let detections = service.signs(context.projection);
+    let detections = service.signs(this.context.projection);
     detections = this.filterDetections(detections);
 
     detections.forEach(d => {
@@ -90,7 +87,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
           markerTexture: spritesheet.textures[d.value + '.svg']
         };
 
-        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
 
         // const marker = feature.marker;
         // const ICONSIZE = 24;

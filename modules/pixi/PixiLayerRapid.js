@@ -20,15 +20,13 @@ export class PixiLayerRapid extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this._enabled = true;  // RapiD features should be enabled by default
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
+    this._enabled = true;  // RapiD features should be enabled by default
     this._serviceFB = null;
     this._serviceEsri = null;
     this.getServiceFB();
@@ -301,7 +299,6 @@ export class PixiLayerRapid extends AbstractLayer {
    * drawPolygons
    */
   drawPolygons(layer, dataset, graph, timestamp, projection, zoom, data) {
-    const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
     const style = {
@@ -319,7 +316,7 @@ export class PixiLayerRapid extends AbstractLayer {
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(context, featureID, layer, entity, geometry);
+        feature = new PixiFeatureMultipolygon(this, featureID, layer, entity, geometry);
         feature.rapidFeature = true;
 
 // shader experiment:
@@ -352,7 +349,6 @@ export class PixiLayerRapid extends AbstractLayer {
    * drawLines
    */
   drawLines(layer, dataset, graph, timestamp, projection, zoom, data) {
-    const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -364,7 +360,7 @@ export class PixiLayerRapid extends AbstractLayer {
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
 
-        feature = new PixiFeatureLine(context, featureID, layer, entity, geometry);
+        feature = new PixiFeatureLine(this, featureID, layer, entity, geometry);
         feature.rapidFeature = true;
       }
 
@@ -394,7 +390,6 @@ export class PixiLayerRapid extends AbstractLayer {
    * drawPoints
    */
   drawPoints(layer, dataset, graph, timestamp, projection, zoom, data) {
-    const context = this.context;
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -415,7 +410,7 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc);
+        feature = new PixiFeaturePoint(this, featureID, layer, entity, entity.loc);
         feature.rapidFeature = true;
       }
 
@@ -445,7 +440,7 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(context, featureID, layer, entity, entity.loc);
+        feature = new PixiFeaturePoint(this, featureID, layer, entity, entity.loc);
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
       }

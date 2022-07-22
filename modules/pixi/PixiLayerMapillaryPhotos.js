@@ -28,13 +28,11 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
     this._service = null;
     this.getService();
@@ -104,7 +102,6 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   drawMarkers(timestamp, projection, zoom) {
-    const context = this.context;
     const scene = this.scene;
 
     const service = this.getService();
@@ -113,8 +110,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const showMarkers = (zoom >= MINMARKERZOOM);
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
-    const sequenceData = service.sequences(context.projection);
-    const photoData = service.images(context.projection);
+    const sequenceData = service.sequences(this.context.projection);
+    const photoData = service.images(this.context.projection);
 
     // const sequenceData = this.filterSequences(sequences);
     // const photoData = this.filterImages(images);
@@ -124,7 +121,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(context, featureID, this.container, d, d.geometry.coordinates, LINESTYLE);
+        feature = new PixiFeatureLine(this, featureID, this.container, d, d.geometry.coordinates, LINESTYLE);
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
@@ -150,7 +147,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
 
-        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
       }
 
       if (feature.dirty) {
@@ -175,12 +172,11 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
-    const context = this.context;
     const service = this.getService();
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadImages(context.projection);  // note: context.projection !== pixi projection
+      service.loadImages(this.context.projection);  // note: context.projection !== pixi projection
 
       this.drawMarkers(timestamp, projection, zoom);
       this.cull(timestamp);

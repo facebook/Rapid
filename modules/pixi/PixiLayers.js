@@ -28,36 +28,35 @@ export class PixiLayers extends EventEmitter {
 
   /**
    * @constructor
-   * @param  context   Global shared application context
-   * @param  scene
+   * @param  scene   The Scene that owns these Layers
    */
-  constructor(context, scene) {
+  constructor(scene) {
     super();
-    this.context = context;
     this.scene = scene;
+    this.context = scene.context;
 
     this._layers = [
-      new PixiLayerBackgroundTiles(context, scene, 1),
+      new PixiLayerBackgroundTiles(scene, 1),
 
-      new PixiLayerOsm(context, scene, 5),
-      new PixiLayerRapid(context, scene, 6),
+      new PixiLayerOsm(scene, 5),
+      new PixiLayerRapid(scene, 6),
 
-      new PixiLayerCustomData(context, scene, 8),
-      new PixiLayerOsmNotes(context, scene, 10),
-      new PixiLayerImproveOsm(context, scene, 11),
-      new PixiLayerKeepRight(context, scene, 12),
-      new PixiLayerOsmose(context, scene, 13),
+      new PixiLayerCustomData(scene, 8),
+      new PixiLayerOsmNotes(scene, 10),
+      new PixiLayerImproveOsm(scene, 11),
+      new PixiLayerKeepRight(scene, 12),
+      new PixiLayerOsmose(scene, 13),
 
-      new PixiLayerMapillaryPhotos(context, scene, 20),
-      new PixiLayerMapillaryFeatures(context, scene, 21),
-      new PixiLayerMapillarySigns(context, scene, 22),
-      new PixiLayerKartaPhotos(context, scene, 25),
-      new PixiLayerStreetsidePhotos(context, scene, 26),
+      new PixiLayerMapillaryPhotos(scene, 20),
+      new PixiLayerMapillaryFeatures(scene, 21),
+      new PixiLayerMapillarySigns(scene, 22),
+      new PixiLayerKartaPhotos(scene, 25),
+      new PixiLayerStreetsidePhotos(scene, 26),
 
-      new PixiLayerLabels(context, scene, 30),
+      new PixiLayerLabels(scene, 30),
 
-      new PixiLayerEditBlocks(context, scene, 90),
-      new PixiLayerMapUI(context, scene, 99)
+      new PixiLayerEditBlocks(scene, 90),
+      new PixiLayerMapUI(scene, 99)
     ];
   }
 

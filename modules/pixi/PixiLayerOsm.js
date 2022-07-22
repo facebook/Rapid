@@ -24,15 +24,13 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this._enabled = true;  // OSM layers should be enabled by default
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
+    this._enabled = true;  // OSM layers should be enabled by default
     this._service = null;
     this.getService();
 
@@ -267,14 +265,13 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   drawPolygons(timestamp, projection, zoom, entities) {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
-    const context = this.context;
     const scene = this.scene;
-    const graph = context.graph();
+    const graph = this.context.graph();
 
     entities.forEach(entity => {
       let feature = scene.get(entity.id);
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(context, entity.id, areaContainer, entity);
+        feature = new PixiFeatureMultipolygon(this, entity.id, areaContainer, entity);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -294,6 +291,9 @@ export class PixiLayerOsm extends AbstractLayer {
         const style = styleMatch(entity.tags);
         feature.style = style;
       }
+
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -317,9 +317,8 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   drawLines(timestamp, projection, zoom, entities) {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
-    const context = this.context;
     const scene = this.scene;
-    const graph = context.graph();
+    const graph = this.context.graph();
 
     function getLevelContainer(level) {
       let levelContainer = lineContainer.getChildByName(level);
@@ -350,7 +349,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       let feature = scene.get(entity.id);
       if (!feature) {
-        feature = new PixiFeatureLine(context, entity.id, levelContainer, entity);
+        feature = new PixiFeatureLine(this, entity.id, levelContainer, entity);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -379,6 +378,9 @@ export class PixiLayerOsm extends AbstractLayer {
       if (feature.container.parent !== levelContainer) {
         feature.container.setParent(levelContainer);
       }
+
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -432,7 +434,7 @@ const activeData = context.activeData();
 
       let feature = scene.get(node.id);
       if (!feature) {
-        feature = new PixiFeaturePoint(context, node.id, parentContainer, node, node.loc);
+        feature = new PixiFeaturePoint(this, node.id, parentContainer, node, node.loc);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -441,12 +443,6 @@ const activeData = context.activeData();
         feature.v = version;
         feature.data = node;   // rebind data
         feature.geometry = node.loc;
-
-feature.interactive = !activeData.has(feature.id);
-if (activeData.has(feature.id)) {
-  console.log(`${feature.id} IS ACTIVE`);
-}
-
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
@@ -490,6 +486,10 @@ if (activeData.has(feature.id)) {
         feature.container.setParent(parentContainer);
       }
 
+      feature.interactive = !activeData.has(feature.id);
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
+
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
@@ -512,14 +512,13 @@ if (activeData.has(feature.id)) {
    */
   drawPoints(timestamp, projection, zoom, entities) {
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
-    const context = this.context;
     const scene = this.scene;
-    const graph = context.graph();
+    const graph = this.context.graph();
 
     entities.forEach(node => {
       let feature = scene.get(node.id);
       if (!feature) {
-        feature = new PixiFeaturePoint(context, node.id, pointContainer, node, node.loc);
+        feature = new PixiFeaturePoint(this, node.id, pointContainer, node, node.loc);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -531,7 +530,7 @@ if (activeData.has(feature.id)) {
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
-        const directions = node.directions(graph, context.projection);
+        const directions = node.directions(graph, this.context.projection);
 
         // set marker style
         let markerStyle = {
@@ -559,6 +558,9 @@ if (activeData.has(feature.id)) {
         feature.label = utilDisplayName(node);
       }
 
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
+
       if (feature.dirty) {
         feature.update(projection, zoom);
         scene.update(feature);
@@ -581,12 +583,11 @@ if (activeData.has(feature.id)) {
    */
   drawMidpoints(timestamp, projection, zoom, entities) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
-    const context = this.context;
     const scene = this.scene;
-    const graph = context.graph();
+    const graph = this.context.graph();
 
     // Midpoints should be drawn above everything
-    const mapUIContainer = context.layers().getLayer('map-ui').container;
+    const mapUIContainer = this.context.layers().getLayer('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     // Generate midpoints from all the highlighted ways
@@ -637,7 +638,7 @@ if (activeData.has(feature.id)) {
       let feature = scene.get(midpoint.id);
       if (!feature) {
         const style = { markerName: 'midpoint' };
-        feature = new PixiFeaturePoint(context, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
+        feature = new PixiFeaturePoint(this, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
       }
 
       // Something about the midpoint has changed
@@ -648,6 +649,9 @@ if (activeData.has(feature.id)) {
         feature.geometry = midpoint.loc;
         feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }
+
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
 
       if (feature.dirty) {
         feature.update(projection, zoom);

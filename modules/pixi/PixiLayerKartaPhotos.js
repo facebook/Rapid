@@ -28,13 +28,11 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
     this._service = null;
     this.getService();
@@ -121,7 +119,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(context, featureID, this.container, d, d.coordinates, LINESTYLE);
+        feature = new PixiFeatureLine(this, featureID, this.container, d, d.coordinates, LINESTYLE);
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
@@ -147,7 +145,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
 
-        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
       }
 
       if (feature.dirty) {

@@ -26,13 +26,11 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
     this._enabled = true;            // this layer should always be enabled
     this.container.visible = true;   // this layer should be visible at start
     this._oldk = 0;
@@ -276,7 +274,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons     Array of polygon data
    */
   drawPolygons(timestamp, projection, zoom, polygons) {
-    const context = this.context;
     const scene = this.scene;
 
     const polyStyle = {
@@ -292,7 +289,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         : (entity.geometry.type === 'MultiPolygon') ? entity.geometry.coordinates : [];
 
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(context, entity.id, this.container, null, geometry, polyStyle );
+        feature = new PixiFeatureMultipolygon(this, entity.id, this.container, null, geometry, polyStyle );
         feature.container.cursor = 'not-allowed';
       }
 
@@ -314,7 +311,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of line data
    */
   drawLines(timestamp, projection, zoom, lines) {
-    const context = this.context;
     const scene = this.scene;
 
     const lineStyle = {
@@ -325,7 +321,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       let feature = scene.get(entity.id);
 
       if (!feature) {
-        feature = new PixiFeatureLine(context, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
+        feature = new PixiFeatureLine(this, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
         feature.container.cursor = 'not-allowed';
       }
 
@@ -347,20 +343,16 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of point data
    */
   drawPoints(timestamp, projection, zoom, points) {
-    const context = this.context;
     const scene = this.scene;
-
-    const pointStyle = {
-      markerTint: 0x00ffff
-    };
+    const pointStyle = { markerTint: 0x00ffff };
 
     points.forEach(entity => {
       let feature = scene.get(entity.id);
 
       if (!feature) {
-        let pointCoords = [entity.geometry.coordinates[0], entity.geometry.coordinates[1]]; //leave off any elevation or other data.
+        const coord = [entity.geometry.coordinates[0], entity.geometry.coordinates[1]]; //leave off any elevation or other data.
 
-        feature = new PixiFeaturePoint(context, entity.id, this.container, entity, pointCoords, pointStyle );
+        feature = new PixiFeaturePoint(this, entity.id, this.container, entity, coord, pointStyle );
         feature.container.cursor = 'not-allowed';
       }
 

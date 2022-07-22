@@ -28,13 +28,11 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
     this._service = null;
     this.getService();
@@ -104,14 +102,13 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   drawMarkers(timestamp, projection, zoom) {
-    const context = this.context;
     const scene = this.scene;
 
     const service = this.getService();
     if (!service) return;
 
-    const images = service.bubbles(context.projection);
-    const sequences = service.sequences(context.projection);
+    const images = service.bubbles(this.context.projection);
+    const sequences = service.sequences(this.context.projection);
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
@@ -121,7 +118,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       let feature = scene.get(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(context, featureID, this.container, d, d.coordinates, LINESTYLE);
+        feature = new PixiFeatureLine(this, featureID, this.container, d, d.coordinates, LINESTYLE);
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
@@ -146,7 +143,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         if (Number.isFinite(d.ca)) {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
-        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
       }
 
       if (feature.dirty) {
@@ -170,12 +167,11 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
-    const context = this.context;
     const service = this.getService();
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadBubbles(context.projection);  // note: context.projection !== pixi projection
+      service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection
 
       this.drawMarkers(timestamp, projection, zoom);
       this.cull(timestamp);

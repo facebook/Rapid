@@ -22,13 +22,12 @@ export class PixiLayerMapUI extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
+
     this._enabled = true;            // this layer should always be enabled
     this.container.visible = true;   // this layer should always be visible
     this._oldk = 0;

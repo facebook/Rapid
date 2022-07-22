@@ -17,13 +17,9 @@ const DEBUG = false;
  *
  * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
- *   `selectTarget`  Current select target (a PIXI DisplayObject), or null
  *   `lastDown`     `eventData` Object for the most recent down event
  *   `lastMove`     `eventData` Object for the most recent move event
  *   `lastSpace`    `eventData` Object for the most recent move event used to trigger a spacebar click
- *
- * Events available:
- *   `selectchanged`  Fires whenever the hover target has changed, receives `eventData` Object
  */
 export class BehaviorSelect extends AbstractBehavior {
 
@@ -40,7 +36,6 @@ export class BehaviorSelect extends AbstractBehavior {
     this._showMenu = false;
     // this._lastInteractionType = null;
 
-    this.selectTarget = null;   // the displayObject being selected
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
@@ -70,7 +65,6 @@ export class BehaviorSelect extends AbstractBehavior {
     }
 
     this._enabled = true;
-    this.selectTarget = null;   // the displayObject being selected
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
@@ -114,20 +108,7 @@ export class BehaviorSelect extends AbstractBehavior {
       console.log('BehaviorSelect: disabling listeners');  // eslint-disable-line no-console
     }
 
-    // Something is currently selected, so un-select it first.
-    const eventData = this.lastMove;
-    if (eventData && this.selectTarget) {
-      eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
-      if (DEBUG) {
-        console.log(`BehaviorSelect: emitting 'selectchanged', selectTarget = none`);  // eslint-disable-line no-console
-      }
-      this.emit('selectchanged', eventData);
-    }
-
     this._enabled = false;
-    this.selectTarget = null;   // the displayObject being selected
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
@@ -314,7 +295,7 @@ export class BehaviorSelect extends AbstractBehavior {
    console.log(`!!! lastMove.target = ${this.lastMove.target}`);
   }
 
-    // Becase spacebar events will repeat if you keep it held down,
+    // Because spacebar events will repeat if you keep it held down,
     // user must move pointer or lift spacebar to allow another spacebar click
     if (this._spaceClickDisabled && this.lastSpace) {
       const dist = vecLength(pointer.coord, this.lastSpace.coord);
@@ -352,26 +333,17 @@ export class BehaviorSelect extends AbstractBehavior {
     const mode = context.mode();
     let datum = eventData.data;
 
-    // Select target has changed
-    if (this.selectTarget !== eventData.target) {
-      this.selectTarget = eventData.target;
-
-      if (DEBUG) {
-        const name = (eventData.target && eventData.target.name) || 'none';
-        console.log(`BehaviorSelect: emitting 'selectchanged', selectTarget = ${name}`);  // eslint-disable-line no-console
-      }
-      this.emit('selectchanged', eventData);
-    } else {
-      return;   // no change
-    }
-
-// vvv---- listen to selectchanged instead?
-    // highlight
-    const target = eventData.target;
-    const renderer = context.map().renderer();
-    const ids = datum ? [target.name] : [];
-    renderer.select(ids);
-///
+//// vvv---- this needs to be done a different way
+//// Selection can happen other ways, without direct user interaction
+//// For example, after adding a point that point needs to be selected.
+//// so instead - the renderer will need to listen to the context mode change events,
+//// and this code below will just do mode changes with context.enter
+//    // highlight
+//    const target = eventData.target;
+//    const renderer = context.map().renderer();
+//    const ids = datum ? [target.name] : [];
+//    renderer.select(ids);
+/////
 
     // What did we click on?
     // switch modes
@@ -410,22 +382,25 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked on a photo, so open / refresh the viewer's pic
     if (datum.captured_at) {
-      //Now, determine the layer that was clicked on, obtain its service.
-      let photoLayerName = eventData.target.parent.name;
-      let service = services[photoLayerName];
+      // Now, determine the layer that was clicked on, obtain its service.
+      const photoLayerName = eventData.target.parent.name;
+      const service = services[photoLayerName];
+      if (!service) return;
 
+      // The 'ID' of the photo varies by layer. Streetside uses 'key', others use 'id'.
+      const photoID = (photoLayerName === 'mapillary') ? datum.id : datum.key;
 
-      //The 'ID' of the photo varies by layer. Streetside uses 'key', others use 'id'.
-      let photoId = (photoLayerName === 'mapillary') ? datum.id : datum.key;
-
-      service.ensureViewerLoaded(context).then(function () {
-        service.selectImage(context, photoId).showViewer(context);
-      });
+      service.ensureViewerLoaded(context)
+        .then(() => service.selectImage(context, photoID).showViewer(context));
 
       context.map().centerEase(datum.loc);
 
+      // No mode change event here, just manually tell the renderer to select it, for now
+      const target = eventData.target;
+      const renderer = context.map().renderer();
+      const ids = datum ? [target.name] : [];
+      renderer.select(ids);
     }
-
 
   }
 

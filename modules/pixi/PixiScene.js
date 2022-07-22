@@ -16,10 +16,11 @@ export class PixiScene {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
+   * @param  renderer   The Renderer that owns this Scene
    */
-  constructor(context) {
-    this.context = context;
+  constructor(renderer) {
+    this.renderer = renderer;
+    this.context = renderer.context;
 
     this.features = new Map();     // Map of featureID -> Feature
     this.boxes = new Map();        // Map of featureID -> box Object (rbush uses these)
@@ -53,23 +54,6 @@ export class PixiScene {
 
     // Update the `features` cache
     this.features.set(featureID, feature);
-
-    // If feature is hovered or selected, update those collections
-    if (feature.hovered && !this.hovered.has(featureID)) {
-      this.hovered.add(featureID);
-      this.hoverTick++;
-    } else if (!feature.hovered && this.hovered.has(featureID)) {
-      this.hovered.delete(featureID);
-      this.hoverTick++;
-    }
-
-    if (feature.selected && !this.selected.has(featureID)) {
-      this.selected.add(featureID);
-      this.selectTick++;
-    } else if (!feature.selected && this.selected.has(featureID)) {
-      this.selected.delete(featureID);
-      this.selectTick++;
-    }
 
     // Update RBush spatial index (feature must have an extent)
     let box = this.boxes.get(featureID);
@@ -127,9 +111,12 @@ export class PixiScene {
 
   /**
    * select
-   * Mark these features as `selected` if they are in the scene.
-   * Note that `featureIDs` should contain the complete list of featureIDs to select.
-   * (in other words, anything not in this list will get unselected)
+   * Mark these features as `selected`
+   * A few things to note:
+   * - the `featureID` may not exist in the scene yet
+   *   (for example, a new point that hasn't yet been rendered)
+   * - `featureIDs` should contain the complete list of featureIDs to select.
+   *   (in other words, anything not in this list will get unselected)
    * @param  featureIDs   `Array` or `Set` of feature IDs to select
    */
   select(featureIDs) {
@@ -138,24 +125,28 @@ export class PixiScene {
 
     // Remove select where not needed
     for (const featureID of this.selected) {
-      const feature = this.features.get(featureID);
-      if (!feature) continue;                  // not in the scene?
       if (toSelect.has(featureID)) continue;   // it should stay selected
 
       this.selected.delete(featureID);
-      feature.selected = false;
       didChange = true;
+
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.selected = false;
+      }
     }
 
     // Add select where needed
     for (const featureID of toSelect) {
-      const feature = this.features.get(featureID);
-      if (!feature) continue;                       // not in the scene?
       if (this.selected.has(featureID)) continue;   // it's already selected
 
       this.selected.add(featureID);
-      feature.selected = true;
       didChange = true;
+
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.selected = true;
+      }
     }
 
     if (didChange) {
@@ -167,8 +158,11 @@ export class PixiScene {
   /**
    * hover
    * Mark these features as `hovered` if they are in the scene.
-   * Note that `featureIDs` should contain the complete list of featureIDs to hover.
-   * (in other words, anything not in this list will get unhovered)
+   * A few things to note:
+   * - the `featureID` may not exist in the scene yet
+   *   (for example, a new point that hasn't yet been rendered)
+   * - `featureIDs` should contain the complete list of featureIDs to hover.
+   *   (in other words, anything not in this list will get unhovered)
    * @param  featureIDs   `Array` or `Set` of feature IDs to hover
    */
   hover(featureIDs) {
@@ -177,24 +171,28 @@ export class PixiScene {
 
     // Remove hover where not needed
     for (const featureID of this.hovered) {
-      const feature = this.features.get(featureID);
-      if (!feature) continue;                  // not in the scene?
       if (toHover.has(featureID)) continue;   // it should stay hovered
 
       this.hovered.delete(featureID);
-      feature.hovered = false;
       didChange = true;
+
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.hovered = false;
+      }
     }
 
     // Add hover where needed
     for (const featureID of toHover) {
-      const feature = this.features.get(featureID);
-      if (!feature) continue;                       // not in the scene?
-      if (this.hovered.has(featureID)) continue;    // it's already hovered
+      if (this.hovered.has(featureID)) continue;   // it's already hovered
 
       this.hovered.add(featureID);
-      feature.hovered = true;
       didChange = true;
+
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.hovered = true;
+      }
     }
 
     if (didChange) {

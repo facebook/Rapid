@@ -153,7 +153,7 @@ export function uiMapInMap(context) {
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
       const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
 
-      const container = context.minipixi.stage;
+      const container = context.miniPixi.stage;
       container.name = 'minimap-stage';
 
       const bboxContainer = container.getChildByName('bbox');
@@ -226,7 +226,7 @@ export function uiMapInMap(context) {
       .on('dblclick.zoom', null)
       .merge(wrap);
 
-    this.minipixi = new PIXI.Application({
+    this.miniPixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
       autoStart: true,        // don't start the ticker yet
@@ -236,19 +236,20 @@ export function uiMapInMap(context) {
       sharedTicker: true,
     });
 
-    wrap.node().appendChild(this.minipixi.view);
+    wrap.node().appendChild(this.miniPixi.view);
     canvas = wrap.selectAll('canvas');
 
     const width = 200;
     const height = 150;
-    this.minipixi.renderer.resize(width, height);
+    this.miniPixi.renderer.resize(width, height);
 
-    const miniMapScene = new PixiScene(this.context);
-    context.minipixi = this.minipixi;
+    const miniRenderer = { context: this.context }; // mock one
+    const miniScene = new PixiScene(miniRenderer);
+    context.miniPixi = this.miniPixi;
 
-    miniMapTileLayer = new PixiLayerBackgroundTiles(this.context, miniMapScene, 1, true);  // isMinimap = true
+    miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 1, true);  // isMinimap = true
 
-    this.minipixi.ticker.add(timestamp => {
+    this.miniPixi.ticker.add(timestamp => {
       window.performance.mark('minimap-start');
       miniMapTileLayer.render(timestamp, projection, 10);
       window.performance.mark('minimap-end');

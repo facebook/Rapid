@@ -22,15 +22,15 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  context   Global shared application context
+   * @param  layer     The Layer that owns this Feature
    * @param  id        Unique string to use for the name of this feature
    * @param  parent    Parent container for this feature.  The feature will be added to it.
    * @param  data      Data to associate with this feature (like `__data__` from the D3.js days)
    * @param  geometry  `Array` containing geometry data
    * @param  style     `Object` containing style data
    */
-  constructor(context, id, parent, data, geometry, style) {
-    super(context, id, parent, data);
+  constructor(layer, id, parent, data, geometry, style) {
+    super(layer, id, parent, data);
 
     this.type = 'point';
     this.geometry = geometry;

@@ -1,10 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
-import {
-  Extent, Tiler,
-  geoMetersToLat, geoMetersToLon, geoScaleToZoom,
-  geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
+import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
 import { utilArrayUnion, utilQsString, utilStringQs, utilUniqueString } from '@id-sdk/util';
 import RBush from 'rbush';
 

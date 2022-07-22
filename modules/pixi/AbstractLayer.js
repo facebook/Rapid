@@ -17,13 +17,15 @@ export class AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
+   * @param  scene    The Scene that owns this Layer
    * @param  id       Unique string to use for the name of this layer
    * @param  layerZ   z-index to assign to this layer's container
    * @param  parent   Optional parent container for this feature.  Should be a Pixi Stage, defaults to the main stage
    */
-  constructor(context, id, layerZ, parent) {
-    this.context = context;
+  constructor(scene, id, layerZ, parent) {
+    this.scene = scene;
+    this.renderer = scene.renderer;
+    this.context = scene.context;
 
     this._enabled = false;  // Whether the user has chosen to see the layer
 
@@ -38,7 +40,7 @@ export class AbstractLayer {
     if (parent) {
       parent.addChild(container);
     } else {
-      context.pixi.stage.addChild(container);
+      this.context.pixi.stage.addChild(container);
     }
 
     // For now, layers will have to keep track of their own feature visiblity

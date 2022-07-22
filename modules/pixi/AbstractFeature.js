@@ -9,7 +9,6 @@ const HOVERGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff
 HOVERGLOW.resolution = 2;
 
 
-
 /**
  * AbstractFeature is the base class from which all features inherit.
  * It contains properties that used to manage the feature in the scene graph
@@ -38,12 +37,12 @@ HOVERGLOW.resolution = 2;
 export class AbstractFeature {
   /**
    * @constructor
-   * @param  context  Global shared application context
+   * @param  layer    The Layer that owns this Feature
    * @param  id       Unique string to use for the name of this feature
    * @param  parent   Parent container for this feature.  The feature's container will be added to it.
    * @param  data     Data to associate with this feature (like `__data__` from the D3.js days)
    */
-  constructor(context, id, parent, data) {
+  constructor(layer, id, parent, data) {
     const container = new PIXI.Container();
     this.container = container;
 
@@ -62,7 +61,10 @@ export class AbstractFeature {
     container.interactiveChildren = true;
 
     this.type = 'unknown';
-    this.context = context;
+    this.layer = layer;
+    this.scene = layer.scene;
+    this.renderer = layer.renderer;
+    this.context = layer.context;
     this.data = data;
     this.v = -1;
     this.lod = 2;   // full detail
@@ -207,7 +209,7 @@ export class AbstractFeature {
   set hovered(val) {
     if (this._hovered !== val) {
       this._hovered = val;
-      this.updateHalo();
+      this._styleDirty = true;
     }
   }
 
@@ -222,7 +224,7 @@ export class AbstractFeature {
   set selected(val) {
     if (this._selected !== val) {
       this._selected = val;
-      this.updateHalo();
+      this._styleDirty = true;
     }
   }
 

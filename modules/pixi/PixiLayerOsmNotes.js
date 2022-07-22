@@ -14,13 +14,11 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
     this._service = null;
     this.getService();
@@ -65,13 +63,12 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   drawMarkers(timestamp, projection, zoom) {
-    const context = this.context;
     const scene = this.scene;
 
     const service = this.getService();
     if (!service) return;
 
-    const visibleData = service.notes(context.projection);
+    const visibleData = service.notes(this.context.projection);
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
@@ -95,7 +92,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
           // iconName: iconName
         };
 
-        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
       }
 
       if (feature.dirty) {
@@ -119,12 +116,11 @@ export class PixiLayerOsmNotes extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
-    const context = this.context;
     const service = this.getService();
 
     if (this.enabled && service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadNotes(context.projection);  // note: context.projection !== pixi projection
+      service.loadNotes(this.context.projection);  // note: context.projection !== pixi projection
 
       this.drawMarkers(timestamp, projection, zoom);
       this.cull(timestamp);

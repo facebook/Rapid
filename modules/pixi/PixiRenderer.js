@@ -32,6 +32,11 @@ export class PixiRenderer {
     this._appPending = false;
     this._drawPending = false;
 
+    // Make sure callbacks have `this` bound correctly
+    this.tick = this.tick.bind(this);
+    this._onModeChange = this._onModeChange.bind(this);
+
+
     // Register Pixi with the pixi-inspector extension if it is installed
     // https://github.com/bfanger/pixi-inspector
     if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
@@ -83,8 +88,6 @@ export class PixiRenderer {
     const defaultListener = ticker._head.next;
     ticker.remove(defaultListener.fn, defaultListener.context);
 
-    // Make sure our tick handler has `this` bound correctly
-    this.tick = this.tick.bind(this);
     ticker.add(this.tick, this);
     ticker.maxFPS = 30;
     ticker.start();
@@ -104,8 +107,20 @@ export class PixiRenderer {
     // Setup other classes
     this.pixiProjection = new Projection();
     this.textures = new PixiTextures(context);
-    this.scene = new PixiScene(context);
-    this.layers = new PixiLayers(context, this.scene);
+    this.scene = new PixiScene(this);
+    this.layers = new PixiLayers(this.scene);
+
+    // Listen to mode changes so we can keep the selection updated
+    context.on('enter.PixiRenderer', this._onModeChange);
+  }
+
+
+  /**
+   * _onModeChange
+   * When changing modes, check whether the selection has changed.
+   */
+  _onModeChange() {
+    this.select(this.context.selectedIDs());
   }
 
 
@@ -164,7 +179,6 @@ export class PixiRenderer {
       // console.log(`app-${frame} : ${duration} ms`);
       return;
     }
-
   }
 
 

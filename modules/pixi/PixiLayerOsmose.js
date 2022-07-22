@@ -15,13 +15,11 @@ export class PixiLayerOsmose extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
 
     this._service = null;
     this.getService();
@@ -51,13 +49,12 @@ export class PixiLayerOsmose extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   drawMarkers(timestamp, projection, zoom) {
-    const context = this.context;
     const scene = this.scene;
 
     const service = this.getService();
     if (!service) return;
 
-    const visibleData = service.getItems(context.projection);
+    const visibleData = service.getItems(this.context.projection);
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
@@ -71,7 +68,7 @@ export class PixiLayerOsmose extends AbstractLayer {
           iconName: d.icon
         };
 
-        feature = new PixiFeaturePoint(context, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
 
         // // mathematically 0,-15 is center of marker, move up slightly
         // icon.position.set(0, -16);
@@ -98,12 +95,11 @@ export class PixiLayerOsmose extends AbstractLayer {
    * @param zoom         effective zoom to use for rendering
    */
   render(timestamp, projection, zoom) {
-    const context = this.context;
     const service = this.getService();
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadIssues(context.projection);  // note: context.projection !== pixi projection
+      service.loadIssues(this.context.projection);  // note: context.projection !== pixi projection
 
       this.drawMarkers(timestamp, projection, zoom);
       this.cull(timestamp);

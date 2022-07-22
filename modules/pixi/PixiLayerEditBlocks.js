@@ -14,13 +14,11 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context  Global shared application context
-   * @param  scene
+   * @param  scene    The Scene that owns this Layer
    * @param  layerZ   z-index to assign to this layer's container
    */
-  constructor(context, scene, layerZ) {
-    super(context, LAYERID, layerZ);
-    this.scene = scene;
+  constructor(scene, layerZ) {
+    super(scene, LAYERID, layerZ);
     this._enabled = true;   // this layer should always be enabled
 
     this._oldk = 0;
@@ -111,7 +109,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
           fill: { pattern: 'construction', color: 0x000001, alpha: 0.7 }
         };
 
-        feature = new PixiFeatureMultipolygon(this.context, featureID, this.container, null, geometry, style);
+        feature = new PixiFeatureMultipolygon(this, featureID, this.container, null, geometry, style);
         feature.container.cursor = 'not-allowed';
       }
 

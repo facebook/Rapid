@@ -26,19 +26,17 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * @constructor
-   * @param  context    Global shared application context
-   * @param  scene
+   * @param  scene      The Scene that owns this Layer
    * @param  layerZ     z-index to assign to this layer's container
    * @param  isMinimap  Pass `true` if this layer should be attached to the minimap
    */
-  constructor(context, scene, layerZ, isMinimap) {
+  constructor(scene, layerZ, isMinimap) {
     if (isMinimap) {
-      const stage = context.minipixi.stage;
-      super(context, `minimap-${LAYERID}`, layerZ, stage);
+      const stage = scene.context.miniPixi.stage;
+      super(scene, `minimap-${LAYERID}`, layerZ, stage);
     } else {
-      super(context, LAYERID, layerZ);
+      super(scene, LAYERID, layerZ);
     }
-    this.scene = scene;
     this.enabled = true;   // background imagery should be enabled by default
     this.isMinimap = isMinimap;
 
@@ -181,7 +179,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
-    const renderer = this.isMinimap ? this.context.minipixi.renderer : this.context.pixi.renderer;
+    const renderer = this.isMinimap ? this.context.miniPixi.renderer : this.context.pixi.renderer;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
