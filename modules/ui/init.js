@@ -296,9 +296,10 @@ export function uiInit(context) {
 
     issueLinks
       .append('button')
+      .attr('class', 'bugnub')
       .attr('tabindex', -1)
       .on('click', generateBugLink)
-      .call(svgIcon('#iD-icon-bug', 'light'))
+      .call(svgIcon('#iD-icon-bug', 'bugnub'))
       .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
 
     issueLinks

@@ -56,6 +56,14 @@ button.rapid-features.layer-off use {
     border-radius: 2px;
 }
 
+button.bugnub {
+    margin-right: 2px;
+}
+
+/* bug nub */
+.ideditor .icon.bugnub {
+    color: #ff26db;
+}
 
 /* UI Buttons */
 /* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
