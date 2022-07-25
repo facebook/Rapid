@@ -542,7 +542,7 @@ export function coreContext() {
   /* Map */
   let _map;
   context.map = () => _map;
-  context.layers = () => _map.layers();
+  context.scene = () => _map.scene();
   context.surface = () => _map.surface;
   context.surfaceRect = () => _map.surface.node().getBoundingClientRect();
   context.editable = () => {

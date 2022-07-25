@@ -41,11 +41,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         window.location.replace('#' + utilQsString(hash, true));  // update hash
       }
 
-      const rapidLayer = context.layers().getLayer('rapid');
-      rapidLayer.makeDirty();
-
+      context.scene().dirtyLayers('rapid');
       context.enter('browse');   // return to browse mode (in case something was selected)
-      context.map().immediateRedraw();
+      context.map().immediateRedraw();   // why? mode change should trigger redraw?
     }
   }
 
@@ -53,10 +51,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     let datasets = rapidContext.datasets();
     let dataset = datasets[datasetID];
     if (dataset) {
-      const rapidLayer = context.layers().getLayer('rapid');
-      rapidLayer.makeDirty();
-
       dataset.color = color;
+
+      context.scene().dirtyLayers('rapid');
       context.map().immediateRedraw();
       _content.call(renderModalContent);
 
@@ -69,7 +66,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleRapid() {
-    context.layers().toggle('rapid');
+    context.scene().toggleLayers('rapid');
     _content.call(renderModalContent);
   }
 
@@ -111,7 +108,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderModalContent(selection) {
-    const rapidLayer = context.layers().getLayer('rapid');
+    const rapidLayer = context.scene().getLayer('rapid');
     if (!rapidLayer) return;
 
     /* Toggle All */
@@ -217,7 +214,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-    const rapidLayer = context.layers().getLayer('rapid');
+    const rapidLayer = context.scene().getLayer('rapid');
     if (!rapidLayer) return;
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')

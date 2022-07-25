@@ -113,7 +113,7 @@ export function uiIntro(context, skipToRapid) {
     overlays.forEach(d => context.background().toggleOverlayLayer(d));
 
     // Setup data layers (only OSM & ai-features)
-    context.layers().only(['osm', 'rapid']);
+    context.scene().onlyLayers(['osm', 'rapid']);
 
     // Setup RapiD Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();

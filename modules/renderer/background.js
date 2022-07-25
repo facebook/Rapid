@@ -164,7 +164,7 @@ export function rendererBackground(context) {
       d3_event.dataTransfer.dropEffect = 'copy';
     }
 
-    let customDataLayer = context.layers().getLayer('custom-data');
+    let customDataLayer = context.scene().getLayer('custom-data');
 
     //Keep trying till the layers are instantiated.
     if (!customDataLayer) return;
@@ -378,7 +378,7 @@ export function rendererBackground(context) {
 
   background.brightness = function (d) {
 
-    context.layers().getLayer('background').setBrightness(d);
+    context.scene().getLayer('background').setBrightness(d);
 
     if (!arguments.length) return _brightness;
     _brightness = d;
@@ -389,7 +389,7 @@ export function rendererBackground(context) {
 
   background.contrast = function(d) {
 
-    context.layers().getLayer('background').setContrast(d);
+    context.scene().getLayer('background').setContrast(d);
 
     if (!arguments.length) return _contrast;
     _contrast = d;
@@ -399,7 +399,7 @@ export function rendererBackground(context) {
 
 
   background.saturation = function(d) {
-      context.layers().getLayer('background').setSaturation(d);
+      context.scene().getLayer('background').setSaturation(d);
     if (!arguments.length) return _saturation;
     _saturation = d;
     if (context.mode()) dispatch.call('change');
@@ -408,7 +408,7 @@ export function rendererBackground(context) {
 
 
   background.sharpness = function (d) {
-    context.layers().getLayer('background').setSharpness(d);
+    context.scene().getLayer('background').setSharpness(d);
 
     if (!arguments.length) return _sharpness;
     _sharpness = d;
@@ -474,7 +474,7 @@ export function rendererBackground(context) {
         });
 
         if (hash.gpx) {
-          const gpx = context.layers().getLayer('custom-data');
+          const gpx = context.scene().getLayer('custom-data');
           if (gpx) {
             gpx.url(hash.gpx, '.gpx');
           }

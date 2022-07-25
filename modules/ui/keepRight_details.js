@@ -77,7 +77,7 @@ export function uiKeepRightDetails(context) {
 
             utilHighlightEntities([entityID], false, context);
 
-            context.layers().enable('osm');  // make sure osm layer is even on
+            context.scene().enableLayers('osm');  // make sure osm layer is even on
             context.map().centerZoomEase(_qaItem.loc, 20);
 
             if (entity) {

@@ -46,7 +46,7 @@ export function uiIntroRapid(context, reveal) {
 
 
   function welcome() {
-    context.layers().enable('rapid');
+    context.scene().enableLayers('rapid');
     context.enter('browse');
     context.history().reset('initial');
     reveal('.intro-nav-wrap .chapter-rapid',
@@ -70,7 +70,7 @@ export function uiIntroRapid(context, reveal) {
 
 
   function selectRoad() {
-    context.layers().enable('rapid');
+    context.scene().enableLayers('rapid');
 
     // disallow scrolling
     d3_select('.inspector-wrap').on('wheel.intro', eventCancel);

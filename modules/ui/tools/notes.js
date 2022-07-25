@@ -22,7 +22,7 @@ export function uiToolNotes(context) {
 
 
   function notesEnabled() {
-    const noteLayer = context.layers().getLayer('notes');
+    const noteLayer = context.scene().getLayer('notes');
     return noteLayer && noteLayer.enabled;
   }
 

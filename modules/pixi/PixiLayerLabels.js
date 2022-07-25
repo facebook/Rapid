@@ -33,7 +33,7 @@ export class PixiLayerLabels extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this layer's container
+   * @param  layerZ   z-index to assign to this Layer's container
    */
   constructor(scene, layerZ) {
     super(scene, LAYERID, layerZ);
@@ -167,11 +167,11 @@ export class PixiLayerLabels extends AbstractLayer {
    * - label placement - do the math of figuring our where labels should be
    * - label rendering - show or hide labels based on their visibility
    *
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  render(timestamp, projection, zoom) {
+  render(frame, projection, zoom) {
     if (this._enabled && zoom >= MINZOOM) {
       this.visible = true;
 
@@ -316,7 +316,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
-      const feature = this.scene.get(featureID);
+      const feature = this.scene.getFeature(featureID);
       const rect = feature && feature.sceneBounds;
       if (!rect) return;
 
@@ -341,7 +341,7 @@ export class PixiLayerLabels extends AbstractLayer {
       const existingBoxes = this._rbush.search(box);
       existingBoxes.forEach(existingBox => {
         if (existingBox.type === 'label') {
-          const existingFeature = this.scene.get(existingBox.featureID);
+          const existingFeature = this.scene.getFeature(existingBox.featureID);
           if (existingFeature) {
             existingFeature._labelDirty = true;
           }

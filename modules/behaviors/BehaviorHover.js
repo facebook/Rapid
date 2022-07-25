@@ -126,13 +126,13 @@ export class BehaviorHover extends AbstractBehavior {
       this.emit('hoverchanged', move);
 
 
-// vvv---- everything below here should be listening instead
+// vvv---- maybe everything below here should be listening instead
       let ids = [];
       if (move.target && move.data) {
         ids = [move.target.name];  // the featureID is here (e.g. osm id)
       }
 
-      this.context.map().renderer().hover(ids);
+      this.context.map().renderer().hoverFeatures(ids);
       // this.context.ui().sidebar.hover([move.data]);
     }
   }

@@ -393,7 +393,7 @@ export function uiInit(context) {
         const mode = context.mode();
         if (mode && /^draw/.test(mode.id)) return;
 
-        const layer = context.layers().toggle('osm');
+        const layer = context.scene().toggleLayers('osm');
         context.enter('browse');
       })
       .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {

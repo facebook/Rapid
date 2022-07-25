@@ -7,7 +7,7 @@ import { utilGetSetValue, utilNoAuto } from '../../util';
 
 
 export function uiSectionPhotoOverlays(context) {
-  let layers = context.layers();
+  const scene = context.scene();
 
   let section = uiSection('photo-overlays', context)
     .label(t.html('photo_overlays.title'))
@@ -31,7 +31,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function showsLayer(layerID) {
-    const layer = layers.getLayer(layerID);
+    const layer = scene.getLayer(layerID);
     return layer && layer.enabled;
   }
 
@@ -42,9 +42,9 @@ export function uiSectionPhotoOverlays(context) {
     if (mode && /^draw/.test(mode.id)) return;
 
     if (val) {
-      layers.enable(layerID);
+      scene.enableLayers(layerID);
     } else {
-      layers.disable(layerID);
+      scene.disableLayers(layerID);
     }
   }
 
@@ -55,8 +55,8 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoItems(selection) {
-    let photoKeys = new Set(context.photos().overlayLayerIDs());
-    const photoLayers = layers.all().filter(layer => photoKeys.has(layer.id));
+    const photoKeys = context.photos().overlayLayerIDs();
+    const photoLayers = scene.layers.filter(layer => photoKeys.includes(layer.id));
     const data = photoLayers.filter(layer => layer.supported);
 
     function layerSupported(d) {
@@ -317,7 +317,7 @@ export function uiSectionPhotoOverlays(context) {
     }
   }
 
-  context.layers().on('layerchange', section.reRender);
+  context.scene().on('layerchange', section.reRender);
   context.photos().on('change.uiSectionPhotoOverlays', section.reRender);
 
   return section;

@@ -23,9 +23,9 @@ export class PixiFeaturePoint extends AbstractFeature {
   /**
    * @constructor
    * @param  layer     The Layer that owns this Feature
-   * @param  id        Unique string to use for the name of this feature
-   * @param  parent    Parent container for this feature.  The feature will be added to it.
-   * @param  data      Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  id        Unique string to use for the name of this Feature
+   * @param  parent    Parent container for this Feature.  The Feature will be added to it.
+   * @param  data      Data to associate with this Feature (like `__data__` from the D3.js days)
    * @param  geometry  `Array` containing geometry data
    * @param  style     `Object` containing style data
    */
@@ -70,8 +70,8 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * destroy
-   * Every feature should have a destroy function that frees all the resources
-   * Do not use the feature after calling `destroy()`.
+   * Every Feature should have a destroy function that frees all the resources
+   * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
     super.destroy();
@@ -274,7 +274,7 @@ export class PixiFeaturePoint extends AbstractFeature {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
 
-        const mapUIContainer = this.context.layers().getLayer('map-ui').container;
+        const mapUIContainer = this.context.scene().getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 
@@ -294,7 +294,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * geometry
-   * @param  arr  Geometry `Array` (contents depends on the feature type)
+   * @param  arr  Geometry `Array` (contents depends on the Feature type)
    *
    * 'point' - Single wgs84 coordinate
    *    [lon, lat]
@@ -313,7 +313,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * style
-   * @param  obj  Style `Object` (contents depends on the feature type)
+   * @param  obj  Style `Object` (contents depends on the Feature type)
    *
    * 'point' - see PixiFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js

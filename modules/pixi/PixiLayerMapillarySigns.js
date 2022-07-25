@@ -15,7 +15,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this layer's container
+   * @param  layerZ   z-index to assign to this Layer's container
    */
   constructor(scene, layerZ) {
     super(scene, LAYERID, layerZ);
@@ -62,11 +62,11 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
   /**
    * drawMarkers
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  drawMarkers(timestamp, projection, zoom) {
+  drawMarkers(frame, projection, zoom) {
     const scene = this.scene;
 
     const service = this.getService();
@@ -80,7 +80,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
     detections.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = scene.get(featureID);
+      let feature = scene.getFeature(featureID);
 
       if (!feature) {
         const style = {
@@ -97,12 +97,12 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
     });
   }
@@ -111,11 +111,11 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
   /**
    * render
    * Draw any data we have, and schedule fetching more of it to cover the view
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
-   * @param zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  render(timestamp, projection, zoom) {
+  render(frame, projection, zoom) {
     const context = this.context;
     const service = this.getService();
 
@@ -124,8 +124,8 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
       service.loadSigns(context.projection);  // note: context.projection !== pixi projection
       service.showSignDetections(true);
 
-      this.drawMarkers(timestamp, projection, zoom);
-      this.cull(timestamp);
+      this.drawMarkers(frame, projection, zoom);
+      this.cull(frame);
 
     } else {
       this.visible = false;
@@ -136,7 +136,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
   /**
    * supported
-   * Whether the layer's service exists
+   * Whether the Layer's service exists
    */
   get supported() {
     return !!this.getService();

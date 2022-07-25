@@ -16,7 +16,7 @@ const GEOLOCATE_OPTIONS = {
 
 export function uiGeolocate(context) {
   let _uiModal = uiLoading(context).message(t.html('geolocate.locating')).blocking(true);
-  let _layer = context.layers().getLayer('map-ui');
+  let _layer = context.scene().getLayer('map-ui');
   let _enabled = false;
   let _timeoutID;
   let _button = d3_select(null);

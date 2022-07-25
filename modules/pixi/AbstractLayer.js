@@ -2,25 +2,25 @@ import * as PIXI from 'pixi.js';
 
 
 /**
- * AbstractLayer is the base class from which all layers inherit.
- * It creates a container to hold the layer data.
+ * AbstractLayer is the base class from which all Layers inherit.
+ * It creates a container to hold the Layer data.
  *
  * Properties you can access:
- *   `container`    PIXI.Container() that contains all the features for this layer
- *   `id`           Unique string to use for the name of this layer
- *   `supported`    Is this layer supported? (i.e. do we even show it in lists?)
- *   `zIndex`       Where this layer sits compared to other layers
- *   `enabled`      Whether the the user has chosen to see the layer
- *   `visible`      Whether the layer's data is currently visible  (many layers become invisible at lower zooms)
+ *   `container`    PIXI.Container() that contains all the Features for this Layer
+ *   `id`           Unique string to use for the name of this Layer
+ *   `supported`    Is this Layer supported? (i.e. do we even show it in lists?)
+ *   `zIndex`       Where this Layer sits compared to other Layers
+ *   `enabled`      Whether the the user has chosen to see the Layer
+ *   `visible`      Whether the Layer's data is currently visible  (many Layers become invisible at lower zooms)
  */
 export class AbstractLayer {
 
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  id       Unique string to use for the name of this layer
-   * @param  layerZ   z-index to assign to this layer's container
-   * @param  parent   Optional parent container for this feature.  Should be a Pixi Stage, defaults to the main stage
+   * @param  id       Unique string to use for the name of this Layer
+   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  parent   Optional parent container for this Layer.  Should be a Pixi Stage, defaults to the main stage
    */
   constructor(scene, id, layerZ, parent) {
     this.scene = scene;
@@ -29,7 +29,7 @@ export class AbstractLayer {
 
     this._enabled = false;  // Whether the user has chosen to see the layer
 
-    // Create layer container
+    // Create Layer container
     const container = new PIXI.Container();
     container.name = id;
     container.zIndex = layerZ;
@@ -43,51 +43,52 @@ export class AbstractLayer {
       this.context.pixi.stage.addChild(container);
     }
 
-    // For now, layers will have to keep track of their own feature visiblity
-    // and implement their own feature culling and updating logic
-    this.seenFeature = new Map();  // Map (feature -> timestamp)
+    // For now, Layers will have to keep track of their own Feature visiblity
+    // and implement their own Feature culling and updating logic
+    this.seenFeature = new Map();  // Map (Feature -> seenFrame)
   }
 
 
   /**
    * render
-   * Every layer should have a render function that manages the scene under its container
+   * Every Layer should have a render function that manages the scene under its container
    * Override in a subclass with needed logic. It will be passed:
-   *
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
   render() {
-    return true;
   }
 
 
   /**
    * cull
-   * Make invisible any features that were not seen during this frame
-   * @param  timestamp   timestamp in milliseconds
+   * Make invisible any Features that were not seen during the current frame
+   * @param  frame    Integer frame being rendered
    */
-  cull(timestamp) {
-    this.seenFeature.forEach((ts, feature) => {
-      if (ts !== timestamp) {
+  cull(frame) {
+    for (const [feature, seenFrame] of this.seenFeature) {
+      if (seenFrame !== frame) {
         feature.visible = false;
       }
-    });
+      // todo - if very old, remove from scene entirely
+    }
   }
 
 
   /**
-   * makeDirty
-   * An easy way to make all the features on this layer dirty
+   * dirtyLayer
+   * An easy way to make all the Features on this Layer dirty
    */
-  makeDirty() {
-    this.seenFeature.forEach((ts, feature) => feature.dirty = true);
+  dirtyLayer() {
+    for (const feature of this.seenFeature.keys()) {
+      feature.dirty = true;
+    }
   }
 
 
   /**
-   * layer id
+   * Layer id
    */
   get id() {
     return this.container.name;
@@ -95,7 +96,7 @@ export class AbstractLayer {
 
   /**
    * supported
-   * Is this layer supported? (i.e. do we even show it in lists?)
+   * Is this Layer supported? (i.e. do we even show it in lists?)
    * Can be overridden in a subclass with additional logic
    */
   get supported() {
@@ -104,7 +105,7 @@ export class AbstractLayer {
 
   /**
    * zIndex
-   * Where this layer sits compared to other layers
+   * Where this Layer sits compared to other Layers
    */
   get zIndex() {
     return this.container.zIndex;
@@ -115,8 +116,8 @@ export class AbstractLayer {
 
   /**
    * visible
-   * Whether the layer's data is currently visible
-   * (many layers become invisible at lower zooms)
+   * Whether the Layer's data is currently visible
+   * (many Layers become invisible at lower zooms)
    */
   get visible() {
     return this.container.visible;
@@ -124,13 +125,15 @@ export class AbstractLayer {
   set visible(val) {
     this.container.visible = val;
     if (!val) {
-      this.seenFeature.forEach((ts, feature) => feature.visible = false);
+      for (const feature of this.seenFeature.keys()) {
+        feature.visible = false;
+      }
     }
   }
 
   /**
    * enabled
-   * Whether the user has chosen to see the layer
+   * Whether the user has chosen to see the Layer
    */
   get enabled() {
     return this._enabled;
@@ -138,7 +141,7 @@ export class AbstractLayer {
   set enabled(val) {
     this._enabled = val;
     this.visible = val;
-    this.makeDirty();
+    this.dirtyLayer();
   }
 
 }

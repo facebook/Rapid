@@ -10,26 +10,26 @@ HOVERGLOW.resolution = 2;
 
 
 /**
- * AbstractFeature is the base class from which all features inherit.
- * It contains properties that used to manage the feature in the scene graph
+ * AbstractFeature is the base class from which all Features inherit.
+ * It contains properties that used to manage the Feature in the scene graph
  *
  * Properties you can access:
- *   `container`      PIXI.Container() that contains all the graphics for this feature
- *   `id`             Unique string to use for the name of this feature
- *   `type`           String describing what kind of feature this is ('point', 'line', 'multipolygon')
+ *   `container`      PIXI.Container() that contains all the graphics for this Feature
+ *   `id`             Unique string to use for the name of this Feature
+ *   `type`           String describing what kind of Feature this is ('point', 'line', 'multipolygon')
  *   `geometry`       Array containing geometry info
  *   `style`          Object containing style info
- *   `label`          String containing the feature's label
- *   `data`           Data to associate with this feature (like `__data__` from the D3.js days)
- *   `visible`        `true` if the feature is visible (`false` if it is culled)
- *   `interactive`    `true` if the feature is interactive (emits Pixi events)
- *   `dirty`          `true` if the feature needs to be rebuilt
- *   `selected`       `true` if the feature is selected
- *   `hovered`        `true` if the feature is hovered
- *   `v`              Version of the feature, can be used to detect changes
- *   `lod`            Level of detail for the feature last time it was styled (0 = off, 1 = simplified, 2 = full)
- *   `extent`         Bounds of the feature (in WGS84 long/lat)
- *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the feature
+ *   `label`          String containing the Feature's label
+ *   `data`           Data to associate with this Feature (like `__data__` from the D3.js days)
+ *   `visible`        `true` if the Feature is visible (`false` if it is culled)
+ *   `interactive`    `true` if the Feature is interactive (emits Pixi events)
+ *   `dirty`          `true` if the Feature needs to be rebuilt
+ *   `selected`       `true` if the Feature is selected
+ *   `hovered`        `true` if the Feature is hovered
+ *   `v`              Version of the Feature, can be used to detect changes
+ *   `lod`            Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
+ *   `extent`         Bounds of the Feature (in WGS84 long/lat)
+ *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the Feature
  *   `sceneBounds`    PIXI.Rectangle() where 0,0 is the origin of the scane
  */
 
@@ -38,9 +38,9 @@ export class AbstractFeature {
   /**
    * @constructor
    * @param  layer    The Layer that owns this Feature
-   * @param  id       Unique string to use for the name of this feature
-   * @param  parent   Parent container for this feature.  The feature's container will be added to it.
-   * @param  data     Data to associate with this feature (like `__data__` from the D3.js days)
+   * @param  id       Unique string to use for the name of this Feature
+   * @param  parent   Parent container for this Feature.  The Feature's container will be added to it.
+   * @param  data     Data to associate with this Feature (like `__data__` from the D3.js days)
    */
   constructor(layer, id, parent, data) {
     const container = new PIXI.Container();
@@ -55,7 +55,7 @@ export class AbstractFeature {
       container.setParent(parent);
     }
 
-    // By default, make the feature interactive
+    // By default, make the Feature interactive
     container.buttonMode = true;
     container.interactive = true;
     container.interactiveChildren = true;
@@ -89,8 +89,8 @@ export class AbstractFeature {
 
   /**
    * destroy
-   * Every feature should have a destroy function that frees all the resources
-   * Do not use the feature after calling `destroy()`.
+   * Every Feature should have a destroy function that frees all the resources
+   * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
     // Destroying a container removes it from its parent automatically
@@ -113,8 +113,8 @@ export class AbstractFeature {
 
   /**
    * update
-   * Every feature should have an update function that redraws the feature at the given projection and zoom.
-   * When the feature is updated, its `dirty` flags should be set to `false`.
+   * Every Feature should have an update function that redraws the Feature at the given projection and zoom.
+   * When the Feature is updated, its `dirty` flags should be set to `false`.
    * Override in a subclass with needed logic. It will be passed:
    *
    * @param  projection  Pixi projection to use for rendering
@@ -131,7 +131,7 @@ export class AbstractFeature {
 
   /**
    * updateHalo
-   * Every feature should have an update function that redraws the features halo when selected or hovered
+   * Every Feature should have an update function that redraws the Feature's halo when selected or hovered
    * Override in a subclass with needed logic.
    */
   updateHalo() {
@@ -156,7 +156,7 @@ export class AbstractFeature {
 
   /**
    * visible
-   * Whether the feature is currently visible
+   * Whether the Feature is currently visible
    */
   get visible() {
     return this.container.visible;
@@ -171,7 +171,7 @@ export class AbstractFeature {
 
   /**
    * interactive
-   * Whether the feature is currently interactive
+   * Whether the Feature is currently interactive
    */
   get interactive() {
     return this.container.interactive;
@@ -186,7 +186,7 @@ export class AbstractFeature {
 
   /**
    * dirty
-   * Whether the feature needs to be rebuilt
+   * Whether the Feature needs to be rebuilt
    */
   get dirty() {
     // The labeling code will decide what to do with the `_labelDirty` flag
@@ -201,7 +201,7 @@ export class AbstractFeature {
 
   /**
    * hovered
-   * @param  val  `true` to make the feature hovered
+   * @param  val  `true` to make the Feature hovered
    */
   get hovered() {
     return this._hovered;
@@ -216,7 +216,7 @@ export class AbstractFeature {
 
   /**
    * selected
-   * @param  val  `true` to make the feature selected
+   * @param  val  `true` to make the Feature selected
    */
   get selected() {
     return this._selected;
@@ -231,7 +231,7 @@ export class AbstractFeature {
 
   /**
    * geometry
-   * @param  arr  Geometry `Array` (contents depends on the feature type)
+   * @param  arr  Geometry `Array` (contents depends on the Feature type)
    *
    * 'point' - Single wgs84 coordinate
    *    [lon, lat]
@@ -265,7 +265,7 @@ export class AbstractFeature {
 
   /**
    * style
-   * @param  obj  Style `Object` (contents depends on the feature type)
+   * @param  obj  Style `Object` (contents depends on the Feature type)
    *
    * 'point' - see AbstractFeaturePoint.js
    * 'line'/'multipolygon' - see styles.js

@@ -12,7 +12,7 @@ export function uiSectionDataLayers(context) {
   let settingsCustomData = uiSettingsCustomData(context)
     .on('change', customChanged);
 
-  let layers = context.layers();
+  const scene = context.scene();
 
   let section = uiSection('data-layers', context)
     .label(t.html('map_data.data_layers'))
@@ -35,7 +35,7 @@ export function uiSectionDataLayers(context) {
 
 
   function showsLayer(layerID) {
-    const layer = layers.getLayer(layerID);
+    const layer = scene.getLayer(layerID);
     return layer && layer.enabled;
   }
 
@@ -46,9 +46,9 @@ export function uiSectionDataLayers(context) {
     if (mode && /^draw/.test(mode.id)) return;
 
     if (val) {
-      layers.enable(layerID);
+      scene.enableLayers(layerID);
     } else {
-      layers.disable(layerID);
+      scene.disableLayers(layerID);
       if (layerID === 'osm' || layerID === 'notes') {
         context.enter('browse');
       }
@@ -62,8 +62,8 @@ export function uiSectionDataLayers(context) {
 
 
   function drawOsmItems(selection) {
-    const osmKeys = new Set(['osm', 'notes']);
-    const osmLayers = layers.all().filter(layer => osmKeys.has(layer.id));
+    const osmKeys = ['osm', 'notes'];
+    const osmLayers = scene.layers.filter(layer => osmKeys.includes(layer.id));
 
     let ul = selection
       .selectAll('.layer-list-osm')
@@ -122,8 +122,8 @@ export function uiSectionDataLayers(context) {
 
 
   function drawQAItems(selection) {
-    const qaKeys = new Set(['keepRight', 'improveOSM', 'osmose']);
-    const qaLayers = layers.all().filter(layer => qaKeys.has(layer.id));
+    const qaKeys = ['keepRight', 'improveOSM', 'osmose'];
+    const qaLayers = scene.layers.filter(layer => qaKeys.includes(layer.id));
 
     let ul = selection
       .selectAll('.layer-list-qa')
@@ -174,7 +174,7 @@ export function uiSectionDataLayers(context) {
 
 
   function drawCustomDataItems(selection) {
-    const dataLayer = layers.getLayer('custom-data');
+    const dataLayer = scene.getLayer('custom-data');
     const hasData = dataLayer && dataLayer.hasData();
     const showsData = hasData && dataLayer.enabled;
 
@@ -264,7 +264,7 @@ export function uiSectionDataLayers(context) {
 
 
   function customChanged(d) {
-    let dataLayer = layers.getLayer('custom-data');
+    const dataLayer = scene.getLayer('custom-data');
 
     if (d && d.url) {
       dataLayer.url(d.url);
@@ -326,7 +326,7 @@ export function uiSectionDataLayers(context) {
       .html(t.html('map_data.measurement_panel.title'));
   }
 
-  context.layers().on('layerchange', section.reRender);
+  context.scene().on('layerchange', section.reRender);
 
   return section;
 }

@@ -25,7 +25,7 @@ export class PixiLayerOsm extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this layer's container
+   * @param  layerZ   z-index to assign to this Layer's container
    */
   constructor(scene, layerZ) {
     super(scene, LAYERID, layerZ);
@@ -80,7 +80,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * supported
-   * Whether the layer's service exists
+   * Whether the Layer's service exists
    */
   get supported() {
     return !!this.getService();
@@ -168,11 +168,11 @@ export class PixiLayerOsm extends AbstractLayer {
   /**
    * render
    * Draw any data we have, and schedule fetching more of it to cover the view
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  render(timestamp, projection, zoom) {
+  render(frame, projection, zoom) {
     const context = this.context;
     const scene = this.scene;
     const service = this.getService();
@@ -242,13 +242,13 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
 
-      this.drawPolygons(timestamp, projection, zoom, data.polygons);
-      this.drawLines(timestamp, projection, zoom, data.lines);
-      this.drawVertices(timestamp, projection, zoom, data.vertices);
-      this.drawPoints(timestamp, projection, zoom, data.points);
-      this.drawMidpoints(timestamp, projection, zoom, data.highlighted);
+      this.drawPolygons(frame, projection, zoom, data.polygons);
+      this.drawLines(frame, projection, zoom, data.lines);
+      this.drawVertices(frame, projection, zoom, data.vertices);
+      this.drawPoints(frame, projection, zoom, data.points);
+      this.drawMidpoints(frame, projection, zoom, data.highlighted);
 
-      this.cull(timestamp);
+      this.cull(frame);
 
     } else {
       this.visible = false;
@@ -258,18 +258,18 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * drawPolygons
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   a pixi projection
-   * @param  zoom         the effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (ways/relations with area geometry)
    */
-  drawPolygons(timestamp, projection, zoom, entities) {
+  drawPolygons(frame, projection, zoom, entities) {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
     const scene = this.scene;
     const graph = this.context.graph();
 
     entities.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.getFeature(entity.id);
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, entity.id, areaContainer, entity);
       }
@@ -297,12 +297,12 @@ export class PixiLayerOsm extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
     });
   }
@@ -310,12 +310,12 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * drawLines
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   a pixi projection
-   * @param  zoom         the effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (ways/relations with line geometry)
    */
-  drawLines(timestamp, projection, zoom, entities) {
+  drawLines(frame, projection, zoom, entities) {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
     const scene = this.scene;
     const graph = this.context.graph();
@@ -347,7 +347,7 @@ export class PixiLayerOsm extends AbstractLayer {
       const lvl = entity.layer().toString();
       const levelContainer = getLevelContainer(lvl);
 
-      let feature = scene.get(entity.id);
+      let feature = scene.getFeature(entity.id);
       if (!feature) {
         feature = new PixiFeatureLine(this, entity.id, levelContainer, entity);
       }
@@ -384,12 +384,12 @@ export class PixiLayerOsm extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
     });
   }
@@ -397,12 +397,12 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * drawVertices
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (nodes with vertex geometry)
    */
-  drawVertices(timestamp, projection, zoom, entities) {
+  drawVertices(frame, projection, zoom, entities) {
     const context = this.context;
     const scene = this.scene;
     const graph = context.graph();
@@ -410,7 +410,7 @@ export class PixiLayerOsm extends AbstractLayer {
     // Most vertices should be children of the vertex container
     const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
     // Vertices related to the selection/hover should be drawn above everything
-    const mapUIContainer = context.layers().getLayer('map-ui').container;
+    const mapUIContainer = context.scene().getLayer('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
@@ -432,7 +432,7 @@ const activeData = context.activeData();
       }
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
 
-      let feature = scene.get(node.id);
+      let feature = scene.getFeature(node.id);
       if (!feature) {
         feature = new PixiFeaturePoint(this, node.id, parentContainer, node, node.loc);
       }
@@ -492,12 +492,12 @@ const activeData = context.activeData();
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
     });
   }
@@ -505,18 +505,18 @@ const activeData = context.activeData();
 
   /**
    * drawPoints
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (nodes with point geometry)
    */
-  drawPoints(timestamp, projection, zoom, entities) {
+  drawPoints(frame, projection, zoom, entities) {
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
     const scene = this.scene;
     const graph = this.context.graph();
 
     entities.forEach(node => {
-      let feature = scene.get(node.id);
+      let feature = scene.getFeature(node.id);
       if (!feature) {
         feature = new PixiFeaturePoint(this, node.id, pointContainer, node, node.loc);
       }
@@ -563,12 +563,12 @@ const activeData = context.activeData();
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
     });
   }
@@ -576,18 +576,18 @@ const activeData = context.activeData();
 
   /**
    * drawMidpoints
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (ways with highlight)
    */
-  drawMidpoints(timestamp, projection, zoom, entities) {
+  drawMidpoints(frame, projection, zoom, entities) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
     const scene = this.scene;
     const graph = this.context.graph();
 
     // Midpoints should be drawn above everything
-    const mapUIContainer = this.context.layers().getLayer('map-ui').container;
+    const mapUIContainer = this.context.scene().getLayer('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     // Generate midpoints from all the highlighted ways
@@ -635,7 +635,7 @@ const activeData = context.activeData();
     });
 
     midpoints.forEach(midpoint => {
-      let feature = scene.get(midpoint.id);
+      let feature = scene.getFeature(midpoint.id);
       if (!feature) {
         const style = { markerName: 'midpoint' };
         feature = new PixiFeaturePoint(this, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
@@ -655,12 +655,12 @@ const activeData = context.activeData();
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
     });
   }

@@ -187,7 +187,7 @@ export function rendererMap(context) {
     context.background()
       .on('change', map.immediateRedraw);
 
-    _renderer.layers
+    _renderer.scene
       .on('layerchange', () => {
         context.background().updateImagery();
         map.immediateRedraw();
@@ -804,8 +804,8 @@ export function rendererMap(context) {
     };
 
 
-    map.layers = function() {
-      return _renderer && _renderer.layers;
+    map.scene = function() {
+      return _renderer && _renderer.scene;
     };
 
     map.renderer = function() {

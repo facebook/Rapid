@@ -18,21 +18,20 @@ export function rendererPhotos(context) {
 
   function photos() {}
 
-   function updateStorage() {
-       if (window.mocha) return;
+   function updateHash() {
+     if (window.mocha) return;
 
-       let hash = utilStringQs(window.location.hash);
-       let enabled = context.layers().all().filter(function(d) {
-           return LAYERIDS.indexOf(d.id) !== -1 && d.supported && d.enabled;
-       }).map(function(d) {
-           return d.id;
-       });
-       if (enabled.length) {
-           hash.photo_overlay = enabled.join(',');
-       } else {
-           delete hash.photo_overlay;
-       }
-       window.location.replace('#' + utilQsString(hash, true));
+     let hash = utilStringQs(window.location.hash);
+     let enabled = context.scene().layers
+       .filter(layer => LAYERIDS.includes(layer.id) && layer.supported && layer.enabled)
+       .map(d => d.id);
+
+     if (enabled.length) {
+       hash.photo_overlay = enabled.join(',');
+     } else {
+       delete hash.photo_overlay;
+     }
+     window.location.replace('#' + utilQsString(hash, true));
    }
 
   photos.overlayLayerIDs = function() {
@@ -121,7 +120,7 @@ export function rendererPhotos(context) {
 
 
   function showsLayer(layerID) {
-    const layer = context.layers().getLayer(layerID);
+    const layer = context.scene().getLayer(layerID);
     return layer && layer.enabled;
   }
 
@@ -193,7 +192,7 @@ export function rendererPhotos(context) {
     // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
     if (hash.photo_overlay) {
       const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
-      context.layers().enable(hashOverlayIDs);
+      context.scene().enableLayers(hashOverlayIDs);
     }
 
     // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
@@ -209,7 +208,7 @@ export function rendererPhotos(context) {
         if (!service || !service.ensureViewerLoaded) return;
 
         // if we're showing a photo then make sure its layer is enabled too
-        context.layers().enable(serviceId);
+        context.scene().enableLayers(serviceId);
 
         const startTime = Date.now();
         service.on('loadedImages.rendererPhotos', () => {
@@ -232,7 +231,7 @@ export function rendererPhotos(context) {
       }
     }
 
-    context.layers().on('layerchange', updateStorage);
+    context.scene().on('layerchange', updateHash);
   };
 
   return utilRebind(photos, dispatch, 'on');

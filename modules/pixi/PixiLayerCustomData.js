@@ -27,7 +27,7 @@ export class PixiLayerCustomData extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this layer's container
+   * @param  layerZ   z-index to assign to this Layer's container
    */
   constructor(scene, layerZ) {
     super(scene, LAYERID, layerZ);
@@ -197,12 +197,11 @@ export class PixiLayerCustomData extends AbstractLayer {
   /**
    * render
    * Draw the geojson custom data
-   *
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  render(timestamp, projection, zoom) {
+  render(frame, projection, zoom) {
     if (!this._loadedUrlData) {
       const hash = utilStringQs(window.location.hash);
 
@@ -224,7 +223,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       }
 
       if (this._dirty) {
-        this.drawCustomData(timestamp, projection, zoom);
+        this.drawCustomData(frame, projection, zoom);
       }
     } else {
       this.visible = false;
@@ -236,12 +235,11 @@ export class PixiLayerCustomData extends AbstractLayer {
   /**
    * drawCustomData
    * Draw the geojson custom data
-   *
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  drawCustomData(timestamp, projection, zoom) {
+  drawCustomData(frame, projection, zoom) {
     // Gather data
     let geoData, polygons, lines, points;
     if (this._template && this.vtService) {   // fetch data from vector tile service
@@ -257,23 +255,22 @@ export class PixiLayerCustomData extends AbstractLayer {
       lines = geoData.filter(this.isLine);
       points = geoData.filter(this.isPoint);
 
-      this.drawPolygons(timestamp, projection, zoom, polygons);
-      this.drawLines(timestamp, projection, zoom, lines);
-      this.drawPoints(timestamp, projection, zoom, points);
-
-      this.cull(timestamp);
+      this.drawPolygons(frame, projection, zoom, polygons);
+      this.drawLines(frame, projection, zoom, lines);
+      this.drawPoints(frame, projection, zoom, points);
+      this.cull(frame);
     }
   }
 
 
   /**
    * drawPolygons
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  polygons     Array of polygon data
    */
-  drawPolygons(timestamp, projection, zoom, polygons) {
+  drawPolygons(frame, projection, zoom, polygons) {
     const scene = this.scene;
 
     const polyStyle = {
@@ -283,7 +280,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     polygons.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.getFeature(entity.id);
 
       const geometry = (entity.geometry.type === 'Polygon') ? [entity.geometry.coordinates]
         : (entity.geometry.type === 'MultiPolygon') ? entity.geometry.coordinates : [];
@@ -295,22 +292,22 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
-      this.seenFeature.set(feature, timestamp);
+      this.seenFeature.set(feature, frame);
     });
   }
 
 
   /**
    * drawLines
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  lines        Array of line data
    */
-  drawLines(timestamp, projection, zoom, lines) {
+  drawLines(frame, projection, zoom, lines) {
     const scene = this.scene;
 
     const lineStyle = {
@@ -318,7 +315,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     lines.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.getFeature(entity.id);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
@@ -327,27 +324,27 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
-      this.seenFeature.set(feature, timestamp);
+      this.seenFeature.set(feature, frame);
     });
   }
 
 
   /**
    * drawPoints
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    * @param  lines        Array of point data
    */
-  drawPoints(timestamp, projection, zoom, points) {
+  drawPoints(frame, projection, zoom, points) {
     const scene = this.scene;
     const pointStyle = { markerTint: 0x00ffff };
 
     points.forEach(entity => {
-      let feature = scene.get(entity.id);
+      let feature = scene.getFeature(entity.id);
 
       if (!feature) {
         const coord = [entity.geometry.coordinates[0], entity.geometry.coordinates[1]]; //leave off any elevation or other data.
@@ -358,10 +355,10 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
-      this.seenFeature.set(feature, timestamp);
+      this.seenFeature.set(feature, frame);
     });
   }
 

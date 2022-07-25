@@ -2,7 +2,6 @@ import * as PIXI from 'pixi.js';
 import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
-import { PixiLayers } from './PixiLayers';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
 
@@ -12,9 +11,8 @@ import { PixiTextures } from './PixiTextures';
  * The renderer implements a game loop and manages when rendering tasks happen.
  *
  * Properties you can access:
- *   `pixiProjection`  To avoid frequent reprojection, the Pixi projection may be offset from the main map
- *   `scene`           The "scene" object manages collections of the features in the scene
- *   `layers`          The "layers" object manages all the layers - visible/hidden, etc
+ *   `scene`     PixiScene object manages the layers and features in the scene
+ *   `textures`  PixiTextures object manages the textures
  */
 export class PixiRenderer {
 
@@ -108,7 +106,6 @@ export class PixiRenderer {
     this.pixiProjection = new Projection();
     this.textures = new PixiTextures(context);
     this.scene = new PixiScene(this);
-    this.layers = new PixiLayers(this.scene);
 
     // Listen to mode changes so we can keep the selection updated
     context.on('enter.PixiRenderer', this._onModeChange);
@@ -120,7 +117,7 @@ export class PixiRenderer {
    * When changing modes, check whether the selection has changed.
    */
   _onModeChange() {
-    this.select(this.context.selectedIDs());
+    this.selectFeatures(this.context.selectedIDs());
   }
 
 
@@ -150,9 +147,8 @@ export class PixiRenderer {
       const drawStart = `draw-${frame}-start`;
       const drawEnd = `draw-${frame}-end`;
       const m1 = window.performance.mark(drawStart);
-      const timestamp = m1.startTime;
 
-      this.draw(timestamp);  // note that DRAW increments the frame counter
+      this.draw();  // note that DRAW increments the frame counter
 
       const m2 = window.performance.mark(drawEnd);
       window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
@@ -168,9 +164,8 @@ export class PixiRenderer {
       const appStart = `app-${frame}-start`;
       const appEnd = `app-${frame}-end`;
       const m1 = window.performance.mark(appStart);
-      const timestamp = m1.startTime;
 
-      this.app(timestamp);
+      this.app();
 
       const m2 = window.performance.mark(appEnd);
       window.performance.measure(`app-${frame}`, appStart, appEnd);
@@ -196,7 +191,7 @@ export class PixiRenderer {
    * The "RapiD" part of the drawing.
    * Where we set up the scene graph and tell Pixi what needs to be drawn.
    */
-  app(timestamp) {
+  app() {
     // Wait for textures to be loaded before attempting rendering.
     if (!this.textures.loaded) return;
 
@@ -220,7 +215,7 @@ export class PixiRenderer {
     const stage = this.pixi.stage;
     stage.position.set(-offset[0], -offset[1]);
 //
-    this.layers.render(timestamp, pixiProjection, effectiveZoom);
+    this.scene.render(this._frame, pixiProjection, effectiveZoom);
 
     this._appPending = false;
     this._drawPending = true;
@@ -251,20 +246,22 @@ export class PixiRenderer {
   }
 
 
-  // pass through calls to other objects
-
+  // pass through calls to the scene
   dirtyScene() {
     this.scene.dirtyScene();
+  }
+  dirtyLayers(layerIDs) {
+    this.scene.dirtyLayers(layerIDs);
   }
   dirtyFeatures(featureIDs) {
     this.scene.dirtyFeatures(featureIDs);
   }
-  select(featureIDs) {
-    this.scene.select(featureIDs);
+  selectFeatures(featureIDs) {
+    this.scene.selectFeatures(featureIDs);
     this._appPending = true;
   }
-  hover(featureIDs) {
-    this.scene.hover(featureIDs);
+  hoverFeatures(featureIDs) {
+    this.scene.hoverFeatures(featureIDs);
     this._appPending = true;
   }
 

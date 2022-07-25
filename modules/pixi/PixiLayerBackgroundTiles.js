@@ -27,7 +27,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   /**
    * @constructor
    * @param  scene      The Scene that owns this Layer
-   * @param  layerZ     z-index to assign to this layer's container
+   * @param  layerZ     z-index to assign to this Layer's container
    * @param  isMinimap  Pass `true` if this layer should be attached to the minimap
    */
   constructor(scene, layerZ, isMinimap) {
@@ -98,10 +98,10 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * render
-   * @param timestamp    timestamp in milliseconds
-   * @param projection   pixi projection to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
    */
-  render(timestamp, projection) {
+  render(frame, projection) {
     const background = this.context.background();
 
     if (!this.isMinimap) {
@@ -139,6 +139,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       const sourceContainer = this.getSourceContainer(source.id);
       sourceContainer.zIndex = zIndex;
 
+      const timestamp = window.performance.now();
       this.renderTileSource(timestamp, projection, source, sourceContainer, tileMap);
     });
 
@@ -171,9 +172,9 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
   /**
    * renderTileSource
-   * @param timestamp          timestamp in milliseconds
-   * @param projection         pixi projection to use for rendering
-   * @param source             imagery tile source Object
+   * @param timestamp          Timestamp in milliseconds
+   * @param projection         Pixi projection to use for rendering
+   * @param source             Imagery tile source Object
    * @param sourcecontainer    Pixi container to render the tiles to
    * @param tileMap            Map(tile.id -> Tile) for this tile source
    */
@@ -184,7 +185,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
     const SHOWDEBUG = context.getDebug('tile');
-    const mapUIContainer = context.layers().getLayer('map-ui').container;
+    const mapUIContainer = context.scene().getLayer('map-ui').container;
     const debugContainer = mapUIContainer.getChildByName('tile-debug');
     debugContainer.visible = SHOWDEBUG;
 

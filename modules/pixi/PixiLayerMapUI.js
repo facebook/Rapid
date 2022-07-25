@@ -23,7 +23,7 @@ export class PixiLayerMapUI extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this layer's container
+   * @param  layerZ   z-index to assign to this Layer's container
    */
   constructor(scene, layerZ) {
     super(scene, LAYERID, layerZ);
@@ -107,11 +107,10 @@ export class PixiLayerMapUI extends AbstractLayer {
   /**
    * render
    * Draw any of the child containers for UI that should float over the map.
-   *
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
    */
-  render(timestamp, projection) {
+  render(frame, projection) {
     // redraw if zoom changes
     const k = projection.scale();
     if (k !== this._oldk) {
@@ -120,7 +119,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     }
 
     if (this._geolocationDirty) {
-      this.drawGeolocation(timestamp, projection);
+      this.drawGeolocation(frame, projection);
     }
   }
 
@@ -128,11 +127,10 @@ export class PixiLayerMapUI extends AbstractLayer {
   /**
    * drawGeolocation
    * Draw the geoloation data
-   *
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
    */
-  drawGeolocation(timestamp, projection) {
+  drawGeolocation(frame, projection) {
     if (this._geolocationDirty) {
       this._geolocationDirty = false;
       this.geolocationContainer.removeChildren();

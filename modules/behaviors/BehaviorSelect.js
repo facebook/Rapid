@@ -399,7 +399,7 @@ export class BehaviorSelect extends AbstractBehavior {
       const target = eventData.target;
       const renderer = context.map().renderer();
       const ids = datum ? [target.name] : [];
-      renderer.select(ids);
+      renderer.selectFeatures(ids);
     }
 
   }

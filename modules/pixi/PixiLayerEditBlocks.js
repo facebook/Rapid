@@ -15,7 +15,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this layer's container
+   * @param  layerZ   z-index to assign to this Layer's container
    */
   constructor(scene, layerZ) {
     super(scene, LAYERID, layerZ);
@@ -39,11 +39,11 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   /**
    * render
    * Draw any edit blocks
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   pixi projection to use for rendering
-   * @param  zoom         effective zoom to use for rendering
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
    */
-  render(timestamp, projection, zoom) {
+  render(frame, projection, zoom) {
     let blocks;
 
     if (zoom >= MINZOOM) {
@@ -51,8 +51,8 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
       const viewport = this.context.map().extent().rectangle();
       blocks = locationManager.wpblocks().bbox(viewport);
-      this.drawBlocks(timestamp, projection, zoom, blocks);
-      this.cull(timestamp);
+      this.drawBlocks(frame, projection, zoom, blocks);
+      this.cull(frame);
 
     } else {
       this.visible = false;
@@ -87,17 +87,17 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
   /**
    * drawBlocks
-   * @param  timestamp    timestamp in milliseconds
-   * @param  projection   a pixi projection
-   * @param  zoom         the effective zoom to use for rendering
-   * @param  blocks       blocks visible in the view
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
+   * @param  blocks       Array of block data visible in the view
    */
-  drawBlocks(timestamp, projection, zoom, blocks) {
+  drawBlocks(frame, projection, zoom, blocks) {
     const scene = this.scene;
 
     blocks.forEach(block => {
       const featureID = block.locationSetID;
-      let feature = scene.get(featureID);
+      let feature = scene.getFeature(featureID);
 
       if (!feature) {
         const geojson = locationManager.feature(featureID).geometry;
@@ -115,14 +115,14 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
       if (feature.dirty) {
         feature.update(projection, zoom);
-        scene.update(feature);
+        scene.updateFeature(feature);
       }
 
       if (feature.lod > 0) {
         feature.visible = true;
-        this.seenFeature.set(feature, timestamp);
+        this.seenFeature.set(feature, frame);
       }
-
     });
+
   }
 }

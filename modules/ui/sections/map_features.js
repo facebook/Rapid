@@ -116,7 +116,7 @@ export function uiSectionMapFeatures(context) {
     }
 
     function showsLayer(id) {
-        var layer = context.layers().layer(id);
+        var layer = context.scene().layer(id);
         return layer && layer.enabled();
     }
 
