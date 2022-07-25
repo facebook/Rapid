@@ -36,8 +36,8 @@ export class PixiLayerOsm extends AbstractLayer {
 
     // On hover or selection, draw related vertices (above everything)
     this._relatedIDs = new Set();
-    this._prevSelectTick = -1;
-    this._prevHoverTick = -1;
+    this._prevSelectV = -1;   // last seen selected version
+    this._prevHoverV = -1;    // last seen hovered version
 
     // experiment for benchmarking
     this._alreadyDownloaded = false;
@@ -186,9 +186,9 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Has select/hover highlighting chagned?
       const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
-      if (this._prevSelectTick !== scene.selectTick || this._prevHoverTick !== scene.hoverTick) {
-        this._prevSelectTick = scene.selectTick;
-        this._prevHoverTick = scene.hoverTick;
+      if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
+        this._prevSelectV = scene.selected.v;
+        this._prevHoverV = scene.hovered.v;
         this._updateRelatedIDs(highlightedIDs);
       }
 

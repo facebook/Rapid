@@ -8,9 +8,7 @@ import RBush from 'rbush';
  *   `features`    `Map` of all features we know about
  *   `rbush`       `RBush` spatial index (boxes are in wgs84 [lon,lat] coords)
  *   `selected`    `Set` of hovered featureIDs
- *   `selectTick`   counter that increments as the selection changes
  *   `hovered`     `Set` of selected featureIDs
- *   `hoverTick`    counter that increments as the hover changes
  */
 export class PixiScene {
 
@@ -27,10 +25,9 @@ export class PixiScene {
     this.rbush = new RBush();      // Spatial index (boxes are in wgs84 [lon,lat] coords)
 
     this.selected = new Set();     // Set of selected featureIDs
-    this.selectTick = 0;
-
+    this.selected.v = 0;           // Version counter that increments as the selection changes
     this.hovered = new Set();      // Set of hovered featureIDs
-    this.hoverTick = 0;
+    this.hovered.v = 0;            // Version counter that increments as the hover changes
   }
 
 
@@ -96,11 +93,11 @@ export class PixiScene {
     // If feature was hovered or selected, update those collections
     if (this.selected.has(featureID)) {
       this.selected.delete(featureID);
-      this.selectTick++;
+      this.selected.v++;
     }
     if (this.hovered.has(featureID)) {
       this.hovered.delete(featureID);
-      this.hoverTick++;
+      this.hovered.v++;
     }
 
     this.boxes.delete(featureID);
@@ -150,7 +147,7 @@ export class PixiScene {
     }
 
     if (didChange) {
-      this.selectTick++;
+      this.selected.v++;
     }
   }
 
@@ -196,7 +193,7 @@ export class PixiScene {
     }
 
     if (didChange) {
-      this.hoverTick++;
+      this.hovered.v++;
     }
   }
 
