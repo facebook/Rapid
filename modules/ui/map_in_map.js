@@ -243,15 +243,17 @@ export function uiMapInMap(context) {
     const height = 150;
     this.miniPixi.renderer.resize(width, height);
 
-    const miniRenderer = { context: this.context }; // mock one
-    const miniScene = new PixiScene(miniRenderer);
+    const miniRenderer = { context: this.context };  // mock
+    const miniScene = { context: this.context, renderer: miniRenderer };  // mock
+    // const miniScene = new PixiScene(miniRenderer);
     context.miniPixi = this.miniPixi;
 
     miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 1, true);  // isMinimap = true
 
-    this.miniPixi.ticker.add(timestamp => {
+    this.miniPixi.ticker.add(() => {
       window.performance.mark('minimap-start');
-      miniMapTileLayer.render(timestamp, projection, 10);
+      const frame = 0;
+      miniMapTileLayer.render(frame, projection, 10);
       window.performance.mark('minimap-end');
     });
 
