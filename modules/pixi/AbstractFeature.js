@@ -97,9 +97,13 @@ export class AbstractFeature {
     // We also remove the children too
     this.container.__feature__ = null;
     this.container.destroy({ children: true });
-
-    this.context = null;
     this.container = null;
+
+    this.layer = null;
+    this.scene = null;
+    this.renderer = null;
+    this.context = null;
+    this.data = null;
 
     this._geometry = null;
     this._style = null;

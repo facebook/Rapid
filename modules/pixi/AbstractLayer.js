@@ -12,6 +12,7 @@ import * as PIXI from 'pixi.js';
  *   `zIndex`       Where this Layer sits compared to other Layers
  *   `enabled`      Whether the the user has chosen to see the Layer
  *   `visible`      Whether the Layer's data is currently visible  (many Layers become invisible at lower zooms)
+ *   `features`     `Map(featureID -> Feature)` of all features on this Layer
  */
 export class AbstractLayer {
 
@@ -43,9 +44,8 @@ export class AbstractLayer {
       this.context.pixi.stage.addChild(container);
     }
 
-    // For now, Layers will have to keep track of their own Feature visiblity
-    // and implement their own Feature culling and updating logic
-    this.seenFeature = new Map();  // Map (Feature -> seenFrame)
+    // Map of features on this Layer (PixiScene will manage this)
+    this.features = new Map();   // Map of featureID -> Feature
   }
 
 
@@ -62,26 +62,11 @@ export class AbstractLayer {
 
 
   /**
-   * cull
-   * Make invisible any Features that were not seen during the current frame
-   * @param  frame    Integer frame being rendered
-   */
-  cull(frame) {
-    for (const [feature, seenFrame] of this.seenFeature) {
-      if (seenFrame !== frame) {
-        feature.visible = false;
-      }
-      // todo - if very old, remove from scene entirely
-    }
-  }
-
-
-  /**
    * dirtyLayer
    * An easy way to make all the Features on this Layer dirty
    */
   dirtyLayer() {
-    for (const feature of this.seenFeature.keys()) {
+    for (const feature of this.features.values()) {
       feature.dirty = true;
     }
   }
@@ -125,7 +110,7 @@ export class AbstractLayer {
   set visible(val) {
     this.container.visible = val;
     if (!val) {
-      for (const feature of this.seenFeature.keys()) {
+      for (const feature of this.features.values()) {
         feature.visible = false;
       }
     }

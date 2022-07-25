@@ -127,7 +127,7 @@ export class PixiRenderer {
    * We can use this to determine the true frame rate that we're running at,
    * and schedule work to happen at opportune times (within animation frame boundaries)
    */
-  tick(time) {
+  tick() {
     // const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
@@ -146,32 +146,45 @@ export class PixiRenderer {
       const frame = this._frame;
       const drawStart = `draw-${frame}-start`;
       const drawEnd = `draw-${frame}-end`;
-      const m1 = window.performance.mark(drawStart);
+      window.performance.mark(drawStart);
 
       this.draw();  // note that DRAW increments the frame counter
 
-      const m2 = window.performance.mark(drawEnd);
+      window.performance.mark(drawEnd);
       window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
-      const measure = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
-      const duration = measure.duration.toFixed(1);
-      // console.log(`draw-${frame} : ${duration} ms`);
+      // const measureDraw = window.performance.getEntriesByName(`draw-${frame}`, 'measure')[0];
+      // const durationDraw = measureDraw.duration.toFixed(1);
+      // console.log(`draw-${frame} : ${durationDraw} ms`);
       return;
     }
 
-    // Do APP to prepare the next frame..
+    // Do APP/CULL to prepare the next frame..
     if (this._appPending) {
       const frame = this._frame;
       const appStart = `app-${frame}-start`;
       const appEnd = `app-${frame}-end`;
-      const m1 = window.performance.mark(appStart);
+      window.performance.mark(appStart);
 
       this.app();
 
-      const m2 = window.performance.mark(appEnd);
+      window.performance.mark(appEnd);
       window.performance.measure(`app-${frame}`, appStart, appEnd);
-      const measure = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
-      const duration = measure.duration.toFixed(1);
-      // console.log(`app-${frame} : ${duration} ms`);
+      // const measureApp = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
+      // const durationApp = measureApp.duration.toFixed(1);
+      // console.log(`app-${frame} : ${durationApp} ms`);
+
+      const cullStart = `cull-${frame}-start`;
+      const cullEnd = `cull-${frame}-end`;
+      window.performance.mark(cullStart);
+
+      this.scene.cull(this._frame);
+
+      window.performance.mark(cullEnd);
+      window.performance.measure(`cull-${frame}`, cullStart, cullEnd);
+      // const measureCull = window.performance.getEntriesByName(`cull-${frame}`, 'measure')[0];
+      // const durationCull = measureCull.duration.toFixed(1);
+      // console.log(`cull-${frame} : ${durationCull} ms`);
+
       return;
     }
   }
@@ -179,7 +192,7 @@ export class PixiRenderer {
 
   /**
    * render
-   * Schedules an "app" pass on the next available tick
+   * Schedules an APP pass on the next available tick
    */
   render() {
     this._appPending = true;

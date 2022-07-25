@@ -38,7 +38,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
   /**
    * render
-   * Draw any edit blocks
+   * Render any edit blocking polygons that are visible in the viewport
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
@@ -51,8 +51,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
       const viewport = this.context.map().extent().rectangle();
       blocks = locationManager.wpblocks().bbox(viewport);
-      this.drawBlocks(frame, projection, zoom, blocks);
-      this.cull(frame);
+      this.renderEditBlocks(frame, projection, zoom, blocks);
 
     } else {
       this.visible = false;
@@ -86,13 +85,13 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
 
   /**
-   * drawBlocks
+   * renderEditBlocks
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  blocks       Array of block data visible in the view
    */
-  drawBlocks(frame, projection, zoom, blocks) {
+  renderEditBlocks(frame, projection, zoom, blocks) {
     const scene = this.scene;
 
     blocks.forEach(block => {
@@ -120,7 +119,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
       if (feature.lod > 0) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
 

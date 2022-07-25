@@ -26,7 +26,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled in iD, so we use a `getService` function
+   * Services are loosely coupled in RapiD, so we use a `getService` function
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
@@ -61,12 +61,12 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
 
   /**
-   * drawMarkers
+   * renderMarkers
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    */
-  drawMarkers(frame, projection, zoom) {
+  renderMarkers(frame, projection, zoom) {
     const scene = this.scene;
 
     const service = this.getService();
@@ -102,7 +102,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
@@ -116,20 +116,19 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const context = this.context;
     const service = this.getService();
 
     if (this._enabled && service && zoom >= MINZOOM) {
       this.visible = true;
-      service.loadSigns(context.projection);  // note: context.projection !== pixi projection
+      service.loadSigns(this.context.projection);  // note: context.projection !== pixi projection
       service.showSignDetections(true);
-
-      this.drawMarkers(frame, projection, zoom);
-      this.cull(frame);
+      this.renderMarkers(frame, projection, zoom);
 
     } else {
       this.visible = false;
-      if (service) service.showSignDetections(false);
+      if (service) {
+        service.showSignDetections(false);
+      }
     }
   }
 

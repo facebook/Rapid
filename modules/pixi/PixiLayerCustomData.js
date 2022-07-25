@@ -52,7 +52,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled in iD, so we use a `getService` function
+   * Services are loosely coupled in RapiD, so we use a `getService` function
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
@@ -196,7 +196,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
   /**
    * render
-   * Draw the geojson custom data
+   * Render the geojson custom data
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
@@ -223,7 +223,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       }
 
       if (this._dirty) {
-        this.drawCustomData(frame, projection, zoom);
+        this.renderCustomData(frame, projection, zoom);
       }
     } else {
       this.visible = false;
@@ -233,13 +233,13 @@ export class PixiLayerCustomData extends AbstractLayer {
 
 
   /**
-   * drawCustomData
-   * Draw the geojson custom data
+   * renderCustomData
+   * Render the geojson custom data
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    */
-  drawCustomData(frame, projection, zoom) {
+  renderCustomData(frame, projection, zoom) {
     // Gather data
     let geoData, polygons, lines, points;
     if (this._template && this.vtService) {   // fetch data from vector tile service
@@ -255,22 +255,21 @@ export class PixiLayerCustomData extends AbstractLayer {
       lines = geoData.filter(this.isLine);
       points = geoData.filter(this.isPoint);
 
-      this.drawPolygons(frame, projection, zoom, polygons);
-      this.drawLines(frame, projection, zoom, lines);
-      this.drawPoints(frame, projection, zoom, points);
-      this.cull(frame);
+      this.renderPolygons(frame, projection, zoom, polygons);
+      this.renderLines(frame, projection, zoom, lines);
+      this.renderPoints(frame, projection, zoom, points);
     }
   }
 
 
   /**
-   * drawPolygons
+   * renderPolygons
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  polygons     Array of polygon data
    */
-  drawPolygons(frame, projection, zoom, polygons) {
+  renderPolygons(frame, projection, zoom, polygons) {
     const scene = this.scene;
 
     const polyStyle = {
@@ -295,19 +294,19 @@ export class PixiLayerCustomData extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      this.seenFeature.set(feature, frame);
+      scene.retainFeature(feature, frame);
     });
   }
 
 
   /**
-   * drawLines
+   * renderLines
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  lines        Array of line data
    */
-  drawLines(frame, projection, zoom, lines) {
+  renderLines(frame, projection, zoom, lines) {
     const scene = this.scene;
 
     const lineStyle = {
@@ -327,19 +326,19 @@ export class PixiLayerCustomData extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      this.seenFeature.set(feature, frame);
+      scene.retainFeature(feature, frame);
     });
   }
 
 
   /**
-   * drawPoints
+   * renderPoints
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  lines        Array of point data
    */
-  drawPoints(frame, projection, zoom, points) {
+  renderPoints(frame, projection, zoom, points) {
     const scene = this.scene;
     const pointStyle = { markerTint: 0x00ffff };
 
@@ -358,7 +357,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      this.seenFeature.set(feature, frame);
+      this.scene.retainFeature(feature, frame);
     });
   }
 

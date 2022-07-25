@@ -106,7 +106,7 @@ export class PixiLayerMapUI extends AbstractLayer {
 
   /**
    * render
-   * Draw any of the child containers for UI that should float over the map.
+   * Render any of the child containers for UI that should float over the map.
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    */
@@ -119,18 +119,18 @@ export class PixiLayerMapUI extends AbstractLayer {
     }
 
     if (this._geolocationDirty) {
-      this.drawGeolocation(frame, projection);
+      this.renderGeolocation(frame, projection);
     }
   }
 
 
   /**
-   * drawGeolocation
-   * Draw the geoloation data
+   * renderGeolocation
+   * Render the geoloation data
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    */
-  drawGeolocation(frame, projection) {
+  renderGeolocation(frame, projection) {
     if (this._geolocationDirty) {
       this._geolocationDirty = false;
       this.geolocationContainer.removeChildren();

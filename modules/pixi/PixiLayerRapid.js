@@ -130,7 +130,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled in iD, so we use these functions
+   * Services are loosely coupled in RapiD, so we use these functions
    * to gain access to them, and bind any event handlers a single time.
    */
   getServiceFB() {
@@ -156,7 +156,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
   /**
    * render
-   * Draw any data we have, and schedule fetching more of it to cover the view
+   * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
@@ -168,7 +168,6 @@ export class PixiLayerRapid extends AbstractLayer {
     if (this._enabled && datasets.length && zoom >= MINZOOM) {
       this.visible = true;
       datasets.forEach(dataset => this.renderDataset(dataset, frame, projection, zoom));
-      this.cull(frame);
 
     } else {
       this.visible = false;
@@ -178,7 +177,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
   /**
    * renderDataset
-   * Draw any data we have, and schedule fetching more of it to cover the view
+   * Render any data we have, and schedule fetching more of it to cover the view
    *
    * @param  dataset
    * @param  frame        Integer frame being rendered
@@ -286,9 +285,9 @@ export class PixiLayerRapid extends AbstractLayer {
 
     if (dsEnabled) {
       dsContainer.visible = true;
-      this.drawPolygons(areas, dataset, dsGraph, frame, projection, zoom, data);
-      this.drawLines(lines, dataset, dsGraph, frame, projection, zoom, data);
-      this.drawPoints(points, dataset, dsGraph, frame, projection, zoom, data);
+      this.renderPolygons(areas, dataset, dsGraph, frame, projection, zoom, data);
+      this.renderLines(lines, dataset, dsGraph, frame, projection, zoom, data);
+      this.renderPoints(points, dataset, dsGraph, frame, projection, zoom, data);
     } else {
       dsContainer.visible = false;
     }
@@ -296,9 +295,9 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
   /**
-   * drawPolygons
+   * renderPolygons
    */
-  drawPolygons(layer, dataset, graph, frame, projection, zoom, data) {
+  renderPolygons(layer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
     const style = {
@@ -339,16 +338,16 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
 
 
   /**
-   * drawLines
+   * renderLines
    */
-  drawLines(layer, dataset, graph, frame, projection, zoom, data) {
+  renderLines(layer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -380,16 +379,16 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
 
 
   /**
-   * drawPoints
+   * renderPoints
    */
-  drawPoints(layer, dataset, graph, frame, projection, zoom, data) {
+  renderPoints(layer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -430,7 +429,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
 
@@ -461,7 +460,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
 

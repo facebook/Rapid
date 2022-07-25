@@ -64,7 +64,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled in iD, so we use a `getService` function
+   * Services are loosely coupled in RapiD, so we use a `getService` function
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
@@ -167,7 +167,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
   /**
    * render
-   * Draw any data we have, and schedule fetching more of it to cover the view
+   * Render any data we have, and schedule fetching more of it to cover the view
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
@@ -242,13 +242,11 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
 
-      this.drawPolygons(frame, projection, zoom, data.polygons);
-      this.drawLines(frame, projection, zoom, data.lines);
-      this.drawVertices(frame, projection, zoom, data.vertices);
-      this.drawPoints(frame, projection, zoom, data.points);
-      this.drawMidpoints(frame, projection, zoom, data.highlighted);
-
-      this.cull(frame);
+      this.renderPolygons(frame, projection, zoom, data.polygons);
+      this.renderLines(frame, projection, zoom, data.lines);
+      this.renderVertices(frame, projection, zoom, data.vertices);
+      this.renderPoints(frame, projection, zoom, data.points);
+      this.renderMidpoints(frame, projection, zoom, data.highlighted);
 
     } else {
       this.visible = false;
@@ -257,13 +255,13 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
-   * drawPolygons
+   * renderPolygons
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (ways/relations with area geometry)
    */
-  drawPolygons(frame, projection, zoom, entities) {
+  renderPolygons(frame, projection, zoom, entities) {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
     const scene = this.scene;
     const graph = this.context.graph();
@@ -302,20 +300,20 @@ export class PixiLayerOsm extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
 
 
   /**
-   * drawLines
+   * renderLines
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (ways/relations with line geometry)
    */
-  drawLines(frame, projection, zoom, entities) {
+  renderLines(frame, projection, zoom, entities) {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
     const scene = this.scene;
     const graph = this.context.graph();
@@ -339,7 +337,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
     entities.forEach(entity => {
-      // Skip untagged multipolygon rings for now, drawPolygons will render them as strokes.
+      // Skip untagged multipolygon rings for now, renderPolygons will render them as strokes.
       // At some point we will want the user to be able to click on them though
       if (isUntaggedMultipolygonRing(entity)) return;
 
@@ -389,20 +387,20 @@ export class PixiLayerOsm extends AbstractLayer {
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
 
 
   /**
-   * drawVertices
+   * renderVertices
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (nodes with vertex geometry)
    */
-  drawVertices(frame, projection, zoom, entities) {
+  renderVertices(frame, projection, zoom, entities) {
     const context = this.context;
     const scene = this.scene;
     const graph = context.graph();
@@ -497,20 +495,20 @@ const activeData = context.activeData();
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
 
 
   /**
-   * drawPoints
+   * renderPoints
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (nodes with point geometry)
    */
-  drawPoints(frame, projection, zoom, entities) {
+  renderPoints(frame, projection, zoom, entities) {
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
     const scene = this.scene;
     const graph = this.context.graph();
@@ -568,20 +566,20 @@ const activeData = context.activeData();
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }
 
 
   /**
-   * drawMidpoints
+   * renderMidpoints
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  entities     Array of OSM entities (ways with highlight)
    */
-  drawMidpoints(frame, projection, zoom, entities) {
+  renderMidpoints(frame, projection, zoom, entities) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
     const scene = this.scene;
     const graph = this.context.graph();
@@ -660,7 +658,7 @@ const activeData = context.activeData();
 
       if (feature.lod > 0 || feature.selected) {
         feature.visible = true;
-        this.seenFeature.set(feature, frame);
+        scene.retainFeature(feature, frame);
       }
     });
   }

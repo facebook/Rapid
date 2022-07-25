@@ -162,7 +162,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * render
-   * Draw all the labels. This is a multi-step process:
+   * Render all the labels. This is a multi-step process:
    * - gather avoids - these are places in the scene that we don't want a label
    * - label placement - do the math of figuring our where labels should be
    * - label rendering - show or hide labels based on their visibility

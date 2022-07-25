@@ -46,6 +46,7 @@ export class PixiScene extends EventEmitter {
     this.context = renderer.context;
 
     this.features = new Map();     // Map of featureID -> Feature
+    this.retained = new Map();     // Map of featureID -> frame last seen
     this.boxes = new Map();        // Map of featureID -> box Object (rbush uses these)
     this.rbush = new RBush();      // Spatial index (boxes are in wgs84 [lon,lat] coords)
 
@@ -91,6 +92,31 @@ export class PixiScene extends EventEmitter {
   render(frame, projection, zoom) {
     for (const layer of this.layers) {
       layer.render(frame, projection, zoom);
+    }
+  }
+
+
+  /**
+   * cull
+   * Make invisible any Features that were not seen during the current frame
+   * @param  frame    Integer frame being rendered
+   */
+  cull(frame) {
+    for (const [featureID, seenFrame] of this.retained) {
+      if (seenFrame === frame) continue;
+      if (this.selected.has(featureID)) continue;
+      if (this.hovered.has(featureID)) continue;
+
+      // Can't see it currently, make it invisible
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.visible = false;
+      }
+
+      // Haven't seen it in a while, remove completely
+      if (frame - seenFrame > 20) {
+        this.removeFeature(feature);
+      }
     }
   }
 
@@ -186,9 +212,11 @@ export class PixiScene extends EventEmitter {
    */
   addFeature(feature) {
     const featureID = feature.id;
+    const layer = feature.layer;
 
-    // Update the `features` cache
+    // Update the `features` caches (here and in the layer)
     this.features.set(featureID, feature);
+    layer.features.set(featureID, feature);
 
     // Update RBush spatial index (feature must have an extent)
     let box = this.boxes.get(featureID);
@@ -207,10 +235,23 @@ export class PixiScene extends EventEmitter {
   /**
    * updateFeature
    * Call this whenever a Feature's `extent` has changed.
-   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   updateFeature(feature) {
     this.addFeature(feature);  // they do the same thing
+  }
+
+
+  /**
+   * retainFeature
+   * Call this to retain the feature for the given frame.
+   * Features that are not retained may be automatically culled (made invisible) or removed.
+   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   * @param  frame     Integer frame being rendered
+   */
+  retainFeature(feature, frame) {
+    const featureID = feature.id;
+    this.retained.set(featureID, frame);
   }
 
 
@@ -221,6 +262,7 @@ export class PixiScene extends EventEmitter {
    */
   removeFeature(feature) {
     const featureID = feature.id;
+    const layer = feature.layer;
 
     // Remove any existing box with this id from the rbush
     let box = this.boxes.get(featureID);
@@ -238,9 +280,12 @@ export class PixiScene extends EventEmitter {
       this.hovered.v++;
     }
 
+    layer.features.delete(featureID);
     this.boxes.delete(featureID);
+    this.retained.delete(featureID);
     this.features.delete(featureID);
-    // feature.destroy() ??
+
+    feature.destroy();
   }
 
 
