@@ -23,15 +23,15 @@ export function uiMapInMap(context) {
     let canvas = d3_select(null);
     let miniMapTileLayer = null;
 
+    let _isHidden = true;          // start out hidden
     let _isTransformed = false;
-    let _isHidden = true;
     let _skipEvents = false;
     let _gesture = null;
-    let _zDiff = 6;  // by default, minimap renders at (main zoom - 6)
-    let _dMini;      // dimensions of minimap
-    let _cMini;      // center pixel of minimap
-    let _tStart;     // transform at start of gesture
-    let _tCurr;      // transform at most recent event
+    let _zDiff = 6;                // by default, minimap renders at (main zoom - 6)
+    let _dMini;                    // dimensions of minimap
+    let _cMini;                    // center pixel of minimap
+    let _tStart;                   // transform at start of gesture
+    let _tCurr;                    // transform at most recent event
 
 
     function zoomStarted() {
@@ -72,8 +72,8 @@ export function uiMapInMap(context) {
       }
 
       if (_gesture === 'pan') {
-       miniMapTileLayer.container.position.x += tX;
-       miniMapTileLayer.container.position.y += tY;
+        miniMapTileLayer.container.position.x += tX;
+        miniMapTileLayer.container.position.y += tY;
       } else {
         utilSetTransform(canvas, 0, 0, scale);
       }
@@ -93,13 +93,13 @@ export function uiMapInMap(context) {
       if (_skipEvents) return;
       if (_gesture !== 'pan') return;
 
-      updateprojection();
+      updateProjection();
       _gesture = null;
       context.map().center(projection.invert(_cMini)); // recenter main map..
     }
 
 
-    function updateprojection() {
+    function updateProjection() {
       const loc = context.map().center();
       const tMain = context.projection.transform();
       const zMain = geoScaleToZoom(tMain.k);
@@ -136,7 +136,7 @@ export function uiMapInMap(context) {
 
     function redraw() {
       if (_isHidden) return;
-      updateprojection();
+      updateProjection();
       drawBoundingBox();
     }
 
@@ -213,6 +213,8 @@ export function uiMapInMap(context) {
       }
     }
 
+
+    /* setup */
     uiMapInMap.toggle = toggle;
 
     wrap = selection.selectAll('.map-in-map')
@@ -226,42 +228,49 @@ export function uiMapInMap(context) {
       .on('dblclick.zoom', null)
       .merge(wrap);
 
-    this.miniPixi = new PIXI.Application({
+    // Create a separate Pixi environment for the minimap
+    context.miniPixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
-      autoStart: true,        // don't start the ticker yet
+      autoStart: false,
       backgroundAlpha: 0.0,   // transparent
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
     });
 
-    wrap.node().appendChild(this.miniPixi.view);
+    wrap.node().appendChild(context.miniPixi.view);
     canvas = wrap.selectAll('canvas');
 
     const width = 200;
     const height = 150;
-    this.miniPixi.renderer.resize(width, height);
+    context.miniPixi.renderer.resize(width, height);
 
-    const miniRenderer = { context: this.context };  // mock
-    const miniScene = { context: this.context, renderer: miniRenderer };  // mock
+    // Setup the stage
+    const stage = context.miniPixi.stage;
+    stage.name = 'minimap-stage'
+    stage.sortableChildren = false;
+    stage.interactive = false;
+
+    const miniRenderer = { context: context };  // mock
+    const miniScene = { context: context, renderer: miniRenderer };  // mock
     // const miniScene = new PixiScene(miniRenderer);
-    context.miniPixi = this.miniPixi;
 
     miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 1, true);  // isMinimap = true
 
-    this.miniPixi.ticker.add(() => {
+    context.miniPixi.ticker.add(() => {
+      if (_isHidden) return;
       window.performance.mark('minimap-start');
       const frame = 0;
       miniMapTileLayer.render(frame, projection, 10);
       window.performance.mark('minimap-end');
     });
 
-    // reflow warning: Hardcode dimensions - currently can't resize it anyway..
+    // Hardcode dimensions - currently can't resize it anyway..
     _dMini = [200, 150]; //utilGetDimensions(wrap);
     _cMini = vecScale(_dMini, 0.5);
 
-    context.map().on('drawn.map-in-map', function(drawn) {
+    context.map().on('drawn.map-in-map', drawn => {
       if (drawn.full === true) {
         redraw();
       }
