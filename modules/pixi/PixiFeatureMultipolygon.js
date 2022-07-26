@@ -104,6 +104,10 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     // GEOMETRY
     //
 
+    if (this._geometryDirty) {
+      this.ssrdata = null;
+    }
+
     // Reproject and recalculate the bounding box
     let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
     let shapes = [];
