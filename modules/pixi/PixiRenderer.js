@@ -32,7 +32,8 @@ export class PixiRenderer {
 
     // Make sure callbacks have `this` bound correctly
     this.tick = this.tick.bind(this);
-    this._onModeChange = this._onModeChange.bind(this);
+    this._onHoverChange = this._onHoverChange.bind(this);
+    this._onSelectChange = this._onSelectChange.bind(this);
 
 
     // Register Pixi with the pixi-inspector extension if it is installed
@@ -107,17 +108,32 @@ export class PixiRenderer {
     this.textures = new PixiTextures(context);
     this.scene = new PixiScene(this);
 
-    // Listen to mode changes so we can keep the selection updated
-    context.on('enter.PixiRenderer', this._onModeChange);
+    // Event listeners to respond to any changes in selection or hover
+    context.on('enter.PixiRenderer', this._onSelectChange);
+    context.behaviors.get('hover').on('hoverchanged', this._onHoverChange);
   }
 
 
   /**
-   * _onModeChange
-   * When changing modes, check whether the selection has changed.
+   * _onSelectChange
+   * Respond to any change in select (called on mode change)
    */
-  _onModeChange() {
-    this.selectFeatures(this.context.selectedIDs());
+  _onSelectChange() {
+    this.scene.selectFeatures(this.context.selectedIDs());
+    this._appPending = true;
+  }
+
+  /**
+   * _onHoverChange
+   * Respond to any change in hover
+   */
+  _onHoverChange(eventData) {
+    let ids = [];
+    if (eventData.target && eventData.data) {
+      ids = [eventData.target.name];  // the featureID is here (e.g. osm id)
+    }
+    this.scene.hoverFeatures(ids);
+    this._appPending = true;
   }
 
 
@@ -219,7 +235,7 @@ export class PixiRenderer {
     if (pixiTransform.k !== currTransform.k) {    // zoom changed, reset
       offset = [0, 0];
       pixiProjection.transform(currTransform);
-      this.dirtyScene();
+      this.scene.dirtyScene();
     } else {
       offset = [ pixiTransform.x - currTransform.x, pixiTransform.y - currTransform.y ];
     }
@@ -257,32 +273,5 @@ export class PixiRenderer {
     this._drawPending = false;
     this._frame++;
   }
-
-
-  // pass through calls to the scene
-  dirtyScene() {
-    this.scene.dirtyScene();
-  }
-  dirtyLayers(layerIDs) {
-    this.scene.dirtyLayers(layerIDs);
-  }
-  dirtyFeatures(featureIDs) {
-    this.scene.dirtyFeatures(featureIDs);
-  }
-  selectFeatures(featureIDs) {
-    this.scene.selectFeatures(featureIDs);
-    this._appPending = true;
-  }
-  hoverFeatures(featureIDs) {
-    this.scene.hoverFeatures(featureIDs);
-    this._appPending = true;
-  }
-
-// // if select or hover changed..
-// // this.draw();    // draw now
-// if (!this.context.map().isTransformed()) {
-//   this._drawPending = true;   // draw asap
-// }
-
 
 }

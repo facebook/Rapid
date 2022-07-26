@@ -171,13 +171,13 @@ export function rendererMap(context) {
     context.history()
       .on('merge', entityIDs => {
         if (entityIDs) {
-          _renderer.dirtyFeatures(entityIDs);
+          _renderer.scene.dirtyFeatures(entityIDs);
         }
         map.deferredRedraw();
       })
       .on('change', difference => {
         if (difference) {
-          _renderer.dirtyFeatures(Object.keys(difference.complete()));
+          _renderer.scene.dirtyFeatures(Object.keys(difference.complete()));
         }
         map.immediateRedraw();
       })

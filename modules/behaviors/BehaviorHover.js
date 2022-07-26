@@ -124,16 +124,6 @@ export class BehaviorHover extends AbstractBehavior {
         console.log(`BehaviorHover: emitting 'hoverchanged', hoverTarget = ${name}`);  // eslint-disable-line no-console
       }
       this.emit('hoverchanged', move);
-
-
-// vvv---- maybe everything below here should be listening instead
-      let ids = [];
-      if (move.target && move.data) {
-        ids = [move.target.name];  // the featureID is here (e.g. osm id)
-      }
-
-      this.context.map().renderer().hoverFeatures(ids);
-      // this.context.ui().sidebar.hover([move.data]);
     }
   }
 
