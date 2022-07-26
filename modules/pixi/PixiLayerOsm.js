@@ -585,7 +585,7 @@ const activeData = context.activeData();
     const graph = this.context.graph();
 
     // Midpoints should be drawn above everything
-    const mapUIContainer = this.context.scene().getLayer('map-ui').container;
+    const mapUIContainer = this.scene.getLayer('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     // Generate midpoints from all the highlighted ways
@@ -618,6 +618,7 @@ const activeData = context.activeData();
         const rot = vecAngle(a.point, b.point);
         const loc = projection.invert(pos);  // store as wgs84 lon/lat
         const midpoint = {
+          type: 'midpoint',
           id: id,
           a: a,
           b: b,

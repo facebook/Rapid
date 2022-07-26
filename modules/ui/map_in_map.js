@@ -248,7 +248,7 @@ export function uiMapInMap(context) {
 
     // Setup the stage
     const stage = context.miniPixi.stage;
-    stage.name = 'minimap-stage'
+    stage.name = 'minimap-stage';
     stage.sortableChildren = false;
     stage.interactive = false;
 

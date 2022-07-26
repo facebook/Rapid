@@ -62,6 +62,30 @@ export class AbstractLayer {
 
 
   /**
+   * cull
+   * Make invisible any Features that were not seen during the current frame
+   * @param  frame   Integer frame being rendered
+   */
+  cull(frame) {
+    const scene = this.scene;
+    for (const [featureID, feature] of this.features) {
+      const seenFrame = scene.retained.get(featureID);
+      if (seenFrame === frame) continue;
+      if (scene.selected.has(featureID)) continue;
+      if (scene.hovered.has(featureID)) continue;
+
+      // Can't see it currently, make it invisible
+      feature.visible = false;
+
+      // Haven't seen it in a while, remove completely
+      if (frame - seenFrame > 20) {
+        scene.removeFeature(feature);
+      }
+    }
+  }
+
+
+  /**
    * dirtyLayer
    * An easy way to make all the Features on this Layer dirty
    */

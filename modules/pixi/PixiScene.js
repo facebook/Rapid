@@ -84,7 +84,17 @@ export class PixiScene extends EventEmitter {
 
   /**
    * render
-   * Calls each Layer's `render` method.
+   * Calls each Layer's `render` and `cull` methods
+   * - `render` will create and update the objects that belong in the scene
+   * - `cull` will make invisible or destroy objects that aren't in the scene anymore
+   *
+   * This process happens on a layer-by-layer basis for several reasons.
+   * - We don't have a full picture of what all will be included in the scene until we actually
+   *   call down to each layer's render method. It depends on where on the map the user is
+   *   looking. This is different from a normal game where the scene is set up ahead of time.
+   * - For proper label placement, we really need to cull the feature layers
+   *    before we render the label layer, so we do these calls in layer order.
+   *
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
@@ -92,31 +102,7 @@ export class PixiScene extends EventEmitter {
   render(frame, projection, zoom) {
     for (const layer of this.layers) {
       layer.render(frame, projection, zoom);
-    }
-  }
-
-
-  /**
-   * cull
-   * Make invisible any Features that were not seen during the current frame
-   * @param  frame    Integer frame being rendered
-   */
-  cull(frame) {
-    for (const [featureID, seenFrame] of this.retained) {
-      if (seenFrame === frame) continue;
-      if (this.selected.has(featureID)) continue;
-      if (this.hovered.has(featureID)) continue;
-
-      // Can't see it currently, make it invisible
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.visible = false;
-      }
-
-      // Haven't seen it in a while, remove completely
-      if (frame - seenFrame > 20) {
-        this.removeFeature(feature);
-      }
+      layer.cull(frame);
     }
   }
 

@@ -174,7 +174,7 @@ export class PixiRenderer {
       return;
     }
 
-    // Do APP/CULL to prepare the next frame..
+    // Do APP to prepare the next frame..
     if (this._appPending) {
       const frame = this._frame;
       const appStart = `app-${frame}-start`;
@@ -188,19 +188,6 @@ export class PixiRenderer {
       // const measureApp = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
       // const durationApp = measureApp.duration.toFixed(1);
       // console.log(`app-${frame} : ${durationApp} ms`);
-
-      const cullStart = `cull-${frame}-start`;
-      const cullEnd = `cull-${frame}-end`;
-      window.performance.mark(cullStart);
-
-      this.scene.cull(this._frame);
-
-      window.performance.mark(cullEnd);
-      window.performance.measure(`cull-${frame}`, cullStart, cullEnd);
-      // const measureCull = window.performance.getEntriesByName(`cull-${frame}`, 'measure')[0];
-      // const durationCull = measureCull.duration.toFixed(1);
-      // console.log(`cull-${frame} : ${durationCull} ms`);
-
       return;
     }
   }
