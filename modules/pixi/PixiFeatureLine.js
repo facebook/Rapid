@@ -281,7 +281,7 @@ export class PixiFeatureLine extends AbstractFeature {
 // Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
     super.updateHalo();
-    if (this.hovered || this.selected) {
+    if (this.visible && (this.hovered || this.selected)) {
       const HALO_COLOR = 0xffff00;
       const HALO_DASH = [6, 3];
       const HALO_WIDTH = 2;  // px
@@ -290,7 +290,7 @@ export class PixiFeatureLine extends AbstractFeature {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
 
-        const mapUIContainer = this.context.scene().getLayer('map-ui').container;
+        const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 

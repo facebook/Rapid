@@ -2,11 +2,8 @@ import * as PIXI from 'pixi.js';
 import { GlowFilter } from '@pixi/filter-glow';
 import { Extent } from '@id-sdk/math';
 
-const SELECTGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xf6634f });
-SELECTGLOW.resolution = 2;
-
-const HOVERGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
-HOVERGLOW.resolution = 2;
+const HALOGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+HALOGLOW.resolution = 2;
 
 
 /**
@@ -28,6 +25,7 @@ HOVERGLOW.resolution = 2;
  *   `hovered`        `true` if the Feature is hovered
  *   `v`              Version of the Feature, can be used to detect changes
  *   `lod`            Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
+ *   `halo`           A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
  *   `extent`         Bounds of the Feature (in WGS84 long/lat)
  *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the Feature
  *   `sceneBounds`    PIXI.Rectangle() where 0,0 is the origin of the scane
@@ -68,6 +66,7 @@ export class AbstractFeature {
     this.data = data;
     this.v = -1;
     this.lod = 2;   // full detail
+    this.halo = null;
 
     this._geometry = null;
     this._geometryDirty = true;
@@ -95,6 +94,7 @@ export class AbstractFeature {
   destroy() {
     // Destroying a container removes it from its parent automatically
     // We also remove the children too
+    this.container.filters = null;
     this.container.__feature__ = null;
     this.container.destroy({ children: true });
     this.container = null;
@@ -104,6 +104,11 @@ export class AbstractFeature {
     this.renderer = null;
     this.context = null;
     this.data = null;
+
+    if (this.halo) {
+      this.halo.destroy({ children: true });
+      this.halo = null;
+    }
 
     this._geometry = null;
     this._style = null;
@@ -135,16 +140,17 @@ export class AbstractFeature {
 
   /**
    * updateHalo
-   * Every Feature should have an update function that redraws the Feature's halo when selected or hovered
+   * Every Feature should have an updateHalo function that redraws the Feature's halo when selected or hovered
    * Override in a subclass with needed logic.
    */
   updateHalo() {
     let filters = [];
-    if (this._hovered) {
-      filters.push(HOVERGLOW);
-    }
-    if (this._selected) {
-      filters.push(SELECTGLOW);
+    if (this.visible) {
+      if (this.selected) {
+        filters.push(HALOGLOW);
+      } else if (this.hovered) {
+        filters.push(HALOGLOW);
+      }
     }
     this.container.filters = filters;
   }
@@ -169,6 +175,10 @@ export class AbstractFeature {
     if (this.container.visible !== val) {
       this.container.visible = val;
       this._labelDirty = true;
+      if (!val) {
+        // remove halo immediately when feature goes invisible
+        this.updateHalo();
+      }
     }
   }
 
