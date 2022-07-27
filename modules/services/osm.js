@@ -280,6 +280,11 @@ function parseJSON(payload, callback, options) {
     return callback({ message: 'No JSON', status: -1 });
   }
 
+  if (json.elements.some(el => el.type === 'error')) {
+      // We have received partial data, and so we should ignore this response.
+      return callback({ message: 'Partial JSON', status: -1 });
+  }
+
   const children = json.elements;
 
   const handle = window.requestIdleCallback(() => {
@@ -507,6 +512,10 @@ function parseXML(xml, callback, options) {
 
   const root = xml.childNodes[0];
   const children = root.childNodes;
+
+    if (children.some(child => child.nodename === 'error')) {
+      return callback({ message: 'Partial XML', status: -1 });
+    }
 
   const handle = window.requestIdleCallback(() => {
     _deferred.delete(handle);
