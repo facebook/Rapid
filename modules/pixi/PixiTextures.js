@@ -84,6 +84,17 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
+
+    const viewfieldOutline = new PIXI.Graphics()
+      .lineStyle(1, 0xcccccc) // same viewfield, but with no fill for wireframe mode
+      .beginFill(0xffffff, 0)
+      .moveTo(-6, 21)
+      .bezierCurveTo(-5, 19, 5, 19, 6, 21)
+      .lineTo(12, 4)
+      .bezierCurveTo(12, 0, -12, 0, -12, 4)
+      .closePath()
+      .endFill();
+
     this.textures.set('viewfield', this.toAtlasTexture(viewfield, {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
@@ -93,6 +104,12 @@ export class PixiTextures {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     }));
+
+    this.textures.set('viewfieldOutline', this.toAtlasTexture(viewfieldOutline, {
+        region: viewfieldRect, // texture the whole 26x26 region
+        resolution: 3, // oversample a bit so it looks pretty when rotated
+      })
+    );
 
 
     //

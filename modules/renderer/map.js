@@ -37,6 +37,7 @@ export function rendererMap(context) {
   let surface = d3_select(null);
 
   let _renderer;
+  let _wireFrameMode = false;
 
   let _dimensions = [1, 1];
   let _dblClickZoomEnabled = true;
@@ -790,8 +791,21 @@ export function rendererMap(context) {
     };
 
 
+    map.toggleWireFrameMode = function () {
+      _wireFrameMode = !_wireFrameMode;
+      _renderer.scene.dirtyScene();
+      map.immediateRedraw();
+    };
+
+
+    map.wireFrameMode = function () {
+      return _wireFrameMode;
+    };
+
+
     map.toggleWireframe = function() {
       let activeFill = map.activeAreaFill();
+      map.toggleWireFrameMode();
 
       if (activeFill === 'wireframe') {
         activeFill = prefs('area-fill-toggle') || 'partial';

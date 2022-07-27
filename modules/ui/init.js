@@ -486,6 +486,7 @@ export function uiInit(context) {
   };
 
 
+
   ui.onResize = function(withPan) {
     const map = context.map();
 

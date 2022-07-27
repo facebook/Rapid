@@ -78,6 +78,7 @@ export class PixiFeatureLine extends AbstractFeature {
   update(projection, zoom) {
     if (!this.dirty) return;  // no change
 
+    const wireframeMode = this.context.map().wireFrameMode();
     // For now, if either geometry or style is dirty, we just update the whole line
     const context = this.context;
     const textures = context.pixi.rapidTextures;
@@ -134,7 +135,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
       // Update hit area
       let hitPath = [];
-      const hitWidth = style.casing.width;
+      const hitWidth = style.casing.width || 3; //casing is set to 0 in wireframe mode, so at least calculate SOMETHING for a hit area.
       this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
       container.hitArea = lineToPolygon(hitWidth, hitPath);
 
@@ -219,18 +220,18 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
     if (this.casing.renderable) {
-      updateGraphic('casing', this.casing, this.points, style);
+      updateGraphic('casing', this.casing, this.points, style, wireframeMode);
     }
     if (this.stroke.renderable) {
-      updateGraphic('stroke', this.stroke, this.points, style);
+      updateGraphic('stroke', this.stroke, this.points, style, wireframeMode);
     }
 
     this._styleDirty = false;
     this.updateHalo();
 
 
-    function updateGraphic(which, graphic, points, style) {
-      const minwidth = (which === 'casing' ? 3 : 2);
+    function updateGraphic(which, graphic, points, style, wireframeMode) {
+      const minwidth = which === 'casing' ? 3 : 2;
       let width = style[which].width;
 
       // Apply effectiveZoom style adjustments
@@ -243,6 +244,10 @@ export class PixiFeatureLine extends AbstractFeature {
         width = minwidth;
       }
 
+      if (wireframeMode) {
+        width = 1;
+      }
+
       let g = graphic.clear();
       if (style[which].alpha === 0) return;
 
@@ -253,7 +258,7 @@ export class PixiFeatureLine extends AbstractFeature {
           width: width,
           alpha: style[which].alpha || 1.0,
           join: style[which].join || PIXI.LINE_JOIN.ROUND,
-          cap: style[which].cap || PIXI.LINE_CAP.ROUND
+          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
         });
       } else {
         g = g.lineStyle({
@@ -261,7 +266,7 @@ export class PixiFeatureLine extends AbstractFeature {
           width: width,
           alpha: style[which].alpha || 1.0,
           join: style[which].join || PIXI.LINE_JOIN.ROUND,
-          cap: style[which].cap || PIXI.LINE_CAP.ROUND
+          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
         });
       }
 

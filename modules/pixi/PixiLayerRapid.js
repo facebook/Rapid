@@ -300,11 +300,17 @@ export class PixiLayerRapid extends AbstractLayer {
   renderPolygons(layer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
+    const wireframeEnabled = this.context.map().wireFrameMode();
+    const width = wireframeEnabled ? 1 : 2;
     const style = {
       labelTint: color,
-      fill: { width: 2, color: color, alpha: 0.3 }
+      fill: { width: width, color: color, alpha: 0.3 },
       // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
     };
+
+    if (wireframeEnabled) {
+      style.fill.width = 0;
+    }
 
     data.polygons.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
@@ -364,10 +370,14 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       if (feature.dirty) {
+        const wireFrameEnabled = this.context.map().wireFrameMode();
+        const casingWidth = wireFrameEnabled ? 0 : 5;
+        const strokeWidth = wireFrameEnabled ? 1 : 3;
+
         const style = {
           labelTint: color,
-          casing: { width: 5, color: 0x444444 },
-          stroke: { width: 3, color: color }
+          casing: { width: casingWidth, color: 0x444444 },
+          stroke: { width: strokeWidth, color: color },
         };
         style.reversePoints = (entity.tags.oneway === '-1');
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';

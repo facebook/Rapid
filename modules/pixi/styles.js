@@ -522,6 +522,10 @@ export function styleMatch(tags) {
   if (tags.tunnel) {
     style.stroke.alpha = 0.5;
   }
+  if (this.context.map().wireFrameMode()) {
+    style.casing.width = 0;
+    style.stroke.width = 0.5;
+  }
 
   // determine surface for paved/unpaved
   let surface = tags.surface;

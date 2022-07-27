@@ -98,6 +98,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
   update(projection) {
     if (!this.dirty) return;  // no change
 
+    const wireframeMode = this.context.map().wireFrameMode();
     // For now, if either geometry or style is dirty, we just update the whole multipolygon
 
     //
@@ -304,13 +305,11 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 
     // STROKE
     if (this.stroke.visible) {
-      this.stroke
-        .clear()
-        .lineStyle({
-          alpha: 1,
-          width: style.fill.width || 2,
-          color: color
-        });
+      this.stroke.clear().lineStyle({
+        alpha: 1,
+        width: wireframeMode ? 1 : style.fill.width || 2,
+        color: color,
+      });
 
       shapes.forEach(shape => {
         this.stroke.drawShape(shape.outer);
@@ -321,6 +320,11 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     }
 
     // FILL
+    if (wireframeMode) {
+      this.fill.visible = false;
+      this.fill.clear();
+    }
+
     if (this.fill.visible) {
       this.fill.clear();
       shapes.forEach(shape => {

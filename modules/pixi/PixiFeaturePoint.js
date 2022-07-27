@@ -147,6 +147,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (!this._styleDirty) return;
 
     const context = this.context;
+    const wireframeMode = context.map().wireFrameMode();
     const textures = context.pixi.rapidTextures;
     const style = this._style;
     const isPin = (style.markerName === 'pin' || style.markerName === 'boldPin');
@@ -224,7 +225,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       this.lod = 0;   // off
       this.visible = false;
 
-    } else if (zoom < 17) {  // Markers drawn but smaller
+    } else if (zoom < 17 || wireframeMode) {  // Markers drawn but smaller
       this.lod = 1;  // simplified
       this.visible = true;
       viewfields.renderable = false;
