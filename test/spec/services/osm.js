@@ -266,6 +266,34 @@ describe('iD.serviceOsm', function () {
     });
 
 
+    describe('#loadFromAPIWithErrors', function () {
+      var path = '/api/0.6/map.json?bbox=-74.542,40.655,-74.541,40.656';
+      var response =
+        '{' +
+        '    "version":"0.6",' +
+        '    "bounds":{"minlat":40.6550000,"minlon":-74.5420000,"maxlat":40.6560000,"maxlon":-74.5410000},' +
+        '    "elements":[' +
+        '        {"type":"node","id":"105340439","visible":true,"version":2,"changeset":2880013,"timestamp":"2009-10-18T07:47:39Z","user":"woodpeck_fixbot","uid":147510,"lat":40.6555,"lon":-74.5415},' +
+        '        {"type":"node","id":"105340442","visible":true,"version":2,"changeset":2880013,"timestamp":"2009-10-18T07:47:39Z","user":"woodpeck_fixbot","uid":147510,"lat":40.6556,"lon":-74.5416},' +
+        '        {"type":"error", "message":"something went wrong loading postgres"},' +
+        '        {"type":"way","id":"40376199","visible":true,"version":1,"changeset":2403012,"timestamp":"2009-09-07T16:01:13Z","user":"NJDataUploads","uid":148169,"nodes":[105340439,105340442],"tags":{"highway":"residential","name":"Potomac Drive"}}' +
+        '    ]' +
+        '}';
+
+      it('returns a partial JSON error', function (done) {
+        fetchMock.mock('https://www.openstreetmap.org' + path, {
+          body: response,
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        connection.loadFromAPI(path, function (err, payload) {
+          expect(err.message).to.eql('Partial JSON');
+          done();
+        });
+      });
+    });
+
     describe('#loadTiles', function() {
         var tileResponse =
             '{' +
