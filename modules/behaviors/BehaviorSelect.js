@@ -22,7 +22,6 @@ const DEBUG = false;
  *   `lastSpace`    `eventData` Object for the most recent move event used to trigger a spacebar click
  */
 export class BehaviorSelect extends AbstractBehavior {
-
   /**
    * @constructor
    * @param  `context`  Global shared application context
@@ -35,6 +34,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._spaceClickDisabled = false;
     this._showMenu = false;
     // this._lastInteractionType = null;
+    this._longPressTimeout = null;
 
     this.lastDown = null;
     this.lastMove = null;
@@ -50,6 +50,8 @@ export class BehaviorSelect extends AbstractBehavior {
 
     this._keydown = this._keydown.bind(this);
     this._spacebar = this._spacebar.bind(this);
+    this._contextmenu = this._contextmenu.bind(this);
+    this._didLongPress = this._didLongPress.bind(this);
   }
 
   /**
@@ -61,7 +63,7 @@ export class BehaviorSelect extends AbstractBehavior {
     if (!this.context.pixi) return;
 
     if (DEBUG) {
-      console.log('BehaviorSelect: enabling listeners');  // eslint-disable-line no-console
+      console.log('BehaviorSelect: enabling listeners'); // eslint-disable-line no-console
     }
 
     this._enabled = true;
@@ -95,7 +97,6 @@ export class BehaviorSelect extends AbstractBehavior {
       .call(this._keybinding);
   }
 
-
   /**
    * disable
    * Unbind event handlers
@@ -104,8 +105,9 @@ export class BehaviorSelect extends AbstractBehavior {
     if (!this._enabled) return;
     if (!this.context.pixi) return;
 
+    this.cancelLongPress();
     if (DEBUG) {
-      console.log('BehaviorSelect: disabling listeners');  // eslint-disable-line no-console
+      console.log('BehaviorSelect: disabling listeners'); // eslint-disable-line no-console
     }
 
     this._enabled = false;
@@ -135,7 +137,6 @@ export class BehaviorSelect extends AbstractBehavior {
       .call(this._keybinding.unbind);
   }
 
-
   /**
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
@@ -143,7 +144,13 @@ export class BehaviorSelect extends AbstractBehavior {
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerdown(e) {
-    if (this.lastDown) return;  // a pointer is already down
+    if (this.lastDown) return; // a pointer is already down
+
+    this.cancelLongPress();
+
+    if (DEBUG) {
+      console.log('BehaviorSelect: pointerdown'); // eslint-disable-line no-console
+    }
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
@@ -155,10 +162,21 @@ export class BehaviorSelect extends AbstractBehavior {
     if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
+
+    // For touch devices, we want to make sure that the context menu is accessible via long press.
+   if (e.data.pointerType === 'touch') {
+      this._longPressTimeout = window.setTimeout(
+        this._didLongPress,
+        750,
+        down,
+        'longdown-' + (down.event.data.pointerType || 'mouse')
+      );
+   }
+
+
     this.lastDown = down;
     this.lastMove = null;
   }
-
 
   /**
    * _pointermove
@@ -176,7 +194,11 @@ export class BehaviorSelect extends AbstractBehavior {
 
     const down = this.lastDown;
     const move = this._getEventData(e);
-    if (!down || down.id !== move.id) return;  // not down, or different pointer
+    if (!down || down.id !== move.id) return; // not down, or different pointer
+
+    if (DEBUG) {
+      console.log('BehaviorSelect: pointermove'); // eslint-disable-line no-console
+    }
 
     // We get a lot more move events than we need,
     // so discard ones where it hasn't actually moved much
@@ -192,7 +214,6 @@ export class BehaviorSelect extends AbstractBehavior {
     }
   }
 
-
   /**
    * _pointerup
    * Handler for pointerup events.  Note that you can get multiples of these
@@ -206,12 +227,19 @@ export class BehaviorSelect extends AbstractBehavior {
 
     this.lastDown = null;
 
-    if (down.isCancelled) return;   // was cancelled already by moving too much
+    if (down.isCancelled) return; // was cancelled already by moving too much
+
+    if (DEBUG) {
+      console.log('BehaviorSelect: pointerdown'); // eslint-disable-line no-console
+    }
 
     const context = this.context;
     const dist = vecLength(down.coord, up.coord);
 
-    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
+    if (
+      dist < NEAR_TOLERANCE ||
+      (dist < FAR_TOLERANCE && up.time - down.time < 500)
+    ) {
       // Prevent a quick second click
       context.map().dblclickZoomEnable(false);
       d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
@@ -224,13 +252,12 @@ export class BehaviorSelect extends AbstractBehavior {
       // trigger a click
       this._click(up);
 
-      if (down.originalEvent.button === 2) {  //right click
+      if (down.originalEvent.button === 2) {
+        //right click
         this._contextmenu(up);
       }
-
     }
   }
-
 
   /**
    * _pointercancel
@@ -243,22 +270,26 @@ export class BehaviorSelect extends AbstractBehavior {
     this.lastDown = null;
   }
 
-
   /**
    * _keydown
    * Handler for keydown events.
    * @param  `e`  A d3 keydown event
    */
   _keydown(e) {
-    if (e.keyCode === 32) {   // spacebar
+    // if any key is pressed the user is probably doing something other than long-pressing
+    this.cancelLongPress();
+
+    if (e.keyCode === 32) {
+      // spacebar
       // ignore spacebar events during text input
       const activeNode = document.activeElement;
-      if (activeNode && new Set(['INPUT', 'TEXTAREA']).has(activeNode.nodeName)) return;
+      if (activeNode && new Set(['INPUT', 'TEXTAREA']).has(activeNode.nodeName))
+        return;
 
       this._spacebar(e);
       return;
-
-    } else if (e.keyCode === 93) {   // contextmenu key
+    } else if (e.keyCode === 93) {
+      // contextmenu key
       // this._lastInteractionType = 'menukey';
       this._contextmenu(this._getEventData(e));
       return;
@@ -269,7 +300,6 @@ export class BehaviorSelect extends AbstractBehavior {
       return;
     }
   }
-
 
   /**
    * _spacebar
@@ -290,16 +320,19 @@ export class BehaviorSelect extends AbstractBehavior {
 
     const pointer = this._getEventData({ data: pointerEvent });
 
-  console.log(`!!! pointer.target = ${pointer.target}`);
-  if (this.lastMove) {
-   console.log(`!!! lastMove.target = ${this.lastMove.target}`);
-  }
+    if (DEBUG) {
+      console.log(`!!! pointer.target = ${pointer.target}`); // eslint-disable-line no-console
+      if (this.lastMove) {
+        console.log(`!!! lastMove.target = ${this.lastMove.target}`); // eslint-disable-line no-console
+      }
+    }
 
     // Because spacebar events will repeat if you keep it held down,
     // user must move pointer or lift spacebar to allow another spacebar click
     if (this._spaceClickDisabled && this.lastSpace) {
       const dist = vecLength(pointer.coord, this.lastSpace.coord);
-      if (dist > FAR_TOLERANCE) {     // pointer moved far enough
+      if (dist > FAR_TOLERANCE) {
+        // pointer moved far enough
         this._spaceClickDisabled = false;
       }
     }
@@ -308,8 +341,9 @@ export class BehaviorSelect extends AbstractBehavior {
       this._spaceClickDisabled = true;
       this.lastSpace = pointer;
 
-      d3_select(window).on('keyup.space-block', (e) => {   // user lifted spacebar up
-        if (e.code !== 'Space') return;  // only spacebar
+      d3_select(window).on('keyup.space-block', (e) => {
+        // user lifted spacebar up
+        if (e.code !== 'Space') return; // only spacebar
         e.preventDefault();
         e.stopPropagation();
         this._spaceClickDisabled = false;
@@ -320,7 +354,6 @@ export class BehaviorSelect extends AbstractBehavior {
       this._click(pointer);
     }
   }
-
 
   /**
    * _click
@@ -333,6 +366,7 @@ export class BehaviorSelect extends AbstractBehavior {
     const mode = context.mode();
     let datum = eventData.data;
 
+    this.cancelLongPress();
 //// vvv---- this needs to be done a different way
 //// Selection can happen other ways, without direct user interaction
 //// For example, after adding a point that point needs to be selected.
@@ -358,10 +392,10 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked a non-OSM feature..
     if (
-      datum.__fbid__ ||              // Clicked a RapiD feature..
-      datum.__featurehash__ ||       // Clicked Custom Data (e.g. gpx track)
-      datum instanceof osmNote ||    // Clicked an OSM Note...
-      datum instanceof QAItem        // Clicked a QA Item (keepright, osmose, improveosm)...
+      datum.__fbid__ || // Clicked a RapiD feature..
+      datum.__featurehash__ || // Clicked Custom Data (e.g. gpx track)
+      datum instanceof osmNote || // Clicked an OSM Note...
+      datum instanceof QAItem // Clicked a QA Item (keepright, osmose, improveosm)...
     ) {
       const selection = new Map().set(datum.id, datum);
       context.enter('select', { selection: selection });
@@ -388,9 +422,10 @@ export class BehaviorSelect extends AbstractBehavior {
       if (!service) return;
 
       // The 'ID' of the photo varies by layer. Streetside uses 'key', others use 'id'.
-      const photoID = (photoLayerName === 'mapillary') ? datum.id : datum.key;
+      const photoID = photoLayerName === 'mapillary' ? datum.id : datum.key;
 
-      service.ensureViewerLoaded(context)
+      service
+        .ensureViewerLoaded(context)
         .then(() => service.selectImage(context, photoID).showViewer(context));
 
       context.map().centerEase(datum.loc);
@@ -401,7 +436,25 @@ export class BehaviorSelect extends AbstractBehavior {
       const ids = datum ? [target.name] : [];
       renderer.selectFeatures(ids);
     }
+  }
 
+  cancelLongPress() {
+    if (this._longPressTimeout) {
+      if (DEBUG) {
+        console.log('BehaviorSelect: clearing long press'); // eslint-disable-line no-console
+      }
+
+      window.clearTimeout(this._longPressTimeout);
+    }
+    this._longPressTimeout = null;
+  }
+
+  _didLongPress(downEventData, interactionType) {
+      // treat long presses like right-clicks
+      this._longPressTimeout = null;
+      this._lastInteractionType = interactionType;
+
+      this._contextmenu(downEventData);
   }
 
 //
@@ -481,43 +534,40 @@ export class BehaviorSelect extends AbstractBehavior {
 //    }
 //  }
 
+  /**
+   * _contextmenu
+   * Handler for `contextmenu` events, will be either a pointer event
+   * for the right button, or a dedicated keydown event for a contextmenu button
+   * @param  `eventData`  event data
+   */
+  _contextmenu(eventData) {
+    //  e.preventDefault();
+    // this._lastMouseEvent = e;
+    // this._lastInteractionType = 'rightclick';
+    this._showMenu = true;
 
-   /**
-    * _contextmenu
-    * Handler for `contextmenu` events, will be either a pointer event
-    * for the right button, or a dedicated keydown event for a contextmenu button
-    * @param  `eventData`  event data
-    */
-   _contextmenu(eventData) {
-     //  e.preventDefault();
-     // this._lastMouseEvent = e;
-     // this._lastInteractionType = 'rightclick';
-     this._showMenu = true;
+    const datum = eventData.data;
 
-     const datum = eventData.data;
-
-     // Only attempt to display the context menu if we're clicking on a non-rapid OSM Entity.
-     if (datum && datum instanceof osmEntity && !datum.__fbid__) {
+    // Only attempt to display the context menu if we're clicking on a non-rapid OSM Entity.
+    if (datum && datum instanceof osmEntity && !datum.__fbid__) {
       // For contextmenu key events we will instead use the last pointer event
       // Get these from Pixi's interaction manager
       const interactionManager = this.context.pixi.renderer.plugins.interaction;
       const pointerOverRenderer = interactionManager.mouseOverRenderer;
       const pointerEvent = interactionManager.mouse;
-      if (!pointerEvent || !pointerOverRenderer) return;
+      if (!pointerEvent || !pointerOverRenderer && !eventData.id === 'touch') return;
 
-      const pointer = this._getEventData({ data: pointerEvent });
+      const pointer = this._getEventData({ data: eventData });
       this.context.ui().showEditMenu(pointer.coord);
     }
   }
 
-
   resetProperties() {
-    // cancelLongPress();
+    this.cancelLongPress();
     this._showMenu = false;
     this._lastInteractionType = null;
     // don't reset _lastMouseEvent since it might still be useful
   }
-
 }
 //
 //

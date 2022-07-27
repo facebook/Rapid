@@ -179,6 +179,15 @@ export class BehaviorDrag extends AbstractBehavior {
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
+    let editMenu = context.map().supersurface.select('.edit-menu');
+
+    //If we detect the edit (right-click) menu, we should cease any dragging behavior.
+    if (editMenu._groups[0][0]) {
+      this.lastDown = null;
+      this.lastMove = null;
+      this.dragTarget = null;
+    }
+
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
     if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
