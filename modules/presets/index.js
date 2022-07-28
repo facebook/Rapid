@@ -114,8 +114,9 @@ export function presetIndex() {
         if (p) {   // add or replace
           const isAddable = !_addablePresetIDs || _addablePresetIDs.has(presetID);
 
-// hack - give Address preset the circular icon
+// A few overrides to use better icons than the ones provided by the id-tagging-schema project
 if (presetID === 'address') p.icon ='maki-circle-stroked';
+if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_crosswalk';
 
           p = presetPreset(presetID, p, isAddable, _fields, _presets);
           if (p.locationSet) newLocationSets.push(p);
