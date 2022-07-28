@@ -35,7 +35,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     this.type = 'point';
     this.geometry = geometry;
     this.style = style || {};
-    this._oldvfLength = 0;  // to watch for change in # of viewfield sprites
+
+    this._oldvfLength = 0;      // to watch for change in # of viewfield sprites
+    this._isCircular = false;   // set true to use a circular halo and hit area
 
     const viewfields = new PIXI.Container();
     viewfields.name = 'viewfields';
@@ -89,31 +91,45 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Recalculate local and scene bounds
     // (note that the local bounds automatically includes children like viewfields too)
     const position = this.container.position;
-    this.container.getLocalBounds(this.localBounds);     // where 0,0 is the origin of the object
-    this.sceneBounds = this.localBounds.clone();    // where 0,0 is the origin of the scene
+    this.container.getLocalBounds(this.localBounds);  // where 0,0 is the origin of the object
+    this.sceneBounds = this.localBounds.clone();      // where 0,0 is the origin of the scene
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
+
 
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
     const rect = this.container.getLocalBounds().clone();
-    if (rect.width < MINSIZE) {
-      rect.pad((MINSIZE - rect.width) / 2, 0);
-    }
-    if (rect.height < MINSIZE) {
-      rect.pad(0, (MINSIZE - rect.height) / 2);
-    }
-    rect.pad(4); // then pad a bit more
 
-    const poly = new PIXI.Polygon([
-      rect.left, rect.top,
-      rect.right, rect.top,
-      rect.right, rect.bottom,
-      rect.left, rect.bottom,
-      rect.left, rect.top
-    ]);
+    if (this._isCircular) {
+      let radius = rect.width / 2;
+      if (radius < MINSIZE / 2) {
+        radius = MINSIZE / 2;
+      }
+      radius = radius + 2;  // then pad a bit more
 
-    this.container.hitArea = poly;
+      const circle = new PIXI.Circle(0, 0, radius);
+      this.container.hitArea = circle;
+
+    } else {
+      if (rect.width < MINSIZE) {
+        rect.pad((MINSIZE - rect.width) / 2, 0);
+      }
+      if (rect.height < MINSIZE) {
+        rect.pad(0, (MINSIZE - rect.height) / 2);
+      }
+      rect.pad(4); // then pad a bit more
+
+      this.container.hitArea = rect;
+
+      // const poly = new PIXI.Polygon([
+      //   rect.left, rect.top,
+      //   rect.right, rect.top,
+      //   rect.right, rect.bottom,
+      //   rect.left, rect.bottom,
+      //   rect.left, rect.top
+      // ]);
+    }
 
     this.updateHalo();
   }
@@ -234,9 +250,11 @@ export class PixiFeaturePoint extends AbstractFeature {
 
       // Replace pins with circles at lower zoom
       const textureName = isPin ? 'largeCircle' : style.markerName;
+      this._isCircular = (!style.markerTexture && /circle$/i.test(textureName));
       marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
+
 
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
@@ -246,6 +264,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.scale.set(1, 1);
 
       marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
+      this._isCircular = (!vfAngles.length && !style.markerTexture && /circle$/i.test(style.markerName));
       if (isPin) {
         marker.anchor.set(0.5, 1);  // middle, bottom
         icon.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
@@ -260,7 +279,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
 
 // experiment
-// Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
+// Show/Hide halo (requires `this.container.hitArea` to be already set up as a supported shape)
   updateHalo() {
     super.updateHalo();
     if (this.visible && (this.hovered || this.selected)) {
@@ -278,7 +297,13 @@ export class PixiFeaturePoint extends AbstractFeature {
 
       const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
       this.halo.clear();
-      new DashLine(this.halo, haloProps).drawPolygon(this.container.hitArea.points);
+
+      const shape = this.container.hitArea;
+      if (shape instanceof PIXI.Circle) {
+        new DashLine(this.halo, haloProps).drawCircle(shape.x, shape.y, shape.radius);
+      } else if (shape instanceof PIXI.Rectangle) {
+        new DashLine(this.halo, haloProps).drawRect(shape.x, shape.y, shape.width, shape.height);
+      }
       this.halo.position = this.container.position;
 
     } else {
