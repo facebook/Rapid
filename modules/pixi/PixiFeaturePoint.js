@@ -250,7 +250,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
       // Replace pins with circles at lower zoom
       const textureName = isPin ? 'largeCircle' : style.markerName;
-      this._isCircular = (!style.markerTexture && /circle$/i.test(textureName));
+      this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(textureName));
       marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
@@ -264,7 +264,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.scale.set(1, 1);
 
       marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
-      this._isCircular = (!vfAngles.length && !style.markerTexture && /circle$/i.test(style.markerName));
+      this._isCircular = (!vfAngles.length && !style.markerTexture && /(circle|midpoint)$/i.test(style.markerName));
       if (isPin) {
         marker.anchor.set(0.5, 1);  // middle, bottom
         icon.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
