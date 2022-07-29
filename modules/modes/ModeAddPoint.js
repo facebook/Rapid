@@ -1,11 +1,13 @@
 import { AbstractMode } from './AbstractMode';
 
-import { t } from '../core/localizer';
-import { modeSelect } from './select';
-import { osmNode } from '../osm/node';
 import { actionAddEntity } from '../actions/add_entity';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionAddMidpoint } from '../actions/add_midpoint';
+import { geoChooseEdge } from '../geo';
+import { locationManager } from '../core/locations';
+import { modeSelect } from '../modes/select';
+import { osmNode } from '../osm/node';
+import { t } from '../core/localizer';
 
 const DEBUG = false;
 
@@ -28,8 +30,6 @@ export class ModeAddPoint extends AbstractMode {
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
-    this._clickWay = this._clickWay.bind(this);
-    this._clickNode = this._clickNode.bind(this);
     this._cancel = this._cancel.bind(this);
   }
 
@@ -46,9 +46,7 @@ export class ModeAddPoint extends AbstractMode {
     this.context.enableBehaviors(['hover', 'draw']);
     this.context.behaviors.get('draw')
       .on('click', this._click)
-      .on('clickWay', this._clickWay)
-      .on('clickNode', this._clickNode)
-      .on('cancel', this._cancel)
+      .on('undo', this._cancel)
       .on('finish', this._cancel);
 
     return true;
@@ -68,10 +66,47 @@ export class ModeAddPoint extends AbstractMode {
     this._active = false;
     this.context.behaviors.get('draw')
       .off('click', this._click)
-      .off('clickWay', this._clickWay)
-      .off('clickNode', this._clickNode)
-      .off('cancel', this._cancel)
+      .off('undo', this._cancel)
       .off('finish', this._cancel);
+  }
+
+
+  /**
+   * _click
+   * Process whatever the user clicked on
+   */
+  _click(eventData) {
+    const context = this.context;
+    const graph = context.graph();
+    const projection = context.projection;
+    const coord = eventData.coord;
+    const loc = projection.invert(coord);
+
+    if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
+
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    const datum = eventData.data;
+    const entity = datum && graph.hasEntity(datum.id);
+
+    // Snap to a node
+    if (entity && entity.type === 'node') {
+      this._clickNode(entity.loc, entity);
+      return;
+    }
+
+    // Snap to a way
+    if (entity && entity.type === 'way') {
+      const activeIDs = context.activeIDs();
+      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      if (choice) {
+        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
+        this._clickWay(choice.loc, edge);
+        return;
+      }
+    }
+
+    this._clickNothing(loc);
   }
 
 
@@ -79,7 +114,7 @@ export class ModeAddPoint extends AbstractMode {
    * _click
    * Clicked on nothing, create the point at given `loc`
    */
-  _click(loc) {
+  _clickNothing(loc) {
     const node = osmNode({ loc: loc, tags: this.defaultTags });
     const annotation = t('operations.add.annotation.point');
     this.context.perform(actionAddEntity(node), annotation);

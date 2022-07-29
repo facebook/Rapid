@@ -72,14 +72,14 @@ export class AbstractMode {
   }
 
   /**
-   * selectedData
+   * activeData
    * @readonly
    */
   get activeData() {
     return this._activeData;
   }
   /**
-   * selectedIDs
+   * activeIDs
    * @readonly
    */
   get activeIDs() {

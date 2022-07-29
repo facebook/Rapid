@@ -2,9 +2,6 @@ import { select as d3_select } from 'd3-selection';
 import { vecEqual, vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { locationManager } from '../core/locations';
-import { osmEntity } from '../osm/entity';
-import { geoChooseEdge } from '../geo';
 import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
@@ -20,17 +17,15 @@ const DEBUG = false;
  *   `lastDown`   `eventData` Object for the most recent down event
  *   `lastMove`   `eventData` Object for the most recent move event
  *   `lastSpace`  `eventData` Object for the most recent move event used to trigger a spacebar click
+ *   `lastClick`  `eventData` Object for the most recent click event
  *
  * Events available:
- *   `down`        Fires on initial pointerdown, receives down `eventData` Object
- *   `move`        Fires on any pointermove, receives move `eventData` Object
- *   `downcancel`  Fires on pointercancel -or- if the pointer has moved too much for it to be a click, receives `eventData`
- *   `click`       Fires on click on nothing, receives `loc` ([lon,lat])
- *   `clickWay`    Fires on click on a Way, receives `loc` ([lon,lat]) and `edge` Object
- *   `clickNode`   Fires on click on a Node, receives `loc` ([lon,lat]) and `entity` (the node)
- *   `undo`        Fires if user presses backspace
- *   `cancel`      Fires if user presses delete
- *   `finish`      Fires if user presses escape or return
+ *   `down`      Fires on initial pointerdown, receives `eventData` Object
+ *   `move`      Fires on _any_ pointermove, receives `eventData` Object
+ *   `cancel`    Fires on pointercancel -or- if the pointer has moved too much for it to be a click, receives `eventData` Object
+ *   `click`     Fires on a successful click (or spacebar), receives `eventData` Object
+ *   `undo`      Fires if user presses delete or backspace
+ *   `finish`    Fires if user presses return, enter, or escape
  */
 export class BehaviorDraw extends AbstractBehavior {
 
@@ -46,6 +41,7 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
+    this.lastClick = null;
 
     this._keybinding = utilKeybinding('drawbehavior');
 
@@ -55,10 +51,20 @@ export class BehaviorDraw extends AbstractBehavior {
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
 
-    this._backspace = this._backspace.bind(this);
-    this._delete = this._delete.bind(this);
-    this._return = this._return.bind(this);
+    this._keydown = this._keydown.bind(this);
+    this._keyup = this._keyup.bind(this);
+    this._blur = this._blur.bind(this);
     this._spacebar = this._spacebar.bind(this);
+    this._undo = this._undo.bind(this);
+    this._finish = this._finish.bind(this);
+
+    // Always observe the state of the modifier keys (even when the behavior is disabled)
+    // This is used to disable snapping/hovering
+    this._modifierKeys = new Set();
+    d3_select(window)
+      .on('keydown.BehaviorDraw', this._keydown)
+      .on('keyup.BehaviorDraw', this._keyup)
+      .on('blur.BehaviorDraw', this._blur);
   }
 
 
@@ -78,12 +84,13 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
+    this.lastClick = null;
 
     this._keybinding
-      .on('⌫', this._backspace)
-      .on('⌦', this._delete)
-      .on('⎋', this._return)
-      .on('↩', this._return)
+      .on('⌫', this._undo)
+      .on('⌦', this._undo)
+      .on('⎋', this._finish)
+      .on('↩', this._finish)
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
@@ -116,6 +123,7 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
+    this.lastClick = null;
 
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
@@ -130,6 +138,39 @@ export class BehaviorDraw extends AbstractBehavior {
   }
 
 
+  /**
+   * _keydown
+   * Handler for presses of the modifier keys
+   * @param  `e`  A d3 keydown event
+   */
+  _keydown(e) {
+     if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
+     this._modifierKeys.add(e.key);
+     this._processMove();
+  }
+
+
+  /**
+   * _keyup
+   * Handler for releases of the modifier keys
+   * @param  `e`  A d3 keyup event
+   */
+  _keyup(e) {
+     if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
+     this._modifierKeys.delete(e.key);
+     this._processMove();
+  }
+
+
+  /**
+   * _blur
+   * Handler for the window losing focus (we won't get keyups if this happens)
+   */
+  _blur() {
+    this._modifierKeys.clear();
+    this._processMove();
+  }
+
 
   /**
    * _pointerdown
@@ -140,15 +181,9 @@ export class BehaviorDraw extends AbstractBehavior {
   _pointerdown(e) {
     if (this.lastDown) return;  // a pointer is already down
 
-    // If pointer is not over the renderer, just discard
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this.context;
-    const interactionManager = context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
-
     const down = this._getEventData(e);
     this.lastDown = down;
+    this.lastClick = null;
 
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'down'`);  // eslint-disable-line no-console
@@ -163,39 +198,28 @@ export class BehaviorDraw extends AbstractBehavior {
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
-    // If pointer is not over the renderer, just discard
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this.context;
-    const interactionManager = context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
-
     const move = this._getEventData(e);
-    if (!move) return;
 
-    // We get a lot more move events than we need,
-    // so discard ones where it hasn't actually moved much
+    // We get a lot more move events than we need, so discard ones where it hasn't actually moved much
     if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
+
     this.lastMove = move;
 
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
-    const down = this._getEventData(e);
-    if (down && down.id === move.id && !down.isCancelled) {
+    const down = this.lastDown;
+    if (down && !down.isCancelled && down.id === move.id) {
       const dist = vecLength(down.coord, move.coord);
       if (dist >= NEAR_TOLERANCE) {
         down.isCancelled = true;
 
         if (DEBUG) {
-          console.log(`BehaviorDraw: emitting 'downcancel'`);  // eslint-disable-line no-console
+          console.log(`BehaviorDraw: emitting 'cancel'`);  // eslint-disable-line no-console
         }
-        this.emit('downcancel', move);
+        this.emit('cancel', move);
       }
     }
 
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'move'`);  // eslint-disable-line no-console
-    }
-    this.emit('move', move);
+    this._processMove();
   }
 
 
@@ -210,28 +234,24 @@ export class BehaviorDraw extends AbstractBehavior {
     const up = this._getEventData(e);
     if (!down || down.id !== up.id) return;  // not down, or different pointer
 
-    // const name = (up.target && up.target.name) || 'no target';
-    // console.log(`pointerup ${name}`);
-
-    this.lastDown = null;
+    this.lastDown = null;  // prepare for the next `pointerdown`
 
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
-    const context = this.context;
     const dist = vecLength(down.coord, up.coord);
-
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
+      this.lastClick = up;   // We will accept this as a click
+
       // Prevent a quick second click
-      context.map().dblclickZoomEnable(false);
+      this.context.map().dblclickZoomEnable(false);
       d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
 
       window.setTimeout(() => {
-        context.map().dblclickZoomEnable(true);
+        this.context.map().dblclickZoomEnable(true);
         d3_select(window).on('click.draw-block', null);
       }, 500);
 
-      // trigger a click
-      this._click(up);
+      this._processClick();
     }
   }
 
@@ -244,45 +264,42 @@ export class BehaviorDraw extends AbstractBehavior {
   _pointercancel(e) {
     const cancel = this._getEventData(e);
     const down = this.lastDown;
-    // const name = (cancel.target && cancel.target.name) || 'no target';
-    // console.log(`pointercancel ${name}`);
 
     if (down && !down.isCancelled) {
       if (DEBUG) {
-        console.log(`BehaviorDraw: emitting 'downcancel'`);  // eslint-disable-line no-console
+        console.log(`BehaviorDraw: emitting 'cancel'`);  // eslint-disable-line no-console
       }
-      this.emit('downcancel', cancel);
+      this.emit('cancel', cancel);
     }
 
-    // Here we can throw away the down data to prepare for another `pointerdown`.
-    // After pointercancel, there should be no more `pointermove` or `pointerup` events.
-    this.lastDown = null;
+    this.lastDown = null;  // prepare for the next `pointerdown`
   }
 
 
   /**
    * _spacebar
-   * Handler for `keydown` events of the spacebar
-   * We use these to simulate clicks
+   * Handler for `keydown` events of the spacebar. We use these to simulate clicks.
+   * Note that the spacebar will repeat, so we can get many of these.
    * @param  `e`  A d3 keydown event
    */
   _spacebar(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    // For spacebar clicks we will instead use the last pointer event
-    // Get these from Pixi's interaction manager
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    const pointerEvent = interactionManager.mouse;
-    if (!pointerEvent || !pointerOverRenderer) return;
+    if (!pointerOverRenderer) return;
 
-    const pointer = this._getEventData({ data: pointerEvent });
+    // For spacebar clicks we will instead use the last move event
+    if (!this.lastMove) return;
+    const move = Object.assign({}, this.lastMove);  // shallow copy
 
     // Becase spacebar events will repeat if you keep it held down,
     // user must move pointer or lift spacebar to allow another spacebar click
     if (this._spaceClickDisabled && this.lastSpace) {
-      const dist = vecLength(pointer.coord, this.lastSpace.coord);
+      const dist = vecLength(move.coord, this.lastSpace.coord);
       if (dist > FAR_TOLERANCE) {     // pointer moved far enough
         this._spaceClickDisabled = false;
       }
@@ -290,7 +307,8 @@ export class BehaviorDraw extends AbstractBehavior {
 
     if (!this._spaceClickDisabled) {
       this._spaceClickDisabled = true;
-      this.lastSpace = pointer;
+      this.lastSpace = move;
+      this.lastClick = move;   // We will accept this as a click
 
       d3_select(window).on('keyup.space-block', (e) => {   // user lifted spacebar up
         if (e.code !== 'Space') return;  // only spacebar
@@ -301,73 +319,77 @@ export class BehaviorDraw extends AbstractBehavior {
       });
 
       // simulate a click
-      this._click(pointer);
+      this._processClick();
     }
   }
 
 
   /**
-   * _click
-   * Once we have determined that the user has clicked, this is where we handle that click.
-   * Note this is not a true `click` event handler - we get into here from `_pointerup` or `_spacebar`.
-   *
-   * related code
-   * - `mode/drag_node.js`      `doMove()`
-   * - `behaviors/draw.js`      `click()`
-   * - `behaviors/draw_way.js`  `move()`
-   *
-   * @param  `eventData`  Object for the event that triggered the click
+   * _processMove
+   * Checks lastMove and emits a 'move' event if needed
    */
-  _click(eventData) {
-    const context = this.context;
-    const projection = context.projection;
-    const coord = eventData.coord;
-    const loc = projection.invert(coord);
+  _processMove() {
+    if (!this._enabled || !this.lastMove) return;  // nothing to do
 
-    if (locationManager.blocksAt(loc).length) return;  // editing is blocked here
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    if (!pointerOverRenderer) return;
 
-    const datum = eventData.data;
-    const entity = (datum instanceof osmEntity) && datum;
+    const move = Object.assign({}, this.lastMove);  // shallow copy
 
-    // Snap to a node
-    if (entity && entity.type === 'node') {
-      if (DEBUG) {
-        console.log(`BehaviorDraw: emitting 'clickNode', target = ${entity.id}`);  // eslint-disable-line no-console
-      }
-      this.emit('clickNode', entity.loc, entity);
-      return;
+    // If a modifier key is down, discard the target to prevent snap/hover.
+    if (this._modifierKeys.size) {
+      move.target = null;
+      move.feature = null;
+      move.data = null;
     }
 
-    // Snap to a way
-    if (entity && entity.type === 'way') {
-      const graph = context.graph();
-      const activeIDs = context.activeIDs();
-      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
-
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
-      if (choice) {
-        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
-        if (DEBUG) {
-          console.log(`BehaviorDraw: emitting 'clickWay', target = ${entity.id}`);  // eslint-disable-line no-console
-        }
-        this.emit('clickWay', choice.loc, edge);
-        return;
-      }
+    if (DEBUG) {
+      console.log(`BehaviorDraw: emitting 'move'`);  // eslint-disable-line no-console
     }
 
-    // Just a click on the map
+    this.emit('move', move);
+  }
+
+
+  /**
+   * _processClick
+   * Checks lastClick and emits a 'click' event if needed
+   */
+  _processClick() {
+    if (!this._enabled || !this.lastClick) return;  // nothing to do
+
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const interactionManager = this.context.pixi.renderer.plugins.interaction;
+    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+    if (!pointerOverRenderer) return;
+
+    const click = Object.assign({}, this.lastClick);  // shallow copy
+
+    // If a modifier key is down, discard the target to prevent snap/hover.
+    if (this._modifierKeys.size) {
+      click.target = null;
+      click.feature = null;
+      click.data = null;
+    }
+
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'click'`);  // eslint-disable-line no-console
     }
-    this.emit('click', loc);
+
+    this.emit('click', click);
   }
 
 
   /**
-   * _backspace
+   * _undo
+   * Fires if user presses delete or backspace - this is used to get rid of the last drawn segment
    * @param  `e`  A d3 keydown event
    */
-  _backspace(e) {
+  _undo(e) {
     e.preventDefault();
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'undo'`);  // eslint-disable-line no-console
@@ -377,23 +399,11 @@ export class BehaviorDraw extends AbstractBehavior {
 
 
   /**
-   * _delete
+   * _finish
+   * Fires if user presses return, enter, or escape - this is used to accept whatever has been drawn
    * @param  `e`  A d3 keydown event
    */
-  _delete(e) {
-    e.preventDefault();
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'cancel'`);  // eslint-disable-line no-console
-    }
-    this.emit('cancel');
-  }
-
-
-  /**
-   * _return
-   * @param  `e`  A d3 keydown event
-   */
-  _return(e) {
+  _finish(e) {
     e.preventDefault();
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'finish'`);  // eslint-disable-line no-console

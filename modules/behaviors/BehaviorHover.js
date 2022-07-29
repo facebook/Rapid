@@ -1,3 +1,4 @@
+import { select as d3_select } from 'd3-selection';
 import { vecEqual } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
@@ -6,7 +7,7 @@ const DEBUG = false;
 
 
 /**
- * `BehaviorHover` listens to pointer events and hovers items that are hovered over
+ * `BehaviorHover` listens to pointer events emits `hoverchanged` events as the user hovers over stuff
  *
  * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
@@ -31,6 +32,18 @@ export class BehaviorHover extends AbstractBehavior {
 
     // Make sure the event handlers have `this` bound correctly
     this._pointermove = this._pointermove.bind(this);
+    this._pointerout = this._pointerout.bind(this);
+    this._keydown = this._keydown.bind(this);
+    this._keyup = this._keyup.bind(this);
+    this._blur = this._blur.bind(this);
+
+    // Always observe the state of the modifier keys (even when the behavior is disabled)
+    // This is used to disable snapping/hovering
+    this._modifierKeys = new Set();
+    d3_select(window)
+      .on('keydown.BehaviorHover', this._keydown)
+      .on('keyup.BehaviorHover', this._keyup)
+      .on('blur.BehaviorHover', this._blur);
   }
 
 
@@ -53,7 +66,7 @@ export class BehaviorHover extends AbstractBehavior {
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .on('pointermove', this._pointermove)
-      .on('pointerout', this._pointermove);   // or leaves the canvas
+      .on('pointerout', this._pointerout);   // or leaves the canvas
   }
 
 
@@ -70,15 +83,12 @@ export class BehaviorHover extends AbstractBehavior {
     }
 
     // Something is currently hovered, so un-hover it first.
-    const eventData = this.lastMove;
-    if (eventData && this.hoverTarget) {
-      eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
-      if (DEBUG) {
-        console.log(`BehaviorHover: emitting 'hoverchanged', hoverTarget = none`);  // eslint-disable-line no-console
-      }
-      this.emit('hoverchanged', eventData);
+    const move = this.lastMove;
+    if (this.hoverTarget && move) {
+      move.target = null;
+      move.feature = null;
+      move.data = null;
+      this._processMove();
     }
 
     this._enabled = false;
@@ -88,28 +98,86 @@ export class BehaviorHover extends AbstractBehavior {
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
     interactionManager
       .off('pointermove', this._pointermove)
-      .off('pointerout', this._pointermove);
+      .off('pointerout', this._pointerout);
+  }
+
+
+  /**
+   * _keydown
+   * Handler for presses of the modifier keys
+   * @param  `e`  A d3 keydown event
+   */
+  _keydown(e) {
+    if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
+    this._modifierKeys.add(e.key);
+    this._processMove();
+  }
+
+
+  /**
+   * _keyup
+   * Handler for releases of the modifier keys
+   * @param  `e`  A d3 keyup event
+   */
+  _keyup(e) {
+    if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
+    this._modifierKeys.delete(e.key);
+    this._processMove();
+  }
+
+
+  /**
+   * _blur
+   * Handler for the window losing focus (we won't get keyups if this happens)
+   */
+  _blur() {
+    this._modifierKeys.clear();
+    this._processMove();
   }
 
 
   /**
    * _pointermove
-   * Handler for pointermove, pointerout events.
+   * Handler for pointermove events.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointermove(e) {
     const move = this._getEventData(e);
 
-    // We get a lot more move events than we need,
-    // so discard ones where it hasn't actually moved much
+    // We get a lot more move events than we need, so discard ones where it hasn't actually moved much
     if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
-    this.lastMove = move;
 
-    // If pointer is not over the renderer, consider it a null target..
+    this.lastMove = move;
+    this._processMove();
+  }
+
+
+  /**
+   * _pointerout
+   * Handler for pointerout events.
+   * @param  `e`  A Pixi InteractionEvent
+   */
+  _pointerout(e) {
+    // Pretend it's a move event, but skip the "has it moved much" test
+    this.lastMove = this._getEventData(e);
+    this._processMove();
+  }
+
+
+  /**
+   * _processMove
+   * Checks lastMove and emits a 'hoverchanged' event if needed
+   */
+  _processMove() {
+    if (!this._enabled || !this.lastMove) return;  // nothing to do
+
+    const move = Object.assign({}, this.lastMove);  // shallow copy
+
+    // If a modifier key is down, or pointer is not over the renderer, discard the target..
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) {
+    if (this._modifierKeys.size || !pointerOverRenderer) {
       move.target = null;
       move.feature = null;
       move.data = null;
@@ -126,5 +194,4 @@ export class BehaviorHover extends AbstractBehavior {
       this.emit('hoverchanged', move);
     }
   }
-
 }

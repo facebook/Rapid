@@ -80,7 +80,6 @@ export class AbstractBehavior extends EventEmitter {
    * @param  `e`  A Pixi InteractionEvent (or something that looks like one)
    */
   _getEventData(e) {
-
     const result = {
       //      mouse event id                touch event id        default
       id: e.data.originalEvent.pointerId || e.data.pointerType || 'mouse',

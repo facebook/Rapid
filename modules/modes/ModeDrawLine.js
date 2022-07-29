@@ -6,6 +6,9 @@ import { actionAddVertex } from '../actions/add_vertex';
 import { actionDeleteNode } from '../actions/delete_node';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
+
+import { geoChooseEdge } from '../geo';
+import { locationManager } from '../core/locations';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
 import { t } from '../core/localizer';
@@ -42,9 +45,7 @@ export class ModeDrawLine extends AbstractMode {
     // Make sure the event handlers have `this` bound correctly
     this._move = this._move.bind(this);
     this._click = this._click.bind(this);
-    this._clickWay = this._clickWay.bind(this);
-    this._clickNode = this._clickNode.bind(this);
-    this._cancel = this._cancel.bind(this);
+    this._undo = this._undo.bind(this);
     this._finish = this._finish.bind(this);
   }
 
@@ -95,18 +96,18 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = continueNode;
       this.firstNode = context.entity(oppositeNodeID);
       this.drawWay = continueWay;
-      this._selectedData.set(this.drawWay.id, this.drawWay);
+      // this._selectedData.set(this.drawWay.id, this.drawWay);
+      this._updateCollections();
+
       this._continueFromNode(continueNode);  // create draw node and extend continue way to it
     }
 
     context.map().dblclickZoomEnable(false);
-    context.enableBehaviors([/*'hover',*/ 'draw']);
+    context.enableBehaviors(['hover', 'draw']);
     context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)
-      .on('clickWay', this._clickWay)
-      .on('clickNode', this._clickNode)
-      .on('cancel', this._cancel)
+      .on('undo', this._undo)
       .on('finish', this._finish);
 
 // figure out how this needs to happen - `this.defaultTags` maybe not ready yet?
@@ -159,10 +160,30 @@ export class ModeDrawLine extends AbstractMode {
     context.behaviors.get('draw')
       .off('move', this._move)
       .off('click', this._click)
-      .off('clickWay', this._clickWay)
-      .off('clickNode', this._clickNode)
-      .off('cancel', this._cancel)
+      .off('undo', this._undo)
       .off('finish', this._finish);
+  }
+
+
+  /**
+   * _updateCollections
+   * Updates the "active" and "selected" collections
+   * - active should contain the drawWay and drawNode
+   * - selected should contain the drawWay
+   */
+  _updateCollections() {
+    this._selectedData.clear();
+    if (this.drawWay) {
+      this._selectedData.set(this.drawWay.id, this.drawWay);
+    }
+
+    this._activeData.clear();
+    if (this.drawWay) {
+      this._activeData.set(this.drawWay.id, this.drawWay);
+    }
+    if (this.drawNode) {
+      this._activeData.set(this.drawNode.id, this.drawNode);
+    }
   }
 
 
@@ -175,7 +196,6 @@ export class ModeDrawLine extends AbstractMode {
     if (this.drawWay.isDegenerate()) return false;
     return true;
   }
-
 
 
   /**
@@ -196,45 +216,86 @@ export class ModeDrawLine extends AbstractMode {
    * Move the draw node, if any.
    */
   _move(eventData) {
-    if (!this.drawWay) return;
+    if (!this.drawNode) return;
 
     const context = this.context;
-    const loc = context.projection.invert(eventData.coord);
+    const graph = context.graph();
+    const projection = context.projection;
+    const coord = eventData.coord;
+    let loc = projection.invert(coord);
 
-    if (DEBUG) {
-      console.log(`ModeDrawLine: _move, moving draw node to ${loc}`);  // eslint-disable-line no-console
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    const datum = eventData.data;
+    const entity = datum && graph.hasEntity(datum.id);
+
+    // Snap to a node
+    if (entity && entity.type === 'node') {
+      loc = entity.loc;
+
+    // Snap to a way
+    } else if (entity && entity.type === 'way') {
+      const activeIDs = context.activeIDs();
+      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      if (choice) {
+        loc = choice.loc;
+      }
     }
-
-//snap
-// todo- we should get what we need from the eventData, not redo that logic here
-//    var targetLoc = datum && datum.properties && datum.properties.entity &&
-//        allowsVertex(datum.properties.entity) && datum.properties.entity.loc;
-//    var targetNodes = datum && datum.properties && datum.properties.nodes;
-//
-//    if (targetLoc) {   // snap to node/vertex - a point target with `.loc`
-//        loc = targetLoc;
-//
-//    } else if (targetNodes) {   // snap to way - a line target with `.nodes`
-//        var choice = geoChooseEdge(targetNodes, context.map().mouse(), context.projection, drawNode.id);
-//        if (choice) {
-//            loc = choice.loc;
-//        }
-//    }
 
     context.replace(
       actionMoveNode(this.drawNode.id, loc),
       this._getAnnotation()
     );
+
     this.drawNode = context.entity(this.drawNode.id);
-    this._activeData.set(this.drawNode.id, this.drawNode);
+    this._updateCollections();
   }
 
 
   /**
    * _click
+   * Process whatever the user clicked on
+   */
+  _click(eventData) {
+    const context = this.context;
+    const graph = context.graph();
+    const projection = context.projection;
+    const coord = eventData.coord;
+    const loc = projection.invert(coord);
+
+    if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
+
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    const datum = eventData.data;
+    const entity = datum && graph.hasEntity(datum.id);
+
+    // Snap to a node
+    if (entity && entity.type === 'node') {
+      this._clickNode(entity.loc, entity);
+      return;
+    }
+
+    // Snap to a way
+    if (entity && entity.type === 'way') {
+      const activeIDs = context.activeIDs();
+      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      if (choice) {
+        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
+        this._clickWay(choice.loc, edge);
+        return;
+      }
+    }
+
+    this._clickNothing(loc);
+  }
+
+
+  /**
+   * _clickNothing
    * Clicked on nothing, create a point at given `loc`.
    */
-  _click(loc) {
+  _clickNothing(loc) {
     const context = this.context;
 
     // Extend line by adding vertex at `loc`...
@@ -284,8 +345,9 @@ export class ModeDrawLine extends AbstractMode {
     }
 
     this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
-    this._selectedData.set(this.drawWay.id, this.drawWay);
-    this._activeData.set(this.drawNode.id, this.drawNode);
+    this._updateCollections();
+    // this._selectedData.set(this.drawWay.id, this.drawWay);
+    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
@@ -349,8 +411,9 @@ export class ModeDrawLine extends AbstractMode {
     }
 
     this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
-    this._selectedData.set(this.drawWay.id, this.drawWay);
-    this._activeData.set(this.drawNode.id, this.drawNode);
+    this._updateCollections();
+    // this._selectedData.set(this.drawWay.id, this.drawWay);
+    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
@@ -409,8 +472,9 @@ export class ModeDrawLine extends AbstractMode {
     }
 
     this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
-    this._selectedData.set(this.drawWay.id, this.drawWay);
-    this._activeData.set(this.drawNode.id, this.drawNode);
+    this._updateCollections();
+    // this._selectedData.set(this.drawWay.id, this.drawWay);
+    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
@@ -438,8 +502,9 @@ export class ModeDrawLine extends AbstractMode {
     );
 
     this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
-    this._selectedData.set(this.drawWay.id, this.drawWay);
-    this._activeData.set(this.drawNode.id, this.drawNode);
+    this._updateCollections();
+    // this._selectedData.set(this.drawWay.id, this.drawWay);
+    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
@@ -470,13 +535,13 @@ export class ModeDrawLine extends AbstractMode {
 
 
   /**
-   * _cancel
+   * _undo
    * Rollback to the initial checkpoint then return to browse mode
    * Note that `exit()` will be called immediately after this to perform cleanup.
    */
-  _cancel() {
+  _undo() {
     if (DEBUG) {
-      console.log(`ModeDrawLine: _cancel`);  // eslint-disable-line no-console
+      console.log(`ModeDrawLine: _undo`);  // eslint-disable-line no-console
     }
     this.drawWay = null;   // this will trigger a rollback
     this.context.enter('browse');

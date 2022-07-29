@@ -246,7 +246,12 @@ export class PixiLayerOsm extends AbstractLayer {
       this.renderLines(frame, projection, zoom, data.lines);
       this.renderVertices(frame, projection, zoom, data.vertices);
       this.renderPoints(frame, projection, zoom, data.points);
-      this.renderMidpoints(frame, projection, zoom, data.highlighted);
+
+      // No midpoints when drawing
+      const currMode = context.mode().id;
+      if (currMode === 'browse' || currMode === 'select') {
+        this.renderMidpoints(frame, projection, zoom, data.highlighted);
+      }
 
     } else {
       this.visible = false;
@@ -265,6 +270,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
     const scene = this.scene;
     const graph = this.context.graph();
+    const activeData = this.context.activeData();
 
     entities.forEach(entity => {
       let feature = scene.getFeature(entity.id);
@@ -290,6 +296,8 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.style = style;
       }
 
+// deal with "active" here?
+      feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
 
@@ -317,6 +325,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
     const scene = this.scene;
     const graph = this.context.graph();
+    const activeData = this.context.activeData();
 
     function getLevelContainer(level) {
       let levelContainer = lineContainer.getChildByName(level);
@@ -377,6 +386,8 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.container.setParent(levelContainer);
       }
 
+// deal with "active" here?
+      feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
 
@@ -404,11 +415,12 @@ export class PixiLayerOsm extends AbstractLayer {
     const context = this.context;
     const scene = this.scene;
     const graph = context.graph();
+    const activeData = this.context.activeData();
 
     // Most vertices should be children of the vertex container
     const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
     // Vertices related to the selection/hover should be drawn above everything
-    const mapUIContainer = context.scene().getLayer('map-ui').container;
+    const mapUIContainer = scene.getLayer('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
@@ -416,9 +428,6 @@ export class PixiLayerOsm extends AbstractLayer {
         entity.hasInterestingTags() || entity.isEndpoint(graph) || entity.isIntersection(graph)
       );
     }
-
-// deal with "active" here?
-const activeData = context.activeData();
 
     entities.forEach(node => {
       let parentContainer = null;
@@ -484,6 +493,7 @@ const activeData = context.activeData();
         feature.container.setParent(parentContainer);
       }
 
+// deal with "active" here?
       feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
@@ -512,6 +522,7 @@ const activeData = context.activeData();
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
     const scene = this.scene;
     const graph = this.context.graph();
+    const activeData = this.context.activeData();
 
     entities.forEach(node => {
       let feature = scene.getFeature(node.id);
@@ -556,6 +567,8 @@ const activeData = context.activeData();
         feature.label = utilDisplayName(node);
       }
 
+// deal with "active" here?
+      feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
 
@@ -583,6 +596,7 @@ const activeData = context.activeData();
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
     const scene = this.scene;
     const graph = this.context.graph();
+    const activeData = this.context.activeData();
 
     // Midpoints should be drawn above everything
     const mapUIContainer = this.scene.getLayer('map-ui').container;
@@ -649,6 +663,8 @@ const activeData = context.activeData();
         feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }
 
+// deal with "active" here?
+      feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
 

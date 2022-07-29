@@ -137,6 +137,7 @@ export class BehaviorSelect extends AbstractBehavior {
       .call(this._keybinding.unbind);
   }
 
+
   /**
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
@@ -283,8 +284,7 @@ export class BehaviorSelect extends AbstractBehavior {
       // spacebar
       // ignore spacebar events during text input
       const activeNode = document.activeElement;
-      if (activeNode && new Set(['INPUT', 'TEXTAREA']).has(activeNode.nodeName))
-        return;
+      if (activeNode && new Set(['INPUT', 'TEXTAREA']).has(activeNode.nodeName)) return;
 
       this._spacebar(e);
       return;
