@@ -21,7 +21,7 @@ const DEBUG = false;
  *
  * Events available:
  *   `down`      Fires on initial pointerdown, receives `eventData` Object
- *   `move`      Fires on _any_ pointermove, receives `eventData` Object
+ *   `move`      Fires on _any_ pointermove (or change of modifier key), receives `eventData` Object
  *   `cancel`    Fires on pointercancel -or- if the pointer has moved too much for it to be a click, receives `eventData` Object
  *   `click`     Fires on a successful click (or spacebar), receives `eventData` Object
  *   `undo`      Fires if user presses delete or backspace
