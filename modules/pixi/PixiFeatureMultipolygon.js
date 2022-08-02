@@ -184,7 +184,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
               axis1: axis1.map(coord => projection.invert(coord)),
               axis2: axis2.map(coord => projection.invert(coord)),
               centroid: projection.invert(centroid),
-              texture: cornersInSSR ? 'lowres-square' : 'lowres-circle'
+              texture: cornersInSSR ? (wireframeMode ? 'lowres-unfilled-square' : 'lowres-square') : (wireframeMode ? 'lowres-unfilled-circle' : 'lowres-circle')
             };
           }
         }

@@ -296,6 +296,33 @@ export class PixiTextures {
     this.textures.set('lowres-square', this.toAtlasTexture(lowresSquare, options));
     this.textures.set('lowres-ell', this.toAtlasTexture(lowresEll, options));
     this.textures.set('lowres-circle', this.toAtlasTexture(lowresCircle, options));
+
+
+    //
+    // Low-res unfilled areas
+    // For wireframe mode rendering (no fills at all)
+    //
+    const lowresUnfilledSquare = new PIXI.Graphics()
+      .lineStyle(1, 0xffffff)
+      .beginFill(0, 0)
+      .drawRect(-5, -5, 10, 10)
+      .endFill();
+
+    const lowresUnfilledEll = new PIXI.Graphics()
+      .lineStyle(1, 0xffffff)
+      .beginFill(0, 0)
+      .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
+      .endFill();
+
+    const lowresUnfilledCircle = new PIXI.Graphics()
+      .lineStyle(1, 0xffffff)
+      .beginFill(0, 0)
+      .drawCircle(0, 0, 5)
+      .endFill();
+
+    this.textures.set('lowres-unfilled-square', this.toAtlasTexture(lowresUnfilledSquare, options));
+    this.textures.set('lowres-unfilled-ell', this.toAtlasTexture(lowresUnfilledEll, options));
+    this.textures.set('lowres-unfilled-circle', this.toAtlasTexture(lowresUnfilledCircle, options));
   }
 
 
