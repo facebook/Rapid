@@ -6,6 +6,9 @@ import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import progress from 'rollup-plugin-progress';
 import replace from '@rollup/plugin-replace';
+import { importAssertionsPlugin } from 'rollup-plugin-import-assert';
+import { importAssertions } from 'acorn-import-assertions';
+
 
 // The "legacy" build includes all modules in a single bundle:
 // * Runs `babel` to transpile ES6 -> ES5 (needed for IE11 and PhantomJS)
@@ -20,6 +23,7 @@ export default {
     sourcemap: false,
     strict: false
   },
+  acornInjectPlugins: [ importAssertions ],
   plugins: [
     progress(),
     includePaths({
@@ -36,7 +40,8 @@ export default {
     replace({
       preventAssignment: true,
       'process.env.NODE_ENV': JSON.stringify( 'production' )
-    })
+    }),
+    importAssertionsPlugin()
   ]
 };
 

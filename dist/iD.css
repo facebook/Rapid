@@ -3095,12 +3095,12 @@
 
 /* Keep Right Issues
 ------------------------------------------------------- */
-.ideditor .keepRight.itemType-20,
-.ideditor .keepRight.itemType-40,
-.ideditor .keepRight.itemType-210,
-.ideditor .keepRight.itemType-270,
-.ideditor .keepRight.itemType-310,
-.ideditor .keepRight.itemType-320,
+.ideditor .keepRight.itemType-20,     
+.ideditor .keepRight.itemType-40,     
+.ideditor .keepRight.itemType-210,     
+.ideditor .keepRight.itemType-270,     
+.ideditor .keepRight.itemType-310,     
+.ideditor .keepRight.itemType-320,     
 .ideditor .keepRight.itemType-350 {   /* improper bridge tag */
     color: #ff9;
 }
@@ -3109,13 +3109,13 @@
     color: #88f;
 }
 
-.ideditor .keepRight.itemType-60,
-.ideditor .keepRight.itemType-70,
-.ideditor .keepRight.itemType-90,
-.ideditor .keepRight.itemType-100,
-.ideditor .keepRight.itemType-110,
-.ideditor .keepRight.itemType-150,
-.ideditor .keepRight.itemType-220,
+.ideditor .keepRight.itemType-60,     
+.ideditor .keepRight.itemType-70,     
+.ideditor .keepRight.itemType-90,     
+.ideditor .keepRight.itemType-100,     
+.ideditor .keepRight.itemType-110,     
+.ideditor .keepRight.itemType-150,     
+.ideditor .keepRight.itemType-220,     
 .ideditor .keepRight.itemType-380 {   /* non-physical sport tag */
     color: #5d0;
 }
@@ -3136,7 +3136,7 @@
     color: #fdbf6f;
 }
 
-.ideditor .keepRight.itemType-160,
+.ideditor .keepRight.itemType-160,    
 .ideditor .keepRight.itemType-230 {   /* layer conflict */
     color: #b60;
 }
@@ -3145,23 +3145,23 @@
     color: #5f47a0;
 }
 
-.ideditor .keepRight.itemType-180,
+.ideditor .keepRight.itemType-180,    
 .ideditor .keepRight.itemType-290 {   /* turn restriction issues */
     color: #ace;
 }
 
-.ideditor .keepRight.itemType-300,
+.ideditor .keepRight.itemType-300,    
 .ideditor .keepRight.itemType-390 {   /* missing tracktype */
     color: #090;
 }
 
-.ideditor .keepRight.itemType-360,
-.ideditor .keepRight.itemType-370,
+.ideditor .keepRight.itemType-360,    
+.ideditor .keepRight.itemType-370,    
 .ideditor .keepRight.itemType-410 {   /* website issues */
     color: #f9b;
 }
 
-.ideditor .keepRight.itemType-120,
+.ideditor .keepRight.itemType-120,    
 .ideditor .keepRight.itemType-400 {   /* geometry / turn angles */
     color: #c35;
 }
@@ -4491,18 +4491,6 @@ hide this one and style something on top of it.  */
 }
 .ideditor .background-pane .layer-list button.background-favorite-button {
     border: 0;
-}
-
-.ideditor li.best > label > span.background-name {
-    -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
-            flex: 1 1 auto;
-}
-
-.ideditor li.best > label > span.best {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
 }
 
 .ideditor li.best > label > span.best > svg {
@@ -8128,7 +8116,6 @@ hide this one and style something on top of it.  */
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    overflow: hidden;
 }
 
 .ideditor[dir='ltr'] .layer-list .indented label {
@@ -8137,6 +8124,7 @@ hide this one and style something on top of it.  */
 .ideditor[dir='rtl'] .layer-list .indented label {
     padding-right: 24px;
 }
+
 .ideditor .layer-list label > span.background-name {
     display: -webkit-box;
     display: -ms-flexbox;
