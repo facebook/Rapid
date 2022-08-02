@@ -23,11 +23,20 @@ export function modeDragNode(context) {
   };
 
   // const behavior = new BehaviorDrag(context)
-  const behavior = context.behaviors.get('drag')
+  const behavior = context.behaviors.get('drag');
+
+  //Clear the listeners from any previous drag behavior.
+  behavior
+    .removeListener('start')
+    .removeListener('cancel')
+    .removeListener('move')
+    .removeListener('end');
+
+  behavior
     .on('start', start)
     .on('move', move)
-    .on('end', end)
-    .on('cancel', cancel);
+    .on('cancel', cancel)
+    .on('end', end);
 
   // behavior.enable();  // start listening
 
