@@ -175,8 +175,8 @@ export function actionMove(moveIDs, tryDelta, projection, cache) {
         if (angle > 175 && angle < 185) return graph;
 
         // moving forward or backward along way?
-        var p1 = [prev.loc, orig.loc, moved.loc, next.loc].map(projection);
-        var p2 = [prev.loc, moved.loc, orig.loc, next.loc].map(projection);
+        var p1 = [prev.loc, orig.loc, moved.loc, next.loc].map(projection.project);
+        var p2 = [prev.loc, moved.loc, orig.loc, next.loc].map(projection.project);
         var d1 = geomPathLength(p1);
         var d2 = geomPathLength(p2);
         var insertAt = (d1 <= d2) ? movedIndex : nextIndex;
