@@ -1,4 +1,4 @@
-import marked from 'marked';
+import { marked } from 'marked';
 import { svgIcon } from '../../svg/icon';
 import { uiIntro } from '../intro/intro';
 import { uiPane } from '../pane';
@@ -264,7 +264,7 @@ export function uiPaneHelp(context) {
 
         return {
             title: t.html(helpkey + '.title'),
-            content: marked(text.trim())
+            content: marked.parse(text.trim())
                 // use keyboard key styling for shortcuts
                 .replace(/<code>/g, '<kbd>')
                 .replace(/<\/code>/g, '<\/kbd>')

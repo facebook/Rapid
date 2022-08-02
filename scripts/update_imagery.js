@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import fs from 'node:fs';
 import prettyStringify from 'json-stringify-pretty-compact';
-import imageryJSON from 'editor-layer-index/imagery.json';
+import imageryJSON from 'editor-layer-index/imagery.json' assert {type: 'json'};
+
 
 let sources = imageryJSON;
 if (fs.existsSync('./data/manual_imagery.json')) {

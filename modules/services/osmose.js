@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Projection, Tiler, vecAdd } from '@id-sdk/math';
 import { utilQsString } from '@id-sdk/util';
-import marked from 'marked';
+import { marked } from 'marked';
 import RBush from 'rbush';
 
 import { fileFetcher } from '../core/file_fetcher';
@@ -179,7 +179,7 @@ export default {
       issue.elems = data.elems.map(e => e.type.substring(0,1) + e.id);
 
       // Some issues have instance specific detail in a subtitle
-      issue.detail = data.subtitle ? marked(data.subtitle.auto) : '';
+      issue.detail = data.subtitle ? marked.parse(data.subtitle.auto) : '';
 
       this.replaceItem(issue);
     };
@@ -235,9 +235,9 @@ export default {
         // Osmose titles shouldn't contain markdown
         let issueStrings = {};
         if (title) issueStrings.title = title.auto;
-        if (detail) issueStrings.detail = marked(detail.auto);
-        if (trap) issueStrings.trap = marked(trap.auto);
-        if (fix) issueStrings.fix = marked(fix.auto);
+        if (detail) issueStrings.detail = marked.parse(detail.auto);
+        if (trap) issueStrings.trap = marked.parse(trap.auto);
+        if (fix) issueStrings.fix = marked.parse(fix.auto);
 
         _cache.strings[locale][itemType] = issueStrings;
       };

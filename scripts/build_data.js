@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import colors from 'colors/safe.js';
+import chalk from 'chalk';
 import fs from 'node:fs';
 import stringify from 'json-stringify-pretty-compact';
 import shell from 'shelljs';
@@ -14,7 +14,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-import territoryInfo from 'cldr-core/supplemental/territoryInfo.json';
+import territoryInfo from 'cldr-core/supplemental/territoryInfo.json' assert {type: 'json'};
 
 fontawesome.library.add(fas, far, fab);
 
@@ -32,8 +32,8 @@ if (process.argv[1].indexOf('build_data.js') > -1) {
 function buildData() {
   if (_currBuild) return _currBuild;
 
-  const START = '🏗   ' + colors.yellow('Building data...');
-  const END = '👍  ' + colors.green('data built');
+  const START = '🏗   ' + chalk.yellow('Building data...');
+  const END = '👍  ' + chalk.green('data built');
 
   console.log('');
   console.log(START);

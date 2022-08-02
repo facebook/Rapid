@@ -246,10 +246,6 @@ export function svgLines(projection, context) {
                 .merge(markers)
                 .attr('marker-mid', marker)
                 .attr('d', function(d) { return d.d; });
-
-            if (detected.ie) {
-                markers.each(function() { this.parentNode.insertBefore(this, this); });
-            }
         }
 
 

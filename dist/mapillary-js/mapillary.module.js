@@ -53797,7 +53797,7 @@ function iterativelyWalk(nodes, cb) {
     if (!('length' in nodes)) {
         nodes = [nodes];
     }
-    
+
     nodes = slice.call(nodes);
 
     while(nodes.length) {
@@ -54056,8 +54056,8 @@ function properties(elem) {
 function escapeText(s) {
     var str = '';
 
-    if (typeof(s) === 'string') { 
-        str = s; 
+    if (typeof(s) === 'string') {
+        str = s;
     } else if (s) {
         str = s.toString();
     }
@@ -54314,7 +54314,7 @@ Event.prototype.initEvent = function _Event_initEvent(type, bubbles, cancelable)
 };
 
 Event.prototype.preventDefault = function _Event_preventDefault() {
-    
+
 };
 
 var document$1 = Document;

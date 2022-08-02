@@ -53803,7 +53803,7 @@
         if (!('length' in nodes)) {
             nodes = [nodes];
         }
-        
+
         nodes = slice.call(nodes);
 
         while(nodes.length) {
@@ -54062,8 +54062,8 @@
     function escapeText(s) {
         var str = '';
 
-        if (typeof(s) === 'string') { 
-            str = s; 
+        if (typeof(s) === 'string') {
+            str = s;
         } else if (s) {
             str = s.toString();
         }
@@ -54320,7 +54320,7 @@
     };
 
     Event.prototype.preventDefault = function _Event_preventDefault() {
-        
+
     };
 
     var document$1 = Document;

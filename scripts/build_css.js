@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import colors from 'colors/safe.js';
+import chalk from 'chalk';
 import concat from 'concat-files';
 import glob from 'glob';
 import fs from 'node:fs';
@@ -18,8 +18,8 @@ if (process.argv[1].indexOf('build_css.js') > -1) {
 export function buildCSS() {
   if (_currBuild) return _currBuild;
 
-  const START = '🏗   ' + colors.yellow('Building css...');
-  const END = '👍  ' + colors.green('css built');
+  const START = '🏗   ' + chalk.yellow('Building css...');
+  const END = '👍  ' + chalk.green('css built');
 
   console.log('');
   console.log(START);

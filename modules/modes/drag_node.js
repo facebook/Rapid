@@ -10,6 +10,7 @@ import { behaviorDrag } from '../behavior/drag';
 import { behaviorEdit } from '../behavior/edit';
 import { behaviorHover } from '../behavior/hover';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
+import { locationManager } from '../core/locations';
 import { modeBrowse } from './browse';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
@@ -178,6 +179,11 @@ export function modeDragNode(context) {
         var currPoint = (d3_event && d3_event.point) || context.projection(_lastLoc);
         var currMouse = vecSubtract(currPoint, nudge);
         var loc = context.projection.invert(currMouse);
+
+        if (locationManager.blocksAt(loc).length) {  // editing is blocked here
+            cancel();
+            return;
+        }
 
         var target, edge;
 

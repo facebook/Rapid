@@ -21,18 +21,12 @@
 <body style="overflow:scroll">
   <div id='mocha'></div>
 
-  <script src='../node_modules/core-js-bundle/index.js'></script>
   <script src='../node_modules/mocha/mocha.js'></script>
   <script src='../node_modules/chai/chai.js'></script>
   <script src='../node_modules/sinon/pkg/sinon.js'></script>
   <script src='../node_modules/sinon-chai/lib/sinon-chai.js'></script>
   <script src='../node_modules/happen/happen.js'></script>
-
-  <script>
-    if (typeof initMochaPhantomJS === 'function') {
-      initMochaPhantomJS()
-    }
-  </script>
+  <script src='../node_modules/fetch-mock/es5/client-bundle.js'></script>
 
   <script>
     var scripts = [
@@ -171,20 +165,13 @@
       window.executionErrors.push("message" + message + " source" + source + " line" + line + " col" + col);
     };
 
-    var isPhantomJS = !!(navigator.userAgent.match(/PhantomJS/));
-    var isIE11 = !!(navigator.userAgent.match(/Trident/) && !navigator.userAgent.match(/MSIE/));
-
     // Prepend scripts to run at the beginning.
-
-    // Third Script?  PhantomJS can test some other capabilities
-    if (isPhantomJS) scripts.unshift('spec/phantom.js');
 
     // Second Script:  Always run spec helpers
     scripts.unshift('spec/spec_helpers.js');
 
-    // First script: Choose either modern or legacy iD build..
-    scripts.unshift((isPhantomJS || isIE11) ? '../dist/iD.legacy.js' : '../dist/iD.js');
-
+    // First script: iD build
+    scripts.unshift('../dist/iD.js');
 
     // Create and execute all scripts in specified order..
     (function nextScript() {
@@ -205,9 +192,6 @@
       var newScript;
       newScript = document.createElement('script');
       newScript.type = 'text/javascript';
-      if (src.substr(0, 5) === 'spec/') {
-        src = '../test/' + src;
-      }
       newScript.src = src;
       newScript.onload = nextScript;
       document.getElementsByTagName('body')[0].appendChild(newScript);

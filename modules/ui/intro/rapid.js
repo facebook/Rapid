@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
-import marked from 'marked';
+import { marked } from 'marked';
 import { t } from '../../core/localizer';
 import { modeBrowse} from '../../modes';
 import { utilRebind } from '../../util/rebind';
@@ -108,13 +108,14 @@ export function uiIntroRapid(context, reveal) {
   function showLint() {
     if (context.mode().id !== 'select') return chapter.restart();
 
-    let button = d3_select('li.issue-list-item.actionable > button');
+    let button = d3_select('div.issue.severity-warning li.issue-fix-item:first-child > button');
     button.on('click.intro', () => continueTo(fixLint));
 
     timeout(() => {
-      reveal('div.issue.severity-warning',
+      // "connect these features" is expected to be the first child
+      reveal('div.issue.severity-warning li.issue-fix-item:first-child',
         t('intro.rapid.new_lints'),
-        { buttonText: t('intro.ok'), buttonCallback: fixLint }
+        { buttonText: t('intro.ok'), buttonCallback: () => continueTo(fixLint) }
       );
      }, 250);
 
@@ -128,12 +129,13 @@ export function uiIntroRapid(context, reveal) {
   function fixLint() {
     if (context.mode().id !== 'select') return chapter.restart();
 
-    let button = d3_select('li.issue-fix-item.actionable');
+    // "connect these features" is expected to be the first child
+    let button = d3_select('div.issue.severity-warning li.issue-fix-item:first-child > button');
     button.on('click.intro', () => continueTo(showFixedRoad));
 
     timeout(() => {
-      reveal('li.issue-fix-item.actionable',
-        t('intro.rapid.fix_lint', {connect: icon('#iD-icon-crossing', 'pre-text') })
+      reveal('div.issue.severity-warning li.issue-fix-item:first-child',
+        t('intro.rapid.fix_lint', { connect: icon('#iD-icon-crossing', 'pre-text') })
       );
     }, 250);
 
@@ -232,7 +234,7 @@ export function uiIntroRapid(context, reveal) {
 
     dispatch.call('done');
     reveal('.intro-nav-wrap .chapter-startEditing',
-      marked(t('intro.rapid.done', { next: t('intro.startediting.title') }))
+      marked.parse(t('intro.rapid.done', { next: t('intro.startediting.title') }))
     );
   }
 
