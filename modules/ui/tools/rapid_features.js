@@ -21,17 +21,18 @@ export function uiToolRapidFeatures(context) {
   };
 
   function layerEnabled() {
-    if (!context.pixi || context.pixi.stage.children.length === 0) return false;
-    let rapidLayer = context.pixi.stage.getChildByName('rapid');
+    if (!context.scene) return false;
+    let rapidLayer = context.scene().getLayer('rapid');
 
-    return rapidLayer ? rapidLayer.visible : false;
+    return rapidLayer ? rapidLayer.enabled : false;
   }
 
 
   function toggleFeatures() {
-    let layer = context.pixi.stage.getChildByName('rapid');
-    layer.visible(!layer.visible);
+    let layer = context.scene().getLayer('rapid');
+    layer.enabled = !layer.enabled;
     toggleKeyDispatcher.call('ai_feature_toggle');
+    context.map().immediateRedraw();
   }
 
 
