@@ -8,6 +8,7 @@ import { uiKeepRightEditor } from '../ui/keepRight_editor';
 import { uiNoteEditor } from '../ui/note_editor';
 import { uiOsmoseEditor } from '../ui/osmose_editor';
 import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector';
+import { utilKeybinding } from '../util';
 
 const DEBUG = false;
 
@@ -113,7 +114,8 @@ export class ModeSelect extends AbstractMode {
 
     // Selected RapiD feature...
     } else if (datum.__fbid__) {
-      const rapidInspector = uiRapidFeatureInspector(context).datum(datum); //, keybinding);
+      const keybinding = utilKeybinding('select-ai-features');
+      const rapidInspector = uiRapidFeatureInspector(context, keybinding).datum(datum);
       sidebarContent = rapidInspector;
     }
 
