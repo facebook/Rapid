@@ -186,6 +186,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Has select/hover highlighting chagned?
       const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
+// console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
       if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
         this._prevSelectV = scene.selected.v;
         this._prevHoverV = scene.hovered.v;

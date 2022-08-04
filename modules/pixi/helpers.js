@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { vecAdd, vecAngle, vecLength } from '@id-sdk/math';
+import { vecAdd, vecAngle, vecEqual, vecLength } from '@id-sdk/math';
 
 
 /**
@@ -130,6 +130,168 @@ export function lineToPolygon(width, points) {
   output.push(output[0], output[1]);
 
   return new PIXI.Polygon(output);
+}
+
+
+/**
+ * lineToPoly
+ * Use Pixi's built-in line builder to convert a line with some width into a polygon.
+ * https://github.com/pixijs/pixijs/blob/dev/packages/graphics/src/utils/buildLine.ts
+ *
+ * @param  shape      Object suitable to use as a shape (likely a PIXI.Polygon)
+ * @param  lineStyle  Object suitable to use as a lineStyle (important options are alignment and width)
+ */
+export function lineToPoly(shape, lineStyle = {}) {
+  const EPSILON = 1e-4;
+  lineStyle.native = false;  // we want the non-native line builder
+
+  // Make some fake graphicsData and graphicsGeometry.
+  // (I'm avoiding using a real PIXI.Graphic because I dont want to affect the batch system)
+  const graphicsData = { shape: shape, lineStyle: lineStyle };
+  const graphicsGeometry = { closePointEps: EPSILON, indices: [], points: [], uvs: [] };
+
+  // Pixi will do the work for us.
+  PIXI.graphicsUtils.buildLine(graphicsData, graphicsGeometry);
+
+
+  // The graphicsGeometry now contains the points as they would be drawn (as a strip of triangles).
+  // What we really want is a polygon representing the outer shape.
+  //
+  // Note that PIXI doesn't actually use GL_TRIANGLE_STRIP here, they are just normal GL_TRIANGLES.
+  // (it looks something like this)
+  //
+  //                        8 +--………_
+  //                         / G   _=-+ 7
+  //  L  0        2       5 / _…-""  /
+  //     +-------_+_-------+="_   F /
+  //     | A _…-" | "-…_ D |   "-…_/
+  //     |_-"   B | C   "-_| E _……+
+  //     +--------+--------+-""    6
+  //  R  1        3        4
+  //
+  //  triangle:  A      B      C      D      E      F      G
+  //   indices:  0 1 2  1 3 2  2 3 4  4 5 2  5 4 6  5 6 7  5 7 8  …
+  //      side:  L R L  R R L  L R R  R L R  L R R  L R R  L R L  …
+
+  const verts = graphicsGeometry.points;
+  const indices = graphicsGeometry.indices;
+
+  let sides = new Map();  // Map(index -> what side it's on) (`true` if left, `false` if right)
+  let pathL = [];
+  let pathR = [];
+  let lastL;
+  let lastR;
+  let lenL = 0;
+  let lenR = 0;
+
+  // Sometimes `buildLine` skips triangles if they are too small, so keep track
+  // of the previous triangle's verts and indices in case we need them.
+  let vp0, vp1, vp2;
+  let ip0, ip1, ip2;
+
+  // Inspect each triangle in the strip.
+  // Assume all triangles are consecutive and wound counterclockwise..
+  for (let j = 0; j < indices.length; j += 3) {
+    const i0 = indices[j];
+    const i1 = indices[j + 1];
+    const i2 = indices[j + 2];
+    const v0 = [ verts[(i0 * 2)], verts[(i0 * 2) + 1] ];
+    const v1 = [ verts[(i1 * 2)], verts[(i1 * 2) + 1] ];
+    const v2 = [ verts[(i2 * 2)], verts[(i2 * 2) + 1] ];
+
+    // First triangle
+    // Pick index 0 as the "left side" and index 1 as the "right side"
+    if (j === 0) {
+      sides.set(i0, true);   // left
+      sides.set(i1, false);  // right
+      sides.set(i2, true);   // left
+      pathL.push(v0);
+      pathR.push(v1);
+      pathL.push(v2);
+      lastR = v1;
+      lastL = v2;
+      lenL = vecLength(v0, v2);
+
+    // Subsequent triangles
+    // Each subsequent triangle in the strip should have:
+    // - two "seen" vertices where we know their sides, and
+    // - one "new" vertex where we need to figure out what side of the line it's on.
+    } else {
+      let s0 = sides.get(i0);
+      let s1 = sides.get(i1);
+      let s2 = sides.get(i2);
+
+      // Sometimes `buildLine` skips triangles - (their verts appear in the vertex array but not the index array)
+      // So first - check if any of the "new" verts in this triangle happen to match the previous triangle's verts
+      if (s0 === undefined && vecEqual(v0, vp0, EPSILON)) {  // v0 and vp0 are the same point
+        s0 = sides.get(ip0);
+        sides.set(i0, s0);
+      }
+      if (s1 === undefined && vecEqual(v1, vp1, EPSILON)) {  // v1 and vp1 are the same point
+        s1 = sides.get(ip1);
+        sides.set(i1, s1);
+      }
+      if (s2 === undefined && vecEqual(v2, vp2, EPSILON)) {  // v2 and vp2 are the same point
+        s2 = sides.get(ip2);
+        sides.set(i2, s2);
+      }
+
+      // Given 2 "seen" vertex sides in counterclockwise order, what side would the third vertex be on?
+      // New side is the opposite of the "previous" vertex side.
+      // (It turns out to just be a truth table for `NOT b`)
+      //   function Is_snew_On_The_Left_Side(a, b) {
+      //     if (a === true  && b === true)  return false;  // L L R
+      //     if (a === true  && b === false) return true;   // L R L
+      //     if (a === false && b === true)  return false;  // R L R
+      //     if (a === false && b === false) return true;   // R R L
+      //   }
+
+      // One of these should be the "new" vertex..
+      let inew, vnew, snew;
+      if (s0 === undefined) {
+        inew = i0;
+        vnew = v0;
+        snew = !s2;
+      }
+      if (s1 === undefined) {
+        inew = i1;
+        vnew = v1;
+        snew = !s0;
+      }
+      if (s2 === undefined) {
+        inew = i2;
+        vnew = v2;
+        snew = !s1;
+      }
+
+      // Append the new vertex to either the left or right side path
+      if (inew !== undefined) {
+        sides.set(inew, snew);  // snew = `true` if left, `false` if right
+        if (snew === true) {
+          pathL.push(vnew);
+          lenL += vecLength(lastL, vnew);
+          lastL = vnew;
+        } else {
+          pathR.push(vnew);
+          lenR += vecLength(lastR, vnew);
+          lastR = vnew;
+        }
+      }  // else we've seen all these vertices before - shouldnt happen?
+    }
+
+    // Remember current verts and indices for next loop iteration
+    vp0 = v0; vp1 = v1; vp2 = v2;
+    ip0 = i0; ip1 = i1; ip2 = i2;
+  }
+
+  // concat and flatten the 2 sides of the path
+  let path = [];
+  pathL.forEach(([x, y]) => path.push(x, y));
+  pathR.reverse();
+  pathR.forEach(([x, y]) => path.push(x, y));
+  path.push(path[0], path[1]);  // close the shape
+
+  return new PIXI.Polygon(path);
 }
 
 

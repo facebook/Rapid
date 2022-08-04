@@ -3,7 +3,7 @@ import { DashLine } from 'pixi-dashed-line';
 import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
-import { getLineSegments, lineToPolygon } from './helpers';
+import { getLineSegments, lineToPolygon, lineToPoly } from './helpers';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -137,7 +137,24 @@ export class PixiFeatureLine extends AbstractFeature {
       let hitPath = [];
       const hitWidth = style.casing.width || 3; //casing is set to 0 in wireframe mode, so at least calculate SOMETHING for a hit area.
       this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
-      container.hitArea = lineToPolygon(hitWidth, hitPath);
+
+      // container.hitArea = lineToPolygon(hitWidth, hitPath);
+      const hitShape = new PIXI.Polygon(hitPath);
+      hitShape.closeStroke = false;
+
+      const hitStyle = {
+        alignment: 0.5,  // middle of line
+        color: 0x0,
+        width: hitWidth + 10,
+        alpha: 1.0,
+        join: PIXI.LINE_JOIN.BEVEL,
+        cap: PIXI.LINE_CAP.BUTT,
+      };
+
+      const hitPoly = lineToPoly(hitShape, hitStyle);
+      // hitPoly.closeStroke = false;
+
+      container.hitArea = hitPoly;
 
       if (zoom < 16) {
         this.lod = 1;  // simplified
