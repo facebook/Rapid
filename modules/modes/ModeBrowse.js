@@ -32,7 +32,7 @@ export class ModeBrowse extends AbstractMode {
     }
 
     this._active = true;
-    this.context.enableBehaviors(['hover', 'select', 'drag']);
+    this.context.enableBehaviors(['hover', 'select', 'drag', 'paste']);
 
     // Get focus on the body.
     // does this do anything?

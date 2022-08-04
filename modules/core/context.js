@@ -33,6 +33,7 @@ import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } fro
 import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
+import { BehaviorPaste } from '../behaviors';
 
 
 export function coreContext() {
@@ -693,7 +694,8 @@ export function coreContext() {
         new BehaviorDrag(context),
         new BehaviorDraw(context),
         new BehaviorHover(context),
-        new BehaviorSelect(context)
+        new BehaviorSelect(context),
+        new BehaviorPaste(context)
       ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
 
       // Initialize modes
