@@ -148,7 +148,7 @@ export class PixiFeatureLine extends AbstractFeature {
         width: hitWidth + 10,
         alpha: 1.0,
         join: PIXI.LINE_JOIN.BEVEL,
-        cap: PIXI.LINE_CAP.BUTT,
+        cap: PIXI.LINE_CAP.BUTT
       };
 
       const hitPoly = lineToPoly(hitShape, hitStyle);

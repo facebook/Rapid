@@ -154,24 +154,29 @@ export function lineToPoly(shape, lineStyle = {}) {
   PIXI.graphicsUtils.buildLine(graphicsData, graphicsGeometry);
 
 
-  // The graphicsGeometry now contains the points as they would be drawn (as a strip of triangles).
+  // The `graphicsGeometry` now contains the points as they would be drawn (as a strip of triangles).
   // What we really want is a polygon representing the outer shape.
   //
-  // Note that PIXI doesn't actually use GL_TRIANGLE_STRIP here, they are just normal GL_TRIANGLES.
+  // Some findings about the `buildLine` triangulation code:
+  //  - PIXI doesn't actually use GL_TRIANGLE_STRIP here, they are just normal GL_TRIANGLES.
+  //  - They are a mix of ccw/cw winding (they don't follow the "ccw = frontface" convention)
+  //  - Rounded caps/joins can add a lot of triangles, the code below can't handle them
+  //  - Triangles with small area may be skipped (they appear in verts but not in indices)
+  //
   // (it looks something like this)
   //
-  //                        8 +--………_
-  //                         / G   _=-+ 7
-  //  L  0        2       5 / _…-""  /
-  //     +-------_+_-------+="_   F /
-  //     | A _…-" | "-…_ D |   "-…_/
-  //     |_-"   B | C   "-_| E _……+
+  //                        7 +…_
+  //                         / \ "-…_
+  //  L  0        2       4 / F \ G  + 8
+  //     +-------_+-------_+…_   \  /
+  //     | A _…-" | C _…-" |  "-…_\/
+  //     |_-"   B |_-"   D | E _…-+
   //     +--------+--------+-""    6
-  //  R  1        3        4
+  //  R  1        3        5
   //
-  //  triangle:  A      B      C      D      E      F      G
-  //   indices:  0 1 2  1 3 2  2 3 4  4 5 2  5 4 6  5 6 7  5 7 8  …
-  //      side:  L R L  R R L  L R R  R L R  L R R  L R R  L R L  …
+  //  triangle:  A ccw  B cw   C ccw  D cw   E ccw  F ccw  G cw
+  //   indices:  0 1 2  1 2 3  2 3 4  3 4 5  4 5 6  4 6 7  6 7 8  …
+  //      side:  L R L  R L R  L R L  R L R  L R R  L R L  R L R  …
 
   const verts = graphicsGeometry.points;
   const indices = graphicsGeometry.indices;
@@ -190,7 +195,6 @@ export function lineToPoly(shape, lineStyle = {}) {
   let ip0, ip1, ip2;
 
   // Inspect each triangle in the strip.
-  // Assume all triangles are consecutive and wound counterclockwise..
   for (let j = 0; j < indices.length; j += 3) {
     const i0 = indices[j];
     const i1 = indices[j + 1];
@@ -236,15 +240,10 @@ export function lineToPoly(shape, lineStyle = {}) {
         sides.set(i2, s2);
       }
 
-      // Given 2 "seen" vertex sides in counterclockwise order, what side would the third vertex be on?
-      // New side is the opposite of the "previous" vertex side.
-      // (It turns out to just be a truth table for `NOT b`)
-      //   function Is_snew_On_The_Left_Side(a, b) {
-      //     if (a === true  && b === true)  return false;  // L L R
-      //     if (a === true  && b === false) return true;   // L R L
-      //     if (a === false && b === true)  return false;  // R L R
-      //     if (a === false && b === false) return true;   // R R L
-      //   }
+      // Given 2 "seen" vertex sides, what side would the third vertex be on?
+      // `buildLine` puts the new side on the opposite of the "previous" vertex side.
+      // There is no requirement to build the lines this way, it's just how `buildLine` works.
+      // (round caps and joins aren't always this way, so this code doesn't support them!)
 
       // One of these should be the "new" vertex..
       let inew, vnew, snew;
@@ -296,7 +295,7 @@ export function lineToPoly(shape, lineStyle = {}) {
 
 
 /**
- *
+ * getLineSegments
  * @param {*} points the series of Vec[2] arrays delineating each waypoint
  * @param {*} spacing Number indicating the distance between segments (arrows, sided arrows, etc)
  * @param {*} sided optional Boolean for applying a 'sided' style to the line, arrows will be drawn perpendicular to the line segments.
