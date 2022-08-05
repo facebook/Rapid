@@ -35,6 +35,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._multiSelection = new Set();
     this._spaceClickDisabled = false;
     this._longPressTimeout = null;
+    this._showMenu = false;
 
     this.lastDown = null;
     this.lastMove = null;
@@ -50,9 +51,15 @@ export class BehaviorSelect extends AbstractBehavior {
     this._pointercancel = this._pointercancel.bind(this);
 
     this._keydown = this._keydown.bind(this);
+    this._keyup = this._keyup.bind(this);
     this._spacebar = this._spacebar.bind(this);
     this._showContextMenu = this._showContextMenu.bind(this);
     this._didLongPress = this._didLongPress.bind(this);
+
+    this._multiSelect = false;
+    d3_select(window)
+      .on('keydown.BehaviorSelect', this._keydown)
+      .on('keyup.BehaviorSelect', this._keyup);
   }
 
 
@@ -76,6 +83,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._multiSelection.clear();
 
     this._keybinding
+      .on('shift', this._keyup)
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
@@ -280,11 +288,22 @@ export class BehaviorSelect extends AbstractBehavior {
     }
 
     if (e.shiftKey) {
-      // ?
+      this._multiSelect = true;
       return;
     }
   }
 
+
+  /**
+   * _keyup
+   * Handler for releases of the modifier keys
+   * @param  `e`  A d3 keyup event
+   */
+  _keyup(e) {
+    if (e.shiftKey) {
+      this._multiSelect = true;
+     }
+ }
 
   /**
    * _spacebar
@@ -380,8 +399,42 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked an OSM feature..
     if (datum instanceof osmEntity) {
-      // keep it really simple for now - legacy Select mode
-      context.enter(modeSelect(context, [datum.id]));
+      var selectedIDs = context.selectedIDs();
+
+      if (!this._multiSelect) {
+        if (
+          !this._showMenu ||
+          selectedIDs.length <= 1 ||
+          selectedIDs.indexOf(datum.id) === -1
+        ) {
+
+          // always enter modeSelect even if the entity is already
+          // selected since listeners may expect `context.enter` events,
+          // e.g. in the walkthrough
+
+          context.enter(modeSelect(context, [datum.id]));
+        }
+
+      } else {
+
+         if (selectedIDs.indexOf(datum.id) !== -1) {
+           // clicked entity is already in the selectedIDs list..
+           if (!this._showMenu) {
+             // deselect clicked entity, then reenter select mode or return to browse mode..
+             selectedIDs = selectedIDs.filter(function (id) {
+               return id !== datum.id;
+             });
+
+             context.enter(modeSelect(context, selectedIDs));
+           }
+         } else {
+           // clicked entity is not in the selected list, add it..
+           selectedIDs = selectedIDs.concat([datum.id]);
+           context.enter(modeSelect(context, selectedIDs));
+
+         }
+      }
+
     }
 
     // Clicked on a photo, so open / refresh the viewer's pic
@@ -416,6 +469,7 @@ export class BehaviorSelect extends AbstractBehavior {
     if (this._longPressTimeout) {
       window.clearTimeout(this._longPressTimeout);
       this._longPressTimeout = null;
+      this._showMenu = false;
     }
   }
 
@@ -426,7 +480,6 @@ export class BehaviorSelect extends AbstractBehavior {
    */
   _didLongPress(down) {
     this._longPressTimeout = null;
-
     if (this.lastDown === down && !down.isCancelled) {   // still down
       this._showContextMenu(down);
     }
@@ -441,6 +494,7 @@ export class BehaviorSelect extends AbstractBehavior {
    */
   _showContextMenu(eventData) {
     const datum = eventData.data;
+    this._showMenu = true;
 
     // Only attempt to display the context menu if we're focused on a non-RapiD OSM Entity.
     if (datum && datum instanceof osmEntity && !datum.__fbid__) {
