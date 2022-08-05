@@ -602,7 +602,8 @@ export function uiInit(context) {
   ui.showEditMenu = function(anchorPoint, triggerType, operations) {
     ui.closeEditMenu();   // remove any displayed menu
 
-    if (!operations && context.mode().operations) operations = context.mode().operations();
+    //TODO: Remove this after the behaviors rewrite has completed
+    if (!operations && context.mode().operations) operations = typeof context.mode().operations === 'function' ? context.mode().operations() : context.mode().operations;
     if (!operations || !operations.length) return;
     if (!context.editable()) return;
 
