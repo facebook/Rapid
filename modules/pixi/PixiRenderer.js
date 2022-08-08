@@ -119,7 +119,23 @@ export class PixiRenderer {
    * Respond to any change in select (called on mode change)
    */
   _onSelectChange() {
-    this.scene.selectFeatures(this.context.selectedIDs());
+    const selectedIDs = this.context.selectedIDs();
+    const selectedData = this.context.selectedData();
+
+    // We want feature ids here, not datum ids. (Only for actual OSM features are these the same)
+    // hacky conversion to get around the id mismatch:
+    const featureIDs = selectedIDs.map(id => {
+      const datum = selectedData.get(id);
+      if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
+        return id;
+      } else if (datum && datum.__fbid__) {
+        return `rapid-${id}`;
+      } else {  // there are other selectable things - we will not select-style them for now :(
+        return null;
+      }
+    }).filter(Boolean);
+
+    this.scene.selectFeatures(featureIDs);
     this._appPending = true;
   }
 
@@ -128,11 +144,11 @@ export class PixiRenderer {
    * Respond to any change in hover
    */
   _onHoverChange(eventData) {
-    let ids = [];
+    let featureIDs = [];
     if (eventData.target && eventData.data) {
-      ids = [eventData.target.name];  // the featureID is here (e.g. osm id)
+      featureIDs = [eventData.target.name];  // the featureID is here (e.g. osm id)
     }
-    this.scene.hoverFeatures(ids);
+    this.scene.hoverFeatures(featureIDs);
     this._appPending = true;
   }
 

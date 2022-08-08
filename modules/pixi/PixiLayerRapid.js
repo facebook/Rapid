@@ -335,6 +335,9 @@ export class PixiLayerRapid extends AbstractLayer {
         // feature.lowRes.shader = this._customshader;
       }
 
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
+
       if (feature.dirty) {
         feature.style = style;
         feature.label = utilDisplayName(entity);
@@ -368,6 +371,9 @@ export class PixiLayerRapid extends AbstractLayer {
         feature = new PixiFeatureLine(this, featureID, layer, entity, geometry);
         feature.rapidFeature = true;
       }
+
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
 
       if (feature.dirty) {
         const wireFrameEnabled = this.context.map().wireFrameMode();
@@ -423,6 +429,9 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.rapidFeature = true;
       }
 
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
+
       if (feature.dirty) {
         feature.style = pointStyle;
 
@@ -453,6 +462,9 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
       }
+
+      feature.selected = scene.selected.has(feature.id);
+      feature.hovered = scene.hovered.has(feature.id);
 
       if (feature.dirty) {
         feature.style = vertexStyle;
