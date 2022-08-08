@@ -248,11 +248,14 @@ export class PixiLayerOsm extends AbstractLayer {
       this.renderVertices(frame, projection, zoom, data.vertices);
       this.renderPoints(frame, projection, zoom, data.points);
 
-      // No midpoints when drawing
-      const currMode = context.mode().id;
-      if (currMode === 'browse' || currMode === 'select') {
-        this.renderMidpoints(frame, projection, zoom, data.highlighted);
-      }
+// bhousel 8/8
+// Midpoints are painful right now because they grab the hoverstate and de-select the line
+// We haven't decided yet how to capture that features relate to one another so I'm commenting them out.
+//      // No midpoints when drawing
+//      const currMode = context.mode().id;
+//      if (currMode === 'browse' || currMode === 'select') {
+//        this.renderMidpoints(frame, projection, zoom, data.highlighted);
+//      }
 
     } else {
       this.visible = false;
