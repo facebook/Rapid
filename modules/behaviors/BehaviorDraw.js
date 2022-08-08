@@ -6,7 +6,8 @@ import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
-const DEBUG = false;
+const DBL_CLICK_TIMEOUT_MS = 400;
+const DEBUG = true;
 
 
 /**
@@ -42,6 +43,8 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
+    this.doubleClickTimeout = null;
+    this.clicked = null;
 
     this._keybinding = utilKeybinding('drawbehavior');
 
@@ -86,6 +89,9 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
+    // Disable double-click to zoom while we're drawing.
+    this.context.map().dblclickZoomEnable(false);
+
     this._keybinding
       .on('⌫', this._undo)
       .on('⌦', this._undo)
@@ -119,6 +125,8 @@ export class BehaviorDraw extends AbstractBehavior {
       console.log('BehaviorDraw: disabling listeners');  // eslint-disable-line no-console
     }
 
+    this.context.map().dblclickZoomEnable(true);
+
     this._enabled = false;
     this.lastDown = null;
     this.lastMove = null;
@@ -146,7 +154,10 @@ export class BehaviorDraw extends AbstractBehavior {
   _keydown(e) {
      if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
      this._modifierKeys.add(e.key);
-     this._processMove();
+    this._processMove();
+    if (DEBUG) {
+      console.log(`event source: ${e.event.source}`);
+    }
   }
 
 
@@ -181,10 +192,21 @@ export class BehaviorDraw extends AbstractBehavior {
   _pointerdown(e) {
     if (this.lastDown) return;  // a pointer is already down
 
+    // See pointerup-
+    if (this.clicked) {
+      clearTimeout(this.doubleClickTimeout);
+      this.clicked = false;
+      if (DEBUG) {
+        console.log(
+          'double click detected, finishing draw.'
+        );
+      }
+      this._finish(e);
+      return;
+    }
     const down = this._getEventData(e);
     this.lastDown = down;
     this.lastClick = null;
-
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'down'`);  // eslint-disable-line no-console
     }
@@ -239,17 +261,25 @@ export class BehaviorDraw extends AbstractBehavior {
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
     const dist = vecLength(down.coord, up.coord);
-    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && (up.time - down.time) < 500)) {
-      this.lastClick = up;   // We will accept this as a click
+    if (
+      dist < NEAR_TOLERANCE ||
+      (dist < FAR_TOLERANCE && up.time - down.time < 500)
+    ) {
+      this.lastClick = up; // We will accept this as a click
+      if (DEBUG) {
+        console.log('accepted a click.');
+      }
+      this.clicked = true;
+      this.doubleClickTimeout = setTimeout(() => {
+        this.clicked = false;
+      }, DBL_CLICK_TIMEOUT_MS); // time for double click detection
 
       // Prevent a quick second click
-      this.context.map().dblclickZoomEnable(false);
-      d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
-
-      window.setTimeout(() => {
-        this.context.map().dblclickZoomEnable(true);
-        d3_select(window).on('click.draw-block', null);
-      }, 500);
+      d3_select(window).on(
+        'click.draw-block',
+        (e) => e.stopPropagation(),
+        true
+      );
 
       this._processClick();
     }
@@ -400,14 +430,17 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * _finish
-   * Fires if user presses return, enter, or escape - this is used to accept whatever has been drawn
+   * Fires if user double clicks, presses return, enter, or escape - this is used to accept whatever has been drawn
    * @param  `e`  A d3 keydown event
    */
   _finish(e) {
-    e.preventDefault();
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'finish'`);  // eslint-disable-line no-console
-    }
+    // Some calls to 'finish' will arise from synthetic double-clicks from within this class, in which case
+    // prevent default is not possible/necessary.
+    if (e.preventDefault && typeof e.preventDefault === 'function') e.preventDefault();
+
+      if (DEBUG) {
+        console.log(`BehaviorDraw: emitting 'finish'`); // eslint-disable-line no-console
+      }
     this.emit('finish');
   }
 
