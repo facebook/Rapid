@@ -395,11 +395,12 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
 
-        this.centroid = new PIXI.Graphics()
-          .lineStyle({ width: HALO_WIDTH, color: HALO_COLOR })
-          .moveTo(-6, 0).lineTo(6, 0).moveTo(0, -6).lineTo(0, 6);  // draw a + at centroid
-        this.centroid.name = `${this.id}-centroid`;
-        this.halo.addChild(this.centroid);
+// bhousel 8/8 skip the '+' for now - it's not actually at the true centroid anyway.
+//        this.centroid = new PIXI.Graphics()
+//          .lineStyle({ width: HALO_WIDTH, color: HALO_COLOR })
+//          .moveTo(-6, 0).lineTo(6, 0).moveTo(0, -6).lineTo(0, 6);  // draw a + at centroid
+//        this.centroid.name = `${this.id}-centroid`;
+//        this.halo.addChild(this.centroid);
 
         const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
