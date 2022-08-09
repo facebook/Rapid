@@ -1,3 +1,5 @@
+import { vecEqual } from '@id-sdk/math';
+
 import { AbstractMode } from './AbstractMode';
 
 import { actionAddEntity } from '../actions/add_entity';
@@ -14,7 +16,7 @@ import { osmNode, osmWay } from '../osm';
 import { t } from '../core/localizer';
 // import { prefs } from '../core/preferences';
 
-const DEBUG = false;
+const DEBUG = true;
 
 
 /**
@@ -41,6 +43,7 @@ export class ModeDrawLine extends AbstractMode {
     // _insertIndex determines where new nodes get added (see `osmWay.addNode()`)
     // `0` = beginning, `undefined` = end
     this._insertIndex = undefined;
+    this._clicks = 0;
 
     // Make sure the event handlers have `this` bound correctly
     this._move = this._move.bind(this);
@@ -85,6 +88,7 @@ export class ModeDrawLine extends AbstractMode {
     this.lastNode = null;
     this.firstNode = null;
     this._insertIndex = undefined;
+    this._clicks = 0;
     this._selectedData.clear();
 
     context.history().checkpoint('draw-line-initial');  // save history checkpoint to return to if things go bad
@@ -153,6 +157,7 @@ export class ModeDrawLine extends AbstractMode {
     this.lastNode = null;
     this.firstNode = null;
     this._insertIndex = undefined;
+    this._clicks = 0;
     this._selectedData.clear();
 
     window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
@@ -204,9 +209,7 @@ export class ModeDrawLine extends AbstractMode {
    * The edits on the history stack with annotations are the ones we can undo/redo back to.
    */
   _getAnnotation() {
-    if (!this._drawWayValid()) return undefined;
-
-    const which = this.drawWay ? 'continue' : 'start';
+    const which = (this._clicks > 1 ? 'continue' : 'start');
     return t(`operations.${which}.annotation.line`);
   }
 
@@ -243,8 +246,7 @@ export class ModeDrawLine extends AbstractMode {
     }
 
     context.replace(
-      actionMoveNode(this.drawNode.id, loc),
-      this._getAnnotation()
+      actionMoveNode(this.drawNode.id, loc)
     );
 
     this.drawNode = context.entity(this.drawNode.id);
@@ -264,6 +266,8 @@ export class ModeDrawLine extends AbstractMode {
     const loc = projection.invert(coord);
 
     if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
+
+    this._clicks++;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
     const datum = eventData.data;
@@ -287,28 +291,30 @@ export class ModeDrawLine extends AbstractMode {
       }
     }
 
-    this._clickNothing(loc);
+    this._clickLoc(loc);
   }
 
 
   /**
-   * _clickNothing
+   * _clickLoc
    * Clicked on nothing, create a point at given `loc`.
    */
-  _clickNothing(loc) {
+  _clickLoc(loc) {
+    const EPSILON = 1e-6;
     const context = this.context;
+    context.pauseChangeDispatch();
 
     // Extend line by adding vertex at `loc`...
     if (this.drawWay) {
       // The drawNode is at the start or end node, try to finish the line.
-      // (Normally this situation would be caught in `_clickNode`, maybe the user held down Alt key?)
-      if (this.drawNode.loc === this.lastNode.loc || this.drawNode.loc === this.firstNode.loc) {
+      // (Normally this situation would be caught in `_clickNode`, maybe the user held down modifier key?)
+      if (vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)) {
         this._finish();
         return;
       }
 
       if (DEBUG) {
-        console.log(`ModeDrawLine: _click, extending line to ${loc}`);  // eslint-disable-line no-console
+        console.log(`ModeDrawLine: _clickLoc, extending line to ${loc}`);  // eslint-disable-line no-console
       }
 
       // Replace draw node
@@ -316,20 +322,18 @@ export class ModeDrawLine extends AbstractMode {
       this.drawNode = osmNode({ loc: loc });
 
       context.replace(
-        actionMoveNode(this.lastNode.id, loc),   // Finalize position of old draw node at `loc`
-        this._getAnnotation()
+        actionMoveNode(this.lastNode.id, loc)   // Finalize position of old draw node at `loc`
       );
       context.perform(
         actionAddEntity(this.drawNode),                                         // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),  // Add new draw node to draw way
-        this._getAnnotation()
+        this._getAnnotation()                                                   // Allow undo/redo to here
       );
-
 
     // Start a new line at `loc`...
     } else {
       if (DEBUG) {
-        console.log(`ModeDrawLine: _click, starting line at ${loc}`);  // eslint-disable-line no-console
+        console.log(`ModeDrawLine: _clickLoc, starting line at ${loc}`);  // eslint-disable-line no-console
       }
       this.firstNode = osmNode({ loc: loc });
       this.lastNode = this.firstNode;
@@ -339,18 +343,17 @@ export class ModeDrawLine extends AbstractMode {
       context.perform(
         actionAddEntity(this.firstNode),  // Create first node
         actionAddEntity(this.drawNode),   // Create new draw node (end)
-        actionAddEntity(this.drawWay)     // Create new draw way
-        // Skip annotation, this is not a valid way yet
+        actionAddEntity(this.drawWay),    // Create new draw way
+        this._getAnnotation()             // Allow undo/redo to here
       );
     }
 
-    this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
-    // this._selectedData.set(this.drawWay.id, this.drawWay);
-    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
+    context.resumeChangeDispatch();
   }
 
 
@@ -359,14 +362,16 @@ export class ModeDrawLine extends AbstractMode {
    * Clicked on an target way, add a midpoint along the `edge` at given `loc`.
    */
   _clickWay(loc, edge) {
+    const EPSILON = 1e-6;
     const context = this.context;
     const midpoint = { loc: loc, edge: edge };
+    context.pauseChangeDispatch();
 
     // Extend line by adding vertex at midpoint on target edge...
     if (this.drawWay) {
       // The drawNode is at the start or end node, try to finish the line.
-      // (Normally this situation would be caught in `_clickNode`, maybe the user held down Alt key?)
-      if (this.drawNode.loc === this.lastNode.loc || this.drawNode.loc === this.firstNode.loc) {
+      // (Normally this situation would be caught in `_clickNode`, maybe the user held down modifier key?)
+      if (vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)) {
         this._finish();
         return;
       }
@@ -381,15 +386,13 @@ export class ModeDrawLine extends AbstractMode {
 
       context.replace(
         actionMoveNode(this.lastNode.id, loc),       // Finalize position of old draw node at `loc`
-        actionAddMidpoint(midpoint, this.lastNode),  // Add old draw node as a midpoint on target edge
-        this._getAnnotation()
+        actionAddMidpoint(midpoint, this.lastNode)   // Add old draw node as a midpoint on target edge
       );
       context.perform(
         actionAddEntity(this.drawNode),                                          // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add new draw node to draw way
-        this._getAnnotation()
+        this._getAnnotation()                                                    // Allow undo/redo to here
       );
-
 
     // Start a new line at `loc` on target edge...
     } else {
@@ -405,18 +408,17 @@ export class ModeDrawLine extends AbstractMode {
         actionAddEntity(this.firstNode),              // Create first node
         actionAddEntity(this.drawNode),               // Create new draw node (end)
         actionAddEntity(this.drawWay),                // Create new draw way
-        actionAddMidpoint(midpoint, this.firstNode)   // Add first node as midpoint on target edge
-        // Skip annotation, this is not a valid way yet
+        actionAddMidpoint(midpoint, this.firstNode),  // Add first node as midpoint on target edge
+        this._getAnnotation()                         // Allow undo/redo to here
       );
     }
 
-    this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
-    // this._selectedData.set(this.drawWay.id, this.drawWay);
-    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
+    context.resumeChangeDispatch();
   }
 
 
@@ -425,13 +427,17 @@ export class ModeDrawLine extends AbstractMode {
    * Clicked on a target node, include that node in the line we are drawing.
    */
   _clickNode(loc, targetNode) {
+    const EPSILON = 1e-6;
     const context = this.context;
+    context.pauseChangeDispatch();
 
     // Extend line by reuse target node as a vertex...
     // (Note that we don't need to replace the draw node in this scenerio)
     if (this.drawWay) {
-      // Clicked on the first or last node, try to finish the line
-      if (this.targetNode === this.lastNode || this.targetNode === this.firstNode) {
+      // Clicked on first or last node, try to finish the line
+      if (this.targetNode === this.lastNode || this.targetNode === this.firstNode ||
+        vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)
+      ) {
         this._finish();
         return;
       }
@@ -445,7 +451,7 @@ export class ModeDrawLine extends AbstractMode {
       // The target node needs to be inserted "before" the draw node
       // If draw node is at the beginning, insert target 1 after beginning.
       // If draw node is at the end, insert target 1 before the end.
-      const targetIndex = this.drawWay.affix(this.drawNode.id) === 'prefix' ? 1 : this.drawWay.nodes.length - 2;
+      const targetIndex = this.drawWay.affix(this.drawNode.id) === 'prefix' ? 1 : this.drawWay.nodes.length - 1;
 
       context.replace(
         actionAddVertex(this.drawWay.id, targetNode.id, targetIndex),   // Add target node to draw way
@@ -466,18 +472,17 @@ export class ModeDrawLine extends AbstractMode {
 
       context.perform(
         actionAddEntity(this.drawNode),   // Create new draw node (end)
-        actionAddEntity(this.drawWay)     // Create new draw way
-        // skip annotation, this is not a valid way yet
+        actionAddEntity(this.drawWay),    // Create new draw way
+        this._getAnnotation()
       );
     }
 
-    this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
-    // this._selectedData.set(this.drawWay.id, this.drawWay);
-    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
+    context.resumeChangeDispatch();
   }
 
 
@@ -488,6 +493,7 @@ export class ModeDrawLine extends AbstractMode {
    */
   _continueFromNode(targetNode) {
     const context = this.context;
+    context.pauseChangeDispatch();
 
     if (DEBUG) {
       console.log(`ModeDrawLine: _continueFromNode, continuing line at ${targetNode.id}`);  // eslint-disable-line no-console
@@ -503,11 +509,10 @@ export class ModeDrawLine extends AbstractMode {
 
     this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
     this._updateCollections();
-    // this._selectedData.set(this.drawWay.id, this.drawWay);
-    // this._activeData.set(this.drawNode.id, this.drawNode);
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
+    context.resumeChangeDispatch();
   }
 
 
@@ -518,6 +523,7 @@ export class ModeDrawLine extends AbstractMode {
    */
   _finish() {
     const context = this.context;
+    context.resumeChangeDispatch();  // it's possible to get here in a paused state
 
     if (this.drawWay) {
       if (DEBUG) {
