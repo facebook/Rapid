@@ -10,7 +10,7 @@ export function uiRapidWhatsNew(context) {
 
 
   return function(selection) {
-    if (prefs('sawWhatsNewGL') === 'true') return;
+    if (prefs('sawWhatsNewGLAlpha') === 'true') return;
 
     const modalSelection = uiModal(selection);
 
@@ -29,15 +29,22 @@ export function uiRapidWhatsNew(context) {
     let body = whatsNewModal
       .append('div')
       .attr('class','modal-section body')
-      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid') })));
+      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid'), bugicon: icon('#iD-icon-bug', 'bugnub') })));
 
 
-    body
+    let imageSection = body.append('div').attr('class', 'whatsnew-images');
+
+    imageSection
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/tucson_icon_logo.png'));
+      .attr('src', context.asset('img/sotm_2022.svg'));
 
-    body.select('p a')
+    imageSection
+      .append('img')
+      .attr('class', 'whatsnew-image')
+      .attr('src', context.asset('img/foss4g2022-400x400.webp'));
+
+    body.selectAll('p a')
       .attr('target', '_blank');
 
 
@@ -92,7 +99,7 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .text(t('rapid_whats_new.ok'))
       .on('click', () => {
-        prefs('sawWhatsNewGL', _dontShowAgain);
+        prefs('sawWhatsNewGLAlpha', _dontShowAgain);
         modalSelection.close();
       });
 

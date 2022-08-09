@@ -453,8 +453,15 @@ button.bugnub {
     background: #ccc;
 }
 
+.modal.rapid-modal.modal-whatsnew div.whatsnew-images {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
 .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
-    width: 30%;
+    max-width: 150px;
+    max-height: 150px;
     margin-top: 20px;
     align-items: center;
 }
@@ -484,7 +491,9 @@ button.bugnub {
     align-items: center;
 }
 
-
+.modal.rapid-modal.modal-whatsnew div.body.modal-section svg.icon.bugnub {
+color: #ff26db;
+}
 /* dark scrollbars */
 .modal.rapid-modal {
     scrollbar-width: thin;
