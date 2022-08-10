@@ -5,7 +5,6 @@ import { Projection, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } fro
 
 import { t } from '../core/localizer';
 import { utilSetTransform } from '../util';
-import { PixiScene } from '../pixi/PixiScene';
 import { PixiLayerBackgroundTiles } from '../pixi/PixiLayerBackgroundTiles';
 
 

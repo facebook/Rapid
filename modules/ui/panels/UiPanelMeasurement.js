@@ -1,14 +1,11 @@
 import { select as d3_select } from 'd3-selection';
-import {
-  geoLength as d3_geoLength,
-  geoCentroid as d3_geoCentroid
-} from 'd3-geo';
+import { geoLength as d3_geoLength, geoCentroid as d3_geoCentroid } from 'd3-geo';
 import { Extent, geoSphericalDistance } from '@id-sdk/math';
 import { utilGetAllNodes } from '@id-sdk/util';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 import { t, localizer } from '../../core/localizer';
-import { osmNote, osmEntity } from '../../osm';
+import { osmNote } from '../../osm';
 import { displayArea, displayLength, decimalCoordinatePair, dmsCoordinatePair } from '../../util/units';
 
 

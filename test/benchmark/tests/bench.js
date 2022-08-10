@@ -3,46 +3,40 @@
 const suite = new Benchmark.Suite();
 
 const values = [];
-
 for (let i = 0; i < 1000000; i++) {
-    values.push(i);
+  values.push(i);
 }
-
 
 // Converts a list of json OSM entities to osm objects
 function jsonToOSM(renderData) {
-    //Entity data is already split into points, vertices, lines, and polygons.
+  //Entity data is already split into points, vertices, lines, and polygons.
+  let osmRenderData = {};
 
-    let osmRenderData = {};
+  let points = renderData.points.map(point => iD.osmNode(point));
+  let vertices = renderData.vertices.map(vertex => iD.osmNode(vertex));
+  let lines = renderData.lines.map(line => iD.osmWay(line));
+  let polygons = renderData.polygons.map(polygon => iD.osmWay(polygon));
 
-    let points = renderData.points.map(point => iD.osmNode(point));
-    let vertices = renderData.vertices.map(vertex => iD.osmNode(vertex));
-    let lines = renderData.lines.map(line => iD.osmWay(line));
-    let polygons = renderData.polygons.map(polygon => iD.osmWay(polygon));
+  osmRenderData.points = points;
+  osmRenderData.vertices = vertices;
+  osmRenderData.lines = lines;
+  osmRenderData.polygons = polygons;
 
-    osmRenderData.points = points;
-    osmRenderData.vertices = vertices;
-    osmRenderData.lines = lines;
-    osmRenderData.polygons = polygons;
-
-    return osmRenderData;
+  return osmRenderData;
 }
+
 
 // Converts a list of json OSM entities to osm objects
 function castEntities(entities) {
-
-    let osmEntities = [];
-
-    for (let entityKey in entities) {
-
-        let entity = entities[entityKey];
-
-        if (entity.id.charAt(0) === 'w') osmEntities.push(new iD.osmWay(entity));
-        if (entity.id.charAt(0) === 'n') osmEntities.push(new iD.osmNode(entity));
-    }
-
-    return osmEntities;
+  let osmEntities = [];
+  for (let entityKey in entities) {
+    let entity = entities[entityKey];
+    if (entity.id.charAt(0) === 'w') osmEntities.push(new iD.osmWay(entity));
+    if (entity.id.charAt(0) === 'n') osmEntities.push(new iD.osmNode(entity));
+  }
+  return osmEntities;
 }
+
 
 //This staticData variable looks like it's not declared anywhere, but it is a global var loaded by the <script src='canned_osm_data.js'> declaration in bench.html
 let renderData;
@@ -61,23 +55,23 @@ content.call(map);
 
 
 function renderTest() {
-        const osmLayer = map.layers().getLayer('osm');
-        osmLayer.drawPoints(timestamp, projection, zoom, renderData.points);
-        osmLayer.drawVertices(timestamp, projection, zoom, renderData.vertices);
-        osmLayer.drawLines(timestamp, projection, zoom, renderData.lines);
-        osmLayer.drawPolygons(timestamp, projection, zoom, renderData.polygons);
-        let renderer = map.renderer();
-        renderer.dirtyScene();  //Dirty the scene so that subsequent runs of this same test don't operate at warp speed
+  const scene = context.scene();
+  const layer = scene.getLayer('osm');
+  layer.drawPoints(timestamp, projection, zoom, renderData.points);
+  layer.drawVertices(timestamp, projection, zoom, renderData.vertices);
+  layer.drawLines(timestamp, projection, zoom, renderData.lines);
+  layer.drawPolygons(timestamp, projection, zoom, renderData.polygons);
+  scene.dirtyScene();  // Dirty the scene so that subsequent runs of this same test don't operate at warp speed
 }
 
 function setup(dataBlob) {
-    //This dataBlob variable should be the json blob exported in bench.html from a <script src='canned_osm_data.js'> declaration
-    renderData = jsonToOSM(dataBlob.data);
-    graphEntities = castEntities(dataBlob.entities);
-    projection = new iD.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
-    zoom = dataBlob.zoom;
-    let graph = context.graph();
-    graph.rebase(graphEntities, [graph], false);
+  //This dataBlob variable should be the json blob exported in bench.html from a <script src='canned_osm_data.js'> declaration
+  renderData = jsonToOSM(dataBlob.data);
+  graphEntities = castEntities(dataBlob.entities);
+  projection = new iD.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
+  zoom = dataBlob.zoom;
+  let graph = context.graph();
+  graph.rebase(graphEntities, [graph], false);
 }
 
 // Enable the cycle event if and only if we really need to print stuff every run.
@@ -87,40 +81,39 @@ function setup(dataBlob) {
 // }
 
 function complete(event) {
-    const benchmark = event.target;
-    let hz = benchmark.hz.toFixed(benchmark.hz < 100 ? 2 : 0);
-    console.log(`benchmark placename: ${benchmark.placename}`);
-    console.log(`benchmark zoom: ${benchmark.zoom}`);
-    console.log(`benchmark ops/sec: ${hz}`);
-
+  const benchmark = event.target;
+  let hz = benchmark.hz.toFixed(benchmark.hz < 100 ? 2 : 0);
+  console.log(`benchmark placename: ${benchmark.placename}`);
+  console.log(`benchmark zoom: ${benchmark.zoom}`);
+  console.log(`benchmark ops/sec: ${hz}`);
 }
 
 suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with zoom 19 Tokyo data',
-    'fn': renderTest,
-    'placename': 'tokyo',
-    'zoom': '19',
-    'onStart': () => setup(tokyo_19),
-    // 'onCycle': event => cycle(event),
-    'onComplete': event => complete(event),
+  'name': 'PixiLayerOsm Renderer Benchmark with zoom 19 Tokyo data',
+  'fn': renderTest,
+  'placename': 'tokyo',
+  'zoom': '19',
+  'onStart': () => setup(tokyo_19),
+  // 'onCycle': event => cycle(event),
+  'onComplete': event => complete(event),
 });
 suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
-    'fn': renderTest,
-    'placename': 'tokyo',
-    'zoom': '17',
-    'onStart': () => setup(tokyo_17),
-    // 'onCycle': event => cycle(event),
-    'onComplete': event => complete(event),
+  'name': 'PixiLayerOsm Renderer Benchmark with zoom 17 Tokyo data',
+  'fn': renderTest,
+  'placename': 'tokyo',
+  'zoom': '17',
+  'onStart': () => setup(tokyo_17),
+  // 'onCycle': event => cycle(event),
+  'onComplete': event => complete(event),
 });
 suite.add({
-    'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
-    'fn': renderTest,
-    'placename': 'tokyo',
-    'zoom': '15',
-    'onStart': () => setup(tokyo_15),
-    // 'onCycle': event => cycle(event),
-    'onComplete': event => complete(event),
+  'name': 'PixiLayerOsm Renderer Benchmark with zoom 15 Tokyo data',
+  'fn': renderTest,
+  'placename': 'tokyo',
+  'zoom': '15',
+  'onStart': () => setup(tokyo_15),
+  // 'onCycle': event => cycle(event),
+  'onComplete': event => complete(event),
 });
 
 suite.run();

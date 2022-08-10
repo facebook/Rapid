@@ -287,7 +287,7 @@ describe('iD.serviceOsm', function () {
           headers: { 'Content-Type': 'application/json' },
         });
 
-        connection.loadFromAPI(path, function (err, payload) {
+        connection.loadFromAPI(path, function (err) {
           expect(err.message).to.eql('Partial JSON');
           done();
         });
