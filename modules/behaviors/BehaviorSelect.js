@@ -300,8 +300,8 @@ export class BehaviorSelect extends AbstractBehavior {
    * @param  `e`  A d3 keyup event
    */
   _keyup(e) {
-    if (e.shiftKey) {
-      this._multiSelect = true;
+    if (e.key === 'Shift') {
+      this._multiSelect = false;
      }
  }
 
