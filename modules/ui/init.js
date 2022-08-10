@@ -393,7 +393,7 @@ export function uiInit(context) {
         const mode = context.mode();
         if (mode && /^draw/.test(mode.id)) return;
 
-        const layer = context.scene().toggleLayers('osm');
+        context.scene().toggleLayers('osm');
         context.enter('browse');
       })
       .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
@@ -599,6 +599,11 @@ export function uiInit(context) {
   };
 
 
+  /* showEditMenu
+   * @param  anchorPoint  Array [x,y] screen coordinate where the menu should be anchored
+   * @param  triggerType  String  'touch', 'pen', or 'rightclick' that triggered the menu
+   * @param  operations   seems not passed in - code below figures it out.
+   */
   ui.showEditMenu = function(anchorPoint, triggerType, operations) {
     ui.closeEditMenu();   // remove any displayed menu
 
@@ -613,35 +618,35 @@ export function uiInit(context) {
       surfaceNode.focus();
     }
 
-    operations.forEach(function(operation) {
+    operations.forEach(operation => {
       if (operation.point) operation.point(anchorPoint);
     });
 
     _editMenu
-      .anchorLoc(anchorPoint)
+      .anchorLoc(context.projection.invert(anchorPoint))
       .triggerType(triggerType)
       .operations(operations);
 
     // render the menu
-    context.map().supersurface.call(_editMenu);
+    context.map().dupersurface.call(_editMenu);
   };
 
 
   // remove any existing menu no matter how it was added
   ui.closeEditMenu = function() {
-    context.map().supersurface.select('.edit-menu').remove();
+    context.map().dupersurface.select('.edit-menu').remove();
   };
 
 
   let _saveLoading = d3_select(null);
   context.uploader()
-    .on('saveStarted.ui', function() {
+    .on('saveStarted.ui', () => {
       _saveLoading = uiLoading(context)
         .message(t.html('save.uploading'))
         .blocking(true);
       context.container().call(_saveLoading);  // block input during upload
     })
-    .on('saveEnded.ui', function() {
+    .on('saveEnded.ui', () => {
       _saveLoading.close();
       _saveLoading = d3_select(null);
     });

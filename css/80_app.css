@@ -4136,7 +4136,8 @@ img.tile-debug {
     touch-action: none;
 }
 
-.supersurface {
+.supersurface,
+.dupersurface {
     transform-origin: 0 0;
 }
 
@@ -4148,16 +4149,6 @@ img.tile-debug {
     bottom: 0;
 }
 
-
-.supersurface .layer.layer-background {
-    z-index: 1;
-}
-.supersurface .layer.layer-overlay {
-    z-index: 2;
-}
-.supersurface .layer.layer-data {
-    z-index: 3;
-}
 
 /* Map-In-Map
 ------------------------------------------------------- */

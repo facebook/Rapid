@@ -33,8 +33,9 @@ export function rendererMap(context) {
   let curtainProjection = context.curtainProjection;
 
   let _selection = d3_select(null);
-  let supersurface = d3_select(null);
-  let surface = d3_select(null);
+  let surface = d3_select(null);        // the map `canvas`
+  let supersurface = d3_select(null);   // parent of surface with temporary zoom/pan transform
+  let dupersurface = d3_select(null);   // sibling of surface, used to hold the editmenu
 
   let _renderer;
   let _wireFrameMode = false;
@@ -87,7 +88,7 @@ export function rendererMap(context) {
       // .call(_zoomPanHandler.transform, projection.transform())
       // .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 
-    // The supersurface is a wrapper div that we temporarily transform as the user zooms and pans.
+    // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
     // At regular intervals we reset this root transform and actually redraw the map.
     map.supersurface = supersurface = selection.append('div')
@@ -95,11 +96,10 @@ export function rendererMap(context) {
       .call(utilSetTransform, 0, 0);
 
     // Content beneath the supersurface may be transformed and will need to rerender sometimes.
-    // This includes the background tile layer, the overlay tile layer, and the Pixi WebGL canvas.
+    // This includes the Pixi WebGL canvas and the right-click edit menu
     let pixiContainer = map.supersurface
       .append('div')
-      .attr('class', 'layer pixi-data')
-      .style('z-index', '3');   // above background and overlay
+      .attr('class', 'layer pixi-data');
 
     _renderer = new PixiRenderer(context, pixiContainer.node());
 
@@ -109,6 +109,13 @@ export function rendererMap(context) {
     //  - css classing surface's child stuff
     //  - listening to events on the surface
     map.surface = surface = pixiContainer.selectAll('canvas');
+
+    // The `dupersurface` is a div that is transformed to cancel out the supersurface.
+    // This is a place to put things _not drawn by pixi_ that should stay positioned
+    // with the map, like the editmenu.
+    map.dupersurface = dupersurface = supersurface.append('div')
+      .attr('class', 'dupersurface')
+      .call(utilSetTransform, 0, 0);
 
 //     surface
 //       .call(_doubleTapHandler);
@@ -149,9 +156,6 @@ export function rendererMap(context) {
     //
     // Setup events that cause the map to redraw
     //
-
-    context
-      .on('change', map.immediateRedraw);
 
     // context.features()
     //   .on('redraw.map', map.immediateRedraw);
@@ -443,6 +447,7 @@ export function rendererMap(context) {
       _transformLast = eventTransform;
 
       utilSetTransform(supersurface, tX, tY, scale);
+      utilSetTransform(dupersurface, -tX, -tY, scale);
       map.deferredRedraw();
 
       dispatch.call('move', this, map);
@@ -468,6 +473,7 @@ export function rendererMap(context) {
       if (!_isTransformed) return false;
 
       utilSetTransform(supersurface, 0, 0);
+      utilSetTransform(dupersurface, 0, 0);
 
       _isTransformed = false;
       _transformStart = projection.transform();
