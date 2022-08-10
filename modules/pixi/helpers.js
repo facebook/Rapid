@@ -337,6 +337,15 @@ export function getLineSegments(points, spacing, sided) {
 
         // generate coordinates between `a` and `b`, spaced `spacing` apart
         let coords = [a, p];
+
+        // If we are going to generate more than 100 line segments,
+        // cap it at 100 so we're not calculating vector segments for thousands of arrows.
+        if (span >= spacing * 100) {
+         let newSpacing = Math.floor(span / 100);
+          // console.log(`skipped calculating ${Math.floor(span / spacing) - 100} segments.`);
+          spacing = newSpacing;
+        }
+
         for (span -= spacing; span >= 0; span -= spacing) {
           p = vecAdd(p, [dx, dy]);
           coords.push(p);
