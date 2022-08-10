@@ -112,8 +112,6 @@ export function uiToolNotes(context) {
     context.keybinding().off(mode.key);
 
     context
-      .on('enter.editor.notes', null)
-      .on('exit.editor.notes', null)
       .on('enter.notes', null);
 
     context.map()
