@@ -37,7 +37,7 @@ import { BehaviorPaste } from '../behaviors';
 
 
 export function coreContext() {
-  const dispatch = d3_dispatch('enter', 'exit', 'change');
+  const dispatch = d3_dispatch('enter', 'exit');
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
@@ -563,10 +563,11 @@ export function coreContext() {
   };
   context.debugFlags = () => _debugFlags;
   context.getDebug = (flag) => flag && _debugFlags[flag];
-  context.setDebug = function(flag, val) {
-    if (arguments.length === 1) val = true;
+  context.setDebug = function(flag, val = true) {
     _debugFlags[flag] = val;
-    dispatch.call('change');
+    if (_map) {
+      _map.immediateRedraw();
+    }
     return context;
   };
 
