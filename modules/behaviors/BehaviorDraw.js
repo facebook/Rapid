@@ -7,7 +7,7 @@ import { utilKeybinding } from '../util';
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
 const DBL_CLICK_TIMEOUT_MS = 400;
-const DEBUG = true;
+const DEBUG = false;
 
 
 /**
@@ -154,10 +154,7 @@ export class BehaviorDraw extends AbstractBehavior {
   _keydown(e) {
      if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
      this._modifierKeys.add(e.key);
-    this._processMove();
-    if (DEBUG) {
-      console.log(`event source: ${e.event.source}`);
-    }
+     this._processMove();
   }
 
 
@@ -194,16 +191,15 @@ export class BehaviorDraw extends AbstractBehavior {
 
     // See pointerup-
     if (this.clicked) {
-      clearTimeout(this.doubleClickTimeout);
+      window.clearTimeout(this.doubleClickTimeout);
       this.clicked = false;
       if (DEBUG) {
-        console.log(
-          'double click detected, finishing draw.'
-        );
+        console.log('double click detected, finishing draw.');
       }
       this._finish(e);
       return;
     }
+
     const down = this._getEventData(e);
     this.lastDown = down;
     this.lastClick = null;
@@ -261,25 +257,19 @@ export class BehaviorDraw extends AbstractBehavior {
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
     const dist = vecLength(down.coord, up.coord);
-    if (
-      dist < NEAR_TOLERANCE ||
-      (dist < FAR_TOLERANCE && up.time - down.time < 500)
-    ) {
+    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = up; // We will accept this as a click
       if (DEBUG) {
         console.log('accepted a click.');
       }
       this.clicked = true;
-      this.doubleClickTimeout = setTimeout(() => {
+      this.doubleClickTimeout = window.setTimeout(() => {
         this.clicked = false;
       }, DBL_CLICK_TIMEOUT_MS); // time for double click detection
 
       // Prevent a quick second click
-      d3_select(window).on(
-        'click.draw-block',
-        (e) => e.stopPropagation(),
-        true
-      );
+      d3_select(window)
+        .on('click.draw-block', (e) => e.stopPropagation(), true);
 
       this._processClick();
     }
@@ -436,11 +426,12 @@ export class BehaviorDraw extends AbstractBehavior {
   _finish(e) {
     // Some calls to 'finish' will arise from synthetic double-clicks from within this class, in which case
     // prevent default is not possible/necessary.
-    if (e.preventDefault && typeof e.preventDefault === 'function') e.preventDefault();
-
-      if (DEBUG) {
-        console.log(`BehaviorDraw: emitting 'finish'`); // eslint-disable-line no-console
-      }
+    if (e.preventDefault && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
+    if (DEBUG) {
+      console.log(`BehaviorDraw: emitting 'finish'`); // eslint-disable-line no-console
+    }
     this.emit('finish');
   }
 
