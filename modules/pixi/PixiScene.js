@@ -251,19 +251,9 @@ export class PixiScene extends EventEmitter {
     const layer = feature.layer;
 
     // Remove any existing box with this id from the rbush
-    let box = this.boxes.get(featureID);
+    const box = this.boxes.get(featureID);
     if (box) {
       this.rbush.remove(box);
-    }
-
-    // If feature was hovered or selected, update those collections
-    if (this.selected.has(featureID)) {
-      this.selected.delete(featureID);
-      this.selected.v++;
-    }
-    if (this.hovered.has(featureID)) {
-      this.hovered.delete(featureID);
-      this.hovered.v++;
     }
 
     layer.features.delete(featureID);

@@ -174,11 +174,8 @@ export class AbstractFeature {
   set visible(val) {
     if (this.container.visible !== val) {
       this.container.visible = val;
+      this.updateHalo();
       this._labelDirty = true;
-      if (!val) {
-        // remove halo immediately when feature goes invisible
-        this.updateHalo();
-      }
     }
   }
 

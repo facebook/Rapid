@@ -71,8 +71,6 @@ export class AbstractLayer {
     for (const [featureID, feature] of this.features) {
       const seenFrame = scene.retained.get(featureID);
       if (seenFrame === frame) continue;
-      if (scene.selected.has(featureID)) continue;
-      if (scene.hovered.has(featureID)) continue;
 
       // Can't see it currently, make it invisible
       feature.visible = false;

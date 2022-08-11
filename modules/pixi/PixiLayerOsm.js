@@ -206,14 +206,14 @@ export class PixiLayerOsm extends AbstractLayer {
           data.vertices.push(entity);
         } else if (geom === 'line') {
           data.lines.push(entity);
-          if (highlightedIDs.has(entity.id)) {
-            data.highlighted.push(entity);
-          }
+//          if (highlightedIDs.has(entity.id)) {
+//            data.highlighted.push(entity);
+//          }
         } else if (geom === 'area') {
           data.polygons.push(entity);
-          if (highlightedIDs.has(entity.id)) {
-            data.highlighted.push(entity);
-          }
+//          if (highlightedIDs.has(entity.id)) {
+//            data.highlighted.push(entity);
+//          }
         }
       });
 
@@ -310,7 +310,7 @@ export class PixiLayerOsm extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -400,7 +400,7 @@ export class PixiLayerOsm extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -507,7 +507,7 @@ export class PixiLayerOsm extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -581,7 +581,7 @@ export class PixiLayerOsm extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -677,7 +677,7 @@ export class PixiLayerOsm extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }

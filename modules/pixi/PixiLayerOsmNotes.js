@@ -100,7 +100,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }

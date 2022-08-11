@@ -345,7 +345,7 @@ export class PixiLayerRapid extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -393,7 +393,7 @@ export class PixiLayerRapid extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -446,7 +446,7 @@ export class PixiLayerRapid extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
@@ -480,7 +480,7 @@ export class PixiLayerRapid extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0 || feature.selected) {
+      if (feature.lod > 0) {
         feature.visible = true;
         scene.retainFeature(feature, frame);
       }
