@@ -250,11 +250,10 @@ export function uiInit(context) {
       .append('div')
       .attr('class', 'main-footer-wrap footer-show');
 
-// skip some stuff - trying to determine where the jank is coming from
-    // footerWrap
-    //     .append('div')
-    //     .attr('class', 'scale-block')
-    //     .call(uiScale(context));
+    footerWrap
+        .append('div')
+        .attr('class', 'scale-block')
+        .call(uiScale(context));
 
     let aboutList = footerWrap
       .append('div')
