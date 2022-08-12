@@ -1,4 +1,3 @@
-
 import { t } from '../../core/localizer';
 import { uiPane } from '../pane';
 
@@ -8,19 +7,16 @@ import { uiSectionValidationRules } from '../sections/validation_rules';
 import { uiSectionValidationStatus } from '../sections/validation_status';
 
 export function uiPaneIssues(context) {
-
-    var issuesPane = uiPane('issues', context)
-        .key(t('issues.key'))
-        .label(t.html('issues.title'))
-        .description(t.html('issues.title'))
-        .iconName('iD-icon-alert')
-        .sections([
-            uiSectionValidationOptions(context),
-            uiSectionValidationStatus(context),
-            uiSectionValidationIssues('issues-errors', 'error', context),
-            uiSectionValidationIssues('issues-warnings', 'warning', context),
-            uiSectionValidationRules(context)
-        ]);
-
-    return issuesPane;
+  return uiPane('issues', context)
+    .key(t('issues.key'))
+    .label(t.html('issues.title'))
+    .description(t.html('issues.title'))
+    .iconName('iD-icon-alert')
+    .sections([
+      uiSectionValidationOptions(context),
+      uiSectionValidationStatus(context),
+      uiSectionValidationIssues(context, 'issues-errors', 'error'),
+      uiSectionValidationIssues(context, 'issues-warnings', 'warning'),
+      uiSectionValidationRules(context)
+    ]);
 }
