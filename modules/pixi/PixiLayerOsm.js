@@ -296,7 +296,7 @@ export class PixiLayerOsm extends AbstractLayer {
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
         feature.geometry = geometry;
 
-        const style = styleMatch(entity.tags);
+        const style = styleMatch(entity.tags, this.context.map().wireFrameMode());
         feature.style = style;
       }
 
@@ -374,7 +374,7 @@ export class PixiLayerOsm extends AbstractLayer {
         const geometry = geojson.coordinates;
         feature.geometry = geometry;
 
-        const style = styleMatch(entity.tags);
+        const style = styleMatch(entity.tags, this.context.map().wireFrameMode());
         style.reversePoints = (entity.tags.oneway === '-1');
         // Todo: handle alternating/two-way case too
 
