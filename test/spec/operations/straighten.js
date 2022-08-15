@@ -7,6 +7,7 @@ describe('iD.operationStraighten', function () {
     fakeContext.graph = function() { return graph; };
     fakeContext.entity = function(id) { return graph.entity(id); };
     fakeContext.hasHiddenConnections = function() { return false; };
+    fakeContext.keyBinding = function () { return false; };
 
     describe('#available', function () {
         beforeEach(function () {

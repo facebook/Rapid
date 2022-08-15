@@ -24,8 +24,7 @@ module.exports = function (config) {
       { pattern: 'dist/**/*', included: false },
       { pattern: 'test/spec/renderer/*.json', included: true, served: true},
       'test/spec/spec_helpers.js',
-      // 'test/spec/**/*.js',
-      'test/spec/renderer/*.js',
+      'test/spec/**/*.js',
     ],
 
     // list of files / patterns to exclude

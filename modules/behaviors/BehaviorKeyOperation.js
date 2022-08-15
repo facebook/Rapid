@@ -17,7 +17,9 @@ export class BehaviorKeyOperation extends AbstractBehavior {
     this.id = `key-${operation.id}`;
 
     this._operation = operation;
-    this._keybinding = this.context.keybinding();  // "global" keybinding (on document)
+    if (!window.mocha) {
+      this._keybinding = this.context.keybinding(); // "global" keybinding (on document)
+    }
 
     // Make sure the event handlers have `this` bound correctly
     this._keydown = this._keydown.bind(this);

@@ -30,20 +30,34 @@ export class PixiTextures {
     // Load spritesheets
     const loader = PIXI.Loader.shared;
     const assetPath = context.assetPath();
-    loader.add(`${assetPath}img/icons/maki-spritesheet.json`);
-    loader.add(`${assetPath}img/icons/temaki-spritesheet.json`);
-    loader.add(`${assetPath}img/icons/fontawesome-spritesheet.json`);
-    loader.add(`${assetPath}img/icons/mapillary-features-spritesheet.json`);
-    loader.add(`${assetPath}img/icons/mapillary-signs-spritesheet.json`);
-    loader.load(loader => {
-      context._makiSheet = loader.resources[`${assetPath}img/icons/maki-spritesheet.json`];
-      context._temakiSheet = loader.resources[`${assetPath}img/icons/temaki-spritesheet.json`];
-      context._fontAwesomeSheet = loader.resources[`${assetPath}img/icons/fontawesome-spritesheet.json`];
-      context._mapillarySheet = loader.resources[`${assetPath}img/icons/mapillary-features-spritesheet.json`];
-      context._mapillarySignSheet = loader.resources[`${assetPath}img/icons/mapillary-signs-spritesheet.json`];
-      this.loaded = true;
-    });
 
+ // During tests we might be reloading the map several times. If so, don't reload the resource spritesheets.
+    if (!loader.resources[`${assetPath}img/icons/maki-spritesheet.json`]) {
+      loader.add(`${assetPath}img/icons/maki-spritesheet.json`);
+      loader.add(`${assetPath}img/icons/temaki-spritesheet.json`);
+      loader.add(`${assetPath}img/icons/fontawesome-spritesheet.json`);
+      loader.add(`${assetPath}img/icons/mapillary-features-spritesheet.json`);
+      loader.add(`${assetPath}img/icons/mapillary-signs-spritesheet.json`);
+      loader.load((loader) => {
+        context._makiSheet =
+          loader.resources[`${assetPath}img/icons/maki-spritesheet.json`];
+        context._temakiSheet =
+          loader.resources[`${assetPath}img/icons/temaki-spritesheet.json`];
+        context._fontAwesomeSheet =
+          loader.resources[
+            `${assetPath}img/icons/fontawesome-spritesheet.json`
+          ];
+        context._mapillarySheet =
+          loader.resources[
+            `${assetPath}img/icons/mapillary-features-spritesheet.json`
+          ];
+        context._mapillarySignSheet =
+          loader.resources[
+            `${assetPath}img/icons/mapillary-signs-spritesheet.json`
+          ];
+        this.loaded = true;
+      });
+    }
     // Load patterns
     context.pixi.rapidTextureKeys = [
       'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',

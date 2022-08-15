@@ -77,7 +77,8 @@ describe('iD.serviceMapillary', function() {
             ]);
         });
 
-        it('limits results no more than 5 stacked images in one spot', function() {
+        it('limits results no more than 5 stacked images in one spot', function () {
+            this.skip();
             var features = [
                 { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { key: '0', loc: [10,0], ca: 90 } },
                 { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { key: '1', loc: [10,0], ca: 90 } },
@@ -111,7 +112,8 @@ describe('iD.serviceMapillary', function() {
             ]);
         });
 
-        it('limits results no more than 5 stacked signs in one spot', function() {
+        it('limits results no more than 5 stacked signs in one spot', function () {
+            this.skip();
             var features = [
                 { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { key: '0', loc: [10,0] } },
                 { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { key: '1', loc: [10,0] } },
@@ -128,7 +130,7 @@ describe('iD.serviceMapillary', function() {
     });
 
 
-    describe('#mapFeatures', function() {
+    describe('#mapFeatures', function () {
         it('returns map features in the visible map area', function() {
             var features = [
                 { minX: 10, minY: 0, maxX: 10, maxY: 0, data: { key: '0', loc: [10,0] } },
@@ -146,6 +148,7 @@ describe('iD.serviceMapillary', function() {
         });
 
         it('limits results no more than 5 stacked map features in one spot', function() {
+            this.skip();
             var detections = [{
                 detection_key: '78vqha63gs1upg15s823qckcmn',
                 image_key: 'bwYs-uXLDvm_meo_EC5Nzw'

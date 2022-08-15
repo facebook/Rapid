@@ -6,6 +6,9 @@ describe('iD.operationExtract', function () {
     fakeContext = {};
     fakeContext.graph = function () { return graph; };
     fakeContext.hasHiddenConnections = function () { return false; };
+        fakeContext.keyBinding = function () {
+          return false;
+        };
     fakeContext.map = function() {
         return {
             extent: function() {
