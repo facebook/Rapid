@@ -5,6 +5,8 @@ import { Projection } from '@id-sdk/math';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
 
+let _sharedTextures;   // singleton (for now)
+
 
 /**
  * PixiRenderer
@@ -105,8 +107,15 @@ export class PixiRenderer {
 
     // Setup other classes
     this.pixiProjection = new Projection();
-    this.textures = new PixiTextures(context);
     this.scene = new PixiScene(this);
+
+    // Texture Manager should only be created once
+    // This is because it will start loading assets and Pixi's asset loader is not reentrant.
+    // (it causes test failures if we create a bunch of these)
+    if (!_sharedTextures) {
+      _sharedTextures = new PixiTextures(context);
+    }
+    this.textures = _sharedTextures;
 
     // Event listeners to respond to any changes in selection or hover
     context.on('enter.PixiRenderer', this._onSelectChange);
@@ -225,7 +234,7 @@ export class PixiRenderer {
    */
   app() {
     // Wait for textures to be loaded before attempting rendering.
-    if (!this.textures.loaded) return;
+    if (!this.textures || !this.textures.loaded) return;
 
     // Reproject the pixi geometries only whenever zoom changes
     const context = this.context;
