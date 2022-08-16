@@ -16,7 +16,7 @@ import { osmNode, osmWay } from '../osm';
 import { t } from '../core/localizer';
 // import { prefs } from '../core/preferences';
 
-const DEBUG = true;
+const DEBUG = false;
 
 
 /**
