@@ -457,7 +457,7 @@ export class BehaviorSelect extends AbstractBehavior {
       // No mode change event here, just manually tell the renderer to select it, for now
       const renderer = context.map().renderer();
       const ids = datum ? [target.name] : [];
-      renderer.selectFeatures(ids);
+      renderer.scene.selectFeatures(ids);
     }
   }
 
