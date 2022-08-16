@@ -154,9 +154,17 @@ export class PixiRenderer {
    */
   _onHoverChange(eventData) {
     let featureIDs = [];
+    let featureData = [];
     if (eventData.target && eventData.data) {
       featureIDs = [eventData.target.name];  // the featureID is here (e.g. osm id)
+      featureData = [eventData.data];
     }
+
+    const mode = this.context.mode();
+    if (mode && mode.id !== 'select') {
+      this.context.ui().sidebar.hover(featureData);
+    }
+
     this.scene.hoverFeatures(featureIDs);
     this._appPending = true;
   }
