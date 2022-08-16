@@ -296,7 +296,7 @@ export function rendererMap(context) {
 
     function zoomPan(event, key, transform) {
       if (!_zoomPanEnabled) return;
-      if (!_dblClickZoomEnabled && event.sourceEvent.type === 'dblclick') return;
+      if (!_dblClickZoomEnabled && event.sourceEvent?.type === 'dblclick') return;
 
       var source = event && event.sourceEvent || event;
       var eventTransform = transform || (event && event.transform);
