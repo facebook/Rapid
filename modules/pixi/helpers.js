@@ -296,16 +296,14 @@ export function lineToPoly(shape, lineStyle = {}) {
 
 /**
  * getLineSegments
- * @param {*} points the series of Vec[2] arrays delineating each waypoint
- * @param {*} spacing Number indicating the distance between segments (arrows, sided arrows, etc)
- * @param {*} sided optional Boolean for applying a 'sided' style to the line, arrows will be drawn perpendicular to the line segments.
- * @returns
+ * @param   points    the series of Vec[2] arrays delineating each waypoint
+ * @param   spacing   Number indicating the distance between segments (arrows, sided arrows, etc)
+ * @param   isSided    optional Boolean, applying a 'sided' style to the line, arrows will be drawn perpendicular to the line segments.
+ * @param   isLimited  optional Boolean, whether to limit the number (temporary, see below)
+ * @returns Array of segment Objects
  */
-export function getLineSegments(points, spacing, sided) {
-  let sidedMode = false;
-  const sidedOffset = 7;
-
-  if (sided) sidedMode = sided;
+export function getLineSegments(points, spacing, isSided = false, isLimited = false) {
+  const SIDEDOFFSET = 7;
 
   let offset = spacing;
   let a;
@@ -325,9 +323,9 @@ export function getLineSegments(points, spacing, sided) {
         let sided_dx = 0;
         let sided_dy = 0;
         // For 'sided' segments, we want to offset the arrows so that they are not centered on the line segment's path
-        if (sidedMode) {
-          sided_dx = sidedOffset * Math.cos(heading + Math.PI / 2);
-          sided_dy = sidedOffset * Math.sin(heading + Math.PI / 2);
+        if (isSided) {
+          sided_dx = SIDEDOFFSET * Math.cos(heading + Math.PI / 2);
+          sided_dy = SIDEDOFFSET * Math.sin(heading + Math.PI / 2);
         }
 
         let p = [
@@ -338,13 +336,14 @@ export function getLineSegments(points, spacing, sided) {
         // generate coordinates between `a` and `b`, spaced `spacing` apart
         let coords = [a, p];
 
-        // If we are going to generate more than 100 line segments,
-        // cap it at 100 so we're not calculating vector segments for thousands of arrows.
-        if (span >= spacing * 100) {
-         let newSpacing = Math.floor(span / 100);
-          // console.log(`skipped calculating ${Math.floor(span / spacing) - 100} segments.`);
-          spacing = newSpacing;
-        }
+// temporary, see https://github.com/facebookincubator/RapiD/issues/544
+// If we are going to generate more than 100 line segments,
+// cap it at 100 so we're not adding thousands of oneway arrows.
+if (isLimited && (span >= spacing * 100)) {
+  const newSpacing = Math.floor(span / 100);
+  // console.log(`skipped calculating ${Math.floor(span / spacing) - 100} segments.`);
+  spacing = newSpacing;
+}
 
         for (span -= spacing; span >= 0; span -= spacing) {
           p = vecAdd(p, [dx, dy]);
@@ -353,8 +352,8 @@ export function getLineSegments(points, spacing, sided) {
         coords.push(b);
 
         segments.push({
-          coords: coords.slice(1,-1),   // skip first and last
-          angle: heading + (sidedMode? Math.PI/2 : 0)
+          coords: coords.slice(1, -1),   // skip first and last
+          angle: heading + (isSided ? Math.PI / 2 : 0)
         });
       }
 

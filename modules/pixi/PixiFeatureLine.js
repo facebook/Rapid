@@ -193,7 +193,7 @@ export class PixiFeatureLine extends AbstractFeature {
       lineMarkers.removeChildren();
 
       if (oneway) {
-        const segments = getLineSegments(this.points, ONEWAY_SPACING);
+        const segments = getLineSegments(this.points, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
 
         segments.forEach(segment => {
           segment.coords.forEach(([x, y]) => {
@@ -213,7 +213,7 @@ export class PixiFeatureLine extends AbstractFeature {
       }
 
       if (sided) {
-        const segments = getLineSegments(this.points, SIDED_SPACING, sided);
+        const segments = getLineSegments(this.points, SIDED_SPACING, true, true);  /* sided = true, limited = true */
 
         segments.forEach(segment => {
           segment.coords.forEach(([x, y]) => {
