@@ -172,12 +172,20 @@ export function coreContext() {
 
 
   context.loadTiles = (projection, callback) => {
+    const MINZOOM = 15;
     const TILESIZE = 256;
+
     const z = geoScaleToZoom(projection.scale(), TILESIZE);
-    if (z < 15) return;  // this would fire off too many API requests
+    if (z < MINZOOM) return;  // this would fire off too many API requests
 
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
+
+      // `projection` may have changed in the time it took to requestIdleCallback!
+      // Double-check that user hasn't zoomed out more in that time.
+      const z = geoScaleToZoom(projection.scale(), TILESIZE);
+      if (z < MINZOOM) return;  // this would fire off too many API requests
+
       if (_connection && context.editable()) {
         const cid = _connection.getConnectionId();
         _connection.loadTiles(projection, afterLoad(cid, callback));
@@ -212,10 +220,10 @@ export function coreContext() {
     context.loadEntity(entityID, (err, result) => {
       if (err) return;
       if (zoomTo !== false) {
-          const entity = result.data.find(e => e.id === entityID);
-          if (entity) {
-            _map.zoomTo(entity);
-          }
+        const entity = result.data.find(e => e.id === entityID);
+        if (entity) {
+          _map.zoomTo(entity);
+        }
       }
     });
 
