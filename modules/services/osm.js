@@ -23,7 +23,16 @@ if (q.hasOwnProperty('osm_api_url')) {
     credentialsMode = 'include';
 }
 
-var redirectPath = window.location.origin + window.location.pathname;
+var origin = window.location.origin;
+var redirectPath;
+// We often deploy different test builds to other pathnames, but we can always
+// use the same /rapid/land.html redirect_uri when on mapwith.ai.
+if (origin === 'https://mapwith.ai') {
+    redirectPath = 'https://mapwith.ai/rapid/';
+} else {
+    redirectPath = window.location.origin + window.location.pathname;
+}
+
 var oauth = osmAuth({
     url: urlroot,
     client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
