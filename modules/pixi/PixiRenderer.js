@@ -207,6 +207,9 @@ export class PixiRenderer {
       return;
     }
 
+// shader experiment - always render
+// this._appPending = true;
+
     // Do APP to prepare the next frame..
     if (this._appPending) {
       const frame = this._frame;

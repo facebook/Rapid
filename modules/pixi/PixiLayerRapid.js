@@ -33,42 +33,80 @@ export class PixiLayerRapid extends AbstractLayer {
     this.getServiceEsri();
 
 //// shader experiment:
-//
-//const uniforms = {
-//  tint: new Float32Array([1, 1, 1, 1]),
-//  translationMatrix: new PIXI.Matrix(),
-//  default: context.pixi.renderer.plugins['batch']._shader.uniformGroup
+//this._uniforms = {
+// u_resolution: [300.0, 300.0],
+// u_time: 0.0,
+// tint: new Float32Array([1, 1, 1, 1]),
+// translationMatrix: new PIXI.Matrix(),
+// default: this.context.pixi.renderer.plugins.batch._shader.uniformGroup
 //};
 //
-//    this._customshader = new PIXI.Shader.from(`
+//const vert = `
 //precision highp float;
 //attribute vec2 aVertexPosition;
-//attribute vec2 aTextureCoord;
-//attribute vec4 aColor;
-//attribute float aTextureId;
 //
 //uniform mat3 projectionMatrix;
 //uniform mat3 translationMatrix;
+//
+//void main(void) {
+//  gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
+//}
+//`;
+//
+//const frag =`
+//// varying vec2 vTextureCoord;
+//// uniform sampler2D uSampler;
+//// void main() {
+////   // gl_FragColor *= texture2D(uSampler, vTextureCoord);
+////  gl_FragColor = vec4(gl_FragCoord.x/1000.0, gl_FragCoord.y/1000.0, 0.0, 1.0);
+//// }
+////
+//// https://thebookofshaders.com/examples/?chapter=proceduralTexture
+//// Title: Cellular Noise
+//
+//#ifdef GL_ES
+//precision mediump float;
+//#endif
+//
+//uniform vec2 u_resolution;
+//uniform float u_time;
 //uniform vec4 tint;
 //
-//varying vec2 vTextureCoord;
-//varying vec4 vColor;
-//varying float vTextureId;
+//vec2 random2(vec2 p) {
+//  return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*u_time);
+//}
 //
-//void main(void){
-//  gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
-//  vTextureCoord = aTextureCoord;
-//  vTextureId = aTextureId;
-//  vColor = aColor * tint;
+//float cellular(vec2 p) {
+//  vec2 i_st = floor(p);
+//  vec2 f_st = fract(p);
+//  float m_dist = 10.;
+//  for (int j=-1; j<=1; j++ ) {
+//    for (int i=-1; i<=1; i++ ) {
+//      vec2 neighbor = vec2(float(i),float(j));
+//      vec2 point = random2(i_st + neighbor);
+//      point = 0.5 + 0.5*sin(6.2831*point);
+//      vec2 diff = neighbor + point - f_st;
+//      float dist = length(diff);
+//      if ( dist < m_dist ) {
+//        m_dist = dist;
+//      }
+//    }
+//  }
+//  return m_dist;
 //}
-//`, `
-//varying vec2 vTextureCoord;
-//uniform sampler2D uSampler;
+//
 //void main() {
-//   // gl_FragColor *= texture2D(uSampler, vTextureCoord);
-//  gl_FragColor = vec4(gl_FragCoord.x/1000.0, gl_FragCoord.y/1000.0, 0.0, 1.0);
+//  vec4 magenta = vec4(218.0/255.0, 38.0/255.0, 211.0/255.0, 0.7);
+//  vec2 st = gl_FragCoord.xy / u_resolution.xy;
+//  st.x *= u_resolution.x / u_resolution.y;
+//  st *= 10.0;
+//
+//  float v = cellular(st);
+//  gl_FragColor = vec4(vec3(v),1.0) * magenta;
 //}
-//`, uniforms);
+//`;
+//
+//this._customshader = new PIXI.Shader.from(vert, frag, this._uniforms);
 
     // Watch history to keep track of which features have been accepted by the user
     // These features will be filtered out when drawing
@@ -164,6 +202,12 @@ export class PixiLayerRapid extends AbstractLayer {
   render(frame, projection, zoom) {
     const rapidContext = this.context.rapidContext();
     const datasets = Object.values(rapidContext.datasets());
+
+// shader experiment
+//const offset = this.context.pixi.stage.position;
+//const transform = this.context.pixi.stage.worldTransform;
+//this._uniforms.translationMatrix = transform.clone().translate(-offset.x, -offset.y);
+//this._uniforms.u_time = frame/10;
 
     if (this._enabled && datasets.length && zoom >= MINZOOM) {
       this.visible = true;
@@ -327,12 +371,10 @@ export class PixiLayerRapid extends AbstractLayer {
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
 // we are fighting with the batch system which is unfortunate
-        // feature.fill.geometry.isBatchable = () => { return false };
-        // feature.fill.shader = this._customshader;
+// feature.fill.geometry.isBatchable = () => { return false; };
+// feature.fill.shader = this._customshader;
 
 // also custom `.shader` dont work on sprites at all, and so we'd have to switch to meshes maybe?
-        // feature.lowRes.geometry.isBatchable = () => { return false };
-        // feature.lowRes.shader = this._customshader;
       }
 
       feature.selected = scene.selected.has(feature.id);
