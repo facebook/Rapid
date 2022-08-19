@@ -278,6 +278,11 @@ export class PixiLayerOsm extends AbstractLayer {
 
     entities.forEach(entity => {
       let feature = scene.getFeature(entity.id);
+
+      if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
+        feature.destroy();
+        feature = null;
+      }
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, entity.id, areaContainer, entity);
       }
@@ -359,6 +364,10 @@ export class PixiLayerOsm extends AbstractLayer {
       const levelContainer = getLevelContainer(lvl);
 
       let feature = scene.getFeature(entity.id);
+      if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
+        feature.destroy();
+        feature = null;
+      }
       if (!feature) {
         feature = new PixiFeatureLine(this, entity.id, levelContainer, entity);
       }
@@ -444,6 +453,10 @@ export class PixiLayerOsm extends AbstractLayer {
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
 
       let feature = scene.getFeature(node.id);
+      if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
+        feature.destroy();
+        feature = null;
+      }
       if (!feature) {
         feature = new PixiFeaturePoint(this, node.id, parentContainer, node, node.loc);
       }
@@ -530,6 +543,10 @@ export class PixiLayerOsm extends AbstractLayer {
 
     entities.forEach(node => {
       let feature = scene.getFeature(node.id);
+      if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
+        feature.destroy();
+        feature = null;
+      }
       if (!feature) {
         feature = new PixiFeaturePoint(this, node.id, pointContainer, node, node.loc);
       }
@@ -653,6 +670,10 @@ export class PixiLayerOsm extends AbstractLayer {
 
     midpoints.forEach(midpoint => {
       let feature = scene.getFeature(midpoint.id);
+      if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
+        feature.destroy();
+        feature = null;
+      }
       if (!feature) {
         const style = { markerName: 'midpoint' };
         feature = new PixiFeaturePoint(this, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
