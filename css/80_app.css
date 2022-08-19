@@ -3223,7 +3223,10 @@ div.full-screen > button:focus {
     padding-bottom: 10px;
 }
 
-
+.map-data-pane .section-map-features {
+    opacity: .65;
+    pointer-events: none;
+}
 /* Issues
 ------------------------------------------------------- */
 .issue {
