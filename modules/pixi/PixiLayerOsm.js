@@ -292,8 +292,12 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
+
+        // Even though we're rendering polygons, we also want to render any polys while they're being drawn.
+        // This means we need to include 'LineString'.
+        const geometry = (geojson.type === 'Polygon' || geojson.type === 'LineString') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+
         feature.geometry = geometry;
 
         const style = styleMatch(entity.tags, this.context.map().wireFrameMode());
