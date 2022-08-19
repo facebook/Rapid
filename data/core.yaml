@@ -30,7 +30,7 @@ en:
   modes:
     add_area:
       title: Area
-      description: "Add parks, buildings, lakes or other areas to the map."
+      description: "Area drawing not implemented yet."
       filter_tooltip: areas
     add_line:
       title: Line

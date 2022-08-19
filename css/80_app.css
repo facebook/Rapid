@@ -519,6 +519,10 @@ button.disabled .icon.operation use,
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE, Edge */
 }
+
+/*#id-container>div.main-content.active>div.top-toolbar-wrap>div>div.toolbar-item.draw-modes>
+div.item-content>div>button.add-area.add-button.bar-button*/
+
 .top-toolbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
 }
@@ -599,6 +603,10 @@ button.bar-button.dragging .tooltip {
 }
 button.bar-button.dragging.removing {
     cursor: url(img/cursor-select-remove.png), pointer;
+}
+
+button.add-area {
+    opacity: 0.65;
 }
 
 button.save .count {
