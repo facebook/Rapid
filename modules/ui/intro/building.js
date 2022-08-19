@@ -70,7 +70,7 @@ export function uiIntroBuilding(context, reveal) {
                 .attr('xlink:href', '#iD-graphic-buildings');
 
             context.on('enter.intro', function(mode) {
-                if (mode.id !== 'add-area') return;
+                if (mode.id !== 'draw-area') return;
                 continueTo(startHouse);
             });
         }, msec + 100);
@@ -83,7 +83,7 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function startHouse() {
-        if (context.mode().id !== 'add-area') {
+        if (context.mode().id !== 'draw-area') {
             return continueTo(addHouse);
         }
 
@@ -447,7 +447,7 @@ export function uiIntroBuilding(context, reveal) {
             );
 
             context.on('enter.intro', function(mode) {
-                if (mode.id !== 'add-area') return;
+                if (mode.id !== 'draw-area') return;
                 continueTo(startTank);
             });
         }, msec + 100);

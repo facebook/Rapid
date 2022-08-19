@@ -32,7 +32,7 @@ export function uiToolDrawModes(context) {
       key: '2'
     },
     {
-      id: 'add-area',
+      id: 'draw-area',
       title: t.html('modes.add_area.title'),
       button: 'area',
       description: t.html('modes.add_area.description'),

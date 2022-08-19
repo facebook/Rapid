@@ -20,7 +20,7 @@ import { BehaviorHover } from '../behaviors/BehaviorHover';
 import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
-import { ModeAddArea } from '../modes/ModeAddArea';
+import { ModeDrawArea } from '../modes/ModeDrawArea';
 import { ModeAddNote } from '../modes/ModeAddNote';
 import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
@@ -711,7 +711,7 @@ export function coreContext() {
 
       // Initialize modes
       [
-        new ModeAddArea(context),
+        new ModeDrawArea(context),
         new ModeAddNote(context),
         new ModeAddPoint(context),
         new ModeBrowse(context),

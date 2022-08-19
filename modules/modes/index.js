@@ -1,4 +1,4 @@
-export { ModeAddArea } from './ModeAddArea';
+export { ModeDrawArea } from './ModeDrawArea';
 export { ModeAddNote } from './ModeAddNote';
 export { ModeAddPoint } from './ModeAddPoint';
 export { ModeBrowse } from './ModeBrowse';

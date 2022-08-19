@@ -61,7 +61,7 @@ export function uiIntroArea(context, reveal) {
                 .attr('xlink:href', '#iD-graphic-areas');
 
             context.on('enter.intro', function(mode) {
-                if (mode.id !== 'add-area') return;
+                if (mode.id !== 'draw-area') return;
                 continueTo(startPlayground);
             });
         }, msec + 100);
@@ -74,7 +74,7 @@ export function uiIntroArea(context, reveal) {
 
 
     function startPlayground() {
-        if (context.mode().id !== 'add-area') {
+        if (context.mode().id !== 'draw-area') {
             return chapter.restart();
         }
 
