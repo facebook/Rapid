@@ -58,7 +58,7 @@ export function rendererMap(context) {
   const _zoomPanHandler = d3_zoom()    //utilZoomPan()
     .scaleExtent([MINK, MAXK])
     // .interpolate(d3_interpolate)
-    // .filter(zoomEventFilter)
+    .filter(zoomEventFilter)
     .on('zoom.map', zoomPan);
 //    .on('start.map', d3_event => {
 //      _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
@@ -201,7 +201,13 @@ export function rendererMap(context) {
   }
 
 
-//    function zoomEventFilter(d3_event) {
+
+   function zoomEventFilter(d3_event) {
+
+     // Get rid of double-click handling while we are drawing stuff.
+     if (d3_event.type === 'dblclick' && !_dblClickZoomEnabled) {
+       return false;
+     }
 //      // Fix for #2151, (see also d3/d3-zoom#60, d3/d3-brush#18)
 //      // Intercept `mousedown` and check if there is an orphaned zoom gesture.
 //      // This can happen if a previous `mousedown` occurred without a `mouseup`.
@@ -231,8 +237,8 @@ export function rendererMap(context) {
 //        }
 //      }
 //
-//      return d3_event.button !== 2;  // ignore right clicks
-//    }
+     return d3_event.button !== 2;  // ignore right clicks
+   }
 
 
     function pxCenter() {

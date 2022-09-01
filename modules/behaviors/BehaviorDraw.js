@@ -89,9 +89,6 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
-    // Disable double-click to zoom while we're drawing.
-    this.context.map().dblclickZoomEnable(false);
-
     this._keybinding
       .on('⌫', this._undo)
       .on('⌦', this._undo)
@@ -125,7 +122,6 @@ export class BehaviorDraw extends AbstractBehavior {
       console.log('BehaviorDraw: disabling listeners');  // eslint-disable-line no-console
     }
 
-    this.context.map().dblclickZoomEnable(true);
 
     this._enabled = false;
     this.lastDown = null;
@@ -143,6 +139,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
     d3_select(document)
       .call(this._keybinding.unbind);
+
   }
 
 
