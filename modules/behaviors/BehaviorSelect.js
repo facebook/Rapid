@@ -233,14 +233,22 @@ export class BehaviorSelect extends AbstractBehavior {
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = up;   // We will accept this as a click
 
-      // Prevent a quick second click
-      this.context.map().dblclickZoomEnable(false);
-      d3_select(window).on('click.draw-block', (e) => e.stopPropagation(), true);
+      //If we're clicking on something, we want to disable dbl click to zoom.
+      if (up.data) {
+        // Prevent a quick second click
+        this.context.map().dblclickZoomEnable(false);
 
-      window.setTimeout(() => {
-        this.context.map().dblclickZoomEnable(true);
-        d3_select(window).on('click.draw-block', null);
-      }, 500);
+        d3_select(window).on(
+          'click.draw-block',
+          (e) => e.stopPropagation(),
+          true
+        );
+
+        window.setTimeout(() => {
+          this.context.map().dblclickZoomEnable(true);
+          d3_select(window).on('click.draw-block', null);
+        }, 500);
+      }
 
       this._processClick();
 
