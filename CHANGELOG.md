@@ -45,6 +45,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 [#571]
 [#569]
+[#555]
 
 # [1.1.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.8)
 ##### 2021-Oct-25
