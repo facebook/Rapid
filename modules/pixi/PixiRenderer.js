@@ -52,7 +52,7 @@ export class PixiRenderer {
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
-    //Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
+    // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
     // Create a Pixi application rendering to the given surface `canvas`
@@ -60,7 +60,6 @@ export class PixiRenderer {
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
-      backgroundAlpha: 0.0,    // transparent
       resizeTo: supersurface,
       resolution: window.devicePixelRatio,
       sharedLoader: true,
@@ -70,7 +69,6 @@ export class PixiRenderer {
 
     context.pixi = this.pixi;
     // parentElement.appendChild(this.pixi.view);
-
 
     // Prepare a basic bitmap font that we can use for things like debug messages
     PIXI.BitmapFont.from('debug', {

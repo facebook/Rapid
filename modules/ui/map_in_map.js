@@ -232,7 +232,6 @@ export function uiMapInMap(context) {
       antialias: true,
       autoDensity: true,
       autoStart: false,
-      backgroundAlpha: 0.0,   // transparent
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
