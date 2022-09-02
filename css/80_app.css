@@ -4150,16 +4150,25 @@ img.tile-debug {
 }
 
 .supersurface,
-.dupersurface {
+.surface,
+.overlay {
     transform-origin: 0 0;
-}
-
-.supersurface, .layer {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+.surface {
+    z-index: 1;
+}
+.overlay {
+    z-index: 2;
+    pointer-events: none;
+}
+.overlay * {
+    pointer-events: auto;
 }
 
 

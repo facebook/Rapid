@@ -628,13 +628,13 @@ export function uiInit(context) {
       .operations(operations);
 
     // render the menu
-    context.map().dupersurface.call(_editMenu);
+    context.map().overlay.call(_editMenu);
   };
 
 
   // remove any existing menu no matter how it was added
   ui.closeEditMenu = function() {
-    context.map().dupersurface.select('.edit-menu').remove();
+    context.map().overlay.select('.edit-menu').remove();
   };
 
 

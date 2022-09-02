@@ -20,13 +20,14 @@ export class PixiRenderer {
 
   /**
    * @constructor
-   * Create a Pixi application and add it to the given parentElement.
+   * Create a Pixi application rendering to the given canvas.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
    *
-   * @param  context         Global shared application context
-   * @param  parentElement   Parent `div` element to add Pixi
+   * @param  context        Global shared application context
+   * @param  supersurface   parent `div`
+   * @param  surface        `canvas` element to render to
    */
-  constructor(context, parentElement) {
+  constructor(context, supersurface, surface) {
     this.context = context;
     this._frame = 0;
     this._appPending = false;
@@ -54,20 +55,21 @@ export class PixiRenderer {
     //Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
-    // Create a Pixi application and add Pixi's canvas to the parent `div`.
+    // Create a Pixi application rendering to the given surface `canvas`
     this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
       backgroundAlpha: 0.0,    // transparent
-      resizeTo: parentElement,
+      resizeTo: supersurface,
       resolution: window.devicePixelRatio,
       sharedLoader: true,
-      sharedTicker: true
+      sharedTicker: true,
+      view: surface
     });
 
     context.pixi = this.pixi;
-    parentElement.appendChild(this.pixi.view);
+    // parentElement.appendChild(this.pixi.view);
 
 
     // Prepare a basic bitmap font that we can use for things like debug messages
