@@ -487,7 +487,7 @@ export function uiInit(context) {
 
 
 
-  ui.onResize = function(withPan) {
+  ui.onResize = function(offset) {
     const map = context.map();
 
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
@@ -496,23 +496,25 @@ export function uiInit(context) {
     const mapDimensions = utilGetDimensions(context.container().select('.main-content'), true);
     utilGetDimensions(context.container().select('.sidebar'), true);
 
-    if (withPan !== undefined) {
+    // When adjusting the sidebar width, pan the map so it stays centered on the same location.
+    if (offset !== undefined) {
       map.redrawEnable(false);
-      map.pan(withPan);
+      map.pan(offset);
       map.redrawEnable(true);
     }
-    map.dimensions(mapDimensions);
 
+    map.dimensions(mapDimensions);
     ui.photoviewer.onMapResize();
 
     // check if header or footer have overflowed
     ui.checkOverflow('.top-toolbar');
     ui.checkOverflow('.map-footer-bar');
 
-    // Use outdated code so it works on Explorer
-    const resizeWindowEvent = document.createEvent('Event');
-    resizeWindowEvent.initEvent('resizeWindow', true, true);
-    document.dispatchEvent(resizeWindowEvent);
+// this was for the restrictions editor?
+//    // Use outdated code so it works on Explorer
+//    const resizeWindowEvent = document.createEvent('Event');
+//    resizeWindowEvent.initEvent('resizeWindow', true, true);
+//    document.dispatchEvent(resizeWindowEvent);
   };
 
 

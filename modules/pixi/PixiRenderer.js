@@ -297,4 +297,16 @@ export class PixiRenderer {
     this._frame++;
   }
 
+
+  /**
+   * resize
+   * Resizes the canvas to the given dimensions
+   * @param  width    Width in pixels
+   * @param  height   Height in pixels
+   */
+  resize(width, height) {
+    this.pixi.renderer.resize(width, height);
+    this._appPending = true;  // needs rerender asap
+  }
+
 }

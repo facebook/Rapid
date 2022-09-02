@@ -576,11 +576,12 @@ export function rendererMap(context) {
       if (!arguments.length) return _dimensions;
 
       _dimensions = val;
-      // context.background().dimensions(_dimensions);
       projection.dimensions([[0, 0], _dimensions]);
       _getMouseCoords = utilFastMouse(supersurface.node());
+      if (_renderer) {
+        _renderer.resize(_dimensions[0], _dimensions[1]);
+      }
 
-      map.deferredRedraw();
       return map;
     };
 
