@@ -243,15 +243,13 @@ export class ModeDrawArea extends AbstractMode {
       this.firstNode = osmNode({ loc: loc });
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
-      this.drawWay = osmWay({
-        tags: this.defaultTags,
-        nodes: [this.firstNode.id, this.drawNode.id],
-      });
+      this.drawWay = osmWay({tags: this.defaultTags});
 
       context.perform(
-        actionAddEntity(this.firstNode),
         actionAddEntity(this.drawNode),
         actionAddEntity(this.drawWay),
+        actionAddVertex(this.drawWay.id, this.drawNode.id),
+        this._actionClose(this.drawWay.id),
         this._getAnnotation()
       );
     }
