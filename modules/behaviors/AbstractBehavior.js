@@ -60,9 +60,9 @@ export class AbstractBehavior extends EventEmitter {
   _getEventCoord(e) {
     let coord;
     const oe = e.data.originalEvent;
-    if (oe.offsetX) {
+    if (oe.offsetX !== undefined) {
       coord = [oe.offsetX, oe.offsetY];    // mouse coords
-    } else if (oe.layerX) {
+    } else if (oe.layerX !== undefined) {
       coord = [oe.layerX, oe.layerY];      // ipad coords, seemingly?
     } else if (oe.touches && oe.touches[0]) {
       coord = [oe.touches[0].clientX, oe.touches[0].clientY];   // initial touch
