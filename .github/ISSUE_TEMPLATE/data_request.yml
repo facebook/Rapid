@@ -1,6 +1,6 @@
 name: 📒 Data Request
 description: Request new or updated data to be included in RapiD.
-labels: ["Needs: Triage :mag:", "Feature Request"]
+labels: ["Needs: Triage :mag:", "Data Request"]
 body:
   - type: markdown
     attributes:
@@ -20,7 +20,7 @@ body:
   - type: textarea
     id: download
     attributes:
-      label:
+      label: Background / where to download this data
       description: Please include a link to pages that describe the data, or direct download links to the data.
       placeholder: ex. https://your.link.here/downloadfolder
     validations:
