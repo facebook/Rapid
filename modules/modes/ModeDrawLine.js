@@ -107,7 +107,7 @@ export class ModeDrawLine extends AbstractMode {
     }
 
     context.map().dblclickZoomEnable(false);
-    context.enableBehaviors(['hover', 'draw']);
+    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
     context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)

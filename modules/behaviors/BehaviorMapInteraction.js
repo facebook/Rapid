@@ -8,13 +8,13 @@ const FAR_TOLERANCE = 4;
 const DEBUG = false;
 
 /**
- * `BehaviorDrag` listens to pointer events and converts those into start/move/end drag events
+ * `BehaviorMapInteraction` listens to pointer events and converts those into zoom/pan map interactions
  *
  * Properties available:
  *   `enabled`     `true` if the event handlers are enabled, `false` if not.
- *   `dragTarget`   After the drag has started, this contains the target (Pixi object)
  *   `lastDown`    `eventData` Object for the most recent down event
  *   `lastMove`    `eventData` Object for the most recent move event
+ *   `gesture`     String containing the current detected gesture ('pan')
  *
  * Events available:
  *   `start`    Fires on pointermove when dragging starts, receives the down `eventData` Object
@@ -22,7 +22,7 @@ const DEBUG = false;
  *   `end`      Fires on pointerup when dragging is done, receives the up `eventData` Object
  *   `cancel`   Fires on pointercancel -or- pointerup outside, receives the cancel `eventData` Object
  */
-export class BehaviorDrag extends AbstractBehavior {
+export class BehaviorMapInteraction extends AbstractBehavior {
 
   /**
    * @constructor
@@ -30,11 +30,11 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   constructor(context) {
     super(context);
-    this.id = 'drag';
+    this.id = 'map-interaction';
 
-    this.dragTarget = null;   // the displayObject being dragged
     this.lastDown = null;
     this.lastMove = null;
+    this.gesture = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._pointerdown = this._pointerdown.bind(this);
@@ -53,15 +53,17 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!this.context.pixi) return;
 
     if (DEBUG) {
-      console.log('BehaviorDrag: enabling listeners');  // eslint-disable-line no-console
+      console.log('BehaviorMapInteraction: enabling listeners');  // eslint-disable-line no-console
     }
 
     this._enabled = true;
     this.lastDown = null;
     this.lastMove = null;
-    this.dragTarget = null;
+    this.gesture = null;
 
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
+    interactionManager.setCursorMode('grab');
+
     interactionManager
       .on('pointerdown', this._pointerdown)
       .on('pointermove', this._pointermove)
@@ -89,20 +91,17 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!this.context.pixi) return;
 
     if (DEBUG) {
-      console.log('BehaviorDrag: disabling listeners');  // eslint-disable-line no-console
+      console.log('BehaviorMapInteraction: disabling listeners');  // eslint-disable-line no-console
     }
 
-    // Something is currently dragging, so cancel the drag first.
+    // Cancel the current gesture, if any.
     const eventData = this.lastMove;
-    if (eventData && this.dragTarget) {
+    if (eventData && this.gesture) {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
-      const name = this.dragTarget.name;
-      this.dragTarget.interactive = true;
-
       if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorMapInteraction: emitting 'cancel'`);  // eslint-disable-line no-console
       }
       this.emit('cancel', eventData);
     }
@@ -110,9 +109,11 @@ export class BehaviorDrag extends AbstractBehavior {
     this._enabled = false;
     this.lastDown = null;
     this.lastMove = null;
-    this.dragTarget = null;
+    this.gesture = null;
 
     const interactionManager = this.context.pixi.renderer.plugins.interaction;
+    interactionManager.setCursorMode('grab');
+
     interactionManager
       .off('pointerdown', this._pointerdown)
       .off('pointermove', this._pointermove)
@@ -150,22 +151,13 @@ export class BehaviorDrag extends AbstractBehavior {
     if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
-    const draggable = down.data instanceof osmNode;
+    const draggable = !(down.data instanceof osmNode);  // not a node
     if (!draggable) return;
 
-    this.context.map().zoomPanEnable(false);
     this.lastDown = down;
     this.lastMove = null;
-    this.dragTarget = null;
-
-    // I _think_ this handles - where on the pin the user grabbed it
-    // this._startOrigin = pointerLocGetter(e);
-    // if (this._origin) {
-    //     this._offset = this._origin.call(this._targetNode, this._downData.targetEntity);
-    //     this._offset = [this._offset[0] - this._startOrigin[0], this._offset[1] - this._startOrigin[1]];
-    // } else {
-    //     this._offset = [0, 0];
-    // }
+    this.gesture = null;
+    interactionManager.setCursorMode('grabbing');
   }
 
 
@@ -179,14 +171,6 @@ export class BehaviorDrag extends AbstractBehavior {
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
-    let editMenu = context.map().supersurface.select('.edit-menu');
-
-    //If we detect the edit (right-click) menu, we should cease any dragging behavior.
-    if (editMenu._groups[0][0]) {
-      this.lastDown = null;
-      this.lastMove = null;
-      this.dragTarget = null;
-    }
 
     const interactionManager = context.pixi.renderer.plugins.interaction;
     const pointerOverRenderer = interactionManager.mouseOverRenderer;
@@ -198,16 +182,15 @@ export class BehaviorDrag extends AbstractBehavior {
 
     // We get a lot more move events than we need,
     // so discard ones where it hasn't actually moved much
-    if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
+//    if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
     this.lastMove = move;
 
     // Dispatch either 'start' or 'move'
     // (Don't send a `move` event in the same time as `start` because
     // dragging a midpoint will convert the target to a node.)  todo: check?
-    if (this.dragTarget) {   // already dragging
+    if (this.gesture) {   // already dragging
       if (DEBUG) {
-        const name = this.dragTarget.name;
-        console.log(`BehaviorDrag: emitting 'move', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorMapInteraction: emitting 'move'`);  // eslint-disable-line no-console
       }
       this.emit('move', move);
 
@@ -215,14 +198,9 @@ export class BehaviorDrag extends AbstractBehavior {
       const dist = vecLength(down.coord, move.coord);
       const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
       if (dist >= tolerance) {
-        // Save the target, *and set it to be non-interactive*.
-        // This lets us catch events for what other objects it passes over as the user drags it.
-        this.dragTarget = down.target;
-        this.dragTarget.interactive = false;
-
+        this.gesture = 'pan';
         if (DEBUG) {
-          const name = this.dragTarget.name;
-          console.log(`BehaviorDrag: emitting 'start', dragTarget = ${name}`);  // eslint-disable-line no-console
+          console.log(`BehaviorMapInteraction: emitting 'start'`);  // eslint-disable-line no-console
         }
         this.emit('start', down);
       }
@@ -241,22 +219,16 @@ export class BehaviorDrag extends AbstractBehavior {
     const up = this._getEventData(e);
     if (!down || down.id !== up.id) return; // not down, or different pointer
 
-    //Before emitting the 'up' event, attach the drag target data to the event data.
-    if (this.dragTarget) {
-      up.data = this.dragTarget.__feature__.data;
-    }
-
     this.lastDown = null;
     this.lastMove = null;
-    this.context.map().zoomPanEnable(true);
 
-    if (this.dragTarget) {
-      const name = this.dragTarget.name;
-      this.dragTarget.interactive = true;
-      this.dragTarget = null;
+    if (this.gesture) {
+      const interactionManager = this.context.pixi.renderer.plugins.interaction;
+      interactionManager.setCursorMode('grab');
+      this.gesture = null;
 
       if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'end', dragTarget = ${name}`); // eslint-disable-line no-console
+        console.log(`BehaviorMapInteraction: emitting 'end'`); // eslint-disable-line no-console
       }
       this.emit('end', up);
     }
@@ -275,15 +247,14 @@ export class BehaviorDrag extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.lastMove = null;
-    this.context.map().zoomPanEnable(true);
 
-    if (this.dragTarget) {
-      const name = this.dragTarget.name;
-      this.dragTarget.interactive = true;
-      this.dragTarget = null;
+    if (this.gesture) {
+      const interactionManager = this.context.pixi.renderer.plugins.interaction;
+      interactionManager.setCursorMode('grab');
+      this.gesture = null;
 
       if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
+        console.log(`BehaviorMapInteraction: emitting 'cancel'`);  // eslint-disable-line no-console
       }
       this.emit('cancel', cancel);
     }

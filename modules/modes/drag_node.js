@@ -478,7 +478,7 @@ const target = false;
 
 
   mode.enter = function() {
-    context.enableBehaviors(['hover', 'drag']);
+    context.enableBehaviors(['hover', 'drag', 'map-interaction']);
 
     d3_select(window)
       .on('keydown.dragNode', keydown)

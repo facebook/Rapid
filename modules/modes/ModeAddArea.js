@@ -45,7 +45,7 @@ export class ModeAddArea extends AbstractMode {
     this._active = true;
     this.defaultTags = { area: 'yes' };
 
-    context.enableBehaviors(['hover', 'draw']);
+    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
     context.map().dblclickZoomEnable(false);
     context.behaviors.get('draw')
       .on('click', this._start)

@@ -18,7 +18,7 @@ export function modeDrawArea(context, wayID, startGraph, button) {
     mode.wayID = wayID;
 
     mode.enter = function() {
-      context.enableBehaviors(['hover', 'select']);
+      context.enableBehaviors(['hover', 'select', 'map-interaction']);
       // context.install(behavior);
       return true;
     };

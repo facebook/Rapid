@@ -94,7 +94,7 @@ export class ModeSave extends AbstractMode {
       .classed('inactive', true);
 
     this._keybindingOn();
-    this.context.enableBehaviors([]);   // no behaviors
+    this.context.enableBehaviors(['map-interaction']);
     return true;
   }
 

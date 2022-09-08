@@ -43,7 +43,7 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     this._active = true;
-    this.context.enableBehaviors(['hover', 'draw']);
+    this.context.enableBehaviors(['hover', 'draw', 'map-interaction']);
     this.context.behaviors.get('draw')
       .on('click', this._click)
       .on('undo', this._cancel)

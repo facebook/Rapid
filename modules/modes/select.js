@@ -231,7 +231,7 @@ export function modeSelect(context, selectedIDs) {
 
         loadOperations();
 
-      context.enableBehaviors(['hover', 'select', 'drag']);
+      context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction']);
 
         // if (!_behaviors.length) {
         //     if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);

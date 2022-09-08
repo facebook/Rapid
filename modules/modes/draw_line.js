@@ -20,7 +20,7 @@ export function modeDrawLine(context, wayID, startGraph, button, affix, continui
     mode.isContinuing = continuing;
 
     mode.enter = function() {
-      context.enableBehaviors(['hover', 'select']);
+      context.enableBehaviors(['hover', 'select', 'map-interaction']);
       // behavior
       //   .nodeIndex(affix === 'prefix' ? 0 : undefined);
       // context.install(behavior);

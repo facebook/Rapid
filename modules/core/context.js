@@ -17,6 +17,7 @@ import { coreUploader } from './uploader';
 import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
+import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
 import { ModeAddArea } from '../modes/ModeAddArea';
@@ -703,8 +704,9 @@ export function coreContext() {
         new BehaviorDrag(context),
         new BehaviorDraw(context),
         new BehaviorHover(context),
-        new BehaviorSelect(context),
-        new BehaviorPaste(context)
+        new BehaviorMapInteraction(context),
+        new BehaviorPaste(context),
+        new BehaviorSelect(context)
       ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
 
       // Initialize modes

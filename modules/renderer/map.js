@@ -54,19 +54,19 @@ export function rendererMap(context) {
   // whether a pointerdown event started the zoom
 //  let _pointerDown = false;
 
-
-  const _zoomPanHandler = d3_zoom()    //utilZoomPan()
-    .scaleExtent([MINK, MAXK])
-    // .interpolate(d3_interpolate)
-    .filter(zoomEventFilter)
-    .on('zoom.map', zoomPan);
-//    .on('start.map', d3_event => {
-//      _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
-//        (d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown'));
-//    })
-//    .on('end.map', () => {
-//      _pointerDown = false;
-//    });
+// unused?
+    const _zoomPanHandler = d3_zoom()    //utilZoomPan()
+      .scaleExtent([MINK, MAXK]);
+//       // .interpolate(d3_interpolate)
+//       .filter(zoomEventFilter)
+//       .on('zoom.map', zoomPan);
+//   //    .on('start.map', d3_event => {
+//   //      _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
+//   //        (d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown'));
+//   //    })
+//   //    .on('end.map', () => {
+//   //      _pointerDown = false;
+//   //    });
 
   // const _doubleTapHandler = utilDoubleUp();
 
@@ -82,11 +82,14 @@ export function rendererMap(context) {
       // Suppress the native right-click context menu
       .on('contextmenu', e => e.preventDefault())
       // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-      .on('wheel.map mousewheel.map', e => e.preventDefault())
-      .call(_zoomPanHandler);
+      .on('wheel.map mousewheel.map', e => e.preventDefault());
+//    // .call(_zoomPanHandler);
       // .call(_doubleTapHandler);
       // .call(_zoomPanHandler.transform, projection.transform())
       // .on('dblclick.zoom', null); // override d3-zoom dblclick handling
+
+    context.behaviors.get('map-interaction')
+      .on('move', _onPan);
 
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
@@ -203,43 +206,43 @@ export function rendererMap(context) {
 
 
 
-   function zoomEventFilter(d3_event) {
-
-     // Get rid of double-click handling while we are drawing stuff.
-     if (d3_event.type === 'dblclick' && !_dblClickZoomEnabled) {
-       return false;
-     }
-//      // Fix for #2151, (see also d3/d3-zoom#60, d3/d3-brush#18)
-//      // Intercept `mousedown` and check if there is an orphaned zoom gesture.
-//      // This can happen if a previous `mousedown` occurred without a `mouseup`.
-//      // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
-//      // so that d3-zoom won't stop propagation of new `mousedown` events.
-//      if (d3_event.type === 'mousedown') {
-//        let hasOrphan = false;
-//        let listeners = window.__on;
-//        for (let i = 0; i < listeners.length; i++) {
-//          const listener = listeners[i];
-//          if (listener.name === 'zoom' && listener.type === 'mouseup') {
-//            hasOrphan = true;
-//            break;
-//          }
-//        }
-//        if (hasOrphan) {
-//          let event = window.CustomEvent;
-//          if (event) {
-//            event = new event('mouseup');
-//          } else {
-//            event = window.document.createEvent('Event');
-//            event.initEvent('mouseup', false, false);
-//          }
-//          // Event needs to be dispatched with an event.view property.
-//          event.view = window;
-//          window.dispatchEvent(event);
-//        }
-//      }
+//     function zoomEventFilter(d3_event) {
 //
-     return d3_event.button !== 2;  // ignore right clicks
-   }
+//       // Get rid of double-click handling while we are drawing stuff.
+//       if (d3_event.type === 'dblclick' && !_dblClickZoomEnabled) {
+//         return false;
+//       }
+//  //      // Fix for #2151, (see also d3/d3-zoom#60, d3/d3-brush#18)
+//  //      // Intercept `mousedown` and check if there is an orphaned zoom gesture.
+//  //      // This can happen if a previous `mousedown` occurred without a `mouseup`.
+//  //      // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
+//  //      // so that d3-zoom won't stop propagation of new `mousedown` events.
+//  //      if (d3_event.type === 'mousedown') {
+//  //        let hasOrphan = false;
+//  //        let listeners = window.__on;
+//  //        for (let i = 0; i < listeners.length; i++) {
+//  //          const listener = listeners[i];
+//  //          if (listener.name === 'zoom' && listener.type === 'mouseup') {
+//  //            hasOrphan = true;
+//  //            break;
+//  //          }
+//  //        }
+//  //        if (hasOrphan) {
+//  //          let event = window.CustomEvent;
+//  //          if (event) {
+//  //            event = new event('mouseup');
+//  //          } else {
+//  //            event = window.document.createEvent('Event');
+//  //            event.initEvent('mouseup', false, false);
+//  //          }
+//  //          // Event needs to be dispatched with an event.view property.
+//  //          event.view = window;
+//  //          window.dispatchEvent(event);
+//  //        }
+//  //      }
+//  //
+//       return d3_event.button !== 2;  // ignore right clicks
+//     }
 
 
     function pxCenter() {
@@ -300,179 +303,205 @@ export function rendererMap(context) {
 //      _selection.node().dispatchEvent(e2);
 //    }
 
+//
+//    function zoomPan(event, key, transform) {
+//      if (!_zoomPanEnabled) return;
+//      if (!_dblClickZoomEnabled && event.sourceEvent?.type === 'dblclick') return;
+//
+//      var source = event && event.sourceEvent || event;
+//      var eventTransform = transform || (event && event.transform);
+//      var x = eventTransform.x;
+//      var y = eventTransform.y;
+//      var k = eventTransform.k;
+//
+//      // Special handling of 'wheel' events:
+//      // They might be triggered by the user scrolling the mouse wheel,
+//      // or 2-finger pinch/zoom gestures, the transform may need adjustment.
+//      if (source && source.type === 'wheel') {
+//
+////            // assume that the gesture is already handled by pointer events
+////            if (_pointerDown) return;
+//
+//          var detected = utilDetect();
+//          var dX = source.deltaX;
+//          var dY = source.deltaY;
+//          var x2 = x;
+//          var y2 = y;
+//          var k2 = k;
+//          var t0, p0, p1;
+//
+//          // Normalize mousewheel scroll speed (Firefox) - #3029
+//          // If wheel delta is provided in LINE units, recalculate it in PIXEL units
+//          // We are essentially redoing the calculations that occur here:
+//          //   https://github.com/d3/d3-zoom/blob/78563a8348aa4133b07cac92e2595c2227ca7cd7/src/zoom.js#L203
+//          // See this for more info:
+//          //   https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
+//          if (source.deltaMode === 1 /* LINE */ ) {
+//              // Convert from lines to pixels, more if the user is scrolling fast.
+//              // (I made up the exp function to roughly match Firefox to what Chrome does)
+//              // These numbers should be floats, because integers are treated as pan gesture below.
+//              var lines = Math.abs(source.deltaY);
+//              var sign = (source.deltaY > 0) ? 1 : -1;
+//              dY = sign * clamp(
+//                  Math.exp((lines - 1) * 0.75) * 4.000244140625,
+//                  4.000244140625, // min
+//                  350.000244140625 // max
+//              );
+//
+//              // On Firefox Windows and Linux we always get +/- the scroll line amount (default 3)
+//              // There doesn't seem to be any scroll acceleration.
+//              // This multiplier increases the speed a little bit - #5512
+//              if (detected.os !== 'mac') {
+//                  dY *= 5;
+//              }
+//
+//              // recalculate x2,y2,k2
+//              t0 = _isTransformed ? _transformLast : _transformStart;
+//              p0 = _getMouseCoords(source);
+//              p1 = t0.invert(p0);
+//              k2 = t0.k * Math.pow(2, -dY / 500);
+//              k2 = clamp(k2, MINK, MAXK);
+//              x2 = p0[0] - p1[0] * k2;
+//              y2 = p0[1] - p1[1] * k2;
+//
+//              // 2 finger map pinch zooming (Safari) - #5492
+//              // These are fake `wheel` events we made from Safari `gesturechange` events..
+//          } else if (source._scale) {
+//              // recalculate x2,y2,k2
+//              t0 = _gestureTransformStart;
+//              p0 = _getMouseCoords(source);
+//              p1 = t0.invert(p0);
+//              k2 = t0.k * source._scale;
+//              k2 = clamp(k2, MINK, MAXK);
+//              x2 = p0[0] - p1[0] * k2;
+//              y2 = p0[1] - p1[1] * k2;
+//
+//              // 2 finger map pinch zooming (all browsers except Safari) - #5492
+//              // Pinch zooming via the `wheel` event will always have:
+//              // - `ctrlKey = true`
+//              // - `deltaY` is not round integer pixels (ignore `deltaX`)
+//          } else if (source.ctrlKey && !isInteger(dY)) {
+//              dY *= 6; // slightly scale up whatever the browser gave us
+//
+//              // recalculate x2,y2,k2
+//              t0 = _isTransformed ? _transformLast : _transformStart;
+//              p0 = _getMouseCoords(source);
+//              p1 = t0.invert(p0);
+//              k2 = t0.k * Math.pow(2, -dY / 500);
+//              k2 = clamp(k2, MINK, MAXK);
+//              x2 = p0[0] - p1[0] * k2;
+//              y2 = p0[1] - p1[1] * k2;
+//
+//              // Trackpad scroll zooming with shift or alt/option key down
+//          } else if ((source.altKey || source.shiftKey) && isInteger(dY)) {
+//              // recalculate x2,y2,k2
+//              t0 = _isTransformed ? _transformLast : _transformStart;
+//              p0 = _getMouseCoords(source);
+//              p1 = t0.invert(p0);
+//              k2 = t0.k * Math.pow(2, -dY / 500);
+//              k2 = clamp(k2, MINK, MAXK);
+//              x2 = p0[0] - p1[0] * k2;
+//              y2 = p0[1] - p1[1] * k2;
+//
+//              // 2 finger map panning (Mac only, all browsers except Firefox #8595) - #5492, #5512
+//              // Panning via the `wheel` event will always have:
+//              // - `ctrlKey = false`
+//              // - `deltaX`,`deltaY` are round integer pixels
+//          } else if (detected.os === 'mac' && detected.browser !== 'Firefox' && !source.ctrlKey && isInteger(dX) && isInteger(dY)) {
+//              p1 = projection.translate();
+//              x2 = p1[0] - dX;
+//              y2 = p1[1] - dY;
+//              k2 = projection.scale();
+//              k2 = clamp(k2, MINK, MAXK);
+//          }
+//
+//          // something changed - replace the event transform
+//          if (x2 !== x || y2 !== y || k2 !== k) {
+//              x = x2;
+//              y = y2;
+//              k = k2;
+//              eventTransform = d3_zoomIdentity.translate(x2, y2).scale(k2);
+//              if (_zoomPanHandler._transform) {
+//                  // utilZoomPan interface
+//                  _zoomPanHandler._transform(eventTransform);
+//              } else {
+//                  // d3_zoom interface
+//                  _selection.node().__zoom = eventTransform;
+//              }
+//          }
+//      }
+//
+//      if (_transformStart.x === x &&
+//          _transformStart.y === y &&
+//          _transformStart.k === k) {
+//          return; // no change
+//      }
+//
+//      k = clamp(k, MINK, MAXK);
+//
+//      projection.transform(eventTransform);
+//
+//      var scale = k / _transformStart.k;
+//      var tX = (x / scale - _transformStart.x) * scale;
+//      var tY = (y / scale - _transformStart.y) * scale;
+//
+//      if (context.inIntro()) {
+//          curtainProjection.transform({
+//              x: x - tX,
+//              y: y - tY,
+//              k: k
+//          });
+//      }
+//
+//      _isTransformed = true;
+//      _transformLast = eventTransform;
+//
+//      utilSetTransform(supersurface, tX, tY, scale);
+//      utilSetTransform(overlay, -tX, -tY, scale);
+//      map.deferredRedraw();
+//
+//      dispatch.call('move', this, map);
+//
+//      function isInteger(val) {
+//          return typeof val === 'number' && isFinite(val) && Math.floor(val) === val;
+//      }
+//    }
 
-    function zoomPan(event, key, transform) {
+
+    function _onPan(eventData) {   // was: event, key, transform
       if (!_zoomPanEnabled) return;
-      if (!_dblClickZoomEnabled && event.sourceEvent?.type === 'dblclick') return;
 
-      var source = event && event.sourceEvent || event;
-      var eventTransform = transform || (event && event.transform);
-      var x = eventTransform.x;
-      var y = eventTransform.y;
-      var k = eventTransform.k;
+      const original = eventData.originalEvent;
+      const [dx, dy] = [original.movementX, original.movementY];
+      if (!dx && !dy) return;  // no change
 
-      // Special handling of 'wheel' events:
-      // They might be triggered by the user scrolling the mouse wheel,
-      // or 2-finger pinch/zoom gestures, the transform may need adjustment.
-      if (source && source.type === 'wheel') {
+      // calculate delta from last event (_transformLast or _transformStart)
+      const tOld = _transformLast || _transformStart;
+      const tNew = { x: tOld.x + dx, y: tOld.y + dy, k: tOld.k };
+      projection.transform(tNew);
 
-//            // assume that the gesture is already handled by pointer events
-//            if (_pointerDown) return;
-
-          var detected = utilDetect();
-          var dX = source.deltaX;
-          var dY = source.deltaY;
-          var x2 = x;
-          var y2 = y;
-          var k2 = k;
-          var t0, p0, p1;
-
-          // Normalize mousewheel scroll speed (Firefox) - #3029
-          // If wheel delta is provided in LINE units, recalculate it in PIXEL units
-          // We are essentially redoing the calculations that occur here:
-          //   https://github.com/d3/d3-zoom/blob/78563a8348aa4133b07cac92e2595c2227ca7cd7/src/zoom.js#L203
-          // See this for more info:
-          //   https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
-          if (source.deltaMode === 1 /* LINE */ ) {
-              // Convert from lines to pixels, more if the user is scrolling fast.
-              // (I made up the exp function to roughly match Firefox to what Chrome does)
-              // These numbers should be floats, because integers are treated as pan gesture below.
-              var lines = Math.abs(source.deltaY);
-              var sign = (source.deltaY > 0) ? 1 : -1;
-              dY = sign * clamp(
-                  Math.exp((lines - 1) * 0.75) * 4.000244140625,
-                  4.000244140625, // min
-                  350.000244140625 // max
-              );
-
-              // On Firefox Windows and Linux we always get +/- the scroll line amount (default 3)
-              // There doesn't seem to be any scroll acceleration.
-              // This multiplier increases the speed a little bit - #5512
-              if (detected.os !== 'mac') {
-                  dY *= 5;
-              }
-
-              // recalculate x2,y2,k2
-              t0 = _isTransformed ? _transformLast : _transformStart;
-              p0 = _getMouseCoords(source);
-              p1 = t0.invert(p0);
-              k2 = t0.k * Math.pow(2, -dY / 500);
-              k2 = clamp(k2, MINK, MAXK);
-              x2 = p0[0] - p1[0] * k2;
-              y2 = p0[1] - p1[1] * k2;
-
-              // 2 finger map pinch zooming (Safari) - #5492
-              // These are fake `wheel` events we made from Safari `gesturechange` events..
-          } else if (source._scale) {
-              // recalculate x2,y2,k2
-              t0 = _gestureTransformStart;
-              p0 = _getMouseCoords(source);
-              p1 = t0.invert(p0);
-              k2 = t0.k * source._scale;
-              k2 = clamp(k2, MINK, MAXK);
-              x2 = p0[0] - p1[0] * k2;
-              y2 = p0[1] - p1[1] * k2;
-
-              // 2 finger map pinch zooming (all browsers except Safari) - #5492
-              // Pinch zooming via the `wheel` event will always have:
-              // - `ctrlKey = true`
-              // - `deltaY` is not round integer pixels (ignore `deltaX`)
-          } else if (source.ctrlKey && !isInteger(dY)) {
-              dY *= 6; // slightly scale up whatever the browser gave us
-
-              // recalculate x2,y2,k2
-              t0 = _isTransformed ? _transformLast : _transformStart;
-              p0 = _getMouseCoords(source);
-              p1 = t0.invert(p0);
-              k2 = t0.k * Math.pow(2, -dY / 500);
-              k2 = clamp(k2, MINK, MAXK);
-              x2 = p0[0] - p1[0] * k2;
-              y2 = p0[1] - p1[1] * k2;
-
-              // Trackpad scroll zooming with shift or alt/option key down
-          } else if ((source.altKey || source.shiftKey) && isInteger(dY)) {
-              // recalculate x2,y2,k2
-              t0 = _isTransformed ? _transformLast : _transformStart;
-              p0 = _getMouseCoords(source);
-              p1 = t0.invert(p0);
-              k2 = t0.k * Math.pow(2, -dY / 500);
-              k2 = clamp(k2, MINK, MAXK);
-              x2 = p0[0] - p1[0] * k2;
-              y2 = p0[1] - p1[1] * k2;
-
-              // 2 finger map panning (Mac only, all browsers except Firefox #8595) - #5492, #5512
-              // Panning via the `wheel` event will always have:
-              // - `ctrlKey = false`
-              // - `deltaX`,`deltaY` are round integer pixels
-          } else if (detected.os === 'mac' && detected.browser !== 'Firefox' && !source.ctrlKey && isInteger(dX) && isInteger(dY)) {
-              p1 = projection.translate();
-              x2 = p1[0] - dX;
-              y2 = p1[1] - dY;
-              k2 = projection.scale();
-              k2 = clamp(k2, MINK, MAXK);
-          }
-
-          // something changed - replace the event transform
-          if (x2 !== x || y2 !== y || k2 !== k) {
-              x = x2;
-              y = y2;
-              k = k2;
-              eventTransform = d3_zoomIdentity.translate(x2, y2).scale(k2);
-              if (_zoomPanHandler._transform) {
-                  // utilZoomPan interface
-                  _zoomPanHandler._transform(eventTransform);
-              } else {
-                  // d3_zoom interface
-                  _selection.node().__zoom = eventTransform;
-              }
-          }
-      }
-
-      if (_transformStart.x === x &&
-          _transformStart.y === y &&
-          _transformStart.k === k) {
-          return; // no change
-      }
-
-      k = clamp(k, MINK, MAXK);
-
-      projection.transform(eventTransform);
-
-      var scale = k / _transformStart.k;
-      var tX = (x / scale - _transformStart.x) * scale;
-      var tY = (y / scale - _transformStart.y) * scale;
-
-      if (context.inIntro()) {
-          curtainProjection.transform({
-              x: x - tX,
-              y: y - tY,
-              k: k
-          });
-      }
+      // calculate delta from last full redraw (stored in _transformStart)
+      const scale = tNew.k / _transformStart.k;
+      const tx = (tNew.x / scale - _transformStart.x) * scale;
+      const ty = (tNew.y / scale - _transformStart.y) * scale;
 
       _isTransformed = true;
-      _transformLast = eventTransform;
+      _transformLast = tNew;
 
-      utilSetTransform(supersurface, tX, tY, scale);
-      utilSetTransform(overlay, -tX, -tY, scale);
+      utilSetTransform(supersurface, tx, ty, scale);
+      utilSetTransform(overlay, -tx, -ty, scale);
       map.deferredRedraw();
 
       dispatch.call('move', this, map);
-
-      function isInteger(val) {
-          return typeof val === 'number' && isFinite(val) && Math.floor(val) === val;
-      }
     }
 
 
+
     function redraw() {
-      if (surface.empty() || !_redrawEnabled) return;
+      if (!_renderer || !_redrawEnabled) return;
 
-      if (_renderer) {
-        _renderer.render();
-        dispatch.call('drawn', this, { full: true });
-      }
-
+      _renderer.render();
+      dispatch.call('drawn', this, { full: true });
     }
 
 
@@ -492,6 +521,7 @@ export function rendererMap(context) {
     };
 
 
+    // returns [x,y]
     map.mouse = function() {
       const interactionManager = context.pixi.renderer.plugins.interaction;
       const pointerEvent = interactionManager.mouse;
@@ -501,7 +531,7 @@ export function rendererMap(context) {
     };
 
 
-    // returns Lng/Lat
+    // returns [lon,lat]
     map.mouseCoordinates = function() {
       const coord = map.mouse() || pxCenter();
       return projection.invert(coord);
