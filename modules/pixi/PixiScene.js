@@ -54,6 +54,8 @@ export class PixiScene extends EventEmitter {
     this.selected.v = 0;           // Version counter that increments as the selection changes
     this.hovered = new Set();      // Set of hovered featureIDs
     this.hovered.v = 0;            // Version counter that increments as the hover changes
+    this.drawing = new Set(); // Set of featureIDs that are currently drawing
+    this.drawing.v = 0; // Version counter that increments as the drawing changes
 
     this.layers = [
       new PixiLayerBackgroundTiles(this, 1),
@@ -263,6 +265,52 @@ export class PixiScene extends EventEmitter {
 
     feature.destroy();
   }
+
+  /**
+   * drawingFeatures
+   * Mark these features as `drawing` if they are in the scene.
+   * A few things to note:
+   * - the `featureID` may not exist in the scene yet
+   *   (for example, a new point that hasn't yet been rendered)
+   * - `featureIDs` should contain the complete list of featureIDs to put in the 'drawing' state.
+   *   (in other words, anything not in this list will be styled normally, without 'drawing' consideration)
+   * @param  featureIDs   `Array` or `Set` of feature IDs to draw
+   */
+  drawingFeatures(featureIDs) {
+    const toDraw = new Set([].concat(featureIDs)); // coax ids into a Set
+    let didChange = false;
+
+    // Remove drawing status where not needed
+    for (const featureID of this.drawing) {
+      if (toDraw.has(featureID)) continue; // it should stay drawing
+
+      this.drawing.delete(featureID);
+      didChange = true;
+
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.drawing = false;
+      }
+    }
+
+    // Add drawing where needed
+    for (const featureID of toDraw) {
+      if (this.drawing.has(featureID)) continue; // it's already hovered
+
+      this.drawing.add(featureID);
+      didChange = true;
+
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.drawing = true;
+      }
+    }
+
+    if (didChange) {
+      this.drawing.v++;
+    }
+  }
+
 
 
   /**

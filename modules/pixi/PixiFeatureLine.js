@@ -303,8 +303,8 @@ export class PixiFeatureLine extends AbstractFeature {
 // Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
     super.updateHalo();
-    if (this.visible && (this.hovered || this.selected)) {
-      const HALO_COLOR = 0xffff00;
+    if (this.visible && (this.hovered || this.selected || this.drawing)) {
+      const HALO_COLOR = this.drawing ? 0xff00ff : 0xffff00;
       const HALO_DASH = [6, 3];
       const HALO_WIDTH = 2;  // px
 
@@ -318,7 +318,11 @@ export class PixiFeatureLine extends AbstractFeature {
 
       const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
       this.halo.clear();
-      new DashLine(this.halo, haloProps).drawPolygon(this.container.hitArea.points);
+      if (this.container.hitArea) {
+        new DashLine(this.halo, haloProps).drawPolygon(
+          this.container.hitArea.points
+        );
+      }
 
     } else {
       if (this.halo) {

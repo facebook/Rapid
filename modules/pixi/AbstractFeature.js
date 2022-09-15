@@ -77,6 +77,7 @@ export class AbstractFeature {
 
     this._selected = false;
     this._hovered = false;
+    this._drawing = false;
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
@@ -239,6 +240,19 @@ export class AbstractFeature {
     }
   }
 
+  /**
+   * drawing
+   * @param  val  `true` to make the Feature drawing
+   */
+  get drawing() {
+    return this._drawing;
+  }
+  set drawing(val) {
+    if (this._drawing !== val) {
+      this._drawing = val;
+      this._styleDirty = true;
+    }
+  }
 
   /**
    * geometry

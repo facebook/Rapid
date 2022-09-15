@@ -322,6 +322,7 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
+      feature.drawing = scene.drawing.has(feature.id);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -416,6 +417,7 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
+      feature.drawing = scene.drawing.has(feature.id);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -450,8 +452,9 @@ export class PixiLayerOsm extends AbstractLayer {
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
+
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
-        entity.hasInterestingTags() || entity.isEndpoint(graph) || entity.isIntersection(graph)
+        entity.hasInterestingTags() || entity.isEndpoint(graph) || scene.drawing.has(entity.id) ||  entity.isIntersection(graph)
       );
     }
 
@@ -527,6 +530,7 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
+      feature.drawing = scene.drawing.has(feature.id);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -705,6 +709,9 @@ export class PixiLayerOsm extends AbstractLayer {
       feature.interactive = !activeData.has(feature.id);
       feature.selected = scene.selected.has(feature.id);
       feature.hovered = scene.hovered.has(feature.id);
+      //Note that there is no 'drawing' feature flag here,
+      // unlike the other OSM feature types. Because points are
+      // standalone, you can never be in the middle of drawing them.
 
       if (feature.dirty) {
         feature.update(projection, zoom);

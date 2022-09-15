@@ -100,6 +100,8 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = continueNode;
       this.firstNode = context.entity(oppositeNodeID);
       this.drawWay = continueWay;
+      const renderer = context.map().renderer();
+      renderer.scene.drawingFeatures([continueWay.id]);
       // this._selectedData.set(this.drawWay.id, this.drawWay);
       this._updateCollections();
 
@@ -303,6 +305,7 @@ export class ModeDrawLine extends AbstractMode {
     const EPSILON = 1e-6;
     const context = this.context;
     context.pauseChangeDispatch();
+    const renderer = context.map().renderer();
 
     // Extend line by adding vertex at `loc`...
     if (this.drawWay) {
@@ -329,6 +332,7 @@ export class ModeDrawLine extends AbstractMode {
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),  // Add new draw node to draw way
         this._getAnnotation()                                                   // Allow undo/redo to here
       );
+      renderer.scene.drawingFeatures([...renderer.scene.drawing, this.drawNode.id]);
 
     // Start a new line at `loc`...
     } else {
@@ -339,6 +343,7 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [ this.firstNode.id, this.drawNode.id ] });
+      renderer.scene.drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
 
       context.perform(
         actionAddEntity(this.firstNode),  // Create first node
@@ -438,6 +443,11 @@ export class ModeDrawLine extends AbstractMode {
       if (this.targetNode === this.lastNode || this.targetNode === this.firstNode ||
         vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)
       ) {
+
+      context.replace(
+        actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
+        this._getAnnotation()
+      );
         this._finish();
         return;
       }
@@ -524,6 +534,9 @@ export class ModeDrawLine extends AbstractMode {
   _finish() {
     const context = this.context;
     context.resumeChangeDispatch();  // it's possible to get here in a paused state
+
+    const renderer = context.map().renderer();
+    renderer.scene.drawingFeatures([]); // No longer drawing features! Clear this data.
 
     if (this.drawWay) {
       if (DEBUG) {
