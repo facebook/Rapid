@@ -56,8 +56,8 @@ export class PixiRenderer {
     // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
-// experiment: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
-delete PIXI.Renderer.__plugins.interaction;
+    // NEW: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
+    delete PIXI.Renderer.__plugins.interaction;
 
     // Create a Pixi application rendering to the given surface `canvas`
     this.pixi = new PIXI.Application({
@@ -71,14 +71,12 @@ delete PIXI.Renderer.__plugins.interaction;
       view: surface
     });
 
-// experiment: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
-delete PIXI.Renderer.__plugins.interaction;
-if (!('events' in this.pixi.renderer)) {
-  this.pixi.renderer.addSystem(EventSystem, 'events');
-}
+    // NEW: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
+    if (!('events' in this.pixi.renderer)) {
+      this.pixi.renderer.addSystem(EventSystem, 'events');
+    }
 
     context.pixi = this.pixi;
-    // parentElement.appendChild(this.pixi.view);
 
     // Prepare a basic bitmap font that we can use for things like debug messages
     PIXI.BitmapFont.from('debug', {
@@ -102,10 +100,6 @@ if (!('events' in this.pixi.renderer)) {
     ticker.add(this.tick, this);
     ticker.maxFPS = 30;
     ticker.start();
-
-//    // Setup the Interaction Manager
-//    const interactionManager = this.pixi.renderer.plugins.interaction;
-//    interactionManager.useSystemTicker = true;
 
     // Setup the stage
     const stage = this.pixi.stage;

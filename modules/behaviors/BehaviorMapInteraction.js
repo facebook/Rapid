@@ -20,7 +20,7 @@ const DEBUG = false;
  *
  * Properties available:
  *   `enabled`     `true` if the event handlers are enabled, `false` if not.
- *   `coord`       `[x,y]` coordinate of the latest event (previously: `InteractionManager.mouse`)
+ *   `coord`       `[x,y]` screen coordinate of the latest event (previously: `InteractionManager.mouse`)
  *   `lastDown`    `eventData` Object for the most recent down event
  *   `lastMove`    `eventData` Object for the most recent move event
  *   `gesture`     String containing the current detected gesture ('pan')
@@ -117,8 +117,8 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     this.coord = [e.global.x, e.global.y];
 
     const down = this._getEventData(e);
-    const draggableTarget = (down.data instanceof osmNode);
-    if (draggableTarget) return;
+    const isDraggableTarget = (down.data instanceof osmNode);
+    if (isDraggableTarget) return;
 
     const original = down.originalEvent;
     if (original.button !== 0) return;   // left button only

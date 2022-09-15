@@ -74,7 +74,6 @@ export class BehaviorDraw extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
-return; // not yet
     if (this._enabled) return;
     if (!this.context.pixi) return;
 
@@ -96,13 +95,12 @@ return; // not yet
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    interactionManager
-      .on('pointerdown', this._pointerdown)
-      .on('pointermove', this._pointermove)
-      .on('pointerup', this._pointerup)
-      .on('pointerupoutside', this._pointercancel)  // if up outide, just cancel
-      .on('pointercancel', this._pointercancel);
+    const stage = this.context.pixi.stage;
+    stage.addEventListener('pointerdown', this._pointerdown);
+    stage.addEventListener('pointermove', this._pointermove);
+    stage.addEventListener('pointerup', this._pointerup);
+    stage.addEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
+    stage.addEventListener('pointercancel', this._pointercancel);
 
     d3_select(document)
       .call(this._keybinding);
@@ -128,13 +126,12 @@ return; // not yet
     this.lastSpace = null;
     this.lastClick = null;
 
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    interactionManager
-      .off('pointerdown', this._pointerdown)
-      .off('pointermove', this._pointermove)
-      .off('pointerup', this._pointerup)
-      .off('pointerupoutside', this._pointercancel) // if up outide, just cancel
-      .off('pointercancel', this._pointercancel);
+    const stage = this.context.pixi.stage;
+    stage.removeEventListener('pointerdown', this._pointerdown);
+    stage.removeEventListener('pointermove', this._pointermove);
+    stage.removeEventListener('pointerup', this._pointerup);
+    stage.removeEventListener('pointerupoutside', this._pointercancel); // if up outide, just cancel
+    stage.removeEventListener('pointercancel', this._pointercancel);
 
     d3_select(document).call(this._keybinding.unbind);
   }
@@ -282,11 +279,11 @@ return; // not yet
     e.preventDefault();
     e.stopPropagation();
 
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
+//    // Ignore it if we are not over the canvas
+//    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
+//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+//    if (!pointerOverRenderer) return;
 
     // For spacebar clicks we will instead use the last move event
     if (!this.lastMove) return;
@@ -306,7 +303,7 @@ return; // not yet
       this.lastSpace = move;
       this.lastClick = move;   // We will accept this as a click
 
-      d3_select(window).on('keyup.space-block', (e) => {   // user lifted spacebar up
+      d3_select(window).on('keyup.space-block', e => {   // user lifted spacebar up
         if (e.code !== 'Space') return;  // only spacebar
         e.preventDefault();
         e.stopPropagation();
@@ -327,11 +324,11 @@ return; // not yet
   _processMove() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
+//    // Ignore it if we are not over the canvas
+//    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
+//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+//    if (!pointerOverRenderer) return;
 
     const move = Object.assign({}, this.lastMove);  // shallow copy
 
@@ -357,11 +354,11 @@ return; // not yet
   _processClick() {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer) return;
+//    // Ignore it if we are not over the canvas
+//    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
+//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+//    if (!pointerOverRenderer) return;
 
     const click = Object.assign({}, this.lastClick);  // shallow copy
 

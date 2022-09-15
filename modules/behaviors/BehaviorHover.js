@@ -52,7 +52,6 @@ export class BehaviorHover extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
-return; // not yet
     if (this._enabled) return;
     if (!this.context.pixi) return;
 
@@ -64,10 +63,9 @@ return; // not yet
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    interactionManager
-      .on('pointermove', this._pointermove)
-      .on('pointerout', this._pointerout);   // or leaves the canvas
+    const stage = this.context.pixi.stage;
+    stage.addEventListener('pointermove', this._pointermove);
+    stage.addEventListener('pointerout', this._pointerout);   // or leaves the canvas
   }
 
 
@@ -96,10 +94,9 @@ return; // not yet
     this.lastMove = null;
     this.hoverTarget = null;
 
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    interactionManager
-      .off('pointermove', this._pointermove)
-      .off('pointerout', this._pointerout);
+    const stage = this.context.pixi.stage;
+    stage.removeEventListener('pointermove', this._pointermove);
+    stage.removeEventListener('pointerout', this._pointerout);   // or leaves the canvas
   }
 
 
@@ -140,7 +137,7 @@ return; // not yet
   /**
    * _pointermove
    * Handler for pointermove events.
-   * @param  `e`  A Pixi InteractionEvent
+   * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
     const move = this._getEventData(e);
@@ -156,7 +153,7 @@ return; // not yet
   /**
    * _pointerout
    * Handler for pointerout events.
-   * @param  `e`  A Pixi InteractionEvent
+   * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerout(e) {
     // Pretend it's a move event, but skip the "has it moved much" test
@@ -176,8 +173,7 @@ return; // not yet
 
     // If a modifier key is down, or pointer is not over the renderer, discard the target..
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+const pointerOverRenderer = true; //interactionManager.mouseOverRenderer;
     if (this._modifierKeys.size || !pointerOverRenderer) {
       move.target = null;
       move.feature = null;

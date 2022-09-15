@@ -49,7 +49,6 @@ export class BehaviorDrag extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
-return; // not yet
     if (this._enabled) return;
     if (!this.context.pixi) return;
 
@@ -62,22 +61,12 @@ return; // not yet
     this.lastMove = null;
     this.dragTarget = null;
 
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    interactionManager
-      .on('pointerdown', this._pointerdown)
-      .on('pointermove', this._pointermove)
-      .on('pointerup', this._pointerup)
-      .on('pointerupoutside', this._pointercancel)  // if up outide, just cancel
-      .on('pointercancel', this._pointercancel);
-
-    if (interactionManager.supportsTouchEvents) {
-      interactionManager
-        .on('touchstart', this._pointerdown)
-        .on('touchmove', this._pointermove)
-        .on('touchend', this._pointerup)
-        .on('touchendoutside', this._pointercancel)
-        .on('touchcancel', this._pointercancel);
-    }
+    const stage = this.context.pixi.stage;
+    stage.addEventListener('pointerdown', this._pointerdown);
+    stage.addEventListener('pointermove', this._pointermove);
+    stage.addEventListener('pointerup', this._pointerup);
+    stage.addEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
+    stage.addEventListener('pointercancel', this._pointercancel);
   }
 
 
@@ -113,22 +102,12 @@ return; // not yet
     this.lastMove = null;
     this.dragTarget = null;
 
-    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-    interactionManager
-      .off('pointerdown', this._pointerdown)
-      .off('pointermove', this._pointermove)
-      .off('pointerup', this._pointerup)
-      .off('pointerupoutside', this._pointercancel)  // if up outide, just cancel
-      .off('pointercancel', this._pointercancel);
-
-    if (interactionManager.supportsTouchEvents) {
-      interactionManager
-        .off('touchstart', this._pointerdown)
-        .off('touchmove', this._pointermove)
-        .off('touchend', this._pointerup)
-        .off('touchendoutside', this._pointercancel)
-        .off('touchcancel', this._pointercancel);
-    }
+    const stage = this.context.pixi.stage;
+    stage.removeEventListener('pointerdown', this._pointerdown);
+    stage.removeEventListener('pointermove', this._pointermove);
+    stage.removeEventListener('pointerup', this._pointerup);
+    stage.removeEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
+    stage.removeEventListener('pointercancel', this._pointercancel);
   }
 
 
@@ -136,23 +115,23 @@ return; // not yet
    * _pointerdown
    * Handler for pointerdown events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
-   * @param  `e`  A Pixi InteractionEvent
+   * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
     if (this.lastDown) return; // a pointer is already down
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this.context;
-    const interactionManager = context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-
-    // However, do not discard if the event was a touch event.
-    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
+//    const context = this.context;
+//    const interactionManager = context.pixi.renderer.plugins.interaction;
+//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+//
+//    // However, do not discard if the event was a touch event.
+//    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
-    const draggable = down.data instanceof osmNode;
-    if (!draggable) return;
+    const isDraggableTarget = down.data instanceof osmNode;
+    if (!isDraggableTarget) return;
 
     this.context.map().zoomPanEnable(false);
     this.lastDown = down;
@@ -174,7 +153,7 @@ return; // not yet
    * _pointermove
    * Handler for pointermove events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
-   * @param  `e`  A Pixi InteractionEvent
+   * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
     // If pointer is not over the renderer, just discard
@@ -182,16 +161,16 @@ return; // not yet
     const context = this.context;
     let editMenu = context.map().supersurface.select('.edit-menu');
 
-    //If we detect the edit (right-click) menu, we should cease any dragging behavior.
+    // If we detect the edit (right-click) menu, we should cease any dragging behavior.
     if (editMenu._groups[0][0]) {
       this.lastDown = null;
       this.lastMove = null;
       this.dragTarget = null;
     }
 
-    const interactionManager = context.pixi.renderer.plugins.interaction;
-    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
+//    const interactionManager = context.pixi.renderer.plugins.interaction;
+//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
+//    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this.lastDown;
     const move = this._getEventData(e);
@@ -235,14 +214,14 @@ return; // not yet
    * _pointerup
    * Handler for pointerup events.  Note that you can get multiples of these
    * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
-   * @param  `e`  A Pixi InteractionEvent
+   * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
     const down = this.lastDown;
     const up = this._getEventData(e);
     if (!down || down.id !== up.id) return; // not down, or different pointer
 
-    //Before emitting the 'up' event, attach the drag target data to the event data.
+    // Before emitting the 'up' event, attach the drag target data to the event data.
     if (this.dragTarget) {
       up.data = this.dragTarget.__feature__.data;
     }
@@ -267,7 +246,7 @@ return; // not yet
   /**
    * _pointercancel
    * Handler for pointercancel events.
-   * @param  `e`  A Pixi InteractionEvent
+   * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointercancel(e) {
     const cancel = this._getEventData(e);
