@@ -52,42 +52,53 @@ export class AbstractBehavior extends EventEmitter {
     return this._enabled;
   }
 
-  /**
-   * _getEventCoord
-   * Returns an [x,y] coordinate of interest for the supplied event.
-   * This can get pretty hairy given the touch and mouse event interactions have different formats.
-   */
-  _getEventCoord(e) {
-    let coord;
-    const oe = e.data.originalEvent;
-    if (oe.offsetX !== undefined) {
-      coord = [oe.offsetX, oe.offsetY];    // mouse coords
-    } else if (oe.layerX !== undefined) {
-      coord = [oe.layerX, oe.layerY];      // ipad coords, seemingly?
-    } else if (oe.touches && oe.touches[0]) {
-      coord = [oe.touches[0].clientX, oe.touches[0].clientY];   // initial touch
-    } else {
-      coord = [oe.changedTouches.clientX, oe.changedTouches.clientY];   // updated touch
-    }
-
-    return coord;
-  }
-
+//  /**
+//   * _getEventCoord
+//   * Returns an [x,y] coordinate of interest for the supplied event.
+//   * This can get pretty hairy given the touch and mouse event interactions have different formats.
+//   */
+//  _getEventCoord(e) {
+//    let coord;
+//    const oe = e.data.originalEvent;
+//    if (oe.offsetX !== undefined) {
+//      coord = [oe.offsetX, oe.offsetY];    // mouse coords
+//    } else if (oe.layerX !== undefined) {
+//      coord = [oe.layerX, oe.layerY];      // ipad coords, seemingly?
+//    } else if (oe.touches && oe.touches[0]) {
+//      coord = [oe.touches[0].clientX, oe.touches[0].clientY];   // initial touch
+//    } else {
+//      coord = [oe.changedTouches.clientX, oe.changedTouches.clientY];   // updated touch
+//    }
+//
+//    return coord;
+//  }
+//
 
   /**
    * _getEventData
    * Returns an object containing the important details about this Pixi event.
-   * @param  `e`  A Pixi InteractionEvent (or something that looks like one)
+   * @param  `e`  A Pixi FederatedEvent (or something that looks like one)
    */
   _getEventData(e) {
+//    const result = {
+//      //      pointer event id                touch event id        default
+//      id: e.data.originalEvent.pointerId || e.data.pointerType || 'mouse',
+//      event: e,
+//      originalEvent: e.data.originalEvent,
+//      // mouse original events contain offsets, touch events contain 'layerX/Y'.
+//      coord: this._getEventCoord(e),
+//      time: e.data.originalEvent.timeStamp,
+//      isCancelled: false,
+//      target: null,
+//      feature: null,
+//      data: null,
+//    };
     const result = {
-      //      mouse event id                touch event id        default
-      id: e.data.originalEvent.pointerId || e.data.pointerType || 'mouse',
+      id: e.originalEvent.pointerId || e.pointerType || 'unknown',
       event: e,
-      originalEvent: e.data.originalEvent,
-      // mouse original events contain offsets, touch events contain 'layerX/Y'.
-      coord: this._getEventCoord(e),
-      time: e.data.originalEvent.timeStamp,
+      originalEvent: e.originalEvent,
+      coord: [e.global.x, e.global.y],
+      time: e.timeStamp,
       isCancelled: false,
       target: null,
       feature: null,

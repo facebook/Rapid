@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { EventSystem } from '@pixi/events';
 import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
@@ -55,6 +56,9 @@ export class PixiRenderer {
     // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
+// experiment: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
+delete PIXI.Renderer.__plugins.interaction;
+
     // Create a Pixi application rendering to the given surface `canvas`
     this.pixi = new PIXI.Application({
       antialias: true,
@@ -66,6 +70,12 @@ export class PixiRenderer {
       sharedTicker: true,
       view: surface
     });
+
+// experiment: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
+delete PIXI.Renderer.__plugins.interaction;
+if (!('events' in this.pixi.renderer)) {
+  this.pixi.renderer.addSystem(EventSystem, 'events');
+}
 
     context.pixi = this.pixi;
     // parentElement.appendChild(this.pixi.view);
@@ -93,9 +103,9 @@ export class PixiRenderer {
     ticker.maxFPS = 30;
     ticker.start();
 
-    // Setup the Interaction Manager
-    const interactionManager = this.pixi.renderer.plugins.interaction;
-    interactionManager.useSystemTicker = true;
+//    // Setup the Interaction Manager
+//    const interactionManager = this.pixi.renderer.plugins.interaction;
+//    interactionManager.useSystemTicker = true;
 
     // Setup the stage
     const stage = this.pixi.stage;

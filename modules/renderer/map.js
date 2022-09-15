@@ -88,9 +88,6 @@ export function rendererMap(context) {
       // .call(_zoomPanHandler.transform, projection.transform())
       // .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 
-    context.behaviors.get('map-interaction')
-      .on('move', _onPan);
-
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
     // At regular intervals we reset this root transform and actually redraw the map.
@@ -202,6 +199,9 @@ export function rendererMap(context) {
         map.immediateRedraw();
     });
 
+    context.behaviors.get('map-interaction')
+      .on('transformchanged', map.setTransform);
+
   }
 
 
@@ -276,6 +276,14 @@ export function rendererMap(context) {
       debouncedRedraw.cancel();
       redraw();
     };
+
+
+    function redraw() {
+      if (!_renderer || !_redrawEnabled) return;
+
+      _renderer.render();
+      dispatch.call('drawn', this, { full: true });
+    }
 
 
 //    function gestureChange(d3_event) {
@@ -468,44 +476,41 @@ export function rendererMap(context) {
 //    }
 
 
-    function _onPan(eventData) {   // was: event, key, transform
-      if (!_zoomPanEnabled) return;
 
-      const original = eventData.originalEvent;
-      const [dx, dy] = [original.movementX, original.movementY];
-      if (!dx && !dy) return;  // no change
-
-      // calculate delta from last event (_transformLast or _transformStart)
+    //
+    // Update the map transform/projection directly.
+    //   (the old way did a round trip through the d3-zoom event system)
+    // Sets a top level temporary transform in superfurface/overlay.
+    // Pass a transform Object with `x`,`y`,`k` properties.
+    //
+    map.setTransform = (t) => {
       const tOld = _transformLast || _transformStart;
-      const tNew = { x: tOld.x + dx, y: tOld.y + dy, k: tOld.k };
+      if (t.x === tOld.x && t.y === tOld.y && t.k === tOld.k) return;   // no change
+
+      const tNew = Object.assign({}, tOld, t);
       projection.transform(tNew);
 
-      // calculate delta from last full redraw (stored in _transformStart)
+      // Calculate delta from last full redraw (stored in _transformStart)
       const scale = tNew.k / _transformStart.k;
-      const tx = (tNew.x / scale - _transformStart.x) * scale;
-      const ty = (tNew.y / scale - _transformStart.y) * scale;
+      const dx = (tNew.x / scale - _transformStart.x) * scale;
+      const dy = (tNew.y / scale - _transformStart.y) * scale;
 
       _isTransformed = true;
       _transformLast = tNew;
 
-      utilSetTransform(supersurface, tx, ty, scale);
-      utilSetTransform(overlay, -tx, -ty, scale);
+      utilSetTransform(supersurface, dx, dy, scale);
+      utilSetTransform(overlay, -dx, -dy, scale);
       map.deferredRedraw();
 
-      dispatch.call('move', this, map);
-    }
+      // dispatch.call('move', this, map);
+    };
 
 
-
-    function redraw() {
-      if (!_renderer || !_redrawEnabled) return;
-
-      _renderer.render();
-      dispatch.call('drawn', this, { full: true });
-    }
-
-
-    map.resetTransform = function() {
+    //
+    // Removes the temporary transforms held in superfurface/overlay.
+    // Called by the renderer code when a full redraw actually happens.
+    //
+    map.resetTransform = () => {
       if (!_isTransformed) return false;
 
       utilSetTransform(supersurface, 0, 0);
@@ -513,6 +518,7 @@ export function rendererMap(context) {
 
       _isTransformed = false;
       _transformStart = projection.transform();
+      _transformLast = null;
 
       if (context.inIntro()) {
         curtainProjection.transform(projection.transform());
@@ -523,11 +529,8 @@ export function rendererMap(context) {
 
     // returns [x,y]
     map.mouse = function() {
-      const interactionManager = context.pixi.renderer.plugins.interaction;
-      const pointerEvent = interactionManager.mouse;
-      if (!pointerEvent) return null;
-
-      return [pointerEvent.global.x, pointerEvent.global.y];
+      const behavior = context.behaviors.get('map-interaction');
+      return behavior ? behavior.coord : [0, 0];
     };
 
 
@@ -538,7 +541,7 @@ export function rendererMap(context) {
     };
 
 
-    function setTransform(t2, duration, force) {
+    function _setTransform(t2, duration, force) {
       const t = projection.transform();
       if (!force && t2.k === t.k && t2.x === t.x && t2.y === t.y) return false;
 
@@ -574,7 +577,7 @@ export function rendererMap(context) {
       const delta = vecSubtract(center, point);
       t = vecAdd(t, delta);
 
-      return setTransform(d3_zoomIdentity.translate(t[0], t[1]).scale(k2), duration, force);
+      return _setTransform(d3_zoomIdentity.translate(t[0], t[1]).scale(k2), duration, force);
     }
 
 
@@ -726,7 +729,7 @@ export function rendererMap(context) {
 
     map.transformEase = function(t2, duration) {
       duration = duration || 250;
-      setTransform(t2, duration, false /* don't force */ );
+      _setTransform(t2, duration, false /* don't force */ );
       return map;
     };
 

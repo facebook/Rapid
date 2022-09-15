@@ -74,6 +74,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * Bind event handlers
    */
   enable() {
+return; // not yet
     if (this._enabled) return;
     if (!this.context.pixi) return;
 
