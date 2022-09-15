@@ -280,7 +280,7 @@ export function modeSelect(context, selectedIDs) {
 //            .on('doubleUp.modeSelect', didDoubleUp);
 
 
-        selectElements();
+//        selectElements();
 
         if (_follow) {
             var extent = utilTotalExtent(selectedIDs, context.graph());
