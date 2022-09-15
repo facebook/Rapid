@@ -6,7 +6,6 @@ import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
-const DBL_CLICK_TIMEOUT_MS = 400;
 const DEBUG = false;
 
 
@@ -43,7 +42,6 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
-    this.doubleClickTimeout = null;
     this.clicked = null;
 
     this._keybinding = utilKeybinding('drawbehavior');
@@ -119,7 +117,7 @@ export class BehaviorDraw extends AbstractBehavior {
     if (!this.context.pixi) return;
 
     if (DEBUG) {
-      console.log('BehaviorDraw: disabling listeners');  // eslint-disable-line no-console
+      console.log('BehaviorDraw: disabling listeners'); // eslint-disable-line no-console
     }
 
 
@@ -134,12 +132,10 @@ export class BehaviorDraw extends AbstractBehavior {
       .off('pointerdown', this._pointerdown)
       .off('pointermove', this._pointermove)
       .off('pointerup', this._pointerup)
-      .off('pointerupoutside', this._pointercancel)  // if up outide, just cancel
+      .off('pointerupoutside', this._pointercancel) // if up outide, just cancel
       .off('pointercancel', this._pointercancel);
 
-    d3_select(document)
-      .call(this._keybinding.unbind);
-
+    d3_select(document).call(this._keybinding.unbind);
   }
 
 
@@ -185,17 +181,6 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   _pointerdown(e) {
     if (this.lastDown) return;  // a pointer is already down
-
-    // See pointerup-
-    if (this.clicked) {
-      window.clearTimeout(this.doubleClickTimeout);
-      this.clicked = false;
-      if (DEBUG) {
-        console.log('double click detected, finishing draw.');
-      }
-      this._finish(e);
-      return;
-    }
 
     const down = this._getEventData(e);
     this.lastDown = down;
@@ -260,13 +245,6 @@ export class BehaviorDraw extends AbstractBehavior {
         console.log('accepted a click.');
       }
       this.clicked = true;
-      this.doubleClickTimeout = window.setTimeout(() => {
-        this.clicked = false;
-      }, DBL_CLICK_TIMEOUT_MS); // time for double click detection
-
-      // Prevent a quick second click
-      d3_select(window)
-        .on('click.draw-block', (e) => e.stopPropagation(), true);
 
       this._processClick();
     }
@@ -417,15 +395,10 @@ export class BehaviorDraw extends AbstractBehavior {
 
   /**
    * _finish
-   * Fires if user double clicks, presses return, enter, or escape - this is used to accept whatever has been drawn
+   * Fires if user presses return, enter, or escape - this is used to accept whatever has been drawn
    * @param  `e`  A d3 keydown event
    */
   _finish(e) {
-    // Some calls to 'finish' will arise from synthetic double-clicks from within this class, in which case
-    // prevent default is not possible/necessary.
-    if (e.preventDefault && typeof e.preventDefault === 'function') {
-      e.preventDefault();
-    }
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'finish'`); // eslint-disable-line no-console
     }
