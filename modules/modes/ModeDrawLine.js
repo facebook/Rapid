@@ -443,11 +443,12 @@ export class ModeDrawLine extends AbstractMode {
       if (this.targetNode === this.lastNode || this.targetNode === this.firstNode ||
         vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)
       ) {
+        const targetIndex = this.drawWay.affix(this.drawNode.id) === 'prefix'? 1 : this.drawWay.nodes.length - 1;
 
-      context.replace(
-        actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
-        this._getAnnotation()
-      );
+        context.replace(
+          actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
+          this._getAnnotation()
+        );
         this._finish();
         return;
       }
