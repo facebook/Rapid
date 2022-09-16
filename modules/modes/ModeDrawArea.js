@@ -15,7 +15,7 @@ import { osmNode, osmWay } from '../osm';
 import { geoChooseEdge } from '../geo';
 import { t } from '../core/localizer';
 
-const DEBUG = true;
+const DEBUG = false;
 
 /**
  * `ModeDrawArea`
@@ -205,6 +205,7 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     context.pauseChangeDispatch();
     const EPSILON = 1e-6;
+    const renderer = context.map().renderer();
 
     //Extend the way by adding vertex at 'loc'
     if (this.drawWay) {
@@ -234,6 +235,9 @@ export class ModeDrawArea extends AbstractMode {
         this._getAnnotation() // Allow undo/redo to here
       );
 
+      // Add this new node to the 'drawing' features set
+      renderer.scene.drawingFeatures([...renderer.scene.drawing, this.drawNode.id]);
+
       // Start a brand new area at 'loc'
     } else {
       if (DEBUG) {
@@ -245,10 +249,17 @@ export class ModeDrawArea extends AbstractMode {
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [this.firstNode.id, this.drawNode.id] });
 
+      renderer.scene.drawingFeatures([
+        this.drawWay.id,
+        this.firstNode.id,
+        this.drawNode.id,
+      ]);
+
       context.perform(
         actionAddEntity(this.drawNode),
         actionAddEntity(this.firstNode),
         actionAddEntity(this.drawWay),
+        actionAddVertex(this.drawWay.id, this.firstNode.id),
         actionAddVertex(this.drawWay.id, this.drawNode.id),
         this._actionClose(this.drawWay.id),
         this._getAnnotation()
@@ -324,6 +335,14 @@ export class ModeDrawArea extends AbstractMode {
     const startGraph = context.graph();
     const node = osmNode({ loc: loc });
     const way = osmWay({ tags: this.defaultTags });
+    const renderer = context.map().renderer();
+
+    this.drawWay = way;
+    this.lastNode = node;
+    this.firstNode = node;
+    if (DEBUG) {
+      console.log(`ModeDrawArea: _clickWay, starting area at ${loc}`); // eslint-disable-line no-console
+    }
 
     context.perform(
       actionAddEntity(node),
@@ -332,6 +351,11 @@ export class ModeDrawArea extends AbstractMode {
       this._actionClose(way.id),
       actionAddMidpoint({ loc: loc, edge: edge }, node)
     );
+
+      renderer.scene.drawingFeatures([
+        node.id,
+        way.id,
+      ]);
   }
 
   /**
@@ -348,6 +372,9 @@ export class ModeDrawArea extends AbstractMode {
       actionAddVertex(way.id, node.id),
       this._actionClose(way.id)
     );
+
+    const renderer = context.map().renderer();
+    renderer.scene.drawingFeatures([way.id]);
   }
 
   /**
@@ -376,6 +403,9 @@ export class ModeDrawArea extends AbstractMode {
   _finish() {
     const context = this.context;
     context.resumeChangeDispatch(); // it's possible to get here in a paused state
+
+    const renderer = context.map().renderer();
+    renderer.scene.drawingFeatures([]); // No longer drawing features! Clear this data.
 
     if (this.drawWay) {
       if (DEBUG) {
