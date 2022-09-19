@@ -46,6 +46,7 @@ export class ModeDrawArea extends AbstractMode {
     this._clickNode = this._clickNode.bind(this);
     this._cancel = this._cancel.bind(this);
     this._move = this._move.bind(this);
+    this._removeDrawNode = this._removeDrawNode.bind(this);
   }
 
   /**
@@ -235,6 +236,9 @@ export class ModeDrawArea extends AbstractMode {
         this._getAnnotation() // Allow undo/redo to here
       );
 
+      this.lastNode = context.entity(this.lastNode.id);
+      this.drawWay = context.entity(this.drawWay.id);
+
       // Add this new node to the 'drawing' features set
       renderer.scene.drawingFeatures([...renderer.scene.drawing, this.drawNode.id]);
 
@@ -259,14 +263,14 @@ export class ModeDrawArea extends AbstractMode {
         actionAddEntity(this.drawNode),
         actionAddEntity(this.firstNode),
         actionAddEntity(this.drawWay),
-        actionAddVertex(this.drawWay.id, this.firstNode.id),
-        actionAddVertex(this.drawWay.id, this.drawNode.id),
+        // actionAddVertex(this.drawWay.id, this.firstNode.id),
+        // actionAddVertex(this.drawWay.id, this.drawNode.id),
         this._actionClose(this.drawWay.id),
         this._getAnnotation()
       );
     }
 
-    this.drawWay = context.entity(this.drawWay.id);
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
@@ -321,8 +325,7 @@ export class ModeDrawArea extends AbstractMode {
     }
 
     context.replace(actionMoveNode(this.drawNode.id, loc));
-
-    this.drawWay = context.entity(this.drawWay.id);
+    this.drawNode = context.entity(this.drawNode.id);
     this._updateCollections();
   }
 
@@ -351,6 +354,7 @@ export class ModeDrawArea extends AbstractMode {
       this._actionClose(way.id),
       actionAddMidpoint({ loc: loc, edge: edge }, node)
     );
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
 
       renderer.scene.drawingFeatures([
         node.id,
@@ -360,21 +364,89 @@ export class ModeDrawArea extends AbstractMode {
 
   /**
    * _clickNode
-   * Clicked on an existing node, start new area from there.
+   * Clicked on an existing node, include that node in the area we are drawing.
    */
-  _clickNode(loc, node) {
+  _clickNode(loc, targetNode) {
+    const EPSILON = 1e-6;
     const context = this.context;
-    const startGraph = context.graph();
-    const way = osmWay({ tags: this.defaultTags });
+    context.pauseChangeDispatch();
 
-    context.perform(
-      actionAddEntity(way),
-      actionAddVertex(way.id, node.id),
-      this._actionClose(way.id)
-    );
+    if (this.drawWay) {
+      // Clicked on first or last node, try to finish the area
+      if (
+        targetNode.id === this.lastNode.id ||
+        targetNode.id === this.firstNode.id ||
+        vecEqual(loc, this.lastNode.loc, EPSILON) ||
+        vecEqual(loc, this.firstNode.loc, EPSILON)
+      ) {
+        const targetIndex =
+          this.drawWay.affix(this.drawNode.id) === 'prefix'
+            ? 1
+            : this.drawWay.nodes.length - 1;
 
-    const renderer = context.map().renderer();
-    renderer.scene.drawingFeatures([way.id]);
+        context.replace(
+          actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
+          this._getAnnotation()
+        );
+        this._finish();
+        return;
+      }
+
+      if (DEBUG) {
+        console.log(
+          `ModeDrawArea: _clickNode, extending line to ${targetNode.id}`
+        ); // eslint-disable-line no-console
+      }
+
+      this.lastNode = targetNode;
+
+      // The target node needs to be inserted "before" the draw node
+      // If draw node is at the beginning, insert target 1 after beginning.
+      // If draw node is at the end, insert target 1 before the end.
+      const targetIndex =
+        this.drawWay.affix(this.drawNode.id) === 'prefix'
+          ? 1
+          : this.drawWay.nodes.length - 1;
+
+      context.replace(
+        actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
+        this._getAnnotation()
+      );
+    } else {
+      if (DEBUG) {
+        console.log(
+          `ModeDrawArea: _clickNode, starting line at ${targetNode.id}`
+        ); // eslint-disable-line no-console
+      }
+
+      const context = this.context;
+
+      this.firstNode = osmNode({ loc: loc });
+      this.lastNode = this.firstNode;
+      this.drawNode = osmNode({ loc: loc });
+      this.drawWay = osmWay({
+        tags: this.defaultTags,
+        nodes: [this.firstNode.id, this.drawNode.id],
+      });
+
+      const renderer = context.map().renderer();
+      renderer.scene.drawingFeatures([
+        this.drawWay.id,
+        this.firstNode.id,
+        this.drawNode.id,
+      ]);
+
+      context.perform(
+        actionAddEntity(this.drawNode),
+        actionAddEntity(this.firstNode),
+        actionAddEntity(this.drawWay),
+        actionAddVertex(this.drawWay.id, this.firstNode.id),
+        actionAddVertex(this.drawWay.id, this.drawNode.id),
+        this._actionClose(this.drawWay.id),
+        this._getAnnotation()
+      );
+      this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
+    }
   }
 
   /**
@@ -387,11 +459,22 @@ export class ModeDrawArea extends AbstractMode {
     return true;
   }
 
+
+    _removeDrawNode() {
+
+      if (this.drawNode) {
+        this.context.replace(actionDeleteNode(this.drawNode.id));
+      }
+        this.drawNode = null;
+    }
+
   /**
    * _cancel
-   * Return to browse mode immediately, `exit()` will handle cleanup
+   * Undo the currently 'drawing' node and leave the shape with one fewer node.
+   * Then, return to browse mode immediately, `exit()` will handle cleanup
    */
   _cancel() {
+    this._removeDrawNode();
     this.context.enter('browse');
   }
 
