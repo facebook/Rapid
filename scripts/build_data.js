@@ -9,7 +9,7 @@ import fetch from 'node-fetch';
 import * as languageNames from './language_names.js';
 
 // fontawesome icons
-import fontawesome from '@fortawesome/fontawesome-svg-core';
+import * as fontawesome from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
