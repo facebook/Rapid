@@ -67,7 +67,7 @@ export function modeRotate(context, entityIDs) {
         }
 
 
-        var currMouse = context.map().mouse(d3_event);
+        var currMouse = context.map().mouse();
         var currAngle = Math.atan2(currMouse[1] - _pivot[1], currMouse[0] - _pivot[0]);
 
         if (typeof _prevAngle === 'undefined') _prevAngle = currAngle;

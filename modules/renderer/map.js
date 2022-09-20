@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
 import _throttle from 'lodash-es/throttle';
@@ -9,72 +8,44 @@ import _debounce from 'lodash-es/debounce';
 import { PixiRenderer } from '../pixi/PixiRenderer';
 
 import { prefs } from '../core/preferences';
-import { utilFastMouse, utilSetTransform, utilTotalExtent } from '../util/util';
-import { utilBindOnce } from '../util/bind_once';
-import { utilDetect } from '../util/detect';
+import { utilSetTransform, utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util/rebind';
 
-// constants
-var TILESIZE = 256;
-var MINZOOM = 2;
-var MAXZOOM = 24;
-var MINK = geoZoomToScale(MINZOOM, TILESIZE);
-var MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
 
+const TILESIZE = 256;
+const MINZOOM = 2;
+const MAXZOOM = 24;
+const MINK = geoZoomToScale(MINZOOM, TILESIZE);
+const MAXK = geoZoomToScale(MAXZOOM, TILESIZE);
 
 function clamp(num, min, max) {
   return Math.max(min, Math.min(num, max));
 }
 
+
 export function rendererMap(context) {
   const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
-  let projection = context.projection;
-  let curtainProjection = context.curtainProjection;
 
-  let _selection = d3_select(null);
-  let surface = d3_select(null);        // the map `canvas`
-  let supersurface = d3_select(null);   // parent of surface with temporary zoom/pan transform
-  let overlay = d3_select(null);        // sibling of surface, used to hold the editmenu
+  let supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
+  let surface = d3_select(null);       // sibling `canvas`
+  let overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
 
   let _renderer;
-  let _wireFrameMode = false;
-
   let _dimensions = [1, 1];
+
+  let _wireFrameMode = false;
   let _dblClickZoomEnabled = true;
   let _redrawEnabled = true;
   let _zoomPanEnabled = true;
-  let _gestureTransformStart;
-  let _transformStart = projection.transform();
+  let _transformStart = context.projection.transform();
   let _transformLast;
-  let _isTransformed = false;
-  let _getMouseCoords;
 
-  // let _preDragTransform;
-  // whether a pointerdown event started the zoom
-//  let _pointerDown = false;
-
-// unused?
-    const _zoomPanHandler = d3_zoom()    //utilZoomPan()
-      .scaleExtent([MINK, MAXK]);
-//       // .interpolate(d3_interpolate)
-//       .filter(zoomEventFilter)
-//       .on('zoom.map', zoomPan);
-//   //    .on('start.map', d3_event => {
-//   //      _pointerDown = d3_event && (d3_event.type === 'pointerdown' ||
-//   //        (d3_event.sourceEvent && d3_event.sourceEvent.type === 'pointerdown'));
-//   //    })
-//   //    .on('end.map', () => {
-//   //      _pointerDown = false;
-//   //    });
-
-  // const _doubleTapHandler = utilDoubleUp();
 
   /**
    *  map
    */
   function map(selection) {
-    _selection = selection;
 
     // Selection here contains a D3 selection for the `main-map` div that the map gets added to
     // It's an absolutely positioned div that takes up as much space as it's allowed to.
@@ -83,10 +54,6 @@ export function rendererMap(context) {
       .on('contextmenu', e => e.preventDefault())
       // Suppress swipe-to-navigate browser pages on trackpad/magic mouse – #5552
       .on('wheel.map mousewheel.map', e => e.preventDefault());
-//    // .call(_zoomPanHandler);
-      // .call(_doubleTapHandler);
-      // .call(_zoomPanHandler.transform, projection.transform())
-      // .on('dblclick.zoom', null); // override d3-zoom dblclick handling
 
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
@@ -108,8 +75,6 @@ export function rendererMap(context) {
       .append('canvas')
       .attr('class', 'surface');
 
-    _renderer = new PixiRenderer(context, supersurface.node(), surface.node());
-
     // The `overlay` is a div that is transformed to cancel out the supersurface.
     // This is a place to put things _not drawn by pixi_ that should stay positioned
     // with the map, like the editmenu.
@@ -118,46 +83,15 @@ export function rendererMap(context) {
       .attr('class', 'overlay')
       .call(utilSetTransform, 0, 0);
 
-//     surface
-//       .call(_doubleTapHandler);
-//        .on('pointerdown.zoom', d3_event => {
-//          if (d3_event.button === 2) {
-//            d3_event.stopPropagation();
-//          }
-//        }, true)
-//        .on('pointerup.zoom', d3_event => {
-//          if (map.resetTransform()) {
-//            map.immediateRedraw();
-//          }
-//        })
+
+    _renderer = new PixiRenderer(context, supersurface, surface, overlay);
 
     map.dimensions(utilGetDimensions(selection));
 
     context.background().initDragAndDrop();
 
-//
-//    _doubleTapHandler
-//      .on('doubleUp.map', (d3_event, p0) => {
-//        if (!_dblClickZoomEnabled) return;
-//
-////      // don't zoom if targeting something other than the map itself
-////      if (typeof d3_event.target.__data__ === 'object' &&
-////          // or area fills
-////          !d3_select(d3_event.target).classed('fill')) return;
-//
-//        const zoomOut = d3_event.shiftKey;
-//        let t = projection.transform();
-//        let p1 = t.invert(p0);
-//        t = t.scale(zoomOut ? 0.5 : 2);
-//        t.x = p0[0] - p1[0] * t.k;
-//        t.y = p0[1] - p1[1] * t.k;
-//        map.transformEase(t);
-//      });
 
-    //
-    // Setup events that cause the map to redraw
-    //
-
+    // Setup events that cause the map to redraw...
     // context.features()
     //   .on('redraw.map', map.immediateRedraw);
 
@@ -200,705 +134,390 @@ export function rendererMap(context) {
     });
 
     context.behaviors.get('map-interaction')
-      .on('transformchanged', map.setTransform);
-
+      .on('transformchanged', map.transform);
   }
 
 
+  map.init = () => { /* noop */ };
 
-//     function zoomEventFilter(d3_event) {
-//
-//       // Get rid of double-click handling while we are drawing stuff.
-//       if (d3_event.type === 'dblclick' && !_dblClickZoomEnabled) {
-//         return false;
-//       }
-//  //      // Fix for #2151, (see also d3/d3-zoom#60, d3/d3-brush#18)
-//  //      // Intercept `mousedown` and check if there is an orphaned zoom gesture.
-//  //      // This can happen if a previous `mousedown` occurred without a `mouseup`.
-//  //      // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
-//  //      // so that d3-zoom won't stop propagation of new `mousedown` events.
-//  //      if (d3_event.type === 'mousedown') {
-//  //        let hasOrphan = false;
-//  //        let listeners = window.__on;
-//  //        for (let i = 0; i < listeners.length; i++) {
-//  //          const listener = listeners[i];
-//  //          if (listener.name === 'zoom' && listener.type === 'mouseup') {
-//  //            hasOrphan = true;
-//  //            break;
-//  //          }
-//  //        }
-//  //        if (hasOrphan) {
-//  //          let event = window.CustomEvent;
-//  //          if (event) {
-//  //            event = new event('mouseup');
-//  //          } else {
-//  //            event = window.document.createEvent('Event');
-//  //            event.initEvent('mouseup', false, false);
-//  //          }
-//  //          // Event needs to be dispatched with an event.view property.
-//  //          event.view = window;
-//  //          window.dispatchEvent(event);
-//  //        }
-//  //      }
-//  //
-//       return d3_event.button !== 2;  // ignore right clicks
-//     }
+  /**
+   * dimensions
+   * Set/Get the map dimensions
+   * @param  val?       Array [x,y] to set the dimensions to
+   * @return map dimensions -or- this
+   */
+  map.dimensions = function(val) {
+    if (!arguments.length) return _dimensions;
+
+    _dimensions = val;
+    context.projection.dimensions([[0, 0], _dimensions]);
+    _renderer.resize(_dimensions[0], _dimensions[1]);
+    return map;
+  };
+
+  function _centerPixel() {
+    return vecScale(_dimensions, 0.5);
+  }
 
 
-    function pxCenter() {
-      return vecScale(_dimensions, 0.5);
+  // Throttled redraw - Redraw no more than once every n milliseconds.
+  // const _throttledRedraw = _throttle(_redraw, 200);
+
+  // Debounced redraw - Wait n milliseconds after these calls stop to draw again.
+  // const _debouncedRedraw = _debounce(_redraw, 100);
+
+  // Our deferral strategy is to use debounce if we are zooming and throttle otherwise
+  map.deferredRedraw = () => {
+    if (!_redrawEnabled) return;
+    _renderer.deferredRender();
+    // if (_isTransformed && _transformLast.k !== _transformStart.k) {
+    //   _throttledRedraw.cancel();
+    //   _debouncedRedraw();
+    // } else {
+      // _throttledRedraw();
+    // }
+  };
+
+  // Immediate redraw
+  map.immediateRedraw = () => {
+    if (!_redrawEnabled) return;
+    _renderer.render();
+    dispatch.call('drawn', this, { full: true });
+    // _throttledRedraw.cancel();
+    // _debouncedRedraw.cancel();
+    // _redraw();
+  };
+
+//  function _redraw() {
+//    if (!_renderer || !_redrawEnabled) return;
+//    _renderer.render();
+//    dispatch.call('drawn', this, { full: true });
+//  }
+
+
+  /**
+   * mouse
+   * Gets the current [x,y] location of the pointer
+   * @return  Array [x,y] (or `null` if the map is not interactive)
+   */
+  map.mouse = () => {
+    const behavior = context.behaviors.get('map-interaction');
+    return behavior && behavior.coord;
+  };
+
+  /**
+   * mouseCoordinates
+   * Gets the current [lon,lat] location of the pointer
+   * @return  Array [lon,lat] (or location at the center of the map)
+   */
+  map.mouseCoordinates = () => {
+    const coord = map.mouse() || _centerPixel();
+    return context.projection.invert(coord);
+  };
+
+
+  /**
+   * setTransform
+   * Set/Get the map transform
+   * IF setting, will schedule an update of map transform/projection.
+   * All convenience methods for adjusting the map go through here.
+   *   (the old way did a round trip through the d3-zoom event system)
+   * @param  t          Transform Object with `x`,`y`,`k` properties.
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return map transform -or- this
+   */
+  map.transform = function(t2, duration) {
+    if (!arguments.length) {
+      return context.projection.transform();
+    }
+    if (duration === undefined) {
+      duration = 0;
+    }
+    _renderer.setTransform(t2, duration);
+    return map;
+  };
+
+  /**
+   * centerZoom
+   * Set both center and zoom at the same time
+   * @param  loc2       Array [lon,lat] to set the center to
+   * @param  z2         Number to set the zoom to
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return this
+   */
+  map.centerZoom = (loc2, z2, duration = 0) => {
+    const c = map.center();
+    const z = map.zoom();
+    if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
+      return map;
     }
 
+    const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
+    let proj = new Projection();
+    proj.transform(context.projection.transform()); // make copy
+    proj.scale(k2);
 
-    map.init = function() {
-      /* noop */
-    };
+    let t = proj.translate();
+    const point = proj.project(loc2);
+    const center = _centerPixel();
+    const delta = vecSubtract(center, point);
+    t = vecAdd(t, delta);
 
-    // Throttled redraw - Redraw no more than once every n milliseconds.
-    const throttledRedraw = _throttle(redraw, 200);
+    return map.transform({ x: t[0], y: t[1], k: k2 }, duration);
+  };
 
-    // Debounced redraw - Wait n milliseconds after these calls stop to draw again.
-    const debouncedRedraw = _debounce(redraw, 100);
+  /**
+   * center
+   * Set/Get the map center
+   * @param  loc2?      Array [lon,lat] to set the center to
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return map center -or- this
+   */
+  map.center = function(loc2, duration) {
+    if (!arguments.length) {
+      return context.projection.invert(_centerPixel());
+    }
+    if (duration === undefined) {
+      duration = 0;
+    }
+    loc2[0] = clamp(loc2[0] || 0, -180, 180);
+    loc2[1] = clamp(loc2[1] || 0, -90, 90);
+    return map.centerZoom(loc2, map.zoom(), duration);
+  };
 
-    // Our deferral strategy is to use debounce if we are zooming and throttle otherwise
-    map.deferredRedraw = function() {
-      if (_isTransformed && _transformLast.k !== _transformStart.k) {
-        throttledRedraw.cancel();
-        debouncedRedraw();
-      } else {
-        throttledRedraw();
-      }
-    };
+  /**
+   * zoom
+   * Set/Get the map zoom
+   * @param  z2?        Number to set the zoom to
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return map zoom -or- this
+   */
+  map.zoom = function(z2, duration) {
+    if (!arguments.length) {
+      return Math.max(0, geoScaleToZoom(context.projection.scale(), TILESIZE));
+    }
+    if (duration === undefined) {
+      duration = 0;
+    }
+    z2 = clamp(z2 || 0, MINZOOM, MAXZOOM);
+    return map.centerZoom(map.center(), z2, duration);
+  };
 
-    // Immediate redraw
-    map.immediateRedraw = function() {
-      throttledRedraw.cancel();
-      debouncedRedraw.cancel();
-      redraw();
-    };
+  /**
+   * pan
+   * Pan the map by given pixel amount
+   * @param  delta      Array [dx,dy] amount to pan the map
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return this
+   */
+  map.pan = (delta, duration = 0) => {
+    const t = context.projection.transform();
+    return map.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
+  };
+
+  /**
+   * zoomTo
+   * Adjust the map to fit to see the given entity or entities  (should be called `fitTo`)
+   * @param  val        Entity or Array of entities to fit in the map view
+   * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return this
+   */
+  map.zoomTo = (val, duration = 0) => {
+    let extent;
+    if (Array.isArray(val)) {
+      extent = utilTotalExtent(val, context.graph());
+    } else {
+      extent = val.extent(context.graph());
+    }
+    if (!isFinite(extent.area())) return map;
+
+    const z2 = clamp(map.trimmedExtentZoom(extent), 0, 20);
+    return map.centerZoom(extent.center(), z2, duration);
+  };
 
 
-    function redraw() {
-      if (!_renderer || !_redrawEnabled) return;
+  // convenience methods for zomming in and out
+  function _zoomIn(delta) {
+    map.centerZoom(map.center(), ~~map.zoom() + delta, 250);
+  }
+  function _zoomOut(delta) {
+    map.centerZoom(map.center(), ~~map.zoom() - delta, 250);
+  }
 
-      _renderer.render();
-      dispatch.call('drawn', this, { full: true });
+  map.zoomIn = () => _zoomIn(1);
+  map.zoomInFurther = () => _zoomIn(4);
+  map.canZoomIn = () => map.zoom() < MAXZOOM;
+
+  map.zoomOut = () => _zoomOut(1);
+  map.zoomOutFurther = () => _zoomOut(4);
+  map.canZoomOut = () => map.zoom() > MINZOOM;
+
+  // convenience methods for the above, but with easing
+  map.transformEase = (t2, duration = 250) => map.transform(t2, duration);
+  map.centerZoomEase = (loc2, z2, duration = 250) => map.centerZoom(loc2, z2, duration);
+  map.centerEase = (loc2, duration = 250) => map.center(loc2, duration);
+  map.zoomEase = (z2, duration = 250) => map.zoom(z2, duration);
+  map.zoomToEase = (val, duration = 250) => map.zoomTo(val, duration);
+
+
+  /**
+   * effectiveZoom
+   * The "effective" zoom can be more useful for controlling the experience of the user.
+   * This zoom is adjusted by latitude.
+   * You can think of it as "what the zoom would be if we were editing at the equator"
+   * For example, if we are editing in Murmansk, Russia, at about 69° North latitude,
+   *  a true zoom of 14.6 corresponds to an effective zoom of 16.
+   * Put another way, even at z14.6 the user should be allowed to edit the map,
+   *  and it should be styled as if it were z16.
+   *
+   * @return  effective zoom
+   */
+  map.effectiveZoom = () => {
+    const lat = map.center()[1];
+    const z = map.zoom();
+    const atLatitude = geoMetersToLon(1, lat);
+    const atEquator = geoMetersToLon(1, 0);
+    const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
+    return Math.min(z + extraZoom, MAXZOOM);
+  };
+
+  /**
+   * extent
+   * Set/Get the map extent
+   * @param  extent?    Extent Object to set the map to
+   * @return map extent -or- this
+   */
+  map.extent = function(extent) {
+    if (!arguments.length) {
+      return new Extent(
+        context.projection.invert([0, _dimensions[1]]),
+        context.projection.invert([_dimensions[0], 0])
+      );
+    } else {
+      return map.centerZoom(extent.center(), map.extentZoom(extent));
+    }
+  };
+
+  /**
+   * trimmedExtent
+   * Set/Get the map extent, but include some padding for header, footer, etc.
+   * @param  extent?    Extent Object to set the map to
+   * @return map extent -or- this
+   */
+  map.trimmedExtent = function(extent) {
+    if (!arguments.length) {
+      const headerY = 71;
+      const footerY = 30;
+      const pad = 10;
+      return new Extent(
+        context.projection.invert([pad, _dimensions[1] - footerY - pad]),
+        context.projection.invert([_dimensions[0] - pad, headerY + pad])
+      );
+    } else {
+      return map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
+    }
+  };
+
+
+  function _calcExtentZoom(extent, dim) {
+    const tl = context.projection.project([extent.min[0], extent.max[1]]);
+    const br = context.projection.project([extent.max[0], extent.min[1]]);
+
+    // Calculate maximum zoom that fits extent
+    const hFactor = (br[0] - tl[0]) / dim[0];
+    const vFactor = (br[1] - tl[1]) / dim[1];
+    const hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
+    const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
+    const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
+
+    const currZoom = map.zoom();
+    return isFinite(zoomDiff) ? (currZoom - zoomDiff) : currZoom;
+  }
+
+
+  map.extentZoom = (extent) => {
+    return _calcExtentZoom(extent, _dimensions);
+  };
+
+
+  map.trimmedExtentZoom = (extent) => {
+    const trimY = 120;
+    const trimX = 40;
+    const trimmed = vecSubtract(_dimensions, [trimX, trimY]);
+    return _calcExtentZoom(extent, trimmed);
+  };
+
+
+  map.toggleHighlightEdited = () => {
+    surface.classed('highlight-edited', !surface.classed('highlight-edited'));
+    map.immediateRedraw();
+    dispatch.call('changeHighlighting', this);
+  };
+
+
+  map.areaFillOptions = ['wireframe', 'partial', 'full'];
+
+
+  map.activeAreaFill = function(val) {
+    if (!arguments.length) {
+      return prefs('area-fill') || 'partial';
     }
 
-
-//    function gestureChange(d3_event) {
-//      // Remap Safari gesture events to wheel events - #5492
-//      // We want these disabled most places, but enabled for zoom/unzoom on map surface
-//      // https://developer.mozilla.org/en-US/docs/Web/API/GestureEvent
-//      const e = d3_event;
-//      e.preventDefault();
-//
-//      const props = {
-//        deltaMode: 0,    // dummy values to ignore in zoomPan
-//        deltaY: 1,       // dummy values to ignore in zoomPan
-//        clientX: e.clientX,
-//        clientY: e.clientY,
-//        screenX: e.screenX,
-//        screenY: e.screenY,
-//        x: e.x,
-//        y: e.y
-//      };
-//
-//      let e2 = new WheelEvent('wheel', props);
-//      e2._scale = e.scale;          // preserve the original scale
-//      e2._rotation = e.rotation;    // preserve the original rotation
-//
-//      _selection.node().dispatchEvent(e2);
-//    }
-
-//
-//    function zoomPan(event, key, transform) {
-//      if (!_zoomPanEnabled) return;
-//      if (!_dblClickZoomEnabled && event.sourceEvent?.type === 'dblclick') return;
-//
-//      var source = event && event.sourceEvent || event;
-//      var eventTransform = transform || (event && event.transform);
-//      var x = eventTransform.x;
-//      var y = eventTransform.y;
-//      var k = eventTransform.k;
-//
-//      // Special handling of 'wheel' events:
-//      // They might be triggered by the user scrolling the mouse wheel,
-//      // or 2-finger pinch/zoom gestures, the transform may need adjustment.
-//      if (source && source.type === 'wheel') {
-//
-////            // assume that the gesture is already handled by pointer events
-////            if (_pointerDown) return;
-//
-//          var detected = utilDetect();
-//          var dX = source.deltaX;
-//          var dY = source.deltaY;
-//          var x2 = x;
-//          var y2 = y;
-//          var k2 = k;
-//          var t0, p0, p1;
-//
-//          // Normalize mousewheel scroll speed (Firefox) - #3029
-//          // If wheel delta is provided in LINE units, recalculate it in PIXEL units
-//          // We are essentially redoing the calculations that occur here:
-//          //   https://github.com/d3/d3-zoom/blob/78563a8348aa4133b07cac92e2595c2227ca7cd7/src/zoom.js#L203
-//          // See this for more info:
-//          //   https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
-//          if (source.deltaMode === 1 /* LINE */ ) {
-//              // Convert from lines to pixels, more if the user is scrolling fast.
-//              // (I made up the exp function to roughly match Firefox to what Chrome does)
-//              // These numbers should be floats, because integers are treated as pan gesture below.
-//              var lines = Math.abs(source.deltaY);
-//              var sign = (source.deltaY > 0) ? 1 : -1;
-//              dY = sign * clamp(
-//                  Math.exp((lines - 1) * 0.75) * 4.000244140625,
-//                  4.000244140625, // min
-//                  350.000244140625 // max
-//              );
-//
-//              // On Firefox Windows and Linux we always get +/- the scroll line amount (default 3)
-//              // There doesn't seem to be any scroll acceleration.
-//              // This multiplier increases the speed a little bit - #5512
-//              if (detected.os !== 'mac') {
-//                  dY *= 5;
-//              }
-//
-//              // recalculate x2,y2,k2
-//              t0 = _isTransformed ? _transformLast : _transformStart;
-//              p0 = _getMouseCoords(source);
-//              p1 = t0.invert(p0);
-//              k2 = t0.k * Math.pow(2, -dY / 500);
-//              k2 = clamp(k2, MINK, MAXK);
-//              x2 = p0[0] - p1[0] * k2;
-//              y2 = p0[1] - p1[1] * k2;
-//
-//              // 2 finger map pinch zooming (Safari) - #5492
-//              // These are fake `wheel` events we made from Safari `gesturechange` events..
-//          } else if (source._scale) {
-//              // recalculate x2,y2,k2
-//              t0 = _gestureTransformStart;
-//              p0 = _getMouseCoords(source);
-//              p1 = t0.invert(p0);
-//              k2 = t0.k * source._scale;
-//              k2 = clamp(k2, MINK, MAXK);
-//              x2 = p0[0] - p1[0] * k2;
-//              y2 = p0[1] - p1[1] * k2;
-//
-//              // 2 finger map pinch zooming (all browsers except Safari) - #5492
-//              // Pinch zooming via the `wheel` event will always have:
-//              // - `ctrlKey = true`
-//              // - `deltaY` is not round integer pixels (ignore `deltaX`)
-//          } else if (source.ctrlKey && !isInteger(dY)) {
-//              dY *= 6; // slightly scale up whatever the browser gave us
-//
-//              // recalculate x2,y2,k2
-//              t0 = _isTransformed ? _transformLast : _transformStart;
-//              p0 = _getMouseCoords(source);
-//              p1 = t0.invert(p0);
-//              k2 = t0.k * Math.pow(2, -dY / 500);
-//              k2 = clamp(k2, MINK, MAXK);
-//              x2 = p0[0] - p1[0] * k2;
-//              y2 = p0[1] - p1[1] * k2;
-//
-//              // Trackpad scroll zooming with shift or alt/option key down
-//          } else if ((source.altKey || source.shiftKey) && isInteger(dY)) {
-//              // recalculate x2,y2,k2
-//              t0 = _isTransformed ? _transformLast : _transformStart;
-//              p0 = _getMouseCoords(source);
-//              p1 = t0.invert(p0);
-//              k2 = t0.k * Math.pow(2, -dY / 500);
-//              k2 = clamp(k2, MINK, MAXK);
-//              x2 = p0[0] - p1[0] * k2;
-//              y2 = p0[1] - p1[1] * k2;
-//
-//              // 2 finger map panning (Mac only, all browsers except Firefox #8595) - #5492, #5512
-//              // Panning via the `wheel` event will always have:
-//              // - `ctrlKey = false`
-//              // - `deltaX`,`deltaY` are round integer pixels
-//          } else if (detected.os === 'mac' && detected.browser !== 'Firefox' && !source.ctrlKey && isInteger(dX) && isInteger(dY)) {
-//              p1 = projection.translate();
-//              x2 = p1[0] - dX;
-//              y2 = p1[1] - dY;
-//              k2 = projection.scale();
-//              k2 = clamp(k2, MINK, MAXK);
-//          }
-//
-//          // something changed - replace the event transform
-//          if (x2 !== x || y2 !== y || k2 !== k) {
-//              x = x2;
-//              y = y2;
-//              k = k2;
-//              eventTransform = d3_zoomIdentity.translate(x2, y2).scale(k2);
-//              if (_zoomPanHandler._transform) {
-//                  // utilZoomPan interface
-//                  _zoomPanHandler._transform(eventTransform);
-//              } else {
-//                  // d3_zoom interface
-//                  _selection.node().__zoom = eventTransform;
-//              }
-//          }
-//      }
-//
-//      if (_transformStart.x === x &&
-//          _transformStart.y === y &&
-//          _transformStart.k === k) {
-//          return; // no change
-//      }
-//
-//      k = clamp(k, MINK, MAXK);
-//
-//      projection.transform(eventTransform);
-//
-//      var scale = k / _transformStart.k;
-//      var tX = (x / scale - _transformStart.x) * scale;
-//      var tY = (y / scale - _transformStart.y) * scale;
-//
-//      if (context.inIntro()) {
-//          curtainProjection.transform({
-//              x: x - tX,
-//              y: y - tY,
-//              k: k
-//          });
-//      }
-//
-//      _isTransformed = true;
-//      _transformLast = eventTransform;
-//
-//      utilSetTransform(supersurface, tX, tY, scale);
-//      utilSetTransform(overlay, -tX, -tY, scale);
-//      map.deferredRedraw();
-//
-//      dispatch.call('move', this, map);
-//
-//      function isInteger(val) {
-//          return typeof val === 'number' && isFinite(val) && Math.floor(val) === val;
-//      }
-//    }
+    prefs('area-fill', val);
+    if (val !== 'wireframe') {
+      prefs('area-fill-toggle', val);
+    }
+    map.immediateRedraw();
+    dispatch.call('changeAreaFill', this);
+    return map;
+  };
 
 
+  map.toggleWireFrameMode = () => {
+    _wireFrameMode = !_wireFrameMode;
+    _renderer.scene.dirtyScene();
+    map.immediateRedraw();
+  };
 
-    //
-    // Update the map transform/projection directly.
-    //   (the old way did a round trip through the d3-zoom event system)
-    // Sets a top level temporary transform in superfurface/overlay.
-    // Pass a transform Object with `x`,`y`,`k` properties.
-    //
-    map.setTransform = (t) => {
-      const tOld = _transformLast || _transformStart;
-      if (t.x === tOld.x && t.y === tOld.y && t.k === tOld.k) return;   // no change
+  map.wireFrameMode = () => _wireFrameMode;
 
-      const tNew = Object.assign({}, tOld, t);
-      projection.transform(tNew);
+  map.toggleWireframe = () => {
+    let activeFill = map.activeAreaFill();
+    map.toggleWireFrameMode();
 
-      // Calculate delta from last full redraw (stored in _transformStart)
-      const scale = tNew.k / _transformStart.k;
-      const dx = (tNew.x / scale - _transformStart.x) * scale;
-      const dy = (tNew.y / scale - _transformStart.y) * scale;
-
-      _isTransformed = true;
-      _transformLast = tNew;
-
-      utilSetTransform(supersurface, dx, dy, scale);
-      utilSetTransform(overlay, -dx, -dy, scale);
-      map.deferredRedraw();
-
-      // dispatch.call('move', this, map);
-    };
-
-
-    //
-    // Removes the temporary transforms held in superfurface/overlay.
-    // Called by the renderer code when a full redraw actually happens.
-    //
-    map.resetTransform = () => {
-      if (!_isTransformed) return false;
-
-      utilSetTransform(supersurface, 0, 0);
-      utilSetTransform(overlay, 0, 0);
-
-      _isTransformed = false;
-      _transformStart = projection.transform();
-      _transformLast = null;
-
-      if (context.inIntro()) {
-        curtainProjection.transform(projection.transform());
-      }
-      return true;
-    };
-
-
-    // returns [x,y]
-    map.mouse = function() {
-      const behavior = context.behaviors.get('map-interaction');
-      return behavior ? behavior.coord : [0, 0];
-    };
-
-
-    // returns [lon,lat]
-    map.mouseCoordinates = function() {
-      const coord = map.mouse() || pxCenter();
-      return projection.invert(coord);
-    };
-
-
-    function _setTransform(t2, duration, force) {
-      const t = projection.transform();
-      if (!force && t2.k === t.k && t2.x === t.x && t2.y === t.y) return false;
-
-      if (duration) {
-        _selection
-          .transition()
-          .duration(duration)
-          .on('start', () => map.startEase())
-          .call(_zoomPanHandler.transform, d3_zoomIdentity.translate(t2.x, t2.y).scale(t2.k));
-      } else {
-        projection.transform(t2);
-        _transformStart = t2;
-        _selection.call(_zoomPanHandler.transform, _transformStart);
-      }
-
-      return true;
+    if (activeFill === 'wireframe') {
+      activeFill = prefs('area-fill-toggle') || 'partial';
+    } else {
+      activeFill = 'wireframe';
     }
 
+    map.activeAreaFill(activeFill);
+    return map;
+  };
 
-    function setCenterZoom(loc2, z2, duration, force) {
-      const c = map.center();
-      const z = map.zoom();
-      if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z && !force) return false;
 
-      const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
-      let proj = new Projection();
-      proj.transform(projection.transform()); // make copy
-      proj.scale(k2);
+  map.scene = () => _renderer && _renderer.scene;
 
-      let t = proj.translate();
-      const point = proj.project(loc2);
-      const center = pxCenter();
-      const delta = vecSubtract(center, point);
-      t = vecAdd(t, delta);
+  map.renderer = () => _renderer;
 
-      return _setTransform(d3_zoomIdentity.translate(t[0], t[1]).scale(k2), duration, force);
-    }
+  map.dblclickZoomEnable = function (val) {
+    if (!arguments.length) return _dblClickZoomEnabled;
+    _dblClickZoomEnabled = val;
+    return map;
+  };
 
+  map.zoomPanEnable = function (val) {
+    if (!arguments.length) return _zoomPanEnabled;
+    _zoomPanEnabled = val;
+    return map;
+  };
 
-    map.pan = function(delta, duration) {
-      let t = projection.translate();
-      let k = projection.scale();
+  map.redrawEnable = function (val) {
+    if (!arguments.length) return _redrawEnabled;
+    _redrawEnabled = val;
+    return map;
+  };
 
-      t = vecAdd(t, delta);
 
-      if (duration) {
-        _selection
-          .transition()
-          .duration(duration)
-          .on('start', () => map.startEase())
-          .call(_zoomPanHandler.transform, d3_zoomIdentity.translate(t[0], t[1]).scale(k));
-      } else {
-        projection.translate(t);
-        _transformStart = projection.transform();
-        _selection.call(_zoomPanHandler.transform, _transformStart);
-        dispatch.call('move', this, map);
-        map.immediateRedraw();
-      }
-
-      return map;
-    };
-
-
-    map.dimensions = function(val) {
-      if (!arguments.length) return _dimensions;
-
-      _dimensions = val;
-      projection.dimensions([[0, 0], _dimensions]);
-      _getMouseCoords = utilFastMouse(supersurface.node());
-      if (_renderer) {
-        _renderer.resize(_dimensions[0], _dimensions[1]);
-      }
-
-      return map;
-    };
-
-
-    function zoomIn(delta) {
-      setCenterZoom(map.center(), ~~map.zoom() + delta, 250, true);
-    }
-
-    function zoomOut(delta) {
-      setCenterZoom(map.center(), ~~map.zoom() - delta, 250, true);
-    }
-
-    map.zoomIn = () => zoomIn(1);
-    map.zoomInFurther = () => zoomIn(4);
-    map.canZoomIn = () => map.zoom() < MAXZOOM;
-
-    map.zoomOut = () => zoomOut(1);
-    map.zoomOutFurther = () => zoomOut(4);
-    map.canZoomOut = () => map.zoom() > MINZOOM;
-
-
-    map.center = function(loc2) {
-      if (!arguments.length) {
-        return projection.invert(pxCenter());
-      }
-
-      if (setCenterZoom(loc2, map.zoom())) {
-        dispatch.call('move', this, map);
-      }
-
-      map.deferredRedraw();
-      return map;
-    };
-
-
-    // The "effective" zoom can be more useful for controlling the experience of the user.
-    // This zoom is adjusted by latitude.
-    //
-    // You can think of it as "what the zoom would be if we were editing at the equator"
-    //
-    // For example, if we are editing in Murmansk, Russia, at about 69° North latitude,
-    // a true zoom of 14.6 corresponds to an effective zoom of 16.
-    //
-    // Put another way, even at z14.6 the user should be allowed to edit the map,
-    // and it should be styled as if it were z16.
-    //
-    map.effectiveZoom = function() {
-      const lat = map.center()[1];
-      const z = map.zoom();
-      const atLatitude = geoMetersToLon(1, lat);
-      const atEquator = geoMetersToLon(1, 0);
-      const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
-      return Math.min(z + extraZoom, MAXZOOM);
-    };
-
-
-    map.zoom = function(z2) {
-      if (!arguments.length) {
-        return Math.max(geoScaleToZoom(projection.scale(), TILESIZE), 0);
-      }
-
-      z2 = clamp(z2, MINZOOM, MAXZOOM);
-
-      if (setCenterZoom(map.center(), z2)) {
-        dispatch.call('move', this, map);
-      }
-
-      map.deferredRedraw();
-      return map;
-    };
-
-
-    map.centerZoom = function(loc2, z2) {
-      if (setCenterZoom(loc2, z2)) {
-        dispatch.call('move', this, map);
-      }
-
-      map.deferredRedraw();
-      return map;
-    };
-
-
-    map.zoomTo = function(entity) {
-      const extent = entity.extent(context.graph());
-      if (!isFinite(extent.area())) return map;
-
-      const z2 = clamp(map.trimmedExtentZoom(extent), 0, 20);
-      return map.centerZoom(extent.center(), z2);
-    };
-
-
-    map.centerEase = function(loc2, duration) {
-      duration = duration || 250;
-      setCenterZoom(loc2, map.zoom(), duration);
-      return map;
-    };
-
-
-    map.zoomEase = function(z2, duration) {
-      duration = duration || 250;
-      setCenterZoom(map.center(), z2, duration, false);
-      return map;
-    };
-
-
-    map.centerZoomEase = function(loc2, z2, duration) {
-      duration = duration || 250;
-      setCenterZoom(loc2, z2, duration, false);
-      return map;
-    };
-
-
-    map.transformEase = function(t2, duration) {
-      duration = duration || 250;
-      _setTransform(t2, duration, false /* don't force */ );
-      return map;
-    };
-
-
-    map.zoomToEase = function(val, duration) {
-      let extent;
-      if (Array.isArray(val)) {
-        extent = utilTotalExtent(val, context.graph());
-      } else {
-        extent = val.extent(context.graph());
-      }
-      if (!isFinite(extent.area())) return map;
-
-      const z2 = clamp(map.trimmedExtentZoom(extent), 0, 20);
-      return map.centerZoomEase(extent.center(), z2, duration);
-    };
-
-
-    map.startEase = function() {
-      utilBindOnce(surface, 'pointerdown.ease', () => map.cancelEase());
-      return map;
-    };
-
-
-    map.cancelEase = function() {
-      _selection.interrupt();
-      return map;
-    };
-
-
-    map.extent = function(extent) {
-      if (!arguments.length) {
-        return new Extent(
-          projection.invert([0, _dimensions[1]]),
-          projection.invert([_dimensions[0], 0])
-        );
-      } else {
-        map.centerZoom(extent.center(), map.extentZoom(extent));
-      }
-    };
-
-
-    map.trimmedExtent = function(extent) {
-      if (!arguments.length) {
-        const headerY = 71;
-        const footerY = 30;
-        const pad = 10;
-        return new Extent(
-          projection.invert([pad, _dimensions[1] - footerY - pad]),
-          projection.invert([_dimensions[0] - pad, headerY + pad])
-        );
-      } else {
-        map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
-      }
-    };
-
-
-    function calcExtentZoom(extent, dim) {
-      const tl = projection.project([extent.min[0], extent.max[1]]);
-      const br = projection.project([extent.max[0], extent.min[1]]);
-
-      // Calculate maximum zoom that fits extent
-      const hFactor = (br[0] - tl[0]) / dim[0];
-      const vFactor = (br[1] - tl[1]) / dim[1];
-      const hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
-      const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
-      const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
-
-      const currZoom = map.zoom();
-      return isFinite(zoomDiff) ? (currZoom - zoomDiff) : currZoom;
-    }
-
-
-    map.extentZoom = function(extent) {
-      return calcExtentZoom(extent, _dimensions);
-    };
-
-
-    map.trimmedExtentZoom = function(extent) {
-      const trimY = 120;
-      const trimX = 40;
-      const trimmed = vecSubtract(_dimensions, [trimX, trimY]);
-      return calcExtentZoom(extent, trimmed);
-    };
-
-
-    map.toggleHighlightEdited = function() {
-      surface.classed('highlight-edited', !surface.classed('highlight-edited'));
-      map.immediateRedraw();
-      dispatch.call('changeHighlighting', this);
-    };
-
-
-    map.areaFillOptions = ['wireframe', 'partial', 'full'];
-
-
-    map.activeAreaFill = function(val) {
-      if (!arguments.length) return prefs('area-fill') || 'partial';
-
-      prefs('area-fill', val);
-      if (val !== 'wireframe') {
-        prefs('area-fill-toggle', val);
-      }
-      map.immediateRedraw();
-      dispatch.call('changeAreaFill', this);
-      return map;
-    };
-
-
-    map.toggleWireFrameMode = function () {
-      _wireFrameMode = !_wireFrameMode;
-      _renderer.scene.dirtyScene();
-      map.immediateRedraw();
-    };
-
-
-    map.wireFrameMode = function () {
-      return _wireFrameMode;
-    };
-
-
-    map.toggleWireframe = function() {
-      let activeFill = map.activeAreaFill();
-      map.toggleWireFrameMode();
-
-      if (activeFill === 'wireframe') {
-        activeFill = prefs('area-fill-toggle') || 'partial';
-      } else {
-        activeFill = 'wireframe';
-      }
-
-      map.activeAreaFill(activeFill);
-      return map;
-    };
-
-
-    map.scene = function() {
-      return _renderer && _renderer.scene;
-    };
-
-    map.renderer = function() {
-      return _renderer;
-    };
-
-    map.dblclickZoomEnable = function(val) {
-      if (!arguments.length) return _dblClickZoomEnabled;
-      _dblClickZoomEnabled = val;
-      return map;
-    };
-
-    map.zoomPanEnable = (val) => {
-      if (!arguments.length) return _zoomPanEnabled;
-      _zoomPanEnabled = val;
-      return map;
-    };
-
-    map.redrawEnable = function(val) {
-      if (!arguments.length) return _redrawEnabled;
-      _redrawEnabled = val;
-      return map;
-    };
-
-    map.isTransformed = function() {
-      return _isTransformed;
-    };
-
-//    map.doubleUpHandler = function() {
-//      return _doubleTapHandler;
-//    };
-
-    return utilRebind(map, dispatch, 'on');
+  return utilRebind(map, dispatch, 'on');
 }

@@ -5,8 +5,11 @@ import { Projection } from '@id-sdk/math';
 
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
+import { utilSetTransform } from '../util/util';
 
 let _sharedTextures;   // singleton (for now)
+
+const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 
 
 /**
@@ -25,17 +28,29 @@ export class PixiRenderer {
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
    *
    * @param  context        Global shared application context
-   * @param  supersurface   parent `div`
-   * @param  surface        `canvas` element to render to
+   * @param  supersurface   D3 selection to the parent `div` "supersurface"
+   * @param  surface        D3 selection to the sibling `canvas` "surface"
+   * @param  overlay        D3 selection to the sibling `div` "overlay"
    */
-  constructor(context, supersurface, surface) {
+  constructor(context, supersurface, surface, overlay) {
     this.context = context;
-    this._frame = 0;
+    this.supersurface = supersurface;
+    this.surface = surface;
+    this.overlay = overlay;
+
+    this._frame = 0;              // counter that increments
+    this._timeToNextRender = 0;   // milliseconds of time to defer rendering
     this._appPending = false;
     this._drawPending = false;
 
+    // Properties used to manage the scene transform
+    this.pixiProjection = new Projection();
+    this._transformDraw = null;      // transform at time of last draw
+    this._isTransformed = false;     // is the supersurface offset?
+    this._transformEaseParams = null;
+
     // Make sure callbacks have `this` bound correctly
-    this.tick = this.tick.bind(this);
+    this._tick = this._tick.bind(this);
     this._onHoverChange = this._onHoverChange.bind(this);
     this._onSelectChange = this._onSelectChange.bind(this);
 
@@ -64,11 +79,11 @@ export class PixiRenderer {
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
-      resizeTo: supersurface,
+      resizeTo: supersurface.node(),
       resolution: window.devicePixelRatio,
       sharedLoader: true,
       sharedTicker: true,
-      view: surface
+      view: surface.node()
     });
 
     // NEW: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
@@ -97,7 +112,7 @@ export class PixiRenderer {
     const defaultListener = ticker._head.next;
     ticker.remove(defaultListener.fn, defaultListener.context);
 
-    ticker.add(this.tick, this);
+    ticker.add(this._tick, this);
     ticker.maxFPS = 30;
     ticker.start();
 
@@ -110,7 +125,6 @@ export class PixiRenderer {
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
 
     // Setup other classes
-    this.pixiProjection = new Projection();
     this.scene = new PixiScene(this);
 
     // Texture Manager should only be created once
@@ -149,7 +163,7 @@ export class PixiRenderer {
     }).filter(Boolean);
 
     this.scene.selectFeatures(featureIDs);
-    this._appPending = true;
+    this.render();
   }
 
   /**
@@ -170,18 +184,18 @@ export class PixiRenderer {
     }
 
     this.scene.hoverFeatures(featureIDs);
-    this._appPending = true;
+    this.render();
   }
 
 
   /**
-   * tick
+   * _tick
    * This is a Pixi.Ticker listener that runs in a `requestAnimationFrame` game loop.
    * We can use this to determine the true frame rate that we're running at,
    * and schedule work to happen at opportune times (within animation frame boundaries)
    */
-  tick() {
-    // const ticker = this.pixi.ticker;
+  _tick() {
+    const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
     // For now, we will perform either APP (RapiD prepares scene graph) or DRAW (Pixi render) during a tick.
@@ -201,7 +215,7 @@ export class PixiRenderer {
       const drawEnd = `draw-${frame}-end`;
       window.performance.mark(drawStart);
 
-      this.draw();  // note that DRAW increments the frame counter
+      this._draw();  // note that DRAW increments the frame counter
 
       window.performance.mark(drawEnd);
       window.performance.measure(`draw-${frame}`, drawStart, drawEnd);
@@ -211,43 +225,149 @@ export class PixiRenderer {
       return;
     }
 
+    // Process the current scene's transform
+    this._tform();
+
 // shader experiment - always render
 // this._appPending = true;
 
     // Do APP to prepare the next frame..
     if (this._appPending) {
-      const frame = this._frame;
-      const appStart = `app-${frame}-start`;
-      const appEnd = `app-${frame}-end`;
-      window.performance.mark(appStart);
+      this._timeToNextRender -= ticker.deltaMS;
 
-      this.app();
+      if (this._timeToNextRender >= 0) {   // render later
+        return;
 
-      window.performance.mark(appEnd);
-      window.performance.measure(`app-${frame}`, appStart, appEnd);
-      // const measureApp = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
-      // const durationApp = measureApp.duration.toFixed(1);
-      // console.log(`app-${frame} : ${durationApp} ms`);
-      return;
+      } else {  // render now
+        const frame = this._frame;
+        const appStart = `app-${frame}-start`;
+        const appEnd = `app-${frame}-end`;
+        window.performance.mark(appStart);
+
+        this._app();
+
+        window.performance.mark(appEnd);
+        window.performance.measure(`app-${frame}`, appStart, appEnd);
+    const measureApp = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
+    const durationApp = measureApp.duration.toFixed(1);
+    console.log(`app-${frame} : ${durationApp} ms`);
+        return;
+      }
     }
   }
 
+
+  /**
+   * deferredRender
+   * Schedules an APP pass but does not reset the timer
+   */
+  deferredRender() {
+    this._appPending = true;
+  }
 
   /**
    * render
    * Schedules an APP pass on the next available tick
    */
   render() {
+    this._timeToNextRender = 0;    // asap
+    this._appPending = true;
+  }
+
+  /**
+   * setTransform
+   * Updates the transform and projection
+   * @param  t           A Transform Object with `x, y, k` properties
+   * @param  duration?   Duration of the transition in milliseconds, defaults to 0ms (asap)
+   */
+  setTransform(t, duration = 0) {
+    if (duration > 0) {
+      const now = window.performance.now();
+      this._transformEaseParams = {
+        time0: now,
+        time1: now + duration,
+        xform0: this.context.projection.transform(),
+        xform1: t
+      };
+      console.log(`scheduled transform { x: ${t.x}, y: ${t.y}, k: ${t.k} }, duration = ${duration} ms`)
+
+    } else {   // change immediately
+      this._transformEaseParams = null;
+      this.context.projection.transform(t);
+      console.log(`immediate transform { x: ${t.x}, y: ${t.y}, k: ${t.k} }`)
+    }
     this._appPending = true;
   }
 
 
   /**
-   * app
+   * resize
+   * Resizes the canvas to the given dimensions
+   * @param  width    Width in pixels
+   * @param  height   Height in pixels
+   */
+  resize(width, height) {
+    this.pixi.renderer.resize(width, height);
+    this._appPending = true;
+  }
+
+
+  /**
+   * _tform
+   * On each tick, manage the scene's transform
+   * The few things we do here involve:
+   *  - if there is a transform ease in progress, compute the eased transform
+   *  - if the transform has changed from the last drawn transform,
+   *    apply the difference to the supersurface and overlay
+   */
+  _tform() {
+    // between APP and DRAW we dont want to change the transform at all
+    // this shouldn't happen, but we check for it just in case.
+    if (this._drawPending) return;
+
+    // Calculate the transform ease, if any
+    if (this._transformEaseParams) {
+      const { time0, time1, xform0, xform1 } = this._transformEaseParams;
+      const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
+      const [x1, y1, k1] = [xform1.x, xform1.y, xform1.k];
+      const now = window.performance.now();
+
+      // keep it simple - linear interpolate
+      const tween = Math.max(0, Math.min(1, (now - time0) / (time1 - time0)));
+      const xNow = x0 + ((x1 - x0) * tween);
+      const yNow = y0 + ((y1 - y0) * tween);
+      const kNow = k0 + ((k1 - k0) * tween);
+      this.context.projection.transform({ x: xNow, y: yNow, k: kNow });
+      console.log(`in TFORM, setting { x: ${xNow}, y: ${yNow}, k: ${kNow} }, tween = ${tween}`);
+
+      if (tween === 1) {  // we're done
+        this._transformEaseParams = null;
+      }
+    }
+
+    // Determine delta from last full draw and apply it to supersurface / overlay
+    const tCurr = this.context.projection.transform();
+    const tDraw = this._transformDraw;
+    if (!tDraw) return;  // haven't drawn yet!
+
+    const isChanged = this._isTransformed || (tDraw.x !== tCurr.x || tDraw.y !== tCurr.y || tDraw.k !== tCurr.k);
+    if (isChanged) {
+      const scale = tCurr.k / tDraw.k;
+      const dx = (tCurr.x / scale - tDraw.x) * scale;
+      const dy = (tCurr.y / scale - tDraw.y) * scale;
+      utilSetTransform(this.supersurface, dx, dy, scale);
+      utilSetTransform(this.overlay, -dx, -dy, scale);
+      this._isTransformed = true;
+    }
+  }
+
+
+  /**
+   * _app
    * The "RapiD" part of the drawing.
    * Where we set up the scene graph and tell Pixi what needs to be drawn.
    */
-  app() {
+  _app() {
     // Wait for textures to be loaded before attempting rendering.
     if (!this.textures || !this.textures.loaded) return;
 
@@ -279,11 +399,11 @@ export class PixiRenderer {
 
 
   /**
-   * draw
+   * _draw
    * The "Pixi" part of the drawing
    * Where it converts Pixi geometries into WebGL instructions.
    */
-  draw() {
+  _draw() {
 // like this? (offset in stage)
     this.pixi.render();
 //...or like this (offset in matrix)?
@@ -294,23 +414,17 @@ export class PixiRenderer {
     // };
     // this.pixi.renderer.render(stage, options);
 //
+    this._transformDraw = this.context.projection.transform();
+    this._timeToNextRender = THROTTLE;
 
-    this.context.map().resetTransform();
+    if (this._isTransformed) {
+      utilSetTransform(this.supersurface, 0, 0);
+      utilSetTransform(this.overlay, 0, 0);
+      this._isTransformed = false;
+    }
 
     this._drawPending = false;
     this._frame++;
-  }
-
-
-  /**
-   * resize
-   * Resizes the canvas to the given dimensions
-   * @param  width    Width in pixels
-   * @param  height   Height in pixels
-   */
-  resize(width, height) {
-    this.pixi.renderer.resize(width, height);
-    this._appPending = true;  // needs rerender asap
   }
 
 }
