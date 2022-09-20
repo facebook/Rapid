@@ -113,7 +113,6 @@ export class PixiRenderer {
     ticker.remove(defaultListener.fn, defaultListener.context);
 
     ticker.add(this._tick, this);
-    ticker.maxFPS = 30;
     ticker.start();
 
     // Setup the stage
@@ -225,7 +224,7 @@ export class PixiRenderer {
       return;
     }
 
-    // Process the current scene's transform
+    // Perform any updates to the scene's transform..
     this._tform();
 
 // shader experiment - always render
@@ -248,9 +247,9 @@ export class PixiRenderer {
 
         window.performance.mark(appEnd);
         window.performance.measure(`app-${frame}`, appStart, appEnd);
-    const measureApp = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
-    const durationApp = measureApp.duration.toFixed(1);
-    console.log(`app-${frame} : ${durationApp} ms`);
+        // const measureApp = window.performance.getEntriesByName(`app-${frame}`, 'measure')[0];
+        // const durationApp = measureApp.duration.toFixed(1);
+        // console.log(`app-${frame} : ${durationApp} ms`);
         return;
       }
     }
@@ -289,12 +288,10 @@ export class PixiRenderer {
         xform0: this.context.projection.transform(),
         xform1: t
       };
-      console.log(`scheduled transform { x: ${t.x}, y: ${t.y}, k: ${t.k} }, duration = ${duration} ms`)
 
     } else {   // change immediately
       this._transformEaseParams = null;
       this.context.projection.transform(t);
-      console.log(`immediate transform { x: ${t.x}, y: ${t.y}, k: ${t.k} }`)
     }
     this._appPending = true;
   }
@@ -325,7 +322,7 @@ export class PixiRenderer {
     // this shouldn't happen, but we check for it just in case.
     if (this._drawPending) return;
 
-    // Calculate the transform ease, if any
+    // Calculate the transform easing, if any
     if (this._transformEaseParams) {
       const { time0, time1, xform0, xform1 } = this._transformEaseParams;
       const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
@@ -338,7 +335,6 @@ export class PixiRenderer {
       const yNow = y0 + ((y1 - y0) * tween);
       const kNow = k0 + ((k1 - k0) * tween);
       this.context.projection.transform({ x: xNow, y: yNow, k: kNow });
-      console.log(`in TFORM, setting { x: ${xNow}, y: ${yNow}, k: ${kNow} }, tween = ${tween}`);
 
       if (tween === 1) {  // we're done
         this._transformEaseParams = null;
