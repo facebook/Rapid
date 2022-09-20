@@ -46,7 +46,7 @@ export class PixiRenderer {
     // Properties used to manage the scene transform
     this.pixiProjection = new Projection();
     this._transformDraw = null;      // transform at time of last draw
-    this._isTransformed = false;     // is the supersurface offset?
+    this._isTransformed = false;     // is the supersurface transformed?
     this._transformEaseParams = null;
 
     // Make sure callbacks have `this` bound correctly

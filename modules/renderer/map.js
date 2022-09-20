@@ -187,7 +187,7 @@ export function rendererMap(context) {
 
 
   /**
-   * setTransform
+   * transform
    * Set/Get the map transform
    * IF setting, will schedule an update of map transform/projection.
    * All convenience methods for adjusting the map go through here.
