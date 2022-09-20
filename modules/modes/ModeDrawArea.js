@@ -70,7 +70,7 @@ export class ModeDrawArea extends AbstractMode {
     context.history().checkpoint('draw-area-initial'); // save history checkpoint to return to if things go bad
 
     context.enableBehaviors(['hover', 'draw']);
-    context.map().dblclickZoomEnable(false);
+//    context.map().dblclickZoomEnable(false);
     context.behaviors
       .get('draw')
       .on('move', this._move)
@@ -94,7 +94,7 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     this._active = false;
 
-    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
+//    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
 
     // Confirm that the drawn area exists and is valid..
     if (!this._drawAreaValid()) {

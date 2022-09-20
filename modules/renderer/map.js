@@ -2,13 +2,11 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
-import _throttle from 'lodash-es/throttle';
-import _debounce from 'lodash-es/debounce';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
 
 import { prefs } from '../core/preferences';
-import { utilSetTransform, utilTotalExtent } from '../util/util';
+import { utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util/rebind';
 
@@ -35,11 +33,7 @@ export function rendererMap(context) {
   let _dimensions = [1, 1];
 
   let _wireFrameMode = false;
-  let _dblClickZoomEnabled = true;
   let _redrawEnabled = true;
-  let _zoomPanEnabled = true;
-  let _transformStart = context.projection.transform();
-  let _transformLast;
 
 
   /**
@@ -60,8 +54,7 @@ export function rendererMap(context) {
     // At regular intervals we reset this root transform and actually redraw the map.
     map.supersurface = supersurface = selection
       .append('div')
-      .attr('class', 'supersurface')
-      .call(utilSetTransform, 0, 0);
+      .attr('class', 'supersurface');
 
     // Content beneath the supersurface may be transformed and will need to rerender sometimes.
     // This includes the Pixi WebGL canvas and the right-click edit menu
@@ -80,9 +73,7 @@ export function rendererMap(context) {
     // with the map, like the editmenu.
     map.overlay = overlay = supersurface
       .append('div')
-      .attr('class', 'overlay')
-      .call(utilSetTransform, 0, 0);
-
+      .attr('class', 'overlay');
 
     _renderer = new PixiRenderer(context, supersurface, surface, overlay);
 
@@ -160,22 +151,10 @@ export function rendererMap(context) {
   }
 
 
-  // Throttled redraw - Redraw no more than once every n milliseconds.
-  // const _throttledRedraw = _throttle(_redraw, 200);
-
-  // Debounced redraw - Wait n milliseconds after these calls stop to draw again.
-  // const _debouncedRedraw = _debounce(_redraw, 100);
-
-  // Our deferral strategy is to use debounce if we are zooming and throttle otherwise
+  // Deferred redraw
   map.deferredRedraw = () => {
     if (!_redrawEnabled) return;
     _renderer.deferredRender();
-    // if (_isTransformed && _transformLast.k !== _transformStart.k) {
-    //   _throttledRedraw.cancel();
-    //   _debouncedRedraw();
-    // } else {
-      // _throttledRedraw();
-    // }
   };
 
   // Immediate redraw
@@ -183,16 +162,7 @@ export function rendererMap(context) {
     if (!_redrawEnabled) return;
     _renderer.render();
     dispatch.call('drawn', this, { full: true });
-    // _throttledRedraw.cancel();
-    // _debouncedRedraw.cancel();
-    // _redraw();
   };
-
-//  function _redraw() {
-//    if (!_renderer || !_redrawEnabled) return;
-//    _renderer.render();
-//    dispatch.call('drawn', this, { full: true });
-//  }
 
 
   /**
@@ -499,18 +469,6 @@ export function rendererMap(context) {
   map.scene = () => _renderer && _renderer.scene;
 
   map.renderer = () => _renderer;
-
-  map.dblclickZoomEnable = function (val) {
-    if (!arguments.length) return _dblClickZoomEnabled;
-    _dblClickZoomEnabled = val;
-    return map;
-  };
-
-  map.zoomPanEnable = function (val) {
-    if (!arguments.length) return _zoomPanEnabled;
-    _zoomPanEnabled = val;
-    return map;
-  };
 
   map.redrawEnable = function (val) {
     if (!arguments.length) return _redrawEnabled;

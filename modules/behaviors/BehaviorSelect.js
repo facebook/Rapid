@@ -215,7 +215,7 @@ export class BehaviorSelect extends AbstractBehavior {
       // If we're clicking on something, we want to disable dbl click to zoom.
       if (up.data) {
         // Prevent a quick second click
-        this.context.map().dblclickZoomEnable(false);
+//        this.context.map().dblclickZoomEnable(false);
 
         d3_select(window).on(
           'click.draw-block',
@@ -224,7 +224,7 @@ export class BehaviorSelect extends AbstractBehavior {
         );
 
         window.setTimeout(() => {
-          this.context.map().dblclickZoomEnable(true);
+//          this.context.map().dblclickZoomEnable(true);
           d3_select(window).on('click.draw-block', null);
         }, 500);
       }

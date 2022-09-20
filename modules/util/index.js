@@ -8,7 +8,6 @@ export { utilGetSetValue } from './get_set_value';
 export { utilHighlightEntities } from './util';
 export { utilKeybinding } from './keybinding';
 export { utilNoAuto } from './util';
-export { utilPrefixCSSProperty } from './util';
 export { utilPrefixDOMProperty } from './util';
 export { utilRebind } from './rebind';
 export { utilSetTransform } from './util';

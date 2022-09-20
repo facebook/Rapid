@@ -278,7 +278,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
             .on('keyup.drawWay', keyup);
 
         context.map()
-            .dblclickZoomEnable(false)
+//            .dblclickZoomEnable(false)
             .on('drawn.draw', setActiveElements);
 
         setActiveElements();
@@ -426,7 +426,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
         }
 
         window.setTimeout(function() {
-            context.map().dblclickZoomEnable(true);
+//            context.map().dblclickZoomEnable(true);
         }, 1000);
 
         var isNewFeature = !mode.isContinuing;
@@ -441,7 +441,7 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
         context.resumeChangeDispatch();
 
         window.setTimeout(function() {
-            context.map().dblclickZoomEnable(true);
+//            context.map().dblclickZoomEnable(true);
         }, 1000);
 
         context.surface()

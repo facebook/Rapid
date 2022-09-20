@@ -108,7 +108,7 @@ export class ModeDrawLine extends AbstractMode {
       this._continueFromNode(continueNode);  // create draw node and extend continue way to it
     }
 
-    context.map().dblclickZoomEnable(false);
+//    context.map().dblclickZoomEnable(false);
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
     context.behaviors.get('draw')
       .on('move', this._move)
@@ -162,7 +162,7 @@ export class ModeDrawLine extends AbstractMode {
     this._clicks = 0;
     this._selectedData.clear();
 
-    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
+//    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
 
     context.behaviors.get('draw')
       .off('move', this._move)

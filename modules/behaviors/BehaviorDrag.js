@@ -133,7 +133,7 @@ export class BehaviorDrag extends AbstractBehavior {
     const isDraggableTarget = down.data instanceof osmNode;
     if (!isDraggableTarget) return;
 
-    this.context.map().zoomPanEnable(false);
+//    this.context.map().zoomPanEnable(false);
     this.lastDown = down;
     this.lastMove = null;
     this.dragTarget = null;
@@ -228,7 +228,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
     this.lastDown = null;
     this.lastMove = null;
-    this.context.map().zoomPanEnable(true);
+//    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
       const name = this.dragTarget.name;
@@ -255,7 +255,7 @@ export class BehaviorDrag extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.lastMove = null;
-    this.context.map().zoomPanEnable(true);
+//    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
       const name = this.dragTarget.name;

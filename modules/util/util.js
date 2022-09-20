@@ -153,32 +153,10 @@ export function utilPrefixDOMProperty(property) {
 }
 
 
-export function utilPrefixCSSProperty(property) {
-    var prefixes = ['webkit', 'ms', 'Moz', 'O'];
-    var i = -1;
-    var n = prefixes.length;
-    var s = document.body.style;
-
-    if (property.toLowerCase() in s) {
-        return property.toLowerCase();
-    }
-
-    while (++i < n) {
-        if (prefixes[i] + property in s) {
-            return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
-        }
-    }
-
-    return false;
-}
-
-
-var transformProperty;
 export function utilSetTransform(el, x, y, scale) {
-    var prop = transformProperty = transformProperty || utilPrefixCSSProperty('Transform');
-    var translate = utilDetect().opera ? 'translate('   + x + 'px,' + y + 'px)'
-        : 'translate3d(' + x + 'px,' + y + 'px,0)';
-    return el.style(prop, translate + (scale ? ' scale(' + scale + ')' : ''));
+  const t = `translate(${x}px,${y}px)`;
+  const s = scale ? ` scale(scale)` : '';
+  return el.style('transform', `${t}${s}`);
 }
 
 
