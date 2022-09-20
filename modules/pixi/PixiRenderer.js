@@ -352,7 +352,7 @@ export class PixiRenderer {
       const dx = (tCurr.x / scale - tDraw.x) * scale;
       const dy = (tCurr.y / scale - tDraw.y) * scale;
       utilSetTransform(this.supersurface, dx, dy, scale);
-      utilSetTransform(this.overlay, -dx, -dy, scale);
+      utilSetTransform(this.overlay, -dx, -dy);
       this._isTransformed = true;
     }
   }

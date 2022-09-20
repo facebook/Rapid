@@ -3,7 +3,6 @@ import { utilEntityOrDeepMemberSelector } from '@id-sdk/util';
 
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
-import { utilDetect } from './detect';
 
 
 // Accepts an array of entities -or- entityIDs
@@ -133,32 +132,14 @@ export function utilDisplayLabel(entity, graphOrGeometry, verbose) {
 }
 
 
-export function utilPrefixDOMProperty(property) {
-    var prefixes = ['webkit', 'ms', 'moz', 'o'];
-    var i = -1;
-    var n = prefixes.length;
-    var s = document.body;
-
-    if (property in s) return property;
-
-    property = property.slice(0, 1).toUpperCase() + property.slice(1);
-
-    while (++i < n) {
-        if (prefixes[i] + property in s) {
-            return prefixes[i] + property;
-        }
-    }
-
-    return false;
+// `utilSetTransform`
+// Applies a CSS transformation to the given selection
+export function utilSetTransform(selection, x, y, scale, rotate) {
+  const t = `translate3d(${x}px,${y}px,0)`;
+  const s = scale ? ` scale(${scale})` : '';
+  const r = rotate ? ` rotate(${rotate}deg)` : '';
+  return selection.style('transform', `${t}${s}${r}`);
 }
-
-
-export function utilSetTransform(el, x, y, scale) {
-  const t = `translate(${x}px,${y}px)`;
-  const s = scale ? ` scale(scale)` : '';
-  return el.style('transform', `${t}${s}`);
-}
-
 
 
 // a d3.mouse-alike which
@@ -177,7 +158,6 @@ export function utilFastMouse(container) {
         ];
     };
 }
-
 
 
 // wraps an index to an interval [0..length-1]
