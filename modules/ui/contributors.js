@@ -1,5 +1,4 @@
 import _debounce from 'lodash-es/debounce';
-
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
@@ -7,11 +6,11 @@ import { svgIcon } from '../svg/icon';
 
 
 export function uiContributors(context) {
-    var osm = context.connection(),
-        debouncedUpdate = _debounce(function() { update(); }, 1000),
-        limit = 4,
-        hidden = false,
-        wrap = d3_select(null);
+    var osm = context.connection();
+    var debouncedUpdate = _debounce(function() { update(); }, 1000);
+    var limit = 4;
+    var hidden = false;
+    var wrap = d3_select(null);
 
 
     function update() {
@@ -81,6 +80,6 @@ export function uiContributors(context) {
         update();
 
         osm.on('loaded.contributors', debouncedUpdate);
-        context.map().on('move.contributors', debouncedUpdate);
+        context.map().on('draw', debouncedUpdate);
     };
 }

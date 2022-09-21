@@ -217,30 +217,26 @@ export function coreContext() {
   };
 
   context.zoomToEntity = (entityID, zoomTo) => {
-    // be sure to load the entity even if we're not going to zoom to it
-    context.loadEntity(entityID, (err, result) => {
-      if (err) return;
+    let entity = context.hasEntity(entityID);
+
+    if (entity) {   // have it already
+      context.enter(modeSelect(context, [entityID]));
       if (zoomTo !== false) {
+        _map.zoomTo(entity);
+      }
+
+    } else {   // need to load it first
+      context.loadEntity(entityID, (err, result) => {
+        if (err) return;
         const entity = result.data.find(e => e.id === entityID);
-        if (entity) {
+        if (!entity) return;
+
+        context.enter(modeSelect(context, [entityID]));
+        if (zoomTo !== false) {
           _map.zoomTo(entity);
         }
-      }
-    });
-
-    _map.on('drawn.zoomToEntity', () => {
-      if (!context.hasEntity(entityID)) return;
-      _map.on('drawn.zoomToEntity', null);
-      context.on('enter.zoomToEntity', null);
-      context.enter(modeSelect(context, [entityID]));
-    });
-
-    context.on('enter.zoomToEntity', () => {
-      if (context._currMode.id !== 'browse') {
-        _map.on('drawn.zoomToEntity', null);
-        context.on('enter.zoomToEntity', null);
-      }
-    });
+      });
+    }
   };
 
 

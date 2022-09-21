@@ -160,17 +160,15 @@ export function uiSectionValidationStatus(context) {
 
         selection.select('.box .message')
             .html(t.html('issues.no_issues.message.' + messageType));
-
     }
 
     context.validator().on('validated.uiSectionValidationStatus', function() {
         window.requestIdleCallback(section.reRender);
     });
 
-    context.map().on('move.uiSectionValidationStatus',
-        _debounce(function() {
-            window.requestIdleCallback(section.reRender);
-        }, 1000)
+    context.map().on('draw', _debounce(function() {
+        window.requestIdleCallback(section.reRender);
+      }, 1000)
     );
 
     return section;

@@ -268,12 +268,7 @@ export function uiMapInMap(context) {
     _dMini = [200, 150]; //utilGetDimensions(wrap);
     _cMini = vecScale(_dMini, 0.5);
 
-    context.map().on('drawn.map-in-map', drawn => {
-      if (drawn.full === true) {
-        redraw();
-      }
-    });
-
+    context.map().on('draw', () => redraw());
     redraw();
 
     context.keybinding().on(t('background.minimap.key'), toggle);

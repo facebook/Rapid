@@ -98,8 +98,7 @@ export function uiAttribution(context) {
     context.background()
       .on('change.attribution', update);
 
-    context.map()
-      .on('move.attribution', _throttle(update, 400, { leading: false }));
+    context.map().on('draw', _throttle(update, 400, { leading: false }));
 
     update();
   };

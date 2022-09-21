@@ -56,7 +56,7 @@ export class BehaviorHash extends AbstractBehavior {
     const context = this.context;
 
     context.map()
-      .on('move.behaviorHash', this._throttledUpdateHash);
+      .on('draw', this._throttledUpdateHash);
 
     context.history()
       .on('change.behaviorHash', this._throttledUpdateTitle);
@@ -86,8 +86,8 @@ export class BehaviorHash extends AbstractBehavior {
 
     const context = this.context;
 
-    context.map()
-      .on('move.behaviorHash', null);
+   context.map()
+     .off('draw', this._throttledUpdateHash);
 
     context.history()
       .on('change.behaviorHash', null);

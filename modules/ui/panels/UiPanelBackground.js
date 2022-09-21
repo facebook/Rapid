@@ -50,8 +50,8 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._metadata = {};
 
     this.context.map()
-      .on('drawn.info-background', this._deferredRender)
-      .on('move.info-background', this._deferredUpdateMetadata);
+      .on('draw', this._deferredRender)
+      .on('move', this._deferredUpdateMetadata);
   }
 
 
@@ -72,8 +72,8 @@ export class UiPanelBackground extends AbstractUiPanel {
     this._metadata = {};
 
     this.context.map()
-      .on('drawn.info-background', null)
-      .on('move.info-background', null);
+      .off('draw', this._deferredRender)
+      .off('move', this._deferredUpdateMetadata);
   }
 
 

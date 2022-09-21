@@ -44,9 +44,10 @@ export function uiToolRapidFeatures(context) {
     context.container().call(powerUserDialog);
   }
 
+  let debouncedUpdate;
 
   tool.install = (selection) => {
-    const debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
+    debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
 
     context.keybinding()
       .on(uiCmd(rapidFeaturesToggleKey), d3_event => {
@@ -56,8 +57,7 @@ export function uiToolRapidFeatures(context) {
       });
 
     context.map()
-      .on('move.rapid_features', debouncedUpdate)
-      .on('drawn.rapid_features', debouncedUpdate);
+      .on('draw', debouncedUpdate);
 
     context
       .on('enter.rapid_features', update);
@@ -116,6 +116,7 @@ export function uiToolRapidFeatures(context) {
 
 
   tool.uninstall = function () {
+    context.map().off('draw', debouncedUpdate);
     context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
   };
 

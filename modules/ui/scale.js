@@ -1,5 +1,4 @@
 import { geoLonToMeters, geoMetersToLon } from '@id-sdk/geo';
-import _throttle from 'lodash-es/throttle';
 
 import { displayLength } from '../util/units';
 import { localizer } from '../core/localizer';
@@ -82,9 +81,8 @@ export function uiScale(context) {
 
     selection.call(update);
 
-    const doUpdate = () => {
+    context.map().on('draw', () => {
       window.requestIdleCallback(() => update(selection));
-    };
-    context.map().on('move.uiScale', _throttle(doUpdate, 100));
+    });
   };
 }

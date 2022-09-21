@@ -41,6 +41,8 @@ export function uiToolDrawModes(context) {
     }
   ];
 
+  let debouncedUpdate;
+
 
   tool.install = function(selection) {
     let wrap = selection
@@ -48,7 +50,7 @@ export function uiToolDrawModes(context) {
       .attr('class', 'joined')
       .style('display', 'flex');
 
-    const debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
     modes.forEach(d => {
       context.keybinding().on(d.key, () => {
@@ -63,8 +65,7 @@ export function uiToolDrawModes(context) {
     });
 
     context.map()
-      .on('move.modes', debouncedUpdate)
-      .on('drawn.modes', debouncedUpdate);
+      .on('draw', debouncedUpdate);
 
     context
       .on('enter.modes', update);
@@ -136,8 +137,7 @@ export function uiToolDrawModes(context) {
     });
 
     context.map()
-      .on('move.modes', null)
-      .on('drawn.modes', null);
+      .off('draw', debouncedUpdate);
 
     context
       .on('enter.modes', null);

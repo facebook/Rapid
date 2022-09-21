@@ -309,8 +309,7 @@ export function uiSectionBackgroundList(context) {
     });
 
   context.map()
-    .on('move.background_list',
-      _debounce(() => {
+    .on('draw', _debounce(() => {
         // layers in-view may have changed due to map move
         window.requestIdleCallback(section.reRender);
       }, 1000)

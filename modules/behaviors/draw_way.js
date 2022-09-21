@@ -277,9 +277,9 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
             .on('keydown.drawWay', keydown)
             .on('keyup.drawWay', keyup);
 
-        context.map()
+//        context.map()
 //            .dblclickZoomEnable(false)
-            .on('drawn.draw', setActiveElements);
+//            .on('drawn.draw', setActiveElements);
 
         setActiveElements();
 
@@ -304,8 +304,8 @@ export function behaviorDrawWay(context, wayID, mode, startGraph) {
         _drawNode = undefined;
         _nodeIndex = undefined;
 
-        context.map()
-            .on('drawn.draw', null);
+//        context.map()
+//            .on('drawn.draw', null);
 
         surface.call(behavior.off)
             .selectAll('.active')

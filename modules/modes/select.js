@@ -273,8 +273,8 @@ export function modeSelect(context, selectedIDs) {
             .on('undone.select', checkSelectedIDs)
             .on('redone.select', checkSelectedIDs);
 
-        context.map()
-            .on('drawn.select', selectElements);
+//        context.map()
+//            .on('drawn.select', selectElements);
 
 //        context.map().doubleUpHandler()
 //            .on('doubleUp.modeSelect', didDoubleUp);
@@ -555,7 +555,7 @@ export function modeSelect(context, selectedIDs) {
             .selectAll('.related')
             .classed('related', false);
 
-        context.map().on('drawn.select', null);
+//        context.map().on('drawn.select', null);
         context.ui().sidebar.hide();
         context.features().forceVisible([]);
 

@@ -69,7 +69,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this._enabled = true;
     this._selection = selection;
 
-    this.context.map().on('drawn.info-measurement', this.render);
+    this.context.map().on('draw', this.render);
     this.context.on('enter.info-measurement', this.render);
   }
 
@@ -85,7 +85,7 @@ export class UiPanelMeasurement extends AbstractUiPanel {
     this._enabled = false;
     this._selection = d3_select(null);
 
-    this.context.map().on('drawn.info-measurement', null);
+    this.context.map().off('draw', this.render);
     this.context.on('enter.info-measurement', null);
   }
 

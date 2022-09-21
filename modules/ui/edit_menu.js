@@ -121,14 +121,14 @@ export function uiEditMenu(context) {
     _updatePosition();
 
     const initialScale = context.projection.scale();
-    context.map()
-      .on('move.edit-menu', () => {
-        if (initialScale !== context.projection.scale()) {
-          editMenu.close();
-        } else {
-          _updatePosition();
-        }
-      });
+//    context.map()
+//      .on('move.edit-menu', () => {
+//        if (initialScale !== context.projection.scale()) {
+//          editMenu.close();
+//        } else {
+//          _updatePosition();
+//        }
+//      });
 
     // `pointerup` is always called before `click`
     let _lastPointerUpType;
@@ -268,8 +268,7 @@ export function uiEditMenu(context) {
    * This removes the menu and unbinds the event handlers
    */
   editMenu.close = function () {
-    context.map()
-      .on('move.edit-menu', null);
+    // context.map().on('move.edit-menu', null);
 
     _menu.remove();
     _tooltips = [];

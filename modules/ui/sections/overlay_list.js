@@ -98,7 +98,6 @@ export function uiSectionOverlayList(context) {
     }
 
     function renderDisclosureContent(selection) {
-
         var container = selection.selectAll('.layer-overlay-list')
             .data([0]);
 
@@ -113,12 +112,11 @@ export function uiSectionOverlayList(context) {
     }
 
     context.map()
-        .on('move.overlay_list',
-            _debounce(function() {
-                // layers in-view may have changed due to map move
-                window.requestIdleCallback(section.reRender);
-            }, 1000)
-        );
+      .on('draw', _debounce(function() {
+        // layers in-view may have changed due to map move
+        window.requestIdleCallback(section.reRender);
+      }, 1000)
+    );
 
     return section;
 }

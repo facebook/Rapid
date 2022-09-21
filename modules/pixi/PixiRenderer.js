@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import { EventEmitter } from '@pixi/utils';
 import { EventSystem } from '@pixi/events';
 import { skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
@@ -19,8 +20,13 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  * Properties you can access:
  *   `scene`     PixiScene object manages the layers and features in the scene
  *   `textures`  PixiTextures object manages the textures
+ *
+ * Events available:
+ *   `draw`      Fires after a full redraw
+ *   `move`      Fires after the map's transform has changed (can fire frequently)
+ *               ('move' is mostly for when you want to update some content that floats over the map)
  */
-export class PixiRenderer {
+export class PixiRenderer extends EventEmitter {
 
   /**
    * @constructor
@@ -33,6 +39,7 @@ export class PixiRenderer {
    * @param  overlay        D3 selection to the sibling `div` "overlay"
    */
   constructor(context, supersurface, surface, overlay) {
+    super();
     this.context = context;
     this.supersurface = supersurface;
     this.surface = surface;
@@ -354,6 +361,7 @@ export class PixiRenderer {
       utilSetTransform(this.supersurface, dx, dy, scale);
       utilSetTransform(this.overlay, -dx, -dy);
       this._isTransformed = true;
+      this.emit('move');
     }
   }
 
@@ -417,9 +425,11 @@ export class PixiRenderer {
       utilSetTransform(this.supersurface, 0, 0);
       utilSetTransform(this.overlay, 0, 0);
       this._isTransformed = false;
+      this.emit('move');
     }
 
     this._drawPending = false;
+    this.emit('draw');
     this._frame++;
   }
 

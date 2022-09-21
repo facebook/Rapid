@@ -1,6 +1,4 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
 import { presetManager } from '../presets';
@@ -62,8 +60,8 @@ export function uiFeatureList(context) {
 
         context
             .on('exit.feature-list', clearSearch);
-        context.map()
-            .on('drawn.feature-list', mapDrawn);
+//        context.map()
+//            .on('drawn.feature-list', mapDrawn);
 
         context.keybinding()
             .on(uiCmd('⌘F'), focusSearch);

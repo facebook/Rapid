@@ -31,9 +31,11 @@ export function uiToolNotes(context) {
     return mode && mode.id !== 'save';
   }
 
+  let debouncedUpdate;
+
 
   tool.install = function(selection) {
-    const debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
     context.keybinding().on(mode.key, () => {
       if (!notesEditable()) return;
@@ -46,8 +48,7 @@ export function uiToolNotes(context) {
     });
 
     context.map()
-      .on('move.notes', debouncedUpdate)
-      .on('drawn.notes', debouncedUpdate);
+      .on('draw', debouncedUpdate);
 
     context
       .on('enter.notes', update);
@@ -115,8 +116,7 @@ export function uiToolNotes(context) {
       .on('enter.notes', null);
 
     context.map()
-      .on('move.notes', null)
-      .on('drawn.notes', null);
+      .off('draw', debouncedUpdate);
   };
 
   return tool;

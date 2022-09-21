@@ -71,8 +71,7 @@ export class ModeDrawArea extends AbstractMode {
 
     context.enableBehaviors(['hover', 'draw']);
 //    context.map().dblclickZoomEnable(false);
-    context.behaviors
-      .get('draw')
+    context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)
       .on('cancel', this._cancel)

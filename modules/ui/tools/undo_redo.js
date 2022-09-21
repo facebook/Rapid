@@ -29,6 +29,8 @@ export function uiToolUndoRedo(context) {
   }];
 
 
+  let debouncedUpdate;
+
   tool.install = function(selection) {
     let tooltipBehavior = uiTooltip()
       .placement('bottom')
@@ -89,7 +91,7 @@ export function uiToolUndoRedo(context) {
         .call(svgIcon(`#iD-icon-${d.icon}`));
     });
 
-    const debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
 
     commands.forEach(command => {
       context.keybinding().on(command.key, d3_event => {
@@ -99,8 +101,7 @@ export function uiToolUndoRedo(context) {
     });
 
     context.map()
-      .on('move.undo_redo', debouncedUpdate)
-      .on('drawn.undo_redo', debouncedUpdate);
+      .on('draw', debouncedUpdate);
 
     context.history()
       .on('change.undo_redo', difference => {
@@ -130,8 +131,7 @@ export function uiToolUndoRedo(context) {
     });
 
     context.map()
-      .on('move.undo_redo', null)
-      .on('drawn.undo_redo', null);
+      .off('draw', debouncedUpdate);
 
     context.history()
       .on('change.undo_redo', null);

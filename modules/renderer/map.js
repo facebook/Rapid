@@ -35,8 +35,9 @@ function clamp(num, min, max) {
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
  *
  * Events available:  (todo)
- *   `move`  Fires on change to map view
- *   `draw`  Fires on full redraw
+ *   `draw`      Fires after a full redraw
+ *   `move`      Fires after the map's transform has changed (can fire frequently)
+ *               ('move' is mostly for when you want to update some content that floats over the map)
  */
 export class RendererMap extends EventEmitter {
 
@@ -108,6 +109,11 @@ export class RendererMap extends EventEmitter {
       .attr('class', 'overlay');
 
     this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
+
+    // Forward the 'move' and 'draw' events from PixiRenderer
+    this._renderer
+      .on('move', () => this.emit('move'))
+      .on('draw', () => this.emit('draw', { full: true }));  // pass {full: true} for legacy receivers
 
     this.dimensions = utilGetDimensions(selection);
 

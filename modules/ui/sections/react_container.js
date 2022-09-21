@@ -32,8 +32,7 @@ export function uiSectionReactContainer(context) {
     .disclosureContent(content);
 
   context.map()
-    .on('move.react_container',
-      _debounce(() => {
+    .on('draw', _debounce(() => {
         reRenderCount++;
         window.requestIdleCallback(section.reRender);
       }, 1000)
