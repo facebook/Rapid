@@ -78,7 +78,7 @@ export class PixiFeatureLine extends AbstractFeature {
   update(projection, zoom) {
     if (!this.dirty) return;  // no change
 
-    const wireframeMode = this.context.map().wireFrameMode();
+    const wireframeMode = this.context.map().wireframeMode;
     // For now, if either geometry or style is dirty, we just update the whole line
     const context = this.context;
     const textures = context.pixi.rapidTextures;

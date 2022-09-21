@@ -54,8 +54,8 @@ export function uiPhotoviewer(context) {
                 buildResizeListener(selection, 'resize', dispatch, { resizeOnY: true })
             );
 
-        function buildResizeListener(target, eventName, dispatch, options) {
 
+        function buildResizeListener(target, eventName, dispatch, options) {
             var resizeOnX = !!options.resizeOnX;
             var resizeOnY = !!options.resizeOnY;
             var minHeight = options.minHeight || 240;
@@ -72,7 +72,7 @@ export function uiPhotoviewer(context) {
                 d3_event.preventDefault();
                 d3_event.stopPropagation();
 
-                var mapSize = context.map().dimensions();
+                var mapSize = context.map().dimensions;
 
                 if (resizeOnX) {
                     var maxWidth = mapSize[0];

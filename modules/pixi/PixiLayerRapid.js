@@ -344,7 +344,7 @@ export class PixiLayerRapid extends AbstractLayer {
   renderPolygons(layer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
-    const wireframeEnabled = this.context.map().wireFrameMode();
+    const wireframeEnabled = this.context.map().wireframeMode;
     const width = wireframeEnabled ? 1 : 2;
     const style = {
       labelTint: color,
@@ -418,9 +418,9 @@ export class PixiLayerRapid extends AbstractLayer {
       feature.hovered = scene.hovered.has(feature.id);
 
       if (feature.dirty) {
-        const wireFrameEnabled = this.context.map().wireFrameMode();
-        const casingWidth = wireFrameEnabled ? 0 : 5;
-        const strokeWidth = wireFrameEnabled ? 1 : 3;
+        const wireframeEnabled = this.context.map().wireframeMode;
+        const casingWidth = wireframeEnabled ? 0 : 5;
+        const strokeWidth = wireframeEnabled ? 1 : 3;
 
         const style = {
           labelTint: color,

@@ -115,7 +115,8 @@ describe('iD.Map', function() {
 
     describe('#extent', function() {
         it('gets and sets extent', function () {
-            map.dimensions([100, 100]).center([0, 0]);
+            map.dimensions = [100,100];
+            map.center([0, 0]);
             var extent;
 
             // get

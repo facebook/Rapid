@@ -49,7 +49,7 @@ export function modeMove(context, entityIDs, baseGraph) {
         var fn;
         if (_prevGraph !== context.graph()) {
             _cache = {};
-            _origin = context.map().mouseCoordinates();
+            _origin = context.map().mouseLoc();
             fn = context.perform;
         } else {
             fn = context.overwrite;
@@ -89,7 +89,7 @@ export function modeMove(context, entityIDs, baseGraph) {
 
     function move() {
         doMove();
-        var nudge = geomViewportNudge(context.map().mouse(), context.map().dimensions());
+        var nudge = geomViewportNudge(context.map().mouse(), context.map().dimensions);
         if (nudge) {
             startNudge(nudge);
         } else {
@@ -124,7 +124,7 @@ export function modeMove(context, entityIDs, baseGraph) {
 
 
     mode.enter = function() {
-        _origin = context.map().mouseCoordinates();
+        _origin = context.map().mouseLoc();
         _prevGraph = null;
         _cache = {};
 

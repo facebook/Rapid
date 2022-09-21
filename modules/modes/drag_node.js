@@ -215,7 +215,7 @@ export function modeDragNode(context) {
    if (!(entity instanceof osmNode)) return;  // sanity check
     doMove(point, entity);
 
-//    var nudge = geomViewportNudge(point, context.map().dimensions());
+//    var nudge = geomViewportNudge(point, context.map().dimensions);
 //    if (nudge) {
 //      startNudge(d3_event, entity, nudge);
 //    } else {

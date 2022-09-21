@@ -103,7 +103,7 @@ export function uiInit(context) {
       .attr('dir', localizer.textDirection());
 
     const map = context.map();
-    map.redrawEnable(false);  // don't draw until we've set zoom/lat/long
+    map.redrawEnabled = false;  // don't draw until we've set zoom/lat/long
 
     container
       .append('svg')
@@ -125,7 +125,7 @@ export function uiInit(context) {
       .append('div')
       .attr('class', 'main-map')
       .attr('dir', 'ltr')
-      .call(map);
+      .call(map.render);
 
     // Top toolbar
     content
@@ -321,7 +321,7 @@ export function uiInit(context) {
     // Setup map dimensions and move map to initial center/zoom.
     // This should happen after .main-content and toolbars exist.
     ui.onResize();
-    map.redrawEnable(true);
+    map.redrawEnabled = true;
 
     ui.hash = new BehaviorHash(context);
     ui.hash.enable();
@@ -362,10 +362,10 @@ export function uiInit(context) {
       .on('↑', pan([0, PAN_PIXELS]))
       .on('→', pan([-PAN_PIXELS, 0]))
       .on('↓', pan([0, -PAN_PIXELS]))
-      .on(uiCmd('⌥←'), pan([map.dimensions()[0], 0]))
-      .on(uiCmd('⌥↑'), pan([0, map.dimensions()[1]]))
-      .on(uiCmd('⌥→'), pan([-map.dimensions()[0], 0]))
-      .on(uiCmd('⌥↓'), pan([0, -map.dimensions()[1]]))
+      .on(uiCmd('⌥←'), pan([map.dimensions[0], 0]))
+      .on(uiCmd('⌥↑'), pan([0, map.dimensions[1]]))
+      .on(uiCmd('⌥→'), pan([-map.dimensions[0], 0]))
+      .on(uiCmd('⌥↓'), pan([0, -map.dimensions[1]]))
       .on(uiCmd('⌘' + t('background.key')), function quickSwitch(d3_event) {
         if (d3_event) {
           d3_event.stopImmediatePropagation();
@@ -382,7 +382,8 @@ export function uiInit(context) {
       .on(t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {
         d3_event.preventDefault();
         d3_event.stopPropagation();
-        context.map().toggleWireframe();
+        const map = context.map();
+        map.wireframeMode = !map.wireframeMode;
       })
       .on(uiCmd('⌥' + t('area_fill.wireframe.key')), function toggleOsmData(d3_event) {
         d3_event.preventDefault();
@@ -493,17 +494,15 @@ export function uiInit(context) {
     // Recalc dimensions of map and sidebar.. (`true` = force recalc)
     // This will call `getBoundingClientRect` and trigger reflow,
     //  but the values will be cached for later use.
-    const mapDimensions = utilGetDimensions(context.container().select('.main-content'), true);
+    const dims = utilGetDimensions(context.container().select('.main-content'), true);
     utilGetDimensions(context.container().select('.sidebar'), true);
 
     // When adjusting the sidebar width, pan the map so it stays centered on the same location.
     if (offset !== undefined) {
-      map.redrawEnable(false);
       map.pan(offset);
-      map.redrawEnable(true);
     }
 
-    map.dimensions(mapDimensions);
+    map.dimensions = dims;
     ui.photoviewer.onMapResize();
 
     // check if header or footer have overflowed

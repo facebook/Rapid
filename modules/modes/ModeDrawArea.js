@@ -204,9 +204,9 @@ export class ModeDrawArea extends AbstractMode {
    */
   _clickLoc(loc) {
     const context = this.context;
-    context.pauseChangeDispatch();
+    const scene = context.scene();
     const EPSILON = 1e-6;
-    const renderer = context.map().renderer();
+    context.pauseChangeDispatch();
 
     //Extend the way by adding vertex at 'loc'
     if (this.drawWay) {
@@ -240,7 +240,7 @@ export class ModeDrawArea extends AbstractMode {
       this.drawWay = context.entity(this.drawWay.id);
 
       // Add this new node to the 'drawing' features set
-      renderer.scene.drawingFeatures([...renderer.scene.drawing, this.drawNode.id]);
+      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
 
       // Start a brand new area at 'loc'
     } else {
@@ -253,11 +253,7 @@ export class ModeDrawArea extends AbstractMode {
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [this.firstNode.id, this.drawNode.id] });
 
-      renderer.scene.drawingFeatures([
-        this.drawWay.id,
-        this.firstNode.id,
-        this.drawNode.id,
-      ]);
+      scene.drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -338,7 +334,6 @@ export class ModeDrawArea extends AbstractMode {
     const startGraph = context.graph();
     const node = osmNode({ loc: loc });
     const way = osmWay({ tags: this.defaultTags });
-    const renderer = context.map().renderer();
 
     this.drawWay = way;
     this.lastNode = node;
@@ -354,12 +349,10 @@ export class ModeDrawArea extends AbstractMode {
       this._actionClose(way.id),
       actionAddMidpoint({ loc: loc, edge: edge }, node)
     );
+
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
 
-      renderer.scene.drawingFeatures([
-        node.id,
-        way.id,
-      ]);
+    context.scene().drawingFeatures([node.id, way.id]);
   }
 
   /**
@@ -429,12 +422,7 @@ export class ModeDrawArea extends AbstractMode {
         nodes: [this.firstNode.id, this.drawNode.id],
       });
 
-      const renderer = context.map().renderer();
-      renderer.scene.drawingFeatures([
-        this.drawWay.id,
-        this.firstNode.id,
-        this.drawNode.id,
-      ]);
+      context.scene().drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -460,13 +448,12 @@ export class ModeDrawArea extends AbstractMode {
   }
 
 
-    _removeDrawNode() {
-
-      if (this.drawNode) {
-        this.context.replace(actionDeleteNode(this.drawNode.id));
-      }
-        this.drawNode = null;
+  _removeDrawNode() {
+    if (this.drawNode) {
+      this.context.replace(actionDeleteNode(this.drawNode.id));
     }
+    this.drawNode = null;
+  }
 
   /**
    * _cancel
@@ -486,9 +473,7 @@ export class ModeDrawArea extends AbstractMode {
   _finish() {
     const context = this.context;
     context.resumeChangeDispatch(); // it's possible to get here in a paused state
-
-    const renderer = context.map().renderer();
-    renderer.scene.drawingFeatures([]); // No longer drawing features! Clear this data.
+    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
 
     if (this.drawWay) {
       if (DEBUG) {

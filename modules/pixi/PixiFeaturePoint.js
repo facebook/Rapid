@@ -163,7 +163,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     if (!this._styleDirty) return;
 
     const context = this.context;
-    const wireframeMode = context.map().wireFrameMode();
+    const wireframeMode = context.map().wireframeMode;
     const textures = context.pixi.rapidTextures;
     const style = this._style;
     const isPin = (style.markerName === 'pin' || style.markerName === 'boldPin');

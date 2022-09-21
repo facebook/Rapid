@@ -98,7 +98,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
   update(projection) {
     if (!this.dirty) return;  // no change
 
-    const wireframeMode = this.context.map().wireFrameMode();
+    const wireframeMode = this.context.map().wireframeMode;
     // For now, if either geometry or style is dirty, we just update the whole multipolygon
 
     //

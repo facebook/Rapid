@@ -18,6 +18,7 @@ import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
 import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
+import { BehaviorPaste } from '../behaviors/BehaviorPaste';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
 import { ModeDrawArea } from '../modes/ModeDrawArea';
@@ -30,11 +31,10 @@ import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
 
 import { presetManager } from '../presets';
-import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
+import { rendererBackground, rendererFeatures, RendererMap, rendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
-import { BehaviorPaste } from '../behaviors';
 
 
 export function coreContext() {
@@ -552,7 +552,7 @@ export function coreContext() {
   /* Map */
   let _map;
   context.map = () => _map;
-  context.scene = () => _map.scene();
+  context.scene = () => _map.scene;
   context.surface = () => _map.surface;
   context.surfaceRect = () => _map.surface.node().getBoundingClientRect();
   context.editable = () => {
@@ -694,7 +694,7 @@ export function coreContext() {
 
       _background = rendererBackground(context);
       _features = rendererFeatures(context);
-      _map = rendererMap(context);
+      _map = new RendererMap(context);
       _photos = rendererPhotos(context);
 
       _ui = uiInit(context);
@@ -742,7 +742,6 @@ export function coreContext() {
         }
       });
 
-      _map.init();
       _validator.init();
       _features.init();
       _rapidContext.init();

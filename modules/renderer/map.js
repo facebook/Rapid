@@ -1,4 +1,4 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
@@ -8,7 +8,6 @@ import { PixiRenderer } from '../pixi/PixiRenderer';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
-import { utilRebind } from '../util/rebind';
 
 
 const TILESIZE = 256;
@@ -22,24 +21,57 @@ function clamp(num, min, max) {
 }
 
 
-export function rendererMap(context) {
-  const dispatch = d3_dispatch('move', 'drawn', 'changeHighlighting', 'changeAreaFill');
+/**
+ * `RendererMap` maintains the map state
+ * and provides an interface for manipulating the map view.
+ *
+ * Properties available:
+ *   `dimensions`      The pixel dimensions of the map viewport [width,height]
+ *   `supersurface`    D3 selection to the parent `div` "supersurface"
+ *   `surface`         D3 selection to the sibling `canvas` "surface"
+ *   `overlay`         D3 selection to the sibling `div` "overlay"
+ *   `redrawEnabled`   `true` to allow drawing, `false` to pause drawing
+ *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
+ *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
+ *
+ * Events available:  (todo)
+ *   `move`  Fires on change to map view
+ *   `draw`  Fires on full redraw
+ */
+export class RendererMap extends EventEmitter {
 
-  let supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
-  let surface = d3_select(null);       // sibling `canvas`
-  let overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
+  /**
+   * @constructor
+   * @param  `context`   Global shared application context
+   */
+  constructor(context) {
+    super();
+    this.context = context;
 
-  let _renderer;
-  let _dimensions = [1, 1];
+    this.supersurface = d3_select(null);  // parent `div` temporary zoom/pan transform
+    this.surface = d3_select(null);       // sibling `canvas`
+    this.overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
+    this.redrawEnabled = true;
 
-  let _wireFrameMode = false;
-  let _redrawEnabled = true;
+    this.areaFillOptions = ['wireframe', 'partial', 'full'];
+    this._currFillMode = prefs('area-fill') || 'partial';            // the current fill mode
+    this._toggleFillMode = prefs('area-fill-toggle') || 'partial';   // the previous *non-wireframe* fill mode
+
+    this._renderer = null;
+    this._dimensions = [1, 1];
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    // (This is also necessary when using `d3-selection.call`)
+    this.render = this.render.bind(this);
+  }
 
 
   /**
-   *  map
+   * @constructor
+   * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
    */
-  function map(selection) {
+  render(selection) {
+    const context = this.context;
 
     // Selection here contains a D3 selection for the `main-map` div that the map gets added to
     // It's an absolutely positioned div that takes up as much space as it's allowed to.
@@ -51,8 +83,8 @@ export function rendererMap(context) {
 
     // The `supersurface` is a wrapper div that we temporarily transform as the user zooms and pans.
     // This allows us to defer actual rendering until the browser has more time to do it.
-    // At regular intervals we reset this root transform and actually redraw the map.
-    map.supersurface = supersurface = selection
+    // At regular intervals we reset this root transform and actually redraw the this.
+    this.supersurface = selection
       .append('div')
       .attr('class', 'supersurface');
 
@@ -64,127 +96,133 @@ export function rendererMap(context) {
     //  - d3 selecting surface's child stuff
     //  - css classing surface's child stuff
     //  - listening to events on the surface
-    map.surface = surface = supersurface
+    this.surface = this.supersurface
       .append('canvas')
       .attr('class', 'surface');
 
     // The `overlay` is a div that is transformed to cancel out the supersurface.
     // This is a place to put things _not drawn by pixi_ that should stay positioned
     // with the map, like the editmenu.
-    map.overlay = overlay = supersurface
+    this.overlay = this.supersurface
       .append('div')
       .attr('class', 'overlay');
 
-    _renderer = new PixiRenderer(context, supersurface, surface, overlay);
+    this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
 
-    map.dimensions(utilGetDimensions(selection));
+    this.dimensions = utilGetDimensions(selection);
 
     context.background().initDragAndDrop();
 
 
     // Setup events that cause the map to redraw...
     // context.features()
-    //   .on('redraw.map', map.immediateRedraw);
+    //   .on('redraw.map', this.immediateRedraw);
 
     const osm = context.connection();
     if (osm) {
-      osm.on('change', map.immediateRedraw);
+      osm.on('change', this.immediateRedraw);
     }
 
     function didUndoOrRedo(targetTransform) {
       const mode = context.mode().id;
       if (mode !== 'browse' && mode !== 'select') return;
       if (targetTransform) {
-        map.transformEase(targetTransform);
+        this.transformEase(targetTransform);
       }
     }
 
     context.history()
       .on('merge', entityIDs => {
         if (entityIDs) {
-          _renderer.scene.dirtyFeatures(entityIDs);
+          this._renderer.scene.dirtyFeatures(entityIDs);
         }
-        map.deferredRedraw();
+        this.deferredRedraw();
       })
       .on('change', difference => {
         if (difference) {
-          _renderer.scene.dirtyFeatures(Object.keys(difference.complete()));
+          this._renderer.scene.dirtyFeatures(Object.keys(difference.complete()));
         }
-        map.immediateRedraw();
+        this.immediateRedraw();
       })
       .on('undone', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
       .on('redone', (stack) => didUndoOrRedo(stack.transform));
 
     context.background()
-      .on('change', map.immediateRedraw);
+      .on('change', () => this.immediateRedraw());
 
-    _renderer.scene
+    this._renderer.scene
       .on('layerchange', () => {
         context.background().updateImagery();
-        map.immediateRedraw();
+        this.immediateRedraw();
     });
 
     context.behaviors.get('map-interaction')
-      .on('transformchanged', map.transform);
+      .on('transformchanged', t => this.transform(t));
   }
 
 
-  map.init = () => { /* noop */ };
+  /**
+   * deferredRedraw
+   * Tell the renderer to redraw soon
+   */
+  deferredRedraw() {
+    if (!this.redrawEnabled) return;
+    this._renderer.deferredRender();
+  }
+
+  /**
+   * deferredRedraw
+   * Tell the renderer to redraw as soon as possible
+   */
+  immediateRedraw() {
+    if (!this.redrawEnabled) return;
+    this._renderer.render();
+  }
+
 
   /**
    * dimensions
-   * Set/Get the map dimensions
-   * @param  val?       Array [x,y] to set the dimensions to
-   * @return map dimensions -or- this
+   * Set/Get the map viewport dimensions in pixels
+   * @param  val?  Array [width, height] to set the dimensions to
    */
-  map.dimensions = function(val) {
-    if (!arguments.length) return _dimensions;
-
-    _dimensions = val;
-    context.projection.dimensions([[0, 0], _dimensions]);
-    _renderer.resize(_dimensions[0], _dimensions[1]);
-    return map;
-  };
-
-  function _centerPixel() {
-    return vecScale(_dimensions, 0.5);
+  get dimensions() {
+    return this._dimensions;
+  }
+  set dimensions(val) {
+    const [w, h] = val;
+    this._dimensions = val;
+    this.context.projection.dimensions([[0, 0], [w, h]]);
+    this._renderer.resize(w, h);
   }
 
-
-  // Deferred redraw
-  map.deferredRedraw = () => {
-    if (!_redrawEnabled) return;
-    _renderer.deferredRender();
-  };
-
-  // Immediate redraw
-  map.immediateRedraw = () => {
-    if (!_redrawEnabled) return;
-    _renderer.render();
-    dispatch.call('drawn', this, { full: true });
-  };
-
+  /**
+   * centerPoint
+   * Returns the [x,y] pixel at the center of the viewport
+   * @return  Array [x,y] pixel at the center of the viewport
+   */
+  centerPoint() {
+    return vecScale(this._dimensions, 0.5);
+  }
 
   /**
    * mouse
    * Gets the current [x,y] location of the pointer
    * @return  Array [x,y] (or `null` if the map is not interactive)
    */
-  map.mouse = () => {
-    const behavior = context.behaviors.get('map-interaction');
+  mouse() {
+    const behavior = this.context.behaviors.get('map-interaction');
     return behavior && behavior.coord;
-  };
+  }
 
   /**
-   * mouseCoordinates
+   * mouseLoc
    * Gets the current [lon,lat] location of the pointer
    * @return  Array [lon,lat] (or location at the center of the map)
    */
-  map.mouseCoordinates = () => {
-    const coord = map.mouse() || _centerPixel();
-    return context.projection.invert(coord);
-  };
-
+  mouseLoc() {
+    const coord = this.mouse() || this.centerPoint();
+    return this.context.projection.invert(coord);
+  }
 
   /**
    * transform
@@ -196,16 +234,16 @@ export function rendererMap(context) {
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return map transform -or- this
    */
-  map.transform = function(t2, duration) {
-    if (!arguments.length) {
-      return context.projection.transform();
+  transform(t2, duration) {
+    if (t2 === undefined) {
+      return this.context.projection.transform();
     }
     if (duration === undefined) {
       duration = 0;
     }
-    _renderer.setTransform(t2, duration);
-    return map;
-  };
+    this._renderer.setTransform(t2, duration);
+    return this;
+  }
 
   /**
    * centerZoom
@@ -215,26 +253,26 @@ export function rendererMap(context) {
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
-  map.centerZoom = (loc2, z2, duration = 0) => {
-    const c = map.center();
-    const z = map.zoom();
+  centerZoom(loc2, z2, duration = 0) {
+    const c = this.center();
+    const z = this.zoom();
     if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
-      return map;
+      return this;
     }
 
     const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
     let proj = new Projection();
-    proj.transform(context.projection.transform()); // make copy
+    proj.transform(this.context.projection.transform()); // make copy
     proj.scale(k2);
 
     let t = proj.translate();
     const point = proj.project(loc2);
-    const center = _centerPixel();
+    const center = this.centerPoint();
     const delta = vecSubtract(center, point);
     t = vecAdd(t, delta);
 
-    return map.transform({ x: t[0], y: t[1], k: k2 }, duration);
-  };
+    return this.transform({ x: t[0], y: t[1], k: k2 }, duration);
+  }
 
   /**
    * center
@@ -243,17 +281,17 @@ export function rendererMap(context) {
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return map center -or- this
    */
-  map.center = function(loc2, duration) {
-    if (!arguments.length) {
-      return context.projection.invert(_centerPixel());
+  center(loc2, duration) {
+    if (loc2 === undefined) {
+      return this.context.projection.invert(this.centerPoint());
     }
     if (duration === undefined) {
       duration = 0;
     }
     loc2[0] = clamp(loc2[0] || 0, -180, 180);
     loc2[1] = clamp(loc2[1] || 0, -90, 90);
-    return map.centerZoom(loc2, map.zoom(), duration);
-  };
+    return this.centerZoom(loc2, this.zoom(), duration);
+  }
 
   /**
    * zoom
@@ -262,16 +300,16 @@ export function rendererMap(context) {
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return map zoom -or- this
    */
-  map.zoom = function(z2, duration) {
-    if (!arguments.length) {
-      return Math.max(0, geoScaleToZoom(context.projection.scale(), TILESIZE));
+  zoom(z2, duration) {
+    if (z2 === undefined) {
+      return Math.max(0, geoScaleToZoom(this.context.projection.scale(), TILESIZE));
     }
     if (duration === undefined) {
       duration = 0;
     }
     z2 = clamp(z2 || 0, MINZOOM, MAXZOOM);
-    return map.centerZoom(map.center(), z2, duration);
-  };
+    return this.centerZoom(this.center(), z2, duration);
+  }
 
   /**
    * pan
@@ -280,10 +318,10 @@ export function rendererMap(context) {
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
-  map.pan = (delta, duration = 0) => {
-    const t = context.projection.transform();
-    return map.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
-  };
+  pan(delta, duration = 0) {
+    const t = this.context.projection.transform();
+    return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
+  }
 
   /**
    * zoomTo
@@ -292,42 +330,38 @@ export function rendererMap(context) {
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return this
    */
-  map.zoomTo = (val, duration = 0) => {
+  zoomTo(val, duration = 0) {
     let extent;
     if (Array.isArray(val)) {
-      extent = utilTotalExtent(val, context.graph());
+      extent = utilTotalExtent(val, this.context.graph());
     } else {
-      extent = val.extent(context.graph());
+      extent = val.extent(this.context.graph());
     }
-    if (!isFinite(extent.area())) return map;
+    if (!isFinite(extent.area())) return this;
 
-    const z2 = clamp(map.trimmedExtentZoom(extent), 0, 20);
-    return map.centerZoom(extent.center(), z2, duration);
-  };
+    const z2 = clamp(this.trimmedExtentZoom(extent), 0, 20);
+    return this.centerZoom(extent.center(), z2, duration);
+  }
 
 
   // convenience methods for zomming in and out
-  function _zoomIn(delta) {
-    map.centerZoom(map.center(), ~~map.zoom() + delta, 250);
-  }
-  function _zoomOut(delta) {
-    map.centerZoom(map.center(), ~~map.zoom() - delta, 250);
-  }
+  _zoomIn(delta)  { return this.centerZoom(this.center(), ~~this.zoom() + delta, 250); }
+  _zoomOut(delta) { return this.centerZoom(this.center(), ~~this.zoom() - delta, 250); }
 
-  map.zoomIn = () => _zoomIn(1);
-  map.zoomInFurther = () => _zoomIn(4);
-  map.canZoomIn = () => map.zoom() < MAXZOOM;
+  zoomIn()        { return this._zoomIn(1); }
+  zoomInFurther() { return this._zoomIn(4); }
+  canZoomIn()     { return this.zoom() < MAXZOOM; }
 
-  map.zoomOut = () => _zoomOut(1);
-  map.zoomOutFurther = () => _zoomOut(4);
-  map.canZoomOut = () => map.zoom() > MINZOOM;
+  zoomOut()        { return this._zoomOut(1); }
+  zoomOutFurther() { return this._zoomOut(4); }
+  canZoomOut()     { return this.zoom() > MINZOOM; }
 
   // convenience methods for the above, but with easing
-  map.transformEase = (t2, duration = 250) => map.transform(t2, duration);
-  map.centerZoomEase = (loc2, z2, duration = 250) => map.centerZoom(loc2, z2, duration);
-  map.centerEase = (loc2, duration = 250) => map.center(loc2, duration);
-  map.zoomEase = (z2, duration = 250) => map.zoom(z2, duration);
-  map.zoomToEase = (val, duration = 250) => map.zoomTo(val, duration);
+  transformEase(t2, duration = 250)        { return this.transform(t2, duration); }
+  centerZoomEase(loc2, z2, duration = 250) { return this.centerZoom(loc2, z2, duration); }
+  centerEase(loc2, duration = 250)         { return this.center(loc2, duration); }
+  zoomEase(z2, duration = 250)             { return this.zoom(z2, duration); }
+  zoomToEase(val, duration = 250)          { return this.zoomTo(val, duration); }
 
 
   /**
@@ -342,14 +376,14 @@ export function rendererMap(context) {
    *
    * @return  effective zoom
    */
-  map.effectiveZoom = () => {
-    const lat = map.center()[1];
-    const z = map.zoom();
+  effectiveZoom() {
+    const lat = this.center()[1];
+    const z = this.zoom();
     const atLatitude = geoMetersToLon(1, lat);
     const atEquator = geoMetersToLon(1, 0);
     const extraZoom = Math.log(atLatitude / atEquator) / Math.LN2;
     return Math.min(z + extraZoom, MAXZOOM);
-  };
+  }
 
   /**
    * extent
@@ -357,16 +391,16 @@ export function rendererMap(context) {
    * @param  extent?    Extent Object to set the map to
    * @return map extent -or- this
    */
-  map.extent = function(extent) {
-    if (!arguments.length) {
+  extent(extent) {
+    if (extent === undefined) {
       return new Extent(
-        context.projection.invert([0, _dimensions[1]]),
-        context.projection.invert([_dimensions[0], 0])
+        this.context.projection.invert([0, this._dimensions[1]]),
+        this.context.projection.invert([this._dimensions[0], 0])
       );
     } else {
-      return map.centerZoom(extent.center(), map.extentZoom(extent));
+      return this.centerZoom(extent.center(), this.extentZoom(extent));
     }
-  };
+  }
 
   /**
    * trimmedExtent
@@ -374,24 +408,24 @@ export function rendererMap(context) {
    * @param  extent?    Extent Object to set the map to
    * @return map extent -or- this
    */
-  map.trimmedExtent = function(extent) {
-    if (!arguments.length) {
+  trimmedExtent(extent) {
+    if (extent === undefined) {
       const headerY = 71;
       const footerY = 30;
       const pad = 10;
       return new Extent(
-        context.projection.invert([pad, _dimensions[1] - footerY - pad]),
-        context.projection.invert([_dimensions[0] - pad, headerY + pad])
+        this.context.projection.invert([pad, this._dimensions[1] - footerY - pad]),
+        this.context.projection.invert([this._dimensions[0] - pad, headerY + pad])
       );
     } else {
-      return map.centerZoom(extent.center(), map.trimmedExtentZoom(extent));
+      return this.centerZoom(extent.center(), this.trimmedExtentZoom(extent));
     }
-  };
+  }
 
 
-  function _calcExtentZoom(extent, dim) {
-    const tl = context.projection.project([extent.min[0], extent.max[1]]);
-    const br = context.projection.project([extent.max[0], extent.min[1]]);
+  _calcExtentZoom(extent, dim) {
+    const tl = this.context.projection.project([extent.min[0], extent.max[1]]);
+    const br = this.context.projection.project([extent.max[0], extent.min[1]]);
 
     // Calculate maximum zoom that fits extent
     const hFactor = (br[0] - tl[0]) / dim[0];
@@ -400,82 +434,87 @@ export function rendererMap(context) {
     const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
     const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
 
-    const currZoom = map.zoom();
+    const currZoom = this.zoom();
     return isFinite(zoomDiff) ? (currZoom - zoomDiff) : currZoom;
   }
 
 
-  map.extentZoom = (extent) => {
-    return _calcExtentZoom(extent, _dimensions);
-  };
+  /**
+   * extentZoom
+   * Returns the maximum zoom that fits the given extent
+   * @param  extent    Extent Object to fit
+   * @return zoom
+   */
+  extentZoom(extent) {
+    return this._calcExtentZoom(extent, this._dimensions);
+  }
 
-
-  map.trimmedExtentZoom = (extent) => {
+  /**
+   * trimmedExtentZoom
+   * Returns the maximum zoom that fits the given extent,
+   *   but trimmed slightly to account for header, footer, etc.
+   * @param  extent    Extent Object to fit
+   * @return zoom
+   */
+  trimmedExtentZoom(extent) {
     const trimY = 120;
     const trimX = 40;
-    const trimmed = vecSubtract(_dimensions, [trimX, trimY]);
-    return _calcExtentZoom(extent, trimmed);
-  };
+    const trimmed = vecSubtract(this._dimensions, [trimX, trimY]);
+    return this._calcExtentZoom(extent, trimmed);
+  }
 
 
-  map.toggleHighlightEdited = () => {
-    surface.classed('highlight-edited', !surface.classed('highlight-edited'));
-    map.immediateRedraw();
-    dispatch.call('changeHighlighting', this);
-  };
+  toggleHighlightEdited() {
+    this.surface.classed('highlight-edited', !this.surface.classed('highlight-edited'));
+    this.immediateRedraw();
+//    dispatch.call('changeHighlighting', this);
+  }
 
 
-  map.areaFillOptions = ['wireframe', 'partial', 'full'];
-
-
-  map.activeAreaFill = function(val) {
-    if (!arguments.length) {
-      return prefs('area-fill') || 'partial';
+  /**
+   * areaFillMode
+   * set/get the area fill mode - one of 'full', 'partial' (default), or 'wireframe'
+   */
+  get areaFillMode() {
+    return this._currFillMode;
+  }
+  set areaFillMode(val) {
+    const current = this._currFillMode;
+    if (current !== 'wireframe') {
+      this._toggleFillMode = current;
+      prefs('area-fill-toggle', current);  // the previous *non-wireframe* fill mode
     }
 
+    this._currFillMode = val;
     prefs('area-fill', val);
-    if (val !== 'wireframe') {
-      prefs('area-fill-toggle', val);
-    }
-    map.immediateRedraw();
-    dispatch.call('changeAreaFill', this);
-    return map;
-  };
+
+    this._renderer.scene.dirtyScene();
+    this.immediateRedraw();
+  }
 
 
-  map.toggleWireFrameMode = () => {
-    _wireFrameMode = !_wireFrameMode;
-    _renderer.scene.dirtyScene();
-    map.immediateRedraw();
-  };
-
-  map.wireFrameMode = () => _wireFrameMode;
-
-  map.toggleWireframe = () => {
-    let activeFill = map.activeAreaFill();
-    map.toggleWireFrameMode();
-
-    if (activeFill === 'wireframe') {
-      activeFill = prefs('area-fill-toggle') || 'partial';
+  /**
+   * wireframeMode
+   * set/get whether the area fill mode is set to 'wireframe'
+   */
+  get wireframeMode() {
+    return this._currFillMode === 'wireframe';
+  }
+  set wireframeMode(val) {
+    if (val) {
+      this.areaFillMode = 'wireframe';
     } else {
-      activeFill = 'wireframe';
+      this.areaFillMode = this._toggleFillMode;  // go back to the previous *non-wireframe* fill mode
     }
-
-    map.activeAreaFill(activeFill);
-    return map;
-  };
+  }
 
 
-  map.scene = () => _renderer && _renderer.scene;
+  get scene() {
+    return this._renderer.scene;
+  }
 
-  map.renderer = () => _renderer;
+  get renderer() {
+    return this._renderer;
+  }
 
-  map.redrawEnable = function (val) {
-    if (!arguments.length) return _redrawEnabled;
-    _redrawEnabled = val;
-    return map;
-  };
-
-
-  return utilRebind(map, dispatch, 'on');
 }

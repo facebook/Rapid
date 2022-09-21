@@ -79,7 +79,7 @@ export function uiSectionMapStyleOptions(context) {
     }
 
     function isActiveFill(d) {
-        return context.map().activeAreaFill() === d;
+        return context.map().areaFillMode === d;
     }
 
     function toggleHighlightEdited(d3_event) {
@@ -88,7 +88,7 @@ export function uiSectionMapStyleOptions(context) {
     }
 
     function setFill(d3_event, d) {
-        context.map().activeAreaFill(d);
+        context.map().areaFillMode = d;
     }
 
     context.map()
