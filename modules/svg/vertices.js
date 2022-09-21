@@ -160,8 +160,7 @@ export function svgVertices(projection, context) {
             .attr('transform', 'translate(-5.5, -5.5)')
             .attr('xlink:href', function(d) {
                 var picon = getIcon(d);
-                var isMaki = /^maki-/.test(picon);
-                return '#' + picon + (isMaki ? '-11' : '');
+                return picon ? `#${picon}` : '';
             });
 
 

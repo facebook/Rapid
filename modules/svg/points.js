@@ -141,18 +141,11 @@ export function svgPoints(projection, context) {
         groups.select('.shadow');   // propagate bound data
         groups.select('.stroke');   // propagate bound data
         groups.select('.icon')      // propagate bound data
-            .attr('xlink:href', function(entity) {
-                var preset = presetManager.match(entity, graph);
+            .attr('xlink:href', function(d) {
+                var preset = presetManager.match(d, context.graph());
                 var picon = preset && preset.icon;
-
-                if (!picon) {
-                    return '';
-                } else {
-                    var isMaki = /^maki-/.test(picon);
-                    return '#' + picon + (isMaki ? '-11' : '');
-                }
+                return picon ? `#${picon}` : '';
             });
-
 
         // Draw touch targets..
         touchLayer

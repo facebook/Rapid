@@ -131,16 +131,7 @@ export function svgOsmose(projection, context, dispatch) {
         .attr('class', 'icon-annotation')
         .attr('width', '13px')
         .attr('height', '13px')
-        .attr('xlink:href', d => {
-          const picon = d.icon;
-
-          if (!picon) {
-            return '';
-          } else {
-            const isMaki = /^maki-/.test(picon);
-            return `#${picon}${isMaki ? '-11' : ''}`;
-          }
-        });
+        .attr('xlink:href', d => d.icon ? `#${d.icon}` : '');
 
     // update
     markers

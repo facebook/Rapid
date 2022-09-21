@@ -233,9 +233,6 @@ export function uiSectionEntityIssues(context) {
         buttons
             .each(function(d) {
                 var iconName = d.icon || 'iD-icon-wrench';
-                if (iconName.startsWith('maki')) {
-                    iconName += '-15';
-                }
                 d3_select(this).call(svgIcon('#' + iconName, 'fix-icon'));
             });
 
