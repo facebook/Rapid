@@ -336,13 +336,8 @@ export function uiPresetIcon() {
     icon.selectAll('svg')
       .attr('class', 'icon ' + picon + ' ' + (!isiDIcon && geom !== 'line'  ? '' : tagClasses));
 
-    var suffix = '';
-    if (isMaki) {
-      suffix = isSmall() && geom === 'point' ? '-11' : '-15';
-    }
-
     icon.selectAll('use')
-      .attr('href', '#' + picon + suffix);
+      .attr('href', `#${picon}`);
   }
 
 

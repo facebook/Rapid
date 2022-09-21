@@ -23,42 +23,9 @@ export function getIconTexture(context, iconName) {
     spriteName = iconName;
   }
 
-  spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
+  spriteName = spriteName + '.svg';
 
   return spritesheet.textures[spriteName];
-}
-
-
-/**
-* Generates a icon sprite for the given texture name
-* @returns {PIXI.Sprite}
-*/
-export function getIconSprite(context, iconName) {
-  const isMaki = /^maki-/.test(iconName);
-  const isTemaki = /^temaki-/.test(iconName);
-
-  let spritesheet;
-  let spriteName;
-  if (isMaki) {
-    spritesheet = context._makiSheet;
-    spriteName = iconName.slice('maki-'.length);
-  } else if (isTemaki) {
-    spritesheet = context._temakiSheet;
-    spriteName = iconName.slice('temaki-'.length);
-  } else {
-    spritesheet = context._fontAwesomeSheet;
-    spriteName = iconName;
-  }
-
-  spriteName = spriteName + (isMaki ? '-15' : '') + '.svg';
-
-  const sprite = new PIXI.Sprite(spritesheet.textures[spriteName]);
-  sprite.name = spriteName;
-  sprite.interactive = false;
-  sprite.interactiveChildren = false;
-  sprite.anchor.set(0.5, 0.5);   // middle, middle
-
-  return sprite;
 }
 
 

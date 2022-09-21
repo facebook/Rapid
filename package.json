@@ -20,7 +20,7 @@
     "build:data": "shx mkdir -p dist/data && node scripts/build_data.js",
     "build:stats": "esbuild-visualizer --metadata dist/esbuild.json --exclude *.png --filename docs/statistics.html",
     "build:modern": "node config/esbuild.config.modern.js",
-    "clean": "shx rm -f dist/esbuild.json dist/*.js dist/*.map dist/*.css dist/img/*.svg",
+    "clean": "shx rm -f dist/esbuild.json dist/*.js dist/*.map dist/*.css dist/img/*-sprite.svg",
     "aws_deploy": "python3 scripts/aws_deploy.py",
     "dist": "run-p dist:**",
     "dist:mapillary": "shx mkdir -p dist/mapillary-js && shx cp -R node_modules/mapillary-js/dist/* dist/mapillary-js/",
