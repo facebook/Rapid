@@ -217,7 +217,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.map().on(`move.uiSectionValidationIssues-${sectionID}`,
+  context.map().on('move',
     _debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;
