@@ -43,7 +43,6 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     this.lastMove = null;
     this.gesture = null;
 
-    // Make sure the event handlers have `this` bound correctly
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);

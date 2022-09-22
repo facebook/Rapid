@@ -36,6 +36,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._spaceClickDisabled = false;
     this._longPressTimeout = null;
     this._showMenu = false;
+    this._pointerOverRenderer = false;
 
     this.lastDown = null;
     this.lastMove = null;
@@ -45,6 +46,8 @@ export class BehaviorSelect extends AbstractBehavior {
     this._keybinding = utilKeybinding('selectbehavior');
 
     // Make sure the event handlers have `this` bound correctly
+    this._pointerover = this._pointerover.bind(this);
+    this._pointerout = this._pointerout.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
@@ -87,6 +90,10 @@ export class BehaviorSelect extends AbstractBehavior {
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
+    const view = this.context.pixi.view;
+    view.addEventListener('pointerover', this._pointerover);
+    view.addEventListener('pointerout', this._pointerout);
+
     const stage = this.context.pixi.stage;
     stage.addEventListener('pointerdown', this._pointerdown);
     stage.addEventListener('pointermove', this._pointermove);
@@ -119,6 +126,10 @@ export class BehaviorSelect extends AbstractBehavior {
     this._multiSelection.clear();
     this.cancelLongPress();
 
+    const view = this.context.pixi.view;
+    view.removeEventListener('pointerover', this._pointerover);
+    view.removeEventListener('pointerout', this._pointerout);
+
     const stage = this.context.pixi.stage;
     stage.removeEventListener('pointerdown', this._pointerdown);
     stage.removeEventListener('pointermove', this._pointermove);
@@ -128,6 +139,23 @@ export class BehaviorSelect extends AbstractBehavior {
 
     d3_select(document)
       .call(this._keybinding.unbind);
+  }
+
+
+  /**
+   * _pointerover
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerover() {
+    this._pointerOverRenderer = true;
+  }
+
+  /**
+   * _pointerout
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerout() {
+    this._pointerOverRenderer = false;
   }
 
 
@@ -148,10 +176,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    // However, do not discard if the event was a touch event.
-//    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
+    if (!this._pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
 
@@ -302,11 +327,9 @@ export class BehaviorSelect extends AbstractBehavior {
     e.preventDefault();
     e.stopPropagation();
 
-    // Ignore it if we are not over the canvas
+    // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    if (!pointerOverRenderer) return;
+    if (!this._pointerOverRenderer) return;
 
     // For spacebar clicks we will instead use the last move event
     if (!this.lastMove) return;

@@ -1,6 +1,4 @@
-import { select as d3_select } from 'd3-selection';
 import { vecEqual } from '@id-sdk/math';
-
 import { AbstractBehavior } from './AbstractBehavior';
 
 const DEBUG = false;
@@ -29,21 +27,25 @@ export class BehaviorHover extends AbstractBehavior {
 
     this.lastMove = null;
     this.hoverTarget = null;
+    this._pointerOverRenderer = false;
 
     // Make sure the event handlers have `this` bound correctly
-    this._pointermove = this._pointermove.bind(this);
-    this._pointerout = this._pointerout.bind(this);
+    this._blur = this._blur.bind(this);
+    this._focus = this._focus.bind(this);
     this._keydown = this._keydown.bind(this);
     this._keyup = this._keyup.bind(this);
-    this._blur = this._blur.bind(this);
+    this._pointerover = this._pointerover.bind(this);
+    this._pointerout = this._pointerout.bind(this);
+    this._pointermove = this._pointermove.bind(this);
 
     // Always observe the state of the modifier keys (even when the behavior is disabled)
     // This is used to disable snapping/hovering
     this._modifierKeys = new Set();
-    d3_select(window)
-      .on('keydown.BehaviorHover', this._keydown)
-      .on('keyup.BehaviorHover', this._keyup)
-      .on('blur.BehaviorHover', this._blur);
+
+    window.addEventListener('blur', this._blur);
+    window.addEventListener('focus', this._focus);
+    window.addEventListener('keydown', this._keydown);
+    window.addEventListener('keyup', this._keyup);
   }
 
 
@@ -63,9 +65,12 @@ export class BehaviorHover extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
+    const view = this.context.pixi.view;
+    view.addEventListener('pointerover', this._pointerover);
+    view.addEventListener('pointerout', this._pointerout);
+
     const stage = this.context.pixi.stage;
     stage.addEventListener('pointermove', this._pointermove);
-    stage.addEventListener('pointerout', this._pointerout);   // or leaves the canvas
   }
 
 
@@ -94,16 +99,41 @@ export class BehaviorHover extends AbstractBehavior {
     this.lastMove = null;
     this.hoverTarget = null;
 
+    const view = this.context.pixi.view;
+    view.removeEventListener('pointerover', this._pointerover);
+    view.removeEventListener('pointerout', this._pointerout);
+
     const stage = this.context.pixi.stage;
     stage.removeEventListener('pointermove', this._pointermove);
-    stage.removeEventListener('pointerout', this._pointerout);   // or leaves the canvas
+  }
+
+
+  /**
+   * _blur
+   * Handler for the document losing focus (we won't get keyups if this happens)
+   * @param  `e`  A DOM FocusEvent
+   */
+  _blur() {
+    this._modifierKeys.clear();
+    this._processMove();
+  }
+
+
+  /**
+   * _focus
+   * Handler for the document regaining focus
+   * @param  `e`  A DOM FocusEvent
+   */
+  _focus() {
+    this._modifierKeys.clear();
+    this._processMove();
   }
 
 
   /**
    * _keydown
    * Handler for presses of the modifier keys
-   * @param  `e`  A d3 keydown event
+   * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
     if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
@@ -115,7 +145,7 @@ export class BehaviorHover extends AbstractBehavior {
   /**
    * _keyup
    * Handler for releases of the modifier keys
-   * @param  `e`  A d3 keyup event
+   * @param  `e`  A DOM KeyboardEvent
    */
   _keyup(e) {
     if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
@@ -125,11 +155,21 @@ export class BehaviorHover extends AbstractBehavior {
 
 
   /**
-   * _blur
-   * Handler for the window losing focus (we won't get keyups if this happens)
+   * _pointerover
+   * @param  `e`  A DOM PointerEvent
    */
-  _blur() {
-    this._modifierKeys.clear();
+  _pointerover() {
+    this._pointerOverRenderer = true;
+    this._processMove();
+  }
+
+
+  /**
+   * _pointerout
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerout() {
+    this._pointerOverRenderer = false;
     this._processMove();
   }
 
@@ -140,24 +180,18 @@ export class BehaviorHover extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    const move = this._getEventData(e);
+    // Refresh modifier state
+    // (It's possible to miss a modifier key if it occurred when the window was out of focus)
+    const modifiers = this._modifierKeys;
+    if (e.altKey)  { modifiers.add('Alt'); } else { modifiers.delete('Alt'); }
+    if (e.metaKey) { modifiers.add('Meta'); } else { modifiers.delete('Meta'); }
+    if (e.ctrlKey) { modifiers.add('Control'); } else { modifiers.delete('Control'); }
 
     // We get a lot more move events than we need, so discard ones where it hasn't actually moved much
+    const move = this._getEventData(e);
     if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
 
     this.lastMove = move;
-    this._processMove();
-  }
-
-
-  /**
-   * _pointerout
-   * Handler for pointerout events.
-   * @param  `e`  A Pixi FederatedPointerEvent
-   */
-  _pointerout(e) {
-    // Pretend it's a move event, but skip the "has it moved much" test
-    this.lastMove = this._getEventData(e);
     this._processMove();
   }
 
@@ -173,8 +207,7 @@ export class BehaviorHover extends AbstractBehavior {
 
     // If a modifier key is down, or pointer is not over the renderer, discard the target..
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-const pointerOverRenderer = true; //interactionManager.mouseOverRenderer;
-    if (this._modifierKeys.size || !pointerOverRenderer) {
+    if (this._modifierKeys.size || !this._pointerOverRenderer) {
       move.target = null;
       move.feature = null;
       move.data = null;

@@ -38,6 +38,8 @@ export class BehaviorDraw extends AbstractBehavior {
     this.id = 'draw';
 
     this._spaceClickDisabled = false;
+    this._pointerOverRenderer = false;
+
     this.lastDown = null;
     this.lastMove = null;
     this.lastSpace = null;
@@ -47,6 +49,8 @@ export class BehaviorDraw extends AbstractBehavior {
     this._keybinding = utilKeybinding('drawbehavior');
 
     // Make sure the event handlers have `this` bound correctly
+    this._pointerover = this._pointerover.bind(this);
+    this._pointerout = this._pointerout.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
@@ -95,6 +99,10 @@ export class BehaviorDraw extends AbstractBehavior {
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
+    const view = this.context.pixi.view;
+    view.addEventListener('pointerover', this._pointerover);
+    view.addEventListener('pointerout', this._pointerout);
+
     const stage = this.context.pixi.stage;
     stage.addEventListener('pointerdown', this._pointerdown);
     stage.addEventListener('pointermove', this._pointermove);
@@ -125,6 +133,10 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
+
+    const view = this.context.pixi.view;
+    view.removeEventListener('pointerover', this._pointerover);
+    view.removeEventListener('pointerout', this._pointerout);
 
     const stage = this.context.pixi.stage;
     stage.removeEventListener('pointerdown', this._pointerdown);
@@ -167,6 +179,25 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   _blur() {
     this._modifierKeys.clear();
+    this._processMove();
+  }
+
+
+  /**
+   * _pointerover
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerover() {
+    this._pointerOverRenderer = true;
+    this._processMove();
+  }
+
+  /**
+   * _pointerout
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerout() {
+    this._pointerOverRenderer = false;
     this._processMove();
   }
 
@@ -239,11 +270,7 @@ export class BehaviorDraw extends AbstractBehavior {
     const dist = vecLength(down.coord, up.coord);
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = up; // We will accept this as a click
-      if (DEBUG) {
-        console.log('accepted a click.');
-      }
       this.clicked = true;
-
       this._processClick();
     }
   }
@@ -279,11 +306,9 @@ export class BehaviorDraw extends AbstractBehavior {
     e.preventDefault();
     e.stopPropagation();
 
-//    // Ignore it if we are not over the canvas
-//    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    if (!pointerOverRenderer) return;
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    if (!this._pointerOverRenderer) return;
 
     // For spacebar clicks we will instead use the last move event
     if (!this.lastMove) return;
@@ -324,11 +349,9 @@ export class BehaviorDraw extends AbstractBehavior {
   _processMove() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
-//    // Ignore it if we are not over the canvas
-//    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    if (!pointerOverRenderer) return;
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    if (!this._pointerOverRenderer) return;
 
     const move = Object.assign({}, this.lastMove);  // shallow copy
 
@@ -354,11 +377,9 @@ export class BehaviorDraw extends AbstractBehavior {
   _processClick() {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
-//    // Ignore it if we are not over the canvas
-//    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-//    const interactionManager = this.context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    if (!pointerOverRenderer) return;
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    if (!this._pointerOverRenderer) return;
 
     const click = Object.assign({}, this.lastClick);  // shallow copy
 
@@ -396,7 +417,7 @@ export class BehaviorDraw extends AbstractBehavior {
    * Fires if user presses return, enter, or escape - this is used to accept whatever has been drawn
    * @param  `e`  A d3 keydown event
    */
-  _finish(e) {
+  _finish() {
     if (DEBUG) {
       console.log(`BehaviorDraw: emitting 'finish'`); // eslint-disable-line no-console
     }

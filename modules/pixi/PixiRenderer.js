@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
-import { EventEmitter } from '@pixi/utils';
 import { EventSystem } from '@pixi/events';
-import { skipHello } from '@pixi/utils';
+import { EventEmitter, skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
 import { PixiScene } from './PixiScene';

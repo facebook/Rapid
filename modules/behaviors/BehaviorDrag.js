@@ -32,11 +32,15 @@ export class BehaviorDrag extends AbstractBehavior {
     super(context);
     this.id = 'drag';
 
+    this._pointerOverRenderer = false;
+
     this.dragTarget = null;   // the displayObject being dragged
     this.lastDown = null;
     this.lastMove = null;
 
     // Make sure the event handlers have `this` bound correctly
+    this._pointerover = this._pointerover.bind(this);
+    this._pointerout = this._pointerout.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
@@ -60,6 +64,10 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastDown = null;
     this.lastMove = null;
     this.dragTarget = null;
+
+    const view = this.context.pixi.view;
+    view.addEventListener('pointerover', this._pointerover);
+    view.addEventListener('pointerout', this._pointerout);
 
     const stage = this.context.pixi.stage;
     stage.addEventListener('pointerdown', this._pointerdown);
@@ -102,12 +110,33 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
+    const view = this.context.pixi.view;
+    view.removeEventListener('pointerover', this._pointerover);
+    view.removeEventListener('pointerout', this._pointerout);
+
     const stage = this.context.pixi.stage;
     stage.removeEventListener('pointerdown', this._pointerdown);
     stage.removeEventListener('pointermove', this._pointermove);
     stage.removeEventListener('pointerup', this._pointerup);
     stage.removeEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
     stage.removeEventListener('pointercancel', this._pointercancel);
+  }
+
+
+  /**
+   * _pointerover
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerover() {
+    this._pointerOverRenderer = true;
+  }
+
+  /**
+   * _pointerout
+   * @param  `e`  A DOM PointerEvent
+   */
+  _pointerout() {
+    this._pointerOverRenderer = false;
   }
 
 
@@ -122,12 +151,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
     // If pointer is not over the renderer, just discard
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-//    const context = this.context;
-//    const interactionManager = context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//
-//    // However, do not discard if the event was a touch event.
-//    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
+    if (!this._pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this._getEventData(e);
     const isDraggableTarget = down.data instanceof osmNode;
@@ -168,9 +192,9 @@ export class BehaviorDrag extends AbstractBehavior {
       this.dragTarget = null;
     }
 
-//    const interactionManager = context.pixi.renderer.plugins.interaction;
-//    const pointerOverRenderer = interactionManager.mouseOverRenderer;
-//    if (!pointerOverRenderer && e.data.pointerType !== 'touch') return;
+    // If pointer is not over the renderer, just discard
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    if (!this._pointerOverRenderer && e.data.pointerType !== 'touch') return;
 
     const down = this.lastDown;
     const move = this._getEventData(e);
