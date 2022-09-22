@@ -2,97 +2,104 @@ import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 
+
 export function uiSectionMapStyleOptions(context) {
 
-    var section = uiSection('fill-area', context)
-        .label(t.html('map_data.style_options'))
-        .disclosureContent(renderDisclosureContent)
-        .expandedByDefault(false);
+  let section = uiSection('fill-area', context)
+      .label(t.html('map_data.style_options'))
+      .disclosureContent(renderDisclosureContent)
+      .expandedByDefault(false);
 
-    function renderDisclosureContent(selection) {
-        var container = selection.selectAll('.layer-fill-list')
-            .data([0]);
 
-        container.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-fill-list')
-            .merge(container)
-            .call(drawListItems, context.map().areaFillOptions, 'radio', 'area_fill', setFill, isActiveFill);
+  function renderDisclosureContent(selection) {
+    let container = selection.selectAll('.layer-fill-list')
+      .data([0]);
 
-        var container2 = selection.selectAll('.layer-visual-diff-list')
-            .data([0]);
+    container.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-fill-list')
+      .merge(container)
+      .call(drawListItems, context.map().areaFillOptions, 'radio', 'area_fill', setFill, isActiveFill);
 
-        container2.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-visual-diff-list')
-            .merge(container2)
-            .call(drawListItems, ['highlight_edits'], 'checkbox', 'visual_diff', toggleHighlightEdited, function() {
-                return context.surface().classed('highlight-edited');
-            });
-    }
+    let container2 = selection.selectAll('.layer-visual-diff-list')
+      .data([0]);
 
-    function drawListItems(selection, data, type, name, change, active) {
-        var items = selection.selectAll('li')
-            .data(data);
+    container2.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-visual-diff-list')
+      .merge(container2)
+      .call(drawListItems, ['highlight_edits'], 'checkbox', 'visual_diff', setHighlighted, isHighlightChecked);
+  }
 
-        // Exit
-        items.exit()
-            .remove();
 
-        // Enter
-        var enter = items.enter()
-            .append('li')
-            .call(uiTooltip()
-                .title(function(d) {
-                    return t.html(name + '.' + d + '.tooltip');
-                })
-                .keys(function(d) {
-                    var key = (d === 'wireframe' ? t('area_fill.wireframe.key') : null);
-                    if (d === 'highlight_edits') key = t('map_data.highlight_edits.key');
-                    return key ? [key] : null;
-                })
-                .placement('top')
-            );
+  function drawListItems(selection, data, type, name, change, active) {
+    let items = selection.selectAll('li')
+      .data(data);
 
-        var label = enter
-            .append('label');
+    // Exit
+    items.exit()
+      .remove();
 
-        label
-            .append('input')
-            .attr('type', type)
-            .attr('name', name)
-            .on('change', change);
+    // Enter
+    let enter = items.enter()
+      .append('li')
+      .call(uiTooltip()
+        .title(d => t.html(`${name}.${d}.tooltip`))
+        .keys(d => {
+          let key = (d === 'wireframe' ? t('area_fill.wireframe.key') : null);
+          if (d === 'highlight_edits') {
+            key = t('map_data.highlight_edits.key');
+          }
+          return key ? [key] : null;
+        })
+        .placement('top')
+      );
 
-        label
-            .append('span')
-            .html(function(d) { return t.html(name + '.' + d + '.description'); });
+    let label = enter
+      .append('label');
 
-        // Update
-        items = items
-            .merge(enter);
+    label
+      .append('input')
+      .attr('type', type)
+      .attr('name', name)
+      .on('change', change);
 
-        items
-            .classed('active', active)
-            .selectAll('input')
-            .property('checked', active)
-            .property('indeterminate', false);
-    }
+    label
+      .append('span')
+      .html(d => t.html(`${name}.${d}.description`));
 
-    function isActiveFill(d) {
-        return context.map().areaFillMode === d;
-    }
+    // Update
+    items = items
+      .merge(enter);
 
-    function toggleHighlightEdited(d3_event) {
-        d3_event.preventDefault();
-        context.map().toggleHighlightEdited();
-    }
+    items
+      .classed('active', active)
+      .selectAll('input')
+      .property('checked', active)
+      .property('indeterminate', false);
+  }
 
-    function setFill(d3_event, d) {
-        context.map().areaFillMode = d;
-    }
 
-    context.map()
-        .on('changeHighlighting.ui_style, changeAreaFill.ui_style', section.reRender);
+  function isActiveFill(d) {
+    return context.map().areaFillMode === d;
+  }
 
-    return section;
+  function setFill(d3_event, d) {
+    context.map().areaFillMode = d;
+  }
+
+  function isHighlightChecked() {
+    return context.map().highlightEdits;
+  }
+
+  function setHighlighted(d3_event) {
+    const input = d3_event.currentTarget;
+    context.map().highlightEdits = input.checked;
+  }
+
+
+  context.map()
+    .on('displaychanged', section.reRender);
+
+  return section;
 }

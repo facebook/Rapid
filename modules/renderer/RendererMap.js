@@ -31,6 +31,7 @@ function clamp(num, min, max) {
  *   `surface`         D3 selection to the sibling `canvas` "surface"
  *   `overlay`         D3 selection to the sibling `div` "overlay"
  *   `redrawEnabled`   `true` to allow drawing, `false` to pause drawing
+ *   `highlightEdits`   true` if edited features should be shown in a special style, `false` otherwise
  *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
  *
@@ -38,6 +39,7 @@ function clamp(num, min, max) {
  *   `draw`      Fires after a full redraw
  *   `move`      Fires after the map's transform has changed (can fire frequently)
  *               ('move' is mostly for when you want to update some content that floats over the map)
+ *   `displaychanged`  Fires on any change in display options (wireframe/areafill, highlightedits)
  */
 export class RendererMap extends EventEmitter {
 
@@ -54,9 +56,11 @@ export class RendererMap extends EventEmitter {
     this.overlay = d3_select(null);       // sibling `div`, offsets supersurface transform (used to hold the editmenu)
     this.redrawEnabled = true;
 
+    // display options
     this.areaFillOptions = ['wireframe', 'partial', 'full'];
-    this._currFillMode = prefs('area-fill') || 'partial';            // the current fill mode
-    this._toggleFillMode = prefs('area-fill-toggle') || 'partial';   // the previous *non-wireframe* fill mode
+    this._highlightEdits = false;                                   // whether to style edited features differently
+    this._currFillMode = prefs('area-fill') || 'partial';           // the current fill mode
+    this._toggleFillMode = prefs('area-fill-toggle') || 'partial';  // the previous *non-wireframe* fill mode
 
     this._renderer = null;
     this._dimensions = [1, 1];
@@ -469,10 +473,20 @@ export class RendererMap extends EventEmitter {
   }
 
 
-  toggleHighlightEdited() {
-    this.surface.classed('highlight-edited', !this.surface.classed('highlight-edited'));
+  /**
+   * highlightEdits
+   * set/get whether to show edited features in a special style
+   */
+  get highlightEdits() {
+    return this._highlightEdits;
+  }
+  set highlightEdits(val) {
+    if (this._highlightEdits === val) return;  // no change
+
+    this._highlightEdits = val;
+    this._renderer.scene.dirtyScene();
     this.immediateRedraw();
-//    dispatch.call('changeHighlighting', this);
+    this.emit('displaychanged');
   }
 
 
@@ -485,9 +499,11 @@ export class RendererMap extends EventEmitter {
   }
   set areaFillMode(val) {
     const current = this._currFillMode;
+    if (current === val) return;  // no change
+
     if (current !== 'wireframe') {
       this._toggleFillMode = current;
-      prefs('area-fill-toggle', current);  // the previous *non-wireframe* fill mode
+      prefs('area-fill-toggle', current);  // remember the previous *non-wireframe* fill mode
     }
 
     this._currFillMode = val;
@@ -495,6 +511,7 @@ export class RendererMap extends EventEmitter {
 
     this._renderer.scene.dirtyScene();
     this.immediateRedraw();
+    this.emit('displaychanged');
   }
 
 
@@ -507,7 +524,9 @@ export class RendererMap extends EventEmitter {
   }
   set wireframeMode(val) {
     if (val) {
-      this.areaFillMode = 'wireframe';
+      if (this.areaFillMode !== 'wireframe') {
+        this.areaFillMode = 'wireframe';
+      }
     } else {
       this.areaFillMode = this._toggleFillMode;  // go back to the previous *non-wireframe* fill mode
     }

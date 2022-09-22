@@ -398,7 +398,7 @@ export function uiInit(context) {
       })
       .on(t('map_data.highlight_edits.key'), function toggleHighlightEdited(d3_event) {
         d3_event.preventDefault();
-        context.map().toggleHighlightEdited();
+        map.highlightEdits = !map.highlightEdits;
       });
 
 
