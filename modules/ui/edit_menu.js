@@ -24,6 +24,7 @@ export function uiEditMenu(context) {
   let _menu = d3_select(null);
   let _operations = [];
   let _anchorLoc = [0, 0];   // Array [lon,lat] wgs84 coordinate where the menu should be anchored
+  let _initialScale = 0;
   let _triggerType = '';     // 'touch', 'pen', or 'rightclick'
   let _menuTop = false;
   let _menuHeight;
@@ -61,6 +62,7 @@ export function uiEditMenu(context) {
     }
 
     _menuHeight = VERTICAL_PADDING * 2 + ops.length * buttonHeight;
+    _initialScale = context.projection.scale();
 
     _menu = selection
       .append('div')
@@ -119,16 +121,8 @@ export function uiEditMenu(context) {
       .classed('disabled', d => d.disabled());
 
     _updatePosition();
+    context.map().on('move', _updatePosition);
 
-    const initialScale = context.projection.scale();
-//    context.map()
-//      .on('move.edit-menu', () => {
-//        if (initialScale !== context.projection.scale()) {
-//          editMenu.close();
-//        } else {
-//          _updatePosition();
-//        }
-//      });
 
     // `pointerup` is always called before `click`
     let _lastPointerUpType;
@@ -177,6 +171,13 @@ export function uiEditMenu(context) {
    */
   function _updatePosition() {
     if (!_menu || _menu.empty()) return;
+
+    // close the menu if the scale (zoom) has changed
+    // (this is because the menu will scale with the supersurface and look wrong)
+    if (_initialScale !== context.projection.scale()) {
+      editMenu.close()
+      return;
+    }
 
     const anchor = context.projection.project(_anchorLoc);  // convert wgs84 [lon,lat] to screen [x,y]
     const viewport = context.surfaceRect();
@@ -268,7 +269,7 @@ export function uiEditMenu(context) {
    * This removes the menu and unbinds the event handlers
    */
   editMenu.close = function () {
-    // context.map().on('move.edit-menu', null);
+     context.map().off('move', _updatePosition);
 
     _menu.remove();
     _tooltips = [];
