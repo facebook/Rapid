@@ -226,14 +226,10 @@ export class ModeDrawArea extends AbstractMode {
       this.lastNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
 
-      context.replace(
-        actionMoveNode(this.lastNode.id, loc), // Finalize position of old draw node at `loc`
-        this._getAnnotation() // Allow undo/redo to here
-      );
       context.perform(
         actionAddEntity(this.drawNode), // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex), // Add new draw node to draw way
-        // this._getAnnotation()
+        this._getAnnotation()
       );
 
       this.lastNode = context.entity(this.lastNode.id);
@@ -247,7 +243,6 @@ export class ModeDrawArea extends AbstractMode {
       if (DEBUG) {
         console.log(`ModeDrawArea: _clickLoc, starting area at ${loc}`); // eslint-disable-line no-console
       }
-
       this.firstNode = osmNode({ loc: loc });
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
@@ -259,19 +254,18 @@ export class ModeDrawArea extends AbstractMode {
         actionAddEntity(this.drawNode),
         actionAddEntity(this.firstNode),
         actionAddEntity(this.drawWay),
-        // actionAddVertex(this.drawWay.id, this.firstNode.id),
-        // actionAddVertex(this.drawWay.id, this.drawNode.id),
-        this._actionClose(this.drawWay.id),
+        this._actionClose(this.drawWay.id)
         // No annotation- we do not want to undo to this state, an area with one node location is pretty weird.
       );
+      // Perform a no-op edit that will be replaced as the user moves the draw node around.
+      context.perform(actionNoop(), this._getAnnotation());
     }
+
+    context.resumeChangeDispatch();
 
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
 
-    // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop(), this._getAnnotation());
-    context.resumeChangeDispatch();
   }
 
   /**
@@ -450,7 +444,8 @@ export class ModeDrawArea extends AbstractMode {
 
   _removeDrawNode() {
     if (this.drawNode) {
-      this.context.replace(actionDeleteNode(this.drawNode.id));
+      // the draw node has already been added to history- so just back it out.
+      this.context.pop();
     }
     this.drawNode = null;
   }
