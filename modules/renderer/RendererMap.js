@@ -394,7 +394,7 @@ export class RendererMap extends EventEmitter {
   /**
    * extent
    * Set/Get the map extent
-   * @param  extent?    Extent Object to set the map to
+   * @param  extent?    Extent Object to fit the map to
    * @return map extent -or- this
    */
   extent(extent) {
@@ -411,7 +411,7 @@ export class RendererMap extends EventEmitter {
   /**
    * trimmedExtent
    * Set/Get the map extent, but include some padding for header, footer, etc.
-   * @param  extent?    Extent Object to set the map to
+   * @param  extent?    Extent Object to fit the map to
    * @return map extent -or- this
    */
   trimmedExtent(extent) {
@@ -429,13 +429,22 @@ export class RendererMap extends EventEmitter {
   }
 
 
-  _calcExtentZoom(extent, dim) {
+  /**
+   * extentZoom
+   * Returns the maximum zoom that will fit the given extent in the map viewport.
+   * @param  extent        Extent Object to fit
+   * @param  dimensions?   Array [width, height] to fit it in (defaults to viewport)
+   * @return zoom
+   */
+  extentZoom(extent, dimensions) {
+    const [w, h] = dimensions || this._dimensions;
+
     const tl = this.context.projection.project([extent.min[0], extent.max[1]]);
     const br = this.context.projection.project([extent.max[0], extent.min[1]]);
 
     // Calculate maximum zoom that fits extent
-    const hFactor = (br[0] - tl[0]) / dim[0];
-    const vFactor = (br[1] - tl[1]) / dim[1];
+    const hFactor = (br[0] - tl[0]) / w;
+    const vFactor = (br[1] - tl[1]) / h;
     const hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2;
     const vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2;
     const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
@@ -446,27 +455,17 @@ export class RendererMap extends EventEmitter {
 
 
   /**
-   * extentZoom
-   * Returns the maximum zoom that fits the given extent
-   * @param  extent    Extent Object to fit
-   * @return zoom
-   */
-  extentZoom(extent) {
-    return this._calcExtentZoom(extent, this._dimensions);
-  }
-
-  /**
    * trimmedExtentZoom
-   * Returns the maximum zoom that fits the given extent,
-   *   but trimmed slightly to account for header, footer, etc.
+   * Returns the maximum zoom that will fit the given extent in the map viewport,
+   *   but zoomed out slightly to account for header, footer, etc.
    * @param  extent    Extent Object to fit
    * @return zoom
    */
   trimmedExtentZoom(extent) {
-    const trimY = 120;
-    const trimX = 40;
-    const trimmed = vecSubtract(this._dimensions, [trimX, trimY]);
-    return this._calcExtentZoom(extent, trimmed);
+    const trimW = 40;
+    const trimH = 120;
+    const trimmed = vecSubtract(this._dimensions, [trimW, trimH]);
+    return this.extentZoom(extent, trimmed);
   }
 
 
