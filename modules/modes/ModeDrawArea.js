@@ -227,12 +227,13 @@ export class ModeDrawArea extends AbstractMode {
       this.drawNode = osmNode({ loc: loc });
 
       context.replace(
-        actionMoveNode(this.lastNode.id, loc) // Finalize position of old draw node at `loc`
+        actionMoveNode(this.lastNode.id, loc), // Finalize position of old draw node at `loc`
+        this._getAnnotation() // Allow undo/redo to here
       );
       context.perform(
         actionAddEntity(this.drawNode), // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex), // Add new draw node to draw way
-        this._getAnnotation() // Allow undo/redo to here
+        // this._getAnnotation()
       );
 
       this.lastNode = context.entity(this.lastNode.id);
@@ -261,7 +262,7 @@ export class ModeDrawArea extends AbstractMode {
         // actionAddVertex(this.drawWay.id, this.firstNode.id),
         // actionAddVertex(this.drawWay.id, this.drawNode.id),
         this._actionClose(this.drawWay.id),
-        this._getAnnotation()
+        // No annotation- we do not want to undo to this state, an area with one node location is pretty weird.
       );
     }
 
@@ -269,7 +270,7 @@ export class ModeDrawArea extends AbstractMode {
     this._updateCollections();
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop());
+    context.perform(actionNoop(), this._getAnnotation());
     context.resumeChangeDispatch();
   }
 
@@ -319,7 +320,7 @@ export class ModeDrawArea extends AbstractMode {
       }
     }
 
-    context.replace(actionMoveNode(this.drawNode.id, loc));
+    context.replace(actionMoveNode(this.drawNode.id, loc), this._getAnnotation());
     this.drawNode = context.entity(this.drawNode.id);
     this._updateCollections();
   }
@@ -430,7 +431,7 @@ export class ModeDrawArea extends AbstractMode {
         actionAddVertex(this.drawWay.id, this.firstNode.id),
         actionAddVertex(this.drawWay.id, this.drawNode.id),
         this._actionClose(this.drawWay.id),
-        this._getAnnotation()
+        //No annotation at this point- having an area with a single node location would be pretty weird.
       );
       this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
     }
