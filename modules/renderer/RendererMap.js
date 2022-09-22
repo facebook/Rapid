@@ -133,11 +133,12 @@ export class RendererMap extends EventEmitter {
       osm.on('change', this.immediateRedraw);
     }
 
+    const thiz = this;
     function didUndoOrRedo(targetTransform) {
       const mode = context.mode().id;
       if (mode !== 'browse' && mode !== 'select') return;
       if (targetTransform) {
-        this.transformEase(targetTransform);
+        thiz.transformEase(targetTransform);
       }
     }
 
