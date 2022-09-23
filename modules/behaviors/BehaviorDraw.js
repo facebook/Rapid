@@ -6,7 +6,6 @@ import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
-const DEBUG = false;
 
 
 /**
@@ -38,7 +37,6 @@ export class BehaviorDraw extends AbstractBehavior {
     this.id = 'draw';
 
     this._spaceClickDisabled = false;
-    this._pointerOverRenderer = false;
 
     this.lastDown = null;
     this.lastMove = null;
@@ -49,8 +47,6 @@ export class BehaviorDraw extends AbstractBehavior {
     this._keybinding = utilKeybinding('drawbehavior');
 
     // Make sure the event handlers have `this` bound correctly
-    this._pointerover = this._pointerover.bind(this);
-    this._pointerout = this._pointerout.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
@@ -58,18 +54,12 @@ export class BehaviorDraw extends AbstractBehavior {
 
     this._keydown = this._keydown.bind(this);
     this._keyup = this._keyup.bind(this);
-    this._blur = this._blur.bind(this);
     this._spacebar = this._spacebar.bind(this);
     this._undo = this._undo.bind(this);
     this._finish = this._finish.bind(this);
 
-    // Always observe the state of the modifier keys (even when the behavior is disabled)
-    // This is used to disable snapping/hovering
-    this._modifierKeys = new Set();
-    d3_select(window)
-      .on('keydown.BehaviorDraw', this._keydown)
-      .on('keyup.BehaviorDraw', this._keyup)
-      .on('blur.BehaviorDraw', this._blur);
+    this._emitMove = this._emitMove.bind(this);
+    this._emitClick = this._emitClick.bind(this);
   }
 
 
@@ -79,11 +69,6 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-    if (!this.context.pixi) return;
-
-    if (DEBUG) {
-      console.log('BehaviorDraw: enabling listeners');  // eslint-disable-line no-console
-    }
 
     this._enabled = true;
     this.lastDown = null;
@@ -99,19 +84,17 @@ export class BehaviorDraw extends AbstractBehavior {
       .on('space', this._spacebar)
       .on('⌥space', this._spacebar);
 
-    const view = this.context.pixi.view;
-    view.addEventListener('pointerover', this._pointerover);
-    view.addEventListener('pointerout', this._pointerout);
-
-    const stage = this.context.pixi.stage;
-    stage.addEventListener('pointerdown', this._pointerdown);
-    stage.addEventListener('pointermove', this._pointermove);
-    stage.addEventListener('pointerup', this._pointerup);
-    stage.addEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
-    stage.addEventListener('pointercancel', this._pointercancel);
-
     d3_select(document)
       .call(this._keybinding);
+
+    const eventManager = this.context.map().renderer.events;
+    eventManager.on('modifierchanged', this._emitMove);
+    eventManager.on('pointerover', this._emitMove);
+    eventManager.on('pointerout', this._emitMove);
+    eventManager.on('pointerdown', this._pointerdown);
+    eventManager.on('pointermove', this._pointermove);
+    eventManager.on('pointerup', this._pointerup);
+    eventManager.on('pointercancel', this._pointercancel);
   }
 
 
@@ -121,12 +104,6 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-    if (!this.context.pixi) return;
-
-    if (DEBUG) {
-      console.log('BehaviorDraw: disabling listeners'); // eslint-disable-line no-console
-    }
-
 
     this._enabled = false;
     this.lastDown = null;
@@ -134,71 +111,33 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
-    const view = this.context.pixi.view;
-    view.removeEventListener('pointerover', this._pointerover);
-    view.removeEventListener('pointerout', this._pointerout);
-
-    const stage = this.context.pixi.stage;
-    stage.removeEventListener('pointerdown', this._pointerdown);
-    stage.removeEventListener('pointermove', this._pointermove);
-    stage.removeEventListener('pointerup', this._pointerup);
-    stage.removeEventListener('pointerupoutside', this._pointercancel); // if up outide, just cancel
-    stage.removeEventListener('pointercancel', this._pointercancel);
-
     d3_select(document).call(this._keybinding.unbind);
+
+    const eventManager = this.context.map().renderer.events;
+    eventManager.off('modifierchanged', this._emitMove);
+    eventManager.off('pointerover', this._emitMove);
+    eventManager.off('pointerout', this._emitMove);
+    eventManager.off('pointerdown', this._pointerdown);
+    eventManager.off('pointermove', this._pointermove);
+    eventManager.off('pointerup', this._pointerup);
+    eventManager.off('pointercancel', this._pointercancel);
   }
 
 
   /**
    * _keydown
-   * Handler for presses of the modifier keys
-   * @param  `e`  A d3 keydown event
+   * Handler for keydown events on the window.
+   * @param  `e`  A DOM KeyboardEvent
    */
-  _keydown(e) {
-     if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
-     this._modifierKeys.add(e.key);
-     this._processMove();
+  _keydown(e) {  // todo
   }
-
 
   /**
    * _keyup
-   * Handler for releases of the modifier keys
-   * @param  `e`  A d3 keyup event
+   * Handler for keyup events on the window.
+   * @param  `e`  A DOM KeyboardEvent
    */
-  _keyup(e) {
-     if (!['Alt', 'Control', 'Meta'].includes(e.key)) return;  // only care about these
-     this._modifierKeys.delete(e.key);
-     this._processMove();
-  }
-
-
-  /**
-   * _blur
-   * Handler for the window losing focus (we won't get keyups if this happens)
-   */
-  _blur() {
-    this._modifierKeys.clear();
-    this._processMove();
-  }
-
-
-  /**
-   * _pointerover
-   * @param  `e`  A DOM PointerEvent
-   */
-  _pointerover() {
-    this._pointerOverRenderer = true;
-    this._processMove();
-  }
-
-  /**
-   * _pointerout
-   * @param  `e`  A DOM PointerEvent
-   */
-  _pointerout() {
-    this._pointerOverRenderer = false;
-    this._processMove();
+  _keyup(e) {   // todo
   }
 
 
@@ -214,9 +153,6 @@ export class BehaviorDraw extends AbstractBehavior {
     const down = this._getEventData(e);
     this.lastDown = down;
     this.lastClick = null;
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'down'`);  // eslint-disable-line no-console
-    }
     this.emit('down', down);
   }
 
@@ -240,22 +176,17 @@ export class BehaviorDraw extends AbstractBehavior {
       const dist = vecLength(down.coord, move.coord);
       if (dist >= NEAR_TOLERANCE) {
         down.isCancelled = true;
-
-        if (DEBUG) {
-          console.log(`BehaviorDraw: emitting 'cancel'`);  // eslint-disable-line no-console
-        }
         this.emit('cancel', move);
       }
     }
 
-    this._processMove();
+    this._emitMove();
   }
 
 
   /**
    * _pointerup
-   * Handler for pointerup events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
+   * Handler for pointerup events.
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointerup(e) {
@@ -271,7 +202,7 @@ export class BehaviorDraw extends AbstractBehavior {
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = up; // We will accept this as a click
       this.clicked = true;
-      this._processClick();
+      this._emitClick();
     }
   }
 
@@ -286,9 +217,6 @@ export class BehaviorDraw extends AbstractBehavior {
     const down = this.lastDown;
 
     if (down && !down.isCancelled) {
-      if (DEBUG) {
-        console.log(`BehaviorDraw: emitting 'cancel'`);  // eslint-disable-line no-console
-      }
       this.emit('cancel', cancel);
     }
 
@@ -337,64 +265,63 @@ export class BehaviorDraw extends AbstractBehavior {
       });
 
       // simulate a click
-      this._processClick();
+      this._emitClick();
     }
   }
 
 
   /**
-   * _processMove
-   * Checks lastMove and emits a 'move' event if needed
+   * _emitMove
+   * Checks lastMove and emits a 'move' event if needed.
+   * This may also be fired if we detect a change in the modifier keys.
    */
-  _processMove() {
+  _emitMove() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (!this._pointerOverRenderer) return;
+    const eventManager = this.context.map().renderer.events;
+    if (!eventManager.pointerOverRenderer) return;
 
-    const move = Object.assign({}, this.lastMove);  // shallow copy
+    const modifiers = eventManager.modifierKeys;
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const eventData = Object.assign({}, this.lastMove);  // shallow copy
 
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (this._modifierKeys.size) {
-      move.target = null;
-      move.feature = null;
-      move.data = null;
+    if (disableSnap) {
+      eventData.target = null;
+      eventData.feature = null;
+      eventData.data = null;
     }
 
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'move'`);  // eslint-disable-line no-console
-    }
-
-    this.emit('move', move);
+    this.emit('move', eventData);
   }
 
 
   /**
-   * _processClick
+   * _emitClick
    * Checks lastClick and emits a 'click' event if needed
    */
-  _processClick() {
+  _emitClick() {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (!this._pointerOverRenderer) return;
+    const eventManager = this.context.map().renderer.events;
+    if (!eventManager.pointerOverRenderer) return;
 
-    const click = Object.assign({}, this.lastClick);  // shallow copy
+    const modifiers = eventManager.modifierKeys;
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const eventData = Object.assign({}, this.lastClick);  // shallow copy
 
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (this._modifierKeys.size) {
-      click.target = null;
-      click.feature = null;
-      click.data = null;
+    if (disableSnap) {
+      eventData.target = null;
+      eventData.feature = null;
+      eventData.data = null;
     }
 
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'click'`);  // eslint-disable-line no-console
-    }
-
-    this.emit('click', click);
+    this.emit('click', eventData);
   }
 
 
@@ -405,12 +332,8 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   _undo(e) {
     e.preventDefault();
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'undo'`);  // eslint-disable-line no-console
-    }
     this.emit('undo');
   }
-
 
   /**
    * _finish
@@ -418,9 +341,6 @@ export class BehaviorDraw extends AbstractBehavior {
    * @param  `e`  A d3 keydown event
    */
   _finish() {
-    if (DEBUG) {
-      console.log(`BehaviorDraw: emitting 'finish'`); // eslint-disable-line no-console
-    }
     this.emit('finish');
   }
 

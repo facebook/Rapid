@@ -217,12 +217,11 @@ export class RendererMap extends EventEmitter {
 
   /**
    * mouse
-   * Gets the current [x,y] location of the pointer
-   * @return  Array [x,y] (or `null` if the map is not interactive)
+   * Gets the current [x,y] pixel location of the pointer
+   * @return  Array [x,y] pixel location
    */
   mouse() {
-    const behavior = this.context.behaviors.get('map-interaction');
-    return behavior && behavior.coord;
+    return this._renderer.events.coord;
   }
 
   /**

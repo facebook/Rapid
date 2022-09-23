@@ -3,6 +3,7 @@ import { EventSystem } from '@pixi/events';
 import { EventEmitter, skipHello } from '@pixi/utils';
 import { Projection } from '@id-sdk/math';
 
+import { PixiEvents } from './PixiEvents';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
 import { utilSetTransform } from '../util/util';
@@ -17,8 +18,12 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  * The renderer implements a game loop and manages when rendering tasks happen.
  *
  * Properties you can access:
- *   `scene`     PixiScene object manages the layers and features in the scene
- *   `textures`  PixiTextures object manages the textures
+ *   `supersurface`   D3 selection to the parent `div` "supersurface"
+ *   `surface`        D3 selection to the sibling `canvas` "surface"
+ *   `overlay`        D3 selection to the sibling `div` "overlay"
+ *   `scene`          PixiScene manages the layers and features in the scene
+ *   `events`         PixiEvents manages the events that other code might want to listen for
+ *   `textures`       PixiTextures manages the textures
  *
  * Events available:
  *   `draw`      Fires after a full redraw
@@ -131,6 +136,7 @@ export class PixiRenderer extends EventEmitter {
 
     // Setup other classes
     this.scene = new PixiScene(this);
+    this.events = new PixiEvents(this);
 
     // Texture Manager should only be created once
     // This is because it will start loading assets and Pixi's asset loader is not reentrant.

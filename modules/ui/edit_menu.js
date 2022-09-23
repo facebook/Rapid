@@ -175,7 +175,7 @@ export function uiEditMenu(context) {
     // close the menu if the scale (zoom) has changed
     // (this is because the menu will scale with the supersurface and look wrong)
     if (_initialScale !== context.projection.scale()) {
-      editMenu.close()
+      editMenu.close();
       return;
     }
 

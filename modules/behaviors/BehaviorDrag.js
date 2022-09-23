@@ -1,11 +1,10 @@
-import { vecEqual, vecLength } from '@id-sdk/math';
+import { vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { osmNode } from '../osm';
 
 const NEAR_TOLERANCE = 1;
 const FAR_TOLERANCE = 4;
-const DEBUG = false;
 
 /**
  * `BehaviorDrag` listens to pointer events and converts those into start/move/end drag events
@@ -32,19 +31,16 @@ export class BehaviorDrag extends AbstractBehavior {
     super(context);
     this.id = 'drag';
 
-    this._pointerOverRenderer = false;
-
     this.dragTarget = null;   // the displayObject being dragged
     this.lastDown = null;
     this.lastMove = null;
 
     // Make sure the event handlers have `this` bound correctly
-    this._pointerover = this._pointerover.bind(this);
-    this._pointerout = this._pointerout.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
     this._pointercancel = this._pointercancel.bind(this);
+    this._emitMove = this._emitMove.bind(this);
   }
 
 
@@ -54,27 +50,20 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-    if (!this.context.pixi) return;
-
-    if (DEBUG) {
-      console.log('BehaviorDrag: enabling listeners');  // eslint-disable-line no-console
-    }
 
     this._enabled = true;
     this.lastDown = null;
     this.lastMove = null;
     this.dragTarget = null;
 
-    const view = this.context.pixi.view;
-    view.addEventListener('pointerover', this._pointerover);
-    view.addEventListener('pointerout', this._pointerout);
-
-    const stage = this.context.pixi.stage;
-    stage.addEventListener('pointerdown', this._pointerdown);
-    stage.addEventListener('pointermove', this._pointermove);
-    stage.addEventListener('pointerup', this._pointerup);
-    stage.addEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
-    stage.addEventListener('pointercancel', this._pointercancel);
+    const eventManager = this.context.map().renderer.events;
+    eventManager.on('modifierchanged', this._emitMove);
+    eventManager.on('pointerover', this._emitMove);
+    eventManager.on('pointerout', this._emitMove);
+    eventManager.on('pointerdown', this._pointerdown);
+    eventManager.on('pointermove', this._pointermove);
+    eventManager.on('pointerup', this._pointerup);
+    eventManager.on('pointercancel', this._pointercancel);
   }
 
 
@@ -84,11 +73,6 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-    if (!this.context.pixi) return;
-
-    if (DEBUG) {
-      console.log('BehaviorDrag: disabling listeners');  // eslint-disable-line no-console
-    }
 
     // Something is currently dragging, so cancel the drag first.
     const eventData = this.lastMove;
@@ -96,12 +80,7 @@ export class BehaviorDrag extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
-      const name = this.dragTarget.name;
       this.dragTarget.interactive = true;
-
-      if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
-      }
       this.emit('cancel', eventData);
     }
 
@@ -110,34 +89,16 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
     this.dragTarget = null;
 
-    const view = this.context.pixi.view;
-    view.removeEventListener('pointerover', this._pointerover);
-    view.removeEventListener('pointerout', this._pointerout);
-
-    const stage = this.context.pixi.stage;
-    stage.removeEventListener('pointerdown', this._pointerdown);
-    stage.removeEventListener('pointermove', this._pointermove);
-    stage.removeEventListener('pointerup', this._pointerup);
-    stage.removeEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
-    stage.removeEventListener('pointercancel', this._pointercancel);
+    const eventManager = this.context.map().renderer.events;
+    eventManager.off('modifierchanged', this._emitMove);
+    eventManager.off('pointerover', this._emitMove);
+    eventManager.off('pointerout', this._emitMove);
+    eventManager.off('pointerdown', this._pointerdown);
+    eventManager.off('pointermove', this._pointermove);
+    eventManager.off('pointerup', this._pointerup);
+    eventManager.off('pointercancel', this._pointercancel);
   }
 
-
-  /**
-   * _pointerover
-   * @param  `e`  A DOM PointerEvent
-   */
-  _pointerover() {
-    this._pointerOverRenderer = true;
-  }
-
-  /**
-   * _pointerout
-   * @param  `e`  A DOM PointerEvent
-   */
-  _pointerout() {
-    this._pointerOverRenderer = false;
-  }
 
 
   /**
@@ -147,11 +108,7 @@ export class BehaviorDrag extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
-    if (this.lastDown) return; // a pointer is already down
-
-    // If pointer is not over the renderer, just discard
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (!this._pointerOverRenderer && e.data.pointerType !== 'touch') return;
+    if (this.lastDown) return;   // a pointer is already down
 
     const down = this._getEventData(e);
     const isDraggableTarget = down.data instanceof osmNode;
@@ -175,45 +132,35 @@ export class BehaviorDrag extends AbstractBehavior {
 
   /**
    * _pointermove
-   * Handler for pointermove events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
+   * Handler for pointermove events.
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    // If pointer is not over the renderer, just discard
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const context = this.context;
-    let editMenu = context.map().supersurface.select('.edit-menu');
+    const map = this.context.map();
 
     // If we detect the edit (right-click) menu, we should cease any dragging behavior.
-    if (editMenu._groups[0][0]) {
-      this.lastDown = null;
-      this.lastMove = null;
-      this.dragTarget = null;
+    const hasEditmenu = map.supersurface.select('.edit-menu').size();
+    if (hasEditmenu) {
+      this._pointercancel(e);
+      return;
     }
 
-    // If pointer is not over the renderer, just discard
+    // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (!this._pointerOverRenderer && e.data.pointerType !== 'touch') return;
+    const eventManager = map.renderer.events;
+    if (!eventManager.pointerOverRenderer) return;
 
     const down = this.lastDown;
     const move = this._getEventData(e);
     if (!down || down.id !== move.id) return;  // not down, or different pointer
 
-    // We get a lot more move events than we need,
-    // so discard ones where it hasn't actually moved much
-    if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
     this.lastMove = move;
 
     // Dispatch either 'start' or 'move'
     // (Don't send a `move` event in the same time as `start` because
     // dragging a midpoint will convert the target to a node.)  todo: check?
     if (this.dragTarget) {   // already dragging
-      if (DEBUG) {
-        const name = this.dragTarget.name;
-        console.log(`BehaviorDrag: emitting 'move', dragTarget = ${name}`);  // eslint-disable-line no-console
-      }
-      this.emit('move', move);
+      this._emitMove();
 
     } else {  // start dragging?
       const dist = vecLength(down.coord, move.coord);
@@ -223,11 +170,6 @@ export class BehaviorDrag extends AbstractBehavior {
         // This lets us catch events for what other objects it passes over as the user drags it.
         this.dragTarget = down.target;
         this.dragTarget.interactive = false;
-
-        if (DEBUG) {
-          const name = this.dragTarget.name;
-          console.log(`BehaviorDrag: emitting 'start', dragTarget = ${name}`);  // eslint-disable-line no-console
-        }
         this.emit('start', down);
       }
     }
@@ -236,14 +178,13 @@ export class BehaviorDrag extends AbstractBehavior {
 
   /**
    * _pointerup
-   * Handler for pointerup events.  Note that you can get multiples of these
-   * if the user taps with multiple fingers. We lock in the first one in `lastDown`.
+   * Handler for pointerup events.
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
     const down = this.lastDown;
     const up = this._getEventData(e);
-    if (!down || down.id !== up.id) return; // not down, or different pointer
+    if (!down || down.id !== up.id) return;   // not down, or different pointer
 
     // Before emitting the 'up' event, attach the drag target data to the event data.
     if (this.dragTarget) {
@@ -255,13 +196,8 @@ export class BehaviorDrag extends AbstractBehavior {
 //    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
-      const name = this.dragTarget.name;
       this.dragTarget.interactive = true;
       this.dragTarget = null;
-
-      if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'end', dragTarget = ${name}`); // eslint-disable-line no-console
-      }
       this.emit('end', up);
     }
   }
@@ -282,15 +218,38 @@ export class BehaviorDrag extends AbstractBehavior {
 //    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
-      const name = this.dragTarget.name;
       this.dragTarget.interactive = true;
       this.dragTarget = null;
-
-      if (DEBUG) {
-        console.log(`BehaviorDrag: emitting 'cancel', dragTarget = ${name}`);  // eslint-disable-line no-console
-      }
       this.emit('cancel', cancel);
     }
+  }
+
+
+  /**
+   * _emitMove
+   * Checks lastMove and emits a 'move' event if needed.
+   * This may also be fired if we detect a change in the modifier keys.
+   */
+  _emitMove() {
+    if (!this._enabled || !this.lastMove) return;  // nothing to do
+
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const eventManager = this.context.map().renderer.events;
+    if (!eventManager.pointerOverRenderer) return;
+
+    const modifiers = eventManager.modifierKeys;
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const eventData = Object.assign({}, this.lastMove);  // shallow copy
+
+    // If a modifier key is down, discard the target to prevent snap/hover.
+    if (disableSnap) {
+      eventData.target = null;
+      eventData.feature = null;
+      eventData.data = null;
+    }
+
+    this.emit('move', eventData);
   }
 
 }
