@@ -73,7 +73,11 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     stage.addEventListener('pointerup', this._pointerup);
     stage.addEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
     stage.addEventListener('pointercancel', this._pointercancel);
-    stage.addEventListener('wheel', this._wheel);
+
+    // Attach wheel to supersurface so that content on the overlay (like the edit menu)
+    // doesn't block the wheel events and prevent panning and zooming.
+    const supersurface = context.map().supersurface.node();
+    supersurface.addEventListener('wheel', this._wheel);
   }
 
 
@@ -100,7 +104,9 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     stage.removeEventListener('pointerup', this._pointerup);
     stage.removeEventListener('pointerupoutside', this._pointercancel);  // if up outide, just cancel
     stage.removeEventListener('pointercancel', this._pointercancel);
-    stage.removeEventListener('wheel', this._wheel);
+
+    const supersurface = context.map().supersurface.node();
+    supersurface.removeEventListener('wheel', this._wheel);
   }
 
 
@@ -195,11 +201,11 @@ export class BehaviorMapInteraction extends AbstractBehavior {
   /**
    * _wheel
    * Handler for wheel events.
-   * @param  `e`  A Pixi FederatedWheelEvent
+   * @param  `e`  A native DOM WheelEvent
    */
   _wheel(e) {
-    let [dX, dY] = this._normalizeWheelDelta(e.nativeEvent);
-    const [x, y] = [e.global.x, e.global.y];
+    let [dX, dY] = this._normalizeWheelDelta(e);
+    const [x, y] = [e.offsetX, e.offsetY];
     this.coord = [x, y];
 
     function isRoundNumber(val) {
@@ -220,7 +226,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     if (!isRoundNumber(dY)) {
       isZoom = true;
       dY *= 6;  // slightly scale up whatever the browser gave us
-    } else if (e.nativeEvent.shiftKey) {
+    } else if (e.shiftKey) {
       isZoom = true;
       dY *= 3;  // slightly scale up whatever the browser gave us
     }
