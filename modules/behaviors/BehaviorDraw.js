@@ -1,8 +1,5 @@
-import { select as d3_select } from 'd3-selection';
-import { vecEqual, vecLength } from '@id-sdk/math';
-
+import { vecLength } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
-import { utilKeybinding } from '../util';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -22,7 +19,7 @@ const FAR_TOLERANCE = 12;
  *   `down`      Fires on initial pointerdown, receives `eventData` Object
  *   `move`      Fires on _any_ pointermove (or change of modifier key), receives `eventData` Object
  *   `cancel`    Fires on pointercancel -or- if the pointer has moved too much for it to be a click, receives `eventData` Object
- *   `click`     Fires on a successful click (or spacebar), receives `eventData` Object
+ *   `click`     Fires on a successful click (or spacebar), receives `eventData` for the event that triggered the click
  *   `undo`      Fires if user presses delete or backspace
  *   `finish`    Fires if user presses return, enter, or escape
  */
@@ -42,24 +39,16 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
-    this.clicked = null;
-
-    this._keybinding = utilKeybinding('drawbehavior');
 
     // Make sure the event handlers have `this` bound correctly
+    this._doClick = this._doClick.bind(this);
+    this._doMove = this._doMove.bind(this);
+    this._keydown = this._keydown.bind(this);
+    this._keyup = this._keyup.bind(this);
+    this._pointercancel = this._pointercancel.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
-    this._pointercancel = this._pointercancel.bind(this);
-
-    this._keydown = this._keydown.bind(this);
-    this._keyup = this._keyup.bind(this);
-    this._spacebar = this._spacebar.bind(this);
-    this._undo = this._undo.bind(this);
-    this._finish = this._finish.bind(this);
-
-    this._emitMove = this._emitMove.bind(this);
-    this._emitClick = this._emitClick.bind(this);
   }
 
 
@@ -76,21 +65,14 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
-    this._keybinding
-      .on('⌫', this._undo)
-      .on('⌦', this._undo)
-      .on('⎋', this._finish)
-      .on('↩', this._finish)
-      .on('space', this._spacebar)
-      .on('⌥space', this._spacebar);
-
-    d3_select(document)
-      .call(this._keybinding);
+    this._spaceClickDisabled = false;
 
     const eventManager = this.context.map().renderer.events;
-    eventManager.on('modifierchanged', this._emitMove);
-    eventManager.on('pointerover', this._emitMove);
-    eventManager.on('pointerout', this._emitMove);
+    eventManager.on('keydown', this._keydown);
+    eventManager.on('keyup', this._keyup);
+    eventManager.on('modifierchanged', this._doMove);
+    eventManager.on('pointerover', this._doMove);
+    eventManager.on('pointerout', this._doMove);
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -111,12 +93,14 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastSpace = null;
     this.lastClick = null;
 
-    d3_select(document).call(this._keybinding.unbind);
+    this._spaceClickDisabled = false;
 
     const eventManager = this.context.map().renderer.events;
-    eventManager.off('modifierchanged', this._emitMove);
-    eventManager.off('pointerover', this._emitMove);
-    eventManager.off('pointerout', this._emitMove);
+    eventManager.off('keydown', this._keydown);
+    eventManager.off('keyup', this._keyup);
+    eventManager.off('modifierchanged', this._doMove);
+    eventManager.off('pointerover', this._doMove);
+    eventManager.off('pointerout', this._doMove);
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
@@ -129,15 +113,36 @@ export class BehaviorDraw extends AbstractBehavior {
    * Handler for keydown events on the window.
    * @param  `e`  A DOM KeyboardEvent
    */
-  _keydown(e) {  // todo
+  _keydown(e) {
+    if (['Enter', 'Escape', 'Esc'].includes(e.key)) {
+      e.preventDefault();
+      this.emit('finish');
+
+    } else if (['Backspace', 'Delete', 'Del'].includes(e.key)) {
+      e.preventDefault();
+      this.emit('undo');
+
+    // After spacebar click, user must move pointer or lift spacebar to allow another spacebar click
+    } else if (!this._spaceClickDisabled && [' ', 'Spacebar'].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+      this._spacebar();
+    }
   }
+
 
   /**
    * _keyup
    * Handler for keyup events on the window.
    * @param  `e`  A DOM KeyboardEvent
    */
-  _keyup(e) {   // todo
+  _keyup(e) {
+    // After spacebar click, user must move pointer or lift spacebar to allow another spacebar click
+    if (this._spaceClickDisabled && [' ', 'Spacebar'].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+      this._spaceClickDisabled = false;
+    }
   }
 
 
@@ -164,11 +169,15 @@ export class BehaviorDraw extends AbstractBehavior {
    */
   _pointermove(e) {
     const move = this._getEventData(e);
-
-    // We get a lot more move events than we need, so discard ones where it hasn't actually moved much
-    if (this.lastMove && vecEqual(move.coord, this.lastMove.coord, 0.9)) return;
-
     this.lastMove = move;
+
+    // After spacebar click, user must move pointer or lift spacebar to allow another spacebar click
+    if (this._spaceClickDisabled && this.lastSpace) {
+      const dist = vecLength(move.coord, this.lastSpace.coord);
+      if (dist > FAR_TOLERANCE) {     // pointer moved far enough
+        this._spaceClickDisabled = false;
+      }
+    }
 
     // If the pointer moves too much, we consider it as a drag, not a click, and set `isCancelled=true`
     const down = this.lastDown;
@@ -180,7 +189,7 @@ export class BehaviorDraw extends AbstractBehavior {
       }
     }
 
-    this._emitMove();
+    this._doMove();
   }
 
 
@@ -200,9 +209,8 @@ export class BehaviorDraw extends AbstractBehavior {
 
     const dist = vecLength(down.coord, up.coord);
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
-      this.lastClick = up; // We will accept this as a click
-      this.clicked = true;
-      this._emitClick();
+      this.lastClick = up;  // We will accept this as a click
+      this._doClick();
     }
   }
 
@@ -228,54 +236,29 @@ export class BehaviorDraw extends AbstractBehavior {
    * _spacebar
    * Handler for `keydown` events of the spacebar. We use these to simulate clicks.
    * Note that the spacebar will repeat, so we can get many of these.
-   * @param  `e`  A d3 keydown event
    */
-  _spacebar(e) {
-    e.preventDefault();
-    e.stopPropagation();
+  _spacebar() {
+    if (this._spaceClickDisabled) return;
 
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (!this._pointerOverRenderer) return;
-
-    // For spacebar clicks we will instead use the last move event
+    // For spacebar clicks we will use the last move event as the trigger
     if (!this.lastMove) return;
-    const move = Object.assign({}, this.lastMove);  // shallow copy
 
     // Becase spacebar events will repeat if you keep it held down,
-    // user must move pointer or lift spacebar to allow another spacebar click
-    if (this._spaceClickDisabled && this.lastSpace) {
-      const dist = vecLength(move.coord, this.lastSpace.coord);
-      if (dist > FAR_TOLERANCE) {     // pointer moved far enough
-        this._spaceClickDisabled = false;
-      }
-    }
-
-    if (!this._spaceClickDisabled) {
-      this._spaceClickDisabled = true;
-      this.lastSpace = move;
-      this.lastClick = move;   // We will accept this as a click
-
-      d3_select(window).on('keyup.space-block', e => {   // user lifted spacebar up
-        if (e.code !== 'Space') return;  // only spacebar
-        e.preventDefault();
-        e.stopPropagation();
-        this._spaceClickDisabled = false;
-        d3_select(window).on('keyup.space-block', null);
-      });
-
-      // simulate a click
-      this._emitClick();
-    }
+    // user must move pointer or lift spacebar to allow another spacebar click.
+    // So we disable further spacebar clicks until one of those things happens.
+    this._spaceClickDisabled = true;
+    this.lastSpace = this.lastMove;
+    this.lastClick = this.lastMove;   // We will accept this as a click
+    this._doClick();
   }
 
 
   /**
-   * _emitMove
+   * _doMove
    * Checks lastMove and emits a 'move' event if needed.
    * This may also be fired if we detect a change in the modifier keys.
    */
-  _emitMove() {
+  _doMove() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
     // Ignore it if we are not over the canvas
@@ -299,10 +282,10 @@ export class BehaviorDraw extends AbstractBehavior {
 
 
   /**
-   * _emitClick
+   * _doClick
    * Checks lastClick and emits a 'click' event if needed
    */
-  _emitClick() {
+  _doClick() {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
     // Ignore it if we are not over the canvas
@@ -322,26 +305,6 @@ export class BehaviorDraw extends AbstractBehavior {
     }
 
     this.emit('click', eventData);
-  }
-
-
-  /**
-   * _undo
-   * Fires if user presses delete or backspace - this is used to get rid of the last drawn segment
-   * @param  `e`  A d3 keydown event
-   */
-  _undo(e) {
-    e.preventDefault();
-    this.emit('undo');
-  }
-
-  /**
-   * _finish
-   * Fires if user presses return, enter, or escape - this is used to accept whatever has been drawn
-   * @param  `e`  A d3 keydown event
-   */
-  _finish() {
-    this.emit('finish');
   }
 
 }

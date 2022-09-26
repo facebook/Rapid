@@ -600,7 +600,7 @@ export function uiInit(context) {
    * @param  operations   seems not passed in - code below figures it out.
    */
   ui.showEditMenu = function(anchorPoint, triggerType, operations) {
-    ui.closeEditMenu();   // remove any displayed menu
+    _editMenu.close();   // remove any displayed menu
 
     //TODO: Remove this after the behaviors rewrite has completed
     if (!operations && context.mode().operations) operations = typeof context.mode().operations === 'function' ? context.mode().operations() : context.mode().operations;
@@ -629,7 +629,7 @@ export function uiInit(context) {
 
   // remove any existing menu no matter how it was added
   ui.closeEditMenu = function() {
-    context.map().overlay.select('.edit-menu').remove();
+    _editMenu.close();
   };
 
 

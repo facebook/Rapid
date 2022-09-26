@@ -36,11 +36,11 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
 
     // Make sure the event handlers have `this` bound correctly
+    this._doMove = this._doMove.bind(this);
+    this._pointercancel = this._pointercancel.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
-    this._pointercancel = this._pointercancel.bind(this);
-    this._emitMove = this._emitMove.bind(this);
   }
 
 
@@ -57,9 +57,9 @@ export class BehaviorDrag extends AbstractBehavior {
     this.dragTarget = null;
 
     const eventManager = this.context.map().renderer.events;
-    eventManager.on('modifierchanged', this._emitMove);
-    eventManager.on('pointerover', this._emitMove);
-    eventManager.on('pointerout', this._emitMove);
+    eventManager.on('modifierchanged', this._doMove);
+    eventManager.on('pointerover', this._doMove);
+    eventManager.on('pointerout', this._doMove);
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -90,9 +90,9 @@ export class BehaviorDrag extends AbstractBehavior {
     this.dragTarget = null;
 
     const eventManager = this.context.map().renderer.events;
-    eventManager.off('modifierchanged', this._emitMove);
-    eventManager.off('pointerover', this._emitMove);
-    eventManager.off('pointerout', this._emitMove);
+    eventManager.off('modifierchanged', this._doMove);
+    eventManager.off('pointerover', this._doMove);
+    eventManager.off('pointerout', this._doMove);
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
@@ -160,7 +160,7 @@ export class BehaviorDrag extends AbstractBehavior {
     // (Don't send a `move` event in the same time as `start` because
     // dragging a midpoint will convert the target to a node.)  todo: check?
     if (this.dragTarget) {   // already dragging
-      this._emitMove();
+      this._doMove();
 
     } else {  // start dragging?
       const dist = vecLength(down.coord, move.coord);
@@ -226,11 +226,11 @@ export class BehaviorDrag extends AbstractBehavior {
 
 
   /**
-   * _emitMove
+   * _doMove
    * Checks lastMove and emits a 'move' event if needed.
    * This may also be fired if we detect a change in the modifier keys.
    */
-  _emitMove() {
+  _doMove() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
     // Ignore it if we are not over the canvas

@@ -26,8 +26,8 @@ export class BehaviorHover extends AbstractBehavior {
     this.hoverTarget = null;
 
     // Make sure the event handlers have `this` bound correctly
+    this._doHover = this._doHover.bind(this);
     this._pointermove = this._pointermove.bind(this);
-    this._emitHoverchanged = this._emitHoverchanged.bind(this);
   }
 
 
@@ -43,9 +43,9 @@ export class BehaviorHover extends AbstractBehavior {
     this.hoverTarget = null;
 
     const eventManager = this.context.map().renderer.events;
-    eventManager.on('modifierchanged', this._emitHoverchanged);
-    eventManager.on('pointerover', this._emitHoverchanged);
-    eventManager.on('pointerout', this._emitHoverchanged);
+    eventManager.on('modifierchanged', this._doHover);
+    eventManager.on('pointerover', this._doHover);
+    eventManager.on('pointerout', this._doHover);
     eventManager.on('pointermove', this._pointermove);
   }
 
@@ -63,7 +63,7 @@ export class BehaviorHover extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
-      this._emitHoverchanged();
+      this._doHover();
     }
 
     this._enabled = false;
@@ -71,9 +71,9 @@ export class BehaviorHover extends AbstractBehavior {
     this.hoverTarget = null;
 
     const eventManager = this.context.map().renderer.events;
-    eventManager.off('modifierchanged', this._emitHoverchanged);
-    eventManager.off('pointerover', this._emitHoverchanged);
-    eventManager.off('pointerout', this._emitHoverchanged);
+    eventManager.off('modifierchanged', this._doHover);
+    eventManager.off('pointerover', this._doHover);
+    eventManager.off('pointerout', this._doHover);
     eventManager.off('pointermove', this._pointermove);
   }
 
@@ -87,16 +87,16 @@ export class BehaviorHover extends AbstractBehavior {
     if (!this._enabled) return;
 
     this.lastMove = this._getEventData(e);
-    this._emitHoverchanged();
+    this._doHover();
   }
 
 
   /**
-   * _emitHoverchanged
+   * _doHover
    * Emits a 'hoverchanged' event if needed
    * This may also be fired if we detect a change in the modifier keys.
    */
-  _emitHoverchanged() {
+  _doHover() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
     const eventManager = this.context.map().renderer.events;
