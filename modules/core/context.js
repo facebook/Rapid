@@ -517,10 +517,10 @@ export function coreContext() {
     return context;
   };
 
-  let _copyLonLat;
-  context.copyLonLat = function(val) {
-    if (!arguments.length) return _copyLonLat;
-    _copyLonLat = val;
+  let _copyLoc;
+  context.copyLoc = function(val) {
+    if (!arguments.length) return _copyLoc;
+    _copyLoc = val;
     return context;
   };
 

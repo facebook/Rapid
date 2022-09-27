@@ -141,10 +141,10 @@ export class PixiEvents extends EventEmitter {
   _checkModifierKeys(e) {
     const modifiers = this.modifierKeys;
     const toCheck = {
-      'altKey': 'Alt',
-      'ctrlKey': 'Control',
-      'metaKey': 'Meta',
-      'shiftKey': 'Shift',
+      'altKey': 'Alt',       // ALT key, on Mac: ⌥ (option)
+      'ctrlKey': 'Control',  // CTRL key, on Mac: ⌃ (control)
+      'metaKey': 'Meta',     // META, on Mac: ⌘ (command), on Windows (Win), on Linux (Super)
+      'shiftKey': 'Shift'    // Shift key, ⇧
     };
 
     let didChange = false;

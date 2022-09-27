@@ -1,14 +1,16 @@
-import { Extent, geomPointInPolygon, vecSubtract } from '@id-sdk/math';
+import { Extent, vecSubtract } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
 import { modeMove } from '../modes/move';
-import { uiCmd } from '../ui/cmd';
+import { utilDetect } from '../util/detect';
+
+const MACOS = (utilDetect().os === 'mac');
 
 
 /**
- * `BehaviorPaste` binds the keypress event '⌘V' when pasting is allowed
+ * `BehaviorPaste` listens for key event '⌘V' when pasting is allowed
  */
 export class BehaviorPaste extends AbstractBehavior {
 
@@ -19,7 +21,6 @@ export class BehaviorPaste extends AbstractBehavior {
   constructor(context) {
     super(context);
     this.id = 'paste';
-    this._keybinding = this.context.keybinding();  // "global" keybinding (on document)
 
     // Make sure the event handlers have `this` bound correctly
     this._keydown = this._keydown.bind(this);
@@ -32,9 +33,10 @@ export class BehaviorPaste extends AbstractBehavior {
    */
   enable() {
     if (this._enabled) return;
-
     this._enabled = true;
-    this._keybinding.on(uiCmd('⌘V'), this._keydown);
+
+    const eventManager = this.context.map().renderer.events;
+    eventManager.on('keydown', this._keydown);
   }
 
 
@@ -44,39 +46,56 @@ export class BehaviorPaste extends AbstractBehavior {
    */
   disable() {
     if (!this._enabled) return;
-
     this._enabled = false;
-    this._keybinding.off(uiCmd('⌘V'));
+
+    const eventManager = this.context.map().renderer.events;
+    eventManager.off('keydown', this._keydown);
   }
 
 
   /**
    * _keydown
-   * Handles the keydown event
-   * @param  `e`  A d3 keydown event
+   * Handler for keydown events on the window.
+   * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
-    e.preventDefault();
+    const modifier = (MACOS && e.metaKey) || (!MACOS && e.ctrlKey);
+    if (modifier && e.key === 'V') {
+      this._doPaste(e);
+    }
+  }
 
+
+  /**
+   * _doPaste
+   * Pastes copied features onto the map, if possible
+   * @param  `e`  A DOM KeyboardEvent
+   */
+  _doPaste(e) {
     const context = this.context;
+
+    // Nothing to copy..
+    const copyIDs = context.copyIDs();
+    if (!copyIDs.length) return;
+
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const eventManager = context.map().renderer.events;
+    if (!eventManager.pointerOverRenderer) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
     const startGraph = context.graph();
     const copyGraph = context.copyGraph();
-    const mouse = context.map().mouse();
     const projection = context.projection;
-    const dimensions = projection.dimensions();
-    const viewport = new Extent(dimensions[0], dimensions[1]).polygon();
 
-    if (!geomPointInPolygon(mouse, viewport)) return;
-
-    const oldIDs = context.copyIDs();
-    if (!oldIDs.length) return;
-
-    const action = actionCopyEntities(oldIDs, copyGraph);
+    const action = actionCopyEntities(copyIDs, copyGraph);
     context.perform(action);
     const copies = action.copies();
 
     let extent = new Extent();
-    let newIDs = [];
+    let pasteIDs = [];
     let originals = new Set();
     Object.values(copies).forEach(entity => originals.add(entity.id));
 
@@ -86,21 +105,23 @@ export class BehaviorPaste extends AbstractBehavior {
 
       extent = extent.extend(oldEntity.extent(copyGraph));
 
-      // Exclude child nodes from newIDs if their parent way was also copied.
+      // Exclude child nodes from pasteIDs if their parent way was also copied.
       const parents = context.graph().parentWays(newEntity);
       const parentCopied = parents.some(parent => originals.has(parent.id));
-
       if (!parentCopied) {
-        newIDs.push(newEntity.id);
+        pasteIDs.push(newEntity.id);
       }
     }
 
-    // Try to put pasted features where mouse pointer is..
-    const copyPoint = (context.copyLonLat() && projection.project(context.copyLonLat())) || projection.project(extent.center());
-    const delta = vecSubtract(mouse, copyPoint);
+    // Move pasted features to where mouse pointer is..
+    // Default to map center if we can't determine the mouse pointer
+    const copyLoc = context.copyLoc();
+    const copyPoint = (copyLoc && projection.project(copyLoc)) || extent.center();
+    const mousePoint = eventManager.coord || context.map().centerPoint();
+    const delta = vecSubtract(mousePoint, copyPoint);
 
-    context.perform(actionMove(newIDs, delta, projection));
-    context.enter(modeMove(context, newIDs, startGraph));
+    context.perform(actionMove(pasteIDs, delta, projection));
+    context.enter(modeMove(context, pasteIDs, startGraph));
   }
 
 }
