@@ -18,9 +18,10 @@ const FAR_TOLERANCE = 4;
  * `BehaviorMapInteraction` listens to pointer events and converts those into zoom/pan map interactions
  *
  * Properties available:
- *   `enabled`    `true` if the event handlers are enabled, `false` if not.
- *   `lastDown`   `eventData` Object for the most recent down event
- *   `gesture`    String containing the current detected gesture ('pan')
+ *   `enabled`             `true` if the event handlers are enabled, `false` if not.
+ *   `doubleClickEnabled`  `true` if double clicks can zoom, `false` if not.
+ *   `lastDown`            `eventData` Object for the most recent down event
+ *   `gesture`             String containing the current detected gesture ('pan')
  */
 export class BehaviorMapInteraction extends AbstractBehavior {
 
@@ -34,6 +35,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     this.lastDown = null;
     this.gesture = null;
+    this.doubleClickEnabled = true;
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
@@ -93,8 +95,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _click(e) {
-    const [x, y] = [e.global.x, e.global.y];
-
+    if (!this.doubleClickEnabled) return;
     if (e.detail !== 2) return;    // double clicks only
     if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
 
@@ -102,6 +103,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
       return Math.max(min, Math.min(num, max));
     }
 
+    const [x, y] = [e.global.x, e.global.y];
     const t = this.context.projection.transform();
     const isShiftDown = e.getModifierState('Shift');
 

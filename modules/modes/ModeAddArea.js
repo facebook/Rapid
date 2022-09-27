@@ -46,13 +46,15 @@ export class ModeAddArea extends AbstractMode {
     this.defaultTags = { area: 'yes' };
 
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
-//    context.map().dblclickZoomEnable(false);
+
     context.behaviors.get('draw')
       .on('click', this._start)
       .on('clickWay', this._startFromWay)
       .on('clickNode', this._startFromNode)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
+
+    context.behaviors.get('map-interaction').doubleClickEnabled = false;
 
     return true;
   }
@@ -71,14 +73,16 @@ export class ModeAddArea extends AbstractMode {
     const context = this.context;
     this._active = false;
 
-    //window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
-
     context.behaviors.get('draw')
       .off('click', this._start)
       .off('clickWay', this._startFromWay)
       .off('clickNode', this._startFromNode)
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
+
+    window.setTimeout(() => {
+      context.behaviors.get('map-interaction').doubleClickEnabled = true;
+    }, 1000);
   }
 
 

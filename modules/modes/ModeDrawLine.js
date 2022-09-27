@@ -108,13 +108,15 @@ export class ModeDrawLine extends AbstractMode {
       this._continueFromNode(continueNode);  // create draw node and extend continue way to it
     }
 
-//    context.map().dblclickZoomEnable(false);
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+
     context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)
       .on('undo', this._undo)
       .on('finish', this._finish);
+
+    context.behaviors.get('map-interaction').doubleClickEnabled = false;
 
 // figure out how this needs to happen - `this.defaultTags` maybe not ready yet?
 // maybe pass defaultTags in `options` now?
@@ -162,7 +164,9 @@ export class ModeDrawLine extends AbstractMode {
     this._clicks = 0;
     this._selectedData.clear();
 
-//    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
+    window.setTimeout(() => {
+      context.behaviors.get('map-interaction').doubleClickEnabled = true;
+    }, 1000);
 
     context.behaviors.get('draw')
       .off('move', this._move)

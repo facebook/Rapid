@@ -71,16 +71,17 @@ export class ModeDrawArea extends AbstractMode {
     context.history().checkpoint('draw-area-initial'); // save history checkpoint to return to if things go bad
 
     context.enableBehaviors(['hover', 'draw']);
-    //    context.map().dblclickZoomEnable(false);
-    context.behaviors
-      .get('draw')
+    context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)
       .on('cancel', this._cancel)
       .on('finish', this._cancel);
 
+    context.behaviors.get('map-interaction').doubleClickEnabled = false;
+
     return true;
   }
+
 
   /**
    * exit
@@ -94,8 +95,6 @@ export class ModeDrawArea extends AbstractMode {
 
     const context = this.context;
     this._active = false;
-
-    //    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
 
     // Confirm that the drawn area exists and is valid..
     if (!this._drawAreaValid()) {
@@ -118,6 +117,10 @@ export class ModeDrawArea extends AbstractMode {
       .off('click', this._start)
       .off('cancel', this._cancel)
       .off('finish', this._cancel);
+
+    window.setTimeout(() => {
+      context.behaviors.get('map-interaction').doubleClickEnabled = true;
+    }, 1000);
   }
 
   /**

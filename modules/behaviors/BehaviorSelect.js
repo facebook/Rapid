@@ -218,20 +218,6 @@ export class BehaviorSelect extends AbstractBehavior {
     if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = up;  // We will accept this as a click
 
-//      // If we're clicking on something, we want to disable dbl click to zoom.
-//      if (up.data) {
-////        this.context.map().dblclickZoomEnable(false); // Prevent a quick second click
-//        d3_select(window).on(
-//          'click.draw-block',
-//          (e) => e.stopPropagation(),
-//          true
-//        );
-//        window.setTimeout(() => {
-////          this.context.map().dblclickZoomEnable(true);
-//          d3_select(window).on('click.draw-block', null);
-//        }, 500);
-//      }
-
       this._doSelect();
       if (down.originalEvent.button === 2) {   // right click
         this._doContextMenu();
@@ -300,8 +286,15 @@ export class BehaviorSelect extends AbstractBehavior {
       eventData.data = null;
     }
 
+    // Determine what we clicked on and switch modes..
     let datum = eventData.data;
-    // Decide what we clicked on and switch modes
+
+    // If we're clicking on something, we want to pause doubleclick zooms
+    if (datum) {
+      const behavior = this.context.behaviors.get('map-interaction');
+      behavior.doubleClickEnabled = false;
+      window.setTimeout(() => behavior.doubleClickEnabled = true, 500);
+    }
 
     // Clicked a midpoint..
     // Treat a click on a midpoint as if clicking on its parent way
