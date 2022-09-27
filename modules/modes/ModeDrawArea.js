@@ -14,6 +14,7 @@ import { locationManager } from '../core/locations';
 import { osmNode, osmWay } from '../osm';
 import { geoChooseEdge } from '../geo';
 import { t } from '../core/localizer';
+import { ContextSystem } from 'pixi.js';
 
 const DEBUG = false;
 
@@ -70,8 +71,9 @@ export class ModeDrawArea extends AbstractMode {
     context.history().checkpoint('draw-area-initial'); // save history checkpoint to return to if things go bad
 
     context.enableBehaviors(['hover', 'draw']);
-//    context.map().dblclickZoomEnable(false);
-    context.behaviors.get('draw')
+    //    context.map().dblclickZoomEnable(false);
+    context.behaviors
+      .get('draw')
       .on('move', this._move)
       .on('click', this._click)
       .on('cancel', this._cancel)
@@ -93,7 +95,7 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     this._active = false;
 
-//    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
+    //    window.setTimeout(() => context.map().dblclickZoomEnable(true), 1000);
 
     // Confirm that the drawn area exists and is valid..
     if (!this._drawAreaValid()) {
@@ -149,6 +151,29 @@ export class ModeDrawArea extends AbstractMode {
     };
   }
 
+  /**
+   * _actionReplaceDrawNode
+   * Helper function to get rid of the transient 'draw' node if we happen to click another node / way.
+   * This removes the transient node from the current graph history state, and replaces it with the new point that was clicked on.
+   * @param {*} wayId the id of the way getting one of its nodes swapped out- likely, the draw way
+   * @param {*} drawNodeId the transient node ID to swap out
+   * @param {*} replacementNodeId the node ID to swap out for the draw Node
+   * @param {*} index the index at which to make the replacement
+   * @returns
+   */
+  _actionReplaceDrawNode(wayId, drawNode, replacementNode) {
+    return function (graph) {
+      graph = graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
+      return graph.replace(graph.entity(wayId).addNode(replacementNode.id, undefined));
+    };
+  }
+
+
+  _actionRemoveDrawNode(wayId, drawNode) {
+    return function (graph) {
+      return graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
+    };
+  }
   /**
    * _click
    * Process whatever the user clicked on.
@@ -246,9 +271,16 @@ export class ModeDrawArea extends AbstractMode {
       this.firstNode = osmNode({ loc: loc });
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
-      this.drawWay = osmWay({ tags: this.defaultTags, nodes: [this.firstNode.id, this.drawNode.id] });
+      this.drawWay = osmWay({
+        tags: this.defaultTags,
+        nodes: [this.firstNode.id, this.drawNode.id],
+      });
 
-      scene.drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
+      scene.drawingFeatures([
+        this.drawWay.id,
+        this.firstNode.id,
+        this.drawNode.id,
+      ]);
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -263,9 +295,8 @@ export class ModeDrawArea extends AbstractMode {
 
     context.resumeChangeDispatch();
 
-    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
+    this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
     this._updateCollections();
-
   }
 
   /**
@@ -314,7 +345,10 @@ export class ModeDrawArea extends AbstractMode {
       }
     }
 
-    context.replace(actionMoveNode(this.drawNode.id, loc), this._getAnnotation());
+    context.replace(
+      actionMoveNode(this.drawNode.id, loc),
+      this._getAnnotation()
+    );
     this.drawNode = context.entity(this.drawNode.id);
     this._updateCollections();
   }
@@ -344,7 +378,7 @@ export class ModeDrawArea extends AbstractMode {
       actionAddMidpoint({ loc: loc, edge: edge }, node)
     );
 
-    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
+    this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
 
     context.scene().drawingFeatures([node.id, way.id]);
   }
@@ -366,15 +400,13 @@ export class ModeDrawArea extends AbstractMode {
         vecEqual(loc, this.lastNode.loc, EPSILON) ||
         vecEqual(loc, this.firstNode.loc, EPSILON)
       ) {
-        const targetIndex =
-          this.drawWay.affix(this.drawNode.id) === 'prefix'
-            ? 1
-            : this.drawWay.nodes.length - 1;
 
         context.replace(
+          this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),
           actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
           this._getAnnotation()
         );
+        this.drawWay = context.entity(this.drawWay.id);
         this._finish();
         return;
       }
@@ -395,10 +427,21 @@ export class ModeDrawArea extends AbstractMode {
           ? 1
           : this.drawWay.nodes.length - 1;
 
-      context.replace(
-        actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
+      const oldDrawNode = this.drawNode;
+      this.drawNode = osmNode({ loc: loc });
+
+      context.perform(
+        actionAddEntity(this.drawNode),
+        this._actionReplaceDrawNode(
+          this.drawWay.id,
+          oldDrawNode,
+          targetNode,
+          targetIndex
+        ),
+        actionAddVertex(this.drawWay.id, this.drawNode.id, targetIndex), // Add draw node to draw way
         this._getAnnotation()
       );
+    this.drawWay = context.entity(this.drawWay.id);
     } else {
       if (DEBUG) {
         console.log(
@@ -408,7 +451,7 @@ export class ModeDrawArea extends AbstractMode {
 
       const context = this.context;
 
-      this.firstNode = osmNode({ loc: loc });
+      this.firstNode = targetNode;
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({
@@ -416,19 +459,27 @@ export class ModeDrawArea extends AbstractMode {
         nodes: [this.firstNode.id, this.drawNode.id],
       });
 
-      context.scene().drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
+      context
+        .scene()
+        .drawingFeatures([
+          this.drawWay.id,
+          this.firstNode.id,
+          this.drawNode.id,
+        ]);
 
       context.perform(
         actionAddEntity(this.drawNode),
         actionAddEntity(this.firstNode),
         actionAddEntity(this.drawWay),
-        actionAddVertex(this.drawWay.id, this.firstNode.id),
-        actionAddVertex(this.drawWay.id, this.drawNode.id),
-        this._actionClose(this.drawWay.id),
+        this._actionClose(this.drawWay.id)
         //No annotation at this point- having an area with a single node location would be pretty weird.
       );
       this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
+      // Perform a no-op edit that will be replaced as the user moves the draw node around.
+      context.perform(actionNoop(), this._getAnnotation());
     }
+
+    context.resumeChangeDispatch();
   }
 
   /**
@@ -440,7 +491,6 @@ export class ModeDrawArea extends AbstractMode {
     if (this.drawWay.isDegenerate()) return false;
     return true;
   }
-
 
   _removeDrawNode() {
     if (this.drawNode) {
