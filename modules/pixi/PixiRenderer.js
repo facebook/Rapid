@@ -351,6 +351,7 @@ export class PixiRenderer extends EventEmitter {
       if (tween === 1) {  // we're done
         this._transformEaseParams = null;
       }
+      this._appPending = true;  // needs occasional renders during/after easing
     }
 
     // Determine delta from last full draw and apply it to supersurface / overlay
