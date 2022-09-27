@@ -166,7 +166,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._cancelLongPress();
 
     // For touch devices, we want to make sure that the context menu is accessible via long press.
-    if (e.data.pointerType === 'touch') {
+    if (e.pointerType === 'touch') {
       this._longPressTimeout = window.setTimeout(this._doLongPress, 750, down);
     }
   }

@@ -166,9 +166,6 @@ export class RendererMap extends EventEmitter {
         context.background().updateImagery();
         this.immediateRedraw();
     });
-
-    context.behaviors.get('map-interaction')
-      .on('transformchanged', t => this.transform(t));
   }
 
 

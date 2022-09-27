@@ -94,7 +94,7 @@ export class AbstractBehavior extends EventEmitter {
 //      data: null,
 //    };
     const result = {
-      id: e.originalEvent.pointerId || e.pointerType || 'unknown',
+      id: e.pointerId || e.pointerType || 'unknown',
       event: e,
       originalEvent: e.originalEvent,
       coord: [e.global.x, e.global.y],

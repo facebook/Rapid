@@ -140,17 +140,16 @@ export class PixiEvents extends EventEmitter {
    */
   _checkModifierKeys(e) {
     const modifiers = this.modifierKeys;
-    const toCheck = {
-      'altKey': 'Alt',       // ALT key, on Mac: ⌥ (option)
-      'ctrlKey': 'Control',  // CTRL key, on Mac: ⌃ (control)
-      'metaKey': 'Meta',     // META, on Mac: ⌘ (command), on Windows (Win), on Linux (Super)
-      'shiftKey': 'Shift'    // Shift key, ⇧
-    };
+    const toCheck = [
+      'Alt',      // ALT key, on Mac: ⌥ (option)
+      'Control',  // CTRL key, on Mac: ⌃ (control)
+      'Meta',     // META, on Mac: ⌘ (command), on Windows (Win), on Linux (Super)
+      'Shift'     // Shift key, ⇧
+    ];
 
     let didChange = false;
-    for (const prop in toCheck) {
-      const key = toCheck[prop];
-      const keyIsDown = e[prop];
+    for (const key of toCheck) {
+      const keyIsDown = e.getModifierState(key);
       const keyWasDown = modifiers.has(key);
 
       if (keyIsDown && !keyWasDown) {

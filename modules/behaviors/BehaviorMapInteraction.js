@@ -21,9 +21,6 @@ const FAR_TOLERANCE = 4;
  *   `enabled`    `true` if the event handlers are enabled, `false` if not.
  *   `lastDown`   `eventData` Object for the most recent down event
  *   `gesture`    String containing the current detected gesture ('pan')
- *
- * Events available:
- *   `transformchanged`  Fires whenever we want to change the map transform
  */
 export class BehaviorMapInteraction extends AbstractBehavior {
 
@@ -39,6 +36,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     this.gesture = null;
 
     // Make sure the event handlers have `this` bound correctly
+    this._click = this._click.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
@@ -59,6 +57,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     this.gesture = null;
 
     const eventManager = this.context.map().renderer.events;
+    eventManager.on('click', this._click);
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -79,11 +78,43 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     this.gesture = null;
 
     const eventManager = this.context.map().renderer.events;
+    eventManager.off('click', this._click);
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
     eventManager.off('pointercancel', this._pointercancel);
     eventManager.off('wheel', this._wheel);
+  }
+
+
+  /**
+   * _click
+   * Handler for click events, used to support double-click to zoom/unzoom.
+   * @param  `e`  A Pixi FederatedPointerEvent
+   */
+  _click(e) {
+    const [x, y] = [e.global.x, e.global.y];
+
+    if (e.detail !== 2) return;    // double clicks only
+    if (e.pointerType === 'mouse' && e.button !== 0) return;   // left click only (if a mouse)
+
+    function clamp(num, min, max) {
+      return Math.max(min, Math.min(num, max));
+    }
+
+    const t = this.context.projection.transform();
+    const isShiftDown = e.getModifierState('Shift');
+
+    // local mouse coord to transform origin (was: d3 `transform.invert`)
+    const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
+    let k2 = t.k * (isShiftDown ? 0.5 : 2);  // rescale
+    k2 = clamp(k2, MINK, MAXK);
+
+    // transform origin back to local coord
+    const x2 = x - p1[0] * k2;
+    const y2 = y - p1[1] * k2;
+
+    this.context.map().transformEase({ x: x2, y: y2, k: k2 });
   }
 
 
@@ -132,7 +163,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
       const t = this.context.projection.transform();
       const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
 
-      this.emit('transformchanged', tNew);
+      this.context.map().transform(tNew);
     }
   }
 
@@ -197,7 +228,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
       tNew = { x: t.x - dX, y: t.y - dY, k: t.k };
     }
 
-    this.emit('transformchanged', tNew);
+    this.context.map().transform(tNew);
   }
 
 }

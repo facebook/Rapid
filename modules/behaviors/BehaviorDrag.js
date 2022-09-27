@@ -164,7 +164,7 @@ export class BehaviorDrag extends AbstractBehavior {
 
     } else {  // start dragging?
       const dist = vecLength(down.coord, move.coord);
-      const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
+      const tolerance = (e.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
       if (dist >= tolerance) {
         // Save the target, *and set it to be non-interactive*.
         // This lets us catch events for what other objects it passes over as the user drags it.
