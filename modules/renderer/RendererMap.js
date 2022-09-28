@@ -35,11 +35,11 @@ function clamp(num, min, max) {
  *   `areaFillMode`    one of 'full', 'partial' (default), or 'wireframe'
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
  *
- * Events available:  (todo)
+ * Events available:
  *   `draw`      Fires after a full redraw
  *   `move`      Fires after the map's transform has changed (can fire frequently)
  *               ('move' is mostly for when you want to update some content that floats over the map)
- *   `displaychanged`  Fires on any change in display options (wireframe/areafill, highlightedits)
+ *   `optionchange`  Fires on any change in display options (wireframe/areafill, highlightedits)
  */
 export class RendererMap extends EventEmitter {
 
@@ -483,7 +483,7 @@ export class RendererMap extends EventEmitter {
     this._highlightEdits = val;
     this._renderer.scene.dirtyScene();
     this.immediateRedraw();
-    this.emit('displaychanged');
+    this.emit('optionchange');
   }
 
 
@@ -508,7 +508,7 @@ export class RendererMap extends EventEmitter {
 
     this._renderer.scene.dirtyScene();
     this.immediateRedraw();
-    this.emit('displaychanged');
+    this.emit('optionchange');
   }
 
 
@@ -530,10 +530,20 @@ export class RendererMap extends EventEmitter {
   }
 
 
+  /**
+   * scene
+   * @return reference to the PixiScene object
+   * @readonly
+   */
   get scene() {
     return this._renderer.scene;
   }
 
+  /**
+   * scene
+   * @return reference to the PixiRenderer object
+   * @readonly
+   */
   get renderer() {
     return this._renderer;
   }

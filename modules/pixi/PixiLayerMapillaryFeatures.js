@@ -42,8 +42,8 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
 
 
   filterDetections(detections) {
-    const fromDate = this.context.photos().fromDate();
-    const toDate = this.context.photos().toDate();
+    const fromDate = this.context.photos().fromDate;
+    const toDate = this.context.photos().toDate;
 
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();

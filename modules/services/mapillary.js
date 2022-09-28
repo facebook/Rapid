@@ -447,10 +447,10 @@ export default {
 
     // Apply filter to image viewer
     filterViewer: function(context) {
-        const showsPano = context.photos().showsPanoramic();
-        const showsFlat = context.photos().showsFlat();
-        const fromDate = context.photos().fromDate();
-        const toDate = context.photos().toDate();
+        const showsPano = context.photos().showsPanoramic;
+        const showsFlat = context.photos().showsFlat;
+        const fromDate = context.photos().fromDate;
+        const toDate = context.photos().toDate;
         const filter = ['all'];
 
         if (!showsPano) filter.push([ '!=', 'cameraType', 'spherical' ]);

@@ -55,7 +55,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoItems(selection) {
-    const photoKeys = context.photos().overlayLayerIDs();
+    const photoKeys = context.photos().overlayLayerIDs;
     const photoLayers = scene.layers.filter(layer => photoKeys.includes(layer.id));
     const data = photoLayers.filter(layer => layer.supported);
 
@@ -129,7 +129,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawPhotoTypeItems(selection) {
-    let data = context.photos().allPhotoTypes();
+    const photoTypes = context.photos().allPhotoTypes;
 
     function typeEnabled(d) {
       return context.photos().showsPhotoType(d);
@@ -148,7 +148,7 @@ export function uiSectionPhotoOverlays(context) {
       .merge(ul);
 
     let li = ul.selectAll('.list-item-photo-types')
-      .data(context.photos().shouldFilterByPhotoType() ? data : []);
+      .data(context.photos().shouldFilterByPhotoType() ? photoTypes : []);
 
     li.exit()
       .remove();
@@ -186,7 +186,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function drawDateFilter(selection) {
-    let data = context.photos().dateFilters();
+    const dateFilterTypes = context.photos().dateFilters;
 
     function filterEnabled(d) {
       return context.photos().dateFilterValue(d);
@@ -205,7 +205,7 @@ export function uiSectionPhotoOverlays(context) {
       .merge(ul);
 
     let li = ul.selectAll('.list-item-date-filter')
-      .data(context.photos().shouldFilterByDate() ? data : []);
+      .data(context.photos().shouldFilterByDate() ? dateFilterTypes : []);
 
     li.exit()
       .remove();
@@ -255,7 +255,7 @@ export function uiSectionPhotoOverlays(context) {
 
   function drawUsernameFilter(selection) {
     function filterEnabled() {
-      return context.photos().usernames();
+      return context.photos().usernames;
     }
 
     let ul = selection
@@ -311,14 +311,14 @@ export function uiSectionPhotoOverlays(context) {
       .classed('active', filterEnabled);
 
     function usernameValue() {
-      let usernames = context.photos().usernames();
+      let usernames = context.photos().usernames;
       if (usernames) return usernames.join('; ');
       return usernames;
     }
   }
 
   context.scene().on('layerchange', section.reRender);
-  context.photos().on('change.uiSectionPhotoOverlays', section.reRender);
+  context.photos().on('optionchange', section.reRender);
 
   return section;
 }

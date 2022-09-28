@@ -98,8 +98,7 @@ export function uiSectionMapStyleOptions(context) {
   }
 
 
-  context.map()
-    .on('displaychanged', section.reRender);
+  context.map().on('optionchange', section.reRender);
 
   return section;
 }

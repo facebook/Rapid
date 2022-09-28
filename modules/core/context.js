@@ -31,7 +31,7 @@ import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
 
 import { presetManager } from '../presets';
-import { rendererBackground, rendererFeatures, RendererMap, rendererPhotos } from '../renderer';
+import { rendererBackground, rendererFeatures, RendererMap, RendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
@@ -691,7 +691,7 @@ export function coreContext() {
       _background = rendererBackground(context);
       _features = rendererFeatures(context);
       _map = new RendererMap(context);
-      _photos = rendererPhotos(context);
+      _photos = new RendererPhotos(context);
 
       _ui = uiInit(context);
 
