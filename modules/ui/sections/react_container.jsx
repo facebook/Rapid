@@ -1,8 +1,9 @@
+import _debounce from 'lodash-es/debounce';
+
 import React from 'react';
 import ReactDom from 'react-dom';
-import { uiSection } from '../section';
 import ReactComponent from './ReactComponent';
-import _debounce from 'lodash-es/debounce';
+import { uiSection } from '../section';
 
 
 export function uiSectionReactContainer(context) {
