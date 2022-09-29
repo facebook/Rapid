@@ -15,7 +15,7 @@ import { services } from '../services';
  *   `usernames`         Current usernames filter value
  *
  * Events available:
- *   `optionchange`      Fires on any change in display options
+ *   `photochange`       Fires on any change in photo display or filtering options
  */
 export class RendererPhotos extends EventEmitter {
 
@@ -42,7 +42,7 @@ export class RendererPhotos extends EventEmitter {
 
   /**
    * init
-   * Should be called one time after all objects have been created.
+   * Called one time after all objects have been instantiated.
    * Handles initial parsing of the url params, and setup of event listeners
    */
   init() {
@@ -246,8 +246,6 @@ export class RendererPhotos extends EventEmitter {
     }
 
     if (didChange) {
-      this.emit('optionchange');
-
       if (updateURL) {
         let rangeString;
         if (this._fromDate || this._toDate) {
@@ -255,8 +253,7 @@ export class RendererPhotos extends EventEmitter {
         }
         this._setUrlFilterValue('photo_dates', rangeString);
       }
-
-      this.context.map().immediateRedraw();
+      this.emit('photochange');
     }
   }
 
@@ -278,7 +275,6 @@ export class RendererPhotos extends EventEmitter {
       }
     }
     this._usernames = val;
-    this.emit('optionchange');
 
     if (updateURL) {
       let hashString;
@@ -288,8 +284,9 @@ export class RendererPhotos extends EventEmitter {
       this._setUrlFilterValue('photo_username', hashString);
     }
 
-    this.context.map().immediateRedraw();
+    this.emit('photochange');
   }
+
 
   /**
    * togglePhotoType
@@ -305,8 +302,7 @@ export class RendererPhotos extends EventEmitter {
       this._shownPhotoTypes.add(which);
     }
 
-    this.emit('optionchange');
-    this.context.map().immediateRedraw();
+    this.emit('photochange');
   }
 
 

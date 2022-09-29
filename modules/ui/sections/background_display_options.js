@@ -1,134 +1,127 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
 import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { svgIcon } from '../../svg/icon';
 import { uiSection } from '../section';
-import { utilDetect } from '../../util/detect';
 
 
 export function uiSectionBackgroundDisplayOptions(context) {
+  const section = uiSection('background-display-options', context)
+    .label(t.html('background.display_options'))
+    .disclosureContent(renderDisclosureContent);
 
-    var section = uiSection('background-display-options', context)
-        .label(t.html('background.display_options'))
-        .disclosureContent(renderDisclosureContent);
+  let _storedOpacity = prefs('background-opacity');
+  const MINVAL = 0;
+  const MAXVAL = 3;
+  const SETTINGS = ['brightness', 'contrast', 'saturation', 'sharpness'];
 
-    var _detected = utilDetect();
-    var _storedOpacity = prefs('background-opacity');
-    var _minVal = 0;
-    var _maxVal = _detected.cssfilters ? 3 : 1;
+  let _options = {
+    brightness: (_storedOpacity !== null ? (+_storedOpacity) : 1),
+    contrast: 1,
+    saturation: 1,
+    sharpness: 1
+  };
 
-    var _sliders = _detected.cssfilters
-        ? ['brightness', 'contrast', 'saturation', 'sharpness']
-        : ['brightness'];
+  function clamp(x, min, max) {
+    return Math.max(min, Math.min(x, max));
+  }
 
-    var _options = {
-        brightness: (_storedOpacity !== null ? (+_storedOpacity) : 1),
-        contrast: 1,
-        saturation: 1,
-        sharpness: 1
-    };
 
-    function clamp(x, min, max) {
-        return Math.max(min, Math.min(x, max));
+  function updateValue(d, val) {
+    val = clamp(val, MINVAL, MAXVAL);
+
+    const imagery = context.imagery();
+    _options[d] = val;
+    if (d === 'brightness') {
+      prefs('background-opacity', val);
+      imagery.brightness = val;
+    } else if (d === 'contrast') {
+      imagery.contrast = val;
+    } else if (d === 'saturation') {
+      imagery.saturation = val;
+    } else if (d === 'sharpness') {
+      imagery.sharpness = val;
     }
+    section.reRender();
+  }
 
-    function updateValue(d, val) {
-        val = clamp(val, _minVal, _maxVal);
 
-        _options[d] = val;
-        context.background()[d](val);
+  function renderDisclosureContent(selection) {
+    let container = selection.selectAll('.display-options-container')
+      .data([0]);
 
-        if (d === 'brightness') {
-            prefs('background-opacity', val);
+    let containerEnter = container.enter()
+      .append('div')
+      .attr('class', 'display-options-container controls-list');
+
+    // add slider controls
+    let slidersEnter = containerEnter.selectAll('.display-control')
+      .data(SETTINGS)
+      .enter()
+      .append('div')
+      .attr('class', d => `display-control display-control-${d}`);
+
+    slidersEnter
+      .append('h5')
+      .html(d => t.html(`background.${d}`))
+      .append('span')
+      .attr('class', d => `display-option-value display-option-value-${d}`);
+
+    let sildersControlEnter = slidersEnter
+      .append('div')
+      .attr('class', 'control-wrap');
+
+    sildersControlEnter
+      .append('input')
+      .attr('class', d => `display-option-input display-option-input-${d}`)
+      .attr('type', 'range')
+      .attr('min', MINVAL)
+      .attr('max', MAXVAL)
+      .attr('step', '0.05')
+      .on('input', (d3_event, d) => {
+        updateValue(d, (d3_event.target.value || 1));
+      });
+
+    sildersControlEnter
+      .append('button')
+      .attr('title', t('background.reset'))
+      .attr('class', d => `display-option-reset display-option-reset-${d}`)
+      .on('click', (d3_event, d) => {
+        if (d3_event.button !== 0) return;  // left click only
+        updateValue(d, 1);
+      })
+      .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+
+    // reset all button
+    containerEnter
+      .append('a')
+      .attr('class', 'display-option-resetlink')
+      .attr('href', '#')
+      .html(t.html('background.reset_all'))
+      .on('click', d3_event => {
+        d3_event.preventDefault();
+        for (let i = 0; i < SETTINGS.length; i++) {
+          updateValue(SETTINGS[i], 1);
         }
+      });
 
-        section.reRender();
+    // update
+    container = containerEnter
+      .merge(container);
+
+    container.selectAll('.display-option-input')
+      .property('value', d => _options[d]);
+
+    container.selectAll('.display-option-value')
+      .text(d => Math.floor(_options[d] * 100) + '%');
+
+    container.selectAll('.display-option-reset')
+      .classed('disabled', d => _options[d] === 1);
+
+    // first time only, set brightness if needed
+    if (containerEnter.size() && _options.brightness !== 1) {
+      context.imagery().brightness = _options.brightness;
     }
+  }
 
-    function renderDisclosureContent(selection) {
-        var container = selection.selectAll('.display-options-container')
-            .data([0]);
-
-        var containerEnter = container.enter()
-            .append('div')
-            .attr('class', 'display-options-container controls-list');
-
-        // add slider controls
-        var slidersEnter = containerEnter.selectAll('.display-control')
-            .data(_sliders)
-            .enter()
-            .append('div')
-            .attr('class', function(d) { return 'display-control display-control-' + d; });
-
-        slidersEnter
-            .append('h5')
-            .html(function(d) { return t.html('background.' + d); })
-            .append('span')
-            .attr('class', function(d) { return 'display-option-value display-option-value-' + d; });
-
-        var sildersControlEnter = slidersEnter
-            .append('div')
-            .attr('class', 'control-wrap');
-
-        sildersControlEnter
-            .append('input')
-            .attr('class', function(d) { return 'display-option-input display-option-input-' + d; })
-            .attr('type', 'range')
-            .attr('min', _minVal)
-            .attr('max', _maxVal)
-            .attr('step', '0.05')
-            .on('input', function(d3_event, d) {
-                var val = d3_select(this).property('value');
-                if (!val && d3_event && d3_event.target) {
-                    val = d3_event.target.value;
-                }
-                updateValue(d, val);
-            });
-
-        sildersControlEnter
-            .append('button')
-            .attr('title', t('background.reset'))
-            .attr('class', function(d) { return 'display-option-reset display-option-reset-' + d; })
-            .on('click', function(d3_event, d) {
-                if (d3_event.button !== 0) return;
-                updateValue(d, 1);
-            })
-            .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
-
-        // reset all button
-        containerEnter
-            .append('a')
-            .attr('class', 'display-option-resetlink')
-            .attr('href', '#')
-            .html(t.html('background.reset_all'))
-            .on('click', function(d3_event) {
-                d3_event.preventDefault();
-                for (var i = 0; i < _sliders.length; i++) {
-                    updateValue(_sliders[i], 1);
-                }
-            });
-
-        // update
-        container = containerEnter
-            .merge(container);
-
-        container.selectAll('.display-option-input')
-            .property('value', function(d) { return _options[d]; });
-
-        container.selectAll('.display-option-value')
-            .html(function(d) { return Math.floor(_options[d] * 100) + '%'; });
-
-        container.selectAll('.display-option-reset')
-            .classed('disabled', function(d) { return _options[d] === 1; });
-
-        // first time only, set brightness if needed
-        if (containerEnter.size() && _options.brightness !== 1) {
-            context.background().brightness(_options.brightness);
-        }
-    }
-
-    return section;
+  return section;
 }

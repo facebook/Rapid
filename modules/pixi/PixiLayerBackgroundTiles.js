@@ -102,7 +102,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    */
   render(frame, projection) {
-    const background = this.context.background();
+    const imagery = this.context.imagery();
 
     if (!this.isMinimap) {
       this.applyFilters();
@@ -111,13 +111,13 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     // Collect tile sources - baselayer and overlays
     let tileSources = new Map();   // Map (tilesource Object -> zIndex)
     let tileSourceIDs = new Set();
-    const base = background.baseLayerSource();
+    const base = imagery.baseLayerSource();
     if (base && base.id !== 'none') {
       tileSources.set(base, -1);
       tileSourceIDs.add(base.id);
     }
 
-    background.overlayLayerSources().forEach((overlay, index) => {
+    imagery.overlayLayerSources().forEach((overlay, index) => {
       if (overlay.id === 'mapbox_locator_overlay') {
         index = 999;  // render locator overlay above all other overlays
       }

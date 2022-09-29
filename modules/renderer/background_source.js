@@ -268,7 +268,7 @@ export function rendererBackgroundSource(data) {
 // https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
 // https://docs.microsoft.com/en-us/bingmaps/rest-services/directly-accessing-the-bing-maps-tiles
 // See also https://github.com/openstreetmap/iD/pull/9133
-rendererBackgroundSource.Bing = function(data, dispatch) {
+rendererBackgroundSource.Bing = function(data) {
     // missing tile image strictness param (n=)
     // * n=f -> (Fail) returns a 404
     // * n=z -> (Empty) returns a 200 with 0 bytes (no content)

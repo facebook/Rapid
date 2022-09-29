@@ -4,8 +4,7 @@ import { uiSection } from '../section';
 
 
 export function uiSectionMapStyleOptions(context) {
-
-  let section = uiSection('fill-area', context)
+  const section = uiSection('fill-area', context)
       .label(t.html('map_data.style_options'))
       .disclosureContent(renderDisclosureContent)
       .expandedByDefault(false);
@@ -98,7 +97,7 @@ export function uiSectionMapStyleOptions(context) {
   }
 
 
-  context.map().on('optionchange', section.reRender);
+  context.map().on('mapchange', section.reRender);
 
   return section;
 }

@@ -47,6 +47,7 @@ import { uiRapidServiceLicense } from './rapid_service_license';
 import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
 
+
 export function uiInit(context) {
   let _initCounter = 0;
   let _needWidth = {};

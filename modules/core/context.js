@@ -31,7 +31,7 @@ import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
 
 import { presetManager } from '../presets';
-import { rendererBackground, rendererFeatures, RendererMap, RendererPhotos } from '../renderer';
+import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
@@ -525,9 +525,10 @@ export function coreContext() {
   };
 
 
-  /* Background */
-  let _background;
-  context.background = () => _background;
+  /* Imagery */
+  let _imagery;
+  context.imagery = () => _imagery;
+  context.background = () => _imagery;   // legacy name
 
 
   /* Features */
@@ -684,18 +685,17 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
-      _rapidContext = coreRapidContext(context);
+      // Instantiate core classes
       _validator = coreValidator(context);
       _uploader = coreUploader(context);
-
-      _background = rendererBackground(context);
+      _imagery = new RendererImagery(context);
       _features = rendererFeatures(context);
       _map = new RendererMap(context);
       _photos = new RendererPhotos(context);
-
+      _rapidContext = coreRapidContext(context);
       _ui = uiInit(context);
 
-      // Initialize "core" behaviors
+      // Instantiate behaviors
       [
         new BehaviorDrag(context),
         new BehaviorDraw(context),
@@ -705,12 +705,12 @@ export function coreContext() {
         new BehaviorSelect(context)
       ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
 
-      // Initialize modes
+      // Instantiate modes
       [
-        new ModeDrawArea(context),
         new ModeAddNote(context),
         new ModeAddPoint(context),
         new ModeBrowse(context),
+        new ModeDrawArea(context),
         new ModeDrawLine(context),
         new ModeSave(context),
         new ModeSelect(context)
@@ -729,9 +729,9 @@ export function coreContext() {
 
       // kick off some async work
       localizer.ensureLoaded();
-      _background.ensureLoaded();
       presetManager.ensureLoaded();
 
+      // Run initializers - this is where code should be that establishes event listeners
       Object.values(services).forEach(service => {
         if (service && typeof service.init === 'function') {
           service.init();
@@ -739,18 +739,10 @@ export function coreContext() {
       });
 
       _validator.init();
+      _imagery.init();
       _features.init();
+      _map.init();
       _rapidContext.init();
-
-
-//      if (services.maprules && context.initialHashParams.maprules) {
-//        d3_json(context.initialHashParams.maprules)
-//          .then(mapcss => {
-//            services.maprules.init();
-//            mapcss.forEach(mapcssSelector => services.maprules.addRule(mapcssSelector));
-//          })
-//          .catch(() => { /* ignore */ });
-//      }
 
       // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {

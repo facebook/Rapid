@@ -36,10 +36,10 @@ function clamp(num, min, max) {
  *   `wireframeMode`   `true` if fill mode is 'wireframe', `false` otherwise
  *
  * Events available:
- *   `draw`      Fires after a full redraw
- *   `move`      Fires after the map's transform has changed (can fire frequently)
- *               ('move' is mostly for when you want to update some content that floats over the map)
- *   `optionchange`  Fires on any change in display options (wireframe/areafill, highlightedits)
+ *   `draw`       Fires after a full redraw
+ *   `move`       Fires after the map's transform has changed (can fire frequently)
+ *                 ('move' is mostly for when you want to update some content that floats over the map)
+ *   `mapchange`  Fires on any change in map display options (wireframe/areafill, highlightedits)
  */
 export class RendererMap extends EventEmitter {
 
@@ -72,7 +72,16 @@ export class RendererMap extends EventEmitter {
 
 
   /**
-   * @constructor
+   * init
+   * Called one time after all objects have been instantiated.
+   */
+  init() {
+    /* noop */
+  }
+
+
+  /**
+   * render
    * @param  `selection`  A d3-selection to a `div` that the panel should render itself into
    */
   render(selection) {
@@ -121,8 +130,28 @@ export class RendererMap extends EventEmitter {
 
     this.dimensions = utilGetDimensions(selection);
 
-    context.background().initDragAndDrop();
 
+
+// setup drag and drop - (doesn't really belong here?)
+    // context.imagery().initDragAndDrop();
+    function over(d3_event) {
+      d3_event.stopPropagation();
+      d3_event.preventDefault();
+      d3_event.dataTransfer.dropEffect = 'copy';
+    }
+    context.container()
+      .attr('dropzone', 'copy')
+      .on('dragenter.draganddrop', over)
+      .on('dragexit.draganddrop', over)
+      .on('dragover.draganddrop', over)
+      .on('drop.draganddrop', (d3_event) => {
+        d3_event.stopPropagation();
+        d3_event.preventDefault();
+        const customDataLayer = context.scene().getLayer('custom-data');
+        if (customDataLayer) {
+          customDataLayer.fileList(d3_event.dataTransfer.files);
+        }
+      });
 
     // Setup events that cause the map to redraw...
     // context.features()
@@ -158,12 +187,12 @@ export class RendererMap extends EventEmitter {
       .on('undone', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
       .on('redone', (stack) => didUndoOrRedo(stack.transform));
 
-    context.background()
-      .on('change', () => this.immediateRedraw());
+    context.imagery().on('imagerychange', () => this.immediateRedraw());
+    context.photos().on('photochange', () => this.immediateRedraw());
 
     this._renderer.scene
       .on('layerchange', () => {
-        context.background().updateImagery();
+        context.imagery().updateImagery();
         this.immediateRedraw();
     });
   }
@@ -483,7 +512,7 @@ export class RendererMap extends EventEmitter {
     this._highlightEdits = val;
     this._renderer.scene.dirtyScene();
     this.immediateRedraw();
-    this.emit('optionchange');
+    this.emit('mapchange');
   }
 
 
@@ -508,7 +537,7 @@ export class RendererMap extends EventEmitter {
 
     this._renderer.scene.dirtyScene();
     this.immediateRedraw();
-    this.emit('optionchange');
+    this.emit('mapchange');
   }
 
 

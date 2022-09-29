@@ -7,12 +7,12 @@ import { utilGetSetValue, utilNoAuto } from '../../util';
 
 
 export function uiSectionPhotoOverlays(context) {
-  const scene = context.scene();
-
-  let section = uiSection('photo-overlays', context)
+  const section = uiSection('photo-overlays', context)
     .label(t.html('photo_overlays.title'))
     .disclosureContent(renderDisclosureContent)
     .expandedByDefault(false);
+
+  const scene = context.scene();
 
 
   function renderDisclosureContent(selection) {
@@ -317,8 +317,9 @@ export function uiSectionPhotoOverlays(context) {
     }
   }
 
+
   context.scene().on('layerchange', section.reRender);
-  context.photos().on('optionchange', section.reRender);
+  context.photos().on('photochange', section.reRender);
 
   return section;
 }

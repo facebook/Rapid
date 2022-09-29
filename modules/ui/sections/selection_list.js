@@ -8,123 +8,126 @@ import { uiSection } from '../section';
 import { t } from '../../core/localizer';
 import { utilDisplayName, utilHighlightEntities } from '../../util';
 
+
 export function uiSectionSelectionList(context) {
+  const section = uiSection('selected-features', context)
+    .shouldDisplay(sectionShouldDisplay)
+    .label(sectionLabel)
+    .disclosureContent(renderDisclosureContent);
 
-    var _selectedIDs = [];
-
-    var section = uiSection('selected-features', context)
-        .shouldDisplay(function() {
-            return _selectedIDs.length > 1;
-        })
-        .label(function() {
-            return t('inspector.title_count', { title: t.html('inspector.features'), count: _selectedIDs.length });
-        })
-        .disclosureContent(renderDisclosureContent);
-
-    context.history()
-        .on('change.selectionList', function(difference) {
-            if (difference) {
-                section.reRender();
-            }
-        });
-
-    section.entityIDs = function(val) {
-        if (!arguments.length) return _selectedIDs;
-        _selectedIDs = val;
-        return section;
-    };
-
-    function selectEntity(d3_event, entity) {
-        context.enter(modeSelect(context, [entity.id]));
-    }
-
-    function deselectEntity(d3_event, entity) {
-        var selectedIDs = _selectedIDs.slice();
-        var index = selectedIDs.indexOf(entity.id);
-        if (index > -1) {
-            selectedIDs.splice(index, 1);
-            context.enter(modeSelect(context, selectedIDs));
-        }
-    }
-
-    function renderDisclosureContent(selection) {
-
-        var list = selection.selectAll('.feature-list')
-            .data([0]);
-
-        list = list.enter()
-            .append('ul')
-            .attr('class', 'feature-list')
-            .merge(list);
-
-        var entities = _selectedIDs
-            .map(function(id) { return context.hasEntity(id); })
-            .filter(Boolean);
-
-        var items = list.selectAll('.feature-list-item')
-            .data(entities, osmEntity.key);
-
-        items.exit()
-            .remove();
-
-        // Enter
-        var enter = items.enter()
-            .append('li')
-            .attr('class', 'feature-list-item')
-            .each(function(d) {
-                d3_select(this)
-                    .on('mouseover', function() {
-                        utilHighlightEntities([d.id], true, context);
-                    })
-                    .on('mouseout', function() {
-                        utilHighlightEntities([d.id], false, context);
-                    });
-            });
-
-        var label = enter
-            .append('button')
-            .attr('class', 'label')
-            .on('click', selectEntity);
-
-        label
-            .append('span')
-            .attr('class', 'entity-geom-icon')
-            .call(svgIcon('', 'pre-text'));
-
-        label
-            .append('span')
-            .attr('class', 'entity-type');
-
-        label
-            .append('span')
-            .attr('class', 'entity-name');
-
-        enter
-            .append('button')
-            .attr('class', 'close')
-            .attr('title', t('icons.deselect'))
-            .on('click', deselectEntity)
-            .call(svgIcon('#iD-icon-close'));
-
-        // Update
-        items = items.merge(enter);
-
-        items.selectAll('.entity-geom-icon use')
-            .attr('href', function() {
-                var entity = this.parentNode.parentNode.__data__;
-                return '#iD-icon-' + entity.geometry(context.graph());
-            });
-
-        items.selectAll('.entity-type')
-            .html(function(entity) { return presetManager.match(entity, context.graph()).name(); });
-
-        items.selectAll('.entity-name')
-            .html(function(d) {
-                // fetch latest entity
-                var entity = context.entity(d.id);
-                return utilDisplayName(entity);
-            });
-    }
-
+  section.entityIDs = function(val) {
+    if (!arguments.length) return _selectedIDs;
+    _selectedIDs = val;
     return section;
+  };
+
+  let _selectedIDs = [];
+
+
+  function sectionShouldDisplay() {
+    return _selectedIDs.length > 1;
+  }
+
+  function sectionLabel() {
+    return t('inspector.title_count', { title: t.html('inspector.features'), count: _selectedIDs.length });
+  }
+
+  function selectEntity(d3_event, entity) {
+    context.enter(modeSelect(context, [entity.id]));
+  }
+
+  function deselectEntity(d3_event, entity) {
+    let selectedIDs = _selectedIDs.slice();
+    let index = selectedIDs.indexOf(entity.id);
+    if (index > -1) {
+      selectedIDs.splice(index, 1);
+      context.enter(modeSelect(context, selectedIDs));
+    }
+  }
+
+
+  function renderDisclosureContent(selection) {
+    let list = selection.selectAll('.feature-list')
+      .data([0]);
+
+    list = list.enter()
+      .append('ul')
+      .attr('class', 'feature-list')
+      .merge(list);
+
+    const entities = _selectedIDs
+      .map(d => context.hasEntity(d))
+      .filter(Boolean);
+
+    let items = list.selectAll('.feature-list-item')
+      .data(entities, osmEntity.key);
+
+    items.exit()
+      .remove();
+
+    // Enter
+    let enter = items.enter()
+      .append('li')
+      .attr('class', 'feature-list-item')
+      .each((d, i, nodes) => {
+        d3_select(nodes[i])
+          .on('mouseover', () => utilHighlightEntities([d.id], true, context))
+          .on('mouseout', () => utilHighlightEntities([d.id], false, context));
+      });
+
+    let label = enter
+      .append('button')
+      .attr('class', 'label')
+      .on('click', selectEntity);
+
+    label
+      .append('span')
+      .attr('class', 'entity-geom-icon')
+      .call(svgIcon('', 'pre-text'));
+
+    label
+      .append('span')
+      .attr('class', 'entity-type');
+
+    label
+      .append('span')
+      .attr('class', 'entity-name');
+
+    enter
+      .append('button')
+      .attr('class', 'close')
+      .attr('title', t('icons.deselect'))
+      .on('click', deselectEntity)
+      .call(svgIcon('#iD-icon-close'));
+
+    // Update
+    items = items.merge(enter);
+
+    items.selectAll('.entity-geom-icon use')
+      .attr('href', (d, i, nodes) => {
+        const thiz = d3_select(nodes[i]);
+        const entity = thiz.parentNode.parentNode.__data__;
+        return '#iD-icon-' + entity.geometry(context.graph());
+      });
+
+    items.selectAll('.entity-type')
+      .html(entity => presetManager.match(entity, context.graph()).name());
+
+    items.selectAll('.entity-name')
+      .html(d => {
+        // fetch latest entity
+        const entity = context.entity(d.id);
+        return utilDisplayName(entity);
+      });
+  }
+
+
+  context.history()
+    .on('change.selectionList', (difference) => {
+      if (difference) {
+        section.reRender();
+      }
+    });
+
+  return section;
 }

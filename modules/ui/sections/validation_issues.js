@@ -17,22 +17,24 @@ import { uiSection } from '../section';
  *  @param  `severity`   String 'error' or 'warning'
  */
 export function uiSectionValidationIssues(context, sectionID, severity) {
+  const section = uiSection(sectionID, context)
+    .label(sectionLabel)
+    .shouldDisplay(sectionShouldDisplay)
+    .disclosureContent(renderDisclosureContent);
+
   let _issues = [];
 
-  const section = uiSection(sectionID, context)
-    .label(() => {
-      if (!_issues) return '';
-      const countText = _issues.length > 1000 ? '1000+' : String(_issues.length);
-      const titleText = t(`issues.${severity}s.list_title`);
-      return t('inspector.title_count', { title: titleText, count: countText });
-    })
-    .disclosureContent(renderDisclosureContent)
-    .shouldDisplay(() => _issues && _issues.length);
+  function sectionLabel() {
+    const countText = _issues.length > 1000 ? '1000+' : String(_issues.length);
+    const titleText = t(`issues.${severity}s.list_title`);
+    return t('inspector.title_count', { title: titleText, count: countText });
+  }
 
+  function sectionShouldDisplay() {
+    return _issues.length;
+  }
 
-  //
   // Accepts a d3-selection to render the content into
-  //
   function renderDisclosureContent(selection) {
     const center = context.map().center();
     const graph = context.graph();
@@ -58,7 +60,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
   // Creates the issues list if needed and updates it with the current issues
   //
   function drawIssuesList(selection, issues) {
-    const SHOWAUTOFIX = prefs('rapid-internal-feature.SHOWAUTOFIX') === 'true';
+    const showAutoFix = (prefs('rapid-internal-feature.showAutoFix') === 'true');
 
     let list = selection.selectAll('.issues-list')
       .data([0]);
@@ -104,7 +106,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .append('span')
       .attr('class', 'issue-message');
 
-    if (SHOWAUTOFIX) {  // for each issue, append autofix button if issue has `autoArgs`
+    if (showAutoFix) {  // for each issue, append autofix button if issue has `autoArgs`
       labelsEnter
         .append('span')
         .attr('class', 'issue-autofix')
@@ -138,7 +140,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
 
     const autofixable = issues.filter(issue => issue.autoArgs);
     let autoFixAll = selection.selectAll('.autofix-all')
-      .data(SHOWAUTOFIX && autofixable.length ? [0] : []);
+      .data(showAutoFix && autofixable.length ? [0] : []);
 
     // exit
     autoFixAll.exit()
@@ -217,7 +219,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     });
   });
 
-  context.map().on('move',
+  context.map().on('draw',
     _debounce(() => {
       window.requestIdleCallback(() => {
         if (!isVisible()) return;

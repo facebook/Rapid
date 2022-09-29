@@ -77,17 +77,21 @@ export function uiIntro(context, skipToRapid) {
   function startIntro(selection) {
     context.enter('browse');
 
-    // Save current map state
-    let osm = context.connection();
-    let history = context.history().toJSON();
-    let hash = window.location.hash;
-    let center = context.map().center();
-    let zoom = context.map().zoom();
-    let background = context.background().baseLayerSource();
-    let overlays = context.background().overlayLayerSources();
-    let opacity = context.container().selectAll('.main-map .layer-background').style('opacity');
-    let caches = osm && osm.caches();
-    let baseEntities = context.history().graph().base().entities;
+    const osm = context.connection();
+    const imagery = context.imagery();
+    const history = context.history();
+
+    // Save current state
+    const original = {
+      hash: window.location.hash,
+      transform: context.map().transform(),
+      opacity: imagery.opacity,
+      baseLayer: imagery.baseLayerSource(),
+      overlayLayers: imagery.overlayLayerSources(),
+      historyJSON: history.toJSON(),
+      baseEntities: history.graph().base().entities,
+      caches: osm && osm.caches()
+    };
 
     // Show sidebar and disable the sidebar resizing button
     // (this needs to be before `context.inIntro(true)`)
@@ -99,18 +103,15 @@ export function uiIntro(context, skipToRapid) {
 
     // Load semi-real data used in intro
     if (osm) { osm.toggle(false).reset(); }
-    context.history().reset();
-    context.history().merge(Object.values(coreGraph().load(_introGraph).entities));
-    context.history().checkpoint('initial');
+    history.reset();
+    history.merge(Object.values(coreGraph().load(_introGraph).entities));
+    history.checkpoint('initial');
 
     // Setup imagery
-    let imagery = context.background().findSource(INTRO_IMAGERY);
-    if (imagery) {
-      context.background().baseLayerSource(imagery);
-    } else {
-      context.background().bing();
-    }
-    overlays.forEach(d => context.background().toggleOverlayLayer(d));
+    const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
+    imagery.baseLayerSource(introSource);
+    original.overlays.forEach(d => imagery.toggleOverlayLayer(d));
+    imagery.opacity = 1;
 
     // Setup data layers (only OSM & ai-features)
     context.scene().onlyLayers(['osm', 'rapid']);
@@ -137,16 +138,14 @@ export function uiIntro(context, skipToRapid) {
       services.fbMLRoads.merge('rapid_intro_graph', entities);
     }
 
-    context.container().selectAll('.main-map .layer-background').style('opacity', 1);
-
-    let curtain = uiCurtain(context.container().node());
+    const curtain = uiCurtain(context.container().node());
     selection.call(curtain);
 
     // Store that the user started the walkthrough..
     prefs('walkthrough_started', 'yes');
 
     // Restore previous walkthrough progress..
-    let storedProgress = prefs('walkthrough_progress') || '';
+    const storedProgress = prefs('walkthrough_progress') || '';
     let progress = storedProgress.split(';').filter(Boolean);
 
     let chapters = chapterFlow.map((chapter, i) => {
@@ -170,13 +169,14 @@ export function uiIntro(context, skipToRapid) {
       return s;
     });
 
+    // When leaving walkthrough...
     chapters[chapters.length - 1].on('startEditing', () => {
       // Store walkthrough progress..
       progress.push('startEditing');
       prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
 
       // Store if walkthrough is completed..
-      let incomplete = utilArrayDifference(chapterFlow, progress);
+      const incomplete = utilArrayDifference(chapterFlow, progress);
       if (!incomplete.length) {
         prefs('walkthrough_completed', 'yes');
       }
@@ -192,17 +192,21 @@ export function uiIntro(context, skipToRapid) {
 
       curtain.remove();
       navwrap.remove();
-      context.container().selectAll('.main-map .layer-background').style('opacity', opacity);
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
-      if (osm) { osm.toggle(true).reset().caches(caches); }
-      context.history().reset().merge(Object.values(baseEntities));
-      context.background().baseLayerSource(background);
-      overlays.forEach(d => context.background().toggleOverlayLayer(d));
-      if (history) { context.history().fromJSON(history, false); }
-      context.map().centerZoom(center, zoom);
-      window.location.replace(hash);
+
+      // Restore State
+      if (original.caches) { osm.toggle(true).reset().caches(original.caches); }
+      history.reset().merge(Object.values(original.baseEntities));
+      imagery.baseLayerSource(original.baseLayer);
+      original.overlays.forEach(d => imagery.toggleOverlayLayer(d));
+      imagery.opacity = original.opacity;
+      if (original.historyJSON) { history.fromJSON(original.historyJSON, false); }
+      context.map().transform(original.transform);
+      window.location.replace(original.hash);
+
       context.inIntro(false);
     });
+
 
     let navwrap = selection
       .append('div')
@@ -236,6 +240,7 @@ export function uiIntro(context, skipToRapid) {
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
     enterChapter(null, chapters[skipToRapid ? 6 : 0]);
+
 
     function enterChapter(d3_event, newChapter) {
       if (_currChapter) _currChapter.exit();

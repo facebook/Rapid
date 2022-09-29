@@ -9,14 +9,14 @@ import { uiSettingsCustomData } from '../settings/custom_data';
 
 
 export function uiSectionDataLayers(context) {
-  let settingsCustomData = uiSettingsCustomData(context)
+  const section = uiSection('data-layers', context)
+    .label(t.html('map_data.data_layers'))
+    .disclosureContent(renderDisclosureContent);
+
+  const settingsCustomData = uiSettingsCustomData(context)
     .on('change', customChanged);
 
   const scene = context.scene();
-
-  let section = uiSection('data-layers', context)
-    .label(t.html('map_data.data_layers'))
-    .disclosureContent(renderDisclosureContent);
 
 
   function renderDisclosureContent(selection) {
@@ -172,7 +172,6 @@ export function uiSectionDataLayers(context) {
   }
 
 
-
   function drawCustomDataItems(selection) {
     const dataLayer = scene.getLayer('custom-data');
     const hasData = dataLayer && dataLayer.hasData();
@@ -325,6 +324,7 @@ export function uiSectionDataLayers(context) {
       .append('span')
       .html(t.html('map_data.measurement_panel.title'));
   }
+
 
   context.scene().on('layerchange', section.reRender);
 

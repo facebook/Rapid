@@ -7,167 +7,161 @@ import { uiSection } from '../section';
 
 
 export function uiSectionBackgroundOffset(context) {
+  const section = uiSection('background-offset', context)
+    .label(t.html('background.fix_misalignment'))
+    .disclosureContent(renderDisclosureContent)
+    .expandedByDefault(false);
 
-    var section = uiSection('background-offset', context)
-        .label(t.html('background.fix_misalignment'))
-        .disclosureContent(renderDisclosureContent)
-        .expandedByDefault(false);
-
-    var _directions = [
-        ['top', [0, -0.5]],
-        ['left', [-0.5, 0]],
-        ['right', [0.5, 0]],
-        ['bottom', [0, 0.5]]
-    ];
+  const DIRECTIONS = [
+    ['top', [0, -0.5]],
+    ['left', [-0.5, 0]],
+    ['right', [0.5, 0]],
+    ['bottom', [0, 0.5]]
+  ];
 
 
-    function updateValue() {
-        var meters = geoOffsetToMeters(context.background().offset());
-        var x = +meters[0].toFixed(2);
-        var y = +meters[1].toFixed(2);
+  function updateValue() {
+    const meters = geoOffsetToMeters(context.imagery().offset);
+    const x = +meters[0].toFixed(2);
+    const y = +meters[1].toFixed(2);
 
-        context.container().selectAll('.nudge-inner-rect')
-            .select('input')
-            .classed('error', false)
-            .property('value', x + ', ' + y);
+    context.container().selectAll('.nudge-inner-rect')
+      .select('input')
+      .classed('error', false)
+      .property('value', `${x},${y}`);
 
-        context.container().selectAll('.nudge-reset')
-            .classed('disabled', function() {
-                return (x === 0 && y === 0);
-            });
+    context.container().selectAll('.nudge-reset')
+      .classed('disabled', (x === 0 && y === 0));
+  }
+
+
+  function resetOffset() {
+    context.imagery().offset = [0, 0];
+    updateValue();
+  }
+
+
+  function nudge(d) {
+    context.imagery().nudge(d, context.map().zoom());
+    updateValue();
+  }
+
+
+  function inputOffset(d3_event) {
+    let input = d3_select(d3_event.target);
+    let val = input.node().value;
+
+    if (val === '') return resetOffset();
+
+    val = val.replace(/;/g, ',').split(',').map(function(n) {
+      // if n is NaN, it will always get mapped to false.
+      return !isNaN(n) && n;
+    });
+
+    if (val.length !== 2 || !val[0] || !val[1]) {
+      input.classed('error', true);
+      return;
     }
 
+    context.imagery().offset = geoMetersToOffset(val);
+    updateValue();
+  }
 
-    function resetOffset() {
-        context.background().offset([0, 0]);
-        updateValue();
+
+  function dragOffset(d3_event) {
+    if (d3_event.button !== 0) return;
+
+    let origin = [d3_event.clientX, d3_event.clientY];
+    const pointerId = d3_event.pointerId || 'mouse';
+
+    context.container()
+      .append('div')
+      .attr('class', 'nudge-surface');
+
+    d3_select(window)
+      .on('pointermove.drag-bg-offset', pointermove)
+      .on('pointerup.drag-bg-offset', pointerup)
+      .on('pointercancel.drag-bg-offset', pointerup);
+
+
+    function pointermove(d3_event) {
+      if (pointerId !== (d3_event.pointerId || 'mouse')) return;
+
+      const latest = [d3_event.clientX, d3_event.clientY];
+      const delta = [
+        -(origin[0] - latest[0]) / 4,
+        -(origin[1] - latest[1]) / 4
+      ];
+
+      origin = latest;
+      nudge(delta);
     }
 
+    function pointerup(d3_event) {
+      if (pointerId !== (d3_event.pointerId || 'mouse')) return;
+      if (d3_event.button !== 0) return;
 
-    function nudge(d) {
-        context.background().nudge(d, context.map().zoom());
-        updateValue();
+      context.container().selectAll('.nudge-surface')
+        .remove();
+
+      d3_select(window)
+        .on('.drag-bg-offset', null);
     }
+  }
 
 
-    function inputOffset() {
-        var input = d3_select(this);
-        var d = input.node().value;
+  function renderDisclosureContent(selection) {
+    let container = selection.selectAll('.nudge-container')
+      .data([0]);
 
-        if (d === '') return resetOffset();
+    let containerEnter = container.enter()
+      .append('div')
+      .attr('class', 'nudge-container');
 
-        d = d.replace(/;/g, ',').split(',').map(function(n) {
-            // if n is NaN, it will always get mapped to false.
-            return !isNaN(n) && n;
-        });
+    containerEnter
+      .append('div')
+      .attr('class', 'nudge-instructions')
+      .html(t.html('background.offset'));
 
-        if (d.length !== 2 || !d[0] || !d[1]) {
-            input.classed('error', true);
-            return;
-        }
+    let nudgeWrapEnter = containerEnter
+      .append('div')
+      .attr('class', 'nudge-controls-wrap');
 
-        context.background().offset(geoMetersToOffset(d));
-        updateValue();
-    }
+    let nudgeEnter = nudgeWrapEnter
+      .append('div')
+      .attr('class', 'nudge-outer-rect')
+      .on('pointerdown', dragOffset);
 
+    nudgeEnter
+      .append('div')
+      .attr('class', 'nudge-inner-rect')
+      .append('input')
+      .attr('type', 'text')
+      .on('change', inputOffset);
 
-    function dragOffset(d3_event) {
-        if (d3_event.button !== 0) return;
+    nudgeWrapEnter
+      .append('div')
+      .selectAll('button')
+      .data(DIRECTIONS).enter()
+      .append('button')
+      .attr('class', d => `${d[0]} nudge`)
+      .attr('tabindex', -1)
+      .on('click', (d3_event, d) => nudge(d[1]) );
 
-        var origin = [d3_event.clientX, d3_event.clientY];
+    nudgeWrapEnter
+      .append('button')
+      .attr('title', t('background.reset'))
+      .attr('class', 'nudge-reset disabled')
+      .on('click', d3_event => {
+        d3_event.preventDefault();
+        resetOffset();
+      })
+      .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
 
-        var pointerId = d3_event.pointerId || 'mouse';
+    updateValue();
+  }
 
-        context.container()
-            .append('div')
-            .attr('class', 'nudge-surface');
+  context.imagery().on('imagerychange', updateValue);
 
-        d3_select(window)
-            .on('pointermove.drag-bg-offset', pointermove)
-            .on('pointerup.drag-bg-offset', pointerup)
-            .on('pointercancel.drag-bg-offset', pointerup);
-
-
-        function pointermove(d3_event) {
-            if (pointerId !== (d3_event.pointerId || 'mouse')) return;
-
-            var latest = [d3_event.clientX, d3_event.clientY];
-            var d = [
-                -(origin[0] - latest[0]) / 4,
-                -(origin[1] - latest[1]) / 4
-            ];
-
-            origin = latest;
-            nudge(d);
-        }
-
-        function pointerup(d3_event) {
-            if (pointerId !== (d3_event.pointerId || 'mouse')) return;
-            if (d3_event.button !== 0) return;
-
-            context.container().selectAll('.nudge-surface')
-                .remove();
-
-            d3_select(window)
-                .on('.drag-bg-offset', null);
-        }
-    }
-
-
-    function renderDisclosureContent(selection) {
-        var container = selection.selectAll('.nudge-container')
-            .data([0]);
-
-        var containerEnter = container.enter()
-            .append('div')
-            .attr('class', 'nudge-container');
-
-        containerEnter
-            .append('div')
-            .attr('class', 'nudge-instructions')
-            .html(t.html('background.offset'));
-
-        var nudgeWrapEnter = containerEnter
-            .append('div')
-            .attr('class', 'nudge-controls-wrap');
-
-        var nudgeEnter = nudgeWrapEnter
-            .append('div')
-            .attr('class', 'nudge-outer-rect')
-            .on('pointerdown', dragOffset);
-
-        nudgeEnter
-            .append('div')
-            .attr('class', 'nudge-inner-rect')
-            .append('input')
-            .attr('type', 'text')
-            .on('change', inputOffset);
-
-        nudgeWrapEnter
-            .append('div')
-            .selectAll('button')
-            .data(_directions).enter()
-            .append('button')
-            .attr('class', function(d) { return d[0] + ' nudge'; })
-            .on('click', function(d3_event, d) {
-                nudge(d[1]);
-            });
-
-        nudgeWrapEnter
-            .append('button')
-            .attr('title', t('background.reset'))
-            .attr('class', 'nudge-reset disabled')
-            .on('click', function(d3_event) {
-                d3_event.preventDefault();
-                resetOffset();
-            })
-            .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
-
-        updateValue();
-    }
-
-    context.background()
-        .on('change.backgroundOffset-update', updateValue);
-
-    return section;
+  return section;
 }

@@ -4,17 +4,22 @@ import { uiSection } from '../section';
 import ReactComponent from './ReactComponent';
 import _debounce from 'lodash-es/debounce';
 
+
 export function uiSectionReactContainer(context) {
   let reRenderCount = 0;
 
+  const section = uiSection('react-container', context)
+    .label('A React Component')
+    .disclosureContent(content);
+
   const chooseBackground = (source) => {
-    context.background().baseLayerSource(source);
+    context.imagery().baseLayerSource(source);
     document.activeElement.blur();
   };
 
   const content = (selection) => {
-    const sources = context.background()
-      .sources(context.map().extent(), context.map().zoom(), true)
+    const sources = context.imagery()
+      .sources(context.map().extent(), context.map().zoom())
       .filter(d => !d.isHidden() && !d.overlay);
 
     selection
@@ -27,9 +32,6 @@ export function uiSectionReactContainer(context) {
     );
   };
 
-  const section = uiSection('react-container', context)
-    .label('A React Component')
-    .disclosureContent(content);
 
   context.map()
     .on('draw', _debounce(() => {
