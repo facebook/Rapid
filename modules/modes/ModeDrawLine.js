@@ -252,7 +252,8 @@ export class ModeDrawLine extends AbstractMode {
     }
 
     context.replace(
-      actionMoveNode(this.drawNode.id, loc)
+      actionMoveNode(this.drawNode.id, loc),
+      this._getAnnotation()
     );
 
     this.drawNode = context.entity(this.drawNode.id);
@@ -328,14 +329,14 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
 
-      context.replace(
-        actionMoveNode(this.lastNode.id, loc)   // Finalize position of old draw node at `loc`
-      );
       context.perform(
         actionAddEntity(this.drawNode),                                         // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),  // Add new draw node to draw way
         this._getAnnotation()                                                   // Allow undo/redo to here
       );
+
+      this.lastNode = context.entity(this.lastNode.id);
+      this.drawWay = context.entity(this.drawWay.id);
       scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
 
     // Start a new line at `loc`...
@@ -353,16 +354,16 @@ export class ModeDrawLine extends AbstractMode {
         actionAddEntity(this.firstNode),  // Create first node
         actionAddEntity(this.drawNode),   // Create new draw node (end)
         actionAddEntity(this.drawWay),    // Create new draw way
-        this._getAnnotation()             // Allow undo/redo to here
       );
+    // Perform a no-op edit that will be replaced as the user moves the draw node around.
+    context.perform(actionNoop(), this._getAnnotation());
+
     }
+
+    context.resumeChangeDispatch();
 
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
-
-    // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop());
-    context.resumeChangeDispatch();
   }
 
 
@@ -418,7 +419,6 @@ export class ModeDrawLine extends AbstractMode {
         actionAddEntity(this.drawNode),               // Create new draw node (end)
         actionAddEntity(this.drawWay),                // Create new draw way
         actionAddMidpoint(midpoint, this.firstNode),  // Add first node as midpoint on target edge
-        this._getAnnotation()                         // Allow undo/redo to here
       );
     }
 
@@ -426,7 +426,7 @@ export class ModeDrawLine extends AbstractMode {
     this._updateCollections();
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop());
+    context.perform(actionNoop(), this._getAnnotation());
     context.resumeChangeDispatch();
   }
 
@@ -488,7 +488,6 @@ export class ModeDrawLine extends AbstractMode {
       context.perform(
         actionAddEntity(this.drawNode),   // Create new draw node (end)
         actionAddEntity(this.drawWay),    // Create new draw way
-        this._getAnnotation()
       );
     }
 
@@ -496,7 +495,7 @@ export class ModeDrawLine extends AbstractMode {
     this._updateCollections();
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop());
+    context.perform(actionNoop(), this._getAnnotation());
     context.resumeChangeDispatch();
   }
 
@@ -531,6 +530,14 @@ export class ModeDrawLine extends AbstractMode {
   }
 
 
+  _removeDrawNode() {
+    if (this.drawNode) {
+      // the draw node has already been added to history- so just back it out.
+      this.context.pop();
+    }
+    this.drawNode = null;
+  }
+
   /**
    * _finish
    * Done drawing, select the draw way or return to browse mode.
@@ -538,6 +545,7 @@ export class ModeDrawLine extends AbstractMode {
    */
   _finish() {
     const context = this.context;
+    this._removeDrawNode();
     context.resumeChangeDispatch();  // it's possible to get here in a paused state
     context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
 
