@@ -105,7 +105,7 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     list
       .append('li')
-      .html(source.label());
+      .html(source.label);
 
     // Add list items for all the imagery metadata
     METADATA_KEYS.forEach(k => {

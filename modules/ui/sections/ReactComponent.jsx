@@ -20,7 +20,7 @@ const ReactComponent = ({reRenderCount, sources, selectSourceHandler}) => {
           checked={source.id === selected}
           onChange={handle}
         />
-        <span className="background-name">{source.name()}</span>
+        <span className="background-name">{source.name}</span>
       </label>
     </li>
   );

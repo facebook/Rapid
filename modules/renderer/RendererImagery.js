@@ -5,7 +5,14 @@ import whichPolygon from 'which-polygon';
 
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
-import { rendererBackgroundSource } from './background_source';
+
+import {
+  RendererImagerySource,
+  RendererImagerySourceBing,
+  RendererImagerySourceCustom,
+  RendererImagerySourceEsri,
+  RendererImagerySourceNone
+} from './RendererImagerySource';
 
 
 /**
@@ -63,12 +70,7 @@ export class RendererImagery extends EventEmitter {
     let currSource = this._baseLayer;
     if (this.context.inIntro() || !currSource) return;
 
-    let o = this._overlayLayers
-      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
-      .map(d => d.id)
-      .join(',');
-
-    const meters = geoOffsetToMeters(currSource.offset());
+    const meters = geoOffsetToMeters(currSource.offset);
     const EPSILON = 0.01;
     const x = +meters[0].toFixed(2);
     const y = +meters[1].toFixed(2);
@@ -76,14 +78,18 @@ export class RendererImagery extends EventEmitter {
 
     let id = currSource.id;
     if (id === 'custom') {
-      id = `custom:${currSource.template()}`;
+      id = `custom:${currSource.template}`;
     }
-
     if (id) {
       hash.background = id;
     } else {
       delete hash.background;
     }
+
+    const o = this._overlayLayers
+      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
+      .map(d => d.id)
+      .join(',');
 
     if (o) {
       hash.overlays = o;
@@ -104,14 +110,14 @@ export class RendererImagery extends EventEmitter {
     let imageryUsed = [];
     // let photoOverlaysUsed = [];
 
-    const currUsed = currSource.imageryUsed();
+    const currUsed = currSource.imageryUsed;
     if (currUsed && this._isValid) {
       imageryUsed.push(currUsed);
     }
 
     this._overlayLayers
       .filter(d => !d.isLocatorOverlay() && !d.isHidden())
-      .forEach(d => imageryUsed.push(d.imageryUsed()));
+      .forEach(d => imageryUsed.push(d.imageryUsed));
 
     this.context.history().imageryUsed(imageryUsed);
     // this.context.history().photoOverlaysUsed(photoOverlaysUsed);
@@ -142,7 +148,7 @@ export class RendererImagery extends EventEmitter {
 
     if (blocklistChanged) {
       this._imageryIndex.sources.forEach(source => {
-        source.isBlocked = blocklists.some(regex => regex.test(source.template()));
+        source.isBlocked = blocklists.some(regex => regex.test(source.template));
       });
       this._checkedBlocklists = blocklists.map(regex => String(regex));
     }
@@ -168,7 +174,7 @@ export class RendererImagery extends EventEmitter {
     if (!osm) return this;
 
     const blocklists = osm.imageryBlocklists();
-    const template = d.template();
+    const template = d.template;
     let fail = false;
     let tested = 0;
     let regex;
@@ -261,14 +267,14 @@ export class RendererImagery extends EventEmitter {
    * set/get offset, in pixels [x,y]
    */
   get offset() {
-    return (this._baseLayer && this._baseLayer.offset()) || [0, 0];
+    return (this._baseLayer && this._baseLayer.offset) || [0, 0];
   }
   set offset([setX, setY] = [0, 0]) {
-    const [currX, currY] = (this._baseLayer && this._baseLayer.offset()) || [0, 0];
+    const [currX, currY] = (this._baseLayer && this._baseLayer.offset) || [0, 0];
     if (setX === currX && setY === currY) return;  // no change
 
     if (this._baseLayer) {
-      this._baseLayer.offset([setX, setY]);
+      this._baseLayer.offset = [setX, setY];
       this.updateImagery();
       this.emit('imagerychange');
     }
@@ -378,7 +384,8 @@ export class RendererImagery extends EventEmitter {
         if (requested && requested.indexOf('custom:') === 0) {
           const template = requested.replace(/^custom:/, '');
           const custom = this.findSource('custom');
-          this.baseLayerSource(custom.template(template));
+          custom.template = template;
+          this.baseLayerSource(custom);
           prefs('background-custom-template', template);
 
         } else {
@@ -406,21 +413,22 @@ export class RendererImagery extends EventEmitter {
           }
         });
 
-        if (hash.gpx) {
-          const gpxLayer = this.context.scene().getLayer('custom-data');
-          if (gpxLayer) {
-            gpxLayer.url(hash.gpx, '.gpx');
-          }
-        }
+// does not belong here
+//        if (hash.gpx) {
+//          const gpxLayer = this.context.scene().getLayer('custom-data');
+//          if (gpxLayer) {
+//            gpxLayer.url(hash.gpx, '.gpx');
+//          }
+//        }
 
-        if (hash.offset) {
+        if (hash.offset) {   // offset in hash is represented in meters east,north
           const offset = hash.offset
             .replace(/;/g, ',')
             .split(',')
             .map(n => !isNaN(n) && n);
 
           if (offset.length === 2) {
-            this.offset(geoMetersToOffset(offset));
+            this.offset = geoMetersToOffset(offset);  // convert to pixels east,north
           }
         }
       })
@@ -471,23 +479,23 @@ export class RendererImagery extends EventEmitter {
         // Create a which-polygon index to support efficient spatial querying.
         this._imageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
 
-        // Instantiate `rendererBackgroundSource` objects for each imagery item.
+        // Instantiate `RendererImagerySource` objects for each imagery item.
         this._imageryIndex.sources = data.map(d => {
           if (d.type === 'bing') {
-            return rendererBackgroundSource.Bing(d);
+            return new RendererImagerySourceBing(d);
           } else if (/^EsriWorldImagery/.test(d.id)) {
-            return rendererBackgroundSource.Esri(d);
+            return new RendererImagerySourceEsri(d);
           } else {
-            return rendererBackgroundSource(d);
+            return new RendererImagerySource(d);
           }
         });
 
         // Add 'None'
-        this._imageryIndex.sources.unshift(rendererBackgroundSource.None());
+        this._imageryIndex.sources.unshift(new RendererImagerySourceNone());
 
         // Add 'Custom' - seed it with whatever template the user has used previously
-        let template = prefs('background-custom-template') || '';
-        const custom = rendererBackgroundSource.Custom(template);
+        const custom = new RendererImagerySourceCustom();
+        custom.template = prefs('background-custom-template') || '';
         this._imageryIndex.sources.unshift(custom);
 
         return this._imageryIndex;

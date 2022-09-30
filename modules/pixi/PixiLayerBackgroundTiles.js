@@ -194,7 +194,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const z = geoScaleToZoom(k, tileSize);  // Use actual zoom for this, not effective zoom
 
     // Apply imagery offset (in pixels) to the source container
-    const offset = vecScale(source.offset(), Math.pow(2, z));
+    const offset = vecScale(source.offset, Math.pow(2, z));
     sourceContainer.position.set(offset[0], offset[1]);
 
     // Determine tiles needed to cover the view at the zoom we want,

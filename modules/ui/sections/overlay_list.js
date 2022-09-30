@@ -19,15 +19,14 @@ export function uiSectionOverlayList(context) {
       const item = d3_select(nodes[i]).select('label');
       const span = item.select('span');
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
-      const description = d.description();
       const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
       item.call(uiTooltip().destroyAny);
 
-      if (description || isOverflowing) {
+      if (d.description || isOverflowing) {
         item.call(uiTooltip()
           .placement(placement)
-          .title(description || d.name())
+          .title(d.description || d.name)
         );
       }
     });
@@ -53,7 +52,7 @@ export function uiSectionOverlayList(context) {
       .filter(filter);
 
     let layerLinks = layerList.selectAll('li')
-      .data(sources, d => d.name());
+      .data(sources, d => d.name);
 
     layerLinks.exit()
       .remove();
@@ -72,7 +71,7 @@ export function uiSectionOverlayList(context) {
 
     label
       .append('span')
-      .html(d => d.label());
+      .html(d => d.label);
 
 
     layerList.selectAll('li')
@@ -83,9 +82,9 @@ export function uiSectionOverlayList(context) {
 
 
     function sortSources(a, b) {
-      return a.best() && !b.best() ? -1
-        : b.best() && !a.best() ? 1
-        : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
+      return a.best && !b.best ? -1
+        : b.best && !a.best ? 1
+        : d3_descending(a.area, b.area) || d3_ascending(a.name, b.name) || 0;
     }
   }
 

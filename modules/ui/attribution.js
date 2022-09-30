@@ -7,7 +7,7 @@ export function uiAttribution(context) {
   let _selection = d3_select(null);
 
 
-  function render(selection, data, klass) {
+  function render(selection, imagerySource, klass) {
     let div = selection.selectAll(`.${klass}`)
       .data([0]);
 
@@ -18,7 +18,7 @@ export function uiAttribution(context) {
 
 
     let attributions = div.selectAll('.attribution')
-      .data(data, d => d.id);
+      .data(imagerySource, d => d.id);
 
     attributions.exit()
       .remove();
@@ -41,10 +41,7 @@ export function uiAttribution(context) {
             .attr('target', '_blank');
         }
 
-        const sourceID = d.id.replace(/\./g, '<TX_DOT>');
-        const terms_text = t(`imagery.${sourceID}.attribution.text`,
-          { default: d.terms_text || d.id || d.name() }
-        );
+        const terms_text = t(`imagery.${d.idtx}.attribution.text`, { default: d.terms_text || d.id || d.name });
 
         if (d.icon && !d.overlay) {
           attribution

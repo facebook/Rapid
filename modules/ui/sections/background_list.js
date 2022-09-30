@@ -136,12 +136,12 @@ export function uiSectionBackgroundList(context) {
       .call(drawListItems, 'radio', chooseBackground, (d) => { return !d.isHidden() && !d.overlay; });
   }
 
+
   function setTooltips(selection) {
     selection.each((d, i, nodes) => {
       const item = d3_select(nodes[i]).select('label');
       const span = item.select('span');
       const placement = (i < nodes.length / 2) ? 'bottom' : 'top';
-      const description = d.description();
       const isOverflowing = (span.property('clientWidth') !== span.property('scrollWidth'));
 
       item.call(uiTooltip().destroyAny);
@@ -152,21 +152,24 @@ export function uiSectionBackgroundList(context) {
           .title('<div>' + t('background.switch') + '</div>')
           .keys([uiCmd('⌘' + t('background.key'))])
         );
-      } else if (description || isOverflowing) {
+      } else if (d.description || isOverflowing) {
         item.call(uiTooltip()
           .placement(placement)
-          .title(description || d.name())
+          .title(d.description || d.name)
         );
       }
     });
   }
 
+
   function sortSources(a, b) {
     return _favoriteBackgrounds[a.id] && !_favoriteBackgrounds[b.id] ? -1
       : _favoriteBackgrounds[b.id] && !_favoriteBackgrounds[a.id] ? 1
-      : a.best() && !b.best() ? -1                : b.best() && !a.best() ? 1
-      : d3_descending(a.area(), b.area()) || d3_ascending(a.name(), b.name()) || 0;
+      : a.best && !b.best ? -1
+      : b.best && !a.best ? 1
+      : d3_descending(a.area, b.area) || d3_ascending(a.name, b.name) || 0;
   }
+
 
   function drawListItems(layerList, type, change, filter) {
     const sources = context.imagery()
@@ -182,7 +185,7 @@ export function uiSectionBackgroundList(context) {
     const layerLinksEnter = layerLinks.enter()
       .append('li')
       .classed('layer-custom', d => (d.id === 'custom'))
-      .classed('best', d => d.best());
+      .classed('best', d => d.best);
 
     const label = layerLinksEnter
       .append('label');
@@ -196,7 +199,7 @@ export function uiSectionBackgroundList(context) {
     label
       .append('span')
       .attr('class', 'background-name')
-      .text(d => d.name());
+      .text(d => d.name);
 
     layerLinksEnter
       .append('button')
@@ -240,7 +243,7 @@ export function uiSectionBackgroundList(context) {
       .on('click', editCustom)
       .call(svgIcon('#iD-icon-more'));
 
-    layerLinksEnter.filter(d => d.best())
+    layerLinksEnter.filter(d => d.best)
       .selectAll('label')
       .append('span')
       .attr('class', 'best')
@@ -273,7 +276,7 @@ export function uiSectionBackgroundList(context) {
 
 
   function chooseBackground(d3_event, d) {
-    if (d.id === 'custom' && !d.template()) {
+    if (d.id === 'custom' && !d.template) {
       return editCustom();
     }
 
@@ -287,10 +290,10 @@ export function uiSectionBackgroundList(context) {
 
   function customChanged(d) {
     if (d && d.template) {
-      customSource.template(d.template);
+      customSource.template = d.template;
       chooseBackground(undefined, customSource);
     } else {
-      customSource.template('');
+      customSource.template = '';
       chooseBackground(undefined, context.imagery().findSource('none'));
     }
   }
@@ -320,7 +323,7 @@ export function uiSectionBackgroundList(context) {
 
     let nextBackgroundIndex = (foundIndex + offset + backgrounds.length) % backgrounds.length;
     let nextBackground = backgrounds[nextBackgroundIndex];
-    if (nextBackground.id === 'custom' && !nextBackground.template()) {
+    if (nextBackground.id === 'custom' && !nextBackground.template) {
       nextBackgroundIndex = (nextBackgroundIndex + offset + backgrounds.length) % backgrounds.length;
       nextBackground = backgrounds[nextBackgroundIndex];
     }
