@@ -3,7 +3,7 @@ import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@id-sdk/math';
 import { utilStringQs } from '@id-sdk/util';
 
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { coreGraph, coreTree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind } from '../util';

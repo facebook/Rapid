@@ -1,4 +1,4 @@
-describe('iD.coreLocations', function() {
+describe('iD.LocationManager', function() {
     var locationManager, loco;
 
     var colorado = {
@@ -25,7 +25,7 @@ describe('iD.coreLocations', function() {
 
     beforeEach(function() {
         // make a new one each time, so we aren't accidentally testing the "global" locationManager
-        locationManager = iD.coreLocations();
+        locationManager = new iD.LocationManager();
         loco = locationManager.loco();
     });
 

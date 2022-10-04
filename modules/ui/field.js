@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@id-sdk/util';
 
 import { t, localizer } from '../core/localizer';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
 // import { uiFieldHelp } from './field_help';

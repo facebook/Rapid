@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { Tiler } from '@id-sdk/math';
 import { utilQsString } from '@id-sdk/util';
 
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { coreGraph, coreTree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';

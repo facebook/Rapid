@@ -5,7 +5,7 @@ import {
 } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
 //import { behaviorLasso } from '../behaviors/lasso';

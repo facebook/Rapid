@@ -10,7 +10,7 @@ import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 
 import { geoChooseEdge } from '../geo';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
 import { t } from '../core/localizer';

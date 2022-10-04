@@ -10,7 +10,7 @@ import { actionDeleteNode } from '../actions/delete_node';
 import { actionNoop } from '../actions/noop';
 
 import { modeDrawArea } from './draw_area';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { osmNode, osmWay } from '../osm';
 import { geoChooseEdge } from '../geo';
 import { t } from '../core/localizer';

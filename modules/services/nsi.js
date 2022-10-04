@@ -111,7 +111,6 @@ function loadNsiData() {
 
 // new - Use the location manager instead of redoing that work
 // It has already processed the presets at this point
-const loco = locationManager.loco();
 
 // We need to monkeypatch a few of the collections that the NSI matcher depends on.
 // The `itemLocation` structure maps itemIDs to locationSetIDs
@@ -133,7 +132,7 @@ Object.keys(_nsi.data).forEach(tkv => {
 
     if (matcher.locationSets.has(locationSetID)) return;   // we've seen this locationSet before..
 
-    const fakeFeature = { properties: { id: locationSetID, area: 1 } };
+    const fakeFeature = { id: locationSetID, properties: { id: locationSetID, area: 1 } };
     matcher.locationSets.set(locationSetID, fakeFeature);
   });
 });
@@ -148,7 +147,7 @@ matcher.locationIndex = (bbox) => {
   for (const [locationSetID, area] of Object.entries(validHere)) {
     const fakeFeature = matcher.locationSets.get(locationSetID);
     if (fakeFeature) {
-      fakeFeature.area = area;
+      fakeFeature.properties.area = area;
       results.push(fakeFeature);
     }
   }
@@ -688,17 +687,17 @@ export default {
     setNsiSources();
     presetManager.ensureLoaded()
       .then(() => loadNsiPresets())
-      .then(() => delay(100))  // wait briefly for locationSets to enter the locationManager queue
-      .then(() => locationManager.mergeLocationSets([]))   // wait for locationSets to resolve
+//      .then(() => delay(100))  // wait briefly for locationSets to enter the locationManager queue
+//      .then(() => locationManager.mergeLocationSets([]))   // wait for locationSets to resolve
       .then(() => loadNsiData())
       .then(() => _nsiStatus = 'ok')
       .catch(() => _nsiStatus = 'failed');
 
-    function delay(msec) {
-      return new Promise(resolve => {
-        window.setTimeout(resolve, msec);
-      });
-    }
+//    function delay(msec) {
+//      return new Promise(resolve => {
+//        window.setTimeout(resolve, msec);
+//      });
+//    }
   },
 
 

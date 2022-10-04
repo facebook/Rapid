@@ -8,7 +8,7 @@ import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 // import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { modeSelect } from './select';
 import { osmJoinWays, osmNode } from '../osm';
 import { presetManager } from '../presets';

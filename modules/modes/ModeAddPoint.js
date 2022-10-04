@@ -4,7 +4,7 @@ import { actionAddEntity } from '../actions/add_entity';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { geoChooseEdge } from '../geo';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
 import { t } from '../core/localizer';

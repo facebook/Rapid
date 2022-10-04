@@ -1,6 +1,6 @@
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 
 const LAYERID = 'edit-blocks';
 const MINZOOM = 4;

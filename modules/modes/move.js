@@ -4,7 +4,7 @@ import { vecLength, vecSubtract, geomViewportNudge } from '@id-sdk/math';
 import { t } from '../core/localizer';
 import { actionMove } from '../actions/move';
 import { actionNoop } from '../actions/noop';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { modeSelect } from './select';
 import { utilKeybinding } from '../util';
 import { utilFastMouse } from '../util/util';

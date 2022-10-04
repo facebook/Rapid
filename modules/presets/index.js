@@ -3,7 +3,7 @@ import { utilArrayUniq } from '@id-sdk/util';
 
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { presetCategory } from './category';
 import { presetCollection } from './collection';

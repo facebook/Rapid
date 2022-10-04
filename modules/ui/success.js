@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { resolveStrings } from 'osm-community-index';
 
 import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { t, localizer } from '../core/localizer';
 
 import { svgIcon } from '../svg/icon';

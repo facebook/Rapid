@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 import { Extent, geomPointInPolygon } from '@id-sdk/math';
 import { utilArrayIntersection } from '@id-sdk/util';
 
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { uiLasso } from '../ui/lasso';
 

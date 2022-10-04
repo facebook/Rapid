@@ -7,7 +7,7 @@ import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';
 
 import { JXON } from '../util/jxon';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
