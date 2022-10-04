@@ -76,9 +76,9 @@ export function uiIntroPoint(context, reveal) {
         var textId = context.lastPointerType() === 'mouse' ? 'place_point' : 'place_point_touch';
         reveal(pointBox, helpHtml('intro.points.' + textId));
 
-        context.map().on('move.intro drawn.intro', function() {
-            pointBox = pad(building, 150, context);
-            reveal(pointBox, helpHtml('intro.points.' + textId), { duration: 0 });
+        context.map().on('move draw', function () {
+          pointBox = pad(building, 150, context);
+          reveal(pointBox, helpHtml('intro.points.' + textId), { duration: 0 });
         });
 
         context.on('enter.intro', function(mode) {
@@ -88,7 +88,7 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -280,11 +280,13 @@ export function uiIntroPoint(context, reveal) {
             reveal(box, helpHtml('intro.points.reselect'), { duration: 600 });
 
             timeout(function() {
-                context.map().on('move.intro drawn.intro', function() {
-                    var entity = context.hasEntity(_pointID);
-                    if (!entity) return chapter.restart();
-                    var box = pointBox(entity.loc, context);
-                    reveal(box, helpHtml('intro.points.reselect'), { duration: 0 });
+                context.map().on('move draw', function () {
+                  var entity = context.hasEntity(_pointID);
+                  if (!entity) return chapter.restart();
+                  var box = pointBox(entity.loc, context);
+                  reveal(box, helpHtml('intro.points.reselect'), {
+                    duration: 0,
+                  });
                 });
             }, 600); // after reveal..
 
@@ -296,7 +298,7 @@ export function uiIntroPoint(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -370,11 +372,11 @@ export function uiIntroPoint(context, reveal) {
         reveal(box, helpHtml('intro.points.' + textId), { duration: 600 });
 
         timeout(function() {
-            context.map().on('move.intro', function() {
-                var entity = context.hasEntity(_pointID);
-                if (!entity) return chapter.restart();
-                var box = pointBox(entity.loc, context);
-                reveal(box, helpHtml('intro.points.' + textId), { duration: 0 });
+            context.map().on('move', function () {
+              var entity = context.hasEntity(_pointID);
+              if (!entity) return chapter.restart();
+              var box = pointBox(entity.loc, context);
+              reveal(box, helpHtml('intro.points.' + textId), { duration: 0 });
             });
         }, 600); // after reveal
 
@@ -391,8 +393,8 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
+            context.map().off('move', null);
             context.on('enter.intro', null);
-            context.map().on('move.intro', null);
             nextStep();
         }
     }
@@ -412,11 +414,11 @@ export function uiIntroPoint(context, reveal) {
         );
 
         timeout(function() {
-            context.map().on('move.intro', function() {
-                reveal('.edit-menu',
-                    helpHtml('intro.points.delete'),
-                    { duration: 0,  padding: 50 }
-                );
+            context.map().on('move', function () {
+              reveal('.edit-menu', helpHtml('intro.points.delete'), {
+                duration: 0,
+                padding: 50,
+              });
             });
         }, 300); // after menu visible
 
@@ -433,7 +435,7 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro', null);
+            context.map().off('move', null);
             context.history().on('change.intro', null);
             context.on('exit.intro', null);
             nextStep();
@@ -477,7 +479,7 @@ export function uiIntroPoint(context, reveal) {
     chapter.exit = function() {
         timeouts.forEach(window.clearTimeout);
         context.on('enter.intro exit.intro', null);
-        context.map().on('move.intro drawn.intro', null);
+        context.map().off('move draw', null);
         context.history().on('change.intro', null);
         context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
         context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);

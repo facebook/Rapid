@@ -553,7 +553,7 @@ export class ModeDrawLine extends AbstractMode {
       if (DEBUG) {
         console.log(`ModeDrawLine: _finish, drawWay = ${this.drawWay.id}`);  // eslint-disable-line no-console
       }
-      context.enter(modeSelect(context, [this.drawWay.id]));  //.newFeature(isNewFeature));
+      context.enter(modeSelect(context, [this.drawWay.id]).newFeature(true));
 
     } else {
       if (DEBUG) {

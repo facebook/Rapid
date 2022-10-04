@@ -17,6 +17,9 @@ export function operationCircularize(context, selectedIDs) {
 
         var entity = context.entity(entityID);
 
+        if (!entity) return;
+
+
         if (entity.type !== 'way' || new Set(entity.nodes).size <= 1) return null;
 
         if (!_extent) {

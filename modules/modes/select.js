@@ -266,7 +266,6 @@ export function modeSelect(context, selectedIDs) {
 
         context.history()
             .on('change.select', function() {
-                loadOperations();
                 // reselect after change in case relation members were removed or added
                 selectElements();
             })

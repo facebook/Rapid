@@ -97,7 +97,7 @@ export function uiIntroLine(context, reveal) {
             helpHtml('intro.lines.' + textId);
         reveal(box, startLineString);
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             padding = 70 * Math.pow(2, context.map().zoom() - 18);
             box = pad(tulipRoadStart, padding, context);
             box.height = box.height + 100;
@@ -110,7 +110,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -131,7 +131,7 @@ export function uiIntroLine(context, reveal) {
                 helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
             );
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 padding = 200 * Math.pow(2, context.map().zoom() - 18.5);
                 box = pad(tulipRoadMidpoint, padding, context);
                 box.height = box.height * 2;
@@ -160,7 +160,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             context.on('enter.intro', null);
             nextStep();
@@ -381,7 +381,7 @@ export function uiIntroLine(context, reveal) {
                 { buttonText: t.html('intro.ok'), buttonCallback: advance }
             );
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 var padding = 250 * Math.pow(2, context.map().zoom() - 19);
                 var box = pad(woodRoadDragMidpoint, padding, context);
                 reveal(box, helpHtml('intro.lines.update_line'),
@@ -391,7 +391,7 @@ export function uiIntroLine(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             nextStep();
         }
     }
@@ -408,7 +408,7 @@ export function uiIntroLine(context, reveal) {
         var addNodeString = helpHtml('intro.lines.add_node' + (context.lastPointerType() === 'mouse' ? '' : '_touch'));
         reveal(box, addNodeString);
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             var padding = 40 * Math.pow(2, context.map().zoom() - 19);
             var box = pad(woodRoadAddNode, padding, context);
             reveal(box, addNodeString, { duration: 0 });
@@ -430,7 +430,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             context.on('enter.intro', null);
             nextStep();
@@ -448,7 +448,7 @@ export function uiIntroLine(context, reveal) {
             helpHtml('intro.lines.drag_to_intersection');
         reveal(box, startDragString);
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
                 return continueTo(updateLine);
             }
@@ -463,7 +463,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             nextStep();
         }
     }
@@ -480,7 +480,7 @@ export function uiIntroLine(context, reveal) {
             helpHtml('intro.lines.finish_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch'));
         reveal(box, finishDragString);
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
                 return continueTo(updateLine);
             }
@@ -499,7 +499,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -518,7 +518,7 @@ export function uiIntroLine(context, reveal) {
         var box = pad(woodRoadDragMidpoint, padding, context);
         reveal(box, helpHtml('intro.lines.start_drag_midpoint'));
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
                 return continueTo(updateLine);
             }
@@ -541,7 +541,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             context.on('enter.intro', null);
             nextStep();
@@ -567,7 +567,7 @@ export function uiIntroLine(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: advance }
         );
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
                 return continueTo(updateLine);
             }
@@ -580,7 +580,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             nextStep();
         }
     }
@@ -611,7 +611,7 @@ export function uiIntroLine(context, reveal) {
                 { buttonText: t.html('intro.ok'), buttonCallback: advance }
             );
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 var padding = 200 * Math.pow(2, context.map().zoom() - 18);
                 var box = pad(deleteLinesLoc, padding, context);
                 box.top -= 200;
@@ -630,7 +630,7 @@ export function uiIntroLine(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -654,7 +654,7 @@ export function uiIntroLine(context, reveal) {
             var box = pad(eleventhAvenueEnd, padding, context);
             reveal(box, rightClickString);
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 var padding = 60 * Math.pow(2, context.map().zoom() - 18);
                 var box = pad(eleventhAvenueEnd, padding, context);
                 reveal(box, rightClickString,
@@ -683,7 +683,7 @@ export function uiIntroLine(context, reveal) {
         }, 600);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             context.history().on('change.intro', null);
             nextStep();
@@ -709,7 +709,7 @@ export function uiIntroLine(context, reveal) {
             { padding: 50 }
         );
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             var node = selectMenuItem(context, 'split').node();
             if (!wasChanged && !node) { return continueTo(rightClickIntersection); }
 
@@ -733,7 +733,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -751,7 +751,7 @@ export function uiIntroLine(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: advance }
         );
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             var padding = 60 * Math.pow(2, context.map().zoom() - 18);
             var box = pad(eleventhAvenueEnd, padding, context);
             reveal(box, helpHtml('intro.lines.retry_split'),
@@ -760,7 +760,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             nextStep();
         }
     }
@@ -789,7 +789,7 @@ export function uiIntroLine(context, reveal) {
         timeout(function() {
             context.map().centerZoomEase(twelfthAvenue, 18, 500);
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 var padding = 200 * Math.pow(2, context.map().zoom() - 18);
                 var box = pad(twelfthAvenue, padding, context);
                 box.width = box.width / 2;
@@ -817,7 +817,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             context.history().on('change.intro', null);
             nextStep();
@@ -869,7 +869,7 @@ export function uiIntroLine(context, reveal) {
                     { selected: selected, other2: other })
             );
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 if (hasWashington) {
                     selected = t('intro.graph.name.washington-street');
                     other = t('intro.graph.name.12th-avenue');
@@ -909,7 +909,7 @@ export function uiIntroLine(context, reveal) {
         }, 600);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             context.history().on('change.intro', null);
             nextStep();
@@ -933,7 +933,7 @@ export function uiIntroLine(context, reveal) {
             helpHtml('intro.lines.multi_' + (context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch'));
         reveal(box, rightClickString);
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             var padding = 200 * Math.pow(2, context.map().zoom() - 18);
             var box = pad(twelfthAvenue, padding, context);
             reveal(box, rightClickString, { duration: 0 });
@@ -970,7 +970,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.ui().editMenu().on('toggled.intro', null);
             context.history().on('change.intro', null);
             nextStep();
@@ -995,7 +995,7 @@ export function uiIntroLine(context, reveal) {
             { padding: 50 }
         );
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().on('move draw', function() {
             reveal('.edit-menu',
                 helpHtml('intro.lines.multi_delete'),
                 { duration: 0, padding: 50 }
@@ -1017,7 +1017,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('exit.intro', null);
             context.history().on('change.intro', null);
             nextStep();
@@ -1062,7 +1062,7 @@ export function uiIntroLine(context, reveal) {
         timeouts.forEach(window.clearTimeout);
         d3_select(window).on('pointerdown.intro mousedown.intro', null, true);
         context.on('enter.intro exit.intro', null);
-        context.map().on('move.intro drawn.intro', null);
+        context.map().off('move draw', null);
         context.history().on('change.intro', null);
         context.container().select('.inspector-wrap').on('wheel.intro', null);
         context.container().select('.preset-list-button').on('click.intro', null);

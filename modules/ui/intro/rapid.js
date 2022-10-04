@@ -247,7 +247,7 @@ export function uiIntroRapid(context, reveal) {
     timeouts.forEach(window.clearTimeout);
     d3_select(window).on('mousedown.intro-rapid', null, true);
     context.on('enter.intro-rapid exit.intro-rapid', null);
-    context.map().on('move.intro-rapid drawn.intro-rapid', null);
+    context.map().off('move draw', null);
     context.history().on('change.intro-rapid', null);
     d3_select('.inspector-wrap').on('wheel.intro-rapid', null);
     d3_select('.preset-list-button').on('click.intro-rapid', null);

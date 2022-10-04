@@ -214,6 +214,9 @@ export class RendererMap extends EventEmitter {
   immediateRedraw() {
     if (!this.redrawEnabled) return;
     this._renderer.render();
+    if (this.context.inIntro()) {
+      this.context.curtainProjection.transform(this.context.projection.transform());
+    }
   }
 
 
@@ -307,6 +310,9 @@ export class RendererMap extends EventEmitter {
     const delta = vecSubtract(center, point);
     t = vecAdd(t, delta);
 
+    if (this.context.inIntro()) {
+      this.context.curtainProjection.transform({ x: t[0], y: t[1], k: k2 });
+    }
     return this.transform({ x: t[0], y: t[1], k: k2 }, duration);
   }
 
@@ -356,6 +362,14 @@ export class RendererMap extends EventEmitter {
    */
   pan(delta, duration = 0) {
     const t = this.context.projection.transform();
+
+    if (this.context.inIntro()) {
+      this.context.curtainProjection.transform({
+        x: t.x - delta[0],
+        y: t.y - delta[1],
+        k: t.k,
+      });
+    }
     return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
   }
 

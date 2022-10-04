@@ -56,14 +56,14 @@ export function uiIntroNavigation(context, reveal) {
             var textId = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
             var dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml('intro.navigation.' + textId);
             reveal('.surface', dragString);
-            context.map().on('drawn.intro', function() {
-                reveal('.surface', dragString, { duration: 0 });
+            context.map().on('draw', function () {
+              reveal('.surface', dragString, { duration: 0 });
             });
 
-            context.map().on('move.intro', function() {
+            context.map().on('move', function() {
                 var centerNow = context.map().center();
                 if (centerStart[0] !== centerNow[0] || centerStart[1] !== centerNow[1]) {
-                    context.map().on('move.intro', null);
+                    context.map().off('move', null);
                     timeout(function() { continueTo(zoomMap); }, 3000);
                 }
             });
@@ -71,7 +71,7 @@ export function uiIntroNavigation(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('draw', null);
             nextStep();
         }
     }
@@ -85,19 +85,19 @@ export function uiIntroNavigation(context, reveal) {
 
         reveal('.surface', zoomString);
 
-        context.map().on('drawn.intro', function() {
-            reveal('.surface', zoomString, { duration: 0 });
+        context.map().on('draw', function () {
+          reveal('.surface', zoomString, { duration: 0 });
         });
 
-        context.map().on('move.intro', function() {
+        context.map().on('move', function() {
             if (context.map().zoom() !== zoomStart) {
-                context.map().on('move.intro', null);
+                context.map().off('move', null);
                 timeout(function() { continueTo(features); }, 3000);
             }
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('draw', null);
             nextStep();
         }
     }
@@ -110,14 +110,16 @@ export function uiIntroNavigation(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: onClick }
         );
 
-        context.map().on('drawn.intro', function() {
-            reveal('.surface', helpHtml('intro.navigation.features'),
-                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
-            );
+        context.map().on('draw', function () {
+          reveal('.surface', helpHtml('intro.navigation.features'), {
+            duration: 0,
+            buttonText: t.html('intro.ok'),
+            buttonCallback: onClick,
+          });
         });
 
         function continueTo(nextStep) {
-            context.map().on('drawn.intro', null);
+            context.map().off('draw', null);
             nextStep();
         }
     }
@@ -129,14 +131,16 @@ export function uiIntroNavigation(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: onClick }
         );
 
-        context.map().on('drawn.intro', function() {
-            reveal('.surface', helpHtml('intro.navigation.points_lines_areas'),
-                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
-            );
+        context.map().on('draw', function () {
+          reveal('.surface', helpHtml('intro.navigation.points_lines_areas'), {
+            duration: 0,
+            buttonText: t.html('intro.ok'),
+            buttonCallback: onClick,
+          });
         });
 
         function continueTo(nextStep) {
-            context.map().on('drawn.intro', null);
+            context.map().off('draw', null);
             nextStep();
         }
     }
@@ -148,14 +152,16 @@ export function uiIntroNavigation(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: onClick }
         );
 
-        context.map().on('drawn.intro', function() {
-            reveal('.surface', helpHtml('intro.navigation.nodes_ways'),
-                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
-            );
+        context.map().on('draw', function () {
+          reveal('.surface', helpHtml('intro.navigation.nodes_ways'), {
+            duration: 0,
+            buttonText: t.html('intro.ok'),
+            buttonCallback: onClick,
+          });
         });
 
         function continueTo(nextStep) {
-            context.map().on('drawn.intro', null);
+            context.map().off('draw', null);
             nextStep();
         }
     }
@@ -176,7 +182,7 @@ export function uiIntroNavigation(context, reveal) {
             var textId = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
             reveal(box, helpHtml('intro.navigation.' + textId));
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 var entity = context.hasEntity(hallId);
                 if (!entity) return;
                 var box = pointBox(entity.loc, context);
@@ -196,8 +202,8 @@ export function uiIntroNavigation(context, reveal) {
         });
 
         function continueTo(nextStep) {
+            context.map().off('move draw');
             context.on('enter.intro', null);
-            context.map().on('move.intro drawn.intro', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -217,13 +223,15 @@ export function uiIntroNavigation(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: onClick }
         );
 
-        context.map().on('move.intro drawn.intro', function() {
-            var entity = context.hasEntity(hallId);
-            if (!entity) return;
-            var box = pointBox(entity.loc, context);
-            reveal(box, helpHtml('intro.navigation.selected_townhall'),
-                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
-            );
+        context.map().on('move draw', function () {
+          var entity = context.hasEntity(hallId);
+          if (!entity) return;
+          var box = pointBox(entity.loc, context);
+          reveal(box, helpHtml('intro.navigation.selected_townhall'), {
+            duration: 0,
+            buttonText: t.html('intro.ok'),
+            buttonCallback: onClick,
+          });
         });
 
         context.history().on('change.intro', function() {
@@ -233,7 +241,7 @@ export function uiIntroNavigation(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -442,15 +450,22 @@ export function uiIntroNavigation(context, reveal) {
         );
 
         timeout(function() {
-            context.map().on('move.intro drawn.intro', function() {
-                var entity = context.hasEntity(springStreetEndId);
-                if (!entity) return;
-                var box = pointBox(entity.loc, context);
-                box.height = 500;
-                reveal(box,
-                    helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
-                    { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
-                );
+            context.map().on('move draw', function () {
+              var entity = context.hasEntity(springStreetEndId);
+              if (!entity) return;
+              var box = pointBox(entity.loc, context);
+              box.height = 500;
+              reveal(
+                box,
+                helpHtml('intro.navigation.selected_street', {
+                  name: t('intro.graph.name.spring-street'),
+                }),
+                {
+                  duration: 0,
+                  buttonText: t.html('intro.ok'),
+                  buttonCallback: onClick,
+                }
+              );
             });
         }, 600);  // after reveal.
 
@@ -474,7 +489,7 @@ export function uiIntroNavigation(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             context.history().on('change.intro', null);
             nextStep();
@@ -539,7 +554,7 @@ export function uiIntroNavigation(context, reveal) {
     chapter.exit = function() {
         timeouts.forEach(window.clearTimeout);
         context.on('enter.intro exit.intro', null);
-        context.map().on('move.intro drawn.intro', null);
+        context.map().off('move draw', null);
         context.history().on('change.intro', null);
         context.container().select('.inspector-wrap').on('wheel.intro', null);
         context.container().select('.search-header input').on('keydown.intro keyup.intro', null);

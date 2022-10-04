@@ -51,8 +51,10 @@ export function uiIntroArea(context, reveal) {
         context.map().centerZoomEase(playground, 19, msec);
 
         timeout(function() {
-            var tooltip = reveal('button.add-area',
-                helpHtml('intro.areas.add_playground'));
+            var tooltip = reveal(
+              'button.draw-area',
+              helpHtml('intro.areas.add_playground')
+            );
 
             tooltip.selectAll('.popover-inner')
                 .insert('svg', 'span')
@@ -67,7 +69,7 @@ export function uiIntroArea(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.on('enter.intro', null);
+            context.map().off('enter.intro', null);
             nextStep();
         }
     }
@@ -81,6 +83,11 @@ export function uiIntroArea(context, reveal) {
         _areaID = null;
         context.map().zoomEase(19.5, 500);
 
+        function onClick() {
+            if (context.mode().id !== 'draw-area') return chapter.restart();
+            continueTo(continuePlayground);
+        }
+
         timeout(function() {
             var textId = context.lastPointerType() === 'mouse' ? 'starting_node_click' : 'starting_node_tap';
             var startDrawString = helpHtml('intro.areas.start_playground') + helpHtml('intro.areas.' + textId);
@@ -89,21 +96,19 @@ export function uiIntroArea(context, reveal) {
             );
 
             timeout(function() {
-                context.map().on('move.intro drawn.intro', function() {
+                context.map().on('move draw', function() {
                     revealPlayground(playground,
                         startDrawString, { duration: 0 }
                     );
                 });
-                context.on('enter.intro', function(mode) {
-                    if (mode.id !== 'draw-area') return chapter.restart();
-                    continueTo(continuePlayground);
-                });
+                context.behaviors.get('draw').on('click', onClick );
             }, 250);  // after reveal
 
         }, 550);  // after easing
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
+            context.behaviors.get('draw').off('click', onClick);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -114,15 +119,24 @@ export function uiIntroArea(context, reveal) {
         if (context.mode().id !== 'draw-area') {
             return chapter.restart();
         }
+        _areaID = context.selectedIDs()[0];
 
-        _areaID = null;
         revealPlayground(playground,
             helpHtml('intro.areas.continue_playground'),
             { duration: 250 }
         );
 
+        function onClick() {
+                const entity = context.hasEntity(_areaID);
+                if (entity && entity.nodes.length >= 5) {
+                    return continueTo(finishPlayground);
+                } else {
+                    return;
+                }
+        }
+
         timeout(function() {
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 revealPlayground(playground,
                     helpHtml('intro.areas.continue_playground'),
                     { duration: 0 }
@@ -130,24 +144,11 @@ export function uiIntroArea(context, reveal) {
             });
         }, 250);  // after reveal
 
-        context.on('enter.intro', function(mode) {
-            if (mode.id === 'draw-area') {
-                var entity = context.hasEntity(context.selectedIDs()[0]);
-                if (entity && entity.nodes.length >= 6) {
-                    return continueTo(finishPlayground);
-                } else {
-                    return;
-                }
-            } else if (mode.id === 'select') {
-                _areaID = context.selectedIDs()[0];
-                return continueTo(searchPresets);
-            } else {
-                return chapter.restart();
-            }
-        });
+        context.behaviors.get('draw').on('click', onClick);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.behaviors.get('draw').off('click', onClick);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -159,7 +160,6 @@ export function uiIntroArea(context, reveal) {
             return chapter.restart();
         }
 
-        _areaID = null;
 
         var finishString = helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
             helpHtml('intro.areas.finish_playground');
@@ -167,27 +167,22 @@ export function uiIntroArea(context, reveal) {
             finishString, { duration: 250 }
         );
 
+        function onClick() {
+            return continueTo(searchPresets);
+        }
+
         timeout(function() {
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 revealPlayground(playground,
                     finishString, { duration: 0 }
                 );
             });
         }, 250);  // after reveal
-
-        context.on('enter.intro', function(mode) {
-            if (mode.id === 'draw-area') {
-                return;
-            } else if (mode.id === 'select') {
-                _areaID = context.selectedIDs()[0];
-                return continueTo(searchPresets);
-            } else {
-                return chapter.restart();
-            }
-        });
+        context.behaviors.get('draw').on('finish', onClick);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.behaviors.get('draw').off('finish', onClick);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -206,7 +201,7 @@ export function uiIntroArea(context, reveal) {
         // disallow scrolling
         context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
-        timeout(function() {
+        timeout(function () {
             // reset pane, in case user somehow happened to change it..
             context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
@@ -219,37 +214,29 @@ export function uiIntroArea(context, reveal) {
             );
         }, 400);  // after preset list pane visible..
 
-        context.on('enter.intro', function(mode) {
-            if (!_areaID || !context.hasEntity(_areaID)) {
-                return continueTo(addArea);
-            }
+        if (!_areaID || !context.hasEntity(_areaID)) {
+            return continueTo(addArea);
+        }
 
-            var ids = context.selectedIDs();
-            if (mode.id !== 'select' || !ids.length || ids[0] !== _areaID) {
-                // keep the user's area selected..
-                context.enter(modeSelect(context, [_areaID]));
+        // reset pane, in case user somehow happened to change it..
+        context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
+        // disallow scrolling
+        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
-                // reset pane, in case user somehow happened to change it..
-                context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
-                // disallow scrolling
-                context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
+        context.container().select('.preset-search-input')
+            .on('keydown.intro', null)
+            .on('keyup.intro', checkPresetSearch);
 
-                context.container().select('.preset-search-input')
-                    .on('keydown.intro', null)
-                    .on('keyup.intro', checkPresetSearch);
+        reveal('.preset-search-input',
+            helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
+        );
 
-                reveal('.preset-search-input',
-                    helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
-                );
-
-                context.history().on('change.intro', null);
-            }
-        });
+        context.history().on('change.intro', null);
 
         function checkPresetSearch() {
             var first = context.container().select('.preset-list-item:first-child');
 
-            if (first.classed('preset-leisure-playground')) {
+            if (first.laclassed('preset-leisure-playground')) {
                 reveal(first.select('.preset-list-button').node(),
                     helpHtml('intro.areas.choose_playground', { preset: playgroundPreset.name() }),
                     { duration: 300 }
@@ -488,7 +475,7 @@ export function uiIntroArea(context, reveal) {
     chapter.exit = function() {
         timeouts.forEach(window.clearTimeout);
         context.on('enter.intro exit.intro', null);
-        context.map().on('move.intro drawn.intro', null);
+        context.map().off('move draw', null);
         context.history().on('change.intro', null);
         context.container().select('.inspector-wrap').on('wheel.intro', null);
         context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);

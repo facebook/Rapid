@@ -83,81 +83,80 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function startHouse() {
-        if (context.mode().id !== 'draw-area') {
-            return continueTo(addHouse);
-        }
+      if (context.mode().id !== 'draw-area') {
+        return continueTo(addHouse);
+      }
 
-        _houseID = null;
-        context.map().zoomEase(20, 500);
+      _houseID = null;
+      context.map().zoomEase(20, 500);
 
         timeout(function() {
             var startString = helpHtml('intro.buildings.start_building') +
                 helpHtml('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
-            revealHouse(house, startString);
+        revealHouse(house, startString);
 
-            context.map().on('move.intro drawn.intro', function() {
-                revealHouse(house, startString, { duration: 0 });
-            });
+            context.map().once('move draw', function() {
+          revealHouse(house, startString, { duration: 0 });
+        });
 
             context.on('enter.intro', function(mode) {
-                if (mode.id !== 'draw-area') return chapter.restart();
-                continueTo(continueHouse);
-            });
+          if (mode.id !== 'draw-area') return chapter.restart();
+          continueTo(continueHouse);
+        });
 
         }, 550);  // after easing
 
-        function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
-        }
+      function continueTo(nextStep) {
+        context.map().off('move draw', null);
+        context.on('enter.intro', null);
+        nextStep();
+      }
     }
 
 
     function continueHouse() {
-        if (context.mode().id !== 'draw-area') {
-            return continueTo(addHouse);
-        }
+      if (context.mode().id !== 'draw-area') {
+        return continueTo(addHouse);
+      }
 
-        _houseID = null;
+      _houseID = null;
 
         var continueString = helpHtml('intro.buildings.continue_building') + '{br}' +
             helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-            helpHtml('intro.buildings.finish_building');
+        helpHtml('intro.buildings.finish_building');
 
-        revealHouse(house, continueString);
+      revealHouse(house, continueString);
 
-        context.map().on('move.intro drawn.intro', function() {
-            revealHouse(house, continueString, { duration: 0 });
-        });
+        context.map().once('move draw', function() {
+        revealHouse(house, continueString, { duration: 0 });
+      });
 
         context.on('enter.intro', function(mode) {
-            if (mode.id === 'draw-area') {
-                return;
-            } else if (mode.id === 'select') {
-                var graph = context.graph();
-                var way = context.entity(context.selectedIDs()[0]);
-                var nodes = graph.childNodes(way);
+        if (mode.id === 'draw-area') {
+          return;
+        } else if (mode.id === 'select') {
+          var graph = context.graph();
+          var way = context.entity(context.selectedIDs()[0]);
+          var nodes = graph.childNodes(way);
                 var points = utilArrayUniq(nodes)
                     .map(function(n) { return context.projection.project(n.loc); });
 
-                if (isMostlySquare(points)) {
-                    _houseID = way.id;
-                    return continueTo(chooseCategoryBuilding);
-                } else {
-                    return continueTo(retryHouse);
-                }
+          if (isMostlySquare(points)) {
+            _houseID = way.id;
+            return continueTo(chooseCategoryBuilding);
+          } else {
+            return continueTo(retryHouse);
+          }
 
-            } else {
-                return chapter.restart();
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
+        } else {
+          return chapter.restart();
         }
+      });
+
+      function continueTo(nextStep) {
+        context.on('enter.intro', null);
+        nextStep();
+      }
     }
 
 
@@ -168,183 +167,181 @@ export function uiIntroBuilding(context, reveal) {
             { buttonText: t.html('intro.ok'), buttonCallback: onClick }
         );
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().once('move draw', function() {
             revealHouse(house, helpHtml('intro.buildings.retry_building'),
                 { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: onClick }
             );
-        });
+      });
 
-        function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
-            nextStep();
-        }
+      function continueTo(nextStep) {
+        nextStep();
+      }
     }
 
 
     function chooseCategoryBuilding() {
-        if (!_houseID || !context.hasEntity(_houseID)) {
-            return addHouse();
-        }
-        var ids = context.selectedIDs();
+      if (!_houseID || !context.hasEntity(_houseID)) {
+        return addHouse();
+      }
+      var ids = context.selectedIDs();
         if (context.mode().id !== 'select' || !ids.length || ids[0] !== _houseID) {
-            context.enter(modeSelect(context, [_houseID]));
-        }
+        context.enter(modeSelect(context, [_houseID]));
+      }
 
-        // disallow scrolling
+      // disallow scrolling
         context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
         timeout(function() {
-            // reset pane, in case user somehow happened to change it..
+        // reset pane, in case user somehow happened to change it..
             context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
             var button = context.container().select('.preset-category-building .preset-list-button');
 
             reveal(button.node(),
                 helpHtml('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
-            );
+        );
 
             button.on('click.intro', function() {
-                button.on('click.intro', null);
-                continueTo(choosePresetHouse);
-            });
+          button.on('click.intro', null);
+          continueTo(choosePresetHouse);
+        });
 
         }, 400);  // after preset list pane visible..
 
 
         context.on('enter.intro', function(mode) {
-            if (!_houseID || !context.hasEntity(_houseID)) {
-                return continueTo(addHouse);
-            }
-            var ids = context.selectedIDs();
-            if (mode.id !== 'select' || !ids.length || ids[0] !== _houseID) {
-                return continueTo(chooseCategoryBuilding);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            context.container().select('.preset-list-button').on('click.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
+        if (!_houseID || !context.hasEntity(_houseID)) {
+          return continueTo(addHouse);
         }
+        var ids = context.selectedIDs();
+        if (mode.id !== 'select' || !ids.length || ids[0] !== _houseID) {
+          return continueTo(chooseCategoryBuilding);
+        }
+      });
+
+      function continueTo(nextStep) {
+        context.container().select('.inspector-wrap').on('wheel.intro', null);
+            context.container().select('.preset-list-button').on('click.intro', null);
+        context.on('enter.intro', null);
+        nextStep();
+      }
     }
 
 
     function choosePresetHouse() {
-        if (!_houseID || !context.hasEntity(_houseID)) {
-            return addHouse();
-        }
-        var ids = context.selectedIDs();
+      if (!_houseID || !context.hasEntity(_houseID)) {
+        return addHouse();
+      }
+      var ids = context.selectedIDs();
         if (context.mode().id !== 'select' || !ids.length || ids[0] !== _houseID) {
-            context.enter(modeSelect(context, [_houseID]));
-        }
+        context.enter(modeSelect(context, [_houseID]));
+      }
 
-        // disallow scrolling
+      // disallow scrolling
         context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
         timeout(function() {
-            // reset pane, in case user somehow happened to change it..
+        // reset pane, in case user somehow happened to change it..
             context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
             var button = context.container().select('.preset-building-house .preset-list-button');
 
             reveal(button.node(),
                 helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
-                { duration: 300 }
-            );
+          { duration: 300 }
+        );
 
             button.on('click.intro', function() {
-                button.on('click.intro', null);
-                continueTo(closeEditorHouse);
-            });
+          button.on('click.intro', null);
+          continueTo(closeEditorHouse);
+        });
 
         }, 400);  // after preset list pane visible..
 
         context.on('enter.intro', function(mode) {
-            if (!_houseID || !context.hasEntity(_houseID)) {
-                return continueTo(addHouse);
-            }
-            var ids = context.selectedIDs();
-            if (mode.id !== 'select' || !ids.length || ids[0] !== _houseID) {
-                return continueTo(chooseCategoryBuilding);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            context.container().select('.preset-list-button').on('click.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
+        if (!_houseID || !context.hasEntity(_houseID)) {
+          return continueTo(addHouse);
         }
+        var ids = context.selectedIDs();
+        if (mode.id !== 'select' || !ids.length || ids[0] !== _houseID) {
+          return continueTo(chooseCategoryBuilding);
+        }
+      });
+
+      function continueTo(nextStep) {
+        context.container().select('.inspector-wrap').on('wheel.intro', null);
+            context.container().select('.preset-list-button').on('click.intro', null);
+        context.on('enter.intro', null);
+        nextStep();
+      }
     }
 
 
     function closeEditorHouse() {
-        if (!_houseID || !context.hasEntity(_houseID)) {
-            return addHouse();
-        }
-        var ids = context.selectedIDs();
+      if (!_houseID || !context.hasEntity(_houseID)) {
+        return addHouse();
+      }
+      var ids = context.selectedIDs();
         if (context.mode().id !== 'select' || !ids.length || ids[0] !== _houseID) {
-            context.enter(modeSelect(context, [_houseID]));
-        }
+        context.enter(modeSelect(context, [_houseID]));
+      }
 
-        context.history().checkpoint('hasHouse');
+      context.history().checkpoint('hasHouse');
 
         context.on('exit.intro', function() {
-            continueTo(rightClickHouse);
-        });
+        continueTo(rightClickHouse);
+      });
 
         timeout(function() {
             reveal('.entity-editor-pane',
                 helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
-            );
-        }, 500);
+        );
+      }, 500);
 
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            nextStep();
-        }
+      function continueTo(nextStep) {
+        context.on('exit.intro', null);
+        nextStep();
+      }
     }
 
 
     function rightClickHouse() {
-        if (!_houseID) return chapter.restart();
+      if (!_houseID) return chapter.restart();
 
-        context.enter('browse');
-        context.history().reset('hasHouse');
-        var zoom = context.map().zoom();
-        if (zoom < 20) {
-            zoom = 20;
-        }
-        context.map().centerZoomEase(house, zoom, 500);
+      context.enter('browse');
+      context.history().reset('hasHouse');
+      var zoom = context.map().zoom();
+      if (zoom < 20) {
+        zoom = 20;
+      }
+      context.map().centerZoomEase(house, zoom, 500);
 
         context.on('enter.intro', function(mode) {
-            if (mode.id !== 'select') return;
-            var ids = context.selectedIDs();
-            if (ids.length !== 1 || ids[0] !== _houseID) return;
+        if (mode.id !== 'select') return;
+        var ids = context.selectedIDs();
+        if (ids.length !== 1 || ids[0] !== _houseID) return;
 
             timeout(function() {
-                var node = selectMenuItem(context, 'orthogonalize').node();
-                if (!node) return;
-                continueTo(clickSquare);
+          var node = selectMenuItem(context, 'orthogonalize').node();
+          if (!node) return;
+          continueTo(clickSquare);
             }, 50);  // after menu visible
-        });
+      });
 
-        context.map().on('move.intro drawn.intro', function() {
+        context.map().once('move draw', function() {
             var rightclickString = helpHtml('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_building' : 'edit_menu_building_touch'));
-            revealHouse(house, rightclickString, { duration: 0 });
-        });
+        revealHouse(house, rightclickString, { duration: 0 });
+      });
 
         context.history().on('change.intro', function() {
-            continueTo(rightClickHouse);
-        });
+        continueTo(rightClickHouse);
+      });
 
-        function continueTo(nextStep) {
-            context.on('enter.intro', null);
-            context.map().on('move.intro drawn.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
+      function continueTo(nextStep) {
+        context.on('enter.intro', null);
+        context.history().on('change.intro', null);
+        nextStep();
+      }
     }
 
 
@@ -371,7 +368,7 @@ export function uiIntroBuilding(context, reveal) {
             }
         });
 
-        context.map().on('move.intro', function() {
+        context.map().on('move', function() {
             var node = selectMenuItem(context, 'orthogonalize').node();
             if (!wasChanged && !node) { return continueTo(rightClickHouse); }
 
@@ -397,7 +394,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move.intro', null);
+            context.map().on('move', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -460,69 +457,67 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function startTank() {
-        if (context.mode().id !== 'add-area') {
-            return continueTo(addTank);
-        }
+      if (context.mode().id !== 'add-area') {
+        return continueTo(addTank);
+      }
 
-        _tankID = null;
+      _tankID = null;
 
         timeout(function() {
             var startString = helpHtml('intro.buildings.start_tank') +
                 helpHtml('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
-            revealTank(tank, startString);
+        revealTank(tank, startString);
 
-            context.map().on('move.intro drawn.intro', function() {
-                revealTank(tank, startString, { duration: 0 });
-            });
+            context.map().once('move draw', function() {
+          revealTank(tank, startString, { duration: 0 });
+        });
 
             context.on('enter.intro', function(mode) {
-                if (mode.id !== 'draw-area') return chapter.restart();
-                continueTo(continueTank);
-            });
+          if (mode.id !== 'draw-area') return chapter.restart();
+          continueTo(continueTank);
+        });
 
         }, 550);  // after easing
 
-        function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
-        }
+      function continueTo(nextStep) {
+        context.on('enter.intro', null);
+        nextStep();
+      }
     }
 
 
     function continueTank() {
-        if (context.mode().id !== 'draw-area') {
-            return continueTo(addTank);
-        }
+      if (context.mode().id !== 'draw-area') {
+        return continueTo(addTank);
+      }
 
-        _tankID = null;
+      _tankID = null;
 
         var continueString = helpHtml('intro.buildings.continue_tank') + '{br}' +
             helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-            helpHtml('intro.buildings.finish_tank');
+        helpHtml('intro.buildings.finish_tank');
 
-        revealTank(tank, continueString);
+      revealTank(tank, continueString);
 
-        context.map().on('move.intro drawn.intro', function() {
-            revealTank(tank, continueString, { duration: 0 });
-        });
+      context.map().on('move draw', function () {
+        revealTank(tank, continueString, { duration: 0 });
+      });
 
         context.on('enter.intro', function(mode) {
-            if (mode.id === 'draw-area') {
-                return;
-            } else if (mode.id === 'select') {
-                _tankID = context.selectedIDs()[0];
-                return continueTo(searchPresetTank);
-            } else {
-                return continueTo(addTank);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
+        if (mode.id === 'draw-area') {
+          return;
+        } else if (mode.id === 'select') {
+          _tankID = context.selectedIDs()[0];
+          return continueTo(searchPresetTank);
+        } else {
+          return continueTo(addTank);
         }
+      });
+
+      function continueTo(nextStep) {
+        context.on('enter.intro', null);
+        nextStep();
+      }
     }
 
 
@@ -659,7 +654,7 @@ export function uiIntroBuilding(context, reveal) {
 
             revealTank(tank, rightclickString);
 
-            context.map().on('move.intro drawn.intro', function() {
+            context.map().on('move draw', function() {
                 revealTank(tank, rightclickString, { duration: 0 });
             });
 
@@ -671,7 +666,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move.intro drawn.intro', null);
+            context.map().on('move draw', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -701,7 +696,7 @@ export function uiIntroBuilding(context, reveal) {
             }
         });
 
-        context.map().on('move.intro', function() {
+        context.map().on('move', function() {
             var node = selectMenuItem(context, 'circularize').node();
             if (!wasChanged && !node) { return continueTo(rightClickTank); }
 
@@ -727,7 +722,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move.intro', null);
+            context.map().on('move', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -768,7 +763,7 @@ export function uiIntroBuilding(context, reveal) {
     chapter.exit = function() {
         timeouts.forEach(window.clearTimeout);
         context.on('enter.intro exit.intro', null);
-        context.map().on('move.intro drawn.intro', null);
+        context.map().off('move draw', null);
         context.history().on('change.intro', null);
         context.container().select('.inspector-wrap').on('wheel.intro', null);
         context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);

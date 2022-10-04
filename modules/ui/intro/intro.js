@@ -85,7 +85,7 @@ export function uiIntro(context, skipToRapid) {
     const original = {
       hash: window.location.hash,
       transform: context.map().transform(),
-      opacity: imagery.opacity,
+      opacity: context.background().brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
       historyJSON: history.toJSON(),
@@ -110,11 +110,11 @@ export function uiIntro(context, skipToRapid) {
     // Setup imagery
     const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
     imagery.baseLayerSource(introSource);
-    original.overlays.forEach(d => imagery.toggleOverlayLayer(d));
+    original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.opacity = 1;
 
-    // Setup data layers (only OSM & ai-features)
-    context.scene().onlyLayers(['osm', 'rapid']);
+    // Setup data layers (only OSM & ai-features, and the background imagery)
+    context.scene().onlyLayers(['osm', 'rapid', 'background']);
 
     // Setup RapiD Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();
@@ -137,6 +137,8 @@ export function uiIntro(context, skipToRapid) {
       const entities = Object.values(coreGraph().load(_rapidGraph).entities);
       services.fbMLRoads.merge('rapid_intro_graph', entities);
     }
+
+    context.background().brightness = 1;
 
     const curtain = uiCurtain(context.container().node());
     selection.call(curtain);
@@ -198,8 +200,8 @@ export function uiIntro(context, skipToRapid) {
       if (original.caches) { osm.toggle(true).reset().caches(original.caches); }
       history.reset().merge(Object.values(original.baseEntities));
       imagery.baseLayerSource(original.baseLayer);
-      original.overlays.forEach(d => imagery.toggleOverlayLayer(d));
-      imagery.opacity = original.opacity;
+      original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+      context.background().brightness = original.opacity;
       if (original.historyJSON) { history.fromJSON(original.historyJSON, false); }
       context.map().transform(original.transform);
       window.location.replace(original.hash);

@@ -5,12 +5,12 @@ import { uiCmd } from '../cmd';
 
 export function pointBox(loc, context) {
     var rect = context.surfaceRect();
-    var point = context.curtainprojection.project(loc);
+    var point = context.curtainProjection.project(loc);
     return {
         left: point[0] + rect.left - 40,
         top: point[1] + rect.top - 60,
         width: 80,
-        height: 90
+      height: 90,
     };
 }
 
@@ -19,7 +19,7 @@ export function pad(locOrBox, padding, context) {
     var box;
     if (locOrBox instanceof Array) {
         var rect = context.surfaceRect();
-        var point = context.curtainprojection.project(locOrBox);
+        var point = context.curtainProjection.project(locOrBox);
         box = {
             left: point[0] + rect.left,
             top: point[1] + rect.top

@@ -14,8 +14,8 @@ export function uiPaneHelp(context) {
             'welcome',
             'open_data_h',
             'open_data',
-//            'before_start_h',
-//            'before_start',
+           'before_start_h',
+           'before_start',
             'open_source_h',
             'open_source',
             'open_source_help'
@@ -384,22 +384,22 @@ export function uiPaneHelp(context) {
             .append('div')
             .html(t.html('shortcuts.title'));
 
-//        var walkthrough = toc
-//            .append('li')
-//            .attr('class', 'walkthrough')
-//            .append('a')
-//            .attr('href', '#')
-//            .on('click', clickWalkthrough);
-//
-//        walkthrough
-//            .append('svg')
-//            .attr('class', 'logo logo-walkthrough')
-//            .append('use')
-//            .attr('xlink:href', '#iD-logo-walkthrough');
-//
-//        walkthrough
-//            .append('div')
-//            .html(t.html('splash.walkthrough'));
+       var walkthrough = toc
+           .append('li')
+           .attr('class', 'walkthrough')
+           .append('a')
+           .attr('href', '#')
+           .on('click', clickWalkthrough);
+
+       walkthrough
+           .append('svg')
+           .attr('class', 'logo logo-walkthrough')
+           .append('use')
+           .attr('xlink:href', '#iD-logo-walkthrough');
+
+       walkthrough
+           .append('div')
+           .html(t.html('splash.walkthrough'));
 
 
         var helpContent = content

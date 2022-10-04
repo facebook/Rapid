@@ -45,9 +45,10 @@ export class ModeDrawArea extends AbstractMode {
     this._click = this._click.bind(this);
     this._clickWay = this._clickWay.bind(this);
     this._clickNode = this._clickNode.bind(this);
-    this._cancel = this._cancel.bind(this);
     this._move = this._move.bind(this);
     this._removeDrawNode = this._removeDrawNode.bind(this);
+    this._finish = this._finish.bind(this);
+
   }
 
   /**
@@ -74,8 +75,8 @@ export class ModeDrawArea extends AbstractMode {
     context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)
-      .on('cancel', this._cancel)
-      .on('finish', this._cancel);
+      // .on('cancel', this._cancel)
+      .on('finish', this._finish);
 
     context.behaviors.get('map-interaction').doubleClickEnabled = false;
 
@@ -395,6 +396,14 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     context.pauseChangeDispatch();
 
+    // The target node needs to be inserted "before" the draw node
+    // If draw node is at the beginning, insert target 1 after beginning.
+    // If draw node is at the end, insert target 1 before the end.
+    const targetIndex =
+      this.drawWay.affix(this.drawNode.id) === 'prefix'
+        ? 1
+        : this.drawWay.nodes.length - 1;
+
     if (this.drawWay) {
       // Clicked on first or last node, try to finish the area
       if (
@@ -403,7 +412,6 @@ export class ModeDrawArea extends AbstractMode {
         vecEqual(loc, this.lastNode.loc, EPSILON) ||
         vecEqual(loc, this.firstNode.loc, EPSILON)
       ) {
-
         context.replace(
           this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),
           actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
@@ -422,14 +430,6 @@ export class ModeDrawArea extends AbstractMode {
 
       this.lastNode = targetNode;
 
-      // The target node needs to be inserted "before" the draw node
-      // If draw node is at the beginning, insert target 1 after beginning.
-      // If draw node is at the end, insert target 1 before the end.
-      const targetIndex =
-        this.drawWay.affix(this.drawNode.id) === 'prefix'
-          ? 1
-          : this.drawWay.nodes.length - 1;
-
       const oldDrawNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
 
@@ -444,7 +444,7 @@ export class ModeDrawArea extends AbstractMode {
         actionAddVertex(this.drawWay.id, this.drawNode.id, targetIndex), // Add draw node to draw way
         this._getAnnotation()
       );
-    this.drawWay = context.entity(this.drawWay.id);
+      this.drawWay = context.entity(this.drawWay.id);
     } else {
       if (DEBUG) {
         console.log(
@@ -503,15 +503,6 @@ export class ModeDrawArea extends AbstractMode {
     this.drawNode = null;
   }
 
-  /**
-   * _cancel
-   * Undo the currently 'drawing' node and leave the shape with one fewer node.
-   * Then, return to browse mode immediately, `exit()` will handle cleanup
-   */
-  _cancel() {
-    this._removeDrawNode();
-    this.context.enter('browse');
-  }
 
   /**
    * _finish
@@ -520,6 +511,7 @@ export class ModeDrawArea extends AbstractMode {
    */
   _finish() {
     const context = this.context;
+    this._removeDrawNode();
     context.resumeChangeDispatch(); // it's possible to get here in a paused state
     context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
 
@@ -527,7 +519,7 @@ export class ModeDrawArea extends AbstractMode {
       if (DEBUG) {
         console.log(`ModeDrawArea: _finish, drawWay = ${this.drawWay.id}`); // eslint-disable-line no-console
       }
-      context.enter(modeSelect(context, [this.drawWay.id])); //.newFeature(isNewFeature));
+      context.enter(modeSelect(context, [this.drawWay.id]).newFeature(true));
     } else {
       if (DEBUG) {
         console.log(`ModeDrawArea: _finish, no drawWay`); // eslint-disable-line no-console
