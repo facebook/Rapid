@@ -1,7 +1,7 @@
 import LocationConflation from '@ideditor/location-conflation';
 import whichPolygon from 'which-polygon';
 import calcArea from '@mapbox/geojson-area';
-import { utilArrayChunk } from '@id-sdk/util';
+// import { utilArrayChunk } from '@id-sdk/util';
 
 let _mainLocations = coreLocations(); // singleton
 export { _mainLocations as locationManager };
@@ -24,9 +24,8 @@ export function coreLocations() {
   let _this = {};
   let _resolvedFeatures = {};              // cache of *resolved* locationSet features
   let _loco = new LocationConflation();    // instance of a location-conflation resolver
-  let _wp;                                 // instance of a which-polygon index
+//  let _wp;                                 // instance of a which-polygon index
   let _wpblocks;                           // separate (faster) which-polygon index just for the blocks
-
 
   // BLOCKED REGIONS
   const ukrainewar2022 = {
@@ -37,7 +36,7 @@ export function coreLocations() {
 
   // pre-resolve the blocked regions locationSets -> geojson features
   let _blocks = [ukrainewar2022];
-  _blocks.forEach(block => resolveLocationSet(block));
+  _blocks.forEach(block => _resolveLocationSet(block));
 
   // merge the data about the block into the resolved feature properties
   const blockedFeatures = _blocks.map(block => {
@@ -49,39 +48,120 @@ export function coreLocations() {
   _wpblocks = whichPolygon({ type: 'FeatureCollection', features: blockedFeatures });
 
 
+
+// bhousel 10/3/22 experiment
+// what we can get quickly from which-polygon is "all of the locations user is in"
+// so we should only put actual locations into which-polygon (not locationSets)
+
+// dont actually resolve the locationsets? - this is slow
+// just resolve individual locations and index them separately
+let _FASTwp;
+let _FASTresolvedLocations = new Map();   // Map (locationID -> GeoJSON feature)
+let _FASTseenLocationSetIDs = new Set();  // Set (locationSetID)
+let _FASTlocationIncludedIn = new Map();  // Map (locationID -> Set(locationSetID) )
+let _FASTlocationExcludedIn = new Map();  // Map (locationID -> Set(locationSetID) )
+
+
   // pre-resolve the worldwide locationSet
   const world = { locationSet: { include: ['Q2'] } };
-  resolveLocationSet(world);
-  rebuildIndex();
+  // _resolveLocationSet(world);
+  // _rebuildIndex();
+  _FASTprocessLocationSet(world);
+  _FASTrebuildIndex();
 
-  let _queue = [];
-  let _deferred = new Set();
-  let _inProcess;
+//  let _queue = [];
+//  let _deferred = new Set();
+//  let _inProcess;
+//
+//  // Returns a Promise to process the queue
+//  function processQueue() {
+//    if (!_queue.length) return Promise.resolve();
+//
+//    // console.log(`queue length ${_queue.length}`);
+//    const chunk = _queue.pop();
+//    return new Promise(resolvePromise => {
+//        const handle = window.requestIdleCallback(() => {
+//          _deferred.delete(handle);
+//          // const t0 = performance.now();
+//          chunk.forEach(resolveLocationSet);
+//          // const t1 = performance.now();
+//          // console.log('chunk processed in ' + (t1 - t0) + ' ms');
+//          resolvePromise();
+//        });
+//        _deferred.add(handle);
+//      })
+//      .then(() => processQueue());
+//  }
 
 
-  // Returns a Promise to process the queue
-  function processQueue() {
-    if (!_queue.length) return Promise.resolve();
-
-    // console.log(`queue length ${_queue.length}`);
-    const chunk = _queue.pop();
-    return new Promise(resolvePromise => {
-        const handle = window.requestIdleCallback(() => {
-          _deferred.delete(handle);
-          // const t0 = performance.now();
-          chunk.forEach(resolveLocationSet);
-          // const t1 = performance.now();
-          // console.log('chunk processed in ' + (t1 - t0) + ' ms');
-          resolvePromise();
-        });
-        _deferred.add(handle);
-      })
-      .then(() => processQueue());
-  }
 
   // Pass an Object with a `locationSet` property,
   // Performs the locationSet resolution, caches the result, and sets a `locationSetID` property on the object.
-  function resolveLocationSet(obj) {
+  function _FASTprocessLocationSet(obj) {
+    if (obj.locationSetID) return;  // work was done already
+
+    try {
+      let locationSet = obj.locationSet;
+      if (!locationSet) {
+        throw new Error('object missing locationSet property');
+      }
+      if (!locationSet.include) {      // missing `include`, default to worldwide include
+        locationSet.include = ['Q2'];  // https://github.com/openstreetmap/iD/pull/8305#discussion_r662344647
+      }
+
+
+      // VALIDATE ONLY
+      // locationSet -> locationSetID
+      const result = _loco.validateLocationSet(locationSet);
+      const locationSetID = result.id;
+      obj.locationSetID = locationSetID;
+      if (_FASTseenLocationSetIDs.has(locationSetID)) return;   // done this before
+
+      // First time seeing a locationSet like this
+      _FASTseenLocationSetIDs.add(locationSetID);
+
+      (locationSet.include || []).forEach(location => {   // index includes
+        const result = _loco.validateLocation(location);
+        const locationID = result.id;
+        if (!_FASTresolvedLocations.has(locationID)) {   // first time seeing a location like this
+          _FASTresolvedLocations.set(locationID, _loco.resolveLocation(location).feature);   // resolve to GeoJSON
+        }
+
+        let s = _FASTlocationIncludedIn.get(locationID);
+        if (!s) {
+          s = new Set();
+          _FASTlocationIncludedIn.set(locationID, s);
+        }
+        s.add(locationSetID);
+      });
+
+      (locationSet.exclude || []).forEach(location => {   // index excludes
+        const result = _loco.validateLocation(location);
+        const locationID = result.id;
+        if (!_FASTresolvedLocations.has(locationID)) {   // first time seeing a location like this
+          _FASTresolvedLocations.set(locationID, _loco.resolveLocation(location).feature);   // resolve to GeoJSON
+        }
+
+        let s = _FASTlocationExcludedIn.get(locationID);
+        if (!s) {
+          s = new Set();
+          _FASTlocationExcludedIn.set(locationID, s);
+        }
+        s.add(locationSetID);
+      });
+
+    } catch (err) {
+      obj.locationSet = { include: ['Q2'] };  // default worldwide
+      obj.locationSetID = '+[Q2]';
+    }
+  }
+
+
+
+
+  // Pass an Object with a `locationSet` property,
+  // Performs the locationSet resolution, caches the result, and sets a `locationSetID` property on the object.
+  function _resolveLocationSet(obj) {
     if (obj.locationSetID) return;  // work was done already
 
     try {
@@ -111,10 +191,14 @@ export function coreLocations() {
     }
   }
 
+
   // Rebuilds the whichPolygon index with whatever features have been resolved.
-  function rebuildIndex() {
-    _wp = whichPolygon({ features: Object.values(_resolvedFeatures) });
+  function _FASTrebuildIndex() {
+    _FASTwp = whichPolygon({ features: Array.from(_FASTresolvedLocations.values()) });
   }
+//  function _rebuildIndex() {
+//    _wp = whichPolygon({ features: Object.values(_resolvedFeatures) });
+//  }
 
   //
   // `mergeCustomGeoJSON`
@@ -135,6 +219,7 @@ export function coreLocations() {
   //
   _this.mergeCustomGeoJSON = (fc) => {
     if (fc && fc.type === 'FeatureCollection' && Array.isArray(fc.features)) {
+console.log('merging in new geojson...');
       fc.features.forEach(feature => {
         feature.properties = feature.properties || {};
         let props = feature.properties;
@@ -183,29 +268,37 @@ export function coreLocations() {
   //  This will take some seconds but happen in the background during browser idle time.
   //
   _this.mergeLocationSets = (objects) => {
-    if (!Array.isArray(objects)) return Promise.reject('nothing to do');
 
-    // Resolve all locationSets -> geojson, processing data in chunks
-    //
-    // Because this will happen during idle callbacks, we want to choose a chunk size
-    // that won't make the browser stutter too badly.  LocationSets that are a simple
-    // country coder include will resolve instantly, but ones that involve complex
-    // include/exclude operations will take some milliseconds longer.
-    //
-    // Some discussion and performance results on these tickets:
-    // https://github.com/ideditor/location-conflation/issues/26
-    // https://github.com/osmlab/name-suggestion-index/issues/4784#issuecomment-742003434
-    _queue = _queue.concat(utilArrayChunk(objects, 200));
+console.log(`merging ${objects.length} new locationSets...`);
+console.log('  process locationSets');
+    objects.forEach(_FASTprocessLocationSet);
+console.log('  rebuild index');
+    _FASTrebuildIndex();
+console.log('  done!');
 
-    if (!_inProcess) {
-      _inProcess = processQueue()
-        .then(() => {
-          rebuildIndex();
-          _inProcess = null;
-          return objects;
-        });
-    }
-    return _inProcess;
+//    if (!Array.isArray(objects)) return Promise.reject('nothing to do');
+//
+//    // Resolve all locationSets -> geojson, processing data in chunks
+//    //
+//    // Because this will happen during idle callbacks, we want to choose a chunk size
+//    // that won't make the browser stutter too badly.  LocationSets that are a simple
+//    // country coder include will resolve instantly, but ones that involve complex
+//    // include/exclude operations will take some milliseconds longer.
+//    //
+//    // Some discussion and performance results on these tickets:
+//    // https://github.com/ideditor/location-conflation/issues/26
+//    // https://github.com/osmlab/name-suggestion-index/issues/4784#issuecomment-742003434
+//    _queue = _queue.concat(utilArrayChunk(objects, 200));
+//
+//    if (!_inProcess) {
+//      _inProcess = processQueue()
+//        .then(() => {
+//          _rebuildIndex();
+//          _inProcess = null;
+//          return objects;
+//        });
+//    }
+//    return _inProcess;
   };
 
 
@@ -244,7 +337,10 @@ export function coreLocations() {
   //     properties: { id: '+[Q30]', area: 21817019.17, … },
   //     geometry: { … }
   //   }
-  _this.feature = (locationSetID) => _resolvedFeatures[locationSetID] || _resolvedFeatures['+[Q2]'];
+  _this.feature = (locationSetID) => {
+// ok - only used by blocks right now
+    return _resolvedFeatures[locationSetID] || _resolvedFeatures['+[Q2]'];
+  };
 
 
   //
@@ -265,7 +361,26 @@ export function coreLocations() {
   //
   _this.locationsAt = (loc) => {
     let result = {};
-    (_wp(loc, true) || []).forEach(prop => result[prop.id] = prop.area);
+//    (_wp(loc, true) || []).forEach(prop => result[prop.id] = prop.area);
+//    return result;
+
+// 2 passes, include then exclude
+// not locationSetID anymore, locationID
+    const isIn = (_FASTwp(loc, true) || []);
+    isIn.forEach(prop => {
+      const locationID = prop.id;
+      const include = _FASTlocationIncludedIn.get(locationID);
+      if (include) {
+        include.forEach(locationSetID => result[locationSetID] = prop.area);
+      }
+     });
+    isIn.forEach(prop => {
+      const locationID = prop.id;
+      const exclude = _FASTlocationExcludedIn.get(locationID);
+      if (exclude) {
+        exclude.forEach(locationSetID => delete result[locationSetID]);
+      }
+    });
     return result;
   };
 
@@ -296,19 +411,19 @@ export function coreLocations() {
   // Returns
   //   Array of GeoJSON *properties* for the locationSet features that exist at `loc`
   //
-  _this.query = (loc, multi) => _wp(loc, multi);
+  // _this.query = (loc, multi) => _wp(loc, multi);
 
   // Direct access to the location-conflation resolver
   _this.loco = () => _loco;
 
   // Direct access to the "main" which-polygon index
-  _this.wp = () => _wp;
+  // _this.wp = () => _wp;
 
   // Direct access to the "blocks" which-polygon index
   _this.wpblocks = () => _wpblocks;
 
   // Direct access to the blocked regions
-  _this.blocks = () => _blocks;
+  // _this.blocks = () => _blocks;
 
   return _this;
 }
