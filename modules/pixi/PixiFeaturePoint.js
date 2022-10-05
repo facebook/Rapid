@@ -96,41 +96,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     this.sceneBounds.x += position.x;
     this.sceneBounds.y += position.y;
 
-
-    // Recalculate hitArea, grow it if too small
-    const MINSIZE = 20;
-    const rect = this.container.getLocalBounds().clone();
-
-    if (this._isCircular) {
-      let radius = rect.width / 2;
-      if (radius < MINSIZE / 2) {
-        radius = MINSIZE / 2;
-      }
-      radius = radius + 2;  // then pad a bit more
-
-      const circle = new PIXI.Circle(0, 0, radius);
-      this.container.hitArea = circle;
-
-    } else {
-      if (rect.width < MINSIZE) {
-        rect.pad((MINSIZE - rect.width) / 2, 0);
-      }
-      if (rect.height < MINSIZE) {
-        rect.pad(0, (MINSIZE - rect.height) / 2);
-      }
-      rect.pad(4); // then pad a bit more
-
-      this.container.hitArea = rect;
-
-      // const poly = new PIXI.Polygon([
-      //   rect.left, rect.top,
-      //   rect.right, rect.top,
-      //   rect.right, rect.bottom,
-      //   rect.left, rect.bottom,
-      //   rect.left, rect.top
-      // ]);
-    }
-
+    this.updateHitArea();
     this.updateHalo();
   }
 
@@ -279,30 +245,62 @@ export class PixiFeaturePoint extends AbstractFeature {
 
 
 // experiment
+  updateHitArea() {
+    if (!this.visible) return;
+
+    // Recalculate hitArea, grow it if too small
+    const MINSIZE = 20;
+    const rect = this.container.getLocalBounds().clone();
+
+    if (this._isCircular) {
+      let radius = rect.width / 2;
+      if (radius < MINSIZE / 2) {
+        radius = MINSIZE / 2;
+      }
+      radius = radius + 2;  // then pad a bit more
+
+      const circle = new PIXI.Circle(0, 0, radius);
+      this.container.hitArea = circle;
+
+    } else {
+      if (rect.width < MINSIZE) {
+        rect.pad((MINSIZE - rect.width) / 2, 0);
+      }
+      if (rect.height < MINSIZE) {
+        rect.pad(0, (MINSIZE - rect.height) / 2);
+      }
+      rect.pad(4); // then pad a bit more
+
+      this.container.hitArea = rect;
+    }
+  }
+
+
+// experiment
 // Show/Hide halo (requires `this.container.hitArea` to be already set up as a supported shape)
   updateHalo() {
-    super.updateHalo();
     if (this.visible && (this.hovered || this.selected)) {
-      const HALO_COLOR = 0xffff00;
-      const HALO_DASH = [6, 3];
-      const HALO_WIDTH = 2;  // px
-
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
-
         const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 
-      const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
+      const HALO_STYLE = {
+        alpha: 0.9,
+        dash: [6, 3],
+        width: 2,   // px
+        color: 0xffff00
+      };
+
       this.halo.clear();
 
       const shape = this.container.hitArea;
       if (shape instanceof PIXI.Circle) {
-        new DashLine(this.halo, haloProps).drawCircle(shape.x, shape.y, shape.radius);
+        new DashLine(this.halo, HALO_STYLE).drawCircle(shape.x, shape.y, shape.radius);
       } else if (shape instanceof PIXI.Rectangle) {
-        new DashLine(this.halo, haloProps).drawRect(shape.x, shape.y, shape.width, shape.height);
+        new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
       }
       this.halo.position = this.container.position;
 

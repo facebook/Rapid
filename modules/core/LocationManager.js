@@ -31,7 +31,7 @@ export class LocationManager extends EventEmitter {
   constructor() {
     super();
 
-    this._wp = null;
+    this._wp = null;                        // A which-polygon index
     this._resolved = new Map();             // Map (id -> GeoJSON feature)
     this._knownLocationSets = new Map();    // Map (locationSetID -> Number area)
     this._locationIncludedIn = new Map();   // Map (locationID -> Set(locationSetID) )
@@ -329,7 +329,7 @@ export class LocationManager extends EventEmitter {
       if (area) {
         result[locationSetID] = area;
       }
-     });
+    });
 
     // locations included
     hits.forEach(prop => {
@@ -342,7 +342,7 @@ export class LocationManager extends EventEmitter {
           result[locationSetID] = area;
         }
       });
-     });
+    });
 
     // locations excluded
     hits.forEach(prop => {

@@ -385,30 +385,23 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 // experiment
 // Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
   updateHalo() {
-    super.updateHalo();
     if (this.ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
-      const HALO_COLOR = this.drawing ? 0xff00ff : 0xffff00;
-      const HALO_DASH = [6, 3];
-      const HALO_WIDTH = 2;  // px
-
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
-
-// bhousel 8/8 skip the '+' for now - it's not actually at the true centroid anyway.
-//        this.centroid = new PIXI.Graphics()
-//          .lineStyle({ width: HALO_WIDTH, color: HALO_COLOR })
-//          .moveTo(-6, 0).lineTo(6, 0).moveTo(0, -6).lineTo(0, 6);  // draw a + at centroid
-//        this.centroid.name = `${this.id}-centroid`;
-//        this.halo.addChild(this.centroid);
-
         const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 
-      const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
+      const HALO_STYLE = {
+        alpha: 0.9,
+        dash: [6, 3],
+        width: 2,   // px
+        color: 0xffff00
+      };
+
       this.halo.clear();
-      new DashLine(this.halo, haloProps).drawPolygon(this.ssrdata.localPolygon.points);
+      new DashLine(this.halo, HALO_STYLE).drawPolygon(this.ssrdata.localPolygon.points);
       this.halo.position = this.ssrdata.localCentroid;
       this.halo.rotation = this.ssrdata.angle;
 

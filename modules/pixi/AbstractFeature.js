@@ -1,9 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { GlowFilter } from '@pixi/filter-glow';
 import { Extent } from '@id-sdk/math';
-
-const HALOGLOW = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
-HALOGLOW.resolution = 2;
 
 
 /**
@@ -136,24 +132,6 @@ export class AbstractFeature {
     this._geometryDirty = false;
     this._styleDirty = false;
     // The labeling code will decide what to do with the `_labelDirty` flag
-  }
-
-
-  /**
-   * updateHalo
-   * Every Feature should have an updateHalo function that redraws the Feature's halo when selected or hovered
-   * Override in a subclass with needed logic.
-   */
-  updateHalo() {
-    let filters = [];
-    if (this.visible) {
-      if (this.selected) {
-        filters.push(HALOGLOW);
-      } else if (this.hovered) {
-        filters.push(HALOGLOW);
-      }
-    }
-    this.container.filters = filters;
   }
 
 

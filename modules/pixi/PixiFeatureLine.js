@@ -133,29 +133,6 @@ export class PixiFeatureLine extends AbstractFeature {
       this.visible = true;
       this.stroke.renderable = true;
 
-      // Update hit area
-      let hitPath = [];
-      const hitWidth = style.casing.width || 3; //casing is set to 0 in wireframe mode, so at least calculate SOMETHING for a hit area.
-      this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
-
-      // container.hitArea = lineToPolygon(hitWidth, hitPath);
-      const hitShape = new PIXI.Polygon(hitPath);
-      hitShape.closeStroke = false;
-
-      const hitStyle = {
-        alignment: 0.5,  // middle of line
-        color: 0x0,
-        width: hitWidth + 10,
-        alpha: 1.0,
-        join: PIXI.LINE_JOIN.BEVEL,
-        cap: PIXI.LINE_CAP.BUTT
-      };
-
-      const hitPoly = lineToPoly(hitShape, hitStyle);
-      // hitPoly.closeStroke = false;
-
-      container.hitArea = hitPoly;
-
       if (zoom < 16) {
         this.lod = 1;  // simplified
         this.casing.renderable = false;
@@ -184,7 +161,6 @@ export class PixiFeatureLine extends AbstractFeature {
         lineMarkers.roundPixels = false;
         container.addChild(lineMarkers);
       }
-
 
       const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
       const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || PIXI.Texture.GREEN;
@@ -244,6 +220,7 @@ export class PixiFeatureLine extends AbstractFeature {
     }
 
     this._styleDirty = false;
+    this.updateHitArea();
     this.updateHalo();
 
 
@@ -300,28 +277,52 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
 // experiment
+  updateHitArea() {
+    if (!this.visible) return;
+
+    let hitPath = [];
+    const hitWidth = Math.max(3, this._style.casing.width || 0);
+    this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
+
+    const hitShape = new PIXI.Polygon(hitPath);
+    hitShape.closeStroke = false;
+
+    const hitStyle = {
+      alignment: 0.5,  // middle of line
+      color: 0x0,
+      width: hitWidth + 10,
+      alpha: 1.0,
+      join: PIXI.LINE_JOIN.BEVEL,
+      cap: PIXI.LINE_CAP.BUTT
+    };
+
+    const hitPoly = lineToPoly(hitShape, hitStyle);
+
+    this.container.hitArea = hitPoly;
+  }
+
+
+// experiment
 // Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
-    super.updateHalo();
     if (this.visible && (this.hovered || this.selected || this.drawing)) {
-      const HALO_COLOR = this.drawing ? 0xff00ff : 0xffff00;
-      const HALO_DASH = [6, 3];
-      const HALO_WIDTH = 2;  // px
-
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
-
         const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
       }
 
-      const haloProps = { dash: HALO_DASH, width: HALO_WIDTH, color: HALO_COLOR };
+      const HALO_STYLE = {
+        alpha: 0.9,
+        dash: [6, 3],
+        width: 2,   // px
+        color: 0xffff00
+      };
+
       this.halo.clear();
       if (this.container.hitArea) {
-        new DashLine(this.halo, haloProps).drawPolygon(
-          this.container.hitArea.points
-        );
+        new DashLine(this.halo, HALO_STYLE).drawPolygon(this.container.hitArea.points);
       }
 
     } else {
