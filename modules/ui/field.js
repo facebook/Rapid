@@ -319,8 +319,8 @@ export function uiField(context, presetField, entityIDs, options) {
         })) return false;
 
         if (entityIDs && _entityExtent && field.locationSetID) {   // is field allowed in this location?
-            var validLocations = locationManager.locationsAt(_entityExtent.center());
-            if (!validLocations[field.locationSetID]) return false;
+            var validHere = locationManager.locationSetsAt(_entityExtent.center());
+            if (!validHere[field.locationSetID]) return false;
         }
 
         var prerequisiteTag = field.prerequisiteTag;

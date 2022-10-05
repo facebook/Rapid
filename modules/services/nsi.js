@@ -141,7 +141,7 @@ Object.keys(_nsi.data).forEach(tkv => {
 // We only really need this to _look like_ which-polygon query `_wp.locationIndex(bbox, true);`
 // i.e. it needs to return the properties of the locationsets
 matcher.locationIndex = (bbox) => {
-  const validHere = locationManager.locationsAt([bbox[0], bbox[1]]);
+  const validHere = locationManager.locationSetsAt([bbox[0], bbox[1]]);
   const results = [];
 
   for (const [locationSetID, area] of Object.entries(validHere)) {
@@ -687,17 +687,9 @@ export default {
     setNsiSources();
     presetManager.ensureLoaded()
       .then(() => loadNsiPresets())
-//      .then(() => delay(100))  // wait briefly for locationSets to enter the locationManager queue
-//      .then(() => locationManager.mergeLocationSets([]))   // wait for locationSets to resolve
       .then(() => loadNsiData())
       .then(() => _nsiStatus = 'ok')
       .catch(() => _nsiStatus = 'failed');
-
-//    function delay(msec) {
-//      return new Promise(resolve => {
-//        window.setTimeout(resolve, msec);
-//      });
-//    }
   },
 
 

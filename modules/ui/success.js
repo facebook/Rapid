@@ -159,12 +159,12 @@ export function uiSuccess(context) {
     ensureOSMCommunityIndex()
       .then(oci => {
         const loc = context.map().center();
-        const validLocations = locationManager.locationsAt(loc);
+        const validHere = locationManager.locationSetsAt(loc);
 
         // Gather the communities
         let communities = [];
         oci.resources.forEach(resource => {
-          let area = validLocations[resource.locationSetID];
+          let area = validHere[resource.locationSetID];
           if (!area) return;
 
           // Resolve strings

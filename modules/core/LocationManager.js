@@ -2,7 +2,6 @@ import { EventEmitter } from '@pixi/utils';
 import LocationConflation from '@ideditor/location-conflation';
 import whichPolygon from 'which-polygon';
 import calcArea from '@mapbox/geojson-area';
-// import { utilArrayChunk } from '@id-sdk/util';
 
 const _loco = new LocationConflation();    // instance of a location-conflation resolver
 
@@ -20,8 +19,6 @@ const _loco = new LocationConflation();    // instance of a location-conflation 
  * For more info see the location-conflation and country-coder projects, see:
  * https://github.com/ideditor/location-conflation
  * https://github.com/ideditor/country-coder
- *
- * Properties available:
  *
  * Events available:
  *   `locationchange`  Fires on any change in the location index
@@ -66,13 +63,14 @@ export class LocationManager extends EventEmitter {
   }
 
 
-
   /**
    * _validateLocationSet
-   * Pass an Object with a `locationSet` property,
+   * Pass an Object with a `locationSet` property.
    * Validates the `locationSet` and sets a `locationSetID` property on the object.
    * To avoid so much computation we only resolve the include and exclude regions, but not the locationSet itself.
-   * Use `_resolveLocationSet` instead if you need to actually resolve the full geojson
+   *
+   * Use `_resolveLocationSet()` instead if you need to resolve geojson of locationSet, for example to render it.
+   * Note: You need to call `_rebuildIndex()` after you're all finished validating the locationSets.
    *
    * @param  `obj`  Object to check, it should have `locationSet` property
    */
@@ -145,8 +143,10 @@ export class LocationManager extends EventEmitter {
 
   /**
    * _resolveLocationSet
-   * Does everything that `_validateLocationSet` does, but then "resolves" the locationSet into GeoJSON.
+   * Does everything that `_validateLocationSet()` does, but then "resolves" the locationSet into GeoJSON.
    * This step is a bit more computationally expensive, so really only needed if you intend to render the shape.
+   *
+   * Note: You need to call `_rebuildIndex()` after you're all finished validating the locationSets.
    *
    * @param  `obj`  Object to check, it should have `locationSet` property
    */
@@ -178,10 +178,11 @@ export class LocationManager extends EventEmitter {
 
   /**
    * _rebuildIndex
-   * Rebuilds the whichPolygon index with whatever features have been resolved.
+   * Rebuilds the whichPolygon index with whatever features have been resolved into GeoJSON.
    */
   _rebuildIndex() {
     this._wp = whichPolygon({ features: [...this._resolved.values()] });
+    this.emit('locationchange');
   }
 
 
@@ -253,7 +254,6 @@ export class LocationManager extends EventEmitter {
 
     objects.forEach(obj => this._validateLocationSet(obj));
     this._rebuildIndex();
-    this.emit('locationchange');
     return Promise.resolve(objects);
   }
 
@@ -261,7 +261,7 @@ export class LocationManager extends EventEmitter {
   /**
    * locationSetID
    * Returns a locationSetID for a given locationSet (fallback to `+[Q2]`, world)
-   * (The locationset doesn't necessarily need to be resolved to compute its `id`)
+   * (The locationSet doesn't necessarily need to be resolved to compute its `id`)
    *
    * @param  `locationSet`  A locationSet Object, e.g. `{ include: ['us'] }`
    * @return  String locationSetID, e.g. `+[Q30]`
@@ -300,7 +300,7 @@ export class LocationManager extends EventEmitter {
 
 
   /**
-   * locationsAt
+   * locationSetsAt
    * Find all the locationSets valid at the given location.
    * Results include the area (in km²) to facilitate sorting.
    *
@@ -315,7 +315,7 @@ export class LocationManager extends EventEmitter {
    * @param  `loc`  `[lon,lat]` location to query, e.g. `[-74.4813, 40.7967]`
    * @return  Object of locationSetIDs valid at given location
    */
-  locationsAt(loc) {
+  locationSetsAt(loc) {
     let result = {};
 
     const hits = this._wp(loc, true) || [];
@@ -383,6 +383,6 @@ export class LocationManager extends EventEmitter {
 }
 
 
-const _sharedLocationManager = new LocationManager(); // singleton
+const _sharedLocationManager = new LocationManager();
 export { _sharedLocationManager as locationManager };
 
