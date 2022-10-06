@@ -61,17 +61,8 @@ export class PixiLayerOsm extends AbstractLayer {
     points.sortableChildren = true;
 
     this.container.addChild(areas, lines, vertices, points);
-
-    this.dirtyAndRedraw = this.dirtyAndRedraw.bind(this);
-
-    this.context.features().on('change.feature_info', this.dirtyAndRedraw);
-
   }
 
-  dirtyAndRedraw() {
-    this.dirtyLayer();
-    this.context.map().deferredRedraw();
-  }
 
   /**
    * Services are loosely coupled in RapiD, so we use a `getService` function
@@ -203,10 +194,9 @@ export class PixiLayerOsm extends AbstractLayer {
         this._updateRelatedIDs(highlightedIDs);
       }
 
-      const features = context.features();
       let entities = context.history().intersects(map.extent());
       //Filter the entities according to features enabled/disabled
-      entities = features.filter(entities, this.context.graph());
+      entities = context.features().filter(entities, this.context.graph());
 
       // Gather data
       let data = { points: [], vertices: [], lines: [], polygons: [], highlighted: [] };

@@ -68,6 +68,8 @@ export class RendererMap extends EventEmitter {
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
     this.render = this.render.bind(this);
+    this.immediateRedraw = this.immediateRedraw.bind(this);
+    this.deferredRedraw = this.deferredRedraw.bind(this);
   }
 
 
@@ -154,13 +156,6 @@ export class RendererMap extends EventEmitter {
       });
 
     // Setup events that cause the map to redraw...
-    // context.features()
-    //   .on('redraw.map', this.immediateRedraw);
-
-    const osm = context.connection();
-    if (osm) {
-      osm.on('change', this.immediateRedraw);
-    }
 
     const thiz = this;
     function didUndoOrRedo(targetTransform) {
@@ -187,8 +182,14 @@ export class RendererMap extends EventEmitter {
       .on('undone', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
       .on('redone', (stack) => didUndoOrRedo(stack.transform));
 
-    context.imagery().on('imagerychange', () => this.immediateRedraw());
-    context.photos().on('photochange', () => this.immediateRedraw());
+    context.features().on('redraw', this.immediateRedraw);
+    context.imagery().on('imagerychange', this.immediateRedraw);
+    context.photos().on('photochange', this.immediateRedraw);
+
+    const osm = context.connection();
+    if (osm) {
+      osm.on('change', this.immediateRedraw);
+    }
 
     this._renderer.scene
       .on('layerchange', () => {

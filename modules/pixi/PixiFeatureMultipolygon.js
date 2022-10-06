@@ -184,7 +184,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
               axis1: axis1.map(coord => projection.invert(coord)),
               axis2: axis2.map(coord => projection.invert(coord)),
               centroid: projection.invert(centroid),
-              texture: cornersInSSR ? (wireframeMode ? 'lowres-unfilled-square' : 'lowres-square') : (wireframeMode ? 'lowres-unfilled-circle' : 'lowres-circle')
+              shapeType: (cornersInSSR ? 'square' : 'circle')
             };
           }
         }
@@ -279,13 +279,15 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       this.mask.visible = false;
       this.lowRes.visible = true;
 
+      const filling = wireframeMode ? '-unfilled' : '';
+      const textureName = `lowres${filling}-${ssrdata.shapeType}`;
       const [x, y] = projection.project(ssrdata.centroid);
       const axis1 = ssrdata.axis1.map(coord => projection.project(coord));
       const axis2 = ssrdata.axis2.map(coord => projection.project(coord));
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
-      this.lowRes.texture = textures.get(ssrdata.texture) || PIXI.Texture.WHITE;
+      this.lowRes.texture = textures.get(textureName) || PIXI.Texture.WHITE;
       this.lowRes.position.set(x, y);
       this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
       this.lowRes.rotation = ssrdata.angle;
