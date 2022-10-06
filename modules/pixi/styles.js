@@ -471,7 +471,7 @@ const ROADS = {
 };
 
 
-export function styleMatch(tags, isWireframeMode) {
+export function styleMatch(tags) {
   let matched = STYLES.DEFAULT;
   let selectivity = 999;
 
@@ -521,10 +521,6 @@ export function styleMatch(tags, isWireframeMode) {
   }
   if (tags.tunnel) {
     style.stroke.alpha = 0.5;
-  }
-  if (isWireframeMode) {
-    style.casing.width = 0;
-    style.stroke.width = 1.0;
   }
 
   // determine surface for paved/unpaved
