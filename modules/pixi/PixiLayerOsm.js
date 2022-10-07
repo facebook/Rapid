@@ -213,6 +213,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //            data.highlighted.push(entity);
 //          }
         } else if (geom === 'area') {
+          data.lines.push(entity);
           data.polygons.push(entity);
 //          if (highlightedIDs.has(entity.id)) {
 //            data.highlighted.push(entity);
@@ -280,14 +281,15 @@ export class PixiLayerOsm extends AbstractLayer {
     const activeData = this.context.activeData();
 
     entities.forEach(entity => {
-      let feature = scene.getFeature(entity.id);
+      const featureID = `${entity.id}-fill`;
+      let feature = scene.getFeature(featureID);
 
       if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, entity.id, areaContainer, entity);
+        feature = new PixiFeatureMultipolygon(this, featureID, areaContainer, entity);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -352,20 +354,23 @@ export class PixiLayerOsm extends AbstractLayer {
       return levelContainer;
     }
 
-    function isUntaggedMultipolygonRing(entity) {
-      if (entity.hasInterestingTags()) return false;
-      return graph.parentRelations(entity).some(relation => relation.isMultipolygon());
-    }
+//    function isUntaggedMultipolygonRing(entity) {
+//      if (entity.hasInterestingTags()) return false;
+//      return graph.parentRelations(entity).some(relation => relation.isMultipolygon());
+//    }
 
 
     entities.forEach(entity => {
-      // Skip untagged multipolygon rings for now, renderPolygons will render them as strokes.
-      // At some point we will want the user to be able to click on them though
-      if (isUntaggedMultipolygonRing(entity)) return;
+// skip relations, we will get their line parts separately and draw those
+if (entity.type === 'relation') return;
+//      // Skip untagged multipolygon rings for now, renderPolygons will render them as strokes.
+//      // At some point we will want the user to be able to click on them though
+//      if (isUntaggedMultipolygonRing(entity)) return;
 
       // Make sure this line is on the correct level container (bridge/tunnel/etc)
-      const lvl = entity.layer().toString();
-      const levelContainer = getLevelContainer(lvl);
+//      const lvl = entity.layer().toString();
+const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
+      const levelContainer = getLevelContainer(layer.toString());
 
       let feature = scene.getFeature(entity.id);
       if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
@@ -384,15 +389,36 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.container.zIndex = getzIndex(entity.tags);
 
         const geojson = entity.asGeoJSON(graph);
-        const geometry = geojson.coordinates;
+
+const geometry = (geojson.type === 'LineString') ? geojson.coordinates
+  : (geojson.type === 'Polygon') ? geojson.coordinates[0] : [];
+//  : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];
+        // const geometry = geojson.coordinates;
         feature.geometry = geometry;
 
-        const style = styleMatch(entity.tags);
+// a line no tags - try to style match the tags of its parent relation
+let tags = entity.tags;
+let geom = entity.geometry(graph);
+if (!entity.hasInterestingTags()) {
+  const parent = graph.parentRelations(entity).find(relation => relation.isMultipolygon());
+  if (parent) {
+    tags = parent.tags;
+    geom = 'area';
+  }
+}
+        const style = styleMatch(tags);
         style.reversePoints = (entity.tags.oneway === '-1');
         // Todo: handle alternating/two-way case too
 
+if (geom === 'line') {
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         style.sidedMarkerName = entity.isSided() ? 'sided' : '';
+} else {  // an area
+  style.casing.width = 0;
+  style.stroke.color = style.fill.color;
+  style.stroke.width = 2;
+  style.stroke.alpha = 1;
+}
         feature.style = style;
 
         feature.label = utilDisplayName(entity);
@@ -442,7 +468,6 @@ export class PixiLayerOsm extends AbstractLayer {
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
-
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
         entity.hasInterestingTags() || entity.isEndpoint(graph) || scene.drawing.has(entity.id) ||  entity.isIntersection(graph)
       );

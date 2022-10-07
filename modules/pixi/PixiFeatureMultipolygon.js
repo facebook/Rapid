@@ -54,12 +54,12 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     fill.sortableChildren = false;
     this.fill = fill;
 
-    const stroke = new PIXI.Graphics();
-    stroke.name = 'stroke';
-    stroke.interactive = false;
-    stroke.interactiveChildren = false;
-    stroke.sortableChildren = false;
-    this.stroke = stroke;
+//    const stroke = new PIXI.Graphics();
+//    stroke.name = 'stroke';
+//    stroke.interactive = false;
+//    stroke.interactiveChildren = false;
+//    stroke.sortableChildren = false;
+//    this.stroke = stroke;
 
     // When partially filling areas: we really want to define the mask as a line
     // drawn within the inside of the area shape.  Graphics defined as a line
@@ -75,7 +75,8 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     mask.visible = false;
     this.mask = mask;
 
-    this.container.addChild(lowRes, fill, stroke, mask);
+    // this.container.addChild(lowRes, fill, stroke, mask);
+    this.container.addChild(lowRes, fill, mask);
   }
 
 
@@ -265,7 +266,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       this.lod = 0;  // off
       this.visible = false;
       this.fill.visible = false;
-      this.stroke.visible = false;
+//      this.stroke.visible = false;
       this.mask.visible = false;
       this.lowRes.visible = false;
 
@@ -275,7 +276,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       this.visible = true;
       const ssrdata = this.ssrdata;
       this.fill.visible = false;
-      this.stroke.visible = false;
+//      this.stroke.visible = false;
       this.mask.visible = false;
       this.lowRes.visible = true;
 
@@ -297,7 +298,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       this.lod = 2;  // full
       this.visible = true;
       this.fill.visible = true;
-      this.stroke.visible = true;
+//      this.stroke.visible = true;
       this.lowRes.visible = false;
     }
 
@@ -305,21 +306,21 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     // redraw the shapes
     //
 
-    // STROKE
-    if (this.stroke.visible) {
-      this.stroke.clear().lineStyle({
-        alpha: 1,
-        width: wireframeMode ? 1 : style.fill.width || 2,
-        color: color,
-      });
-
-      shapes.forEach(shape => {
-        this.stroke.drawShape(shape.outer);
-        shape.holes.forEach(hole => {
-          this.stroke.drawShape(hole);
-        });
-      });
-    }
+//    // STROKE
+//    if (this.stroke.visible) {
+//      this.stroke.clear().lineStyle({
+//        alpha: 1,
+//        width: wireframeMode ? 1 : style.fill.width || 2,
+//        color: color,
+//      });
+//
+//      shapes.forEach(shape => {
+//        this.stroke.drawShape(shape.outer);
+//        shape.holes.forEach(hole => {
+//          this.stroke.drawShape(hole);
+//        });
+//      });
+//    }
 
     // FILL
     if (wireframeMode) {
@@ -387,32 +388,32 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 // experiment
 // Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
   updateHalo() {
-    if (this.ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
-      if (!this.halo) {
-        this.halo = new PIXI.Graphics();
-        this.halo.name = `${this.id}-halo`;
-        const mapUIContainer = this.scene.getLayer('map-ui').container;
-        mapUIContainer.addChild(this.halo);
-      }
-
-      const HALO_STYLE = {
-        alpha: 0.9,
-        dash: [6, 3],
-        width: 2,   // px
-        color: 0xffff00
-      };
-
-      this.halo.clear();
-      new DashLine(this.halo, HALO_STYLE).drawPolygon(this.ssrdata.localPolygon.points);
-      this.halo.position = this.ssrdata.localCentroid;
-      this.halo.rotation = this.ssrdata.angle;
-
-    } else {
-      if (this.halo) {
-        this.halo.destroy({ children: true });
-        this.halo = null;
-      }
-    }
+//    if (this.ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
+//      if (!this.halo) {
+//        this.halo = new PIXI.Graphics();
+//        this.halo.name = `${this.id}-halo`;
+//        const mapUIContainer = this.scene.getLayer('map-ui').container;
+//        mapUIContainer.addChild(this.halo);
+//      }
+//
+//      const HALO_STYLE = {
+//        alpha: 0.9,
+//        dash: [6, 3],
+//        width: 2,   // px
+//        color: 0xffff00
+//      };
+//
+//      this.halo.clear();
+//      new DashLine(this.halo, HALO_STYLE).drawPolygon(this.ssrdata.localPolygon.points);
+//      this.halo.position = this.ssrdata.localCentroid;
+//      this.halo.rotation = this.ssrdata.angle;
+//
+//    } else {
+//      if (this.halo) {
+//        this.halo.destroy({ children: true });
+//        this.halo = null;
+//      }
+//    }
   }
 
 
