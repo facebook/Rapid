@@ -105,16 +105,23 @@ export function lineToPolygon(width, points) {
  * Use Pixi's built-in line builder to convert a line with some width into a polygon.
  * https://github.com/pixijs/pixijs/blob/dev/packages/graphics/src/utils/buildLine.ts
  *
- * @param  shape      Object suitable to use as a shape (likely a PIXI.Polygon)
+ * @param  points     Array of [x,y] points that make up the line
  * @param  lineStyle  Object suitable to use as a lineStyle (important options are alignment and width)
  */
-export function lineToPoly(shape, lineStyle = {}) {
+export function lineToPoly(points, lineStyle = {}) {
   const EPSILON = 1e-4;
+  const isClosed = vecEqual(points[0], points[points.length - 1], EPSILON);
+
+  let sourcePath = [];
+  points.forEach(([x, y]) => sourcePath.push(x, y));  // flatten point array
+  const sourceShape = new PIXI.Polygon(sourcePath);
+
   lineStyle.native = false;  // we want the non-native line builder
+  sourceShape.closeStroke = false;  // don't make an extra segment from end to start
 
   // Make some fake graphicsData and graphicsGeometry.
   // (I'm avoiding using a real PIXI.Graphic because I dont want to affect the batch system)
-  const graphicsData = { shape: shape, lineStyle: lineStyle };
+  const graphicsData = { shape: sourceShape, lineStyle: lineStyle };
   const graphicsGeometry = { closePointEps: EPSILON, indices: [], points: [], uvs: [] };
 
   // Pixi will do the work for us.
@@ -250,14 +257,34 @@ export function lineToPoly(shape, lineStyle = {}) {
     ip0 = i0; ip1 = i1; ip2 = i2;
   }
 
-  // concat and flatten the 2 sides of the path
-  let path = [];
-  pathL.forEach(([x, y]) => path.push(x, y));
-  pathR.reverse();
-  pathR.forEach(([x, y]) => path.push(x, y));
-  path.push(path[0], path[1]);  // close the shape
 
-  return new PIXI.Polygon(path);
+  const result = {};
+
+  // This path can be used as an array of points for the hitArea.
+  // Go out on one side and back on the other, then close it off.
+  let perimeter = [];
+  pathL.forEach(([x, y]) => perimeter.push(x, y));   // flatten
+  pathR.reverse();
+  pathR.forEach(([x, y]) => perimeter.push(x, y));   // flatten
+  perimeter.push(perimeter[0], perimeter[1]);  // close the shape
+  result.perimeter = perimeter;
+
+  // If the line was closed, determine which path is longer (outer) and shorter (inner)
+  if (isClosed) {
+    let pointsL = [];
+    let pointsR = [];
+    pathL.forEach(([x, y]) => pointsL.push(x, y));   // flatten
+    pathR.forEach(([x, y]) => pointsR.push(x, y));   // flatten
+    if (lenL > lenR) {
+      result.outer = pointsL;
+      result.inner = pointsR;
+    } else {
+      result.outer = pointsR;
+      result.inner = pointsL;
+    }
+  }
+
+  return result;
 }
 
 

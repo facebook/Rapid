@@ -278,15 +278,9 @@ export class PixiFeatureLine extends AbstractFeature {
 
 // experiment
   updateHitArea() {
-    if (!this.visible) return;
+    if (!this.visible || !this.points) return;
 
-    let hitPath = [];
     const hitWidth = Math.max(3, this._style.casing.width || 0);
-    this.points.forEach(([x, y]) => hitPath.push(x, y));  // flatten point array
-
-    const hitShape = new PIXI.Polygon(hitPath);
-    hitShape.closeStroke = false;
-
     const hitStyle = {
       alignment: 0.5,  // middle of line
       color: 0x0,
@@ -296,9 +290,8 @@ export class PixiFeatureLine extends AbstractFeature {
       cap: PIXI.LINE_CAP.BUTT
     };
 
-    const hitPoly = lineToPoly(hitShape, hitStyle);
-
-    this.container.hitArea = hitPoly;
+    this._bufferdata = lineToPoly(this.points, hitStyle);
+    this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 
 
@@ -321,8 +314,20 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-      if (this.container.hitArea) {
-        new DashLine(this.halo, HALO_STYLE).drawPolygon(this.container.hitArea.points);
+//      if (this.container.hitArea) {
+//        new DashLine(this.halo, HALO_STYLE).drawPolygon(this.container.hitArea.points);
+//      }
+      const dl = new DashLine(this.halo, HALO_STYLE);
+      if (this._bufferdata) {
+        if (this._bufferdata.outer && this._bufferdata.inner) {
+          dl.drawPolygon(this._bufferdata.outer);
+//hacky
+// if (this.data && typeof this.data.isArea === 'function' && !this.data.isArea()) {
+          dl.drawPolygon(this._bufferdata.inner);
+// }
+        } else {
+          dl.drawPolygon(this._bufferdata.perimeter);
+        }
       }
 
     } else {
