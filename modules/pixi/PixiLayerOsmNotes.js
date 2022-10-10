@@ -92,7 +92,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
           // iconName: iconName
         };
 
-        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, null, d.loc, style);
       }
 
       if (feature.dirty) {

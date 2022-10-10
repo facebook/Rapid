@@ -275,6 +275,7 @@ export class BehaviorDraw extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
+      eventData.related = null;
     }
 
     this.emit('move', eventData);
@@ -302,6 +303,7 @@ export class BehaviorDraw extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
+      eventData.related = null;
     }
 
     this.emit('click', eventData);

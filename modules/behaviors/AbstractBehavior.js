@@ -103,6 +103,7 @@ export class AbstractBehavior extends EventEmitter {
       target: null,
       feature: null,
       data: null,
+      related: null
     };
 
     if (!e.target) {   // `e.target` is the Pixi DisplayObject that triggered this event.
@@ -117,6 +118,7 @@ export class AbstractBehavior extends EventEmitter {
       result.target = target;
       result.feature = feature;
       result.data = feature.data;
+      result.related = feature.related;
       return result;
     }
 
@@ -127,6 +129,7 @@ export class AbstractBehavior extends EventEmitter {
       result.target = target;
       result.feature = feature;
       result.data = feature.data;
+      result.related = feature.related;
       return result;
     }
 

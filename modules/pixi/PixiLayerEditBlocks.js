@@ -108,7 +108,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
           fill: { pattern: 'construction', color: 0x000001, alpha: 0.7 }
         };
 
-        feature = new PixiFeatureMultipolygon(this, featureID, this.container, null, geometry, style);
+        feature = new PixiFeatureMultipolygon(this, featureID, this.container, block, null, geometry, style);
         feature.container.cursor = 'not-allowed';
       }
 

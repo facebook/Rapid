@@ -284,6 +284,7 @@ export class BehaviorSelect extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
+      eventData.related = null;
     }
 
     // Determine what we clicked on and switch modes..
@@ -433,6 +434,7 @@ export class BehaviorSelect extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
+      eventData.related = null;
     }
 
     const datum = eventData.data;

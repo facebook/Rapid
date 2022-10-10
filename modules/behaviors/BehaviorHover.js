@@ -63,6 +63,7 @@ export class BehaviorHover extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
+      eventData.related = null;
       this._doHover();
     }
 
@@ -110,6 +111,7 @@ export class BehaviorHover extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
+      eventData.related = null;
     }
 
     // Hover target has changed

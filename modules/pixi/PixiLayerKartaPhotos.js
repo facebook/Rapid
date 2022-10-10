@@ -113,13 +113,16 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
+    const seenSequences = {};
 
     sequenceData.forEach(d => {
+      seenSequences[d.properties.key] = d;
+
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(this, featureID, this.container, d, d.coordinates, LINESTYLE);
+        feature = new PixiFeatureLine(this, featureID, this.container, d, null, d.coordinates, LINESTYLE);
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
@@ -145,7 +148,8 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
 
-        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
+        const parentSequence = seenSequences[d.sequence_id];
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, parentSequence, d.loc, style);
       }
 
       if (feature.dirty) {

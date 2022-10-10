@@ -104,7 +104,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (!feature) return;
     feature.__featurehash__ = utilHashcode(stringify(feature));
 
-    // The pixi scene cache relies on each entity having its own id member,
+    // The pixi scene cache relies on each feature having its own id member,
     // so use the hashcode string as a fallback.
     if (!feature.id) {
       feature.id = feature.__featurehash__.toString();
@@ -278,14 +278,14 @@ export class PixiLayerCustomData extends AbstractLayer {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
-    polygons.forEach(entity => {
-      let feature = scene.getFeature(entity.id);
+    polygons.forEach(d => {
+      let feature = scene.getFeature(d.id);
 
-      const geometry = (entity.geometry.type === 'Polygon') ? [entity.geometry.coordinates]
-        : (entity.geometry.type === 'MultiPolygon') ? entity.geometry.coordinates : [];
+      const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
+        : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, entity.id, this.container, null, geometry, polyStyle );
+        feature = new PixiFeatureMultipolygon(this, d.id, this.container, d, null, geometry, polyStyle );
         feature.container.cursor = 'not-allowed';
       }
 
@@ -313,11 +313,11 @@ export class PixiLayerCustomData extends AbstractLayer {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
-    lines.forEach(entity => {
-      let feature = scene.getFeature(entity.id);
+    lines.forEach(d => {
+      let feature = scene.getFeature(d.id);
 
       if (!feature) {
-        feature = new PixiFeatureLine(this, entity.id, this.container, entity, entity.geometry.coordinates, lineStyle );
+        feature = new PixiFeatureLine(this, d.id, this.container, d, null, d.geometry.coordinates, lineStyle );
         feature.container.cursor = 'not-allowed';
       }
 
@@ -342,13 +342,13 @@ export class PixiLayerCustomData extends AbstractLayer {
     const scene = this.scene;
     const pointStyle = { markerTint: 0x00ffff };
 
-    points.forEach(entity => {
-      let feature = scene.getFeature(entity.id);
+    points.forEach(d => {
+      let feature = scene.getFeature(d.id);
 
       if (!feature) {
-        const coord = [entity.geometry.coordinates[0], entity.geometry.coordinates[1]]; //leave off any elevation or other data.
+        const coord = [d.geometry.coordinates[0], d.geometry.coordinates[1]]; //leave off any elevation or other data.
 
-        feature = new PixiFeaturePoint(this, entity.id, this.container, entity, coord, pointStyle );
+        feature = new PixiFeaturePoint(this, d.id, this.container, d, null, coord, pointStyle );
         feature.container.cursor = 'not-allowed';
       }
 
@@ -367,7 +367,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  gj
    * @param  src
    */
-  geojson (gj, src) {
+  geojson(gj, src) {
     if (!arguments.length) return this._geojson;
 
     this._template = null;

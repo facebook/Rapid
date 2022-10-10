@@ -95,7 +95,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
           markerTint: TINTS.get(d.parentIssueType) || 0xffffff
         };
 
-        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, null, d.loc, style);
       }
 
       if (feature.dirty) {

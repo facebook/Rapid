@@ -182,19 +182,29 @@ export class PixiRenderer extends EventEmitter {
    * Respond to any change in hover
    */
   _onHoverChange(eventData) {
-    let featureIDs = [];
-    let featureData = [];
+    let hoverIDs = new Set();
+    let hoverData = [];
+
     if (eventData.target && eventData.data) {
-      featureIDs = [eventData.target.name];  // the featureID is here (e.g. osm id)
-      featureData = [eventData.data];
+      hoverIDs.add(eventData.target.name);  // the featureID is here (e.g. osm id)
+
+// experiment: hover related too (for child nodes and midpoints)
+if (eventData.related) {
+  const related = new Set([].concat(eventData.related));  // coax related data into a Set
+  for (const r of related) {
+    hoverIDs.add(r.id); // feature.id only same as related.id for OSM?
+  }
+}
+
+      hoverData = [eventData.data];
     }
 
     const mode = this.context.mode();
     if (mode && mode.id !== 'select') {
-      this.context.ui().sidebar.hover(featureData);
+      this.context.ui().sidebar.hover(hoverData);
     }
 
-    this.scene.hoverFeatures(featureIDs);
+    this.scene.hoverFeatures(Array.from(hoverIDs));  /// todo fix: these methods should take array or set
     this.render();
   }
 

@@ -365,7 +365,7 @@ export class PixiLayerRapid extends AbstractLayer {
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(this, featureID, layer, entity, geometry);
+        feature = new PixiFeatureMultipolygon(this, featureID, layer, entity, null, geometry);
         feature.rapidFeature = true;
 
 // shader experiment:
@@ -410,7 +410,7 @@ export class PixiLayerRapid extends AbstractLayer {
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
 
-        feature = new PixiFeatureLine(this, featureID, layer, entity, geometry);
+        feature = new PixiFeatureLine(this, featureID, layer, entity, null, geometry);
         feature.rapidFeature = true;
       }
 
@@ -467,7 +467,7 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, layer, entity, entity.loc);
+        feature = new PixiFeaturePoint(this, featureID, layer, entity, null, entity.loc);
         feature.rapidFeature = true;
       }
 
@@ -500,7 +500,7 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, layer, entity, entity.loc);
+        feature = new PixiFeaturePoint(this, featureID, layer, entity, null, entity.loc);
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
       }

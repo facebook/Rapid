@@ -209,15 +209,15 @@ export class PixiLayerOsm extends AbstractLayer {
           data.vertices.push(entity);
         } else if (geom === 'line') {
           data.lines.push(entity);
-//          if (highlightedIDs.has(entity.id)) {
-//            data.highlighted.push(entity);
-//          }
+          if (highlightedIDs.has(entity.id)) {
+            data.highlighted.push(entity);
+          }
         } else if (geom === 'area') {
           data.lines.push(entity);
           data.polygons.push(entity);
-//          if (highlightedIDs.has(entity.id)) {
-//            data.highlighted.push(entity);
-//          }
+          if (highlightedIDs.has(entity.id)) {
+            data.highlighted.push(entity);
+          }
         }
       });
 
@@ -255,11 +255,13 @@ export class PixiLayerOsm extends AbstractLayer {
 // bhousel 8/8
 // Midpoints are painful right now because they grab the hoverstate and de-select the line
 // We haven't decided yet how to capture that features relate to one another so I'm commenting them out.
+// bhousel 10/10
+// update, we're startint to capture how features relate to one another now.
 //      // No midpoints when drawing
-//      const currMode = context.mode().id;
-//      if (currMode === 'browse' || currMode === 'select') {
-//        this.renderMidpoints(frame, projection, zoom, data.highlighted);
-//      }
+     const currMode = context.mode().id;
+     if (currMode === 'browse' || currMode === 'select') {
+       this.renderMidpoints(frame, projection, zoom, data.highlighted);
+     }
 
     } else {
       this.visible = false;
@@ -289,7 +291,7 @@ export class PixiLayerOsm extends AbstractLayer {
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, featureID, areaContainer, entity);
+        feature = new PixiFeatureMultipolygon(this, featureID, areaContainer, entity, null);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -378,7 +380,7 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureLine(this, entity.id, levelContainer, entity);
+        feature = new PixiFeatureLine(this, entity.id, levelContainer, entity, null);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -489,7 +491,7 @@ if (geom === 'line') {
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeaturePoint(this, node.id, parentContainer, node, node.loc);
+        feature = new PixiFeaturePoint(this, node.id, parentContainer, node, null, node.loc);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -497,6 +499,10 @@ if (geom === 'line') {
       if (feature.v !== version || feature.dirty) {
         feature.v = version;
         feature.data = node;   // rebind data
+
+// experiment: set related data, so we can hover that too
+feature.related = graph.parentWays(node);
+
         feature.geometry = node.loc;
 
         const preset = presetManager.match(node, graph);
@@ -580,7 +586,7 @@ if (geom === 'line') {
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeaturePoint(this, node.id, pointContainer, node, node.loc);
+        feature = new PixiFeaturePoint(this, node.id, pointContainer, node, null, node.loc);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -708,7 +714,7 @@ if (geom === 'line') {
       }
       if (!feature) {
         const style = { markerName: 'midpoint' };
-        feature = new PixiFeaturePoint(this, midpoint.id, selectedContainer, midpoint, midpoint.loc, style);
+        feature = new PixiFeaturePoint(this, midpoint.id, selectedContainer, midpoint, midpoint.way, midpoint.loc, style);
       }
 
       // Something about the midpoint has changed

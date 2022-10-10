@@ -68,7 +68,7 @@ export class PixiLayerOsmose extends AbstractLayer {
           iconName: d.icon
         };
 
-        feature = new PixiFeaturePoint(this, featureID, this.container, d, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container, d, null, d.loc, style);
 
         // // mathematically 0,-15 is center of marker, move up slightly
         // icon.position.set(0, -16);

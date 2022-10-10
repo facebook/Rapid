@@ -29,12 +29,13 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
    * @param  layer     The Layer that owns this Feature
    * @param  id        Unique string to use for the name of this Feature
    * @param  parent    Parent container for this Feature.  The Feature will be added to it.
-   * @param  data      Data to associate with this Feature (like `__data__` from the D3.js days)
+   * @param  data      Data bound to this Feature (like `__data__` from the D3.js days)
+   * @param  related   Data related to this Feature (usually the parent)
    * @param  geometry  `Array` containing geometry data
    * @param  style     `Object` containing style data
    */
-  constructor(layer, id, parent, data, geometry, style) {
-    super(layer, id, parent, data);
+  constructor(layer, id, parent, data, related, geometry, style) {
+    super(layer, id, parent, data, related);
 
     this.type = 'multipolygon';
     this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]

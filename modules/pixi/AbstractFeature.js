@@ -13,7 +13,8 @@ import { Extent } from '@id-sdk/math';
  *   `geometry`       Array containing geometry info
  *   `style`          Object containing style info
  *   `label`          String containing the Feature's label
- *   `data`           Data to associate with this Feature (like `__data__` from the D3.js days)
+ *   `data`           Data bound to this Feature (like `__data__` from the D3.js days)
+ *   `related`        Data related to this Feature (usually the parent)
  *   `visible`        `true` if the Feature is visible (`false` if it is culled)
  *   `interactive`    `true` if the Feature is interactive (emits Pixi events)
  *   `dirty`          `true` if the Feature needs to be rebuilt
@@ -34,9 +35,10 @@ export class AbstractFeature {
    * @param  layer    The Layer that owns this Feature
    * @param  id       Unique string to use for the name of this Feature
    * @param  parent   Parent container for this Feature.  The Feature's container will be added to it.
-   * @param  data     Data to associate with this Feature (like `__data__` from the D3.js days)
+   * @param  data     Data bound to this Feature (like `__data__` from the D3.js days)
+   * @param  related  Data related to this Feature (usually the parent)
    */
-  constructor(layer, id, parent, data) {
+  constructor(layer, id, parent, data, related) {
     const container = new PIXI.Container();
     this.container = container;
 
@@ -60,6 +62,7 @@ export class AbstractFeature {
     this.renderer = layer.renderer;
     this.context = layer.context;
     this.data = data;
+    this.related = related;
     this.v = -1;
     this.lod = 2;   // full detail
     this.halo = null;
@@ -101,6 +104,7 @@ export class AbstractFeature {
     this.renderer = null;
     this.context = null;
     this.data = null;
+    this.related = null;
 
     if (this.halo) {
       this.halo.destroy({ children: true });
