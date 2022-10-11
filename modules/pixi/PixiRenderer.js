@@ -204,7 +204,7 @@ if (eventData.related) {
       this.context.ui().sidebar.hover(hoverData);
     }
 
-    this.scene.hoverFeatures(Array.from(hoverIDs));  /// todo fix: these methods should take array or set
+    this.scene.hoverFeatures(hoverIDs);
     this.render();
   }
 

@@ -19,6 +19,13 @@ import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos';
 import { PixiLayerCustomData } from './PixiLayerCustomData';
 
 
+// Convert a single value, an Array of values, or a Set of values.
+function asSet(vals) {
+  if (vals instanceof Set) return vals;
+  return new Set(vals !== undefined && [].concat(vals));
+}
+
+
 /**
  * PixiScene
  * The "scene" maintains useful collections of Features.
@@ -54,8 +61,8 @@ export class PixiScene extends EventEmitter {
     this.selected.v = 0;           // Version counter that increments as the selection changes
     this.hovered = new Set();      // Set of hovered featureIDs
     this.hovered.v = 0;            // Version counter that increments as the hover changes
-    this.drawing = new Set(); // Set of featureIDs that are currently drawing
-    this.drawing.v = 0; // Version counter that increments as the drawing changes
+    this.drawing = new Set();      // Set of featureIDs that are currently drawing
+    this.drawing.v = 0;            // Version counter that increments as the drawing changes
 
     this.layers = [
       new PixiLayerBackgroundTiles(this, 1),
@@ -123,10 +130,10 @@ export class PixiScene extends EventEmitter {
   /**
    * enableLayers
    * Enables the layers with the given layerIDs, other layers will not be affected
-   * @param  ids  A `Set` or `Array` of layerIDs, or single `String` layerID
+   * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
-  enableLayers(ids) {
-    const toEnable = new Set([].concat(ids));  // coax ids into a Set
+  enableLayers(layerIDs) {
+    const toEnable = asSet(layerIDs);  // coax ids into a Set
     for (const layer of this.layers) {
       if (toEnable.has(layer.id)) {
         layer.enabled = true;
@@ -139,10 +146,10 @@ export class PixiScene extends EventEmitter {
   /**
    * disableLayers
    * Disables the layers with the given layerIDs, other layers will not be affected
-   * @param  ids  A `Set` or `Array` of layerIDs, or single `String` layerID
+   * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
-  disableLayers(ids) {
-    const toDisable = new Set([].concat(ids));  // coax ids into a Set
+  disableLayers(layerIDs) {
+    const toDisable = asSet(layerIDs);  // coax ids into a Set
     for (const layer of this.layers) {
       if (toDisable.has(layer.id)) {
         layer.enabled = false;
@@ -155,10 +162,10 @@ export class PixiScene extends EventEmitter {
   /**
    * toggleLayers
    * Toggles the layers with the given layerIDs, other layers will not be affected
-   * @param  ids  A `Set` or `Array` of layerIDs, or single `String` layerID
+   * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
-  toggleLayers(ids) {
-    const toToggle = new Set([].concat(ids));  // coax ids into a Set
+  toggleLayers(layerIDs) {
+    const toToggle = asSet(layerIDs);  // coax ids into a Set
     for (const layer of this.layers) {
       if (toToggle.has(layer.id)) {
         layer.enabled = !layer.enabled;
@@ -171,10 +178,10 @@ export class PixiScene extends EventEmitter {
   /**
    * onlyLayers
    * LayerIDs in the given list will be enabled, all others will be disabled
-   * @param  ids  A `Set` or `Array` of layerIDs, or single `String` layerID
+   * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
-  onlyLayers(ids) {
-    const toEnable = new Set([].concat(ids));  // coax ids into a Set
+  onlyLayers(layerIDs) {
+    const toEnable = asSet(layerIDs);  // coax ids into a Set
     for (const layer of this.layers) {
       layer.enabled = toEnable.has(layer.id);
     }
@@ -266,6 +273,7 @@ export class PixiScene extends EventEmitter {
     feature.destroy();
   }
 
+
   /**
    * drawingFeatures
    * Mark these features as `drawing` if they are in the scene.
@@ -277,7 +285,7 @@ export class PixiScene extends EventEmitter {
    * @param  featureIDs   `Array` or `Set` of feature IDs to draw
    */
   drawingFeatures(featureIDs) {
-    const toDraw = new Set([].concat(featureIDs)); // coax ids into a Set
+    const toDraw = asSet(featureIDs);  // coax ids into a Set
     let didChange = false;
 
     // Remove drawing status where not needed
@@ -324,7 +332,7 @@ export class PixiScene extends EventEmitter {
    * @param  featureIDs   `Array` or `Set` of feature IDs to select
    */
   selectFeatures(featureIDs) {
-    const toSelect = new Set([].concat(featureIDs));  // coax ids into a Set
+    const toSelect = asSet(featureIDs);  // coax ids into a Set
     let didChange = false;
 
     // Remove select where not needed
@@ -370,7 +378,7 @@ export class PixiScene extends EventEmitter {
    * @param  featureIDs   `Array` or `Set` of feature IDs to hover
    */
   hoverFeatures(featureIDs) {
-    const toHover = new Set([].concat(featureIDs));  // coax ids into a Set
+    const toHover = asSet(featureIDs);  // coax ids into a Set
     let didChange = false;
 
     // Remove hover where not needed
@@ -423,7 +431,7 @@ export class PixiScene extends EventEmitter {
    * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
   dirtyLayers(layerIDs) {
-    const toDirty = new Set([].concat(layerIDs));  // coax ids into a Set
+    const toDirty = asSet(layerIDs);  // coax ids into a Set
     for (const layer of this.layers) {
       if (toDirty.has(layer.id)) {
         layer.dirtyLayer();
@@ -439,7 +447,8 @@ export class PixiScene extends EventEmitter {
    * @param  featureIDs  A `Set` or `Array` of featureIDs
    */
   dirtyFeatures(featureIDs) {
-    (featureIDs || []).forEach(featureID => {
+    const toDirty = asSet(featureIDs);  // coax ids into a Set
+    toDirty.forEach(featureID => {
       const feature = this.features.get(featureID);
       if (feature) {
         feature.dirty = true;
