@@ -220,9 +220,6 @@ if (eventData.related) {
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
     // For now, we will perform either APP (RapiD prepares scene graph) or DRAW (Pixi render) during a tick.
-    // The ticker is configured to run at 30fps to allow time for other work to happen on the main thread.
-    // But the browser will still fire events like pointer/wheel faster than that, and other code
-    // that runs on requestAnimationFrame will happen faster than that too (e.g. d3-zoom, for now)
     // GPU work will happen in its own thread, and we don't have direct insight into its timing.
     // For reference:
     //   16.7ms = 60fps

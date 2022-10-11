@@ -35,6 +35,7 @@ function asSet(vals) {
  *   `features`    `Map(featureID -> Feature)` of all features we know about
  *   `selected`    `Set` of hovered featureIDs
  *   `hovered`     `Set` of selected featureIDs
+ *   `drawing`     `Set` of drawing featureIDs
  *
  * Events available:
  *   `layerchange`   Fires when layers are toggled from enabled/disabled
@@ -198,7 +199,7 @@ export class PixiScene extends EventEmitter {
 
   /**
    * addFeature
-   * Add a feature to the scene. The Feature is expected to already have an Extent.
+   * Add a feature to the scene.
    * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   addFeature(feature) {
@@ -213,7 +214,7 @@ export class PixiScene extends EventEmitter {
 
   /**
    * updateFeature
-   * Call this whenever a Feature's `extent` has changed.
+   * Call this whenever a Feature has changed.
    * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   updateFeature(feature) {
