@@ -1,5 +1,4 @@
 import { EventEmitter } from '@pixi/utils';
-import RBush from 'rbush';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles';
 import { PixiLayerEditBlocks } from './PixiLayerEditBlocks';
@@ -34,7 +33,6 @@ function asSet(vals) {
  * Properties you can access:
  *   `layers`      `Array` of all layers
  *   `features`    `Map(featureID -> Feature)` of all features we know about
- *   `rbush`       `RBush` spatial index (boxes are in wgs84 [lon,lat] coords)
  *   `selected`    `Set` of hovered featureIDs
  *   `hovered`     `Set` of selected featureIDs
  *
@@ -54,8 +52,6 @@ export class PixiScene extends EventEmitter {
 
     this.features = new Map();     // Map of featureID -> Feature
     this.retained = new Map();     // Map of featureID -> frame last seen
-    this.boxes = new Map();        // Map of featureID -> box Object (rbush uses these)
-    this.rbush = new RBush();      // Spatial index (boxes are in wgs84 [lon,lat] coords)
 
     this.selected = new Set();     // Set of selected featureIDs
     this.selected.v = 0;           // Version counter that increments as the selection changes
@@ -212,18 +208,6 @@ export class PixiScene extends EventEmitter {
     // Update the `features` caches (here and in the layer)
     this.features.set(featureID, feature);
     layer.features.set(featureID, feature);
-
-    // Update RBush spatial index (feature must have an extent)
-    let box = this.boxes.get(featureID);
-    if (box) {
-      this.rbush.remove(box);
-    }
-    if (feature.extent) {
-      box = feature.extent.bbox();
-      box.id = featureID;
-      this.boxes.set(box);
-      this.rbush.insert(box);
-    }
   }
 
 
@@ -259,14 +243,7 @@ export class PixiScene extends EventEmitter {
     const featureID = feature.id;
     const layer = feature.layer;
 
-    // Remove any existing box with this id from the rbush
-    const box = this.boxes.get(featureID);
-    if (box) {
-      this.rbush.remove(box);
-    }
-
     layer.features.delete(featureID);
-    this.boxes.delete(featureID);
     this.retained.delete(featureID);
     this.features.delete(featureID);
 
