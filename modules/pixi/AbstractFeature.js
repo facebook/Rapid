@@ -12,9 +12,9 @@ import { Extent } from '@id-sdk/math';
  *   `type`           String describing what kind of Feature this is ('point', 'line', 'multipolygon')
  *   `geometry`       Array containing geometry info
  *   `style`          Object containing style info
- *   `label`          String containing the Feature's label
  *   `data`           Data bound to this Feature (like `__data__` from the D3.js days)
  *   `related`        Data related to this Feature (usually the parent)
+ *   `label`          String containing the Feature's label (if any)
  *   `visible`        `true` if the Feature is visible (`false` if it is culled)
  *   `interactive`    `true` if the Feature is interactive (emits Pixi events)
  *   `dirty`          `true` if the Feature needs to be rebuilt
@@ -35,10 +35,8 @@ export class AbstractFeature {
    * @param  layer    The Layer that owns this Feature
    * @param  id       Unique string to use for the name of this Feature
    * @param  parent   Parent container for this Feature.  The Feature's container will be added to it.
-   * @param  data     Data bound to this Feature (like `__data__` from the D3.js days)
-   * @param  related  Data related to this Feature (usually the parent)
    */
-  constructor(layer, id, parent, data, related) {
+  constructor(layer, id, parent) {
     const container = new PIXI.Container();
     this.container = container;
 
@@ -61,8 +59,8 @@ export class AbstractFeature {
     this.scene = layer.scene;
     this.renderer = layer.renderer;
     this.context = layer.context;
-    this.data = data;
-    this.related = related;
+    this.data = null;
+    this.related = null;
     this.v = -1;
     this.lod = 2;   // full detail
     this.halo = null;

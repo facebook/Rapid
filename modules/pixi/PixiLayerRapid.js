@@ -344,17 +344,6 @@ export class PixiLayerRapid extends AbstractLayer {
   renderPolygons(layer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
-    const wireframeEnabled = this.context.map().wireframeMode;
-    const width = wireframeEnabled ? 1 : 2;
-    const style = {
-      labelTint: color,
-      fill: { width: width, color: color, alpha: 0.3 },
-      // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
-    };
-
-    if (wireframeEnabled) {
-      style.fill.width = 0;
-    }
 
     data.polygons.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
@@ -365,7 +354,9 @@ export class PixiLayerRapid extends AbstractLayer {
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(this, featureID, layer, entity, null, geometry);
+        feature = new PixiFeatureMultipolygon(this, featureID, layer);
+        feature.data = entity;
+        feature.geometry = geometry;
         feature.rapidFeature = true;
 
 // shader experiment:
@@ -377,11 +368,17 @@ export class PixiLayerRapid extends AbstractLayer {
 // also custom `.shader` dont work on sprites at all, and so we'd have to switch to meshes maybe?
       }
 
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
 
       if (feature.dirty) {
+        const style = {
+          labelTint: color,
+          fill: { width: 2, color: color, alpha: 0.3 },
+          // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
+        };
         feature.style = style;
+
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
         scene.updateFeature(feature);
@@ -410,26 +407,25 @@ export class PixiLayerRapid extends AbstractLayer {
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
 
-        feature = new PixiFeatureLine(this, featureID, layer, entity, null, geometry);
+        feature = new PixiFeatureLine(this, featureID, layer);
+        feature.data = entity;
+        feature.geometry = geometry;
         feature.rapidFeature = true;
       }
 
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
 
       if (feature.dirty) {
-        const wireframeEnabled = this.context.map().wireframeMode;
-        const casingWidth = wireframeEnabled ? 0 : 5;
-        const strokeWidth = wireframeEnabled ? 1 : 3;
-
         const style = {
           labelTint: color,
-          casing: { width: casingWidth, color: 0x444444 },
-          stroke: { width: strokeWidth, color: color },
+          casing: { width: 5, color: 0x444444 },
+          stroke: { width: 3, color: color },
         };
         style.reversePoints = (entity.tags.oneway === '-1');
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
+
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
         scene.updateFeature(feature);
@@ -467,12 +463,14 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, layer, entity, null, entity.loc);
+        feature = new PixiFeaturePoint(this, featureID, layer);
+        feature.data = entity;
+        feature.geometry = entity.loc;
         feature.rapidFeature = true;
       }
 
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
 
       if (feature.dirty) {
         feature.style = pointStyle;
@@ -500,13 +498,15 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, layer, entity, null, entity.loc);
+        feature = new PixiFeaturePoint(this, featureID, layer);
+        feature.data = entity;
+        feature.geometry = entity.loc;
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
       }
 
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
 
       if (feature.dirty) {
         feature.style = vertexStyle;

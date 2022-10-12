@@ -272,20 +272,23 @@ export class PixiLayerCustomData extends AbstractLayer {
   renderPolygons(frame, projection, zoom, polygons) {
     const scene = this.scene;
 
-    const polyStyle = {
-      requireFill: true,    // no partial fill option - must fill fully
+    const POLY_STYLE = {
       fill: { color: 0x00ffff, alpha: 0.3, },
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     polygons.forEach(d => {
-      let feature = scene.getFeature(d.id);
+      const featureID = `${LAYERID}-${d.id}`;
+      let feature = scene.getFeature(featureID);
 
       const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, d.id, this.container, d, null, geometry, polyStyle );
+        feature = new PixiFeatureMultipolygon(this, featureID, this.container);
+        feature.data = d;
+        feature.geometry = geometry;
+        feature.style = POLY_STYLE;
         feature.container.cursor = 'not-allowed';
       }
 
@@ -309,15 +312,19 @@ export class PixiLayerCustomData extends AbstractLayer {
   renderLines(frame, projection, zoom, lines) {
     const scene = this.scene;
 
-    const lineStyle = {
+    const LINE_STYLE = {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     lines.forEach(d => {
-      let feature = scene.getFeature(d.id);
+      const featureID = `${LAYERID}-${d.id}`;
+      let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(this, d.id, this.container, d, null, d.geometry.coordinates, lineStyle );
+        feature = new PixiFeatureLine(this, featureID, this.container);
+        feature.data = d;
+        feature.geometry = d.geometry.coordinates;
+        feature.style = LINE_STYLE;
         feature.container.cursor = 'not-allowed';
       }
 
@@ -340,15 +347,19 @@ export class PixiLayerCustomData extends AbstractLayer {
    */
   renderPoints(frame, projection, zoom, points) {
     const scene = this.scene;
-    const pointStyle = { markerTint: 0x00ffff };
+    const POINT_STYLE = { markerTint: 0x00ffff };
 
     points.forEach(d => {
-      let feature = scene.getFeature(d.id);
+      const featureID = `${LAYERID}-${d.id}`;
+      let feature = scene.getFeature(featureID);
 
       if (!feature) {
         const coord = [d.geometry.coordinates[0], d.geometry.coordinates[1]]; //leave off any elevation or other data.
 
-        feature = new PixiFeaturePoint(this, d.id, this.container, d, null, coord, pointStyle );
+        feature = new PixiFeaturePoint(this, featureID, this.container);
+        feature.data = d;
+        feature.geometry = coord;
+        feature.style = POINT_STYLE;
         feature.container.cursor = 'not-allowed';
       }
 

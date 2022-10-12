@@ -36,7 +36,7 @@ export class PixiLayerOsm extends AbstractLayer {
     this._lastFilter = null;
 
     // On hover or selection, draw related vertices (above everything)
-    this._relatedIDs = new Set();
+    this._relatedOsmIDs = new Set();
     this._prevSelectV = -1;   // last seen selected version
     this._prevHoverV = -1;    // last seen hovered version
 
@@ -89,12 +89,12 @@ export class PixiLayerOsm extends AbstractLayer {
 
 
   /**
-   * _updateRelatedIDs
+   * _updateRelatedOsmIds
    * On any change in selection or hovering, we should check for which vertices
    * become interesting enough to render
-   * @param  ids   `Set` of ids that are selected or hovered
+   * @param  osmids   `Set` of OSM ids that are selected or hovered
    */
-  _updateRelatedIDs(ids) {
+  _updateRelatedOsmIds(osmids) {
     const context = this.context;
     const graph = context.graph();
     let seen = new Set();   // avoid infinite recursion, handle circular relations
@@ -119,24 +119,24 @@ export class PixiLayerOsm extends AbstractLayer {
           }
         }
       } else {  // a node
-        result.add(entity.id);
+        result.add(`osm-${entity.id}`);
       }
     }
 
-    ids.forEach(id => {
+    osmids.forEach(id => {
       const entity = graph.hasEntity(id);
       if (!entity) return;
 
       if (entity.type === 'node') {
-        result.add(entity.id);
+        result.add(`osm-${entity.id}`);
         graph.parentWays(entity).forEach(entity => addChildVertices(entity));
       } else {  // way, relation
         addChildVertices(entity);
       }
     });
 
-    this._relatedIDs = result;
-    return this._relatedIDs;
+    this._relatedOsmIDs = result;
+    return this._relatedOsmIDs;
   }
 
 
@@ -187,11 +187,20 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Has select/hover highlighting chagned?
       const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
-// console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
+console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
       if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
         this._prevSelectV = scene.selected.v;
         this._prevHoverV = scene.hovered.v;
-        this._updateRelatedIDs(highlightedIDs);
+
+// convert feature id to osm id
+let osmids = new Set();
+highlightedIDs.forEach(featureID => {
+  const feat = scene.getFeature(featureID);
+  if (feat && feat.data) {
+    osmids.add(feat.data.id);
+  }
+});
+        this._updateRelatedOsmIds(osmids);
       }
 
       let entities = context.history().intersects(map.extent());
@@ -283,7 +292,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const activeData = this.context.activeData();
 
     entities.forEach(entity => {
-      const featureID = `${entity.id}-fill`;
+      const featureID = `${LAYERID}-${entity.id}-fill`;
       let feature = scene.getFeature(featureID);
 
       if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
@@ -291,7 +300,7 @@ export class PixiLayerOsm extends AbstractLayer {
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, featureID, areaContainer, entity, null);
+        feature = new PixiFeatureMultipolygon(this, featureID, areaContainer);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -313,10 +322,10 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
 // deal with "active" here?
-      feature.interactive = !activeData.has(feature.id);
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
-      feature.drawing = scene.drawing.has(feature.id);
+      feature.interactive = !activeData.has(featureID);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
+      feature.drawing = scene.drawing.has(featureID);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -374,13 +383,14 @@ if (entity.type === 'relation') return;
 const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = getLevelContainer(layer.toString());
 
-      let feature = scene.getFeature(entity.id);
+      const featureID = `${LAYERID}-${entity.id}`;
+      let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureLine(this, entity.id, levelContainer, entity, null);
+        feature = new PixiFeatureLine(this, featureID, levelContainer);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -432,10 +442,10 @@ if (geom === 'line') {
       }
 
 // deal with "active" here?
-      feature.interactive = !activeData.has(feature.id);
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
-      feature.drawing = scene.drawing.has(feature.id);
+      feature.interactive = !activeData.has(featureID);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
+      feature.drawing = scene.drawing.has(featureID);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -470,8 +480,9 @@ if (geom === 'line') {
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
+      const featureID = `${LAYERID}-${entity.id}`;
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
-        entity.hasInterestingTags() || entity.isEndpoint(graph) || scene.drawing.has(entity.id) ||  entity.isIntersection(graph)
+        entity.hasInterestingTags() || entity.isEndpoint(graph) || scene.drawing.has(featureID) ||  entity.isIntersection(graph)
       );
     }
 
@@ -480,18 +491,19 @@ if (geom === 'line') {
       if (zoom >= 16 && isInterestingVertex(node)) {
         parentContainer = vertexContainer;
       }
-      if (this._relatedIDs.has(node.id)) {
+      if (this._relatedOsmIDs.has(node.id)) {
         parentContainer = selectedContainer;
       }
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
 
-      let feature = scene.getFeature(node.id);
+      const featureID = `${LAYERID}-${node.id}`;
+      let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeaturePoint(this, node.id, parentContainer, node, null, node.loc);
+        feature = new PixiFeaturePoint(this, featureID, parentContainer);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -548,10 +560,10 @@ feature.related = graph.parentWays(node);
       }
 
 // deal with "active" here?
-      feature.interactive = !activeData.has(feature.id);
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
-      feature.drawing = scene.drawing.has(feature.id);
+      feature.interactive = !activeData.has(featureID);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
+      feature.drawing = scene.drawing.has(featureID);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -580,13 +592,14 @@ feature.related = graph.parentWays(node);
     const activeData = this.context.activeData();
 
     entities.forEach(node => {
-      let feature = scene.getFeature(node.id);
+      const featureID = `${LAYERID}-${node.id}`;
+      let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeaturePoint(this, node.id, pointContainer, node, null, node.loc);
+        feature = new PixiFeaturePoint(this, featureID, pointContainer);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -627,9 +640,9 @@ feature.related = graph.parentWays(node);
       }
 
 // deal with "active" here?
-      feature.interactive = !activeData.has(feature.id);
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
+      feature.interactive = !activeData.has(featureID);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
 
       if (feature.dirty) {
         feature.update(projection, zoom);
@@ -707,14 +720,16 @@ feature.related = graph.parentWays(node);
     });
 
     midpoints.forEach(midpoint => {
-      let feature = scene.getFeature(midpoint.id);
+      const featureID = `${LAYERID}-${midpoint.id}`;
+      let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
       if (!feature) {
         const style = { markerName: 'midpoint' };
-        feature = new PixiFeaturePoint(this, midpoint.id, selectedContainer, midpoint, midpoint.way, midpoint.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, selectedContainer);
+        feature.style = style;
       }
 
       // Something about the midpoint has changed
@@ -722,14 +737,15 @@ feature.related = graph.parentWays(node);
       if (feature.v !== midpoint.loc || feature.dirty) {
         feature.v = midpoint.loc;
         feature.data = midpoint;
+        feature.related = midpoint.way;
         feature.geometry = midpoint.loc;
         feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }
 
 // deal with "active" here?
-      feature.interactive = !activeData.has(feature.id);
-      feature.selected = scene.selected.has(feature.id);
-      feature.hovered = scene.hovered.has(feature.id);
+      feature.interactive = !activeData.has(featureID);
+      feature.selected = scene.selected.has(featureID);
+      feature.hovered = scene.hovered.has(featureID);
       //Note that there is no 'drawing' feature flag here,
       // unlike the other OSM feature types. Because points are
       // standalone, you can never be in the middle of drawing them.

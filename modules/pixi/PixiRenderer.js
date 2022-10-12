@@ -160,12 +160,12 @@ export class PixiRenderer extends EventEmitter {
     const selectedIDs = this.context.selectedIDs();
     const selectedData = this.context.selectedData();
 
-    // We want feature ids here, not datum ids. (Only for actual OSM features are these the same)
+    // We want feature ids here, not datum ids.
     // hacky conversion to get around the id mismatch:
     const featureIDs = selectedIDs.map(id => {
       const datum = selectedData.get(id);
       if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
-        return id;
+        return `osm-${id}`;
       } else if (datum && datum.__fbid__) {
         return `rapid-${id}`;
       } else {  // there are other selectable things - we will not select-style them for now :(
@@ -177,6 +177,7 @@ export class PixiRenderer extends EventEmitter {
     this.render();
   }
 
+
   /**
    * _onHoverChange
    * Respond to any change in hover
@@ -185,14 +186,21 @@ export class PixiRenderer extends EventEmitter {
     let hoverIDs = new Set();
     let hoverData = [];
 
-    if (eventData.target && eventData.data) {
-      hoverIDs.add(eventData.target.name);  // the featureID is here (e.g. osm id)
+    if (eventData.feature && eventData.data) {
+      const featureID = eventData.feature.id;
+      const layerID = eventData.feature.layer.id;
+      hoverIDs.add(featureID);
 
-// experiment: hover related too (for child nodes and midpoints)
-if (eventData.related) {
+// experiment: deal with fills
+if (/-fill$/.test(featureID)) {
+  hoverIDs.add(featureID.replace('-fill', ''));
+}
+
+// experiment: hover related data too (for child nodes and midpoints)
+if (eventData.related && layerID === 'osm') {
   const related = new Set([].concat(eventData.related));  // coax related data into a Set
   for (const r of related) {
-    hoverIDs.add(r.id); // feature.id only same as related.id for OSM?
+    hoverIDs.add(`osm-${r.id}`);
   }
 }
 

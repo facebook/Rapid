@@ -124,7 +124,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(this, featureID, this.container, d, null, d.geometry.coordinates, LINESTYLE);
+        feature = new PixiFeatureLine(this, featureID, this.container);
+        feature.data = d;
+        feature.geometry = d.geometry.coordinates;
+        feature.style = LINESTYLE;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
       }
 
@@ -150,8 +153,11 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
 
-        const parentSequence = seenSequences[d.sequence_id];
-        feature = new PixiFeaturePoint(this, featureID, this.container, d, parentSequence, d.loc, style);
+        feature = new PixiFeaturePoint(this, featureID, this.container);
+        feature.data = d;
+        feature.related = seenSequences[d.sequence_id];
+        feature.geometry = d.loc;
+        feature.style = style;
       }
 
       if (feature.dirty) {

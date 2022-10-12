@@ -22,20 +22,14 @@ export class PixiFeaturePoint extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  layer     The Layer that owns this Feature
-   * @param  id        Unique string to use for the name of this Feature
-   * @param  parent    Parent container for this Feature.  The Feature will be added to it.
-   * @param  data      Data bound to this Feature (like `__data__` from the D3.js days)
-   * @param  related   Data related to this Feature (usually the parent)
-   * @param  geometry  `Array` containing geometry data
-   * @param  style     `Object` containing style data
+   * @param  layer   The Layer that owns this Feature
+   * @param  id      Unique string to use for the name of this Feature
+   * @param  parent  Parent container for this Feature.  The Feature will be added to it.
    */
-  constructor(layer, id, parent, data, related, geometry, style) {
-    super(layer, id, parent, data, related);
+  constructor(layer, id, parent) {
+    super(layer, id, parent);
 
     this.type = 'point';
-    this.geometry = geometry;
-    this.style = style || {};
 
     this._oldvfLength = 0;      // to watch for change in # of viewfield sprites
     this._isCircular = false;   // set true to use a circular halo and hit area

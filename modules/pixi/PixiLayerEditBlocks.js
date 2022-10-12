@@ -94,8 +94,8 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   renderEditBlocks(frame, projection, zoom, blocks) {
     const scene = this.scene;
 
-    blocks.forEach(block => {
-      const featureID = block.locationSetID;
+    blocks.forEach(d => {
+      const featureID = `${LAYERID}-${d.locationSetID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -103,12 +103,15 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        const style = {
+        const BLOCK_STYLE = {
           requireFill: true,    // no partial fill option - must fill fully
           fill: { pattern: 'construction', color: 0x000001, alpha: 0.7 }
         };
 
-        feature = new PixiFeatureMultipolygon(this, featureID, this.container, block, null, geometry, style);
+        feature = new PixiFeatureMultipolygon(this, featureID, this.container);
+        feature.data = d;
+        feature.geometry = geometry;
+        feature.style = BLOCK_STYLE;
         feature.container.cursor = 'not-allowed';
       }
 

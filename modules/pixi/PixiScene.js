@@ -28,7 +28,12 @@ function asSet(vals) {
 /**
  * PixiScene
  * The "scene" maintains useful collections of Features.
- * Features are organized into layers that can be enabled or disabled if needed.
+ * Features are organized into Layers that can be enabled or disabled if needed.
+ *
+ * A note on identifiers:
+ *  `layerID` - Unique identifier for the layer, for example 'osm'
+ *  `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
+ *  `featureID` - Unique identifier for the feature, for example 'osm-w-123'
  *
  * Properties you can access:
  *   `layers`      `Array` of all layers

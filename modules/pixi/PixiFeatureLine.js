@@ -26,20 +26,14 @@ export class PixiFeatureLine extends AbstractFeature {
 
   /**
    * @constructor
-   * @param  layer     The Layer that owns this Feature
-   * @param  id        Unique string to use for the name of this Feature
-   * @param  parent    Parent container for this Feature.  The Feature will be added to it.
-   * @param  data      Data bound to this Feature (like `__data__` from the D3.js days)
-   * @param  related   Data related to this Feature (usually the parent)
-   * @param  geometry  `Array` containing geometry data
-   * @param  style     `Object` containing style data
+   * @param  layer   The Layer that owns this Feature
+   * @param  id      Unique string to use for the name of this Feature
+   * @param  parent  Parent container for this Feature.  The Feature will be added to it.
    */
-  constructor(layer, id, parent, data, related, geometry, style) {
-    super(layer, id, parent, data, related);
+  constructor(layer, id, parent) {
+    super(layer, id, parent);
 
     this.type = 'line';
-    this.geometry = geometry || [];    // Array of wgs84 coordinates [lon, lat]
-    this.style = style || {};
     this.points = [];
 
     const casing = new PIXI.Graphics();
