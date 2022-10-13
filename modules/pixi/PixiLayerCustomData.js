@@ -76,6 +76,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._enabled = val;
   }
 
+
   /**
    * visible
    */

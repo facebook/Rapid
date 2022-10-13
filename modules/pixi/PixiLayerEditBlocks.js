@@ -24,6 +24,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     this._oldk = 0;
   }
 
+
   /**
    * enabled
    * This layer should always be enabled

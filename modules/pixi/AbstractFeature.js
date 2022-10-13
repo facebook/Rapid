@@ -149,11 +149,10 @@ export class AbstractFeature {
     return this.container.visible;
   }
   set visible(val) {
-    if (this.container.visible !== val) {
-      this.container.visible = val;
-      this.updateHalo();
-      this._labelDirty = true;
-    }
+    if (val === this.container.visible) return;  // no change
+    this.container.visible = val;
+    this.updateHalo();
+    this._labelDirty = true;
   }
 
 
@@ -165,11 +164,10 @@ export class AbstractFeature {
     return this.container.interactive;
   }
   set interactive(val) {
-    if (this.container.interactive !== val) {
-      this.container.buttonMode = val;
-      this.container.interactive = val;
-      this.container.interactiveChildren = val;
-    }
+    if (val === this.container.interactive) return;  // no change
+    this.container.buttonMode = val;
+    this.container.interactive = val;
+    this.container.interactiveChildren = val;
   }
 
 
@@ -196,10 +194,9 @@ export class AbstractFeature {
     return this._hovered;
   }
   set hovered(val) {
-    if (this._hovered !== val) {
-      this._hovered = val;
-      this._styleDirty = true;
-    }
+    if (val === this._hovered) return;  // no change
+    this._hovered = val;
+    this._styleDirty = true;
   }
 
 
@@ -211,10 +208,9 @@ export class AbstractFeature {
     return this._selected;
   }
   set selected(val) {
-    if (this._selected !== val) {
-      this._selected = val;
-      this._styleDirty = true;
-    }
+    if (val === this._selected) return;  // no change
+    this._selected = val;
+    this._styleDirty = true;
   }
 
   /**
@@ -225,10 +221,9 @@ export class AbstractFeature {
     return this._drawing;
   }
   set drawing(val) {
-    if (this._drawing !== val) {
-      this._drawing = val;
-      this._styleDirty = true;
-    }
+    if (val === this._drawing) return;  // no change
+    this._drawing = val;
+    this._styleDirty = true;
   }
 
   /**
@@ -289,10 +284,9 @@ export class AbstractFeature {
     return this._label;
   }
   set label(str) {
-    if (this._label !== str) {
-      this._label = str;
-      this._labelDirty = true;
-    }
+    if (str === this._label) return;  // no change
+    this._label = str;
+    this._labelDirty = true;
   }
 
 

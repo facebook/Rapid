@@ -101,6 +101,7 @@ export class AbstractLayer {
     return this.container.name;
   }
 
+
   /**
    * supported
    * Is this Layer supported? (i.e. do we even show it in lists?)
@@ -110,6 +111,7 @@ export class AbstractLayer {
     return true;
   }
 
+
   /**
    * zIndex
    * Where this Layer sits compared to other Layers
@@ -118,8 +120,10 @@ export class AbstractLayer {
     return this.container.zIndex;
   }
   set zIndex(val) {
+    if (val === this.container.zIndex) return;  // no change
     this.container.zIndex = val;
   }
+
 
   /**
    * visible
@@ -130,6 +134,7 @@ export class AbstractLayer {
     return this.container.visible;
   }
   set visible(val) {
+    if (val === this.container.visible) return;  // no change
     this.container.visible = val;
     if (!val) {
       for (const feature of this.features.values()) {
@@ -137,6 +142,7 @@ export class AbstractLayer {
       }
     }
   }
+
 
   /**
    * enabled
@@ -146,6 +152,7 @@ export class AbstractLayer {
     return this._enabled;
   }
   set enabled(val) {
+    if (val === this._enabled) return;  // no change
     this._enabled = val;
     this.visible = val;
     this.dirtyLayer();
