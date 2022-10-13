@@ -80,6 +80,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         feature.geometry = d.loc;
         feature.style = markerStyle;
         feature.parent = this.container;
+        scene.addFeature(feature);
         // was here before
         // if (feature.icon) {
         //  // mathematically 0,-15 is center of marker, move up slightly
@@ -87,15 +88,9 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         // }
       }
 
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.syncFeatureState(feature);
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 

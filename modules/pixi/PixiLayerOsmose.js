@@ -73,20 +73,14 @@ export class PixiLayerOsmose extends AbstractLayer {
         feature.geometry = d.loc;
         feature.style = style;
         feature.parent = this.container;
-
         // // mathematically 0,-15 is center of marker, move up slightly
         // icon.position.set(0, -16);
+        scene.addFeature(feature);
       }
 
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.syncFeatureState(feature);
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 

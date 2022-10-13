@@ -125,7 +125,7 @@ export class AbstractFeature {
    * @param  zoom        Effective zoom to use for rendering
    */
   update() {
-    if (!this.dirty) return;  // no change
+    if (!this.dirty) return;  // nothing to do
 
     this._geometryDirty = false;
     this._styleDirty = false;
@@ -171,6 +171,7 @@ export class AbstractFeature {
       this.container.interactiveChildren = val;
     }
   }
+
 
   /**
    * dirty

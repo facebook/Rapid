@@ -92,6 +92,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
         feature.geometry = d.loc;
         feature.style = style;
         feature.parent = this.container;
+        scene.addFeature(feature);
 
         // const marker = feature.marker;
         // const ICONSIZE = 24;
@@ -99,15 +100,9 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
         // marker.height = ICONSIZE;
       }
 
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.syncFeatureState(feature);
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 

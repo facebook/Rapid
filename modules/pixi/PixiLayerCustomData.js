@@ -291,13 +291,11 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature.style = POLY_STYLE;
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
+        scene.addFeature(feature);
       }
 
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
+      scene.syncFeatureState(feature);
+      feature.update(projection, zoom);
       scene.retainFeature(feature, frame);
     });
   }
@@ -328,13 +326,11 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature.style = LINE_STYLE;
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
+        scene.addFeature(feature);
       }
 
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
+      scene.syncFeatureState(feature);
+      feature.update(projection, zoom);
       scene.retainFeature(feature, frame);
     });
   }
@@ -356,21 +352,17 @@ export class PixiLayerCustomData extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        const coord = [d.geometry.coordinates[0], d.geometry.coordinates[1]]; //leave off any elevation or other data.
-
         feature = new PixiFeaturePoint(this, featureID);
         feature.data = d;
-        feature.geometry = coord;
+        feature.geometry = [d.geometry.coordinates[0], d.geometry.coordinates[1]];  // omit elevation or other data.
         feature.style = POINT_STYLE;
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
+        scene.addFeature(feature);
       }
 
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
+      scene.syncFeatureState(feature);
+      feature.update(projection, zoom);
       scene.retainFeature(feature, frame);
     });
   }

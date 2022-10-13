@@ -289,7 +289,6 @@ highlightedIDs.forEach(featureID => {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
     const scene = this.scene;
     const graph = this.context.graph();
-    const activeData = this.context.activeData();
 
     entities.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}-fill`;
@@ -302,7 +301,10 @@ highlightedIDs.forEach(featureID => {
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, featureID);
         feature.parent = areaContainer;
+        scene.addFeature(feature);
       }
+
+      scene.syncFeatureState(feature);
 
       // Something has changed since the last time we've styled this feature.
       const version = (entity.v || 0);
@@ -322,21 +324,8 @@ highlightedIDs.forEach(featureID => {
         feature.style = style;
       }
 
-// deal with "active" here?
-      feature.interactive = !activeData.has(featureID);
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
-      feature.drawing = scene.drawing.has(featureID);
-
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 
@@ -352,7 +341,6 @@ highlightedIDs.forEach(featureID => {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
     const scene = this.scene;
     const graph = this.context.graph();
-    const activeData = this.context.activeData();
 
     function getLevelContainer(level) {
       let levelContainer = lineContainer.getChildByName(level);
@@ -392,7 +380,11 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       }
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
+        scene.addFeature(feature);
       }
+
+      scene.syncFeatureState(feature);
+      feature.parent = levelContainer;    // Change layer stacking if necessary
 
       // Something has changed since the last time we've styled this feature.
       const version = (entity.v || 0);
@@ -437,22 +429,8 @@ if (geom === 'line') {
         feature.label = utilDisplayName(entity);
       }
 
-      feature.parent = levelContainer;  // Change parent if necessary
-// deal with "active" here?
-      feature.interactive = !activeData.has(featureID);
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
-      feature.drawing = scene.drawing.has(featureID);
-
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 
@@ -468,7 +446,6 @@ if (geom === 'line') {
     const context = this.context;
     const scene = this.scene;
     const graph = context.graph();
-    const activeData = this.context.activeData();
 
     // Most vertices should be children of the vertex container
     const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
@@ -501,7 +478,11 @@ if (geom === 'line') {
       }
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
+        scene.addFeature(feature);
       }
+
+      scene.syncFeatureState(feature);
+      feature.parent = parentContainer;   // change layer stacking if necessary
 
       // Something has changed since the last time we've styled this feature.
       const version = (node.v || 0);
@@ -551,22 +532,8 @@ feature.related = graph.parentWays(node);
         feature.label = utilDisplayName(node);
       }
 
-      feature.parent = parentContainer;   // change parent if necessary
-// deal with "active" here?
-      feature.interactive = !activeData.has(featureID);
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
-      feature.drawing = scene.drawing.has(featureID);
-
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 
@@ -582,7 +549,6 @@ feature.related = graph.parentWays(node);
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
     const scene = this.scene;
     const graph = this.context.graph();
-    const activeData = this.context.activeData();
 
     entities.forEach(node => {
       const featureID = `${LAYERID}-${node.id}`;
@@ -594,7 +560,10 @@ feature.related = graph.parentWays(node);
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
         feature.parent = pointContainer;
+        scene.addFeature(feature);
       }
+
+      scene.syncFeatureState(feature);
 
       // Something has changed since the last time we've styled this feature.
       const version = (node.v || 0);
@@ -633,20 +602,8 @@ feature.related = graph.parentWays(node);
         feature.label = utilDisplayName(node);
       }
 
-// deal with "active" here?
-      feature.interactive = !activeData.has(featureID);
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
-
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 
@@ -662,7 +619,6 @@ feature.related = graph.parentWays(node);
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
     const scene = this.scene;
     const graph = this.context.graph();
-    const activeData = this.context.activeData();
 
     // Midpoints should be drawn above everything
     const mapUIContainer = this.scene.getLayer('map-ui').container;
@@ -725,7 +681,10 @@ feature.related = graph.parentWays(node);
         feature = new PixiFeaturePoint(this, featureID);
         feature.style = style;
         feature.parent = selectedContainer;
+        scene.addFeature(feature);
       }
+
+      scene.syncFeatureState(feature);
 
       // Something about the midpoint has changed
       // Here we use the midpoint location as it's "version"
@@ -737,23 +696,8 @@ feature.related = graph.parentWays(node);
         feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }
 
-// deal with "active" here?
-      feature.interactive = !activeData.has(featureID);
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
-      //Note that there is no 'drawing' feature flag here,
-      // unlike the other OSM feature types. Because points are
-      // standalone, you can never be in the middle of drawing them.
-
-      if (feature.dirty) {
-        feature.update(projection, zoom);
-        scene.updateFeature(feature);
-      }
-
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      feature.update(projection, zoom);
+      scene.retainFeature(feature, frame);
     });
   }
 

@@ -204,26 +204,37 @@ export class PixiScene extends EventEmitter {
 
   /**
    * addFeature
-   * Add a feature to the scene.
+   * Add a feature to the scene and layer caches.
    * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   addFeature(feature) {
     const featureID = feature.id;
     const layer = feature.layer;
 
-    // Update the `features` caches (here and in the layer)
     this.features.set(featureID, feature);
     layer.features.set(featureID, feature);
   }
 
 
   /**
-   * updateFeature
-   * Call this whenever a Feature has changed.
+   * syncFeatureState
+   * Call this to set the feature's various state properties (e.g. selected, hovered, etc.)
+   *
+   * Counterintuitively, the scene needs to be the source of truth for these properties,
+   * because a feature can be "selected" or "drawing" even before it has been created.
+   *
+   * Setting these state properties may dirty the feature if the it causes the state to change.
+   * Therefore this should be called after the feature has been created but before any updates happen.
+   *
    * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
-  updateFeature(feature) {
-    this.addFeature(feature);  // they do the same thing
+  syncFeatureState(feature) {
+    const featureID = feature.id;
+    const activeData = this.context.activeData();
+    feature.interactive = !activeData.has(featureID);
+    feature.selected = this.selected.has(featureID);
+    feature.hovered = this.hovered.has(featureID);
+    feature.drawing = this.drawing.has(featureID);
   }
 
 
@@ -235,8 +246,10 @@ export class PixiScene extends EventEmitter {
    * @param  frame     Integer frame being rendered
    */
   retainFeature(feature, frame) {
-    const featureID = feature.id;
-    this.retained.set(featureID, frame);
+    if (feature.lod > 0) {
+      feature.visible = true;
+      this.retained.set(feature.id, frame);
+    }
   }
 
 

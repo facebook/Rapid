@@ -70,7 +70,7 @@ export class PixiFeatureLine extends AbstractFeature {
    * @param  zoom        Effective zoom to use for rendering
    */
   update(projection, zoom) {
-    if (!this.dirty) return;  // no change
+    if (!this.dirty) return;  // nothing to do
 
     const wireframeMode = this.context.map().wireframeMode;
     // For now, if either geometry or style is dirty, we just update the whole line

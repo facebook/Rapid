@@ -77,7 +77,7 @@ export class PixiFeaturePoint extends AbstractFeature {
    * @param  zoom        Effective zoom to use for rendering
    */
   update(projection, zoom) {
-    if (!this.dirty) return;  // no change
+    if (!this.dirty) return;  // nothing to do
 
     this.updateGeometry(projection);
     this.updateStyle(zoom);

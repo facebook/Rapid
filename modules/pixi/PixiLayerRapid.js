@@ -359,6 +359,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.geometry = geometry;
         feature.parent = parentContainer;
         feature.rapidFeature = true;
+        scene.addFeature(feature);
 
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
@@ -369,8 +370,7 @@ export class PixiLayerRapid extends AbstractLayer {
 // also custom `.shader` dont work on sprites at all, and so we'd have to switch to meshes maybe?
       }
 
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
+      scene.syncFeatureState(feature);
 
       if (feature.dirty) {
         const style = {
@@ -382,13 +382,9 @@ export class PixiLayerRapid extends AbstractLayer {
 
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
-        scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.retainFeature(feature, frame);
     });
   }
 
@@ -413,10 +409,10 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.geometry = geometry;
         feature.parent = parentContainer;
         feature.rapidFeature = true;
+        scene.addFeature(feature);
       }
 
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
+      scene.syncFeatureState(feature);
 
       if (feature.dirty) {
         const style = {
@@ -430,13 +426,9 @@ export class PixiLayerRapid extends AbstractLayer {
 
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
-        scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.retainFeature(feature, frame);
     });
   }
 
@@ -470,10 +462,10 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.geometry = entity.loc;
         feature.parent = parentContainer;
         feature.rapidFeature = true;
+        scene.addFeature(feature);
       }
 
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
+      scene.syncFeatureState(feature);
 
       if (feature.dirty) {
         feature.style = pointStyle;
@@ -484,15 +476,10 @@ export class PixiLayerRapid extends AbstractLayer {
         if (!feature.label && housenumber) {
           feature.label = housenumber;
         }
-
         feature.update(projection, zoom);
-        scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.retainFeature(feature, frame);
     });
 
 
@@ -507,10 +494,10 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.parent = parentContainer;
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
+        scene.addFeature(feature);
       }
 
-      feature.selected = scene.selected.has(featureID);
-      feature.hovered = scene.hovered.has(featureID);
+      scene.syncFeatureState(feature);
 
       if (feature.dirty) {
         feature.style = vertexStyle;
@@ -521,15 +508,10 @@ export class PixiLayerRapid extends AbstractLayer {
         if (!feature.label && housenumber) {
           feature.label = housenumber;
         }
-
         feature.update(projection, zoom);
-        scene.updateFeature(feature);
       }
 
-      if (feature.lod > 0) {
-        feature.visible = true;
-        scene.retainFeature(feature, frame);
-      }
+      scene.retainFeature(feature, frame);
     });
 
   }
