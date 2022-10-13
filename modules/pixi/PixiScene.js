@@ -272,7 +272,7 @@ export class PixiScene extends EventEmitter {
 
   /**
    * drawingFeatures
-   * Mark these features as `drawing` if they are in the scene.
+   * Mark these featureIDs as `drawing`
    * A few things to note:
    * - the `featureID` may not exist in the scene yet
    *   (for example, a new point that hasn't yet been rendered)
@@ -286,28 +286,16 @@ export class PixiScene extends EventEmitter {
 
     // Remove drawing status where not needed
     for (const featureID of this.drawing) {
-      if (toDraw.has(featureID)) continue; // it should stay drawing
-
+      if (toDraw.has(featureID)) continue;   // it should stay drawing
       this.drawing.delete(featureID);
       didChange = true;
-
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.drawing = false;
-      }
     }
 
     // Add drawing where needed
     for (const featureID of toDraw) {
-      if (this.drawing.has(featureID)) continue; // it's already hovered
-
+      if (this.drawing.has(featureID)) continue;   // it's already drawing
       this.drawing.add(featureID);
       didChange = true;
-
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.drawing = true;
-      }
     }
 
     if (didChange) {
@@ -319,7 +307,7 @@ export class PixiScene extends EventEmitter {
 
   /**
    * select
-   * Mark these features as `selected`
+   * Mark these featureIDs as `selected`
    * A few things to note:
    * - the `featureID` may not exist in the scene yet
    *   (for example, a new point that hasn't yet been rendered)
@@ -334,27 +322,15 @@ export class PixiScene extends EventEmitter {
     // Remove select where not needed
     for (const featureID of this.selected) {
       if (toSelect.has(featureID)) continue;   // it should stay selected
-
       this.selected.delete(featureID);
       didChange = true;
-
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.selected = false;
-      }
     }
 
     // Add select where needed
     for (const featureID of toSelect) {
       if (this.selected.has(featureID)) continue;   // it's already selected
-
       this.selected.add(featureID);
       didChange = true;
-
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.selected = true;
-      }
     }
 
     if (didChange) {
@@ -365,7 +341,7 @@ export class PixiScene extends EventEmitter {
 
   /**
    * hover
-   * Mark these features as `hovered` if they are in the scene.
+   * Mark these featureIDs as `hovered`
    * A few things to note:
    * - the `featureID` may not exist in the scene yet
    *   (for example, a new point that hasn't yet been rendered)
@@ -380,27 +356,15 @@ export class PixiScene extends EventEmitter {
     // Remove hover where not needed
     for (const featureID of this.hovered) {
       if (toHover.has(featureID)) continue;   // it should stay hovered
-
       this.hovered.delete(featureID);
       didChange = true;
-
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.hovered = false;
-      }
     }
 
     // Add hover where needed
     for (const featureID of toHover) {
       if (this.hovered.has(featureID)) continue;   // it's already hovered
-
       this.hovered.add(featureID);
       didChange = true;
-
-      const feature = this.features.get(featureID);
-      if (feature) {
-        feature.hovered = true;
-      }
     }
 
     if (didChange) {
