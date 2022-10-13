@@ -15,6 +15,7 @@ import { Extent } from '@id-sdk/math';
  *   `data`           Data bound to this Feature (like `__data__` from the D3.js days)
  *   `related`        Data related to this Feature (usually the parent)
  *   `label`          String containing the Feature's label (if any)
+ *   `parent`         PIXI.Container() for the parent - this Feature's container will be added to it.
  *   `visible`        `true` if the Feature is visible (`false` if it is culled)
  *   `interactive`    `true` if the Feature is interactive (emits Pixi events)
  *   `dirty`          `true` if the Feature needs to be rebuilt
@@ -34,9 +35,8 @@ export class AbstractFeature {
    * @constructor
    * @param  layer    The Layer that owns this Feature
    * @param  id       Unique string to use for the name of this Feature
-   * @param  parent   Parent container for this Feature.  The Feature's container will be added to it.
    */
-  constructor(layer, id, parent) {
+  constructor(layer, id) {
     const container = new PIXI.Container();
     this.container = container;
 
@@ -44,10 +44,6 @@ export class AbstractFeature {
     container.name = id;
     container.sortableChildren = false;
     container.visible = true;
-
-    if (parent) {
-      container.setParent(parent);
-    }
 
     // By default, make the Feature interactive
     container.buttonMode = true;
@@ -295,6 +291,23 @@ export class AbstractFeature {
     if (this._label !== str) {
       this._label = str;
       this._labelDirty = true;
+    }
+  }
+
+
+  /**
+   * parent
+   * @param  val  PIXI.Container() for the parent - this Feature's container will be added to it.
+   */
+  get parent() {
+    return this.container.parent;
+  }
+  set parent(val) {
+    const currParent = this.container.parent;
+    if (val && val !== currParent) {   // put this feature under a different parent container
+      this.container.setParent(val);
+    } else if (!val && currParent) {   // remove this feature from its parent container
+      currParent.removeChild(this.container);
     }
   }
 

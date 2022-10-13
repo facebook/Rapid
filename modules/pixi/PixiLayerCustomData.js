@@ -285,10 +285,11 @@ export class PixiLayerCustomData extends AbstractLayer {
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, featureID, this.container);
+        feature = new PixiFeatureMultipolygon(this, featureID);
         feature.data = d;
         feature.geometry = geometry;
         feature.style = POLY_STYLE;
+        feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
       }
 
@@ -321,10 +322,11 @@ export class PixiLayerCustomData extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeatureLine(this, featureID, this.container);
+        feature = new PixiFeatureLine(this, featureID);
         feature.data = d;
         feature.geometry = d.geometry.coordinates;
         feature.style = LINE_STYLE;
+        feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
       }
 
@@ -356,10 +358,11 @@ export class PixiLayerCustomData extends AbstractLayer {
       if (!feature) {
         const coord = [d.geometry.coordinates[0], d.geometry.coordinates[1]]; //leave off any elevation or other data.
 
-        feature = new PixiFeaturePoint(this, featureID, this.container);
+        feature = new PixiFeaturePoint(this, featureID);
         feature.data = d;
         feature.geometry = coord;
         feature.style = POINT_STYLE;
+        feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
       }
 
@@ -368,7 +371,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         scene.updateFeature(feature);
       }
 
-      this.scene.retainFeature(feature, frame);
+      scene.retainFeature(feature, frame);
     });
   }
 

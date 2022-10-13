@@ -341,7 +341,7 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * renderPolygons
    */
-  renderPolygons(layer, dataset, graph, frame, projection, zoom, data) {
+  renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -354,9 +354,10 @@ export class PixiLayerRapid extends AbstractLayer {
         const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(this, featureID, layer);
+        feature = new PixiFeatureMultipolygon(this, featureID);
         feature.data = entity;
         feature.geometry = geometry;
+        feature.parent = parentContainer;
         feature.rapidFeature = true;
 
 // shader experiment:
@@ -395,7 +396,7 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * renderLines
    */
-  renderLines(layer, dataset, graph, frame, projection, zoom, data) {
+  renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -407,9 +408,10 @@ export class PixiLayerRapid extends AbstractLayer {
         const geojson = entity.asGeoJSON(graph);
         const geometry = geojson.coordinates;
 
-        feature = new PixiFeatureLine(this, featureID, layer);
+        feature = new PixiFeatureLine(this, featureID);
         feature.data = entity;
         feature.geometry = geometry;
+        feature.parent = parentContainer;
         feature.rapidFeature = true;
       }
 
@@ -442,7 +444,7 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * renderPoints
    */
-  renderPoints(layer, dataset, graph, frame, projection, zoom, data) {
+  renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
@@ -463,9 +465,10 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, layer);
+        feature = new PixiFeaturePoint(this, featureID);
         feature.data = entity;
         feature.geometry = entity.loc;
+        feature.parent = parentContainer;
         feature.rapidFeature = true;
       }
 
@@ -498,9 +501,10 @@ export class PixiLayerRapid extends AbstractLayer {
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, layer);
+        feature = new PixiFeaturePoint(this, featureID);
         feature.data = entity;
         feature.geometry = entity.loc;
+        feature.parent = parentContainer;
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
       }

@@ -87,10 +87,11 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
           markerTexture: spritesheet.textures[d.value + '.svg']
         };
 
-        feature = new PixiFeaturePoint(this, featureID, this.container);
+        feature = new PixiFeaturePoint(this, featureID);
         feature.data = d;
         feature.geometry = d.loc;
         feature.style = style;
+        feature.parent = this.container;
 
         // const marker = feature.marker;
         // const ICONSIZE = 24;

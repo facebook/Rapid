@@ -75,10 +75,11 @@ export class PixiLayerImproveOsm extends AbstractLayer {
           iconName: d.icon
         };
 
-        feature = new PixiFeaturePoint(this, featureID, this.container);
+        feature = new PixiFeaturePoint(this, featureID);
         feature.data = d;
         feature.geometry = d.loc;
         feature.style = markerStyle;
+        feature.parent = this.container;
         // was here before
         // if (feature.icon) {
         //  // mathematically 0,-15 is center of marker, move up slightly

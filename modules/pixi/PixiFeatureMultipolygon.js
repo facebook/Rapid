@@ -28,10 +28,9 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
   /**
    * @param  layer   The Layer that owns this Feature
    * @param  id      Unique string to use for the name of this Feature
-   * @param  parent  Parent container for this Feature.  The Feature will be added to it.
    */
-  constructor(layer, id, parent) {
-    super(layer, id, parent);
+  constructor(layer, id) {
+    super(layer, id);
 
     this.type = 'multipolygon';
     this.ssrdata = null;

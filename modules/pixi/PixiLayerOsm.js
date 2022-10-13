@@ -300,7 +300,8 @@ highlightedIDs.forEach(featureID => {
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, featureID, areaContainer);
+        feature = new PixiFeatureMultipolygon(this, featureID);
+        feature.parent = areaContainer;
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -390,7 +391,7 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeatureLine(this, featureID, levelContainer);
+        feature = new PixiFeatureLine(this, featureID);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -436,11 +437,7 @@ if (geom === 'line') {
         feature.label = utilDisplayName(entity);
       }
 
-      // Change parent if necessary
-      if (feature.container.parent !== levelContainer) {
-        feature.container.setParent(levelContainer);
-      }
-
+      feature.parent = levelContainer;  // Change parent if necessary
 // deal with "active" here?
       feature.interactive = !activeData.has(featureID);
       feature.selected = scene.selected.has(featureID);
@@ -503,7 +500,7 @@ if (geom === 'line') {
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, parentContainer);
+        feature = new PixiFeaturePoint(this, featureID);
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -554,11 +551,7 @@ feature.related = graph.parentWays(node);
         feature.label = utilDisplayName(node);
       }
 
-      // change parent if necessary
-      if (feature.container.parent !== parentContainer) {
-        feature.container.setParent(parentContainer);
-      }
-
+      feature.parent = parentContainer;   // change parent if necessary
 // deal with "active" here?
       feature.interactive = !activeData.has(featureID);
       feature.selected = scene.selected.has(featureID);
@@ -599,7 +592,8 @@ feature.related = graph.parentWays(node);
         feature = null;
       }
       if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID, pointContainer);
+        feature = new PixiFeaturePoint(this, featureID);
+        feature.parent = pointContainer;
       }
 
       // Something has changed since the last time we've styled this feature.
@@ -728,8 +722,9 @@ feature.related = graph.parentWays(node);
       }
       if (!feature) {
         const style = { markerName: 'midpoint' };
-        feature = new PixiFeaturePoint(this, featureID, selectedContainer);
+        feature = new PixiFeaturePoint(this, featureID);
         feature.style = style;
+        feature.parent = selectedContainer;
       }
 
       // Something about the midpoint has changed
