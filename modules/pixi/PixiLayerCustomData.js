@@ -279,7 +279,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     polygons.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const dataID = d.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
@@ -293,6 +294,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -317,7 +319,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     lines.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const dataID = d.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -328,6 +331,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -349,7 +353,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     points.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const dataID = d.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -360,6 +365,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);

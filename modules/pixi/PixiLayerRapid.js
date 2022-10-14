@@ -346,7 +346,8 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.polygons.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const dataID = entity.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -360,6 +361,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.parent = parentContainer;
         feature.rapidFeature = true;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
 
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
@@ -397,7 +399,8 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.lines.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const dataID = entity.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -410,6 +413,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.parent = parentContainer;
         feature.rapidFeature = true;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -453,7 +457,8 @@ export class PixiLayerRapid extends AbstractLayer {
     };
 
     data.points.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const dataID = entity.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -463,6 +468,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.parent = parentContainer;
         feature.rapidFeature = true;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -484,7 +490,8 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
     data.vertices.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const dataID = entity.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -495,6 +502,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);

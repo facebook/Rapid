@@ -118,9 +118,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     const seenSequences = {};
 
     sequenceData.forEach(d => {
-      seenSequences[d.properties.id] = d;
+      const dataID = d.properties.id;
+      seenSequences[dataID] = d;
 
-      const featureID = `${LAYERID}-sequence-${d.properties.id}`;
+      const featureID = `${LAYERID}-sequence-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -131,6 +132,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.parent = this.container;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -140,7 +142,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
 
     photoData.forEach(d => {
-      const featureID = `${LAYERID}-photo-${d.id}`;
+      const dataID = d.id;
+      const featureID = `${LAYERID}-photo-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -156,6 +159,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.style = style;
         feature.parent = this.container;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);

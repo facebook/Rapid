@@ -291,7 +291,8 @@ highlightedIDs.forEach(featureID => {
     const graph = this.context.graph();
 
     entities.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}-fill`;
+      const dataID = entity.id;
+      const featureID = `${LAYERID}-${dataID}-fill`;
       let feature = scene.getFeature(featureID);
 
       if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
@@ -302,6 +303,7 @@ highlightedIDs.forEach(featureID => {
         feature = new PixiFeatureMultipolygon(this, featureID);
         feature.parent = areaContainer;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -372,7 +374,8 @@ if (entity.type === 'relation') return;
 const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = getLevelContainer(layer.toString());
 
-      const featureID = `${LAYERID}-${entity.id}`;
+      const dataID = entity.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -381,6 +384,7 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -469,8 +473,8 @@ if (geom === 'line') {
         parentContainer = selectedContainer;
       }
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
-
-      const featureID = `${LAYERID}-${node.id}`;
+      const dataID = node.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -479,6 +483,7 @@ if (geom === 'line') {
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -551,7 +556,8 @@ feature.related = graph.parentWays(node);
     const graph = this.context.graph();
 
     entities.forEach(node => {
-      const featureID = `${LAYERID}-${node.id}`;
+      const dataID = node.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -561,6 +567,7 @@ feature.related = graph.parentWays(node);
         feature = new PixiFeaturePoint(this, featureID);
         feature.parent = pointContainer;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);
@@ -670,7 +677,8 @@ feature.related = graph.parentWays(node);
     });
 
     midpoints.forEach(midpoint => {
-      const featureID = `${LAYERID}-${midpoint.id}`;
+      const dataID = midpoint.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -682,6 +690,7 @@ feature.related = graph.parentWays(node);
         feature.style = style;
         feature.parent = selectedContainer;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);

@@ -56,8 +56,9 @@ export class PixiScene extends EventEmitter {
     this.renderer = renderer;
     this.context = renderer.context;
 
-    this.features = new Map();     // Map of featureID -> Feature
-    this.retained = new Map();     // Map of featureID -> frame last seen
+    // Collections of Features
+    this.features = new Map();     // Map (featureID -> Feature)
+    this.retained = new Map();     // Map (featureID -> frame last seen)
 
     this.selected = new Set();     // Set of selected featureIDs
     this.selected.v = 0;           // Version counter that increments as the selection changes
@@ -66,6 +67,21 @@ export class PixiScene extends EventEmitter {
     this.drawing = new Set();      // Set of featureIDs that are currently drawing
     this.drawing.v = 0;            // Version counter that increments as the drawing changes
 
+    // How Data maps to Features...
+    // There is a one-to-many relationship between data and Features.
+    // These lookups capture which features are bound to which data.
+    this.dataFeatures = new Map();   // Map (dataID -> Set(featureID))  one-to-many data-to-features
+    this.featureData = new Map();    // Map (featureID -> dataID)       reverse index feature-to-data
+
+    // How Data maps to Data...
+    // Data can have its own separate parent-child hierarchy that exists independently from the scene.
+    // (For example, OSM ways have child nodes, sequences have photos, etc).
+    // These relationships can affect state, e.g. when we want to hover an element and all its children.
+    this.dataChildren = new Map();   // Map (parent dataID -> Set(child dataID))    one-to-many parent-to-children
+    this.parentData = new Map();     // Map (child dataID -> parent dataID)         reverse index child-to-parent
+
+
+    // The layers in the scene
     this.layers = [
       new PixiLayerBackgroundTiles(this, 1),
 
@@ -193,7 +209,7 @@ export class PixiScene extends EventEmitter {
 
   /**
    * getFeature
-   * Get a Feature by its layerID
+   * Get a Feature by its featureID
    * @param   featureID  `String` id of a Feature
    * @return  The Feature with the given id or `undefined` if not found
    */
@@ -213,6 +229,86 @@ export class PixiScene extends EventEmitter {
 
     this.features.set(featureID, feature);
     layer.features.set(featureID, feature);
+  }
+
+
+  /**
+   * bindData
+   * This adds (or replaces) a relationship between a featureID and a dataID
+   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
+   * @param  dataID     `String` dataID     (e.g. 'w-123')
+   */
+  bindData(featureID, dataID) {
+    this.unbindData(featureID);
+
+    let bindings = this.dataFeatures.get(dataID);   // one-to-many data-to-features
+    if (!bindings) {
+      bindings = new Set();
+      this.dataFeatures.set(dataID, bindings);
+    }
+    bindings.add(featureID);
+
+    this.featureData.set(featureID, dataID);   // reverse feature-to-data
+  }
+
+
+  /**
+   * unbindData
+   * This removes the data bindings for a given featureID
+   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
+   */
+  unbindData(featureID) {
+    const dataID = this.featureData.get(featureID);
+    if (!dataID) return;
+
+    const bindings = this.dataFeatures.get(dataID);   // one-to-many data-to-features
+    if (bindings) {
+      bindings.delete(featureID);
+      if (!bindings.size) {
+        this.dataFeatures.delete(dataID);
+      }
+    }
+
+    this.featureData.delete(featureID);   // reverse feature-to-data
+  }
+
+
+  /**
+   * setParentData
+   * @param  childID    `String` dataID  (e.g. 'w-123' outer)
+   * @param  parentID   `String` dataID  (e.g. 'r-123' multipolygon)
+   */
+  setParentData(childID, parentID) {
+    this.removeParentData(childID);
+
+    let children = this.dataChildren.get(parentID);   // one-to-many parent-to-children
+    if (!children) {
+      children = new Set();
+      this.dataChildren.set(parentID, children);
+    }
+    children.add(childID);
+
+    this.parentData.set(childID, parentID);   // reverse child-to-parent
+  }
+
+
+  /**
+   * removeParentData
+   * @param  childID    `String` dataID  (e.g. 'w-123' outer)
+   */
+  removeParentData(childID) {
+    const parentID = this.parentData.get(childID);
+    if (!parentID) return;
+
+    const children = this.dataChildren.get(parentID);   // one-to-many parent-to-children
+    if (children) {
+      children.delete(childID);
+      if (!children.size) {
+        this.dataChildren.delete(parentID);
+      }
+    }
+
+    this.parentData.delete(childID);   // reverse child-to-parent
   }
 
 
@@ -262,6 +358,7 @@ export class PixiScene extends EventEmitter {
     const featureID = feature.id;
     const layer = feature.layer;
 
+    this.unbindData(featureID);
     layer.features.delete(featureID);
     this.retained.delete(featureID);
     this.features.delete(featureID);
@@ -278,7 +375,7 @@ export class PixiScene extends EventEmitter {
    *   (for example, a new point that hasn't yet been rendered)
    * - `featureIDs` should contain the complete list of featureIDs to put in the 'drawing' state.
    *   (in other words, anything not in this list will be styled normally, without 'drawing' consideration)
-   * @param  featureIDs   `Array` or `Set` of feature IDs to draw
+   * @param  featureIDs   `Array` or `Set` of feature IDs to draw, or single `String` featureID
    */
   drawingFeatures(featureIDs) {
     const toDraw = asSet(featureIDs);  // coax ids into a Set
@@ -313,7 +410,7 @@ export class PixiScene extends EventEmitter {
    *   (for example, a new point that hasn't yet been rendered)
    * - `featureIDs` should contain the complete list of featureIDs to select.
    *   (in other words, anything not in this list will get unselected)
-   * @param  featureIDs   `Array` or `Set` of feature IDs to select
+   * @param  featureIDs   `Array` or `Set` of feature IDs to select, or single `String` featureID
    */
   selectFeatures(featureIDs) {
     const toSelect = asSet(featureIDs);  // coax ids into a Set
@@ -347,7 +444,7 @@ export class PixiScene extends EventEmitter {
    *   (for example, a new point that hasn't yet been rendered)
    * - `featureIDs` should contain the complete list of featureIDs to hover.
    *   (in other words, anything not in this list will get unhovered)
-   * @param  featureIDs   `Array` or `Set` of feature IDs to hover
+   * @param  featureIDs   `Array` or `Set` of feature IDs to hover, or single `String` featureID
    */
   hoverFeatures(featureIDs) {
     const toHover = asSet(featureIDs);  // coax ids into a Set

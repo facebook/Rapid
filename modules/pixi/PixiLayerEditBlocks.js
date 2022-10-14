@@ -96,7 +96,8 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     const scene = this.scene;
 
     blocks.forEach(d => {
-      const featureID = `${LAYERID}-${d.locationSetID}`;
+      const dataID = d.locationSetID;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -116,6 +117,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         feature.parent = this.container;
         feature.container.cursor = 'not-allowed';
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
       }
 
       scene.syncFeatureState(feature);

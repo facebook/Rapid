@@ -65,7 +65,8 @@ export class PixiLayerImproveOsm extends AbstractLayer {
     const visibleData = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
 
     visibleData.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const dataID = d.id;
+      const featureID = `${LAYERID}-${dataID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -81,6 +82,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         feature.style = markerStyle;
         feature.parent = this.container;
         scene.addFeature(feature);
+        scene.bindData(featureID, dataID);
         // was here before
         // if (feature.icon) {
         //  // mathematically 0,-15 is center of marker, move up slightly
