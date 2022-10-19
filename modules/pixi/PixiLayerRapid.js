@@ -346,8 +346,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.polygons.forEach(entity => {
-      const dataID = entity.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${entity.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -356,12 +355,10 @@ export class PixiLayerRapid extends AbstractLayer {
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.data = entity;
         feature.geometry = geometry;
-        feature.parent = parentContainer;
+        feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(entity, entity.id);
 
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
@@ -399,8 +396,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.lines.forEach(entity => {
-      const dataID = entity.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${entity.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -408,12 +404,10 @@ export class PixiLayerRapid extends AbstractLayer {
         const geometry = geojson.coordinates;
 
         feature = new PixiFeatureLine(this, featureID);
-        feature.data = entity;
         feature.geometry = geometry;
-        feature.parent = parentContainer;
+        feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(entity, entity.id);
       }
 
       scene.syncFeatureState(feature);
@@ -457,18 +451,15 @@ export class PixiLayerRapid extends AbstractLayer {
     };
 
     data.points.forEach(entity => {
-      const dataID = entity.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${entity.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = entity;
         feature.geometry = entity.loc;
-        feature.parent = parentContainer;
+        feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(entity, entity.id);
       }
 
       scene.syncFeatureState(feature);
@@ -490,19 +481,16 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
     data.vertices.forEach(entity => {
-      const dataID = entity.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${entity.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = entity;
         feature.geometry = entity.loc;
-        feature.parent = parentContainer;
+        feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(entity, entity.id);
       }
 
       scene.syncFeatureState(feature);

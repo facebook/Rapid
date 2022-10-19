@@ -1,6 +1,13 @@
 import * as PIXI from 'pixi.js';
 
 
+// Convert a single value, an Array of values, or a Set of values.
+function asSet(vals) {
+  if (vals instanceof Set) return vals;
+  return new Set(vals !== undefined && [].concat(vals));
+}
+
+
 /**
  * AbstractLayer is the base class from which all Layers inherit.
  * It creates a container to hold the Layer data.
@@ -44,8 +51,20 @@ export class AbstractLayer {
       this.context.pixi.stage.addChild(container);
     }
 
-    // Map of features on this Layer (PixiScene will manage this)
-    this.features = new Map();   // Map of featureID -> Feature
+    // Collection of Features on this Layer
+    this.features = new Map();       // Map (featureID -> Feature)
+
+    // Collections of Data on this Layer
+    // There is a one-to-many relationship between Data and Features.
+    // These lookups capture which features are bound to which data.
+    this.dataFeatures = new Map();   // Map (dataID -> Set(featureID))  one-to-many data-to-features
+    this.featureData = new Map();    // Map (featureID -> dataID)       reverse index feature-to-data
+
+    // Data mapped to Data
+    // There is a one-to-many relationship between parent data and child data.
+    // For example, we need this to know which ways make up a multipolygon relation.
+    // Here we're just keeping track of the dataIDs of the direct descendents.
+    this.childData = new Map();      // Map (dataID -> Set(child dataID))  one-to-many parent-to-children
   }
 
 
@@ -77,15 +96,111 @@ export class AbstractLayer {
 
       // Haven't seen it in a while, remove completely
       if (frame - seenFrame > 20) {
-        scene.removeFeature(feature);
+        feature.destroy();
       }
     }
   }
 
 
   /**
+   * addFeature
+   * Add a feature to the layer cache.
+   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   */
+  addFeature(feature) {
+    this.features.set(feature.id, feature);
+  }
+
+
+  /**
+   * removeFeature
+   * Remove a Feature from the layer cache.
+   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   */
+  removeFeature(feature) {
+    this.unbindData(feature.id);
+    this.features.delete(feature.id);
+  }
+
+
+  /**
+   * bindData
+   * This adds (or replaces) a data binding from featureID to a dataID
+   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
+   * @param  dataID     `String` dataID     (e.g. 'w-123')
+   */
+  bindData(featureID, dataID) {
+    this.unbindData(featureID);
+
+    let s = this.dataFeatures.get(dataID);   // one-to-many data-to-features
+    if (!s) {
+      s = new Set();
+      this.dataFeatures.set(dataID, s);
+    }
+    s.add(featureID);
+
+    this.featureData.set(featureID, dataID);   // reverse feature-to-data
+  }
+
+
+  /**
+   * unbindData
+   * This removes the data bindings for a given featureID
+   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
+   */
+  unbindData(featureID) {
+    const dataID = this.featureData.get(featureID);
+    if (!dataID) return;
+
+    const s = this.dataFeatures.get(dataID);   // one-to-many data-to-features
+    if (s) {
+      s.delete(featureID);
+      if (!s.size) {  // nobody is looking for this dataID anymore
+        this.dataFeatures.delete(dataID);
+        this.childData.delete(dataID);
+      }
+    }
+
+    this.featureData.delete(featureID);   // reverse feature-to-data
+  }
+
+
+  /**
+   * addChildData
+   * This adds a mapping from parent data to child data.
+   * @param  parentID  `String` dataID (e.g. 'r123')
+   * @param  childIDs  `Array` or `Set` of childIDs, or single `String` childID
+   */
+  addChildData(parentID, childIDs) {
+    const toAdd = asSet(childIDs);  // coax ids into a Set
+
+    let s = this.childData.get(parentID);   // one-to-many parent-to-children
+    if (!s) {
+      s = new Set();
+      this.childData.set(parentID, s);
+    }
+    for (const dataID of toAdd) {
+      s.add(dataID);
+    }
+  }
+
+  /**
+   * removeChildData
+   * Removes mapping from parent data to child data.
+   * @param  parentID  `String` dataID (e.g. 'r123')
+   * @param  childID   `String` dataID to remove as a child (e.g. 'w1')
+   */
+  removeChildData(parentID, childID) {
+    const s = this.childData.get(parentID);   // one-to-many parent-to-children
+    if (!s) return;
+    s.delete(childID);
+  }
+
+
+  /**
    * dirtyLayer
-   * An easy way to make all the Features on this Layer dirty
+   * Mark all features on this layer as `dirty`.
+   * During the next "app" pass, dirty features will be rebuilt.
    */
   dirtyLayer() {
     for (const feature of this.features.values()) {
@@ -93,9 +208,40 @@ export class AbstractLayer {
     }
   }
 
+  /**
+   * dirtyFeatures
+   * Mark specific features features as `dirty`
+   * During the next "app" pass, dirty features will be rebuilt.
+   * @param  featureIDs  A `Set` or `Array` of featureIDs, or single `String` featureID
+   */
+  dirtyFeatures(featureIDs) {
+    for (const featureID of asSet(featureIDs)) {   // coax ids into a Set
+      const feature = this.features.get(featureID);
+      if (feature) {
+        feature.dirty = true;
+      }
+    }
+  }
+
+  /**
+   * dirtyData
+   * Mark any features bound to a given dataID as `dirty`
+   * During the next "app" pass, dirty features will be rebuilt.
+   * @param  dataIDs  A `Set` or `Array` of dataIDs, or single `String` dataID
+   */
+  dirtyData(dataIDs) {
+    for (const dataID of asSet(dataIDs)) {   // coax ids into a Set
+      const featureIDs = this.dataFeatures.get(dataID);
+      if (featureIDs) {
+        this.dirtyFeatures(featureIDs);
+      }
+    }
+  }
+
 
   /**
    * Layer id
+   * @readonly
    */
   get id() {
     return this.container.name;

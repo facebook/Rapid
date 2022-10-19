@@ -169,19 +169,14 @@ export class RendererMap extends EventEmitter {
     context.history()
       .on('merge', entityIDs => {
         if (entityIDs) {
-          // this._renderer.scene.dirtyFeatures(entityIDs);
-// hacky, convert osm ids to feature ids
-const featureIDs = Array.from(entityIDs).map(id => `osm-${id}`);
-this._renderer.scene.dirtyFeatures(featureIDs);
+          this._renderer.scene.dirtyData('osm', entityIDs);
         }
         this.deferredRedraw();
       })
       .on('change', difference => {
         if (difference) {
-          // this._renderer.scene.dirtyFeatures(Object.keys(difference.complete()));
-// hacky, convert osm ids to feature ids
-const featureIDs = Object.keys(difference.complete()).map(id => `osm-${id}`);
-this._renderer.scene.dirtyFeatures(featureIDs);
+          const entityIDs = Object.keys(difference.complete());
+          this._renderer.scene.dirtyData('osm', entityIDs);
         }
         this.immediateRedraw();
       })

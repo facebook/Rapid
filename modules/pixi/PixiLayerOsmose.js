@@ -57,8 +57,7 @@ export class PixiLayerOsmose extends AbstractLayer {
     const visibleData = service.getItems(this.context.projection);
 
     visibleData.forEach(d => {
-      const dataID = d.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -70,14 +69,12 @@ export class PixiLayerOsmose extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = d;
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parent = this.container;
+        feature.parentContainer = this.container;
         // // mathematically 0,-15 is center of marker, move up slightly
         // icon.position.set(0, -16);
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(d, d.id);
       }
 
       scene.syncFeatureState(feature);

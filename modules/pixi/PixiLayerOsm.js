@@ -33,7 +33,6 @@ export class PixiLayerOsm extends AbstractLayer {
     this._enabled = true;  // OSM layers should be enabled by default
     this._service = null;
     this.getService();
-    this._lastFilter = null;
 
     // On hover or selection, draw related vertices (above everything)
     this._relatedOsmIDs = new Set();
@@ -87,58 +86,58 @@ export class PixiLayerOsm extends AbstractLayer {
     return !!this.getService();
   }
 
-
-  /**
-   * _updateRelatedOsmIds
-   * On any change in selection or hovering, we should check for which vertices
-   * become interesting enough to render
-   * @param  osmids   `Set` of OSM ids that are selected or hovered
-   */
-  _updateRelatedOsmIds(osmids) {
-    const context = this.context;
-    const graph = context.graph();
-    let seen = new Set();   // avoid infinite recursion, handle circular relations
-    let result = new Set();
-
-    function addChildVertices(entity) {
-      if (seen.has(entity.id)) return;
-      seen.add(entity.id);
-
-      if (entity.type === 'way') {
-        for (let i = 0; i < entity.nodes.length; i++) {
-          const child = graph.hasEntity(entity.nodes[i]);
-          if (child) {
-            addChildVertices(child);
-          }
-        }
-      } else if (entity.type === 'relation') {
-        for (let i = 0; i < entity.members.length; i++) {
-          const member = graph.hasEntity(entity.members[i].id);
-          if (member) {
-            addChildVertices(member);
-          }
-        }
-      } else {  // a node
-        result.add(`osm-${entity.id}`);
-      }
-    }
-
-    osmids.forEach(id => {
-      const entity = graph.hasEntity(id);
-      if (!entity) return;
-
-      if (entity.type === 'node') {
-        result.add(`osm-${entity.id}`);
-        graph.parentWays(entity).forEach(entity => addChildVertices(entity));
-      } else {  // way, relation
-        addChildVertices(entity);
-      }
-    });
-
-    this._relatedOsmIDs = result;
-    return this._relatedOsmIDs;
-  }
-
+//
+//  /**
+//   * _updateRelatedOsmIds
+//   * On any change in selection or hovering, we should check for which vertices
+//   * become interesting enough to render
+//   * @param  osmids   `Set` of OSM ids that are selected or hovered
+//   */
+//  _updateRelatedOsmIds(osmids) {
+//    const context = this.context;
+//    const graph = context.graph();
+//    let seen = new Set();   // avoid infinite recursion, handle circular relations
+//    let result = new Set();
+//
+//    function addChildVertices(entity) {
+//      if (seen.has(entity.id)) return;
+//      seen.add(entity.id);
+//
+//      if (entity.type === 'way') {
+//        for (let i = 0; i < entity.nodes.length; i++) {
+//          const child = graph.hasEntity(entity.nodes[i]);
+//          if (child) {
+//            addChildVertices(child);
+//          }
+//        }
+//      } else if (entity.type === 'relation') {
+//        for (let i = 0; i < entity.members.length; i++) {
+//          const member = graph.hasEntity(entity.members[i].id);
+//          if (member) {
+//            addChildVertices(member);
+//          }
+//        }
+//      } else {  // a node
+//        result.add(`osm-${entity.id}`);
+//      }
+//    }
+//
+//    osmids.forEach(id => {
+//      const entity = graph.hasEntity(id);
+//      if (!entity) return;
+//
+//      if (entity.type === 'node') {
+//        result.add(`osm-${entity.id}`);
+//        graph.parentWays(entity).forEach(entity => addChildVertices(entity));
+//      } else {  // way, relation
+//        addChildVertices(entity);
+//      }
+//    });
+//
+//    this._relatedOsmIDs = result;
+//    return this._relatedOsmIDs;
+//  }
+//
 
   /**
    * downloadFile
@@ -187,21 +186,21 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Has select/hover highlighting chagned?
       const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
-console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
-      if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
-        this._prevSelectV = scene.selected.v;
-        this._prevHoverV = scene.hovered.v;
-
-// convert feature id to osm id
-let osmids = new Set();
-highlightedIDs.forEach(featureID => {
-  const feat = scene.getFeature(featureID);
-  if (feat && feat.data) {
-    osmids.add(feat.data.id);
-  }
-});
-        this._updateRelatedOsmIds(osmids);
-      }
+//console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
+//      if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
+//        this._prevSelectV = scene.selected.v;
+//        this._prevHoverV = scene.hovered.v;
+//
+//// convert feature id to osm id
+//let osmids = new Set();
+//highlightedIDs.forEach(featureID => {
+//  const feat = scene.getFeature(featureID);
+//  if (feat && feat.data) {
+//    osmids.add(feat.data.id);
+//  }
+//});
+////        this._updateRelatedOsmIds(osmids);
+//      }
 
       let entities = context.history().intersects(map.extent());
       //Filter the entities according to features enabled/disabled
@@ -291,29 +290,34 @@ highlightedIDs.forEach(featureID => {
     const graph = this.context.graph();
 
     entities.forEach(entity => {
-      const dataID = entity.id;
-      const featureID = `${LAYERID}-${dataID}-fill`;
+      const featureID = `${LAYERID}-${entity.id}-fill`;
+
       let feature = scene.getFeature(featureID);
 
       if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
+
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.parent = areaContainer;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.parentContainer = areaContainer;
+      }
+
+      const version = (entity.v || 0);  // If data has changed, rebind
+      if (feature.v !== version) {
+        feature.v = version;
+        feature.bindData(entity, entity.id);
+
+        if (entity.type === 'relation') {
+          const memberIDs = entity.members.map(member => member.id);
+          feature.addChildData(entity.id, memberIDs);
+        }
       }
 
       scene.syncFeatureState(feature);
 
-      // Something has changed since the last time we've styled this feature.
-      const version = (entity.v || 0);
-      if (feature.v !== version || feature.dirty) {
-        feature.v = version;
-        feature.data = entity;   // rebind data
-
+      if (feature.dirty) {
         const area = entity.extent(graph).area();  // estimate area from extent for speed
         feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
@@ -374,29 +378,33 @@ if (entity.type === 'relation') return;
 const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = getLevelContainer(layer.toString());
 
-      const dataID = entity.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${entity.id}`;
+
       let feature = scene.getFeature(featureID);
+
       if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
+
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+      }
+
+      const version = (entity.v || 0);  // If data has changed, rebind
+      if (feature.v !== version) {
+        feature.v = version;
+        feature.bindData(entity, entity.id);
+
+        const childIDs = graph.childNodes(entity).map(node => node.id);
+        feature.addChildData(entity.id, childIDs);
       }
 
       scene.syncFeatureState(feature);
-      feature.parent = levelContainer;    // Change layer stacking if necessary
+      feature.parentContainer = levelContainer;    // Change layer stacking if necessary
 
-      // Something has changed since the last time we've styled this feature.
-      const version = (entity.v || 0);
-      if (feature.v !== version || feature.dirty) {
-        feature.v = version;
-        feature.data = entity;  // rebind data
+      if (feature.dirty) {
         feature.container.zIndex = getzIndex(entity.tags);
-
         const geojson = entity.asGeoJSON(graph);
 
 const geometry = (geojson.type === 'LineString') ? geojson.coordinates
@@ -473,31 +481,30 @@ if (geom === 'line') {
         parentContainer = selectedContainer;
       }
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
-      const dataID = node.id;
-      const featureID = `${LAYERID}-${dataID}`;
+
+      const featureID = `${LAYERID}-${node.id}`;
+
       let feature = scene.getFeature(featureID);
+
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
+
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+      }
+
+      const version = (node.v || 0);  // If data has changed, rebind
+      if (feature.v !== version) {
+        feature.v = version;
+        feature.bindData(node, node.id);
       }
 
       scene.syncFeatureState(feature);
-      feature.parent = parentContainer;   // change layer stacking if necessary
+      feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
-      // Something has changed since the last time we've styled this feature.
-      const version = (node.v || 0);
-      if (feature.v !== version || feature.dirty) {
-        feature.v = version;
-        feature.data = node;   // rebind data
-
-// experiment: set related data, so we can hover that too
-feature.related = graph.parentWays(node);
-
+      if (feature.dirty) {
         feature.geometry = node.loc;
 
         const preset = presetManager.match(node, graph);
@@ -556,27 +563,28 @@ feature.related = graph.parentWays(node);
     const graph = this.context.graph();
 
     entities.forEach(node => {
-      const dataID = node.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${node.id}`;
+
       let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
+
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.parent = pointContainer;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.parentContainer = pointContainer;
+      }
+
+      const version = (node.v || 0);  // If data has changed, rebind
+      if (feature.v !== version) {
+        feature.v = version;
+        feature.bindData(node, node.id);
       }
 
       scene.syncFeatureState(feature);
 
-      // Something has changed since the last time we've styled this feature.
-      const version = (node.v || 0);
-      if (feature.v !== version || feature.dirty) {
-        feature.v = version;
-        feature.data = node;   // rebind data
+      if (feature.dirty) {
         feature.geometry = node.loc;
 
         const preset = presetManager.match(node, graph);
@@ -633,6 +641,7 @@ feature.related = graph.parentWays(node);
 
     // Generate midpoints from all the highlighted ways
     let midpoints = new Map();
+    const MIDPOINT_STYLE = { markerName: 'midpoint' };
 
     entities.forEach(way => {
       const nodes = graph.childNodes(way);
@@ -677,30 +686,29 @@ feature.related = graph.parentWays(node);
     });
 
     midpoints.forEach(midpoint => {
-      const dataID = midpoint.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${midpoint.id}`;
       let feature = scene.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
       }
       if (!feature) {
-        const style = { markerName: 'midpoint' };
         feature = new PixiFeaturePoint(this, featureID);
-        feature.style = style;
-        feature.parent = selectedContainer;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.style = MIDPOINT_STYLE;
+        feature.parentContainer = selectedContainer;
+      }
+
+      // Something about the midpoint has changed
+      // Here we use the midpoint location as it's "version"
+      if (feature.v !== midpoint.loc) {
+        feature.v = midpoint.loc;
+        feature.bindData(midpoint, midpoint.id);
+        feature.addChildData(midpoint.way.id, midpoint.id);
       }
 
       scene.syncFeatureState(feature);
 
-      // Something about the midpoint has changed
-      // Here we use the midpoint location as it's "version"
-      if (feature.v !== midpoint.loc || feature.dirty) {
-        feature.v = midpoint.loc;
-        feature.data = midpoint;
-        feature.related = midpoint.way;
+      if (feature.dirty) {
         feature.geometry = midpoint.loc;
         feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }

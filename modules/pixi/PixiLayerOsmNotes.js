@@ -71,8 +71,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
     const visibleData = service.notes(this.context.projection);
 
     visibleData.forEach(d => {
-      const dataID = d.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -94,12 +93,10 @@ export class PixiLayerOsmNotes extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = d;
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parent = this.container;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.parentContainer = this.container;
+        feature.bindData(d, d.id);
       }
 
       scene.syncFeatureState(feature);

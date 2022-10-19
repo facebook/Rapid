@@ -96,8 +96,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
     const scene = this.scene;
 
     blocks.forEach(d => {
-      const dataID = d.locationSetID;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.locationSetID}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -111,13 +110,11 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         };
 
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.data = d;
         feature.geometry = geometry;
         feature.style = BLOCK_STYLE;
-        feature.parent = this.container;
+        feature.parentContainer = this.container;
         feature.container.cursor = 'not-allowed';
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(d, d.locationSetID);
       }
 
       scene.syncFeatureState(feature);

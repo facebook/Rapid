@@ -31,13 +31,14 @@ function asSet(vals) {
  * Features are organized into Layers that can be enabled or disabled if needed.
  *
  * A note on identifiers:
- *  `layerID` - Unique identifier for the layer, for example 'osm'
+ *  `layerID` - A unique identifier for the layer, for example 'osm'
  *  `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
- *  `featureID` - Unique identifier for the feature, for example 'osm-w-123'
+ *  `featureID` - A unique identifier for the feature, for example 'osm-w-123'
  *
  * Properties you can access:
  *   `layers`      `Array` of all layers
- *   `features`    `Map(featureID -> Feature)` of all features we know about
+ *   `features`    `Map (featureID -> Feature)` of all features we know about
+ *   `retained`    `Map (featureID -> frame last seen)`
  *   `selected`    `Set` of hovered featureIDs
  *   `hovered`     `Set` of selected featureIDs
  *   `drawing`     `Set` of drawing featureIDs
@@ -60,26 +61,15 @@ export class PixiScene extends EventEmitter {
     this.features = new Map();     // Map (featureID -> Feature)
     this.retained = new Map();     // Map (featureID -> frame last seen)
 
+    // Feature state properties
+    // Counterintuitively, the scene needs to be the source of truth for these properties,
+    // because a feature can be "selected" or "drawing" even before it has been created.
     this.selected = new Set();     // Set of selected featureIDs
     this.selected.v = 0;           // Version counter that increments as the selection changes
     this.hovered = new Set();      // Set of hovered featureIDs
     this.hovered.v = 0;            // Version counter that increments as the hover changes
     this.drawing = new Set();      // Set of featureIDs that are currently drawing
     this.drawing.v = 0;            // Version counter that increments as the drawing changes
-
-    // How Data maps to Features...
-    // There is a one-to-many relationship between data and Features.
-    // These lookups capture which features are bound to which data.
-    this.dataFeatures = new Map();   // Map (dataID -> Set(featureID))  one-to-many data-to-features
-    this.featureData = new Map();    // Map (featureID -> dataID)       reverse index feature-to-data
-
-    // How Data maps to Data...
-    // Data can have its own separate parent-child hierarchy that exists independently from the scene.
-    // (For example, OSM ways have child nodes, sequences have photos, etc).
-    // These relationships can affect state, e.g. when we want to hover an element and all its children.
-    this.dataChildren = new Map();   // Map (parent dataID -> Set(child dataID))    one-to-many parent-to-children
-    this.parentData = new Map();     // Map (child dataID -> parent dataID)         reverse index child-to-parent
-
 
     // The layers in the scene
     this.layers = [
@@ -120,7 +110,7 @@ export class PixiScene extends EventEmitter {
    *   call down to each layer's render method. It depends on where on the map the user is
    *   looking. This is different from a normal game where the scene is set up ahead of time.
    * - For proper label placement, we really need to cull the feature layers
-   *    before we render the label layer, so we do these calls in layer order.
+   *   before we render the label layer, so we do these calls in layer order.
    *
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
@@ -220,95 +210,22 @@ export class PixiScene extends EventEmitter {
 
   /**
    * addFeature
-   * Add a feature to the scene and layer caches.
+   * Add a feature to the scene feature cache.
    * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   addFeature(feature) {
-    const featureID = feature.id;
-    const layer = feature.layer;
-
-    this.features.set(featureID, feature);
-    layer.features.set(featureID, feature);
+    this.features.set(feature.id, feature);
   }
 
 
   /**
-   * bindData
-   * This adds (or replaces) a relationship between a featureID and a dataID
-   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
-   * @param  dataID     `String` dataID     (e.g. 'w-123')
+   * removeFeature
+   * Remove a Feature from the scene caches.
+   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
-  bindData(featureID, dataID) {
-    this.unbindData(featureID);
-
-    let bindings = this.dataFeatures.get(dataID);   // one-to-many data-to-features
-    if (!bindings) {
-      bindings = new Set();
-      this.dataFeatures.set(dataID, bindings);
-    }
-    bindings.add(featureID);
-
-    this.featureData.set(featureID, dataID);   // reverse feature-to-data
-  }
-
-
-  /**
-   * unbindData
-   * This removes the data bindings for a given featureID
-   * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
-   */
-  unbindData(featureID) {
-    const dataID = this.featureData.get(featureID);
-    if (!dataID) return;
-
-    const bindings = this.dataFeatures.get(dataID);   // one-to-many data-to-features
-    if (bindings) {
-      bindings.delete(featureID);
-      if (!bindings.size) {
-        this.dataFeatures.delete(dataID);
-      }
-    }
-
-    this.featureData.delete(featureID);   // reverse feature-to-data
-  }
-
-
-  /**
-   * setParentData
-   * @param  childID    `String` dataID  (e.g. 'w-123' outer)
-   * @param  parentID   `String` dataID  (e.g. 'r-123' multipolygon)
-   */
-  setParentData(childID, parentID) {
-    this.removeParentData(childID);
-
-    let children = this.dataChildren.get(parentID);   // one-to-many parent-to-children
-    if (!children) {
-      children = new Set();
-      this.dataChildren.set(parentID, children);
-    }
-    children.add(childID);
-
-    this.parentData.set(childID, parentID);   // reverse child-to-parent
-  }
-
-
-  /**
-   * removeParentData
-   * @param  childID    `String` dataID  (e.g. 'w-123' outer)
-   */
-  removeParentData(childID) {
-    const parentID = this.parentData.get(childID);
-    if (!parentID) return;
-
-    const children = this.dataChildren.get(parentID);   // one-to-many parent-to-children
-    if (children) {
-      children.delete(childID);
-      if (!children.size) {
-        this.dataChildren.delete(parentID);
-      }
-    }
-
-    this.parentData.delete(childID);   // reverse child-to-parent
+  removeFeature(feature) {
+    this.retained.delete(feature.id);
+    this.features.delete(feature.id);
   }
 
 
@@ -327,6 +244,7 @@ export class PixiScene extends EventEmitter {
   syncFeatureState(feature) {
     const featureID = feature.id;
     const activeData = this.context.activeData();
+
     feature.interactive = !activeData.has(featureID);
     feature.selected = this.selected.has(featureID);
     feature.hovered = this.hovered.has(featureID);
@@ -344,26 +262,11 @@ export class PixiScene extends EventEmitter {
   retainFeature(feature, frame) {
     if (feature.lod > 0) {
       feature.visible = true;
-      this.retained.set(feature.id, frame);
     }
-  }
-
-
-  /**
-   * removeFeature
-   * Remove a Feature from the scene.
-   * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
-   */
-  removeFeature(feature) {
-    const featureID = feature.id;
-    const layer = feature.layer;
-
-    this.unbindData(featureID);
-    layer.features.delete(featureID);
-    this.retained.delete(featureID);
-    this.features.delete(featureID);
-
-    feature.destroy();
+    // If it's in the user's view, retain it regardless of whether it's actually visible.
+    // We want to avoid continuously creating invisible things just to dispose of them a few frames later.
+    // For example points when zoomed out far.
+    this.retained.set(feature.id, frame);
   }
 
 
@@ -399,7 +302,6 @@ export class PixiScene extends EventEmitter {
       this.drawing.v++;
     }
   }
-
 
 
   /**
@@ -488,9 +390,9 @@ export class PixiScene extends EventEmitter {
    * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
   dirtyLayers(layerIDs) {
-    const toDirty = asSet(layerIDs);  // coax ids into a Set
-    for (const layer of this.layers) {
-      if (toDirty.has(layer.id)) {
+    for (const layerID of asSet(layerIDs)) {   // coax ids into a Set
+      const layer = this.getLayer(layerID);
+      if (layer) {
         layer.dirtyLayer();
       }
     }
@@ -501,16 +403,30 @@ export class PixiScene extends EventEmitter {
    * dirtyFeatures
    * Mark specific features features as `dirty`
    * During the next "app" pass, dirty features will be rebuilt.
-   * @param  featureIDs  A `Set` or `Array` of featureIDs
+   * @param  featureIDs  A `Set` or `Array` of featureIDs, or single `String` featureID
    */
   dirtyFeatures(featureIDs) {
-    const toDirty = asSet(featureIDs);  // coax ids into a Set
-    toDirty.forEach(featureID => {
+    for (const featureID of asSet(featureIDs)) {   // coax ids into a Set
       const feature = this.features.get(featureID);
       if (feature) {
         feature.dirty = true;
       }
-    });
+    }
+  }
+
+
+  /**
+   * dirtyData
+   * Mark any features bound to a given dataID as `dirty`
+   * DataIDs are only consistent within a Layer, therefore the layerID is required here.
+   * @param  layerID  `String` id of a Layer
+   * @param  dataIDs  A `Set` or `Array` of dataIDs, or single `String` dataID
+   */
+  dirtyData(layerID, dataIDs) {
+    const layer = this.getLayer(layerID);
+    if (layer) {
+      layer.dirtyData(dataIDs);
+    }
   }
 
 }

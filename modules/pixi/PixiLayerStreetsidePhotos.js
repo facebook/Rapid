@@ -112,13 +112,9 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
-    const seenSequences = {};
 
     sequenceData.forEach(d => {
-      const dataID = d.properties.key;
-      seenSequences[dataID] = d;
-
-      const featureID = `${LAYERID}-sequence-${dataID}`;
+      const featureID = `${LAYERID}-sequence-${d.properties.key}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -126,10 +122,9 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         feature.data = d;
         feature.geometry = d.coordinates;
         feature.style = LINESTYLE;
-        feature.parent = this.container;
+        feature.parentContainer = this.container;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(d, d.properties.key);
       }
 
       scene.syncFeatureState(feature);
@@ -139,8 +134,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
 
     photoData.forEach(d => {
-      const dataID = d.key;
-      const featureID = `${LAYERID}-photo-${dataID}`;
+      const featureID = `${LAYERID}-photo-${d.key}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -151,12 +145,14 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
         feature = new PixiFeaturePoint(this, featureID);
         feature.data = d;
-        feature.related = seenSequences[d.sequenceKey];
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parent = this.container;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.parentContainer = this.container;
+        feature.bindData(d, d.key);
+
+        if (d.sequenceKey) {
+          feature.addChildData(d.sequenceKey, d.key);
+        }
       }
 
       scene.syncFeatureState(feature);

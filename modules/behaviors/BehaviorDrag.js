@@ -80,7 +80,6 @@ export class BehaviorDrag extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
-      eventData.related = null;
       this.dragTarget.interactive = true;
       this.emit('cancel', eventData);
     }
@@ -190,7 +189,6 @@ export class BehaviorDrag extends AbstractBehavior {
     // Before emitting the 'up' event, attach the drag target data to the event data.
     if (this.dragTarget) {
       up.data = this.dragTarget.__feature__.data;
-      up.related = this.dragTarget.__feature__.related;
     }
 
     this.lastDown = null;
@@ -249,7 +247,6 @@ export class BehaviorDrag extends AbstractBehavior {
       eventData.target = null;
       eventData.feature = null;
       eventData.data = null;
-      eventData.related = null;
     }
 
     this.emit('move', eventData);

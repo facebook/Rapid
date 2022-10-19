@@ -79,8 +79,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     detections = this.filterDetections(detections);
 
     detections.forEach(d => {
-      const dataID = d.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -89,12 +88,10 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = d;
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parent = this.container;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.parentContainer = this.container;
+        feature.bindData(d, d.id);
 
         // const marker = feature.marker;
         // const ICONSIZE = 24;

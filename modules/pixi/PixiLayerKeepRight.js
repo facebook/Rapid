@@ -86,8 +86,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
     const visibleData = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
 
     visibleData.forEach(d => {
-      const dataID = d.key;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.key}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
@@ -97,12 +96,10 @@ export class PixiLayerKeepRight extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = d;
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parent = this.container;
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.parentContainer = this.container;
+        feature.bindData(d, d.key);
       }
 
       scene.syncFeatureState(feature);

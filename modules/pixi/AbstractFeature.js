@@ -7,26 +7,25 @@ import { Extent } from '@id-sdk/math';
  * It contains properties that used to manage the Feature in the scene graph
  *
  * Properties you can access:
- *   `container`      PIXI.Container() that contains all the graphics for this Feature
- *   `id`             Unique string to use for the name of this Feature
- *   `type`           String describing what kind of Feature this is ('point', 'line', 'multipolygon')
- *   `geometry`       Array containing geometry info
- *   `style`          Object containing style info
- *   `data`           Data bound to this Feature (like `__data__` from the D3.js days)
- *   `related`        Data related to this Feature (usually the parent)
- *   `label`          String containing the Feature's label (if any)
- *   `parent`         PIXI.Container() for the parent - this Feature's container will be added to it.
- *   `visible`        `true` if the Feature is visible (`false` if it is culled)
- *   `interactive`    `true` if the Feature is interactive (emits Pixi events)
- *   `dirty`          `true` if the Feature needs to be rebuilt
- *   `selected`       `true` if the Feature is selected
- *   `hovered`        `true` if the Feature is hovered
- *   `v`              Version of the Feature, can be used to detect changes
- *   `lod`            Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
- *   `halo`           A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
- *   `extent`         Bounds of the Feature (in WGS84 long/lat)
- *   `localBounds`    PIXI.Rectangle() where 0,0 is the origin of the Feature
- *   `sceneBounds`    PIXI.Rectangle() where 0,0 is the origin of the scane
+ *   `id`               Unique string to use for the name of this Feature
+ *   `type`             String describing what kind of Feature this is ('point', 'line', 'multipolygon')
+ *   `container`        PIXI.Container() that contains all the graphics needed to draw the Feature
+ *   `parentContainer`  PIXI.Container() for the parent - this Feature's container will be added to it.
+ *   `geometry`         Array containing geometry info
+ *   `style`            Object containing style info
+ *   `label`            String containing the Feature's label (if any)
+ *   `data`             Data bound to this Feature (like `__data__` from the D3.js days)
+ *   `visible`          `true` if the Feature is visible (`false` if it is culled)
+ *   `interactive`      `true` if the Feature is interactive (emits Pixi events)
+ *   `dirty`            `true` if the Feature needs to be rebuilt
+ *   `selected`         `true` if the Feature is selected
+ *   `hovered`          `true` if the Feature is hovered
+ *   `v`                Version of the Feature, can be used to detect changes
+ *   `lod`              Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
+ *   `halo`             A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
+ *   `extent`           Bounds of the Feature (in WGS84 long/lat)
+ *   `localBounds`      PIXI.Rectangle() where 0,0 is the origin of the Feature
+ *   `sceneBounds`      PIXI.Rectangle() where 0,0 is the origin of the scane
  */
 
 
@@ -55,8 +54,6 @@ export class AbstractFeature {
     this.scene = layer.scene;
     this.renderer = layer.renderer;
     this.context = layer.context;
-    this.data = null;
-    this.related = null;
     this.v = -1;
     this.lod = 2;   // full detail
     this.halo = null;
@@ -68,6 +65,8 @@ export class AbstractFeature {
     this._label = null;
     this._labelDirty = true;
 
+    this._data = null;
+
     this._selected = false;
     this._hovered = false;
     this._drawing = false;
@@ -77,6 +76,9 @@ export class AbstractFeature {
     this.extent = new Extent();                // in WGS84 coordinates ([0,0] is null island)
     this.localBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the object
     this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
+
+    this.layer.addFeature(this);
+    this.scene.addFeature(this);
   }
 
 
@@ -86,7 +88,10 @@ export class AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
-    // Destroying a container removes it from its parent automatically
+    this.layer.removeFeature(this);
+    this.scene.removeFeature(this);
+
+    // Destroying a container removes it from its parent container automatically
     // We also remove the children too
     this.container.filters = null;
     this.container.__feature__ = null;
@@ -97,8 +102,6 @@ export class AbstractFeature {
     this.scene = null;
     this.renderer = null;
     this.context = null;
-    this.data = null;
-    this.related = null;
 
     if (this.halo) {
       this.halo.destroy({ children: true });
@@ -108,6 +111,7 @@ export class AbstractFeature {
     this._geometry = null;
     this._style = null;
     this._label = null;
+    this._data = null;
 
     this.extent = null;
     this.localBounds = null;
@@ -135,9 +139,26 @@ export class AbstractFeature {
 
   /**
    * Feature id
+   * @readonly
    */
   get id() {
     return this.container.name;
+  }
+
+  /**
+   * parentContainer
+   * @param  val  PIXI.Container() for the parent - this Feature's container will be added to it.
+   */
+  get parentContainer() {
+    return this.container.parent;
+  }
+  set parentContainer(val) {
+    const currParent = this.container.parent;
+    if (val && val !== currParent) {   // put this feature under a different parent container
+      this.container.setParent(val);
+    } else if (!val && currParent) {   // remove this feature from its parent container
+      currParent.removeChild(this.container);
+    }
   }
 
 
@@ -291,19 +312,36 @@ export class AbstractFeature {
 
 
   /**
-   * parent
-   * @param  val  PIXI.Container() for the parent - this Feature's container will be added to it.
+   * data
+   * Getter only, use `bindData` to change it.
+   * (because we need to know an id/key to identify the data by, and these can be anything)
+   * @readonly
    */
-  get parent() {
-    return this.container.parent;
+  get data() {
+    return this._data;
   }
-  set parent(val) {
-    const currParent = this.container.parent;
-    if (val && val !== currParent) {   // put this feature under a different parent container
-      this.container.setParent(val);
-    } else if (!val && currParent) {   // remove this feature from its parent container
-      currParent.removeChild(this.container);
-    }
+
+  /**
+   * bindData
+   * This binds the data element to the feature, also lets the layer know about it.
+   * @param   data     `Object` data to bind to the feature (e.g. an OSM Node)
+   * @param   dataID   `String` identifer for this data element (e.g. 'n123')
+   */
+  bindData(data, dataID) {
+    this._data = data;
+    this.layer.bindData(this.id, dataID);
+    this.dirty = true;
   }
+
+  /**
+   * addChildData
+   * This adds a mapping from parent data to child data.
+   * @param  parentID  `String` dataID (e.g. 'r123')
+   * @param  childIDs  `Array` or `Set` of childIDs, or single `String` childID
+   */
+   addChildData(parentID, childID) {
+     this.layer.addChildData(parentID, childID);
+     this.dirty = true;
+   }
 
 }

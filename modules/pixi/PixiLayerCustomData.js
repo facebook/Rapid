@@ -279,8 +279,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     polygons.forEach(d => {
-      const dataID = d.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = scene.getFeature(featureID);
 
       const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
@@ -288,13 +287,11 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.data = d;
         feature.geometry = geometry;
         feature.style = POLY_STYLE;
-        feature.parent = this.container;
+        feature.parentContainer = this.container;
         feature.container.cursor = 'not-allowed';
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(d, d.id);
       }
 
       scene.syncFeatureState(feature);
@@ -319,19 +316,16 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     lines.forEach(d => {
-      const dataID = d.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
-        feature.data = d;
         feature.geometry = d.geometry.coordinates;
         feature.style = LINE_STYLE;
-        feature.parent = this.container;
+        feature.parentContainer = this.container;
         feature.container.cursor = 'not-allowed';
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(d, d.id);
       }
 
       scene.syncFeatureState(feature);
@@ -353,19 +347,16 @@ export class PixiLayerCustomData extends AbstractLayer {
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     points.forEach(d => {
-      const dataID = d.id;
-      const featureID = `${LAYERID}-${dataID}`;
+      const featureID = `${LAYERID}-${d.id}`;
       let feature = scene.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.data = d;
         feature.geometry = [d.geometry.coordinates[0], d.geometry.coordinates[1]];  // omit elevation or other data.
         feature.style = POINT_STYLE;
-        feature.parent = this.container;
+        feature.parentContainer = this.container;
         feature.container.cursor = 'not-allowed';
-        scene.addFeature(feature);
-        scene.bindData(featureID, dataID);
+        feature.bindData(d, d.id);
       }
 
       scene.syncFeatureState(feature);
