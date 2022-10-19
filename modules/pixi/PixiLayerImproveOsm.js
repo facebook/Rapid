@@ -66,7 +66,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const markerStyle = {
@@ -89,7 +89,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 

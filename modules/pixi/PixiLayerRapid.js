@@ -347,7 +347,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.polygons.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
@@ -383,7 +383,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.update(projection, zoom);
       }
 
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -397,7 +397,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.lines.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
@@ -426,7 +426,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.update(projection, zoom);
       }
 
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -452,7 +452,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.points.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
@@ -476,13 +476,13 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.update(projection, zoom);
       }
 
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
 
 
     data.vertices.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
@@ -507,7 +507,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.update(projection, zoom);
       }
 
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
 
   }

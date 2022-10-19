@@ -80,7 +80,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
     detections.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const style = {
@@ -101,7 +101,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 

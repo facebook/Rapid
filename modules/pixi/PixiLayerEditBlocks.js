@@ -97,7 +97,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
     blocks.forEach(d => {
       const featureID = `${LAYERID}-${d.locationSetID}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const geojson = locationManager.feature(featureID).geometry;
@@ -119,7 +119,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
 
   }

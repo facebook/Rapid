@@ -280,7 +280,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     polygons.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
@@ -296,7 +296,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -317,7 +317,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     lines.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
@@ -330,7 +330,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -348,7 +348,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     points.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
@@ -361,7 +361,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 

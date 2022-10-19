@@ -87,7 +87,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.key}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const style = {
@@ -104,7 +104,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 

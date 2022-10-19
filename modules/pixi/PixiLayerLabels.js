@@ -270,39 +270,39 @@ export class PixiLayerLabels extends AbstractLayer {
     const stage = this.context.pixi.stage;
     const avoidObject = _avoidObject.bind(this);
 
-    // Gather the layers that have avoidable stuff on them
-    const avoidLayers = [];
-    const mapUILayer = stage.getChildByName('map-ui');
-    if (mapUILayer) {
-      mapUILayer.children.forEach(layer => {
-        if (layer.name === 'selected') {
-          avoidLayers.push(layer);
+    // Gather the containers that have avoidable stuff on them
+    const avoidContainers = [];
+    const mapUIContainer = stage.getChildByName('map-ui');
+    if (mapUIContainer) {
+      mapUIContainer.children.forEach(container => {
+        if (container.name === 'selected') {
+          avoidContainers.push(container);
         }
       });
     }
-    const osmLayer = stage.getChildByName('osm');
-    if (osmLayer) {
-      osmLayer.children.forEach(layer => {
-        if (layer.name === 'osm-points' || layer.name === 'osm-vertices') {
-          avoidLayers.push(layer);
+    const osmContainer = stage.getChildByName('osm');
+    if (osmContainer) {
+      osmContainer.children.forEach(container => {
+        if (container.name === 'osm-points' || container.name === 'osm-vertices') {
+          avoidContainers.push(container);
         }
       });
     }
-    const rapidLayer = stage.getChildByName('rapid');
-    if (rapidLayer) {
-      rapidLayer.children.forEach(dataset => {
+    const rapidContainer = stage.getChildByName('rapid');
+    if (rapidContainer) {
+      rapidContainer.children.forEach(dataset => {
         const dsname = dataset.name;
-        dataset.children.forEach(layer => {
-          if (layer.name === `${dsname}-points` || layer.name === `${dsname}-vertices`) {
-            avoidLayers.push(layer);
+        dataset.children.forEach(container => {
+          if (container.name === `${dsname}-points` || container.name === `${dsname}-vertices`) {
+            avoidContainers.push(container);
           }
         });
       });
     }
 
-    // For each layer, gather the avoid boxes
+    // For each container, gather the avoid boxes
     let toInsert = [];
-    avoidLayers.forEach(layer => layer.children.forEach(avoidObject));
+    avoidContainers.forEach(container => container.children.forEach(avoidObject));
 
     if (toInsert.length) {
       this._rbush.load(toInsert);  // bulk insert

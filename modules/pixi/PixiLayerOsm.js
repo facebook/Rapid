@@ -194,7 +194,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //// convert feature id to osm id
 //let osmids = new Set();
 //highlightedIDs.forEach(featureID => {
-//  const feat = scene.getFeature(featureID);
+//  const feat = this.getFeature(featureID);
 //  if (feat && feat.data) {
 //    osmids.add(feat.data.id);
 //  }
@@ -292,7 +292,7 @@ export class PixiLayerOsm extends AbstractLayer {
     entities.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}-fill`;
 
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -331,7 +331,7 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -380,7 +380,7 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
 
       const featureID = `${LAYERID}-${entity.id}`;
 
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -442,7 +442,7 @@ if (geom === 'line') {
       }
 
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -484,7 +484,7 @@ if (geom === 'line') {
 
       const featureID = `${LAYERID}-${node.id}`;
 
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
@@ -545,7 +545,7 @@ if (geom === 'line') {
       }
 
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -565,7 +565,7 @@ if (geom === 'line') {
     entities.forEach(node => {
       const featureID = `${LAYERID}-${node.id}`;
 
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
@@ -618,7 +618,7 @@ if (geom === 'line') {
       }
 
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 
@@ -687,7 +687,7 @@ if (geom === 'line') {
 
     midpoints.forEach(midpoint => {
       const featureID = `${LAYERID}-${midpoint.id}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
@@ -714,7 +714,7 @@ if (geom === 'line') {
       }
 
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 

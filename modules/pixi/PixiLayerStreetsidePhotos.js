@@ -115,7 +115,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
     sequenceData.forEach(d => {
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
@@ -129,13 +129,13 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
 
 
     photoData.forEach(d => {
       const featureID = `${LAYERID}-photo-${d.key}`;
-      let feature = scene.getFeature(featureID);
+      let feature = this.getFeature(featureID);
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);
@@ -157,7 +157,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
       scene.syncFeatureState(feature);
       feature.update(projection, zoom);
-      scene.retainFeature(feature, frame);
+      this.retainFeature(feature, frame);
     });
   }
 

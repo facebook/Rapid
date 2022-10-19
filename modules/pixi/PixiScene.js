@@ -38,7 +38,6 @@ function asSet(vals) {
  * Properties you can access:
  *   `layers`      `Array` of all layers
  *   `features`    `Map (featureID -> Feature)` of all features we know about
- *   `retained`    `Map (featureID -> frame last seen)`
  *   `selected`    `Set` of hovered featureIDs
  *   `hovered`     `Set` of selected featureIDs
  *   `drawing`     `Set` of drawing featureIDs
@@ -57,9 +56,8 @@ export class PixiScene extends EventEmitter {
     this.renderer = renderer;
     this.context = renderer.context;
 
-    // Collections of Features
+    // Collection of all Features in the scene (used for label placement)
     this.features = new Map();     // Map (featureID -> Feature)
-    this.retained = new Map();     // Map (featureID -> frame last seen)
 
     // Feature state properties
     // Counterintuitively, the scene needs to be the source of truth for these properties,
@@ -220,11 +218,10 @@ export class PixiScene extends EventEmitter {
 
   /**
    * removeFeature
-   * Remove a Feature from the scene caches.
+   * Remove a Feature from the scene feature cache.
    * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)
    */
   removeFeature(feature) {
-    this.retained.delete(feature.id);
     this.features.delete(feature.id);
   }
 
@@ -249,24 +246,6 @@ export class PixiScene extends EventEmitter {
     feature.selected = this.selected.has(featureID);
     feature.hovered = this.hovered.has(featureID);
     feature.drawing = this.drawing.has(featureID);
-  }
-
-
-  /**
-   * retainFeature
-   * Call this to retain the feature for the given frame.
-   * Features that are not retained may be automatically culled (made invisible) or removed.
-   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
-   * @param  frame     Integer frame being rendered
-   */
-  retainFeature(feature, frame) {
-    if (feature.lod > 0) {
-      feature.visible = true;
-    }
-    // If it's in the user's view, retain it regardless of whether it's actually visible.
-    // We want to avoid continuously creating invisible things just to dispose of them a few frames later.
-    // For example points when zoomed out far.
-    this.retained.set(feature.id, frame);
   }
 
 

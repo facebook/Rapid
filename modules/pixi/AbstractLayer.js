@@ -20,6 +20,7 @@ function asSet(vals) {
  *   `enabled`      Whether the the user has chosen to see the Layer
  *   `visible`      Whether the Layer's data is currently visible  (many Layers become invisible at lower zooms)
  *   `features`     `Map(featureID -> Feature)` of all features on this Layer
+ *   `retained`     `Map(featureID -> Integer frame)` last seen
  */
 export class AbstractLayer {
 
@@ -52,7 +53,8 @@ export class AbstractLayer {
     }
 
     // Collection of Features on this Layer
-    this.features = new Map();       // Map (featureID -> Feature)
+    this.features = new Map();     // Map (featureID -> Feature)
+    this.retained = new Map();     // Map (featureID -> frame last seen)
 
     // Collections of Data on this Layer
     // There is a one-to-many relationship between Data and Features.
@@ -70,7 +72,7 @@ export class AbstractLayer {
 
   /**
    * render
-   * Every Layer should have a render function that manages the scene under its container
+   * Every Layer should have a render function that manages the Features in view.
    * Override in a subclass with needed logic. It will be passed:
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
@@ -86,9 +88,8 @@ export class AbstractLayer {
    * @param  frame   Integer frame being rendered
    */
   cull(frame) {
-    const scene = this.scene;
     for (const [featureID, feature] of this.features) {
-      const seenFrame = scene.retained.get(featureID);
+      const seenFrame = this.retained.get(featureID);
       if (seenFrame === frame) continue;
 
       // Can't see it currently, make it invisible
@@ -99,6 +100,17 @@ export class AbstractLayer {
         feature.destroy();
       }
     }
+  }
+
+
+  /**
+   * getFeature
+   * Get a Feature by its featureID
+   * @param   featureID  `String` id of a Feature
+   * @return  The Feature with the given id or `undefined` if not found
+   */
+  getFeature(featureID) {
+    return this.features.get(featureID);
   }
 
 
@@ -119,7 +131,26 @@ export class AbstractLayer {
    */
   removeFeature(feature) {
     this.unbindData(feature.id);
+    this.retained.delete(feature.id);
     this.features.delete(feature.id);
+  }
+
+
+  /**
+   * retainFeature
+   * Call this to retain the feature for the given frame.
+   * Features that are not retained may be automatically culled (made invisible) or removed.
+   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   * @param  frame     Integer frame being rendered
+   */
+  retainFeature(feature, frame) {
+    if (feature.lod > 0) {
+      feature.visible = true;
+    }
+    // If it's in the user's view, retain it regardless of whether it's actually visible.
+    // We want to avoid continuously creating invisible things just to dispose of them a few frames later.
+    // For example points when zoomed out far.
+    this.retained.set(feature.id, frame);
   }
 
 
