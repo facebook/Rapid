@@ -1,5 +1,5 @@
 import {Assets, Texture, Graphics, Rectangle, FORMATS, TYPES} from 'pixi.js';
-import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+import { AtlasAllocator } from 'texture-allocator';
 
 
 /**

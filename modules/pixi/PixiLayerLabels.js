@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+import { AtlasAllocator } from 'texture-allocator';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
@@ -113,7 +113,7 @@ export class PixiLayerLabels extends AbstractLayer {
   resetAll() {
     this._labels.forEach(label => {
       if (label.displayObject) {
-        label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
+        label.displayObject.destroy({ children: false, texture: false, baseTexture: false });
         label.displayObject = null;
       }
     });
@@ -152,7 +152,7 @@ export class PixiLayerLabels extends AbstractLayer {
     labelIDs.forEach(labelID => {
       let label = this._labels.get(labelID);
       if (label && label.displayObject) {
-        label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
+        label.displayObject.destroy({ children: false, texture: false, baseTexture: false });
         label.displayObject = null;
       }
       this._labels.delete(labelID);

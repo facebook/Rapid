@@ -88,7 +88,7 @@ export class PixiScene extends EventEmitter {
       new PixiLayerKartaPhotos(this, 25),
       new PixiLayerStreetsidePhotos(this, 26),
 
-      new PixiLayerLabels(this, 30),
+     new PixiLayerLabels(this, 30),
 
       new PixiLayerEditBlocks(this, 90),
       new PixiLayerMapUI(this, 99)
