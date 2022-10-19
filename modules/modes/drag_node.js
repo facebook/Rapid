@@ -201,7 +201,7 @@ export function modeDragNode(context) {
    * move
    */
   function move(eventData) {
-    if (_isCancelled && !_activeEntity) return;
+    if (_isCancelled || !_activeEntity) return;
 
     const point = eventData.coord;
     _lastLoc = context.projection.invert(point);
