@@ -11,7 +11,7 @@ const FAR_TOLERANCE = 4;
  *
  * Properties available:
  *   `enabled`     `true` if the event handlers are enabled, `false` if not.
- *   `dragTarget`   After the drag has started, this contains the target (Pixi object)
+ *   `dragTarget`   After the drag has started, `Object` that contains details about the feature being dragged
  *   `lastDown`    `eventData` Object for the most recent down event
  *   `lastMove`    `eventData` Object for the most recent move event
  *
@@ -31,7 +31,7 @@ export class BehaviorDrag extends AbstractBehavior {
     super(context);
     this.id = 'drag';
 
-    this.dragTarget = null;   // the displayObject being dragged
+    this.dragTarget = null;   // details of the feature being dragged
     this.lastDown = null;
     this.lastMove = null;
 
@@ -78,9 +78,7 @@ export class BehaviorDrag extends AbstractBehavior {
     const eventData = this.lastMove;
     if (eventData && this.dragTarget) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
-      this.dragTarget.interactive = true;
+      this.dragTarget.feature.interactive = true;
       this.emit('cancel', eventData);
     }
 
@@ -111,10 +109,9 @@ export class BehaviorDrag extends AbstractBehavior {
     if (this.lastDown) return;   // a pointer is already down
 
     const down = this._getEventData(e);
-    const isDraggableTarget = down.data instanceof osmNode;
+    const isDraggableTarget = (down.target?.data instanceof osmNode);
     if (!isDraggableTarget) return;
 
-//    this.context.map().zoomPanEnable(false);
     this.lastDown = down;
     this.lastMove = null;
     this.dragTarget = null;
@@ -162,14 +159,14 @@ export class BehaviorDrag extends AbstractBehavior {
     if (this.dragTarget) {   // already dragging
       this._doMove();
 
-    } else {  // start dragging?
+    } else if (down.target) {  // start dragging?
       const dist = vecLength(down.coord, move.coord);
       const tolerance = (e.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
       if (dist >= tolerance) {
         // Save the target, *and set it to be non-interactive*.
         // This lets us catch events for what other objects it passes over as the user drags it.
-        this.dragTarget = down.target;
-        this.dragTarget.interactive = false;
+        this.dragTarget = Object.assign({}, down.target);  // shallow copy
+        this.dragTarget.feature.interactive = false;
         this.emit('start', down);
       }
     }
@@ -186,17 +183,16 @@ export class BehaviorDrag extends AbstractBehavior {
     const up = this._getEventData(e);
     if (!down || down.id !== up.id) return;   // not down, or different pointer
 
-    // Before emitting the 'up' event, attach the drag target data to the event data.
+    // Before emitting the 'up' event, copy the drag target data to the event data.
     if (this.dragTarget) {
-      up.data = this.dragTarget.__feature__.data;
+      up.target = Object.assign({}, this.dragTarget);   // shallow copy
     }
 
     this.lastDown = null;
     this.lastMove = null;
-//    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
-      this.dragTarget.interactive = true;
+      this.dragTarget.feature.interactive = true;
       this.dragTarget = null;
       this.emit('end', up);
     }
@@ -215,10 +211,9 @@ export class BehaviorDrag extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.lastMove = null;
-//    this.context.map().zoomPanEnable(true);
 
     if (this.dragTarget) {
-      this.dragTarget.interactive = true;
+      this.dragTarget.feature.interactive = true;
       this.dragTarget = null;
       this.emit('cancel', cancel);
     }
@@ -245,8 +240,6 @@ export class BehaviorDrag extends AbstractBehavior {
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (disableSnap) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
     }
 
     this.emit('move', eventData);

@@ -156,8 +156,8 @@ export function modeDragNode(context) {
    * start
    */
   function start(eventData) {
-    let entity = eventData.data;
     const event = eventData.originalEvent;
+    let entity = eventData.target.data;
 
     _wasMidpoint = entity.type === 'midpoint';
     const hasHidden = context.features().hasHiddenConnections(entity, context.graph());
@@ -201,23 +201,16 @@ export function modeDragNode(context) {
    * move
    */
   function move(eventData) {
-    if (_isCancelled) return;
+    if (_isCancelled && !_activeEntity) return;
 
-    const event = eventData.originalEvent;
     const point = eventData.coord;
-    const target = behavior.dragTarget;
-
-    // event.stopPropagation();  // why?
-//    context.surface().classed('nope-disabled', event.altKey);
     _lastLoc = context.projection.invert(point);
 
-   const entity = target.__feature__.data;
-   if (!(entity instanceof osmNode)) return;  // sanity check
-    doMove(point, entity);
+    doMove(point, _activeEntity);
 
 //    var nudge = geomViewportNudge(point, context.map().dimensions);
 //    if (nudge) {
-//      startNudge(d3_event, entity, nudge);
+//      startNudge(d3_event, _activeEntity, nudge);
 //    } else {
 //      stopNudge();
 //    }
@@ -228,8 +221,8 @@ export function modeDragNode(context) {
    * end
    */
   function end(eventData) {
-    const entity = eventData.data;
-    const event = eventData.originalEvent;
+    const entity = eventData.target.data;
+//    const event = eventData.originalEvent;
 
     if (_isCancelled) return;
 

@@ -93,45 +93,55 @@ export class AbstractBehavior extends EventEmitter {
 //      feature: null,
 //      data: null,
 //    };
+
     const result = {
-      id: e.pointerId || e.pointerType || 'unknown',
+      id: e.pointerId ?? e.pointerType ?? 'unknown',
       event: e,
       originalEvent: e.originalEvent,
       coord: [e.global.x, e.global.y],
       time: e.timeStamp,
       isCancelled: false,
-      target: null,
-      feature: null,
-      data: null
+      target: null
     };
 
     if (!e.target) {   // `e.target` is the Pixi DisplayObject that triggered this event.
       return result;
     }
 
-    let target = e.target;
-    let feature = target && target.__feature__;
+    let dObj = e.target;
+    let feature = dObj?.__feature__;
 
     // __feature__ is here, use this target
     if (feature) {
-      result.target = target;
-      result.feature = feature;
-      result.data = feature.data;
+      result.target = {
+        displayObject: dObj,
+        feature: feature,
+        layer: feature.layer,
+        data: feature.data
+      };
       return result;
     }
 
     // No __feature__ in target, look in parent
-    target = e.target.parent;
-    feature = target && target.__feature__;
+    dObj = e.target.parent;
+    feature = dObj?.__feature__;
     if (feature) {
-      result.target = target;
-      result.feature = feature;
-      result.data = feature.data;
+      result.target = {
+        displayObject: dObj,
+        feature: feature,
+        layer: feature.layer,
+        data: feature.data
+      };
       return result;
     }
 
     // No __feature__ there either, just use the original target
-    result.target = e.target;
+    result.target = {
+      displayObject: e.target,
+      feature: null,
+      layer: null,
+      data: null
+    };
     return result;
   }
 

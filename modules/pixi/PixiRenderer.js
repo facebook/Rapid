@@ -166,7 +166,7 @@ export class PixiRenderer extends EventEmitter {
       const datum = selectedData.get(id);
       if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
         return `osm-${id}`;
-      } else if (datum && datum.__fbid__) {
+      } else if (datum?.__fbid__) {
         return `rapid-${id}`;
       } else {  // there are other selectable things - we will not select-style them for now :(
         return null;
@@ -183,36 +183,17 @@ export class PixiRenderer extends EventEmitter {
    * Respond to any change in hover
    */
   _onHoverChange(eventData) {
-    let hoverIDs = new Set();
-    let hoverData = [];
+    const target = eventData.target;
 
-    if (eventData.feature && eventData.data) {
-      const featureID = eventData.feature.id;
-      const layerID = eventData.feature.layer.id;
-      hoverIDs.add(featureID);
-
-// experiment: deal with fills
-if (/-fill$/.test(featureID)) {
-  hoverIDs.add(featureID.replace('-fill', ''));
-}
-
-// experiment: hover related data too (for child nodes and midpoints)
-if (eventData.related && layerID === 'osm') {
-  const related = new Set([].concat(eventData.related));  // coax related data into a Set
-  for (const r of related) {
-    hoverIDs.add(`osm-${r.id}`);
-  }
-}
-
-      hoverData = [eventData.data];
-    }
-
+    const hoverData = target?.data;
     const mode = this.context.mode();
-    if (mode && mode.id !== 'select') {
-      this.context.ui().sidebar.hover(hoverData);
+    if (mode?.id !== 'select') {
+      this.context.ui().sidebar.hover(hoverData ? [hoverData] : []);
     }
 
-    this.scene.hoverFeatures(hoverIDs);
+    const hoverID = target?.feature?.id;
+    this.scene.hoverFeatures(hoverID ?? []);
+
     this.render();
   }
 

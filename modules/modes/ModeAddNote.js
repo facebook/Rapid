@@ -78,10 +78,6 @@ export class ModeAddNote extends AbstractMode {
     const note = osmNote({ loc: loc, status: 'open', comments: [] });
     osm.replaceNote(note);
 
-    // force a redraw (there is no history change that would otherwise do this)
-// why? should the mode change trigger a redraw?
-    // this.context.map().immediateRedraw();
-
     const selection = new Map().set(note.id, note);
     this.context.enter('select', { selection: selection });  //.newFeature(true));
   }

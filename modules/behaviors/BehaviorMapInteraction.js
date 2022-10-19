@@ -130,7 +130,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     if (this.lastDown) return;   // a pointer is already down
 
     const down = this._getEventData(e);
-    const isDraggableTarget = (down.data instanceof osmNode);
+    const isDraggableTarget = down.target && (down.target.data instanceof osmNode);
     if (isDraggableTarget) return;
 
     const original = down.originalEvent;

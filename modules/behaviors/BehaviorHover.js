@@ -7,7 +7,7 @@ import { AbstractBehavior } from './AbstractBehavior';
  * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
  *   `lastMove`     `eventData` Object for the most recent move event
- *   `hoverTarget`   Current hover target (a PIXI DisplayObject), or null
+ *   `hoverTarget`  `Object` that contains details about the feature being hovered, or `null`
  *
  * Events available:
  *   `hoverchanged`  Fires whenever the hover target has changed, receives `eventData` Object
@@ -61,9 +61,6 @@ export class BehaviorHover extends AbstractBehavior {
     const eventData = this.lastMove;
     if (this.hoverTarget && eventData) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
-      eventData.related = null;
       this._doHover();
     }
 
@@ -109,14 +106,13 @@ export class BehaviorHover extends AbstractBehavior {
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     if (isCancelled || !eventManager.pointerOverRenderer) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
-      eventData.related = null;
     }
 
-    // Hover target has changed
-    if (this.hoverTarget !== eventData.target) {
-      this.hoverTarget = eventData.target;
+    // Check if hover target has changed
+    const prevID = this.hoverTarget?.feature?.id;
+    const currID = eventData?.target?.feature?.id;
+    if (prevID !== currID) {
+      this.hoverTarget = Object.assign({}, eventData.target);  // shallow copy
       this.emit('hoverchanged', eventData);
     }
   }

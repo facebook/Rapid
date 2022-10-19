@@ -273,8 +273,6 @@ export class BehaviorDraw extends AbstractBehavior {
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (disableSnap) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
     }
 
     this.emit('move', eventData);
@@ -300,8 +298,6 @@ export class BehaviorDraw extends AbstractBehavior {
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (disableSnap) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
     }
 
     this.emit('click', eventData);

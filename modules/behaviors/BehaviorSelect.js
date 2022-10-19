@@ -157,7 +157,7 @@ export class BehaviorSelect extends AbstractBehavior {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
-    if (this.lastDown) return; // a pointer is already down
+    if (this.lastDown) return;  // a pointer is already down
 
     const down = this._getEventData(e);
     this.lastDown = down;
@@ -282,12 +282,11 @@ export class BehaviorSelect extends AbstractBehavior {
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (disableSnap) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
     }
 
     // Determine what we clicked on and switch modes..
-    let datum = eventData.data;
+    const target = eventData.target;
+    let datum = target && target.data;
 
     // If we're clicking on something, we want to pause doubleclick zooms
     if (datum) {
@@ -358,13 +357,13 @@ export class BehaviorSelect extends AbstractBehavior {
     // Clicked on a photo, so open / refresh the viewer's pic
     if (datum.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
-      const target = eventData.target;
-      const photoLayerName = target.parent.name;
-      const service = services[photoLayerName];
+      const layerID = target.layer.id;
+      const featureID = target.feature.id;
+      const service = services[layerID];
       if (!service) return;
 
       // The 'ID' of the photo varies by layer. Streetside uses 'key', others use 'id'.
-      const photoID = photoLayerName === 'mapillary' ? datum.id : datum.key;
+      const photoID = layerID === 'mapillary' ? datum.id : datum.key;
 
       service
         .ensureViewerLoaded(context)
@@ -373,8 +372,7 @@ export class BehaviorSelect extends AbstractBehavior {
       context.map().centerEase(datum.loc);
 
       // No mode change event here, just manually tell the renderer to select it, for now
-      const ids = datum ? [target.name] : [];
-      context.scene().selectFeatures(ids);
+      context.scene().selectFeatures(featureID);
     }
   }
 
@@ -431,11 +429,7 @@ export class BehaviorSelect extends AbstractBehavior {
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (disableSnap) {
       eventData.target = null;
-      eventData.feature = null;
-      eventData.data = null;
     }
-
-    const datum = eventData.data;
 
     if (this._showsMenu) {   // menu is on, toggle it off
       context.ui().closeEditMenu();
@@ -443,6 +437,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     } else {                 // menu is off, toggle it on
       // Only attempt to display the context menu if we're focused on a non-RapiD OSM Entity.
+      const datum = eventData.target?.data;
       if (datum && datum instanceof osmEntity && !datum.__fbid__) {
         this._showsMenu = true;
         context.ui().showEditMenu(eventData.coord);

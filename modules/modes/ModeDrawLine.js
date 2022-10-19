@@ -234,7 +234,8 @@ export class ModeDrawLine extends AbstractMode {
     let loc = projection.invert(coord);
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
-    const datum = eventData.data;
+    const target = eventData.target;
+    const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);
 
     // Snap to a node
@@ -277,7 +278,8 @@ export class ModeDrawLine extends AbstractMode {
     this._clicks++;
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
-    const datum = eventData.data;
+    const target = eventData.target;
+    const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);
 
     // Snap to a node

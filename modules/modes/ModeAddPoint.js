@@ -85,7 +85,8 @@ export class ModeAddPoint extends AbstractMode {
     if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
-    const datum = eventData.data;
+    const target = eventData.target;
+    const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);
 
     // Snap to a node
