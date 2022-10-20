@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+import {Assets, Texture, Graphics, Rectangle, FORMATS, TYPES} from 'pixi.js';
+import { AtlasAllocator } from 'texture-allocator';
 
 
 /**
@@ -28,46 +28,49 @@ export class PixiTextures {
     context.pixi.rapidTextures = this.textures;
 
     // Load spritesheets
-    const loader = PIXI.Loader.shared;
     const assetPath = context.assetPath();
 
- // During tests we might be reloading the map several times. If so, don't reload the resource spritesheets.
-    if (!loader.resources[`${assetPath}img/icons/maki-spritesheet.json`]) {
-      loader.add(`${assetPath}img/icons/maki-spritesheet.json`);
-      loader.add(`${assetPath}img/icons/temaki-spritesheet.json`);
-      loader.add(`${assetPath}img/icons/fontawesome-spritesheet.json`);
-      loader.add(`${assetPath}img/icons/mapillary-features-spritesheet.json`);
-      loader.add(`${assetPath}img/icons/mapillary-signs-spritesheet.json`);
-      loader.load((loader) => {
-        context._makiSheet =
-          loader.resources[`${assetPath}img/icons/maki-spritesheet.json`];
-        context._temakiSheet =
-          loader.resources[`${assetPath}img/icons/temaki-spritesheet.json`];
-        context._fontAwesomeSheet =
-          loader.resources[
-            `${assetPath}img/icons/fontawesome-spritesheet.json`
-          ];
-        context._mapillarySheet =
-          loader.resources[
-            `${assetPath}img/icons/mapillary-features-spritesheet.json`
-          ];
-        context._mapillarySignSheet =
-          loader.resources[
-            `${assetPath}img/icons/mapillary-signs-spritesheet.json`
-          ];
-        this.loaded = true;
-      });
-    }
-    // Load patterns
-    context.pixi.rapidTextureKeys = [
-      'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
-      'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
-      'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
-      'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
-    ];
-    context.pixi.rapidTextureKeys.forEach(key => {
-      this.textures.set(key, new PIXI.Texture.from(`${assetPath}img/pattern/${key}.png`));
-    });
+   // During tests we might be reloading the map several times. If so, don't reload the resource spritesheets.
+    //  if (Object.keys(Assets.loader.promiseCache).length === 0) {
+
+       this.loaded = true;
+
+       // Load patterns
+       context.pixi.rapidTextureKeys = [
+         'bushes',
+         'cemetery',
+         'cemetery_buddhist',
+         'cemetery_christian',
+         'cemetery_jewish',
+         'cemetery_muslim',
+         'construction',
+         'dots',
+         'farmland',
+         'farmyard',
+         'forest',
+         'forest_broadleaved',
+         'forest_leafless',
+         'forest_needleleaved',
+         'grass',
+         'landfill',
+         'lines',
+         'orchard',
+         'pond',
+         'quarry',
+         'vineyard',
+         'waves',
+         'wetland',
+         'wetland_bog',
+         'wetland_marsh',
+         'wetland_reedbed',
+         'wetland_swamp',
+       ];
+       context.pixi.rapidTextureKeys.forEach((key) => {
+         this.textures.set(
+           key,
+           Texture.from(`${assetPath}img/pattern/${key}.png`)
+         );
+       });
 
 
     // Convert frequently used graphics to textures/sprites for performance
@@ -77,8 +80,8 @@ export class PixiTextures {
     //
     // Viewfields
     //
-    const viewfieldRect = new PIXI.Rectangle(-13, 0, 26, 26);
-    const viewfield = new PIXI.Graphics()
+    const viewfieldRect = new Rectangle(-13, 0, 26, 26);
+    const viewfield = new Graphics()
       .lineStyle(1, 0x444444)                    //  [-6,21]  ,-___-,  [6,21]
       .beginFill(0xffffff, 0.75)                 //          /       \
       .moveTo(-6, 21)                            //         /         \
@@ -88,7 +91,7 @@ export class PixiTextures {
       .closePath()                               // [-12,4]              [12,4]    |
       .endFill();                                //            [0,0]               +-- +x
 
-    const viewfieldDark = new PIXI.Graphics()
+    const viewfieldDark = new Graphics()
       .lineStyle(1, 0xcccccc)         // same viewfield, but outline light gray
       .beginFill(0x333333, 0.75)      // and fill dark gray (not intended to be tinted)
       .moveTo(-6, 21)
@@ -99,7 +102,7 @@ export class PixiTextures {
       .endFill();
 
 
-    const viewfieldOutline = new PIXI.Graphics()
+    const viewfieldOutline = new Graphics()
       .lineStyle(1, 0xcccccc) // same viewfield, but with no fill for wireframe mode
       .beginFill(0xffffff, 0)
       .moveTo(-6, 21)
@@ -129,7 +132,7 @@ export class PixiTextures {
     //
     // Markers
     //
-    const pin = new PIXI.Graphics()              //              [0,-23]
+    const pin = new Graphics()              //              [0,-23]
       .lineStyle(1, 0x444444)                    //              _,-+-,_
       .beginFill(0xffffff, 1)                    //            /'       `\
       .moveTo(0, 0)                              //           :           :
@@ -140,7 +143,7 @@ export class PixiTextures {
       .closePath()                               //               \   /      -y
       .endFill();                                //                `+`        |
                                                  //               [0,0]       +-- +x
-    const boldPin = new PIXI.Graphics()
+    const boldPin = new Graphics()
       .lineStyle(1.5, 0x666666)        // same pin, bolder line stroke
       .beginFill(0xdddddd, 1)
       .moveTo(0, 0)
@@ -151,25 +154,25 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
-    const largeCircle = new PIXI.Graphics()    // suitable to display an icon inside
+    const largeCircle = new Graphics()    // suitable to display an icon inside
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 8)
       .endFill();
 
-    const mediumCircle = new PIXI.Graphics()   // suitable for a streetview photo marker
+    const mediumCircle = new Graphics()   // suitable for a streetview photo marker
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 6)
       .endFill();
 
-    const smallCircle = new PIXI.Graphics()    // suitable for a plain vertex
+    const smallCircle = new Graphics()    // suitable for a plain vertex
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
       .endFill();
 
-    const taggedCircle = new PIXI.Graphics()   // a small circle with a dot inside
+    const taggedCircle = new Graphics()   // a small circle with a dot inside
       .lineStyle(1, 0x444444)
       .beginFill(0xffffff, 1)
       .drawCircle(0, 0, 4.5)
@@ -186,7 +189,7 @@ export class PixiTextures {
 
 
     // KeepRight
-    const keepright = new PIXI.Graphics()
+    const keepright = new Graphics()
       .lineStyle(1, 0x333333)
       .beginFill(0xffffff)
       .moveTo(15, 6.5)
@@ -206,7 +209,7 @@ export class PixiTextures {
       .closePath();
 
     // ImproveOsm
-    const improveosm = new PIXI.Graphics()
+    const improveosm = new Graphics()
       .lineStyle(1, 0x333333)
       .beginFill(0xffffff)
       .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
@@ -214,7 +217,7 @@ export class PixiTextures {
       .closePath();
 
     // OSM note
-    const osmnote = new PIXI.Graphics()
+    const osmnote = new Graphics()
       .lineStyle(1.5, 0x333333)
       .beginFill(0xffffff, 1)
       .moveTo(17.5, 0)
@@ -233,7 +236,7 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
-    const osmose = new PIXI.Graphics()
+    const osmose = new Graphics()
       .lineStyle(1, 0x333333)
       .beginFill(0xffffff)
       .drawPolygon([16,3, 4,3, 1,6, 1,17, 4,20, 7,20, 10,27, 13,20, 16,20, 19,17.033, 19,6])
@@ -249,18 +252,18 @@ export class PixiTextures {
     //
     // Line markers
     //
-    const midpoint = new PIXI.Graphics()      // [-3, 4]  ._                +y
+    const midpoint = new Graphics()      // [-3, 4]  ._                +y
       .lineStyle(1, 0x444444)                 //          | "-._             |
       .beginFill(0xffffff, 1)                 //          |    _:>  [7,0]    +-- +x
       .drawPolygon([-3,4, 7,0, -3,-4])        //          |_,-"
       .endFill();                             // [-3,-4]  '
 
-    const oneway = new PIXI.Graphics()
+    const oneway = new Graphics()
       .beginFill(0xffffff, 1)
       .drawPolygon([5,3, 0,3, 0,2, 5,2, 5,0, 10,2.5, 5,5])
       .endFill();
 
-    const sided = new PIXI.Graphics()
+    const sided = new Graphics()
       .beginFill(0xffffff, 1)
       .drawPolygon([0,5, 5,0, 0,-5])
       .endFill();
@@ -274,12 +277,12 @@ export class PixiTextures {
     // Stripe (experiment)
     // For drawing stripes on Rapid features
     //
-    const stripe = new PIXI.Graphics()
+    const stripe = new Graphics()
       .lineStyle(2, 0xffffff)
       .moveTo(0, 0)
       .lineTo(4, 0);
     this.textures.set('stripe', this.toAtlasTexture(stripe, {
-      region: new PIXI.Rectangle(0, 0, 4, 4),
+      region: new Rectangle(0, 0, 4, 4),
       resolution: 2
     }));
 
@@ -289,19 +292,19 @@ export class PixiTextures {
     // We can replace areas with these sprites when they are very small
     // They are all sized to 10x10 (would look fine scaled down but not up)
     //
-    const lowresSquare = new PIXI.Graphics()
+    const lowresSquare = new Graphics()
       .lineStyle(1, 0xffffff)
       .beginFill(0xffffff, 0.6)
       .drawRect(-5, -5, 10, 10)
       .endFill();
 
-    const lowresEll = new PIXI.Graphics()
+    const lowresEll = new Graphics()
       .lineStyle(1, 0xffffff)
       .beginFill(0xffffff, 0.6)
       .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
       .endFill();
 
-    const lowresCircle = new PIXI.Graphics()
+    const lowresCircle = new Graphics()
       .lineStyle(1, 0xffffff)
       .beginFill(0xffffff, 0.6)
       .drawCircle(0, 0, 5)
@@ -316,19 +319,19 @@ export class PixiTextures {
     // Low-res unfilled areas
     // For wireframe mode rendering (no fills at all)
     //
-    const lowresUnfilledSquare = new PIXI.Graphics()
+    const lowresUnfilledSquare = new Graphics()
       .lineStyle(1, 0xffffff)
       .beginFill(0, 0)
       .drawRect(-5, -5, 10, 10)
       .endFill();
 
-    const lowresUnfilledEll = new PIXI.Graphics()
+    const lowresUnfilledEll = new Graphics()
       .lineStyle(1, 0xffffff)
       .beginFill(0, 0)
       .drawPolygon([-5,-5, 5,-5, 5,5, 1,5, 1,1, -5,1, -5,-5])
       .endFill();
 
-    const lowresUnfilledCircle = new PIXI.Graphics()
+    const lowresUnfilledCircle = new Graphics()
       .lineStyle(1, 0xffffff)
       .beginFill(0, 0)
       .drawCircle(0, 0, 5)
@@ -350,8 +353,8 @@ export class PixiTextures {
     const renderTexture = renderer.generateTexture(graphic, options);
     const baseTexture = renderTexture.baseTexture;
 
-    if (baseTexture.format !== PIXI.FORMATS.RGBA) return;       // we could handle other values
-    if (baseTexture.type !== PIXI.TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
+    if (baseTexture.format !== FORMATS.RGBA) return;       // we could handle other values
+    if (baseTexture.type !== TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
 
     const framebuffer = baseTexture.framebuffer;
     // If we can't get framebuffer, just return the rendertexture

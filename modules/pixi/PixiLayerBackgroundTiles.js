@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
-import { AtlasAllocator } from '@pixi-essentials/texture-allocator';
+import { AtlasAllocator } from 'texture-allocator';
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
 import { ConvolutionFilter } from '@pixi/filter-convolution';
 import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';

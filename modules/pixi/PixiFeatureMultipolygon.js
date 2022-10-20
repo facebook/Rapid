@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from 'pixi-dashed-line';
+// import { DashLine } from 'pixi-dashed-line';
 import { Extent, geomGetSmallestSurroundingRectangle, geomRotatePoints, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';

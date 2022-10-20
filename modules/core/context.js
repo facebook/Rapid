@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { Assets } from 'pixi.js';
 // import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@id-sdk/math';
@@ -663,12 +664,31 @@ export function coreContext() {
   let _rapidContext;
   context.rapidContext = () => _rapidContext;
 
+  async function loadImages() {
+      context._makiSheet = await Assets.load(
+        `${_assetPath}img/icons/maki-spritesheet.json`
+      );
+      context._temakiSheet = await Assets.load(
+        `${_assetPath}img/icons/temaki-spritesheet.json`
+      );
+      context._fontAwesomeSheet = await Assets.load(
+        `${_assetPath}img/icons/fontawesome-spritesheet.json`
+      );
+      context._mapillarySheet = await Assets.load(
+        `${_assetPath}img/icons/mapillary-features-spritesheet.json`
+      );
+      context._mapillarySignSheet = await Assets.load(
+        `${_assetPath}img/icons/mapillary-signs-spritesheet.json`
+      );
+    }
 
   /* Init */
   context.init = () => {
     instantiateInternal();
     initializeDependents();
+    loadImages();
     return context;
+
 
     // Load variables and properties. No property of `context` should be accessed
     // until this is complete since load statuses are indeterminate. The order

@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from 'pixi-dashed-line';
+ import { DashLine } from 'pixi-dashed-line';
 import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
@@ -308,17 +308,11 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-//      if (this.container.hitArea) {
-//        new DashLine(this.halo, HALO_STYLE).drawPolygon(this.container.hitArea.points);
-//      }
-      const dl = new DashLine(this.halo, HALO_STYLE);
+       const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
         if (this._bufferdata.outer && this._bufferdata.inner) {
           dl.drawPolygon(this._bufferdata.outer);
-//hacky
-// if (this.data && typeof this.data.isArea === 'function' && !this.data.isArea()) {
           dl.drawPolygon(this._bufferdata.inner);
-// }
         } else {
           dl.drawPolygon(this._bufferdata.perimeter);
         }
@@ -326,6 +320,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
     } else {
       if (this.halo) {
+        this.container.filters = null;
         this.halo.destroy({ children: true });
         this.halo = null;
       }
