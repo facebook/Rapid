@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 // import { DashLine } from 'pixi-dashed-line';
+import { GlowFilter } from '@pixi/filter-glow';
 import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
@@ -308,9 +309,17 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-//      if (this.container.hitArea) {
+      if (this.container.hitArea) {
 //        new DashLine(this.halo, HALO_STYLE).drawPolygon(this.container.hitArea.points);
-//      }
+        this.container.filters = [new GlowFilter({
+            distance: 5,
+            outerStrength: 4,
+            innerStrength: 2,
+            color: this.style.stroke?.color||this.style.fill?.color||this.style.casing?.color,
+            quality: 0.1
+          })];
+
+      }
       // const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
         if (this._bufferdata.outer && this._bufferdata.inner) {
@@ -326,6 +335,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
     } else {
       if (this.halo) {
+        this.container.filters = null;
         this.halo.destroy({ children: true });
         this.halo = null;
       }
