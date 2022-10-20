@@ -1,6 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { Assets } from 'pixi.js';
-// import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
@@ -22,10 +21,11 @@ import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
 import { BehaviorPaste } from '../behaviors/BehaviorPaste';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
-import { ModeDrawArea } from '../modes/ModeDrawArea';
 import { ModeAddNote } from '../modes/ModeAddNote';
 import { ModeAddPoint } from '../modes/ModeAddPoint';
 import { ModeBrowse } from '../modes/ModeBrowse';
+import { ModeDragNode } from '../modes/ModeDragNode';
+import { ModeDrawArea } from '../modes/ModeDrawArea';
 import { ModeDrawLine } from '../modes/ModeDrawLine';
 import { ModeSave } from '../modes/ModeSave';
 import { ModeSelect } from '../modes/ModeSelect';  // new
@@ -730,6 +730,7 @@ export function coreContext() {
         new ModeAddNote(context),
         new ModeAddPoint(context),
         new ModeBrowse(context),
+        new ModeDragNode(context),
         new ModeDrawArea(context),
         new ModeDrawLine(context),
         new ModeSave(context),

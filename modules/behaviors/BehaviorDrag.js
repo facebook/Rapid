@@ -159,14 +159,20 @@ export class BehaviorDrag extends AbstractBehavior {
     if (this.dragTarget) {   // already dragging
       this._doMove();
 
-    } else if (down.target) {  // start dragging?
+    } else if (down.target) {  // start dragging if we've moved enough
       const dist = vecLength(down.coord, move.coord);
       const tolerance = (e.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
       if (dist >= tolerance) {
         // Save the target, *and set it to be non-interactive*.
         // This lets us catch events for what other objects it passes over as the user drags it.
-        this.dragTarget = Object.assign({}, down.target);  // shallow copy
-        this.dragTarget.feature.interactive = false;
+        const target = Object.assign({}, down.target);  // shallow copy
+        this.dragTarget = target;
+        target.feature.interactive = false;
+
+        // Enter Drag Node mode
+        const selection = new Map().set(target.data.id, target.data);
+        this.context.enter('drag-node', { selection: selection });
+
         this.emit('start', down);
       }
     }

@@ -13,8 +13,6 @@ import { actionDeleteRelation } from '../actions/delete_relation';
 //import { BehaviorPaste } from '../behaviors/BehaviorPaste';
 //import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
-import { modeDragNode } from './drag_node';
-import { modeDragNote } from './drag_note';
 import { osmNode, osmWay } from '../osm';
 import * as Operations from '../operations/index';
 import { uiCmd } from '../ui/cmd';
@@ -29,7 +27,6 @@ export function modeSelect(context, selectedIDs) {
 
     var keybinding = utilKeybinding('select');
 
-    var _modeDragNode = modeDragNode(context);
     // var _selectBehavior;
     // var _behaviors = [];
 
@@ -226,26 +223,9 @@ export function modeSelect(context, selectedIDs) {
         if (!checkSelectedIDs()) return false;
 
         context.features().forceVisible(selectedIDs);
-
-        _modeDragNode.restoreSelectedIDs(selectedIDs);
-
         loadOperations();
 
-      context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction']);
-
-        // if (!_behaviors.length) {
-        //     if (!_selectBehavior) _selectBehavior = new BehaviorSelect(context);
-
-        //     _behaviors = [
-        //         new BehaviorHover(context),
-        //         new BehaviorPaste(context),
-        //         _selectBehavior,
-        //         behaviorLasso(context),
-        //         _modeDragNode.behavior,
-        //         // modeDragNote(context).behavior
-        //     ];
-        // }
-        // _behaviors.forEach(context.install);
+        context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction']);
 
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -274,10 +254,6 @@ export function modeSelect(context, selectedIDs) {
 
 //        context.map()
 //            .on('drawn.select', selectElements);
-
-//        context.map().doubleUpHandler()
-//            .on('doubleUp.modeSelect', didDoubleUp);
-
 
 //        selectElements();
 
