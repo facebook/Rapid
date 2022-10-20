@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
-// import { DashLine } from 'pixi-dashed-line';
-import { GlowFilter } from '@pixi/filter-glow';
+ import { DashLine } from 'pixi-dashed-line';
 import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
@@ -240,16 +239,16 @@ export class PixiFeatureLine extends AbstractFeature {
       let g = graphic.clear();
       if (style[which].alpha === 0) return;
 
-      // if (style[which].dash) {
-      //   g = new DashLine(g, {
-      //     dash: style[which].dash,
-      //     color: style[which].color,
-      //     width: width,
-      //     alpha: style[which].alpha || 1.0,
-      //     join: style[which].join || PIXI.LINE_JOIN.ROUND,
-      //     cap: style[which].cap || PIXI.LINE_CAP.ROUND,
-      //   });
-      // } else {
+      if (style[which].dash) {
+        g = new DashLine(g, {
+          dash: style[which].dash,
+          color: style[which].color,
+          width: width,
+          alpha: style[which].alpha || 1.0,
+          join: style[which].join || PIXI.LINE_JOIN.ROUND,
+          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
+        });
+      } else {
         g = g.lineStyle({
           color: style[which].color,
           width: width,
@@ -257,7 +256,7 @@ export class PixiFeatureLine extends AbstractFeature {
           join: style[which].join || PIXI.LINE_JOIN.ROUND,
           cap: style[which].cap || PIXI.LINE_CAP.ROUND,
         });
-      // }
+      }
 
       points.forEach(([x, y], i) => {
         if (i === 0) {
@@ -309,27 +308,13 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-      if (this.container.hitArea) {
-//        new DashLine(this.halo, HALO_STYLE).drawPolygon(this.container.hitArea.points);
-        this.container.filters = [new GlowFilter({
-            distance: 5,
-            outerStrength: 4,
-            innerStrength: 2,
-            color: this.style.stroke?.color||this.style.fill?.color||this.style.casing?.color,
-            quality: 0.1
-          })];
-
-      }
-      // const dl = new DashLine(this.halo, HALO_STYLE);
+       const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
         if (this._bufferdata.outer && this._bufferdata.inner) {
-          // dl.drawPolygon(this._bufferdata.outer);
-//hacky
-// if (this.data && typeof this.data.isArea === 'function' && !this.data.isArea()) {
-          // dl.drawPolygon(this._bufferdata.inner);
-// }
+          dl.drawPolygon(this._bufferdata.outer);
+          dl.drawPolygon(this._bufferdata.inner);
         } else {
-          // dl.drawPolygon(this._bufferdata.perimeter);
+          dl.drawPolygon(this._bufferdata.perimeter);
         }
       }
 

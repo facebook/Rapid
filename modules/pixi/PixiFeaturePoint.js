@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-// import { DashLine } from 'pixi-dashed-line';
+import { DashLine } from 'pixi-dashed-line';
 
 import { AbstractFeature } from './AbstractFeature';
 import { getIconTexture } from './helpers';
@@ -291,11 +291,11 @@ export class PixiFeaturePoint extends AbstractFeature {
       this.halo.clear();
 
       const shape = this.container.hitArea;
-      // if (shape instanceof PIXI.Circle) {
-      //   new DashLine(this.halo, HALO_STYLE).drawCircle(shape.x, shape.y, shape.radius);
-      // } else if (shape instanceof PIXI.Rectangle) {
-      //   new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
-      // }
+      if (shape instanceof PIXI.Circle) {
+        new DashLine(this.halo, HALO_STYLE).drawCircle(shape.x, shape.y, shape.radius);
+      } else if (shape instanceof PIXI.Rectangle) {
+        new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
+      }
       this.halo.position = this.container.position;
 
     } else {
