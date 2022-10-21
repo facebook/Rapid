@@ -1,5 +1,4 @@
-import {Texture, Rectangle, FORMATS, TYPES} from '@pixi/core';
-import { Graphics } from '@pixi/graphics';
+import {Assets, Texture, Graphics, Rectangle, FORMATS, TYPES} from 'pixi.js';
 import { AtlasAllocator } from 'texture-allocator';
 
 
@@ -22,7 +21,7 @@ export class PixiTextures {
 
     this._atlasAllocator = new AtlasAllocator();
 
-    // Map(String key -> Texture)
+    // Map(String key -> PIXI.Texture)
     // important to make sure these keys don't conflict
     this.textures = new Map();
     // make it accessable this way (for now)
@@ -381,7 +380,7 @@ export class PixiTextures {
     const PADDING = 1;
     const texture = this._atlasAllocator.allocate(w, h, PADDING, pixels);
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
-    // (i.e. the dimensions that a Sprite using this texture will want to make itself)
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
     texture.orig = renderTexture.orig.clone();
 
     renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas

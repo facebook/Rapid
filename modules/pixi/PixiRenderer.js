@@ -1,9 +1,6 @@
-import { ENV, MIPMAP_MODES, Rectangle, Renderer, settings } from '@pixi/core';
-import { Application } from '@pixi/app';
+import * as PIXI from 'pixi.js';
 import { EventSystem } from '@pixi/events';
 import { EventEmitter, skipHello } from '@pixi/utils';
-import { BitmapFont } from '@pixi/text-bitmap';
-
 import { Projection } from '@id-sdk/math';
 
 import { PixiEvents } from './PixiEvents';
@@ -73,22 +70,25 @@ export class PixiRenderer extends EventEmitter {
 
     // Register Pixi with the pixi-inspector extension if it is installed
     // https://github.com/bfanger/pixi-inspector
-    // if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
-    //   window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
-    // }
+    if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
+      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
+    }
 
     if (window.mocha) {
       skipHello();
     }
 
     // Disable mipmapping, we always want textures near the resolution they are at.
-    settings.MIPMAP_TEXTURES = MIPMAP_MODES.OFF;
+    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
 
     // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
-    settings.PREFER_ENV = ENV.WEBGL2;
+    PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
+
+    // NEW: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
+    delete PIXI.Renderer.__plugins.interaction;
 
     // Create a Pixi application rendering to the given surface `canvas`
-    this.pixi = new Application({
+    this.pixi = new PIXI.Application({
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
@@ -109,13 +109,13 @@ export class PixiRenderer extends EventEmitter {
     context.pixi = this.pixi;
 
     // Prepare a basic bitmap font that we can use for things like debug messages
-    BitmapFont.from('debug', {
+    PIXI.BitmapFont.from('debug', {
       fill: 0xffffff,
       fontSize: 14,
       stroke: 0x333333,
       strokeThickness: 2
     },{
-      chars: BitmapFont.ASCII,
+      chars: PIXI.BitmapFont.ASCII,
       padding: 0,
       resolution: 2
     });
@@ -136,7 +136,7 @@ export class PixiRenderer extends EventEmitter {
     stage.sortableChildren = true;
     stage.interactive = true;
     // Add a big hit area to `stage` so that clicks on nothing will generate events
-    stage.hitArea = new Rectangle(-100000, -100000, 200000, 200000);
+    stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
     this.stage = stage;
 
     // Setup other classes
@@ -418,7 +418,7 @@ export class PixiRenderer extends EventEmitter {
 // like this? (offset in stage)
     this.pixi.render();
 //...or like this (offset in matrix)?
-    // const m = new Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
+    // const m = new PIXI.Matrix(1, 0, 0, 1, -offset[0], -offset[1]);
     // const options = {
     //   transform: m,
     //   // skipUpdateTransform: true

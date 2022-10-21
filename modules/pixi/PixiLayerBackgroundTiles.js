@@ -1,11 +1,4 @@
-import { Container } from '@pixi/display';
-import { Graphics } from '@pixi/graphics';
-import { Texture } from '@pixi/core';
-import { BlurFilter } from '@pixi/filter-blur';
-import { Sprite } from '@pixi/sprite';
-import { BitmapText } from '@pixi/text-bitmap';
-
-
+import * as PIXI from 'pixi.js';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { AtlasAllocator } from 'texture-allocator';
 import { AdjustmentFilter } from '@pixi/filter-adjustment';
@@ -96,7 +89,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     } else if (this.filters.sharpness < 1) {
       const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
-      this.blurFilter = new BlurFilter(blurFactor, 4);
+      this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
       this.container.filters.push(this.blurFilter);
     }
   }
@@ -247,7 +240,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       if (tileMap.has(tile.id)) return;   // we made it already
 
       const tileName = `${source.id}-${tile.id}`;
-      const sprite = new Sprite();
+      const sprite = new PIXI.Sprite();
       sprite.name = tileName;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
@@ -328,14 +321,14 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         if (SHOWDEBUG && !source.overlay && !this.isMinimap) {
           // Display debug tile info
           if (!tile.debug) {
-            tile.debug = new Graphics();
+            tile.debug = new PIXI.Graphics();
             tile.debug.name = `debug-${tile.id}`;
             tile.debug.interactive = false;
             tile.debug.interactiveChildren = false;
             tile.debug.sortableChildren = false;
             debugContainer.addChild(tile.debug);
 
-            const label = new BitmapText(tile.id, { fontName: 'debug' });
+            const label = new PIXI.BitmapText(tile.id, { fontName: 'debug' });
             label.name = `label-${tile.id}`;
             label.tint = DEBUGCOLOR;
             label.position.set(2, 2);
@@ -365,7 +358,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   destroyTile(tile) {
     if (tile.sprite) {
-      if (tile.sprite.texture && tile.sprite.texture !== Texture.EMPTY) {
+      if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
         this._atlasAllocator.free(tile.sprite.texture);
       }
       tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
@@ -386,7 +379,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   getSourceContainer(sourceID) {
     let sourceContainer = this.container.getChildByName(sourceID);
     if (!sourceContainer) {
-      sourceContainer = new Container();
+      sourceContainer = new PIXI.Container();
       sourceContainer.name = sourceID;
       sourceContainer.buttonMode = false;
       sourceContainer.interactive = false;

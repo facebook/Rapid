@@ -1,17 +1,11 @@
-import { Point } from '@pixi/core';
-import { Sprite } from '@pixi/sprite';
-import { SimpleRope } from '@pixi/mesh-extras';
-import { Text, TextStyle } from '@pixi/text';
-import { Container } from '@pixi/display';
-import { ParticleContainer } from '@pixi/particle-container';
-import { BitmapFont, BitmapText } from '@pixi/text-bitmap';
+import * as PIXI from 'pixi.js';
 import { AtlasAllocator } from 'texture-allocator';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
 import { localizer } from '../core/localizer';
-import { getLineSegments } from './helpers.js';
+import { getLineSegments, getDebugBBox } from './helpers.js';
 
 const LAYERID = 'labels';
 const MINZOOM = 12;
@@ -51,7 +45,7 @@ export class PixiLayerLabels extends AbstractLayer {
     layerContainer.interactive = false;
     layerContainer.interactiveChildren = false;
 
-    const debugContainer = new ParticleContainer(50000);
+    const debugContainer = new PIXI.ParticleContainer(50000);
     debugContainer.name = 'debug';
     debugContainer.roundPixels = false;
     debugContainer.buttonMode = false;
@@ -60,7 +54,7 @@ export class PixiLayerLabels extends AbstractLayer {
     debugContainer.sortableChildren = false;
     this.debugContainer = debugContainer;
 
-    const labelContainer = new Container();
+    const labelContainer = new PIXI.Container();
     labelContainer.name = 'labels';
     labelContainer.buttonMode = false;
     labelContainer.interactive = false;
@@ -100,15 +94,15 @@ export class PixiLayerLabels extends AbstractLayer {
       strokeThickness: 3
     };
 
-    // For ascii-only labels, we can use BitmapText to avoid generating label textures
-    BitmapFont.from('label', fontOptions, {
-      chars: BitmapFont.ASCII,
+    // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
+    PIXI.BitmapFont.from('label', fontOptions, {
+      chars: PIXI.BitmapFont.ASCII,
       padding: 0,
       resolution: 2
     });
 
-    // For all other labels, generate it on the fly in a Text or Sprite
-    this._textstyle = new TextStyle(fontOptions);
+    // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
+    this._textstyle = new PIXI.TextStyle(fontOptions);
   }
 
 
@@ -240,7 +234,7 @@ export class PixiLayerLabels extends AbstractLayer {
     let texture = this._textures.get(str);
 
     if (!texture) {
-      const text = new Text(str, this._textstyle);
+      const text = new PIXI.Text(str, this._textstyle);
       text.resolution = 2;
       text.updateText(false);  // force update it so the texture is prepared
 
@@ -250,14 +244,14 @@ export class PixiLayerLabels extends AbstractLayer {
       const PADDING = 0;
       texture = this._atlasAllocator.allocate(w, h, PADDING, data);
       // These textures are overscaled, but `orig` Rectangle stores the original width/height
-      // (i.e. the dimensions that a Sprite using this texture will want to make itself)
+      // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
       texture.orig = text.texture.orig.clone();
 
       this._textures.set(str, texture);
       text.destroy();  // safe to destroy, the texture is copied to the atlas
     }
 
-    sprite = new Sprite(texture);
+    sprite = new PIXI.Sprite(texture);
     sprite.name = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
@@ -375,7 +369,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
         let labelObj;
         if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
-          labelObj = new BitmapText(feature.label, { fontName: 'label' });
+          labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label' });
           labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
           labelObj.name = feature.label;
           // labelObj.anchor.set(0.5, 0.5);   // middle, middle
@@ -427,7 +421,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * try them until we find one that doesn't collide with something.
    *
    * @param  feature   The feature to place point labels on
-   * @param  labelObj  a Sprite, Text, or BitmapText to use as the label
+   * @param  labelObj  a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText to use as the label
    */
   placePointLabel(feature, labelObj) {
     if (!feature || !feature.sceneBounds) return;
@@ -556,7 +550,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * then add the labels in spaces along the line wherever they fit
    *
    * @param  feature   The feature to place point labels on
-   * @param  labelObj  a Sprite to use as the label
+   * @param  labelObj  a PIXI.Sprite to use as the label
    */
   placeLineLabel(feature, labelObj) {
     if (!feature || !feature.points) return;
@@ -794,7 +788,7 @@ export class PixiLayerLabels extends AbstractLayer {
       if (label.displayObject) return;   // done already
 
       if (label.type === 'text') {
-        const labelObj = options.labelObj;  // a Sprite, Text, or BitmapText
+        const labelObj = options.labelObj;  // a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText
         labelObj.tint = options.tint || 0xffffff;
         labelObj.position.set(options.x, options.y);
 
@@ -802,9 +796,9 @@ export class PixiLayerLabels extends AbstractLayer {
         this.labelContainer.addChild(labelObj);
 
       } else if (label.type === 'rope') {
-        const labelObj = options.labelObj;  // a Sprite, or Text
-        const points = options.coords.map(([x,y]) => new Point(x, y));
-        const rope = new SimpleRope(labelObj.texture, points);
+        const labelObj = options.labelObj;  // a PIXI.Sprite, or PIXI.Text
+        const points = options.coords.map(([x,y]) => new PIXI.Point(x, y));
+        const rope = new PIXI.SimpleRope(labelObj.texture, points);
         rope.name = labelID;
         rope.autoUpdate = false;
         rope.interactiveChildren = false;

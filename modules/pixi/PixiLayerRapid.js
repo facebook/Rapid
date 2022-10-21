@@ -1,5 +1,4 @@
-import { utils } from '@pixi/core';
-import { Container } from '@pixi/display';
+import * as PIXI from 'pixi.js';
 import geojsonRewind from '@mapbox/geojson-rewind';
 
 import { services } from '../services';
@@ -38,7 +37,7 @@ export class PixiLayerRapid extends AbstractLayer {
 // u_resolution: [300.0, 300.0],
 // u_time: 0.0,
 // tint: new Float32Array([1, 1, 1, 1]),
-// translationMatrix: new Matrix(),
+// translationMatrix: new PIXI.Matrix(),
 // default: this.context.pixi.renderer.plugins.batch._shader.uniformGroup
 //};
 //
@@ -107,7 +106,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //}
 //`;
 //
-//this._customshader = new Shader.from(vert, frag, this._uniforms);
+//this._customshader = new PIXI.Shader.from(vert, frag, this._uniforms);
 
     // Watch history to keep track of which features have been accepted by the user
     // These features will be filtered out when drawing
@@ -303,20 +302,20 @@ export class PixiLayerRapid extends AbstractLayer {
     let areas, lines, points;
 
     if (!dsContainer) {
-      dsContainer = new Container();
+      dsContainer = new PIXI.Container();
       dsContainer.name = dataset.id;
       dsContainer.sortableChildren = false;
       this.container.addChild(dsContainer);
 
-      areas = new Container();
+      areas = new PIXI.Container();
       areas.name = `${dataset.id}-areas`;
       areas.sortableChildren = true;
 
-      lines = new Container();
+      lines = new PIXI.Container();
       lines.name = `${dataset.id}-lines`;
       lines.sortableChildren = true;
 
-      points = new Container();
+      points = new PIXI.Container();
       points.name = `${dataset.id}-points`;
       points.sortableChildren = true;
 
@@ -344,7 +343,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
-    const color = utils.string2hex(dataset.color);
+    const color = PIXI.utils.string2hex(dataset.color);
 
     data.polygons.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
@@ -394,7 +393,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
-    const color = utils.string2hex(dataset.color);
+    const color = PIXI.utils.string2hex(dataset.color);
 
     data.lines.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
@@ -437,7 +436,7 @@ export class PixiLayerRapid extends AbstractLayer {
    */
   renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const scene = this.scene;
-    const color = utils.string2hex(dataset.color);
+    const color = PIXI.utils.string2hex(dataset.color);
 
     const pointStyle = {
       markerName: 'largeCircle',

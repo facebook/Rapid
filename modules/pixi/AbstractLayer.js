@@ -1,5 +1,4 @@
-import { Container } from '@pixi/display';
-
+import * as PIXI from 'pixi.js';
 
 
 // Convert a single value, an Array of values, or a Set of values.
@@ -14,7 +13,7 @@ function asSet(vals) {
  * It creates a container to hold the Layer data.
  *
  * Properties you can access:
- *   `container`    Container() that contains all the Features for this Layer
+ *   `container`    PIXI.Container() that contains all the Features for this Layer
  *   `id`           Unique string to use for the name of this Layer
  *   `supported`    Is this Layer supported? (i.e. do we even show it in lists?)
  *   `zIndex`       Where this Layer sits compared to other Layers
@@ -38,8 +37,8 @@ export class AbstractLayer {
 
     this._enabled = false;  // Whether the user has chosen to see the layer
 
-    // Create Layer container
-    const container = new Container();
+    // Create Layer container, add to this renderer's root
+    const container = new PIXI.Container();
     container.name = id;
     container.zIndex = layerZ;
     container.visible = false;

@@ -1,12 +1,9 @@
-import { Polygon, Texture } from '@pixi/core';
-import { Container } from '@pixi/display';
-import { Graphics, LINE_JOIN, LINE_CAP } from '@pixi/graphics';
-import { Sprite } from '@pixi/sprite';
-import { DashLine } from 'pixi-dashed-line';
+import * as PIXI from 'pixi.js';
+ import { DashLine } from 'pixi-dashed-line';
 import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
-import { getLineSegments, lineToPoly } from './helpers';
+import { getLineSegments, lineToPolygon, lineToPoly } from './helpers';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -19,9 +16,9 @@ const SIDED_SPACING = 30;
  *   `geometry`   Array of wgs84 coordinates [lon, lat]
  *   `points`     Array of projected points in scene coordinates
  *   `style`      Object containing styling data
- *   `container`  Toplevel Container containing the display objects used to draw the line
- *   `casing`     Graphic for the casing (below)
- *   `stroke`     Graphic for the stroke (above)
+ *   `container`  Toplevel PIXI.Container containing the display objects used to draw the line
+ *   `casing`     PIXI.Graphic for the casing (below)
+ *   `stroke`     PIXI.Graphic for the stroke (above)
  *
  *   (also all properties inherited from `AbstractFeature`)
  */
@@ -38,14 +35,14 @@ export class PixiFeatureLine extends AbstractFeature {
     this.type = 'line';
     this.points = [];
 
-    const casing = new Graphics();
+    const casing = new PIXI.Graphics();
     casing.name = 'casing';
     casing.interactive = false;
     casing.interactiveChildren = false;
     casing.sortableChildren = false;
     this.casing = casing;
 
-    const stroke = new Graphics();
+    const stroke = new PIXI.Graphics();
     stroke.name = 'stroke';
     stroke.interactive = false;
     stroke.interactiveChildren = false;
@@ -151,7 +148,7 @@ export class PixiFeatureLine extends AbstractFeature {
     if (showMarkers && ((style.lineMarkerTexture || style.lineMarkerName) || (style.sidedMarkerTexture || style.sidedMarkerName))) {
       // Create line marker container, if necessary
       if (!lineMarkers) {
-        lineMarkers = new Container();
+        lineMarkers = new PIXI.Container();
         lineMarkers.name = 'lineMarkers';
         lineMarkers.interactiveChildren = false;
         lineMarkers.sortableChildren = false;
@@ -159,8 +156,8 @@ export class PixiFeatureLine extends AbstractFeature {
         container.addChild(lineMarkers);
       }
 
-      const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || Texture.WHITE;
-      const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || Texture.GREEN;
+      const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
+      const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || PIXI.Texture.GREEN;
       const sided = style.sidedMarkerName === 'sided';
       const oneway = style.lineMarkerName === 'oneway';
       lineMarkers.removeChildren();
@@ -170,7 +167,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
         segments.forEach(segment => {
           segment.coords.forEach(([x, y]) => {
-            const arrow = new Sprite(lineMarkerTexture);
+            const arrow = new PIXI.Sprite(lineMarkerTexture);
             arrow.interactive = false;
             arrow.interactiveChildren = false;
             arrow.sortableChildren = false;
@@ -190,7 +187,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
         segments.forEach(segment => {
           segment.coords.forEach(([x, y]) => {
-            const arrow = new Sprite(sidedMarkerTexture);
+            const arrow = new PIXI.Sprite(sidedMarkerTexture);
             arrow.interactive = false;
             arrow.interactiveChildren = false;
             arrow.sortableChildren = false;
@@ -248,16 +245,16 @@ export class PixiFeatureLine extends AbstractFeature {
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
-          join: style[which].join || LINE_JOIN.ROUND,
-          cap: style[which].cap || LINE_CAP.ROUND,
+          join: style[which].join || PIXI.LINE_JOIN.ROUND,
+          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
         });
       } else {
         g = g.lineStyle({
           color: style[which].color,
           width: width,
           alpha: style[which].alpha || 1.0,
-          join: style[which].join || LINE_JOIN.ROUND,
-          cap: style[which].cap || LINE_CAP.ROUND,
+          join: style[which].join || PIXI.LINE_JOIN.ROUND,
+          cap: style[which].cap || PIXI.LINE_CAP.ROUND,
         });
       }
 
@@ -283,21 +280,21 @@ export class PixiFeatureLine extends AbstractFeature {
       color: 0x0,
       width: hitWidth + 10,
       alpha: 1.0,
-      join: LINE_JOIN.BEVEL,
-      cap: LINE_CAP.BUTT
+      join: PIXI.LINE_JOIN.BEVEL,
+      cap: PIXI.LINE_CAP.BUTT
     };
 
     this._bufferdata = lineToPoly(this.points, hitStyle);
-    this.container.hitArea = new Polygon(this._bufferdata.perimeter);
+    this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 
 
 // experiment
-// Show/Hide halo (requires `this.container.hitArea` to be already set up as a Polygon)
+// Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
   updateHalo() {
     if (this.visible && (this.hovered || this.selected || this.drawing)) {
       if (!this.halo) {
-        this.halo = new Graphics();
+        this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
         const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
@@ -379,7 +376,7 @@ const STYLE_DEFAULTS = {
   labelTint: 0xffffff,
 
   fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-  casing: { width: 5, color: 0x444444, alpha: 1, cap: LINE_CAP.ROUND, join: LINE_JOIN.ROUND },
-  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: LINE_CAP.ROUND, join: LINE_JOIN.ROUND }
+  casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
+  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
 };
 

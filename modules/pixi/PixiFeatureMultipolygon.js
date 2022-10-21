@@ -1,7 +1,4 @@
-import { Geometry, Point, Polygon, Texture} from '@pixi/core';
-import { Sprite } from '@pixi/sprite';
-import { Graphics, LINE_JOIN, LINE_CAP } from '@pixi/graphics';
-import { Mesh, MeshMaterial } from '@pixi/mesh';
+import * as PIXI from 'pixi.js';
 // import { DashLine } from 'pixi-dashed-line';
 import { Extent, geomGetSmallestSurroundingRectangle, geomRotatePoints, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
@@ -17,11 +14,11 @@ const PARTIALFILLWIDTH = 32;
  * Properties you can access:
  *   `geometry`   Treat like multipolygon (Array of polygons wgs84 [lon, lat])
  *   `style`      Object containing styling data
- *   `container`  Toplevel Container containing the display objects used to draw the multipolygon
- *   `lowRes`     Sprite for a replacement graphic to display at low resolution
- *   `fill`       Graphic for the fill (below)
- *   `stroke`     Graphic for the stroke (above)
- *   `mask`       Mesh for the mask (applied to fill)
+ *   `container`  Toplevel PIXI.Container containing the display objects used to draw the multipolygon
+ *   `lowRes`     PIXI.Sprite for a replacement graphic to display at low resolution
+ *   `fill`       PIXI.Graphic for the fill (below)
+ *   `stroke`     PIXI.Graphic for the stroke (above)
+ *   `mask`       PIXI.Mesh for the mask (applied to fill)
  *   `ssrdata`    Object containing SSR data (computed one time for simple polygons)
  *
  *   (also all properties inherited from `AbstractFeature`)
@@ -38,20 +35,20 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     this.type = 'multipolygon';
     this.ssrdata = null;
 
-    const lowRes = new Sprite();
+    const lowRes = new PIXI.Sprite();
     lowRes.name = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
     lowRes.interactive = true;
     this.lowRes = lowRes;
 
-    const fill = new Graphics();
+    const fill = new PIXI.Graphics();
     fill.name = 'fill';
     fill.interactive = true;
     fill.sortableChildren = false;
     this.fill = fill;
 
-//    const stroke = new Graphics();
+//    const stroke = new PIXI.Graphics();
 //    stroke.name = 'stroke';
 //    stroke.interactive = false;
 //    stroke.interactiveChildren = false;
@@ -64,7 +61,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     // So we'll create the mask graphic and then copy its attributes into a mesh
     // which _does_ hit test properly.
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
-    const mask = new Mesh(null, new MeshMaterial(Texture.WHITE));
+    const mask = new PIXI.Mesh(null, new PIXI.MeshMaterial(PIXI.Texture.WHITE));
     mask.name = 'mask';
     mask.buttonMode = true;
     mask.interactive = true;
@@ -187,7 +184,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
           }
         }
 
-        const poly = new Polygon(points);
+        const poly = new PIXI.Polygon(points);
         if (isOuter) {
           shape.outer = poly;
         } else {
@@ -212,8 +209,8 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
         return [x2, y2];
       });
 
-      this.ssrdata.localCentroid = new Point(centroid[0], centroid[1]);
-      this.ssrdata.localPolygon = new Polygon(coords.map(([x,y]) => new Point(x, y)));
+      this.ssrdata.localCentroid = new PIXI.Point(centroid[0], centroid[1]);
+      this.ssrdata.localPolygon = new PIXI.Polygon(coords.map(([x,y]) => new PIXI.Point(x, y)));
     }
 
     const [w, h] = [maxX - minX, maxY - minY];
@@ -235,7 +232,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     const color = style.fill.color || 0xaaaaaa;
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
-    let texture = pattern && textures.get(pattern) || Texture.WHITE;    // WHITE turns off the texture
+    let texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
@@ -255,7 +252,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 // so that the scene is sorted by style, and we'll try to just keep similarly
 // textured things together to improve batching performance.
     if (w < PARTIALFILLWIDTH || h < PARTIALFILLWIDTH) {
-      texture = Texture.WHITE;
+      texture = PIXI.Texture.WHITE;
     }
 
     // Cull really tiny shapes
@@ -285,7 +282,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
-      this.lowRes.texture = textures.get(textureName) || Texture.WHITE;
+      this.lowRes.texture = textures.get(textureName) || PIXI.Texture.WHITE;
       this.lowRes.position.set(x, y);
       this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
       this.lowRes.rotation = ssrdata.angle;
@@ -345,14 +342,14 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       });
 
       if (doPartialFill) {   // mask around the inside edges of the fill with a line
-        const maskSource = new Graphics()
+        const maskSource = new PIXI.Graphics()
           .clear()
           .lineTextureStyle({
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
             width: PARTIALFILLWIDTH,
             color: 0x000000,
-            texture: Texture.WHITE
+            texture: PIXI.Texture.WHITE
           });
 
         shapes.forEach(shape => {
@@ -363,7 +360,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
         // Compute the mask's geometry, then copy its attributes into the mesh's geometry
         // This lets us use the Mesh as the mask and properly hit test against it.
         maskSource.geometry.updateBatches(true);
-        this.mask.geometry = new Geometry()
+        this.mask.geometry = new PIXI.Geometry()
           .addAttribute('aVertexPosition', maskSource.geometry.points, 2)
           .addAttribute('aTextureCoord', maskSource.geometry.uvs, 2)
           .addIndex(maskSource.geometry.indices);
@@ -383,11 +380,11 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 
 
 // experiment
-// Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a Polygon)
+// Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
   updateHalo() {
 //    if (this.ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
 //      if (!this.halo) {
-//        this.halo = new Graphics();
+//        this.halo = new PIXI.Graphics();
 //        this.halo.name = `${this.id}-halo`;
 //        const mapUIContainer = this.scene.getLayer('map-ui').container;
 //        mapUIContainer.addChild(this.halo);
@@ -478,6 +475,6 @@ const STYLE_DEFAULTS = {
   labelTint: 0xffffff,
 
   fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-  casing: { width: 5, color: 0x444444, alpha: 1, cap: LINE_CAP.ROUND, join: LINE_JOIN.ROUND },
-  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: LINE_CAP.ROUND, join: LINE_JOIN.ROUND }
+  casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
+  stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
 };
