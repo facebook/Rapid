@@ -8,7 +8,7 @@ import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
 
-import { geoChooseEdge, geoHasLineIntersections, geoHasSelfIntersections } from '../geo';
+import { geoChooseEdge /*, geoHasLineIntersections, geoHasSelfIntersections */} from '../geo';
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from './select';
 import { osmNode } from '../osm';
@@ -234,7 +234,7 @@ const nope = false;
    * @param  coord  `[x,y]` screen coordinate of the latest event
    * @param  nudge  `[x,y]` optional offset to nudge the map by
    */
-  _doMove(coord, nudge = [0, 0]) {
+  _doMove(coord /*, nudge = [0, 0] */) {
     if (!this.dragNode) return;
 
     const context = this.context;
