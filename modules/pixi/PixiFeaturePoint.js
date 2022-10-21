@@ -1,4 +1,7 @@
-import * as PIXI from 'pixi.js';
+import {Circle, Rectangle, Texture} from '@pixi/core';
+import { Container } from '@pixi/display';
+import { Graphics } from '@pixi/graphics';
+import { Sprite } from '@pixi/sprite';
 import { DashLine } from 'pixi-dashed-line';
 
 import { AbstractFeature } from './AbstractFeature';
@@ -11,10 +14,10 @@ import { getIconTexture } from './helpers';
  * Properties you can access:
  *   `geometry`    Single wgs84 coordinate [lon, lat]
  *   `style`       Object containing styling data
- *   `container`   Toplevel PIXI.Container containing the display objects used to draw the point
- *   `viewfields`  PIXI.Container that contains viewfields
- *   `marker`      PIXI.Sprite for the marker
- *   `icon`        PIXI.Sprite for the icon
+ *   `container`   Toplevel Container containing the display objects used to draw the point
+ *   `viewfields`  Container that contains viewfields
+ *   `marker`      Sprite for the marker
+ *   `icon`        Sprite for the icon
  *
  *   (also all properties inherited from `AbstractFeature`)
  */
@@ -33,7 +36,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     this._oldvfLength = 0;      // to watch for change in # of viewfield sprites
     this._isCircular = false;   // set true to use a circular halo and hit area
 
-    const viewfields = new PIXI.Container();
+    const viewfields = new Container();
     viewfields.name = 'viewfields';
     viewfields.interactive = false;
     viewfields.interactiveChildren = false;
@@ -41,7 +44,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     viewfields.visible = false;
     this.viewfields = viewfields;
 
-    const marker = new PIXI.Sprite();
+    const marker = new Sprite();
     marker.name = 'marker';
     marker.interactive = false;
     marker.interactiveChildren = false;
@@ -49,7 +52,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     marker.visible = true;
     this.marker = marker;
 
-    const icon = new PIXI.Sprite();
+    const icon = new Sprite();
     icon.name = 'icon';
     icon.interactive = false;
     icon.interactiveChildren = false;
@@ -135,7 +138,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     //
     // Update marker style
     //
-    marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
+    marker.texture = style.markerTexture || textures.get(style.markerName) || Texture.WHITE;
     marker.tint = style.markerTint;
 
     //
@@ -143,7 +146,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     //
     const vfAngles = style.viewfieldAngles || [];
     if (vfAngles.length) {
-      const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
+      const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || Texture.WHITE;
 
       // sort markers with viewfields above markers without viewfields
       this.container.zIndex = -this._geometry[1] + 1000;
@@ -152,7 +155,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       if (vfAngles.length !== this._oldvfLength) {
         viewfields.removeChildren();
         vfAngles.forEach(() => {
-          const vfSprite = new PIXI.Sprite(vfTexture);
+          const vfSprite = new Sprite(vfTexture);
           vfSprite.interactive = false;
           vfSprite.interactiveChildren = false;
           vfSprite.anchor.set(0.5, 1);  // middle, top
@@ -181,7 +184,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     //
     if (style.iconTexture || style.iconName) {
       // Update texture and style, if necessary
-      icon.texture = style.iconTexture || getIconTexture(context, style.iconName) || PIXI.Texture.WHITE;
+      icon.texture = style.iconTexture || getIconTexture(context, style.iconName) || Texture.WHITE;
       const ICONSIZE = 11;
       icon.anchor.set(0.5, 0.5);   // middle, middle
       icon.width = ICONSIZE;
@@ -211,7 +214,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       // Replace pins with circles at lower zoom
       const textureName = isPin ? 'largeCircle' : style.markerName;
       this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(textureName));
-      marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
+      marker.texture = style.markerTexture || textures.get(textureName) || Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
 
@@ -223,7 +226,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.renderable = true;
       marker.scale.set(1, 1);
 
-      marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
+      marker.texture = style.markerTexture || textures.get(style.markerName) || Texture.WHITE;
       this._isCircular = (!vfAngles.length && !style.markerTexture && /(circle|midpoint)$/i.test(style.markerName));
       if (isPin) {
         marker.anchor.set(0.5, 1);  // middle, bottom
@@ -253,7 +256,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       }
       radius = radius + 2;  // then pad a bit more
 
-      const circle = new PIXI.Circle(0, 0, radius);
+      const circle = new Circle(0, 0, radius);
       this.container.hitArea = circle;
 
     } else {
@@ -275,7 +278,7 @@ export class PixiFeaturePoint extends AbstractFeature {
   updateHalo() {
     if (this.visible && (this.hovered || this.selected)) {
       if (!this.halo) {
-        this.halo = new PIXI.Graphics();
+        this.halo = new Graphics();
         this.halo.name = `${this.id}-halo`;
         const mapUIContainer = this.scene.getLayer('map-ui').container;
         mapUIContainer.addChild(this.halo);
@@ -291,9 +294,9 @@ export class PixiFeaturePoint extends AbstractFeature {
       this.halo.clear();
 
       const shape = this.container.hitArea;
-      if (shape instanceof PIXI.Circle) {
+      if (shape instanceof Circle) {
         new DashLine(this.halo, HALO_STYLE).drawCircle(shape.x, shape.y, shape.radius);
-      } else if (shape instanceof PIXI.Rectangle) {
+      } else if (shape instanceof Rectangle) {
         new DashLine(this.halo, HALO_STYLE).drawRect(shape.x, shape.y, shape.width, shape.height);
       }
       this.halo.position = this.container.position;

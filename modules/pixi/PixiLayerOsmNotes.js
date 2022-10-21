@@ -24,7 +24,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
     this.getService();
 
 // might use these
-//    const markerHighlight = new PIXI.Graphics()
+//    const markerHighlight = new Graphics()
 //      .lineStyle(4, 0xcccccc, 0.6)
 //      .moveTo(-1, -1)
 //      .lineTo(-1, 17.25)
@@ -32,7 +32,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 //      .lineTo(18.5, -1)
 //      .closePath();
 //
-//    const ellipse = new PIXI.Graphics()
+//    const ellipse = new Graphics()
 //      .lineStyle(1, 0x222222, 0.6)
 //      .beginFill(0x222222, 0.6)
 //      .drawEllipse(0.5, 1, 6.5, 3)

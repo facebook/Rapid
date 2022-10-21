@@ -1,4 +1,5 @@
-import * as PIXI from 'pixi.js';
+import {LINE_JOIN, LINE_CAP} from '@pixi/graphics';
+
 import { osmPavedTags } from '../osm/tags';
 
 //
@@ -20,8 +21,8 @@ import { osmPavedTags } from '../osm/tags';
 //   `width` - line width in pixel (for fills, this is the width of the outline)
 //   `color` - the color
 //   `alpha` - 0 = transparent/invisible, 1 = filled
-//   `cap`   - `PIXI.LINE_CAP.` `BUTT`, `SQUARE`, or `ROUND`
-//   `join`  - `PIXI.LINE_JOIN.` `BEVEL`, `MITER`, or `ROUND`
+//   `cap`   - `LINE_CAP.` `BUTT`, `SQUARE`, or `ROUND`
+//   `join`  - `LINE_JOIN.` `BEVEL`, `MITER`, or `ROUND`
 //   `dash`  - array of pixels on/off - e.g. `[20, 5, 5, 5]`
 //
 // The fill group also supports:
@@ -33,8 +34,8 @@ import { osmPavedTags } from '../osm/tags';
 const STYLES = {
   DEFAULT: {
     fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
-    casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },
-    stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND }
+    casing: { width: 5, color: 0x444444, alpha: 1, cap: LINE_CAP.ROUND, join: LINE_JOIN.ROUND },
+    stroke: { width: 3, color: 0xcccccc, alpha: 1, cap: LINE_CAP.ROUND, join: LINE_JOIN.ROUND }
   },
 
   red: {
@@ -121,39 +122,39 @@ const STYLES = {
 
   pedestrian: {
     casing: { width: 7, color: 0xffffff },
-    stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: LINE_CAP.BUTT }
   },
   path: {
     casing: { width: 5, color: 0xffffff },
-    stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: LINE_CAP.BUTT }
   },
   footway: {
     casing: { width: 5, color: 0xffffff },
-    stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: LINE_CAP.BUTT }
   },
   crossing_marked: {
     casing: { width: 5, color: 0xddccaa },
-    stroke: { width: 3, color: 0x4c4444, dash: [6, 3], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x4c4444, dash: [6, 3], cap: LINE_CAP.BUTT }
   },
   crossing_unmarked: {
     casing: { width: 5, color: 0xddccaa },
-    stroke: { width: 3, color: 0x776a6a, dash: [6, 4], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x776a6a, dash: [6, 4], cap: LINE_CAP.BUTT }
   },
   cycleway: {
     casing: { width: 5, color: 0xffffff },
-    stroke: { width: 3, color: 0x58a9ed, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x58a9ed, dash: [6, 6], cap: LINE_CAP.BUTT }
   },
   bridleway: {
     casing: { width: 5, color: 0xffffff },
-    stroke: { width: 3, color: 0xe06d5f, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0xe06d5f, dash: [6, 6], cap: LINE_CAP.BUTT }
   },
   corridor: {
     casing: { width: 5, color: 0xffffff },
-    stroke: { width: 3, color: 0x8cd05f, dash: [2, 8], cap: PIXI.LINE_CAP.ROUND }
+    stroke: { width: 3, color: 0x8cd05f, dash: [2, 8], cap: LINE_CAP.ROUND }
   },
   steps: {
     casing: { width: 5, color: 0xffffff },
-    stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x81d25c, dash: [3, 3], cap: LINE_CAP.BUTT }
   },
 
   river: {
@@ -166,8 +167,8 @@ const STYLES = {
   },
 
   runway: {
-    casing: { width: 10, color: 0x000000, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 8, color: 0xffffff, dash: [24, 48], cap: PIXI.LINE_CAP.BUTT }
+    casing: { width: 10, color: 0x000000, cap: LINE_CAP.BUTT },
+    stroke: { width: 8, color: 0xffffff, dash: [24, 48], cap: LINE_CAP.BUTT }
   },
   taxiway: {
     casing: { width: 7, color: 0x444444 },
@@ -175,36 +176,36 @@ const STYLES = {
   },
 
   railway: {
-    casing: { width: 7, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+    casing: { width: 7, color: 0x555555, cap: LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: LINE_CAP.BUTT,  }
   },
 
   ferry: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: LINE_CAP.BUTT }
   },
 
   boundary: {
-    casing: { width: 6, color: 0x82b5fe, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 2, color: 0xffffff, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+    casing: { width: 6, color: 0x82b5fe, cap: LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xffffff, dash: [20, 5, 5, 5], cap: LINE_CAP.BUTT }
   },
   boundary_park: {
-    casing: { width: 6, color: 0x82b5fe, cap: PIXI.LINE_CAP.BUTT },
-    stroke: { width: 2, color: 0xb0e298, dash: [20, 5, 5, 5], cap: PIXI.LINE_CAP.BUTT }
+    casing: { width: 6, color: 0x82b5fe, cap: LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xb0e298, dash: [20, 5, 5, 5], cap: LINE_CAP.BUTT }
   },
 
   barrier: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: LINE_CAP.ROUND }
   },
   barrier_wall: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: LINE_CAP.ROUND }
   },
   barrier_hedge: {
     fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0x8cd05f, dash: [16, 3, 9, 3], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x8cd05f, dash: [16, 3, 9, 3], cap: LINE_CAP.BUTT }
   }
 };
 
@@ -517,7 +518,7 @@ export function styleMatch(tags) {
   if (tags.bridge) {
     style.casing.width += 7;
     style.casing.color = 0x000000;
-    style.casing.cap = PIXI.LINE_CAP.BUTT;
+    style.casing.cap = LINE_CAP.BUTT;
   }
   if (tags.tunnel) {
     style.stroke.alpha = 0.5;
@@ -531,7 +532,7 @@ export function styleMatch(tags) {
   }
   if (surface && ROADS[highway] && !osmPavedTags.surface[surface]) {
     if (!tags.bridge) style.casing.color = 0xcccccc;
-    style.casing.cap = PIXI.LINE_CAP.BUTT;
+    style.casing.cap = LINE_CAP.BUTT;
     style.casing.dash = [4, 4];
   }
 

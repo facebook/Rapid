@@ -1,4 +1,7 @@
-import * as PIXI from 'pixi.js';
+import { Sprite } from '@pixi/sprite';
+import { Container } from '@pixi/display';
+import { Graphics } from '@pixi/graphics';
+
 import { geoMetersToLon } from '@id-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
@@ -38,7 +41,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     // GEOLOCATION
     this._geolocationData = null;
     this._geolocationDirty = false;
-    const geolocationContainer = new PIXI.Container();
+    const geolocationContainer = new Container();
     geolocationContainer.name = 'geolocation';
     geolocationContainer.buttonMode = false;
     geolocationContainer.interactive = false;
@@ -48,7 +51,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     this.geolocationContainer = geolocationContainer;
 
     // TILE DEBUGGING
-    const tileDebugContainer = new PIXI.Container();
+    const tileDebugContainer = new Container();
     tileDebugContainer.name = 'tile-debug';
     tileDebugContainer.buttonMode = false;
     tileDebugContainer.interactive = false;
@@ -58,7 +61,7 @@ export class PixiLayerMapUI extends AbstractLayer {
     this.tileDebugContainer = tileDebugContainer;
 
     // SELECTED
-    const selectedContainer = new PIXI.Container();
+    const selectedContainer = new Container();
     selectedContainer.name = 'selected';
     selectedContainer.sortableChildren = true;
     selectedContainer.visible = true;
@@ -147,7 +150,7 @@ export class PixiLayerMapUI extends AbstractLayer {
         const r = Math.max(Math.abs(x2 - x), 15);
         const BLUE = 0xe60ff;
 
-        const locatorAura = new PIXI.Graphics()
+        const locatorAura = new Graphics()
           .beginFill(BLUE, 0.4)
           .drawCircle(x, y, r)
           .endFill();
@@ -157,7 +160,7 @@ export class PixiLayerMapUI extends AbstractLayer {
         // Show a viewfield for the heading if we have it
         if (d.heading !== null && !isNaN(d.heading)) {
           const textures = this.context.pixi.rapidTextures;
-          const locatorHeading = new PIXI.Sprite(textures.get('viewfieldDark'));
+          const locatorHeading = new Sprite(textures.get('viewfieldDark'));
           locatorHeading.anchor.set(0.5, 1);  // middle, top
           locatorHeading.angle = d.heading;
           locatorHeading.name = 'heading';
@@ -165,7 +168,7 @@ export class PixiLayerMapUI extends AbstractLayer {
           this.geolocationContainer.addChild(locatorHeading);
         }
 
-        const locatorPosition = new PIXI.Graphics()
+        const locatorPosition = new Graphics()
           .lineStyle(1.5, 0xffffff, 1.0)
           .beginFill(BLUE, 1.0)
           .drawCircle(x, y, 6.5)

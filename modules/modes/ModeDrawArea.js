@@ -14,7 +14,7 @@ import { locationManager } from '../core/LocationManager';
 import { osmNode, osmWay } from '../osm';
 import { geoChooseEdge } from '../geo';
 import { t } from '../core/localizer';
-import { ContextSystem } from 'pixi.js';
+import { ContextSystem } from '@pixi/core';
 
 const DEBUG = false;
 

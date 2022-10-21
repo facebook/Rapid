@@ -1,5 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { Assets } from 'pixi.js';
+import { Assets } from '@pixi/assets';
+// import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';

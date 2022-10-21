@@ -1,4 +1,7 @@
-import * as PIXI from 'pixi.js';
+import { Application } from '@pixi/app';
+import { Container } from '@pixi/display';
+import { Graphics } from '@pixi/graphics';
+
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Projection, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
@@ -156,14 +159,14 @@ export function uiMapInMap(context) {
       const stage = _miniPixi.stage;
       const bboxContainer = stage.getChildByName('bbox');
       if (!bboxContainer) {
-        const bboxContainer = new PIXI.Container();
+        const bboxContainer = new Container();
         bboxContainer.name = 'bbox';
         bboxContainer.interactiveChildren = false;
         bboxContainer.buttonMode = false;
         bboxContainer.interactive = false;
         stage.addChild(bboxContainer);
 
-        const bboxGraphic = new PIXI.Graphics()
+        const bboxGraphic = new Graphics()
           .clear()
           .lineStyle(2, 0x00ffff)
           .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
@@ -227,7 +230,7 @@ export function uiMapInMap(context) {
 
     if (!_miniPixi) {
       // Create a separate Pixi application for the minimap
-      _miniPixi = new PIXI.Application({
+      _miniPixi = new Application({
         antialias: true,
         autoDensity: true,
         autoStart: false,

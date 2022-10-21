@@ -1,4 +1,5 @@
-import * as PIXI from 'pixi.js';
+import {LINE_CAP} from '@pixi/graphics';
+
 import { text as d3_text } from 'd3-fetch';
 import { geoBounds as d3_geoBounds } from 'd3-geo';
 
@@ -275,7 +276,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     const POLY_STYLE = {
       fill: { color: 0x00ffff, alpha: 0.3, },
-      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: LINE_CAP.ROUND }
     };
 
     polygons.forEach(d => {
@@ -312,7 +313,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     const scene = this.scene;
 
     const LINE_STYLE = {
-      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
+      stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: LINE_CAP.ROUND }
     };
 
     lines.forEach(d => {

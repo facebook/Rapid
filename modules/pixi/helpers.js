@@ -1,10 +1,13 @@
-import * as PIXI from 'pixi.js';
+import { Container } from '@pixi/display';
+import { graphicsUtils } from '@pixi/graphics';
+import { Polygon, Texture } from '@pixi/core';
+import { Sprite } from '@pixi/sprite';
 import { vecAdd, vecAngle, vecEqual, vecLength } from '@id-sdk/math';
 
 
 /**
 * Generates a icon sprite for the given texture name
-* @returns {PIXI.Sprite}
+* @returns {Sprite}
 */
 export function getIconTexture(context, iconName) {
   const isMaki = /^maki-/.test(iconName);
@@ -33,16 +36,16 @@ export function getIconTexture(context, iconName) {
 * Generates a pixi container with viewfield icons rotated appropriately
 * @param texture
 * @param {Array<number>} directions an array of directional angles in degrees, 'UP' is zero degrees
-* @returns {PIXI.Container} A container with the ViewfieldSprites rotated according to the supplied directions.
+* @returns {Container} A container with the ViewfieldSprites rotated according to the supplied directions.
 */
 export function getViewfieldContainer(texture, directions, tint) {
-  const vfContainer = new PIXI.Container();
+  const vfContainer = new Container();
   vfContainer.name = 'viewfields';
   vfContainer.interactive = false;
   vfContainer.interactiveChildren = false;
 
   directions.forEach(direction => {
-    const sprite = new PIXI.Sprite(texture);
+    const sprite = new Sprite(texture);
     sprite.interactive = false;
     sprite.interactiveChildren = false;
     sprite.tint = tint || 0x333333;
@@ -59,7 +62,7 @@ export function getViewfieldContainer(texture, directions, tint) {
 * Generates a polygon from a line. Intended for use to create custom hit areas for our ways.
 * @param width the width of the polygon in pixels (deviation from either side of the line))
 * @param {Array<points>} A list of point coord pairs that denote the line.
-* @returns {PIXI.Polygon} The polygon encasing the line with specified width.
+* @returns {Polygon} The polygon encasing the line with specified width.
 * method pilfered from https://jsfiddle.net/bigtimebuddy/xspmq8au/
 */
 export function lineToPolygon(width, points) {
@@ -96,7 +99,7 @@ export function lineToPolygon(width, points) {
   // close the shape
   output.push(output[0], output[1]);
 
-  return new PIXI.Polygon(output);
+  return new Polygon(output);
 }
 
 
@@ -114,18 +117,18 @@ export function lineToPoly(points, lineStyle = {}) {
 
   let sourcePath = [];
   points.forEach(([x, y]) => sourcePath.push(x, y));  // flatten point array
-  const sourceShape = new PIXI.Polygon(sourcePath);
+  const sourceShape = new Polygon(sourcePath);
 
   lineStyle.native = false;  // we want the non-native line builder
   sourceShape.closeStroke = false;  // don't make an extra segment from end to start
 
   // Make some fake graphicsData and graphicsGeometry.
-  // (I'm avoiding using a real PIXI.Graphic because I dont want to affect the batch system)
+  // (I'm avoiding using a real Graphic because I dont want to affect the batch system)
   const graphicsData = { shape: sourceShape, lineStyle: lineStyle };
   const graphicsGeometry = { closePointEps: EPSILON, indices: [], points: [], uvs: [] };
 
   // Pixi will do the work for us.
-  PIXI.graphicsUtils.buildLine(graphicsData, graphicsGeometry);
+  graphicsUtils.buildLine(graphicsData, graphicsGeometry);
 
 
   // The `graphicsGeometry` now contains the points as they would be drawn (as a strip of triangles).
@@ -361,7 +364,7 @@ if (isLimited && (span >= spacing * 100)) {
 
 
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
-  const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+  const sprite = new Sprite(Texture.WHITE);
   sprite.interactive = false;
   sprite.interactiveChildren = false;
   sprite.anchor.set(0, 0);  // top, left

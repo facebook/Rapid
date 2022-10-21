@@ -1,4 +1,5 @@
-import * as PIXI from 'pixi.js';
+import { Rectangle } from '@pixi/core';
+import { Container } from '@pixi/display';
 import { Extent } from '@id-sdk/math';
 
 
@@ -9,8 +10,8 @@ import { Extent } from '@id-sdk/math';
  * Properties you can access:
  *   `id`               Unique string to use for the name of this Feature
  *   `type`             String describing what kind of Feature this is ('point', 'line', 'multipolygon')
- *   `container`        PIXI.Container() that contains all the graphics needed to draw the Feature
- *   `parentContainer`  PIXI.Container() for the parent - this Feature's container will be added to it.
+ *   `container`        Container() that contains all the graphics needed to draw the Feature
+ *   `parentContainer`  Container() for the parent - this Feature's container will be added to it.
  *   `geometry`         Array containing geometry info
  *   `style`            Object containing style info
  *   `label`            String containing the Feature's label (if any)
@@ -22,10 +23,10 @@ import { Extent } from '@id-sdk/math';
  *   `hovered`          `true` if the Feature is hovered
  *   `v`                Version of the Feature, can be used to detect changes
  *   `lod`              Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
- *   `halo`             A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
+ *   `halo`             A DisplayObject() that contains the graphics for the Feature's halo (if it has one)
  *   `extent`           Bounds of the Feature (in WGS84 long/lat)
- *   `localBounds`      PIXI.Rectangle() where 0,0 is the origin of the Feature
- *   `sceneBounds`      PIXI.Rectangle() where 0,0 is the origin of the scane
+ *   `localBounds`      Rectangle() where 0,0 is the origin of the Feature
+ *   `sceneBounds`      Rectangle() where 0,0 is the origin of the scane
  */
 
 
@@ -36,7 +37,7 @@ export class AbstractFeature {
    * @param  id       Unique string to use for the name of this Feature
    */
   constructor(layer, id) {
-    const container = new PIXI.Container();
+    const container = new Container();
     this.container = container;
 
     container.__feature__ = this;   // Link the container back to `this`
@@ -74,8 +75,8 @@ export class AbstractFeature {
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
     this.extent = new Extent();                // in WGS84 coordinates ([0,0] is null island)
-    this.localBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the object
-    this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
+    this.localBounds = new Rectangle();   // where 0,0 is the origin of the object
+    this.sceneBounds = new Rectangle();   // where 0,0 is the origin of the scene
 
     this.layer.addFeature(this);
     this.scene.addFeature(this);
@@ -147,7 +148,7 @@ export class AbstractFeature {
 
   /**
    * parentContainer
-   * @param  val  PIXI.Container() for the parent - this Feature's container will be added to it.
+   * @param  val  Container() for the parent - this Feature's container will be added to it.
    */
   get parentContainer() {
     return this.container.parent;
