@@ -21,6 +21,8 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
  *   `supersurface`   D3 selection to the parent `div` "supersurface"
  *   `surface`        D3 selection to the sibling `canvas` "surface"
  *   `overlay`        D3 selection to the sibling `div` "overlay"
+ *   `pixi`           PIXI.Application() created to render to the canvas
+ *   `stage`          PIXI.Container() that lives at the root of this scene
  *   `scene`          PixiScene manages the layers and features in the scene
  *   `events`         PixiEvents manages the events that other code might want to listen for
  *   `textures`       PixiTextures manages the textures
@@ -102,6 +104,8 @@ export class PixiRenderer extends EventEmitter {
       this.pixi.renderer.addSystem(EventSystem, 'events');
     }
 
+// todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
+// so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
     context.pixi = this.pixi;
 
     // Prepare a basic bitmap font that we can use for things like debug messages
@@ -133,6 +137,7 @@ export class PixiRenderer extends EventEmitter {
     stage.interactive = true;
     // Add a big hit area to `stage` so that clicks on nothing will generate events
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
+    this.stage = stage;
 
     // Setup other classes
     this.scene = new PixiScene(this);

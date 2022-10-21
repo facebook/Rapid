@@ -29,7 +29,6 @@ export class AbstractLayer {
    * @param  scene    The Scene that owns this Layer
    * @param  id       Unique string to use for the name of this Layer
    * @param  layerZ   z-index to assign to this Layer's container
-   * @param  parent   Optional parent container for this Layer.  Should be a Pixi Stage, defaults to the main stage
    */
   constructor(scene, id, layerZ, parent) {
     this.scene = scene;
@@ -38,19 +37,14 @@ export class AbstractLayer {
 
     this._enabled = false;  // Whether the user has chosen to see the layer
 
-    // Create Layer container
+    // Create Layer container, add to this renderer's root
     const container = new PIXI.Container();
     container.name = id;
     container.zIndex = layerZ;
     container.visible = false;
     container.sortableChildren = true;
     this.container = container;
-
-    if (parent) {
-      parent.addChild(container);
-    } else {
-      this.context.pixi.stage.addChild(container);
-    }
+    this.renderer.stage.addChild(container);
 
     // Collection of Features on this Layer
     this.features = new Map();     // Map (featureID -> Feature)

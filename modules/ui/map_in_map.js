@@ -26,11 +26,12 @@ export function uiMapInMap(context) {
     let _isTransformed = false;
     let _skipEvents = false;
     let _gesture = null;
-    let _zDiff = 6;                // by default, minimap renders at (main zoom - 6)
-    let _dMini;                    // dimensions of minimap
-    let _cMini;                    // center pixel of minimap
-    let _tStart;                   // transform at start of gesture
-    let _tCurr;                    // transform at most recent event
+    let _zDiff = 6;        // by default, minimap renders at (main zoom - 6)
+    let _dMini;            // dimensions of minimap
+    let _cMini;            // center pixel of minimap
+    let _tStart;           // transform at start of gesture
+    let _tCurr;            // transform at most recent event
+    let _miniPixi;         // Pixi application for the minimap
 
 
     function zoomStarted() {
@@ -152,17 +153,15 @@ export function uiMapInMap(context) {
       const boxWidth = Math.abs(bottomRightPoint[0] - topLeftPoint[0]);
       const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
 
-      const container = context.miniPixi.stage;
-      container.name = 'minimap-stage';
-
-      const bboxContainer = container.getChildByName('bbox');
+      const stage = _miniPixi.stage;
+      const bboxContainer = stage.getChildByName('bbox');
       if (!bboxContainer) {
         const bboxContainer = new PIXI.Container();
         bboxContainer.name = 'bbox';
         bboxContainer.interactiveChildren = false;
         bboxContainer.buttonMode = false;
         bboxContainer.interactive = false;
-        container.addChild(bboxContainer);
+        stage.addChild(bboxContainer);
 
         const bboxGraphic = new PIXI.Graphics()
           .clear()
@@ -219,56 +218,63 @@ export function uiMapInMap(context) {
     wrap = selection.selectAll('.map-in-map')
       .data([0]);
 
-    wrap = wrap.enter()
+    let wrapEnter = wrap.enter()
       .append('div')
       .attr('class', 'map-in-map')
       .style('display', _isHidden ? 'none' : 'block')
       .call(zoom)
-      .on('dblclick.zoom', null)
+      .on('dblclick.zoom', null);
+
+    if (!_miniPixi) {
+      // Create a separate Pixi application for the minimap
+      _miniPixi = new PIXI.Application({
+        antialias: true,
+        autoDensity: true,
+        autoStart: false,
+        resolution: window.devicePixelRatio,
+        sharedLoader: true,
+        sharedTicker: true,
+      });
+
+      const [width, height] = [200, 150];
+      _miniPixi.renderer.resize(width, height);
+
+      // Setup the stage
+      const stage = _miniPixi.stage;
+      stage.name = 'minimap-stage';
+      stage.sortableChildren = false;
+      stage.interactive = false;
+
+      const miniRenderer = { context: context, pixi: _miniPixi, stage: stage };  // mock
+      const miniScene = { context: context, renderer: miniRenderer };  // mock
+      miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 1, true);  // isMinimap = true
+
+      _miniPixi.ticker.add(() => {
+        if (_isHidden) return;
+        window.performance.mark('minimap-start');
+        const frame = 0;
+        miniMapTileLayer.render(frame, projection, 10);
+        window.performance.mark('minimap-end');
+      });
+
+      // Hardcode dimensions - currently can't resize it anyway..
+      _dMini = [width, height];
+      _cMini = vecScale(_dMini, 0.5);
+
+      context.map().on('draw', () => redraw());
+    }
+
+    wrapEnter
+      .each((d, i, nodes) => {
+        nodes[i].appendChild(_miniPixi.view);
+      });
+
+    wrap = wrapEnter
       .merge(wrap);
 
-    // Create a separate Pixi environment for the minimap
-    context.miniPixi = new PIXI.Application({
-      antialias: true,
-      autoDensity: true,
-      autoStart: false,
-      resolution: window.devicePixelRatio,
-      sharedLoader: true,
-      sharedTicker: true,
-    });
+    // canvas = wrap.selectAll('canvas');
+    canvas = d3_select(_miniPixi.view);
 
-    wrap.node().appendChild(context.miniPixi.view);
-    canvas = wrap.selectAll('canvas');
-
-    const width = 200;
-    const height = 150;
-    context.miniPixi.renderer.resize(width, height);
-
-    // Setup the stage
-    const stage = context.miniPixi.stage;
-    stage.name = 'minimap-stage';
-    stage.sortableChildren = false;
-    stage.interactive = false;
-
-    const miniRenderer = { context: context };  // mock
-    const miniScene = { context: context, renderer: miniRenderer };  // mock
-    // const miniScene = new PixiScene(miniRenderer);
-
-    miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 1, true);  // isMinimap = true
-
-    context.miniPixi.ticker.add(() => {
-      if (_isHidden) return;
-      window.performance.mark('minimap-start');
-      const frame = 0;
-      miniMapTileLayer.render(frame, projection, 10);
-      window.performance.mark('minimap-end');
-    });
-
-    // Hardcode dimensions - currently can't resize it anyway..
-    _dMini = [200, 150]; //utilGetDimensions(wrap);
-    _cMini = vecScale(_dMini, 0.5);
-
-    context.map().on('draw', () => redraw());
     redraw();
 
     context.keybinding().on(t('background.minimap.key'), toggle);

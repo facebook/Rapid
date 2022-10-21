@@ -32,8 +32,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   constructor(scene, layerZ, isMinimap) {
     if (isMinimap) {
-      const stage = scene.context.miniPixi.stage;
-      super(scene, `minimap-${LAYERID}`, layerZ, stage);
+      super(scene, `minimap-${LAYERID}`, layerZ);
     } else {
       super(scene, LAYERID, layerZ);
     }
@@ -180,7 +179,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
-    const renderer = this.isMinimap ? this.context.miniPixi.renderer : this.context.pixi.renderer;
+    const pixi = this.renderer.pixi;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
@@ -213,7 +212,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       const result = this._tiler
         .skipNullIsland(!!source.overlay)
         .zoomRange(tryZoom)
-        .getTiles(this.isMinimap ? projection : context.projection);
+        .getTiles(this.isMinimap ? projection : context.projection);  // minimap passes in its own projection
 
       let hasHoles = false;
       for (let i = 0; i < result.tiles.length; i++) {
@@ -265,7 +264,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         const h = tile.image.naturalHeight;
 
         let source = tile.image;
-        if (renderer.context.webGLVersion === 1) {
+        if (pixi.renderer.context.webGLVersion === 1) {
           // Convert to ArrayBufferView of pixels when used in a WebGL1 environment - #478
           const canvas = document.createElement('canvas');
           canvas.width = w;
@@ -278,26 +277,20 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         const PADDING = 0;
         const texture = this._atlasAllocator.allocate(w, h, PADDING, source);
 
-        // Shrink texture coords by half pixel to avoid colors spilling over from adjacent tile.
+        // Shrink texture coords by half pixel to avoid colors spilling over from adjacent tile in atlas.
         // https://gamedev.stackexchange.com/a/49585
         const rect = texture.frame.clone().pad(-0.5);
         texture.frame = rect;  // `.frame` setter will call updateUVs() automatically
 
         sprite.texture = texture;
         tile.image = null;
-        if (!this.isMinimap) {
-          //Only redraw the main map when appropriate.
-          context.map().deferredRedraw();
-        }
+        context.map().deferredRedraw();
       };
 
       image.onerror = () => {
         tile.image = null;
         this._failed.add(tile.url);
-        if (!this.isMinimap) {
-          //Only redraw the main map when appropriate.
-          context.map().deferredRedraw();
-        }
+        context.map().deferredRedraw();
       };
 
     });
