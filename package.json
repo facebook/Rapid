@@ -52,7 +52,7 @@
     "@tmcw/togeojson": "^5.1.2",
     "@turf/bbox-clip": "^6.0.0",
     "alif-toolkit": "^1.2.9",
-    "esbuild": "^0.15.8",
+    "esbuild": "^0.15.12",
     "fast-deep-equal": "~3.1.1",
     "fast-json-stable-stringify": "2.1.0",
     "lodash-es": "~4.17.15",
