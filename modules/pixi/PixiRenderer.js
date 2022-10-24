@@ -162,23 +162,29 @@ export class PixiRenderer extends EventEmitter {
    * Respond to any change in select (called on mode change)
    */
   _onSelectChange() {
-    const selectedIDs = this.context.selectedIDs();
+    const selectedIDs = Array.from(this.context.selectedIDs());
     const selectedData = this.context.selectedData();
 
-    // We want feature ids here, not datum ids.
-    // hacky conversion to get around the id mismatch:
-    const featureIDs = selectedIDs.map(id => {
-      const datum = selectedData.get(id);
-      if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
-        return `osm-${id}`;
-      } else if (datum?.__fbid__) {
-        return `rapid-${id}`;
-      } else {  // there are other selectable things - we will not select-style them for now :(
-        return null;
-      }
-    }).filter(Boolean);
+// hacky conversion to get around the id mismatch:
+let dataID = selectedIDs[0];
+let layerID;
+if (dataID) {
+  const datum = selectedData.get(dataID);
+  if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
+    layerID = 'osm';
+  } else if (datum?.__fbid__) {
+    layerID = 'rapid';
+  } else {
+    // there are other selectable things - we will not select-style them for now :(
+  }
+}
+//    this.scene.selectFeatures(featureIDs);
+    this.scene.clearClassData('osm', 'selected');
+    this.scene.clearClassData('rapid', 'selected');
+    if (layerID && dataID) {
+      this.scene.addDataClass(layerID, dataID, 'selected');
+    }
 
-    this.scene.selectFeatures(featureIDs);
     this.render();
   }
 
@@ -189,6 +195,8 @@ export class PixiRenderer extends EventEmitter {
    */
   _onHoverChange(eventData) {
     const target = eventData.target;
+    const layerID = target?.layerID;
+    const dataID = target?.dataID;
 
     const hoverData = target?.data;
     const mode = this.context.mode();
@@ -196,8 +204,12 @@ export class PixiRenderer extends EventEmitter {
       this.context.ui().sidebar.hover(hoverData ? [hoverData] : []);
     }
 
-    const hoverID = target?.feature?.id;
-    this.scene.hoverFeatures(hoverID ?? []);
+//    this.scene.hoverFeatures(hoverID ?? []);
+    this.scene.clearClassData('osm', 'hovered');
+    this.scene.clearClassData('rapid', 'hovered');
+    if (layerID && dataID) {
+      this.scene.addDataClass(layerID, dataID, 'hovered');
+    }
 
     this.render();
   }

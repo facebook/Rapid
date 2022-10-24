@@ -127,7 +127,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
         feature.bindData(d, d.properties.key);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });
@@ -154,7 +154,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
         }
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });

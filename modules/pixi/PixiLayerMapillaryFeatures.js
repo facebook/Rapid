@@ -98,7 +98,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
         // marker.height = ICONSIZE;
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });

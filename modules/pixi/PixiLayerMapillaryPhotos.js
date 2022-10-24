@@ -129,7 +129,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.bindData(d, d.properties.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });
@@ -156,7 +156,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         }
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });

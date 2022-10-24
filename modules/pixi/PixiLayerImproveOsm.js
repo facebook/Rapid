@@ -87,7 +87,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         // }
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });

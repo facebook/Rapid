@@ -77,7 +77,7 @@ export class PixiLayerOsmose extends AbstractLayer {
         feature.bindData(d, d.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     });

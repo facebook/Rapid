@@ -101,7 +101,7 @@ export class ModeDrawLine extends AbstractMode {
       this.firstNode = context.entity(oppositeNodeID);
       this.drawWay = continueWay;
 
-      context.scene().drawingFeatures([continueWay.id]);
+//      context.scene().drawingFeatures([continueWay.id]);
       // this._selectedData.set(this.drawWay.id, this.drawWay);
       this._updateCollections();
 
@@ -339,7 +339,7 @@ export class ModeDrawLine extends AbstractMode {
 
       this.lastNode = context.entity(this.lastNode.id);
       this.drawWay = context.entity(this.drawWay.id);
-      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
+//      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
 
     // Start a new line at `loc`...
     } else {
@@ -350,7 +350,7 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [ this.firstNode.id, this.drawNode.id ] });
-      scene.drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
+//      scene.drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
 
       context.perform(
         actionAddEntity(this.firstNode),  // Create first node
@@ -549,7 +549,7 @@ export class ModeDrawLine extends AbstractMode {
     const context = this.context;
     this._removeDrawNode();
     context.resumeChangeDispatch();  // it's possible to get here in a paused state
-    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
+//    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
 
     if (this.drawWay) {
       if (DEBUG) {

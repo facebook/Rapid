@@ -266,7 +266,7 @@ export class ModeDrawArea extends AbstractMode {
       this.drawWay = context.entity(this.drawWay.id);
 
       // Add this new node to the 'drawing' features set
-      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
+//      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
 
       // Start a brand new area at 'loc'
     } else {
@@ -281,11 +281,11 @@ export class ModeDrawArea extends AbstractMode {
         nodes: [this.firstNode.id, this.drawNode.id],
       });
 
-      scene.drawingFeatures([
-        this.drawWay.id,
-        this.firstNode.id,
-        this.drawNode.id,
-      ]);
+//      scene.drawingFeatures([
+//        this.drawWay.id,
+//        this.firstNode.id,
+//        this.drawNode.id,
+//      ]);
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -386,7 +386,7 @@ export class ModeDrawArea extends AbstractMode {
 
     this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
 
-    context.scene().drawingFeatures([node.id, way.id]);
+//    context.scene().drawingFeatures([node.id, way.id]);
   }
 
   /**
@@ -464,13 +464,13 @@ export class ModeDrawArea extends AbstractMode {
         nodes: [this.firstNode.id, this.drawNode.id],
       });
 
-      context
-        .scene()
-        .drawingFeatures([
-          this.drawWay.id,
-          this.firstNode.id,
-          this.drawNode.id,
-        ]);
+//      context
+//        .scene()
+//        .drawingFeatures([
+//          this.drawWay.id,
+//          this.firstNode.id,
+//          this.drawNode.id,
+//        ]);
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -515,7 +515,7 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     this._removeDrawNode();
     context.resumeChangeDispatch(); // it's possible to get here in a paused state
-    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
+//    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
 
     if (this.drawWay) {
       if (DEBUG) {

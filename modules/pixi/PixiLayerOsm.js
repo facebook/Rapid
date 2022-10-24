@@ -185,7 +185,8 @@ export class PixiLayerOsm extends AbstractLayer {
       context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
       // Has select/hover highlighting chagned?
-      const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
+      const highlightedIDs = new Set();
+//      const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
 //console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
 //      if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
 //        this._prevSelectV = scene.selected.v;
@@ -310,12 +311,13 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.bindData(entity, entity.id);
 
         if (entity.type === 'relation') {
-          const memberIDs = entity.members.map(member => member.id);
-          feature.addChildData(entity.id, memberIDs);
+          entity.members.forEach(member => {
+            feature.addChildData(entity.id, member.id);
+          });
         }
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         const area = entity.extent(graph).area();  // estimate area from extent for speed
@@ -396,11 +398,12 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
         feature.v = version;
         feature.bindData(entity, entity.id);
 
-        const childIDs = graph.childNodes(entity).map(node => node.id);
-        feature.addChildData(entity.id, childIDs);
+        graph.childNodes(entity).forEach(node => {
+          feature.addChildData(entity.id, node.id);
+        });
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.parentContainer = levelContainer;    // Change layer stacking if necessary
 
       if (feature.dirty) {
@@ -468,7 +471,7 @@ if (geom === 'line') {
     function isInterestingVertex(entity) {
       const featureID = `${LAYERID}-${entity.id}`;
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
-        entity.hasInterestingTags() || entity.isEndpoint(graph) || scene.drawing.has(featureID) ||  entity.isIntersection(graph)
+        entity.hasInterestingTags() || entity.isEndpoint(graph) /*|| scene.drawing.has(featureID)*/ ||  entity.isIntersection(graph)
       );
     }
 
@@ -501,7 +504,7 @@ if (geom === 'line') {
         feature.bindData(node, node.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
       feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
       if (feature.dirty) {
@@ -582,7 +585,7 @@ if (geom === 'line') {
         feature.bindData(node, node.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         feature.geometry = node.loc;
@@ -706,7 +709,7 @@ if (geom === 'line') {
         feature.addChildData(midpoint.way.id, midpoint.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         feature.geometry = midpoint.loc;

@@ -15,6 +15,7 @@ import { Extent } from '@id-sdk/math';
  *   `style`            Object containing style info
  *   `label`            String containing the Feature's label (if any)
  *   `data`             Data bound to this Feature (like `__data__` from the D3.js days)
+ *   `dataID`           Data bound to this Feature (like `__data__` from the D3.js days)
  *   `visible`          `true` if the Feature is visible (`false` if it is culled)
  *   `interactive`      `true` if the Feature is interactive (emits Pixi events)
  *   `dirty`            `true` if the Feature needs to be rebuilt
@@ -321,6 +322,7 @@ export class AbstractFeature {
     return this._data;
   }
 
+
   /**
    * bindData
    * This binds the data element to the feature, also lets the layer know about it.
@@ -329,15 +331,17 @@ export class AbstractFeature {
    */
   bindData(data, dataID) {
     this._data = data;
+    this.dataID = dataID;
     this.layer.bindData(this.id, dataID);
     this.dirty = true;
   }
 
+
   /**
    * addChildData
    * This adds a mapping from parent data to child data.
-   * @param  parentID  `String` dataID (e.g. 'r123')
-   * @param  childIDs  `Array` or `Set` of childIDs, or single `String` childID
+   * @param  parentID  `String` dataID of the parent (e.g. 'r123')
+   * @param  childID   `String` dataID of the child (e.g. 'w123')
    */
    addChildData(parentID, childID) {
      this.layer.addChildData(parentID, childID);

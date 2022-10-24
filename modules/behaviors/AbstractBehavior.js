@@ -116,8 +116,11 @@ export class AbstractBehavior extends EventEmitter {
       result.target = {
         displayObject: dObj,
         feature: feature,
+        featureID: feature.id,
         layer: feature.layer,
-        data: feature.data
+        layerID: feature.layer.id,
+        data: feature.data,
+        dataID: feature.data?.id
       };
       return result;
     }
@@ -129,8 +132,11 @@ export class AbstractBehavior extends EventEmitter {
       result.target = {
         displayObject: dObj,
         feature: feature,
+        featureID: feature.id,
         layer: feature.layer,
-        data: feature.data
+        layerID: feature.layer.id,
+        data: feature.data,
+        dataID: feature.data?.id
       };
       return result;
     }
@@ -139,8 +145,11 @@ export class AbstractBehavior extends EventEmitter {
     result.target = {
       displayObject: e.target,
       feature: null,
+      featureID: null,
       layer: null,
-      data: null
+      layerID: null,
+      data: null,
+      dataID: null
     };
     return result;
   }

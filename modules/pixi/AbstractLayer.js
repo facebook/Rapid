@@ -12,6 +12,16 @@ function asSet(vals) {
  * AbstractLayer is the base class from which all Layers inherit.
  * It creates a container to hold the Layer data.
  *
+ * Notes on identifiers:
+ *  - `layerID` - A unique identifier for the layer, for example 'osm'
+ *    layerIDs are unique for the entire scene.
+ *  - `featureID` - A unique identifier for the feature, for example 'osm-w-123-fill'
+ *    featureIDs are expected to be unique across the entire scene.
+ *  - `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
+ *    dataIDs are only expected to be unique *on a given layer*
+ *  - `classID` - A class identifier like 'hovered' or 'selected'
+ *    classIDs are arbitrary stings
+ *
  * Properties you can access:
  *   `container`    PIXI.Container() that contains all the Features for this Layer
  *   `id`           Unique string to use for the name of this Layer
@@ -53,14 +63,22 @@ export class AbstractLayer {
     // Collections of Data on this Layer
     // There is a one-to-many relationship between Data and Features.
     // These lookups capture which features are bound to which data.
-    this.dataFeatures = new Map();   // Map (dataID -> Set(featureID))  one-to-many data-to-features
-    this.featureData = new Map();    // Map (featureID -> dataID)       reverse index feature-to-data
+    this._dataFeature = new Map();    // Map (dataID -> Set(featureID))
+    this._featureData = new Map();    // Map (featureID -> dataID)
 
     // Data mapped to Data
     // There is a one-to-many relationship between parent data and child data.
     // For example, we need this to know which ways make up a multipolygon relation.
     // Here we're just keeping track of the dataIDs of the direct descendents.
-    this.childData = new Map();      // Map (dataID -> Set(child dataID))  one-to-many parent-to-children
+    this._dataChildren = new Map();    // Map (parent dataID -> Set(child dataID))
+
+    // Data classes are strings (like what CSS classes used to do for us).
+    // Currently supported "selected", "hovered", "drawing"
+    // Can set other ones but it won't do anything (but won't break anything either)
+    // Counterintuitively, the Layer needs to be the source of truth for these data classes,
+    // because a Feature can be "selected" or "drawing" even before it has been created.
+    this._dataClass = new Map();     // Map (dataID -> Set(String))
+    this._classData = new Map();     // Map (String -> Set(dataID))
   }
 
 
@@ -132,7 +150,7 @@ export class AbstractLayer {
 
   /**
    * retainFeature
-   * Call this to retain the feature for the given frame.
+   * Retain the feature for the given frame.
    * Features that are not retained may be automatically culled (made invisible) or removed.
    * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
    * @param  frame     Integer frame being rendered
@@ -149,65 +167,90 @@ export class AbstractLayer {
 
 
   /**
+   * syncFeatureClasses
+   * Set the feature's various state properties (e.g. selected, hovered, etc.)
+   * Counterintuitively, the Layer needs to be the source of truth for these properties,
+   * because a Feature can be "selected" or "drawing" even before it has been created.
+   *
+   * Setting these state properties may dirty the feature if the it causes the state to change.
+   * Therefore this should be called after the Feature has been created but before any updates happen.
+   *
+   * @param  feature   A Feature derived from `AbstractFeature` (point, line, multipolygon)
+   */
+  syncFeatureClasses(feature) {
+    const featureID = feature.id;
+    const dataID = this._featureData.get(featureID);
+    if (!dataID) return;
+
+    const activeData = this.context.activeData();
+    feature.interactive = !activeData.has(dataID);  // is this the same as drawing??
+
+    feature.selected = this._classData.get('selected')?.has(dataID);
+    feature.hovered = this._classData.get('hovered')?.has(dataID);
+    feature.drawing = this._classData.get('drawing')?.has(dataID);
+  }
+
+
+  /**
    * bindData
-   * This adds (or replaces) a data binding from featureID to a dataID
+   * Adds (or replaces) a data binding from featureID to a dataID
    * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
    * @param  dataID     `String` dataID     (e.g. 'w-123')
    */
   bindData(featureID, dataID) {
     this.unbindData(featureID);
 
-    let s = this.dataFeatures.get(dataID);   // one-to-many data-to-features
-    if (!s) {
-      s = new Set();
-      this.dataFeatures.set(dataID, s);
+    let featureIDs = this._dataFeature.get(dataID);   // one-to-many data-to-features
+    if (!featureIDs) {
+      featureIDs = new Set();
+      this._dataFeature.set(dataID, featureIDs);
     }
-    s.add(featureID);
+    featureIDs.add(featureID);
 
-    this.featureData.set(featureID, dataID);   // reverse feature-to-data
+    this._featureData.set(featureID, dataID);   // reverse feature-to-data
   }
 
 
   /**
    * unbindData
-   * This removes the data bindings for a given featureID
+   * Removes the data bindings for a given featureID
    * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
    */
   unbindData(featureID) {
-    const dataID = this.featureData.get(featureID);
+    const dataID = this._featureData.get(featureID);
     if (!dataID) return;
 
-    const s = this.dataFeatures.get(dataID);   // one-to-many data-to-features
-    if (s) {
-      s.delete(featureID);
-      if (!s.size) {  // nobody is looking for this dataID anymore
-        this.dataFeatures.delete(dataID);
-        this.childData.delete(dataID);
+    const featureIDs = this._dataFeature.get(dataID);   // one-to-many data-to-features
+    if (featureIDs) {
+      featureIDs.delete(featureID);
+
+      if (!featureIDs.size) {  // no features are bound to this data anymore
+        this._dataFeature.delete(dataID);
+        this._dataChildren.delete(dataID);
+        // Note that we don't touch the data classes here..
+        // If a selected feature leaves the scene and comes back later, it's still selected!
       }
     }
 
-    this.featureData.delete(featureID);   // reverse feature-to-data
+    this._featureData.delete(featureID);   // reverse feature-to-data
   }
 
 
   /**
    * addChildData
    * This adds a mapping from parent data to child data.
-   * @param  parentID  `String` dataID (e.g. 'r123')
-   * @param  childIDs  `Array` or `Set` of childIDs, or single `String` childID
+   * @param  parentID  `String` dataID of the parent (e.g. 'r123')
+   * @param  childID   `String` dataID of the child (e.g. 'w123')
    */
-  addChildData(parentID, childIDs) {
-    const toAdd = asSet(childIDs);  // coax ids into a Set
-
-    let s = this.childData.get(parentID);   // one-to-many parent-to-children
-    if (!s) {
-      s = new Set();
-      this.childData.set(parentID, s);
+  addChildData(parentID, childID) {
+    let childIDs = this._dataChildren.get(parentID);   // one-to-many parent-to-children
+    if (!childIDs) {
+      childIDs = new Set();
+      this._dataChildren.set(parentID, childIDs);
     }
-    for (const dataID of toAdd) {
-      s.add(dataID);
-    }
+    childIDs.add(childID);
   }
+
 
   /**
    * removeChildData
@@ -216,9 +259,91 @@ export class AbstractLayer {
    * @param  childID   `String` dataID to remove as a child (e.g. 'w1')
    */
   removeChildData(parentID, childID) {
-    const s = this.childData.get(parentID);   // one-to-many parent-to-children
-    if (!s) return;
-    s.delete(childID);
+    this._dataChildren.get(parentID)?.delete(childID);
+  }
+
+
+  /**
+   * clearChildData
+   * Removes all child dataIDs for the given parent dataID
+   * @param  parentID  `String` dataID (e.g. 'r123')
+   */
+  clearChildData(parentID) {
+    this._dataChildren.delete(parentID);
+  }
+
+
+  /**
+   * addDataClass
+   * Sets a dataID as being classed a certain way (e.g. 'hovered')
+   * @param  dataID   `String` dataID (e.g. 'r123')
+   * @param  classID  `String` classID (e.g. 'hovered')
+   */
+  addDataClass(dataID, classID) {
+    let classIDs = this._dataClass.get(dataID);
+    if (!classIDs) {
+      classIDs = new Set();
+      this._dataClass.set(dataID, classIDs);
+    }
+    classIDs.add(classID);
+
+    let dataIDs = this._classData.get(classID);
+    if (!dataIDs) {
+      dataIDs = new Set();
+      this._classData.set(classID, dataIDs);
+    }
+    dataIDs.add(dataID);
+  }
+
+
+  /**
+   * removeDataClass
+   * Unsets a dataID from being classed a certain way (e.g. 'hovered')
+   * @param  dataID   `String` dataID (e.g. 'r123')
+   * @param  classID  `String` classID (e.g. 'hovered')
+   */
+  removeDataClass(dataID, classID) {
+    let classIDs = this._dataClass.get(dataID);
+    if (classIDs) {
+      classIDs.delete(classID);
+      if (!classIDs.size) {
+        this._dataClass.delete(dataID);
+      }
+    }
+
+    let dataIDs = this._classData.get(classID);
+    if (dataIDs) {
+      dataIDs.delete(dataID);
+      if (!dataIDs.size) {
+        this._classData.delete(classID);
+      }
+    }
+  }
+
+
+  /**
+   * clearDataClasses
+   * Remove all classIDs for a given dataID
+   * @param  dataID    `String` dataID (e.g. 'r123')
+   */
+  clearDataClasses(dataID) {
+    const classIDs = this._dataClass.get(dataID);
+    classIDs?.forEach(classID => {
+      this.removeDataClass(dataID, classID);
+    });
+  }
+
+
+  /**
+   * clearClassData
+   * Remove all dataIDs for a given classID
+   * @param  classID   `String` classID (e.g. 'hovered')
+   */
+  clearClassData(classID) {
+    const dataIDs = this._classData.get(classID);
+    dataIDs?.forEach(dataID => {
+      this.removeDataClass(dataID, classID);
+    });
   }
 
 
@@ -256,7 +381,7 @@ export class AbstractLayer {
    */
   dirtyData(dataIDs) {
     for (const dataID of asSet(dataIDs)) {   // coax ids into a Set
-      const featureIDs = this.dataFeatures.get(dataID);
+      const featureIDs = this._dataFeature.get(dataID);
       if (featureIDs) {
         this.dirtyFeatures(featureIDs);
       }

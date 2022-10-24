@@ -369,7 +369,7 @@ export class PixiLayerRapid extends AbstractLayer {
 // also custom `.shader` dont work on sprites at all, and so we'd have to switch to meshes maybe?
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         const style = {
@@ -410,7 +410,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.bindData(entity, entity.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         const style = {
@@ -462,7 +462,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.bindData(entity, entity.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         feature.style = pointStyle;
@@ -493,7 +493,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.bindData(entity, entity.id);
       }
 
-      scene.syncFeatureState(feature);
+      this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
         feature.style = vertexStyle;
