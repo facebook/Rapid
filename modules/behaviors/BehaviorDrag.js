@@ -115,15 +115,6 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastDown = down;
     this.lastMove = null;
     this.dragTarget = null;
-
-    // I _think_ this handles - where on the pin the user grabbed it
-    // this._startOrigin = pointerLocGetter(e);
-    // if (this._origin) {
-    //     this._offset = this._origin.call(this._targetNode, this._downData.targetEntity);
-    //     this._offset = [this._offset[0] - this._startOrigin[0], this._offset[1] - this._startOrigin[1]];
-    // } else {
-    //     this._offset = [0, 0];
-    // }
   }
 
 

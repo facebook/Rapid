@@ -1,4 +1,4 @@
-// import { vecSubtract, geomViewportNudge } from '@id-sdk/math';
+import { /*geomViewportNudge, */ vecAdd, vecSubtract } from '@id-sdk/math';
 import { utilArrayIntersection } from '@id-sdk/util';
 
 import { AbstractMode } from './AbstractMode';
@@ -35,6 +35,7 @@ export class ModeDragNode extends AbstractMode {
     this._restoreSelectedIDs = null;
     this._wasMidpoint = false;        // Used to set the correct edit annotation
     this._startLoc = null;
+    this._clickLoc = null;
 
     // Make sure the event handlers have `this` bound correctly
     this._move = this._move.bind(this);
@@ -90,6 +91,12 @@ export class ModeDragNode extends AbstractMode {
 
     this.dragNode = entity;
     this._startLoc = entity.loc;
+
+    // `_clickLoc` is used later to calculate a drag offset,
+    // to correct for where "on the pin" the user grabbed the target.
+    const clickCoord = context.behaviors.get('drag').lastDown.coord;
+    this._clickLoc = context.projection.invert(clickCoord);
+
     this._updateCollections();
 
     context.enableBehaviors(['hover', 'drag', 'map-interaction']);
@@ -117,6 +124,7 @@ export class ModeDragNode extends AbstractMode {
     this._wasMidpoint = false;
     this.dragNode = null;
     this._startLoc = null;
+    this._clickLoc = null;
 
     this.context.behaviors.get('drag')
       .off('move', this._move)
@@ -239,8 +247,17 @@ const nope = false;
 
     const context = this.context;
     // var currMouse = vecSubtract(coord, nudge);
-    const loc = context.projection.invert(coord);
 
+    // The "drag offset" is the difference between where the user grabbed
+    // the marker/pin and where the location of the node actually is.
+    // We calculate the drag offset each time because it's possible
+    // the user may have changed zooms while dragging..
+    const clickCoord = context.projection.project(this._clickLoc);
+    const startCoord = context.projection.project(this._startLoc);
+    const dragOffset = vecSubtract(startCoord, clickCoord);
+    coord = vecAdd(coord, dragOffset);
+
+    const loc = context.projection.invert(coord);
     if (locationManager.blocksAt(loc).length) {  // editing is blocked here
       this._cancel();
       return;
