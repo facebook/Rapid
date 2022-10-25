@@ -68,6 +68,9 @@ export class PixiFeaturePoint extends AbstractFeature {
    */
   destroy() {
     super.destroy();
+    this.viewfields = null;
+    this.marker = null;
+    this.icon = null;
   }
 
 

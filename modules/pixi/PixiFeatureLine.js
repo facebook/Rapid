@@ -59,8 +59,10 @@ export class PixiFeatureLine extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
-    this.points = null;
     super.destroy();
+    this.points = null;
+    this.casing = null;
+    this.stroke = null;
   }
 
 

@@ -81,8 +81,11 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
    * Do not use the Feature after calling `destroy()`.
    */
   destroy() {
-    this.ssrdata = null;
     super.destroy();
+    this.ssrdata = null;
+    this.lowRes = null;
+    this.fill = null;
+    this.mask = null;
   }
 
 
