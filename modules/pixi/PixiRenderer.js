@@ -84,9 +84,6 @@ export class PixiRenderer extends EventEmitter {
     // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
 
-    // NEW: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
-    delete PIXI.Renderer.__plugins.interaction;
-
     // Create a Pixi application rendering to the given surface `canvas`
     this.pixi = new PIXI.Application({
       antialias: true,
@@ -98,11 +95,6 @@ export class PixiRenderer extends EventEmitter {
       sharedTicker: true,
       view: surface.node()
     });
-
-    // NEW: Replace InteractionManager with EventSystem (will be the default in Pixi 7.x)
-    if (!('events' in this.pixi.renderer)) {
-      this.pixi.renderer.addSystem(EventSystem, 'events');
-    }
 
 // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
 // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
