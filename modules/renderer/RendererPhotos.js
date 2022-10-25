@@ -74,13 +74,13 @@ export class RendererPhotos extends EventEmitter {
       const results = /(.*)\/(.*)/g.exec(photoId);
 
       if (results && results.length >= 3) {
-        const serviceId = results[1];
+        const serviceID = results[1];
         const photoKey = results[2];
-        const service = services[serviceId];
+        const service = services[serviceID];
         if (!service || !service.ensureViewerLoaded) return;
 
         // if we're showing a photo then make sure its layer is enabled too
-        scene.enableLayers(serviceId);
+        scene.enableLayers(serviceID);
 
         const startTime = Date.now();
         service.on('loadedImages.rendererPhotos', () => {
@@ -113,9 +113,12 @@ export class RendererPhotos extends EventEmitter {
   _updateHash() {
     if (window.mocha) return;
 
-    const enabled = this.context.scene().layers
-      .filter(layer => this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled)
-      .map(d => d.id);
+    const enabled = [];
+    for (const layer of this.context.scene().layers.values()) {
+      if (this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled) {
+        enabled.push(layer.id);
+      }
+    }
 
     let hash = utilStringQs(window.location.hash);
     if (enabled.length) {
@@ -307,7 +310,7 @@ export class RendererPhotos extends EventEmitter {
 
 
   _showsLayer(layerID) {
-    const layer = this.context.scene().getLayer(layerID);
+    const layer = this.context.scene().layers.get(layerID);
     return layer && layer.enabled;
   }
 

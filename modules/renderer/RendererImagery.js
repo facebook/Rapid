@@ -290,7 +290,7 @@ export class RendererImagery extends EventEmitter {
   set brightness(val = 1) {
     if (val === this._brightness) return;  // no change
     this._brightness = val;
-    this.context.scene().getLayer('background').setBrightness(val);
+    this.context.scene().layers.get('background')?.setBrightness(val);
     this.emit('imagerychange');
   }
 
@@ -304,7 +304,7 @@ export class RendererImagery extends EventEmitter {
   set contrast(val = 1) {
     if (val === this._contrast) return;  // no change
     this._contrast = val;
-    this.context.scene().getLayer('background').setContrast(val);
+    this.context.scene().layers.get('background')?.setContrast(val);
     this.emit('imagerychange');
   }
 
@@ -318,7 +318,7 @@ export class RendererImagery extends EventEmitter {
   set saturation(val = 1) {
     if (val === this._saturation) return;  // no change
     this._saturation = val;
-    this.context.scene().getLayer('background').setSaturation(val);
+    this.context.scene().layers.get('background')?.setSaturation(val);
     this.emit('imagerychange');
   }
 
@@ -332,7 +332,7 @@ export class RendererImagery extends EventEmitter {
   set sharpness(val = 1) {
     if (val === this._sharpness) return;  // no change
     this._sharpness = val;
-    this.context.scene().getLayer('background').setSharpness(val);
+    this.context.scene().layers.get('background')?.setSharpness(val);
     this.emit('imagerychange');
   }
 
@@ -415,7 +415,7 @@ export class RendererImagery extends EventEmitter {
 
 // does not belong here
 //        if (hash.gpx) {
-//          const gpxLayer = this.context.scene().getLayer('custom-data');
+//          const gpxLayer = this.context.scene().layers.get('custom-data');
 //          if (gpxLayer) {
 //            gpxLayer.url(hash.gpx, '.gpx');
 //          }

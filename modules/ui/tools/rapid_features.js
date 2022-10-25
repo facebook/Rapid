@@ -22,17 +22,14 @@ export function uiToolRapidFeatures(context) {
 
   function layerEnabled() {
     if (!context.scene) return false;
-    let rapidLayer = context.scene().getLayer('rapid');
-
-    return rapidLayer ? rapidLayer.enabled : false;
+    let rapidLayer = context.scene().layers.get('rapid');
+    return rapidLayer?.enabled;
   }
 
 
   function toggleFeatures() {
-    let layer = context.scene().getLayer('rapid');
-    layer.enabled = !layer.enabled;
+    context.scene().toggleLayers('rapid');
     toggleKeyDispatcher.call('ai_feature_toggle');
-    context.map().immediateRedraw();
   }
 
 

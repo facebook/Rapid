@@ -22,13 +22,11 @@ export function uiToolNotes(context) {
 
 
   function notesEnabled() {
-    const noteLayer = context.scene().getLayer('notes');
-    return noteLayer && noteLayer.enabled;
+    return context.scene().layers.get('notes')?.enabled;
   }
 
   function notesEditable() {
-    const mode = context.mode();
-    return mode && mode.id !== 'save';
+    return context.mode()?.id !== 'save';
   }
 
   let debouncedUpdate;

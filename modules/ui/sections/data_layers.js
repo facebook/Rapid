@@ -35,7 +35,7 @@ export function uiSectionDataLayers(context) {
 
 
   function showsLayer(layerID) {
-    const layer = scene.getLayer(layerID);
+    const layer = scene.layers.get(layerID);
     return layer && layer.enabled;
   }
 
@@ -63,7 +63,7 @@ export function uiSectionDataLayers(context) {
 
   function drawOsmItems(selection) {
     const osmKeys = ['osm', 'notes'];
-    const osmLayers = scene.layers.filter(layer => osmKeys.includes(layer.id));
+    const osmLayers = osmKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
 
     let ul = selection
       .selectAll('.layer-list-osm')
@@ -123,7 +123,7 @@ export function uiSectionDataLayers(context) {
 
   function drawQAItems(selection) {
     const qaKeys = ['keepRight', 'improveOSM', 'osmose'];
-    const qaLayers = scene.layers.filter(layer => qaKeys.includes(layer.id));
+    const qaLayers = qaKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
 
     let ul = selection
       .selectAll('.layer-list-qa')
@@ -173,7 +173,7 @@ export function uiSectionDataLayers(context) {
 
 
   function drawCustomDataItems(selection) {
-    const dataLayer = scene.getLayer('custom-data');
+    const dataLayer = scene.layers.get('custom-data');
     const hasData = dataLayer && dataLayer.hasData();
     const showsData = hasData && dataLayer.enabled;
 
@@ -263,7 +263,7 @@ export function uiSectionDataLayers(context) {
 
 
   function customChanged(d) {
-    const dataLayer = scene.getLayer('custom-data');
+    const dataLayer = scene.layers.get('custom-data');
 
     if (d && d.url) {
       dataLayer.url(d.url);

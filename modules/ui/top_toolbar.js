@@ -18,8 +18,7 @@ export function uiTopToolbar(context) {
 
 
   function notesEnabled() {
-    const noteLayer = context.scene().getLayer('notes');
-    return noteLayer && noteLayer.enabled;
+    return context.scene().layers.get('notes')?.enabled;
   }
 
 

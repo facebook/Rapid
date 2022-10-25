@@ -31,7 +31,7 @@ export function uiSectionPhotoOverlays(context) {
 
 
   function showsLayer(layerID) {
-    const layer = scene.getLayer(layerID);
+    const layer = scene.layers.get(layerID);
     return layer && layer.enabled;
   }
 
@@ -56,7 +56,7 @@ export function uiSectionPhotoOverlays(context) {
 
   function drawPhotoItems(selection) {
     const photoKeys = context.photos().overlayLayerIDs;
-    const photoLayers = scene.layers.filter(layer => photoKeys.includes(layer.id));
+    const photoLayers = photoKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
     const data = photoLayers.filter(layer => layer.supported);
 
     function layerSupported(d) {

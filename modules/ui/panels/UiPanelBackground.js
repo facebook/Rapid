@@ -159,8 +159,8 @@ export class UiPanelBackground extends AbstractUiPanel {
     // Look for a loaded tile that covers the center of the map.
     const center = context.map().center();
     const centerExtent = new Extent(center);
-    const layer = context.scene().getLayer('background');
-    const tileMap = layer && layer._tileMaps.get(source.id);
+    const layer = context.scene().layers.get('background');
+    const tileMap = layer?._tileMaps.get(source.id);
     let tileCoord, tileZoom;
 
     if (tileMap) {

@@ -26,11 +26,12 @@ const PARTIALFILLWIDTH = 32;
 export class PixiFeatureMultipolygon extends AbstractFeature {
 
   /**
-   * @param  layer   The Layer that owns this Feature
-   * @param  id      Unique string to use for the name of this Feature
+   * @constructor
+   * @param  layer       The Layer that owns this Feature
+   * @param  featureID   Unique string to use for the name of this Feature
    */
-  constructor(layer, id) {
-    super(layer, id);
+  constructor(layer, featureID) {
+    super(layer, featureID);
 
     this.type = 'multipolygon';
     this.ssrdata = null;
@@ -386,7 +387,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 //      if (!this.halo) {
 //        this.halo = new PIXI.Graphics();
 //        this.halo.name = `${this.id}-halo`;
-//        const mapUIContainer = this.scene.getLayer('map-ui').container;
+//        const mapUIContainer = this.scene.layers.get('map-ui').container;
 //        mapUIContainer.addChild(this.halo);
 //      }
 //

@@ -28,20 +28,19 @@ import { Extent } from '@id-sdk/math';
  *   `localBounds`      PIXI.Rectangle() where 0,0 is the origin of the Feature
  *   `sceneBounds`      PIXI.Rectangle() where 0,0 is the origin of the scane
  */
-
-
 export class AbstractFeature {
+
   /**
    * @constructor
-   * @param  layer    The Layer that owns this Feature
-   * @param  id       Unique string to use for the name of this Feature
+   * @param  layer       The Layer that owns this Feature
+   * @param  featureID   Unique string to use for the name of this Feature
    */
-  constructor(layer, id) {
+  constructor(layer, featureID) {
     const container = new PIXI.Container();
     this.container = container;
 
     container.__feature__ = this;   // Link the container back to `this`
-    container.name = id;
+    container.name = featureID;
     container.sortableChildren = false;
     container.visible = true;
 

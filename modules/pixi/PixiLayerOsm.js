@@ -461,7 +461,7 @@ if (geom === 'line') {
     // Most vertices should be children of the vertex container
     const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
     // Vertices related to the selection/hover should be drawn above everything
-    const mapUIContainer = this.scene.getLayer('map-ui').container;
+    const mapUIContainer = this.scene.layers.get('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
@@ -633,7 +633,7 @@ if (geom === 'line') {
     const graph = this.context.graph();
 
     // Midpoints should be drawn above everything
-    const mapUIContainer = this.scene.getLayer('map-ui').container;
+    const mapUIContainer = this.scene.layers.get('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     // Generate midpoints from all the highlighted ways

@@ -132,7 +132,8 @@ export class RendererMap extends EventEmitter {
 
     this.dimensions = utilGetDimensions(selection);
 
-
+    const scene = this._renderer.scene;
+    const thiz = this;
 
 // setup drag and drop - (doesn't really belong here?)
     // context.imagery().initDragAndDrop();
@@ -149,7 +150,7 @@ export class RendererMap extends EventEmitter {
       .on('drop.draganddrop', (d3_event) => {
         d3_event.stopPropagation();
         d3_event.preventDefault();
-        const customDataLayer = context.scene().getLayer('custom-data');
+        const customDataLayer = scene.layers.get('custom-data');
         if (customDataLayer) {
           customDataLayer.fileList(d3_event.dataTransfer.files);
         }
@@ -157,7 +158,6 @@ export class RendererMap extends EventEmitter {
 
     // Setup events that cause the map to redraw...
 
-    const thiz = this;
     function didUndoOrRedo(targetTransform) {
       const mode = context.mode().id;
       if (mode !== 'browse' && mode !== 'select') return;
@@ -169,14 +169,14 @@ export class RendererMap extends EventEmitter {
     context.history()
       .on('merge', entityIDs => {
         if (entityIDs) {
-          this._renderer.scene.dirtyData('osm', entityIDs);
+          scene.dirtyData('osm', entityIDs);
         }
         this.deferredRedraw();
       })
       .on('change', difference => {
         if (difference) {
           const entityIDs = Object.keys(difference.complete());
-          this._renderer.scene.dirtyData('osm', entityIDs);
+          scene.dirtyData('osm', entityIDs);
         }
         this.immediateRedraw();
       })
@@ -192,7 +192,7 @@ export class RendererMap extends EventEmitter {
       osm.on('change', this.immediateRedraw);
     }
 
-    this._renderer.scene
+    scene
       .on('layerchange', () => {
         context.imagery().updateImagery();
         this.immediateRedraw();

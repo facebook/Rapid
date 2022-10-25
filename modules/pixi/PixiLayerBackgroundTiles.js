@@ -184,7 +184,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
     const SHOWDEBUG = context.getDebug('tile');
-    const mapUIContainer = context.scene().getLayer('map-ui').container;
+    const mapUIContainer = context.scene().layers.get('map-ui').container;
     const debugContainer = mapUIContainer.getChildByName('tile-debug');
     debugContainer.visible = SHOWDEBUG;
 

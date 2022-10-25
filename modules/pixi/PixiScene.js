@@ -42,11 +42,8 @@ function asSet(vals) {
  *    classIDs are arbitrary stings
  *
  * Properties you can access:
- *   `layers`      `Array` of all layers
- *   `features`    `Map (featureID -> Feature)` of all features we know about
- *   `selected`    `Set` of hovered featureIDs
- *   `hovered`     `Set` of selected featureIDs
- *   `drawing`     `Set` of drawing featureIDs
+ *   `layers`     `Map (layerID -> Layer)` of all layers in the scene
+ *   `features`   `Map (featureID -> Feature)` of all features in the scene
  *
  * Events available:
  *   `layerchange`   Fires when layers are toggled from enabled/disabled
@@ -62,21 +59,11 @@ export class PixiScene extends EventEmitter {
     this.renderer = renderer;
     this.context = renderer.context;
 
-    // Collection of all Features in the scene (used for label placement)
-    this.features = new Map();     // Map (featureID -> Feature)
+    this.features = new Map();   // Map (featureID -> Feature)
+    this.layers = new Map();     // Map (layerID -> Layer)
 
-//    // Feature state properties
-//    // Counterintuitively, the scene needs to be the source of truth for these properties,
-//    // because a feature can be "selected" or "drawing" even before it has been created.
-//    this.selected = new Set();     // Set of selected featureIDs
-//    this.selected.v = 0;           // Version counter that increments as the selection changes
-//    this.hovered = new Set();      // Set of hovered featureIDs
-//    this.hovered.v = 0;            // Version counter that increments as the hover changes
-//    this.drawing = new Set();      // Set of featureIDs that are currently drawing
-//    this.drawing.v = 0;            // Version counter that increments as the drawing changes
-
-    // The layers in the scene
-    this.layers = [
+    // Instantiate layers
+    [
       new PixiLayerBackgroundTiles(this, 1),
 
       new PixiLayerOsm(this, 5),
@@ -98,7 +85,7 @@ export class PixiScene extends EventEmitter {
 
       new PixiLayerEditBlocks(this, 90),
       new PixiLayerMapUI(this, 99)
-    ];
+    ].forEach(layer => this.layers.set(layer.id, layer));
 
   }
 
@@ -121,21 +108,10 @@ export class PixiScene extends EventEmitter {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    for (const layer of this.layers) {
+    for (const layer of this.layers.values()) {
       layer.render(frame, projection, zoom);
       layer.cull(frame);
     }
-  }
-
-
-  /**
-   * getLayer
-   * Get a Layer by its layerID
-   * @param   layerID  `String` id of a Layer
-   * @return  The Layer with the given id or `undefined` if not found
-   */
-  getLayer(layerID) {
-    return this.layers.find(layer => layer.id === layerID);
   }
 
 
@@ -145,9 +121,9 @@ export class PixiScene extends EventEmitter {
    * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
   enableLayers(layerIDs) {
-    const toEnable = asSet(layerIDs);  // coax ids into a Set
-    for (const layer of this.layers) {
-      if (toEnable.has(layer.id)) {
+    for (const layerID of asSet(layerIDs)) {   // coax ids into a Set
+      const layer = this.layers.get(layerID);
+      if (layer) {
         layer.enabled = true;
       }
     }
@@ -161,9 +137,9 @@ export class PixiScene extends EventEmitter {
    * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
   disableLayers(layerIDs) {
-    const toDisable = asSet(layerIDs);  // coax ids into a Set
-    for (const layer of this.layers) {
-      if (toDisable.has(layer.id)) {
+    for (const layerID of asSet(layerIDs)) {   // coax ids into a Set
+      const layer = this.layers.get(layerID);
+      if (layer) {
         layer.enabled = false;
       }
     }
@@ -177,9 +153,9 @@ export class PixiScene extends EventEmitter {
    * @param  layerIDs  A `Set` or `Array` of layerIDs, or single `String` layerID
    */
   toggleLayers(layerIDs) {
-    const toToggle = asSet(layerIDs);  // coax ids into a Set
-    for (const layer of this.layers) {
-      if (toToggle.has(layer.id)) {
+    for (const layerID of asSet(layerIDs)) {  // coax ids into a Set
+      const layer = this.layers.get(layerID);
+      if (layer) {
         layer.enabled = !layer.enabled;
       }
     }
@@ -194,7 +170,7 @@ export class PixiScene extends EventEmitter {
    */
   onlyLayers(layerIDs) {
     const toEnable = asSet(layerIDs);  // coax ids into a Set
-    for (const layer of this.layers) {
+    for (const layer of this.layers.values()) {
       layer.enabled = toEnable.has(layer.id);
     }
     this.emit('layerchange');
@@ -229,7 +205,7 @@ export class PixiScene extends EventEmitter {
    * @param  classID  `String` classID (e.g. 'hovered')
    */
   addDataClass(layerID, dataID, classID) {
-    this.getLayer(layerID)?.addDataClass(dataID, classID);
+    this.layers.get(layerID)?.addDataClass(dataID, classID);
   }
 
   /**
@@ -240,7 +216,7 @@ export class PixiScene extends EventEmitter {
    * @param  classID  `String` classID (e.g. 'hovered')
    */
   removeDataClass(layerID, dataID, classID) {
-    this.getLayer(layerID)?.removeDataClass(layerID, dataID, classID);
+    this.layers.get(layerID)?.removeDataClass(layerID, dataID, classID);
   }
 
 
@@ -251,7 +227,7 @@ export class PixiScene extends EventEmitter {
    * @param  dataID    `String` dataID (e.g. 'r123')
    */
   clearDataClasses(layerID, dataID) {
-    this.getLayer(layerID)?.clearDataClasses(dataID);
+    this.layers.get(layerID)?.clearDataClasses(dataID);
   }
 
 
@@ -262,112 +238,9 @@ export class PixiScene extends EventEmitter {
    * @param  classID   `String` classID (e.g. 'hovered')
    */
   clearClassData(layerID, classID) {
-    this.getLayer(layerID)?.clearClassData(classID);
+    this.layers.get(layerID)?.clearClassData(classID);
   }
 
-
-//
-//  /**
-//   * drawingFeatures
-//   * Mark these featureIDs as `drawing`
-//   * A few things to note:
-//   * - the `featureID` may not exist in the scene yet
-//   *   (for example, a new point that hasn't yet been rendered)
-//   * - `featureIDs` should contain the complete list of featureIDs to put in the 'drawing' state.
-//   *   (in other words, anything not in this list will be styled normally, without 'drawing' consideration)
-//   * @param  featureIDs   `Array` or `Set` of feature IDs to draw, or single `String` featureID
-//   */
-//  drawingFeatures(featureIDs) {
-//    const toDraw = asSet(featureIDs);  // coax ids into a Set
-//    let didChange = false;
-//
-//    // Remove drawing status where not needed
-//    for (const featureID of this.drawing) {
-//      if (toDraw.has(featureID)) continue;   // it should stay drawing
-//      this.drawing.delete(featureID);
-//      didChange = true;
-//    }
-//
-//    // Add drawing where needed
-//    for (const featureID of toDraw) {
-//      if (this.drawing.has(featureID)) continue;   // it's already drawing
-//      this.drawing.add(featureID);
-//      didChange = true;
-//    }
-//
-//    if (didChange) {
-//      this.drawing.v++;
-//    }
-//  }
-//
-//
-//  /**
-//   * select
-//   * Mark these featureIDs as `selected`
-//   * A few things to note:
-//   * - the `featureID` may not exist in the scene yet
-//   *   (for example, a new point that hasn't yet been rendered)
-//   * - `featureIDs` should contain the complete list of featureIDs to select.
-//   *   (in other words, anything not in this list will get unselected)
-//   * @param  featureIDs   `Array` or `Set` of feature IDs to select, or single `String` featureID
-//   */
-//  selectFeatures(featureIDs) {
-//    const toSelect = asSet(featureIDs);  // coax ids into a Set
-//    let didChange = false;
-//
-//    // Remove select where not needed
-//    for (const featureID of this.selected) {
-//      if (toSelect.has(featureID)) continue;   // it should stay selected
-//      this.selected.delete(featureID);
-//      didChange = true;
-//    }
-//
-//    // Add select where needed
-//    for (const featureID of toSelect) {
-//      if (this.selected.has(featureID)) continue;   // it's already selected
-//      this.selected.add(featureID);
-//      didChange = true;
-//    }
-//
-//    if (didChange) {
-//      this.selected.v++;
-//    }
-//  }
-//
-//
-//  /**
-//   * hover
-//   * Mark these featureIDs as `hovered`
-//   * A few things to note:
-//   * - the `featureID` may not exist in the scene yet
-//   *   (for example, a new point that hasn't yet been rendered)
-//   * - `featureIDs` should contain the complete list of featureIDs to hover.
-//   *   (in other words, anything not in this list will get unhovered)
-//   * @param  featureIDs   `Array` or `Set` of feature IDs to hover, or single `String` featureID
-//   */
-//  hoverFeatures(featureIDs) {
-//    const toHover = asSet(featureIDs);  // coax ids into a Set
-//    let didChange = false;
-//
-//    // Remove hover where not needed
-//    for (const featureID of this.hovered) {
-//      if (toHover.has(featureID)) continue;   // it should stay hovered
-//      this.hovered.delete(featureID);
-//      didChange = true;
-//    }
-//
-//    // Add hover where needed
-//    for (const featureID of toHover) {
-//      if (this.hovered.has(featureID)) continue;   // it's already hovered
-//      this.hovered.add(featureID);
-//      didChange = true;
-//    }
-//
-//    if (didChange) {
-//      this.hovered.v++;
-//    }
-//  }
-//
 
   /**
    * dirtyScene
@@ -388,7 +261,7 @@ export class PixiScene extends EventEmitter {
    */
   dirtyLayers(layerIDs) {
     for (const layerID of asSet(layerIDs)) {   // coax ids into a Set
-      this.getLayer(layerID)?.dirtyLayer();
+      this.layers.get(layerID)?.dirtyLayer();
     }
   }
 
@@ -417,7 +290,7 @@ export class PixiScene extends EventEmitter {
    * @param  dataIDs  A `Set` or `Array` of dataIDs, or single `String` dataID
    */
   dirtyData(layerID, dataIDs) {
-    this.getLayer(layerID)?.dirtyData(dataIDs);
+    this.layers.get(layerID)?.dirtyData(dataIDs);
   }
 
 }

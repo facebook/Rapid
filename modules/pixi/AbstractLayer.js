@@ -36,11 +36,11 @@ export class AbstractLayer {
 
   /**
    * @constructor
-   * @param  scene    The Scene that owns this Layer
-   * @param  id       Unique string to use for the name of this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  scene     The Scene that owns this Layer
+   * @param  layerID   Unique string to use for the name of this Layer
+   * @param  layerZ    z-index to assign to this Layer's container
    */
-  constructor(scene, id, layerZ) {
+  constructor(scene, layerID, layerZ) {
     this.scene = scene;
     this.renderer = scene.renderer;
     this.context = scene.context;
@@ -49,7 +49,7 @@ export class AbstractLayer {
 
     // Create Layer container, add to this renderer's root
     const container = new PIXI.Container();
-    container.name = id;
+    container.name = layerID;
     container.zIndex = layerZ;
     container.visible = false;
     container.sortableChildren = true;

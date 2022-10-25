@@ -69,7 +69,7 @@ describe('PixiRenderer', () => {
 
   describe('#osmRenderer', () => {
     it('renders the canned data scene', () => {
-      const osmLayer = context.scene().getLayer('osm');
+      const osmLayer = context.scene().layers.get('osm');
       osmLayer.drawPoints(timestamp, projection, zoom, renderData.points);
       osmLayer.drawVertices(timestamp, projection, zoom, renderData.vertices);
       osmLayer.drawLines(timestamp, projection, zoom, renderData.lines);

@@ -43,7 +43,6 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
       context.scene().dirtyLayers('rapid');
       context.enter('browse');   // return to browse mode (in case something was selected)
-      context.map().immediateRedraw();   // why? mode change should trigger redraw?
     }
   }
 
@@ -108,7 +107,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderModalContent(selection) {
-    const rapidLayer = context.scene().getLayer('rapid');
+    const rapidLayer = context.scene().layers.get('rapid');
     if (!rapidLayer) return;
 
     /* Toggle All */
@@ -214,7 +213,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-    const rapidLayer = context.scene().getLayer('rapid');
+    const rapidLayer = context.scene().layers.get('rapid');
     if (!rapidLayer) return;
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
