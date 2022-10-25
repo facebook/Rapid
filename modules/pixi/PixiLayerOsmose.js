@@ -56,7 +56,7 @@ export class PixiLayerOsmose extends AbstractLayer {
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const color = service.getColor(d.item);

@@ -116,7 +116,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
     sequenceData.forEach(d => {
       const featureID = `${LAYERID}-sequence-${d.properties.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
@@ -135,7 +135,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
     photoData.forEach(d => {
       const featureID = `${LAYERID}-photo-${d.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);

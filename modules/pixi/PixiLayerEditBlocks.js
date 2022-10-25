@@ -95,7 +95,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   renderEditBlocks(frame, projection, zoom, blocks) {
     blocks.forEach(d => {
       const featureID = `${LAYERID}-${d.locationSetID}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const geojson = locationManager.feature(featureID).geometry;

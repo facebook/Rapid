@@ -346,7 +346,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.polygons.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
@@ -395,7 +395,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.lines.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
@@ -449,7 +449,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.points.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
@@ -479,7 +479,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
     data.vertices.forEach(entity => {
       const featureID = `${LAYERID}-${entity.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);

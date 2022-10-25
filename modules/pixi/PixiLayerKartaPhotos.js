@@ -113,7 +113,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
     sequenceData.forEach(d => {
       const featureID = `${LAYERID}-sequence-${d.properties.key}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
@@ -132,7 +132,7 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
     photoData.forEach(d => {
       const featureID = `${LAYERID}-photo-${d.key}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const style = Object.assign({}, MARKERSTYLE);

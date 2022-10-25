@@ -85,7 +85,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
     visibleData.forEach(d => {
       const featureID = `${LAYERID}-${d.key}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         const style = {

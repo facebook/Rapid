@@ -278,7 +278,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     polygons.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
@@ -313,7 +313,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     lines.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
@@ -343,7 +343,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     points.forEach(d => {
       const featureID = `${LAYERID}-${d.id}`;
-      let feature = this.getFeature(featureID);
+      let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
