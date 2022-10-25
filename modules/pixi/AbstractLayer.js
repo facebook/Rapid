@@ -40,7 +40,7 @@ export class AbstractLayer {
    * @param  id       Unique string to use for the name of this Layer
    * @param  layerZ   z-index to assign to this Layer's container
    */
-  constructor(scene, id, layerZ, parent) {
+  constructor(scene, id, layerZ) {
     this.scene = scene;
     this.renderer = scene.renderer;
     this.context = scene.context;

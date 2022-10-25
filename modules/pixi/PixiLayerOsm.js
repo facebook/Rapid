@@ -174,7 +174,6 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   render(frame, projection, zoom) {
     const context = this.context;
-    const scene = this.scene;
     const service = this.getService();
     const graph = context.graph();
     const map = context.map();
@@ -287,7 +286,6 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderPolygons(frame, projection, zoom, entities) {
     const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
-    const scene = this.scene;
     const graph = this.context.graph();
 
     entities.forEach(entity => {
@@ -347,7 +345,6 @@ export class PixiLayerOsm extends AbstractLayer {
    */
   renderLines(frame, projection, zoom, entities) {
     const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
-    const scene = this.scene;
     const graph = this.context.graph();
 
     function getLevelContainer(level) {
@@ -459,17 +456,16 @@ if (geom === 'line') {
    */
   renderVertices(frame, projection, zoom, entities) {
     const context = this.context;
-    const scene = this.scene;
     const graph = context.graph();
 
     // Most vertices should be children of the vertex container
     const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
     // Vertices related to the selection/hover should be drawn above everything
-    const mapUIContainer = scene.getLayer('map-ui').container;
+    const mapUIContainer = this.scene.getLayer('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
-      const featureID = `${LAYERID}-${entity.id}`;
+      // const featureID = `${LAYERID}-${entity.id}`;
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
         entity.hasInterestingTags() || entity.isEndpoint(graph) /*|| scene.drawing.has(featureID)*/ ||  entity.isIntersection(graph)
       );
@@ -562,7 +558,6 @@ if (geom === 'line') {
    */
   renderPoints(frame, projection, zoom, entities) {
     const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
-    const scene = this.scene;
     const graph = this.context.graph();
 
     entities.forEach(node => {
@@ -635,7 +630,6 @@ if (geom === 'line') {
    */
   renderMidpoints(frame, projection, zoom, entities) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
-    const scene = this.scene;
     const graph = this.context.graph();
 
     // Midpoints should be drawn above everything

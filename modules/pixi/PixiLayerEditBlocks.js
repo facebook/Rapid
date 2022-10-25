@@ -93,8 +93,6 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  blocks       Array of block data visible in the view
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
-    const scene = this.scene;
-
     blocks.forEach(d => {
       const featureID = `${LAYERID}-${d.locationSetID}`;
       let feature = this.getFeature(featureID);

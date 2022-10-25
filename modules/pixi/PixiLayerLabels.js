@@ -316,7 +316,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
       if (this._avoidBoxes.has(featureID)) return;  // we've processed this avoidance already
 
-      const feature = this.scene.getFeature(featureID);
+      const feature = this.scene.features.get(featureID);
       const rect = feature && feature.sceneBounds;
       if (!rect) return;
 
@@ -341,7 +341,7 @@ export class PixiLayerLabels extends AbstractLayer {
       const existingBoxes = this._rbush.search(box);
       existingBoxes.forEach(existingBox => {
         if (existingBox.type === 'label') {
-          const existingFeature = this.scene.getFeature(existingBox.featureID);
+          const existingFeature = this.scene.features.get(existingBox.featureID);
           if (existingFeature) {
             existingFeature._labelDirty = true;
           }

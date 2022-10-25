@@ -271,8 +271,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons     Array of polygon data
    */
   renderPolygons(frame, projection, zoom, polygons) {
-    const scene = this.scene;
-
     const POLY_STYLE = {
       fill: { color: 0x00ffff, alpha: 0.3, },
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
@@ -309,8 +307,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of line data
    */
   renderLines(frame, projection, zoom, lines) {
-    const scene = this.scene;
-
     const LINE_STYLE = {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
@@ -343,7 +339,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of point data
    */
   renderPoints(frame, projection, zoom, points) {
-    const scene = this.scene;
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     points.forEach(d => {

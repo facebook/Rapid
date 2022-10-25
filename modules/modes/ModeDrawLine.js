@@ -311,7 +311,7 @@ export class ModeDrawLine extends AbstractMode {
   _clickLoc(loc) {
     const EPSILON = 1e-6;
     const context = this.context;
-    const scene = context.scene();
+//    const scene = context.scene();
     context.pauseChangeDispatch();
 
     // Extend line by adding vertex at `loc`...

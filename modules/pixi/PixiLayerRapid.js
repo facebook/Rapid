@@ -342,7 +342,6 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderPolygons
    */
   renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
-    const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.polygons.forEach(entity => {
@@ -392,7 +391,6 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderLines
    */
   renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
-    const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.lines.forEach(entity => {
@@ -435,7 +433,6 @@ export class PixiLayerRapid extends AbstractLayer {
    * renderPoints
    */
   renderPoints(parentContainer, dataset, graph, frame, projection, zoom, data) {
-    const scene = this.scene;
     const color = PIXI.utils.string2hex(dataset.color);
 
     const pointStyle = {

@@ -202,17 +202,6 @@ export class PixiScene extends EventEmitter {
 
 
   /**
-   * getFeature
-   * Get a Feature by its featureID
-   * @param   featureID  `String` id of a Feature
-   * @return  The Feature with the given id or `undefined` if not found
-   */
-  getFeature(featureID) {
-    return this.features.get(featureID);
-  }
-
-
-  /**
    * addFeature
    * Add a feature to the scene feature cache.
    * @param  feature  A Feature derived from `AbstractFeature` (point, line, multipolygon)

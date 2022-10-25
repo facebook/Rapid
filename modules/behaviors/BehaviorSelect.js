@@ -358,7 +358,6 @@ export class BehaviorSelect extends AbstractBehavior {
     if (datum.captured_at) {
       // Determine the layer that was clicked on, obtain its service.
       const layerID = target.layer.id;
-      const featureID = target.feature.id;
       const service = services[layerID];
       if (!service) return;
 

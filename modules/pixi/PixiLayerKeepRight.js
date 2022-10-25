@@ -78,8 +78,6 @@ export class PixiLayerKeepRight extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const scene = this.scene;
-
     const service = this.getService();
     if (!service) return;
 

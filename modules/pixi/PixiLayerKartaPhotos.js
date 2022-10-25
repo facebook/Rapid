@@ -102,14 +102,11 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderMarkers(frame, projection, zoom) {
-    const context = this.context;
-    const scene = this.scene;
-
     const service = this.getService();
     if (!service) return;
 
-    const images = service.images(context.projection);
-    const sequences = service.sequences(context.projection);
+    const images = service.images(this.context.projection);
+    const sequences = service.sequences(this.context.projection);
 
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
