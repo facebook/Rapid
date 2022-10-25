@@ -693,7 +693,8 @@ export class PixiLayerLabels extends AbstractLayer {
 
       coords = coords.map(coord => vecSubtract(coord, origin));  // to local coords
       coords = geomRotatePoints(coords, -angle, [0,0]);          // rotate to x axis
-      coords = coords.map(([x,y]) => [x * scaleX, y]);           // apply `scaleX`
+      coords = coords.map(([x,y]) => [x * scaleX, y - 2]);       // apply `scaleX`
+        // also `y-2` to move labels up slightly, see #625
       coords = geomRotatePoints(coords, angle, [0,0]);           // rotate back
       coords = coords.map(coord => vecAdd(coord, origin));       // back to scene coords
 
