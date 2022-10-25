@@ -6,9 +6,11 @@ import { presetManager } from '../presets';
 import { BehaviorHash } from '../behaviors/BehaviorHash';
 import { svgDefs } from '../svg/defs';
 import { svgIcon } from '../svg/icon';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
-
+import { App } from '../3drenderer/App';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
@@ -68,6 +70,7 @@ export function uiInit(context) {
     window.open(link.toString(), '_blank');
   };
 
+  let controls;
   function render(container) {
 //    container.on('click.ui', d3_event => {
 //      if (d3_event.button !== 0) return;  // we're only concerned with the primary mouse button
@@ -161,7 +164,7 @@ export function uiInit(context) {
 
 
     // Map controls
-    const controls = overMap
+    controls = overMap
       .append('div')
       .attr('class', 'map-controls');
 
@@ -179,6 +182,17 @@ export function uiInit(context) {
       .append('div')
       .attr('class', 'map-control geolocate-control')
       .call(uiGeolocate(context));
+
+    // let buildings3D = new Buildings3D();
+
+    controls
+      .append('div')
+      // .attr('class', 'map-control ' + Buildings3D.buttonClass)
+      .attr('id', '3d-buildings');
+
+      const root = createRoot(document.getElementById('3d-buildings'));
+    root.render(<App context={context} />);
+
 
     // Panes
     // This should happen after map is initialized, as some require surface()
@@ -646,6 +660,7 @@ export function uiInit(context) {
       _saveLoading.close();
       _saveLoading = d3_select(null);
     });
+
 
   return ui;
 }
