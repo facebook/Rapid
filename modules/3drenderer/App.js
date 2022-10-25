@@ -16,19 +16,22 @@ export class App extends React.Component {
     featuresToGeoJSON() {
         var context = this.props.context;
         var map = context.map();
-        var entities = context.history().intersects(map.extent()).filter(ent => Object.keys(ent.tags).includes('building'));
+        const entities = context.history().intersects(map.extent());
+        const buildingEnts = entities.filter(ent => {
+            const tags = Object.keys(ent.tags).filter(tagname => tagname.startsWith('building'));
+            return tags.length > 0;
+        });
         var features = [];
-        for (var id in entities) {
+        for (var id in buildingEnts) {
 //            try {
-                var gj = entities[id].asGeoJSON(context.graph());
+                var gj = buildingEnts[id].asGeoJSON(context.graph());
                 if (gj.type !== 'Polygon') continue;
-                if (entities[id].tags.building !== 'yes') continue;
                 features.push({
                     type: 'Feature',
                     properties: {
                         extrude: true,
-                        min_height: entities[id].tags.min_height ? parseFloat(entities[id].tags.min_height) : 0,
-                        height: parseFloat(entities[id].tags.height)
+                        min_height: buildingEnts[id].tags.min_height ? parseFloat(buildingEnts[id].tags.min_height) : 0,
+                        height: parseFloat(buildingEnts[id].tags.height || buildingEnts[id].tags['building:levels'] * 3 || 0)
                     },
                     geometry: gj
                 });
