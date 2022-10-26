@@ -520,11 +520,10 @@ function parseXML(xml, callback, options) {
   }
 
   const root = xml.childNodes[0];
-  const children = root.childNodes;
-
-    if (children.some(child => child.nodename === 'error')) {
-      return callback({ message: 'Partial XML', status: -1 });
-    }
+  const children = Array.from(root.childNodes);
+  if (children.some(child => child.nodename === 'error')) {
+    return callback({ message: 'Partial XML', status: -1 });
+  }
 
   const handle = window.requestIdleCallback(() => {
     _deferred.delete(handle);
