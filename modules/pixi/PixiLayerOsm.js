@@ -12,7 +12,6 @@ import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { utilDisplayName } from '../util';
 import { styleMatch } from './styles';
 
-const LAYERID = 'osm';
 const MINZOOM = 12;
 
 
@@ -25,10 +24,12 @@ export class PixiLayerOsm extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
+
+    const groupContainer = this.scene.groups.get('basemap');
 
     this._enabled = true;  // OSM layers should be enabled by default
     this._service = null;
@@ -44,22 +45,26 @@ export class PixiLayerOsm extends AbstractLayer {
     this._saveCannedData = false;
 
     const areas = new PIXI.Container();
-    areas.name = `${LAYERID}-areas`;
+    areas.name = `${this.layerID}-areas`;
     areas.sortableChildren = true;
+    this.areaContainer = areas;
 
     const lines = new PIXI.Container();
-    lines.name = `${LAYERID}-lines`;
+    lines.name = `${this.layerID}-lines`;
     lines.sortableChildren = true;
+    this.lineContainer = lines;
 
     const vertices = new PIXI.Container();
-    vertices.name = `${LAYERID}-vertices`;
+    vertices.name = `${this.layerID}-vertices`;
     vertices.sortableChildren = true;
+    this.vertexContainer = vertices;
 
     const points = new PIXI.Container();
-    points.name = `${LAYERID}-points`;
+    points.name = `${this.layerID}-points`;
     points.sortableChildren = true;
+    this.pointContainer = points;
 
-    this.container.addChild(areas, lines, vertices, points);
+    groupContainer.addChild(areas, lines, vertices, points);
   }
 
 
@@ -285,11 +290,10 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  entities     Array of OSM entities (ways/relations with area geometry)
    */
   renderPolygons(frame, projection, zoom, entities) {
-    const areaContainer = this.container.getChildByName(`${LAYERID}-areas`);
     const graph = this.context.graph();
 
     entities.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}-fill`;
+      const featureID = `${this.layerID}-${entity.id}-fill`;
 
       let feature = this.features.get(featureID);
 
@@ -300,7 +304,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.parentContainer = areaContainer;
+        feature.parentContainer = this.areaContainer;
       }
 
       const version = (entity.v || 0);  // If data has changed, rebind
@@ -344,8 +348,8 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  entities     Array of OSM entities (ways/relations with line geometry)
    */
   renderLines(frame, projection, zoom, entities) {
-    const lineContainer = this.container.getChildByName(`${LAYERID}-lines`);
     const graph = this.context.graph();
+    const lineContainer = this.lineContainer;
 
     function getLevelContainer(level) {
       let levelContainer = lineContainer.getChildByName(level);
@@ -377,7 +381,7 @@ if (entity.type === 'relation') return;
 const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = getLevelContainer(layer.toString());
 
-      const featureID = `${LAYERID}-${entity.id}`;
+      const featureID = `${this.layerID}-${entity.id}`;
 
       let feature = this.features.get(featureID);
 
@@ -458,14 +462,12 @@ if (geom === 'line') {
     const context = this.context;
     const graph = context.graph();
 
-    // Most vertices should be children of the vertex container
-    const vertexContainer = this.container.getChildByName(`${LAYERID}-vertices`);
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
 
     function isInterestingVertex(entity) {
-      // const featureID = `${LAYERID}-${entity.id}`;
+      // const featureID = `${this.layerID}-${entity.id}`;
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
         entity.hasInterestingTags() || entity.isEndpoint(graph) /*|| scene.drawing.has(featureID)*/ ||  entity.isIntersection(graph)
       );
@@ -474,14 +476,14 @@ if (geom === 'line') {
     entities.forEach(node => {
       let parentContainer = null;
       if (zoom >= 16 && isInterestingVertex(node)) {
-        parentContainer = vertexContainer;
+        parentContainer = this.vertexContainer;
       }
       if (this._relatedOsmIDs.has(node.id)) {
         parentContainer = selectedContainer;
       }
       if (!parentContainer) return;   // this vertex isn't interesting enough to render
 
-      const featureID = `${LAYERID}-${node.id}`;
+      const featureID = `${this.layerID}-${node.id}`;
 
       let feature = this.features.get(featureID);
 
@@ -557,11 +559,10 @@ if (geom === 'line') {
    * @param  entities     Array of OSM entities (nodes with point geometry)
    */
   renderPoints(frame, projection, zoom, entities) {
-    const pointContainer = this.container.getChildByName(`${LAYERID}-points`);
     const graph = this.context.graph();
 
     entities.forEach(node => {
-      const featureID = `${LAYERID}-${node.id}`;
+      const featureID = `${this.layerID}-${node.id}`;
 
       let feature = this.features.get(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
@@ -571,7 +572,7 @@ if (geom === 'line') {
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.parentContainer = pointContainer;
+        feature.parentContainer = this.pointContainer;
       }
 
       const version = (node.v || 0);  // If data has changed, rebind
@@ -683,7 +684,7 @@ if (geom === 'line') {
     });
 
     midpoints.forEach(midpoint => {
-      const featureID = `${LAYERID}-${midpoint.id}`;
+      const featureID = `${this.layerID}-${midpoint.id}`;
       let feature = this.features.get(featureID);
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();

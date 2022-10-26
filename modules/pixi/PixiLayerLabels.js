@@ -7,7 +7,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { localizer } from '../core/localizer';
 import { getLineSegments, getDebugBBox } from './helpers.js';
 
-const LAYERID = 'labels';
 const MINZOOM = 12;
 
 
@@ -33,17 +32,17 @@ export class PixiLayerLabels extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
     this._enabled = true;   // labels should be enabled by default
 
     // Items in this layer don't actually need to be interactive
-    const layerContainer = this.container;
-    layerContainer.buttonMode = false;
-    layerContainer.interactive = false;
-    layerContainer.interactiveChildren = false;
+    const container = this.scene.groups.get('labels');
+    container.buttonMode = false;
+    container.interactive = false;
+    container.interactiveChildren = false;
 
     const debugContainer = new PIXI.ParticleContainer(50000);
     debugContainer.name = 'debug';
@@ -62,7 +61,7 @@ export class PixiLayerLabels extends AbstractLayer {
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
 
-    layerContainer.addChild(debugContainer, labelContainer);
+    container.addChild(debugContainer, labelContainer);
 
     this._atlasAllocator = new AtlasAllocator();
 
@@ -267,38 +266,39 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   gatherAvoids() {
     const SHOWDEBUG = this.context.getDebug('label');
-    const stage = this.context.pixi.stage;
     const avoidObject = _avoidObject.bind(this);
 
     // Gather the containers that have avoidable stuff on them
     const avoidContainers = [];
-    const mapUIContainer = stage.getChildByName('map-ui');
-    if (mapUIContainer) {
-      mapUIContainer.children.forEach(container => {
-        if (container.name === 'selected') {
-          avoidContainers.push(container);
-        }
-      });
+    const mapUIContainer = this.scene.layers.get('map-ui').container;
+    const selected = mapUIContainer?.getChildByName('selected');
+    if (selected) {
+      avoidContainers.push(selected);
     }
-    const osmContainer = stage.getChildByName('osm');
-    if (osmContainer) {
-      osmContainer.children.forEach(container => {
-        if (container.name === 'osm-points' || container.name === 'osm-vertices') {
-          avoidContainers.push(container);
-        }
-      });
+
+    const pois = this.scene.groups.get('pois');
+    if (pois) {
+      avoidContainers.push(pois);
     }
-    const rapidContainer = stage.getChildByName('rapid');
-    if (rapidContainer) {
-      rapidContainer.children.forEach(dataset => {
-        const dsname = dataset.name;
-        dataset.children.forEach(container => {
-          if (container.name === `${dsname}-points` || container.name === `${dsname}-vertices`) {
-            avoidContainers.push(container);
-          }
-        });
-      });
-    }
+//    const osmContainer = stage.getChildByName('osm');
+//    if (osmContainer) {
+//      osmContainer.children.forEach(container => {
+//        if (container.name === 'osm-points' || container.name === 'osm-vertices') {
+//          avoidContainers.push(container);
+//        }
+//      });
+//    }
+//    const rapidContainer = stage.getChildByName('rapid');
+//    if (rapidContainer) {
+//      rapidContainer.children.forEach(dataset => {
+//        const dsname = dataset.name;
+//        dataset.children.forEach(container => {
+//          if (container.name === `${dsname}-points` || container.name === `${dsname}-vertices`) {
+//            avoidContainers.push(container);
+//          }
+//        });
+//      });
+//    }
 
     // For each container, gather the avoid boxes
     let toInsert = [];

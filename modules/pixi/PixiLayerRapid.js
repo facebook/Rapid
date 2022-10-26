@@ -8,7 +8,6 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { utilDisplayName } from '../util';
 
-const LAYERID = 'rapid';
 const MINZOOM = 12;
 
 
@@ -21,10 +20,10 @@ export class PixiLayerRapid extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
 
     this._enabled = true;  // RapiD features should be enabled by default
     this._serviceFB = null;
@@ -298,14 +297,15 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
     // If a container doesn't yet exist for this dataset, create it and add it to the main rapid layer.
-    let dsContainer = this.container.getChildByName(dataset.id);
+    const groupContainer = this.scene.groups.get('basemap');
+    let dsContainer = groupContainer.getChildByName(dataset.id);
     let areas, lines, points;
 
     if (!dsContainer) {
       dsContainer = new PIXI.Container();
       dsContainer.name = dataset.id;
       dsContainer.sortableChildren = false;
-      this.container.addChild(dsContainer);
+      groupContainer.addChild(dsContainer);
 
       areas = new PIXI.Container();
       areas.name = `${dataset.id}-areas`;
@@ -345,7 +345,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.polygons.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const featureID = `${this.layerID}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -394,7 +394,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.lines.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const featureID = `${this.layerID}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -448,7 +448,7 @@ export class PixiLayerRapid extends AbstractLayer {
     };
 
     data.points.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const featureID = `${this.layerID}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -478,7 +478,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
     data.vertices.forEach(entity => {
-      const featureID = `${LAYERID}-${entity.id}`;
+      const featureID = `${this.layerID}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {

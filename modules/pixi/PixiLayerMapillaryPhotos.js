@@ -3,7 +3,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
-const LAYERID = 'mapillary';
 const MINZOOM = 12;
 const MAPILLARY_GREEN = 0x55ff22;
 
@@ -29,10 +28,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
 
     this._service = null;
     this.getService();
@@ -108,6 +107,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const showMarkers = (zoom >= MINMARKERZOOM);
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
+    const parentContainer = this.scene.groups.get('streetview');
     const sequenceData = service.sequences(this.context.projection);
     const photoData = service.images(this.context.projection);
 
@@ -115,14 +115,14 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const photoData = this.filterImages(images);
 
     sequenceData.forEach(d => {
-      const featureID = `${LAYERID}-sequence-${d.properties.id}`;
+      const featureID = `${this.layerID}-sequence-${d.properties.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
         feature.geometry = d.geometry.coordinates;
         feature.style = LINESTYLE;
-        feature.parentContainer = this.container;
+        feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
         feature.bindData(d, d.properties.id);
       }
@@ -134,7 +134,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
 
     photoData.forEach(d => {
-      const featureID = `${LAYERID}-photo-${d.id}`;
+      const featureID = `${this.layerID}-photo-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -146,7 +146,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parentContainer = this.container;
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
 
         if (d.sequence_id) {

@@ -36,6 +36,13 @@ export class AbstractFeature {
    * @param  featureID   Unique string to use for the name of this Feature
    */
   constructor(layer, featureID) {
+    this.type = 'unknown';
+    this.layer = layer;
+    this.scene = layer.scene;
+    this.renderer = layer.renderer;
+    this.context = layer.context;
+    this.featureID = featureID;
+
     const container = new PIXI.Container();
     this.container = container;
 
@@ -49,11 +56,6 @@ export class AbstractFeature {
     container.interactive = true;
     container.interactiveChildren = true;
 
-    this.type = 'unknown';
-    this.layer = layer;
-    this.scene = layer.scene;
-    this.renderer = layer.renderer;
-    this.context = layer.context;
     this.v = -1;
     this.lod = 2;   // full detail
     this.halo = null;
@@ -142,7 +144,7 @@ export class AbstractFeature {
    * @readonly
    */
   get id() {
-    return this.container.name;
+    return this.featureID;
   }
 
   /**

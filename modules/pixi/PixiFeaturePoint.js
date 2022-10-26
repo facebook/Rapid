@@ -11,7 +11,7 @@ import { getIconTexture } from './helpers';
  * Properties you can access:
  *   `geometry`    Single wgs84 coordinate [lon, lat]
  *   `style`       Object containing styling data
- *   `container`   Toplevel PIXI.Container containing the display objects used to draw the point
+ *   `container`   PIXI.Container containing the display objects used to draw the point
  *   `viewfields`  PIXI.Container that contains viewfields
  *   `marker`      PIXI.Sprite for the marker
  *   `icon`        PIXI.Sprite for the icon
@@ -29,7 +29,6 @@ export class PixiFeaturePoint extends AbstractFeature {
     super(layer, featureID);
 
     this.type = 'point';
-
     this._oldvfLength = 0;      // to watch for change in # of viewfield sprites
     this._isCircular = false;   // set true to use a circular halo and hit area
 

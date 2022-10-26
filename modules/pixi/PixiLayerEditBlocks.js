@@ -2,7 +2,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
 import { locationManager } from '../core/LocationManager';
 
-const LAYERID = 'edit-blocks';
 const MINZOOM = 4;
 
 
@@ -15,12 +14,12 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
-    this._enabled = true;   // this layer should always be enabled
+  constructor(scene, layerID) {
+    super(scene, layerID);
 
+    this._enabled = true;   // this layer should always be enabled
     this._oldk = 0;
   }
 
@@ -93,8 +92,10 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    * @param  blocks       Array of block data visible in the view
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
+    const parentContainer = this.scene.groups.get('blocks');
+
     blocks.forEach(d => {
-      const featureID = `${LAYERID}-${d.locationSetID}`;
+      const featureID = `${this.layerID}-${d.locationSetID}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -110,7 +111,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         feature = new PixiFeatureMultipolygon(this, featureID);
         feature.geometry = geometry;
         feature.style = BLOCK_STYLE;
-        feature.parentContainer = this.container;
+        feature.parentContainer = parentContainer;
         feature.container.cursor = 'not-allowed';
         feature.bindData(d, d.locationSetID);
       }

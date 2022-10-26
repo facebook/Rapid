@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
 
 import { PixiLayerBackgroundTiles } from './PixiLayerBackgroundTiles';
@@ -28,20 +29,20 @@ function asSet(vals) {
 /**
  * PixiScene
  * The "scene" maintains useful collections of Features.
- * Features are organized into Layers that can be enabled or disabled if needed.
- * Each Layer is responsible for the data that it is for, and for the features used to render that data.
+ *
+ * Features are organized into thematic Layers that can be enabled or disabled if needed.
+ * Each Layer is responsible for managing its own data and Featuers.
+ * Features must be added to an appropriate group parent container.
  *
  * Notes on identifiers:
+ *  - `groupID` - A unique identifier for the group (a parent PIXI.container)
  *  - `layerID` - A unique identifier for the layer, for example 'osm'
- *    layerIDs are unique for the entire scene.
  *  - `featureID` - A unique identifier for the feature, for example 'osm-w-123-fill'
- *    featureIDs are expected to be unique across the entire scene.
  *  - `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
- *    dataIDs are only expected to be unique *on a given layer*
  *  - `classID` - A class identifier like 'hovered' or 'selected'
- *    classIDs are arbitrary stings
  *
  * Properties you can access:
+ *   `groups`     `Map (groupID -> PIXI.Container)` of all groups
  *   `layers`     `Map (layerID -> Layer)` of all layers in the scene
  *   `features`   `Map (featureID -> Feature)` of all features in the scene
  *
@@ -59,32 +60,53 @@ export class PixiScene extends EventEmitter {
     this.renderer = renderer;
     this.context = renderer.context;
 
-    this.features = new Map();   // Map (featureID -> Feature)
+    this.groups = new Map();     // Map (groupID -> PIXI.Container)
     this.layers = new Map();     // Map (layerID -> Layer)
+    this.features = new Map();   // Map (featureID -> Feature)
 
-    // Instantiate layers
+    // Create Groups, and add them to the stage..
+    // Groups are pre-established Containers that the Layers can add
+    // their Features to, so that the scene can be sorted reasonably.
     [
-      new PixiLayerBackgroundTiles(this, 1),
+      'background',
+      'basemap',
+      'pois',
+      'streetview',
+      'qa',
+      'labels',
+      'blocks',
+      'ui'
+    ].forEach((groupID, i) => {
+      const container = new PIXI.Container();
+      container.name = groupID;
+      container.sortableChildren = true;
+      container.zIndex = i;
+      this.renderer.stage.addChild(container);
+      this.groups.set(groupID, container);
+    });
 
-      new PixiLayerOsm(this, 5),
-      new PixiLayerRapid(this, 6),
+    // Create Layers
+    [
+      new PixiLayerBackgroundTiles(this, 'background'),
+      new PixiLayerOsm(this, 'osm'),
+      new PixiLayerRapid(this, 'rapid'),
 
-      new PixiLayerCustomData(this, 8),
-      new PixiLayerOsmNotes(this, 10),
-      new PixiLayerImproveOsm(this, 11),
-      new PixiLayerKeepRight(this, 12),
-      new PixiLayerOsmose(this, 13),
+      new PixiLayerMapillaryFeatures(this, 'mapillary-map-features'),
+      new PixiLayerMapillarySigns(this, 'mapillary-signs'),
 
-      new PixiLayerMapillaryPhotos(this, 20),
-      new PixiLayerMapillaryFeatures(this, 21),
-      new PixiLayerMapillarySigns(this, 22),
-      new PixiLayerKartaPhotos(this, 25),
-      new PixiLayerStreetsidePhotos(this, 26),
+      new PixiLayerCustomData(this, 'custom-data'),
+      new PixiLayerOsmNotes(this, 'notes'),
+      new PixiLayerImproveOsm(this, 'improveOSM'),
+      new PixiLayerKeepRight(this, 'keepRight'),
+      new PixiLayerOsmose(this, 'osmose'),
 
-      new PixiLayerLabels(this, 30),
+      new PixiLayerMapillaryPhotos(this, 'mapillary'),
+      new PixiLayerKartaPhotos(this, 'kartaview'),
+      new PixiLayerStreetsidePhotos(this, 'streetside'),
 
-      new PixiLayerEditBlocks(this, 90),
-      new PixiLayerMapUI(this, 99)
+      new PixiLayerLabels(this, 'labels'),
+      new PixiLayerEditBlocks(this, 'edit-blocks'),
+      new PixiLayerMapUI(this, 'map-ui')
     ].forEach(layer => this.layers.set(layer.id, layer));
 
   }
@@ -93,8 +115,8 @@ export class PixiScene extends EventEmitter {
   /**
    * render
    * Calls each Layer's `render` and `cull` methods
-   * - `render` will create and update the objects that belong in the scene
-   * - `cull` will make invisible or destroy objects that aren't in the scene anymore
+   * - `render` will create and update the Features that belong in the scene
+   * - `cull` will make invisible or destroy Features that aren't in the scene anymore
    *
    * This process happens on a layer-by-layer basis for several reasons.
    * - We don't have a full picture of what all will be included in the scene until we actually

@@ -239,15 +239,36 @@ export function uiMapInMap(context) {
       const [width, height] = [200, 150];
       _miniPixi.renderer.resize(width, height);
 
-      // Setup the stage
+      // Setup the stage..
       const stage = _miniPixi.stage;
       stage.name = 'minimap-stage';
       stage.sortableChildren = false;
       stage.interactive = false;
 
-      const miniRenderer = { context: context, pixi: _miniPixi, stage: stage };  // mock
-      const miniScene = { context: context, renderer: miniRenderer };  // mock
-      miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 1, true);  // isMinimap = true
+      // Construct the scene..
+      const miniRenderer = {    // Mock Renderer
+        context: context,
+        pixi: _miniPixi,
+        stage: stage
+      };
+
+      const miniScene = {   // Mock Scene
+        context: context,
+        renderer: miniRenderer,
+        groups: new Map(),
+        layers: new Map(),
+        features: new Map()
+      };
+
+      // Group Container
+      const groupContainer = new PIXI.Container();
+      groupContainer.name = 'background';
+      stage.addChild(groupContainer);
+      miniScene.groups.set('background', groupContainer);
+
+      // Layer
+      miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 'minimap-background', true);  // isMinimap = true
+      miniScene.layers.set(miniMapTileLayer.id, miniMapTileLayer);
 
       _miniPixi.ticker.add(() => {
         if (_isHidden) return;

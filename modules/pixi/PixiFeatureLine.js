@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
- import { DashLine } from 'pixi-dashed-line';
+import { DashLine } from 'pixi-dashed-line';
 import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
@@ -16,7 +16,7 @@ const SIDED_SPACING = 30;
  *   `geometry`   Array of wgs84 coordinates [lon, lat]
  *   `points`     Array of projected points in scene coordinates
  *   `style`      Object containing styling data
- *   `container`  Toplevel PIXI.Container containing the display objects used to draw the line
+ *   `container`  PIXI.Container containing the display objects used to draw the line
  *   `casing`     PIXI.Graphic for the casing (below)
  *   `stroke`     PIXI.Graphic for the stroke (above)
  *

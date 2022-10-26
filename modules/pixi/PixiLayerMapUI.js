@@ -3,7 +3,6 @@ import { geoMetersToLon } from '@id-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
 
-const LAYERID = 'map-ui';
 
 
 /**
@@ -23,10 +22,19 @@ export class PixiLayerMapUI extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
+
+// todo: I'm adjusting the container nesting, this will need to be revisited
+const container = new PIXI.Container();
+container.name = layerID;
+container.sortableChildren = true;
+this.container = container;
+
+const groupContainer = this.scene.groups.get('ui');
+groupContainer.addChild(container);
 
     this._enabled = true;            // this layer should always be enabled
     this.container.visible = true;   // this layer should always be visible

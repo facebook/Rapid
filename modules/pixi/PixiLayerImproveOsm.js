@@ -2,7 +2,6 @@ import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
-const LAYERID = 'improveOSM';
 const MINZOOM = 12;
 
 // A mapping of improveOSM rule numbers and their respective tint colors.
@@ -24,10 +23,10 @@ export class PixiLayerImproveOsm extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
 
     this._service = null;
     this.getService();
@@ -60,10 +59,11 @@ export class PixiLayerImproveOsm extends AbstractLayer {
     const service = this.getService();
     if (!service) return;
 
+    const parentContainer = this.scene.groups.get('qa');
     const visibleData = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
 
     visibleData.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -76,7 +76,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry = d.loc;
         feature.style = markerStyle;
-        feature.parentContainer = this.container;
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
         // was here before
         // if (feature.icon) {

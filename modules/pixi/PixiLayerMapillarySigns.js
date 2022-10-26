@@ -2,7 +2,6 @@ import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
-const LAYERID = 'mapillary-signs';
 const MINZOOM = 12;
 
 
@@ -15,10 +14,10 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
 
     this._service = null;
     this.getService();
@@ -73,11 +72,13 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     const spritesheet = this.context._mapillarySignSheet;
     if (!spritesheet) return;  // wait for spritesheet to load
 
+    const parentContainer = this.scene.groups.get('pois');
+
     let detections = service.signs(this.context.projection);
     detections = this.filterDetections(detections);
 
     detections.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -88,7 +89,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parentContainer = this.container;
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
 
         // const marker = feature.marker;

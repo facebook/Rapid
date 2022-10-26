@@ -1,5 +1,3 @@
-import * as PIXI from 'pixi.js';
-
 
 // Convert a single value, an Array of values, or a Set of values.
 function asSet(vals) {
@@ -14,16 +12,11 @@ function asSet(vals) {
  *
  * Notes on identifiers:
  *  - `layerID` - A unique identifier for the layer, for example 'osm'
- *    layerIDs are unique for the entire scene.
  *  - `featureID` - A unique identifier for the feature, for example 'osm-w-123-fill'
- *    featureIDs are expected to be unique across the entire scene.
  *  - `dataID` - A feature may have data bound to it, for example OSM identifier like 'w-123'
- *    dataIDs are only expected to be unique *on a given layer*
  *  - `classID` - A class identifier like 'hovered' or 'selected'
- *    classIDs are arbitrary stings
  *
  * Properties you can access:
- *   `container`    PIXI.Container() that contains all the Features for this Layer
  *   `id`           Unique string to use for the name of this Layer
  *   `supported`    Is this Layer supported? (i.e. do we even show it in lists?)
  *   `zIndex`       Where this Layer sits compared to other Layers
@@ -38,23 +31,14 @@ export class AbstractLayer {
    * @constructor
    * @param  scene     The Scene that owns this Layer
    * @param  layerID   Unique string to use for the name of this Layer
-   * @param  layerZ    z-index to assign to this Layer's container
    */
-  constructor(scene, layerID, layerZ) {
+  constructor(scene, layerID) {
     this.scene = scene;
     this.renderer = scene.renderer;
     this.context = scene.context;
+    this.layerID = layerID;
 
     this._enabled = false;  // Whether the user has chosen to see the layer
-
-    // Create Layer container, add to this renderer's root
-    const container = new PIXI.Container();
-    container.name = layerID;
-    container.zIndex = layerZ;
-    container.visible = false;
-    container.sortableChildren = true;
-    this.container = container;
-    this.renderer.stage.addChild(container);
 
     // Collection of Features on this Layer
     this.features = new Map();     // Map (featureID -> Feature)
@@ -383,7 +367,7 @@ export class AbstractLayer {
    * @readonly
    */
   get id() {
-    return this.container.name;
+    return this.layerID;
   }
 
 
@@ -397,36 +381,23 @@ export class AbstractLayer {
   }
 
 
-  /**
-   * zIndex
-   * Where this Layer sits compared to other Layers
-   */
-  get zIndex() {
-    return this.container.zIndex;
-  }
-  set zIndex(val) {
-    if (val === this.container.zIndex) return;  // no change
-    this.container.zIndex = val;
-  }
-
-
-  /**
-   * visible
-   * Whether the Layer's data is currently visible
-   * (many Layers become invisible at lower zooms)
-   */
-  get visible() {
-    return this.container.visible;
-  }
-  set visible(val) {
-    if (val === this.container.visible) return;  // no change
-    this.container.visible = val;
-    if (!val) {
-      for (const feature of this.features.values()) {
-        feature.visible = false;
-      }
-    }
-  }
+//  /**
+//   * visible
+//   * Whether the Layer's data is currently visible
+//   * (many Layers become invisible at lower zooms)
+//   */
+//  get visible() {
+//    return this.container.visible;
+//  }
+//  set visible(val) {
+//    if (val === this.container.visible) return;  // no change
+//    this.container.visible = val;
+//    if (!val) {
+//      for (const feature of this.features.values()) {
+//        feature.visible = false;
+//      }
+//    }
+//  }
 
 
   /**

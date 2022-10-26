@@ -13,8 +13,6 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
-const LAYERID = 'custom-data';
-
 
 /**
  * PixiLayerCustomData
@@ -27,12 +25,12 @@ export class PixiLayerCustomData extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
+
     this._enabled = true;            // this layer should always be enabled
-    this.container.visible = true;   // this layer should be visible at start
     this._oldk = 0;
     this._loadedUrlData = false;
     // setup the child containers
@@ -63,28 +61,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     return this._vtService;
-  }
-
-
-  /**
-   * enabled
-   */
-  get enabled() {
-    return this._enabled;
-  }
-  set enabled(val) {
-    this._enabled = val;
-  }
-
-
-  /**
-   * visible
-   */
-  get visible() {
-    return this.container.visible;
-  }
-  set visible(val) {
-    this.container.visible = val;
   }
 
 
@@ -184,7 +160,6 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     this._dirty = true;
-    // dispatch.call('change');
     return this;
   }
 
@@ -216,6 +191,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
     if (this.enabled) {
       this.visible = true;
+
       // redraw if zoom changes
       const k = projection.scale();
       if (k !== this._oldk) {
@@ -271,13 +247,14 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  polygons     Array of polygon data
    */
   renderPolygons(frame, projection, zoom, polygons) {
+    const parentContainer = this.scene.groups.get('basemap');
     const POLY_STYLE = {
       fill: { color: 0x00ffff, alpha: 0.3, },
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     polygons.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
       const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
@@ -287,8 +264,7 @@ export class PixiLayerCustomData extends AbstractLayer {
         feature = new PixiFeatureMultipolygon(this, featureID);
         feature.geometry = geometry;
         feature.style = POLY_STYLE;
-        feature.parentContainer = this.container;
-        feature.container.cursor = 'not-allowed';
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
       }
 
@@ -307,20 +283,20 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of line data
    */
   renderLines(frame, projection, zoom, lines) {
+    const parentContainer = this.scene.groups.get('basemap');
     const LINE_STYLE = {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
     lines.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
         feature.geometry = d.geometry.coordinates;
         feature.style = LINE_STYLE;
-        feature.parentContainer = this.container;
-        feature.container.cursor = 'not-allowed';
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
       }
 
@@ -339,18 +315,18 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of point data
    */
   renderPoints(frame, projection, zoom, points) {
+    const parentContainer = this.scene.groups.get('pois');
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     points.forEach(d => {
-      const featureID = `${LAYERID}-${d.id}`;
+      const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry = [d.geometry.coordinates[0], d.geometry.coordinates[1]];  // omit elevation or other data.
         feature.style = POINT_STYLE;
-        feature.parentContainer = this.container;
-        feature.container.cursor = 'not-allowed';
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
       }
 

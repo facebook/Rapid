@@ -31,14 +31,14 @@ describe('iD.pixiMapUILayer', () => {
     expect(mapUI.visible).to.be.true;
   });
 
-  it('has the highest z-index of any other layer', () => {
-    const scene = context.scene();
-    const zIndex = scene.layers.get('map-ui').zIndex;
-    for (const layer of scene.layers.values()) {
-      if (layer.id !== 'map-ui') {
-        expect(layer.zIndex < zIndex).to.be.true;
-      }
-    }
-  });
+//  it('has the highest z-index of any other layer', () => {
+//    const scene = context.scene();
+//    const zIndex = scene.layers.get('map-ui').zIndex;
+//    for (const layer of scene.layers.values()) {
+//      if (layer.id !== 'map-ui') {
+//        expect(layer.zIndex < zIndex).to.be.true;
+//      }
+//    }
+//  });
 
 });

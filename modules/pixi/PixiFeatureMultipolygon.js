@@ -14,7 +14,7 @@ const PARTIALFILLWIDTH = 32;
  * Properties you can access:
  *   `geometry`   Treat like multipolygon (Array of polygons wgs84 [lon, lat])
  *   `style`      Object containing styling data
- *   `container`  Toplevel PIXI.Container containing the display objects used to draw the multipolygon
+ *   `container`  PIXI.Container containing the display objects used to draw the multipolygon
  *   `lowRes`     PIXI.Sprite for a replacement graphic to display at low resolution
  *   `fill`       PIXI.Graphic for the fill (below)
  *   `stroke`     PIXI.Graphic for the stroke (above)

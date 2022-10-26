@@ -7,7 +7,6 @@ import { Tiler, geoScaleToZoom, vecScale } from '@id-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
 
-const LAYERID = 'background';
 const DEBUGCOLOR = 0xffff00;
 
 // scalars for use by the convolution filter to sharpen the imagery
@@ -27,22 +26,21 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
   /**
    * @constructor
    * @param  scene      The Scene that owns this Layer
-   * @param  layerZ     z-index to assign to this Layer's container
+   * @param  layerID    Unique string to use for the name of this Layer
    * @param  isMinimap  Pass `true` if this layer should be attached to the minimap
    */
-  constructor(scene, layerZ, isMinimap) {
-    if (isMinimap) {
-      super(scene, `minimap-${LAYERID}`, layerZ);
-    } else {
-      super(scene, LAYERID, layerZ);
-    }
+  constructor(scene, layerID, isMinimap) {
+    super(scene, layerID);
+
     this.enabled = true;   // background imagery should be enabled by default
     this.isMinimap = isMinimap;
 
-    // items in this layer don't need to be interactive
-    this.container.buttonMode = false;
-    this.container.interactive = false;
-    this.container.interactiveChildren = false;
+    // Items in this layer don't need to be interactive
+    const groupContainer = this.scene.groups.get('background');
+    groupContainer.buttonMode = false;
+    groupContainer.interactive = false;
+    groupContainer.interactiveChildren = false;
+
     this.filters = {
       brightness: 1,
       contrast: 1,
@@ -58,69 +56,29 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
 
   /**
-   * applyFilters
-   * Adds an adjustment filter for brightness/contrast/saturation and
-   * a sharpen/blur filter, depending on the UI slider settings.
-   */
-  applyFilters() {
-    this.adjustmentFilter = new AdjustmentFilter({
-      brightness: this.filters.brightness,
-      contrast: this.filters.contrast,
-      saturation: this.filters.saturation,
-    });
-
-    this.container.filters = [this.adjustmentFilter];
-
-    if (this.filters.sharpness > 1) {
-      // The convolution filter consists of adjacent pixels with a negative factor and the central pixel being at least one.
-      // The central pixel (at index 4 of our 3x3 array) starts at 1 and increases
-      const convolutionArray = sharpenMatrix.map((n, i) => {
-        if (i === 4) {
-          const interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
-          const result = n * interp;
-          return result;
-        } else {
-          return n;
-        }
-      });
-
-      this.convolutionFilter = new ConvolutionFilter(convolutionArray);
-      this.container.filters.push(this.convolutionFilter);
-
-    } else if (this.filters.sharpness < 1) {
-      const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
-      this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
-      this.container.filters.push(this.blurFilter);
-    }
-  }
-
-
-  /**
    * render
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    */
   render(frame, projection) {
     const imagery = this.context.imagery();
-
-    if (!this.isMinimap) {
-      this.applyFilters();
-    }
+    const groupContainer = this.scene.groups.get('background');
 
     // Collect tile sources - baselayer and overlays
     let tileSources = new Map();   // Map (tilesource Object -> zIndex)
     let tileSourceIDs = new Set();
+
     const base = imagery.baseLayerSource();
     if (base && base.id !== 'none') {
       tileSources.set(base, -1);
       tileSourceIDs.add(base.id);
     }
 
-    imagery.overlayLayerSources().forEach((overlay, index) => {
+    imagery.overlayLayerSources().forEach((overlay, zIndex) => {
       if (overlay.id === 'mapbox_locator_overlay') {
-        index = 999;  // render locator overlay above all other overlays
+        zIndex = 999;  // render locator overlay above all other overlays
       }
-      tileSources.set(overlay, index);
+      tileSources.set(overlay, zIndex);
       tileSourceIDs.add(overlay.id);
     });
 
@@ -138,6 +96,11 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       const sourceContainer = this.getSourceContainer(source.id);
       sourceContainer.zIndex = zIndex;
 
+      // If this is the base tile layer (and not minimap) apply the filters to it.
+      if (!this.isMinimap && zIndex === -1) {
+        this.applyFilters(sourceContainer);
+      }
+
       const timestamp = window.performance.now();
       this.renderTileSource(timestamp, projection, source, sourceContainer, tileMap);
     });
@@ -146,7 +109,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     // Remove any tile sourceContainers and data not needed anymore (not in `tileSourceIDs`)
     // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
     let toDestroy = [];
-    this.container.children.forEach(sourceContainer => {
+    groupContainer.children.forEach(sourceContainer => {
       const sourceID = sourceContainer.name;
       if (!tileSourceIDs.has(sourceID)) {
         toDestroy.push(sourceContainer);
@@ -170,11 +133,50 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
 
   /**
+   * applyFilters
+   * Adds an adjustment filter for brightness/contrast/saturation and
+   * a sharpen/blur filter, depending on the UI slider settings.
+   * @param  sourceContainer   PIXI.Container that contains the tiles
+   */
+  applyFilters(sourceContainer) {
+    const adjustmentFilter = new AdjustmentFilter({
+      brightness: this.filters.brightness,
+      contrast: this.filters.contrast,
+      saturation: this.filters.saturation,
+    });
+
+    sourceContainer.filters = [adjustmentFilter];
+
+    if (this.filters.sharpness > 1) {
+      // The convolution filter consists of adjacent pixels with a negative factor and the central pixel being at least one.
+      // The central pixel (at index 4 of our 3x3 array) starts at 1 and increases
+      const convolutionArray = sharpenMatrix.map((n, i) => {
+        if (i === 4) {
+          const interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
+          const result = n * interp;
+          return result;
+        } else {
+          return n;
+        }
+      });
+
+      this.convolutionFilter = new ConvolutionFilter(convolutionArray);
+      sourceContainer.filters.push(this.convolutionFilter);
+
+    } else if (this.filters.sharpness < 1) {
+      const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
+      this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
+      sourceContainer.filters.push(this.blurFilter);
+    }
+  }
+
+
+  /**
    * renderTileSource
    * @param timestamp          Timestamp in milliseconds
    * @param projection         Pixi projection to use for rendering
    * @param source             Imagery tile source Object
-   * @param sourcecontainer    Pixi container to render the tiles to
+   * @param sourceContainer    PIXI.Container to render the tiles to
    * @param tileMap            Map(tile.id -> Tile) for this tile source
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
@@ -183,10 +185,14 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
-    const SHOWDEBUG = context.getDebug('tile');
-    const mapUIContainer = context.scene().layers.get('map-ui').container;
-    const debugContainer = mapUIContainer.getChildByName('tile-debug');
-    debugContainer.visible = SHOWDEBUG;
+    let SHOWDEBUG = false;
+    let debugContainer;
+    if (!this.isMinimap) {
+      SHOWDEBUG = context.getDebug('tile');
+      const mapUIContainer = this.scene.layers.get('map-ui').container;
+      debugContainer = mapUIContainer.getChildByName('tile-debug');
+      debugContainer.visible = SHOWDEBUG;
+    }
 
     const tileSize = source.tileSize || 256;
     const k = projection.scale();
@@ -318,7 +324,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-        if (SHOWDEBUG && !source.overlay && !this.isMinimap) {
+        if (SHOWDEBUG && debugContainer && !source.overlay) {
           // Display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
@@ -377,7 +383,8 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    * @param  sourceID
    */
   getSourceContainer(sourceID) {
-    let sourceContainer = this.container.getChildByName(sourceID);
+    const groupContainer = this.scene.groups.get('background');
+    let sourceContainer = groupContainer.getChildByName(sourceID);
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
       sourceContainer.name = sourceID;
@@ -385,7 +392,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       sourceContainer.interactive = false;
       sourceContainer.interactiveChildren = false;
       sourceContainer.sortableChildren = true;
-      this.container.addChild(sourceContainer);
+      groupContainer.addChild(sourceContainer);
     }
     return sourceContainer;
   }

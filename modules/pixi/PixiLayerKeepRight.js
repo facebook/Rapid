@@ -2,37 +2,26 @@ import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
-const LAYERID = 'keepRight';
 const MINZOOM = 12;
 
 // A mapping of KeepRight rule numbers to their respective tint colors.
 const TINTS = new Map();
-
 ['20', '40', '210', '270', '310', '320', '350'].forEach(key => TINTS.set(key, 0xffff99));
-
-TINTS.set('50', 0xffff99);
-
 ['60', '70', '90', '100', '110', '150', '220', '380'].forEach(key => TINTS.set(key, 0x55dd00));
-
+['360', '370', '410'].forEach(key => TINTS.set(key, 0xff99bb));
+TINTS.set('50',  0xffff99);
+TINTS.set('120', 0xcc3355);
 TINTS.set('130', 0xffaa33);
+TINTS.set('160', 0xbb6600);
 TINTS.set('170', 0xffff00);
-
+TINTS.set('180', 0xaaccee);
 TINTS.set('190', 0xff3333);
 TINTS.set('200', 0xfdbf6f);
-
-TINTS.set('160', 0xbb6600);
 TINTS.set('230', 0xbb6600);
-
 TINTS.set('280', 0x5f47a0);
-TINTS.set('180', 0xaaccee);
 TINTS.set('290', 0xaaccee);
-
 TINTS.set('300', 0x009900);
 TINTS.set('390', 0x009900);
-
-['360', '370', '410'].forEach(key => TINTS.set(key, 0xff99bb));
-
-TINTS.set('120', 0xcc3355);
 TINTS.set('400', 0xcc3355);
 
 
@@ -45,10 +34,10 @@ export class PixiLayerKeepRight extends AbstractLayer {
   /**
    * @constructor
    * @param  scene    The Scene that owns this Layer
-   * @param  layerZ   z-index to assign to this Layer's container
+   * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerZ) {
-    super(scene, LAYERID, layerZ);
+  constructor(scene, layerID) {
+    super(scene, layerID);
 
     this._service = null;
     this.getService();
@@ -81,10 +70,11 @@ export class PixiLayerKeepRight extends AbstractLayer {
     const service = this.getService();
     if (!service) return;
 
+    const parentContainer = this.scene.groups.get('qa');
     const visibleData = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
 
     visibleData.forEach(d => {
-      const featureID = `${LAYERID}-${d.key}`;
+      const featureID = `${this.layerID}-${d.key}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -96,7 +86,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry = d.loc;
         feature.style = style;
-        feature.parentContainer = this.container;
+        feature.parentContainer = parentContainer;
         feature.bindData(d, d.key);
       }
 
