@@ -6,11 +6,11 @@ import { presetManager } from '../presets';
 import { BehaviorHash } from '../behaviors/BehaviorHash';
 import { svgDefs } from '../svg/defs';
 import { svgIcon } from '../svg/icon';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+//import React from 'react';
+//import { createRoot } from 'react-dom/client';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
-import { App } from '../3drenderer/App';
+// import { App } from '../3drenderer/App';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
@@ -185,13 +185,13 @@ export function uiInit(context) {
 
     // let buildings3D = new Buildings3D();
 
-    controls
-      .append('div')
-      // .attr('class', 'map-control ' + Buildings3D.buttonClass)
-      .attr('id', '3d-buildings');
-
-      const root = createRoot(document.getElementById('3d-buildings'));
-    root.render(<App context={context} />);
+//    controls
+//      .append('div')
+//      // .attr('class', 'map-control ' + Buildings3D.buttonClass)
+//      .attr('id', '3d-buildings');
+//
+//      const root = createRoot(document.getElementById('3d-buildings'));
+//    root.render(<App context={context} />);
 
 
     // Panes
