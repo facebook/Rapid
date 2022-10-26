@@ -39,10 +39,10 @@ export class PixiLayerLabels extends AbstractLayer {
     this._enabled = true;   // labels should be enabled by default
 
     // Items in this layer don't actually need to be interactive
-    const container = this.scene.groups.get('labels');
-    container.buttonMode = false;
-    container.interactive = false;
-    container.interactiveChildren = false;
+    const groupContainer = this.scene.groups.get('labels');
+    groupContainer.buttonMode = false;
+    groupContainer.interactive = false;
+    groupContainer.interactiveChildren = false;
 
     const debugContainer = new PIXI.ParticleContainer(50000);
     debugContainer.name = 'debug';
@@ -61,7 +61,7 @@ export class PixiLayerLabels extends AbstractLayer {
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
 
-    container.addChild(debugContainer, labelContainer);
+    groupContainer.addChild(debugContainer, labelContainer);
 
     this._atlasAllocator = new AtlasAllocator();
 
