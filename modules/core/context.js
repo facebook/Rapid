@@ -664,29 +664,34 @@ export function coreContext() {
   let _rapidContext;
   context.rapidContext = () => _rapidContext;
 
-  async function loadImages() {
-      context._makiSheet = await Assets.load(
+   async function loadImages() {
+       let makiPromise = Assets.load(
         `${_assetPath}img/icons/maki-spritesheet.json`
       );
-      context._temakiSheet = await Assets.load(
+      let temakiPromise = Assets.load(
         `${_assetPath}img/icons/temaki-spritesheet.json`
       );
-      context._fontAwesomeSheet = await Assets.load(
+      let faPromise = Assets.load(
         `${_assetPath}img/icons/fontawesome-spritesheet.json`
       );
-      context._mapillarySheet = await Assets.load(
+      let mapillaryPromise = Assets.load(
         `${_assetPath}img/icons/mapillary-features-spritesheet.json`
       );
-      context._mapillarySignSheet = await Assets.load(
+      let mapillarySignPromise = Assets.load(
         `${_assetPath}img/icons/mapillary-signs-spritesheet.json`
       );
+
+     [context._makiSheet, context._temakiSheet, context._fontAwesomeSheet, context._mapillarySheet, context._mapillarySignSheet] = await Promise.all([makiPromise, temakiPromise, faPromise, mapillaryPromise, mapillarySignPromise]);
+
+
     }
+
+  loadImages();
 
   /* Init */
   context.init = () => {
     instantiateInternal();
     initializeDependents();
-    loadImages();
     return context;
 
 
