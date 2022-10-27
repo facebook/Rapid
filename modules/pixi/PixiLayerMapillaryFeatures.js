@@ -72,7 +72,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     const spritesheet = this.context._mapillarySheet;
     if (!spritesheet) return;  // wait for spritesheet to load
 
-    const parentContainer = this.scene.groups.get('pois');
+    const parentContainer = this.scene.groups.get('points');
 
     let detections = service.mapFeatures(this.context.projection);
     detections = this.filterDetections(detections);

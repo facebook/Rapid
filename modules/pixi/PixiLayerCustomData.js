@@ -293,7 +293,7 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  lines        Array of point data
    */
   renderPoints(frame, projection, zoom, points) {
-    const parentContainer = this.scene.groups.get('pois');
+    const parentContainer = this.scene.groups.get('points');
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     points.forEach(d => {

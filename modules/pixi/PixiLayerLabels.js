@@ -269,35 +269,16 @@ export class PixiLayerLabels extends AbstractLayer {
 
     // Gather the containers that have avoidable stuff on them
     const avoidContainers = [];
-    const mapUIContainer = this.scene.layers.get('map-ui').container;
-    const selected = mapUIContainer?.getChildByName('selected');
-    if (selected) {
-      avoidContainers.push(selected);
-    }
 
-    const pois = this.scene.groups.get('pois');
-    if (pois) {
-      avoidContainers.push(pois);
+    const mapUIContainer = this.scene.layers.get('map-ui').container;
+    const selectedContainer = mapUIContainer.getChildByName('selected');
+    if (selectedContainer) {
+      avoidContainers.push(selectedContainer);
     }
-//    const osmContainer = stage.getChildByName('osm');
-//    if (osmContainer) {
-//      osmContainer.children.forEach(container => {
-//        if (container.name === 'osm-points' || container.name === 'osm-vertices') {
-//          avoidContainers.push(container);
-//        }
-//      });
-//    }
-//    const rapidContainer = stage.getChildByName('rapid');
-//    if (rapidContainer) {
-//      rapidContainer.children.forEach(dataset => {
-//        const dsname = dataset.name;
-//        dataset.children.forEach(container => {
-//          if (container.name === `${dsname}-points` || container.name === `${dsname}-vertices`) {
-//            avoidContainers.push(container);
-//          }
-//        });
-//      });
-//    }
+    const pointsContainer = this.scene.groups.get('points');
+    if (pointsContainer) {
+      avoidContainers.push(pointsContainer);
+    }
 
     // For each container, gather the avoid boxes
     let toInsert = [];

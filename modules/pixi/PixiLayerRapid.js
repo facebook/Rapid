@@ -226,6 +226,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const context = this.context;
     const rapidContext = context.rapidContext();
     const dsEnabled = (dataset.added && dataset.enabled);
+    if (!dsEnabled) return;
 
     const service = dataset.service === 'fbml' ? this.getServiceFB(): this.getServiceEsri();
     if (!service) return;
@@ -244,7 +245,7 @@ export class PixiLayerRapid extends AbstractLayer {
     // let data = { polygons: [], lines: [], points: [], vertices: new Set() };
 
     /* Facebook AI/ML */
-    if (dsEnabled && dataset.service === 'fbml') {
+    if (dataset.service === 'fbml') {
       if (zoom >= 15) { // avoid firing off too many API requests
         service.loadTiles(datasetID, context.projection, rapidContext.getTaskExtent());  // fetch more
       }
@@ -270,7 +271,7 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
     /* ESRI ArcGIS */
-    } else if (dsEnabled && dataset.service === 'esri') {
+    } else if (dataset.service === 'esri') {
       if (zoom >= 14) { // avoid firing off too many API requests
         service.loadTiles(datasetID, context.projection);  // fetch more
       }
@@ -290,46 +291,30 @@ export class PixiLayerRapid extends AbstractLayer {
       });
     }
 
+    const pointsContainer = this.scene.groups.get('points');
+    const basemapContainer = this.scene.groups.get('basemap');
+    const areasID = `${this.layerID}-${dataset.id}-areas`;
+    const linesID = `${this.layerID}-${dataset.id}-lines`;
 
-    // If a container doesn't yet exist for this dataset, create it and add it to the main rapid layer.
-    const groupContainer = this.scene.groups.get('basemap');
-    let dsContainer = groupContainer.getChildByName(dataset.id);
-    let areas, lines, points;
-
-    if (!dsContainer) {
-      dsContainer = new PIXI.Container();
-      dsContainer.name = dataset.id;
-      dsContainer.sortableChildren = false;
-      groupContainer.addChild(dsContainer);
-
-      areas = new PIXI.Container();
-      areas.name = `${dataset.id}-areas`;
-      areas.sortableChildren = true;
-
-      lines = new PIXI.Container();
-      lines.name = `${dataset.id}-lines`;
-      lines.sortableChildren = true;
-
-      points = new PIXI.Container();
-      points.name = `${dataset.id}-points`;
-      points.sortableChildren = true;
-
-      dsContainer.addChild(areas, lines, points);
-
-    } else {
-      areas = dsContainer.getChildByName(`${dataset.id}-areas`);
-      lines = dsContainer.getChildByName(`${dataset.id}-lines`);
-      points = dsContainer.getChildByName(`${dataset.id}-points`);
+    let areasContainer = basemapContainer.getChildByName(areasID);
+    if (!areasContainer) {
+      areasContainer = new PIXI.Container();
+      areasContainer.name = areasID;
+      areasContainer.sortableChildren = true;
+      basemapContainer.addChild(areasContainer);
     }
 
-    if (dsEnabled) {
-      dsContainer.visible = true;
-      this.renderPolygons(areas, dataset, dsGraph, frame, projection, zoom, data);
-      this.renderLines(lines, dataset, dsGraph, frame, projection, zoom, data);
-      this.renderPoints(points, dataset, dsGraph, frame, projection, zoom, data);
-    } else {
-      dsContainer.visible = false;
+    let linesContainer = basemapContainer.getChildByName(linesID);
+    if (!linesContainer) {
+      linesContainer = new PIXI.Container();
+      linesContainer.name = linesID;
+      linesContainer.sortableChildren = true;
+      basemapContainer.addChild(linesContainer);
     }
+
+    this.renderPolygons(areasContainer, dataset, dsGraph, frame, projection, zoom, data);
+    this.renderLines(linesContainer, dataset, dsGraph, frame, projection, zoom, data);
+    this.renderPoints(pointsContainer, dataset, dsGraph, frame, projection, zoom, data);
   }
 
 
@@ -340,7 +325,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.polygons.forEach(entity => {
-      const featureID = `${this.layerID}-${entity.id}`;
+      const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -353,7 +338,6 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.bindData(entity, entity.id);
-
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
 // we are fighting with the batch system which is unfortunate
@@ -372,7 +356,6 @@ export class PixiLayerRapid extends AbstractLayer {
           // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
         };
         feature.style = style;
-
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
       }
@@ -389,7 +372,7 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     data.lines.forEach(entity => {
-      const featureID = `${this.layerID}-${entity.id}`;
+      const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -414,7 +397,6 @@ export class PixiLayerRapid extends AbstractLayer {
         style.reversePoints = (entity.tags.oneway === '-1');
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
-
         feature.label = utilDisplayName(entity);
         feature.update(projection, zoom);
       }
@@ -443,7 +425,7 @@ export class PixiLayerRapid extends AbstractLayer {
     };
 
     data.points.forEach(entity => {
-      const featureID = `${this.layerID}-${entity.id}`;
+      const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -458,7 +440,6 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = pointStyle;
-
         feature.label = utilDisplayName(entity);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];
@@ -489,7 +470,6 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (feature.dirty) {
         feature.style = vertexStyle;
-
         feature.label = utilDisplayName(entity);
         // experiment: label addresses
         const housenumber = entity.tags['addr:housenumber'];

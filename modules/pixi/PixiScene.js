@@ -70,7 +70,7 @@ export class PixiScene extends EventEmitter {
     [
       'background',
       'basemap',
-      'pois',
+      'points',
       'streetview',
       'qa',
       'labels',

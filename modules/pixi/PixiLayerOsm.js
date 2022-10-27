@@ -29,7 +29,7 @@ export class PixiLayerOsm extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-    const groupContainer = this.scene.groups.get('basemap');
+    const basemapContainer = this.scene.groups.get('basemap');
 
     this._enabled = true;  // OSM layers should be enabled by default
     this._service = null;
@@ -54,17 +54,7 @@ export class PixiLayerOsm extends AbstractLayer {
     lines.sortableChildren = true;
     this.lineContainer = lines;
 
-    const vertices = new PIXI.Container();
-    vertices.name = `${this.layerID}-vertices`;
-    vertices.sortableChildren = true;
-    this.vertexContainer = vertices;
-
-    const points = new PIXI.Container();
-    points.name = `${this.layerID}-points`;
-    points.sortableChildren = true;
-    this.pointContainer = points;
-
-    groupContainer.addChild(areas, lines, vertices, points);
+    basemapContainer.addChild(areas, lines);
   }
 
 
@@ -460,6 +450,7 @@ if (geom === 'line') {
     // Vertices related to the selection/hover should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
     const selectedContainer = mapUIContainer.getChildByName('selected');
+    const pointsContainer = this.scene.groups.get('points');
 
     function isInterestingVertex(entity) {
       // const featureID = `${this.layerID}-${entity.id}`;
@@ -471,7 +462,7 @@ if (geom === 'line') {
     entities.forEach(node => {
       let parentContainer = null;
       if (zoom >= 16 && isInterestingVertex(node)) {
-        parentContainer = this.vertexContainer;
+        parentContainer = pointsContainer;
       }
       if (this._relatedOsmIDs.has(node.id)) {
         parentContainer = selectedContainer;
@@ -555,6 +546,7 @@ if (geom === 'line') {
    */
   renderPoints(frame, projection, zoom, entities) {
     const graph = this.context.graph();
+    const pointsContainer = this.scene.groups.get('points');
 
     entities.forEach(node => {
       const featureID = `${this.layerID}-${node.id}`;
@@ -567,7 +559,7 @@ if (geom === 'line') {
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.parentContainer = this.pointContainer;
+        feature.parentContainer = pointsContainer;
       }
 
       const version = (node.v || 0);  // If data has changed, rebind

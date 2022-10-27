@@ -72,7 +72,7 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     const spritesheet = this.context._mapillarySignSheet;
     if (!spritesheet) return;  // wait for spritesheet to load
 
-    const parentContainer = this.scene.groups.get('pois');
+    const parentContainer = this.scene.groups.get('points');
 
     let detections = service.signs(this.context.projection);
     detections = this.filterDetections(detections);
