@@ -14,7 +14,7 @@ export function getIconTexture(context, iconName) {
   let spriteName;
   if (isMaki) {
     spritesheet = context._makiSheet;
-    spriteName = iconName.slice('maki-'.length);
+    spriteName = 'maki/' + iconName.slice('maki-'.length);
   } else if (isTemaki) {
     spritesheet = context._temakiSheet;
     spriteName = iconName.slice('temaki-'.length);
