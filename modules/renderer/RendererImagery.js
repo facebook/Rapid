@@ -380,7 +380,7 @@ export class RendererImagery extends EventEmitter {
           best = this.sources(extent).find(s => s.best());
         }
 
-        // Decide which background layer to start with
+        // Decide which base layer to start with..
         if (requested && requested.indexOf('custom:') === 0) {
           const template = requested.replace(/^custom:/, '');
           const custom = this.findSource('custom');
@@ -400,14 +400,17 @@ export class RendererImagery extends EventEmitter {
           );
         }
 
-        const locator = imageryIndex.sources.find(d => d.overlay && d.default);
+        // Default the locator overlay to "on"..
+        const locator = this.findSource('mapbox_locator_overlay');
         if (locator) {
           this.toggleOverlayLayer(locator);
         }
 
-        const overlays = (hash.overlays || '').split(',');
-        overlays.forEach(overlay => {
-          overlay = this.findSource(overlay);
+        // Enable other overlays in url hash..
+        const overlayIDs = (hash.overlays || '').split(',');
+        overlayIDs.forEach(overlayID => {
+          if (overlayID === 'mapbox_locator_overlay') return;
+          const overlay = this.findSource(overlayID);
           if (overlay) {
             this.toggleOverlayLayer(overlay);
           }
