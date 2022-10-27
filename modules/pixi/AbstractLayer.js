@@ -21,7 +21,6 @@ function asSet(vals) {
  *   `supported`    Is this Layer supported? (i.e. do we even show it in lists?)
  *   `zIndex`       Where this Layer sits compared to other Layers
  *   `enabled`      Whether the the user has chosen to see the Layer
- *   `visible`      Whether the Layer's data is currently visible  (many Layers become invisible at lower zooms)
  *   `features`     `Map(featureID -> Feature)` of all features on this Layer
  *   `retained`     `Map(featureID -> Integer frame)` last seen
  */
@@ -381,25 +380,6 @@ export class AbstractLayer {
   }
 
 
-//  /**
-//   * visible
-//   * Whether the Layer's data is currently visible
-//   * (many Layers become invisible at lower zooms)
-//   */
-//  get visible() {
-//    return this.container.visible;
-//  }
-//  set visible(val) {
-//    if (val === this.container.visible) return;  // no change
-//    this.container.visible = val;
-//    if (!val) {
-//      for (const feature of this.features.values()) {
-//        feature.visible = false;
-//      }
-//    }
-//  }
-
-
   /**
    * enabled
    * Whether the user has chosen to see the Layer
@@ -410,7 +390,6 @@ export class AbstractLayer {
   set enabled(val) {
     if (val === this._enabled) return;  // no change
     this._enabled = val;
-    this.visible = val;
     this.dirtyLayer();
   }
 

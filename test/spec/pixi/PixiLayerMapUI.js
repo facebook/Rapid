@@ -20,7 +20,6 @@ describe('iD.pixiMapUILayer', () => {
     const scene = context.scene();
     const mapUI = scene.layers.get('map-ui');
     expect(mapUI.enabled).to.be.true;
-    expect(mapUI.visible).to.be.true;
   });
 
   it('stays enabled and visible even if somoene tries disabling it', () => {
@@ -28,17 +27,6 @@ describe('iD.pixiMapUILayer', () => {
     scene.disableLayers(['map-ui']);
     const mapUI = scene.layers.get('map-ui');
     expect(mapUI.enabled).to.be.true;
-    expect(mapUI.visible).to.be.true;
   });
-
-//  it('has the highest z-index of any other layer', () => {
-//    const scene = context.scene();
-//    const zIndex = scene.layers.get('map-ui').zIndex;
-//    for (const layer of scene.layers.values()) {
-//      if (layer.id !== 'map-ui') {
-//        expect(layer.zIndex < zIndex).to.be.true;
-//      }
-//    }
-//  });
 
 });

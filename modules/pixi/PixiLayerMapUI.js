@@ -37,7 +37,6 @@ const groupContainer = this.scene.groups.get('ui');
 groupContainer.addChild(container);
 
     this._enabled = true;            // this layer should always be enabled
-    this.container.visible = true;   // this layer should always be visible
     this._oldk = 0;
 
     // setup the child containers
@@ -84,17 +83,6 @@ groupContainer.addChild(container);
     return this._enabled;
   }
   set enabled(val) {
-    // noop
-  }
-
-  /**
-   * visible
-   * This layer should always be visible - it contains important UI stuff
-   */
-  get visible() {
-    return this.container.visible;
-  }
-  set visible(val) {
     // noop
   }
 

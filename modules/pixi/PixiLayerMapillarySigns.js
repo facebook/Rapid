@@ -116,16 +116,12 @@ export class PixiLayerMapillarySigns extends AbstractLayer {
     const service = this.getService();
 
     if (this._enabled && service && zoom >= MINZOOM) {
-      this.visible = true;
       service.loadSigns(this.context.projection);  // note: context.projection !== pixi projection
       service.showSignDetections(true);
       this.renderMarkers(frame, projection, zoom);
 
     } else {
-      this.visible = false;
-      if (service) {
-        service.showSignDetections(false);
-      }
+      service?.showSignDetections(false);
     }
   }
 

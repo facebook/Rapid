@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Map as mapLibreMap } from 'maplibre-gl';
 

@@ -201,6 +201,7 @@ export class PixiLayerRapid extends AbstractLayer {
   render(frame, projection, zoom) {
     const rapidContext = this.context.rapidContext();
     const datasets = Object.values(rapidContext.datasets());
+    if (!this.enabled || !datasets.length || zoom < MINZOOM) return;
 
 // shader experiment
 //const offset = this.context.pixi.stage.position;
@@ -208,13 +209,7 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.translationMatrix = transform.clone().translate(-offset.x, -offset.y);
 //this._uniforms.u_time = frame/10;
 
-    if (this._enabled && datasets.length && zoom >= MINZOOM) {
-      this.visible = true;
-      datasets.forEach(dataset => this.renderDataset(dataset, frame, projection, zoom));
-
-    } else {
-      this.visible = false;
-    }
+    datasets.forEach(dataset => this.renderDataset(dataset, frame, projection, zoom));
   }
 
 

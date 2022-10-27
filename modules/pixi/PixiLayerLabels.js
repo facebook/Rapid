@@ -172,10 +172,8 @@ export class PixiLayerLabels extends AbstractLayer {
    */
   render(frame, projection, zoom) {
     if (this._enabled && zoom >= MINZOOM) {
-      this.visible = true;
-
-      const SHOWDEBUG = this.context.getDebug('label');
-      this.debugContainer.visible = SHOWDEBUG;
+      this.labelContainer.visible = true;
+      this.debugContainer.visible = this.context.getDebug('label');
 
       // Reset all labels and avoids when scale changes
       const k = projection.scale();
@@ -219,7 +217,8 @@ export class PixiLayerLabels extends AbstractLayer {
       this.renderObjects(projection);
 
     } else {
-      this.visible = false;
+      this.labelContainer.visible = false;
+      this.debugContainer.visible = false;
     }
   }
 

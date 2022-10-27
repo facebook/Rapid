@@ -115,16 +115,12 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
     const service = this.getService();
 
     if (this._enabled && service && zoom >= MINZOOM) {
-      this.visible = true;
       service.loadMapFeatures(this.context.projection);  // note: context.projection !== pixi projection
       service.showFeatureDetections(true);
       this.renderMarkers(frame, projection, zoom);
 
     } else {
-      this.visible = false;
-      if (service) {
-        service.showFeatureDetections(false);
-      }
+      service?.showFeatureDetections(false);
     }
   }
 

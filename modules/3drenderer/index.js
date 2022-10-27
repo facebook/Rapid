@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Map } from './Map';
 import { App }  from './App';
 

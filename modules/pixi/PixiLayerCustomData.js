@@ -31,13 +31,9 @@ export class PixiLayerCustomData extends AbstractLayer {
     super(scene, layerID);
 
     this._enabled = true;            // this layer should always be enabled
-    this._oldk = 0;
     this._loadedUrlData = false;
     // setup the child containers
     // these only go visible if they have something to show
-
-    // Main custom data container
-    this._dirty = false;
 
     this._vtService = null;
     this._geojson = {};
@@ -159,7 +155,6 @@ export class PixiLayerCustomData extends AbstractLayer {
       this.fitZoom();
     }
 
-    this._dirty = true;
     return this;
   }
 
@@ -180,32 +175,15 @@ export class PixiLayerCustomData extends AbstractLayer {
   render(frame, projection, zoom) {
     if (!this._loadedUrlData) {
       const hash = utilStringQs(window.location.hash);
-
-      // GPX data
       if (hash.gpx) {
         this.url(hash.gpx, '.gpx');
       }
-
       this._loadedUrlData = true;
     }
 
     if (this.enabled) {
-      this.visible = true;
-
-      // redraw if zoom changes
-      const k = projection.scale();
-      if (k !== this._oldk) {
-        this._dirty = true;
-        this._oldk = k;
-      }
-
-      if (this._dirty) {
-        this.renderCustomData(frame, projection, zoom);
-      }
-    } else {
-      this.visible = false;
+      this.renderCustomData(frame, projection, zoom);
     }
-
   }
 
 

@@ -167,15 +167,10 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
    */
   render(frame, projection, zoom) {
     const service = this.getService();
+    if (!this.enabled || !service || zoom < MINZOOM) return;
 
-    if (this._enabled && service && zoom >= MINZOOM) {
-      this.visible = true;
-      service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection
-      this.renderMarkers(frame, projection, zoom);
-
-    } else {
-      this.visible = false;
-    }
+    service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection
+    this.renderMarkers(frame, projection, zoom);
   }
 
 

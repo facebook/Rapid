@@ -183,13 +183,12 @@ export class PixiLayerOsm extends AbstractLayer {
     const graph = context.graph();
     const map = context.map();
 
-    if (this._enabled && service && zoom >= MINZOOM) {
-      this.visible = true;
+    if (!this._enabled || !service || zoom < MINZOOM) return;
 
-      context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
+    context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-      // Has select/hover highlighting chagned?
-      const highlightedIDs = new Set();
+    // Has select/hover highlighting chagned?
+    const highlightedIDs = new Set();
 //      const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
 //console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
 //      if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
@@ -207,63 +206,63 @@ export class PixiLayerOsm extends AbstractLayer {
 ////        this._updateRelatedOsmIds(osmids);
 //      }
 
-      let entities = context.history().intersects(map.extent());
-      //Filter the entities according to features enabled/disabled
-      entities = context.features().filter(entities, this.context.graph());
+    let entities = context.history().intersects(map.extent());
+    //Filter the entities according to features enabled/disabled
+    entities = context.features().filter(entities, this.context.graph());
 
-      // Gather data
-      let data = { points: [], vertices: [], lines: [], polygons: [], highlighted: [] };
+    // Gather data
+    let data = { points: [], vertices: [], lines: [], polygons: [], highlighted: [] };
 
-      entities.forEach(entity => {
-        const geom = entity.geometry(graph);
-        if (geom === 'point') {
-          data.points.push(entity);
-        } else if (geom === 'vertex') {
-          data.vertices.push(entity);
-        } else if (geom === 'line') {
-          data.lines.push(entity);
-          if (highlightedIDs.has(entity.id)) {
-            data.highlighted.push(entity);
-          }
-        } else if (geom === 'area') {
-          data.lines.push(entity);
-          data.polygons.push(entity);
-          if (highlightedIDs.has(entity.id)) {
-            data.highlighted.push(entity);
-          }
+    entities.forEach(entity => {
+      const geom = entity.geometry(graph);
+      if (geom === 'point') {
+        data.points.push(entity);
+      } else if (geom === 'vertex') {
+        data.vertices.push(entity);
+      } else if (geom === 'line') {
+        data.lines.push(entity);
+        if (highlightedIDs.has(entity.id)) {
+          data.highlighted.push(entity);
         }
-      });
-
-
-      // Instructions to save 'canned' entity data for use in the renderer test suite:
-      // Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
-      // continuing will fire off the download of the data into a file called 'canned_data.json'.
-      // move the data into the test/spec/renderer directory.
-      if (this._saveCannedData && !this._alreadyDownloaded) {
-        const map = context.map();
-        const [lng, lat] = map.center();
-
-        let viewData = {
-          'lng': lng,
-          'lat': lat,
-          'zoom': zoom,
-          'width': window.innerWidth,
-          'height': window.innerHeight,
-          'projection': projection,
-          'data': data,
-          'entities': context.graph().base().entities
-        };
-
-        let cannedData = JSON.stringify(viewData);
-        this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
-        this._alreadyDownloaded = true;
+      } else if (geom === 'area') {
+        data.lines.push(entity);
+        data.polygons.push(entity);
+        if (highlightedIDs.has(entity.id)) {
+          data.highlighted.push(entity);
+        }
       }
+    });
 
 
-      this.renderPolygons(frame, projection, zoom, data.polygons);
-      this.renderLines(frame, projection, zoom, data.lines);
-      this.renderVertices(frame, projection, zoom, data.vertices);
-      this.renderPoints(frame, projection, zoom, data.points);
+    // Instructions to save 'canned' entity data for use in the renderer test suite:
+    // Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
+    // continuing will fire off the download of the data into a file called 'canned_data.json'.
+    // move the data into the test/spec/renderer directory.
+    if (this._saveCannedData && !this._alreadyDownloaded) {
+      const map = context.map();
+      const [lng, lat] = map.center();
+
+      let viewData = {
+        'lng': lng,
+        'lat': lat,
+        'zoom': zoom,
+        'width': window.innerWidth,
+        'height': window.innerHeight,
+        'projection': projection,
+        'data': data,
+        'entities': context.graph().base().entities
+      };
+
+      let cannedData = JSON.stringify(viewData);
+      this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
+      this._alreadyDownloaded = true;
+    }
+
+
+    this.renderPolygons(frame, projection, zoom, data.polygons);
+    this.renderLines(frame, projection, zoom, data.lines);
+    this.renderVertices(frame, projection, zoom, data.vertices);
+    this.renderPoints(frame, projection, zoom, data.points);
 
 // bhousel 8/8
 // Midpoints are painful right now because they grab the hoverstate and de-select the line
@@ -271,13 +270,9 @@ export class PixiLayerOsm extends AbstractLayer {
 // bhousel 10/10
 // update, we're startint to capture how features relate to one another now.
 //      // No midpoints when drawing
-     const currMode = context.mode().id;
-     if (currMode === 'browse' || currMode === 'select') {
-       this.renderMidpoints(frame, projection, zoom, data.highlighted);
-     }
-
-    } else {
-      this.visible = false;
+    const currMode = context.mode().id;
+    if (currMode === 'browse' || currMode === 'select') {
+      this.renderMidpoints(frame, projection, zoom, data.highlighted);
     }
   }
 
