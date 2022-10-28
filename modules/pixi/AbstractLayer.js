@@ -246,12 +246,12 @@ export class AbstractLayer {
 
 
   /**
-   * addDataClass
+   * addClass
    * Sets a dataID as being classed a certain way (e.g. 'hovered')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  addDataClass(dataID, classID) {
+  addClass(dataID, classID) {
     let classIDs = this._dataClass.get(dataID);
     if (!classIDs) {
       classIDs = new Set();
@@ -269,12 +269,12 @@ export class AbstractLayer {
 
 
   /**
-   * removeDataClass
+   * removeClass
    * Unsets a dataID from being classed a certain way (e.g. 'hovered')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  removeDataClass(dataID, classID) {
+  removeClass(dataID, classID) {
     let classIDs = this._dataClass.get(dataID);
     if (classIDs) {
       classIDs.delete(classID);
@@ -294,27 +294,14 @@ export class AbstractLayer {
 
 
   /**
-   * clearDataClasses
-   * Remove all classIDs for a given dataID
-   * @param  dataID    `String` dataID (e.g. 'r123')
-   */
-  clearDataClasses(dataID) {
-    const classIDs = this._dataClass.get(dataID);
-    classIDs?.forEach(classID => {
-      this.removeDataClass(dataID, classID);
-    });
-  }
-
-
-  /**
-   * clearClassData
-   * Remove all dataIDs for a given classID
+   * clearClass
+   * Clear out all uses of the given classID.
    * @param  classID   `String` classID (e.g. 'hovered')
    */
-  clearClassData(classID) {
+  clearClass(classID) {
     const dataIDs = this._classData.get(classID);
     dataIDs?.forEach(dataID => {
-      this.removeDataClass(dataID, classID);
+      this.removeClass(dataID, classID);
     });
   }
 

@@ -371,9 +371,9 @@ export class BehaviorSelect extends AbstractBehavior {
       context.map().centerEase(datum.loc);
 
       // No mode change event here, just manually tell the renderer to select it, for now
-//      context.scene().selectFeatures(featureID);
-      context.scene().clearClassData(layerID, 'selected');
-      context.scene().addDataClass(layerID, photoID, 'selected');
+      const scene = context.scene();
+      scene.clearClass('selected');
+      scene.addClass(layerID, photoID, 'selected');
     }
   }
 

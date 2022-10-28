@@ -169,11 +169,10 @@ if (dataID) {
     // there are other selectable things - we will not select-style them for now :(
   }
 }
-//    this.scene.selectFeatures(featureIDs);
-    this.scene.clearClassData('osm', 'selected');
-    this.scene.clearClassData('rapid', 'selected');
+
+    this.scene.clearClass('selected');
     if (layerID && dataID) {
-      this.scene.addDataClass(layerID, dataID, 'selected');
+      this.scene.addClass(layerID, dataID, 'selected');
     }
 
     this.render();
@@ -195,11 +194,9 @@ if (dataID) {
       this.context.ui().sidebar.hover(hoverData ? [hoverData] : []);
     }
 
-//    this.scene.hoverFeatures(hoverID ?? []);
-    this.scene.clearClassData('osm', 'hovered');
-    this.scene.clearClassData('rapid', 'hovered');
+    this.scene.clearClass('hovered');
     if (layerID && dataID) {
-      this.scene.addDataClass(layerID, dataID, 'hovered');
+      this.scene.addClass(layerID, dataID, 'hovered');
     }
 
     this.render();

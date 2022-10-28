@@ -220,47 +220,37 @@ export class PixiScene extends EventEmitter {
 
 
   /**
-   * addDataClass
+   * addClass
    * Sets a dataID as being classed a certain way (e.g. 'hovered')
    * @param  layerID  `String` layerID (e.g. 'osm')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  addDataClass(layerID, dataID, classID) {
-    this.layers.get(layerID)?.addDataClass(dataID, classID);
+  addClass(layerID, dataID, classID) {
+    this.layers.get(layerID)?.addClass(dataID, classID);
   }
 
   /**
-   * removeDataClass
+   * removeClass
    * Unsets a dataID from being classed a certain way (e.g. 'hovered')
    * @param  layerID  `String` layerID (e.g. 'osm')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  removeDataClass(layerID, dataID, classID) {
-    this.layers.get(layerID)?.removeDataClass(layerID, dataID, classID);
+  removeClass(layerID, dataID, classID) {
+    this.layers.get(layerID)?.removeClass(layerID, dataID, classID);
   }
 
 
   /**
-   * clearDataClasses
-   * Remove all classIDs for a given dataID
-   * @param  layerID   `String` layerID (e.g. 'osm')
-   * @param  dataID    `String` dataID (e.g. 'r123')
-   */
-  clearDataClasses(layerID, dataID) {
-    this.layers.get(layerID)?.clearDataClasses(dataID);
-  }
-
-
-  /**
-   * clearClassData
-   * Remove all dataIDs for a given classID
-   * @param  layerID   `String` layerID (e.g. 'osm')
+   * clearClass
+   * Clear out all uses of the given classID across all layers.
    * @param  classID   `String` classID (e.g. 'hovered')
    */
-  clearClassData(layerID, classID) {
-    this.layers.get(layerID)?.clearClassData(classID);
+  clearClass(classID) {
+    for (const layer of this.layers.values()) {
+      layer.clearClass(classID);
+    }
   }
 
 
