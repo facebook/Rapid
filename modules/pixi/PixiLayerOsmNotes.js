@@ -66,9 +66,9 @@ export class PixiLayerOsmNotes extends AbstractLayer {
     if (!service) return;
 
     const parentContainer = this.scene.groups.get('qa');
-    const visibleData = service.notes(this.context.projection);
+    const items = service.notes(this.context.projection);
 
-    visibleData.forEach(d => {
+    for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
@@ -100,7 +100,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 

@@ -91,7 +91,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
   renderEditBlocks(frame, projection, zoom, blocks) {
     const parentContainer = this.scene.groups.get('blocks');
 
-    blocks.forEach(d => {
+    for (const d of blocks) {
       const featureID = `${this.layerID}-${d.locationSetID}`;
       let feature = this.features.get(featureID);
 
@@ -116,7 +116,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
 
   }
 }

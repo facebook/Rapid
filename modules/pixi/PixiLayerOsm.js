@@ -203,7 +203,7 @@ export class PixiLayerOsm extends AbstractLayer {
     // Gather data
     let data = { points: [], vertices: [], lines: [], polygons: [], highlighted: [] };
 
-    entities.forEach(entity => {
+    for (const entity of entities) {
       const geom = entity.geometry(graph);
       if (geom === 'point') {
         data.points.push(entity);
@@ -221,8 +221,7 @@ export class PixiLayerOsm extends AbstractLayer {
           data.highlighted.push(entity);
         }
       }
-    });
-
+    }
 
     // Instructions to save 'canned' entity data for use in the renderer test suite:
     // Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
@@ -277,9 +276,8 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPolygons(frame, projection, zoom, entities) {
     const graph = this.context.graph();
 
-    entities.forEach(entity => {
+    for (const entity of entities) {
       const featureID = `${this.layerID}-${entity.id}-fill`;
-
       let feature = this.features.get(featureID);
 
       if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
@@ -321,7 +319,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -354,9 +352,9 @@ export class PixiLayerOsm extends AbstractLayer {
 //    }
 
 
-    entities.forEach(entity => {
+    for (const entity of entities) {
 // skip relations, we will get their line parts separately and draw those
-if (entity.type === 'relation') return;
+if (entity.type === 'relation') continue;
 //      // Skip untagged multipolygon rings for now, renderPolygons will render them as strokes.
 //      // At some point we will want the user to be able to click on them though
 //      if (isUntaggedMultipolygonRing(entity)) return;
@@ -432,7 +430,7 @@ if (geom === 'line') {
 
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -459,7 +457,7 @@ if (geom === 'line') {
       );
     }
 
-    entities.forEach(node => {
+    for (const node of entities) {
       let parentContainer = null;
       if (zoom >= 16 && isInterestingVertex(node)) {
         parentContainer = pointsContainer;
@@ -467,10 +465,9 @@ if (geom === 'line') {
       if (this._relatedOsmIDs.has(node.id)) {
         parentContainer = selectedContainer;
       }
-      if (!parentContainer) return;   // this vertex isn't interesting enough to render
+      if (!parentContainer) continue;   // this vertex isn't interesting enough to render
 
       const featureID = `${this.layerID}-${node.id}`;
-
       let feature = this.features.get(featureID);
 
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
@@ -533,7 +530,7 @@ if (geom === 'line') {
 
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -548,10 +545,10 @@ if (geom === 'line') {
     const graph = this.context.graph();
     const pointsContainer = this.scene.groups.get('points');
 
-    entities.forEach(node => {
+    for (const node of entities) {
       const featureID = `${this.layerID}-${node.id}`;
-
       let feature = this.features.get(featureID);
+
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
@@ -605,7 +602,7 @@ if (geom === 'line') {
 
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -628,9 +625,9 @@ if (geom === 'line') {
     let midpoints = new Map();
     const MIDPOINT_STYLE = { markerName: 'midpoint' };
 
-    entities.forEach(way => {
+    for (const way of entities) {
       const nodes = graph.childNodes(way);
-      if (!nodes.length) return;  // maybe a relation?
+      if (!nodes.length) continue;  // maybe a relation?
 
       // Compute midpoints in projected coordinates
       let nodeData = nodes.map(node => {
@@ -668,11 +665,12 @@ if (geom === 'line') {
           midpoints.set(id, midpoint);
         }
       });
-    });
+    }
 
-    midpoints.forEach(midpoint => {
+    for (const midpoint of midpoints) {
       const featureID = `${this.layerID}-${midpoint.id}`;
       let feature = this.features.get(featureID);
+
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
         feature.destroy();
         feature = null;
@@ -700,7 +698,7 @@ if (geom === 'line') {
 
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 }

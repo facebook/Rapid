@@ -231,7 +231,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
-    polygons.forEach(d => {
+    for (const d of polygons) {
       const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
@@ -249,7 +249,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -266,7 +266,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
 
-    lines.forEach(d => {
+    for (const d of lines) {
       const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
@@ -281,7 +281,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -296,7 +296,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     const parentContainer = this.scene.groups.get('points');
     const POINT_STYLE = { markerTint: 0x00ffff };
 
-    points.forEach(d => {
+    for (const d of points) {
       const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
@@ -311,7 +311,7 @@ export class PixiLayerCustomData extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 

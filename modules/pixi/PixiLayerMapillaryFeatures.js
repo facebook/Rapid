@@ -74,10 +74,10 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
 
     const parentContainer = this.scene.groups.get('points');
 
-    let detections = service.mapFeatures(this.context.projection);
-    detections = this.filterDetections(detections);
+    let items = service.mapFeatures(this.context.projection);
+    items = this.filterDetections(items);
 
-    detections.forEach(d => {
+    for (const d of items) {
       const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
@@ -100,7 +100,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 

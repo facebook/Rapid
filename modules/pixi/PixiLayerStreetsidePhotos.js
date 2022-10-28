@@ -111,7 +111,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
 
-    sequenceData.forEach(d => {
+    for (const d of sequenceData) {
       const featureID = `${this.layerID}-sequence-${d.properties.key}`;
       let feature = this.features.get(featureID);
 
@@ -127,10 +127,10 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
 
 
-    photoData.forEach(d => {
+    for (const d of photoData) {
       const featureID = `${this.layerID}-photo-${d.key}`;
       let feature = this.features.get(featureID);
 
@@ -154,7 +154,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 

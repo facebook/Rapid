@@ -209,7 +209,9 @@ export class PixiLayerRapid extends AbstractLayer {
 //this._uniforms.translationMatrix = transform.clone().translate(-offset.x, -offset.y);
 //this._uniforms.u_time = frame/10;
 
-    datasets.forEach(dataset => this.renderDataset(dataset, frame, projection, zoom));
+    for (const dataset of datasets) {
+      this.renderDataset(dataset, frame, projection, zoom);
+    }
   }
 
 
@@ -278,8 +280,8 @@ export class PixiLayerRapid extends AbstractLayer {
 
       const entities = service.intersects(datasetID, context.map().extent());
 
-      entities.forEach(entity => {
-        if (isAccepted(entity)) return;   // skip features already accepted, see onHistoryRestore()
+      for (const entity of entities) {
+        if (isAccepted(entity)) continue;   // skip features already accepted, see onHistoryRestore()
         const geom = entity.geometry(dsGraph);
         if (geom === 'point' && !!entity.__fbid__) {  // standalone points only (not vertices/childnodes)
           data.points.push(entity);
@@ -288,7 +290,7 @@ export class PixiLayerRapid extends AbstractLayer {
         } else if (geom === 'area') {
           data.polygons.push(entity);
         }
-      });
+      }
     }
 
     const pointsContainer = this.scene.groups.get('points');
@@ -324,7 +326,7 @@ export class PixiLayerRapid extends AbstractLayer {
   renderPolygons(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = PIXI.utils.string2hex(dataset.color);
 
-    data.polygons.forEach(entity => {
+    for (const entity of data.polygons) {
       const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
       let feature = this.features.get(featureID);
 
@@ -361,7 +363,7 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -371,7 +373,7 @@ export class PixiLayerRapid extends AbstractLayer {
   renderLines(parentContainer, dataset, graph, frame, projection, zoom, data) {
     const color = PIXI.utils.string2hex(dataset.color);
 
-    data.lines.forEach(entity => {
+    for (const entity of data.lines) {
       const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
       let feature = this.features.get(featureID);
 
@@ -402,7 +404,7 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       this.retainFeature(feature, frame);
-    });
+    }
   }
 
 
@@ -424,7 +426,7 @@ export class PixiLayerRapid extends AbstractLayer {
       labelTint: color
     };
 
-    data.points.forEach(entity => {
+    for (const entity of data.points) {
       const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
       let feature = this.features.get(featureID);
 
@@ -450,10 +452,10 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       this.retainFeature(feature, frame);
-    });
+    }
 
 
-    data.vertices.forEach(entity => {
+    for (const entity of data.vertices) {
       const featureID = `${this.layerID}-${entity.id}`;
       let feature = this.features.get(featureID);
 
@@ -480,7 +482,7 @@ export class PixiLayerRapid extends AbstractLayer {
       }
 
       this.retainFeature(feature, frame);
-    });
+    }
 
   }
 

@@ -498,20 +498,20 @@ export function styleMatch(tags) {
 
   // copy style, filling in defaults
   let style = {};
-  ['fill', 'casing', 'stroke'].forEach(group => {
+  for (const group of ['fill', 'casing', 'stroke']) {
     style[group] = {};
-    ['width', 'color', 'alpha', 'cap', 'dash'].forEach(prop => {
+    for (const prop of ['width', 'color', 'alpha', 'cap', 'dash']) {
       let value = matched[group] && matched[group][prop];
       if (value !== undefined) {
         style[group][prop] = value;
-        return;
+        continue;
       }
       let fallback = STYLES.DEFAULT[group] && STYLES.DEFAULT[group][prop];
       if (fallback !== undefined) {
         style[group][prop] = fallback;
       }
-    });
-  });
+    }
+  }
 
   // overrides
   if (tags.bridge) {

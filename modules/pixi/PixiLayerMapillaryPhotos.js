@@ -114,7 +114,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const sequenceData = this.filterSequences(sequences);
     // const photoData = this.filterImages(images);
 
-    sequenceData.forEach(d => {
+    for (const d of sequenceData) {
       const featureID = `${this.layerID}-sequence-${d.properties.id}`;
       let feature = this.features.get(featureID);
 
@@ -130,10 +130,10 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
 
 
-    photoData.forEach(d => {
+    for (const d of photoData) {
       const featureID = `${this.layerID}-photo-${d.id}`;
       let feature = this.features.get(featureID);
 
@@ -157,7 +157,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
-    });
+    }
 
   }
 

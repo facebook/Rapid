@@ -110,12 +110,12 @@ export class PixiLayerLabels extends AbstractLayer {
    * Remove all label and debug objects from the scene and from all caches
    */
   resetAll() {
-    this._labels.forEach(label => {
+    for (const label of this._labels.values()) {
       if (label.displayObject) {
         label.displayObject.destroy({ children: false, texture: false, baseTexture: false });
         label.displayObject = null;
       }
-    });
+    }
 
     this._avoidBoxes.clear();
     this._labelBoxes.clear();
@@ -138,24 +138,24 @@ export class PixiLayerLabels extends AbstractLayer {
     (this._avoidBoxes.get(featureID) || []).forEach(box => boxes.add(box));
 
     // gather labels and remove boxes
-    boxes.forEach(box => {
+    for (const box of boxes.values()) {
       this._rbush.remove(box);
       if (box.labelID) {
         labelIDs.add(box.labelID);
       }
-    });
+    }
     this._labelBoxes.delete(featureID);
     this._avoidBoxes.delete(featureID);
 
     // remove labels
-    labelIDs.forEach(labelID => {
+    for (const labelID of labelIDs.values()) {
       let label = this._labels.get(labelID);
       if (label && label.displayObject) {
         label.displayObject.destroy({ children: false, texture: false, baseTexture: false });
         label.displayObject = null;
       }
       this._labels.delete(labelID);
-    });
+    }
   }
 
 
@@ -183,12 +183,12 @@ export class PixiLayerLabels extends AbstractLayer {
       }
 
       // Check for any features which have changed and need recalculation.
-      this.scene.features.forEach(feature => {
+      for (const feature of this.scene.features.values()) {
         if (feature._labelDirty) {
           this.resetFeature(feature.id);
           feature._labelDirty = false;
         }
-      });
+      }
 
       // Collect features to avoid.
       this.gatherAvoids();
@@ -196,7 +196,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // Collect features to place labels on.
       let points = [];
       let lines = [];
-      this.scene.features.forEach(feature => {
+      for (const feature of this.scene.features.values()) {
         // If the feature can be labeled, and hasn't yet been, add it to the list for placement.
         if (feature.label && feature.visible && !this._labelBoxes.has(feature.id)) {
           if (feature.type === 'point') {
@@ -207,7 +207,7 @@ export class PixiLayerLabels extends AbstractLayer {
             // no label for now
           }
         }
-      });
+      }
 
       // Points first, then lines (so line labels can avoid point labels)
       this.placePointLabels(points);
@@ -319,14 +319,14 @@ export class PixiLayerLabels extends AbstractLayer {
       // This is somewhat common that a label will be placed somewhere, then as more map loads,
       // we learn that some of those junctions become important and we need to avoid them.
       const existingBoxes = this._rbush.search(box);
-      existingBoxes.forEach(existingBox => {
+      for (const existingBox of existingBoxes) {
         if (existingBox.type === 'label') {
           const existingFeature = this.scene.features.get(existingBox.featureID);
           if (existingFeature) {
             existingFeature._labelDirty = true;
           }
         }
-      });
+      }
 
     }
   }
@@ -340,28 +340,27 @@ export class PixiLayerLabels extends AbstractLayer {
   placePointLabels(features) {
     features.sort((a, b) => b.geometry[1] - a.geometry[1]);
 
-    features
-      .forEach(feature => {
-        if (this._labelBoxes.has(feature.id)) return;  // processed it already
-        this._labelBoxes.set(feature.id, []);
+    for (const feature of features) {
+      if (this._labelBoxes.has(feature.id)) continue;  // processed it already
+      this._labelBoxes.set(feature.id, []);
 
-        if (!feature.label) return;  // nothing to do
+      if (!feature.label) continue;  // nothing to do
 
-        let labelObj;
-        if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
-          labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label' });
-          labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
-          labelObj.name = feature.label;
-          // labelObj.anchor.set(0.5, 0.5);   // middle, middle
-          labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
-          labelObj.letterSpacing = -0.5;   // to adjust for lack of kerning
+      let labelObj;
+      if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
+        labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label' });
+        labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
+        labelObj.name = feature.label;
+        // labelObj.anchor.set(0.5, 0.5);   // middle, middle
+        labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
+        labelObj.letterSpacing = -0.5;   // to adjust for lack of kerning
 
-        } else {
-          labelObj = this.getLabelSprite(feature.label);
-        }
+      } else {
+        labelObj = this.getLabelSprite(feature.label);
+      }
 
-        this.placePointLabel(feature, labelObj);
-      });
+      this.placePointLabel(feature, labelObj);
+    }
   }
 
 
@@ -381,16 +380,15 @@ export class PixiLayerLabels extends AbstractLayer {
 
     features.sort((a, b) => level(b) - level(a));
 
-    features
-      .forEach(feature => {
-        if (this._labelBoxes.has(feature.id)) return;  // processed it already
-        this._labelBoxes.set(feature.id, []);
+    for (const feature of features) {
+      if (this._labelBoxes.has(feature.id)) continue;  // processed it already
+      this._labelBoxes.set(feature.id, []);
 
-        if (!feature.label) return;  // nothing to do
+      if (!feature.label) continue;  // nothing to do
 
-        const labelObj = this.getLabelSprite(feature.label);
-        this.placeLineLabel(feature, labelObj);
-      });
+      const labelObj = this.getLabelSprite(feature.label);
+      this.placeLineLabel(feature, labelObj);
+    }
   }
 
 
@@ -753,20 +751,20 @@ export class PixiLayerLabels extends AbstractLayer {
     // Collect labels in view
     let labelIDs = new Set();
     const visible = this._rbush.search(mapExtent.bbox());
-    visible.forEach(box => {
+    for (const box of visible) {
       if (box.labelID) {
         labelIDs.add(box.labelID);
       }
-    });
+    }
 
     // Create and add labels to the scene, if needed
-    labelIDs.forEach(labelID => {
+    for (const labelID of labelIDs.values()) {
       const label = this._labels.get(labelID);
-      if (!label) return;  // bad labelID - shouldn't happen?
+      if (!label) continue;  // bad labelID - shouldn't happen?
 
       const options = label.options;
 
-      if (label.displayObject) return;   // done already
+      if (label.displayObject) continue;   // done already
 
       if (label.type === 'text') {
         const labelObj = options.labelObj;  // a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText
@@ -800,7 +798,7 @@ export class PixiLayerLabels extends AbstractLayer {
 //        renderable.displayObject = sprite;
 //        this.debugContainer.addChild(sprite);
 //      }
-    });
+    }
   }
 
 }
