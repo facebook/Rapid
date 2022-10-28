@@ -1,14 +1,14 @@
 describe('iD.pixiMapUILayer', () => {
-  let context, map;
+  let context, container, map;
 
   beforeEach(() => {
-    const container = d3.select('body').append('div');
+    container = d3.select('body').append('div');
     context = iD.coreContext().assetPath('../dist/').init().container(container);
     map = context.map();
     map.render(container);
   });
-
-  afterEach(() => {});
+ 
+  afterEach(() => { container.remove(); });
 
   it('is part of the pixi layers', () => {
     const scene = context.scene();
