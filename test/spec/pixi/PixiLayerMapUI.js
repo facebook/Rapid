@@ -5,7 +5,7 @@ describe('iD.pixiMapUILayer', () => {
     const container = d3.select('body').append('div');
     context = iD.coreContext().assetPath('../dist/').init().container(container);
     map = context.map();
-    container.call(map);
+    map.render(container);
   });
 
   afterEach(() => {});
