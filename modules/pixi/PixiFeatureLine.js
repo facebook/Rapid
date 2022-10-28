@@ -63,6 +63,13 @@ export class PixiFeatureLine extends AbstractFeature {
     this.points = null;
     this.casing = null;
     this.stroke = null;
+
+    if (this._bufferdata) {
+      delete this._bufferdata.inner;
+      delete this._bufferdata.outer;
+      delete this._bufferdata.perimeter;
+      this._bufferdata = null;
+    }
   }
 
 
@@ -75,7 +82,6 @@ export class PixiFeatureLine extends AbstractFeature {
     if (!this.dirty) return;  // nothing to do
 
     const wireframeMode = this.context.map().wireframeMode;
-    // For now, if either geometry or style is dirty, we just update the whole line
     const context = this.context;
     const textures = context.pixi.rapidTextures;
     const container = this.container;
@@ -84,127 +90,138 @@ export class PixiFeatureLine extends AbstractFeature {
     //
     // GEOMETRY
     //
+    if (this._geometryDirty) {
+      // Reproject and recalculate the bounding box
+      let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
+  //    this.points = [];
+  //    this._geometry.forEach(coord => {
+  //      const [x, y] = projection.project(coord);
+  //      this.points.push([x, y]);
+  //
+  //      [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+  //      [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+  //    });
+      this.points = new Array(this._geometry.length);
+      for (let i = 0; i < this._geometry.length; ++i) {
+        const [x, y] = projection.project(this._geometry[i]);
+        this.points[i] = [x, y];
+        [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
+        [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
+      }
 
-    // Reproject and recalculate the bounding box
-    let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
-    this.points = [];
-    this._geometry.forEach(coord => {
-      const [x, y] = projection.project(coord);
-      this.points.push([x, y]);
+      // Calculate bounds
+      const [w, h] = [maxX - minX, maxY - minY];
+      this.localBounds.x = minX;
+      this.localBounds.y = minY;
+      this.localBounds.width = w;
+      this.localBounds.height = h;
+      this.sceneBounds = this.localBounds.clone();  // for lines, they are the same
 
-      [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
-      [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
-    });
-
-    if (style.reversePoints) {
-      this.points.reverse();
+      this.updateHitArea();
+      this._geometryDirty = false;
     }
 
-    // Calculate bounds
-    const [w, h] = [maxX - minX, maxY - minY];
-    this.localBounds.x = minX;
-    this.localBounds.y = minY;
-    this.localBounds.width = w;
-    this.localBounds.height = h;
-    this.sceneBounds = this.localBounds.clone();  // for lines, they are the same
-
-    this._geometryDirty = false;
 
     //
     // STYLE
     //
+    if (this._styleDirty) {
+      const {width, height} = this.localBounds;
 
-    // Apply effectiveZoom style adjustments
-    let showMarkers = true;
+      // Apply effectiveZoom style adjustments
+      let showMarkers = true;
 
-    // Cull really tiny shapes
-    if (w < 4 && h < 4) {  // so tiny
-      this.lod = 0;  // off
-      this.visible = false;
-      this.stroke.renderable = false;
-      this.casing.renderable = false;
-      showMarkers = false;
-
-    } else {
-      this.visible = true;
-      this.stroke.renderable = true;
-
-      if (zoom < 16) {
-        this.lod = 1;  // simplified
+      // Cull really tiny shapes
+      if (width < 4 && height < 4) {  // so tiny
+        this.lod = 0;  // off
+        this.visible = false;
+        this.stroke.renderable = false;
         this.casing.renderable = false;
         showMarkers = false;
 
       } else {
-        this.lod = 2;  // full
-        this.casing.renderable = true;
-        showMarkers = true;
-      }
-    }
+        this.visible = true;
+        this.stroke.renderable = true;
 
-    //
-    // Update line markers, if any..
-    // Todo: left/right markers (like for coastlines, retaining walls, etc)
-    //
-    let lineMarkers = container.getChildByName('lineMarkers');
+        if (zoom < 16) {
+          this.lod = 1;  // simplified
+          this.casing.renderable = false;
+          showMarkers = false;
 
-    if (showMarkers && ((style.lineMarkerTexture || style.lineMarkerName) || (style.sidedMarkerTexture || style.sidedMarkerName))) {
-      // Create line marker container, if necessary
-      if (!lineMarkers) {
-        lineMarkers = new PIXI.Container();
-        lineMarkers.name = 'lineMarkers';
-        lineMarkers.interactiveChildren = false;
-        lineMarkers.sortableChildren = false;
-        lineMarkers.roundPixels = false;
-        container.addChild(lineMarkers);
+        } else {
+          this.lod = 2;  // full
+          this.casing.renderable = true;
+          showMarkers = true;
+        }
       }
 
-      const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
-      const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || PIXI.Texture.GREEN;
-      const sided = style.sidedMarkerName === 'sided';
-      const oneway = style.lineMarkerName === 'oneway';
-      lineMarkers.removeChildren();
+      //
+      // Update line markers, if any..
+      // Todo: left/right markers (like for coastlines, retaining walls, etc)
+      //
+      let lineMarkers = container.getChildByName('lineMarkers');
 
-      if (oneway) {
-        const segments = getLineSegments(this.points, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
+      if (showMarkers && ((style.lineMarkerTexture || style.lineMarkerName) || (style.sidedMarkerTexture || style.sidedMarkerName))) {
+        // Create line marker container, if necessary
+        if (!lineMarkers) {
+          lineMarkers = new PIXI.Container();
+          lineMarkers.name = 'lineMarkers';
+          lineMarkers.interactiveChildren = false;
+          lineMarkers.sortableChildren = false;
+          lineMarkers.roundPixels = false;
+          container.addChild(lineMarkers);
+        }
 
-        segments.forEach(segment => {
-          segment.coords.forEach(([x, y]) => {
-            const arrow = new PIXI.Sprite(lineMarkerTexture);
-            arrow.interactive = false;
-            arrow.interactiveChildren = false;
-            arrow.sortableChildren = false;
-            arrow.anchor.set(0.5, 0.5); // middle, middle
-            arrow.position.set(x, y);
-            //segments with directional 'sides' get rotated 90 degrees
-            arrow.rotation = segment.angle;
-            // arrow.rotation = segment.angle;
-            arrow.tint = style.lineMarkerTint;
-            lineMarkers.addChild(arrow);
+        const lineMarkerTexture = style.lineMarkerTexture || textures.get(style.lineMarkerName) || PIXI.Texture.WHITE;
+        const sidedMarkerTexture = style.sidedMarkerTexture || textures.get(style.sidedMarkerName) || PIXI.Texture.GREEN;
+        const sided = style.sidedMarkerName === 'sided';
+        const oneway = style.lineMarkerName === 'oneway';
+        lineMarkers.removeChildren();
+
+        if (oneway) {
+          const segments = getLineSegments(this.points, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
+
+          segments.forEach(segment => {
+            segment.coords.forEach(([x, y]) => {
+              const arrow = new PIXI.Sprite(lineMarkerTexture);
+              arrow.interactive = false;
+              arrow.interactiveChildren = false;
+              arrow.sortableChildren = false;
+              arrow.anchor.set(0.5, 0.5); // middle, middle
+              arrow.position.set(x, y);
+              //segments with directional 'sides' get rotated 90 degrees
+              arrow.rotation = segment.angle;
+              // arrow.rotation = segment.angle;
+              arrow.tint = style.lineMarkerTint;
+              lineMarkers.addChild(arrow);
+            });
           });
-        });
-      }
+        }
 
-      if (sided) {
-        const segments = getLineSegments(this.points, SIDED_SPACING, true, true);  /* sided = true, limited = true */
+        if (sided) {
+          const segments = getLineSegments(this.points, SIDED_SPACING, true, true);  /* sided = true, limited = true */
 
-        segments.forEach(segment => {
-          segment.coords.forEach(([x, y]) => {
-            const arrow = new PIXI.Sprite(sidedMarkerTexture);
-            arrow.interactive = false;
-            arrow.interactiveChildren = false;
-            arrow.sortableChildren = false;
-            arrow.anchor.set(0.5, 0.5); // middle, middle
-            arrow.position.set(x, y);
-            arrow.rotation = segment.angle;
-            arrow.tint = style.stroke.color;
-            lineMarkers.addChild(arrow);
+          segments.forEach(segment => {
+            segment.coords.forEach(([x, y]) => {
+              const arrow = new PIXI.Sprite(sidedMarkerTexture);
+              arrow.interactive = false;
+              arrow.interactiveChildren = false;
+              arrow.sortableChildren = false;
+              arrow.anchor.set(0.5, 0.5); // middle, middle
+              arrow.position.set(x, y);
+              arrow.rotation = segment.angle;
+              arrow.tint = style.stroke.color;
+              lineMarkers.addChild(arrow);
+            });
           });
-        });
+        }
+
+      } else if (lineMarkers) {  // No line markers, remove if it exists
+        container.removeChild(lineMarkers);
+        lineMarkers.destroy({ children: true });
       }
 
-    } else if (lineMarkers) {  // No line markers, remove if it exists
-      container.removeChild(lineMarkers);
-      lineMarkers.destroy({ children: true });
+      this._styleDirty = false;
     }
 
 
@@ -215,8 +232,6 @@ export class PixiFeatureLine extends AbstractFeature {
       updateGraphic('stroke', this.stroke, this.points, style, wireframeMode);
     }
 
-    this._styleDirty = false;
-    this.updateHitArea();
     this.updateHalo();
 
 
@@ -372,7 +387,6 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
 const STYLE_DEFAULTS = {
-  reversePoints: false,
   lineMarkerName: '',
   lineMarkerTint: 0x000000,
   labelTint: 0xffffff,

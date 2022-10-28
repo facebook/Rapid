@@ -382,6 +382,11 @@ export class PixiLayerRapid extends AbstractLayer {
         const geometry = geojson.coordinates;
 
         feature = new PixiFeatureLine(this, featureID);
+
+        if (entity.tags.oneway === '-1') {
+          geometry.reverse();
+        }
+
         feature.geometry = geometry;
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
@@ -396,7 +401,6 @@ export class PixiLayerRapid extends AbstractLayer {
           casing: { width: 5, color: 0x444444 },
           stroke: { width: 3, color: color },
         };
-        style.reversePoints = (entity.tags.oneway === '-1');
         style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
         feature.style = style;
         feature.label = utilDisplayName(entity);

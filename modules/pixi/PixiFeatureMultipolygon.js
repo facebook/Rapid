@@ -473,7 +473,6 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 
 const STYLE_DEFAULTS = {
   requireFill: false,      // allow partial fill or wireframe styles
-  reversePoints: false,
   lineMarkerName: '',
   lineMarkerTint: 0x000000,
   labelTint: 0xffffff,

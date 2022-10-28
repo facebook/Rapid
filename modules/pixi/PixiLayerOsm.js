@@ -398,6 +398,10 @@ const geometry = (geojson.type === 'LineString') ? geojson.coordinates
   : (geojson.type === 'Polygon') ? geojson.coordinates[0] : [];
 //  : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];
         // const geometry = geojson.coordinates;
+        // reverse-order the points
+        if (entity.tags.oneway === '-1') {
+          geometry.reverse();
+        }
         feature.geometry = geometry;
 
 // a line no tags - try to style match the tags of its parent relation
@@ -411,7 +415,6 @@ if (!entity.hasInterestingTags()) {
   }
 }
         const style = styleMatch(tags);
-        style.reversePoints = (entity.tags.oneway === '-1');
         // Todo: handle alternating/two-way case too
 
 if (geom === 'line') {

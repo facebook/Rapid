@@ -262,19 +262,46 @@ export function lineToPoly(points, lineStyle = {}) {
 
   // This path can be used as an array of points for the hitArea.
   // Go out on one side and back on the other, then close it off.
-  let perimeter = [];
-  pathL.forEach(([x, y]) => perimeter.push(x, y));   // flatten
+  // let perimeter = [];
+  const len = pathL.length + pathR.length + 1;
+  const perimeter = new Array(len * 2);
+  let i = 0;
+  // pathL.forEach(([x, y]) => perimeter.push(x, y));   // flatten
+  for (let j = 0; j < pathL.length; ++i, ++j) {
+    perimeter[i * 2] = pathL[j][0];
+    perimeter[i * 2 + 1] = pathL[j][1];
+  }
+
   pathR.reverse();
-  pathR.forEach(([x, y]) => perimeter.push(x, y));   // flatten
-  perimeter.push(perimeter[0], perimeter[1]);  // close the shape
+  // pathR.forEach(([x, y]) => perimeter.push(x, y));   // flatten
+  for (let j = 0; j < pathR.length; ++i, ++j) {
+    perimeter[i * 2] = pathR[j][0];
+    perimeter[i * 2 + 1] = pathR[j][1];
+  }
+  // perimeter.push(perimeter[0], perimeter[1]);  // close the shape
+  perimeter[i * 2] = perimeter[0];
+  perimeter[i * 2 + 1] = perimeter[1];
+
   result.perimeter = perimeter;
 
   // If the line was closed, determine which path is longer (outer) and shorter (inner)
   if (isClosed) {
-    let pointsL = [];
-    let pointsR = [];
-    pathL.forEach(([x, y]) => pointsL.push(x, y));   // flatten
-    pathR.forEach(([x, y]) => pointsR.push(x, y));   // flatten
+    // let pointsL = [];
+    const pointsL = new Array(pathL.length * 2);
+    // pathL.forEach(([x, y]) => pointsL.push(x, y));   // flatten
+    for (let j = 0; j < pathL.length; ++j) {
+      pointsL[j * 2] = pathL[j][0];
+      pointsL[j * 2 + 1] = pathL[j][1];
+    }
+
+    // let pointsR = [];
+    const pointsR = new Array(pathR.length * 2);
+    // pathR.forEach(([x, y]) => pointsR.push(x, y));   // flatten
+    for (let j = 0; j < pathR.length; ++j) {
+      pointsR[j * 2] = pathR[j][0];
+      pointsR[j * 2 + 1] = pathR[j][1];
+    }
+
     if (lenL > lenR) {
       result.outer = pointsL;
       result.inner = pointsR;
