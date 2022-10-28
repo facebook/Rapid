@@ -1,14 +1,21 @@
 describe('iD.rendererFeatures', function() {
     var dimensions = [1000, 1000];
-    var context, features;
+    var context, content, features, map;
 
     beforeEach(function() {
         context = iD.coreContext().assetPath('../dist/').init();
-        d3.select(document.createElement('div'))
-            .attr('class', 'main-map')
-            .call(context.map());
-        context.map().zoom(16);
+        content = d3.select(document.createElement('div'))
+            .attr('class', 'main-map');
+        map = context.map();
+
+        map.render(content);
+        map.zoom(16);
         features = iD.rendererFeatures(context);
+    });
+
+
+    afterEach(function() {
+        content.remove();
     });
 
     describe('#keys', function() {

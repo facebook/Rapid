@@ -5,7 +5,7 @@ describe('iD.Map', function() {
         content = d3.select('body').append('div');
         context = iD.coreContext().assetPath('../dist/').init().container(content);
         map = context.map();
-        content.call(map);
+        map.render(content);
     });
 
     afterEach(function() {
