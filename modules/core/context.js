@@ -37,6 +37,7 @@ import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
+let _loadedImages = false;
 
 export function coreContext() {
   const dispatch = d3_dispatch('enter', 'exit');
@@ -686,7 +687,10 @@ export function coreContext() {
 
     }
 
-  loadImages();
+  if (_loadedImages === false) {
+    loadImages();
+    _loadedImages = true;
+  }
 
   /* Init */
   context.init = () => {
