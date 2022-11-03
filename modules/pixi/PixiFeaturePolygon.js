@@ -159,12 +159,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const [minX, minY] = this.geometry.extent.min;
     const [maxX, maxY] = this.geometry.extent.max;
     const [w, h] = [maxX - minX, maxY - minY];
-    this.localBounds.x = minX;
-    this.localBounds.y = minY;
-    this.localBounds.width = w;
-    this.localBounds.height = h;
-    this.sceneBounds = this.localBounds.clone();  // for polygons, they are the same
-
+    this.sceneBounds.x = minX;
+    this.sceneBounds.y = minY;
+    this.sceneBounds.width = w;
+    this.sceneBounds.height = h;
 
 
 //    // Project the ssr polygon too, for use as a halo

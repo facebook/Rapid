@@ -94,11 +94,10 @@ export class PixiFeatureLine extends AbstractFeature {
       const [minX, minY] = this.geometry.extent.min;
       const [maxX, maxY] = this.geometry.extent.max;
       const [w, h] = [maxX - minX, maxY - minY];
-      this.localBounds.x = minX;
-      this.localBounds.y = minY;
-      this.localBounds.width = w;
-      this.localBounds.height = h;
-      this.sceneBounds = this.localBounds.clone();  // for lines, they are the same
+      this.sceneBounds.x = minX;
+      this.sceneBounds.y = minY;
+      this.sceneBounds.width = w;
+      this.sceneBounds.height = h;
 
       this.updateHitArea();
     }
@@ -108,7 +107,7 @@ export class PixiFeatureLine extends AbstractFeature {
     // STYLE
     //
     if (this._styleDirty) {
-      const {width, height} = this.localBounds;
+      const {width, height} = this.sceneBounds;
 
       // Apply effectiveZoom style adjustments
       let showMarkers = true;
