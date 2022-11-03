@@ -5,7 +5,7 @@ import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
-import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 import { utilDisplayName } from '../util';
 
 const MINZOOM = 12;
@@ -28,6 +28,8 @@ export class PixiLayerRapid extends AbstractLayer {
     this._enabled = true;  // RapiD features should be enabled by default
     this._serviceFB = null;
     this._serviceEsri = null;
+    this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
+
     this.getServiceFB();
     this.getServiceEsri();
 
@@ -327,22 +329,27 @@ export class PixiLayerRapid extends AbstractLayer {
     const color = PIXI.utils.string2hex(dataset.color);
 
     for (const entity of data.polygons) {
-      const featureID = `${this.layerID}-${dataset.id}-${entity.id}`;
-      let feature = this.features.get(featureID);
+      // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
+      // This is ok because the rapid features won't change once loaded.
+      let geojson = this._resolved.get(entity.id);
+      if (!geojson) {
+        geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+        this._resolved.set(entity.id, geojson);
+      }
 
-      if (!feature) {
-        const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-//        const coords = (geojson.type === 'Polygon') ? [geojson.coordinates]
-//          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
-//bhousel multipolygons out for now
-if (geojson.type !== 'Polygon') continue;
-const coords = geojson.coordinates;
+      const parts = (geojson.type === 'Polygon') ? [geojson.coordinates]
+        : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-        feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.geometry.setCoords(coords);
-        feature.parentContainer = parentContainer;
-        feature.rapidFeature = true;
-        feature.bindData(entity, entity.id);
+      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+        const featureID = `${this.layerID}-${dataset.id}-${entity.id}-${i}`;
+        let feature = this.features.get(featureID);
+
+        if (!feature) {
+          feature = new PixiFeaturePolygon(this, featureID);
+          feature.geometry.setCoords(coords);
+          feature.parentContainer = parentContainer;
+          feature.rapidFeature = true;
+          feature.bindData(entity, entity.id);
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
 // we are fighting with the batch system which is unfortunate
@@ -350,22 +357,23 @@ const coords = geojson.coordinates;
 // feature.fill.shader = this._customshader;
 
 // also custom `.shader` dont work on sprites at all, and so we'd have to switch to meshes maybe?
+        }
+
+        this.syncFeatureClasses(feature);
+
+        if (feature.dirty) {
+          const style = {
+            labelTint: color,
+            fill: { width: 2, color: color, alpha: 0.3 },
+            // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
+          };
+          feature.style = style;
+          feature.label = utilDisplayName(entity);
+          feature.update(projection, zoom);
+        }
+
+        this.retainFeature(feature, frame);
       }
-
-      this.syncFeatureClasses(feature);
-
-      if (feature.dirty) {
-        const style = {
-          labelTint: color,
-          fill: { width: 2, color: color, alpha: 0.3 },
-          // fill: { width: 2, color: color, alpha: 1, pattern: 'stripe' }
-        };
-        feature.style = style;
-        feature.label = utilDisplayName(entity);
-        feature.update(projection, zoom);
-      }
-
-      this.retainFeature(feature, frame);
     }
   }
 
@@ -383,13 +391,11 @@ const coords = geojson.coordinates;
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
         const coords = geojson.coordinates;
-
-        feature = new PixiFeatureLine(this, featureID);
-
         if (entity.tags.oneway === '-1') {
           coords.reverse();
         }
 
+        feature = new PixiFeatureLine(this, featureID);
         feature.geometry.setCoords(coords);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;

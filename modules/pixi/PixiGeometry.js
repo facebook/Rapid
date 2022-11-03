@@ -11,12 +11,12 @@ import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } 
  *
  * Properties you can access:
  *   `type`          String describing what kind of geometry this is ('point', 'line', 'polygon')
- *   `origData`      Original coordinate data (in WGS84 long/lat)
+ *   `origCoords`    Original coordinate data (in WGS84 long/lat)
  *   `origExtent`    Original extent (the bounds of the geometry)
  *   `origCentroid`  Original centroid (center of mass / rotation)
  *   `origHull`      Original convex hull
  *   `origSsr`       Original smallest surrounding rectangle
- *   `data`          Projected coordinate data
+ *   `coords`        Projected coordinate data
  *   `extent`        Projected extent
  *   `centroid`      Projected centroid, [x, y]
  *   `outer`         Projected outer ring, Array of coordinate pairs [ [x,y], [x,y], … ]
@@ -56,15 +56,17 @@ export class PixiGeometry {
    * Remove all stored data
    */
   reset() {
-    // Original data - These are in WGS84 coordinates ([0,0] is Null Island)
-    this.origData = null;       // the data!
+    // Original data - These are in WGS84 coordinates
+    // ([0,0] is Null Island)
+    this.origCoords = null;     // coordinate data
     this.origExtent = null;     // extent (bounding box)
     this.origCentroid = null;   // centroid (center of mass / rotation)
     this.origHull = null;       // convex hull
     this.origSsr = null;        // smallest surrounding rectangle
 
-    // The rest of the data is projected data in screen coordinates ([0,0] is the origin of the Pixi scene)
-    this.data = null;
+    // The rest of the data is projected data in screen coordinates
+    // ([0,0] is the origin of the Pixi scene)
+    this.coords = null;
     this.extent = null;
     this.centroid = null;
     this.hull = null;
@@ -87,14 +89,14 @@ export class PixiGeometry {
    * @param  zoom        Effective zoom to use for rendering
    */
   update(projection) {
-    if (!this.dirty || !this.origData || !this.origExtent) return;  // nothing to do
+    if (!this.dirty || !this.origCoords || !this.origExtent) return;  // nothing to do
     this.dirty = false;
 
     // Points are simple, just project once.
     if (this.type === 'point') {
-      this.data = projection.project(this.origData);
-      this.extent = new Extent(this.data);
-      this.centroid = this.data;
+      this.coords = projection.project(this.origCoords);
+      this.extent = new Extent(this.coords);
+      this.centroid = this.coords;
       this.hull = null;
       this.ssr = null;
       this.outer = null;
@@ -108,7 +110,7 @@ export class PixiGeometry {
     }
 
     // A line or a polygon.
-    this.data = null;
+    this.coords = null;
     this.extent = null;
     this.centroid = null;
     this.outer = null;
@@ -120,8 +122,9 @@ export class PixiGeometry {
 
     // First, project extent..
     this.extent = new Extent();
-    this.extent.min = projection.project(this.origExtent.min);
-    this.extent.max = projection.project(this.origExtent.max);
+    // Watch out, we can't project min/max directly. Construct topLeft, bottomRight corners and project those.
+    this.extent.min = projection.project([this.origExtent.min[0], this.origExtent.max[1]]);  // top-left
+    this.extent.max = projection.project([this.origExtent.max[0], this.origExtent.min[1]]);  // bottom-right
 
     const [minX, minY] = this.extent.min;
     const [maxX, maxY] = this.extent.max;
@@ -137,8 +140,8 @@ export class PixiGeometry {
 
     // Reproject the coordinate data..
     // Generate both normal coordinate rings and flattened rings at the same time to avoid extra iterations.
-    // Preallocate memory to avoid GC caused by excessive .push()
-    const origRings = (this.type === 'line') ? [this.origData] : this.origData;
+    // Preallocate Arrays to avoid garbage collection formerly caused by excessive Array.push()
+    const origRings = (this.type === 'line') ? [this.origCoords] : this.origCoords;
     const projRings = new Array(origRings.length);
     const projFlatRings = new Array(origRings.length);
 
@@ -157,13 +160,13 @@ export class PixiGeometry {
 
     // Assign outer and holes
     if (this.type === 'line') {
-      this.data = projRings[0];
+      this.coords = projRings[0];
       this.outer = projRings[0];
       this.flatOuter = projFlatRings[0];
       this.holes = null;
       this.flatHoles = null;
     } else {
-      this.data = projRings;
+      this.coords = projRings;
       this.outer = projRings[0];
       this.flatOuter = projFlatRings[0];
       this.holes = projRings.slice(1);
@@ -176,7 +179,7 @@ export class PixiGeometry {
       this.centroid = null;
       this.ssr = null;
 
-    } else if (this.outer.length === 1) {   // single coordinate? - shouldn't happen
+    } else if (this.outer.length === 1) {   // single coordinate? - wrong but can happen
       this.hull = null;
       this.centroid = this.outer[0];
       this.ssr = null;
@@ -203,10 +206,13 @@ export class PixiGeometry {
         this.origHull[i] = projection.invert(this.hull[i]);
       }
     }
-    if (this.ssr && this.ssr.poly) {
-      this.origSsr = new Array(this.ssr.poly.length);
-      for (let i = 0; i < this.origSsr.length; ++i) {
-        this.origSsr[i] = projection.invert(this.ssr.poly[i]);
+    if (this.ssr) {
+      this.origSsr = {
+        poly: new Array(this.ssr.poly.length),
+        angle: this.ssr.angle
+      };
+      for (let i = 0; i < this.origSsr.poly.length; ++i) {
+        this.origSsr.poly[i] = projection.invert(this.ssr.poly[i]);
       }
     }
 
@@ -237,7 +243,7 @@ export class PixiGeometry {
 
     this.reset();
     this.type = type;
-    this.origData = data;
+    this.origCoords = data;
     this.origExtent = new Extent();
 
     // Determine extent (bounds)
@@ -249,7 +255,7 @@ export class PixiGeometry {
       this.origCentroid = data;
 
     } else {
-      const origRings = (this.type === 'line') ? [this.origData] : this.origData;
+      const origRings = (this.type === 'line') ? [this.origCoords] : this.origCoords;
       for (let i = 0; i < origRings.length; ++i) {
         const origRing = origRings[i];
         for (let j = 0; j < origRing.length; ++j) {

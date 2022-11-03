@@ -8,7 +8,7 @@ import { presetManager } from '../presets';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
-import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 import { utilDisplayName } from '../util';
 import { styleMatch } from './styles';
 
@@ -33,6 +33,8 @@ export class PixiLayerOsm extends AbstractLayer {
 
     this._enabled = true;  // OSM layers should be enabled by default
     this._service = null;
+    this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
+
     this.getService();
 
     // On hover or selection, draw related vertices (above everything)
@@ -277,51 +279,60 @@ export class PixiLayerOsm extends AbstractLayer {
     const graph = this.context.graph();
 
     for (const entity of entities) {
-      const featureID = `${this.layerID}-${entity.id}-fill`;
-      let feature = this.features.get(featureID);
+      const entityVersion = (entity.v || 0);
 
-      if (feature && feature.type !== 'multipolygon') {  // if feature type has changed, recreate it
-        feature.destroy();
-        feature = null;
+      // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
+      let geojson = this._resolved.get(entity.id);
+      if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
+        geojson = null;
+      }
+      if (!geojson) {
+        geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+        geojson.v = entityVersion;
+        this._resolved.set(entity.id, geojson);
       }
 
-      if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.parentContainer = this.areaContainer;
-      }
+      const parts = (geojson.type === 'Polygon') ? [geojson.coordinates]
+        : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-      const version = (entity.v || 0);  // If data has changed, rebind
-      if (feature.v !== version) {
-        feature.v = version;
-        feature.bindData(entity, entity.id);
+      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+        const featureID = `${this.layerID}-${entity.id}-fill-${i}`;
+        let feature = this.features.get(featureID);
 
-        if (entity.type === 'relation') {
-          entity.members.forEach(member => {
-            feature.addChildData(entity.id, member.id);
-          });
+        if (feature && feature.type !== 'polygon') {  // if feature type has changed, recreate it
+          feature.destroy();
+          feature = null;
         }
+
+        if (!feature) {
+          feature = new PixiFeaturePolygon(this, featureID);
+          feature.parentContainer = this.areaContainer;
+        }
+
+        if (feature?.v !== entityVersion) {   // update coords and bound data
+          feature.v = entityVersion;
+          feature.geometry.setCoords(coords);
+          feature.bindData(entity, entity.id);
+          if (entity.type === 'relation') {
+            entity.members.forEach(member => {
+              feature.addChildData(entity.id, member.id);
+            });
+          }
+        }
+
+        this.syncFeatureClasses(feature);
+
+        if (feature.dirty) {
+          const area = entity.extent(graph).area();  // estimate area from extent for speed
+          feature.container.zIndex = -area;      // sort by area descending (small things above big things)
+
+          const style = styleMatch(entity.tags);
+          feature.style = style;
+        }
+
+        feature.update(projection, zoom);
+        this.retainFeature(feature, frame);
       }
-
-      this.syncFeatureClasses(feature);
-
-      if (feature.dirty) {
-        const area = entity.extent(graph).area();  // estimate area from extent for speed
-        feature.container.zIndex = -area;      // sort by area descending (small things above big things)
-
-        const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-//        const coords = (geojson.type === 'Polygon') ? [geojson.coordinates]
-//          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
-//bhousel multipolygons out for now
-if (geojson.type !== 'Polygon') continue;
-const coords = geojson.coordinates;
-       feature.geometry.setCoords(coords);
-
-        const style = styleMatch(entity.tags);
-        feature.style = style;
-      }
-
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
     }
   }
 
@@ -337,7 +348,97 @@ const coords = geojson.coordinates;
     const graph = this.context.graph();
     const lineContainer = this.lineContainer;
 
-    function getLevelContainer(level) {
+    for (const entity of entities) {
+      const entityVersion = (entity.v || 0);
+      const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
+      const levelContainer = _getLevelContainer(layer.toString());
+      const zindex = getzIndex(entity.tags);
+
+      // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
+      let geojson = this._resolved.get(entity.id);
+      if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
+        geojson = null;
+      }
+      if (!geojson) {
+        geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+        geojson.v = entityVersion;
+        if (geojson.type === 'LineString' && entity.tags.oneway === '-1') {
+          geojson.coordinates.reverse();
+        }
+        this._resolved.set(entity.id, geojson);
+      }
+
+      const parts = (geojson.type === 'LineString') ? [[geojson.coordinates]]
+        : (geojson.type === 'Polygon') ? [geojson.coordinates]
+        : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+
+      for (let i = 0, segments = parts[i]; i < parts.length; ++i) {
+        for (let j = 0, coords = segments[j]; j < segments.length; ++j) {
+          const featureID = `${this.layerID}-${entity.id}-${i}-${j}`;
+          let feature = this.features.get(featureID);
+
+          if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
+            feature.destroy();
+            feature = null;
+          }
+
+          if (!feature) {
+            feature = new PixiFeatureLine(this, featureID);
+          }
+
+          if (feature?.v !== entityVersion) {   // update coords and bound data
+            feature.v = entityVersion;
+            feature.geometry.setCoords(coords);
+            feature.parentContainer = levelContainer;    // Change layer stacking if necessary
+            feature.container.zIndex = zindex;
+            feature.bindData(entity, entity.id);
+
+            if (entity.type === 'relation') {
+              entity.members.forEach(member => {
+                feature.addChildData(entity.id, member.id);
+              });
+            }
+          }
+
+          this.syncFeatureClasses(feature);
+
+          if (feature.dirty) {
+            let tags = entity.tags;
+            let geom = entity.geometry(graph);
+
+            // a line no tags - try to style match the tags of its parent relation
+            if (!entity.hasInterestingTags()) {
+              const parent = graph.parentRelations(entity).find(relation => relation.isMultipolygon());
+              if (parent) {
+                tags = parent.tags;
+                geom = 'area';
+              }
+            }
+
+            const style = styleMatch(tags);
+            // Todo: handle alternating/two-way case too
+            if (geom === 'line') {
+              style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
+              style.sidedMarkerName = entity.isSided() ? 'sided' : '';
+            } else {  // an area
+              style.casing.width = 0;
+              style.stroke.color = style.fill.color;
+              style.stroke.width = 2;
+              style.stroke.alpha = 1;
+            }
+            feature.style = style;
+
+            feature.label = utilDisplayName(entity);
+          }
+
+          feature.update(projection, zoom);
+          this.retainFeature(feature, frame);
+        }
+      }
+    }
+
+
+    function _getLevelContainer(level) {
       let levelContainer = lineContainer.getChildByName(level);
       if (!levelContainer) {
         levelContainer = new PIXI.Container();
@@ -349,94 +450,6 @@ const coords = geojson.coordinates;
       return levelContainer;
     }
 
-//    function isUntaggedMultipolygonRing(entity) {
-//      if (entity.hasInterestingTags()) return false;
-//      return graph.parentRelations(entity).some(relation => relation.isMultipolygon());
-//    }
-
-
-    for (const entity of entities) {
-// skip relations, we will get their line parts separately and draw those
-if (entity.type === 'relation') continue;
-//      // Skip untagged multipolygon rings for now, renderPolygons will render them as strokes.
-//      // At some point we will want the user to be able to click on them though
-//      if (isUntaggedMultipolygonRing(entity)) return;
-
-      // Make sure this line is on the correct level container (bridge/tunnel/etc)
-//      const lvl = entity.layer().toString();
-const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
-      const levelContainer = getLevelContainer(layer.toString());
-
-      const featureID = `${this.layerID}-${entity.id}`;
-
-      let feature = this.features.get(featureID);
-
-      if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
-        feature.destroy();
-        feature = null;
-      }
-
-      if (!feature) {
-        feature = new PixiFeatureLine(this, featureID);
-      }
-
-      const version = (entity.v || 0);  // If data has changed, rebind
-      if (feature.v !== version) {
-        feature.v = version;
-        feature.bindData(entity, entity.id);
-
-        graph.childNodes(entity).forEach(node => {
-          feature.addChildData(entity.id, node.id);
-        });
-      }
-
-      this.syncFeatureClasses(feature);
-      feature.parentContainer = levelContainer;    // Change layer stacking if necessary
-
-      if (feature.dirty) {
-        feature.container.zIndex = getzIndex(entity.tags);
-        const geojson = entity.asGeoJSON(graph);
-
-const coords = (geojson.type === 'LineString') ? geojson.coordinates
-  : (geojson.type === 'Polygon') ? geojson.coordinates[0] : [];
-//  : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];
-        // const geometry = geojson.coordinates;
-        // reverse-order the points
-        if (entity.tags.oneway === '-1') {
-          coords.reverse();
-        }
-        feature.geometry.setCoords(coords);
-
-// a line no tags - try to style match the tags of its parent relation
-let tags = entity.tags;
-let geom = entity.geometry(graph);
-if (!entity.hasInterestingTags()) {
-  const parent = graph.parentRelations(entity).find(relation => relation.isMultipolygon());
-  if (parent) {
-    tags = parent.tags;
-    geom = 'area';
-  }
-}
-        const style = styleMatch(tags);
-        // Todo: handle alternating/two-way case too
-
-if (geom === 'line') {
-        style.lineMarkerName = entity.isOneWay() ? 'oneway' : '';
-        style.sidedMarkerName = entity.isSided() ? 'sided' : '';
-} else {  // an area
-  style.casing.width = 0;
-  style.stroke.color = style.fill.color;
-  style.stroke.width = 2;
-  style.stroke.alpha = 1;
-}
-        feature.style = style;
-
-        feature.label = utilDisplayName(entity);
-      }
-
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
-    }
   }
 
 

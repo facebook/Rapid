@@ -1,6 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { Extent } from '@id-sdk/math';
-
 import { PixiGeometry } from './PixiGeometry';
 
 
@@ -10,7 +8,7 @@ import { PixiGeometry } from './PixiGeometry';
  *
  * Properties you can access:
  *   `id`               Unique string to use for the name of this Feature
- *   `type`             String describing what kind of Feature this is ('point', 'line', 'multipolygon')
+ *   `type`             String describing what kind of Feature this is ('point', 'line', 'polygon')
  *   `container`        PIXI.Container() that contains all the graphics needed to draw the Feature
  *   `parentContainer`  PIXI.Container() for the parent - this Feature's container will be added to it.
  *   `geometry`         PixiGeometry() class containing all the information about the geometry
@@ -26,7 +24,6 @@ import { PixiGeometry } from './PixiGeometry';
  *   `v`                Version of the Feature, can be used to detect changes
  *   `lod`              Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
  *   `halo`             A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
- *   `extent`           Bounds of the Feature (in WGS84 long/lat)
  *   `localBounds`      PIXI.Rectangle() where 0,0 is the origin of the Feature
  *   `sceneBounds`      PIXI.Rectangle() where 0,0 is the origin of the scane
  */
@@ -76,7 +73,6 @@ export class AbstractFeature {
 
     // We will manage our own bounds for now because we can probably do this
     // faster than Pixi's built in bounds calculations.
-    this.extent = new Extent();                // in WGS84 coordinates ([0,0] is null island)
     this.localBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the object
     this.sceneBounds = new PIXI.Rectangle();   // where 0,0 is the origin of the scene
 
@@ -117,7 +113,6 @@ export class AbstractFeature {
     this._label = null;
     this._data = null;
 
-    this.extent = null;
     this.localBounds = null;
     this.sceneBounds = null;
   }
@@ -257,7 +252,7 @@ export class AbstractFeature {
    * @param  obj  Style `Object` (contents depends on the Feature type)
    *
    * 'point' - see AbstractFeaturePoint.js
-   * 'line'/'multipolygon' - see styles.js
+   * 'line'/'polygon' - see styles.js
    */
   get style() {
     return this._style;

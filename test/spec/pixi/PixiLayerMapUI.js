@@ -1,4 +1,4 @@
-describe('iD.pixiMapUILayer', () => {
+describe('PixiLayerMapUI', () => {
   let context, container, map;
 
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe('iD.pixiMapUILayer', () => {
     map = context.map();
     map.render(container);
   });
- 
+
   afterEach(() => { container.remove(); });
 
   it('is part of the pixi layers', () => {

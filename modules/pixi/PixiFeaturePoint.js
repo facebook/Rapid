@@ -108,12 +108,12 @@ export class PixiFeaturePoint extends AbstractFeature {
     // Reproject
     this.geometry.update(projection, zoom);
 
-    const [x, y] = this.geometry.data;
+    const [x, y] = this.geometry.coords;
     this.container.position.set(x, y);
 
     // sort markers by latitude ascending
     // sort markers with viewfields above markers without viewfields
-    const z = -this.geometry.origData[1];  // latitude
+    const z = -this.geometry.origCoords[1];  // latitude
     this.container.zIndex = (this._oldvfLength > 0) ? (z + 1000) : z;
   }
 
@@ -134,7 +134,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     const viewfields = this.viewfields;
     const marker = this.marker;
     const icon = this.icon;
-    const latitude = this.geometry.origData[1];
+    const latitude = this.geometry.origCoords[1];
 
     //
     // Update marker style
@@ -316,7 +316,7 @@ export class PixiFeaturePoint extends AbstractFeature {
    * @param  obj  Style `Object` (contents depends on the Feature type)
    *
    * 'point' - see PixiFeaturePoint.js
-   * 'line'/'multipolygon' - see styles.js
+   * 'line'/'polygon' - see styles.js
    */
   get style() {
     return this._style;

@@ -7,7 +7,7 @@ import { gpx, kml } from '@tmcw/togeojson';
 import { Extent, geomPolygonIntersectsPolygon } from '@id-sdk/math';
 import { utilArrayFlatten, utilArrayUnion, utilHashcode, utilStringQs } from '@id-sdk/util';
 import { services } from '../services';
-import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
@@ -98,18 +98,6 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-  featureKey(d) {
-    return d.__featurehash__;
-  }
-
-  isLine(d) {
-    return d.geometry.type === 'LineString';
-  }
-
-  isPoint(d) {
-    return d.geometry.type === 'Point';
-  }
-
   isPolygon(d) {
     return d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon';
   }
@@ -159,7 +147,11 @@ export class PixiLayerCustomData extends AbstractLayer {
   }
 
 
-  hasData () {
+  /**
+   * hasData
+   * @return true if either there is a custom datafile loaded, or a vector tile template set.
+   */
+  hasData() {
     const gj = this._geojson || {};
     return !!(this._template || Object.keys(gj).length);
   }
@@ -195,7 +187,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderCustomData(frame, projection, zoom) {
-    // Gather data
     let geoData, polygons, lines, points;
     if (this._template && this.vtService) {   // fetch data from vector tile service
       var sourceID = this._template;
@@ -206,9 +197,9 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
 
     if (this.hasData()) {
-      polygons = geoData.filter(this.isPolygon);
-      lines = geoData.filter(this.isLine);
-      points = geoData.filter(this.isPoint);
+      polygons = geoData.filter(d => d.geometry.type === 'Polygon' || d.geometry.type === 'MultiPolygon');
+      lines = geoData.filter(d => d.geometry.type === 'LineString' || d.geometry.type === 'MultiLineString');
+      points = geoData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
       this.renderPolygons(frame, projection, zoom, polygons);
       this.renderLines(frame, projection, zoom, lines);
@@ -232,23 +223,25 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     for (const d of polygons) {
-      const featureID = `${this.layerID}-${d.id}`;
-      let feature = this.features.get(featureID);
-
-      const coords = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
+      const parts = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
-      if (!feature) {
-        feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.geometry.setCoords(coords);
-        feature.style = POLY_STYLE;
-        feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
-      }
+      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+        const featureID = `${this.layerID}-${d.id}-${i}`;
+        let feature = this.features.get(featureID);
 
-      this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
+        if (!feature) {
+          feature = new PixiFeaturePolygon(this, featureID);
+          feature.geometry.setCoords(coords);
+          feature.style = POLY_STYLE;
+          feature.parentContainer = parentContainer;
+          feature.bindData(d, d.id);
+        }
+
+        this.syncFeatureClasses(feature);
+        feature.update(projection, zoom);
+        this.retainFeature(feature, frame);
+      }
     }
   }
 
@@ -267,20 +260,25 @@ export class PixiLayerCustomData extends AbstractLayer {
     };
 
     for (const d of lines) {
-      const featureID = `${this.layerID}-${d.id}`;
-      let feature = this.features.get(featureID);
+      const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
+        : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
 
-      if (!feature) {
-        feature = new PixiFeatureLine(this, featureID);
-        feature.geometry.setCoords(d.geometry.coordinates);
-        feature.style = LINE_STYLE;
-        feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
+      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+        const featureID = `${this.layerID}-${d.id}-${i}`;
+        let feature = this.features.get(featureID);
+
+        if (!feature) {
+          feature = new PixiFeatureLine(this, featureID);
+          feature.geometry.setCoords(coords);
+          feature.style = LINE_STYLE;
+          feature.parentContainer = parentContainer;
+          feature.bindData(d, d.id);
+        }
+
+        this.syncFeatureClasses(feature);
+        feature.update(projection, zoom);
+        this.retainFeature(feature, frame);
       }
-
-      this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
     }
   }
 
@@ -297,20 +295,25 @@ export class PixiLayerCustomData extends AbstractLayer {
     const POINT_STYLE = { markerTint: 0x00ffff };
 
     for (const d of points) {
-      const featureID = `${this.layerID}-${d.id}`;
-      let feature = this.features.get(featureID);
+      const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
+        : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
-      if (!feature) {
-        feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry.setCoords([d.geometry.coordinates[0], d.geometry.coordinates[1]]);  // omit elevation or other data.
-        feature.style = POINT_STYLE;
-        feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
+      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+        const featureID = `${this.layerID}-${d.id}-${i}`;
+        let feature = this.features.get(featureID);
+
+        if (!feature) {
+          feature = new PixiFeaturePoint(this, featureID);
+          feature.geometry.setCoords(coords);
+          feature.style = POINT_STYLE;
+          feature.parentContainer = parentContainer;
+          feature.bindData(d, d.id);
+        }
+
+        this.syncFeatureClasses(feature);
+        feature.update(projection, zoom);
+        this.retainFeature(feature, frame);
       }
-
-      this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
     }
   }
 

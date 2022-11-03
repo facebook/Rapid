@@ -9,21 +9,21 @@ const PARTIALFILLWIDTH = 32;
 
 
 /**
- * PixiFeatureMultipolygon
+ * PixiFeaturePolygon
  *
  * Properties you can access:
  *   `geometry`   PixiGeometry() class containing all the information about the geometry
  *   `style`      Object containing styling data
- *   `container`  PIXI.Container containing the display objects used to draw the multipolygon
+ *   `container`  PIXI.Container containing the display objects used to draw the polygon
  *   `lowRes`     PIXI.Sprite for a replacement graphic to display at low resolution
  *   `fill`       PIXI.Graphic for the fill (below)
  *   `stroke`     PIXI.Graphic for the stroke (above)
  *   `mask`       PIXI.Mesh for the mask (applied to fill)
- *   `ssrdata`    Object containing SSR data (computed one time for simple polygons)
+ *   `_ssrdata`    Object containing SSR data (computed one time for simple polygons)
  *
  *   (also all properties inherited from `AbstractFeature`)
  */
-export class PixiFeatureMultipolygon extends AbstractFeature {
+export class PixiFeaturePolygon extends AbstractFeature {
 
   /**
    * @constructor
@@ -33,8 +33,8 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
   constructor(layer, featureID) {
     super(layer, featureID);
 
-    this.type = 'multipolygon';
-    this.ssrdata = null;
+    this.type = 'polygon';
+    this._ssrdata = null;
 
     const lowRes = new PIXI.Sprite();
     lowRes.name = 'lowRes';
@@ -82,7 +82,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
    */
   destroy() {
     super.destroy();
-    this.ssrdata = null;
+    this._ssrdata = null;
     this.lowRes = null;
     this.fill = null;
     this.mask = null;
@@ -98,7 +98,6 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     if (!this.dirty) return;  // nothing to do
 
     const wireframeMode = this.context.map().wireframeMode;
-    // For now, if either geometry or style is dirty, we just update the whole multipolygon
 
     //
     // GEOMETRY
@@ -107,56 +106,52 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
     if (this.geometry.dirty) {
       this.geometry.update(projection, zoom);
 
-      // redo ssr
-      this.ssrdata = null;
+      // redo ssr (move more of this into PixiGeometry later)
+      this._ssrdata = null;
 
-      // Calculate Smallest Surrounding Rectangle (SSR):
-      // If this is a simple polygon (no multiple outers), perform a one-time
-      // calculation SSR to use as a replacement geometry at low zooms.
-      if (this.geometry.ssr) {
-        let ssr = this.geometry.ssr;
-        if (ssr && ssr.poly) {
-          // Calculate axes of symmetry to determine width, height
-          // The shape's surrounding rectangle has 2 axes of symmetry.
-          //
-          //       1
-          //   p1 /\              p1 = midpoint of poly[0]-poly[1]
-          //     /\ \ q2          q1 = midpoint of poly[2]-poly[3]
-          //   0 \ \/\
-          //      \/\ \ 2         p2 = midpoint of poly[3]-poly[0]
-          //    p2 \ \/           q2 = midpoint of poly[1]-poly[2]
-          //        \/ q1
-          //        3
+      // We use the SSR to approximate a low resolution polygon at low zooms
+      if (this.geometry.ssr?.poly) {
+        // Calculate axes of symmetry to determine width, height
+        // The shape's surrounding rectangle has 2 axes of symmetry.
+        //
+        //       1
+        //   p1 /\              p1 = midpoint of poly[0]-poly[1]
+        //     /\ \ q2          q1 = midpoint of poly[2]-poly[3]
+        //   0 \ \/\
+        //      \/\ \ 2         p2 = midpoint of poly[3]-poly[0]
+        //    p2 \ \/           q2 = midpoint of poly[1]-poly[2]
+        //        \/ q1
+        //        3
 
-          const p1 = [(ssr.poly[0][0] + ssr.poly[1][0]) / 2, (ssr.poly[0][1] + ssr.poly[1][1]) / 2 ];
-          const q1 = [(ssr.poly[2][0] + ssr.poly[3][0]) / 2, (ssr.poly[2][1] + ssr.poly[3][1]) / 2 ];
-          const p2 = [(ssr.poly[3][0] + ssr.poly[0][0]) / 2, (ssr.poly[3][1] + ssr.poly[0][1]) / 2 ];
-          const q2 = [(ssr.poly[1][0] + ssr.poly[2][0]) / 2, (ssr.poly[1][1] + ssr.poly[2][1]) / 2 ];
-          const axis1 = [p1, q1];
-          const axis2 = [p2, q2];
-          const center = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
+        const poly = this.geometry.ssr.poly;
+        const p1 = [(poly[0][0] + poly[1][0]) / 2, (poly[0][1] + poly[1][1]) / 2 ];
+        const q1 = [(poly[2][0] + poly[3][0]) / 2, (poly[2][1] + poly[3][1]) / 2 ];
+        const p2 = [(poly[3][0] + poly[0][0]) / 2, (poly[3][1] + poly[0][1]) / 2 ];
+        const q2 = [(poly[1][0] + poly[2][0]) / 2, (poly[1][1] + poly[2][1]) / 2 ];
+        const axis1 = [p1, q1];
+        const axis2 = [p2, q2];
+        const center = [ (p1[0] + q1[0]) / 2, (p1[1] + q1[1]) / 2 ];
 
-          // Pick an appropriate lowRes sprite for this shape
-          // Are the SSR corners part of the shape?
-          const EPSILON = 0.1;
-          let c0in, c1in, c2in, c3in;
-          this.geometry.outer.forEach(point => {
-            if (!c0in) c0in = vecEqual(point, ssr.poly[0], EPSILON);
-            if (!c1in) c1in = vecEqual(point, ssr.poly[1], EPSILON);
-            if (!c2in) c2in = vecEqual(point, ssr.poly[2], EPSILON);
-            if (!c3in) c3in = vecEqual(point, ssr.poly[3], EPSILON);
-          });
-          const cornersInSSR = c0in || c1in || c2in || c3in;
+        // Pick an appropriate lowRes sprite for this shape
+        // Are the SSR corners part of the shape?
+        const EPSILON = 0.1;
+        let c0in, c1in, c2in, c3in;
+        this.geometry.outer.forEach(point => {
+          if (!c0in) c0in = vecEqual(point, poly[0], EPSILON);
+          if (!c1in) c1in = vecEqual(point, poly[1], EPSILON);
+          if (!c2in) c2in = vecEqual(point, poly[2], EPSILON);
+          if (!c3in) c3in = vecEqual(point, poly[3], EPSILON);
+        });
+        const cornersInSSR = c0in || c1in || c2in || c3in;
 
-          this.ssrdata = {
-            angle: ssr.angle,
-            origSsr: this.geometry.origSsr,
-            axis1: axis1.map(coord => projection.invert(coord)),
-            axis2: axis2.map(coord => projection.invert(coord)),
-            center: projection.invert(center),
-            shapeType: (cornersInSSR ? 'square' : 'circle')
-          };
-        }
+        this._ssrdata = {
+          ssr: this.geometry.ssr,
+          origSsr: this.geometry.origSsr,
+          origAxis1: axis1.map(coord => projection.invert(coord)),
+          origAxis2: axis2.map(coord => projection.invert(coord)),
+          origCenter: projection.invert(center),
+          shapeType: (cornersInSSR ? 'square' : 'circle')
+        };
       }
     }
 
@@ -174,21 +169,21 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 
 //    // Project the ssr polygon too, for use as a halo
 //    // Add some padding too
-//    if (this.ssrdata) {
+//    if (this._ssrdata) {
 //      const PADDING = 8;  // in pixels
-//      const center = projection.project(this.ssrdata.center);
-//      let coords = this.ssrdata.origSsr.map(coord => projection.project(coord));
+//      const center = projection.project(this._ssrdata.center);
+//      let coords = this._ssrdata.origSsr.map(coord => projection.project(coord));
 //
 //      coords = coords.map(coord => vecSubtract(coord, center));     // to local coords
-//      coords = geomRotatePoints(coords, -this.ssrdata.angle, [0,0]);  // rotate to x axis
+//      coords = geomRotatePoints(coords, -this._ssrdata.angle, [0,0]);  // rotate to x axis
 //      coords = coords.map(([x,y]) => {
 //        const x2 = (x > 0) ? (x + PADDING) : (x < 0) ? (x - PADDING) : x;
 //        const y2 = (y > 0) ? (y + PADDING) : (y < 0) ? (y - PADDING) : y;
 //        return [x2, y2];
 //      });
 //
-//      this.ssrdata.haloCenter = new PIXI.Point(center[0], center[1]);
-//      this.ssrdata.haloPolygon = new PIXI.Polygon(coords.map(([x,y]) => new PIXI.Point(x, y)));
+//      this._ssrdata.haloCenter = new PIXI.Point(center[0], center[1]);
+//      this._ssrdata.haloPolygon = new PIXI.Polygon(coords.map(([x,y]) => new PIXI.Point(x, y)));
 //    }
 
 
@@ -234,10 +229,10 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
       this.lowRes.visible = false;
 
     // Very small, swap with lowRes sprite
-    } else if (this.ssrdata && (w < 20 && h < 20)) {
+    } else if (this._ssrdata && (w < 20 && h < 20)) {
       this.lod = 1;  // simplified
       this.visible = true;
-      const ssrdata = this.ssrdata;
+      const ssrdata = this._ssrdata;
       this.fill.visible = false;
 //      this.stroke.visible = false;
       this.mask.visible = false;
@@ -245,16 +240,17 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 
       const filling = wireframeMode ? '-unfilled' : '';
       const textureName = `lowres${filling}-${ssrdata.shapeType}`;
-      const [x, y] = projection.project(ssrdata.center);
-      const axis1 = ssrdata.axis1.map(coord => projection.project(coord));
-      const axis2 = ssrdata.axis2.map(coord => projection.project(coord));
+      const [x, y] = projection.project(ssrdata.origCenter);
+      const rotation = ssrdata.ssr.angle;
+      const axis1 = ssrdata.origAxis1.map(coord => projection.project(coord));
+      const axis2 = ssrdata.origAxis2.map(coord => projection.project(coord));
       const w = vecLength(axis1[0], axis1[1]);
       const h = vecLength(axis2[0], axis2[1]);
 
       this.lowRes.texture = textures.get(textureName) || PIXI.Texture.WHITE;
       this.lowRes.position.set(x, y);
       this.lowRes.scale.set(w / 10, h / 10);   // our sprite is 10x10
-      this.lowRes.rotation = ssrdata.angle;
+      this.lowRes.rotation = rotation;
       this.lowRes.tint = color;
 
     } else {
@@ -352,9 +348,9 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 
 
 // experiment
-// Show/Hide halo (requires `this.ssrdata.polygon` to be already set up as a PIXI.Polygon)
+// Show/Hide halo (requires `this._ssrdata.polygon` to be already set up as a PIXI.Polygon)
   updateHalo() {
-//    if (this.ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
+//    if (this._ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
 //      if (!this.halo) {
 //        this.halo = new PIXI.Graphics();
 //        this.halo.name = `${this.id}-halo`;
@@ -370,9 +366,9 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
 //      };
 //
 //      this.halo.clear();
-//      new DashLine(this.halo, HALO_STYLE).drawPolygon(this.ssrdata.haloPolygon.points);
-//      this.halo.position = this.ssrdata.haloCenter;
-//      this.halo.rotation = this.ssrdata.angle;
+//      new DashLine(this.halo, HALO_STYLE).drawPolygon(this._ssrdata.haloPolygon.points);
+//      this.halo.position = this._ssrdata.haloCenter;
+//      this.halo.rotation = this._ssrdata.ssr.angle;
 //
 //    } else {
 //      if (this.halo) {
@@ -389,7 +385,7 @@ export class PixiFeatureMultipolygon extends AbstractFeature {
    * @param  obj  Style `Object` (contents depends on the Feature type)
    *
    * 'point' - see PixiFeaturePoint.js
-   * 'line'/'multipolygon' - see styles.js
+   * 'line'/'polygon' - see styles.js
    */
   get style() {
     return this._style;

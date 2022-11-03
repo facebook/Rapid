@@ -338,7 +338,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * @param  features  The features to place point labels on
    */
   placePointLabels(features) {
-    features.sort((a, b) => b.geometry.origData[1] - a.geometry.origData[1]);
+    features.sort((a, b) => b.geometry.origCoords[1] - a.geometry.origCoords[1]);
 
     for (const feature of features) {
       if (this._labelBoxes.has(feature.id)) continue;  // processed it already
@@ -531,7 +531,7 @@ export class PixiLayerLabels extends AbstractLayer {
    * @param  labelObj  a PIXI.Sprite to use as the label
    */
   placeLineLabel(feature, labelObj) {
-    if (!feature || !feature.geometry.data) return;
+    if (!feature || !feature.geometry.coords) return;
 
     const dObj = feature.container;
     if (!dObj.visible || !dObj.renderable) return;
@@ -563,7 +563,7 @@ export class PixiLayerLabels extends AbstractLayer {
     const maxChainLength = numBoxes + 15;
 
     // Cover the line in bounding boxes
-    const segments = getLineSegments(feature.geometry.data, boxsize);
+    const segments = getLineSegments(feature.geometry.coords, boxsize);
 
     let boxes = [];
     let candidates = [];

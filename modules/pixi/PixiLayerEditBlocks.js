@@ -1,5 +1,5 @@
 import { AbstractLayer } from './AbstractLayer';
-import { PixiFeatureMultipolygon } from './PixiFeatureMultipolygon';
+import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 import { locationManager } from '../core/LocationManager';
 
 const MINZOOM = 4;
@@ -90,33 +90,35 @@ export class PixiLayerEditBlocks extends AbstractLayer {
    */
   renderEditBlocks(frame, projection, zoom, blocks) {
     const parentContainer = this.scene.groups.get('blocks');
+    const BLOCK_STYLE = {
+      requireFill: true,    // no partial fill option - must fill fully
+      fill: { pattern: 'construction', color: 0x000001, alpha: 0.7 }
+    };
 
     for (const d of blocks) {
-      const featureID = `${this.layerID}-${d.locationSetID}`;
-      let feature = this.features.get(featureID);
+      const geometry = locationManager.feature(d.locationSetID).geometry;  // get GeoJSON
+      if (!geometry) continue;
 
-      if (!feature) {
-        const geojson = locationManager.feature(featureID).geometry;
-        const coords = (geojson.type === 'Polygon') ? [geojson.coordinates]
-          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+      const parts = (geometry.type === 'Polygon') ? [geometry.coordinates]
+        : (geometry.type === 'MultiPolygon') ? geometry.coordinates : [];
 
-        const BLOCK_STYLE = {
-          requireFill: true,    // no partial fill option - must fill fully
-          fill: { pattern: 'construction', color: 0x000001, alpha: 0.7 }
-        };
+      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+        const featureID = `${this.layerID}-${d.locationSetID}-${i}`;
+        let feature = this.features.get(featureID);
 
-        feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.geometry.setCoords(coords);
-        feature.style = BLOCK_STYLE;
-        feature.parentContainer = parentContainer;
-        feature.container.cursor = 'not-allowed';
-        feature.bindData(d, d.locationSetID);
+        if (!feature) {
+          feature = new PixiFeaturePolygon(this, featureID);
+          feature.geometry.setCoords(coords);
+          feature.style = BLOCK_STYLE;
+          feature.parentContainer = parentContainer;
+          feature.container.cursor = 'not-allowed';
+          feature.bindData(d, d.locationSetID);
+        }
+
+        this.syncFeatureClasses(feature);
+        feature.update(projection, zoom);
+        this.retainFeature(feature, frame);
       }
-
-      this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
     }
-
   }
 }

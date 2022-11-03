@@ -161,7 +161,7 @@ export class PixiFeatureLine extends AbstractFeature {
         lineMarkers.removeChildren();
 
         if (oneway) {
-          const segments = getLineSegments(this.geometry.data, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
+          const segments = getLineSegments(this.geometry.coords, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
@@ -181,7 +181,7 @@ export class PixiFeatureLine extends AbstractFeature {
         }
 
         if (sided) {
-          const segments = getLineSegments(this.geometry.data, SIDED_SPACING, true, true);  /* sided = true, limited = true */
+          const segments = getLineSegments(this.geometry.coords, SIDED_SPACING, true, true);  /* sided = true, limited = true */
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
@@ -208,10 +208,10 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
     if (this.casing.renderable) {
-      updateGraphic('casing', this.casing, this.geometry.data, style, wireframeMode);
+      updateGraphic('casing', this.casing, this.geometry.coords, style, wireframeMode);
     }
     if (this.stroke.renderable) {
-      updateGraphic('stroke', this.stroke, this.geometry.data, style, wireframeMode);
+      updateGraphic('stroke', this.stroke, this.geometry.coords, style, wireframeMode);
     }
 
     this.updateHalo();
@@ -271,7 +271,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 // experiment
   updateHitArea() {
-    if (!this.visible || !this.geometry.data) return;
+    if (!this.visible || !this.geometry.coords) return;
 
     const hitWidth = Math.max(3, this._style.casing.width || 0);
     const hitStyle = {
@@ -283,7 +283,7 @@ export class PixiFeatureLine extends AbstractFeature {
       cap: PIXI.LINE_CAP.BUTT
     };
 
-    this._bufferdata = lineToPoly(this.geometry.data, hitStyle);
+    this._bufferdata = lineToPoly(this.geometry.coords, hitStyle);
     this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 

@@ -4,7 +4,6 @@ import { geoMetersToLon } from '@id-sdk/math';
 import { AbstractLayer } from './AbstractLayer';
 
 
-
 /**
  * PixiLayerMapUI
  * This class contains any UI elements to be 'drawn over' the map.
