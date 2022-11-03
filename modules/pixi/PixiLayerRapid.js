@@ -346,7 +346,11 @@ export class PixiLayerRapid extends AbstractLayer {
 
         if (!feature) {
           feature = new PixiFeaturePolygon(this, featureID);
+
           feature.geometry.setCoords(coords);
+          const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
+          feature.container.zIndex = -area;      // sort by area descending (small things above big things)
+
           feature.parentContainer = parentContainer;
           feature.rapidFeature = true;
           feature.bindData(entity, entity.id);

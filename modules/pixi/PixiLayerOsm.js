@@ -311,7 +311,11 @@ export class PixiLayerOsm extends AbstractLayer {
 
         if (feature?.v !== entityVersion) {   // update coords and bound data
           feature.v = entityVersion;
+
           feature.geometry.setCoords(coords);
+          const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
+          feature.container.zIndex = -area;      // sort by area descending (small things above big things)
+
           feature.bindData(entity, entity.id);
           if (entity.type === 'relation') {
             entity.members.forEach(member => {
@@ -323,9 +327,6 @@ export class PixiLayerOsm extends AbstractLayer {
         this.syncFeatureClasses(feature);
 
         if (feature.dirty) {
-          const area = entity.extent(graph).area();  // estimate area from extent for speed
-          feature.container.zIndex = -area;      // sort by area descending (small things above big things)
-
           const style = styleMatch(entity.tags);
           feature.style = style;
         }
