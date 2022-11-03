@@ -270,7 +270,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 // experiment
   updateHitArea() {
-    if (!this.visible || !this.geometry.coords) return;
+    if (/*!this.visible ||*/ !this.geometry.coords) return;
 
     const hitWidth = Math.max(3, this._style.casing.width || 0);
     const hitStyle = {
