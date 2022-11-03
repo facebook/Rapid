@@ -309,9 +309,12 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
-          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
-        feature.geometry = geometry;
+//        const coords = (geojson.type === 'Polygon') ? [geojson.coordinates]
+//          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+//bhousel multipolygons out for now
+if (geojson.type !== 'Polygon') continue;
+const coords = geojson.coordinates;
+       feature.geometry.setCoords(coords);
 
         const style = styleMatch(entity.tags);
         feature.style = style;
@@ -394,15 +397,15 @@ const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
         feature.container.zIndex = getzIndex(entity.tags);
         const geojson = entity.asGeoJSON(graph);
 
-const geometry = (geojson.type === 'LineString') ? geojson.coordinates
+const coords = (geojson.type === 'LineString') ? geojson.coordinates
   : (geojson.type === 'Polygon') ? geojson.coordinates[0] : [];
 //  : (geojson.type === 'MultiPolygon') ? geojson.coordinates[0][0] : [];
         // const geometry = geojson.coordinates;
         // reverse-order the points
         if (entity.tags.oneway === '-1') {
-          geometry.reverse();
+          coords.reverse();
         }
-        feature.geometry = geometry;
+        feature.geometry.setCoords(coords);
 
 // a line no tags - try to style match the tags of its parent relation
 let tags = entity.tags;
@@ -492,7 +495,7 @@ if (geom === 'line') {
       feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
       if (feature.dirty) {
-        feature.geometry = node.loc;
+        feature.geometry.setCoords(node.loc);
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
@@ -571,7 +574,7 @@ if (geom === 'line') {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        feature.geometry = node.loc;
+        feature.geometry.setCoords(node.loc);
 
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
@@ -695,7 +698,7 @@ if (geom === 'line') {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        feature.geometry = midpoint.loc;
+        feature.geometry.setCoords(midpoint.loc);
         feature.container.rotation = midpoint.rot;  // remember to apply rotation
       }
 

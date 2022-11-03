@@ -9,7 +9,7 @@ import { getIconTexture } from './helpers';
  * PixiFeaturePoint
  *
  * Properties you can access:
- *   `geometry`    Single wgs84 coordinate [lon, lat]
+ *   `geometry`    PixiGeometry() class containing all the information about the geometry
  *   `style`       Object containing styling data
  *   `container`   PIXI.Container containing the display objects used to draw the point
  *   `viewfields`  PIXI.Container that contains viewfields
@@ -81,7 +81,7 @@ export class PixiFeaturePoint extends AbstractFeature {
   update(projection, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    this.updateGeometry(projection);
+    this.updateGeometry(projection, zoom);
     this.updateStyle(zoom);
 
     // Recalculate local and scene bounds
@@ -100,20 +100,21 @@ export class PixiFeaturePoint extends AbstractFeature {
   /**
    * updateGeometry
    * @param  projection   Pixi projection to use for rendering
+   * @param  zoom        Effective zoom to use for rendering
    */
-  updateGeometry(projection) {
-    if (!this._geometryDirty) return;
+  updateGeometry(projection, zoom) {
+    if (!this.geometry.dirty) return;
 
     // Reproject
-    const [x, y] = projection.project(this._geometry);
+    this.geometry.update(projection, zoom);
+
+    const [x, y] = this.geometry.data;
     this.container.position.set(x, y);
 
     // sort markers by latitude ascending
     // sort markers with viewfields above markers without viewfields
-    const z = -this._geometry[1];
+    const z = -this.geometry.origData[1];  // latitude
     this.container.zIndex = (this._oldvfLength > 0) ? (z + 1000) : z;
-
-    this._geometryDirty = false;
   }
 
 
@@ -133,6 +134,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     const viewfields = this.viewfields;
     const marker = this.marker;
     const icon = this.icon;
+    const latitude = this.geometry.origData[1];
 
     //
     // Update marker style
@@ -148,7 +150,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
 
       // sort markers with viewfields above markers without viewfields
-      this.container.zIndex = -this._geometry[1] + 1000;
+      this.container.zIndex = -latitude + 1000;
 
       // If # of viewfields has changed from before, replace them.
       if (vfAngles.length !== this._oldvfLength) {
@@ -173,7 +175,7 @@ export class PixiFeaturePoint extends AbstractFeature {
       viewfields.visible = true;
 
     } else {  // No viewfields
-      this.container.zIndex = -this._geometry[1];   // restore default marker sorting
+      this.container.zIndex = -latitude;   // restore default marker sorting
       viewfields.removeChildren();
       viewfields.visible = false;
     }
@@ -306,25 +308,6 @@ export class PixiFeaturePoint extends AbstractFeature {
         this.halo = null;
       }
     }
-  }
-
-
-  /**
-   * geometry
-   * @param  arr  Geometry `Array` (contents depends on the Feature type)
-   *
-   * 'point' - Single wgs84 coordinate
-   *    [lon, lat]
-   */
-  get geometry() {
-    return this._geometry;
-  }
-  set geometry(arr) {
-    this.extent.min = arr;
-    this.extent.max = arr;
-
-    this._geometry = arr;
-    this._geometryDirty = true;
   }
 
 

@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js';
 import { Extent } from '@id-sdk/math';
 
+import { PixiGeometry } from './PixiGeometry';
+
 
 /**
  * AbstractFeature is the base class from which all Features inherit.
@@ -11,7 +13,7 @@ import { Extent } from '@id-sdk/math';
  *   `type`             String describing what kind of Feature this is ('point', 'line', 'multipolygon')
  *   `container`        PIXI.Container() that contains all the graphics needed to draw the Feature
  *   `parentContainer`  PIXI.Container() for the parent - this Feature's container will be added to it.
- *   `geometry`         Array containing geometry info
+ *   `geometry`         PixiGeometry() class containing all the information about the geometry
  *   `style`            Object containing style info
  *   `label`            String containing the Feature's label (if any)
  *   `data`             Data bound to this Feature (like `__data__` from the D3.js days)
@@ -60,8 +62,7 @@ export class AbstractFeature {
     this.lod = 2;   // full detail
     this.halo = null;
 
-    this._geometry = null;
-    this._geometryDirty = true;
+    this.geometry = new PixiGeometry();
     this._style = null;
     this._styleDirty = true;
     this._label = null;
@@ -110,7 +111,8 @@ export class AbstractFeature {
       this.halo = null;
     }
 
-    this._geometry = null;
+    this.geometry.destroy();
+    this.geometry = null;
     this._style = null;
     this._label = null;
     this._data = null;
@@ -130,10 +132,10 @@ export class AbstractFeature {
    * @param  projection  Pixi projection to use for rendering
    * @param  zoom        Effective zoom to use for rendering
    */
-  update() {
+  update(projection, zoom) {
     if (!this.dirty) return;  // nothing to do
 
-    this._geometryDirty = false;
+    this.geometry.update(projection, zoom);
     this._styleDirty = false;
     // The labeling code will decide what to do with the `_labelDirty` flag
   }
@@ -200,10 +202,10 @@ export class AbstractFeature {
    */
   get dirty() {
     // The labeling code will decide what to do with the `_labelDirty` flag
-    return this._geometryDirty || this._styleDirty;
+    return this.geometry.dirty || this._styleDirty;
   }
   set dirty(val) {
-    this._geometryDirty = val;
+    this.geometry.dirty = val;
     this._styleDirty = val;
     this._labelDirty = val;
   }
@@ -247,39 +249,6 @@ export class AbstractFeature {
     if (val === this._drawing) return;  // no change
     this._drawing = val;
     this._styleDirty = true;
-  }
-
-  /**
-   * geometry
-   * @param  arr  Geometry `Array` (contents depends on the Feature type)
-   *
-   * 'point' - Single wgs84 coordinate
-   *    [lon, lat]
-   *
-   * 'line' - Array of coordinates
-   *    [ [lon, lat], [lon, lat],  … ]
-   *
-   * 'multipolygon' - Array of Arrays of Arrays
-   *   [
-   *     [                                  // polygon 1
-   *       [ [lon, lat], [lon, lat], … ],   // outer ring
-   *       [ [lon, lat], [lon, lat], … ],   // inner rings
-   *       …
-   *     ],
-   *     [                                  // polygon 2
-   *       [ [lon, lat], [lon, lat], … ],   // outer ring
-   *       [ [lon, lat], [lon, lat], … ],   // inner rings
-   *       …
-   *     ],
-   *     …
-   *   ]
-   */
-  get geometry() {
-    return this._geometry;
-  }
-  set geometry(arr) {
-    this._geometry = arr;
-    this._geometryDirty = true;
   }
 
 

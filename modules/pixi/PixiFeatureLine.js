@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
-import { Extent } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
 import { getLineSegments, lineToPolygon, lineToPoly } from './helpers';
@@ -13,7 +12,7 @@ const SIDED_SPACING = 30;
  * PixiFeatureLine
  *
  * Properties you can access:
- *   `geometry`   Array of wgs84 coordinates [lon, lat]
+ *   `geometry`   PixiGeometry() class containing all the information about the geometry
  *   `points`     Array of projected points in scene coordinates
  *   `style`      Object containing styling data
  *   `container`  PIXI.Container containing the display objects used to draw the line
@@ -33,7 +32,6 @@ export class PixiFeatureLine extends AbstractFeature {
     super(layer, featureID);
 
     this.type = 'line';
-    this.points = [];
 
     const casing = new PIXI.Graphics();
     casing.name = 'casing';
@@ -60,7 +58,6 @@ export class PixiFeatureLine extends AbstractFeature {
    */
   destroy() {
     super.destroy();
-    this.points = null;
     this.casing = null;
     this.stroke = null;
 
@@ -90,26 +87,12 @@ export class PixiFeatureLine extends AbstractFeature {
     //
     // GEOMETRY
     //
-    if (this._geometryDirty) {
-      // Reproject and recalculate the bounding box
-      let [minX, minY, maxX, maxY] = [Infinity, Infinity, -Infinity, -Infinity];
-  //    this.points = [];
-  //    this._geometry.forEach(coord => {
-  //      const [x, y] = projection.project(coord);
-  //      this.points.push([x, y]);
-  //
-  //      [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
-  //      [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
-  //    });
-      this.points = new Array(this._geometry.length);
-      for (let i = 0; i < this._geometry.length; ++i) {
-        const [x, y] = projection.project(this._geometry[i]);
-        this.points[i] = [x, y];
-        [minX, minY] = [Math.min(x, minX), Math.min(y, minY)];
-        [maxX, maxY] = [Math.max(x, maxX), Math.max(y, maxY)];
-      }
+    if (this.geometry.dirty) {
+      this.geometry.update(projection, zoom);
 
       // Calculate bounds
+      const [minX, minY] = this.geometry.extent.min;
+      const [maxX, maxY] = this.geometry.extent.max;
       const [w, h] = [maxX - minX, maxY - minY];
       this.localBounds.x = minX;
       this.localBounds.y = minY;
@@ -118,7 +101,6 @@ export class PixiFeatureLine extends AbstractFeature {
       this.sceneBounds = this.localBounds.clone();  // for lines, they are the same
 
       this.updateHitArea();
-      this._geometryDirty = false;
     }
 
 
@@ -179,7 +161,7 @@ export class PixiFeatureLine extends AbstractFeature {
         lineMarkers.removeChildren();
 
         if (oneway) {
-          const segments = getLineSegments(this.points, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
+          const segments = getLineSegments(this.geometry.data, ONEWAY_SPACING, false, true);  /* sided = false, limited = true */
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
@@ -199,7 +181,7 @@ export class PixiFeatureLine extends AbstractFeature {
         }
 
         if (sided) {
-          const segments = getLineSegments(this.points, SIDED_SPACING, true, true);  /* sided = true, limited = true */
+          const segments = getLineSegments(this.geometry.data, SIDED_SPACING, true, true);  /* sided = true, limited = true */
 
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
@@ -226,10 +208,10 @@ export class PixiFeatureLine extends AbstractFeature {
 
 
     if (this.casing.renderable) {
-      updateGraphic('casing', this.casing, this.points, style, wireframeMode);
+      updateGraphic('casing', this.casing, this.geometry.data, style, wireframeMode);
     }
     if (this.stroke.renderable) {
-      updateGraphic('stroke', this.stroke, this.points, style, wireframeMode);
+      updateGraphic('stroke', this.stroke, this.geometry.data, style, wireframeMode);
     }
 
     this.updateHalo();
@@ -289,7 +271,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 // experiment
   updateHitArea() {
-    if (!this.visible || !this.points) return;
+    if (!this.visible || !this.geometry.data) return;
 
     const hitWidth = Math.max(3, this._style.casing.width || 0);
     const hitStyle = {
@@ -301,7 +283,7 @@ export class PixiFeatureLine extends AbstractFeature {
       cap: PIXI.LINE_CAP.BUTT
     };
 
-    this._bufferdata = lineToPoly(this.points, hitStyle);
+    this._bufferdata = lineToPoly(this.geometry.data, hitStyle);
     this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 
@@ -342,29 +324,6 @@ export class PixiFeatureLine extends AbstractFeature {
         this.halo = null;
       }
     }
-  }
-
-
-  /**
-   * geometry
-   * @param  arr  Geometry `Array` (contents depends on the Feature type)
-   *
-   * 'line' - Array of coordinates
-   *    [ [lon, lat], [lon, lat],  … ]
-   */
-  get geometry() {
-    return this._geometry;
-  }
-  set geometry(arr) {
-    this.extent = arr.reduce((extent, coord) => {
-      // update extent in place
-      extent.min = [ Math.min(extent.min[0], coord[0]), Math.min(extent.min[1], coord[1]) ];
-      extent.max = [ Math.max(extent.max[0], coord[0]), Math.max(extent.max[1], coord[1]) ];
-      return extent;
-    }, new Extent());
-
-    this._geometry = arr;
-    this._geometryDirty = true;
   }
 
 

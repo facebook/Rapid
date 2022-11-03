@@ -235,12 +235,12 @@ export class PixiLayerCustomData extends AbstractLayer {
       const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
-      const geometry = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
+      const coords = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
       if (!feature) {
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.geometry = geometry;
+        feature.geometry.setCoords(coords);
         feature.style = POLY_STYLE;
         feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
@@ -272,7 +272,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
-        feature.geometry = d.geometry.coordinates;
+        feature.geometry.setCoords(d.geometry.coordinates);
         feature.style = LINE_STYLE;
         feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);
@@ -302,7 +302,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry = [d.geometry.coordinates[0], d.geometry.coordinates[1]];  // omit elevation or other data.
+        feature.geometry.setCoords([d.geometry.coordinates[0], d.geometry.coordinates[1]]);  // omit elevation or other data.
         feature.style = POINT_STYLE;
         feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);

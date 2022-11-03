@@ -97,7 +97,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
 
       if (!feature) {
         const geojson = locationManager.feature(featureID).geometry;
-        const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
+        const coords = (geojson.type === 'Polygon') ? [geojson.coordinates]
           : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
         const BLOCK_STYLE = {
@@ -106,7 +106,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
         };
 
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.geometry = geometry;
+        feature.geometry.setCoords(coords);
         feature.style = BLOCK_STYLE;
         feature.parentContainer = parentContainer;
         feature.container.cursor = 'not-allowed';

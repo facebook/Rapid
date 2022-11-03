@@ -84,7 +84,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry = d.loc;
+        feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
         feature.bindData(d, d.key);

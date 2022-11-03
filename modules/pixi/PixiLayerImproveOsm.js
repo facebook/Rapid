@@ -74,7 +74,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry = d.loc;
+        feature.geometry.setCoords(d.loc);
         feature.style = markerStyle;
         feature.parentContainer = parentContainer;
         feature.bindData(d, d.id);

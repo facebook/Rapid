@@ -67,7 +67,7 @@ export class PixiLayerOsmose extends AbstractLayer {
         };
 
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry = d.loc;
+        feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
         // // mathematically 0,-15 is center of marker, move up slightly

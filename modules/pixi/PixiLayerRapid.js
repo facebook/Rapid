@@ -332,11 +332,14 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (!feature) {
         const geojson = geojsonRewind(entity.asGeoJSON(graph), true);
-        const geometry = (geojson.type === 'Polygon') ? [geojson.coordinates]
-          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+//        const coords = (geojson.type === 'Polygon') ? [geojson.coordinates]
+//          : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
+//bhousel multipolygons out for now
+if (geojson.type !== 'Polygon') continue;
+const coords = geojson.coordinates;
 
         feature = new PixiFeatureMultipolygon(this, featureID);
-        feature.geometry = geometry;
+        feature.geometry.setCoords(coords);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.bindData(entity, entity.id);
@@ -379,15 +382,15 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (!feature) {
         const geojson = entity.asGeoJSON(graph);
-        const geometry = geojson.coordinates;
+        const coords = geojson.coordinates;
 
         feature = new PixiFeatureLine(this, featureID);
 
         if (entity.tags.oneway === '-1') {
-          geometry.reverse();
+          coords.reverse();
         }
 
-        feature.geometry = geometry;
+        feature.geometry.setCoords(coords);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.bindData(entity, entity.id);
@@ -436,7 +439,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry = entity.loc;
+        feature.geometry.setCoords(entity.loc);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.bindData(entity, entity.id);
@@ -465,7 +468,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
-        feature.geometry = entity.loc;
+        feature.geometry.setCoords(entity.loc);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
