@@ -46,22 +46,22 @@ export class AbstractLayer {
     // Collections of Data on this Layer
     // There is a one-to-many relationship between Data and Features.
     // These lookups capture which features are bound to which data.
-    this._dataFeature = new Map();    // Map (dataID -> Set(featureID))
-    this._featureData = new Map();    // Map (featureID -> dataID)
+    this._dataHasFeature = new Map();    // Map (dataID -> Set(featureID))
+    this._featureHasData = new Map();    // Map (featureID -> dataID)
 
     // Data mapped to Data
     // There is a one-to-many relationship between parent data and child data.
     // For example, we need this to know which ways make up a multipolygon relation.
     // Here we're just keeping track of the dataIDs of the direct descendents.
-    this._dataChildren = new Map();    // Map (parent dataID -> Set(child dataID))
+    this._dataHasChildren = new Map();    // Map (parent dataID -> Set(child dataID))
 
     // Data classes are strings (like what CSS classes used to do for us).
     // Currently supported "selected", "hovered", "drawing"
     // Can set other ones but it won't do anything (but won't break anything either)
     // Counterintuitively, the Layer needs to be the source of truth for these data classes,
     // because a Feature can be "selected" or "drawing" even before it has been created.
-    this._dataClass = new Map();     // Map (dataID -> Set(String))
-    this._classData = new Map();     // Map (String -> Set(dataID))
+    this._dataHasClass = new Map();     // Map (dataID -> Set(String))
+    this._classHasData = new Map();     // Map (String -> Set(dataID))
   }
 
 
@@ -151,15 +151,15 @@ export class AbstractLayer {
    */
   syncFeatureClasses(feature) {
     const featureID = feature.id;
-    const dataID = this._featureData.get(featureID);
+    const dataID = this._featureHasData.get(featureID);
     if (!dataID) return;
 
     const activeData = this.context.activeData();
     feature.interactive = !activeData.has(dataID);  // is this the same as drawing??
 
-    feature.selected = this._classData.get('selected')?.has(dataID);
-    feature.hovered = this._classData.get('hovered')?.has(dataID);
-    feature.drawing = this._classData.get('drawing')?.has(dataID);
+    feature.selected = this._classHasData.get('selected')?.has(dataID);
+    feature.hovered = this._classHasData.get('hovered')?.has(dataID);
+    feature.drawing = this._classHasData.get('drawing')?.has(dataID);
   }
 
 
@@ -172,14 +172,14 @@ export class AbstractLayer {
   bindData(featureID, dataID) {
     this.unbindData(featureID);
 
-    let featureIDs = this._dataFeature.get(dataID);   // one-to-many data-to-features
+    let featureIDs = this._dataHasFeature.get(dataID);   // one-to-many data-to-features
     if (!featureIDs) {
       featureIDs = new Set();
-      this._dataFeature.set(dataID, featureIDs);
+      this._dataHasFeature.set(dataID, featureIDs);
     }
     featureIDs.add(featureID);
 
-    this._featureData.set(featureID, dataID);   // reverse feature-to-data
+    this._featureHasData.set(featureID, dataID);   // reverse feature-to-data
   }
 
 
@@ -189,22 +189,22 @@ export class AbstractLayer {
    * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
    */
   unbindData(featureID) {
-    const dataID = this._featureData.get(featureID);
+    const dataID = this._featureHasData.get(featureID);
     if (!dataID) return;
 
-    const featureIDs = this._dataFeature.get(dataID);   // one-to-many data-to-features
+    const featureIDs = this._dataHasFeature.get(dataID);   // one-to-many data-to-features
     if (featureIDs) {
       featureIDs.delete(featureID);
 
       if (!featureIDs.size) {  // no features are bound to this data anymore
-        this._dataFeature.delete(dataID);
-        this._dataChildren.delete(dataID);
+        this._dataHasFeature.delete(dataID);
+        this._dataHasChildren.delete(dataID);
         // Note that we don't touch the data classes here..
         // If a selected feature leaves the scene and comes back later, it's still selected!
       }
     }
 
-    this._featureData.delete(featureID);   // reverse feature-to-data
+    this._featureHasData.delete(featureID);   // reverse feature-to-data
   }
 
 
@@ -215,10 +215,10 @@ export class AbstractLayer {
    * @param  childID   `String` dataID of the child (e.g. 'w123')
    */
   addChildData(parentID, childID) {
-    let childIDs = this._dataChildren.get(parentID);   // one-to-many parent-to-children
+    let childIDs = this._dataHasChildren.get(parentID);   // one-to-many parent-to-children
     if (!childIDs) {
       childIDs = new Set();
-      this._dataChildren.set(parentID, childIDs);
+      this._dataHasChildren.set(parentID, childIDs);
     }
     childIDs.add(childID);
   }
@@ -231,7 +231,34 @@ export class AbstractLayer {
    * @param  childID   `String` dataID to remove as a child (e.g. 'w1')
    */
   removeChildData(parentID, childID) {
-    this._dataChildren.get(parentID)?.delete(childID);
+    this._dataHasChildren.get(parentID)?.delete(childID);
+  }
+
+
+  /**
+   * getDeepDescendents
+   * Get a result Set including parentID and all dataIDs descendent from the parentID
+   * @param   parentID  `String` dataID (e.g. 'r123')
+   * @param   result?   `Set` containing the results
+   * @return  `Set` including the parentID and any childIDs descended from it
+   */
+  getDeepDescendents(parentID, result) {
+    if (result instanceof Set) {
+      result.add(parentID);
+    } else {
+      result = new Set([parentID]);
+    }
+
+    const childIDs = this._dataHasChildren.get(parentID);
+    if (childIDs) {
+      for (const childID of childIDs) {
+        if (!result.has(childID)) {
+          this.getDeepDescendents(childID, result);
+        }
+      }
+    }
+
+    return result;
   }
 
 
@@ -241,54 +268,82 @@ export class AbstractLayer {
    * @param  parentID  `String` dataID (e.g. 'r123')
    */
   clearChildData(parentID) {
-    this._dataChildren.delete(parentID);
+    this._dataHasChildren.delete(parentID);
   }
 
 
   /**
-   * addClass
+   * classData
    * Sets a dataID as being classed a certain way (e.g. 'hovered')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  addClass(dataID, classID) {
-    let classIDs = this._dataClass.get(dataID);
+  classData(dataID, classID) {
+    let classIDs = this._dataHasClass.get(dataID);
     if (!classIDs) {
       classIDs = new Set();
-      this._dataClass.set(dataID, classIDs);
+      this._dataHasClass.set(dataID, classIDs);
     }
     classIDs.add(classID);
 
-    let dataIDs = this._classData.get(classID);
+    let dataIDs = this._classHasData.get(classID);
     if (!dataIDs) {
       dataIDs = new Set();
-      this._classData.set(classID, dataIDs);
+      this._classHasData.set(classID, dataIDs);
     }
     dataIDs.add(dataID);
   }
 
 
   /**
-   * removeClass
+   * classDataAndDescendents
+   * Like `classData` but also classes the descendent/children data
+   * @param  parentID  `String` parentID (e.g. 'r123')
+   * @param  classID   `String` classID (e.g. 'hovered')
+   */
+  classDataAndDescendents(parentID, classID) {
+    const dataIDs = this.getDeepDescendents(parentID);
+    for (const dataID of dataIDs) {
+      this.classData(dataID, classID);
+    }
+  }
+
+
+  /**
+   * unclassData
    * Unsets a dataID from being classed a certain way (e.g. 'hovered')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  removeClass(dataID, classID) {
-    let classIDs = this._dataClass.get(dataID);
+  unclassData(dataID, classID) {
+    let classIDs = this._dataHasClass.get(dataID);
     if (classIDs) {
       classIDs.delete(classID);
       if (!classIDs.size) {
-        this._dataClass.delete(dataID);
+        this._dataHasClass.delete(dataID);
       }
     }
 
-    let dataIDs = this._classData.get(classID);
+    let dataIDs = this._classHasData.get(classID);
     if (dataIDs) {
       dataIDs.delete(dataID);
       if (!dataIDs.size) {
-        this._classData.delete(classID);
+        this._classHasData.delete(classID);
       }
+    }
+  }
+
+
+  /**
+   * unclassDataAndDescendents
+   * Like `unclassData` but also unclasses the descendent/children data
+   * @param  parentID  `String` parentID (e.g. 'r123')
+   * @param  classID   `String` classID (e.g. 'hovered')
+   */
+  unclassDataAndDescendents(parentID, classID) {
+    const dataIDs = this.getDeepDescendents(parentID);
+    for (const dataID of dataIDs) {
+      this.unclassData(dataID, classID);
     }
   }
 
@@ -299,9 +354,9 @@ export class AbstractLayer {
    * @param  classID   `String` classID (e.g. 'hovered')
    */
   clearClass(classID) {
-    const dataIDs = this._classData.get(classID);
+    const dataIDs = this._classHasData.get(classID);
     dataIDs?.forEach(dataID => {
-      this.removeClass(dataID, classID);
+      this.unclassData(dataID, classID);
     });
   }
 
@@ -340,7 +395,7 @@ export class AbstractLayer {
    */
   dirtyData(dataIDs) {
     for (const dataID of asSet(dataIDs)) {   // coax ids into a Set
-      const featureIDs = this._dataFeature.get(dataID);
+      const featureIDs = this._dataHasFeature.get(dataID);
       if (featureIDs) {
         this.dirtyFeatures(featureIDs);
       }

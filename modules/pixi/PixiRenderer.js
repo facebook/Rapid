@@ -172,7 +172,7 @@ if (dataID) {
 
     this.scene.clearClass('selected');
     if (layerID && dataID) {
-      this.scene.addClass(layerID, dataID, 'selected');
+      this.scene.classData(layerID, dataID, 'selected');
     }
 
     this.render();
@@ -196,7 +196,7 @@ if (dataID) {
 
     this.scene.clearClass('hovered');
     if (layerID && dataID) {
-      this.scene.addClass(layerID, dataID, 'hovered');
+      this.scene.classDataAndDescendents(layerID, dataID, 'hovered');
     }
 
     this.render();

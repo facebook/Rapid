@@ -373,7 +373,7 @@ export class BehaviorSelect extends AbstractBehavior {
       // No mode change event here, just manually tell the renderer to select it, for now
       const scene = context.scene();
       scene.clearClass('selected');
-      scene.addClass(layerID, photoID, 'selected');
+      scene.classData(layerID, photoID, 'selected');
     }
   }
 

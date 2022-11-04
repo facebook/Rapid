@@ -220,27 +220,48 @@ export class PixiScene extends EventEmitter {
 
 
   /**
-   * addClass
+   * classData
    * Sets a dataID as being classed a certain way (e.g. 'hovered')
    * @param  layerID  `String` layerID (e.g. 'osm')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  addClass(layerID, dataID, classID) {
-    this.layers.get(layerID)?.addClass(dataID, classID);
+  classData(layerID, dataID, classID) {
+    this.layers.get(layerID)?.classData(dataID, classID);
   }
 
   /**
-   * removeClass
+   * classDataAndDescendents
+   * Like `classData` but also classes the descendent/children data
+   * @param  layerID  `String` layerID (e.g. 'osm')
+   * @param  dataID   `String` dataID (e.g. 'r123')
+   * @param  classID  `String` classID (e.g. 'hovered')
+   */
+  classDataAndDescendents(layerID, dataID, classID) {
+    this.layers.get(layerID)?.classDataAndDescendents(dataID, classID);
+  }
+
+  /**
+   * unclassData
    * Unsets a dataID from being classed a certain way (e.g. 'hovered')
    * @param  layerID  `String` layerID (e.g. 'osm')
    * @param  dataID   `String` dataID (e.g. 'r123')
    * @param  classID  `String` classID (e.g. 'hovered')
    */
-  removeClass(layerID, dataID, classID) {
-    this.layers.get(layerID)?.removeClass(layerID, dataID, classID);
+  unclassData(layerID, dataID, classID) {
+    this.layers.get(layerID)?.unclassData(layerID, dataID, classID);
   }
 
+  /**
+   * unclassDataAndDescendents
+   * Like `unclassData` but also unclasses the descendent/children data
+   * @param  layerID  `String` layerID (e.g. 'osm')
+   * @param  dataID   `String` dataID (e.g. 'r123')
+   * @param  classID  `String` classID (e.g. 'hovered')
+   */
+  unclassDataAndDescendents(layerID, dataID, classID) {
+    this.layers.get(layerID)?.unclassDataAndDescendents(layerID, dataID, classID);
+  }
 
   /**
    * clearClass
