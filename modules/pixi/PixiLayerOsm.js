@@ -37,11 +37,6 @@ export class PixiLayerOsm extends AbstractLayer {
 
     this.getService();
 
-    // On hover or selection, draw related vertices (above everything)
-    this._relatedOsmIDs = new Set();
-    this._prevSelectV = -1;   // last seen selected version
-    this._prevHoverV = -1;    // last seen hovered version
-
     // experiment for benchmarking
     this._alreadyDownloaded = false;
     this._saveCannedData = false;
@@ -83,58 +78,6 @@ export class PixiLayerOsm extends AbstractLayer {
     return !!this.getService();
   }
 
-//
-//  /**
-//   * _updateRelatedOsmIds
-//   * On any change in selection or hovering, we should check for which vertices
-//   * become interesting enough to render
-//   * @param  osmids   `Set` of OSM ids that are selected or hovered
-//   */
-//  _updateRelatedOsmIds(osmids) {
-//    const context = this.context;
-//    const graph = context.graph();
-//    let seen = new Set();   // avoid infinite recursion, handle circular relations
-//    let result = new Set();
-//
-//    function addChildVertices(entity) {
-//      if (seen.has(entity.id)) return;
-//      seen.add(entity.id);
-//
-//      if (entity.type === 'way') {
-//        for (let i = 0; i < entity.nodes.length; i++) {
-//          const child = graph.hasEntity(entity.nodes[i]);
-//          if (child) {
-//            addChildVertices(child);
-//          }
-//        }
-//      } else if (entity.type === 'relation') {
-//        for (let i = 0; i < entity.members.length; i++) {
-//          const member = graph.hasEntity(entity.members[i].id);
-//          if (member) {
-//            addChildVertices(member);
-//          }
-//        }
-//      } else {  // a node
-//        result.add(`osm-${entity.id}`);
-//      }
-//    }
-//
-//    osmids.forEach(id => {
-//      const entity = graph.hasEntity(id);
-//      if (!entity) return;
-//
-//      if (entity.type === 'node') {
-//        result.add(`osm-${entity.id}`);
-//        graph.parentWays(entity).forEach(entity => addChildVertices(entity));
-//      } else {  // way, relation
-//        addChildVertices(entity);
-//      }
-//    });
-//
-//    this._relatedOsmIDs = result;
-//    return this._relatedOsmIDs;
-//  }
-//
 
   /**
    * downloadFile
@@ -142,7 +85,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  data
    * @param  fileName
    */
-  downloadFile(data, fileName) {
+  _downloadFile(data, fileName) {
     let a = document.createElement('a');   // Create an invisible A element
     a.style.display = 'none';
     document.body.appendChild(a);
@@ -179,27 +122,8 @@ export class PixiLayerOsm extends AbstractLayer {
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    // Has select/hover highlighting chagned?
-    const highlightedIDs = new Set();
-//      const highlightedIDs = new Set([...scene.selected, ...scene.hovered]);
-//console.log(`highlightedIDs = ` + Array.from(highlightedIDs));
-//      if (this._prevSelectV !== scene.selected.v || this._prevHoverV !== scene.hovered.v) {
-//        this._prevSelectV = scene.selected.v;
-//        this._prevHoverV = scene.hovered.v;
-//
-//// convert feature id to osm id
-//let osmids = new Set();
-//highlightedIDs.forEach(featureID => {
-//  const feat = this.features.get(featureID);
-//  if (feat && feat.data) {
-//    osmids.add(feat.data.id);
-//  }
-//});
-////        this._updateRelatedOsmIds(osmids);
-//      }
-
     let entities = context.history().intersects(map.extent());
-    //Filter the entities according to features enabled/disabled
+    // Filter the entities according to features enabled/disabled
     entities = context.features().filter(entities, this.context.graph());
 
     // Gather data
@@ -207,21 +131,22 @@ export class PixiLayerOsm extends AbstractLayer {
 
     for (const entity of entities) {
       const geom = entity.geometry(graph);
+
       if (geom === 'point') {
         data.points.push(entity);
       } else if (geom === 'vertex') {
         data.vertices.push(entity);
       } else if (geom === 'line') {
         data.lines.push(entity);
-        if (highlightedIDs.has(entity.id)) {
-          data.highlighted.push(entity);
-        }
+//        if (highlightedIDs.has(entity.id)) {
+//          data.highlighted.push(entity);
+//        }
       } else if (geom === 'area') {
-        data.lines.push(entity);
+//        data.lines.push(entity);
         data.polygons.push(entity);
-        if (highlightedIDs.has(entity.id)) {
-          data.highlighted.push(entity);
-        }
+//        if (highlightedIDs.has(entity.id)) {
+//          data.highlighted.push(entity);
+//        }
       }
     }
 
@@ -245,7 +170,7 @@ export class PixiLayerOsm extends AbstractLayer {
       };
 
       let cannedData = JSON.stringify(viewData);
-      this.downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
+      this._downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
       this._alreadyDownloaded = true;
     }
 
@@ -255,12 +180,8 @@ export class PixiLayerOsm extends AbstractLayer {
     this.renderVertices(frame, projection, zoom, data.vertices);
     this.renderPoints(frame, projection, zoom, data.points);
 
-// bhousel 8/8
-// Midpoints are painful right now because they grab the hoverstate and de-select the line
-// We haven't decided yet how to capture that features relate to one another so I'm commenting them out.
-// bhousel 10/10
-// update, we're startint to capture how features relate to one another now.
-//      // No midpoints when drawing
+// coming soon
+    // No midpoints when drawing
     const currMode = context.mode().id;
     if (currMode === 'browse' || currMode === 'select') {
       this.renderMidpoints(frame, projection, zoom, data.highlighted);
@@ -283,6 +204,8 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
       let geojson = this._resolved.get(entity.id);
+// bhousel 11/7 todo - we must replace the geojson if the multipolygon has new parts downloaded.
+// Not clear how to detect this - .v maybe could increment every time we merge in a change for that base entity
       if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
         geojson = null;
       }
@@ -482,9 +405,9 @@ export class PixiLayerOsm extends AbstractLayer {
       if (zoom >= 16 && isInterestingVertex(node)) {
         parentContainer = pointsContainer;
       }
-      if (this._relatedOsmIDs.has(node.id)) {
-        parentContainer = selectedContainer;
-      }
+//      if (this._relatedOsmIDs.has(node.id)) {
+//        parentContainer = selectedContainer;
+//      }
       if (!parentContainer) continue;   // this vertex isn't interesting enough to render
 
       const featureID = `${this.layerID}-${node.id}`;

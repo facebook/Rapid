@@ -49,12 +49,12 @@ export class PixiFeaturePolygon extends AbstractFeature {
     fill.sortableChildren = false;
     this.fill = fill;
 
-//    const stroke = new PIXI.Graphics();
-//    stroke.name = 'stroke';
-//    stroke.interactive = false;
-//    stroke.interactiveChildren = false;
-//    stroke.sortableChildren = false;
-//    this.stroke = stroke;
+    const stroke = new PIXI.Graphics();
+    stroke.name = 'stroke';
+    stroke.interactive = false;
+    stroke.interactiveChildren = false;
+    stroke.sortableChildren = false;
+    this.stroke = stroke;
 
     // When partially filling areas: we really want to define the mask as a line
     // drawn within the inside of the area shape.  Graphics defined as a line
@@ -70,8 +70,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     mask.visible = false;
     this.mask = mask;
 
-    // this.container.addChild(lowRes, fill, stroke, mask);
-    this.container.addChild(lowRes, fill, mask);
+    this.container.addChild(lowRes, fill, stroke, mask);
   }
 
 
@@ -195,6 +194,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;
     let texture = pattern && textures.get(pattern) || PIXI.Texture.WHITE;    // WHITE turns off the texture
+    let shape;
 // bhousel update 5/27/22:
 // I've noticed that we can't use textures from a spritesheet for patterns,
 // and it would be nice to figure out why
@@ -222,7 +222,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.lod = 0;  // off
       this.visible = false;
       this.fill.visible = false;
-//      this.stroke.visible = false;
+      this.stroke.visible = false;
       this.mask.visible = false;
       this.lowRes.visible = false;
 
@@ -232,7 +232,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.visible = true;
       const ssrdata = this._ssrdata;
       this.fill.visible = false;
-//      this.stroke.visible = false;
+      this.stroke.visible = false;
       this.mask.visible = false;
       this.lowRes.visible = true;
 
@@ -255,29 +255,32 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.lod = 2;  // full
       this.visible = true;
       this.fill.visible = true;
-//      this.stroke.visible = true;
+      this.stroke.visible = true;
       this.lowRes.visible = false;
+
+      shape = {
+        outer: new PIXI.Polygon(this.geometry.flatOuter),
+        holes: (this.geometry.flatHoles || []).map(flatHole => new PIXI.Polygon(flatHole))
+      };
     }
 
     //
     // redraw the shapes
     //
 
-//    // STROKE
-//    if (this.stroke.visible) {
-//      this.stroke.clear().lineStyle({
-//        alpha: 1,
-//        width: wireframeMode ? 1 : style.fill.width || 2,
-//        color: color,
-//      });
-//
-//      shapes.forEach(shape => {
-//        this.stroke.drawShape(shape.outer);
-//        shape.holes.forEach(hole => {
-//          this.stroke.drawShape(hole);
-//        });
-//      });
-//    }
+    // STROKE
+    if (shape && this.stroke.visible) {
+      this.stroke
+        .clear()
+        .lineStyle({
+          alpha: 1,
+          width: wireframeMode ? 1 : style.fill.width || 2,
+          color: color,
+        })
+        .drawShape(shape.outer);
+
+      shape.holes.forEach(hole => this.stroke.drawShape(hole));
+    }
 
     // FILL
     if (wireframeMode) {
@@ -285,12 +288,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
       this.fill.clear();
     }
 
-    if (this.fill.visible) {
-      let shape = {
-        outer: new PIXI.Polygon(this.geometry.flatOuter),
-        holes: (this.geometry.flatHoles || []).map(flatHole => new PIXI.Polygon(flatHole))
-      };
-
+    if (shape && this.fill.visible) {
       this.fill
         .clear()
         .beginTextureFill({
