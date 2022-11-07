@@ -226,7 +226,8 @@ export class PixiLayerCustomData extends AbstractLayer {
       const parts = (d.geometry.type === 'Polygon') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPolygon') ? d.geometry.coordinates : [];
 
-      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
         const featureID = `${this.layerID}-${d.id}-${i}`;
         let feature = this.features.get(featureID);
 
@@ -263,7 +264,8 @@ export class PixiLayerCustomData extends AbstractLayer {
       const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiLineString') ? d.geometry.coordinates : [];
 
-      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
         const featureID = `${this.layerID}-${d.id}-${i}`;
         let feature = this.features.get(featureID);
 
@@ -298,7 +300,8 @@ export class PixiLayerCustomData extends AbstractLayer {
       const parts = (d.geometry.type === 'Point') ? [d.geometry.coordinates]
         : (d.geometry.type === 'MultiPoint') ? d.geometry.coordinates : [];
 
-      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
         const featureID = `${this.layerID}-${d.id}-${i}`;
         let feature = this.features.get(featureID);
 

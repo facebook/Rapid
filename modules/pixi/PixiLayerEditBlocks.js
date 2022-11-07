@@ -102,7 +102,8 @@ export class PixiLayerEditBlocks extends AbstractLayer {
       const parts = (geometry.type === 'Polygon') ? [geometry.coordinates]
         : (geometry.type === 'MultiPolygon') ? geometry.coordinates : [];
 
-      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
         const featureID = `${this.layerID}-${d.locationSetID}-${i}`;
         let feature = this.features.get(featureID);
 

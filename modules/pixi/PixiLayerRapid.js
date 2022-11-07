@@ -340,7 +340,8 @@ export class PixiLayerRapid extends AbstractLayer {
       const parts = (geojson.type === 'Polygon') ? [geojson.coordinates]
         : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
         const featureID = `${this.layerID}-${dataset.id}-${entity.id}-${i}`;
         let feature = this.features.get(featureID);
 

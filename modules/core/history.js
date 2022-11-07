@@ -139,15 +139,50 @@ export function coreHistory(context) {
         },
 
 
+        /**
+         *  merge
+         *  Merge new entities into the history.  This function is called
+         *  when we have parsed a new tile of OSM data, we will receive the
+         *  new entities and a list of all entity ids that the tile contains.
+         *  Can also be called in other situations, like restoring history from
+         *  storage, or loading specific entities from the OSM API.
+         *
+         *  @param  entities   Entities to merge into the history (usually only the new ones)
+         *  @param  seenIDs?   Optional - All entity IDs on the tile (including previously seen ones)
+         */
         merge: function(entities, seenIDs) {
-            var stack = _stack.map(function(state) { return state.graph; });
-            _stack[0].graph.rebase(entities, stack, false);
-            _tree.rebase(entities, false);
+          const baseGraph = this.base();
+          const headGraph = this.graph();
 
-            if (!seenIDs) {
-                seenIDs = entities.map(entity => entity.id);
+          if (!(seenIDs instanceof Set)) {
+            seenIDs = new Set(entities.map(entity => entity.id));
+          }
+
+          // Which ones are really new (not in the base graph)?
+          const newIDs = new Set();
+          for (const entity of entities) {
+            if (!baseGraph.hasEntity(entity.id)) {  // not merged in yet.
+              newIDs.add(entity.id);
             }
-            dispatch.call('merge', this, seenIDs);
+          }
+
+          // If we are merging in new relation members, bump the relation's version.
+          for (const id of seenIDs) {
+            const entity = headGraph.hasEntity(id);
+            if (entity?.type !== 'relation') continue;
+
+            for (const member of entity.members) {
+              if (newIDs.has(member.id)) {
+                entity.v = (entity.v || 0) + 1;   // bump version in place
+              }
+            }
+          }
+
+          const stack = _stack.map(state => state.graph);
+          baseGraph.rebase(entities, stack, false);
+          _tree.rebase(entities, false);
+
+          dispatch.call('merge', this, seenIDs);
         },
 
 

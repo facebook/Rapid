@@ -204,8 +204,6 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
       let geojson = this._resolved.get(entity.id);
-// bhousel 11/7 todo - we must replace the geojson if the multipolygon has new parts downloaded.
-// Not clear how to detect this - .v maybe could increment every time we merge in a change for that base entity
       if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
         geojson = null;
       }
@@ -218,7 +216,8 @@ export class PixiLayerOsm extends AbstractLayer {
       const parts = (geojson.type === 'Polygon') ? [geojson.coordinates]
         : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-      for (let i = 0, coords = parts[i]; i < parts.length; ++i) {
+      for (let i = 0; i < parts.length; ++i) {
+        const coords = parts[i];
         const featureID = `${this.layerID}-${entity.id}-fill-${i}`;
         let feature = this.features.get(featureID);
 
@@ -296,8 +295,10 @@ export class PixiLayerOsm extends AbstractLayer {
         : (geojson.type === 'Polygon') ? [geojson.coordinates]
         : (geojson.type === 'MultiPolygon') ? geojson.coordinates : [];
 
-      for (let i = 0, segments = parts[i]; i < parts.length; ++i) {
-        for (let j = 0, coords = segments[j]; j < segments.length; ++j) {
+      for (let i = 0; i < parts.length; ++i) {
+        const segments = parts[i];
+        for (let j = 0; j < segments.length; ++j) {
+          const coords = segments[j];
           const featureID = `${this.layerID}-${entity.id}-${i}-${j}`;
           let feature = this.features.get(featureID);
 
