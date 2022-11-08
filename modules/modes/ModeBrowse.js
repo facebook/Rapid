@@ -17,9 +17,8 @@ export class ModeBrowse extends AbstractMode {
    */
   constructor(context) {
     super(context);
-
+    this.context = context;
     this.id = 'browse';
-    this.operations = [ operationPaste(context) ];
   }
 
 
@@ -31,6 +30,7 @@ export class ModeBrowse extends AbstractMode {
       console.log('ModeBrowse: entering');  // eslint-disable-line no-console
     }
 
+    this.operations = [ operationPaste(this.context) ];
     this._active = true;
     this.context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'map-interaction']);
 
@@ -50,7 +50,6 @@ export class ModeBrowse extends AbstractMode {
   exit() {
     if (!this._active) return;
     this._active = false;
-
     if (DEBUG) {
       console.log('ModeBrowse: exiting');  // eslint-disable-line no-console
     }
