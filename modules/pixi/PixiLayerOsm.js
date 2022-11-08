@@ -245,10 +245,12 @@ export class PixiLayerOsm extends AbstractLayer {
           feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
           feature.bindData(entity, entityID);
+
           if (entity.type === 'relation') {
-            entity.members.forEach(member => {
-              feature.addChildData(entityID, member.id);
-            });
+            entity.members.forEach(member => feature.addChildData(entityID, member.id));
+          }
+          if (entity.type === 'way') {
+            entity.nodes.forEach(nodeID => feature.addChildData(entityID, nodeID));
           }
         }
 
@@ -322,12 +324,14 @@ export class PixiLayerOsm extends AbstractLayer {
             feature.geometry.setCoords(coords);
             feature.parentContainer = levelContainer;    // Change layer stacking if necessary
             feature.container.zIndex = zindex;
+
             feature.bindData(entity, entityID);
 
             if (entity.type === 'relation') {
-              entity.members.forEach(member => {
-                feature.addChildData(entityID, member.id);
-              });
+              entity.members.forEach(member => feature.addChildData(entityID, member.id));
+            }
+            if (entity.type === 'way') {
+              entity.nodes.forEach(nodeID => feature.addChildData(entityID, nodeID));
             }
           }
 
@@ -400,6 +404,18 @@ export class PixiLayerOsm extends AbstractLayer {
     const selectedContainer = mapUIContainer.getChildByName('selected');
     const pointsContainer = this.scene.groups.get('points');
 
+    // Gather vertices related to the selection
+    const hoveredIDs = this._classHasData.get('hovered') || new Set();
+    const selectedIDs = this._classHasData.get('selected') || new Set();
+    const relatedIDs = new Set();
+    for (const hoveredID of hoveredIDs) {
+      this.getAllDescendants(hoveredID).forEach(id => relatedIDs.add(id));
+    }
+    for (const selectedID of selectedIDs) {
+      this.getAllDescendants(selectedID).forEach(id => relatedIDs.add(id));
+    }
+
+
     function isInterestingVertex(entity) {
       // const featureID = `${this.layerID}-${entity.id}`;
       return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
@@ -407,14 +423,15 @@ export class PixiLayerOsm extends AbstractLayer {
       );
     }
 
+
     for (const [nodeID, node] of entities) {
       let parentContainer = null;
       if (zoom >= 16 && isInterestingVertex(node)) {
         parentContainer = pointsContainer;
       }
-//      if (this._relatedOsmIDs.has(nodeID)) {
-//        parentContainer = selectedContainer;
-//      }
+      if (relatedIDs.has(nodeID)) {
+        parentContainer = selectedContainer;
+      }
       if (!parentContainer) continue;   // this vertex isn't interesting enough to render
 
       const featureID = `${this.layerID}-${nodeID}`;

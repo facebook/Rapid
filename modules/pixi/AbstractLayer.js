@@ -45,8 +45,8 @@ export class AbstractLayer {
 
     // Feature <-> Data
     // These lookups capture which features are bound to which data.
-    this._dataHasFeature = new Map();    // Map (dataID -> Set(featureID))
     this._featureHasData = new Map();    // Map (featureID -> dataID)
+    this._dataHasFeature = new Map();    // Map (dataID -> Set(featureID))
 
     // Parent Data <-> Child Data
     // For example, we need this to know which ways make up a multipolygon relation.
