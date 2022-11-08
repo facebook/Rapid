@@ -196,7 +196,7 @@ if (dataID) {
 
     this.scene.clearClass('hovered');
     if (layerID && dataID) {
-      this.scene.classDataAndDescendents(layerID, dataID, 'hovered');
+      this.scene.classData(layerID, dataID, 'hovered');
     }
 
     this.render();

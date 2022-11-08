@@ -197,7 +197,7 @@ export function actionMergeRemoteChanges(id, localGraph, remoteGraph, discardTag
     //  `graph.base()` is the common ancestor of the two graphs.
     //  `localGraph` contains user's edits up to saving
     //  `remoteGraph` contains remote edits to modified nodes
-    //  `graph` must be a descendent of `localGraph` and may include
+    //  `graph` must be a descendant of `localGraph` and may include
     //      some conflict resolution actions performed on it.
     //
     //                  --- ... --- `localGraph` -- ... -- `graph`

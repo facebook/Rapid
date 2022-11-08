@@ -37,9 +37,9 @@ export class PixiLayerOsm extends AbstractLayer {
 
     this.getService();
 
-    // experiment for benchmarking
-    this._alreadyDownloaded = false;
-    this._saveCannedData = false;
+// experiment for benchmarking
+//    this._alreadyDownloaded = false;
+//    this._saveCannedData = false;
 
     const areas = new PIXI.Container();
     areas.name = `${this.layerID}-areas`;
@@ -79,30 +79,31 @@ export class PixiLayerOsm extends AbstractLayer {
   }
 
 
-  /**
-   * downloadFile
-   * experiment for benchmarking
-   * @param  data
-   * @param  fileName
-   */
-  _downloadFile(data, fileName) {
-    let a = document.createElement('a');   // Create an invisible A element
-    a.style.display = 'none';
-    document.body.appendChild(a);
-
-    // Set the HREF to a Blob representation of the data to be downloaded
-    a.href = window.URL.createObjectURL(new Blob([data]));
-
-    // Use download attribute to set set desired file name
-    a.setAttribute('download', fileName);
-
-    // Trigger the download by simulating click
-    a.click();
-
-    // Cleanup
-    window.URL.revokeObjectURL(a.href);
-    document.body.removeChild(a);
-  }
+// experiment for benchmarking
+//  /**
+//   * downloadFile
+//   * experiment for benchmarking
+//   * @param  data
+//   * @param  fileName
+//   */
+//  _downloadFile(data, fileName) {
+//    let a = document.createElement('a');   // Create an invisible A element
+//    a.style.display = 'none';
+//    document.body.appendChild(a);
+//
+//    // Set the HREF to a Blob representation of the data to be downloaded
+//    a.href = window.URL.createObjectURL(new Blob([data]));
+//
+//    // Use download attribute to set set desired file name
+//    a.setAttribute('download', fileName);
+//
+//    // Trigger the download by simulating click
+//    a.click();
+//
+//    // Cleanup
+//    window.URL.revokeObjectURL(a.href);
+//    document.body.removeChild(a);
+//  }
 
 
   /**
@@ -113,78 +114,83 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    const context = this.context;
     const service = this.getService();
+    if (!this._enabled || !service || zoom < MINZOOM) return;
+
+    const context = this.context;
     const graph = context.graph();
     const map = context.map();
-
-    if (!this._enabled || !service || zoom < MINZOOM) return;
+    const hoveredIDs = this._classHasData.get('hovered') || new Set();
+    const selectedIDs = this._classHasData.get('selected') || new Set();
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
-    let entities = context.history().intersects(map.extent());
-    // Filter the entities according to features enabled/disabled
-    entities = context.features().filter(entities, this.context.graph());
+    let entities = context.history().intersects(map.extent());             // Gather data in view
+    entities = context.features().filter(entities, this.context.graph());  // Apply feature filters
 
-    // Gather data
-    let data = { points: [], vertices: [], lines: [], polygons: [], highlighted: [] };
+    let data = {
+      points: new Map(),
+      vertices: new Map(),
+      lines: new Map(),
+      polygons: new Map(),
+      midpoints: new Map()
+    };
 
     for (const entity of entities) {
       const geom = entity.geometry(graph);
-
       if (geom === 'point') {
-        data.points.push(entity);
+        data.points.set(entity.id, entity);
       } else if (geom === 'vertex') {
-        data.vertices.push(entity);
+        data.vertices.set(entity.id, entity);
       } else if (geom === 'line') {
-        data.lines.push(entity);
-//        if (highlightedIDs.has(entity.id)) {
-//          data.highlighted.push(entity);
-//        }
+        data.lines.set(entity.id, entity);
       } else if (geom === 'area') {
-//        data.lines.push(entity);
-        data.polygons.push(entity);
-//        if (highlightedIDs.has(entity.id)) {
-//          data.highlighted.push(entity);
-//        }
+        data.polygons.set(entity.id, entity);
+      }
+
+      if (entity.type === 'way' && (hoveredIDs.has(entity.id) || selectedIDs.has(entity.id))) {
+        data.midpoints.set(entity.id, entity);
       }
     }
 
-    // Instructions to save 'canned' entity data for use in the renderer test suite:
-    // Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
-    // continuing will fire off the download of the data into a file called 'canned_data.json'.
-    // move the data into the test/spec/renderer directory.
-    if (this._saveCannedData && !this._alreadyDownloaded) {
-      const map = context.map();
-      const [lng, lat] = map.center();
-
-      let viewData = {
-        'lng': lng,
-        'lat': lat,
-        'zoom': zoom,
-        'width': window.innerWidth,
-        'height': window.innerHeight,
-        'projection': projection,
-        'data': data,
-        'entities': context.graph().base().entities
-      };
-
-      let cannedData = JSON.stringify(viewData);
-      this._downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
-      this._alreadyDownloaded = true;
-    }
-
+// experiment for benchmarking
+//    // Instructions to save 'canned' entity data for use in the renderer test suite:
+//    // Set a breakpoint at the next line, then modify `this._saveCannedData` to be 'true'
+//    // continuing will fire off the download of the data into a file called 'canned_data.json'.
+//    // move the data into the test/spec/renderer directory.
+//    if (this._saveCannedData && !this._alreadyDownloaded) {
+//      const map = context.map();
+//      const [lng, lat] = map.center();
+//
+//      let viewData = {
+//        'lng': lng,
+//        'lat': lat,
+//        'zoom': zoom,
+//        'width': window.innerWidth,
+//        'height': window.innerHeight,
+//        'projection': projection,
+//        'data': data,
+//        'entities': context.graph().base().entities
+//      };
+//
+//      let cannedData = JSON.stringify(viewData);
+//      this._downloadFile(cannedData,`${zoom}_${lat}_${lng}_canned_osm_data.json`);
+//      this._alreadyDownloaded = true;
+//    }
 
     this.renderPolygons(frame, projection, zoom, data.polygons);
     this.renderLines(frame, projection, zoom, data.lines);
+
+    // At this point, all the visible linear features have been accounted for,
+    // and parent-child data links have been established.
+
     this.renderVertices(frame, projection, zoom, data.vertices);
     this.renderPoints(frame, projection, zoom, data.points);
 
-// coming soon
     // No midpoints when drawing
     const currMode = context.mode().id;
     if (currMode === 'browse' || currMode === 'select') {
-      this.renderMidpoints(frame, projection, zoom, data.highlighted);
+      this.renderMidpoints(frame, projection, zoom, data.midpoints);
     }
   }
 
@@ -194,23 +200,23 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Array of OSM entities (ways/relations with area geometry)
+   * @param  entities     Map (entity.id -> entity) (ways/relations with area geometry)
    */
   renderPolygons(frame, projection, zoom, entities) {
     const graph = this.context.graph();
 
-    for (const entity of entities) {
+    for (const [entityID, entity] of entities) {
       const entityVersion = (entity.v || 0);
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
-      let geojson = this._resolved.get(entity.id);
+      let geojson = this._resolved.get(entityID);
       if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
         geojson = null;
       }
       if (!geojson) {
         geojson = geojsonRewind(entity.asGeoJSON(graph), true);
         geojson.v = entityVersion;
-        this._resolved.set(entity.id, geojson);
+        this._resolved.set(entityID, geojson);
       }
 
       const parts = (geojson.type === 'Polygon') ? [geojson.coordinates]
@@ -218,7 +224,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${entity.id}-fill-${i}`;
+        const featureID = `${this.layerID}-${entityID}-fill-${i}`;
         let feature = this.features.get(featureID);
 
         if (feature && feature.type !== 'polygon') {  // if feature type has changed, recreate it
@@ -238,10 +244,10 @@ export class PixiLayerOsm extends AbstractLayer {
           const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
           feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
-          feature.bindData(entity, entity.id);
+          feature.bindData(entity, entityID);
           if (entity.type === 'relation') {
             entity.members.forEach(member => {
-              feature.addChildData(entity.id, member.id);
+              feature.addChildData(entityID, member.id);
             });
           }
         }
@@ -265,20 +271,20 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Array of OSM entities (ways/relations with line geometry)
+   * @param  entities     Map (entity.id -> entity)  (ways/relations with line geometry)
    */
   renderLines(frame, projection, zoom, entities) {
     const graph = this.context.graph();
     const lineContainer = this.lineContainer;
 
-    for (const entity of entities) {
+    for (const [entityID, entity] of entities) {
       const entityVersion = (entity.v || 0);
       const layer = (typeof entity.layer === 'function') ? entity.layer() : 0;
       const levelContainer = _getLevelContainer(layer.toString());
       const zindex = getzIndex(entity.tags);
 
       // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
-      let geojson = this._resolved.get(entity.id);
+      let geojson = this._resolved.get(entityID);
       if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
         geojson = null;
       }
@@ -288,7 +294,7 @@ export class PixiLayerOsm extends AbstractLayer {
         if (geojson.type === 'LineString' && entity.tags.oneway === '-1') {
           geojson.coordinates.reverse();
         }
-        this._resolved.set(entity.id, geojson);
+        this._resolved.set(entityID, geojson);
       }
 
       const parts = (geojson.type === 'LineString') ? [[geojson.coordinates]]
@@ -299,7 +305,7 @@ export class PixiLayerOsm extends AbstractLayer {
         const segments = parts[i];
         for (let j = 0; j < segments.length; ++j) {
           const coords = segments[j];
-          const featureID = `${this.layerID}-${entity.id}-${i}-${j}`;
+          const featureID = `${this.layerID}-${entityID}-${i}-${j}`;
           let feature = this.features.get(featureID);
 
           if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
@@ -316,11 +322,11 @@ export class PixiLayerOsm extends AbstractLayer {
             feature.geometry.setCoords(coords);
             feature.parentContainer = levelContainer;    // Change layer stacking if necessary
             feature.container.zIndex = zindex;
-            feature.bindData(entity, entity.id);
+            feature.bindData(entity, entityID);
 
             if (entity.type === 'relation') {
               entity.members.forEach(member => {
-                feature.addChildData(entity.id, member.id);
+                feature.addChildData(entityID, member.id);
               });
             }
           }
@@ -383,7 +389,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Array of OSM entities (nodes with vertex geometry)
+   * @param  entities     Map (entity.id -> entity)  (nodes with vertex geometry)
    */
   renderVertices(frame, projection, zoom, entities) {
     const context = this.context;
@@ -401,17 +407,17 @@ export class PixiLayerOsm extends AbstractLayer {
       );
     }
 
-    for (const node of entities) {
+    for (const [nodeID, node] of entities) {
       let parentContainer = null;
       if (zoom >= 16 && isInterestingVertex(node)) {
         parentContainer = pointsContainer;
       }
-//      if (this._relatedOsmIDs.has(node.id)) {
+//      if (this._relatedOsmIDs.has(nodeID)) {
 //        parentContainer = selectedContainer;
 //      }
       if (!parentContainer) continue;   // this vertex isn't interesting enough to render
 
-      const featureID = `${this.layerID}-${node.id}`;
+      const featureID = `${this.layerID}-${nodeID}`;
       let feature = this.features.get(featureID);
 
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
@@ -426,7 +432,7 @@ export class PixiLayerOsm extends AbstractLayer {
       const version = (node.v || 0);  // If data has changed, rebind
       if (feature.v !== version) {
         feature.v = version;
-        feature.bindData(node, node.id);
+        feature.bindData(node, nodeID);
       }
 
       this.syncFeatureClasses(feature);
@@ -483,14 +489,14 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Array of OSM entities (nodes with point geometry)
+   * @param  entities     Map (entity.id -> entity)  (nodes with point geometry)
    */
   renderPoints(frame, projection, zoom, entities) {
     const graph = this.context.graph();
     const pointsContainer = this.scene.groups.get('points');
 
-    for (const node of entities) {
-      const featureID = `${this.layerID}-${node.id}`;
+    for (const [nodeID, node] of entities) {
+      const featureID = `${this.layerID}-${nodeID}`;
       let feature = this.features.get(featureID);
 
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
@@ -506,7 +512,7 @@ export class PixiLayerOsm extends AbstractLayer {
       const version = (node.v || 0);  // If data has changed, rebind
       if (feature.v !== version) {
         feature.v = version;
-        feature.bindData(node, node.id);
+        feature.bindData(node, nodeID);
       }
 
       this.syncFeatureClasses(feature);
@@ -555,7 +561,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Array of OSM entities (ways with highlight)
+   * @param  entities     Map (entity.id -> entity)  (ways with highlight)
    */
   renderMidpoints(frame, projection, zoom, entities) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
@@ -569,9 +575,9 @@ export class PixiLayerOsm extends AbstractLayer {
     let midpoints = new Map();
     const MIDPOINT_STYLE = { markerName: 'midpoint' };
 
-    for (const way of entities) {
+    for (const [wayID, way] of entities) {
       const nodes = graph.childNodes(way);
-      if (!nodes.length) continue;  // maybe a relation?
+      if (!nodes.length) continue;
 
       // Compute midpoints in projected coordinates
       let nodeData = nodes.map(node => {
@@ -611,8 +617,8 @@ export class PixiLayerOsm extends AbstractLayer {
       });
     }
 
-    for (const midpoint of midpoints) {
-      const featureID = `${this.layerID}-${midpoint.id}`;
+    for (const [midpointID, midpoint] of midpoints) {
+      const featureID = `${this.layerID}-${midpointID}`;
       let feature = this.features.get(featureID);
 
       if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
@@ -629,8 +635,8 @@ export class PixiLayerOsm extends AbstractLayer {
       // Here we use the midpoint location as it's "version"
       if (feature.v !== midpoint.loc) {
         feature.v = midpoint.loc;
-        feature.bindData(midpoint, midpoint.id);
-        feature.addChildData(midpoint.way.id, midpoint.id);
+        feature.bindData(midpoint, midpointID);
+        feature.addChildData(midpoint.way.id, midpointID);
       }
 
       this.syncFeatureClasses(feature);

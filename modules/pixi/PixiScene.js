@@ -230,16 +230,6 @@ export class PixiScene extends EventEmitter {
     this.layers.get(layerID)?.classData(dataID, classID);
   }
 
-  /**
-   * classDataAndDescendents
-   * Like `classData` but also classes the descendent/children data
-   * @param  layerID  `String` layerID (e.g. 'osm')
-   * @param  dataID   `String` dataID (e.g. 'r123')
-   * @param  classID  `String` classID (e.g. 'hovered')
-   */
-  classDataAndDescendents(layerID, dataID, classID) {
-    this.layers.get(layerID)?.classDataAndDescendents(dataID, classID);
-  }
 
   /**
    * unclassData
@@ -252,16 +242,6 @@ export class PixiScene extends EventEmitter {
     this.layers.get(layerID)?.unclassData(layerID, dataID, classID);
   }
 
-  /**
-   * unclassDataAndDescendents
-   * Like `unclassData` but also unclasses the descendent/children data
-   * @param  layerID  `String` layerID (e.g. 'osm')
-   * @param  dataID   `String` dataID (e.g. 'r123')
-   * @param  classID  `String` classID (e.g. 'hovered')
-   */
-  unclassDataAndDescendents(layerID, dataID, classID) {
-    this.layers.get(layerID)?.unclassDataAndDescendents(layerID, dataID, classID);
-  }
 
   /**
    * clearClass
