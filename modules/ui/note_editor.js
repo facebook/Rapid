@@ -90,7 +90,7 @@ export function uiNoteEditor(context) {
 
 
     function noteSaveSection(selection) {
-        var isSelected = (_note && _note.id === context.selectedNoteID());
+        var isSelected = (_note && _note.id === context.selectedIDs()[0]);
         var noteSave = selection.selectAll('.note-save')
             .data((isSelected ? [_note] : []), function(d) { return d.status + d.id; });
 
@@ -309,7 +309,7 @@ export function uiNoteEditor(context) {
         var osm = services.osm;
         var hasAuth = osm && osm.authenticated();
 
-        var isSelected = (_note && _note.id === context.selectedNoteID());
+        var isSelected = (_note && _note.id === context.selectedIDs()[0]);
         var buttonSection = selection.selectAll('.buttons')
             .data((isSelected ? [_note] : []), function(d) { return d.status + d.id; });
 

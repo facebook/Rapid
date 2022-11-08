@@ -67,10 +67,15 @@ export class ModeAddNote extends AbstractMode {
 
   /**
    * _click
-   * Add a Note at `loc`
+   * Add a Note at the mouse click coords
    */
-  _click(loc) {
+  _click(eventData) {
+    const context = this.context;
     const osm = services.osm;
+    const projection = context.projection;
+    const coord = eventData.coord;
+    const loc = projection.invert(coord);
+
     if (!osm) return;
 
     const note = osmNote({ loc: loc, status: 'open', comments: [] });
