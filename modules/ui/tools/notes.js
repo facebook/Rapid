@@ -17,7 +17,7 @@ export function uiToolNotes(context) {
     title: t.html('modes.add_note.title'),
     button: 'note',
     description: t.html('modes.add_note.description'),
-    key: '4'
+    key: t('modes.add_note.key')
   };
 
 
