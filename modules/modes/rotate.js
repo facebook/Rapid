@@ -7,11 +7,6 @@ import { t } from '../core/localizer';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
 import { modeSelect } from './select';
-import { operationCircularize } from '../operations/circularize';
-import { operationDelete } from '../operations/delete';
-import { operationMove } from '../operations/move';
-import { operationOrthogonalize } from '../operations/orthogonalize';
-import { operationReflectLong, operationReflectShort } from '../operations/reflect';
 import { utilKeybinding } from '../util/keybinding';
 import { utilFastMouse } from '../util/util';
 
@@ -26,14 +21,6 @@ export function modeRotate(context, entityIDs) {
     };
 
     var keybinding = utilKeybinding('rotate');
-//    var behaviors = [
-//        operationCircularize(context, entityIDs).behavior,
-//        operationDelete(context, entityIDs).behavior,
-//        operationMove(context, entityIDs).behavior,
-//        operationOrthogonalize(context, entityIDs).behavior,
-//        operationReflectLong(context, entityIDs).behavior,
-//        operationReflectShort(context, entityIDs).behavior
-//    ];
     var annotation = entityIDs.length === 1 ?
         t('operations.rotate.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.rotate.annotation.feature', { n: entityIDs.length });

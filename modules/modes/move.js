@@ -9,12 +9,6 @@ import { modeSelect } from './select';
 import { utilKeybinding } from '../util';
 import { utilFastMouse } from '../util/util';
 
-import { operationCircularize } from '../operations/circularize';
-import { operationDelete } from '../operations/delete';
-import { operationOrthogonalize } from '../operations/orthogonalize';
-import { operationReflectLong, operationReflectShort } from '../operations/reflect';
-import { operationRotate } from '../operations/rotate';
-
 
 export function modeMove(context, entityIDs, baseGraph) {
     var _tolerancePx = 4; // see also behaviorDrag, behaviorSelect, modeRotate
@@ -25,14 +19,6 @@ export function modeMove(context, entityIDs, baseGraph) {
     };
 
     var keybinding = utilKeybinding('move');
-//    var behaviors = [
-//        operationCircularize(context, entityIDs).behavior,
-//        operationDelete(context, entityIDs).behavior,
-//        operationOrthogonalize(context, entityIDs).behavior,
-//        operationReflectLong(context, entityIDs).behavior,
-//        operationReflectShort(context, entityIDs).behavior,
-//        operationRotate(context, entityIDs).behavior
-//    ];
     var annotation = entityIDs.length === 1 ?
         t('operations.move.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.move.annotation.feature', { n: entityIDs.length });
