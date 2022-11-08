@@ -159,6 +159,9 @@ export class BehaviorSelect extends AbstractBehavior {
   _pointerdown(e) {
     if (this.lastDown) return;  // a pointer is already down
 
+    this.context.ui().closeEditMenu();
+    this._showsMenu = false;
+
     const down = this._getEventData(e);
     this.lastDown = down;
     this.lastClick = null;
@@ -438,11 +441,8 @@ export class BehaviorSelect extends AbstractBehavior {
 
     } else {                 // menu is off, toggle it on
       // Only attempt to display the context menu if we're focused on a non-RapiD OSM Entity.
-      const datum = eventData.target?.data;
-      if (datum && datum instanceof osmEntity && !datum.__fbid__) {
         this._showsMenu = true;
         context.ui().showEditMenu(eventData.coord);
-      }
     }
   }
 
