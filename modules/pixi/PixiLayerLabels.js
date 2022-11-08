@@ -112,7 +112,7 @@ export class PixiLayerLabels extends AbstractLayer {
   resetAll() {
     for (const label of this._labels.values()) {
       if (label.displayObject) {
-        label.displayObject.destroy({ children: false, texture: false, baseTexture: false });
+        label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
         label.displayObject = null;
       }
     }
@@ -151,7 +151,7 @@ export class PixiLayerLabels extends AbstractLayer {
     for (const labelID of labelIDs.values()) {
       let label = this._labels.get(labelID);
       if (label && label.displayObject) {
-        label.displayObject.destroy({ children: false, texture: false, baseTexture: false });
+        label.displayObject.destroy({ children: true, texture: false, baseTexture: false });
         label.displayObject = null;
       }
       this._labels.delete(labelID);
