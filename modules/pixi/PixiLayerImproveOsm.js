@@ -77,7 +77,7 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         feature.geometry.setCoords(d.loc);
         feature.style = markerStyle;
         feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
+        feature.setData(d.id, d);
         // was here before
         // if (feature.icon) {
         //  // mathematically 0,-15 is center of marker, move up slightly

@@ -124,7 +124,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.style = LINESTYLE;
         feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        feature.bindData(d, d.properties.id);
+        feature.setData(d.properties.id, d);
       }
 
       this.syncFeatureClasses(feature);
@@ -147,7 +147,7 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
+        feature.setData(d.id, d);
 
         if (d.sequence_id) {
           feature.addChildData(d.sequence_id, d.id);

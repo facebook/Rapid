@@ -120,8 +120,8 @@ export class PixiLayerOsm extends AbstractLayer {
     const context = this.context;
     const graph = context.graph();
     const map = context.map();
-    const hoveredIDs = this._classHasData.get('hovered') || new Set();
-    const selectedIDs = this._classHasData.get('selected') || new Set();
+    const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
+    const selectedIDs = this._classHasData.get('selected') ?? new Set();
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
@@ -227,7 +227,8 @@ export class PixiLayerOsm extends AbstractLayer {
         const featureID = `${this.layerID}-${entityID}-fill-${i}`;
         let feature = this.features.get(featureID);
 
-        if (feature && feature.type !== 'polygon') {  // if feature type has changed, recreate it
+        // If feature existed before as a different type, recreate it.
+        if (feature && feature.type !== 'polygon') {
           feature.destroy();
           feature = null;
         }
@@ -237,15 +238,16 @@ export class PixiLayerOsm extends AbstractLayer {
           feature.parentContainer = this.areaContainer;
         }
 
-        if (feature?.v !== entityVersion) {   // update coords and bound data
+        // If data has changed.. Replace data and parent-child links.
+        if (feature?.v !== entityVersion) {
           feature.v = entityVersion;
 
           feature.geometry.setCoords(coords);
           const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
           feature.container.zIndex = -area;      // sort by area descending (small things above big things)
 
-          feature.bindData(entity, entityID);
-
+          feature.setData(entityID, entity);
+          feature.clearChildData(entityID);
           if (entity.type === 'relation') {
             entity.members.forEach(member => feature.addChildData(entityID, member.id));
           }
@@ -310,7 +312,8 @@ export class PixiLayerOsm extends AbstractLayer {
           const featureID = `${this.layerID}-${entityID}-${i}-${j}`;
           let feature = this.features.get(featureID);
 
-          if (feature && feature.type !== 'line') {  // if feature type has changed, recreate it
+          // If feature existed before as a different type, recreate it.
+          if (feature && feature.type !== 'line') {
             feature.destroy();
             feature = null;
           }
@@ -319,14 +322,15 @@ export class PixiLayerOsm extends AbstractLayer {
             feature = new PixiFeatureLine(this, featureID);
           }
 
-          if (feature?.v !== entityVersion) {   // update coords and bound data
+          // If data has changed.. Replace data and parent-child links.
+          if (feature?.v !== entityVersion) {
             feature.v = entityVersion;
             feature.geometry.setCoords(coords);
             feature.parentContainer = levelContainer;    // Change layer stacking if necessary
             feature.container.zIndex = zindex;
 
-            feature.bindData(entity, entityID);
-
+            feature.setData(entityID, entity);
+            feature.clearChildData(entityID);
             if (entity.type === 'relation') {
               entity.members.forEach(member => feature.addChildData(entityID, member.id));
             }
@@ -405,14 +409,14 @@ export class PixiLayerOsm extends AbstractLayer {
     const pointsContainer = this.scene.groups.get('points');
 
     // Gather vertices related to the selection
-    const hoveredIDs = this._classHasData.get('hovered') || new Set();
-    const selectedIDs = this._classHasData.get('selected') || new Set();
+    const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
+    const selectedIDs = this._classHasData.get('selected') ?? new Set();
     const relatedIDs = new Set();
     for (const hoveredID of hoveredIDs) {
-      this.getAllDescendants(hoveredID).forEach(id => relatedIDs.add(id));
+      this.getSelfAndDescendants(hoveredID).forEach(id => relatedIDs.add(id));
     }
     for (const selectedID of selectedIDs) {
-      this.getAllDescendants(selectedID).forEach(id => relatedIDs.add(id));
+      this.getSelfAndDescendants(selectedID).forEach(id => relatedIDs.add(id));
     }
 
 
@@ -437,7 +441,8 @@ export class PixiLayerOsm extends AbstractLayer {
       const featureID = `${this.layerID}-${nodeID}`;
       let feature = this.features.get(featureID);
 
-      if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
+      // If feature existed before as a different type, recreate it.
+      if (feature && feature.type !== 'point') {
         feature.destroy();
         feature = null;
       }
@@ -446,18 +451,18 @@ export class PixiLayerOsm extends AbstractLayer {
         feature = new PixiFeaturePoint(this, featureID);
       }
 
-      const version = (node.v || 0);  // If data has changed, rebind
+      // If data has changed, replace it.
+      const version = (node.v || 0);
       if (feature.v !== version) {
         feature.v = version;
-        feature.bindData(node, nodeID);
+        feature.geometry.setCoords(node.loc);
+        feature.setData(nodeID, node);
       }
 
       this.syncFeatureClasses(feature);
       feature.parentContainer = parentContainer;   // change layer stacking if necessary
 
       if (feature.dirty) {
-        feature.geometry.setCoords(node.loc);
-
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
         const directions = node.directions(graph, context.projection);
@@ -516,7 +521,8 @@ export class PixiLayerOsm extends AbstractLayer {
       const featureID = `${this.layerID}-${nodeID}`;
       let feature = this.features.get(featureID);
 
-      if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
+      // If feature existed before as a different type, recreate it.
+      if (feature && feature.type !== 'point') {
         feature.destroy();
         feature = null;
       }
@@ -526,17 +532,17 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.parentContainer = pointsContainer;
       }
 
-      const version = (node.v || 0);  // If data has changed, rebind
+      // If data has changed, replace it.
+      const version = (node.v || 0);
       if (feature.v !== version) {
         feature.v = version;
-        feature.bindData(node, nodeID);
+        feature.geometry.setCoords(node.loc);
+        feature.setData(nodeID, node);
       }
 
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        feature.geometry.setCoords(node.loc);
-
         const preset = presetManager.match(node, graph);
         const iconName = preset && preset.icon;
         const directions = node.directions(graph, this.context.projection);
@@ -638,10 +644,6 @@ export class PixiLayerOsm extends AbstractLayer {
       const featureID = `${this.layerID}-${midpointID}`;
       let feature = this.features.get(featureID);
 
-      if (feature && feature.type !== 'point') {  // if feature type has changed, recreate it
-        feature.destroy();
-        feature = null;
-      }
       if (!feature) {
         feature = new PixiFeaturePoint(this, featureID);
         feature.style = MIDPOINT_STYLE;
@@ -652,17 +654,13 @@ export class PixiLayerOsm extends AbstractLayer {
       // Here we use the midpoint location as it's "version"
       if (feature.v !== midpoint.loc) {
         feature.v = midpoint.loc;
-        feature.bindData(midpoint, midpointID);
+        feature.geometry.setCoords(midpoint.loc);
+        feature.container.rotation = midpoint.rot;  // remember to apply rotation
+        feature.setData(midpointID, midpoint);
         feature.addChildData(midpoint.way.id, midpointID);
       }
 
       this.syncFeatureClasses(feature);
-
-      if (feature.dirty) {
-        feature.geometry.setCoords(midpoint.loc);
-        feature.container.rotation = midpoint.rot;  // remember to apply rotation
-      }
-
       feature.update(projection, zoom);
       this.retainFeature(feature, frame);
     }

@@ -113,7 +113,7 @@ export class PixiLayerEditBlocks extends AbstractLayer {
           feature.style = BLOCK_STYLE;
           feature.parentContainer = parentContainer;
           feature.container.cursor = 'not-allowed';
-          feature.bindData(d, d.locationSetID);
+          feature.setData(d.locationSetID, d);
         }
 
         this.syncFeatureClasses(feature);

@@ -49,16 +49,17 @@ export class AbstractLayer {
     this._dataHasFeature = new Map();    // Map (dataID -> Set(featureID))
 
     // Parent Data <-> Child Data
+    // We establish a parent-child data hierarchy (like what the DOM used to do for us)
     // For example, we need this to know which ways make up a multipolygon relation.
     this._parentHasChildren = new Map();  // Map (parent dataID -> Set(child dataID))
     this._childHasParents = new Map();    // Map (child dataID -> Set(parent dataID))
 
     // Data <-> Class
-    // Data classes are strings (like what CSS classes used to do for us).
+    // Data classes are strings (like what CSS classes used to do for us)
     // Currently supported "selected", "hovered", "drawing"
     // Can set other ones but it won't do anything (but won't break anything either)
     // Counterintuitively, the Layer needs to be the source of truth for these data classes,
-    // because a Feature can be "selected" or "drawing" even before it has been created.
+    // because a Feature can be "selected" or "drawing" even before it has been created, or after destroyed
     this._dataHasClass = new Map();     // Map (dataID -> Set(classID))
     this._classHasData = new Map();     // Map (classID -> Set(dataID))
   }
@@ -155,13 +156,11 @@ export class AbstractLayer {
 
     // Gather all classes set on ancestor data..
     const classList = new Set();
-    const ancestorIDs = this.getAllAncestors(dataID);
+    const ancestorIDs = this.getSelfAndAncestors(dataID);
     for (const ancestorID of ancestorIDs) {
-      const classIDs = this._dataHasClass.get(ancestorID);
-      if (classIDs) {
-        for (const classID of classIDs) {
-          classList.add(classID);
-        }
+      const classIDs = this._dataHasClass.get(ancestorID) ?? new Set();
+      for (const classID of classIDs) {
+        classList.add(classID);
       }
     }
 
@@ -182,20 +181,20 @@ export class AbstractLayer {
   bindData(featureID, dataID) {
     this.unbindData(featureID);
 
-    let featureIDs = this._dataHasFeature.get(dataID);   // one-to-many data-to-features
+    let featureIDs = this._dataHasFeature.get(dataID);
     if (!featureIDs) {
       featureIDs = new Set();
       this._dataHasFeature.set(dataID, featureIDs);
     }
     featureIDs.add(featureID);
 
-    this._featureHasData.set(featureID, dataID);   // reverse feature-to-data
+    this._featureHasData.set(featureID, dataID);
   }
 
 
   /**
    * unbindData
-   * Removes the data bindings for a given featureID
+   * Removes the data binding for a given featureID
    * @param  featureID  `String` featureID  (e.g. 'osm-w-123-fill')
    */
   unbindData(featureID) {
@@ -222,7 +221,7 @@ export class AbstractLayer {
 
   /**
    * addChildData
-   * This adds a mapping from parent data to child data.
+   * Adds a mapping from parent data to child data.
    * @param  parentID  `String` dataID of the parent (e.g. 'r123')
    * @param  childID   `String` dataID of the child (e.g. 'w123')
    */
@@ -274,33 +273,31 @@ export class AbstractLayer {
    * @param  parentID  `String` dataID (e.g. 'r123')
    */
   clearChildData(parentID) {
-    const childIDs = this._parentHasChildren.get(parentID);
-    childIDs?.forEach(childID => {
+    const childIDs = this._parentHasChildren.get(parentID) ?? new Set();
+    for (const childID of childIDs) {
       this.removeChildData(parentID, childID);
-    });
+    }
   }
 
 
   /**
-   * getAllDescendants
-   * Get a result Set including the parentID and all dataIDs in the child hierarchy.
-   * @param   parentID  `String` dataID (e.g. 'r123')
-   * @param   result?   `Set` containing the results (e.g. ['r123','w123','n123'])
-   * @return  `Set` including the parentID and all dataIDs in the child hierarchy
+   * getSelfAndDescendants
+   * Recursively get a result `Set` including the given dataID and all dataIDs in the child hierarchy.
+   * @param   dataID   `String` dataID (e.g. 'r123')
+   * @param   result?  `Set` containing the results (e.g. ['r123','w123','n123'])
+   * @return  `Set` including the dataID and all dataIDs in the child hierarchy
    */
-  getAllDescendants(parentID, result) {
+  getSelfAndDescendants(dataID, result) {
     if (result instanceof Set) {
-      result.add(parentID);
+      result.add(dataID);
     } else {
-      result = new Set([parentID]);
+      result = new Set([dataID]);
     }
 
-    const childIDs = this._parentHasChildren.get(parentID);
-    if (childIDs) {
-      for (const childID of childIDs) {
-        if (!result.has(childID)) {
-          this.getAllDescendants(childID, result);
-        }
+    const childIDs = this._parentHasChildren.get(dataID) ?? new Set();
+    for (const childID of childIDs) {
+      if (!result.has(childID)) {
+        this.getSelfAndDescendants(childID, result);
       }
     }
 
@@ -309,25 +306,49 @@ export class AbstractLayer {
 
 
   /**
-   * getAllAncestors
-   * Get a result Set including the childID and all dataIDs in the parent hierarchy
-   * @param   childID   `String` dataID (e.g. 'n123')
-   * @param   result?   `Set` containing the results (e.g. ['n123','w123','r123'])
-   * @return  `Set` including the childID and all dataIDs in the parent hierarchy
+   * getSelfAndAncestors
+   * Recursively get a result `Set` including the given dataID and all dataIDs in the parent hierarchy
+   * @param   dataID   `String` dataID (e.g. 'n123')
+   * @param   result?  `Set` containing the results (e.g. ['n123','w123','r123'])
+   * @return  `Set` including the dataID and all dataIDs in the parent hierarchy
    */
-  getAllAncestors(childID, result) {
+  getSelfAndAncestors(dataID, result) {
     if (result instanceof Set) {
-      result.add(childID);
+      result.add(dataID);
     } else {
-      result = new Set([childID]);
+      result = new Set([dataID]);
     }
 
-    const parentIDs = this._childHasParents.get(childID);
-    if (parentIDs) {
-      for (const parentID of parentIDs) {
-        if (!result.has(parentID)) {
-          this.getAllAncestors(parentID, result);
-        }
+    const parentIDs = this._childHasParents.get(dataID) ?? new Set();
+    for (const parentID of parentIDs) {
+      if (!result.has(parentID)) {
+        this.getSelfAndAncestors(parentID, result);
+      }
+    }
+
+    return result;
+  }
+
+
+  /**
+   * getSelfAndSiblings
+   * Get a result `Set` including the dataID and all dataIDs adjacent in the parent-child hierarchy
+   * @param   dataID   `String` dataID (e.g. 'n123')
+   * @param   result?  `Set` containing the results (e.g. ['n121','n122','n123','n124'])
+   * @return  `Set` including the dataID and all dataIDs adjacent in the parent-child hierarchy
+   */
+  getSelfAndSiblings(dataID, result) {
+    if (result instanceof Set) {
+      result.add(dataID);
+    } else {
+      result = new Set([dataID]);
+    }
+
+    const parentIDs = this._childHasParents.get(dataID) ?? new Set();
+    for (const parentID of parentIDs) {
+      const siblingIDs = this._parentHasChildren.get(parentID) ?? new Set();
+      for (const siblingID of siblingIDs) {
+        result.add(siblingID);
       }
     }
 
@@ -389,10 +410,10 @@ export class AbstractLayer {
    * @param  classID   `String` classID (e.g. 'hovered')
    */
   clearClass(classID) {
-    const dataIDs = this._classHasData.get(classID);
-    dataIDs?.forEach(dataID => {
+    const dataIDs = this._classHasData.get(classID) ?? new Set();
+    for (const dataID of dataIDs) {
       this.unclassData(dataID, classID);
-    });
+    }
   }
 
 

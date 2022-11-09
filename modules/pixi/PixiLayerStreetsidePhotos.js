@@ -121,7 +121,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         feature.style = LINESTYLE;
         feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        feature.bindData(d, d.properties.key);
+        feature.setData(d.properties.key, d);
       }
 
       this.syncFeatureClasses(feature);
@@ -144,7 +144,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.bindData(d, d.key);
+        feature.setData(d.key, d);
 
         if (d.sequenceKey) {
           feature.addChildData(d.sequenceKey, d.key);

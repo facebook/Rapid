@@ -236,7 +236,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.geometry.setCoords(coords);
           feature.style = POLY_STYLE;
           feature.parentContainer = parentContainer;
-          feature.bindData(d, d.id);
+          feature.setData(d.id, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -274,7 +274,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.geometry.setCoords(coords);
           feature.style = LINE_STYLE;
           feature.parentContainer = parentContainer;
-          feature.bindData(d, d.id);
+          feature.setData(d.id, d);
         }
 
         this.syncFeatureClasses(feature);
@@ -310,7 +310,7 @@ export class PixiLayerCustomData extends AbstractLayer {
           feature.geometry.setCoords(coords);
           feature.style = POINT_STYLE;
           feature.parentContainer = parentContainer;
-          feature.bindData(d, d.id);
+          feature.setData(d.id, d);
         }
 
         this.syncFeatureClasses(feature);

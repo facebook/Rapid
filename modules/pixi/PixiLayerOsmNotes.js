@@ -94,7 +94,7 @@ export class PixiLayerOsmNotes extends AbstractLayer {
         feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
+        feature.setData(d.id, d);
       }
 
       this.syncFeatureClasses(feature);

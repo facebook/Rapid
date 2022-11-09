@@ -354,7 +354,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
           feature.parentContainer = parentContainer;
           feature.rapidFeature = true;
-          feature.bindData(entity, entity.id);
+          feature.setData(entity.id, entity);
 // shader experiment:
 // check https://github.com/pixijs/pixijs/discussions/7728 for some discussion
 // we are fighting with the batch system which is unfortunate
@@ -404,7 +404,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.geometry.setCoords(coords);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
-        feature.bindData(entity, entity.id);
+        feature.setData(entity.id, entity);
       }
 
       this.syncFeatureClasses(feature);
@@ -453,7 +453,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.geometry.setCoords(entity.loc);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
-        feature.bindData(entity, entity.id);
+        feature.setData(entity.id, entity);
       }
 
       this.syncFeatureClasses(feature);
@@ -483,7 +483,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
         feature.interactive = false;   // vertices in this layer don't actually need to be interactive
-        feature.bindData(entity, entity.id);
+        feature.setData(entity.id, entity);
       }
 
       this.syncFeatureClasses(feature);

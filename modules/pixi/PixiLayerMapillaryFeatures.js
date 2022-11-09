@@ -90,7 +90,7 @@ export class PixiLayerMapillaryFeatures extends AbstractLayer {
         feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.bindData(d, d.id);
+        feature.setData(d.id, d);
         // const marker = feature.marker;
         // const ICONSIZE = 24;
         // marker.width = ICONSIZE;

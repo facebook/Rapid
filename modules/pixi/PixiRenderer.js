@@ -380,7 +380,7 @@ if (dataID) {
    */
   _app() {
     // Wait for textures to be loaded before attempting rendering.
-    if (!this.textures || !this.textures.loaded) return;
+    if (!this.textures?.loaded) return;
 
     // Reproject the pixi geometries only whenever zoom changes
     const context = this.context;

@@ -276,7 +276,7 @@ export class AbstractFeature {
 
   /**
    * data
-   * Getter only, use `bindData` to change it.
+   * Getter only, use `setData()` to change it.
    * (because we need to know an id/key to identify the data by, and these can be anything)
    * @readonly
    */
@@ -286,27 +286,36 @@ export class AbstractFeature {
 
 
   /**
-   * bindData
+   * setData
    * This binds the data element to the feature, also lets the layer know about it.
-   * @param   data     `Object` data to bind to the feature (e.g. an OSM Node)
    * @param   dataID   `String` identifer for this data element (e.g. 'n123')
+   * @param   data     `Object` data to bind to the feature (e.g. an OSM Node)
    */
-  bindData(data, dataID) {
+  setData(dataID, data) {
     this._data = data;
     this.dataID = dataID;
     this.layer.bindData(this.id, dataID);
     this.dirty = true;
   }
 
-
   /**
    * addChildData
-   * This adds a mapping from parent data to child data.
+   * Adds a mapping from parent data to child data.
    * @param  parentID  `String` dataID of the parent (e.g. 'r123')
    * @param  childID   `String` dataID of the child (e.g. 'w123')
    */
    addChildData(parentID, childID) {
      this.layer.addChildData(parentID, childID);
+     this.dirty = true;
+   }
+
+  /**
+   * clearChildData
+   * Removes all child dataIDs for the given parent dataID
+   * @param  parentID  `String` dataID of the parent (e.g. 'r123')
+   */
+   clearChildData(parentID) {
+     this.layer.clearChildData(parentID);
      this.dirty = true;
    }
 
