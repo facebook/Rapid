@@ -154,15 +154,17 @@ export class AbstractLayer {
     const dataID = this._featureHasData.get(featureID);
     if (!dataID) return;
 
-    // Gather all classes set on ancestor data..
-    const classList = new Set();
-    const ancestorIDs = this.getSelfAndAncestors(dataID);
-    for (const ancestorID of ancestorIDs) {
-      const classIDs = this._dataHasClass.get(ancestorID) ?? new Set();
-      for (const classID of classIDs) {
-        classList.add(classID);
-      }
-    }
+//    // Gather all classes set on ancestor data..
+//    const classList = new Set();
+//    const ancestorIDs = this.getSelfAndAncestors(dataID);
+//    for (const ancestorID of ancestorIDs) {
+//      const classIDs = this._dataHasClass.get(ancestorID) ?? new Set();
+//      for (const classID of classIDs) {
+//        classList.add(classID);
+//      }
+//    }
+//
+    const classList = this._dataHasClass.get(dataID) ?? new Set();
 
     const activeData = this.context.activeData();
     feature.interactive = !activeData.has(dataID);  // is this the same as drawing??
@@ -238,7 +240,7 @@ export class AbstractLayer {
       parentIDs = new Set();
       this._childHasParents.set(childID, parentIDs);
     }
-    parentIDs.add(childID);
+    parentIDs.add(parentID);
   }
 
 
@@ -332,7 +334,7 @@ export class AbstractLayer {
 
   /**
    * getSelfAndSiblings
-   * Get a result `Set` including the dataID and all dataIDs adjacent in the parent-child hierarchy
+   * Get a result `Set` including the dataID and all sibling dataIDs in the parent-child hierarchy
    * @param   dataID   `String` dataID (e.g. 'n123')
    * @param   result?  `Set` containing the results (e.g. ['n121','n122','n123','n124'])
    * @return  `Set` including the dataID and all dataIDs adjacent in the parent-child hierarchy

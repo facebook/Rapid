@@ -228,6 +228,7 @@ export class AbstractFeature {
     if (val === this._selected) return;  // no change
     this._selected = val;
     this._styleDirty = true;
+    this._labelDirty = true;
   }
 
   /**

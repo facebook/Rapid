@@ -120,20 +120,17 @@ export class PixiLayerOsm extends AbstractLayer {
     const context = this.context;
     const graph = context.graph();
     const map = context.map();
-    const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
-    const selectedIDs = this._classHasData.get('selected') ?? new Set();
 
     context.loadTiles(context.projection);  // Load tiles of OSM data to cover the view
 
     let entities = context.history().intersects(map.extent());             // Gather data in view
     entities = context.features().filter(entities, this.context.graph());  // Apply feature filters
 
-    let data = {
+    const data = {
+      polygons: new Map(),
+      lines: new Map(),
       points: new Map(),
       vertices: new Map(),
-      lines: new Map(),
-      polygons: new Map(),
-      midpoints: new Map()
     };
 
     for (const entity of entities) {
@@ -146,10 +143,6 @@ export class PixiLayerOsm extends AbstractLayer {
         data.lines.set(entity.id, entity);
       } else if (geom === 'area') {
         data.polygons.set(entity.id, entity);
-      }
-
-      if (entity.type === 'way' && (hoveredIDs.has(entity.id) || selectedIDs.has(entity.id))) {
-        data.midpoints.set(entity.id, entity);
       }
     }
 
@@ -178,19 +171,30 @@ export class PixiLayerOsm extends AbstractLayer {
 //      this._alreadyDownloaded = true;
 //    }
 
-    this.renderPolygons(frame, projection, zoom, data.polygons);
-    this.renderLines(frame, projection, zoom, data.lines);
+    this.renderPolygons(frame, projection, zoom, data);
+    this.renderLines(frame, projection, zoom, data);
+    this.renderPoints(frame, projection, zoom, data);
 
     // At this point, all the visible linear features have been accounted for,
     // and parent-child data links have been established.
 
-    this.renderVertices(frame, projection, zoom, data.vertices);
-    this.renderPoints(frame, projection, zoom, data.points);
+    // Gather data related to the selected data
+    const selectedIDs = this._classHasData.get('selected') ?? new Set();
+    const descendantIDs = new Set();
+    const siblingIDs = new Set();
+    for (const selectedID of selectedIDs) {
+      this.getSelfAndDescendants(selectedID, descendantIDs);
+      this.getSelfAndSiblings(selectedID, siblingIDs);
+    }
+    const related = {
+      descendantIDs: descendantIDs,
+      siblingIDs: siblingIDs
+    };
 
-    // No midpoints when drawing
-    const currMode = context.mode().id;
-    if (currMode === 'browse' || currMode === 'select') {
-      this.renderMidpoints(frame, projection, zoom, data.midpoints);
+    this.renderVertices(frame, projection, zoom, data, related);
+
+    if (context.mode()?.id === 'select') {
+      this.renderMidpoints(frame, projection, zoom, data, related);
     }
   }
 
@@ -200,9 +204,10 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Map (entity.id -> entity) (ways/relations with area geometry)
+   * @param  data         Visible OSM data to render, sorted by type
    */
-  renderPolygons(frame, projection, zoom, entities) {
+  renderPolygons(frame, projection, zoom, data) {
+    const entities = data.polygons;
     const graph = this.context.graph();
 
     for (const [entityID, entity] of entities) {
@@ -239,7 +244,7 @@ export class PixiLayerOsm extends AbstractLayer {
         }
 
         // If data has changed.. Replace data and parent-child links.
-        if (feature?.v !== entityVersion) {
+        if (feature.v !== entityVersion) {
           feature.v = entityVersion;
 
           feature.geometry.setCoords(coords);
@@ -275,9 +280,10 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Map (entity.id -> entity)  (ways/relations with line geometry)
+   * @param  data         Visible OSM data to render, sorted by type
    */
-  renderLines(frame, projection, zoom, entities) {
+  renderLines(frame, projection, zoom, data) {
+    const entities = data.lines;
     const graph = this.context.graph();
     const lineContainer = this.lineContainer;
 
@@ -323,7 +329,7 @@ export class PixiLayerOsm extends AbstractLayer {
           }
 
           // If data has changed.. Replace data and parent-child links.
-          if (feature?.v !== entityVersion) {
+          if (feature.v !== entityVersion) {
             feature.v = entityVersion;
             feature.geometry.setCoords(coords);
             feature.parentContainer = levelContainer;    // Change layer stacking if necessary
@@ -397,9 +403,11 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Map (entity.id -> entity)  (nodes with vertex geometry)
+   * @param  data         Visible OSM data to render, sorted by type
+   * @param  realated     Collections of related OSM IDs
    */
-  renderVertices(frame, projection, zoom, entities) {
+  renderVertices(frame, projection, zoom, data, related) {
+    const entities = data.vertices;
     const context = this.context;
     const graph = context.graph();
 
@@ -408,35 +416,24 @@ export class PixiLayerOsm extends AbstractLayer {
     const selectedContainer = mapUIContainer.getChildByName('selected');
     const pointsContainer = this.scene.groups.get('points');
 
-    // Gather vertices related to the selection
-    const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
-    const selectedIDs = this._classHasData.get('selected') ?? new Set();
-    const relatedIDs = new Set();
-    for (const hoveredID of hoveredIDs) {
-      this.getSelfAndDescendants(hoveredID).forEach(id => relatedIDs.add(id));
-    }
-    for (const selectedID of selectedIDs) {
-      this.getSelfAndDescendants(selectedID).forEach(id => relatedIDs.add(id));
+    function isInterestingVertex(node) {
+      return node.hasInterestingTags() || node.isEndpoint(graph) || node.isIntersection(graph);
     }
 
-
-    function isInterestingVertex(entity) {
-      // const featureID = `${this.layerID}-${entity.id}`;
-      return entity.type === 'node' && entity.geometry(graph) === 'vertex' && (
-        entity.hasInterestingTags() || entity.isEndpoint(graph) /*|| scene.drawing.has(featureID)*/ ||  entity.isIntersection(graph)
-      );
+    function isRelatedVertex(entityID) {
+      return related.descendantIDs.has(entityID) || related.siblingIDs.has(entityID);
     }
-
 
     for (const [nodeID, node] of entities) {
       let parentContainer = null;
-      if (zoom >= 16 && isInterestingVertex(node)) {
+
+      if (zoom >= 16 && isInterestingVertex(node)) {  // minor importance
         parentContainer = pointsContainer;
       }
-      if (relatedIDs.has(nodeID)) {
+      if (isRelatedVertex(nodeID)) {   // major importance
         parentContainer = selectedContainer;
       }
-      if (!parentContainer) continue;   // this vertex isn't interesting enough to render
+      if (!parentContainer) continue;   // this vertex isn't important enough to render
 
       const featureID = `${this.layerID}-${nodeID}`;
       let feature = this.features.get(featureID);
@@ -452,9 +449,9 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // If data has changed, replace it.
-      const version = (node.v || 0);
-      if (feature.v !== version) {
-        feature.v = version;
+      const entityVersion = (node.v || 0);
+      if (feature.v !== entityVersion) {
+        feature.v = entityVersion;
         feature.geometry.setCoords(node.loc);
         feature.setData(nodeID, node);
       }
@@ -511,13 +508,15 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Map (entity.id -> entity)  (nodes with point geometry)
+   * @param  data         Visible OSM data to render, sorted by type
    */
-  renderPoints(frame, projection, zoom, entities) {
+  renderPoints(frame, projection, zoom, data) {
+    const entities = data.points;
     const graph = this.context.graph();
     const pointsContainer = this.scene.groups.get('points');
 
     for (const [nodeID, node] of entities) {
+      const entityVersion = (node.v || 0);
       const featureID = `${this.layerID}-${nodeID}`;
       let feature = this.features.get(featureID);
 
@@ -533,9 +532,8 @@ export class PixiLayerOsm extends AbstractLayer {
       }
 
       // If data has changed, replace it.
-      const version = (node.v || 0);
-      if (feature.v !== version) {
-        feature.v = version;
+      if (feature.v !== entityVersion) {
+        feature.v = entityVersion;
         feature.geometry.setCoords(node.loc);
         feature.setData(nodeID, node);
       }
@@ -584,10 +582,12 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
-   * @param  entities     Map (entity.id -> entity)  (ways with highlight)
+   * @param  data         Visible OSM data to render, sorted by type
+   * @param  realated     Collections of related OSM IDs
    */
-  renderMidpoints(frame, projection, zoom, entities) {
+  renderMidpoints(frame, projection, zoom, data, related) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
+    const entities = data.lines;
     const graph = this.context.graph();
 
     // Midpoints should be drawn above everything
@@ -599,6 +599,10 @@ export class PixiLayerOsm extends AbstractLayer {
     const MIDPOINT_STYLE = { markerName: 'midpoint' };
 
     for (const [wayID, way] of entities) {
+      // Include only ways that are selected, or descended from a relation that is selected
+      if (!related.descendantIDs.has(wayID)) continue;
+
+      // Include only actual ways that have child nodes
       const nodes = graph.childNodes(way);
       if (!nodes.length) continue;
 
@@ -617,7 +621,7 @@ export class PixiLayerOsm extends AbstractLayer {
       nodeData.slice(0, -1).forEach((_, i) => {
         const a = nodeData[i];
         const b = nodeData[i + 1];
-        const id = [a.id, b.id].sort().join('-');
+        const midpointID = [a.id, b.id].sort().join('-');
         const dist = vecLength(a.point, b.point);
         if (dist < MIN_MIDPOINT_DIST) return;
 
@@ -626,7 +630,7 @@ export class PixiLayerOsm extends AbstractLayer {
         const loc = projection.invert(pos);  // store as wgs84 lon/lat
         const midpoint = {
           type: 'midpoint',
-          id: id,
+          id: midpointID,
           a: a,
           b: b,
           way: way,
@@ -634,8 +638,8 @@ export class PixiLayerOsm extends AbstractLayer {
           rot: rot
         };
 
-        if (!midpoints.has(id)) {
-          midpoints.set(id, midpoint);
+        if (!midpoints.has(midpointID)) {
+          midpoints.set(midpointID, midpoint);
         }
       });
     }
@@ -652,6 +656,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       // Something about the midpoint has changed
       // Here we use the midpoint location as it's "version"
+      // (This can happen if a sibling node has moved, the midpoint moves too)
       if (feature.v !== midpoint.loc) {
         feature.v = midpoint.loc;
         feature.geometry.setCoords(midpoint.loc);
