@@ -1,8 +1,9 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
+import { GlowFilter } from '@pixi/filter-glow';
 
 import { AbstractFeature } from './AbstractFeature';
-import { getLineSegments, lineToPolygon, lineToPoly } from './helpers';
+import { getLineSegments, lineToPoly } from './helpers';
 
 const ONEWAY_SPACING = 35;
 const SIDED_SPACING = 30;
@@ -287,10 +288,29 @@ export class PixiFeatureLine extends AbstractFeature {
   }
 
 
-// experiment
-// Show/Hide halo (requires `this.container.hitArea` to be already set up as a PIXI.Polygon)
+  /**
+   * updateHalo
+   * Show/Hide halo (expects `this._bufferdata` to be already set up by `updateHitArea` as a PIXI.Polygon)
+   */
   updateHalo() {
-    if (this.visible && (this.hovered || this.selected || this.drawing)) {
+    const showHover = (this.visible && this.hovered);
+    const showSelect = (this.visible && this.selected);
+
+    // Hover
+    if (showHover) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else {
+      if (this.container.filters) {
+        this.container.filters = null;
+      }
+    }
+
+    // Select
+    if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
@@ -306,7 +326,7 @@ export class PixiFeatureLine extends AbstractFeature {
       };
 
       this.halo.clear();
-       const dl = new DashLine(this.halo, HALO_STYLE);
+      const dl = new DashLine(this.halo, HALO_STYLE);
       if (this._bufferdata) {
         if (this._bufferdata.outer && this._bufferdata.inner) {
           dl.drawPolygon(this._bufferdata.outer);
@@ -315,10 +335,8 @@ export class PixiFeatureLine extends AbstractFeature {
           dl.drawPolygon(this._bufferdata.perimeter);
         }
       }
-
     } else {
       if (this.halo) {
-        this.container.filters = null;
         this.halo.destroy({ children: true });
         this.halo = null;
       }

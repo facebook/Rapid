@@ -1,8 +1,10 @@
 import * as PIXI from 'pixi.js';
-// import { DashLine } from 'pixi-dashed-line';
+import { DashLine } from 'pixi-dashed-line';
+import { GlowFilter } from '@pixi/filter-glow';
 import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@id-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
+import { lineToPoly } from './helpers';
 import { prefs } from '../core/preferences';
 
 const PARTIALFILLWIDTH = 32;
@@ -343,37 +345,66 @@ export class PixiFeaturePolygon extends AbstractFeature {
   }
 
 
-// experiment
-// Show/Hide halo (requires `this._ssrdata.polygon` to be already set up as a PIXI.Polygon)
+  /**
+   * updateHalo
+   * Show/Hide halo
+   */
   updateHalo() {
-//    if (this._ssrdata && this.visible && (this.hovered || this.selected|| this.drawing )) {
-//      if (!this.halo) {
-//        this.halo = new PIXI.Graphics();
-//        this.halo.name = `${this.id}-halo`;
-//        const mapUIContainer = this.scene.layers.get('map-ui').container;
-//        mapUIContainer.addChild(this.halo);
-//      }
-//
-//      const HALO_STYLE = {
-//        alpha: 0.9,
-//        dash: [6, 3],
-//        width: 2,   // px
-//        color: 0xffff00
-//      };
-//
-//      this.halo.clear();
-//      new DashLine(this.halo, HALO_STYLE).drawPolygon(this._ssrdata.haloPolygon.points);
-//      this.halo.position = this._ssrdata.haloCenter;
-//      this.halo.rotation = this._ssrdata.ssr.angle;
-//
-//    } else {
-//      if (this.halo) {
-//        this.halo.destroy({ children: true });
-//        this.halo = null;
-//      }
-//    }
-  }
+    const showHover = (this.visible && this.hovered);
+    const showSelect = (this.visible && this.selected);
 
+    // Hover
+    if (showHover) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else {
+      if (this.container.filters) {
+        this.container.filters = null;
+      }
+    }
+
+    // Select
+    if (showSelect) {
+      if (!this.halo) {
+        this.halo = new PIXI.Graphics();
+        this.halo.name = `${this.id}-halo`;
+        const mapUIContainer = this.scene.layers.get('map-ui').container;
+        mapUIContainer.addChild(this.halo);
+      }
+
+      const HALO_STYLE = {
+        alpha: 0.9,
+        dash: [6, 3],
+        width: 2,   // px
+        color: 0xffff00
+      };
+
+// for now, just copy what PixiFeatureLine does
+const hitStyle = {
+  alignment: 0.5,  // middle of line
+  color: 0x0,
+  width: 16,
+  alpha: 1.0,
+  join: PIXI.LINE_JOIN.BEVEL,
+  cap: PIXI.LINE_CAP.BUTT
+};
+const bufferdata = lineToPoly(this.geometry.outer, hitStyle);
+
+      this.halo.clear();
+      const dl = new DashLine(this.halo, HALO_STYLE);
+      if (bufferdata?.outer) {
+        dl.drawPolygon(bufferdata.outer);
+      }
+    } else {
+      if (this.halo) {
+        this.halo.destroy({ children: true });
+        this.halo = null;
+      }
+    }
+  }
 
 
   /**

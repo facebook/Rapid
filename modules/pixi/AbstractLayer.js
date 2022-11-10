@@ -72,6 +72,7 @@ export class AbstractLayer {
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
+   * @abstract
    */
   render() {
   }
@@ -474,6 +475,7 @@ export class AbstractLayer {
    * supported
    * Is this Layer supported? (i.e. do we even show it in lists?)
    * Can be overridden in a subclass with additional logic
+   * @abstract
    */
   get supported() {
     return true;

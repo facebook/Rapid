@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
+import { GlowFilter } from '@pixi/filter-glow';
 
 import { AbstractFeature } from './AbstractFeature';
 import { getIconTexture } from './helpers';
@@ -273,10 +274,29 @@ export class PixiFeaturePoint extends AbstractFeature {
   }
 
 
-// experiment
-// Show/Hide halo (requires `this.container.hitArea` to be already set up as a supported shape)
+  /**
+   * updateHalo
+   * Show/Hide halo (requires `this.container.hitArea` to be already set up by `updateHitArea` as a supported shape)
+   */
   updateHalo() {
-    if (this.visible && (this.hovered || this.selected)) {
+    const showHover = (this.visible && this.hovered);
+    const showSelect = (this.visible && this.selected);
+
+    // Hover
+    if (showHover) {
+      if (!this.container.filters) {
+        const glow = new GlowFilter({ distance: 15, outerStrength: 3, color: 0xffff00 });
+        glow.resolution = 2;
+        this.container.filters = [glow];
+      }
+    } else {
+      if (this.container.filters) {
+        this.container.filters = null;
+      }
+    }
+
+    // Select
+    if (showSelect) {
       if (!this.halo) {
         this.halo = new PIXI.Graphics();
         this.halo.name = `${this.id}-halo`;
