@@ -261,45 +261,44 @@ export function lineToPoly(flatPoints, lineStyle = {}) {
 
   // This path can be used as an array of points for the hitArea.
   // Go out on one side and back on the other, then close it off.
-  // let perimeter = [];
   const len = pathL.length + pathR.length + 1;
   const perimeter = new Array(len * 2);
   let i = 0;
-  // pathL.forEach(([x, y]) => perimeter.push(x, y));   // flatten
-  for (let j = 0; j < pathL.length; ++i, ++j) {
+  for (let j = 0; j < pathL.length; ++i, ++j) {   // flatten coords
     perimeter[i * 2] = pathL[j][0];
     perimeter[i * 2 + 1] = pathL[j][1];
   }
 
   pathR.reverse();
-  // pathR.forEach(([x, y]) => perimeter.push(x, y));   // flatten
-  for (let j = 0; j < pathR.length; ++i, ++j) {
+  for (let j = 0; j < pathR.length; ++i, ++j) {   // flatten coords
     perimeter[i * 2] = pathR[j][0];
     perimeter[i * 2 + 1] = pathR[j][1];
   }
-  // perimeter.push(perimeter[0], perimeter[1]);  // close the shape
-  perimeter[i * 2] = perimeter[0];
-  perimeter[i * 2 + 1] = perimeter[1];
+  // close the shape
+  perimeter[perimeter.length - 2] = perimeter[0];
+  perimeter[perimeter.length - 1] = perimeter[1];
 
   result.perimeter = perimeter;
 
   // If the line was closed, determine which path is longer (outer) and shorter (inner)
   if (isClosed) {
-    // let pointsL = [];
-    const pointsL = new Array(pathL.length * 2);
-    // pathL.forEach(([x, y]) => pointsL.push(x, y));   // flatten
-    for (let j = 0; j < pathL.length; ++j) {
+    const pointsL = new Array((pathL.length + 1) * 2);
+    for (let j = 0; j < pathL.length; ++j) {   // flatten coords
       pointsL[j * 2] = pathL[j][0];
       pointsL[j * 2 + 1] = pathL[j][1];
     }
+    // close the shape
+    pointsL[pointsL.length - 2] = pathL[0][0];
+    pointsL[pointsL.length - 1] = pathL[0][1];
 
-    // let pointsR = [];
-    const pointsR = new Array(pathR.length * 2);
-    // pathR.forEach(([x, y]) => pointsR.push(x, y));   // flatten
-    for (let j = 0; j < pathR.length; ++j) {
+    const pointsR = new Array((pathR.length + 1) * 2);
+    for (let j = 0; j < pathR.length; ++j) {   // flatten coords
       pointsR[j * 2] = pathR[j][0];
       pointsR[j * 2 + 1] = pathR[j][1];
     }
+    // close the shape
+    pointsR[pointsR.length - 2] = pathR[0][0];
+    pointsR[pointsR.length - 1] = pathR[0][1];
 
     if (lenL > lenR) {
       result.outer = pointsL;
