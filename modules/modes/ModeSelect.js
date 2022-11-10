@@ -10,7 +10,7 @@ import { uiOsmoseEditor } from '../ui/osmose_editor';
 import { uiRapidFeatureInspector } from '../ui/rapid_feature_inspector';
 import { utilKeybinding } from '../util';
 
-const DEBUG = false;
+const DEBUG = true;
 
 
 /**

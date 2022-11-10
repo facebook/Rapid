@@ -109,7 +109,11 @@ export class BehaviorDrag extends AbstractBehavior {
     if (this.lastDown) return;   // a pointer is already down
 
     const down = this._getEventData(e);
-    const isDraggableTarget = (down.target?.data instanceof osmNode && down.target?.layerID === 'osm');
+
+    const isNode = down.target?.data instanceof osmNode;
+    const isMidpoint = down.target?.data?.type === 'midpoint';
+    const isDraggableTarget =
+      (isNode || isMidpoint) && down.target?.layerID === 'osm';
     if (!isDraggableTarget) return;
 
     this.lastDown = down;
@@ -241,5 +245,4 @@ export class BehaviorDrag extends AbstractBehavior {
 
     this.emit('move', eventData);
   }
-
 }

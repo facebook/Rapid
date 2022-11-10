@@ -66,24 +66,26 @@ export class ModeDragNode extends AbstractMode {
     // It's an odd check, not sure if still needed or why?  (low zooms?)
     if (!context.editable()) return false;
 
-    // Bail out if the node is connected to something hidden.
-    const hasHidden = context.features().hasHiddenConnections(entity, context.graph());
-    if (hasHidden) {
-      context.ui().flash
-        .duration(4000)
-        .iconName('#iD-icon-no')
-        .label(t('modes.drag_node.connected_to_hidden'))();
-      return false;
-    }
+    this._wasMidpoint = (entity.type === 'midpoint');
 
+    if (!this._wasMidpoint) {
+      // Bail out if the node is connected to something hidden.
+      const hasHidden = context.features().hasHiddenConnections(entity, context.graph());
+      if (hasHidden) {
+        context.ui().flash
+          .duration(4000)
+          .iconName('#iD-icon-no')
+          .label(t('modes.drag_node.connected_to_hidden'))();
+        return false;
+      }
+    }
     this._active = true;
 
     // Convert a midpoint to a node..
-    this._wasMidpoint = (entity.type === 'midpoint');
     if (this._wasMidpoint) {
       const midpoint = entity;
       entity = osmNode();
-      context.perform(actionAddMidpoint(midpoint, entity));
+      context.perform(actionAddMidpoint(midpoint, entity), t('operations.add.annotation.vertex'));
       entity = context.entity(entity.id);   // get post-action entity
     } else {
       context.perform(actionNoop());
@@ -99,7 +101,7 @@ export class ModeDragNode extends AbstractMode {
 
     this._updateCollections();
 
-    context.enableBehaviors(['hover', 'drag', 'map-interaction']);
+    context.enableBehaviors(['hover', 'drag']);
 
     context.behaviors.get('drag')
       .on('move', this._move)
