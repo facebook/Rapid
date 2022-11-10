@@ -207,6 +207,19 @@ coreGraph.prototype = {
         var type = entity && entity.type || oldentity && oldentity.type;
         var removed, added, i;
 
+// todo: experiment
+// When changing a node, update the internal verisons of its parentways so that they update too.
+// This code might be the wrong thing , or might belong in difference.js
+// Need to consider undo/redo also
+if (type === 'node') {
+    const nodeID = oldentity?.id ?? entity?.id;
+    const parentIDs = parentWays[nodeID] || [];
+    for (const parentID of parentIDs) {
+        let parent = this.entities[parentID];
+        parent.v = (parent.v || 0) + 1;   // bump version in place
+    }
+}
+
         if (type === 'way') {   // Update parentWays
             if (oldentity && entity) {
                 removed = utilArrayDifference(oldentity.nodes, entity.nodes);
