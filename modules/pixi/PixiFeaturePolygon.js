@@ -21,7 +21,6 @@ const PARTIALFILLWIDTH = 32;
  *   `fill`       PIXI.Graphic for the fill (below)
  *   `stroke`     PIXI.Graphic for the stroke (above)
  *   `mask`       PIXI.Mesh for the mask (applied to fill)
- *   `_ssrdata`    Object containing SSR data (computed one time for simple polygons)
  *
  *   (also all properties inherited from `AbstractFeature`)
  */
@@ -83,10 +82,19 @@ export class PixiFeaturePolygon extends AbstractFeature {
    */
   destroy() {
     super.destroy();
-    this._ssrdata = null;
     this.lowRes = null;
     this.fill = null;
     this.mask = null;
+
+    if (this._ssrdata) {
+      delete this._ssrdata.ssr;
+      delete this._ssrdata.origSsr;
+      delete this._ssrdata.origAxis1;
+      delete this._ssrdata.origAxis2;
+      delete this._ssrdata.origCenter;
+      delete this._ssrdata.shapeType;
+      this._ssrdata = null;
+    }
   }
 
 
@@ -164,26 +172,6 @@ export class PixiFeaturePolygon extends AbstractFeature {
     this.sceneBounds.y = minY;
     this.sceneBounds.width = w;
     this.sceneBounds.height = h;
-
-
-//    // Project the ssr polygon too, for use as a halo
-//    // Add some padding too
-//    if (this._ssrdata) {
-//      const PADDING = 8;  // in pixels
-//      const center = projection.project(this._ssrdata.center);
-//      let coords = this._ssrdata.origSsr.map(coord => projection.project(coord));
-//
-//      coords = coords.map(coord => vecSubtract(coord, center));     // to local coords
-//      coords = geomRotatePoints(coords, -this._ssrdata.angle, [0,0]);  // rotate to x axis
-//      coords = coords.map(([x,y]) => {
-//        const x2 = (x > 0) ? (x + PADDING) : (x < 0) ? (x - PADDING) : x;
-//        const y2 = (y > 0) ? (y + PADDING) : (y < 0) ? (y - PADDING) : y;
-//        return [x2, y2];
-//      });
-//
-//      this._ssrdata.haloCenter = new PIXI.Point(center[0], center[1]);
-//      this._ssrdata.haloPolygon = new PIXI.Polygon(coords.map(([x,y]) => new PIXI.Point(x, y)));
-//    }
 
 
     //

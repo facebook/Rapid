@@ -33,6 +33,7 @@ export class PixiFeatureLine extends AbstractFeature {
     super(layer, featureID);
 
     this.type = 'line';
+    this._bufferdata = null;
 
     const casing = new PIXI.Graphics();
     casing.name = 'casing';
