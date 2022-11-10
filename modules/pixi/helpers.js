@@ -105,16 +105,15 @@ export function lineToPolygon(width, points) {
  * Use Pixi's built-in line builder to convert a line with some width into a polygon.
  * https://github.com/pixijs/pixijs/blob/dev/packages/graphics/src/utils/buildLine.ts
  *
- * @param  points     Array of [x,y] points that make up the line
- * @param  lineStyle  Object suitable to use as a lineStyle (important options are alignment and width)
+ * @param  flatPoints  `Array` of [ x,y, x,y, … ] points that make up the line
+ * @param  lineStyle   `Object` suitable to use as a lineStyle (important options are alignment and width)
  */
-export function lineToPoly(points, lineStyle = {}) {
+export function lineToPoly(flatPoints, lineStyle = {}) {
   const EPSILON = 1e-4;
-  const isClosed = vecEqual(points[0], points[points.length - 1], EPSILON);
-
-  let sourcePath = [];
-  points.forEach(([x, y]) => sourcePath.push(x, y));  // flatten point array
-  const sourceShape = new PIXI.Polygon(sourcePath);
+  const first = [flatPoints[0], flatPoints[1]];
+  const last = [flatPoints[flatPoints.length - 2], flatPoints[flatPoints.length - 1]];
+  const isClosed = vecEqual(first, last, EPSILON);
+  const sourceShape = new PIXI.Polygon(flatPoints);
 
   lineStyle.native = false;  // we want the non-native line builder
   sourceShape.closeStroke = false;  // don't make an extra segment from end to start

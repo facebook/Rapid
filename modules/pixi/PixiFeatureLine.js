@@ -271,7 +271,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
 // experiment
   updateHitArea() {
-    if (/*!this.visible ||*/ !this.geometry.coords) return;
+    if (!this.geometry.flatOuter) return;   // no points?
 
     const hitWidth = Math.max(3, this._style.casing.width || 0);
     const hitStyle = {
@@ -283,7 +283,7 @@ export class PixiFeatureLine extends AbstractFeature {
       cap: PIXI.LINE_CAP.BUTT
     };
 
-    this._bufferdata = lineToPoly(this.geometry.coords, hitStyle);
+    this._bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
     this.container.hitArea = new PIXI.Polygon(this._bufferdata.perimeter);
   }
 

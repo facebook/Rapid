@@ -350,6 +350,8 @@ export class PixiFeaturePolygon extends AbstractFeature {
    * Show/Hide halo
    */
   updateHalo() {
+if (!this.geometry.flatOuter) return;  // no points?
+
     const showHover = (this.visible && this.hovered);
     const showSelect = (this.visible && this.selected);
 
@@ -391,7 +393,7 @@ const hitStyle = {
   join: PIXI.LINE_JOIN.BEVEL,
   cap: PIXI.LINE_CAP.BUTT
 };
-const bufferdata = lineToPoly(this.geometry.outer, hitStyle);
+const bufferdata = lineToPoly(this.geometry.flatOuter, hitStyle);
 
       this.halo.clear();
       const dl = new DashLine(this.halo, HALO_STYLE);
