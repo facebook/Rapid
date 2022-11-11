@@ -20,7 +20,6 @@ export class BehaviorLasso extends AbstractBehavior {
         this._lassoing = false;
         this._extent = null;
         this._points = []; // A series of x,y screen coords that we record while lassoing.
-
         this._pointerdown = this._pointerdown.bind(this);
         this._pointermove = this._pointermove.bind(this);
         this._pointerup = this._pointerup.bind(this);
@@ -73,8 +72,15 @@ export class BehaviorLasso extends AbstractBehavior {
         const eventManager = this.context.map().renderer.events;
         if (!eventManager.pointerOverRenderer) return;
         const move = this._getEventData(e);
+
+        // Update geometry and extent
         this._extent = this._extent.extend(new Extent(move.coord));
         this._points.push(move.coord);
+
+        //Push the polygon data to the map UI for rendering.
+        const mapUILayer = this.context.scene().layers.get('map-ui');
+        mapUILayer.lassoPolygonData = this._points;
+        this.context.map().immediateRedraw();
     }
 
     _pointerup() {
@@ -82,8 +88,13 @@ export class BehaviorLasso extends AbstractBehavior {
         if (!this._lassoing) return;
 
         this._lassoing = false;
+        const mapUILayer = this.context.scene().layers.get('map-ui');
 
         var ids = this._lassoed();
+        this._points = [];
+        mapUILayer.lassoPolygonData = this._points;
+
+        this._extent = null;
 
         if (ids.length) {
             this.context.enter(modeSelect(this.context, ids));

@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import { geoMetersToLon } from '@id-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
+import { DashLine } from 'pixi-dashed-line';
 
 
 /**
@@ -12,6 +13,7 @@ import { AbstractLayer } from './AbstractLayer';
  * - selected / hovered vertices and other elements
  * - geolocation aura
  * - tile debugging grid
+ * - lasso selection polygon
  * - others?
  *
  * @class
@@ -70,7 +72,17 @@ groupContainer.addChild(container);
     selectedContainer.visible = true;
     this.selectedContainer = selectedContainer;
 
-    this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer);
+    // Lasso polygon
+    this._lassoPolygonData = null;
+    this._lassoPolygonDirty = false;
+    this._lassoGraphics = new PIXI.Graphics();
+    const lassoContainer = new PIXI.Container();
+    lassoContainer.addChild(this._lassoGraphics);
+    lassoContainer.name = 'lasso';
+    lassoContainer.sortableChildren = false;
+    lassoContainer.visible = true;
+    this.lassoContainer = lassoContainer;
+    this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer, lassoContainer);
   }
 
 
@@ -100,6 +112,18 @@ groupContainer.addChild(container);
 
 
   /**
+   * lassoPolygonData
+   */
+   get lassoPolygonData() {
+    return this._lassoPolygonData;
+  }
+  set lassoPolygonData(val) {
+    this._lassoPolygonData = val;
+    this._lassoPolygonDirty = true;
+  }
+
+
+  /**
    * render
    * Render any of the child containers for UI that should float over the map.
    * @param  frame        Integer frame being rendered
@@ -110,14 +134,60 @@ groupContainer.addChild(container);
     const k = projection.scale();
     if (k !== this._oldk) {
       this._geolocationDirty = true;
+      this._lassoPolygonDirty = true;
       this._oldk = k;
     }
 
     if (this._geolocationDirty) {
       this.renderGeolocation(frame, projection);
     }
+
+    if (this._lassoPolygonDirty) {
+      this.renderLasso(frame, projection);
+    }
+
   }
 
+  /**
+   * renderLasso
+   * Render the lasso polygon
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   */
+  renderLasso(frame, projection) {
+    if (this._lassoPolygonDirty) {
+      this._lassoPolygonDirty = false;
+    }
+
+
+    const LASSO_STYLE = {
+      alpha: 0.7,
+      dash: [6, 3],
+      width: 1,   // px
+      color: 0xffffff
+    };
+
+    //Simple state machine: If there's lasso data set, ensure that the lasso graphcs are added to the container.
+    // If there's no lasso data set, remove the graphics from the container and stop rendering.
+
+    //No polygon data? remove the graphics from the container.
+    if (!this._lassoPolygonData && this._lassoGraphics.parent) {
+      this.lassoContainer.removeChildren();
+    } else {
+      //Otherwise, we have polygon data but no parent. Add the graphics to the lasso container.
+      if (!this._lassoGraphics.parent) {
+        this.lassoContainer.addChild(this._lassoGraphics);
+       }
+
+        //Update polygon rendered to map UI
+      this._lassoGraphics.clear();
+
+      //Render the data only as long as we have something meaningful.
+      if (this._lassoPolygonData?.length > 0) {
+        new DashLine(this._lassoGraphics, LASSO_STYLE).drawPolygon(this._lassoPolygonData.flat());
+      }
+    }
+  }
 
   /**
    * renderGeolocation
