@@ -236,7 +236,7 @@ export function uiIntroArea(context, reveal) {
         function checkPresetSearch() {
             var first = context.container().select('.preset-list-item:first-child');
 
-            if (first.laclassed('preset-leisure-playground')) {
+            if (first.classed('preset-leisure-playground')) {
                 reveal(first.select('.preset-list-button').node(),
                     helpHtml('intro.areas.choose_playground', { preset: playgroundPreset.name() }),
                     { duration: 300 }
