@@ -128,6 +128,8 @@ export class BehaviorMapInteraction extends AbstractBehavior {
    */
   _pointerdown(e) {
     if (this.lastDown) return;   // a pointer is already down
+    const eventManager = this.context.map().renderer.events;
+    if (eventManager.modifierKeys.has('Shift')) return; // shift indicates lasso, not panning!
 
     const down = this._getEventData(e);
     const isDraggableTarget = (down.target?.data instanceof osmNode && down.target?.layerID === 'osm');

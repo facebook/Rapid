@@ -17,6 +17,7 @@ import { coreUploader } from './uploader';
 import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
+import { BehaviorLasso } from '../behaviors/BehaviorLasso';
 import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
 import { BehaviorPaste } from '../behaviors/BehaviorPaste';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
@@ -729,6 +730,7 @@ export function coreContext() {
         new BehaviorDrag(context),
         new BehaviorDraw(context),
         new BehaviorHover(context),
+        new BehaviorLasso(context),
         new BehaviorMapInteraction(context),
         new BehaviorPaste(context),
         new BehaviorSelect(context)
