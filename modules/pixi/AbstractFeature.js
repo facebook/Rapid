@@ -188,9 +188,10 @@ export class AbstractFeature {
    * Whether the Feature is currently interactive
    */
   get interactive() {
-    return this.container.interactive;
+    return this.container?.interactive;
   }
   set interactive(val) {
+    if (!this.container) return;
     if (val === this.container.interactive) return;  // no change
     this.container.buttonMode = val;
     this.container.interactive = val;
