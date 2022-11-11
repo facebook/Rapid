@@ -19,7 +19,7 @@ export class BehaviorLasso extends AbstractBehavior {
         this.lasso = null;
         this._lassoing = false;
         this._extent = null;
-        this._points = []; // A series of x,y screen coords that we record while lassoing.
+        this._points = []; // A series of lat/lon coords that we record while lassoing.
         this._pointerdown = this._pointerdown.bind(this);
         this._pointermove = this._pointermove.bind(this);
         this._pointerup = this._pointerup.bind(this);
@@ -55,14 +55,14 @@ export class BehaviorLasso extends AbstractBehavior {
          if (!eventManager.pointerOverRenderer) return;
 
 
-        const move = this._getEventData(e);
          const modifiers = eventManager.modifierKeys;
          const drawLasso = modifiers.has('Shift');
 
          if (drawLasso) {
              this._lassoing = true;
-             this._extent = new Extent(move.coord);
-             this._points.push(move.coord);
+             const coord = this.context.map().mouseLoc();
+             this._extent = new Extent(coord);
+             this._points.push(coord);
          }
     }
 
@@ -71,12 +71,12 @@ export class BehaviorLasso extends AbstractBehavior {
         if (!this._lassoing) return;
         const eventManager = this.context.map().renderer.events;
         if (!eventManager.pointerOverRenderer) return;
-        const move = this._getEventData(e);
+
+        const coord = this.context.map().mouseLoc();
 
         // Update geometry and extent
-        this._extent = this._extent.extend(new Extent(move.coord));
-        this._points.push(move.coord);
-
+        this._extent = this._extent.extend(new Extent(coord));
+        this._points.push(coord);
         //Push the polygon data to the map UI for rendering.
         const mapUILayer = this.context.scene().layers.get('map-ui');
         mapUILayer.lassoPolygonData = this._points;
@@ -114,17 +114,15 @@ export class BehaviorLasso extends AbstractBehavior {
     _lassoed() {
         const graph = this.context.graph();
         const context = this.context;
-        const polygonPoints = this._points;
+        const polygonLocs = this._points;
 
         if (!this.context.editable()) return [];
 
-        var extent = this._extent;  // extent in screen coordinates
-        var bounds = this._normalize(this.context.projection.invert(extent.min), this.context.projection.invert(extent.max));
-        var wgs84Extent = new Extent(bounds[0], bounds[1]);
+        var extent = this._extent;  // extent in lat/lon coord space
 
-        var intersects = this.context.history().intersects(wgs84Extent).filter(function(entity) {
+        var intersects = this.context.history().intersects(extent).filter(function(entity) {
             return entity.type === 'node' &&
-                geomPointInPolygon(context.projection.project(entity.loc), polygonPoints) &&
+                geomPointInPolygon(entity.loc, polygonLocs) &&
                 !context.features().isHidden(entity, graph, entity.geometry(graph)) &&
                 !locationManager.blocksAt(entity.loc).length;
         });

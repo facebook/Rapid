@@ -75,9 +75,11 @@ groupContainer.addChild(container);
     // Lasso polygon
     this._lassoPolygonData = null;
     this._lassoPolygonDirty = false;
-    this._lassoGraphics = new PIXI.Graphics();
+    this._lassoLineGraphics = new PIXI.Graphics();
+    this._lassoFillGraphics = new PIXI.Graphics();
     const lassoContainer = new PIXI.Container();
-    lassoContainer.addChild(this._lassoGraphics);
+    lassoContainer.addChild(this._lassoLineGraphics);
+    lassoContainer.addChild(this._lassoFillGraphics);
     lassoContainer.name = 'lasso';
     lassoContainer.sortableChildren = false;
     lassoContainer.visible = true;
@@ -171,20 +173,26 @@ groupContainer.addChild(container);
     // If there's no lasso data set, remove the graphics from the container and stop rendering.
 
     //No polygon data? remove the graphics from the container.
-    if (!this._lassoPolygonData && this._lassoGraphics.parent) {
+    if (!this._lassoPolygonData && this._lassoLineGraphics.parent) {
       this.lassoContainer.removeChildren();
     } else {
       //Otherwise, we have polygon data but no parent. Add the graphics to the lasso container.
-      if (!this._lassoGraphics.parent) {
-        this.lassoContainer.addChild(this._lassoGraphics);
-       }
+      if (!this._lassoLineGraphics.parent) {
+        this.lassoContainer.addChild(this._lassoLineGraphics);
+        this.lassoContainer.addChild(this._lassoFillGraphics);
+      }
 
         //Update polygon rendered to map UI
-      this._lassoGraphics.clear();
+      this._lassoLineGraphics.clear();
+      this._lassoFillGraphics.clear();
+
 
       //Render the data only as long as we have something meaningful.
       if (this._lassoPolygonData?.length > 0) {
-        new DashLine(this._lassoGraphics, LASSO_STYLE).drawPolygon(this._lassoPolygonData.flat());
+        const projectedCoords = this._lassoPolygonData.map(coord => projection.project(coord));
+        new DashLine(this._lassoLineGraphics, LASSO_STYLE).drawPolygon(projectedCoords.flat());
+        this._lassoFillGraphics.beginFill(0xaaaaaa, 0.5).drawPolygon(projectedCoords.flat()).endFill();
+
       }
     }
   }
