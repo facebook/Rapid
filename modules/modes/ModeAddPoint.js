@@ -97,8 +97,8 @@ export class ModeAddPoint extends AbstractMode {
       return;
     }
 
-    // Snap to a way
-    if (entity && entity.type === 'way') {
+    // Snap to a way, unless the target was an area fill
+    if (entity && entity.type === 'way' && !target.featureID.includes('fill')) {
       const activeIDs = context.activeIDs();
       const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
       const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
