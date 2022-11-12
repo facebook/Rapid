@@ -83,7 +83,7 @@ export class ModeDragNode extends AbstractMode {
 
     // Convert a midpoint to a node..
     if (this._wasMidpoint) {
-      const midpoint = entity;
+      const midpoint = { loc: entity.loc, edge: [entity.a.id, entity.b.id] };
       entity = osmNode();
       context.perform(actionAddMidpoint(midpoint, entity), t('operations.add.annotation.vertex'));
       entity = context.entity(entity.id);   // get post-action entity
