@@ -104,13 +104,15 @@ export function uiIntroLine(context, reveal) {
             reveal(box, startLineString, { duration: 0 });
         });
 
-        context.on('enter.intro', function(mode) {
-            if (mode.id !== 'draw-line') return chapter.restart();
+        function onClick() {
+            if (context.mode().id !== 'draw-line') return chapter.restart();
             continueTo(drawLine);
-        });
+        }
+        context.behaviors.get('draw').on('click', onClick );
 
         function continueTo(nextStep) {
             context.map().off('move draw', null);
+            context.behaviors.get('draw').off('click', onClick);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -120,8 +122,14 @@ export function uiIntroLine(context, reveal) {
     function drawLine() {
         if (context.mode().id !== 'draw-line') return chapter.restart();
 
-        _tulipRoadID = context.mode().selectedIDs()[0];
+        _tulipRoadID = context.selectedIDs()[0];
         context.map().centerEase(tulipRoadMidpoint, 500);
+
+        function onClick() {
+            if (isLineConnected()) {
+                continueTo(continueLine);
+            }
+        }
 
         timeout(function() {
             var padding = 200 * Math.pow(2, context.map().zoom() - 18.5);
@@ -142,26 +150,11 @@ export function uiIntroLine(context, reveal) {
             });
         }, 550);  // after easing..
 
-        context.history().on('change.intro', function() {
-            if (isLineConnected()) {
-                continueTo(continueLine);
-            }
-        });
-
-        context.on('enter.intro', function(mode) {
-            if (mode.id === 'draw-line') {
-                return;
-            } else if (mode.id === 'select') {
-                continueTo(retryIntersect);
-                return;
-            } else {
-                return chapter.restart();
-            }
-        });
+        context.behaviors.get('draw').on('click', onClick);
 
         function continueTo(nextStep) {
             context.map().off('move draw', null);
-            context.history().on('change.intro', null);
+            context.behaviors.get('draw').off('click', onClick);
             context.on('enter.intro', null);
             nextStep();
         }
