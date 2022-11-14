@@ -1,5 +1,6 @@
 export { utilDetect } from './detect';
 export { utilDisplayName } from './util';
+export { utilDisplayPOIName } from './util';
 export { utilDisplayType } from './util';
 export { utilDisplayLabel } from './util';
 export { utilFastMouse } from './util';

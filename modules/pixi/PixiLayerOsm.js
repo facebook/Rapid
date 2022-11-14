@@ -9,7 +9,7 @@ import { AbstractLayer } from './AbstractLayer';
 import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
-import { utilDisplayName } from '../util';
+import { utilDisplayName, utilDisplayPOIName } from '../util';
 import { styleMatch } from './styles';
 
 const MINZOOM = 12;
@@ -209,6 +209,7 @@ export class PixiLayerOsm extends AbstractLayer {
   renderPolygons(frame, projection, zoom, data) {
     const entities = data.polygons;
     const graph = this.context.graph();
+    const pointsContainer = this.scene.groups.get('points');
 
     for (const [entityID, entity] of entities) {
       const entityVersion = (entity.v || 0);
@@ -246,7 +247,6 @@ export class PixiLayerOsm extends AbstractLayer {
         // If data has changed.. Replace data and parent-child links.
         if (feature.v !== entityVersion) {
           feature.v = entityVersion;
-
           feature.geometry.setCoords(coords);
           const area = feature.geometry.origExtent.area();   // estimate area from extent for speed
           feature.container.zIndex = -area;      // sort by area descending (small things above big things)
@@ -266,10 +266,72 @@ export class PixiLayerOsm extends AbstractLayer {
         if (feature.dirty) {
           const style = styleMatch(entity.tags);
           feature.style = style;
+
+          // POI = "Point of Interest"
+          // For POIs mapped as polygons, we can create a virtual point feature at the centroid.
+          // todo: https://github.com/mapbox/polylabel - maybe place at pole of inaccessability?
+          let poiName, poiPreset;
+          feature.geometry.update(projection);  // update now, so we have `origCentroid` calculated
+          if (feature.geometry.origCentroid) {
+            poiName = utilDisplayPOIName(entity);
+            poiPreset = poiName && presetManager.matchTags(entity.tags, 'point', feature.geometry.origCentroid);
+          }
+
+          if (poiName && poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
+            feature.poiFeatureID = `${this.layerID}-${entityID}-poi-${i}`;
+            feature.poiPreset = poiPreset;
+            feature.poiName = poiName;
+          } else {
+            feature.poiFeatureID = null;
+            feature.poiPreset = null;
+            feature.poiName = null;
+          }
         }
 
         feature.update(projection, zoom);
         this.retainFeature(feature, frame);
+
+
+        // Same as above, but for the virtual POI, if any
+        if (feature.poiFeatureID) {
+          let poiFeature = this.features.get(feature.poiFeatureID);
+
+          if (!poiFeature) {
+            poiFeature = new PixiFeaturePoint(this, feature.poiFeatureID);
+            poiFeature.virtual = true;
+            poiFeature.parentContainer = pointsContainer;
+          }
+
+          if (poiFeature.v !== entityVersion) {
+            poiFeature.v = entityVersion;
+            poiFeature.geometry.setCoords(feature.geometry.origCentroid);
+            poiFeature.setData(entityID, entity);
+          }
+
+          this.syncFeatureClasses(poiFeature);
+
+          if (poiFeature.dirty) {
+            let markerStyle = {
+              markerName: 'pin',
+              markerTint: 0xffffff,
+              iconName: feature.poiPreset.icon,
+              iconAlpha: 1
+            };
+
+            if (hasWikidata(entity)) {
+              markerStyle.markerName = 'boldPin';
+              markerStyle.markerTint = 0xdddddd;
+              markerStyle.labelTint = 0xdddddd;
+              markerStyle.iconAlpha = 0.6;
+            }
+            poiFeature.style = markerStyle;
+            poiFeature.label = feature.poiName;
+          }
+
+          poiFeature.update(projection, zoom);
+          this.retainFeature(poiFeature, frame);
+        }
+
       }
     }
   }

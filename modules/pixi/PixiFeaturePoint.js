@@ -280,7 +280,7 @@ export class PixiFeaturePoint extends AbstractFeature {
    */
   updateHalo() {
     const showHover = (this.visible && this.hovered);
-    const showSelect = (this.visible && this.selected);
+    const showSelect = (this.visible && this.selected && !this.virtual);
 
     // Hover
     if (showHover) {
