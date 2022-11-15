@@ -265,26 +265,27 @@ export class PixiLayerOsm extends AbstractLayer {
 
         if (feature.dirty) {
           const style = styleMatch(entity.tags);
+          style.labelTint = style.fill.color ?? style.stroke.color ?? 0xffffff;
           feature.style = style;
+
+          const label = utilDisplayPOIName(entity);
+          feature.label = label;
 
           // POI = "Point of Interest"
           // For POIs mapped as polygons, we can create a virtual point feature at the centroid.
           // todo: https://github.com/mapbox/polylabel - maybe place at pole of inaccessability?
-          let poiName, poiPreset;
+          let poiPreset;
           feature.geometry.update(projection);  // update now, so we have `origCentroid` calculated
-          if (feature.geometry.origCentroid) {
-            poiName = utilDisplayPOIName(entity);
-            poiPreset = poiName && presetManager.matchTags(entity.tags, 'point', feature.geometry.origCentroid);
+          if (label && feature.geometry.origCentroid) {
+            poiPreset = presetManager.matchTags(entity.tags, 'point', feature.geometry.origCentroid);
           }
 
-          if (poiName && poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
+          if (poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
             feature.poiFeatureID = `${this.layerID}-${entityID}-poi-${i}`;
             feature.poiPreset = poiPreset;
-            feature.poiName = poiName;
           } else {
             feature.poiFeatureID = null;
             feature.poiPreset = null;
-            feature.poiName = null;
           }
         }
 
@@ -325,7 +326,7 @@ export class PixiLayerOsm extends AbstractLayer {
               markerStyle.iconAlpha = 0.6;
             }
             poiFeature.style = markerStyle;
-            poiFeature.label = feature.poiName;
+            poiFeature.label = feature.label;
           }
 
           poiFeature.update(projection, zoom);

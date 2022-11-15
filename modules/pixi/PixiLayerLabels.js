@@ -5,7 +5,7 @@ import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } fro
 
 import { AbstractLayer } from './AbstractLayer';
 import { localizer } from '../core/localizer';
-import { getLineSegments, getDebugBBox } from './helpers.js';
+import { getLineSegments, getDebugBBox, lineToPoly } from './helpers.js';
 
 const MINZOOM = 12;
 
@@ -84,24 +84,36 @@ export class PixiLayerLabels extends AbstractLayer {
     // Old map scale (aka zoom) - we reset the labeling when the scale changes.
     this._oldk = 0;
 
-    const fontOptions = {
+    const fontNormal = {
       fill: 0x333333,
+      fontFamily: 'Helvetica',
       fontSize: 11,
       fontWeight: 600,
-      miterLimit: 1,
-      stroke: 0xeeeeee,
+      lineJoin: 'bevel',
+      // miterLimit: 2,
+      stroke: 0xffffff,
       strokeThickness: 3
     };
 
+    const fontItalic = {
+      fill: 0x333333,
+      fontFamily: 'Helvetica',
+      fontSize: 10,
+      fontStyle: 'italic',
+      fontWeight: 600,
+      lineJoin: 'bevel',
+      stroke: 0xffffff,
+      strokeThickness: 2
+    };
+
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.from('label', fontOptions, {
-      chars: PIXI.BitmapFont.ASCII,
-      padding: 0,
-      resolution: 2
-    });
+    PIXI.BitmapFont.from('label-normal', fontNormal, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    // not actually used
+    // PIXI.BitmapFont.from('label-italic', fontItalic, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
-    this._textstyle = new PIXI.TextStyle(fontOptions);
+    this._textStyleNormal = new PIXI.TextStyle(fontNormal);
+    this._textStyleItalic = new PIXI.TextStyle(fontItalic);
   }
 
 
@@ -196,6 +208,7 @@ export class PixiLayerLabels extends AbstractLayer {
       // Collect features to place labels on.
       let points = [];
       let lines = [];
+      let polygons = [];
       for (const feature of this.scene.features.values()) {
         // If the feature can be labeled, and hasn't yet been, add it to the list for placement.
         if (feature.label && feature.visible && !this._labelBoxes.has(feature.id)) {
@@ -203,16 +216,16 @@ export class PixiLayerLabels extends AbstractLayer {
             points.push(feature);
           } else if (feature.type === 'line') {
             lines.push(feature);
-          } else {
-            // no label for now
+          } else if (feature.type === 'polygon') {
+            polygons.push(feature);
           }
         }
       }
 
       // Points first, then lines (so line labels can avoid point labels)
-      this.placePointLabels(points);
-      this.placeLineLabels(lines);
-      // this.placeAreaLabels();
+      this.labelPoints(points);
+      this.labelLines(lines);
+      this.labelPolygons(polygons);
 
       this.renderObjects(projection);
 
@@ -225,14 +238,15 @@ export class PixiLayerLabels extends AbstractLayer {
 
   /**
    * getLabelSprite
-   * @param  str  String for the label
+   * @param  str    String for the label
+   * @param  style  'normal' or 'italic'
    */
-  getLabelSprite(str) {
-    let sprite;
-    let texture = this._textures.get(str);
+  getLabelSprite(str, style = 'normal') {
+    const textureID = `${str}-${style}`;
+    let texture = this._textures.get(textureID);
 
     if (!texture) {
-      const text = new PIXI.Text(str, this._textstyle);
+      const text = new PIXI.Text(str, (style === 'normal' ? this._textStyleNormal : this._textStyleItalic));
       text.resolution = 2;
       text.updateText(false);  // force update it so the texture is prepared
 
@@ -245,11 +259,11 @@ export class PixiLayerLabels extends AbstractLayer {
       // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
       texture.orig = text.texture.orig.clone();
 
-      this._textures.set(str, texture);
+      this._textures.set(textureID, texture);
       text.destroy();  // safe to destroy, the texture is copied to the atlas
     }
 
-    sprite = new PIXI.Sprite(texture);
+    const sprite = new PIXI.Sprite(texture);
     sprite.name = str;
     sprite.anchor.set(0.5, 0.5);   // middle, middle
     return sprite;
@@ -333,11 +347,11 @@ export class PixiLayerLabels extends AbstractLayer {
 
 
   /**
-   * placePointLabels
+   * labelPoints
    * This calculates the placement, but does not actually add the label to the scene.
    * @param  features  The features to place point labels on
    */
-  placePointLabels(features) {
+  labelPoints(features) {
     features.sort((a, b) => b.geometry.origCoords[1] - a.geometry.origCoords[1]);
 
     for (const feature of features) {
@@ -348,7 +362,7 @@ export class PixiLayerLabels extends AbstractLayer {
 
       let labelObj;
       if (/^[\x20-\x7E]*$/.test(feature.label)) {   // is it in the printable ASCII range?
-        labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label' });
+        labelObj = new PIXI.BitmapText(feature.label, { fontName: 'label-normal' });
         labelObj.updateText();           // force update it so its texture is ready to be reused on a sprite
         labelObj.name = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
@@ -356,20 +370,21 @@ export class PixiLayerLabels extends AbstractLayer {
         labelObj.letterSpacing = -0.5;   // to adjust for lack of kerning
 
       } else {
-        labelObj = this.getLabelSprite(feature.label);
+        labelObj = this.getLabelSprite(feature.label, 'normal');
       }
 
-      this.placePointLabel(feature, labelObj);
+      this.placeTextLabel(feature, labelObj);
     }
   }
 
 
   /**
-   * placeLineLabels
-   * This calculates the placement, but does not actually add the label to the scene.
+   * labelLines
+   * Lines are labeled with PIXI.SimpleRope that run along the line.
+   * This calculates the placement, but does not actually add the rope label to the scene.
    * @param  features  The features to place line labels on
    */
-  placeLineLabels(features) {
+  labelLines(features) {
     // This is hacky, but we can sort the line labels by their parent container name.
     // It might be a level container with a name like "1", "-1", or just a name like "lines"
     // If `parseInt` fails, just sort the label above everything.
@@ -381,27 +396,74 @@ export class PixiLayerLabels extends AbstractLayer {
     features.sort((a, b) => level(b) - level(a));
 
     for (const feature of features) {
-      if (this._labelBoxes.has(feature.id)) continue;  // processed it already
-      this._labelBoxes.set(feature.id, []);
+      const featureID = feature.id;
 
-      if (!feature.label) continue;  // nothing to do
+      if (this._labelBoxes.has(featureID)) continue;  // processed it already
+      this._labelBoxes.set(featureID, []);
 
-      const labelObj = this.getLabelSprite(feature.label);
-      this.placeLineLabel(feature, labelObj);
+      if (!feature.label) continue;                                                 // no label
+      if (!feature.geometry.coords) continue;                                       // no points
+      if (!feature.container.visible || !feature.container.renderable) continue;    // not visible
+      if (feature.geometry.width < 40 && feature.geometry.height < 40) continue;    // too small
+
+      const labelObj = this.getLabelSprite(feature.label, 'normal');
+
+      this.placeRopeLabel(feature, labelObj, feature.geometry.coords);
     }
   }
 
 
   /**
-   * placePointLabel
-   * Point labels are placed somewhere near the marker.
+   * labelPolygons
+   * Polygons are labeled with PIXI.SimpleRope that run along the inside of the perimeter.
+   * This calculates the placement, but does not actually add the rope label to the scene.
+   * @param  features  The features to place line labels on
+   */
+  labelPolygons(features) {
+    for (const feature of features) {
+      const featureID = feature.id;
+
+      if (this._labelBoxes.has(featureID)) continue;  // processed it already
+      this._labelBoxes.set(featureID, []);
+
+      if (!feature.label) continue;                                                 // no label
+      if (!feature.geometry.flatOuter) continue;                                    // no points
+      if (!feature.container.visible || !feature.container.renderable) continue;    // not visible
+      if (feature.geometry.width < 600 && feature.geometry.height < 600) continue;  // too small
+
+      const labelObj = this.getLabelSprite(feature.label, 'italic');
+
+// precompute a line buffer in geometry maybe?
+const hitStyle = {
+  alignment: 0.5,  // middle of line
+  color: 0x0,
+  width: 24,
+  alpha: 1.0,
+  join: PIXI.LINE_JOIN.BEVEL,
+  cap: PIXI.LINE_CAP.BUTT
+};
+const bufferdata = lineToPoly(feature.geometry.flatOuter, hitStyle);
+if (!bufferdata.inner) continue;
+let coords = new Array(bufferdata.inner.length / 2);  // un-flatten :(
+for (let i = 0; i < bufferdata.inner.length / 2; ++i) {
+  coords[i] = [ bufferdata.inner[(i * 2)], bufferdata.inner[(i * 2) + 1] ];
+}
+this.placeRopeLabel(feature, labelObj, coords);
+
+    }
+  }
+
+
+  /**
+   * placeTextLabel
+   * Text labels are used to label point features like map pins.
    * We generate several placement regions around the marker,
    * try them until we find one that doesn't collide with something.
    *
    * @param  feature   The feature to place point labels on
    * @param  labelObj  a PIXI.Sprite, PIXI.Text, or PIXI.BitmapText to use as the label
    */
-  placePointLabel(feature, labelObj) {
+  placeTextLabel(feature, labelObj) {
     if (!feature || !feature.sceneBounds) return;
 
     const container = feature.container;
@@ -522,26 +584,19 @@ export class PixiLayerLabels extends AbstractLayer {
 
 
   /**
-   * placeLineLabel
-   * Line labels are placed along a line.
+   * placeRopeLabel
+   * Rope labels are placed along a string of coordinates.
    * We generate chains of bounding boxes along the line,
-   * then add the labels in spaces along the line wherever they fit
+   * then add the labels in spaces along the line wherever they fit.
    *
    * @param  feature   The feature to place point labels on
    * @param  labelObj  a PIXI.Sprite to use as the label
    */
-  placeLineLabel(feature, labelObj) {
-    if (!feature || !feature.geometry.coords) return;
+  placeRopeLabel(feature, labelObj, coords) {
+    if (!feature || !labelObj || !coords) return;
+    if (!feature.container.visible || !feature.container.renderable) return;
 
-    const dObj = feature.container;
-    if (!dObj.visible || !dObj.renderable) return;
-
-    // `f` - feature, these bounds are in "scene" coordinates
     const featureID = feature.id;
-    const fRect = feature.sceneBounds;
-    const fWidth = fRect.width;
-    const fHeight = fRect.height;
-    if (fWidth < 40 && fHeight < 40) return;  // too small in both dimensions to even waste time labeling
 
     // `l` = label, these bounds are in "local" coordinates to the label,
     // 0,0 is the center of the label
@@ -563,7 +618,7 @@ export class PixiLayerLabels extends AbstractLayer {
     const maxChainLength = numBoxes + 15;
 
     // Cover the line in bounding boxes
-    const segments = getLineSegments(feature.geometry.coords, boxsize);
+    const segments = getLineSegments(coords, boxsize);
 
     let boxes = [];
     let candidates = [];
@@ -709,26 +764,6 @@ export class PixiLayerLabels extends AbstractLayer {
 //      });
 //    }
   }
-
-
-//    //
-//    // Place area labels
-//    //
-//    placeAreaLabels() {
-//      return;  // not yet
-//    }
-//
-//
-//    //
-//    // Area labels are placed at the centroid along with an icon.
-//    // Can also consider:
-//    //   placing at pole-of-inaccessability instead of centroid?
-//    //   placing label along edge of area stroke?
-//    //
-//    placeAreaLabel(feature, labelObj) {
-//      return;  // not yet
-//    }
-
 
 
   /**
