@@ -246,6 +246,12 @@ export class PixiFeaturePoint extends AbstractFeature {
   updateHitArea() {
     if (!this.visible) return;
 
+    //Fix for bug #648: If we're drawing, we don't need to hit ourselves.
+    if (this._drawing) {
+      this.container.hitArea = null;
+      return;
+    }
+
     // Recalculate hitArea, grow it if too small
     const MINSIZE = 20;
     const rect = this.container.getLocalBounds().clone();

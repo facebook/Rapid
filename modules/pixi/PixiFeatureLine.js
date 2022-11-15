@@ -85,7 +85,6 @@ export class PixiFeatureLine extends AbstractFeature {
     const textures = context.pixi.rapidTextures;
     const container = this.container;
     const style = this._style;
-
     //
     // GEOMETRY
     //
@@ -273,6 +272,12 @@ export class PixiFeatureLine extends AbstractFeature {
 // experiment
   updateHitArea() {
     if (!this.geometry.flatOuter) return;   // no points?
+
+    //Fix for bug #648: If we're drawing, we don't need to hit ourselves.
+    if (this._drawing) {
+      this.hitArea = null;
+      return;
+    }
 
     const hitWidth = Math.max(3, this._style.casing.width || 0);
     const hitStyle = {
