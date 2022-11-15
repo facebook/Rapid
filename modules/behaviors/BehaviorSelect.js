@@ -4,6 +4,11 @@ import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { services } from '../services';
+import { actionAddMidpoint } from '../actions/add_midpoint';
+import { osmNode } from '../osm/node';
+import { osmWay } from '../osm/way';
+import { t } from '../core/localizer';
+import { geoChooseEdge } from '../geo';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -15,6 +20,7 @@ const FAR_TOLERANCE = 12;
  * Properties available:
  *   `enabled`      `true` if the event handlers are enabled, `false` if not.
  *   `lastDown`     `eventData` Object for the most recent down event
+ *   `lastUp`     `eventData` Object for the most recent up event (to detect dbl clicks)
  *   `lastMove`     `eventData` Object for the most recent move event
  *   `lastSpace`    `eventData` Object for the most recent move event used to trigger a spacebar click
  *   `lastClick`    `eventData` Object for the most recent click event
@@ -35,6 +41,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._showsMenu = false;
 
     this.lastDown = null;
+    this.lastUp = null;
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
@@ -65,6 +72,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._showsMenu = false;
 
     this.lastDown = null;
+    this.lastUp = null;
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
@@ -93,6 +101,7 @@ export class BehaviorSelect extends AbstractBehavior {
     this._showsMenu = false;
 
     this.lastDown = null;
+    this.lastUp = null;
     this.lastMove = null;
     this.lastSpace = null;
     this.lastClick = null;
@@ -218,8 +227,15 @@ export class BehaviorSelect extends AbstractBehavior {
     if (down.isCancelled) return;   // was cancelled already by moving too much
 
     const dist = vecLength(down.coord, up.coord);
-    if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
-      this.lastClick = up;  // We will accept this as a click
+    const updist = vecLength(up.coord, this.lastUp ? this.lastUp.coord : 0);
+
+    // Second click nearby, targeting the same target, within half a second of the last up event.
+    // We got ourselves a double click!
+    if (this.lastUp?.target?.dataID && updist < NEAR_TOLERANCE && this.lastUp?.target?.dataID === up.target?.dataID && up.time - (this.lastUp ? this.lastUp.time : 0) < 500) {
+      this.lastClick = this.lastUp = up;  // We will accept this as a click
+      this._doDoubleClick(up.coord, up.target);
+    } else if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
+      this.lastClick = this.lastUp = up;  // We will accept this as a click
 
       this._doSelect();
       if (down.originalEvent.button === 2) {   // right click
@@ -410,6 +426,40 @@ export class BehaviorSelect extends AbstractBehavior {
     }
   }
 
+  /**
+   * _doDoubleClick
+   * Once we have had two 'ups' in a row we need to see if anything special needs to be done to the entity being clicked on.
+   * If it's a way or an area, we need to add a node wherever they clicked:
+   * - If it's on a bare part of the way
+   * - If they double clicked right on a midpoint.
+   */
+  _doDoubleClick(coord, target) {
+    if (!this._enabled || !this.lastUp) return;
+    const context = this.context;
+    const graph = context.graph();
+    const data = target.data;
+    const isMidPoint = data.type === 'midpoint';
+    const isWay = data instanceof osmWay;
+
+    if (isWay) {
+      const choice = geoChooseEdge(graph.childNodes(data), context.projection.invert(coord), context.projection);
+      var prev = data.nodes[choice.index - 1];
+      var next = data.nodes[choice.index];
+      context.perform(
+        actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
+        t('operations.add.annotation.vertex')
+      );
+      context.validator().validate();
+    } else if (isMidPoint) {
+      const edge = [data.a.id, data.b.id];
+
+      this.context.perform(
+        actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
+        t('operations.add.annotation.vertex')
+      );
+      context.validator().validate();
+    }
+  }
 
   /**
    * _doContextMenu
