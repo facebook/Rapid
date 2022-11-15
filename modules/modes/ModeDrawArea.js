@@ -266,7 +266,7 @@ export class ModeDrawArea extends AbstractMode {
       this.drawWay = context.entity(this.drawWay.id);
 
       // Add this new node to the 'drawing' features set
-//      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
+      scene.classData('osm', this.drawNode.id, 'drawing');
 
       // Start a brand new area at 'loc'
     } else {
@@ -281,11 +281,10 @@ export class ModeDrawArea extends AbstractMode {
         nodes: [this.firstNode.id, this.drawNode.id],
       });
 
-//      scene.drawingFeatures([
-//        this.drawWay.id,
-//        this.firstNode.id,
-//        this.drawNode.id,
-//      ]);
+      // Give these features the 'drawing' class
+      scene.classData('osm', this.drawWay.id, 'drawing');
+      scene.classData('osm', this.firstNode.id, 'drawing');
+      scene.classData('osm', this.drawNode.id, 'drawing');
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -365,7 +364,7 @@ export class ModeDrawArea extends AbstractMode {
    */
   _clickWay(loc, edge) {
     const context = this.context;
-    const startGraph = context.graph();
+    const scene = context.scene();
     const node = osmNode({ loc: loc });
     const way = osmWay({ tags: this.defaultTags });
 
@@ -386,7 +385,8 @@ export class ModeDrawArea extends AbstractMode {
 
     this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
 
-//    context.scene().drawingFeatures([node.id, way.id]);
+    scene.classData('osm', node.id, 'drawing');
+    scene.classData('osm', way.id, 'drawing');
   }
 
   /**
@@ -396,6 +396,7 @@ export class ModeDrawArea extends AbstractMode {
   _clickNode(loc, targetNode) {
     const EPSILON = 1e-6;
     const context = this.context;
+    const scene = context.scene();
     context.pauseChangeDispatch();
 
     // The target node needs to be inserted "before" the draw node
@@ -464,13 +465,9 @@ export class ModeDrawArea extends AbstractMode {
         nodes: [this.firstNode.id, this.drawNode.id],
       });
 
-//      context
-//        .scene()
-//        .drawingFeatures([
-//          this.drawWay.id,
-//          this.firstNode.id,
-//          this.drawNode.id,
-//        ]);
+      scene.classData('osm', this.drawWay.id, 'drawing');
+      scene.classData('osm', this.firstNode.id, 'drawing');
+      scene.classData('osm', this.drawNode.id, 'drawing');
 
       context.perform(
         actionAddEntity(this.drawNode),
@@ -515,7 +512,8 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     this._removeDrawNode();
     context.resumeChangeDispatch(); // it's possible to get here in a paused state
-//    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
+    // We're done drawing, so ensure that we don't keep the hovered class on things.
+    context.scene().clearClass('drawing');
 
     if (this.drawWay) {
       if (DEBUG) {

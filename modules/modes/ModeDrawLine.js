@@ -62,6 +62,8 @@ export class ModeDrawLine extends AbstractMode {
    * @param  `options`  Optional `Object` of options passed to the new mode
    */
   enter(options = {}) {
+    const scene = this.context.scene();
+
     const continueNode = options.continueNode;
     const continueWay = options.continueWay;
 
@@ -101,7 +103,9 @@ export class ModeDrawLine extends AbstractMode {
       this.firstNode = context.entity(oppositeNodeID);
       this.drawWay = continueWay;
 
-//      context.scene().drawingFeatures([continueWay.id]);
+      // Add the way to the 'drawing' features set
+      scene.classData('osm', continueWay.id, 'drawing');
+
       // this._selectedData.set(this.drawWay.id, this.drawWay);
       this._updateCollections();
 
@@ -311,7 +315,7 @@ export class ModeDrawLine extends AbstractMode {
   _clickLoc(loc) {
     const EPSILON = 1e-6;
     const context = this.context;
-//    const scene = context.scene();
+    const scene = context.scene();
     context.pauseChangeDispatch();
 
     // Extend line by adding vertex at `loc`...
@@ -332,14 +336,13 @@ export class ModeDrawLine extends AbstractMode {
       this.drawNode = osmNode({ loc: loc });
 
       context.perform(
-        actionAddEntity(this.drawNode),                                         // Create new draw node
+        actionAddEntity(this.drawNode), // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),  // Add new draw node to draw way
-        this._getAnnotation()                                                   // Allow undo/redo to here
+        this._getAnnotation() // Allow undo/redo to here
       );
 
       this.lastNode = context.entity(this.lastNode.id);
       this.drawWay = context.entity(this.drawWay.id);
-//      scene.drawingFeatures([...scene.drawing, this.drawNode.id]);
 
     // Start a new line at `loc`...
     } else {
@@ -350,7 +353,9 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [ this.firstNode.id, this.drawNode.id ] });
-//      scene.drawingFeatures([this.drawWay.id, this.firstNode.id, this.drawNode.id]);
+      scene.classData('osm', this.drawWay.id, 'drawing');
+       scene.classData('osm', this.firstNode.id, 'drawing');
+       scene.classData('osm', this.drawNode.id, 'drawing');
 
       context.perform(
         actionAddEntity(this.firstNode),  // Create first node
@@ -491,6 +496,9 @@ export class ModeDrawLine extends AbstractMode {
         actionAddEntity(this.drawNode),   // Create new draw node (end)
         actionAddEntity(this.drawWay),    // Create new draw way
       );
+
+      context.scene().classData('osm', this.drawWay.id, 'drawing');
+
     }
 
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
@@ -522,6 +530,7 @@ export class ModeDrawLine extends AbstractMode {
       actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add draw node to draw way
       this._getAnnotation()
     );
+    context.scene().classData('osm', this.drawWay.id, 'drawing');
 
     this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
     this._updateCollections();
@@ -549,7 +558,8 @@ export class ModeDrawLine extends AbstractMode {
     const context = this.context;
     this._removeDrawNode();
     context.resumeChangeDispatch();  // it's possible to get here in a paused state
-//    context.scene().drawingFeatures([]); // No longer drawing features! Clear this data.
+    // We're done drawing, so ensure that we don't keep the hovered class on things.
+    context.scene().clearClass('drawing');
 
     if (this.drawWay) {
       if (DEBUG) {
