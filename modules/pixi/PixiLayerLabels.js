@@ -9,6 +9,28 @@ import { getLineSegments, getDebugBBox, lineToPoly } from './helpers.js';
 
 const MINZOOM = 12;
 
+const TEXT_NORMAL = {
+  fill: 0x333333,
+  fontFamily: 'Arial, Helvetica, sans-serif',
+  fontSize: 11,
+  fontWeight: 600,
+  lineJoin: 'round',
+  stroke: 0xffffff,
+  strokeThickness: 2.7
+};
+
+const TEXT_ITALIC = {
+  fill: 0x333333,
+  fontFamily: 'Arial, Helvetica, sans-serif',
+  fontSize: 11,
+  fontStyle: 'italic',
+  fontWeight: 600,
+  lineJoin: 'round',
+  stroke: 0xffffff,
+  strokeThickness: 2.7
+};
+
+
 
 /**
  *
@@ -84,35 +106,14 @@ export class PixiLayerLabels extends AbstractLayer {
     // Old map scale (aka zoom) - we reset the labeling when the scale changes.
     this._oldk = 0;
 
-    const fontNormal = {
-      fill: 0x333333,
-      fontFamily: 'Helvetica',
-      fontSize: 11,
-      fontWeight: 600,
-      lineJoin: 'bevel',
-      stroke: 0xffffff,
-      strokeThickness: 3
-    };
-
-    const fontItalic = {
-      fill: 0x333333,
-      fontFamily: 'Helvetica',
-      fontSize: 11,
-      fontStyle: 'italic',
-      fontWeight: 600,
-      lineJoin: 'bevel',
-      stroke: 0xffffff,
-      strokeThickness: 3
-    };
-
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
-    PIXI.BitmapFont.from('label-normal', fontNormal, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    PIXI.BitmapFont.from('label-normal', TEXT_NORMAL, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
     // not actually used
-    // PIXI.BitmapFont.from('label-italic', fontItalic, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
+    // PIXI.BitmapFont.from('label-italic', TEXT_ITALIC, { chars: PIXI.BitmapFont.ASCII, padding: 0, resolution: 2 });
 
     // For all other labels, generate it on the fly in a PIXI.Text or PIXI.Sprite
-    this._textStyleNormal = new PIXI.TextStyle(fontNormal);
-    this._textStyleItalic = new PIXI.TextStyle(fontItalic);
+    this._textStyleNormal = new PIXI.TextStyle(TEXT_NORMAL);
+    this._textStyleItalic = new PIXI.TextStyle(TEXT_ITALIC);
   }
 
 
@@ -245,18 +246,42 @@ export class PixiLayerLabels extends AbstractLayer {
     let texture = this._textures.get(textureID);
 
     if (!texture) {
-      const text = new PIXI.Text(str, (style === 'normal' ? this._textStyleNormal : this._textStyleItalic));
+      // Add some extra padding if we detect unicode combining marks in the text - see #653
+      let pad = 0;
+      const marks = str.match(/\p{M}/gu);     // add /u to get a unicode-aware regex
+      if (marks && marks.length > 0)  pad = 10;  // Text with a few ascenders/descenders?
+      if (marks && marks.length > 20) pad = 50;  // Zalgotext?
+
+      let textStyle;
+      if (pad) {   // make a new style
+        const props = Object.assign({}, (style === 'normal' ? TEXT_NORMAL : TEXT_ITALIC), { padding: pad });
+        textStyle = new PIXI.TextStyle(props);
+      } else {             // use a cached style
+        textStyle = (style === 'normal' ? this._textStyleNormal : this._textStyleItalic);
+      }
+
+      // Generate the Text
+      const text = new PIXI.Text(str, textStyle);
       text.resolution = 2;
       text.updateText(false);  // force update it so the texture is prepared
 
-      const [w, h] = [text.canvas.width, text.canvas.height];
-      const data = text.context.getImageData(0, 0, w, h);
+      // Copy the texture data into the atlas.
+      // Also remove x-padding, as this will only end up pushing the label away from the pin.
+      // (We are mostly interested in y-padding diacritics, see #653)
+      // Note: Whatever padding we set before got doubled because resolution = 2
+      const [x, y] = [pad * 2, 0];
+      const [w, h] = [text.canvas.width - (pad * 4), text.canvas.height];
+      const data = text.context.getImageData(x, y, w, h);
 
-      const PADDING = 0;
-      texture = this._atlasAllocator.allocate(w, h, PADDING, data);
+      const ATLAS_PADDING = 0;
+      texture = this._atlasAllocator.allocate(w, h, ATLAS_PADDING, data);
+
       // These textures are overscaled, but `orig` Rectangle stores the original width/height
       // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+      // We need to manually adjust these values so that the Sprites or Ropes know how big to be.
       texture.orig = text.texture.orig.clone();
+      texture.orig.width = w / 2;
+      texture.orig.height = h / 2;
 
       this._textures.set(textureID, texture);
       text.destroy();  // safe to destroy, the texture is copied to the atlas
