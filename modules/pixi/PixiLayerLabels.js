@@ -90,7 +90,6 @@ export class PixiLayerLabels extends AbstractLayer {
       fontSize: 11,
       fontWeight: 600,
       lineJoin: 'bevel',
-      // miterLimit: 2,
       stroke: 0xffffff,
       strokeThickness: 3
     };
@@ -98,12 +97,12 @@ export class PixiLayerLabels extends AbstractLayer {
     const fontItalic = {
       fill: 0x333333,
       fontFamily: 'Helvetica',
-      fontSize: 10,
+      fontSize: 11,
       fontStyle: 'italic',
       fontWeight: 600,
       lineJoin: 'bevel',
       stroke: 0xffffff,
-      strokeThickness: 2
+      strokeThickness: 3
     };
 
     // For ascii-only labels, we can use PIXI.BitmapText to avoid generating label textures
@@ -367,7 +366,7 @@ export class PixiLayerLabels extends AbstractLayer {
         labelObj.name = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
         labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
-        labelObj.letterSpacing = -0.5;   // to adjust for lack of kerning
+        labelObj.letterSpacing = -0.4;   // to adjust for lack of kerning
 
       } else {
         labelObj = this.getLabelSprite(feature.label, 'normal');
@@ -568,7 +567,7 @@ this.placeRopeLabel(feature, labelObj, coords);
           labelObj: labelObj,
           x: x,
           y: y,
-          tint: feature.style.labelTint || 0xffffff
+          tint: feature.style.labelTint || 0xeeeeee
         });
         this._labels.set(featureID, label);
         this._labelBoxes.get(featureID).push(box);
@@ -734,7 +733,7 @@ this.placeRopeLabel(feature, labelObj, coords);
       const label = new Label(labelID, 'rope', {
         coords: coords,
         labelObj: labelObj,
-        tint: feature.style.labelTint || 0xffffff
+        tint: feature.style.labelTint || 0xeeeeee
       });
       this._labels.set(labelID, label);
 

@@ -419,7 +419,7 @@ const STYLE_DEFAULTS = {
   requireFill: false,      // allow partial fill or wireframe styles
   lineMarkerName: '',
   lineMarkerTint: 0x000000,
-  labelTint: 0xffffff,
+  labelTint: 0xeeeeee,
 
   fill:   { width: 2, color: 0xaaaaaa, alpha: 0.3 },
   casing: { width: 5, color: 0x444444, alpha: 1, cap: PIXI.LINE_CAP.ROUND, join: PIXI.LINE_JOIN.ROUND },

@@ -265,7 +265,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
         if (feature.dirty) {
           const style = styleMatch(entity.tags);
-          style.labelTint = style.fill.color ?? style.stroke.color ?? 0xffffff;
+          style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
 
           const label = utilDisplayPOIName(entity);
@@ -530,7 +530,7 @@ export class PixiLayerOsm extends AbstractLayer {
         let markerStyle = {
           markerName: 'smallCircle',
           markerTint: 0xffffff,
-          labelTint: 0xffffff,
+          labelTint: 0xeeeeee,
           viewfieldAngles: directions,
           viewfieldName: 'viewfieldDark',
           viewfieldTint: 0xffffff,

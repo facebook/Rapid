@@ -362,5 +362,5 @@ const STYLE_DEFAULTS = {
   viewfieldTint: 0xffffff,
   iconName: '',
   iconAlpha: 1,
-  labelTint: 0xffffff
+  labelTint: 0xeeeeee
 };
