@@ -440,13 +440,15 @@ export class BehaviorSelect extends AbstractBehavior {
     const data = target.data;
     const isMidPoint = data.type === 'midpoint';
     const isWay = data instanceof osmWay;
+    const projection = context.projection;
 
     if (isWay) {
-      const choice = geoChooseEdge(graph.childNodes(data), context.projection.invert(coord), context.projection);
+      const loc = projection.invert(coord);
+      const choice = geoChooseEdge(graph.childNodes(data), coord, projection);
       var prev = data.nodes[choice.index - 1];
       var next = data.nodes[choice.index];
       context.perform(
-        actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
+        actionAddMidpoint({ loc: loc, edge: [prev, next] }, osmNode()),
         t('operations.add.annotation.vertex')
       );
       context.validator().validate();
