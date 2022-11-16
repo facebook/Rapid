@@ -355,13 +355,13 @@ export class PixiLayerOsm extends AbstractLayer {
       const levelContainer = _getLevelContainer(layer.toString());
       const zindex = getzIndex(entity.tags);
 
-      // Cache GeoJSON resolution, as we expect the rewind and asGeoJSON calls to be kinda slow.
+      // Cache GeoJSON resolution, as we expect the asGeoJSON call to be kinda slow.
       let geojson = this._resolved.get(entityID);
       if (geojson?.v !== entityVersion) {  // bust cache if the entity has a new verison
         geojson = null;
       }
       if (!geojson) {
-        geojson = geojsonRewind(entity.asGeoJSON(graph), true);
+        geojson = entity.asGeoJSON(graph);
         geojson.v = entityVersion;
         if (geojson.type === 'LineString' && entity.tags.oneway === '-1') {
           geojson.coordinates.reverse();
