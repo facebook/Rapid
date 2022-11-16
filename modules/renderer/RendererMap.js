@@ -372,6 +372,10 @@ export class RendererMap extends EventEmitter {
         k: t.k,
       });
     }
+    if (this.context.inIntro()) {
+      this.context.curtainProjection.transform({ x: t.x - delta[0], y: t.y - delta[1], k: t.k }, duration);
+    }
+
     return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
   }
 
