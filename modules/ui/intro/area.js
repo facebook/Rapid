@@ -69,7 +69,7 @@ export function uiIntroArea(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.map().off('enter.intro', null);
+            context.on('enter.intro', null);
             nextStep();
         }
     }
@@ -109,7 +109,6 @@ export function uiIntroArea(context, reveal) {
         function continueTo(nextStep) {
             context.map().off('move draw', null);
             context.behaviors.get('draw').off('click', onClick);
-            context.on('enter.intro', null);
             nextStep();
         }
     }
@@ -149,7 +148,6 @@ export function uiIntroArea(context, reveal) {
         function continueTo(nextStep) {
             context.behaviors.get('draw').off('click', onClick);
             context.map().off('move draw', null);
-            context.on('enter.intro', null);
             nextStep();
         }
     }
@@ -183,7 +181,6 @@ export function uiIntroArea(context, reveal) {
         function continueTo(nextStep) {
             context.behaviors.get('draw').off('finish', onClick);
             context.map().off('move draw', null);
-            context.on('enter.intro', null);
             nextStep();
         }
     }
@@ -254,7 +251,6 @@ export function uiIntroArea(context, reveal) {
 
         function continueTo(nextStep) {
             context.container().select('.inspector-wrap').on('wheel.intro', null);
-            context.on('enter.intro', null);
             context.history().on('change.intro', null);
             context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);
             nextStep();

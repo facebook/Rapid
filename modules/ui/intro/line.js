@@ -113,7 +113,6 @@ export function uiIntroLine(context, reveal) {
         function continueTo(nextStep) {
             context.map().off('move draw', null);
             context.behaviors.get('draw').off('click', onClick);
-            context.on('enter.intro', null);
             nextStep();
         }
     }
@@ -155,7 +154,6 @@ export function uiIntroLine(context, reveal) {
         function continueTo(nextStep) {
             context.map().off('move draw', null);
             context.behaviors.get('draw').off('click', onClick);
-            context.on('enter.intro', null);
             nextStep();
         }
     }
@@ -441,7 +439,7 @@ export function uiIntroLine(context, reveal) {
             helpHtml('intro.lines.drag_to_intersection');
         reveal(box, startDragString);
 
-        context.map().on('move draw', function() {
+        context.map().renderer.on('draw', function() {
             if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
                 return continueTo(updateLine);
             }
@@ -456,7 +454,7 @@ export function uiIntroLine(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().off('move draw', null);
+            context.map().renderer.off('draw', null);
             nextStep();
         }
     }

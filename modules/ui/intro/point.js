@@ -76,10 +76,13 @@ export function uiIntroPoint(context, reveal) {
         var textId = context.lastPointerType() === 'mouse' ? 'place_point' : 'place_point_touch';
         reveal(pointBox, helpHtml('intro.points.' + textId));
 
-        context.map().on('move draw', function () {
-          pointBox = pad(building, 150, context);
-          reveal(pointBox, helpHtml('intro.points.' + textId), { duration: 0 });
-        });
+        function onMapRender() {
+            pointBox = pad(building, 150, context);
+            reveal(pointBox, helpHtml('intro.points.' + textId), { duration: 0 });
+        }
+
+        context.map().renderer.on('move', onMapRender);
+        context.map().renderer.on('draw', onMapRender);
 
         context.on('enter.intro', function(mode) {
             if (mode.id !== 'select') return chapter.restart();
@@ -88,7 +91,8 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().off('move draw', null);
+            context.map().renderer.off('move', null);
+            context.map().renderer.off('draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
