@@ -217,6 +217,7 @@ export class RendererMap extends EventEmitter {
     if (!this.redrawEnabled) return;
     this._renderer.render();
     if (this.context.inIntro()) {
+      console.log('Resetting curtain projection to be same as regular.');
       this.context.curtainProjection.transform(this.context.projection.transform());
     }
   }
@@ -371,9 +372,6 @@ export class RendererMap extends EventEmitter {
         y: t.y - delta[1],
         k: t.k,
       });
-    }
-    if (this.context.inIntro()) {
-      this.context.curtainProjection.transform({ x: t.x - delta[0], y: t.y - delta[1], k: t.k }, duration);
     }
 
     return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
