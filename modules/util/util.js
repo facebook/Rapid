@@ -99,10 +99,10 @@ export function utilDisplayName(entity, hideNetwork) {
 export function utilDisplayPOIName(entity) {
   const code = localizer.languageCode().toLowerCase();
   const tags = entity.tags;
+
   return (
-    tags[`name:${code}`] || tags.name ||
-    tags[`brand:${code}`] || tags.brand ||
-    tags[`operator:${code}`] || tags.operator
+    tags[`name:${code}`] ?? tags.name ??
+    tags[`brand:${code}`] ?? tags.brand
   );
 }
 
