@@ -271,13 +271,12 @@ export class PixiLayerOsm extends AbstractLayer {
           const label = utilDisplayPOIName(entity);
           feature.label = label;
 
-          // POI = "Point of Interest"
-          // For POIs mapped as polygons, we can create a virtual point feature at the centroid.
-          // todo: https://github.com/mapbox/polylabel - maybe place at pole of inaccessability?
+          // POI = "Point of Interest" -and- "Pole of Inaccessability"
+          // For POIs mapped as polygons, we can create a virtual point feature at the pole of inaccessability.
           let poiPreset;
-          feature.geometry.update(projection);  // update now, so we have `origCentroid` calculated
-          if (label && feature.geometry.origCentroid) {
-            poiPreset = presetManager.matchTags(entity.tags, 'point', feature.geometry.origCentroid);
+          feature.geometry.update(projection);  // update now, so we have `origPoi` calculated
+          if (label && feature.geometry.origPoi) {
+            poiPreset = presetManager.matchTags(entity.tags, 'point', feature.geometry.origPoi);
           }
 
           if (poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
@@ -305,7 +304,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
           if (poiFeature.v !== entityVersion) {
             poiFeature.v = entityVersion;
-            poiFeature.geometry.setCoords(feature.geometry.origCentroid);
+            poiFeature.geometry.setCoords(feature.geometry.origPoi);
             poiFeature.setData(entityID, entity);
           }
 
