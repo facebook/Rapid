@@ -237,9 +237,15 @@ export class BehaviorSelect extends AbstractBehavior {
     } else if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = this.lastUp = up;  // We will accept this as a click
 
-      this._doSelect();
       if (down.originalEvent.button === 2) {   // right click
+        //If we right click on something that's not already selected, go ahead and select the item being right clicked on.
+        if (!this.context.selectedIDs().includes(down.target.dataID)) {
+          this._doSelect();
+        }
+        //Then, show the context menu.
         this._doContextMenu();
+      } else {
+        this._doSelect();
       }
     }
   }
