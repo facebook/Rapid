@@ -168,6 +168,9 @@ export class BehaviorMapInteraction extends AbstractBehavior {
       const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
 
       this.context.map().transform(tNew);
+      if (this.context.inIntro()) {
+        this.context.curtainProjection.transform({ x: t.x - dX, y: t.y - dY, k: t.k });
+      }
     }
   }
 
@@ -230,9 +233,13 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     } else {  // pan
       tNew = { x: t.x - dX, y: t.y - dY, k: t.k };
+      if (this.context.inIntro()) {
+        this.context.curtainProjection.transform({ x: t.x + dX, y: t.y + dY, k: t.k });
+      }
     }
 
     this.context.map().transform(tNew);
+
   }
 
 }
