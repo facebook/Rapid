@@ -60,7 +60,7 @@ export function uiIntroBuilding(context, reveal) {
         context.map().centerZoomEase(house, 19, msec);
 
         timeout(function() {
-            var tooltip = reveal('button.add-area',
+            var tooltip = reveal('button.draw-area',
                 helpHtml('intro.buildings.add_building'));
 
             tooltip.selectAll('.popover-inner')
@@ -91,23 +91,28 @@ export function uiIntroBuilding(context, reveal) {
       context.map().zoomEase(20, 500);
 
         timeout(function() {
-            var startString = helpHtml('intro.buildings.start_building') +
-                helpHtml('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
-        revealHouse(house, startString);
+          var startString = helpHtml('intro.buildings.start_building') +
+              helpHtml('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+          revealHouse(house, startString);
 
-            context.map().once('move draw', function() {
-          revealHouse(house, startString, { duration: 0 });
-        });
 
-            context.on('enter.intro', function(mode) {
-          if (mode.id !== 'draw-area') return chapter.restart();
-          continueTo(continueHouse);
-        });
+          function onMapRender() {
+            revealHouse(house, startString, { duration: 0 });
+          }
 
+          context.map().renderer.on('move', onMapRender);
+          context.map().renderer.on('draw', onMapRender);
+
+          function onClick() {
+            if (context.mode().id !== 'draw-area') return chapter.restart();
+            continueTo(continueHouse);
+          }
+          context.behaviors.get('draw').on('click', onClick );
         }, 550);  // after easing
 
       function continueTo(nextStep) {
-        context.map().off('move draw', null);
+        context.map().renderer.off('move', null);
+        context.map().renderer.off('draw', null);
         context.on('enter.intro', null);
         nextStep();
       }
@@ -237,40 +242,41 @@ export function uiIntroBuilding(context, reveal) {
         context.enter(modeSelect(context, [_houseID]));
       }
 
+        var button = context.container().select('.preset-building-house .preset-list-button');
+
       // disallow scrolling
         context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
         timeout(function() {
-        // reset pane, in case user somehow happened to change it..
-            context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
+          // reset pane, in case user somehow happened to change it..
+          context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
-            var button = context.container().select('.preset-building-house .preset-list-button');
 
-            reveal(button.node(),
-                helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
-          { duration: 300 }
-        );
+          reveal(
+            button.node(),
+            helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
+            { duration: 300 }
+          );
 
-            button.on('click.intro', function() {
-          button.on('click.intro', null);
-          continueTo(closeEditorHouse);
-        });
+          button.on('click.intro', function() {
+            continueTo(closeEditorHouse);
+          });
 
         }, 400);  // after preset list pane visible..
 
-        context.on('enter.intro', function(mode) {
-        if (!_houseID || !context.hasEntity(_houseID)) {
-          return continueTo(addHouse);
-        }
-        var ids = context.selectedIDs();
-        if (mode.id !== 'select' || !ids.length || ids[0] !== _houseID) {
-          return continueTo(chooseCategoryBuilding);
-        }
-      });
+      //   context.on('enter.intro', function(mode) {
+      //   if (!_houseID || !context.hasEntity(_houseID)) {
+      //     return continueTo(addHouse);
+      //   }
+      //   var ids = context.selectedIDs();
+      //   if (mode.id !== 'select' || !ids.length || ids[0] !== _houseID) {
+      //     return continueTo(chooseCategoryBuilding);
+      //   }
+      // });
 
       function continueTo(nextStep) {
         context.container().select('.inspector-wrap').on('wheel.intro', null);
-            context.container().select('.preset-list-button').on('click.intro', null);
+        context.container().select('.preset-list-button').on('click.intro', null);
         context.on('enter.intro', null);
         nextStep();
       }
@@ -289,12 +295,12 @@ export function uiIntroBuilding(context, reveal) {
       context.history().checkpoint('hasHouse');
 
         context.on('exit.intro', function() {
-        continueTo(rightClickHouse);
-      });
+          continueTo(rightClickHouse);
+        });
 
-        timeout(function() {
-            reveal('.entity-editor-pane',
-                helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
+      timeout(function() {
+        reveal('.entity-editor-pane',
+          helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
         );
       }, 500);
 
@@ -315,29 +321,49 @@ export function uiIntroBuilding(context, reveal) {
         zoom = 20;
       }
       context.map().centerZoomEase(house, zoom, 500);
+      if (context.selectedIDs().indexOf(_houseID) === -1) {
+        context.enter(modeSelect(context, [_houseID]));
+      }
+      var ids = context.selectedIDs();
+      if (ids.length !== 1 || ids[0] !== _houseID) return;
 
-        context.on('enter.intro', function(mode) {
-        if (mode.id !== 'select') return;
-        var ids = context.selectedIDs();
-        if (ids.length !== 1 || ids[0] !== _houseID) return;
+      timeout(function() {
+        var node = selectMenuItem(context, 'orthogonalize').node();
+        if (!node) return;
+        continueTo(clickSquare);
+      }, 50);  // after menu visible
 
-            timeout(function() {
-          var node = selectMenuItem(context, 'orthogonalize').node();
-          if (!node) return;
-          continueTo(clickSquare);
-            }, 50);  // after menu visible
-      });
-
-        context.map().once('move draw', function() {
-            var rightclickString = helpHtml('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_building' : 'edit_menu_building_touch'));
+      function onMapRender() {
+        var rightclickString = helpHtml('intro.buildings.' + (context.lastPointerType() === 'mouse' ? 'rightclick_building' : 'edit_menu_building_touch'));
         revealHouse(house, rightclickString, { duration: 0 });
+      }
+
+
+      context.ui().editMenu().on('toggled.intro', function (open) {
+        if (!open) return;
+
+        timeout(function() {
+          var ids = context.selectedIDs();
+           if (ids.length === 1 &&
+              ids.indexOf(_houseID) !== -1) {
+              return continueTo(clickSquare);
+          } else {
+              return continueTo(rightClickHouse);
+          }
+      }, 300);  // after edit menu visible
       });
+
+        context.map().renderer.on('move', onMapRender);
+        context.map().renderer.on('draw', onMapRender);
 
         context.history().on('change.intro', function() {
         continueTo(rightClickHouse);
       });
 
       function continueTo(nextStep) {
+        context.map().renderer.off('move', null);
+        context.map().renderer.off('draw', null);
+        context.ui().editMenu().on('toggled.intro', null);
         context.on('enter.intro', null);
         context.history().on('change.intro', null);
         nextStep();
@@ -394,7 +420,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move', null);
+            context.map().off('move', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -439,7 +465,7 @@ export function uiIntroBuilding(context, reveal) {
         context.map().centerZoomEase(tank, 19.5, msec);
 
         timeout(function() {
-            reveal('button.add-area',
+            reveal('button.draw-area',
                 helpHtml('intro.buildings.add_tank')
             );
 
@@ -457,7 +483,7 @@ export function uiIntroBuilding(context, reveal) {
 
 
     function startTank() {
-      if (context.mode().id !== 'add-area') {
+      if (context.mode().id !== 'draw-area') {
         return continueTo(addTank);
       }
 
@@ -472,15 +498,16 @@ export function uiIntroBuilding(context, reveal) {
           revealTank(tank, startString, { duration: 0 });
         });
 
-            context.on('enter.intro', function(mode) {
-          if (mode.id !== 'draw-area') return chapter.restart();
-          continueTo(continueTank);
-        });
-
         }, 550);  // after easing
 
+        function onClick() {
+          if (context.mode().id !== 'draw-area') return chapter.restart();
+          continueTo(continueTank);
+        }
+        context.behaviors.get('draw').on('click', onClick );
+
       function continueTo(nextStep) {
-        context.on('enter.intro', null);
+        context.behaviors.get('draw').off('click', onClick);
         nextStep();
       }
     }
@@ -666,7 +693,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move draw', null);
+            context.map().off('move draw', null);
             context.history().on('change.intro', null);
             nextStep();
         }
@@ -722,7 +749,7 @@ export function uiIntroBuilding(context, reveal) {
 
         function continueTo(nextStep) {
             context.on('enter.intro', null);
-            context.map().on('move', null);
+            context.map().off('move', null);
             context.history().on('change.intro', null);
             nextStep();
         }
