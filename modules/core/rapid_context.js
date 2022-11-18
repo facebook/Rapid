@@ -87,15 +87,15 @@ export function coreRapidContext(context) {
   const RAPID_MAGENTA = '#da26d3';
   const COLORS = [
     '#ff0000',  // red
-    '#ffa500',  // orange
-    '#ffd700',  // gold
+    // '#ffa500',  // orange
+    // '#ffd700',  // gold
     '#00ff00',  // lime
-    '#00ffff',  // cyan
-    '#1e90ff',  // dodgerblue
-    '#da26d3',  // rapid magenta
-    '#ffc0cb',  // pink
-    '#d3d3d3',  // lightgray
-    '#faf0e6'   // linen
+    // '#00ffff',  // cyan
+    // '#1e90ff',  // dodgerblue
+    // '#da26d3',  // rapid magenta
+    // '#ffc0cb',  // pink
+    // '#d3d3d3',  // lightgray
+    // '#faf0e6'   // linen
   ];
   _rapidContext.colors = () => COLORS;
 
@@ -117,7 +117,7 @@ export function coreRapidContext(context) {
             enabled: false,      // whether the user has checked it on
             conflated: true,
             service: 'fbml',
-            color: RAPID_MAGENTA,
+            color: '#00ff00',
             label: t('rapid_feature_toggle.fbRoads.label'),
             license_markdown: t('rapid_feature_toggle.fbRoads.license_markdown')
           },
@@ -128,7 +128,7 @@ export function coreRapidContext(context) {
             enabled: false,      // whether the user has checked it on
             conflated: true,
             service: 'fbml',
-            color: RAPID_MAGENTA,
+            color: '#ff0000',
             label: t('rapid_feature_toggle.msBuildings.label'),
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
           }
