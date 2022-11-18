@@ -684,7 +684,9 @@ export function coreContext() {
         `${_assetPath}img/icons/mapillary-signs-spritesheet.json`
       );
 
-     [context._makiSheet, context._temakiSheet, context._fontAwesomeSheet, context._mapillarySheet, context._mapillarySignSheet] = await Promise.all([makiPromise, temakiPromise, faPromise, mapillaryPromise, mapillarySignPromise]);
+     let snowflakePromise = Assets.load(`${_assetPath}img/icons/snowflake.png`);
+
+     [context._makiSheet, context._temakiSheet, context._fontAwesomeSheet, context._mapillarySheet, context._mapillarySignSheet, context._snowflakeIcon] = await Promise.all([makiPromise, temakiPromise, faPromise, mapillaryPromise, mapillarySignPromise, snowflakePromise]);
 
 
     }

@@ -15,6 +15,7 @@ import { PixiLayerOsmNotes } from './PixiLayerOsmNotes';
 import { PixiLayerOsmose } from './PixiLayerOsmose';
 import { PixiLayerRapid } from './PixiLayerRapid';
 import { PixiLayerMapUI } from './PixiLayerMapUI';
+// import { PixiLayerSnowflakes } from './PixiLayerSnowflakes';
 import { PixiLayerStreetsidePhotos } from './PixiLayerStreetsidePhotos';
 import { PixiLayerCustomData } from './PixiLayerCustomData';
 
@@ -106,7 +107,8 @@ export class PixiScene extends EventEmitter {
 
       new PixiLayerLabels(this, 'labels'),
       new PixiLayerEditBlocks(this, 'edit-blocks'),
-      new PixiLayerMapUI(this, 'map-ui')
+      new PixiLayerMapUI(this, 'map-ui'),
+      // new PixiLayerSnowflakes(this, 'snowflakes')
     ].forEach(layer => this.layers.set(layer.id, layer));
 
   }
