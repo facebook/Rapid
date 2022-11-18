@@ -3,13 +3,15 @@ import { utilStringQs } from '@id-sdk/util';
 
 import {
   uiToolRapidFeatures, uiToolDrawModes, uiToolNotes, uiToolSave,
-  uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
+  uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc, uiToolFbBannerOne, uiToolFbBannerTwo
 } from './tools';
 
 
 export function uiTopToolbar(context) {
   const sidebarToggle = uiToolSidebarToggle(context);
   const rapidFeatures = uiToolRapidFeatures(context);
+  const bannerOne = uiToolFbBannerOne(context);
+  const bannerTwo = uiToolFbBannerTwo(context);
   const modes = uiToolDrawModes(context);
   const notes = uiToolNotes(context);
   const undoRedo = uiToolUndoRedo(context);
@@ -23,7 +25,7 @@ export function uiTopToolbar(context) {
 
 
   function update(selection) {
-    let tools = [sidebarToggle, 'spacer', modes, rapidFeatures];
+    let tools = [sidebarToggle, 'spacer', bannerOne, modes, rapidFeatures, bannerTwo];
 
     if (notesEnabled()) {
       tools.push('spacer', notes);
