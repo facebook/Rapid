@@ -64,7 +64,15 @@ export function uiPane(id, context) {
     pane.togglePane = function(d3_event) {
         if (d3_event) d3_event.preventDefault();
         _paneTooltip.hide();
-        context.ui().togglePanes(!_paneSelection.classed('shown') ? _paneSelection : undefined);
+        const shown = !_paneSelection.classed('shown');
+        context.ui().togglePanes(shown ? _paneSelection : undefined);
+
+        // Fix #655: Since firing the validator is so expensive,
+        // only do it when we're right about to open the validation pane.
+        if (this.parentElement.className.includes('issues') && shown) {
+            context.validator().validate();
+            console.log('firing validator.');
+        }
     };
 
     pane.renderToggleButton = function(selection) {
