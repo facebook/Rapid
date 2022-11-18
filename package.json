@@ -36,6 +36,7 @@
     "dist:svg:rapid": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"rapid-%s\" --symbol-sprite dist/img/rapid-sprite.svg \"svg/rapid-sprite/**/*.svg\"",
     "dist:svg:roentgen": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"roentgen-%s\" --symbol-sprite dist/img/roentgen-sprite.svg svg/roentgen/*.svg",
     "dist:svg:temaki": "svg-sprite --symbol --symbol-dest . --shape-id-generator \"temaki-%s\" --symbol-sprite dist/img/temaki-sprite.svg node_modules/@rapideditor/temaki/icons/*.svg",
+    "dist:svg:christmas": "shx cp holidays/* dist/img",
     "docs": "jsdoc -c webdoc.conf.json -r",
     "imagery": "dotenvx run --quiet -- node scripts/update_imagery.js",
     "lint": "eslint modules test",

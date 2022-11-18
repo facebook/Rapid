@@ -3,7 +3,7 @@ import {
   DEG2RAD, RAD2DEG, TAU, Extent, Viewport, geoMetersToLon, geoZoomToScale,
   numClamp, numWrap, vecAdd, vecRotate, vecSubtract
 } from '@rapid-sdk/math';
-
+import { PixiLayerSnowflakes } from '../pixi/PixiLayerSnowflakes.js';
 import { AbstractSystem } from './AbstractSystem.js';
 import { QAItem } from '../osm/index.js';
 import { utilTotalExtent } from '../util/index.js';
@@ -279,6 +279,11 @@ export class MapSystem extends AbstractSystem {
     $$supersurface
       .append(() => gfx.overlay)
       .attr('class', 'overlay');
+
+      const $$snowOverlay = $$mainmap.append('div').attr('class', 'snowflake-overlay');
+      $$snowOverlay.append('canvas').attr('class', 'snowflake-layer');
+
+    this.snowflakes = new PixiLayerSnowflakes(context, 'snowflakes');
   }
 
 
