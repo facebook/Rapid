@@ -217,7 +217,6 @@ export class RendererMap extends EventEmitter {
     if (!this.redrawEnabled) return;
     this._renderer.render();
     if (this.context.inIntro()) {
-      console.log('Resetting curtain projection to be same as regular.');
       this.context.curtainProjection.transform(this.context.projection.transform());
     }
   }
