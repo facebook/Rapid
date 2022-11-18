@@ -92,10 +92,10 @@ export function uiZoom(context) {
             })
             .call(tooltipBehavior);
 
-        buttons.each(function(d) {
-            d3_select(this)
-                .call(svgIcon('#' + d.icon, 'light'));
-        });
+        // buttons.each(function(d) {
+        //     d3_select(this)
+        //         .call(svgIcon('#' + d.icon, 'light'));
+        // });
 
         utilKeybinding.plusKeys.forEach(function(key) {
             context.keybinding().on([key], zoomIn);

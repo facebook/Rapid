@@ -9,7 +9,6 @@ export function uiPanePreferences(context) {
     .key(t('preferences.key'))
     .label(t.html('preferences.title'))
     .description(t.html('preferences.description'))
-    .iconName('fas-user-cog')
     .sections([
         uiSectionPrivacy(context)
     ]);
