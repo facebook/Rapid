@@ -53,19 +53,17 @@ export class PixiLayerSnowflakes extends AbstractLayer {
     // noop
   }
 
-
   /**
    * render
    * Render any of the child containers for UI that should float over the map.
    * @param  frame        Integer frame being rendered
    * @param  projection   Pixi projection to use for rendering
    */
-  render(frame, projection) {
-
+  render() {
     const now = Date.now();
     if (this.emitter) {
         // update emitter (convert to seconds)
-        this.emitter.update((now - this.elapsed) * 0.001);
+      this.emitter.update((now - this.elapsed) * 0.001);
     }
 
     // call update hook for specialist examples
@@ -75,6 +73,7 @@ export class PixiLayerSnowflakes extends AbstractLayer {
 
     // framerate.innerHTML = `${(1000 / (now - this.elapsed)).toFixed(2)} fps`;
 
+    this.scene.renderer.render();
     this.elapsed = now;
 
     // if (this.emitter && particleCount)
