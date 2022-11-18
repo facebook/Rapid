@@ -1109,3 +1109,38 @@ div.holiday-banner.smaller {
         background: #0f0;
     }
 }
+
+div.map-controls .map-control {
+    background: #aaaaaa88;
+    border-radius: 4px;
+}
+
+div.map-control.help-control button {
+    background: url('img/holiday_help.svg')
+}
+
+div.map-control.preferences-control button {
+    background: url('img/holiday_preferences.svg')
+}
+
+div.map-control.issues-control button {
+    background: url('img/holiday_issues.svg')
+}
+div.map-control.map-data-control button {
+    background: url('img/holiday_map-data.svg')
+}
+div.map-control.background-control button {
+    background: url('img/holiday_background.svg')
+}
+div.map-control.geolocate-control button {
+    background: url('img/holiday_geolocate.svg')
+}
+div.map-control.zoom-to-selection-control button {
+    background: url('img/holiday_zoom-to-selection.svg')
+}
+div.map-control.zoombuttons button.zoom-in {
+    background: url('img/holiday_zoom-in.svg')
+}
+div.map-control.zoombuttons button.zoom-out {
+    background: url('img/holiday_zoom-out.svg')
+}

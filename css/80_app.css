@@ -2955,7 +2955,7 @@ img.tag-reference-wiki-image {
     border-radius: 0;
     pointer-events: auto;
 }
-
+/* 
 .map-control > button:not(.disabled):focus,
 .map-control > button:not(.disabled):active {
     background: rgba(0, 0, 0, .8);
@@ -2963,14 +2963,14 @@ img.tag-reference-wiki-image {
 .map-control > button.active,
 .map-control > button.active:active {
     background: #7092ff;
-}
+} */
 @media (hover: hover) {
-    .map-control > button:not(.disabled):hover {
+    /* .map-control > button:not(.disabled):hover {
         background: rgba(0, 0, 0, .8);
     }
     .map-control > button.active:hover {
         background: #7092ff;
-    }
+    } */
 }
 
 .map-control > button.disabled .icon {

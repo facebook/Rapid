@@ -275,7 +275,6 @@ export function uiPaneHelp(context) {
         .key(t('help.key'))
         .label(t.html('help.title'))
         .description(t.html('help.title'))
-        .iconName('iD-icon-help');
 
     helpPane.renderContent = function(content) {
 

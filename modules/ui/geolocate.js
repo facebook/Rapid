@@ -104,7 +104,6 @@ export function uiGeolocate(context) {
     _button = selection
       .append('button')
       .on('click', click)
-      .call(svgIcon('#iD-icon-geolocate', 'light'))
       .call(uiTooltip()
         .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
         .title(t.html('geolocate.title'))
