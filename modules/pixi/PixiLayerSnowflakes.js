@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer';
-import  * as particles from '@pixi/particle-emitter';
+import  * as particles from 'particle-emitter';
 import { snowflakesConfig } from './PixiLayerSnowflakesConfig';
 /**
  * PixiLayerSnowflakes
