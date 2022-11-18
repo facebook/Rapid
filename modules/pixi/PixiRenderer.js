@@ -134,6 +134,9 @@ export class PixiRenderer extends EventEmitter {
     this.scene = new PixiScene(this);
     this.events = new PixiEvents(this);
 
+    const snowflakesLayer = this.scene.layers.get('snowflakes');
+
+    ticker.add(snowflakesLayer.render, snowflakesLayer);
     // Texture Manager should only be created once
     // This is because it will start loading assets and Pixi's asset loader is not reentrant.
     // (it causes test failures if we create a bunch of these)
