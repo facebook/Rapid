@@ -3,6 +3,7 @@ import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vec
 
 import { AbstractSystem } from './AbstractSystem';
 import { PixiRenderer } from '../pixi/PixiRenderer';
+import { PixiLayerSnowflakes } from '../pixi/PixiLayerSnowflakes.js';
 import { uiCmd } from '../ui/cmd.js';
 import { utilTotalExtent } from '../util/util';
 import { utilGetDimensions } from '../util/dimensions';
@@ -224,6 +225,11 @@ export class MapSystem extends AbstractSystem {
 
     if (!this._renderer) {
       this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
+
+    this.snowOverlay = selection.append('div').attr('class', 'snowflake-overlay');
+    this.snowLayer = this.snowOverlay.append('canvas').attr('class', 'snowflake-layer');
+
+    this.snowflakes = new PixiLayerSnowflakes(context, 'snowflakes');
 
       // Forward the 'move' and 'draw' events from PixiRenderer
       this._renderer
