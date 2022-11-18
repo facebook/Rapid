@@ -106,7 +106,7 @@ export class PixiScene extends EventEmitter {
 
       new PixiLayerLabels(this, 'labels'),
       new PixiLayerEditBlocks(this, 'edit-blocks'),
-      new PixiLayerMapUI(this, 'map-ui')
+      new PixiLayerMapUI(this, 'map-ui'),
     ].forEach(layer => this.layers.set(layer.id, layer));
 
   }
