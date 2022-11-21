@@ -354,7 +354,7 @@ export class ModeDrawLine extends AbstractMode {
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [ this.firstNode.id, this.drawNode.id ] });
       scene.classData('osm', this.drawWay.id, 'drawing');
-       scene.classData('osm', this.firstNode.id, 'drawing');
+      //  scene.classData('osm', this.firstNode.id, 'drawing');
        scene.classData('osm', this.drawNode.id, 'drawing');
 
       context.perform(
@@ -460,6 +460,7 @@ export class ModeDrawLine extends AbstractMode {
           actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
           this._getAnnotation()
         );
+        this.drawNode = null;
         this._finish();
         return;
       }
