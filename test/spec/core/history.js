@@ -32,7 +32,7 @@ describe('iD.coreHistory', function () {
             var n = iD.osmNode({id: 'n'});
             history.on('merge', spy);
             history.merge([n]);
-            expect(spy).to.have.been.calledWith([n.id]);
+            expect(spy).to.have.been.calledWith(new Set([n.id]));
         });
     });
 
