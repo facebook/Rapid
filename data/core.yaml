@@ -1050,7 +1050,7 @@ en:
     start: "No thanks, just start mapping"
   rapid_whats_new:
     welcome: What's New- a webGL-based {rapidicon} Alpha!
-    text: "Enjoy this alpha of a *completely rewritten* {rapidicon}!  We're hoping community members will join us in testing this version of RapiD out, so we made the bug report button {bugicon} easier to use.  <p>If you'd like more information, here's our [original post](https://github.com/facebookincubator/RapiD/discussions/481) announcing this work. We also maintain a list of [known issues](https://github.com/orgs/facebookincubator/projects/4/views/4?filterQuery=status%3ATriage). Chief among these: drawing new areas does not work."
+    text: "Enjoy this alpha v3 of a *completely rewritten* {rapidicon}!  We're hoping community members will join us in testing this version of RapiD out, so we made the bug report button {bugicon} easier to use.  <p>If you'd like more information, here's our [original post](https://github.com/facebookincubator/RapiD/discussions/481) announcing this work. We also maintain a list of [known issues](https://github.com/orgs/facebookincubator/projects/4/views/4?filterQuery=status%3ATriage)."
     ok: Okay
     nope: No thanks, just take me to RapiD
     dontshowagain: Don't show this again

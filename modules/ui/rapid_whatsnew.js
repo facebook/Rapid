@@ -10,7 +10,7 @@ export function uiRapidWhatsNew(context) {
 
 
   return function(selection) {
-    if (prefs('sawWhatsNewGLAlpha') === 'true') return;
+    if (prefs('sawWhatsNewGLAlphav3') === 'true') return;
 
     const modalSelection = uiModal(selection);
 
@@ -36,13 +36,13 @@ export function uiRapidWhatsNew(context) {
 
     imageSection
       .append('img')
-      .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/sotm_2022.svg'));
+      .attr('class', 'whatsnew-image wide')
+      .attr('src', context.asset('img/pista_sotm_asia.png'));
 
     imageSection
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/foss4g2022-400x400.webp'));
+      .attr('src', context.asset('img/foss4g-sotm-oceania-2021_logo_reverse-colour.webp'));
 
     body.selectAll('p a')
       .attr('target', '_blank');

@@ -465,6 +465,10 @@ button.bugnub {
     margin-top: 20px;
     align-items: center;
 }
+.modal.rapid-modal.modal-whatsnew img.whatsnew-image.wide {
+    max-width: 300px;
+}
+
 .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
     font-size: 16px;
     padding: 0 30px;
