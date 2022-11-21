@@ -51,44 +51,44 @@ Wireframe mode (w) is back [#497], as well as the feature filtering[#584] for OS
 
 We've substantially reduced the bundle size by rebuilding some dependent projects with pixi v7 [#492], [#632]
 
-[#617] Code is now based off Pixi.v7.
-[#499] All draw modes should now be working & available. Hooray!
-[#531] Lasso drawing to select OSM Nodes is back!
-[#538] Way midpoints now render and are interactive (double click, click-to-drag)
-[#652] double-clicking on a way (or at a midpoint) should now add a node to the way.
+* [#617] Code is now based off Pixi.v7.
+* [#499] All draw modes should now be working & available. Hooray!
+* [#531] Lasso drawing to select OSM Nodes is back!
+* [#538] Way midpoints now render and are interactive (double click, click-to-drag)
+* [#652] double-clicking on a way (or at a midpoint) should now add a node to the way.
 
 
 ### Bugfixes:
-[#493] We've set webGL2 as the preferred method of starting up and haven't seen this issue since.
-[#495] Not a bug, actually- this was just an 'area-fill' issue before we had partials.
-[#518] Double-clicking to finish a way no longer zooms the map.
-[#519] Area drawing mode should work once again.
-[#521] The 'Notes' layer, hotkeys, and editing should work once again.
-[#524] Fixed a bug with way moving causing exceptions in rare cases.
-[#529] Right-clicking an empty part of the map should correctly show the 'paste' option.
-[#554] Continuing a line should work once again ('a' hotkey)
-[#555] No more auto-zoom after drawing a feature.
-[#556], [#569] Fixed a bug that caused keyboard/mouse events to get eaten after exiting a drawing mode.
-[#558] Fixed a bug with history / state annotations causing too many undo states during line drawing.
-[#561] Lines should now be closeable when drawing.
-[#562] Copy and Paste should now work correctly.
-[#563] Adding nodes to existing lines should work again in all browsers.
-[#565] Verified that Black-screen problems during data validation no longer occur.
-[#566] users should now be able to add nodes to the lines and area features.
-[#571] Fix a bug that was preventing ESRI buildings from conflating properly.
-[#580], [#581], and [#582] Added new templates for bug submissions!
-[#586] Area add button is now available, the mode is implemented!
-[#608] The preset picker dialog in the sidebar now correctly opens when the user adds a new untagged feature to the map.
-[#609] Various history fixes have been made to the line and area drawing modes, undo/redo should do the correct things to the change stack now.
-[#620] Fixed the 'destroy' calls for pixi v7 and bitmap text labels, freeing up more memory.
-[#627] Loading notes no longer causes a stack trace
-[#629] Fixed resource loading of textures during tests, also sped up resource loads of spritesheets by making the load promises parallel.
-[#630] Fixed many, many unit tests to go along with all these fixes/changes.
-[#637] Adding notes should now work.
-[#639] Fix the 'a' hotkey for adding to a line.
-[#646] FIxed a bug where clicking to snap to an area while hovering the fill caused a stack trace.
-[#648] Fixed a hover/snapping bug that prevented features from attaching to other features mid-draw.
-[#654] Fixed a bug with right-clicking on multiselections
+* [#493] We've set webGL2 as the preferred method of starting up and haven't seen this issue since.
+* [#495] Not a bug, actually- this was just an 'area-fill' issue before we had partials.
+* [#518] Double-clicking to finish a way no longer zooms the map.
+* [#519] Area drawing mode should work once again.
+* [#521] The 'Notes' layer, hotkeys, and editing should work once again.
+* [#524] Fixed a bug with way moving causing exceptions in rare cases.
+* [#529] Right-clicking an empty part of the map should correctly show the 'paste' option.
+* [#554] Continuing a line should work once again ('a' hotkey)
+* [#555] No more auto-zoom after drawing a feature.
+* [#556], [#569] Fixed a bug that caused keyboard/mouse events to get eaten after exiting a drawing mode.
+* [#558] Fixed a bug with history / state annotations causing too many undo states during line drawing.
+* [#561] Lines should now be closeable when drawing.
+* [#562] Copy and Paste should now work correctly.
+* [#563] Adding nodes to existing lines should work again in all browsers.
+* [#565] Verified that Black-screen problems during data validation no longer occur.
+* [#566] users should now be able to add nodes to the lines and area features.
+* [#571] Fix a bug that was preventing ESRI buildings from conflating properly.
+* [#580], [#581], and [#582] Added new templates for bug submissions!
+* [#586] Area add button is now available, the mode is implemented!
+* [#608] The preset picker dialog in the sidebar now correctly opens when the user adds a new untagged feature to the map.
+* [#609] Various history fixes have been made to the line and area drawing modes, undo/redo should do the correct things to the change stack now.
+* [#620] Fixed the 'destroy' calls for pixi v7 and bitmap text labels, freeing up more memory.
+* [#627] Loading notes no longer causes a stack trace
+* [#629] Fixed resource loading of textures during tests, also sped up resource loads of spritesheets by making the load promises parallel.
+* [#630] Fixed many, many unit tests to go along with all these fixes/changes.
+* [#637] Adding notes should now work.
+* [#639] Fix the 'a' hotkey for adding to a line.
+* [#646] FIxed a bug where clicking to snap to an area while hovering the fill caused a stack trace.
+* [#648] Fixed a hover/snapping bug that prevented features from attaching to other features mid-draw.
+* [#654] Fixed a bug with right-clicking on multiselections
 
 
 
@@ -98,7 +98,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 
 
 ### Bugfixes:
- 
+
 [#571]
 [#569]
 [#555]
