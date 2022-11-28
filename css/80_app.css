@@ -1067,19 +1067,14 @@ a.hide-toggle {
     background: #ececec;
 }
 
+
 .preset-icon-container {
     position: relative;
     width: 60px;
     height: 60px;
-    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 auto;
-}
-.preset-icon-container.small {
-    width: 40px;
-    height: 40px;
     flex: 0 0 auto;
 }
 .preset-icon-container img.image-icon {
@@ -1087,8 +1082,8 @@ a.hide-toggle {
     height: 50px;
     object-fit: contain;
     border-radius: 2px;
-    z-index: 2;
     visibility: hidden;
+    z-index: 2;
 }
 .preset-icon-container.showing-img img.image-icon {
     visibility: visible;
@@ -1097,113 +1092,93 @@ a.hide-toggle {
     display: none;
 }
 
-.preset-icon-point-border path {
-    stroke: #333;
-    stroke-width: 1.2;
-    fill: transparent;
-}
-
 .preset-icon-category-border path {
-    stroke: #999;
+    stroke-opacity: 1;
     stroke-width: 1px;
-    fill: transparent;
-    backface-visibility: hidden;
-    vector-effect: non-scaling-stroke;
 }
 
-.preset-icon-line {
-    margin: auto;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-.preset-icon-container path {
-    cursor: inherit;
-}
-.preset-icon-container circle.vertex {
+.preset-icon-point-border path {
     fill: #fff;
-    stroke: rgba(0, 0, 0, 0.25);
-}
-.preset-icon-fill circle.midpoint {
-    fill: transparent;
-    stroke: rgba(0, 0, 0, 0.25);
-}
-/* use a consistent stroke width */
-.preset-icon-container path.line.stroke {
-    stroke-width: 2 !important;
-}
-.preset-icon-container path.line.casing {
-    stroke-width: 4 !important;
+    stroke: #333;
+    stroke-opacity: 1;
+    stroke-width: 1px;
 }
 
-.preset-icon-fill {
-    margin: auto;
+.preset-icon-vertex-border circle {
+    fill: #efefef;
+    fill-opacity: 1;
+    stroke: #333;
+    stroke-opacity: 1;
+    stroke-width: 1.5px;
+}
+
+.preset-icon-area-border path {
+    stroke-opacity: 1;
+    stroke-width: 1.2px;
+}
+.preset-icon-area-border circle.vertex {
+    fill: #fff;
+    fill-opacity: 1;
+    stroke: #000;
+    stroke-opacity: 0.3;
+    stroke-width: 1px;
+}
+.preset-icon-area-border circle.midpoint {
+    fill: transparent;
+    fill-opacity: 1;
+    stroke: #000;
+    stroke-opacity: 0.3;
+    stroke-width: 1px;
+}
+
+.preset-icon-line path.casing {
+    stroke-width: 5px;
+}
+.preset-icon-line path.stroke {
+    stroke-width: 4px;
+}
+.preset-icon-line circle.vertex {
+    fill: #fff;
+    fill-opacity: 1;
+    stroke: #000;
+    stroke-opacity: 0.3;
+    stroke-width: 1px;
+}
+
+.preset-icon,
+.preset-icon-route {
     position: absolute;
     width: 100%;
     height: 100%;
-    left: 0;
-    top: 0;
-}
-.preset-icon-container svg,
-.preset-icon-container svg > * {
-    cursor: inherit !important;
-}
-.preset-icon-fill path.area.stroke {
-    fill: transparent;
-}
-
-.preset-icon-fill-vertex circle {
-    stroke-width: 1.5px;
-    stroke: #333;
-    fill: #efefef;
-    backface-visibility: hidden;
-}
-
-.preset-icon {
-    width: 100%;
-    height:100%;
-    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 1;
 }
-.preset-icon .icon {
-    position: absolute;
-    margin: auto;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    transform: scale(0.48);
+.preset-icon svg.icon,
+.preset-icon-route svg.icon {
+    width: 28px;
+    height: 28px;
+    fill: #333;
 }
-.preset-icon-container.small .preset-icon.point-geom .icon {
-    transform: translateY(-7%) scale(0.27);
+.preset-icon svg.icon.idicon,
+.preset-icon-route svg.icon.idicon {
+    width: 50px;
+    height: 50px;
 }
-.preset-icon-container.small .preset-icon.point-geom.preset-icon-iD .icon {
-    transform: translateY(-9%) scale(0.5);
+.preset-icon svg.icon.shrunk,
+.preset-icon-route svg.icon.shrunk {
+    scale: 0.8;
 }
-.preset-icon.framed .icon {
-    transform: scale(0.4);
+.preset-icon svg.icon.raised,
+.preset-icon-route svg.icon.raised {
+    translate: 0 -7px;
 }
-.preset-icon.framed.line-geom:not(.category) .icon,
-.preset-icon.framed.route-geom .icon {
-    top: 20%;
-    transform: translateY(-30%) scale(0.4);
+.preset-icon svg.icon.lowered,
+.preset-icon-route svg.icon.lowered {
+    translate: 0 12px;
 }
-.preset-icon-iD .icon {
-    transform: scale(1);
-}
-.preset-icon-iD.framed .icon {
-    transform: scale(0.74);
-}
-.preset-icon-iD.framed.line-geom:not(.category) .icon,
-.preset-icon-iD.framed.route-geom .icon {
-    transform: translateY(-30%) scale(0.74);
-}
-.preset-icon-container.fallback .preset-icon .icon {
-    transform: scale(0.5) !important;
-}
+
 
 .preset-list-button .label {
     display: flex;
@@ -2739,16 +2714,6 @@ img.tag-reference-wiki-image {
 .qa-header-icon .icon-wrap {
     position: absolute;
     top: 0px;
-}
-.preset-icon-28 {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    margin: auto;
-}
-.preset-icon-28 .icon {
-    width: 28px;
-    height: 28px;
 }
 
 .note-header-label,

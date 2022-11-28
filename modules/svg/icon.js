@@ -1,7 +1,7 @@
 export function svgIcon(name, svgklass, useklass) {
   return function drawIcon(selection) {
-    selection.selectAll('svg.icon' + (svgklass ? '.' + svgklass.split(' ')[0] : ''))
-      .data([0])
+    selection.selectAll('svg.icon')
+      .data([name])
       .enter()
       .append('svg')
       .attr('class', 'icon ' + (svgklass || ''))

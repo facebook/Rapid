@@ -195,16 +195,16 @@ const STYLES = {
 
   barrier: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
   },
   barrier_wall: {
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0xdddddd, dash: [15, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+    stroke: { width: 3, color: 0xdddddd, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
   },
   barrier_hedge: {
     fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
     casing: { alpha: 0 },  // disable
-    stroke: { width: 3, color: 0x8cd05f, dash: [16, 3, 9, 3], cap: PIXI.LINE_CAP.BUTT }
+    stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
   }
 };
 
@@ -366,6 +366,9 @@ const STYLE_SELECTORS = {
     beachvolleyball: 'yellow',
     skateboard: 'darkgray',
     softball: 'yellow'
+  },
+  type: {
+    waterway: 'river'
   },
   waterway: {
     river: 'river',
