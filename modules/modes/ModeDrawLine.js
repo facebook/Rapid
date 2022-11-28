@@ -451,16 +451,21 @@ export class ModeDrawLine extends AbstractMode {
     // (Note that we don't need to replace the draw node in this scenerio)
     if (this.drawWay) {
       // Clicked on first or last node, try to finish the line
-      if (this.targetNode === this.lastNode || this.targetNode === this.firstNode ||
+      if (targetNode === this.lastNode || targetNode === this.firstNode ||
         vecEqual(loc, this.lastNode.loc, EPSILON) || vecEqual(loc, this.firstNode.loc, EPSILON)
       ) {
         const targetIndex = this.drawWay.affix(this.drawNode.id) === 'prefix'? 1 : this.drawWay.nodes.length - 1;
 
         context.replace(
+          this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),
           actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
           this._getAnnotation()
         );
-        this.drawNode = null;
+
+        if (targetNode === this.firstNode) {
+          this.drawNode = null;
+        }
+
         this._finish();
         return;
       }
@@ -510,6 +515,11 @@ export class ModeDrawLine extends AbstractMode {
     context.resumeChangeDispatch();
   }
 
+  _actionRemoveDrawNode(wayId, drawNode) {
+    return function (graph) {
+      return graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
+    };
+  }
 
   /**
    * _continueFromNode
@@ -543,10 +553,16 @@ export class ModeDrawLine extends AbstractMode {
 
 
   _removeDrawNode() {
+
+    // In mose cases, we have automatically created a draw node after each click, with a separate history step.
+    // In that case, we can simply back it out.
     if (this.drawNode) {
       // the draw node has already been added to history- so just back it out.
       this.context.pop();
     }
+
+    //Special case- the final node that was clicked was an already-existing node, which means that we need to just clean up the draw node, not do anything to history itself.
+
     this.drawNode = null;
   }
 

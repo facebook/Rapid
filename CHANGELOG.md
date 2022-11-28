@@ -52,6 +52,7 @@ Wireframe mode (w) is back [#497], as well as the feature filtering[#584] for OS
 We've substantially reduced the bundle size by rebuilding some dependent projects with pixi v7 [#492], [#632]
 
 * [#617] Code is now based off Pixi.v7.
+* [#502] The walkthrough has been restored!
 * [#499] All draw modes should now be working & available. Hooray!
 * [#531] Lasso drawing to select OSM Nodes is back!
 * [#538] Way midpoints now render and are interactive (double click, click-to-drag)
@@ -70,12 +71,13 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * [#555] No more auto-zoom after drawing a feature.
 * [#556], [#569] Fixed a bug that caused keyboard/mouse events to get eaten after exiting a drawing mode.
 * [#558] Fixed a bug with history / state annotations causing too many undo states during line drawing.
-* [#561] Lines should now be closeable when drawing.
+* [#561], [#660] Lines should now be closeable when drawing.
 * [#562] Copy and Paste should now work correctly.
 * [#563] Adding nodes to existing lines should work again in all browsers.
 * [#565] Verified that Black-screen problems during data validation no longer occur.
 * [#566] users should now be able to add nodes to the lines and area features.
 * [#571] Fix a bug that was preventing ESRI buildings from conflating properly.
+* [#572] Snapping to ways that are already on the map should be back to normal.
 * [#580], [#581], and [#582] Added new templates for bug submissions!
 * [#586] Area add button is now available, the mode is implemented!
 * [#608] The preset picker dialog in the sidebar now correctly opens when the user adds a new untagged feature to the map.
@@ -89,7 +91,8 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * [#646] FIxed a bug where clicking to snap to an area while hovering the fill caused a stack trace.
 * [#648] Fixed a hover/snapping bug that prevented features from attaching to other features mid-draw.
 * [#654] Fixed a bug with right-clicking on multiselections
-
+* [#661] Cursors should properly update when transitioning in & out of modes.
+* [#670] Double-clicking on a pre-existing node during way-drawing should leave the history in the correct state (with no 'extra' states to undo)
 
 
 # [2.0.1-alpha]
