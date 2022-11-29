@@ -688,13 +688,9 @@ export function coreContext() {
 
     }
 
-  if (_loadedImages === false) {
-    loadImages();
-    _loadedImages = true;
-  }
-
   /* Init */
   context.init = () => {
+    loadImages();
     instantiateInternal();
     initializeDependents();
     return context;
