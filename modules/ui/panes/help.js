@@ -274,7 +274,7 @@ export function uiPaneHelp(context) {
     var helpPane = uiPane('help', context)
         .key(t('help.key'))
         .label(t.html('help.title'))
-        .description(t.html('help.title'))
+        .description(t.html('help.title'));
 
     helpPane.renderContent = function(content) {
 
