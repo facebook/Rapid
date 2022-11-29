@@ -37,6 +37,7 @@ export class PixiLayerSnowflakes {
       autoStart: false,        // don't start the ticker yet
       resizeTo: overlay.node(),
       resolution: window.devicePixelRatio,
+      backgroundAlpha: 0,
       sharedLoader: true,
       sharedTicker: true,
       view: surface.node(),
