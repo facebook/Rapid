@@ -1,7 +1,7 @@
 export const snowflakesConfig = {
     'lifetime': {
-        'min': 4,
-        'max': 4
+        'min': 8,
+        'max': 8
     },
     'ease': [
         {
@@ -22,8 +22,8 @@ export const snowflakesConfig = {
     ],
     'frequency': 0.004,
     'emitterLifetime': 0,
-    'maxParticles': 1000,
-    'addAtBack': false,
+    'maxParticles': 3000,
+    'addAtBack': true,
     'pos': {
         'x': 0,
         'y': 0
@@ -39,7 +39,7 @@ export const snowflakesConfig = {
                             'value': 0.73
                         },
                         {
-                            'time': 1,
+                            'time': 5,
                             'value': 0.46
                         }
                     ]
@@ -49,7 +49,7 @@ export const snowflakesConfig = {
         {
             'type': 'moveSpeedStatic',
             'config': {
-                'min': 200,
+                'min': 100,
                 'max': 200
             }
         },
@@ -57,7 +57,7 @@ export const snowflakesConfig = {
             'type': 'scale',
             'config': {
                 'scale': {
-                    'list': [
+                    'list': [ 
                         {
                             'time': 0,
                             'value': 0.15
@@ -94,10 +94,10 @@ export const snowflakesConfig = {
             'config': {
                 'type': 'rect',
                 'data': {
-                    'x': -500,
-                    'y': -300,
-                    'w': 900,
-                    'h': 20
+                    'x': -100,
+                    'y': -100,
+                    'w': 1280,
+                    'h': 1024
                 }
             }
         }
