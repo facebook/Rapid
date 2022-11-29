@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { AbstractLayer } from './AbstractLayer';
-import  * as particles from 'particle-emitter';
+import  * as particles from '@pixi/particle-emitter';
 import { snowflakesConfig } from './PixiLayerSnowflakesConfig';
 /**
  * PixiLayerSnowflakes
@@ -11,15 +11,49 @@ import { snowflakesConfig } from './PixiLayerSnowflakesConfig';
  *
  * @class
  */
-export class PixiLayerSnowflakes extends AbstractLayer {
+export class PixiLayerSnowflakes {
 
   /**
    * @constructor
-   * @param  scene    The Scene that owns this Layer
+   * @param  context    top-level context
    * @param  layerID  Unique string to use for the name of this Layer
    */
-  constructor(scene, layerID) {
-    super(scene, layerID);
+  constructor(context, layerID) {
+    this.context = context;
+    // Disable mipmapping, we always want textures near the resolution they are at.
+    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
+
+    // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
+    PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
+
+    const overlay = this.context.container().select('.snowflake-overlay');
+    const surface = this.context.container().select('.snowflake-layer');
+
+    // Create a Pixi application rendering to the given surface `canvas`
+    // Which in this case is an entirely separate canvas from the main map supersurface
+    this.pixi = new PIXI.Application({
+      antialias: true,
+      autoDensity: true,
+      autoStart: false,        // don't start the ticker yet
+      resizeTo: overlay.node(),
+      resolution: window.devicePixelRatio,
+      sharedLoader: true,
+      sharedTicker: true,
+      view: surface.node(),
+    });
+    this.pixi.renderer.resize(1024, 1024);
+
+    //Debug circle code
+    // const circle = new PIXI.Graphics()
+    //  .lineStyle(1, 0xFFFFFF, 1.0)
+    //  .beginFill(0xFFFFFF, 1.0)
+    //  .drawEllipse(0, 0, 50, 100).
+    //  endFill();
+
+    //   circle.position.y = 400;
+    //   circle.position.x = 400;
+
+    // this.pixi.stage.addChild(circle);
 
     const container = new PIXI.ParticleContainer();
     container.setProperties({
@@ -32,13 +66,16 @@ export class PixiLayerSnowflakes extends AbstractLayer {
     container.name = layerID;
     this.container = container;
     this.elapsed = Date.now();
-    const groupContainer = this.scene.groups.get('ui');
-    groupContainer.addChild(container);
-
+    this.pixi.stage.addChild(container);
+    this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
     this._enabled = true;            // this layer should always be enabled
     this._oldk = 0;
     this.emitter = new particles.Emitter(container, snowflakesConfig);
     this.emitter.parent = container;
+
+
+    const ticker = this.pixi.ticker; //Thank goodness for shared tickers
+    ticker.add(this.render, this);
   }
 
 
@@ -52,6 +89,7 @@ export class PixiLayerSnowflakes extends AbstractLayer {
   set enabled(val) {
     // noop
   }
+
 
   /**
    * render
@@ -71,15 +109,12 @@ export class PixiLayerSnowflakes extends AbstractLayer {
         this.updateHook(now - this.elapsed);
     }
 
-    // framerate.innerHTML = `${(1000 / (now - this.elapsed)).toFixed(2)} fps`;
 
-    this.scene.renderer.render();
+     this.pixi.renderer.render(this.pixi.stage);
     this.elapsed = now;
+//    let snowflakePosition = this.pixi.stage.children[0].children[0].position;
 
-    // if (this.emitter && particleCount)
-    // {
-    //     particleCount.innerHTML = `${this.emitter.particleCount} particles`;
-    // }
+//    console.log(`snowflake position: [${snowflakePosition._x},${snowflakePosition._y}]`);
 
   }
 

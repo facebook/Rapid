@@ -4,6 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
+import { PixiLayerSnowflakes } from '../pixi/PixiLayerSnowflakes';
 
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
@@ -124,6 +125,11 @@ export class RendererMap extends EventEmitter {
       .attr('class', 'overlay');
 
     this._renderer = new PixiRenderer(context, this.supersurface, this.surface, this.overlay);
+
+    this.snowOverlay = selection.append('div').attr('class', 'snowflake-overlay');
+    this.snowLayer = this.snowOverlay.append('canvas').attr('class', 'snowflake-layer');
+
+    this.snowflakes = new PixiLayerSnowflakes(context, 'snowflakes');
 
     // Forward the 'move' and 'draw' events from PixiRenderer
     this._renderer

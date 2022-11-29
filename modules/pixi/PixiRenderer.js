@@ -6,6 +6,7 @@ import { PixiEvents } from './PixiEvents';
 import { PixiScene } from './PixiScene';
 import { PixiTextures } from './PixiTextures';
 import { utilSetTransform } from '../util/util';
+import { PixiLayerSnowflakes } from './PixiLayerSnowflakes';
 
 let _sharedTextures;   // singleton (for now)
 
@@ -132,11 +133,12 @@ export class PixiRenderer extends EventEmitter {
 
     // Setup other classes
     this.scene = new PixiScene(this);
+
     this.events = new PixiEvents(this);
 
-    const snowflakesLayer = this.scene.layers.get('snowflakes');
+//    const snowflakesLayer = this.pixi.stage.getChildByName('snowflakes');
 
-    ticker.add(snowflakesLayer.render, snowflakesLayer);
+    // ticker.add(snowflakesLayer.render, snowflakesLayer);
     // Texture Manager should only be created once
     // This is because it will start loading assets and Pixi's asset loader is not reentrant.
     // (it causes test failures if we create a bunch of these)
