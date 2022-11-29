@@ -42,7 +42,7 @@ export class PixiLayerSnowflakes {
       sharedTicker: true,
       view: surface.node(),
     });
-    this.pixi.renderer.resize(1024, 1024);
+    this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
 
     //Debug circle code
     // const circle = new PIXI.Graphics()
