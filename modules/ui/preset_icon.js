@@ -259,7 +259,7 @@ export function uiPresetIcon() {
     const style = styleMatch(tags);
 
     container
-      .classed('showing-img', !!imageURL)
+      .classed('showing-img', !!imageURL);
 
     // Render outline shape, if any
     if (isCategory)   renderCategoryBorder(container, style);
