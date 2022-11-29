@@ -3,6 +3,7 @@ import * as PIXI from 'pixi.js';
 import { AbstractLayer } from './AbstractLayer';
 import  * as particles from '@pixi/particle-emitter';
 import { snowflakesConfig } from './PixiLayerSnowflakesConfig';
+import { config } from 'chai';
 /**
  * PixiLayerSnowflakes
  * This class has only one job- to fill the screen with snowflakes and holiday cheer.
@@ -71,7 +72,16 @@ export class PixiLayerSnowflakes {
     this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
     this._enabled = true;            // this layer should always be enabled
     this._oldk = 0;
-    this.emitter = new particles.Emitter(container, snowflakesConfig);
+
+    //Now we need to modify the particle emitter config at runtime, so that it includes the dist folder.
+    //Otherwise, once we deploy to AWS this won't work.
+    let distModifiedConfig = snowflakesConfig;
+    // The 'textureRandom' behavior contains the texture path we need to reference.
+    let snowflakeImagePath = distModifiedConfig.behaviors.filter(behavior => behavior.type === 'textureRandom')[0].config;
+    // Modify each path by prepending the asset path.
+    snowflakeImagePath.textures = snowflakeImagePath.textures.map(texture => texture = this.context.assetPath() + texture);
+
+    this.emitter = new particles.Emitter(container, distModifiedConfig);
     this.emitter.parent = container;
 
 
