@@ -69,7 +69,7 @@ export function uiPane(id, context) {
 
         // Fix #655: Since firing the validator is so expensive,
         // only do it when we're right about to open the validation pane.
-        if (this.parentElement.className.includes('issues') && shown) {
+        if (pane.id === 'issues' && shown) {
             context.validator().validate();
             console.log('firing validator.');
         }
