@@ -152,7 +152,7 @@ export function uiSectionValidationStatus(context) {
       });
     }
 
-    if (opts.what === 'edited' && context.history().difference().summary().length === 0) {
+    if (opts.what === 'edited' && context.history().difference().summary().size === 0) {
       messageType = 'no_edits';
     }
 

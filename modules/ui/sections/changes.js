@@ -24,13 +24,13 @@ export function uiSectionChanges(context) {
         .label(function() {
             var history = context.history();
             var summary = history.difference().summary();
-            return t('inspector.title_count', { title: t.html('commit.changes'), count: summary.length });
+            return t('inspector.title_count', { title: t.html('commit.changes'), count: summary.size });
         })
         .disclosureContent(renderDisclosureContent);
 
     function renderDisclosureContent(selection) {
         var history = context.history();
-        var summary = history.difference().summary();
+        var summary = [...history.difference().summary().values()];
 
         var container = selection.selectAll('.commit-section')
             .data([0]);

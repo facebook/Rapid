@@ -38,7 +38,7 @@ describe('iD.coreHistory', function () {
 
     describe('#perform', function () {
         it('returns a difference', function () {
-            expect(history.perform(actionNoop).changes()).to.eql({});
+            expect(history.perform(actionNoop).changes).to.be.empty;
         });
 
         it('updates the graph', function () {
@@ -82,7 +82,7 @@ describe('iD.coreHistory', function () {
 
     describe('#replace', function () {
         it('returns a difference', function () {
-            expect(history.replace(actionNoop).changes()).to.eql({});
+            expect(history.replace(actionNoop).changes).to.be.empty;
         });
 
         it('updates the graph', function () {
@@ -116,7 +116,7 @@ describe('iD.coreHistory', function () {
     describe('#pop', function () {
         it('returns a difference', function () {
             history.perform(actionNoop, 'annotation');
-            expect(history.pop().changes()).to.eql({});
+            expect(history.pop().changes).to.be.empty;
         });
 
         it('updates the graph', function () {
@@ -168,7 +168,7 @@ describe('iD.coreHistory', function () {
     describe('#overwrite', function () {
         it('returns a difference', function () {
             history.perform(actionNoop, 'annotation');
-            expect(history.overwrite(actionNoop).changes()).to.eql({});
+            expect(history.overwrite(actionNoop).changes).to.be.empty;
         });
 
         it('updates the graph', function () {
@@ -210,7 +210,7 @@ describe('iD.coreHistory', function () {
 
     describe('#undo', function () {
         it('returns a difference', function () {
-            expect(history.undo().changes()).to.eql({});
+            expect(history.undo().changes).to.be.empty;
         });
 
         it('pops the undo stack', function () {
@@ -242,7 +242,7 @@ describe('iD.coreHistory', function () {
 
     describe('#redo', function () {
         it('returns a difference', function () {
-            expect(history.redo().changes()).to.eql({});
+            expect(history.redo().changes).to.be.empty;
         });
 
         it('does redo into an annotated state', function () {
@@ -315,7 +315,7 @@ describe('iD.coreHistory', function () {
 
             var diff = history.resumeChangeDispatch();
             expect(spy).to.have.been.calledOnceWith(diff);
-            expect(diff.changes()).to.include.keys(['a', 'b']);
+            expect(diff.changes).to.have.all.keys('a', 'b');
         });
     });
 

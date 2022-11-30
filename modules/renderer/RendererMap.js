@@ -175,7 +175,7 @@ export class RendererMap extends EventEmitter {
       })
       .on('change', difference => {
         if (difference) {
-          const entityIDs = Object.keys(difference.complete());
+          const entityIDs = [...difference.complete().keys()];
           scene.dirtyData('osm', entityIDs);
         }
         this.immediateRedraw();

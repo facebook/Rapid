@@ -104,8 +104,8 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection)(graph));
-            expect(Object.keys(diff.changes()).sort()).to.eql(['a', 'b', 'c', 'f']);
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            expect(diff.changes).to.have.all.keys('a', 'b', 'c', 'f');
         });
 
         it('does not move or remove self-intersecting nodes', function() {
@@ -125,8 +125,8 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection)(graph));
-            expect(diff.changes().d).to.be.undefined;
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            expect(diff.changes).to.not.have.any.keys('d');
             expect(graph.hasEntity('d')).to.be.ok;
         });
 
@@ -261,8 +261,8 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection)(graph));
-            expect(Object.keys(diff.changes()).sort()).to.eql(['b', 'c']);
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            expect(diff.changes).to.have.all.keys('b', 'c');
         });
 
         it('does not move or remove self-intersecting nodes', function() {
@@ -278,8 +278,8 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection)(graph));
-            expect(diff.changes().d).to.be.undefined;
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            expect(diff.changes).to.not.have.any.keys('d');
             expect(graph.hasEntity('d')).to.be.ok;
         });
     });
@@ -298,11 +298,9 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
-            expect(diff.changes().a).to.be.undefined;
-            expect(diff.changes().b).to.be.not.undefined;
-            expect(diff.changes().c).to.be.undefined;
-            expect(diff.changes().d).to.be.undefined;
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            expect(diff.changes).to.have.all.keys('b');
+            expect(diff.changes).to.not.have.any.keys('a', 'c', 'd');
         });
 
         it('orthogonalizes a single vertex in a triangle', function () {
@@ -317,10 +315,9 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
-            expect(diff.changes().a).to.be.undefined;
-            expect(diff.changes().b).to.be.not.undefined;
-            expect(diff.changes().c).to.be.undefined;
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            expect(diff.changes).to.have.all.keys('b');
+            expect(diff.changes).to.not.have.any.keys('a', 'c');
         });
 
         it('orthogonalizes a single vertex in a quad path', function () {
@@ -335,11 +332,9 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
-            expect(diff.changes().a).to.be.undefined;
-            expect(diff.changes().b).to.be.not.undefined;
-            expect(diff.changes().c).to.be.undefined;
-            expect(diff.changes().d).to.be.undefined;
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            expect(diff.changes).to.have.all.keys('b');
+            expect(diff.changes).to.not.have.any.keys('a', 'c', 'd');
         });
 
         it('orthogonalizes a single vertex in a 3-point path', function () {
@@ -354,10 +349,9 @@ describe('iD.actionOrthogonalize', function () {
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'c']})
             ]);
 
-            var diff = iD.coreDifference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
-            expect(diff.changes().a).to.be.undefined;
-            expect(diff.changes().b).to.be.not.undefined;
-            expect(diff.changes().c).to.be.undefined;
+            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            expect(diff.changes).to.have.all.keys('b');
+            expect(diff.changes).to.not.have.any.keys('a', 'c');
         });
     });
 

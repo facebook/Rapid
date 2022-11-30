@@ -4,7 +4,7 @@ import { Tiler } from '@id-sdk/math';
 import { utilStringQs } from '@id-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
-import { coreGraph, coreTree } from '../core';
+import { coreGraph, Tree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -214,7 +214,7 @@ export default {
         // allocate a special dataset for the rapid intro graph.
         var datasetID = 'rapid_intro_graph';
         var graph = coreGraph();
-        var tree = coreTree(graph);
+        var tree = new Tree(graph);
         var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
         _datasets[datasetID] = ds;
@@ -231,7 +231,7 @@ export default {
                 Object.values(ds.cache.inflight).forEach(abortRequest);
             }
             ds.graph = coreGraph();
-            ds.tree = coreTree(ds.graph);
+            ds.tree = new Tree(ds.graph);
             ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         });
 
@@ -301,7 +301,7 @@ export default {
         } else {
             // as tile requests arrive, setup the resources needed to hold the results
             graph = coreGraph();
-            tree = coreTree(graph);
+            tree = new Tree(graph);
             cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
             ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
             _datasets[datasetID] = ds;

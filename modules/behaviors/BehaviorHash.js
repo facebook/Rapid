@@ -176,7 +176,7 @@ export class BehaviorHash extends AbstractBehavior {
     }
 
     if (!skipChangeCount) {
-      changeCount = context.history().difference().summary().length;
+      changeCount = context.history().difference().summary().size;
       if (changeCount > 0) {
         titleType = contextual ? 'changes_context' : 'changes';
       }

@@ -48,7 +48,7 @@ export function uiToolSave(context) {
   }
 
   function updateCount() {
-    const val = context.history().difference().summary().length;
+    const val = context.history().difference().summary().size;
     if (val === _numChanges) return;  // no change
 
     _numChanges = val;

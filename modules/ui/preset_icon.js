@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 
-import { presetManager } from '../presets';
 import { prefs } from '../core/preferences';
 import { styleMatch } from '../pixi/styles';
 import { svgIcon } from '../svg/icon';

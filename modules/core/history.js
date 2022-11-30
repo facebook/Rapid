@@ -3,11 +3,11 @@ import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@id-sdk/util';
 
-import { prefs } from './preferences';
-import { coreDifference } from './difference';
 import { coreGraph } from './graph';
-import { coreTree } from './tree';
+import { Difference } from './Difference';
 import { osmEntity } from '../osm/entity';
+import { prefs } from './preferences';
+import { Tree } from './Tree';
 import { uiLoading } from '../ui/loading';
 import { utilRebind } from '../util';
 
@@ -92,7 +92,7 @@ export function coreHistory(context) {
 
     // determine difference and dispatch a change event
     function change(previous) {
-        var difference = coreDifference(previous, history.graph());
+        var difference = new Difference(previous, history.graph());
         if (!_pausedGraph) {
             dispatch.call('change', this, difference);
         }
@@ -330,7 +330,7 @@ export function coreHistory(context) {
         difference: function() {
             var base = _stack[0].graph;
             var head = _stack[_index].graph;
-            return coreDifference(base, head);
+            return new Difference(base, head);
         },
 
 
@@ -342,7 +342,7 @@ export function coreHistory(context) {
                 head = action(head);
             }
 
-            var difference = coreDifference(base, head);
+            var difference = new Difference(base, head);
 
             return {
                 modified: difference.modified(),
@@ -411,7 +411,7 @@ export function coreHistory(context) {
             } else {
                 _stack = [{graph: coreGraph()}];
                 _index = 0;
-                _tree = coreTree(_stack[0].graph);
+                _tree = new Tree(_stack[0].graph);
                 _checkpoints = {};
             }
             dispatch.call('reset');

@@ -5,7 +5,7 @@ import { Tiler } from '@id-sdk/math';
 import { utilQsString } from '@id-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
-import { coreGraph, coreTree } from '../core';
+import { coreGraph, Tree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -85,7 +85,7 @@ function parseDataset(ds) {
 
   _datasets[ds.id] = ds;
   ds.graph = coreGraph();
-  ds.tree = coreTree(ds.graph);
+  ds.tree = new Tree(ds.graph);
   ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
 
   // cleanup the `licenseInfo` field by removing styles  (not used currently)
@@ -259,7 +259,7 @@ export default {
         Object.values(ds.cache.inflight).forEach(abortRequest);
       }
       ds.graph = coreGraph();
-      ds.tree = coreTree(ds.graph);
+      ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
     });
 

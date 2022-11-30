@@ -3,7 +3,7 @@ describe('iD.actionCopyEntities', function () {
         var a = iD.osmNode({id: 'a'});
         var base = iD.coreGraph([a]);
         var head = iD.actionCopyEntities(['a'], base)(base);
-        var diff = iD.coreDifference(base, head);
+        var diff = new iD.Difference(base, head);
         var created = diff.created();
 
         expect(head.hasEntity('a')).to.be.ok;
@@ -17,7 +17,7 @@ describe('iD.actionCopyEntities', function () {
         var base = iD.coreGraph([a, b, w]);
         var action = iD.actionCopyEntities(['w'], base);
         var head = action(base);
-        var diff = iD.coreDifference(base, head);
+        var diff = new iD.Difference(base, head);
         var created = diff.created();
 
         expect(head.hasEntity('w')).to.be.ok;
@@ -31,7 +31,7 @@ describe('iD.actionCopyEntities', function () {
         ]);
         var action = iD.actionCopyEntities(['a', 'b'], base);
         var head = action(base);
-        var diff = iD.coreDifference(base, head);
+        var diff = new iD.Difference(base, head);
         var created = diff.created();
 
         expect(head.hasEntity('a')).to.be.ok;
@@ -49,7 +49,7 @@ describe('iD.actionCopyEntities', function () {
         ]);
         var action = iD.actionCopyEntities(['w1', 'w2'], base);
         var head = action(base);
-        var diff = iD.coreDifference(base, head);
+        var diff = new iD.Difference(base, head);
         var created = diff.created();
 
         expect(created).to.have.length(5);

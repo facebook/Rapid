@@ -6,7 +6,6 @@
   <title>Mocha Tests</title>
   <link rel='stylesheet' href='../node_modules/mocha/mocha.css'>
   <link rel='stylesheet' href='../dist/iD.css'>
-  <!-- <script src='../node_modules/d3/build/d3.js'></script> -->
   <style type='text/css'>
     /* apply standalone iD styling when testing */
     html, body {
@@ -66,18 +65,17 @@
       'spec/actions/extract.js',
       'spec/actions/upgrade_tags.js',
 
-      'spec/behaviors/hash.js',
-      'spec/behaviors/hover.js',
-      'spec/behaviors/select.js',
+      'spec/behaviors/BehaviorHash.test.js',
       'spec/behaviors/lasso.js',
+      'spec/behaviors/select.js',
 
       'spec/core/context.js',
-      'spec/core/difference.js',
+      'spec/core/Difference.test.js',
       'spec/core/file_fetcher.js',
       'spec/core/graph.js',
       'spec/core/history.js',
-      'spec/core/LocationManager.js',
-      'spec/core/tree.js',
+      'spec/core/LocationManager.test.js',
+      'spec/core/Tree.test.js',
       'spec/core/validator.js',
 
       'spec/geo/geom.js',
@@ -102,10 +100,9 @@
       'spec/presets/index.js',
       'spec/presets/preset.js',
 
-      'spec/renderer/background_source.js',
+      'spec/renderer/RendererImagerySource.js',
       'spec/renderer/features.js',
       'spec/renderer/map.js',
-      'spec/renderer/tile_layer.js',
 
       'spec/services/mapillary.js',
       'spec/services/maprules.js',
@@ -116,17 +113,8 @@
       'spec/services/streetside.js',
       'spec/services/taginfo.js',
 
-      'spec/svg/areas.js',
-      'spec/svg/data.js',
       'spec/svg/icon.js',
-      'spec/svg/layers.js',
-      'spec/svg/lines.js',
-      'spec/svg/midpoints.js',
-      'spec/svg/osm.js',
-      'spec/svg/points.js',
-      'spec/svg/svg.js',
       'spec/svg/tag_classes.js',
-      'spec/svg/vertices.js',
 
       'spec/ui/cmd.js',
       'spec/ui/combobox.js',

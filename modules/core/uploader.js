@@ -98,7 +98,6 @@ export function coreUploader(context) {
 
 
     function performFullConflictCheck(changeset) {
-
         var osm = context.connection();
         if (!osm) return;
 
@@ -109,11 +108,10 @@ export function coreUploader(context) {
 
         var summary = history.difference().summary();
         var _toCheck = [];
-        for (var i = 0; i < summary.length; i++) {
-            var item = summary[i];
-            if (item.changeType === 'modified') {
-                _toCheck.push(item.entity.id);
-            }
+        for (const [entityID, item] of summary) {
+          if (item.changeType === 'modified') {
+            _toCheck.push(entityID);
+          }
         }
 
         var _toLoad = withChildNodes(_toCheck, localGraph);
