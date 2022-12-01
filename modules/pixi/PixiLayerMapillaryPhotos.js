@@ -4,7 +4,7 @@ import { PixiFeatureLine } from './PixiFeatureLine';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const MINZOOM = 12;
-const MAPILLARY_GREEN = 0x55ff22;
+const MAPILLARY_GREEN = 0x05CB63;
 
 const LINESTYLE = {
   casing: { alpha: 0 },  // disable
