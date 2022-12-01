@@ -353,7 +353,7 @@ export function coreHistory(context) {
 
 
         hasChanges: function() {
-            return this.difference().length() > 0;
+            return this.difference().changes.size > 0;
         },
 
 

@@ -71,16 +71,8 @@ export class Difference {
 
 
   /**
-   * length
-   * @return The number of ids that have changed
-   */
-  length() {
-    return this._changes.size;
-  }
-
-
-  /**
    * changes
+   * @readonly
    * @return  Map(entityID -> change Object)
    */
   get changes() {
