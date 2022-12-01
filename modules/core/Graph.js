@@ -374,8 +374,8 @@ if (type === 'node') {
    * @return  A new Graph
    */
   revert(id) {
-    var baseEntity = this.base().entities[id];
-    var headEntity = this.entities[id];
+    const baseEntity = this.base().entities[id];
+    const headEntity = this.entities[id];
     if (headEntity === baseEntity) return this;
 
     return this.update(function() {
@@ -388,13 +388,14 @@ if (type === 'node') {
   /**
    * update
    * Applies the given list of function arguments to the Graph, and returns a new Graph
-   * @param   arguments
+   * @param   {...function} args  Functions to apply to the graph to update it
    * @return  A new Graph
    */
-  update() {
+  update(...args) {
     const graph = this._frozen ? new Graph(this, true) : this;
-    for (var i = 0; i < arguments.length; i++) {
-        arguments[i].call(graph, graph);
+
+    for (const fn of args) {
+      fn.call(graph, graph);
     }
 
     if (this._frozen) {
