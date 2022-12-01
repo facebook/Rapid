@@ -5,7 +5,7 @@ describe('iD.actionStraightenNodes', function () {
     };
 
     it('straightens points', function() {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [0, -1] }),
             iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
             iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
@@ -30,7 +30,7 @@ describe('iD.actionStraightenNodes', function () {
         });
 
         it('straighten at t = 0', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, -1] }),
                 iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
                 iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
@@ -49,7 +49,7 @@ describe('iD.actionStraightenNodes', function () {
         });
 
         it('straighten at t = 0.5', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, -1] }),
                 iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
                 iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
@@ -68,7 +68,7 @@ describe('iD.actionStraightenNodes', function () {
         });
 
         it('straighten at t = 1', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, -1] }),
                 iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
                 iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged

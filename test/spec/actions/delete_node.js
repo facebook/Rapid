@@ -2,7 +2,7 @@ describe('iD.actionDeleteNode', function () {
     it('removes the node from the graph', function () {
         var node   = iD.osmNode(),
             action = iD.actionDeleteNode(node.id),
-            graph  = action(iD.coreGraph([node]));
+            graph  = action(new iD.Graph([node]));
         expect(graph.hasEntity(node.id)).to.be.undefined;
     });
 
@@ -12,7 +12,7 @@ describe('iD.actionDeleteNode', function () {
             node3  = iD.osmNode(),
             way    = iD.osmWay({nodes: [node1.id, node2.id, node3.id]}),
             action = iD.actionDeleteNode(node1.id),
-            graph  = action(iD.coreGraph([node1, node2, node3, way]));
+            graph  = action(new iD.Graph([node1, node2, node3, way]));
         expect(graph.entity(way.id).nodes).to.eql([node2.id, node3.id]);
     });
 
@@ -21,7 +21,7 @@ describe('iD.actionDeleteNode', function () {
             node2    = iD.osmNode(),
             relation = iD.osmRelation({members: [{ id: node1.id }, { id: node2.id }]}),
             action   = iD.actionDeleteNode(node1.id),
-            graph    = action(iD.coreGraph([node1, node2, relation]));
+            graph    = action(new iD.Graph([node1, node2, relation]));
         expect(graph.entity(relation.id).members).to.eql([{ id: node2.id }]);
     });
 
@@ -30,7 +30,7 @@ describe('iD.actionDeleteNode', function () {
             node2  = iD.osmNode(),
             way    = iD.osmWay({nodes: [node1.id, node2.id]}),
             action = iD.actionDeleteNode(node1.id),
-            graph  = action(iD.coreGraph([node1, node2, way]));
+            graph  = action(new iD.Graph([node1, node2, way]));
         expect(graph.hasEntity(way.id)).to.be.undefined;
     });
 
@@ -39,7 +39,7 @@ describe('iD.actionDeleteNode', function () {
             node2  = iD.osmNode(),
             way    = iD.osmWay({nodes: [node1.id, node2.id, node1.id]}),
             action = iD.actionDeleteNode(node2.id),
-            graph  = action(iD.coreGraph([node1, node2, way]));
+            graph  = action(new iD.Graph([node1, node2, way]));
         expect(graph.hasEntity(way.id)).to.be.undefined;
     });
 
@@ -47,7 +47,7 @@ describe('iD.actionDeleteNode', function () {
         var node1    = iD.osmNode(),
             relation = iD.osmRelation({members: [{ id: node1.id }]}),
             action   = iD.actionDeleteNode(node1.id),
-            graph    = action(iD.coreGraph([node1, relation]));
+            graph    = action(new iD.Graph([node1, relation]));
         expect(graph.hasEntity(relation.id)).to.be.undefined;
     });
 });

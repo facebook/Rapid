@@ -2,7 +2,7 @@ describe('Difference', () => {
   describe('#changes', () => {
     it('includes created entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph();
+      const base = new iD.Graph();
       const head = base.replace(node);
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
@@ -11,7 +11,7 @@ describe('Difference', () => {
 
     it('includes undone created entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph();
+      const base = new iD.Graph();
       const head = base.replace(node);
       const diff = new iD.Difference(head, base);
       expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
@@ -21,7 +21,7 @@ describe('Difference', () => {
     it('includes modified entities', () => {
       const n1 = iD.osmNode({id: 'n'});
       const n2 = n1.update({ tags: { yes: 'no' } });
-      const base = iD.coreGraph([n1]);
+      const base = new iD.Graph([n1]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
@@ -31,7 +31,7 @@ describe('Difference', () => {
     it('includes undone modified entities', () => {
       const n1 = iD.osmNode({id: 'n'});
       const n2 = n1.update({ tags: { yes: 'no' } });
-      const base = iD.coreGraph([n1]);
+      const base = new iD.Graph([n1]);
       const head = base.replace(n2);
       const diff = new iD.Difference(head, base);
       expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
@@ -41,7 +41,7 @@ describe('Difference', () => {
     it('doesn\'t include updated but identical entities', () => {
       const n1 = iD.osmNode({id: 'n'});
       const n2 = n1.update();
-      const base = iD.coreGraph([n1]);
+      const base = new iD.Graph([n1]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.empty;
@@ -49,7 +49,7 @@ describe('Difference', () => {
 
     it('includes deleted entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph([node]);
+      const base = new iD.Graph([node]);
       const head = base.remove(node);
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
@@ -58,7 +58,7 @@ describe('Difference', () => {
 
     it('includes undone deleted entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph([node]);
+      const base = new iD.Graph([node]);
       const head = base.remove(node);
       const diff = new iD.Difference(head, base);
       expect(diff.changes).to.be.an.instanceof(Map).that.has.all.keys('n');
@@ -67,7 +67,7 @@ describe('Difference', () => {
 
     it('doesn\'t include created entities that were subsequently deleted', () => {
       const node = iD.osmNode();
-      const base = iD.coreGraph();
+      const base = new iD.Graph();
       const head = base.replace(node).remove(node);
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.empty;
@@ -75,7 +75,7 @@ describe('Difference', () => {
 
     it('doesn\'t include created entities that were subsequently reverted', () => {
       const node = iD.osmNode({id: 'n-1'});
-      const base = iD.coreGraph();
+      const base = new iD.Graph();
       const head = base.replace(node).revert('n-1');
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.empty;
@@ -84,7 +84,7 @@ describe('Difference', () => {
     it('doesn\'t include modified entities that were subsequently reverted', () => {
       const n1 = iD.osmNode({id: 'n'});
       const n2 = n1.update({ tags: { yes: 'no' } });
-      const base = iD.coreGraph([n1]);
+      const base = new iD.Graph([n1]);
       const head = base.replace(n2).revert('n');
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.empty;
@@ -92,7 +92,7 @@ describe('Difference', () => {
 
     it('doesn\'t include deleted entities that were subsequently reverted', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph([node]);
+      const base = new iD.Graph([node]);
       const head = base.remove(node).revert('n');
       const diff = new iD.Difference(base, head);
       expect(diff.changes).to.be.empty;
@@ -103,7 +103,7 @@ describe('Difference', () => {
   describe('#created', () => {
     it('returns an array of created entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph();
+      const base = new iD.Graph();
       const head = base.replace(node);
       const diff = new iD.Difference(base, head);
       expect(diff.created()).to.eql([node]);
@@ -114,7 +114,7 @@ describe('Difference', () => {
     it('returns an array of modified entities', () => {
       const n1 = iD.osmNode({id: 'n'});
       const n2 = n1.move([1, 2]);
-      const base = iD.coreGraph([n1]);
+      const base = new iD.Graph([n1]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       expect(diff.modified()).to.eql([n2]);
@@ -124,7 +124,7 @@ describe('Difference', () => {
   describe('#deleted', () => {
     it('returns an array of deleted entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph([node]);
+      const base = new iD.Graph([node]);
       const head = base.remove(node);
       const diff = new iD.Difference(base, head);
       expect(diff.deleted()).to.eql([node]);
@@ -132,7 +132,7 @@ describe('Difference', () => {
   });
 
   describe('#summary', () => {
-    const base = iD.coreGraph([
+    const base = new iD.Graph([
       iD.osmNode({id: 'a', tags: {crossing: 'marked'}}),
       iD.osmNode({id: 'b'}),
       iD.osmNode({id: 'v'}),
@@ -267,7 +267,7 @@ describe('Difference', () => {
   describe('#complete', () => {
     it('includes created entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph();
+      const base = new iD.Graph();
       const head = base.replace(node);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -278,7 +278,7 @@ describe('Difference', () => {
     it('includes modified entities', () => {
       const n1 = iD.osmNode({id: 'n'});
       const n2 = n1.move([1, 2]);
-      const base = iD.coreGraph([n1]);
+      const base = new iD.Graph([n1]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -288,7 +288,7 @@ describe('Difference', () => {
 
     it('includes deleted entities', () => {
       const node = iD.osmNode({id: 'n'});
-      const base = iD.coreGraph([node]);
+      const base = new iD.Graph([node]);
       const head = base.remove(node);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -301,7 +301,7 @@ describe('Difference', () => {
       const n2 = iD.osmNode({id: 'n2'});
       const w1 = iD.osmWay({id: 'w', nodes: ['n1']});
       const w2 = w1.addNode('n2');
-      const base = iD.coreGraph([n1, n2, w1]);
+      const base = new iD.Graph([n1, n2, w1]);
       const head = base.replace(w2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -314,7 +314,7 @@ describe('Difference', () => {
       const n2 = iD.osmNode({id: 'n2'});
       const w1 = iD.osmWay({id: 'w', nodes: ['n1', 'n2']});
       const w2 = w1.removeNode('n2');
-      const base = iD.coreGraph([n1, n2, w1]);
+      const base = new iD.Graph([n1, n2, w1]);
       const head = base.replace(w2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -331,7 +331,7 @@ describe('Difference', () => {
         members: [{role: 'outer', id: 'w1', type: 'way'}, {role: '', id: 'w2', type: 'way'}]
       });
       const r2 = r1.updateMember({role: 'inner', id: 'w2', type: 'way'}, 1);
-      const base = iD.coreGraph([w1, w2, r1]);
+      const base = new iD.Graph([w1, w2, r1]);
       const head = base.replace(r2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -343,7 +343,7 @@ describe('Difference', () => {
       const n1   = iD.osmNode({id: 'n'});
       const n2   = n1.move([1, 2]);
       const way  = iD.osmWay({id: 'w', nodes: ['n']});
-      const base = iD.coreGraph([n1, way]);
+      const base = new iD.Graph([n1, way]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -355,7 +355,7 @@ describe('Difference', () => {
       const n1   = iD.osmNode({id: 'n'});
       const n2   = n1.move([1, 2]);
       const rel  = iD.osmRelation({id: 'r', members: [{id: 'n'}]});
-      const base = iD.coreGraph([n1, rel]);
+      const base = new iD.Graph([n1, rel]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -368,7 +368,7 @@ describe('Difference', () => {
       const n2   = n1.move([1, 2]);
       const rel1 = iD.osmRelation({id: 'r1', members: [{id: 'n'}]});
       const rel2 = iD.osmRelation({id: 'r2', members: [{id: 'r1'}]});
-      const base = iD.coreGraph([n1, rel1, rel2]);
+      const base = new iD.Graph([n1, rel1, rel2]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -381,7 +381,7 @@ describe('Difference', () => {
       const n2   = n1.move([1, 2]);
       const way  = iD.osmWay({id: 'w', nodes: ['n']});
       const rel  = iD.osmRelation({id: 'r', members: [{id: 'w'}]});
-      const base = iD.coreGraph([n1, way, rel]);
+      const base = new iD.Graph([n1, way, rel]);
       const head = base.replace(n2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
@@ -393,7 +393,7 @@ describe('Difference', () => {
       const node = iD.osmNode({id: 'n'});
       const rel1 = iD.osmRelation({id: 'r1', members: [{id: 'n'}, {id: 'r2'}]});
       const rel2 = iD.osmRelation({id: 'r2', members: [{id: 'r1'}]});
-      const base = iD.coreGraph([node, rel1, rel2]);
+      const base = new iD.Graph([node, rel1, rel2]);
       const head = base.replace(node.move([1, 2]));
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();

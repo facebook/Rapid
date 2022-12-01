@@ -54,7 +54,7 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0, 0]}),
                 iD.osmNode({id: 'b', loc: [2, 0]}),
                 iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -72,7 +72,7 @@ describe('iD.actionCircularize', function () {
         //    d,e -- c
         //    |      |
         //    a ---- b
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0, 0]}),
                 iD.osmNode({id: 'b', loc: [2, 0]}),
                 iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -98,7 +98,7 @@ describe('iD.actionCircularize', function () {
         //    b ---- a
         //    |      |
         //    c ---- d
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [2, 2]}),
                 iD.osmNode({id: 'b', loc: [-2, 2]}),
                 iD.osmNode({id: 'c', loc: [-2, -2]}),
@@ -117,7 +117,7 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0, 0]}),
                 iD.osmNode({id: 'b', loc: [2, 0]}),
                 iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -144,7 +144,7 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0, 0]}),
                 iD.osmNode({id: 'b', loc: [2, 0]}),
                 iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -164,7 +164,7 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0, 0]}),
                 iD.osmNode({id: 'b', loc: [2, 0]}),
                 iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -190,7 +190,7 @@ describe('iD.actionCircularize', function () {
         //  a-b-c-d-e-a is counterclockwise
         //  a-b-f-g-e-a is clockwise
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [ 0,  0]}),
                 iD.osmNode({id: 'b', loc: [ 1,  2]}),
                 iD.osmNode({id: 'c', loc: [-2,  2]}),
@@ -224,7 +224,7 @@ describe('iD.actionCircularize', function () {
         //  a-b-c-d-e-a is counterclockwise
         //  a-e-g-f-b-a is counterclockwise
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [ 0,  0]}),
                 iD.osmNode({id: 'b', loc: [ 1,  2]}),
                 iD.osmNode({id: 'c', loc: [-2,  2]}),
@@ -257,7 +257,7 @@ describe('iD.actionCircularize', function () {
         //
         //  a-b-c-d-e-a is extremely concave and 'a' is to the left of centoid..
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [ 0,  0]}),
                 iD.osmNode({id: 'b', loc: [10,  2]}),
                 iD.osmNode({id: 'c', loc: [-2,  2]}),
@@ -279,7 +279,7 @@ describe('iD.actionCircularize', function () {
     });
 
     it('circularizes a closed single line way', function () {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0, 0]}),
                 iD.osmNode({id: 'b', loc: [0, 2]}),
                 iD.osmWay({id: '-', nodes: ['a', 'b', 'a']})
@@ -293,7 +293,7 @@ describe('iD.actionCircularize', function () {
     });
 
     it('not disable circularize when its not circular', function(){
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({id: 'a', loc: [0, 0]}),
             iD.osmNode({id: 'b', loc: [2, 0]}),
             iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -306,7 +306,7 @@ describe('iD.actionCircularize', function () {
     });
 
     it('disable circularize twice', function(){
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({id: 'a', loc: [0, 0]}),
             iD.osmNode({id: 'b', loc: [2, 0]}),
             iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -326,7 +326,7 @@ describe('iD.actionCircularize', function () {
         });
 
         it('circularize at t = 0', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                     iD.osmNode({id: 'a', loc: [0, 0]}),
                     iD.osmNode({id: 'b', loc: [2, 0]}),
                     iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -340,7 +340,7 @@ describe('iD.actionCircularize', function () {
         });
 
         it('circularize at t = 0.5', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                     iD.osmNode({id: 'a', loc: [0, 0]}),
                     iD.osmNode({id: 'b', loc: [2, 0]}),
                     iD.osmNode({id: 'c', loc: [2, 2]}),
@@ -354,7 +354,7 @@ describe('iD.actionCircularize', function () {
         });
 
         it('circularize at t = 1', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                     iD.osmNode({id: 'a', loc: [0, 0]}),
                     iD.osmNode({id: 'b', loc: [2, 0]}),
                     iD.osmNode({id: 'c', loc: [2, 2]}),

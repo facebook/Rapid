@@ -4,7 +4,7 @@ import * as sexagesimal from '@mapbox/sexagesimal';
 import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
-import { coreGraph } from '../core/graph';
+import { Graph } from '../core/Graph';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { Extent } from '@id-sdk/extent';
 import { modeSelect } from '../modes/select';
@@ -193,7 +193,7 @@ export function uiFeatureList(context) {
                     }
 
                     var tempEntity = osmEntity(attrs);
-                    var tempGraph = coreGraph([tempEntity]);
+                    var tempGraph = new Graph([tempEntity]);
                     var matched = presetManager.match(tempEntity, tempGraph);
                     var type = (matched && matched.name()) || utilDisplayType(id);
 

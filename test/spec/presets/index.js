@@ -15,27 +15,27 @@ describe('iD.presetIndex', function () {
     describe('#init', function () {
         it('has a fallback point preset', function () {
             var node = iD.osmNode({ id: 'n' });
-            var graph = iD.coreGraph([node]);
+            var graph = new iD.Graph([node]);
             var presets = iD.presetIndex();
             expect(presets.match(node, graph).id).to.eql('point');
         });
         it('has a fallback line preset', function () {
             var node = iD.osmNode({ id: 'n' });
             var way = iD.osmWay({ id: 'w', nodes: ['n'] });
-            var graph = iD.coreGraph([node, way]);
+            var graph = new iD.Graph([node, way]);
             var presets = iD.presetIndex();
             expect(presets.match(way, graph).id).to.eql('line');
         });
         it('has a fallback area preset', function () {
             var node = iD.osmNode({ id: 'n' });
             var way = iD.osmWay({ id: 'w', nodes: ['n'], tags: { area: 'yes' }});
-            var graph = iD.coreGraph([node, way]);
+            var graph = new iD.Graph([node, way]);
             var presets = iD.presetIndex();
             expect(presets.match(way, graph).id).to.eql('area');
         });
         it('has a fallback relation preset', function () {
             var relation = iD.osmRelation({ id: 'r' });
-            var graph = iD.coreGraph([relation]);
+            var graph = new iD.Graph([relation]);
             var presets = iD.presetIndex();
             expect(presets.match(relation, graph).id).to.eql('relation');
         });
@@ -53,7 +53,7 @@ describe('iD.presetIndex', function () {
             var presets = iD.presetIndex();
             presets.ensureLoaded().then(function() {
                 var way = iD.osmWay({ tags: { highway: 'residential' } });
-                var graph = iD.coreGraph([way]);
+                var graph = new iD.Graph([way]);
                 expect(presets.match(way, graph).id).to.eql('residential');
                 done();
             });
@@ -64,7 +64,7 @@ describe('iD.presetIndex', function () {
             var presets = iD.presetIndex();
             var point = iD.osmNode();
             var line = iD.osmWay({ tags: { foo: 'bar' } });
-            var graph = iD.coreGraph([point, line]);
+            var graph = new iD.Graph([point, line]);
 
             presets.ensureLoaded().then(function() {
                 expect(presets.match(point, graph).id).to.eql('point');
@@ -78,7 +78,7 @@ describe('iD.presetIndex', function () {
             var presets = iD.presetIndex();
             var point = iD.osmNode({ tags: { leisure: 'park' } });
             var line = iD.osmWay({ nodes: [point.id], tags: { 'highway': 'residential' } });
-            var graph = iD.coreGraph([point, line]);
+            var graph = new iD.Graph([point, line]);
 
             presets.ensureLoaded().then(function() {
                 expect(presets.match(point, graph).id).to.eql('point');
@@ -91,7 +91,7 @@ describe('iD.presetIndex', function () {
             var presets = iD.presetIndex();
             var point = iD.osmNode({ tags: { leisure: 'park' } });
             var line = iD.osmWay({ nodes: [point.id], tags: { 'addr:interpolation': 'even' } });
-            var graph = iD.coreGraph([point, line]);
+            var graph = new iD.Graph([point, line]);
 
             presets.ensureLoaded().then(function() {
                 expect(presets.match(point, graph).id).to.eql('park');
@@ -280,7 +280,7 @@ describe('iD.presetIndex', function () {
     describe.skip('#build', function () {
         it('builds presets from provided', function () {
             var surfShop = iD.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
-            var graph = iD.coreGraph([surfShop]);
+            var graph = new iD.Graph([surfShop]);
             var presets = iD.presetIndex();
             var presetData = {
                 presets: {
@@ -300,7 +300,7 @@ describe('iD.presetIndex', function () {
             var surfShop = iD.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
             var firstStreetJetty = iD.osmNode({ tags: { man_made: 'jetty' } });
             var entities = [surfShop, firstStreetJetty];
-            var graph = iD.coreGraph(entities);
+            var graph = new iD.Graph(entities);
             var presets = iD.presetIndex();
             var presetData = {
                 presets: {
@@ -351,7 +351,7 @@ describe('iD.presetIndex', function () {
             iD.fileFetcher.cache().preset_presets = testPresets;
             var presets = iD.presetIndex();
             var relation = iD.osmRelation({ tags: { type: 'multipolygon', building: 'yes' } });
-            var graph = iD.coreGraph([relation]);
+            var graph = new iD.Graph([relation]);
             presets.ensureLoaded().then(function() {
                 var match = presets.match(relation, graph);
                 expect(match.id).to.eql('building');
@@ -363,7 +363,7 @@ describe('iD.presetIndex', function () {
             iD.fileFetcher.cache().preset_presets = testPresets;
             var presets = iD.presetIndex();
             var way = iD.osmWay({ tags: { area: 'yes', building: 'yes', 'addr:housenumber': '1234' } });
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
             presets.ensureLoaded().then(function() {
                 var match = presets.match(way, graph);
                 expect(match.id).to.eql('building');
@@ -375,7 +375,7 @@ describe('iD.presetIndex', function () {
             iD.fileFetcher.cache().preset_presets = testPresets;
             var presets = iD.presetIndex();
             var way = iD.osmWay({ tags: { area: 'yes', highway: 'pedestrian' } });
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
             presets.ensureLoaded().then(function() {
                 var match = presets.match(way, graph);
                 expect(match.id).to.eql('highway/pedestrian_area');
@@ -417,14 +417,14 @@ describe('iD.presetIndex', function () {
 
         it('builds presets w/external sources set to addable', function () {
             var surfShop = iD.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
-            var graph = iD.coreGraph([surfShop]);
+            var graph = new iD.Graph([surfShop]);
             var url = 'https://fakemaprules.io/fake.json';
 
             // no exernal presets yet
             expect(iD.presetIndex().match(surfShop, graph).id).to.eql('point');
 
             // reset graph...
-            graph = iD.coreGraph([surfShop]);
+            graph = new iD.Graph([surfShop]);
 
             // add the validations query param...
             iD.presetIndex().fromExternal(url, function (externalPresets) {

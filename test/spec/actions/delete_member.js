@@ -4,7 +4,7 @@ describe('iD.actionDeleteMember', function () {
             b      = iD.osmNode({id: 'b'}),
             r      = iD.osmRelation({members: [{id: 'a'}, {id: 'b'}]}),
             action = iD.actionDeleteMember(r.id, 0),
-            graph  = action(iD.coreGraph([a, b, r]));
+            graph  = action(new iD.Graph([a, b, r]));
         expect(graph.entity(r.id).members).to.eql([{id: 'b'}]);
     });
 
@@ -12,7 +12,7 @@ describe('iD.actionDeleteMember', function () {
         var a      = iD.osmNode({id: 'a'}),
             r      = iD.osmRelation({id: 'r', members: [{id: 'a'}]}),
             action = iD.actionDeleteMember(r.id, 0),
-            graph  = action(iD.coreGraph([a, r]));
+            graph  = action(new iD.Graph([a, r]));
         expect(graph.hasEntity('r')).to.be.undefined;
     });
 });

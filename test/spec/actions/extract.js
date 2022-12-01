@@ -11,7 +11,7 @@ describe('iD.actionExtract', function () {
             //
             // a -- b -- c -- d
             //
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -170,7 +170,7 @@ describe('iD.actionExtract', function () {
             //  |    |
             //  a -- b
             //
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -340,7 +340,7 @@ describe('iD.actionExtract', function () {
             //
             // Node c represents the target
             //
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [2, 0], tags: tags }),
@@ -449,7 +449,7 @@ describe('iD.actionExtract', function () {
             //
             // c is the target node
             //
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [1, 1], tags: tags }),
@@ -564,7 +564,7 @@ describe('iD.actionExtract', function () {
             // Node b represents the target
             // With a relationship for the way including b
             //
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0], tags: tags }),
                 iD.osmNode({ id: 'c', loc: [2, 0] }),

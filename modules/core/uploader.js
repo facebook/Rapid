@@ -6,7 +6,7 @@ import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
 import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
-import { coreGraph } from '../core/graph';
+import { Graph } from '../core/Graph';
 import { t } from '../core/localizer';
 import { utilDisplayName, utilDisplayType, utilRebind } from '../util';
 
@@ -104,7 +104,7 @@ export function coreUploader(context) {
         var history = context.history();
 
         var localGraph = context.graph();
-        var remoteGraph = coreGraph(history.base(), true);
+        var remoteGraph = new Graph(history.base(), true);
 
         var summary = history.difference().summary();
         var _toCheck = [];

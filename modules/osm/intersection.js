@@ -4,7 +4,7 @@ import { utilArrayDifference, utilArrayUniq } from '@id-sdk/util';
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { actionReverse } from '../actions/reverse';
 import { actionSplit } from '../actions/split';
-import { coreGraph } from '../core/graph';
+import { Graph } from '../core/Graph';
 import { osmEntity } from './entity';
 
 
@@ -18,7 +18,7 @@ export function osmTurn(turn) {
 
 export function osmIntersection(graph, startVertexId, maxDistance) {
     maxDistance = maxDistance || 30;    // in meters
-    var vgraph = coreGraph();           // virtual graph
+    var vgraph = new Graph();           // virtual graph
     var i, j, k;
 
 

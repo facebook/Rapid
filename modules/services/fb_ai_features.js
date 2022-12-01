@@ -4,7 +4,7 @@ import { Tiler } from '@id-sdk/math';
 import { utilStringQs } from '@id-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
-import { coreGraph, Tree } from '../core';
+import { Graph, Tree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -213,7 +213,7 @@ export default {
 
         // allocate a special dataset for the rapid intro graph.
         var datasetID = 'rapid_intro_graph';
-        var graph = coreGraph();
+        var graph = new Graph();
         var tree = new Tree(graph);
         var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
@@ -230,7 +230,7 @@ export default {
             if (ds.cache.inflight) {
                 Object.values(ds.cache.inflight).forEach(abortRequest);
             }
-            ds.graph = coreGraph();
+            ds.graph = new Graph();
             ds.tree = new Tree(ds.graph);
             ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         });
@@ -300,7 +300,7 @@ export default {
             cache = ds.cache;
         } else {
             // as tile requests arrive, setup the resources needed to hold the results
-            graph = coreGraph();
+            graph = new Graph();
             tree = new Tree(graph);
             cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
             ds = { id: datasetID, graph: graph, tree: tree, cache: cache };

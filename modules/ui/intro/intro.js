@@ -4,7 +4,7 @@ import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
 import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
-import { coreGraph } from '../../core/graph';
+import { Graph } from '../../core/Graph';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
@@ -104,7 +104,7 @@ export function uiIntro(context, skipToRapid) {
     // Load semi-real data used in intro
     if (osm) { osm.toggle(false).reset(); }
     history.reset();
-    history.merge(Object.values(coreGraph().load(_introGraph).entities));
+    history.merge(Object.values(new Graph().load(_introGraph).entities));
     history.checkpoint('initial');
 
     // Setup imagery
@@ -134,7 +134,7 @@ export function uiIntro(context, skipToRapid) {
 
     if (services.fbMLRoads) {
       services.fbMLRoads.toggle(false);    // disable network
-      const entities = Object.values(coreGraph().load(_rapidGraph).entities);
+      const entities = Object.values(new Graph().load(_rapidGraph).entities);
       services.fbMLRoads.merge('rapid_intro_graph', entities);
     }
 

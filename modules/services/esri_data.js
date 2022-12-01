@@ -5,7 +5,7 @@ import { Tiler } from '@id-sdk/math';
 import { utilQsString } from '@id-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
-import { coreGraph, Tree } from '../core';
+import { Graph, Tree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -84,7 +84,7 @@ function parseDataset(ds) {
   if (_datasets[ds.id]) return;  // unless we've seen it already
 
   _datasets[ds.id] = ds;
-  ds.graph = coreGraph();
+  ds.graph = new Graph();
   ds.tree = new Tree(ds.graph);
   ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
 
@@ -258,7 +258,7 @@ export default {
       if (ds.cache.inflight) {
         Object.values(ds.cache.inflight).forEach(abortRequest);
       }
-      ds.graph = coreGraph();
+      ds.graph = new Graph();
       ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
     });

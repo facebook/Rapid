@@ -544,7 +544,7 @@ describe('maprules', function() {
                     iD.osmNode({ id: 'e' }),
                     iD.osmNode({ id: 'f' }),
                 ];
-                _graph = iD.coreGraph(entities.concat(wayNodes));
+                _graph = new iD.Graph(entities.concat(wayNodes));
                 iD.serviceMapRules.clearRules();
                 selectors.forEach(function(selector) { iD.serviceMapRules.addRule(selector); });
                 validationRules = iD.serviceMapRules.validationRules();

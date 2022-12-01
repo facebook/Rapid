@@ -3,7 +3,7 @@ import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayGroupBy, utilArrayUnion, utilObjectOmit, utilSessionMutex } from '@id-sdk/util';
 
-import { coreGraph } from './graph';
+import { Graph } from './Graph';
 import { Difference } from './Difference';
 import { osmEntity } from '../osm/entity';
 import { prefs } from './preferences';
@@ -409,7 +409,7 @@ export function coreHistory(context) {
                 _stack = _checkpoints[key].stack;
                 _index = _checkpoints[key].index;
             } else {
-                _stack = [{graph: coreGraph()}];
+                _stack = [{graph: new Graph()}];
                 _index = 0;
                 _tree = new Tree(_stack[0].graph);
                 _checkpoints = {};
@@ -671,7 +671,7 @@ export function coreHistory(context) {
                     }
 
                     return {
-                        graph: coreGraph(_stack[0].graph).load(entities),
+                        graph: new Graph(_stack[0].graph).load(entities),
                         annotation: d.annotation,
                         imageryUsed: d.imageryUsed,
                         photoOverlaysUsed: d.photoOverlaysUsed,
@@ -689,7 +689,7 @@ export function coreHistory(context) {
                         entities[i] = entity === 'undefined' ? undefined : osmEntity(entity);
                     }
 
-                    d.graph = coreGraph(_stack[0].graph).load(entities);
+                    d.graph = new Graph(_stack[0].graph).load(entities);
                     return d;
                 });
             }

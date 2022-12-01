@@ -136,7 +136,7 @@ export class Difference {
     const head = this._head;
     const result = new Map();  // Map(entityID -> change detail)
 
-    for (const [id, change] of this._changes) {
+    for (const change of this._changes.values()) {
       const h = change.head;
       const b = change.base;
 
@@ -182,7 +182,6 @@ export class Difference {
    * @return  Map(entityID -> Entity)
    */
   complete() {
-    const base = this._base;
     const head = this._head;
     const result = new Map();  // Map(entityID -> Entity)
 

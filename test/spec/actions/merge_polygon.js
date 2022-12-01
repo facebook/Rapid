@@ -41,7 +41,7 @@ describe('iD.actionMergePolygon', function () {
     var graph;
 
     beforeEach(function() {
-        graph = iD.coreGraph(e);
+        graph = new iD.Graph(e);
     });
 
     function find(relation, id) {
@@ -84,7 +84,7 @@ describe('iD.actionMergePolygon', function () {
     });
 
     it('merges multipolygon tags', function() {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmRelation({id: 'r1', tags: {type: 'multipolygon', a: 'a'}}),
             iD.osmRelation({id: 'r2', tags: {type: 'multipolygon', b: 'b'}})
         ]);

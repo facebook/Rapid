@@ -17,7 +17,7 @@ describe('iD.coreHistory', function () {
 
     describe('#graph', function () {
         it('returns the current graph', function () {
-            expect(history.graph()).to.be.an.instanceOf(iD.coreGraph);
+            expect(history.graph()).to.be.an.instanceOf(iD.Graph);
         });
     });
 
@@ -60,8 +60,8 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs multiple actions', function () {
-            var action1 = sinon.stub().returns(iD.coreGraph());
-            var action2 = sinon.stub().returns(iD.coreGraph());
+            var action1 = sinon.stub().returns(new iD.Graph());
+            var action2 = sinon.stub().returns(new iD.Graph());
             history.perform(action1, action2, 'annotation');
             expect(action1).to.have.been.called;
             expect(action2).to.have.been.called;
@@ -69,7 +69,7 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs transitionable actions in a transition', function (done) {
-            var action1 = function() { return iD.coreGraph(); };
+            var action1 = function() { return new iD.Graph(); };
             action1.transitionable = true;
             history.on('change', spy);
             history.perform(action1);
@@ -104,8 +104,8 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs multiple actions', function () {
-            var action1 = sinon.stub().returns(iD.coreGraph());
-            var action2 = sinon.stub().returns(iD.coreGraph());
+            var action1 = sinon.stub().returns(new iD.Graph());
+            var action2 = sinon.stub().returns(new iD.Graph());
             history.replace(action1, action2, 'annotation');
             expect(action1).to.have.been.called;
             expect(action2).to.have.been.called;
@@ -198,8 +198,8 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs multiple actions', function () {
-            var action1 = sinon.stub().returns(iD.coreGraph());
-            var action2 = sinon.stub().returns(iD.coreGraph());
+            var action1 = sinon.stub().returns(new iD.Graph());
+            var action2 = sinon.stub().returns(new iD.Graph());
             history.perform(actionNoop, 'annotation');
             history.overwrite(action1, action2, 'annotation2');
             expect(action1).to.have.been.called;

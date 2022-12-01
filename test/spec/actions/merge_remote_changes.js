@@ -1,7 +1,7 @@
 describe('iD.actionMergeRemoteChanges', function () {
     var discardTags = { created_by: true };
 
-    var base = iD.coreGraph([
+    var base = new iD.Graph([
             iD.osmNode({id: 'a', loc: [1, 1], version: '1', tags: {foo: 'foo'}}),
 
             iD.osmNode({id: 'p1', loc: [ 10,  10], version: '1'}),
@@ -61,7 +61,7 @@ describe('iD.actionMergeRemoteChanges', function () {
     function makeGraph(entities) {
         return entities.reduce(function(graph, entity) {
             return graph.replace(entity);
-        }, iD.coreGraph(base));
+        }, new iD.Graph(base));
     }
 
 

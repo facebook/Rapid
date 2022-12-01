@@ -17,7 +17,7 @@ describe('iD.operationStraighten', function () {
             // w3 - way with 3 nodes connected to w2
             // w4 - way with 3 nodes connected to w3
             // w5 - way with 4 nodes not connected to any other nodes
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'n1', type: 'node' }),
                 iD.osmNode({ id: 'n2', type: 'node' }),
                 iD.osmNode({ id: 'n2-1', type: 'node' }),

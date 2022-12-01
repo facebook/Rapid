@@ -9,7 +9,7 @@ describe('iD.actionMergeNodes', function () {
             //       |
             //       e
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-2,  2] }),
                 iD.osmNode({ id: 'b', loc: [ 0,  2] }),
                 iD.osmNode({ id: 'c', loc: [ 2,  2] }),
@@ -25,7 +25,7 @@ describe('iD.actionMergeNodes', function () {
 
 
     it('merges two isolated nodes, averaging loc', function() {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [0, 0] }),
             iD.osmNode({ id: 'b', loc: [4, 4] })
         ]);
@@ -41,7 +41,7 @@ describe('iD.actionMergeNodes', function () {
 
 
     it('merges two isolated nodes, merging tags, and keeping loc of the interesting node', function() {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [0, 0], tags: { highway: 'traffic_signals' }}),
             iD.osmNode({ id: 'b', loc: [4, 4] })
         ]);
@@ -58,7 +58,7 @@ describe('iD.actionMergeNodes', function () {
 
 
     it('merges two isolated nodes, merging tags, and averaging loc of both interesting nodes', function() {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [0, -2], tags: { highway: 'traffic_signals' } }),
             iD.osmNode({ id: 'b', loc: [0,  2], tags: { crossing: 'marked' } })
         ]);
@@ -78,7 +78,7 @@ describe('iD.actionMergeNodes', function () {
         //
         //  a -- b -- c       a ---- c
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [-2,  2] }),
             iD.osmNode({ id: 'b', loc: [ 0,  2] }),
             iD.osmNode({ id: 'c', loc: [ 2,  2] }),
@@ -106,7 +106,7 @@ describe('iD.actionMergeNodes', function () {
         //       |                |
         //       e                e
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [-2,  2] }),
             iD.osmNode({ id: 'b', loc: [ 0,  2] }),
             iD.osmNode({ id: 'c', loc: [ 2,  2] }),
@@ -141,7 +141,7 @@ describe('iD.actionMergeNodes', function () {
         //        ‖                ‖
         //        f                f
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'a', loc: [-2,  0] }),
             iD.osmNode({ id: 'b', loc: [ 0,  0] }),
             iD.osmNode({ id: 'c', loc: [ 0,  4] }),

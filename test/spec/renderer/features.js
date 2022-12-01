@@ -60,7 +60,7 @@ describe('iD.rendererFeatures', function() {
 
     describe('#gatherStats', function() {
         it('counts features', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'point_bar', tags: {amenity: 'bar'}, version: 1}),
                 iD.osmNode({id: 'point_dock', tags: {waterway: 'dock'}, version: 1}),
                 iD.osmNode({id: 'point_rail_station', tags: {railway: 'station'}, version: 1}),
@@ -93,7 +93,7 @@ describe('iD.rendererFeatures', function() {
     });
 
     describe('matching', function() {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             // Points
             iD.osmNode({id: 'point_bar', tags: {amenity: 'bar'}, version: 1}),
             iD.osmNode({id: 'point_dock', tags: {waterway: 'dock'}, version: 1}),
@@ -543,7 +543,7 @@ describe('iD.rendererFeatures', function() {
             var a = iD.osmNode({id: 'a', version: 1});
             var b = iD.osmNode({id: 'b', version: 1});
             var w = iD.osmWay({id: 'w', nodes: [a.id, b.id], tags: {highway: 'path'}, version: 1});
-            var graph = iD.coreGraph([a, b, w]);
+            var graph = new iD.Graph([a, b, w]);
             var geometry = a.geometry(graph);
             var all = Object.values(graph.base().entities);
 
@@ -572,7 +572,7 @@ describe('iD.rendererFeatures', function() {
                 ],
                 version: 1
             });
-            var graph = iD.coreGraph([outer, inner1, inner2, inner3, r]);
+            var graph = new iD.Graph([outer, inner1, inner2, inner3, r]);
             var all = Object.values(graph.base().entities);
 
             features.disable('landuse');
@@ -587,7 +587,7 @@ describe('iD.rendererFeatures', function() {
         it('hides only versioned entities', function() {
             var a = iD.osmNode({id: 'a', version: 1});
             var b = iD.osmNode({id: 'b'});
-            var graph = iD.coreGraph([a, b]);
+            var graph = new iD.Graph([a, b]);
             var ageo = a.geometry(graph);
             var bgeo = b.geometry(graph);
             var all = Object.values(graph.base().entities);
@@ -601,7 +601,7 @@ describe('iD.rendererFeatures', function() {
 
         it('#forceVisible', function() {
             var a = iD.osmNode({id: 'a', version: 1});
-            var graph = iD.coreGraph([a]);
+            var graph = new iD.Graph([a]);
             var ageo = a.geometry(graph);
             var all = Object.values(graph.base().entities);
 
@@ -613,7 +613,7 @@ describe('iD.rendererFeatures', function() {
         });
 
         it('auto-hides features', function() {
-            var graph = iD.coreGraph([]);
+            var graph = new iD.Graph([]);
             var maxPoints = 200;
             var all, hidden, autoHidden, i, msg;
 
@@ -643,7 +643,7 @@ describe('iD.rendererFeatures', function() {
         });
 
         it('doubles auto-hide threshold when doubling viewport size', function() {
-            var graph = iD.coreGraph([]);
+            var graph = new iD.Graph([]);
             var maxPoints = 400;
             var dimensions = [2000, 1000];
             var all, hidden, autoHidden, i, msg;

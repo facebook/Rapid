@@ -5,7 +5,7 @@ describe('iD.actionSplit', function () {
             //
             //  a ---> b ---> c         split at 'b' not disabled
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -23,7 +23,7 @@ describe('iD.actionSplit', function () {
             //         |
             //         d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-1, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [0, 1] }),
@@ -44,7 +44,7 @@ describe('iD.actionSplit', function () {
             //         |
             //         d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-1, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [0, 1] }),
@@ -65,7 +65,7 @@ describe('iD.actionSplit', function () {
             //  | /
             //  a -- b
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 2] }),
                 iD.osmNode({ id: 'c', loc: [1, 2] }),
@@ -80,7 +80,7 @@ describe('iD.actionSplit', function () {
             //
             //  a ---> b                split at 'a' disabled - 'not eligible'
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmWay({ id: '-', nodes: ['a', 'b'] })
@@ -93,7 +93,7 @@ describe('iD.actionSplit', function () {
             //
             //  a ---> b                split at 'b' disabled - 'not eligible'
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmWay({ id: '-', nodes: ['a', 'b'] })
@@ -110,7 +110,7 @@ describe('iD.actionSplit', function () {
             //         |                (there is no '=' here)
             //         d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-1, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [0, 1] }),
@@ -135,7 +135,7 @@ describe('iD.actionSplit', function () {
             // Expected result:
             //    a ---> b ===> c
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -150,7 +150,7 @@ describe('iD.actionSplit', function () {
 
         it('copies tags to the new way', function () {
             var tags = { highway: 'residential' };
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -176,7 +176,7 @@ describe('iD.actionSplit', function () {
             //           |
             //           d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-1, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 0] }),
                 iD.osmNode({ id: 'c', loc: [1, 0] }),
@@ -208,7 +208,7 @@ describe('iD.actionSplit', function () {
             //         ¦
             //         d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-1, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [0, 1] }),
@@ -234,7 +234,7 @@ describe('iD.actionSplit', function () {
             //         |
             //         d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [-1, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [0, 1] }),
@@ -277,7 +277,7 @@ describe('iD.actionSplit', function () {
             //          /  |
             //         c - a == d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 2] }),
                 iD.osmNode({ id: 'c', loc: [-1, 0] }),
@@ -298,7 +298,7 @@ describe('iD.actionSplit', function () {
             //    |      |
             //    d ---- c
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 1] }),
                 iD.osmNode({ id: 'b', loc: [1, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 0] }),
@@ -342,7 +342,7 @@ describe('iD.actionSplit', function () {
             //    a ---> b ===> c
             //    Relation: ['~', '-', '=']
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -370,7 +370,7 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c
                 //    Relation: ['-', '=']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({ id: 'a', loc: [0, 0] }),
                     iD.osmNode({ id: 'b', loc: [1, 0] }),
                     iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -398,7 +398,7 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c ~~~> d
                 //    Relation: ['-', '=', '~']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({ id: 'a', loc: [0, 0] }),
                     iD.osmNode({ id: 'b', loc: [1, 0] }),
                     iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -425,7 +425,7 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c ~~~> d
                 //    Relation: ['~', '=', '-']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({ id: 'a', loc: [0, 0] }),
                     iD.osmNode({ id: 'b', loc: [1, 0] }),
                     iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -443,7 +443,7 @@ describe('iD.actionSplit', function () {
             });
 
             it('reorders members as node, way, relation (for Public Transport routing)', function () {
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({ id: 'a', loc: [0, 0] }),
                     iD.osmNode({ id: 'b', loc: [1, 0] }),
                     iD.osmNode({ id: 'c', loc: [2, 0] }),
@@ -484,7 +484,7 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c ~~~> d
                 //    Relation: ['-', '=', '~', '~', '=', '-']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     a, b, c, d,
                     iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
                     iD.osmWay({id: '~', nodes: ['c', 'd']}),
@@ -513,7 +513,7 @@ describe('iD.actionSplit', function () {
                 //    a <=== b <--- c ~~~> d
                 //    Relation: ['=', '-', '~', '~', '-', '=']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     a, b, c, d,
                     iD.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
                     iD.osmWay({id: '~', nodes: ['c', 'd']}),
@@ -542,7 +542,7 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c <~~~ d
                 //    Relation: ['-', '=', '~', '~', '=', '-']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     a, b, c, d,
                     iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
                     iD.osmWay({id: '~', nodes: ['d', 'c']}),
@@ -571,7 +571,7 @@ describe('iD.actionSplit', function () {
                 //    a <=== b <--- c <~~~ d
                 //    Relation: ['=', '-', '~', '~', '-', '=']
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     a, b, c, d,
                     iD.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
                     iD.osmWay({id: '~', nodes: ['d', 'c']}),
@@ -606,7 +606,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat1a = iD.coreGraph([
+            var hat1a = new iD.Graph([
                 a, b, c, d, e,
                 iD.osmWay({id: '-', nodes: ['a', 'b']}),
                 iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
@@ -631,7 +631,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '~', '#', '~', '=']
             //
-            var hat1b = iD.coreGraph([
+            var hat1b = new iD.Graph([
                 a, b, c, d, e,
                 iD.osmWay({id: '-', nodes: ['a', 'b']}),
                 iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
@@ -656,7 +656,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat2 = iD.coreGraph([
+            var hat2 = new iD.Graph([
                 a, b, c, d, e,
                 iD.osmWay({id: '-', nodes: ['a', 'b']}),
                 iD.osmWay({id: '#', nodes: ['d', 'c', 'b']}),
@@ -681,7 +681,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat3 = iD.coreGraph([
+            var hat3 = new iD.Graph([
                 a, b, c, d, e,
                 iD.osmWay({id: '-', nodes: ['a', 'b']}),
                 iD.osmWay({id: '#', nodes: ['d', 'c', 'b']}),
@@ -706,7 +706,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat4 = iD.coreGraph([
+            var hat4 = new iD.Graph([
                 a, b, c, d, e,
                 iD.osmWay({id: '-', nodes: ['a', 'b']}),
                 iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
@@ -731,7 +731,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat5 = iD.coreGraph([
+            var hat5 = new iD.Graph([
                 a, b, c, d, e,
                 iD.osmWay({id: '-', nodes: ['b', 'a']}),
                 iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
@@ -868,7 +868,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon1 = iD.coreGraph([
+            var spoon1 = new iD.Graph([
                 a, b, c, d, e, f,
                 iD.osmWay({id: '-', nodes: ['d', 'a', 'b', 'c', 'd']}),
                 iD.osmWay({id: '~', nodes: ['d', 'e', 'f']}),
@@ -887,7 +887,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon2 = iD.coreGraph([
+            var spoon2 = new iD.Graph([
                 a, b, c, d, e, f,
                 iD.osmWay({id: '-', nodes: ['d', 'c', 'b', 'a', 'd']}),
                 iD.osmWay({id: '~', nodes: ['d', 'e', 'f']}),
@@ -906,7 +906,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon3 = iD.coreGraph([
+            var spoon3 = new iD.Graph([
                 a, b, c, d, e, f,
                 iD.osmWay({id: '-', nodes: ['d', 'a', 'b', 'c', 'd']}),
                 iD.osmWay({id: '~', nodes: ['f', 'e', 'd']}),
@@ -925,7 +925,7 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon4 = iD.coreGraph([
+            var spoon4 = new iD.Graph([
                 a, b, c, d, e, f,
                 iD.osmWay({id: '-', nodes: ['d', 'c', 'b', 'a', 'd']}),
                 iD.osmWay({id: '~', nodes: ['f', 'e', 'd']}),
@@ -1098,7 +1098,7 @@ describe('iD.actionSplit', function () {
                 //    ||     |
                 //    d ==== c
                 //
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({id: 'a', loc: [0,1]}),
                     iD.osmNode({id: 'b', loc: [1,1]}),
                     iD.osmNode({id: 'c', loc: [1,0]}),
@@ -1120,7 +1120,7 @@ describe('iD.actionSplit', function () {
             });
 
             it('splits only the line of a node shared by a line and an area', function () {
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({id: 'a', loc: [0,1]}),
                     iD.osmNode({id: 'b', loc: [1,1]}),
                     iD.osmNode({id: 'c', loc: [1,0]}),
@@ -1137,7 +1137,7 @@ describe('iD.actionSplit', function () {
             });
 
             it('converts simple multipolygon to a proper multipolygon', function () {
-                var graph = iD.coreGraph([
+                var graph = new iD.Graph([
                     iD.osmNode({id: 'a'}),
                     iD.osmNode({id: 'b'}),
                     iD.osmNode({id: 'c'}),
@@ -1169,7 +1169,7 @@ describe('iD.actionSplit', function () {
                     //    a ----> b ====> c ~~~~ d
                     // A restriction from ==== to ~~~~ via node c.
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),
@@ -1203,7 +1203,7 @@ describe('iD.actionSplit', function () {
                     //    a ----> b ====> c ~~~~ d
                     // A restriction from ~~~~ to ==== via node c.
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),
@@ -1237,7 +1237,7 @@ describe('iD.actionSplit', function () {
                     //    a ----> b ====> c ~~~~ d
                     // A restriction from ==== to ==== via node c.
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),
@@ -1279,7 +1279,7 @@ describe('iD.actionSplit', function () {
                     //
                     // A restriction from ==== to ~~~~ via way |
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),
@@ -1323,7 +1323,7 @@ describe('iD.actionSplit', function () {
                     //
                     // A restriction from ~~~~ to ==== via way |
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),
@@ -1368,7 +1368,7 @@ describe('iD.actionSplit', function () {
                     //
                     // A restriction from | to ‖ via ways ----, ====
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),
@@ -1405,7 +1405,7 @@ describe('iD.actionSplit', function () {
                     //    a <==== b <---- c ~~~~ d
                     // A restriction from ---- to ~~~~ via c.
                     //
-                    var graph = iD.coreGraph([
+                    var graph = new iD.Graph([
                         iD.osmNode({id: 'a'}),
                         iD.osmNode({id: 'b'}),
                         iD.osmNode({id: 'c'}),

@@ -198,14 +198,14 @@ describe('iD.osmEntity', function () {
         it('returns true for a way with a node within the given extent', function () {
             var node  = iD.osmNode({loc: [0, 0]});
             var way   = iD.osmWay({nodes: [node.id]});
-            var graph = iD.coreGraph([node, way]);
+            var graph = new iD.Graph([node, way]);
             expect(way.intersects(new sdk.Extent([-5, -5], [5, 5]), graph)).to.equal(true);
         });
 
         it('returns false for way with no nodes within the given extent', function () {
             var node  = iD.osmNode({loc: [6, 6]});
             var way   = iD.osmWay({nodes: [node.id]});
-            var graph = iD.coreGraph([node, way]);
+            var graph = new iD.Graph([node, way]);
             expect(way.intersects(new sdk.Extent([-5, -5], [5, 5]), graph)).to.equal(false);
         });
     });
@@ -231,13 +231,13 @@ describe('iD.osmEntity', function () {
         it('returns true for an entity that is a relation member', function () {
             var node = iD.osmNode();
             var relation = iD.osmRelation({members: [{id: node.id}]});
-            var graph = iD.coreGraph([node, relation]);
+            var graph = new iD.Graph([node, relation]);
             expect(node.hasParentRelations(graph)).to.equal(true);
         });
 
         it('returns false for an entity that is not a relation member', function () {
             var node = iD.osmNode();
-            var graph = iD.coreGraph([node]);
+            var graph = new iD.Graph([node]);
             expect(node.hasParentRelations(graph)).to.equal(false);
         });
     });
