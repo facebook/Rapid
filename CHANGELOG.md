@@ -36,6 +36,13 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.0.0-beta]
+
+#### 2022-Dec-15
+### Bugfixes:
+* [#685] fixed the color for mapillary image pins.
+
+[#685]: https://github.com/facebook/RapiD/issues/685
 # [2.0.0-alpha3]
 
 #### 2022-Nov-21
@@ -47,10 +54,9 @@ We have completely rewritten the code that associates an OSM shape with its cons
 
 All drawing modes are now available and should work well (We do expect some bugs at this point still).
 
-Wireframe mode (w) is back [#497], as well as the feature filtering[#584] for OSM features!
+Wireframe mode (w) is back [#497], as well as the feature filtering [#584] for OSM features!
 
 We've substantially reduced the bundle size by rebuilding some dependent projects with pixi v7 [#492], [#632]
-
 * [#617] Code is now based off Pixi.v7.
 * [#502] The walkthrough has been restored!
 * [#499] All draw modes should now be working & available. Hooray!
@@ -94,6 +100,52 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * [#661] Cursors should properly update when transitioning in & out of modes.
 * [#670] Double-clicking on a pre-existing node during way-drawing should leave the history in the correct state (with no 'extra' states to undo)
 
+[#497]: https://github.com/facebook/RapiD/issues/497
+[#584]: https://github.com/facebook/RapiD/issues/584
+[#492]: https://github.com/facebook/RapiD/issues/492
+[#632]: https://github.com/facebook/RapiD/issues/632
+
+[#617]: https://github.com/facebook/RapiD/issues/617
+[#502]: https://github.com/facebook/RapiD/issues/502
+[#499]: https://github.com/facebook/RapiD/issues/499
+[#531]: https://github.com/facebook/RapiD/issues/531
+[#538]: https://github.com/facebook/RapiD/issues/538
+[#652]: https://github.com/facebook/RapiD/issues/652
+[#493]: https://github.com/facebook/RapiD/issues/493
+[#495]: https://github.com/facebook/RapiD/issues/495
+[#518]: https://github.com/facebook/RapiD/issues/518
+[#519]: https://github.com/facebook/RapiD/issues/519
+[#521]: https://github.com/facebook/RapiD/issues/521
+[#524]: https://github.com/facebook/RapiD/issues/524
+[#529]: https://github.com/facebook/RapiD/issues/529
+[#554]: https://github.com/facebook/RapiD/issues/554
+[#555]: https://github.com/facebook/RapiD/issues/555
+[#556]: https://github.com/facebook/RapiD/issues/556
+[#558]: https://github.com/facebook/RapiD/issues/558
+[#561]: https://github.com/facebook/RapiD/issues/561
+[#562]: https://github.com/facebook/RapiD/issues/562
+[#563]: https://github.com/facebook/RapiD/issues/563
+[#565]: https://github.com/facebook/RapiD/issues/565
+[#566]: https://github.com/facebook/RapiD/issues/566
+[#571]: https://github.com/facebook/RapiD/issues/571
+[#572]: https://github.com/facebook/RapiD/issues/572
+[#580]: https://github.com/facebook/RapiD/issues/580
+[#581]: https://github.com/facebook/RapiD/issues/581
+[#582]: https://github.com/facebook/RapiD/issues/582
+[#586]: https://github.com/facebook/RapiD/issues/586
+[#608]: https://github.com/facebook/RapiD/issues/608
+[#609]: https://github.com/facebook/RapiD/issues/609
+[#620]: https://github.com/facebook/RapiD/issues/620
+[#627]: https://github.com/facebook/RapiD/issues/627
+[#629]: https://github.com/facebook/RapiD/issues/629
+[#630]: https://github.com/facebook/RapiD/issues/630
+[#637]: https://github.com/facebook/RapiD/issues/637
+[#639]: https://github.com/facebook/RapiD/issues/639
+[#646]: https://github.com/facebook/RapiD/issues/646
+[#648]: https://github.com/facebook/RapiD/issues/648
+[#654]: https://github.com/facebook/RapiD/issues/654
+[#661]: https://github.com/facebook/RapiD/issues/661
+[#670]: https://github.com/facebook/RapiD/issues/670
 
 # [2.0.1-alpha]
 
