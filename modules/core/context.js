@@ -19,6 +19,7 @@ import { BehaviorDraw } from '../behaviors/BehaviorDraw';
 import { BehaviorHover } from '../behaviors/BehaviorHover';
 import { BehaviorLasso } from '../behaviors/BehaviorLasso';
 import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
+import { BehaviorMapNudging } from '../behaviors/BehaviorMapNudging';
 import { BehaviorPaste } from '../behaviors/BehaviorPaste';
 import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 
@@ -728,6 +729,7 @@ export function coreContext() {
         new BehaviorHover(context),
         new BehaviorLasso(context),
         new BehaviorMapInteraction(context),
+        new BehaviorMapNudging(context),
         new BehaviorPaste(context),
         new BehaviorSelect(context)
       ].forEach(behavior => context.behaviors.set(behavior.id, behavior));

@@ -6,15 +6,12 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
 import { modeSelect } from '../modes/select';
-import { actionDeleteNode } from '../actions/delete_node';
 import { actionNoop } from '../actions/noop';
 
-import { modeDrawArea } from './draw_area';
 import { locationManager } from '../core/LocationManager';
 import { osmNode, osmWay } from '../osm';
 import { geoChooseEdge } from '../geo';
 import { t } from '../core/localizer';
-import { ContextSystem } from 'pixi.js';
 
 const DEBUG = false;
 
@@ -71,7 +68,7 @@ export class ModeDrawArea extends AbstractMode {
     this._selectedData.clear();
     context.history().checkpoint('draw-area-initial'); // save history checkpoint to return to if things go bad
 
-    context.enableBehaviors(['hover', 'draw']);
+    context.enableBehaviors(['hover', 'draw', 'map-nudging']);
     context.behaviors.get('draw')
       .on('move', this._move)
       .on('click', this._click)
@@ -192,6 +189,8 @@ export class ModeDrawArea extends AbstractMode {
     if (locationManager.blocksAt(loc).length) return; // editing is blocked here
 
     this._clicks++;
+    //Now that the user has clicked, let them nudge the map by moving to the edge.
+    context.behaviors.get('map-nudging').allow();
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
     const target = eventData.target;

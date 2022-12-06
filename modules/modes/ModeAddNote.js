@@ -35,13 +35,14 @@ export class ModeAddNote extends AbstractMode {
     }
 
     this._active = true;
-    this.context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+    this.context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
     this.context.behaviors.get('draw')
       .on('click', this._click)
       .on('cancel', this._cancel)
       .on('undo', this._cancel)
       .on('finish', this._cancel);
 
+    this.context.behaviors.get('map-nudging').allow();
     return true;
   }
 

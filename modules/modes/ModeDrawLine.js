@@ -112,7 +112,7 @@ export class ModeDrawLine extends AbstractMode {
       this._continueFromNode(continueNode);  // create draw node and extend continue way to it
     }
 
-    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
 
     context.behaviors.get('draw')
       .on('move', this._move)
@@ -280,6 +280,8 @@ export class ModeDrawLine extends AbstractMode {
     if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
 
     this._clicks++;
+    //Now that the user has clicked, let them nudge the map by moving to the edge.
+    context.behaviors.get('map-nudging').allow();
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
     const target = eventData.target;
