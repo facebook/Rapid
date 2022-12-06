@@ -27,12 +27,12 @@ export class Difference {
     this.didChange = {};  // 'addition', 'deletion', 'geometry', 'properties'
 
     // Gather affected ids
-    const ids = new Set(Object.keys(head.entities).concat(Object.keys(base.entities)));
+    const ids = new Set([...head.entities.keys(), ...base.entities.keys()]);
 
     // Check each id to determine whether it has changed from base -> head..
     for (const id of ids) {
-      const h = head.entities[id];
-      const b = base.entities[id];
+      const h = head.hasEntity(id);
+      const b = base.hasEntity(id);
       if (h === b) continue;  // no change
 
       if (b && !h) {

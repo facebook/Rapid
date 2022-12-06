@@ -187,7 +187,8 @@ function parseXML(dataset, xml, tile, callback, options) {
         var origUid;
         if (child.attributes.orig_id) {
             origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
-            if (graph.entities[origUid] ||
+            // skip if seen already
+            if (graph.hasEntity(origUid) ||
                 (cache.origIdTile[origUid] && cache.origIdTile[origUid] !== tile.id)) {
                 return null;
             }

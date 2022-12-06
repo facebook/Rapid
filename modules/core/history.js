@@ -178,8 +178,8 @@ export function coreHistory(context) {
             }
           }
 
-          const stack = _stack.map(state => state.graph);
-          baseGraph.rebase(entities, stack, false);
+          const graphs = _stack.map(state => state.graph);
+          baseGraph.rebase(entities, graphs, false);
           _tree.rebase(entities, false);
 
           dispatch.call('merge', this, seenIDs);
@@ -432,279 +432,281 @@ export function coreHistory(context) {
         //  5. This outputs stringified JSON to the browser console
         //  6. Copy it to `data/intro_graph.json` and prettify it in your code editor
         toIntroGraph: function() {
-            var nextID = { n: 0, r: 0, w: 0 };
-            var permIDs = {};
-            var graph = this.graph();
-            var baseEntities = {};
+          let nextID = { n: 0, r: 0, w: 0 };
+          let permIDs = {};
+          let graph = this.graph();
+          let result = new Map;   // Map(entityID -> Entity)
 
-            // clone base entities..
-            Object.values(graph.base().entities).forEach(function(entity) {
-                var copy = copyIntroEntity(entity);
-                baseEntities[copy.id] = copy;
-            });
+          // Copy base entities..
+          for (const entity of graph.base().entities.values()) {
+            const copy = _copyIntroEntity(entity);
+            result.set(copy.id, copy);
+          }
 
-            // replace base entities with head entities..
-            Object.keys(graph.entities).forEach(function(id) {
-                var entity = graph.entities[id];
-                if (entity) {
-                    var copy = copyIntroEntity(entity);
-                    baseEntities[copy.id] = copy;
-                } else {
-                    delete baseEntities[id];
-                }
-            });
-
-            // swap temporary for permanent ids..
-            Object.values(baseEntities).forEach(function(entity) {
-                if (Array.isArray(entity.nodes)) {
-                    entity.nodes = entity.nodes.map(function(node) {
-                        return permIDs[node] || node;
-                    });
-                }
-                if (Array.isArray(entity.members)) {
-                    entity.members = entity.members.map(function(member) {
-                        member.id = permIDs[member.id] || member.id;
-                        return member;
-                    });
-                }
-            });
-
-            return JSON.stringify({ dataIntroGraph: baseEntities });
-
-
-            function copyIntroEntity(source) {
-                var copy = utilObjectOmit(source, ['type', 'user', 'v', 'version', 'visible']);
-
-                // Note: the copy is no longer an osmEntity, so it might not have `tags`
-                if (copy.tags && !Object.keys(copy.tags)) {
-                    delete copy.tags;
-                }
-
-                if (Array.isArray(copy.loc)) {
-                    copy.loc[0] = +copy.loc[0].toFixed(6);
-                    copy.loc[1] = +copy.loc[1].toFixed(6);
-                }
-
-                var match = source.id.match(/([nrw])-\d*/);  // temporary id
-                if (match !== null) {
-                    var nrw = match[1];
-                    var permID;
-                    do { permID = nrw + (++nextID[nrw]); }
-                    while (baseEntities.hasOwnProperty(permID));
-
-                    copy.id = permIDs[source.id] = permID;
-                }
-                return copy;
+          // Replace base entities with head entities..
+          for (const [entityID, entity] of graph.entities) {
+            if (entity) {
+              const copy = _copyIntroEntity(entity);
+              result.set(copy.id, copy);
+            } else {
+              result.delete(entityID);
             }
+          }
+
+          // Swap ids in node and member lists..
+          for (let entity of result.values()) {
+            if (Array.isArray(entity.nodes)) {
+              entity.nodes = entity.nodes.map(nodeID => {
+                return permIDs[nodeID] ?? nodeID;
+              });
+            }
+            if (Array.isArray(entity.members)) {
+              entity.members = entity.members.map(member => {
+                member.id = permIDs[member.id] || member.id;
+                return member;
+              });
+            }
+          }
+
+          // Convert to Object so we can stringify it.
+          let obj = {};
+          for (const [k, v] of result) { obj[k] = v; }
+          return JSON.stringify({ dataIntroGraph: obj });
+
+
+          function _copyIntroEntity(entity) {
+            let copy = utilObjectOmit(entity, ['type', 'user', 'v', 'version', 'visible']);
+
+            // Note: the copy is no longer an osmEntity, so it might not have `tags`
+            if (copy.tags && !Object.keys(copy.tags)) {
+              delete copy.tags;
+            }
+
+            if (Array.isArray(copy.loc)) {
+              copy.loc[0] = +copy.loc[0].toFixed(6);
+              copy.loc[1] = +copy.loc[1].toFixed(6);
+            }
+
+            const match = entity.id.match(/([nrw])-\d*/);  // temporary id
+            if (match !== null) {
+              let nrw = match[1];
+              let permID;
+              do { permID = nrw + (++nextID[nrw]); }
+              while (result.has(permID));
+
+              permIDs[entity.id] = permID;
+              copy.id = permID;
+            }
+            return copy;
+          }
+
         },
 
 
+        //
+        //
+        //
         toJSON: function() {
-            if (!this.hasChanges()) return;
+          if (!this.hasChanges()) return;
 
-            var allEntities = {};
-            var baseEntities = {};
-            var base = _stack[0];
+          const modifiedEntities = new Map();  // Map(Entity.key -> Entity)
+          const allEntityIDs = new Set();
+          const stackData = [];
 
-            var s = _stack.map(function(i) {
-                var modified = [];
-                var deleted = [];
+          // Preserve the users stack of edits..
+          for (const s of _stack) {
+            const currGraph = s.graph;   // edit done at this point in time
+            let modified = [];
+            let deleted = [];
 
-                Object.keys(i.graph.entities).forEach(function(id) {
-                    var entity = i.graph.entities[id];
-                    if (entity) {
-                        var key = osmEntity.key(entity);
-                        allEntities[key] = entity;
-                        modified.push(key);
-                    } else {
-                        deleted.push(id);
-                    }
+            // watch out: for modified entities we index on "key" - e.g. "n1v1"
+            for (const [entityID, entity] of currGraph.entities) {
+              allEntityIDs.add(entityID);
+              if (entity) {
+                const key = osmEntity.key(entity);
+                modifiedEntities.set(key, entity);
+                modified.push(key);
+              } else {
+                deleted.push(entityID);
+              }
+            }
 
-                    // make sure that the originals of changed or deleted entities get merged
-                    // into the base of the _stack after restoring the data from JSON.
-                    if (id in base.graph.entities) {
-                        baseEntities[id] = base.graph.entities[id];
-                    }
-                    if (entity && entity.nodes) {
-                        // get originals of pre-existing child nodes
-                        entity.nodes.forEach(function(nodeID) {
-                            if (nodeID in base.graph.entities) {
-                                baseEntities[nodeID] = base.graph.entities[nodeID];
-                            }
-                        });
-                    }
-                    // get originals of parent entities too
-                    var baseParents = base.graph._parentWays[id];
-                    if (baseParents) {
-                        baseParents.forEach(function(parentID) {
-                            if (parentID in base.graph.entities) {
-                                baseEntities[parentID] = base.graph.entities[parentID];
-                            }
-                        });
-                    }
-                });
+            const item = {};
+            if (modified.length)      item.modified = modified;
+            if (deleted.length)       item.deleted = deleted;
+            if (s.imageryUsed)        item.imageryUsed = s.imageryUsed;
+            if (s.photoOverlaysUsed)  item.photoOverlaysUsed = s.photoOverlaysUsed;
+            if (s.annotation)         item.annotation = s.annotation;
+            if (s.transform)          item.transform = s.transform;
+            if (s.selectedIDs)        item.selectedIDs = s.selectedIDs;
+            stackData.push(item);
+          }
 
-                var x = {};
+          // Preserve the originals of edited Entities.
+          // If user restores their edits, we need these Entities to look the same too.
+          const baseGraph = this.base();   // The initial unedited graph
+          let baseEntities = new Map();    // Map(entityID -> entity)
 
-                if (modified.length) x.modified = modified;
-                if (deleted.length) x.deleted = deleted;
-                if (i.imageryUsed) x.imageryUsed = i.imageryUsed;
-                if (i.photoOverlaysUsed) x.photoOverlaysUsed = i.photoOverlaysUsed;
-                if (i.annotation) x.annotation = i.annotation;
-                if (i.transform) x.transform = i.transform;
-                if (i.selectedIDs) x.selectedIDs = i.selectedIDs;
+          for (const entityID of allEntityIDs) {
+            const original = baseGraph.hasEntity(entityID);
+            if (!original || baseEntities.has(entityID)) continue;
 
-                return x;
-            });
+            baseEntities.set(entityID, original);
 
-            return JSON.stringify({
-                version: 3,
-                entities: Object.values(allEntities),
-                baseEntities: Object.values(baseEntities),
-                stack: s,
-                nextIDs: osmEntity.id.next,
-                index: _index,
-                // note the time the changes were saved
-                timestamp: (new Date()).getTime()
-            });
+            // Preserve originals of child nodes
+            for (const child of baseGraph.childNodes(original)) {
+              baseEntities.set(child.id, child);
+            }
+            // Preserve originals of parent entities too
+            for (const parent of baseGraph.parentWays(original)) {
+              baseEntities.set(parent.id, parent);
+            }
+          }
+
+          return JSON.stringify({
+            version: 3,
+            entities: [...modifiedEntities.values()],
+            baseEntities: [...baseEntities.values()],
+            stack: stackData,
+            nextIDs: osmEntity.id.next,
+            index: _index,
+            timestamp: (new Date()).getTime()
+          });
         },
 
 
+        //
+        //
+        //
         fromJSON: function(json, loadChildNodes) {
-            var h = JSON.parse(json);
-            var loadComplete = true;
+          const baseGraph = this.base();   // The initial unedited graph
+          const hist = JSON.parse(json);
+          let loadComplete = true;
 
-            osmEntity.id.next = h.nextIDs;
-            _index = h.index;
+          osmEntity.id.next = hist.nextIDs;
+          _index = hist.index;
 
-            if (h.version === 2 || h.version === 3) {
-                var allEntities = {};
+          if (hist.version !== 2 && hist.version !== 3) {
+            throw new Error(`History version ${hist.version} not supported.`);
+          }
 
-                h.entities.forEach(function(entity) {
-                    allEntities[osmEntity.key(entity)] = osmEntity(entity);
-                });
+          // Instantiate the modified entities
+          const modifiedEntities = new Map;  // Map(Entity.key -> Entity)
+          for (const e of hist.entities) {
+            modifiedEntities.set(osmEntity.key(e), osmEntity(e));
+          }
 
-                if (h.version === 3) {
-                    // This merges originals for changed entities into the base of
-                    // the _stack even if the current _stack doesn't have them (for
-                    // example when iD has been restarted in a different region)
-                    var baseEntities = h.baseEntities.map(function(d) { return osmEntity(d); });
-                    var stack = _stack.map(function(state) { return state.graph; });
-                    _stack[0].graph.rebase(baseEntities, stack, true);
-                    _tree.rebase(baseEntities, true);
+          if (hist.version >= 3) {
+            // If v3+, instantiate base entities too.
+            const baseEntities = hist.baseEntities.map(e => osmEntity(e));
 
-                    // When we restore a modified way, we also need to fetch any missing
-                    // childnodes that would normally have been downloaded with it.. #2142
-                    if (loadChildNodes) {
-                        var osm = context.connection();
-                        var baseWays = baseEntities
-                            .filter(function(e) { return e.type === 'way'; });
-                        var nodeIDs = baseWays
-                            .reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
-                        var missing = nodeIDs
-                            .filter(function(n) { return !_stack[0].graph.hasEntity(n); });
+            // Merge originals into base graph, note that the force parameter is `true` here
+            // to replace any that might have been loaded from the API.
+            const graphs = _stack.map(s => s.graph);
+            baseGraph.rebase(baseEntities, graphs, true);
+            _tree.rebase(baseEntities, true);
 
-                        if (missing.length && osm) {
-                            loadComplete = false;
-                            context.map().redrawEnabled = false;
+            // When we restore a modified way, we also need to fetch any missing
+            // childnodes that would normally have been downloaded with it.. #2142
+            if (loadChildNodes) {
+              const osm = context.connection();
+              const baseWays = baseEntities.filter(entity => entity.type === 'way');
+              const nodeIDs = baseWays.reduce(function(acc, way) { return utilArrayUnion(acc, way.nodes); }, []);
+              let missing = nodeIDs.filter(nodeID => !baseGraph.hasEntity(nodeID));
 
-                            var loading = uiLoading(context).blocking(true);
-                            context.container().call(loading);
+              if (missing.length && osm) {
+                loadComplete = false;
+                context.map().redrawEnabled = false;
 
-                            var childNodesLoaded = function(err, result) {
-                                if (!err) {
-                                    var visibleGroups = utilArrayGroupBy(result.data, 'visible');
-                                    var visibles = visibleGroups.true || [];      // alive nodes
-                                    var invisibles = visibleGroups.false || [];   // deleted nodes
+                const loading = uiLoading(context).blocking(true);
+                context.container().call(loading);
 
-                                    if (visibles.length) {
-                                        var visibleIDs = visibles.map(function(entity) { return entity.id; });
-                                        var stack = _stack.map(function(state) { return state.graph; });
-                                        missing = utilArrayDifference(missing, visibleIDs);
-                                        _stack[0].graph.rebase(visibles, stack, true);
-                                        _tree.rebase(visibles, true);
-                                    }
+                var _childNodesLoaded = function(err, result) {
+                  if (!err) {
+                    const visibleGroups = utilArrayGroupBy(result.data, 'visible');
+                    const visibles = visibleGroups.true || [];      // alive nodes
+                    const invisibles = visibleGroups.false || [];   // deleted nodes
 
-                                    // fetch older versions of nodes that were deleted..
-                                    invisibles.forEach(function(entity) {
-                                        osm.loadEntityVersion(entity.id, +entity.version - 1, childNodesLoaded);
-                                    });
-                                }
-
-                                if (err || !missing.length) {
-                                    loading.close();
-                                    context.map().redrawEnabled = true;
-                                    dispatch.call('change');
-                                    dispatch.call('restore', this);
-                                }
-                            };
-
-                            osm.loadMultiple(missing, childNodesLoaded);
-                        }
-                    }
-                }
-
-                _stack = h.stack.map(function(d) {
-                    var entities = {}, entity;
-
-                    if (d.modified) {
-                        d.modified.forEach(function(key) {
-                            entity = allEntities[key];
-                            entities[entity.id] = entity;
-                        });
+                    if (visibles.length) {
+                      const visibleIDs = visibles.map(entity => entity.id);
+                      const graphs = _stack.map(s => s.graph);
+                      missing = utilArrayDifference(missing, visibleIDs);
+                      baseGraph.rebase(visibles, graphs, true);   // force = true
+                      _tree.rebase(visibles, true);               // force = true
                     }
 
-                    if (d.deleted) {
-                        d.deleted.forEach(function(id) {
-                            entities[id] = undefined;
-                        });
-                    }
+                    // fetch older versions of nodes that were deleted..
+                    invisibles.forEach(function(entity) {
+                      osm.loadEntityVersion(entity.id, +entity.version - 1, _childNodesLoaded);
+                    });
+                  }
 
-                    // restore RapiD sources
-                    if (d.annotation && d.annotation.type === 'rapid_accept_feature') {
-                        var rapidContext = context.rapidContext();
-                        var sourceTag = d.annotation.source;
-                        rapidContext.sources.add('mapwithai');      // always add 'mapwithai'
-                        if (sourceTag && /^esri/.test(sourceTag)) {
-                            rapidContext.sources.add('esri');       // add 'esri' for esri sources
-                        }
-                    }
+                  if (err || !missing.length) {
+                    loading.close();
+                    context.map().redrawEnabled = true;
+                    dispatch.call('change');
+                    dispatch.call('restore', this);
+                  }
+                };
 
-                    return {
-                        graph: new Graph(_stack[0].graph).load(entities),
-                        annotation: d.annotation,
-                        imageryUsed: d.imageryUsed,
-                        photoOverlaysUsed: d.photoOverlaysUsed,
-                        transform: d.transform,
-                        selectedIDs: d.selectedIDs
-                    };
-                });
+                osm.loadMultiple(missing, _childNodesLoaded);
+              }
+            }
+          }   // end v3+
 
-            } else { // original version
-                _stack = h.stack.map(function(d) {
-                    var entities = {};
 
-                    for (var i in d.entities) {
-                        var entity = d.entities[i];
-                        entities[i] = entity === 'undefined' ? undefined : osmEntity(entity);
-                    }
+          // Replace the history stack.
+          _stack = hist.stack.map((s, index) => {
+            // Leave base graph alone, this first entry should have nothing in it.
+            if (index === 0) return _stack[0];
 
-                    d.graph = new Graph(_stack[0].graph).load(entities);
-                    return d;
-                });
+            let entities = {};
+
+            if (Array.isArray(s.modified)) {
+              s.modified.forEach(key => {
+                const entity = modifiedEntities.get(key);
+                entities[entity.id] = entity;
+              });
             }
 
-            var transform = _stack[_index].transform;
-            if (transform) {
-                context.map().transformEase(transform, 0);   // 0 = immediate, no easing
+            if (Array.isArray(s.deleted)) {
+              s.deleted.forEach(entityID => {
+                entities[entityID] = undefined;
+              });
             }
 
-            if (loadComplete) {
-                dispatch.call('change');
-                dispatch.call('restore', this);
+            // restore RapiD sources
+            if (s.annotation && s.annotation.type === 'rapid_accept_feature') {
+              const rapidContext = context.rapidContext();
+              const sourceTag = s.annotation.source;
+              rapidContext.sources.add('mapwithai');      // always add 'mapwithai'
+              if (sourceTag && /^esri/.test(sourceTag)) {
+                rapidContext.sources.add('esri');       // add 'esri' for esri sources
+              }
             }
 
-            return history;
+            return {
+              graph: new Graph(baseGraph).load(entities),
+              annotation: s.annotation,
+              imageryUsed: s.imageryUsed,
+              photoOverlaysUsed: s.photoOverlaysUsed,
+              transform: s.transform,
+              selectedIDs: s.selectedIDs
+            };
+          });
+
+
+          const transform = _stack[_index].transform;
+          if (transform) {
+            context.map().transform(transform);
+          }
+
+          if (loadComplete) {
+            dispatch.call('change');
+            dispatch.call('restore', this);
+          }
+
+          return history;
         },
 
 

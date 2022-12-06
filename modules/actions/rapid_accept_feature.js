@@ -122,9 +122,9 @@ export function actionRapidAcceptFeature(entityID, extGraph) {
 
                 if (conn && graph.hasEntity(conn[0])) {
                     //conn=w316746574,n3229071295,n3229071273
-                    var targetWay = graph.entities[conn[0]];
-                    var nodeA = graph.entities[conn[1]];
-                    var nodeB = graph.entities[conn[2]];
+                    var targetWay = graph.hasEntity(conn[0]);
+                    var nodeA = graph.hasEntity(conn[1]);
+                    var nodeB = graph.hasEntity(conn[2]);
 
                     if (targetWay && nodeA && nodeB) {
                         var result = findConnectionPoint(graph, node, targetWay, nodeA, nodeB);

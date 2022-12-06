@@ -439,56 +439,6 @@ describe('iD.coreHistory', function () {
     });
 
     describe('#fromJSON', function() {
-        it('restores from v1 JSON (creation)', function() {
-            var json = {
-                'stack': [
-                    {'entities': {}},
-                    {'entities': {'n-1': {'loc': [1, 2], 'id': 'n-1'}}, 'imageryUsed': ['Bing'], 'annotation': 'Added a point.'}
-                ],
-                'nextIDs': {'node': -2, 'way': -1, 'relation': -1},
-                'index': 1
-            };
-            history.fromJSON(JSON.stringify(json));
-            expect(history.graph().entity('n-1')).to.eql(iD.osmNode({id: 'n-1', loc: [1, 2]}));
-            expect(history.undoAnnotation()).to.eql('Added a point.');
-            expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
-        });
-
-        it('restores from v1 JSON (modification)', function() {
-            var json = {
-                'stack': [
-                    {'entities': {}},
-                    {'entities': {'n-1': {'loc': [1, 2], 'id': 'n-1'}}, 'imageryUsed': ['Bing'], 'annotation': 'Added a point.'},
-                    {'entities': {'n-1': {'loc': [2, 3], 'id': 'n-1', 'v': 1}}, 'imageryUsed': ['Bing'], 'annotation': 'Moved a point.'}
-                ],
-                'nextIDs': {'node': -2, 'way': -1, 'relation': -1},
-                'index': 2
-            };
-            history.fromJSON(JSON.stringify(json));
-            expect(history.graph().entity('n-1')).to.eql(iD.osmNode({id: 'n-1', loc: [2, 3], v: 1}));
-            expect(history.undoAnnotation()).to.eql('Moved a point.');
-            expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
-        });
-
-        it('restores from v1 JSON (deletion)', function() {
-            var json = {
-                'stack': [
-                    {'entities': {}},
-                    {'entities': {'n1': 'undefined'}, 'imageryUsed': ['Bing'], 'annotation': 'Deleted a point.'}
-                ],
-                'nextIDs': {'node': -1, 'way': -2, 'relation': -3},
-                'index': 1
-            };
-            history.fromJSON(JSON.stringify(json));
-            history.merge([iD.osmNode({id: 'n1'})]);
-            expect(history.graph().hasEntity('n1')).to.be.undefined;
-            expect(history.undoAnnotation()).to.eql('Deleted a point.');
-            expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -1, way: -2, relation: -3});
-        });
-
         it('restores from v2 JSON (creation)', function() {
             var json = {
                 'version': 2,

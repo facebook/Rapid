@@ -27,14 +27,13 @@ function jsonToOSM(renderData) {
 
 
 // Converts a list of json OSM entities to osm objects
-function castEntities(entities) {
-  let osmEntities = [];
-  for (let entityKey in entities) {
-    let entity = entities[entityKey];
-    if (entity.id.charAt(0) === 'w') osmEntities.push(new iD.osmWay(entity));
-    if (entity.id.charAt(0) === 'n') osmEntities.push(new iD.osmNode(entity));
+function instantiateEntities(data) {
+  let entities = [];
+  for (const props of data) {
+    if (props.id.charAt(0) === 'w') entities.push(new iD.osmWay(props));
+    if (props.id.charAt(0) === 'n') entities.push(new iD.osmNode(props));
   }
-  return osmEntities;
+  return entities;
 }
 
 
@@ -67,7 +66,7 @@ function renderTest() {
 function setup(dataBlob) {
   //This dataBlob variable should be the json blob exported in bench.html from a <script src='canned_osm_data.js'> declaration
   renderData = jsonToOSM(dataBlob.data);
-  graphEntities = castEntities(dataBlob.entities);
+  graphEntities = instantiateEntities(dataBlob.entities);
   projection = new iD.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
   zoom = dataBlob.zoom;
   let graph = context.graph();

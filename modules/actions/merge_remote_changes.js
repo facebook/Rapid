@@ -206,7 +206,7 @@ export function actionMergeRemoteChanges(id, localGraph, remoteGraph, discardTag
     //
     var action = function(graph) {
         var updates = { replacements: [], removeIds: [] };
-        var base = graph.base().entities[id];
+        var base = graph.base().entities.get(id);
         var local = localGraph.entity(id);
         var remote = remoteGraph.entity(id);
         var target = osmEntity(local, { version: remote.version });
