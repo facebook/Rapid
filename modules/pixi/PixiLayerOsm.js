@@ -163,7 +163,7 @@ export class PixiLayerOsm extends AbstractLayer {
 //        'height': window.innerHeight,
 //        'projection': projection,
 //        'data': data,
-//        'entities': context.graph().base().entities
+//        'entities': context.graph().base.entities   // TODO convert from Map to Object if we are keeping this)
 //      };
 //
 //      let cannedData = JSON.stringify(viewData);

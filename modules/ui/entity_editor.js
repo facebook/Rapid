@@ -293,7 +293,7 @@ export function uiEntityEditor(context) {
         for (var i in _entityIDs) {
             var entityID = _entityIDs[i];
 
-            var original = context.graph().base().entities.get(entityID);
+            var original = context.graph().base.entities.get(entityID);
             var changed = {};
             for (var j in keys) {
                 var key = keys[j];

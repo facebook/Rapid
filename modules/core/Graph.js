@@ -1,5 +1,4 @@
 import { utilArrayDifference } from '@id-sdk/util';
-import { debug } from '../index';
 
 
 /**
@@ -13,53 +12,53 @@ export class Graph {
    * @param  mutable?  Do updates affect this Graph or return a new Graph
    */
   constructor(other, mutable) {
+
+    // A Graph derived from a predecessor Graph
     if (other instanceof Graph) {
-      this._base = other._base;
-      this.entities = new Map(other.entities);       // shallow clone
-      this._parentWays = new Map(other._parentWays);   // shallow clone
-      this._parentRels = new Map(other._parentRels);   // shallow clone
-//      var base = other.base();
-//      this.entities = Object.assign(Object.create(base.entities), other.entities);
-//      this._parentWays = Object.assign(Object.create(base._parentWays), other._parentWays);
-//      this._parentRels = Object.assign(Object.create(base._parentRels), other._parentRels);
-
-    } else {
-      this._base = {
-        entities: new Map(),       // Map(entityID -> Entity)
-        _parentWays: new Map(),     // Map(entityID -> Set(entityIDs))
-        _parentRels: new Map()      // Map(entityID -> Set(entityIDs))
+      this._base = other._base;      // Base data is shared among the chain of Graphs
+      this._local = {                // Local data is a clone of the predecessor data
+        entities: new Map(other._local.entities),       // shallow clone
+        parentWays: new Map(other._local.parentWays),   // shallow clone
+        parentRels: new Map(other._local.parentRels)    // shallow clone
       };
-      this.entities = new Map();       // Map(entityID -> Entity)
-      this._parentWays = new Map();     // Map(entityID -> Set(entityIDs))
-      this._parentRels = new Map();     // Map(entityID -> Set(entityIDs))
 
-//      this.entities = Object.create({});
-//      this._parentWays = Object.create({});
-//      this._parentRels = Object.create({});
-      this.rebase(other || [], [this]);
+     // A fresh Graph
+     } else {
+      this._base = {
+        entities: new Map(),      // Map(entityID -> Entity)
+        parentWays: new Map(),    // Map(entityID -> Set(entityIDs))
+        parentRels: new Map()     // Map(entityID -> Set(entityIDs))
+      };
+      this._local = {
+        entities: new Map(),      // Map(entityID -> Entity)
+        parentWays: new Map(),    // Map(entityID -> Set(entityIDs))
+        parentRels: new Map()     // Map(entityID -> Set(entityIDs))
+      };
+
+      this.rebase(other || [], [this]);   // seed with Entities, if provided
     }
 
     this._transients = new Map();     // Map(entityID -> Map(k -> v))
     this._childNodes = new Map();
-
-//    this._transients = {};
-//    this._childNodes = {};
     this._frozen = !mutable;
   }
 
 
   /**
    * base
+   * @readonly
    */
-  base() {
+  get base() {
     return this._base;
-//    return {
-//      'entities': Object.getPrototypeOf(this.entities),
-//      'parentWays': Object.getPrototypeOf(this._parentWays),
-//      'parentRels': Object.getPrototypeOf(this._parentRels)
-//    };
   }
 
+  /**
+   * local
+   * @readonly
+   */
+  get local() {
+    return this._local;
+  }
 
   /**
    * frozen
@@ -72,23 +71,29 @@ export class Graph {
 
   /**
    * hasEntity
-   * @param  id
+   * Gets an Entity, searches the local graph first, then the base graph.
+   * @param   entityID  The entityID to lookup
+   * @return  Entity from either local or base graph, or `undefined` if not found.
    */
-  hasEntity(id) {
-//    return this.entities[id];
-    return this.entities.has(id) ? this.entities.get(id) : this._base.entities.get(id);
+  hasEntity(entityID) {
+    const base = this._base;
+    const local = this._local;
+    return local.entities.has(entityID) ? local.entities.get(entityID) : base.entities.get(entityID);
   }
 
 
   /**
    * entity
-   * @param  id
+   * Gets an Entity, searches the local graph first, then the base graph.
+   * (same as `hasEntity` but throws if not found)
+   * @param   entityID  The entityID to lookup
+   * @return  Entity from either local or base graph
+   * @throws  Will throw if the entity is not found
    */
-  entity(id) {
-//    const entity = this.entities[id];
-    const entity = this.hasEntity(id);
+  entity(entityID) {
+    const entity = this.hasEntity(entityID);
     if (!entity) {
-      throw new Error(`Entity ${id} not found`);
+      throw new Error(`Entity ${entityID} not found`);
     }
     return entity;
   }
@@ -96,10 +101,13 @@ export class Graph {
 
   /**
    * geometry
-   * @param  id
+   * Returns the geometry of the given entityID.
+   * @param   entityID  The entityID to lookup
+   * @return  String geometry of that entity (e.g. 'point', 'vertex', 'line', 'area')
+   * @throws  Will throw if the entity is not found
    */
-  geometry(id) {
-    return this.entity(id).geometry(this);
+  geometry(entityID) {
+    return this.entity(entityID).geometry(this);
   }
 
 
@@ -108,16 +116,17 @@ export class Graph {
    * Stores a computed property for the given Entity in the graph itself,
    * to avoid frequent and expensive recomputation.  We're essentially
    * implementating "memoization" for the provided function.
-   * @param  entity
-   * @param  key
-   * @param  fn
+   * @param   entity   The Entity to compute a value for
+   * @param   key      String cache key to lookup the computed value (e.g. 'extent')
+   * @param   fn       Function that performs the computation, will be passed `entity`
+   * @return  The result of the function call
    */
   transient(entity, key, fn) {
-    const id = entity.id;
-    let cache = this._transients.get(id);
+    const entityID = entity.id;
+    let cache = this._transients.get(entityID);
     if (!cache) {
       cache = new Map();
-      this._transients.set(id, cache);
+      this._transients.set(entityID, cache);
     }
 
     let val = cache.get(key);
@@ -126,16 +135,6 @@ export class Graph {
     val = fn.call(entity);   // compute value
     cache.set(key, val);
     return val;
-
-//    const id = entity.id;
-//    const transients = this._transients[id] || (this._transients[id] = {});
-//
-//    if (transients[key] !== undefined) {
-//      return transients[key];
-//    }
-//
-//    transients[key] = fn.call(entity);
-//    return transients[key];
   }
 
 
@@ -145,10 +144,10 @@ export class Graph {
    * @return  `true` if no parents
    */
   isPoi(entity) {
-    const parentIDs = this._parentWays.get(entity.id) ?? this._base._parentWays.get(entity.id) ?? new Set();
+    const base = this._base;
+    const local = this._local;
+    const parentIDs = local.parentWays.get(entity.id) ?? base.parentWays.get(entity.id) ?? new Set();
     return parentIDs.size === 0;
-//    const parents = this._parentWays[entity.id];
-//    return !parents || parents.size === 0;
   }
 
 
@@ -158,10 +157,10 @@ export class Graph {
    * @return  `true` if >1 parents
    */
   isShared(entity) {
-    const parentIDs = this._parentWays.get(entity.id) ?? this._base._parentWays.get(entity.id) ?? new Set();
+    const base = this._base;
+    const local = this._local;
+    const parentIDs = local.parentWays.get(entity.id) ?? base.parentWays.get(entity.id) ?? new Set();
     return parentIDs.size  > 1;
-//    const parents = this._parentWays[entity.id];
-//    return parents && parents.size > 1;
   }
 
 
@@ -171,16 +170,13 @@ export class Graph {
    * Makes a shallow copy (i.e. the Array is new, but the Entities in it are references)
    * @param   entity
    * @return  Array of parent Ways
+   * @throws  Will throw if any parent Way is not found
    */
   parentWays(entity) {
-    const parentIDs = this._parentWays.get(entity.id) ?? this._base._parentWays.get(entity.id) ?? new Set();
+    const base = this._base;
+    const local = this._local;
+    const parentIDs = local.parentWays.get(entity.id) ?? base.parentWays.get(entity.id) ?? new Set();
     return Array.from(parentIDs).map(parentID => this.entity(parentID));
-//    const parents = this._parentWays[entity.id];
-//    let result = [];
-//    if (parents) {
-//      parents.forEach(function(id) { result.push(this.entity(id)); }, this);
-//    }
-//    return result;
   }
 
 
@@ -188,24 +184,24 @@ export class Graph {
    * parentRelations
    * Makes an Array containing parent Relations for the given Entity.
    * Makes a shallow copy (i.e. the Array is new, but the Entities in it are references)
-   * @param  entity
+   * @param   entity
    * @return  Array of parent Relations
+   * @throws  Will throw if any parent Relation is not found
    */
   parentRelations(entity) {
-    const parentIDs = this._parentRels.get(entity.id) ?? this._base._parentRels.get(entity.id) ?? new Set();
+    const base = this._base;
+    const local = this._local;
+    const parentIDs = local.parentRels.get(entity.id) ?? base.parentRels.get(entity.id) ?? new Set();
     return Array.from(parentIDs).map(parentID => this.entity(parentID));
-//    const parents = this._parentRels[entity.id];
-//    let result = [];
-//    if (parents) {
-//      parents.forEach(function(id) { result.push(this.entity(id)); }, this);
-//    }
-//    return result;
   }
 
 
   /**
    * parentMultipolygons
-   * @param  entity
+   * Same as parentRelations, but filtered for multipolygons.
+   * @param   entity
+   * @return  Array of parent Relations that are multipolygons
+   * @throws  Will throw if any parent Relation is not found
    */
   parentMultipolygons(entity) {
     return this.parentRelations(entity).filter(relation => relation.isMultipolygon());
@@ -218,6 +214,7 @@ export class Graph {
    * This function is memoized, so that repeated calls return the same Array.
    * @param   entity
    * @return  Array of child Nodes
+   * @throws  Will throw if any parent Relation is not found
    */
   childNodes(entity) {
     if (!entity.nodes) return [];  // not a way?
@@ -232,35 +229,23 @@ export class Graph {
     }
     this._childNodes.set(entity.id, children);  // set cache
     return children;
-
-//    if (this._childNodes[entity.id]) return this._childNodes[entity.id];
-//    if (!entity.nodes) return [];
-//
-//    var nodes = [];
-//    for (var i = 0; i < entity.nodes.length; i++) {
-//        nodes[i] = this.entity(entity.nodes[i]);
-//    }
-//
-//    if (debug) Object.freeze(nodes);
-//
-//    this._childNodes[entity.id] = nodes;
-//    return this._childNodes[entity.id];
   }
 
 
   /**
    * rebase
-   * Unlike other graph methods, rebase mutates in place. This is because it
-   * is used only during the history operation that merges newly downloaded
-   * data into each state. To external consumers, it should appear as if the
-   * Graph always contained the newly downloaded data.
-   * @param  entities
-   * @param  stack
-   * @param  force
+   * Rebase merges new Entities into the base graph.
+   * Unlike other Graph methods that return a new Graph, rebase mutates in place.
+   * This is because it is used during the history operation that merges newly
+   * downloaded data into the existing stack of edits. To external consumers of the Graph,
+   * it should appear as if the Graph always contained the newly downloaded data.
+   * @param  entities  Entities to add to the base Graph
+   * @param  stack     Stack of graphs that need updates after this rebase
+   * @param  force     If `true`, always update, if `false` skip entities that we've seen already
    */
   rebase(entities, stack, force) {
     const base = this._base;
-    const head = stack[stack.length - 1];
+    const head = stack[stack.length - 1]._local;
     const restoreIDs = new Set();
 
     for (const entity of entities) {
@@ -268,7 +253,7 @@ export class Graph {
 
       // Merge data into the base graph
       base.entities.set(entity.id, entity);
-      this._updateCalculated(undefined, entity, base._parentWays, base._parentRels);
+      this._updateCalculated(undefined, entity, base.parentWays, base.parentRels);
 
       // A weird thing we have to watch out for..
       // Sometimes an edit can remove a node, then we download more information and realize
@@ -284,10 +269,11 @@ export class Graph {
     }
 
     for (const graph of stack) {
+      const local = graph._local;
       // Restore deleted nodes that were discovered to belong to a parentWay.
       for (const id of restoreIDs) {
-        if (graph.entities.has(id) && (graph.entities.get(id) === undefined)) {  // was deleted
-          graph.entities.delete(id);
+        if (local.entities.has(id) && (local.entities.get(id) === undefined)) {  // was deleted
+          local.entities.delete(id);
         }
       }
       graph._updateRebased();
@@ -297,49 +283,33 @@ export class Graph {
 
   /**
    * _updateRebased
+   * Internal function - Update a graph following a `rebase` (base graph has changed).
+   * Check local `parentWays` and `parentRels` caches and make sure they
+   * are consistent with the data in the base caches.
    */
   _updateRebased() {
     const base = this._base;
+    const local = this._local;
 
-    for (const [childID, parentWayIDs] of this._parentWays) {  // for all this.parentWays we've cached
-      const baseWayIDs = base._parentWays.get(childID);        // compare to base._parentWays
+    for (const [childID, parentWayIDs] of local.parentWays) {  // for all this.parentWays we've cached
+      const baseWayIDs = base.parentWays.get(childID);         // compare to base.parentWays
       if (!baseWayIDs) continue;
       for (const wayID of baseWayIDs) {
-        if (!this.entities.has(wayID)) {  // if the Way hasn't been edited
+        if (!local.entities.has(wayID)) {  // if the Way hasn't been edited
           parentWayIDs.add(wayID);        // update `this.parentWays` cache
         }
       }
     }
 
-    // Object.keys(this._parentWays).forEach(function(childID) {
-    //   if (base._parentWays[childID]) {
-    //     base._parentWays[childID].forEach(function(id) {
-    //       if (!this.entities.hasOwnProperty(id)) {
-    //         this._parentWays[childID].add(id);
-    //       }
-    //     }, this);
-    //   }
-    // }, this);
-
-    for (const [childID, parentRelIDs] of this._parentRels) {  // for all this.parentRels we've cached
-      const baseRelIDs = base._parentRels.get(childID);        // compare to base._parentRels
+    for (const [childID, parentRelIDs] of local.parentRels) {  // for all this.parentRels we've cached
+      const baseRelIDs = base.parentRels.get(childID);         // compare to base.parentRels
       if (!baseRelIDs) continue;
       for (const relID of baseRelIDs) {
-        if (!this.entities.has(relID)) {  // if the Relation hasn't been edited
+        if (!local.entities.has(relID)) {  // if the Relation hasn't been edited
           parentRelIDs.add(relID);        // update `this.parentRels` cache
         }
       }
     }
-
-    // Object.keys(this._parentRels).forEach(function(childID) {
-    //   if (base._parentRels[childID]) {
-    //     base._parentRels[childID].forEach(function(id) {
-    //       if (!this.entities.hasOwnProperty(id)) {
-    //         this._parentRels[childID].add(id);
-    //       }
-    //     }, this);
-    //   }
-    // }, this);
 
     this._transients = new Map();
 
@@ -350,33 +320,35 @@ export class Graph {
 
   /**
    * _updateCalculated
-   * Updates calculated properties (parentWays, parentRels) for the specified change
+   * Internal function, used to update parentWays and parentRels caches
+   * based on an entity update
    * @param  previous?     The previous Entity
    * @param  current?      The current Entity
-   * @param  parentWays?   parentWays Map() to update (defaults to `this._parentWays`)
-   * @param  parentRels?   parentRels Map() to update (defaults to `this._parentRels`)
+   * @param  parentWays?   parentWays Map() to update (defaults to `this._local.parentWays`)
+   * @param  parentRels?   parentRels Map() to update (defaults to `this._local.parentRels`)
    */
-    _updateCalculated(previous, current, parentWays, parentRels) {
-      parentWays = parentWays || this._parentWays;
-      parentRels = parentRels || this._parentRels;
+  _updateCalculated(previous, current, parentWays, parentRels) {
+    const base = this._base;
+    const local = this._local;
+    parentWays = parentWays || local.parentWays;
+    parentRels = parentRels || local.parentRels;
 
-      const entity = current ?? previous;
-      if (!entity) return;   // Either current or previous must be set
+    const entity = current ?? previous;
+    if (!entity) return;   // Either current or previous must be set
 
-      let removed, added;
+    let removed, added;
 
-// todo: experiment
-// When changing a node, update the internal verisons of its parentways so that they update too.
-// This code might be the wrong thing, or might belong in difference.js
-// Need to consider undo/redo also
-if (entity.type === 'node' && parentWays === this._parentWays) {
-  const parents = this.parentWays(entity);
-  for (const parent of parents) {
-    parent.v = (parent.v || 0) + 1;   // very hacky - bump version in place
-  }
-}
+    // todo: experiment
+    // When changing a node, update the internal verisons of its parentways so that they update too.
+    // This code might be the wrong thing, or might belong in difference.js
+    // Need to consider undo/redo also
+    if (entity.type === 'node' && parentWays === local.parentWays) {
+      const parents = this.parentWays(entity);
+      for (const parent of parents) {
+        parent.v = (parent.v || 0) + 1;   // very hacky - bump version in place
+      }
 
-    if (entity.type === 'way') {  // Update _parentWays
+    } else if (entity.type === 'way') {  // Update parentWays
       if (previous && current) {  // Way Modified
         removed = utilArrayDifference(previous.nodes, current.nodes);
         added = utilArrayDifference(current.nodes, previous.nodes);
@@ -390,17 +362,17 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
 
       // shallow copy whatever parentWays had in it before, and perform deletes/adds as needed
       for (const childID of removed) {
-        const parentIDs = new Set( this._parentWays.get(childID) ?? this._base._parentWays.get(childID) ?? [] );
+        const parentIDs = new Set( local.parentWays.get(childID) ?? base.parentWays.get(childID) ?? [] );
         parentIDs.delete(entity.id);
         parentWays.set(childID, parentIDs);
       }
       for (const childID of added) {
-        const parentIDs = new Set( this._parentWays.get(childID) ?? this._base._parentWays.get(childID) ?? [] );
+        const parentIDs = new Set( local.parentWays.get(childID) ?? base.parentWays.get(childID) ?? [] );
         parentIDs.add(entity.id);
         parentWays.set(childID, parentIDs);
       }
 
-    } else if (entity.type === 'relation') {   // Update _parentRels
+    } else if (entity.type === 'relation') {   // Update parentRels
       // diff only on the IDs since the same entity can be a member multiple times with different roles
       const previousMemberIDs = previous ? previous.members.map(m => m.id) : [];
       const currentMemberIDs = current ? current.members.map(m => m.id) : [];
@@ -418,12 +390,12 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
 
       // shallow copy whatever parentRels had in it before, and perform deletes/adds as needed
       for (const childID of removed) {
-        const parentIDs = new Set( this._parentRels.get(childID) ?? this._base._parentRels.get(childID) ?? [] );
+        const parentIDs = new Set( local.parentRels.get(childID) ?? base.parentRels.get(childID) ?? [] );
         parentIDs.delete(entity.id);
         parentRels.set(childID, parentIDs);
       }
       for (const childID of added) {
-        const parentIDs = new Set( this._parentRels.get(childID) ?? this._base._parentRels.get(childID) ?? [] );
+        const parentIDs = new Set( local.parentRels.get(childID) ?? base.parentRels.get(childID) ?? [] );
         parentIDs.add(entity.id);
         parentRels.set(childID, parentIDs);
       }
@@ -434,7 +406,7 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
   /**
    * replace
    * Replace an Entity in this Graph
-   * @param   entity
+   * @param   entity  The Entity to replace
    * @return  A new Graph
    */
   replace(replacement) {
@@ -444,7 +416,7 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
 
     return this.update(function() {
       this._updateCalculated(current, replacement);
-      this.entities.set(entityID, replacement);
+      this._local.entities.set(entityID, replacement);
     });
   }
 
@@ -452,7 +424,7 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
   /**
    * remove
    * Remove an Entity from this Graph
-   * @param   entity
+   * @param   entity  The Entity to remove
    * @return  A new Graph
    */
   remove(entity) {
@@ -462,7 +434,7 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
 
     return this.update(function() {
       this._updateCalculated(current, undefined);
-      this.entities.set(entityID, undefined);
+      this._local.entities.set(entityID, undefined);
     });
   }
 
@@ -470,7 +442,7 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
   /**
    * revert
    * Revert an Entity back to whatver state it had in the base graph
-   * @param   entityID
+   * @param   entityID   The entityID of the Entity to revert
    * @return  A new Graph
    */
   revert(entityID) {
@@ -480,7 +452,7 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
 
     return this.update(function() {
       this._updateCalculated(current, original);
-      this.entities.delete(entityID);
+      this._local.entities.delete(entityID);
     });
   }
 
@@ -508,30 +480,23 @@ if (entity.type === 'node' && parentWays === this._parentWays) {
 
   /**
    * load
-   * Loads new entities into the Graph, obliterating any existing Entities.
+   * Loads new Entities into the local Graph, obliterating any existing Entities.
    * Used when restoring history or entering/leaving walkthrough.
-   * @param   entities `Object (entityID -> Entity)`
+   * @param   entities   `Object (entityID -> Entity)`
    * @return  this Graph
    */
   load(entities) {
-    this.entities = new Map();
+    const base = this._base;
+    const local = this._local;
+    local.entities = new Map();
 
     for (const [entityID, entity] of Object.entries(entities)) {
-      const original = this._base.entities.get(entityID);   // likely undefined, but may as well check
-      this.entities.set(entityID, entity);
+      const original = base.entities.get(entityID);   // likely undefined, but may as well check
+      local.entities.set(entityID, entity);
       this._updateCalculated(original, entity);
     }
-    return this;
 
-//    var base = this.base();
-//    this.entities = Object.create(base.entities);
-//
-//    for (var i in entities) {
-//      this.entities[i] = entities[i];
-//      this._updateCalculated(base.entities[i], this.entities[i]);
-//    }
-//
-//    return this;
+    return this;
   }
 
 }

@@ -438,13 +438,13 @@ export function coreHistory(context) {
           let result = new Map;   // Map(entityID -> Entity)
 
           // Copy base entities..
-          for (const entity of graph.base().entities.values()) {
+          for (const entity of graph.base.entities.values()) {
             const copy = _copyIntroEntity(entity);
             result.set(copy.id, copy);
           }
 
           // Replace base entities with head entities..
-          for (const [entityID, entity] of graph.entities) {
+          for (const [entityID, entity] of graph.local.entities) {
             if (entity) {
               const copy = _copyIntroEntity(entity);
               result.set(copy.id, copy);
@@ -520,7 +520,7 @@ export function coreHistory(context) {
             let deleted = [];
 
             // watch out: for modified entities we index on "key" - e.g. "n1v1"
-            for (const [entityID, entity] of currGraph.entities) {
+            for (const [entityID, entity] of currGraph.local.entities) {
               allEntityIDs.add(entityID);
               if (entity) {
                 const key = osmEntity.key(entity);

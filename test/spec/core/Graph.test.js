@@ -9,21 +9,23 @@ describe('Graph', () => {
 
     it('accepts a Graph', () => {
       const entity = iD.osmEntity();
-      const graph = new iD.Graph(new iD.Graph([entity]));
-      expect(graph.entity(entity.id)).to.equal(entity);
+      const graph1 = new iD.Graph([entity]);
+      const graph2 = new iD.Graph(graph1);
+      expect(graph2.entity(entity.id)).to.equal(entity);
     });
 
-    it('copies other\'s entities', () => {
+    it('shallow copies other\'s entities', () => {
       const entity = iD.osmEntity();
-      const base = new iD.Graph([entity]);
-      const graph = new iD.Graph(base);
-      expect(graph.entities).not.to.equal(base.entities);
+      const graph1 = new iD.Graph([entity]);
+      const graph2 = new iD.Graph(graph1);
+      expect(graph2.local).to.not.equal(graph1.local);
+      expect(graph2.local.entities).not.to.equal(graph1.local.entities);
     });
 
-    it('rebases on other\'s base', () => {
-      const base = new iD.Graph();
-      const graph = new iD.Graph(base);
-      expect(graph.base().entities).to.equal(base.base().entities);
+    it('shares base data among chain of Graphs', () => {
+      const graph1 = new iD.Graph();
+      const graph2 = new iD.Graph(graph1);
+      expect(graph2.base).to.equal(graph1.base);
     });
 
     it('freezes by default', () => {
@@ -100,8 +102,8 @@ describe('Graph', () => {
     it('inherits entities from base', () => {
       const graph = new iD.Graph();
       graph.rebase([iD.osmNode({ id: 'n' })], [graph]);
-      expect(graph.entities).to.not.have.any.keys('n');
-      expect(graph._base.entities).to.have.all.keys('n');
+      expect(graph.local.entities).to.not.have.any.keys('n');
+      expect(graph.base.entities).to.have.all.keys('n');
     });
 
     it('updates parentWays', () => {
@@ -111,8 +113,8 @@ describe('Graph', () => {
       const graph = new iD.Graph([n, w1]);
       graph.rebase([w2], [graph]);
       expect(graph.parentWays(n)).to.have.members([w1, w2]);
-      expect(graph._parentWays).to.not.have.any.keys('n');
-      expect(graph._base._parentWays).to.have.all.keys('n');
+      expect(graph.local.parentWays).to.not.have.any.keys('n');
+      expect(graph.base.parentWays).to.have.all.keys('n');
     });
 
     it('avoids adding duplicate parentWays', () => {
@@ -171,8 +173,8 @@ describe('Graph', () => {
       const graph = new iD.Graph([n, r1]);
       graph.rebase([r2], [graph]);
       expect(graph.parentRelations(n)).to.have.members([r1, r2]);
-      expect(graph._parentRels).to.not.have.any.keys('n');
-      expect(graph._base._parentRels).to.have.all.keys('n');
+      expect(graph.local.parentRels).to.not.have.any.keys('n');
+      expect(graph.base.parentRels).to.have.all.keys('n');
     });
 
     it('avoids re-adding a modified relation as a parent relation', () => {

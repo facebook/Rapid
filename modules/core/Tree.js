@@ -187,6 +187,7 @@ export class Tree {
    */
   rebase(entities, force) {
     const graph = this._current;
+    const local = graph.local;
     const toUpdate = new Map();
 
     for (const entity of entities) {
@@ -195,19 +196,12 @@ export class Tree {
       const entityID = entity.id;
 
       // Entity is deleted in current graph, leave it out of the tree..
-      const isDeleted = graph.entities.has(entityID) && (graph.entities.get(entityID) === undefined);
+      const isDeleted = local.entities.has(entityID) && (local.entities.get(entityID) === undefined);
       if (isDeleted) continue;
 
       // Entity is already in the tree, skip (unless force = true)
       if (this._entityBoxes.has(entityID) && !force) continue;
 
-//      if (graph.entities.hasOwnProperty(entityID) || this._entityBoxes.has(entityID)) {
-//        if (!force) {
-//          continue;
-//        } else if (this._entityBoxes.has(entityID)) {
-//          this._removeEntity(entity);
-//        }
-//      }
       // Add or Replace the Entity
       this._removeEntity(entityID);
       toUpdate.set(entityID, entity);
