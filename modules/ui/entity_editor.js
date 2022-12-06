@@ -289,12 +289,11 @@ export function uiEntityEditor(context) {
     }
 
     function revertTags(keys) {
-
         var actions = [];
         for (var i in _entityIDs) {
             var entityID = _entityIDs[i];
 
-            var original = context.graph().base().entities[entityID];
+            var original = context.graph().base().entities.get(entityID);
             var changed = {};
             for (var j in keys) {
                 var key = keys[j];

@@ -97,10 +97,11 @@ describe('Graph', () => {
       expect(graph.entity('n')).to.equal(b);
     });
 
-    it('inherits entities from base prototypally', () => {
+    it('inherits entities from base', () => {
       const graph = new iD.Graph();
       graph.rebase([iD.osmNode({ id: 'n' })], [graph]);
-      expect(graph.entities).not.to.have.ownProperty('n');
+      expect(graph.entities).to.not.have.any.keys('n');
+      expect(graph._base.entities).to.have.all.keys('n');
     });
 
     it('updates parentWays', () => {
@@ -109,8 +110,9 @@ describe('Graph', () => {
       const w2 = iD.osmWay({ id: 'w2', nodes: ['n'] });
       const graph = new iD.Graph([n, w1]);
       graph.rebase([w2], [graph]);
-      expect(graph.parentWays(n)).to.eql([w1, w2]);
-      expect(graph._parentWays.hasOwnProperty('n')).to.be.false;
+      expect(graph.parentWays(n)).to.have.members([w1, w2]);
+      expect(graph._parentWays).to.not.have.any.keys('n');
+      expect(graph._base._parentWays).to.have.all.keys('n');
     });
 
     it('avoids adding duplicate parentWays', () => {
@@ -118,7 +120,7 @@ describe('Graph', () => {
       const w1 = iD.osmWay({ id: 'w1', nodes: ['n'] });
       const graph = new iD.Graph([n, w1]);
       graph.rebase([w1], [graph]);
-      expect(graph.parentWays(n)).to.eql([w1]);
+      expect(graph.parentWays(n)).to.have.members([w1]);
     });
 
     it('updates parentWays for nodes with modified parentWays', () => {
@@ -129,7 +131,7 @@ describe('Graph', () => {
       const graph = new iD.Graph([n, w1]);
       const graph2 = graph.replace(w2);
       graph.rebase([w3], [graph, graph2]);
-      expect(graph2.parentWays(n)).to.eql([w1, w2, w3]);
+      expect(graph2.parentWays(n)).to.have.members([w1, w2, w3]);
     });
 
     it('avoids re-adding a modified way as a parent way', () => {
@@ -168,8 +170,9 @@ describe('Graph', () => {
       const r2 = iD.osmRelation({ id: 'r2', members: [{ id: 'n'}] });
       const graph = new iD.Graph([n, r1]);
       graph.rebase([r2], [graph]);
-      expect(graph.parentRelations(n)).to.eql([r1, r2]);
-      expect(graph._parentRels.hasOwnProperty('n')).to.be.false;
+      expect(graph.parentRelations(n)).to.have.members([r1, r2]);
+      expect(graph._parentRels).to.not.have.any.keys('n');
+      expect(graph._base._parentRels).to.have.all.keys('n');
     });
 
     it('avoids re-adding a modified relation as a parent relation', () => {
@@ -199,7 +202,7 @@ describe('Graph', () => {
       const graph = new iD.Graph([n, r1]);
       const graph2 = graph.replace(r2);
       graph.rebase([r3], [graph, graph2]);
-      expect(graph2.parentRelations(n)).to.eql([r1, r2, r3]);
+      expect(graph2.parentRelations(n)).to.have.members([r1, r2, r3]);
     });
 
     it('invalidates transients', () => {
@@ -286,7 +289,7 @@ describe('Graph', () => {
       const node = iD.osmNode({ id: 'n' });
       const w1 = iD.osmWay({ id: 'w', nodes: ['n'] });
       const graph = new iD.Graph([node]);
-      expect(graph.replace(w1).parentWays(node)).to.eql([w1]);
+      expect(graph.replace(w1).parentWays(node)).to.have.members([w1]);
     });
 
     it('removes parentWays', () => {
@@ -300,14 +303,14 @@ describe('Graph', () => {
       const node = iD.osmNode({ id: 'n' });
       const w1 = iD.osmWay({ id: 'w', nodes: ['n'] });
       const graph = new iD.Graph([node, w1]);
-      expect(graph.replace(w1).parentWays(node)).to.eql([w1]);
+      expect(graph.replace(w1).parentWays(node)).to.have.members([w1]);
     });
 
     it('adds parentRelations', () => {
       const node = iD.osmNode({ id: 'n' });
       const r1 = iD.osmRelation({ id: 'r', members: [{ id: 'n'}] });
       const graph = new iD.Graph([node]);
-      expect(graph.replace(r1).parentRelations(node)).to.eql([r1]);
+      expect(graph.replace(r1).parentRelations(node)).to.have.members([r1]);
     });
 
     it('removes parentRelations', () => {
@@ -321,7 +324,7 @@ describe('Graph', () => {
       const node = iD.osmNode({ id: 'n' });
       const r1 = iD.osmRelation({ id: 'r', members: [{ id: 'n'}] });
       const graph = new iD.Graph([node, r1]);
-      expect(graph.replace(r1).parentRelations(node)).to.eql([r1]);
+      expect(graph.replace(r1).parentRelations(node)).to.have.members([r1]);
     });
   });
 
@@ -394,7 +397,7 @@ describe('Graph', () => {
       let graph = new iD.Graph([n1, w1]).replace(w2);
       graph = graph.revert('w');
       expect(graph.hasEntity('n')).to.equal(n1);
-      expect(graph.parentWays(n1)).to.eql([w1]);
+      expect(graph.parentWays(n1)).to.have.members([w1]);
     });
 
     it('reverts updated parentRelations', () => {
@@ -404,7 +407,7 @@ describe('Graph', () => {
       let graph = new iD.Graph([n1, r1]).replace(r2);
       graph = graph.revert('r');
       expect(graph.hasEntity('n')).to.equal(n1);
-      expect(graph.parentRelations(n1)).to.eql([r1]);
+      expect(graph.parentRelations(n1)).to.have.members([r1]);
     });
 
     it('restores deleted parentWays', () => {
@@ -413,7 +416,7 @@ describe('Graph', () => {
       let graph = new iD.Graph([n1, w1]).remove(w1);
       graph = graph.revert('w');
       expect(graph.hasEntity('n')).to.equal(n1);
-      expect(graph.parentWays(n1)).to.eql([w1]);
+      expect(graph.parentWays(n1)).to.have.members([w1]);
     });
 
     it('restores deleted parentRelations', () => {
@@ -422,7 +425,7 @@ describe('Graph', () => {
       let graph = new iD.Graph([n1, r1]).remove(r1);
       graph = graph.revert('r');
       expect(graph.hasEntity('n')).to.equal(n1);
-      expect(graph.parentRelations(n1)).to.eql([r1]);
+      expect(graph.parentRelations(n1)).to.have.members([r1]);
     });
   });
 
@@ -470,7 +473,7 @@ describe('Graph', () => {
       const node = iD.osmNode({ id: 'n1' });
       const way = iD.osmWay({ id: 'w1', nodes: ['n1'] });
       const graph = new iD.Graph([node, way]);
-      expect(graph.parentWays(node)).to.eql([way]);
+      expect(graph.parentWays(node)).to.have.members([way]);
       expect(graph.parentWays(way)).to.eql([]);
     });
   });
@@ -481,7 +484,7 @@ describe('Graph', () => {
       const nonnode = iD.osmNode({ id: 'n2' });
       const relation = iD.osmRelation({ id: 'r1', members: [{ id: 'n1', role: 'from' }] });
       const graph = new iD.Graph([node, relation]);
-      expect(graph.parentRelations(node)).to.eql([relation]);
+      expect(graph.parentRelations(node)).to.have.members([relation]);
       expect(graph.parentRelations(nonnode)).to.eql([]);
     });
   });
@@ -491,7 +494,7 @@ describe('Graph', () => {
       const node = iD.osmNode({ id: 'n1' });
       const way = iD.osmWay({ id: 'w1', nodes: ['n1'] });
       const graph = new iD.Graph([node, way]);
-      expect(graph.childNodes(way)).to.eql([node]);
+      expect(graph.childNodes(way)).to.have.members([node]);
     });
   });
 });

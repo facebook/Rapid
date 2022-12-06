@@ -33,11 +33,9 @@ export class Tree {
   /**
    * _removeEntity
    * Remove an Entity from all internal indexes.
-   * @param  entity
+   * @param  entityID
    */
-  _removeEntity(entity) {
-    const entityID = entity.id;
-
+  _removeEntity(entityID) {
     const ebox = this._entityBoxes.get(entityID);
     if (ebox) {
       this._entityRBush.remove(ebox);
@@ -122,7 +120,7 @@ export class Tree {
 
     for (const way of graph.parentWays(entity)) {
       if (this._entityBoxes.has(way.id)) {
-        this._removeEntity(way);
+        this._removeEntity(way.id);
         toUpdate.set(way.id, way);
       }
       this._includeParents(way, toUpdate, seen);
@@ -130,7 +128,7 @@ export class Tree {
 
     for (const relation of graph.parentRelations(entity)) {
       if (this._entityBoxes.has(relation.id)) {
-        this._removeEntity(relation);
+        this._removeEntity(relation.id);
         toUpdate.set(relation.id, relation);
       }
       this._includeParents(relation, toUpdate, seen);
@@ -158,13 +156,13 @@ export class Tree {
 
     if (changed.deletion) {
       for (const entity of diff.deleted()) {
-        this._removeEntity(entity);
+        this._removeEntity(entity.id);
       }
     }
 
     if (changed.geometry) {
       for (const entity of diff.modified()) {
-        this._removeEntity(entity);
+        this._removeEntity(entity.id);
         toUpdate.set(entity.id, entity);
         this._includeParents(entity, toUpdate);
       }
@@ -182,7 +180,7 @@ export class Tree {
 
   /**
    * rebase
-   * This is used to load new Entities into the tree, but without adjusting what Graph is current.
+   * This is used to load new Entities into the tree, but without adjusting which Graph is current.
    * It's called when fetching new data from the OSM API, restoring saved history, etc.
    * @param  entities   Array of Entities
    * @param  force?     If `true`, replace an Entity, even if we've seen it already
@@ -196,15 +194,23 @@ export class Tree {
 
       const entityID = entity.id;
 
-      if (graph.entities.hasOwnProperty(entityID) || this._entityBoxes.has(entityID)) {
-        if (!force) {
-          continue;
-        } else if (this._entityBoxes.has(entityID)) {
-          this._removeEntity(entity);
-        }
-      }
+      // Entity is deleted in current graph, leave it out of the tree..
+      const isDeleted = graph.entities.has(entityID) && (graph.entities.get(entityID) === undefined);
+      if (isDeleted) continue;
 
-      toUpdate.set(entity.id, entity);
+      // Entity is already in the tree, skip (unless force = true)
+      if (this._entityBoxes.has(entityID) && !force) continue;
+
+//      if (graph.entities.hasOwnProperty(entityID) || this._entityBoxes.has(entityID)) {
+//        if (!force) {
+//          continue;
+//        } else if (this._entityBoxes.has(entityID)) {
+//          this._removeEntity(entity);
+//        }
+//      }
+      // Add or Replace the Entity
+      this._removeEntity(entityID);
+      toUpdate.set(entityID, entity);
       this._includeParents(entity, toUpdate);
     }
 

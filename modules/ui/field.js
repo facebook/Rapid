@@ -79,7 +79,7 @@ export function uiField(context, presetField, entityIDs, options) {
     function isModified() {
         if (!entityIDs || !entityIDs.length) return false;
         return entityIDs.some(function(entityID) {
-            var original = context.graph().base().entities[entityID];
+            var original = context.graph().base().entities.get(entityID);
             var latest = context.graph().entity(entityID);
             return field.keys.some(function(key) {
                 return original ? latest.tags[key] !== original.tags[key] : latest.tags[key];
