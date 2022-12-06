@@ -174,6 +174,16 @@ export class AbstractLayer {
     feature.drawing = classList.has('drawing');
   }
 
+  /**
+   * isDrawing
+   * @param dataId 'String' dataID (e.g. 'w-123')
+   * @returns true or false
+   */
+  isDrawing(dataID) {
+    const classList = this._dataHasClass.get(dataID);
+    return classList?.has('drawing');
+  }
+
 
   /**
    * bindData

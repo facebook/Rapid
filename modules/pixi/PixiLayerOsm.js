@@ -489,12 +489,16 @@ export class PixiLayerOsm extends AbstractLayer {
     for (const [nodeID, node] of entities) {
       let parentContainer = null;
 
-      if (zoom >= 16 && isInterestingVertex(node)) {  // minor importance
+      if (zoom >= 16 && isInterestingVertex(node) ) {  // minor importance
         parentContainer = pointsContainer;
       }
       if (isRelatedVertex(nodeID)) {   // major importance
         parentContainer = selectedContainer;
       }
+      if (this.isDrawing(node.id)) {
+        parentContainer = selectedContainer; // Also major importance
+      }
+
       if (!parentContainer) continue;   // this vertex isn't important enough to render
 
       const featureID = `${this.layerID}-${nodeID}`;

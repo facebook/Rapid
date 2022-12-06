@@ -416,7 +416,6 @@ export class ModeDrawArea extends AbstractMode {
       ) {
         context.replace(
           this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),
-          actionAddVertex(this.drawWay.id, targetNode.id, targetIndex), // Add target node to draw way
           this._getAnnotation()
         );
         this.drawWay = context.entity(this.drawWay.id);
