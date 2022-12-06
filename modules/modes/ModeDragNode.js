@@ -91,7 +91,16 @@ export class ModeDragNode extends AbstractMode {
       context.perform(actionNoop());
     }
 
+    // While drawing, we want to hide the hit targets being generated for the node and any ways attached to it.
     this.dragNode = entity;
+    const scene = this.context.scene();
+    const targetParentWayIDs = this.context.graph().parentWays(this.dragNode);
+
+    scene.classData('osm', this.dragNode.id, 'drawing');
+    targetParentWayIDs.forEach(parentWay => {
+      scene.classData('osm', parentWay.id, 'drawing');
+    });
+
     this._startLoc = entity.loc;
 
     // `_clickLoc` is used later to calculate a drag offset,
@@ -124,6 +133,8 @@ export class ModeDragNode extends AbstractMode {
 
     this._selectedData.clear();
     this._wasMidpoint = false;
+    this.context.scene().clearClass('drawing');
+
     this.dragNode = null;
     this._startLoc = null;
     this._clickLoc = null;
