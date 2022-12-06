@@ -4,7 +4,6 @@ import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
 import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
-import { Graph } from '../../core/Graph';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
@@ -85,12 +84,10 @@ export function uiIntro(context, skipToRapid) {
     const original = {
       hash: window.location.hash,
       transform: context.map().transform(),
-      opacity: context.background().brightness,
+      brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
-      historyJSON: history.toJSON(),
-      baseEntities: history.graph().base().entities,
-      caches: osm && osm.caches()
+      historyJSON: history.toJSON()
     };
 
     // Show sidebar and disable the sidebar resizing button
@@ -98,23 +95,24 @@ export function uiIntro(context, skipToRapid) {
     context.ui().sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
-    // Block saving
+    // Disable saving
     context.inIntro(true);
 
-    // Load semi-real data used in intro
-    if (osm) { osm.toggle(false).reset(); }
+    // Disable OSM
+    if (osm) {
+      osm.toggle(false).reset();
+    }
+
+    // Load walkthrough data
     history.reset();
-    history.merge(Object.values(new Graph().load(_introGraph).entities));
+    history.merge(Object.values(_introGraph));
     history.checkpoint('initial');
 
     // Setup imagery
     const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
     imagery.baseLayerSource(introSource);
     original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
-    imagery.opacity = 1;
-
-    // Setup data layers (only OSM & ai-features, and the background imagery)
-    context.scene().onlyLayers(['osm', 'rapid', 'background']);
+    imagery.brightness = 1;
 
     // Setup RapiD Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();
@@ -134,11 +132,8 @@ export function uiIntro(context, skipToRapid) {
 
     if (services.fbMLRoads) {
       services.fbMLRoads.toggle(false);    // disable network
-      const entities = Object.values(new Graph().load(_rapidGraph).entities);
-      services.fbMLRoads.merge('rapid_intro_graph', entities);
+      services.fbMLRoads.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
-
-    context.background().brightness = 1;
 
     const curtain = uiCurtain(context.container().node());
     selection.call(curtain);
@@ -153,7 +148,6 @@ export function uiIntro(context, skipToRapid) {
     let chapters = chapterFlow.map((chapter, i) => {
       let s = chapterUi[chapter](context, curtain.reveal)
         .on('done', () => {
-
           buttons
             .filter(d => d.title === s.title)
             .classed('finished', true);
@@ -196,16 +190,25 @@ export function uiIntro(context, skipToRapid) {
       navwrap.remove();
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
 
-      // Restore State
-      if (original.caches) { osm.toggle(true).reset().caches(original.caches); }
-      history.reset().merge(Object.values(original.baseEntities));
+      // Restore Map State
       imagery.baseLayerSource(original.baseLayer);
       original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
-      context.background().brightness = original.opacity;
-      if (original.historyJSON) { history.fromJSON(original.historyJSON, false); }
+      imagery.brightness = original.brightness;
       context.map().transform(original.transform);
       window.location.replace(original.hash);
 
+      // Restore History and Edits
+      history.reset();
+      if (original.historyJSON) {
+        history.fromJSON(original.historyJSON, true);
+      }
+
+      // Enable OSM
+      if (osm) {
+        osm.toggle(true).reset();
+      }
+
+      // Enable Saving
       context.inIntro(false);
     });
 
