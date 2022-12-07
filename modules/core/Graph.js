@@ -76,9 +76,9 @@ export class Graph {
    * @return  Entity from either local or base graph, or `undefined` if not found.
    */
   hasEntity(entityID) {
-    const base = this._base;
-    const local = this._local;
-    return local.entities.has(entityID) ? local.entities.get(entityID) : base.entities.get(entityID);
+    const base = this._base.entities;
+    const local = this._local.entities;
+    return local.has(entityID) ? local.get(entityID) : base.get(entityID);
   }
 
 
@@ -144,9 +144,9 @@ export class Graph {
    * @return  `true` if no parents
    */
   isPoi(entity) {
-    const base = this._base;
-    const local = this._local;
-    const parentIDs = local.parentWays.get(entity.id) ?? base.parentWays.get(entity.id) ?? new Set();
+    const base = this._base.parentWays;
+    const local = this._local.parentWays;
+    const parentIDs = local.get(entity.id) ?? base.get(entity.id) ?? new Set();
     return parentIDs.size === 0;
   }
 
@@ -157,10 +157,10 @@ export class Graph {
    * @return  `true` if >1 parents
    */
   isShared(entity) {
-    const base = this._base;
-    const local = this._local;
-    const parentIDs = local.parentWays.get(entity.id) ?? base.parentWays.get(entity.id) ?? new Set();
-    return parentIDs.size  > 1;
+    const base = this._base.parentWays;
+    const local = this._local.parentWays;
+    const parentIDs = local.get(entity.id) ?? base.get(entity.id) ?? new Set();
+    return parentIDs.size > 1;
   }
 
 
@@ -173,9 +173,9 @@ export class Graph {
    * @throws  Will throw if any parent Way is not found
    */
   parentWays(entity) {
-    const base = this._base;
-    const local = this._local;
-    const parentIDs = local.parentWays.get(entity.id) ?? base.parentWays.get(entity.id) ?? new Set();
+    const base = this._base.parentWays;
+    const local = this._local.parentWays;
+    const parentIDs = local.get(entity.id) ?? base.get(entity.id) ?? new Set();
     return Array.from(parentIDs).map(parentID => this.entity(parentID));
   }
 
@@ -189,9 +189,9 @@ export class Graph {
    * @throws  Will throw if any parent Relation is not found
    */
   parentRelations(entity) {
-    const base = this._base;
-    const local = this._local;
-    const parentIDs = local.parentRels.get(entity.id) ?? base.parentRels.get(entity.id) ?? new Set();
+    const base = this._base.parentRels;
+    const local = this._local.parentRels;
+    const parentIDs = local.get(entity.id) ?? base.get(entity.id) ?? new Set();
     return Array.from(parentIDs).map(parentID => this.entity(parentID));
   }
 
@@ -245,7 +245,7 @@ export class Graph {
    */
   rebase(entities, stack, force) {
     const base = this._base;
-    const head = stack[stack.length - 1]._local;
+    const head = stack[stack.length - 1]._local.entities;
     const restoreIDs = new Set();
 
     for (const entity of entities) {
@@ -261,7 +261,7 @@ export class Graph {
       // (A "delete" is stored as: setting that entity = `undefined`)
       if (entity.type === 'way') {
         for (const id of entity.nodes) {
-          if (head.entities.has(id) && (head.entities.get(id) === undefined)) {  // was deleted
+          if (head.has(id) && head.get(id) === undefined) {  // was deleted
             restoreIDs.add(id);
           }
         }
@@ -269,11 +269,11 @@ export class Graph {
     }
 
     for (const graph of stack) {
-      const local = graph._local;
+      const local = graph._local.entities;
       // Restore deleted nodes that were discovered to belong to a parentWay.
       for (const id of restoreIDs) {
-        if (local.entities.has(id) && (local.entities.get(id) === undefined)) {  // was deleted
-          local.entities.delete(id);
+        if (local.has(id) && local.get(id) === undefined) {  // was deleted
+          local.delete(id);
         }
       }
       graph._updateRebased();
