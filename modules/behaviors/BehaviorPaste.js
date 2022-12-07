@@ -3,8 +3,8 @@ import { Extent, vecSubtract } from '@id-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
-import { modeMove } from '../modes/move';
 import { utilDetect } from '../util/detect';
+import { t } from '../core/localizer';
 
 const MACOS = (utilDetect().os === 'mac');
 
@@ -59,8 +59,9 @@ export class BehaviorPaste extends AbstractBehavior {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
+    console.log(`${MACOS && e.metaKey} + ${e.key}`);
     const modifier = (MACOS && e.metaKey) || (!MACOS && e.ctrlKey);
-    if (modifier && e.key === 'V') {
+    if (modifier && e.key === 'v') {
       this._doPaste(e);
     }
   }
@@ -116,12 +117,12 @@ export class BehaviorPaste extends AbstractBehavior {
     // Move pasted features to where mouse pointer is..
     // Default to map center if we can't determine the mouse pointer
     const copyLoc = context.copyLoc();
-    const copyPoint = (copyLoc && projection.project(copyLoc)) || extent.center();
+    const copyPoint = (copyLoc && projection.project(copyLoc)) || projection.project(extent.center());
     const mousePoint = eventManager.coord || context.map().centerPoint();
     const delta = vecSubtract(mousePoint, copyPoint);
 
-    context.perform(actionMove(pasteIDs, delta, projection));
-    context.enter(modeMove(context, pasteIDs, startGraph));
+    context.perform(actionMove(pasteIDs, delta, projection), t('operations.paste.annotation', { n: context.copyIDs().length }));
+    context.enter('select', { selection: pasteIDs });
   }
 
 }
