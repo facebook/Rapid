@@ -36,13 +36,29 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
-# [2.0.0-beta]
+# [2.0.0-alpha3.1]
 
-#### 2022-Dec-15
+#### 2022-Dec-07
+This is a small refresher release to address a few issues reported by internal testers. Keep those bugs coming!
+
+#### :tada: New code- Graph and history rewrite optimization
+
+This version of the alpha has rewritten substantial portions of our core code. This rewrite was to help solve issues like #665 where 'ghost' nodes or ways are present on the map. This fix is still in flight and not complete yet.
 ### Bugfixes:
-* [#685] fixed the color for mapillary image pins.
+* [#685] Fixed the color for mapillary image pins.
+* [#684] Quickly left-then-right clicking a way should now bring up the context menu, NOT add a point to the way.
+* [#699] Privacy Policy link and text have been updated from iD to Map with AI.
+* [#695] Cmd-V to paste features should now work once again.
+* [#681] Area Drawing mode should now render all vertices of the area during the draw.
+* [#687] The map can now be nudged (skootched?) during draw gestures by moving the pointer near the side of the map.
 
 [#685]: https://github.com/facebook/RapiD/issues/685
+[#684]: https://github.com/facebook/RapiD/issues/684
+[#699]: https://github.com/facebook/RapiD/issues/699
+[#695]: https://github.com/facebook/RapiD/issues/695
+[#681]: https://github.com/facebook/RapiD/issues/681
+[#687]: https://github.com/facebook/RapiD/issues/687
+[#665]: https://github.com/facebook/RapiD/issues/665
 # [2.0.0-alpha3]
 
 #### 2022-Nov-21
