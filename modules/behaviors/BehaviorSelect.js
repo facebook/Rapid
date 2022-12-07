@@ -228,10 +228,10 @@ export class BehaviorSelect extends AbstractBehavior {
 
     const dist = vecLength(down.coord, up.coord);
     const updist = vecLength(up.coord, this.lastUp ? this.lastUp.coord : 0);
-
-    // Second click nearby, targeting the same target, within half a second of the last up event.
+    const lClick = up.event.button === 0;
+    // Second left-click nearby, targeting the same target, within half a second of the last up event.
     // We got ourselves a double click!
-    if (this.lastUp?.target?.dataID && updist < NEAR_TOLERANCE && this.lastUp?.target?.dataID === up.target?.dataID && up.time - (this.lastUp ? this.lastUp.time : 0) < 500) {
+    if ( lClick && this.lastUp?.target?.dataID && updist < NEAR_TOLERANCE && this.lastUp?.target?.dataID === up.target?.dataID && up.time - (this.lastUp ? this.lastUp.time : 0) < 500) {
       this.lastClick = this.lastUp = up;  // We will accept this as a click
       this._doDoubleClick(up.coord, up.target);
     } else if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
