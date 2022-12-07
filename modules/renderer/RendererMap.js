@@ -175,8 +175,12 @@ export class RendererMap extends EventEmitter {
       })
       .on('change', difference => {
         if (difference) {
-          const entityIDs = [...difference.complete().keys()];
-          scene.dirtyData('osm', entityIDs);
+          const complete = difference.complete();
+          for (const [entityID, entity] of complete) {
+            if (entity) entity.touch();  // bump version in place
+          }
+//         const entityIDs = [...complete.keys()];
+//         scene.dirtyData('osm', entityIDs);
         }
         this.immediateRedraw();
       })
@@ -209,6 +213,7 @@ export class RendererMap extends EventEmitter {
     this._renderer.deferredRender();
   }
 
+
   /**
    * deferredRedraw
    * Tell the renderer to redraw as soon as possible
@@ -237,6 +242,7 @@ export class RendererMap extends EventEmitter {
     this._renderer.resize(w, h);
   }
 
+
   /**
    * centerPoint
    * Returns the [x,y] pixel at the center of the viewport
@@ -245,6 +251,7 @@ export class RendererMap extends EventEmitter {
   centerPoint() {
     return vecScale(this._dimensions, 0.5);
   }
+
 
   /**
    * mouse
@@ -255,6 +262,7 @@ export class RendererMap extends EventEmitter {
     return this._renderer.events.coord;
   }
 
+
   /**
    * mouseLoc
    * Gets the current [lon,lat] location of the pointer
@@ -264,6 +272,7 @@ export class RendererMap extends EventEmitter {
     const coord = this.mouse() || this.centerPoint();
     return this.context.projection.invert(coord);
   }
+
 
   /**
    * transform
@@ -285,6 +294,7 @@ export class RendererMap extends EventEmitter {
     this._renderer.setTransform(t2, duration);
     return this;
   }
+
 
   /**
    * centerZoom
@@ -318,6 +328,7 @@ export class RendererMap extends EventEmitter {
     return this.transform({ x: t[0], y: t[1], k: k2 }, duration);
   }
 
+
   /**
    * center
    * Set/Get the map center
@@ -337,6 +348,7 @@ export class RendererMap extends EventEmitter {
     return this.centerZoom(loc2, this.zoom(), duration);
   }
 
+
   /**
    * zoom
    * Set/Get the map zoom
@@ -354,6 +366,7 @@ export class RendererMap extends EventEmitter {
     z2 = clamp(z2 || 0, MINZOOM, MAXZOOM);
     return this.centerZoom(this.center(), z2, duration);
   }
+
 
   /**
    * pan
@@ -375,6 +388,7 @@ export class RendererMap extends EventEmitter {
 
     return this.transform({ x: t.x + delta[0], y: t.y + delta[1], k: t.k }, duration);
   }
+
 
   /**
    * zoomTo
@@ -438,6 +452,7 @@ export class RendererMap extends EventEmitter {
     return Math.min(z + extraZoom, MAXZOOM);
   }
 
+
   /**
    * extent
    * Set/Get the map extent
@@ -454,6 +469,7 @@ export class RendererMap extends EventEmitter {
       return this.centerZoom(extent.center(), this.extentZoom(extent));
     }
   }
+
 
   /**
    * trimmedExtent

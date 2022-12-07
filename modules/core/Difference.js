@@ -178,7 +178,7 @@ export class Difference {
 
   /**
    * complete
-   * Returns complete set of entities that require a redraw
+   * Returns complete set of entities affected by a change
    * @return  Map(entityID -> Entity)
    */
   complete() {
@@ -196,12 +196,19 @@ export class Difference {
         const headNodes = h ? h.nodes : [];
         const baseNodes = b ? b.nodes : [];
 
-        for (const nodeID of utilArrayDifference(headNodes, baseNodes)) {
+        for (const nodeID of baseNodes) {
           result.set(nodeID, head.hasEntity(nodeID));
         }
-        for (const nodeID of utilArrayDifference(baseNodes, headNodes)) {
+        for (const nodeID of headNodes) {
           result.set(nodeID, head.hasEntity(nodeID));
         }
+
+//        for (const nodeID of utilArrayDifference(headNodes, baseNodes)) {
+//          result.set(nodeID, head.hasEntity(nodeID));
+//        }
+//        for (const nodeID of utilArrayDifference(baseNodes, headNodes)) {
+//          result.set(nodeID, head.hasEntity(nodeID));
+//        }
       }
 
       if (entity.type === 'relation' && entity.isMultipolygon()) {

@@ -338,17 +338,7 @@ export class Graph {
 
     let removed, added;
 
-    // todo: experiment
-    // When changing a node, update the internal verisons of its parentways so that they update too.
-    // This code might be the wrong thing, or might belong in difference.js
-    // Need to consider undo/redo also
-    if (entity.type === 'node' && parentWays === local.parentWays) {
-      const parents = this.parentWays(entity);
-      for (const parent of parents) {
-        parent.v = (parent.v || 0) + 1;   // very hacky - bump version in place
-      }
-
-    } else if (entity.type === 'way') {  // Update parentWays
+    if (entity.type === 'way') {  // Update parentWays
       if (previous && current) {  // Way Modified
         removed = utilArrayDifference(previous.nodes, current.nodes);
         added = utilArrayDifference(current.nodes, previous.nodes);

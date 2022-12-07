@@ -173,7 +173,7 @@ export function coreHistory(context) {
 
             for (const member of entity.members) {
               if (newIDs.has(member.id)) {
-                entity.v = (entity.v || 0) + 1;   // bump version in place
+                entity.touch();  // bump version in place
               }
             }
           }

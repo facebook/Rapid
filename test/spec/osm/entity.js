@@ -117,6 +117,25 @@ describe('iD.osmEntity', function () {
         });
     });
 
+    describe('#touch', function () {
+        it('updates the entity version in place', function () {
+            var a = iD.osmEntity();
+            var b = a.touch();
+            expect(b instanceof iD.osmEntity).to.be.true;
+            expect(a).to.equal(b);
+        });
+
+        it('sets v to 1 if previously undefined', function() {
+            var e = iD.osmEntity().touch();
+            expect(e.v).to.equal(1);
+        });
+
+        it('increments v', function() {
+            var e = iD.osmEntity({v: 1}).touch();
+            expect(e.v).to.equal(2);
+        });
+    });
+
     describe('#mergeTags', function () {
         it('returns self if unchanged', function () {
             var a = iD.osmEntity({tags: {a: 'a'}});

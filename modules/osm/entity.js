@@ -134,9 +134,14 @@ osmEntity.prototype = {
 
 
     update: function(attrs) {
-        return osmEntity(this, attrs, { v: 1 + (this.v || 0) });
+        return osmEntity(this, attrs).touch();
     },
 
+    // Bump internal version in place
+    touch: function(attrs) {
+        this.v = (this.v || 0) + 1;
+        return this;
+    },
 
     mergeTags: function(tags) {
         var merged = Object.assign({}, this.tags);   // shallow copy
