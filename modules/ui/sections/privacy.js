@@ -53,7 +53,7 @@ export function uiSectionPrivacy(context) {
       .append('a')
       .attr('target', '_blank')
       .call(svgIcon('#iD-icon-out-link', 'inline'))
-      .attr('href', 'https://github.com/openstreetmap/iD/blob/release/PRIVACY.md')
+      .attr('href', 'https://mapwith.ai/doc/license/MapWithAIPrivacyPolicy.pdf')
       .append('span')
       .html(t.html('preferences.privacy.privacy_link'));
 
