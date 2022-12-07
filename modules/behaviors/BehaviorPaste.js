@@ -59,7 +59,6 @@ export class BehaviorPaste extends AbstractBehavior {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
-    console.log(`${MACOS && e.metaKey} + ${e.key}`);
     const modifier = (MACOS && e.metaKey) || (!MACOS && e.ctrlKey);
     if (modifier && e.key === 'v') {
       this._doPaste(e);
