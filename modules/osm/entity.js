@@ -4,6 +4,8 @@ import { debug } from '../index';
 import { osmIsInterestingTag } from './tags';
 
 
+let _nextv = 0;
+
 export function osmEntity(attrs) {
     // For prototypal inheritance.
     if (this instanceof osmEntity) return;
@@ -50,8 +52,8 @@ osmEntity.key = function(entity) {
     return entity.id + 'v' + (entity.v || 0);
 };
 
-var _deprecatedTagValuesByKey;
 
+var _deprecatedTagValuesByKey;
 osmEntity.deprecatedTagValuesByKey = function(dataDeprecated) {
     if (!_deprecatedTagValuesByKey) {
         _deprecatedTagValuesByKey = {};
@@ -116,7 +118,7 @@ osmEntity.prototype = {
     copy: function(resolver, copies) {
         if (copies[this.id]) return copies[this.id];
 
-        var copy = osmEntity(this, { id: undefined, user: undefined, version: undefined });
+        var copy = osmEntity(this, { id: undefined, user: undefined, version: undefined, v: undefined });
         copies[this.id] = copy;
 
         return copy;
@@ -139,7 +141,7 @@ osmEntity.prototype = {
 
     // Bump internal version in place
     touch: function(attrs) {
-        this.v = (this.v || 0) + 1;
+        this.v = _nextv++;
         return this;
     },
 

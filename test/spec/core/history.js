@@ -409,32 +409,38 @@ describe('iD.coreHistory', function () {
         });
 
         it('generates v3 JSON', function() {
-            var node_1 = iD.osmNode({id: 'n-1'});
-            var node1 = iD.osmNode({id: 'n1'});
-            var node2 = iD.osmNode({id: 'n2'});
-            var node3 = iD.osmNode({id: 'n3'});
-            history.merge([node1, node2, node3]);
-            history.perform(iD.actionAddEntity(node_1));           // addition
-            history.perform(iD.actionChangeTags('n2', {k: 'v'}));  // modification
-            history.perform(iD.actionDeleteNode('n3'));            // deletion
+            const node_1 = iD.osmNode({id: 'n-1'});
+            const node1 = iD.osmNode({id: 'n1'});
+            const node2 = iD.osmNode({id: 'n2'});
+            const node3 = iD.osmNode({id: 'n3'});
+
+            const node_1_json = JSON.parse(JSON.stringify(node_1));
+            const node1_json = JSON.parse(JSON.stringify(node1));
+            const node2_json = JSON.parse(JSON.stringify(node2));
+            const node3_json = JSON.parse(JSON.stringify(node3));
+
+            history.merge([node1, node2, node3]);                  // merge base entities
+            history.perform(iD.actionAddEntity(node_1));           // add n-1
+            history.perform(iD.actionChangeTags('n2', {k: 'v'}));  // update n2
+            const node2upd = history.graph().entity('n2');
+            const node2upd_json = JSON.parse(JSON.stringify(node2upd));
+            history.perform(iD.actionDeleteNode('n3'));            // delete n3
 
             var json = JSON.parse(history.toJSON());
-            var node_1_json = JSON.parse(JSON.stringify(node_1));
-            var node1_json = JSON.parse(JSON.stringify(node1));
-            var node2_json = JSON.parse(JSON.stringify(node2));
-            var node2_upd_json = JSON.parse(JSON.stringify(node2.update({tags: {k: 'v'}})));
-            var node3_json = JSON.parse(JSON.stringify(node3));
-
             expect(json.version).to.eql(3);
-            expect(json.entities).to.deep.own.include(node_1_json);
-            expect(json.entities).to.not.include(node1_json);
-            expect(json.entities).to.deep.own.include(node2_upd_json);
-            expect(json.entities).to.not.include(node3_json);
 
+            expect(json.entities).to.deep.include(node_1_json);     // n-1 was added
+            expect(json.entities).to.deep.include(node2upd_json);   // n2 was updated
+            expect(json.entities).to.not.include(node1_json);       // n1 was never updated
+            expect(json.entities).to.not.include(node2_json);       // n2?
+            expect(json.entities).to.not.include(node3_json);       // n3 is now deleted
+
+            // base entities - before all edits
             expect(json.baseEntities).to.not.include(node_1_json);
-            expect(json.baseEntities).to.not.include(node1_json);
-            expect(json.baseEntities).to.deep.own.include(node2_json);
-            expect(json.baseEntities).to.deep.own.include(node3_json);
+            expect(json.baseEntities).to.not.include(node1_json);     // n1 was never updated
+            expect(json.baseEntities).to.deep.include(node2_json);    // n2 is in base
+            expect(json.baseEntities).to.deep.include(node3_json);    // n3 is in base
+            expect(json.baseEntities).to.not.include(node2upd_json);
         });
     });
 

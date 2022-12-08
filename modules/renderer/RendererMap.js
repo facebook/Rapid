@@ -175,10 +175,14 @@ export class RendererMap extends EventEmitter {
       })
       .on('change', difference => {
         if (difference) {
+          // todo - maybe only do this if difference.didChange.geometry?
           const complete = difference.complete();
           for (const [entityID, entity] of complete) {
-            if (entity) entity.touch();  // bump version in place
+            if (entity) {
+              entity.touch();  // bump version in place
+            }
           }
+          // touching entity will bump .v and the renderer should pick it up as dirty?
 //         const entityIDs = [...complete.keys()];
 //         scene.dirtyData('osm', entityIDs);
         }

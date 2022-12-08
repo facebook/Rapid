@@ -305,7 +305,7 @@ describe('Difference', () => {
       const head = base.replace(w2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('w', 'n2');
+      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('w', 'n1', 'n2');
       expect(complete.get('n2')).to.equal(n2);
     });
 
@@ -318,7 +318,7 @@ describe('Difference', () => {
       const head = base.replace(w2);
       const diff = new iD.Difference(base, head);
       const complete = diff.complete();
-      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('w', 'n2');
+      expect(complete).to.be.an.instanceof(Map).that.has.all.keys('w', 'n1', 'n2');
       expect(complete.get('n2')).to.equal(n2);
     });
 

@@ -62,13 +62,14 @@ describe('iD.osmEntity', function () {
             expect(result1).to.equal(result2);
         });
 
-        it('resets \'id\', \'user\', and \'version\' properties', function () {
-            var n = iD.osmEntity({id: 'n', version: 10, user: 'user'});
+        it('resets \'id\', \'user\', \'version\', and \'v\' properties', function () {
+            var n = iD.osmEntity({ id: 'n', user: 'user', version: 10, v: 100 });
             var copies = {};
             n.copy(null, copies);
             expect(copies.n.isNew()).to.be.ok;
-            expect(copies.n.version).to.be.undefined;
             expect(copies.n.user).to.be.undefined;
+            expect(copies.n.version).to.be.undefined;
+            expect(copies.n.v).to.be.undefined;
         });
 
         it('copies tags', function () {
@@ -108,33 +109,39 @@ describe('iD.osmEntity', function () {
             expect(iD.osmEntity().update({})).not.to.have.ownProperty('update');
         });
 
-        it('sets v to 1 if previously undefined', function() {
-            expect(iD.osmEntity().update({}).v).to.equal(1);
+        it('sets v if undefined', function() {
+            const a = iD.osmEntity();
+            const b = a.update({});
+            const bv = b.v;
+            expect(bv).to.be.a('number');
         });
 
-        it('increments v', function() {
-            expect(iD.osmEntity({v: 1}).update({}).v).to.equal(2);
+        it('updates v if already defined', function() {
+            const a = iD.osmEntity({v: 100});
+            const b = a.update({});
+            const bv = b.v;
+            expect(bv).to.be.a('number');
+            expect(bv).to.be.not.equal(100);
         });
     });
 
     describe('#touch', function () {
-        it('updates the entity version in place', function () {
-            var a = iD.osmEntity();
-            var b = a.touch();
-            expect(b instanceof iD.osmEntity).to.be.true;
+        it('updates v in place', function () {
+            const a = iD.osmEntity();
+            expect(a.v).to.be.undefined;
+
+            const b = a.touch();
+            const bv = b.v;
             expect(a).to.equal(b);
-        });
+            expect(bv).to.be.a('number');
 
-        it('sets v to 1 if previously undefined', function() {
-            var e = iD.osmEntity().touch();
-            expect(e.v).to.equal(1);
+            const c = b.touch();
+            const cv = c.v;
+            expect(c).to.equal(b);
+            expect(cv).to.be.a('number');
+            expect(cv).to.not.equal(bv);
         });
-
-        it('increments v', function() {
-            var e = iD.osmEntity({v: 1}).touch();
-            expect(e.v).to.equal(2);
-        });
-    });
+   });
 
     describe('#mergeTags', function () {
         it('returns self if unchanged', function () {

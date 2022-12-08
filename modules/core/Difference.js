@@ -178,7 +178,8 @@ export class Difference {
 
   /**
    * complete
-   * Returns complete set of entities affected by a change
+   * Returns complete set of entities affected by a change.
+   * This is used to know which entities need redraw or revalidation
    * @return  Map(entityID -> Entity)
    */
   complete() {
@@ -195,20 +196,9 @@ export class Difference {
       if (entity.type === 'way') {
         const headNodes = h ? h.nodes : [];
         const baseNodes = b ? b.nodes : [];
-
-        for (const nodeID of baseNodes) {
+        for (const nodeID of utilArrayUnion(headNodes, baseNodes)) {
           result.set(nodeID, head.hasEntity(nodeID));
         }
-        for (const nodeID of headNodes) {
-          result.set(nodeID, head.hasEntity(nodeID));
-        }
-
-//        for (const nodeID of utilArrayDifference(headNodes, baseNodes)) {
-//          result.set(nodeID, head.hasEntity(nodeID));
-//        }
-//        for (const nodeID of utilArrayDifference(baseNodes, headNodes)) {
-//          result.set(nodeID, head.hasEntity(nodeID));
-//        }
       }
 
       if (entity.type === 'relation' && entity.isMultipolygon()) {
