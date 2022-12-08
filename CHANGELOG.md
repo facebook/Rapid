@@ -36,7 +36,22 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.0.0-alpha3.2]
+
+#### 2022-Dec-08
+
+#### :tada: Square, Circularize, and related fixes
+
+We've been hot on the trail of fixing issues with many different edit operations- our renderer wasn't picking them up properly and was therefore displaying the wrong shapes under certain conditions. Rotation, Move, Circularize, and Square operations were all affected. They should be working fine now.
+
+### Bugfixes:
+* [#682], [#683] and [#693] Square operation should be working correctly now.
+* [#665] Ghost ways should no longer appear.
+
 # [2.0.0-alpha3.1]
+[#682]: https://github.com/facebook/RapiD/issues/682
+[#683]: https://github.com/facebook/RapiD/issues/683
+[#693]: https://github.com/facebook/RapiD/issues/693
 
 #### 2022-Dec-07
 This is a small refresher release to address a few issues reported by internal testers. Keep those bugs coming!
