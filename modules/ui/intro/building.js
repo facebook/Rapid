@@ -8,7 +8,7 @@ import { utilRebind } from '../../util';
 import { helpHtml, icon, pad, isMostlySquare, selectMenuItem, transitionTime } from './helper';
 
 
-export function uiIntroBuilding(context, reveal) {
+export function uiIntroBuilding(context, curtain) {
     var dispatch = d3_dispatch('done');
     var house = [-85.62815, 41.95638];
     var tank = [-85.62732, 41.95347];
@@ -39,14 +39,14 @@ export function uiIntroBuilding(context, reveal) {
     function revealHouse(center, text, options) {
         var padding = 160 * Math.pow(2, context.map().zoom() - 20);
         var box = pad(center, padding, context);
-        reveal(box, text, options);
+        curtain.reveal(box, text, options);
     }
 
 
     function revealTank(center, text, options) {
         var padding = 190 * Math.pow(2, context.map().zoom() - 19.5);
         var box = pad(center, padding, context);
-        reveal(box, text, options);
+        curtain.reveal(box, text, options);
     }
 
 
@@ -56,11 +56,11 @@ export function uiIntroBuilding(context, reveal) {
         _houseID = null;
 
         var msec = transitionTime(house, context.map().center());
-        if (msec) { reveal(null, null, { duration: 0 }); }
+        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
         context.map().centerZoomEase(house, 19, msec);
 
         timeout(function() {
-            var tooltip = reveal('button.draw-area',
+            var tooltip = curtain.reveal('button.draw-area',
                 helpHtml('intro.buildings.add_building'));
 
             tooltip.selectAll('.popover-inner')
@@ -202,7 +202,7 @@ export function uiIntroBuilding(context, reveal) {
 
             var button = context.container().select('.preset-category-building .preset-list-button');
 
-            reveal(button.node(),
+            curtain.reveal(button.node(),
                 helpHtml('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
         );
 
@@ -252,7 +252,7 @@ export function uiIntroBuilding(context, reveal) {
           context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
 
 
-          reveal(
+          curtain.reveal(
             button.node(),
             helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() }),
             { duration: 300 }
@@ -299,7 +299,7 @@ export function uiIntroBuilding(context, reveal) {
         });
 
       timeout(function() {
-        reveal('.entity-editor-pane',
+        curtain.reveal('.entity-editor-pane',
           helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
         );
       }, 500);
@@ -381,7 +381,7 @@ export function uiIntroBuilding(context, reveal) {
 
         var wasChanged = false;
 
-        reveal('.edit-menu',
+        curtain.reveal('.edit-menu',
             helpHtml('intro.buildings.square_building'),
             { padding: 50 }
         );
@@ -398,7 +398,7 @@ export function uiIntroBuilding(context, reveal) {
             var node = selectMenuItem(context, 'orthogonalize').node();
             if (!wasChanged && !node) { return continueTo(rightClickHouse); }
 
-            reveal('.edit-menu',
+            curtain.reveal('.edit-menu',
                 helpHtml('intro.buildings.square_building'),
                 { duration: 0, padding: 50 }
             );
@@ -461,11 +461,11 @@ export function uiIntroBuilding(context, reveal) {
         _tankID = null;
 
         var msec = transitionTime(tank, context.map().center());
-        if (msec) { reveal(null, null, { duration: 0 }); }
+        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
         context.map().centerZoomEase(tank, 19.5, msec);
 
         timeout(function() {
-            reveal('button.draw-area',
+            curtain.reveal('button.draw-area',
                 helpHtml('intro.buildings.add_tank')
             );
 
@@ -568,7 +568,7 @@ export function uiIntroBuilding(context, reveal) {
                 .on('keydown.intro', null)
                 .on('keyup.intro', checkPresetSearch);
 
-            reveal('.preset-search-input',
+            curtain.reveal('.preset-search-input',
                 helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
             );
         }, 400);  // after preset list pane visible..
@@ -592,7 +592,7 @@ export function uiIntroBuilding(context, reveal) {
                     .on('keydown.intro', null)
                     .on('keyup.intro', checkPresetSearch);
 
-                reveal('.preset-search-input',
+                curtain.reveal('.preset-search-input',
                     helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
                 );
 
@@ -604,7 +604,7 @@ export function uiIntroBuilding(context, reveal) {
             var first = context.container().select('.preset-list-item:first-child');
 
             if (first.classed('preset-man_made-storage_tank')) {
-                reveal(first.select('.preset-list-button').node(),
+                curtain.reveal(first.select('.preset-list-button').node(),
                     helpHtml('intro.buildings.choose_tank', { preset: tankPreset.name() }),
                     { duration: 300 }
                 );
@@ -645,7 +645,7 @@ export function uiIntroBuilding(context, reveal) {
         });
 
         timeout(function() {
-            reveal('.entity-editor-pane',
+            curtain.reveal('.entity-editor-pane',
                 helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
             );
         }, 500);
@@ -710,7 +710,7 @@ export function uiIntroBuilding(context, reveal) {
 
         var wasChanged = false;
 
-        reveal('.edit-menu',
+        curtain.reveal('.edit-menu',
             helpHtml('intro.buildings.circle_tank'),
             { padding: 50 }
         );
@@ -727,7 +727,7 @@ export function uiIntroBuilding(context, reveal) {
             var node = selectMenuItem(context, 'circularize').node();
             if (!wasChanged && !node) { return continueTo(rightClickTank); }
 
-            reveal('.edit-menu',
+            curtain.reveal('.edit-menu',
                 helpHtml('intro.buildings.circle_tank'),
                 { duration: 0, padding: 50 }
             );
@@ -772,11 +772,11 @@ export function uiIntroBuilding(context, reveal) {
 
     function play() {
         dispatch.call('done');
-        reveal('.ideditor',
+        curtain.reveal('.ideditor',
             helpHtml('intro.buildings.play', { next: t('intro.rapid.title') }), {
                 tooltipBox: '.intro-nav-wrap .chapter-rapid',
                 buttonText: t.html('intro.ok'),
-                buttonCallback: function() { reveal('.ideditor'); }
+                buttonCallback: function() { curtain.reveal('.ideditor'); }
             }
         );
     }

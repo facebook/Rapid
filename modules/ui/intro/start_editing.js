@@ -9,7 +9,7 @@ import { uiModal } from '../modal';
 import { utilRebind } from '../../util/rebind';
 
 
-export function uiIntroStartEditing(context, reveal) {
+export function uiIntroStartEditing(context, curtain) {
     var dispatch = d3_dispatch('done', 'startEditing');
     var modalSelection = d3_select(null);
 
@@ -19,7 +19,7 @@ export function uiIntroStartEditing(context, reveal) {
     };
 
     function showHelp() {
-        reveal('.map-control.help-control',
+        curtain.reveal('.map-control.help-control',
             helpHtml('intro.startediting.help'), {
                 buttonText: t.html('intro.ok'),
                 buttonCallback: function() { shortcuts(); }
@@ -28,7 +28,7 @@ export function uiIntroStartEditing(context, reveal) {
     }
 
     function shortcuts() {
-        reveal('.map-control.help-control',
+        curtain.reveal('.map-control.help-control',
             helpHtml('intro.startediting.shortcuts'), {
                 buttonText: t.html('intro.ok'),
                 buttonCallback: function() { showSave(); }
@@ -38,7 +38,7 @@ export function uiIntroStartEditing(context, reveal) {
 
     function showSave() {
         context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
-        reveal('.top-toolbar button.save',
+        curtain.reveal('.top-toolbar button.save',
             helpHtml('intro.startediting.save'), {
                 buttonText: t.html('intro.ok'),
                 buttonCallback: function() { showStart(); }
