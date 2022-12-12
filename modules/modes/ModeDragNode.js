@@ -159,16 +159,35 @@ export class ModeDragNode extends AbstractMode {
   _move(eventData) {
     if (!this.dragNode) return;
 
-    this.lastLoc = this.context.projection.invert(eventData.coord);
-    this._doMove(eventData.coord);
+    const context = this.context;
+    const graph = context.graph();
+    const projection = context.projection;
+    const coord = eventData.coord;
+    let loc = projection.invert(coord);
 
-// if at edge of viewport, schedule a nudge
-//    const nudge = geomViewportNudge(point, context.map().dimensions);
-//    if (nudge) {
-//      this._startNudge(d3_event, dragNode, nudge);
-//    } else {
-//      this._stopNudge();
-//    }
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    const target = eventData.target;
+    const datum = target && target.data;
+    const entity = datum && graph.hasEntity(datum.id);
+
+    // Snap to a node
+    if (entity && entity.type === 'node') {
+      this.lastLoc = entity.loc;
+
+    // Snap to a way that isn't the node's parent
+    } else if (entity && entity.type === 'way' && !graph.parentWays(this.dragNode).includes(entity)) {
+      const activeIDs = context.activeIDs();
+      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      if (choice) {
+        this.lastLoc = choice.loc;
+      }
+    } else {
+      this.lastLoc = projection.invert(eventData.coord);
+    }
+
+    this._doMove(projection.project(this.lastLoc));
+
   }
 
 
@@ -354,30 +373,6 @@ const nope = false;
   }
 
 }
-
-
-//  /**
-//   * _startNudge
-//   */
-//  function _startNudge(d3_event, entity, nudge) {
-//    if (_nudgeInterval) window.clearInterval(_nudgeInterval);
-//
-//    _nudgeInterval = window.setInterval(() => {
-//      context.map().pan(nudge);
-//      doMove(d3_event, entity, nudge);
-//    }, 50);
-//  }
-//
-//  /**
-//   * _stopNudge
-//   */
-//  function _stopNudge() {
-//    if (_nudgeInterval) {
-//      window.clearInterval(_nudgeInterval);
-//      _nudgeInterval = null;
-//    }
-//  }
-
 
 
 //  mode.selectedIDs = function() {

@@ -184,10 +184,18 @@ export class BehaviorDrag extends AbstractBehavior {
     const up = this._getEventData(e);
     if (!down || down.id !== up.id) return;   // not down, or different pointer
 
-    // Before emitting the 'up' event, copy the drag target data to the event data.
+    // Before emitting the 'up' event, copy the drag target data to the event data
+    // UNLESS snapping is disabled.
     if (this.dragTarget) {
-      up.target = Object.assign({}, this.dragTarget);   // shallow copy
+
+      // Snapping is disabled - drag has no target.
+      if (this._snappingDisabled()) {
+        up.target = null;
+      } else {
+        up.target = Object.assign({}, up.target);
+      }
     }
+
 
     this.lastDown = null;
     this.lastMove = null;
@@ -220,6 +228,18 @@ export class BehaviorDrag extends AbstractBehavior {
     }
   }
 
+  _snappingDisabled() {
+
+    // Ignore it if we are not over the canvas
+    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
+    const eventManager = this.context.map().renderer.events;
+    if (!eventManager.pointerOverRenderer) return false;
+
+    const modifiers = eventManager.modifierKeys;
+    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+
+    return disableSnap;
+  }
 
   /**
    * _doMove
@@ -228,18 +248,10 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   _doMove() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
-
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    const eventManager = this.context.map().renderer.events;
-    if (!eventManager.pointerOverRenderer) return;
-
-    const modifiers = eventManager.modifierKeys;
-    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
     const eventData = Object.assign({}, this.lastMove);  // shallow copy
 
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (disableSnap) {
+    if (this._snappingDisabled()) {
       eventData.target = null;
     }
 
