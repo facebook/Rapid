@@ -206,7 +206,7 @@ export class ModeDragNode extends AbstractMode {
     const target = eventData.target?.data;    // entity to snap to
 
 //    const nope = (target && target.properties && target.properties.nope) || context.surface().classed('nope');
-const nope = false;
+    const nope = graph.parentWays(entity).includes(target);
 
     if (nope) {   // bounce back
       context.perform(_actionBounceBack(entity.id, this._startLoc));
