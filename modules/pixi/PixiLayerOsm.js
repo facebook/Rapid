@@ -495,6 +495,14 @@ export class PixiLayerOsm extends AbstractLayer {
       if (isRelatedVertex(nodeID)) {   // major importance
         parentContainer = selectedContainer;
       }
+      if ((
+        // If the node in question has a parent being hovered, display it.
+        graph.parentWays(node).filter(way => this.isHovered(way.id)).length > 0) ||
+        // OR if the node itself is being hovered, also display it.
+        this.isHovered(node.id)
+      ) {
+        parentContainer = pointsContainer;
+      }
       if (this.isDrawing(node.id)) {
         parentContainer = selectedContainer; // Also major importance
       }
