@@ -365,10 +365,30 @@ export class ModeDrawArea extends AbstractMode {
     const context = this.context;
     const scene = context.scene();
 
+    // If the draw way already exists, we need to continue it with this new node.
     if (this.drawWay) {
+      // The target node needs to be inserted "before" the draw node
+      // If draw node is at the beginning, insert target 1 after beginning.
+      // If draw node is at the end, insert target 1 before the end.
+      const targetIndex =
+      this.drawWay?.affix(this.drawNode.id) === 'prefix'
+          ? 1
+          : this.drawWay.nodes.length - 1;
 
-    }
-    else {
+      const oldDrawNode = this.drawNode;
+      this.drawNode = osmNode({ loc: loc });
+
+      context.perform(
+        actionAddEntity(this.drawNode),
+        actionAddMidpoint({ loc: loc, edge: edge }, oldDrawNode),
+        actionAddVertex(this.drawWay.id, this.drawNode.id, targetIndex), // Add draw node to draw way
+        this._getAnnotation()
+      );
+
+      this.drawWay = context.entity(this.drawWay.id);
+    } else {
+      // No draw way exists yet, so time to make a new way!
+
       const node = osmNode({ loc: loc });
       const drawNode = osmNode({loc: loc});
       const way = osmWay({ tags: this.defaultTags});
@@ -413,15 +433,17 @@ export class ModeDrawArea extends AbstractMode {
     const scene = context.scene();
     context.pauseChangeDispatch();
 
-    // The target node needs to be inserted "before" the draw node
-    // If draw node is at the beginning, insert target 1 after beginning.
-    // If draw node is at the end, insert target 1 before the end.
-    const targetIndex =
-      this.drawWay.affix(this.drawNode.id) === 'prefix'
+
+
+    if (this.drawWay) {
+      // The target node needs to be inserted "before" the draw node
+      // If draw node is at the beginning, insert target 1 after beginning.
+      // If draw node is at the end, insert target 1 before the end.
+      const targetIndex =
+      this.drawWay?.affix(this.drawNode.id) === 'prefix'
         ? 1
         : this.drawWay.nodes.length - 1;
 
-    if (this.drawWay) {
       // Clicked on first or last node, try to finish the area
       if (
         targetNode.id === this.lastNode.id ||
