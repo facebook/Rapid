@@ -185,7 +185,7 @@ export class AbstractLayer {
   }
 
     /**
-   * isHovering
+   * isHovered
    * @param dataId 'String' dataID (e.g. 'w-123')
    * @returns true or false
    */

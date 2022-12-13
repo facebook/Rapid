@@ -124,7 +124,7 @@ export class BehaviorDrag extends AbstractBehavior {
     // appears right over the mouse pointer, not off to the side
     if (isDraggableTarget) {
       const centerOfNode = this.context.projection.project(down.target.data.loc);
-      const clickLocation = [e.globalX, e.globalY];
+      const clickLocation = down.coord;
       this.dragOffset = [clickLocation[0] - centerOfNode[0], clickLocation[1] -  centerOfNode[1]];
     }
   }
