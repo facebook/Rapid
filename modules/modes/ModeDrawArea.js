@@ -364,28 +364,43 @@ export class ModeDrawArea extends AbstractMode {
   _clickWay(loc, edge) {
     const context = this.context;
     const scene = context.scene();
-    const node = osmNode({ loc: loc });
-    const way = osmWay({ tags: this.defaultTags });
 
-    this.drawWay = way;
-    this.lastNode = node;
-    this.firstNode = node;
-    if (DEBUG) {
-      console.log(`ModeDrawArea: _clickWay, starting area at ${loc}`); // eslint-disable-line no-console
+    if (this.drawWay) {
+
     }
+    else {
+      const node = osmNode({ loc: loc });
+      const drawNode = osmNode({loc: loc});
+      const way = osmWay({ tags: this.defaultTags});
 
-    context.perform(
-      actionAddEntity(node),
-      actionAddEntity(way),
-      actionAddVertex(way.id, node.id),
-      this._actionClose(way.id),
-      actionAddMidpoint({ loc: loc, edge: edge }, node)
-    );
+      this.drawWay = way;
+      this.lastNode = node;
+      this.drawNode = drawNode;
+      if (DEBUG) {
+        console.log(`ModeDrawArea: _clickWay, starting area at ${loc}`); // eslint-disable-line no-console
+      }
 
-    this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
+      context.perform(
+        actionAddEntity(node),
+        actionAddEntity(way),
+        actionAddVertex(way.id, node.id),
+        this._actionClose(way.id),
+        actionAddMidpoint({ loc: loc, edge: edge }, node),
+        // Up to this point, all we've done is created a two-node area at the midpoint we just added to the existing way.
+        // Let's add the draw node.
+        actionAddEntity(drawNode),
+        actionAddVertex(this.drawWay.id, this.drawNode.id, 1), // Add draw node to draw way
+      );
 
-    scene.classData('osm', node.id, 'drawing');
-    scene.classData('osm', way.id, 'drawing');
+      this.firstNode = context.entity(node.id); // Refresh first node
+      this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
+      this.drawNode = context.entity(this.drawNode.id); // Refresh draw node
+      this.lastNode = this.drawNode;
+
+      scene.classData('osm', this.firstNode.id, 'drawing');
+      scene.classData('osm', this.drawWay.id, 'drawing');
+      scene.classData('osm', this.drawNode.id, 'drawing');
+    }
   }
 
   /**
