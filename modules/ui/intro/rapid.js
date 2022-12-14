@@ -10,7 +10,7 @@ import { icon, pad, transitionTime } from './helper';
 
 export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
-  let chapter = { title: 'intro.rapid.title' };
+  const chapter = { title: 'intro.rapid.title' };
   let timeouts = [];
 
   const tulipLaneStart = [-85.6297512, 41.9561476];
@@ -18,8 +18,8 @@ export function uiIntroRapid(context, curtain) {
   const tulipLaneEnd = [-85.6272670, 41.9558780];
 
 
-  function timeout(f, t) {
-    timeouts.push(window.setTimeout(f, t));
+  function timeout(fn, t) {
+    timeouts.push(window.setTimeout(fn, t));
   }
 
 

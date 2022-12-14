@@ -40,8 +40,8 @@ export function uiIntroLine(context, curtain) {
     };
 
 
-    function timeout(f, t) {
-        timeouts.push(window.setTimeout(f, t));
+    function timeout(fn, t) {
+        timeouts.push(window.setTimeout(fn, t));
     }
 
 

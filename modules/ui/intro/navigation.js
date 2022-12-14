@@ -1,3 +1,4 @@
+import { Extent, vecEqual } from '@id-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
@@ -5,567 +6,508 @@ import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { helpHtml, icon, pointBox, transitionTime } from './helper';
+import { helpHtml, icon, /*pointBox,*/ transitionTime } from './helper';
 
 
 export function uiIntroNavigation(context, curtain) {
-    var dispatch = d3_dispatch('done');
-    var timeouts = [];
-    var hallId = 'n2061';
-    var townHall = [-85.63591, 41.94285];
-    var springStreetId = 'w397';
-    var springStreetEndId = 'n1834';
-    var springStreet = [-85.63582, 41.94255];
-    var onewayField = presetManager.field('oneway');
-    var maxspeedField = presetManager.field('maxspeed');
+  const dispatch = d3_dispatch('done');
+  const chapter = {
+    title: 'intro.navigation.title'
+  };
+
+  const hallID = 'n2061';
+  const townHall = [-85.63591, 41.94285];
+  const springStreetID = 'w397';
+  const springStreetEndID = 'n1834';
+  const springStreet = [-85.63582, 41.94255];
+  const onewayField = presetManager.field('oneway');
+  const maxspeedField = presetManager.field('maxspeed');
+  let timeouts = [];
 
 
-    var chapter = {
-        title: 'intro.navigation.title'
+  function timeout(fn, t) {
+    timeouts.push(window.setTimeout(fn, t));
+  }
+
+
+  function eventCancel(d3_event) {
+    d3_event.stopPropagation();
+    d3_event.preventDefault();
+  }
+
+
+  function isTownHallSelected() {
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === hallID;
+  }
+
+
+  function dragMap() {
+    context.enter('browse');
+    context.history().reset('initial');
+
+    const msec = transitionTime(townHall, context.map().center());
+    context.map().centerZoomEase(townHall, 19, msec);
+
+    timeout(() => {
+      const centerStart = context.map().center();
+      const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
+      const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
+
+      const checkDrag = () => {
+        if (vecEqual(centerStart, context.map().center())) return;  // no change
+        context.map().off('move', checkDrag);
+        timeout(zoomMap, 2000);
+      };
+
+      curtain.reveal({
+        revealSelector: '.surface',
+        tipHtml: dragString
+      });
+
+      context.map().on('move', checkDrag);
+
+    }, msec + 100);
+  }
+
+
+  function zoomMap() {
+    const zoomStart = context.map().zoom();
+    const textID = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
+    const zoomString = helpHtml(`intro.navigation.${textID}`);
+
+    const checkZoom = () => {
+      if (zoomStart === context.map().zoom()) return;  // no change
+      context.map().off('move', checkZoom);
+      timeout(features, 2000);
     };
 
+    curtain.reveal({
+      revealSelector: '.surface',
+      tipHtml: zoomString
+    });
 
-    function timeout(f, t) {
-        timeouts.push(window.setTimeout(f, t));
-    }
-
-
-    function eventCancel(d3_event) {
-        d3_event.stopPropagation();
-        d3_event.preventDefault();
-    }
+    context.map().on('move', checkZoom);
+  }
 
 
-    function isTownHallSelected() {
-        var ids = context.selectedIDs();
-        return ids.length === 1 && ids[0] === hallId;
-    }
+  function features() {
+    curtain.reveal({
+      revealSelector: '.surface',
+      tipHtml: helpHtml('intro.navigation.features'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: pointsLinesAreas
+    });
+  }
 
 
-    function dragMap() {
-        context.enter('browse');
-        context.history().reset('initial');
+  function pointsLinesAreas() {
+    curtain.reveal({
+      revealSelector: '.surface',
+      tipHtml: helpHtml('intro.navigation.points_lines_areas'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: nodesWays
+    });
+  }
 
-        var msec = transitionTime(townHall, context.map().center());
-        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
-        context.map().centerZoomEase(townHall, 19, msec);
 
-        timeout(function() {
-            var centerStart = context.map().center();
+  function nodesWays() {
+    curtain.reveal({
+      revealSelector: '.surface',
+      tipHtml: helpHtml('intro.navigation.nodes_ways'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: clickTownHall
+    });
+  }
 
-            var textId = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
-            var dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml('intro.navigation.' + textId);
-            curtain.reveal('.surface', dragString);
-            context.map().on('draw', function () {
-              curtain.reveal('.surface', dragString, { duration: 0 });
-            });
 
-            context.map().on('move', function() {
-                var centerNow = context.map().center();
-                if (centerStart[0] !== centerNow[0] || centerStart[1] !== centerNow[1]) {
-                    context.map().off('move', null);
-                    timeout(function() { continueTo(zoomMap); }, 2500);
-                }
-            });
+  function clickTownHall() {
+    context.enter('browse');
+    context.history().reset('initial');
 
-        }, msec + 100);
+    const entity = context.hasEntity(hallID);
+    if (!entity) return;
+    context.map().centerZoomEase(entity.loc, 19, 500);
 
-        function continueTo(nextStep) {
-            context.map().off('draw', null);
-            nextStep();
+    timeout(() => {
+      const entity = context.hasEntity(hallID);
+      if (!entity) return;
+
+      const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
+
+      curtain.reveal({
+        revealExtent: new Extent(entity.loc).padByMeters(20),
+        tipHtml: helpHtml(`intro.navigation.${textID}`)
+      });
+
+      context.on('enter.intro', () => {
+        if (isTownHallSelected()) {
+          continueTo(selectedTownHall);
         }
+      });
+
+    }, 550);  // after centerZoomEase
+
+    context.history().on('change.intro', () => {
+      if (!context.hasEntity(hallID)) {
+        continueTo(clickTownHall);
+      }
+    });
+
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      context.history().on('change.intro', null);
+      nextStep();
+    }
+  }
+
+
+  function selectedTownHall() {
+    if (!isTownHallSelected()) return clickTownHall();
+
+    const entity = context.hasEntity(hallID);
+    if (!entity) return clickTownHall();
+
+    const onClick = () => { continueTo(editorTownHall); };
+
+    curtain.reveal({
+      revealExtent: new Extent(entity.loc).padByMeters(20),
+      tipHtml: helpHtml('intro.navigation.selected_townhall'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: onClick
+    });
+
+    context.history().on('change.intro', () => {
+      if (!context.hasEntity(hallID)) {
+        continueTo(clickTownHall);
+      }
+    });
+
+    function continueTo(nextStep) {
+      context.history().on('change.intro', null);
+      nextStep();
+    }
+  }
+
+
+  function editorTownHall() {
+    if (!isTownHallSelected()) return clickTownHall();
+
+    // disallow scrolling
+    context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
+
+    const onClick = () => { continueTo(presetTownHall); };
+
+    curtain.reveal({
+      revealSelector: '.entity-editor-pane',
+      tipHtml: helpHtml('intro.navigation.editor_townhall'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: onClick
+    });
+
+    context.on('exit.intro', () => {
+      continueTo(clickTownHall);
+    });
+
+    context.history().on('change.intro', () => {
+      if (!context.hasEntity(hallID)) {
+        continueTo(clickTownHall);
+      }
+    });
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      context.history().on('change.intro', null);
+      context.container().select('.inspector-wrap').on('wheel.intro', null);
+      nextStep();
+    }
+  }
+
+
+  function presetTownHall() {
+    if (!isTownHallSelected()) return clickTownHall();
+
+    // reset pane, in case user happened to change it..
+    context.container().select('.inspector-wrap .panewrap').style('right', '0%');
+    // disallow scrolling
+    context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
+
+    // preset match, in case the user happened to change it.
+    const entity = context.entity(context.selectedIDs()[0]);
+    const preset = presetManager.match(entity, context.graph());
+
+    const onClick = () => { continueTo(fieldsTownHall); };
+
+    curtain.reveal({
+      revealSelector: '.entity-editor-pane .section-feature-type',
+      revealPadding: 5,
+      tipHtml: helpHtml('intro.navigation.preset_townhall', { preset: preset.name() }),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: onClick
+    });
+
+    context.on('exit.intro', () => {
+      continueTo(clickTownHall);
+    });
+
+    context.history().on('change.intro', () => {
+      if (!context.hasEntity(hallID)) {
+        continueTo(clickTownHall);
+      }
+    });
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      context.history().on('change.intro', null);
+      context.container().select('.inspector-wrap').on('wheel.intro', null);
+      nextStep();
+    }
+  }
+
+
+  function fieldsTownHall() {
+    if (!isTownHallSelected()) return clickTownHall();
+
+    // reset pane, in case user happened to change it..
+    context.container().select('.inspector-wrap .panewrap').style('right', '0%');
+    // disallow scrolling
+    context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
+
+    const onClick = () => { continueTo(closeTownHall); };
+
+    curtain.reveal({
+      revealSelector: '.entity-editor-pane .section-preset-fields',
+      revealPadding: 5,
+      tipHtml: helpHtml('intro.navigation.fields_townhall'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: onClick
+    });
+
+    context.on('exit.intro', () => {
+      continueTo(clickTownHall);
+    });
+
+    context.history().on('change.intro', () => {
+      if (!context.hasEntity(hallID)) {
+        continueTo(clickTownHall);
+      }
+    });
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      context.history().on('change.intro', null);
+      context.container().select('.inspector-wrap').on('wheel.intro', null);
+      nextStep();
+    }
+  }
+
+
+  function closeTownHall() {
+    if (!isTownHallSelected()) return clickTownHall();
+
+    const selector = '.entity-editor-pane button.close svg use';
+    const href = d3_select(selector).attr('href') || '#iD-icon-close';
+
+    curtain.reveal({
+      revealSelector: '.entity-editor-pane',
+      tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(href, 'inline') })
+    });
+
+    context.on('exit.intro', () => {
+      continueTo(searchStreet);
+    });
+
+    context.history().on('change.intro', () => {
+      // update the close icon in the tooltip if the user edits something.
+      const selector = '.entity-editor-pane button.close svg use';
+      const href = d3_select(selector).attr('href') || '#iD-icon-close';
+
+      curtain.reveal({
+        revealSelector: '.entity-editor-pane',
+        tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(href, 'inline') })
+      });
+    });
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      context.history().on('change.intro', null);
+      nextStep();
+    }
+  }
+
+
+  function searchStreet() {
+    context.enter('browse');
+    context.history().reset('initial');  // ensure spring street exists
+
+    const msec = transitionTime(springStreet, context.map().center());
+    context.map().centerZoomEase(springStreet, 19, msec);  // ..and user can see it
+
+    timeout(() => {
+      curtain.reveal({
+        revealSelector: '.search-header input',
+        tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
+      });
+
+      context.container().select('.search-header input')
+        .on('keyup.intro', checkSearchResult);
+    }, msec + 100);
+  }
+
+
+  function checkSearchResult() {
+    const first = context.container().select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
+    const firstName = first.select('.entity-name');
+    const name = t('intro.graph.name.spring-street');
+
+    if (!firstName.empty() && firstName.html() === name) {
+      curtain.reveal({
+        revealNode: first.node(),
+        tipHtml: helpHtml('intro.navigation.choose_street', { name: name }),
+        duration: 300
+      });
+
+      context.on('exit.intro', () => {
+        continueTo(selectedStreet);
+      });
+
+      context.container().select('.search-header input')
+        .on('keydown.intro', eventCancel, true)
+        .on('keyup.intro', null);
     }
 
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      context.container().select('.search-header input')
+        .on('keydown.intro', null)
+        .on('keyup.intro', null);
+      nextStep();
+    }
+  }
 
-    function zoomMap() {
-        var zoomStart = context.map().zoom();
 
-        var textId = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
-        var zoomString = helpHtml('intro.navigation.' + textId);
-
-        curtain.reveal('.surface', zoomString);
-
-        context.map().on('draw', function () {
-          curtain.reveal('.surface', zoomString, { duration: 0 });
-        });
-
-        context.map().on('move', function() {
-            if (context.map().zoom() !== zoomStart) {
-                context.map().off('move', null);
-                timeout(function() { continueTo(features); }, 2500);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('draw', null);
-            nextStep();
-        }
+  function selectedStreet() {
+    if (!context.hasEntity(springStreetEndID) || !context.hasEntity(springStreetID)) {
+        return searchStreet();
     }
 
+    const onClick = () => { continueTo(editorStreet); };
+    const entity = context.entity(springStreetEndID);
+//        const box = pointBox(entity.loc, context);
+//        box.height = 500;
 
-    function features() {
-        var onClick = function() { continueTo(pointsLinesAreas); };
+    curtain.reveal({
+      revealExtent: new Extent(entity.loc),
+      revealPadding: 40,
+      tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: onClick,
+      duration: 600
+    });
 
-        curtain.reveal('.surface', helpHtml('intro.navigation.features'),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
+    context.on('enter.intro', mode => {
+      if (!context.hasEntity(springStreetID)) {
+        return continueTo(searchStreet);
+      }
+      const ids = context.selectedIDs();
+      if (mode.id !== 'select' || !ids.length || ids[0] !== springStreetID) {
+        // keep Spring Street selected..
+        context.enter(modeSelect(context, [springStreetID]));
+      }
+    });
 
-        context.map().on('draw', function () {
-          curtain.reveal('.surface', helpHtml('intro.navigation.features'), {
-            duration: 0,
-            buttonText: t.html('intro.ok'),
-            buttonCallback: onClick,
-          });
-        });
+    context.history().on('change.intro', () => {
+      if (!context.hasEntity(springStreetEndID) || !context.hasEntity(springStreetID)) {
+        timeout(() => continueTo(searchStreet), 300);  // after any transition (e.g. if user deleted intersection)
+      }
+    });
 
-        function continueTo(nextStep) {
-            context.map().off('draw', null);
-            nextStep();
-        }
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      context.history().on('change.intro', null);
+      nextStep();
     }
+  }
 
-    function pointsLinesAreas() {
-        var onClick = function() { continueTo(nodesWays); };
 
-        curtain.reveal('.surface', helpHtml('intro.navigation.points_lines_areas'),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
+  function editorStreet() {
+    const selector = '.entity-editor-pane button.close svg use';
+    const href = d3_select(selector).attr('href') || '#iD-icon-close';
+    const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
+      helpHtml('intro.navigation.editor_street', {
+        button: icon(href, 'inline'),
+        field1: onewayField.label(),
+        field2: maxspeedField.label()
+      });
 
-        context.map().on('draw', function () {
-          curtain.reveal('.surface', helpHtml('intro.navigation.points_lines_areas'), {
-            duration: 0,
-            buttonText: t.html('intro.ok'),
-            buttonCallback: onClick,
-          });
+    curtain.reveal({
+      revealSelector: '.entity-editor-pane',
+      tipHtml: tipHtml
+    });
+
+    context.on('exit.intro', () => {
+      continueTo(play);
+    });
+
+    context.history().on('change.intro', () => {
+      // update the close icon in the tooltip if the user edits something.
+      const selector = '.entity-editor-pane button.close svg use';
+      const href = d3_select(selector).attr('href') || '#iD-icon-close';
+      const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
+        helpHtml('intro.navigation.editor_street', {
+          button: icon(href, 'inline'),
+          field1: onewayField.label(),
+          field2: maxspeedField.label()
         });
 
-        function continueTo(nextStep) {
-            context.map().off('draw', null);
-            nextStep();
-        }
+      curtain.reveal({
+        revealSelector: '.entity-editor-pane',
+        tipHtml: tipHtml
+      });
+    });
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      context.history().on('change.intro', null);
+      nextStep();
     }
+  }
 
-    function nodesWays() {
-        var onClick = function() { continueTo(clickTownHall); };
 
-        curtain.reveal('.surface', helpHtml('intro.navigation.nodes_ways'),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
+  function play() {
+    dispatch.call('done');
 
-        context.map().on('draw', function () {
-          curtain.reveal('.surface', helpHtml('intro.navigation.nodes_ways'), {
-            duration: 0,
-            buttonText: t.html('intro.ok'),
-            buttonCallback: onClick,
-          });
-        });
+    curtain.reveal({
+      revealSelector: '.ideditor',
+      tipSelector: '.intro-nav-wrap .chapter-point',
+      tipHtml: helpHtml('intro.navigation.play', { next: t('intro.points.title') }),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: () => {
+        curtain.reveal({ revealSelector: '.ideditor' });  // re-reveal but without the tooltip
+      }
+    });
+  }
 
-        function continueTo(nextStep) {
-            context.map().off('draw', null);
-            nextStep();
-        }
-    }
 
-    function clickTownHall() {
-        context.enter('browse');
-        context.history().reset('initial');
+  chapter.enter = () => {
+    dragMap();
+  };
 
-        var entity = context.hasEntity(hallId);
-        if (!entity) return;
-        curtain.reveal(null, null, { duration: 0 });
-        context.map().centerZoomEase(entity.loc, 19, 500);
 
-        timeout(function() {
-            var entity = context.hasEntity(hallId);
-            if (!entity) return;
-            var box = pointBox(entity.loc, context);
-            var textId = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
-            curtain.reveal(box, helpHtml('intro.navigation.' + textId));
+  chapter.exit = () => {
+    timeouts.forEach(window.clearTimeout);
+    context.on('enter.intro exit.intro', null);
+    context.history().on('change.intro', null);
+    context.container().select('.inspector-wrap').on('wheel.intro', null);
+    context.container().select('.search-header input').on('keydown.intro keyup.intro', null);
+  };
 
-            context.map().on('move draw', function() {
-                var entity = context.hasEntity(hallId);
-                if (!entity) return;
-                var box = pointBox(entity.loc, context);
-                curtain.reveal(box, helpHtml('intro.navigation.' + textId), { duration: 0 });
-            });
 
-            context.on('enter.intro', function() {
-                if (isTownHallSelected()) continueTo(selectedTownHall);
-            });
+  chapter.restart = () => {
+    chapter.exit();
+    chapter.enter();
+  };
 
-        }, 550);  // after centerZoomEase
 
-        context.history().on('change.intro', function() {
-            if (!context.hasEntity(hallId)) {
-                continueTo(clickTownHall);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw');
-            context.on('enter.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function selectedTownHall() {
-        if (!isTownHallSelected()) return clickTownHall();
-
-        var entity = context.hasEntity(hallId);
-        if (!entity) return clickTownHall();
-
-        var box = pointBox(entity.loc, context);
-        var onClick = function() { continueTo(editorTownHall); };
-
-        curtain.reveal(box, helpHtml('intro.navigation.selected_townhall'),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
-
-        context.map().on('move draw', function () {
-          var entity = context.hasEntity(hallId);
-          if (!entity) return;
-          var box = pointBox(entity.loc, context);
-          curtain.reveal(box, helpHtml('intro.navigation.selected_townhall'), {
-            duration: 0,
-            buttonText: t.html('intro.ok'),
-            buttonCallback: onClick,
-          });
-        });
-
-        context.history().on('change.intro', function() {
-            if (!context.hasEntity(hallId)) {
-                continueTo(clickTownHall);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function editorTownHall() {
-        if (!isTownHallSelected()) return clickTownHall();
-
-        // disallow scrolling
-        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
-
-        var onClick = function() { continueTo(presetTownHall); };
-
-        curtain.reveal('.entity-editor-pane',
-            helpHtml('intro.navigation.editor_townhall'),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
-
-        context.on('exit.intro', function() {
-            continueTo(clickTownHall);
-        });
-
-        context.history().on('change.intro', function() {
-            if (!context.hasEntity(hallId)) {
-                continueTo(clickTownHall);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            context.history().on('change.intro', null);
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function presetTownHall() {
-        if (!isTownHallSelected()) return clickTownHall();
-
-        // reset pane, in case user happened to change it..
-        context.container().select('.inspector-wrap .panewrap').style('right', '0%');
-        // disallow scrolling
-        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
-
-        // preset match, in case the user happened to change it.
-        var entity = context.entity(context.selectedIDs()[0]);
-        var preset = presetManager.match(entity, context.graph());
-
-        var onClick = function() { continueTo(fieldsTownHall); };
-
-        curtain.reveal('.entity-editor-pane .section-feature-type',
-            helpHtml('intro.navigation.preset_townhall', { preset: preset.name() }),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
-
-        context.on('exit.intro', function() {
-            continueTo(clickTownHall);
-        });
-
-        context.history().on('change.intro', function() {
-            if (!context.hasEntity(hallId)) {
-                continueTo(clickTownHall);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            context.history().on('change.intro', null);
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function fieldsTownHall() {
-        if (!isTownHallSelected()) return clickTownHall();
-
-        // reset pane, in case user happened to change it..
-        context.container().select('.inspector-wrap .panewrap').style('right', '0%');
-        // disallow scrolling
-        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
-
-        var onClick = function() { continueTo(closeTownHall); };
-
-        curtain.reveal('.entity-editor-pane .section-preset-fields',
-            helpHtml('intro.navigation.fields_townhall'),
-            { buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
-
-        context.on('exit.intro', function() {
-            continueTo(clickTownHall);
-        });
-
-        context.history().on('change.intro', function() {
-            if (!context.hasEntity(hallId)) {
-                continueTo(clickTownHall);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            context.history().on('change.intro', null);
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function closeTownHall() {
-        if (!isTownHallSelected()) return clickTownHall();
-
-        var selector = '.entity-editor-pane button.close svg use';
-        var href = d3_select(selector).attr('href') || '#iD-icon-close';
-
-        curtain.reveal('.entity-editor-pane',
-            helpHtml('intro.navigation.close_townhall', { button: icon(href, 'inline') })
-        );
-
-        context.on('exit.intro', function() {
-            continueTo(searchStreet);
-        });
-
-        context.history().on('change.intro', function() {
-            // update the close icon in the tooltip if the user edits something.
-            var selector = '.entity-editor-pane button.close svg use';
-            var href = d3_select(selector).attr('href') || '#iD-icon-close';
-
-            curtain.reveal('.entity-editor-pane',
-                helpHtml('intro.navigation.close_townhall', { button: icon(href, 'inline') }),
-                { duration: 0 }
-            );
-        });
-
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function searchStreet() {
-        context.enter('browse');
-        context.history().reset('initial');  // ensure spring street exists
-
-        var msec = transitionTime(springStreet, context.map().center());
-        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
-        context.map().centerZoomEase(springStreet, 19, msec);  // ..and user can see it
-
-        timeout(function() {
-            curtain.reveal('.search-header input',
-                helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
-            );
-
-            context.container().select('.search-header input')
-                .on('keyup.intro', checkSearchResult);
-        }, msec + 100);
-    }
-
-
-    function checkSearchResult() {
-        var first = context.container().select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
-        var firstName = first.select('.entity-name');
-        var name = t('intro.graph.name.spring-street');
-
-        if (!firstName.empty() && firstName.html() === name) {
-            curtain.reveal(first.node(),
-                helpHtml('intro.navigation.choose_street', { name: name }),
-                { duration: 300 }
-            );
-
-            context.on('exit.intro', function() {
-                continueTo(selectedStreet);
-            });
-
-            context.container().select('.search-header input')
-                .on('keydown.intro', eventCancel, true)
-                .on('keyup.intro', null);
-        }
-
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            context.container().select('.search-header input')
-                .on('keydown.intro', null)
-                .on('keyup.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function selectedStreet() {
-        if (!context.hasEntity(springStreetEndId) || !context.hasEntity(springStreetId)) {
-            return searchStreet();
-        }
-
-        var onClick = function() { continueTo(editorStreet); };
-        var entity = context.entity(springStreetEndId);
-        var box = pointBox(entity.loc, context);
-        box.height = 500;
-
-        curtain.reveal(box,
-            helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
-            { duration: 600, buttonText: t.html('intro.ok'), buttonCallback: onClick }
-        );
-
-        timeout(function() {
-            context.map().on('move draw', function () {
-              var entity = context.hasEntity(springStreetEndId);
-              if (!entity) return;
-              var box = pointBox(entity.loc, context);
-              box.height = 500;
-              curtain.reveal(
-                box,
-                helpHtml('intro.navigation.selected_street', {
-                  name: t('intro.graph.name.spring-street'),
-                }),
-                {
-                  duration: 0,
-                  buttonText: t.html('intro.ok'),
-                  buttonCallback: onClick,
-                }
-              );
-            });
-        }, 600);  // after curtain.reveal.
-
-        context.on('enter.intro', function(mode) {
-            if (!context.hasEntity(springStreetId)) {
-                return continueTo(searchStreet);
-            }
-            var ids = context.selectedIDs();
-            if (mode.id !== 'select' || !ids.length || ids[0] !== springStreetId) {
-                // keep Spring Street selected..
-                context.enter(modeSelect(context, [springStreetId]));
-            }
-        });
-
-        context.history().on('change.intro', function() {
-            if (!context.hasEntity(springStreetEndId) || !context.hasEntity(springStreetId)) {
-                timeout(function() {
-                    continueTo(searchStreet);
-                }, 300);  // after any transition (e.g. if user deleted intersection)
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.on('enter.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function editorStreet() {
-        var selector = '.entity-editor-pane button.close svg use';
-        var href = d3_select(selector).attr('href') || '#iD-icon-close';
-
-        curtain.reveal('.entity-editor-pane', helpHtml('intro.navigation.street_different_fields') + '{br}' +
-            helpHtml('intro.navigation.editor_street', {
-                button: icon(href, 'inline'),
-                field1: onewayField.label(),
-                field2: maxspeedField.label()
-            }));
-
-        context.on('exit.intro', function() {
-            continueTo(play);
-        });
-
-        context.history().on('change.intro', function() {
-            // update the close icon in the tooltip if the user edits something.
-            var selector = '.entity-editor-pane button.close svg use';
-            var href = d3_select(selector).attr('href') || '#iD-icon-close';
-
-            curtain.reveal('.entity-editor-pane', helpHtml('intro.navigation.street_different_fields') + '{br}' +
-                helpHtml('intro.navigation.editor_street', {
-                    button: icon(href, 'inline'),
-                    field1: onewayField.label(),
-                    field2: maxspeedField.label()
-                }), { duration: 0 }
-            );
-        });
-
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function play() {
-        dispatch.call('done');
-        curtain.reveal('.ideditor',
-            helpHtml('intro.navigation.play', { next: t('intro.points.title') }), {
-                tooltipBox: '.intro-nav-wrap .chapter-point',
-                buttonText: t.html('intro.ok'),
-                buttonCallback: function() { curtain.reveal('.ideditor'); }
-            }
-        );
-    }
-
-
-    chapter.enter = function() {
-        dragMap();
-    };
-
-
-    chapter.exit = function() {
-        timeouts.forEach(window.clearTimeout);
-        context.on('enter.intro exit.intro', null);
-        context.map().off('move draw', null);
-        context.history().on('change.intro', null);
-        context.container().select('.inspector-wrap').on('wheel.intro', null);
-        context.container().select('.search-header input').on('keydown.intro keyup.intro', null);
-    };
-
-
-    chapter.restart = function() {
-        chapter.exit();
-        chapter.enter();
-    };
-
-
-    return utilRebind(chapter, dispatch, 'on');
+  return utilRebind(chapter, dispatch, 'on');
 }
