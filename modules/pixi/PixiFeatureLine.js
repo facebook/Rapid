@@ -99,9 +99,10 @@ export class PixiFeatureLine extends AbstractFeature {
       this.sceneBounds.y = minY;
       this.sceneBounds.width = w;
       this.sceneBounds.height = h;
-
-      this.updateHitArea();
     }
+
+    // TODO: Move this inside the geometry.dirty block above.
+    this.updateHitArea();
 
 
     //
@@ -275,7 +276,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
     //Fix for bug #648: If we're drawing, we don't need to hit ourselves.
     if (this._drawing) {
-      this.hitArea = null;
+      this.container.hitArea = null;
       return;
     }
 
