@@ -36,6 +36,42 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.0.0-alpha3.3]
+
+#### 2022-Dec-14
+
+#### :tada: Numerous drawing/node-snapping fixes
+
+We've ironed out a bunch of kinks in your way (ha!) that were preventing snapping, causing excess flickering, and just generally making it weird to interact with shapes on the map.
+
+### Bugfixes:
+* [#689] Fixed snapping during the 'add point' operation.
+* [#635] Multi-select should now properly draw selection halos around EVERY selected item, not just the first.
+* [#664] Hovering over a way should now show its vertices, not just the endpoint/interesting ones.
+* [#718] Area drawing can now correctly snap the drawing area's points into existing ways.
+* [#702] Rejoice, for you can now drag nodes in a way on top of each other to make them disappear!
+* [#691] Adding nodes at the end of a line should now allow you to snap to existing lines and areas.
+
+* [#703], [#704], [#705], [#706], and [#707] were all fixed by last week's [#682] fix.
+* [#709] Removed the keyboard shortcut help text for the 'scale' and 'nudge' operations, as those have been removed.
+* [#717] Restored the tooltip text for the area drawing mode- it incorrectly said 'not implemented'.
+* [#720] Selecting an area should now display midpoints that are draggable.
+
+[#689]: https://github.com/facebook/RapiD/issues/689
+[#635]: https://github.com/facebook/RapiD/issues/635
+[#664]: https://github.com/facebook/RapiD/issues/664
+[#718]: https://github.com/facebook/RapiD/issues/718
+[#702]: https://github.com/facebook/RapiD/issues/702
+[#619]: https://github.com/facebook/RapiD/issues/619
+[#703]: https://github.com/facebook/RapiD/issues/703
+[#704]: https://github.com/facebook/RapiD/issues/704
+[#705]: https://github.com/facebook/RapiD/issues/705
+[#706]: https://github.com/facebook/RapiD/issues/706
+[#707]: https://github.com/facebook/RapiD/issues/707
+[#708]: https://github.com/facebook/RapiD/issues/708
+[#709]: https://github.com/facebook/RapiD/issues/709
+[#717]: https://github.com/facebook/RapiD/issues/717
+[#720]: https://github.com/facebook/RapiD/issues/720
 # [2.0.0-alpha3.2]
 
 #### 2022-Dec-08
