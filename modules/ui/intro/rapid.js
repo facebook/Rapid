@@ -8,9 +8,9 @@ import { utilRebind } from '../../util/rebind';
 import { icon, pad, transitionTime } from './helper';
 
 
-export function uiIntroRapid(context, reveal) {
+export function uiIntroRapid(context, curtain) {
   const dispatch = d3_dispatch('done');
-  let chapter = { title: 'intro.rapid.title' };
+  const chapter = { title: 'intro.rapid.title' };
   let timeouts = [];
 
   const tulipLaneStart = [-85.6297512, 41.9561476];
@@ -18,8 +18,8 @@ export function uiIntroRapid(context, reveal) {
   const tulipLaneEnd = [-85.6272670, 41.9558780];
 
 
-  function timeout(f, t) {
-    timeouts.push(window.setTimeout(f, t));
+  function timeout(fn, t) {
+    timeouts.push(window.setTimeout(fn, t));
   }
 
 
@@ -50,7 +50,7 @@ export function uiIntroRapid(context, reveal) {
     context.scene().enableLayers('rapid');
     context.enter('browse');
     context.history().reset('initial');
-    reveal('.intro-nav-wrap .chapter-rapid',
+    curtain.reveal('.intro-nav-wrap .chapter-rapid',
       t('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
       { buttonText: t('intro.ok'), buttonCallback: showHideRoads }
     );
@@ -59,10 +59,10 @@ export function uiIntroRapid(context, reveal) {
 
   function showHideRoads() {
     const msec = transitionTime(tulipLaneMid, context.map().center());
-    if (msec) { reveal(null, null, { duration: 0 }); }
+    if (msec) { curtain.reveal(null, null, { duration: 0 }); }
     context.map().centerZoomEase(tulipLaneMid, 18.5, msec);
 
-    reveal(
+    curtain.reveal(
       'button.rapid-features',
       t('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
       { buttonText: t('intro.ok'), buttonCallback: selectRoad }
@@ -75,7 +75,7 @@ export function uiIntroRapid(context, reveal) {
 
     // disallow scrolling
     d3_select('.inspector-wrap').on('wheel.intro', eventCancel);
-    reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road'));
+    curtain.reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road'));
     const _fbRoadID = 'w-516';
 
     context.map().renderer.on('draw', function (mode) {
@@ -88,7 +88,7 @@ export function uiIntroRapid(context, reveal) {
 
   function addRoad() {
     timeout(() => {
-      reveal('.rapid-inspector-choice-accept', t('intro.rapid.add_road'));
+      curtain.reveal('.rapid-inspector-choice-accept', t('intro.rapid.add_road'));
       let button = d3_select('.choice-button-accept');
       button.on('click.intro', roadAdded);
     }, 250);
@@ -99,7 +99,7 @@ export function uiIntroRapid(context, reveal) {
     if (context.mode().id !== 'select') return chapter.restart();
 
     timeout(() => {
-      reveal(tulipLaneBoundingBox(),
+      curtain.reveal(tulipLaneBoundingBox(),
         t('intro.rapid.add_road_not_saved_yet', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
         { buttonText: t('intro.ok'), buttonCallback: showIssuesButton }
       );
@@ -111,7 +111,7 @@ export function uiIntroRapid(context, reveal) {
     issuesButton.on('click.intro', () => showLint());
 
     timeout(() => {
-      reveal(issuesButton.node(), t('intro.rapid.open_issues'));
+      curtain.reveal(issuesButton.node(), t('intro.rapid.open_issues'));
     }, 250);
   }
 
@@ -124,7 +124,7 @@ export function uiIntroRapid(context, reveal) {
       label = d3_select('li.issue.severity-warning');
 
       // "connect these features" is expected to be the first child
-      reveal(label.node(),
+      curtain.reveal(label.node(),
         t('intro.rapid.new_lints'),
         { buttonText: t('intro.ok'), buttonCallback: () => continueTo(undoRoadAdd) }
       );
@@ -141,7 +141,7 @@ export function uiIntroRapid(context, reveal) {
     timeout(() => {
       let button = d3_select('.top-toolbar button.undo-button');
       const iconName = '#iD-icon-undo';
-      reveal('.top-toolbar button.undo-button',
+      curtain.reveal('.top-toolbar button.undo-button',
         t('intro.rapid.undo_road_add', { button: icon(iconName, 'pre-text') })
       );
       button.on('click.intro', afterUndoRoadAdd);
@@ -151,7 +151,7 @@ export function uiIntroRapid(context, reveal) {
 
   function afterUndoRoadAdd() {
     timeout(() => {
-      reveal(
+      curtain.reveal(
         tulipLaneBoundingBox(),
         t('intro.rapid.undo_road_add_aftermath'),
         { buttonText: t('intro.ok'), buttonCallback: selectRoadAgain }
@@ -162,7 +162,7 @@ export function uiIntroRapid(context, reveal) {
 
   function selectRoadAgain() {
 
-    reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road_again'));
+    curtain.reveal(tulipLaneBoundingBox(), t('intro.rapid.select_road_again'));
     const _fbRoadID = 'w-516';
 
     context.map().renderer.on('draw', function (mode) {
@@ -175,7 +175,7 @@ export function uiIntroRapid(context, reveal) {
 
   function ignoreRoad() {
     timeout(() => {
-      reveal('.rapid-inspector-choice-ignore', t('intro.rapid.ignore_road'));
+      curtain.reveal('.rapid-inspector-choice-ignore', t('intro.rapid.ignore_road'));
       let button = d3_select('.choice-button-ignore');
       button.on('click.intro', showHelp);
     }, 250);
@@ -183,7 +183,7 @@ export function uiIntroRapid(context, reveal) {
 
 
   function showHelp() {
-    reveal(
+    curtain.reveal(
       '.map-control.help-control',
       t('intro.rapid.help', {
         rapid: icon('#iD-logo-rapid', 'pre-text'),
@@ -199,7 +199,7 @@ export function uiIntroRapid(context, reveal) {
     if (context.mode().id !== 'browse') return chapter.restart();
 
     dispatch.call('done');
-    reveal('.intro-nav-wrap .chapter-startEditing',
+    curtain.reveal('.intro-nav-wrap .chapter-startEditing',
       marked.parse(t('intro.rapid.done', { next: t('intro.startediting.title') }))
     );
   }

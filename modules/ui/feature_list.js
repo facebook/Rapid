@@ -148,10 +148,17 @@ export function uiFeatureList(context) {
                 });
             }
 
-            var allEntities = graph.entities;
+            // search both local and base graphs
+            // Gather affected ids
+            const base = graph.base.entities;
+            const local = graph.local.entities;
+            const ids = new Set([...base.keys(), ...local.keys()]);
+
+            // var allEntities = graph.entities;
             var localResults = [];
-            for (var id in allEntities) {
-                var entity = allEntities[id];
+            for (var id of ids) {
+                if (local.has(id) && local.get(id) === undefined) continue;  // deleted locally
+                const entity = graph.hasEntity(id);
                 if (!entity) continue;
 
                 var name = utilDisplayName(entity) || '';

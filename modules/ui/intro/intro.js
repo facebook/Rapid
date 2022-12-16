@@ -7,8 +7,8 @@ import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
-import { uiCurtain } from '../curtain';
 
+import { UiCurtain } from './UiCurtain';
 import { uiIntroWelcome } from './welcome';
 import { uiIntroNavigation } from './navigation';
 import { uiIntroPoint } from './point';
@@ -135,8 +135,8 @@ export function uiIntro(context, skipToRapid) {
       services.fbMLRoads.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
 
-    const curtain = uiCurtain(context.container().node());
-    selection.call(curtain);
+    const curtain = new UiCurtain(context);
+    selection.call(curtain.enable);
 
     // Store that the user started the walkthrough..
     prefs('walkthrough_started', 'yes');
@@ -146,7 +146,7 @@ export function uiIntro(context, skipToRapid) {
     let progress = storedProgress.split(';').filter(Boolean);
 
     let chapters = chapterFlow.map((chapter, i) => {
-      let s = chapterUi[chapter](context, curtain.reveal)
+      let s = chapterUi[chapter](context, curtain)
         .on('done', () => {
           buttons
             .filter(d => d.title === s.title)
@@ -186,7 +186,7 @@ export function uiIntro(context, skipToRapid) {
         services.fbMLRoads.toggle(true);
       }
 
-      curtain.remove();
+      curtain.disable();
       navwrap.remove();
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
 
@@ -233,7 +233,7 @@ export function uiIntro(context, skipToRapid) {
       .enter()
       .append('button')
       .attr('class', (d, i) => `chapter chapter-${chapterFlow[i]}`)
-      .on('click', enterChapter);
+      .on('click', _enterChapter);
 
     buttons
       .append('span')
@@ -244,10 +244,10 @@ export function uiIntro(context, skipToRapid) {
       .attr('class', 'status')
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-    enterChapter(null, chapters[skipToRapid ? 6 : 0]);
+    _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 
 
-    function enterChapter(d3_event, newChapter) {
+    function _enterChapter(d3_event, newChapter) {
       if (_currChapter) _currChapter.exit();
       context.enter('browse');
 

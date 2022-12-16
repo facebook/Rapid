@@ -495,6 +495,14 @@ export class PixiLayerOsm extends AbstractLayer {
       if (isRelatedVertex(nodeID)) {   // major importance
         parentContainer = selectedContainer;
       }
+      if ((
+        // If the node in question has a parent being hovered, display it.
+        graph.parentWays(node).filter(way => this.isHovered(way.id)).length > 0) ||
+        // OR if the node itself is being hovered, also display it.
+        this.isHovered(node.id)
+      ) {
+        parentContainer = pointsContainer;
+      }
       if (this.isDrawing(node.id)) {
         parentContainer = selectedContainer; // Also major importance
       }
@@ -649,12 +657,14 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  data         Visible OSM data to render, sorted by type
-   * @param  realated     Collections of related OSM IDs
+   * @param  related     Collections of related OSM IDs
    */
   renderMidpoints(frame, projection, zoom, data, related) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels
-    const entities = data.lines;
     const graph = this.context.graph();
+
+    //Need to consider both lines and polygons for drawing our midpoints
+    const entities = new Map([...data.lines, ...data.polygons]);
 
     // Midpoints should be drawn above everything
     const mapUIContainer = this.scene.layers.get('map-ui').container;
@@ -663,7 +673,6 @@ export class PixiLayerOsm extends AbstractLayer {
     // Generate midpoints from all the highlighted ways
     let midpoints = new Map();
     const MIDPOINT_STYLE = { markerName: 'midpoint' };
-
     for (const [wayID, way] of entities) {
       // Include only ways that are selected, or descended from a relation that is selected
       if (!related.descendantIDs.has(wayID)) continue;

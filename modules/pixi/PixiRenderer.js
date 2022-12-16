@@ -160,24 +160,25 @@ export class PixiRenderer extends EventEmitter {
   _onSelectChange() {
     const selectedIDs = Array.from(this.context.selectedIDs());
     const selectedData = this.context.selectedData();
-
-// hacky conversion to get around the id mismatch:
-let dataID = selectedIDs[0];
-let layerID;
-if (dataID) {
-  const datum = selectedData.get(dataID);
-  if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
-    layerID = 'osm';
-  } else if (datum?.__fbid__) {
-    layerID = 'rapid';
-  } else {
-    // there are other selectable things - we will not select-style them for now :(
-  }
-}
-
     this.scene.clearClass('selected');
-    if (layerID && dataID) {
-      this.scene.classData(layerID, dataID, 'selected');
+
+    // hacky conversion to get around the id mismatch:
+    for (let dataID of selectedIDs) {
+      let layerID;
+      if (dataID) {
+        const datum = selectedData.get(dataID);
+        if (!datum) {  // Legacy OSM select mode - there is no selectedData so the id is the id
+          layerID = 'osm';
+        } else if (datum?.__fbid__) {
+          layerID = 'rapid';
+        } else {
+          // there are other selectable things - we will not select-style them for now :(
+        }
+      }
+
+      if (layerID && dataID) {
+        this.scene.classData(layerID, dataID, 'selected');
+      }
     }
 
     this.render();

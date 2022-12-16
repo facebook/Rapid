@@ -32,6 +32,7 @@ export class ModeDragNode extends AbstractMode {
     this.id = 'drag-node';
 
     this.dragNode = null;             // The node being dragged
+    this.drawingParentIDs = [];
     this._restoreSelectedIDs = null;
     this._wasMidpoint = false;        // Used to set the correct edit annotation
     this._startLoc = null;
@@ -94,11 +95,18 @@ export class ModeDragNode extends AbstractMode {
     // While drawing, we want to hide the hit targets being generated for the node and any ways attached to it.
     this.dragNode = entity;
     const scene = this.context.scene();
-    const targetParentWayIDs = this.context.graph().parentWays(this.dragNode);
+    this.drawingParentIDs = this.context.graph().parentWays(this.dragNode);
 
     scene.classData('osm', this.dragNode.id, 'drawing');
-    targetParentWayIDs.forEach(parentWay => {
+    // While we're dragging, we need to ensure that the parent ways and all their nodes are also 'drawing'. This does two things:
+    // Ensures that the area fills aren't targetable
+    // Ensures that the nodes are being drawn / are therefore targetable
+
+    this.drawingParentIDs.forEach(parentWay => {
       scene.classData('osm', parentWay.id, 'drawing');
+      parentWay.nodes.forEach(node => {
+        if (node !== this.dragNode.id) { scene.classData('osm', node, 'drawing'); }
+      });
     });
 
     this._startLoc = entity.loc;
@@ -134,7 +142,8 @@ export class ModeDragNode extends AbstractMode {
     this._selectedData.clear();
     this._wasMidpoint = false;
     this.context.scene().clearClass('drawing');
-
+    this.context.scene().dirtyFeatures(this.drawingParentIDs);
+    this.drawingParentIDs = [];
     this.dragNode = null;
     this._startLoc = null;
     this._clickLoc = null;
@@ -159,16 +168,35 @@ export class ModeDragNode extends AbstractMode {
   _move(eventData) {
     if (!this.dragNode) return;
 
-    this.lastLoc = this.context.projection.invert(eventData.coord);
-    this._doMove(eventData.coord);
+    const context = this.context;
+    const graph = context.graph();
+    const projection = context.projection;
+    const coord = eventData.coord;
+    let loc = projection.invert(coord);
 
-// if at edge of viewport, schedule a nudge
-//    const nudge = geomViewportNudge(point, context.map().dimensions);
-//    if (nudge) {
-//      this._startNudge(d3_event, dragNode, nudge);
-//    } else {
-//      this._stopNudge();
-//    }
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    const target = eventData.target;
+    const datum = target && target.data;
+    const entity = datum && graph.hasEntity(datum.id);
+
+    // Snap to a node
+    if (entity && entity.type === 'node') {
+      this.lastLoc = entity.loc;
+
+    // Snap to a way that isn't the node's parent
+    } else if (entity && entity.type === 'way' && !graph.parentWays(this.dragNode).includes(entity)) {
+      const activeIDs = context.activeIDs();
+      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      if (choice) {
+        this.lastLoc = choice.loc;
+      }
+    } else {
+      this.lastLoc = projection.invert(eventData.coord);
+    }
+
+    this._doMove(projection.project(this.lastLoc));
+
   }
 
 
@@ -186,12 +214,11 @@ export class ModeDragNode extends AbstractMode {
     const isPoint = entity.geometry(graph) === 'point';   // i.e. not a vertex along a line
     const target = eventData.target?.data;    // entity to snap to
 
-//    const nope = (target && target.properties && target.properties.nope) || context.surface().classed('nope');
-const nope = false;
+    // const nope = graph.parentWays(entity).includes(target);
+    const nope = null;
 
     if (nope) {   // bounce back
       context.perform(_actionBounceBack(entity.id, this._startLoc));
-
     } else if (target && target.type === 'way') {
       const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, entity.id);
       context.replace(
@@ -279,6 +306,7 @@ const nope = false;
     const entity = this.dragNode;
     context.replace(actionMoveNode(entity.id, loc));
     this.dragNode = context.entity(entity.id);   // get post-action entity
+
     this._updateCollections();
   }
 
@@ -354,30 +382,6 @@ const nope = false;
   }
 
 }
-
-
-//  /**
-//   * _startNudge
-//   */
-//  function _startNudge(d3_event, entity, nudge) {
-//    if (_nudgeInterval) window.clearInterval(_nudgeInterval);
-//
-//    _nudgeInterval = window.setInterval(() => {
-//      context.map().pan(nudge);
-//      doMove(d3_event, entity, nudge);
-//    }, 50);
-//  }
-//
-//  /**
-//   * _stopNudge
-//   */
-//  function _stopNudge() {
-//    if (_nudgeInterval) {
-//      window.clearInterval(_nudgeInterval);
-//      _nudgeInterval = null;
-//    }
-//  }
-
 
 
 //  mode.selectedIDs = function() {

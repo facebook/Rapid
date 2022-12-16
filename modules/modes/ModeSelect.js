@@ -1,6 +1,7 @@
 import { AbstractMode } from './AbstractMode';
 import { services } from '../services';
 import { osmNote, QAItem } from '../osm';
+import { select as d3_select } from 'd3-selection';
 
 import { uiDataEditor } from '../ui/data_editor';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
@@ -29,6 +30,7 @@ export class ModeSelect extends AbstractMode {
   constructor(context) {
     super(context);
     this.id = 'select';
+    this.keybinding = null;
   }
 
 
@@ -114,8 +116,8 @@ export class ModeSelect extends AbstractMode {
 
     // Selected RapiD feature...
     } else if (datum.__fbid__) {
-      const keybinding = utilKeybinding('select-ai-features');
-      const rapidInspector = uiRapidFeatureInspector(context, keybinding).datum(datum);
+      this.keybinding = utilKeybinding('select-ai-features');
+      const rapidInspector = uiRapidFeatureInspector(context, this.keybinding).datum(datum);
       sidebarContent = rapidInspector;
     }
 
@@ -142,6 +144,12 @@ export class ModeSelect extends AbstractMode {
   exit() {
     if (!this._active) return;
     this._active = false;
+
+    if (this.keybinding) {
+      d3_select(document)
+      .call(this.keybinding.unbind);
+      this.keybinding = null;
+    }
 
     if (DEBUG) {
       console.log('ModeSelect: exiting');  // eslint-disable-line no-console

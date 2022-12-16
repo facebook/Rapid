@@ -8,7 +8,7 @@ import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, pad, transitionTime } from './helper';
 
 
-export function uiIntroArea(context, reveal) {
+export function uiIntroArea(context, curtain) {
     var dispatch = d3_dispatch('done');
     var playground = [-85.63552, 41.94159];
     var playgroundPreset = presetManager.item('leisure/playground');
@@ -23,8 +23,8 @@ export function uiIntroArea(context, reveal) {
     };
 
 
-    function timeout(f, t) {
-        timeouts.push(window.setTimeout(f, t));
+    function timeout(fn, t) {
+        timeouts.push(window.setTimeout(fn, t));
     }
 
 
@@ -37,7 +37,7 @@ export function uiIntroArea(context, reveal) {
     function revealPlayground(center, text, options) {
         var padding = 180 * Math.pow(2, context.map().zoom() - 19.5);
         var box = pad(center, padding, context);
-        reveal(box, text, options);
+        curtain.reveal(box, text, options);
     }
 
 
@@ -47,11 +47,11 @@ export function uiIntroArea(context, reveal) {
         _areaID = null;
 
         var msec = transitionTime(playground, context.map().center());
-        if (msec) { reveal(null, null, { duration: 0 }); }
+        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
         context.map().centerZoomEase(playground, 19, msec);
 
         timeout(function() {
-            var tooltip = reveal(
+            var tooltip = curtain.reveal(
               'button.draw-area',
               helpHtml('intro.areas.add_playground')
             );
@@ -206,7 +206,7 @@ export function uiIntroArea(context, reveal) {
                 .on('keydown.intro', null)
                 .on('keyup.intro', checkPresetSearch);
 
-            reveal('.preset-search-input',
+            curtain.reveal('.preset-search-input',
                 helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
             );
         }, 400);  // after preset list pane visible..
@@ -224,7 +224,7 @@ export function uiIntroArea(context, reveal) {
             .on('keydown.intro', null)
             .on('keyup.intro', checkPresetSearch);
 
-        reveal('.preset-search-input',
+        curtain.reveal('.preset-search-input',
             helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
         );
 
@@ -234,7 +234,7 @@ export function uiIntroArea(context, reveal) {
             var first = context.container().select('.preset-list-item:first-child');
 
             if (first.classed('preset-leisure-playground')) {
-                reveal(first.select('.preset-list-button').node(),
+                curtain.reveal(first.select('.preset-list-button').node(),
                     helpHtml('intro.areas.choose_playground', { preset: playgroundPreset.name() }),
                     { duration: 300 }
                 );
@@ -305,7 +305,7 @@ export function uiIntroArea(context, reveal) {
             }
 
             timeout(function() {
-                reveal('.more-fields .combobox-input',
+                curtain.reveal('.more-fields .combobox-input',
                     helpHtml('intro.areas.add_field', {
                         name: nameField.label(),
                         description: descriptionField.label()
@@ -373,7 +373,7 @@ export function uiIntroArea(context, reveal) {
             }
         }, 300);
 
-        reveal('div.combobox',
+        curtain.reveal('div.combobox',
             helpHtml('intro.areas.choose_field', { field: descriptionField.label() }),
             { duration: 300 }
         );
@@ -410,7 +410,7 @@ export function uiIntroArea(context, reveal) {
             continueTo(play);
         });
 
-        reveal('.entity-editor-pane',
+        curtain.reveal('.entity-editor-pane',
             helpHtml('intro.areas.describe_playground', { button: icon('#iD-icon-close', 'inline') }),
             { duration: 300 }
         );
@@ -434,7 +434,7 @@ export function uiIntroArea(context, reveal) {
         // reset pane, in case user happened to change it..
         context.container().select('.inspector-wrap .panewrap').style('right', '0%');
 
-        reveal('.entity-editor-pane',
+        curtain.reveal('.entity-editor-pane',
             helpHtml('intro.areas.retry_add_field', { field: descriptionField.label() }), {
             buttonText: t.html('intro.ok'),
             buttonCallback: function() { continueTo(clickAddField); }
@@ -453,11 +453,11 @@ export function uiIntroArea(context, reveal) {
 
     function play() {
         dispatch.call('done');
-        reveal('.ideditor',
+        curtain.reveal('.ideditor',
             helpHtml('intro.areas.play', { next: t('intro.lines.title') }), {
                 tooltipBox: '.intro-nav-wrap .chapter-line',
                 buttonText: t.html('intro.ok'),
-                buttonCallback: function() { reveal('.ideditor'); }
+                buttonCallback: function() { curtain.reveal('.ideditor'); }
             }
         );
     }
