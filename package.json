@@ -124,7 +124,7 @@
     "node-fetch": "^3.3.0",
     "npm-run-all": "^4.0.0",
     "osm-community-index": "~5.3.1",
-    "postcss": "^8.4.19",
+    "postcss": "^8.4.20",
     "postcss-selector-prepend": "^0.5.0",
     "shelljs": "^0.8.5",
     "shx": "^0.3.4",
