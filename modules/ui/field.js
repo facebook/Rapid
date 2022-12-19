@@ -3,10 +3,10 @@ import { select as d3_select } from 'd3-selection';
 import { utilUniqueString } from '@id-sdk/util';
 
 import { t, localizer } from '../core/localizer';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { svgIcon } from '../svg/icon';
 import { uiTooltip } from './tooltip';
-import { uiFieldHelp } from './field_help';
+// import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
 import { uiTagReference } from './tag_reference';
 import { utilRebind, utilTotalExtent } from '../util';
@@ -79,7 +79,7 @@ export function uiField(context, presetField, entityIDs, options) {
     function isModified() {
         if (!entityIDs || !entityIDs.length) return false;
         return entityIDs.some(function(entityID) {
-            var original = context.graph().base().entities[entityID];
+            var original = context.graph().base.entities.get(entityID);
             var latest = context.graph().entity(entityID);
             return field.keys.some(function(key) {
                 return original ? latest.tags[key] !== original.tags[key] : latest.tags[key];
@@ -193,10 +193,10 @@ export function uiField(context, presetField, entityIDs, options) {
 
                 var reference, help;
 
-                // instantiate field help
-                if (options.wrap && field.type === 'restrictions') {
-                    help = uiFieldHelp(context, 'restrictions');
-                }
+//                // instantiate field help
+//                if (options.wrap && field.type === 'restrictions') {
+//                    help = uiFieldHelp(context, 'restrictions');
+//                }
 
                 // instantiate tag reference
                 if (options.wrap && options.info) {
@@ -319,8 +319,8 @@ export function uiField(context, presetField, entityIDs, options) {
         })) return false;
 
         if (entityIDs && _entityExtent && field.locationSetID) {   // is field allowed in this location?
-            var validLocations = locationManager.locationsAt(_entityExtent.center());
-            if (!validLocations[field.locationSetID]) return false;
+            var validHere = locationManager.locationSetsAt(_entityExtent.center());
+            if (!validHere[field.locationSetID]) return false;
         }
 
         var prerequisiteTag = field.prerequisiteTag;

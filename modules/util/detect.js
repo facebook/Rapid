@@ -9,9 +9,9 @@ export function utilDetect(refresh) {
   let m = null;
 
   /* Browser */
-  m = ua.match(/(edge)\/?\s*(\.?\d+(\.\d+)*)/i);   // Edge
+  m = ua.match(/(edg)\/?\s*(\.?\d+(\.\d+)*)/i);   // Edge
   if (m !== null) {
-    _detected.browser = m[1];
+    _detected.browser = 'Edge';
     _detected.version = m[2];
   }
   if (!_detected.browser) {

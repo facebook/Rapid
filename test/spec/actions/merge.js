@@ -1,6 +1,6 @@
 describe('iD.actionMerge', function () {
     it('merges multiple points to a line', function () {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', tags: {a: 'a'}}),
                 iD.osmNode({id: 'b', tags: {b: 'b'}}),
                 iD.osmWay({id: 'w'}),
@@ -19,7 +19,7 @@ describe('iD.actionMerge', function () {
     });
 
     it('merges multiple points to an area', function () {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', tags: {a: 'a'}}),
                 iD.osmNode({id: 'b', tags: {b: 'b'}}),
                 iD.osmWay({id: 'w', tags: {area: 'yes'}}),
@@ -38,7 +38,7 @@ describe('iD.actionMerge', function () {
     });
 
     it('preserves original point if possible', function () {
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [1, 0], tags: {a: 'a'}}),
                 iD.osmNode({id: 'p', loc: [0, 0], tags: {p: 'p'}}),
                 iD.osmNode({id: 'q', loc: [0, 1]}),

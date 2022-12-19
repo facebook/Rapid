@@ -1,24 +1,5 @@
 describe('iD.util', function() {
 
-    describe('utilAsyncMap', function() {
-        it('handles correct replies', function() {
-            iD.utilAsyncMap([1, 2, 3],
-                function(d, c) { c(null, d * 2); },
-                function(err, res) {
-                    expect(err).to.eql([null, null, null]);
-                    expect(res).to.eql([2, 4, 6]);
-                });
-        });
-        it('handles errors', function() {
-            iD.utilAsyncMap([1, 2, 3],
-                function(d, c) { c('whoops ' + d, null); },
-                function(err, res) {
-                    expect(err).to.eql(['whoops 1', 'whoops 2', 'whoops 3']);
-                    expect(res).to.eql([null, null, null]);
-                });
-        });
-    });
-
     describe('utilDisplayName', function() {
         it('returns the name if tagged with a name', function() {
             expect(iD.utilDisplayName({tags: {name: 'East Coast Greenway'}})).to.eql('East Coast Greenway');
@@ -58,11 +39,11 @@ describe('iD.util', function() {
             // BART Yellow Line: Antioch => Pittsburg/Bay Point => SFO Airport => Millbrae
             expect(iD.utilDisplayName({tags: {network: 'BART', ref: 'Yellow', from: 'Antioch', to: 'Millbrae', via: 'Pittsburg/Bay Point;San Francisco International Airport', route: 'subway'}})).to.eql('BART Yellow from Antioch to Millbrae via Pittsburg/Bay Point;San Francisco International Airport');
         });
-        it('uses the housename if there is no better name', function() {
-            expect(iD.utilDisplayName({tags: {'addr:housename': 'Pembridge House', 'addr:housenumber': '31', 'addr:street': 'Princes Street' }})).to.eql('Pembridge House');
-        });
-        it('uses the street address as a last resort', function() {
-            expect(iD.utilDisplayName({tags: {'addr:housenumber': '31', 'addr:street': 'Princes Street' }})).to.eql('31 Princes Street');
-        });
+//        it('uses the housename if there is no better name', function() {
+//            expect(iD.utilDisplayName({tags: {'addr:housename': 'Pembridge House', 'addr:housenumber': '31', 'addr:street': 'Princes Street' }})).to.eql('Pembridge House');
+//        });
+//        it('uses the street address as a last resort', function() {
+//            expect(iD.utilDisplayName({tags: {'addr:housenumber': '31', 'addr:street': 'Princes Street' }})).to.eql('31 Princes Street');
+//        });
     });
 });

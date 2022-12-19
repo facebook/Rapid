@@ -3,7 +3,7 @@ describe('iD.actionRestrictTurn', function() {
         //
         // u === * --- w
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({id: 'u'}),
             iD.osmNode({id: '*'}),
             iD.osmNode({id: 'w'}),
@@ -43,7 +43,7 @@ describe('iD.actionRestrictTurn', function() {
         //       |
         // w --- v2
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({id: 'u'}),
             iD.osmNode({id: 'v1'}),
             iD.osmNode({id: 'v2'}),

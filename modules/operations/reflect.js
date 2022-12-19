@@ -2,7 +2,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionReflect } from '../actions/reflect';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
 
@@ -94,7 +94,7 @@ export function operationReflect(context, selectedIDs, axis) {
     operation.id = 'reflect-' + axis;
     operation.keys = [t('operations.reflect.key.' + axis)];
     operation.title = t('operations.reflect.title.' + axis);
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

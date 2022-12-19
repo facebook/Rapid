@@ -6,6 +6,9 @@ describe('iD.operationExtract', function () {
     fakeContext = {};
     fakeContext.graph = function () { return graph; };
     fakeContext.hasHiddenConnections = function () { return false; };
+        fakeContext.keyBinding = function () {
+          return false;
+        };
     fakeContext.map = function() {
         return {
             extent: function() {
@@ -31,7 +34,7 @@ describe('iD.operationExtract', function () {
             // d - node with no tags, 2 parent ways
             // e - node with tags, no parent way
             // f - node with no tags, no parent way
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode(createFakeNode('a', true)),
                 iD.osmNode(createFakeNode('b', true)),
                 iD.osmNode(createFakeNode('c', false)),
@@ -97,7 +100,7 @@ describe('iD.operationExtract', function () {
 
     describe('disabled', function () {
         it('returns enabled for non-related node', function () {
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode(createFakeNode('a', false)),
                 iD.osmNode(createFakeNode('b', true)),
                 iD.osmNode(createFakeNode('c', false)),
@@ -108,7 +111,7 @@ describe('iD.operationExtract', function () {
         });
 
         it('returns enabled for non-restriction related node', function () {
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode(createFakeNode('a', false)),
                 iD.osmNode(createFakeNode('b', true)),
                 iD.osmNode(createFakeNode('c', false)),
@@ -122,7 +125,7 @@ describe('iD.operationExtract', function () {
         it('returns enabled for via node in restriction', function () {
             // https://wiki.openstreetmap.org/wiki/Relation:restriction indicates that
             // from & to roles are only appropriate for Ways
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode(createFakeNode('a', false)),
                 iD.osmNode(createFakeNode('b', false)),
                 iD.osmNode(createFakeNode('c', false)),
@@ -147,7 +150,7 @@ describe('iD.operationExtract', function () {
         it('returns enabled for location_hint node in restriction', function () {
             // https://wiki.openstreetmap.org/wiki/Relation:restriction indicates that
             // from & to roles are only appropriate for Ways
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode(createFakeNode('a', false)),
                 iD.osmNode(createFakeNode('b', false)),
                 iD.osmNode(createFakeNode('c', false)),

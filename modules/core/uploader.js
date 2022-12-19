@@ -6,7 +6,7 @@ import { actionDiscardTags } from '../actions/discard_tags';
 import { actionMergeRemoteChanges } from '../actions/merge_remote_changes';
 import { actionNoop } from '../actions/noop';
 import { actionRevert } from '../actions/revert';
-import { coreGraph } from '../core/graph';
+import { Graph } from '../core/Graph';
 import { t } from '../core/localizer';
 import { utilDisplayName, utilDisplayType, utilRebind } from '../util';
 
@@ -98,22 +98,20 @@ export function coreUploader(context) {
 
 
     function performFullConflictCheck(changeset) {
-
         var osm = context.connection();
         if (!osm) return;
 
         var history = context.history();
 
         var localGraph = context.graph();
-        var remoteGraph = coreGraph(history.base(), true);
+        var remoteGraph = new Graph(history.base(), true);
 
         var summary = history.difference().summary();
         var _toCheck = [];
-        for (var i = 0; i < summary.length; i++) {
-            var item = summary[i];
-            if (item.changeType === 'modified') {
-                _toCheck.push(item.entity.id);
-            }
+        for (const [entityID, item] of summary) {
+          if (item.changeType === 'modified') {
+            _toCheck.push(entityID);
+          }
         }
 
         var _toLoad = withChildNodes(_toCheck, localGraph);

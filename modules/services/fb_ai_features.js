@@ -1,10 +1,10 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
-import { Projection, Tiler } from '@id-sdk/math';
+import { Tiler } from '@id-sdk/math';
 import { utilStringQs } from '@id-sdk/util';
 
-import { locationManager } from '../core/locations';
-import { coreGraph, coreTree } from '../core';
+import { locationManager } from '../core/LocationManager';
+import { Graph, Tree } from '../core';
 import { osmEntity, osmNode, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -187,7 +187,8 @@ function parseXML(dataset, xml, tile, callback, options) {
         var origUid;
         if (child.attributes.orig_id) {
             origUid = osmEntity.id.fromOSM(child.nodeName, child.attributes.orig_id.value);
-            if (graph.entities[origUid] ||
+            // skip if seen already
+            if (graph.hasEntity(origUid) ||
                 (cache.origIdTile[origUid] && cache.origIdTile[origUid] !== tile.id)) {
                 return null;
             }
@@ -213,8 +214,8 @@ export default {
 
         // allocate a special dataset for the rapid intro graph.
         var datasetID = 'rapid_intro_graph';
-        var graph = coreGraph();
-        var tree = coreTree(graph);
+        var graph = new Graph();
+        var tree = new Tree(graph);
         var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
         _datasets[datasetID] = ds;
@@ -230,8 +231,8 @@ export default {
             if (ds.cache.inflight) {
                 Object.values(ds.cache.inflight).forEach(abortRequest);
             }
-            ds.graph = coreGraph();
-            ds.tree = coreTree(ds.graph);
+            ds.graph = new Graph();
+            ds.tree = new Tree(ds.graph);
             ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
         });
 
@@ -300,15 +301,14 @@ export default {
             cache = ds.cache;
         } else {
             // as tile requests arrive, setup the resources needed to hold the results
-            graph = coreGraph();
-            tree = coreTree(graph);
+            graph = new Graph();
+            tree = new Tree(graph);
             cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
             ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
             _datasets[datasetID] = ds;
         }
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.getTiles(proj).tiles;
+        var tiles = tiler.getTiles(projection).tiles;
 
         // abort inflight requests that are no longer needed
         Object.keys(cache.inflight).forEach(k => {

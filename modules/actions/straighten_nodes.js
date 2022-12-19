@@ -34,7 +34,7 @@ export function actionStraightenNodes(nodeIDs, projection) {
         t = Math.min(Math.max(+t, 0), 1);
 
         var nodes = nodeIDs.map(function(id) { return graph.entity(id); });
-        var points = nodes.map(function(n) { return projection(n.loc); });
+        var points = nodes.map(function(n) { return projection.project(n.loc); });
         var endpoints = getEndpoints(points);
         var startPoint = endpoints[0];
         var endPoint = endpoints[1];
@@ -56,7 +56,7 @@ export function actionStraightenNodes(nodeIDs, projection) {
     action.disabled = function(graph) {
 
         var nodes = nodeIDs.map(function(id) { return graph.entity(id); });
-        var points = nodes.map(function(n) { return projection(n.loc); });
+        var points = nodes.map(function(n) { return projection.project(n.loc); });
         var endpoints = getEndpoints(points);
         var startPoint = endpoints[0];
         var endPoint = endpoints[1];

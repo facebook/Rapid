@@ -7,6 +7,7 @@ describe('iD.operationStraighten', function () {
     fakeContext.graph = function() { return graph; };
     fakeContext.entity = function(id) { return graph.entity(id); };
     fakeContext.hasHiddenConnections = function() { return false; };
+    fakeContext.keyBinding = function () { return false; };
 
     describe('#available', function () {
         beforeEach(function () {
@@ -16,7 +17,7 @@ describe('iD.operationStraighten', function () {
             // w3 - way with 3 nodes connected to w2
             // w4 - way with 3 nodes connected to w3
             // w5 - way with 4 nodes not connected to any other nodes
-            graph = iD.coreGraph([
+            graph = new iD.Graph([
                 iD.osmNode({ id: 'n1', type: 'node' }),
                 iD.osmNode({ id: 'n2', type: 'node' }),
                 iD.osmNode({ id: 'n2-1', type: 'node' }),

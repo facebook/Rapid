@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionReverse } from '../actions/reverse';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
 export function operationReverse(context, selectedIDs) {
@@ -71,7 +71,7 @@ export function operationReverse(context, selectedIDs) {
     operation.id = 'reverse';
     operation.keys = [t('operations.reverse.key')];
     operation.title = t('operations.reverse.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

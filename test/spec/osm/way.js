@@ -68,7 +68,7 @@ describe('iD.osmWay', function () {
             var a = iD.osmNode({id: 'a'}),
                 b = iD.osmNode({id: 'b'}),
                 w = iD.osmWay({id: 'w', nodes: ['a', 'b']}),
-                graph = iD.coreGraph([a, b, w]),
+                graph = new iD.Graph([a, b, w]),
                 copies = {},
                 result = w.copy(graph, copies);
 
@@ -83,7 +83,7 @@ describe('iD.osmWay', function () {
         it('creates only one copy of shared nodes', function () {
             var a = iD.osmNode({id: 'a'}),
                 w = iD.osmWay({id: 'w', nodes: ['a', 'a']}),
-                graph = iD.coreGraph([a, w]),
+                graph = new iD.Graph([a, w]),
                 copies = {},
                 result = w.copy(graph, copies);
 
@@ -133,7 +133,7 @@ describe('iD.osmWay', function () {
             var node1 = iD.osmNode({loc: [0, 0]}),
                 node2 = iD.osmNode({loc: [5, 10]}),
                 way   = iD.osmWay({nodes: [node1.id, node2.id]}),
-                graph = iD.coreGraph([node1, node2, way]);
+                graph = new iD.Graph([node1, node2, way]);
             expect(way.extent(graph).equals(new sdk.Extent([0, 0], [5, 10]))).to.be.ok;
         });
     });
@@ -167,7 +167,7 @@ describe('iD.osmWay', function () {
             //    |      a
             //    |     /
             //    c -- b
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [ 0.0003,  0.0000]}),
                 iD.osmNode({id: 'b', loc: [ 0.0002, -0.0002]}),
                 iD.osmNode({id: 'c', loc: [-0.0002, -0.0002]}),
@@ -184,7 +184,7 @@ describe('iD.osmWay', function () {
             //    |  a
             //    |   \
             //    c -- b
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [ 0.0000,  0.0000]}),
                 iD.osmNode({id: 'b', loc: [ 0.0002, -0.0002]}),
                 iD.osmNode({id: 'c', loc: [-0.0002, -0.0002]}),
@@ -201,7 +201,7 @@ describe('iD.osmWay', function () {
             //    |  a
             //    |   \
             //    c -- b
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [ 0.0000,  0.0000]}),
                 iD.osmNode({id: 'b', loc: [ 0.0002, -0.0002]}),
                 iD.osmNode({id: 'c', loc: [-0.0002, -0.0002]}),
@@ -213,7 +213,7 @@ describe('iD.osmWay', function () {
         });
 
         it('returns null for degenerate ways', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [0.0000,  0.0000]}),
                 iD.osmWay({id: 'w', nodes: ['a','a']})
             ]);
@@ -507,11 +507,11 @@ describe('iD.osmWay', function () {
 
     describe('#geometry', function() {
         it('returns \'line\' when the way is not an area', function () {
-            expect(iD.osmWay().geometry(iD.coreGraph())).to.equal('line');
+            expect(iD.osmWay().geometry(new iD.Graph())).to.equal('line');
         });
 
         it('returns \'area\' when the way is an area', function () {
-            expect(iD.osmWay({tags: { area: 'yes' }}).geometry(iD.coreGraph())).to.equal('area');
+            expect(iD.osmWay({tags: { area: 'yes' }}).geometry(new iD.Graph())).to.equal('area');
         });
     });
 
@@ -1006,7 +1006,7 @@ describe('iD.osmWay', function () {
             var a = iD.osmNode({loc: [1, 2]}),
                 b = iD.osmNode({loc: [3, 4]}),
                 w = iD.osmWay({tags: {highway: 'residential'}, nodes: [a.id, b.id]}),
-                graph = iD.coreGraph([a, b, w]),
+                graph = new iD.Graph([a, b, w]),
                 json = w.asGeoJSON(graph);
 
             expect(json.type).to.equal('LineString');
@@ -1018,7 +1018,7 @@ describe('iD.osmWay', function () {
                 b = iD.osmNode({loc: [5, 6]}),
                 c = iD.osmNode({loc: [3, 4]}),
                 w = iD.osmWay({tags: {area: 'yes'}, nodes: [a.id, b.id, c.id, a.id]}),
-                graph = iD.coreGraph([a, b, c, w]),
+                graph = new iD.Graph([a, b, c, w]),
                 json = w.asGeoJSON(graph);
 
             expect(json.type).to.equal('Polygon');
@@ -1030,7 +1030,7 @@ describe('iD.osmWay', function () {
                 b = iD.osmNode({loc: [5, 6]}),
                 c = iD.osmNode({loc: [3, 4]}),
                 w = iD.osmWay({tags: {area: 'yes'}, nodes: [a.id, b.id, c.id]}),
-                graph = iD.coreGraph([a, b, c, w]),
+                graph = new iD.Graph([a, b, c, w]),
                 json = w.asGeoJSON(graph);
 
             expect(json.type).to.equal('LineString');
@@ -1040,7 +1040,7 @@ describe('iD.osmWay', function () {
 
     describe('#area', function() {
         it('returns a relative measure of area', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [-0.0002,  0.0001]}),
                 iD.osmNode({id: 'b', loc: [ 0.0002,  0.0001]}),
                 iD.osmNode({id: 'c', loc: [ 0.0002, -0.0001]}),
@@ -1060,7 +1060,7 @@ describe('iD.osmWay', function () {
         });
 
         it('treats unclosed areas as if they were closed', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [-0.0002,  0.0001]}),
                 iD.osmNode({id: 'b', loc: [ 0.0002,  0.0001]}),
                 iD.osmNode({id: 'c', loc: [ 0.0002, -0.0001]}),
@@ -1076,7 +1076,7 @@ describe('iD.osmWay', function () {
         });
 
         it('returns 0 for degenerate areas', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'a', loc: [-0.0002,  0.0001]}),
                 iD.osmNode({id: 'b', loc: [ 0.0002,  0.0001]}),
                 iD.osmWay({id: '0', tags: {area: 'yes'}, nodes: []}),

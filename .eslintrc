@@ -2,7 +2,7 @@
     "env": {
         "browser": true,
         "node": true,
-        "es6": true
+        "es2021": true
     },
     "extends": [
         "eslint:recommended",
@@ -12,7 +12,6 @@
         "d3": false
     },
     "parserOptions": {
-        "ecmaVersion": 6,
         "sourceType": "module"
     },
     "rules": {
@@ -22,7 +21,6 @@
         "block-scoped-var": "error",
         "block-spacing": ["warn", "always"],
         "brace-style": ["warn", "1tbs", { "allowSingleLine": true }],
-        "class-methods-use-this": "error",
         "complexity": ["warn", 50],
         "curly": ["warn", "multi-line"],
         "default-case-last": "error",
@@ -91,14 +89,14 @@
         "no-useless-call": "warn",
         "no-useless-computed-key": "warn",
         "no-useless-concat": "warn",
-        "no-useless-constructor": "warn",
+        "no-useless-constructor": "off",
         "no-useless-escape": "off",
         "no-useless-rename": "warn",
         "no-void": "error",
         "no-warning-comments": "warn",
         "no-whitespace-before-property": "warn",
         "no-with": "error",
-        "quotes": ["error", "single"],
+        "quotes": ["error", "single", { "allowTemplateLiterals": true }],
         "radix": ["error", "always"],
         "require-atomic-updates": "error",
         "require-await": "error",

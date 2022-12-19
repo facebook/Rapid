@@ -1,7 +1,7 @@
 import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeRotate } from '../modes/rotate';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
@@ -77,7 +77,7 @@ export function operationRotate(context, selectedIDs) {
     operation.id = 'rotate';
     operation.keys = [t('operations.rotate.key')];
     operation.title = t('operations.rotate.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     operation.mouseOnly = true;
 

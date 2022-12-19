@@ -1,36 +1,36 @@
 import { geomLineIntersection, vecDot, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
 
 
-// Choose the edge with the minimal distance from `point` to its orthogonal
+// Choose the edge with the minimal distance from `coord` to its orthogonal
 // projection onto that edge, if such a projection exists, or the distance to
 // the closest vertex on that edge. Returns an object with the `index` of the
 // chosen edge, the chosen `loc` on that edge, and the `distance` to to it.
-export function geoChooseEdge(nodes, point, projection, activeID) {
+export function geoChooseEdge(nodes, coord, projection, activeID) {
     var dist = vecLength;
-    var points = nodes.map(function(n) { return projection(n.loc); });
+    var coords = nodes.map(function(n) { return projection.project(n.loc); });
     var ids = nodes.map(function(n) { return n.id; });
     var min = Infinity;
     var idx;
     var loc;
 
-    for (var i = 0; i < points.length - 1; i++) {
+    for (var i = 0; i < coords.length - 1; i++) {
         if (ids[i] === activeID || ids[i + 1] === activeID) continue;
 
-        var o = points[i];
-        var s = vecSubtract(points[i + 1], o);
-        var v = vecSubtract(point, o);
+        var o = coords[i];
+        var s = vecSubtract(coords[i + 1], o);
+        var v = vecSubtract(coord, o);
         var proj = vecDot(v, s) / vecDot(s, s);
         var p;
 
         if (proj < 0) {
             p = o;
         } else if (proj > 1) {
-            p = points[i + 1];
+            p = coords[i + 1];
         } else {
             p = [o[0] + proj * s[0], o[1] + proj * s[1]];
         }
 
-        var d = dist(p, point);
+        var d = dist(p, coord);
         if (d < min) {
             min = d;
             idx = i + 1;

@@ -10,7 +10,7 @@ export function uiRapidWhatsNew(context) {
 
 
   return function(selection) {
-    if (prefs('sawWhatsNew') === 'true') return;
+    if (prefs('sawWhatsNewGLAlphav3') === 'true') return;
 
     const modalSelection = uiModal(selection);
 
@@ -29,15 +29,22 @@ export function uiRapidWhatsNew(context) {
     let body = whatsNewModal
       .append('div')
       .attr('class','modal-section body')
-      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid') })));
+      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid'), bugicon: icon('#iD-icon-bug', 'bugnub') })));
 
 
-    body
+    let imageSection = body.append('div').attr('class', 'whatsnew-images');
+
+    imageSection
+      .append('img')
+      .attr('class', 'whatsnew-image wide')
+      .attr('src', context.asset('img/pista_sotm_asia.png'));
+
+    imageSection
       .append('img')
       .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/rapid-esri-splash.jpg'));
+      .attr('src', context.asset('img/foss4g-sotm-oceania-2021_logo_reverse-colour.webp'));
 
-    body.select('p a')
+    body.selectAll('p a')
       .attr('target', '_blank');
 
 
@@ -72,17 +79,17 @@ export function uiRapidWhatsNew(context) {
     .append('div')
     .attr('class', 'modal-actions');
 
-    let nothanks = buttonWrap
-      .append('button')
-      .attr('class', 'whats-new-nothanks')
-      .on('click', () => {
-        prefs('sawWhatsNew', _dontShowAgain);
-        modalSelection.close();
-      });
+    // let nothanks = buttonWrap
+    //   .append('button')
+    //   .attr('class', 'whats-new-nothanks')
+    //   .on('click', () => {
+    //     prefs('sawWhatsNewGL', _dontShowAgain);
+    //     modalSelection.close();
+    //   });
 
-    nothanks
-      .append('div')
-      .text(t('rapid_whats_new.nope'));
+    // nothanks
+    //   .append('div')
+    //   .text(t('rapid_whats_new.nope'));
 
     let okayButton = buttonWrap
       .append('button')
@@ -92,9 +99,8 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .text(t('rapid_whats_new.ok'))
       .on('click', () => {
-        prefs('sawWhatsNew', _dontShowAgain);
+        prefs('sawWhatsNewGLAlpha', _dontShowAgain);
         modalSelection.close();
-        window.open('https://mapwith.ai/rapid-esri', '_blank');
       });
 
     modalSelection.select('button.close')

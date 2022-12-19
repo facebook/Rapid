@@ -1,12 +1,11 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
-
-import { Projection, Tiler } from '@id-sdk/math';
+import { Tiler } from '@id-sdk/math';
 import { utilQsString } from '@id-sdk/util';
 
-import { locationManager } from '../core/locations';
-import { coreGraph, coreTree } from '../core';
+import { locationManager } from '../core/LocationManager';
+import { Graph, Tree } from '../core';
 import { osmNode, osmRelation, osmWay } from '../osm';
 import { utilRebind } from '../util';
 
@@ -85,8 +84,8 @@ function parseDataset(ds) {
   if (_datasets[ds.id]) return;  // unless we've seen it already
 
   _datasets[ds.id] = ds;
-  ds.graph = coreGraph();
-  ds.tree = coreTree(ds.graph);
+  ds.graph = new Graph();
+  ds.tree = new Tree(ds.graph);
   ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
 
   // cleanup the `licenseInfo` field by removing styles  (not used currently)
@@ -259,8 +258,8 @@ export default {
       if (ds.cache.inflight) {
         Object.values(ds.cache.inflight).forEach(abortRequest);
       }
-      ds.graph = coreGraph();
-      ds.tree = coreTree(ds.graph);
+      ds.graph = new Graph();
+      ds.tree = new Tree(ds.graph);
       ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
     });
 
@@ -296,8 +295,7 @@ export default {
     if (!ds || !ds.layer) return;
 
     const cache = ds.cache;
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.getTiles(proj).tiles;
+    const tiles = tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
     Object.keys(cache.inflight).forEach(k => {

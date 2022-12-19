@@ -1,11 +1,7 @@
+import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';
-import { behaviorDrag } from '../behavior/drag';
-import { behaviorEdit } from '../behavior/edit';
-import { vecSubtract } from '@id-sdk/vector';
-import { geomViewportNudge } from '@id-sdk/geom';
-import { modeSelectNote } from './select_note';
 
 
 export function modeDragNote(context) {
@@ -14,7 +10,10 @@ export function modeDragNote(context) {
         button: 'browse'
     };
 
-    var edit = behaviorEdit(context);
+    const behavior = context.behaviors.get('drag')
+      .on('start', start)
+      .on('move', move)
+      .on('end', end);
 
     var _nudgeInterval;
     var _lastLoc;
@@ -39,7 +38,7 @@ export function modeDragNote(context) {
 
 
     function origin(note) {
-        return context.projection(note.loc);
+        return context.projection.project(note.loc);
     }
 
 
@@ -51,13 +50,14 @@ export function modeDragNote(context) {
             // and dragging it around can sometimes delete the users note comment.
             _note = osm.getNote(_note.id);
         }
+        if (!_note.id) return;
 
         context.surface().selectAll('.note-' + _note.id)
             .classed('active', true);
 
         context.perform(actionNoop());
         context.enter(mode);
-        context.selectedNoteID(_note.id);
+        // context.selectedNoteID(_note.id);
     }
 
 
@@ -66,7 +66,7 @@ export function modeDragNote(context) {
         _lastLoc = context.projection.invert(point);
 
         doMove(d3_event);
-        var nudge = geomViewportNudge(point, context.map().dimensions());
+        var nudge = geomViewportNudge(point, context.map().dimensions);
         if (nudge) {
             startNudge(d3_event, nudge);
         } else {
@@ -78,7 +78,7 @@ export function modeDragNote(context) {
     function doMove(d3_event, nudge) {
         nudge = nudge || [0, 0];
 
-        var currPoint = (d3_event && d3_event.point) || context.projection(_lastLoc);
+        var currPoint = (d3_event && d3_event.point) || context.projection.project(_lastLoc);
         var currMouse = vecSubtract(currPoint, nudge);
         var loc = context.projection.invert(currMouse);
 
@@ -96,29 +96,20 @@ export function modeDragNote(context) {
     function end() {
         context.replace(actionNoop());   // trigger redraw
 
-        context
-            .selectedNoteID(_note.id)
-            .enter(modeSelectNote(context, _note.id));
+        const selectedData = new Map().set(_note.id, _note);
+        context.enter('select', selectedData);
     }
 
 
-    var drag = behaviorDrag()
-        .selector('.layer-touch.markers .target.note.new')
-        .surface(context.container().select('.main-map').node())
-        .origin(origin)
-        .on('start', start)
-        .on('move', move)
-        .on('end', end);
-
 
     mode.enter = function() {
-        context.install(edit);
+      context.enableBehaviors(['hover', 'drag', 'map-interaction']);
+      return true;
     };
 
 
     mode.exit = function() {
         context.ui().sidebar.hover.cancel();
-        context.uninstall(edit);
 
         context.surface()
             .selectAll('.active')
@@ -127,7 +118,7 @@ export function modeDragNote(context) {
         stopNudge();
     };
 
-    mode.behavior = drag;
+    // mode.behavior = drag;
 
     return mode;
 }

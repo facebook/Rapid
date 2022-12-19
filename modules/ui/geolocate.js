@@ -3,95 +3,111 @@ import { select as d3_select } from 'd3-selection';
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { Extent } from '@id-sdk/extent';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 import { uiLoading } from './loading';
 
+const GEOLOCATE_TIMEOUT = 10000;  // 10 sec
+const GEOLOCATE_REPEAT = 2000;    // 2 sec
+const GEOLOCATE_OPTIONS = {
+  enableHighAccuracy: false,   // prioritize speed and power usage over precision
+  timeout: 6000   // 6sec      // don't hang indefinitely getting the location
+};
+
+
 export function uiGeolocate(context) {
-    var _geolocationOptions = {
-        // prioritize speed and power usage over precision
-        enableHighAccuracy: false,
-        // don't hang indefinitely getting the location
-        timeout: 6000 // 6sec
-    };
-    var _locating = uiLoading(context).message(t.html('geolocate.locating')).blocking(true);
-    var _layer = context.layers().layer('geolocate');
-    var _position;
-    var _extent;
-    var _timeoutID;
-    var _button = d3_select(null);
+  let _uiModal = uiLoading(context).message(t.html('geolocate.locating')).blocking(true);
+  let _layer = context.scene().layers.get('map-ui');
+  let _enabled = false;
+  let _timeoutID;
+  let _button = d3_select(null);
 
-    function click() {
-        if (context.inIntro()) return;
-        if (!_layer.enabled() && !_locating.isShown()) {
 
-            // This timeout ensures that we still call finish() even if
-            // the user declines to share their location in Firefox
-            _timeoutID = setTimeout(error, 10000 /* 10sec */ );
+  function click() {
+    if (context.inIntro()) return;
 
-            context.container().call(_locating);
-            // get the latest position even if we already have one
-            navigator.geolocation.getCurrentPosition(success, error, _geolocationOptions);
-        } else {
-            _locating.close();
-            _layer.enabled(null, false);
-            updateButtonState();
-        }
+    if (!_enabled) {   // start geolocating
+      _enabled = true;
+      _button.classed('active', true);
+
+      // Ensures that we complete even if the success/error callbacks never get called.
+      // This can happen if the user declines to share their location.
+      _timeoutID = window.setTimeout(error, GEOLOCATE_TIMEOUT);
+
+      context.container().call(_uiModal);  // block UI
+      navigator.geolocation.getCurrentPosition(success, error, GEOLOCATE_OPTIONS);
+
+    } else {   // stop geolocating
+      _enabled = false;
+      _layer.geolocationData = null;
+      context.map().deferredRedraw();
+      finish();
     }
+  }
 
-    function zoomTo() {
-        context.enter(modeBrowse(context));
 
-        var map = context.map();
-        _layer.enabled(_position, true);
-        updateButtonState();
-        map.centerZoomEase(_extent.center(), Math.min(20, map.extentZoom(_extent)));
-    }
+  function success(result) {
+    if (_enabled) {    // user may have disabled it before the callback fires
+      context.enter('browse');
 
-    function success(geolocation) {
-        _position = geolocation;
-        var coords = _position.coords;
-        _extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
-        zoomTo();
-        finish();
-    }
+      const coords = result.coords;
+      const extent = new Extent([coords.longitude, coords.latitude]).padByMeters(coords.accuracy);
+      _layer.geolocationData = result;
+      context.map().deferredRedraw();
 
-    function error() {
-        if (_position) {
-            // use the position from a previous call if we have one
-            zoomTo();
-        } else {
-            context.ui().flash
-                .label(t.html('geolocate.location_unavailable'))
-                .iconName('#iD-icon-geolocate')();
-        }
-
-        finish();
-    }
-
-    function finish() {
-        _locating.close();  // unblock ui
-        if (_timeoutID) { clearTimeout(_timeoutID); }
+      // If `_timeoutID` has a value, this is the first successful result we've received.
+      // Recenter the map and clear the timeout.
+      if (_timeoutID) {
+        window.clearTimeout(_timeoutID);
         _timeoutID = undefined;
+
+        const map = context.map();
+        map.centerZoomEase(extent.center(), Math.min(20, map.extentZoom(extent)));
+      }
+
+      // keep geolocating until user turns the feature off
+      window.setTimeout(() => {
+        navigator.geolocation.getCurrentPosition(success, error, GEOLOCATE_OPTIONS);
+      }, GEOLOCATE_REPEAT);
+    }
+    finish();
+  }
+
+
+  function error() {
+    if (_enabled) {    // user may have disabled it before the callback fires
+      context.ui().flash
+        .label(t.html('geolocate.location_unavailable'))
+        .iconName('#iD-icon-geolocate')();
     }
 
-    function updateButtonState() {
-        _button.classed('active', _layer.enabled());
+    _enabled = false;
+    _layer.geolocationData = null;
+    context.map().deferredRedraw();
+    finish();
+  }
+
+
+  function finish() {
+    if (_timeoutID) {
+      window.clearTimeout(_timeoutID);
+      _timeoutID = undefined;
     }
 
-    return function(selection) {
-        if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) return;
+    _uiModal.close();  // unblock UI
+    _button.classed('active', _enabled);
+  }
 
-        _button = selection
-            .append('button')
-            .on('click', click)
-            .call(svgIcon('#iD-icon-geolocate', 'light'))
-            .call(uiTooltip()
-                .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-                .title(t.html('geolocate.title'))
-                .keys([t('geolocate.key')])
-            );
 
-        context.keybinding().on(t('geolocate.key'), click);
-    };
+  return function(selection) {
+    if (!navigator.geolocation || !navigator.geolocation.getCurrentPosition) return;
+
+    _button = selection
+      .append('button')
+      .on('click', click)
+      .call(svgIcon('#iD-icon-geolocate', 'light'))
+      .call(uiTooltip()
+        .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+        .title(t.html('geolocate.title'))
+      );
+  };
 }

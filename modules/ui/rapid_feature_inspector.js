@@ -2,9 +2,9 @@ import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
 
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
-import { modeBrowse, modeSelect } from '../modes';
+import { modeSelect } from '../modes';
 import { services } from '../services';
-import { svgIcon } from '../svg';
+import { svgIcon } from '../svg/icon';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
 import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
@@ -90,7 +90,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       origid: _datum.__origid__
     };
     context.perform(actionNoop(), annotation);
-    context.enter(modeBrowse(context));
+    context.enter('browse');
   }
 
 
@@ -205,7 +205,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .append('button')
       .attr('class', 'fr rapid-inspector-close')
       .on('click', () => {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
       })
       .call(svgIcon('#iD-icon-close'));
 

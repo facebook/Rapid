@@ -2,7 +2,7 @@ import { utilArrayUniq, utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
 
@@ -207,7 +207,7 @@ export function operationDisconnect(context, selectedIDs) {
     operation.id = 'disconnect';
     operation.keys = [t('operations.disconnect.key')];
     operation.title = t('operations.disconnect.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

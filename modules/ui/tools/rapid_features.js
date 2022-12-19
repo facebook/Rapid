@@ -20,22 +20,15 @@ export function uiToolRapidFeatures(context) {
     label: t('toolbar.rapid_features')
   };
 
-  context.keybinding()
-    .on(uiCmd(rapidFeaturesToggleKey), (d3_event) => {
-      d3_event.preventDefault();
-      d3_event.stopPropagation();
-      toggleFeatures();
-    });
-
-
   function layerEnabled() {
-    return context.layers().layer('ai-features').enabled();
+    if (!context.scene) return false;
+    let rapidLayer = context.scene().layers.get('rapid');
+    return rapidLayer?.enabled;
   }
 
 
   function toggleFeatures() {
-    let layer = context.layers().layer('ai-features');
-    layer.enabled(!layer.enabled());
+    context.scene().toggleLayers('rapid');
     toggleKeyDispatcher.call('ai_feature_toggle');
   }
 
@@ -48,20 +41,28 @@ export function uiToolRapidFeatures(context) {
     context.container().call(powerUserDialog);
   }
 
+  let debouncedUpdate;
 
-  tool.render = (selection) => {
-    const debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
+  tool.install = (selection) => {
+    debouncedUpdate = _debounce(update, 100, { leading: true, trailing: true });
+
+    context.keybinding()
+      .on(uiCmd(rapidFeaturesToggleKey), d3_event => {
+        d3_event.preventDefault();
+        d3_event.stopPropagation();
+        toggleFeatures();
+      });
+
+    context.map()
+      .on('draw', debouncedUpdate);
+
+    context
+      .on('enter.rapid_features', update);
+
     let wrap = selection
       .append('div')
       .attr('class', showPowerUser ? 'joined' : null)
       .style('display', 'flex');
-
-    context.map()
-      .on('move.rapid_features', debouncedUpdate)
-      .on('drawn.rapid_features', debouncedUpdate);
-
-    context
-      .on('enter.rapid_features', update);
 
     update();
 
@@ -108,6 +109,12 @@ export function uiToolRapidFeatures(context) {
         .append('div')
         .attr('class', 'beta');
     }
+  };
+
+
+  tool.uninstall = function () {
+    context.map().off('draw', debouncedUpdate);
+    context.keybinding().off(uiCmd(rapidFeaturesToggleKey));
   };
 
   return tool;

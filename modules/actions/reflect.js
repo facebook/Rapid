@@ -12,7 +12,7 @@ export function actionReflect(reflectIds, projection) {
         t = Math.min(Math.max(+t, 0), 1);
 
         var nodes = utilGetAllNodes(reflectIds, graph);
-        var points = nodes.map(function(n) { return projection(n.loc); });
+        var points = nodes.map(function(n) { return projection.project(n.loc); });
         var ssr = geomGetSmallestSurroundingRectangle(points);
 
         // Choose line pq = axis of symmetry.
@@ -41,7 +41,7 @@ export function actionReflect(reflectIds, projection) {
         var b = 2 * dx * dy / (dx * dx + dy * dy);
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
-            var c = projection(node.loc);
+            var c = projection.project(node.loc);
             var c2 = [
                 a * (c[0] - p[0]) + b * (c[1] - p[1]) + p[0],
                 b * (c[0] - p[0]) - a * (c[1] - p[1]) + p[1]

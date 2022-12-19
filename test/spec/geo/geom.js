@@ -3,6 +3,7 @@ describe('iD.geo - geometry', function() {
     describe('geoChooseEdge', function() {
         var projection = function (l) { return l; };
         projection.invert = projection;
+        projection.project = projection;
 
         it('returns null for a degenerate way (no nodes)', function() {
             expect(iD.geoChooseEdge([], [0, 0], projection)).to.be.null;

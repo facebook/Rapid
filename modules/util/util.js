@@ -1,10 +1,8 @@
 import { Extent } from '@id-sdk/math';
 import { utilEntityOrDeepMemberSelector } from '@id-sdk/util';
 
-import { fixRTLTextForSvg, rtlRegex } from './svg_paths_rtl_fix';
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
-import { utilDetect } from './detect';
 
 
 // Accepts an array of entities -or- entityIDs
@@ -82,30 +80,30 @@ export function utilDisplayName(entity, hideNetwork) {
         name = t('inspector.display_name.' + keyComponents.join('_'), tags);
     }
 
-    // if there's still no name found, try addr:housename
-    if (!name && entity.tags['addr:housename']) {
-        name = entity.tags['addr:housename'];
-    }
-
-    // as a last resort, use the street address as a name
-    if (!name && entity.tags['addr:housenumber'] && entity.tags['addr:street']) {
-        name = entity.tags['addr:housenumber'] + ' ' + entity.tags['addr:street'];
-    }
+// bhousel 3/28 - no labels for addresses for now
+//    // if there's still no name found, try addr:housename
+//    if (!name && entity.tags['addr:housename']) {
+//        name = entity.tags['addr:housename'];
+//    }
+//
+//    // as a last resort, use the street address as a name
+//    if (!name && entity.tags['addr:housenumber'] && entity.tags['addr:street']) {
+//        name = entity.tags['addr:housenumber'] + ' ' + entity.tags['addr:street'];
+//    }
 
     return name;
 }
 
 
-export function utilDisplayNameForPath(entity) {
-    var name = utilDisplayName(entity);
-    var isFirefox = utilDetect().browser.toLowerCase().indexOf('firefox') > -1;
-    var isNewChromium = Number(utilDetect().version.split('.')[0]) >= 96.0;
+// This is like utilDisplayName, but more useful for POI display names
+export function utilDisplayPOIName(entity) {
+  const code = localizer.languageCode().toLowerCase();
+  const tags = entity.tags;
 
-    if (!isFirefox && !isNewChromium && name && rtlRegex.test(name)) {
-        name = fixRTLTextForSvg(name);
-    }
-
-    return name;
+  return (
+    tags[`name:${code}`] ?? tags.name ??
+    tags[`brand:${code}`] ?? tags.brand
+  );
 }
 
 
@@ -144,54 +142,14 @@ export function utilDisplayLabel(entity, graphOrGeometry, verbose) {
 }
 
 
-export function utilPrefixDOMProperty(property) {
-    var prefixes = ['webkit', 'ms', 'moz', 'o'];
-    var i = -1;
-    var n = prefixes.length;
-    var s = document.body;
-
-    if (property in s) return property;
-
-    property = property.slice(0, 1).toUpperCase() + property.slice(1);
-
-    while (++i < n) {
-        if (prefixes[i] + property in s) {
-            return prefixes[i] + property;
-        }
-    }
-
-    return false;
+// `utilSetTransform`
+// Applies a CSS transformation to the given selection
+export function utilSetTransform(selection, x, y, scale, rotate) {
+  const t = `translate3d(${x}px,${y}px,0)`;
+  const s = scale ? ` scale(${scale})` : '';
+  const r = rotate ? ` rotate(${rotate}deg)` : '';
+  return selection.style('transform', `${t}${s}${r}`);
 }
-
-
-export function utilPrefixCSSProperty(property) {
-    var prefixes = ['webkit', 'ms', 'Moz', 'O'];
-    var i = -1;
-    var n = prefixes.length;
-    var s = document.body.style;
-
-    if (property.toLowerCase() in s) {
-        return property.toLowerCase();
-    }
-
-    while (++i < n) {
-        if (prefixes[i] + property in s) {
-            return '-' + prefixes[i].toLowerCase() + property.replace(/([A-Z])/g, '-$1').toLowerCase();
-        }
-    }
-
-    return false;
-}
-
-
-var transformProperty;
-export function utilSetTransform(el, x, y, scale) {
-    var prop = transformProperty = transformProperty || utilPrefixCSSProperty('Transform');
-    var translate = utilDetect().opera ? 'translate('   + x + 'px,' + y + 'px)'
-        : 'translate3d(' + x + 'px,' + y + 'px,0)';
-    return el.style(prop, translate + (scale ? ' scale(' + scale + ')' : ''));
-}
-
 
 
 // a d3.mouse-alike which
@@ -209,22 +167,6 @@ export function utilFastMouse(container) {
             e.clientY - rectTop - clientTop
         ];
     };
-}
-
-
-export function utilAsyncMap(inputs, func, callback) {
-    var remaining = inputs.length;
-    var results = [];
-    var errors = [];
-
-    inputs.forEach(function(d, i) {
-        func(d, function done(err, data) {
-            errors[i] = err;
-            results[i] = data;
-            remaining--;
-            if (!remaining) callback(errors, results);
-        });
-    });
 }
 
 

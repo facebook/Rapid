@@ -2,7 +2,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionCircularize } from '../actions/circularize';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 
 
@@ -16,6 +16,9 @@ export function operationCircularize(context, selectedIDs) {
     function getAction(entityID) {
 
         var entity = context.entity(entityID);
+
+        if (!entity) return;
+
 
         if (entity.type !== 'way' || new Set(entity.nodes).size <= 1) return null;
 
@@ -113,7 +116,7 @@ export function operationCircularize(context, selectedIDs) {
     operation.id = 'circularize';
     operation.keys = [t('operations.circularize.key')];
     operation.title = t('operations.circularize.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

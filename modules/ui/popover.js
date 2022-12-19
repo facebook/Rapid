@@ -18,8 +18,6 @@ export function uiPopover(klass) {
     var _displayType = utilFunctor('');
     var _hasArrow = utilFunctor(true);
 
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
     popover.displayType = function(val) {
         if (arguments.length) {
@@ -101,10 +99,10 @@ export function uiPopover(klass) {
         selector = selector || '.popover-' + _id;
 
         selection
-            .on(_pointerPrefix + 'enter.popover', null)
-            .on(_pointerPrefix + 'leave.popover', null)
-            .on(_pointerPrefix + 'up.popover', null)
-            .on(_pointerPrefix + 'down.popover', null)
+            .on('pointerenter.popover', null)
+            .on('pointerleave.popover', null)
+            .on('pointerup.popover', null)
+            .on('pointerdown.popover', null)
             .on('click.popover', null)
             .attr('title', function() {
                 return this.getAttribute('data-original-title') || this.getAttribute('title');
@@ -150,7 +148,7 @@ export function uiPopover(klass) {
 
         if (display === 'hover') {
             var _lastNonMouseEnterTime;
-            anchor.on(_pointerPrefix + 'enter.popover', function(d3_event) {
+            anchor.on('pointerenter.popover', function(d3_event) {
 
                 if (d3_event.pointerType) {
                     if (d3_event.pointerType !== 'mouse') {
@@ -172,7 +170,7 @@ export function uiPopover(klass) {
 
                 show.apply(this, arguments);
             })
-            .on(_pointerPrefix + 'leave.popover', function() {
+            .on('pointerleave.popover', function() {
                 hide.apply(this, arguments);
             })
             // show on focus too for better keyboard navigation support
@@ -185,11 +183,11 @@ export function uiPopover(klass) {
 
         } else if (display === 'clickFocus') {
             anchor
-                .on(_pointerPrefix + 'down.popover', function(d3_event) {
+                .on('pointerdown.popover', function(d3_event) {
                     d3_event.preventDefault();
                     d3_event.stopPropagation();
                 })
-                .on(_pointerPrefix + 'up.popover', function(d3_event) {
+                .on('pointerup.popover', function(d3_event) {
                     d3_event.preventDefault();
                     d3_event.stopPropagation();
                 })

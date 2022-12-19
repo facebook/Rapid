@@ -1,18 +1,15 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, pointBox, pad, selectMenuItem, transitionTime } from './helper';
 
 
-export function uiIntroPoint(context, reveal) {
+export function uiIntroPoint(context, curtain) {
     var dispatch = d3_dispatch('done');
     var timeouts = [];
     var intersection = [-85.63279, 41.94394];
@@ -26,8 +23,8 @@ export function uiIntroPoint(context, reveal) {
     };
 
 
-    function timeout(f, t) {
-        timeouts.push(window.setTimeout(f, t));
+    function timeout(fn, t) {
+        timeouts.push(window.setTimeout(fn, t));
     }
 
 
@@ -38,15 +35,15 @@ export function uiIntroPoint(context, reveal) {
 
 
     function addPoint() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().reset('initial');
 
         var msec = transitionTime(intersection, context.map().center());
-        if (msec) { reveal(null, null, { duration: 0 }); }
+        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
         context.map().centerZoomEase(intersection, 19, msec);
 
         timeout(function() {
-            var tooltip = reveal('button.add-point',
+            var tooltip = curtain.reveal('button.add-point',
                 helpHtml('intro.points.points_info') + '{br}' + helpHtml('intro.points.add_point'));
 
             _pointID = null;
@@ -77,12 +74,15 @@ export function uiIntroPoint(context, reveal) {
 
         var pointBox = pad(building, 150, context);
         var textId = context.lastPointerType() === 'mouse' ? 'place_point' : 'place_point_touch';
-        reveal(pointBox, helpHtml('intro.points.' + textId));
+        curtain.reveal(pointBox, helpHtml('intro.points.' + textId));
 
-        context.map().on('move.intro drawn.intro', function() {
+        function onMapRender() {
             pointBox = pad(building, 150, context);
-            reveal(pointBox, helpHtml('intro.points.' + textId), { duration: 0 });
-        });
+            curtain.reveal(pointBox, helpHtml('intro.points.' + textId), { duration: 0 });
+        }
+
+        context.map().renderer.on('move', onMapRender);
+        context.map().renderer.on('draw', onMapRender);
 
         context.on('enter.intro', function(mode) {
             if (mode.id !== 'select') return chapter.restart();
@@ -91,7 +91,8 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().renderer.off('move', null);
+            context.map().renderer.off('draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -110,7 +111,7 @@ export function uiIntroPoint(context, reveal) {
             .on('keydown.intro', null)
             .on('keyup.intro', checkPresetSearch);
 
-        reveal('.preset-search-input',
+        curtain.reveal('.preset-search-input',
             helpHtml('intro.points.search_cafe', { preset: cafePreset.name() })
         );
 
@@ -131,7 +132,7 @@ export function uiIntroPoint(context, reveal) {
                     .on('keydown.intro', null)
                     .on('keyup.intro', checkPresetSearch);
 
-                reveal('.preset-search-input',
+                curtain.reveal('.preset-search-input',
                     helpHtml('intro.points.search_cafe', { preset: cafePreset.name() })
                 );
 
@@ -148,7 +149,7 @@ export function uiIntroPoint(context, reveal) {
                     .on('keydown.intro', eventCancel, true)
                     .on('keyup.intro', null);
 
-                reveal(first.select('.preset-list-button').node(),
+                curtain.reveal(first.select('.preset-list-button').node(),
                     helpHtml('intro.points.choose_cafe', { preset: cafePreset.name() }),
                     { duration: 300 }
                 );
@@ -175,7 +176,7 @@ export function uiIntroPoint(context, reveal) {
         }
 
         timeout(function() {
-            reveal('.entity-editor-pane', helpHtml('intro.points.feature_editor'), {
+            curtain.reveal('.entity-editor-pane', helpHtml('intro.points.feature_editor'), {
                 tooltipClass: 'intro-points-describe',
                 buttonText: t.html('intro.ok'),
                 buttonCallback: function() { continueTo(addName); }
@@ -210,7 +211,7 @@ export function uiIntroPoint(context, reveal) {
             // Give them an OK button instead.
             var entity = context.entity(_pointID);
             if (entity.tags.name) {
-                var tooltip = reveal('.entity-editor-pane', addNameString, {
+                var tooltip = curtain.reveal('.entity-editor-pane', addNameString, {
                     tooltipClass: 'intro-points-describe',
                     buttonText: t.html('intro.ok'),
                     buttonCallback: function() { continueTo(addCloseEditor); }
@@ -218,7 +219,7 @@ export function uiIntroPoint(context, reveal) {
                 tooltip.select('.instruction').style('display', 'none');
 
             } else {
-                reveal('.entity-editor-pane', addNameString,
+                curtain.reveal('.entity-editor-pane', addNameString,
                     { tooltipClass: 'intro-points-describe' }
                 );
             }
@@ -252,7 +253,7 @@ export function uiIntroPoint(context, reveal) {
             continueTo(reselectPoint);
         });
 
-        reveal('.entity-editor-pane',
+        curtain.reveal('.entity-editor-pane',
             helpHtml('intro.points.add_close', { button: icon(href, 'inline') })
         );
 
@@ -272,24 +273,26 @@ export function uiIntroPoint(context, reveal) {
         var oldPreset = presetManager.match(entity, context.graph());
         context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         var msec = transitionTime(entity.loc, context.map().center());
-        if (msec) { reveal(null, null, { duration: 0 }); }
+        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
         context.map().centerEase(entity.loc, msec);
 
         timeout(function() {
             var box = pointBox(entity.loc, context);
-            reveal(box, helpHtml('intro.points.reselect'), { duration: 600 });
+            curtain.reveal(box, helpHtml('intro.points.reselect'), { duration: 600 });
 
             timeout(function() {
-                context.map().on('move.intro drawn.intro', function() {
-                    var entity = context.hasEntity(_pointID);
-                    if (!entity) return chapter.restart();
-                    var box = pointBox(entity.loc, context);
-                    reveal(box, helpHtml('intro.points.reselect'), { duration: 0 });
+                context.map().on('move draw', function () {
+                  var entity = context.hasEntity(_pointID);
+                  if (!entity) return chapter.restart();
+                  var box = pointBox(entity.loc, context);
+                  curtain.reveal(box, helpHtml('intro.points.reselect'), {
+                    duration: 0,
+                  });
                 });
-            }, 600); // after reveal..
+            }, 600); // after curtain.reveal..
 
             context.on('enter.intro', function(mode) {
                 if (mode.id !== 'select') return;
@@ -299,7 +302,7 @@ export function uiIntroPoint(context, reveal) {
         }, msec + 100);
 
         function continueTo(nextStep) {
-            context.map().on('move.intro drawn.intro', null);
+            context.map().off('move draw', null);
             context.on('enter.intro', null);
             nextStep();
         }
@@ -323,7 +326,7 @@ export function uiIntroPoint(context, reveal) {
         });
 
         timeout(function() {
-            reveal('.entity-editor-pane', helpHtml('intro.points.update'),
+            curtain.reveal('.entity-editor-pane', helpHtml('intro.points.update'),
                 { tooltipClass: 'intro-points-describe' }
             );
         }, 400);
@@ -349,7 +352,7 @@ export function uiIntroPoint(context, reveal) {
         });
 
         timeout(function() {
-            reveal('.entity-editor-pane',
+            curtain.reveal('.entity-editor-pane',
                 helpHtml('intro.points.update_close', { button: icon('#iD-icon-close', 'inline') })
             );
         }, 500);
@@ -366,20 +369,20 @@ export function uiIntroPoint(context, reveal) {
         var entity = context.hasEntity(_pointID);
         if (!entity) return chapter.restart();
 
-        context.enter(modeBrowse(context));
+        context.enter('browse');
 
         var box = pointBox(entity.loc, context);
         var textId = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
-        reveal(box, helpHtml('intro.points.' + textId), { duration: 600 });
+        curtain.reveal(box, helpHtml('intro.points.' + textId), { duration: 600 });
 
         timeout(function() {
-            context.map().on('move.intro', function() {
-                var entity = context.hasEntity(_pointID);
-                if (!entity) return chapter.restart();
-                var box = pointBox(entity.loc, context);
-                reveal(box, helpHtml('intro.points.' + textId), { duration: 0 });
+            context.map().on('move', function () {
+              var entity = context.hasEntity(_pointID);
+              if (!entity) return chapter.restart();
+              var box = pointBox(entity.loc, context);
+              curtain.reveal(box, helpHtml('intro.points.' + textId), { duration: 0 });
             });
-        }, 600); // after reveal
+        }, 600); // after curtain.reveal
 
         context.on('enter.intro', function(mode) {
             if (mode.id !== 'select') return;
@@ -394,8 +397,8 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
+            context.map().off('move', null);
             context.on('enter.intro', null);
-            context.map().on('move.intro', null);
             nextStep();
         }
     }
@@ -409,17 +412,17 @@ export function uiIntroPoint(context, reveal) {
         var node = selectMenuItem(context, 'delete').node();
         if (!node) { return continueTo(rightClickPoint); }
 
-        reveal('.edit-menu',
+        curtain.reveal('.edit-menu',
             helpHtml('intro.points.delete'),
             { padding: 50 }
         );
 
         timeout(function() {
-            context.map().on('move.intro', function() {
-                reveal('.edit-menu',
-                    helpHtml('intro.points.delete'),
-                    { duration: 0,  padding: 50 }
-                );
+            context.map().on('move', function () {
+              curtain.reveal('.edit-menu', helpHtml('intro.points.delete'), {
+                duration: 0,
+                padding: 50,
+              });
             });
         }, 300); // after menu visible
 
@@ -436,7 +439,7 @@ export function uiIntroPoint(context, reveal) {
         });
 
         function continueTo(nextStep) {
-            context.map().on('move.intro', null);
+            context.map().off('move', null);
             context.history().on('change.intro', null);
             context.on('exit.intro', null);
             nextStep();
@@ -449,7 +452,7 @@ export function uiIntroPoint(context, reveal) {
             continueTo(play);
         });
 
-        reveal('.top-toolbar button.undo-button',
+        curtain.reveal('.top-toolbar button.undo-button',
             helpHtml('intro.points.undo')
         );
 
@@ -462,11 +465,11 @@ export function uiIntroPoint(context, reveal) {
 
     function play() {
         dispatch.call('done');
-        reveal('.ideditor',
+        curtain.reveal('.ideditor',
             helpHtml('intro.points.play', { next: t('intro.areas.title') }), {
                 tooltipBox: '.intro-nav-wrap .chapter-area',
                 buttonText: t.html('intro.ok'),
-                buttonCallback: function() { reveal('.ideditor'); }
+                buttonCallback: function() { curtain.reveal('.ideditor'); }
             }
         );
     }
@@ -480,7 +483,7 @@ export function uiIntroPoint(context, reveal) {
     chapter.exit = function() {
         timeouts.forEach(window.clearTimeout);
         context.on('enter.intro exit.intro', null);
-        context.map().on('move.intro drawn.intro', null);
+        context.map().off('move draw', null);
         context.history().on('change.intro', null);
         context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
         context.container().select('.preset-search-input').on('keydown.intro keyup.intro', null);

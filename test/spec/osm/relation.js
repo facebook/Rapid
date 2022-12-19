@@ -58,7 +58,7 @@ describe('iD.osmRelation', function () {
             var c = iD.osmNode({id: 'c'});
             var w = iD.osmWay({id: 'w', nodes: ['a','b','c','a']});
             var r = iD.osmRelation({id: 'r', members: [{id: 'w', role: 'outer'}]});
-            var graph = iD.coreGraph([a, b, c, w, r]);
+            var graph = new iD.Graph([a, b, c, w, r]);
             var copies = {};
             var result = r.copy(graph, copies);
 
@@ -75,7 +75,7 @@ describe('iD.osmRelation', function () {
             var w = iD.osmWay({id: 'w'});
             var r1 = iD.osmRelation({id: 'r1', members: [{id: 'r2'}, {id: 'w'}]});
             var r2 = iD.osmRelation({id: 'r2', members: [{id: 'w'}]});
-            var graph = iD.coreGraph([w, r1, r2]);
+            var graph = new iD.Graph([w, r1, r2]);
             var copies = {};
             r1.copy(graph, copies);
 
@@ -91,7 +91,7 @@ describe('iD.osmRelation', function () {
         it('deep copies cyclical relation graphs without issue', function () {
             var r1 = iD.osmRelation({id: 'r1', members: [{id: 'r2'}]});
             var r2 = iD.osmRelation({id: 'r2', members: [{id: 'r1'}]});
-            var graph = iD.coreGraph([r1, r2]);
+            var graph = new iD.Graph([r1, r2]);
             var copies = {};
             r1.copy(graph, copies);
 
@@ -102,7 +102,7 @@ describe('iD.osmRelation', function () {
 
         it('deep copies self-referencing relations without issue', function () {
             var r = iD.osmRelation({id: 'r', members: [{id: 'r'}]});
-            var graph = iD.coreGraph([r]);
+            var graph = new iD.Graph([r]);
             var copies = {};
             r.copy(graph, copies);
 
@@ -116,7 +116,7 @@ describe('iD.osmRelation', function () {
             var a = iD.osmNode({loc: [0, 0]});
             var b = iD.osmNode({loc: [5, 10]});
             var r = iD.osmRelation({members: [{id: a.id}, {id: b.id}]});
-            var graph = iD.coreGraph([a, b, r]);
+            var graph = new iD.Graph([a, b, r]);
             expect(r.extent(graph)).to.eql(new sdk.Extent([0, 0], [5, 10]));
         });
 
@@ -124,25 +124,25 @@ describe('iD.osmRelation', function () {
             var a = iD.osmNode({loc: [0, 0]});
             var b = iD.osmNode({loc: [5, 10]});
             var r = iD.osmRelation({members: [{id: a.id}, {id: b.id}]});
-            var graph = iD.coreGraph([a, r]);
+            var graph = new iD.Graph([a, r]);
             expect(r.extent(graph)).to.eql(new sdk.Extent([0, 0], [0, 0]));
         });
 
         it('does not error on self-referencing relations', function () {
             var r = iD.osmRelation();
             r = r.addMember({id: r.id});
-            var graph = iD.coreGraph([r]);
+            var graph = new iD.Graph([r]);
             expect(r.extent(graph)).to.eql(new sdk.Extent());
         });
     });
 
     describe('#geometry', function () {
         it('returns \'area\' for multipolygons', function () {
-            expect(iD.osmRelation({tags: {type: 'multipolygon'}}).geometry(iD.coreGraph())).to.equal('area');
+            expect(iD.osmRelation({tags: {type: 'multipolygon'}}).geometry(new iD.Graph())).to.equal('area');
         });
 
         it('returns \'relation\' for other relations', function () {
-            expect(iD.osmRelation().geometry(iD.coreGraph())).to.equal('relation');
+            expect(iD.osmRelation().geometry(new iD.Graph())).to.equal('relation');
         });
     });
 
@@ -281,7 +281,7 @@ describe('iD.osmRelation', function () {
     describe('#isValidRestriction', function () {
         it('not a restriction', function () {
             var r = iD.osmRelation({ id: 'r', tags: { type: 'multipolygon' }});
-            var graph = iD.coreGraph([r]);
+            var graph = new iD.Graph([r]);
             expect(r.isValidRestriction(graph)).to.be.false;
         });
 
@@ -298,7 +298,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f, v, t, r]);
+            var graph = new iD.Graph([f, v, t, r]);
 
             expect(r.isValidRestriction(graph)).to.be.true;
         });
@@ -318,7 +318,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f1, f2, v, t, r]);
+            var graph = new iD.Graph([f1, f2, v, t, r]);
 
             expect(r.isValidRestriction(graph)).to.be.false;
         });
@@ -338,7 +338,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f1, f2, v, t, r]);
+            var graph = new iD.Graph([f1, f2, v, t, r]);
 
             expect(r.isValidRestriction(graph)).to.be.true;
         });
@@ -358,7 +358,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't2', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f, v, t1, t2, r]);
+            var graph = new iD.Graph([f, v, t1, t2, r]);
 
             expect(r.isValidRestriction(graph)).to.be.false;
         });
@@ -378,7 +378,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't2', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f, v, t1, t2, r]);
+            var graph = new iD.Graph([f, v, t1, t2, r]);
 
             expect(r.isValidRestriction(graph)).to.be.true;
         });
@@ -398,7 +398,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f, v1, v2, t, r]);
+            var graph = new iD.Graph([f, v1, v2, t, r]);
 
             expect(r.isValidRestriction(graph)).to.be.false;
         });
@@ -418,7 +418,7 @@ describe('iD.osmRelation', function () {
                     { role: 'to', id: 't', type: 'way' },
                 ]
             });
-            var graph = iD.coreGraph([f, v1, v2, t, r]);
+            var graph = new iD.Graph([f, v1, v2, t, r]);
 
             expect(r.isValidRestriction(graph)).to.be.true;
         });
@@ -538,7 +538,7 @@ describe('iD.osmRelation', function () {
             var c = iD.osmNode({loc: [2, 2]});
             var w = iD.osmWay({nodes: [a.id, b.id, c.id, a.id]});
             var r = iD.osmRelation({tags: {type: 'multipolygon'}, members: [{id: w.id, type: 'way'}]});
-            var g = iD.coreGraph([a, b, c, w, r]);
+            var g = new iD.Graph([a, b, c, w, r]);
             var json = r.asGeoJSON(g);
 
             expect(json.type).to.equal('MultiPolygon');
@@ -551,7 +551,7 @@ describe('iD.osmRelation', function () {
             var c = iD.osmNode({loc: [1, 0]});
             var w = iD.osmWay({nodes: [a.id, c.id, b.id, a.id]});
             var r = iD.osmRelation({tags: {type: 'multipolygon'}, members: [{id: w.id, type: 'way'}]});
-            var g = iD.coreGraph([a, b, c, w, r]);
+            var g = new iD.Graph([a, b, c, w, r]);
             var json = r.asGeoJSON(g);
 
             expect(json.coordinates[0][0]).to.eql([a.loc, b.loc, c.loc, a.loc]);
@@ -567,7 +567,7 @@ describe('iD.osmRelation', function () {
             var outer = iD.osmWay({nodes: [a.id, b.id, c.id, a.id]});
             var inner = iD.osmWay({nodes: [d.id, e.id, f.id, d.id]});
             var r = iD.osmRelation({members: [{id: outer.id, type: 'way'}, {id: inner.id, role: 'inner', type: 'way'}]});
-            var g = iD.coreGraph([a, b, c, d, e, f, outer, inner, r]);
+            var g = new iD.Graph([a, b, c, d, e, f, outer, inner, r]);
 
             expect(r.multipolygon(g)[0][1]).to.eql([d.loc, f.loc, e.loc, d.loc]);
         });
@@ -575,7 +575,7 @@ describe('iD.osmRelation', function () {
         it('converts a relation to a GeoJSON FeatureCollection', function() {
             var a = iD.osmNode({loc: [1, 1]});
             var r = iD.osmRelation({tags: {type: 'type'}, members: [{id: a.id, role: 'role'}]});
-            var g = iD.coreGraph([a, r]);
+            var g = new iD.Graph([a, r]);
             var json = r.asGeoJSON(g);
 
             expect(json.type).to.equal('FeatureCollection');
@@ -594,7 +594,7 @@ describe('iD.osmRelation', function () {
             var c = iD.osmNode({loc: [2, 2]});
             var w = iD.osmWay({nodes: [a.id, b.id, c.id, a.id]});
             var r = iD.osmRelation({members: [{id: w.id, type: 'way'}]});
-            var g = iD.coreGraph([a, b, c, w, r]);
+            var g = new iD.Graph([a, b, c, w, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]]]);
         });
@@ -606,7 +606,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [a.id, b.id]});
             var w2 = iD.osmWay({nodes: [b.id, c.id, a.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]]]);
         });
@@ -618,7 +618,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [a.id, b.id]});
             var w2 = iD.osmWay({nodes: [a.id, c.id, b.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]]]);
         });
@@ -633,7 +633,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [a.id, b.id, c.id, a.id]});
             var w2 = iD.osmWay({nodes: [d.id, e.id, f.id, d.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, d, e, f, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, d, e, f, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]], [[d.loc, e.loc, f.loc, d.loc]]]);
         });
@@ -644,7 +644,7 @@ describe('iD.osmRelation', function () {
             var c = iD.osmNode({loc: [2, 2]});
             var w = iD.osmWay({nodes: [a.id, b.id, c.id]});
             var r = iD.osmRelation({members: [{id: w.id, type: 'way'}]});
-            var g = iD.coreGraph([a, b, c, w, r]);
+            var g = new iD.Graph([a, b, c, w, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]]]);
         });
@@ -656,7 +656,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [a.id, b.id]});
             var w2 = iD.osmWay({nodes: [b.id, c.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]]]);
         });
@@ -669,7 +669,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [c.id, d.id]});
             var w2 = iD.osmWay({nodes: [a.id, b.id, c.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, d, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, d, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[d.loc, c.loc, b.loc, a.loc, d.loc]]]);
         });
@@ -682,7 +682,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [a.id, b.id, c.id]});
             var w2 = iD.osmWay({nodes: [d.id, c.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, d, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, d, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, d.loc, c.loc, b.loc, a.loc]]]);
         });
@@ -695,7 +695,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [c.id, d.id]});
             var w2 = iD.osmWay({nodes: [c.id, b.id, a.id]});
             var r  = iD.osmRelation({members: [{id: w1.id, type: 'way'}, {id: w2.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, d, w1, w2, r]);
+            var g  = new iD.Graph([a, b, c, d, w1, w2, r]);
 
             expect(r.multipolygon(g)).to.eql([[[d.loc, c.loc, b.loc, a.loc, d.loc]]]);
         });
@@ -713,7 +713,7 @@ describe('iD.osmRelation', function () {
                 {id: outer.id, type: 'way'},
                 {id: inner.id, role: 'inner', type: 'way'}
             ]});
-            var g = iD.coreGraph([a, b, c, d, e, f, outer, inner, r]);
+            var g = new iD.Graph([a, b, c, d, e, f, outer, inner, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc], [d.loc, e.loc, f.loc, d.loc]]]);
         });
@@ -733,7 +733,7 @@ describe('iD.osmRelation', function () {
                 {id: inner1.id, role: 'inner', type: 'way'},
                 {id: inner2.id, role: 'inner', type: 'way'}
             ]});
-            var graph = iD.coreGraph([a, b, c, d, e, f, outer, inner1, inner2, r]);
+            var graph = new iD.Graph([a, b, c, d, e, f, outer, inner1, inner2, r]);
 
             expect(r.multipolygon(graph)).to.eql([[[a.loc, b.loc, c.loc, a.loc], [d.loc, e.loc, f.loc, d.loc]]]);
         });
@@ -756,7 +756,7 @@ describe('iD.osmRelation', function () {
                 {id: inner1.id, role: 'inner', type: 'way'},
                 {id: inner2.id, role: 'inner', type: 'way'}
             ]});
-            var graph = iD.coreGraph([a, b, c, d, e, f, g, h, i, outer, inner1, inner2, r]);
+            var graph = new iD.Graph([a, b, c, d, e, f, g, h, i, outer, inner1, inner2, r]);
 
             expect(r.multipolygon(graph)).to.eql([[[a.loc, b.loc, c.loc, a.loc], [d.loc, e.loc, f.loc, d.loc], [g.loc, h.loc, i.loc, g.loc]]]);
         });
@@ -779,7 +779,7 @@ describe('iD.osmRelation', function () {
                 {id: outer2.id, type: 'way'},
                 {id: inner.id, role: 'inner', type: 'way'}
             ]});
-            var graph = iD.coreGraph([a, b, c, d, e, f, g, h, i, outer1, outer2, inner, r]);
+            var graph = new iD.Graph([a, b, c, d, e, f, g, h, i, outer1, outer2, inner, r]);
 
             expect(r.multipolygon(graph)).to.eql([[[a.loc, b.loc, c.loc, a.loc], [d.loc, e.loc, f.loc, d.loc]], [[g.loc, h.loc, i.loc, g.loc]]]);
         });
@@ -790,7 +790,7 @@ describe('iD.osmRelation', function () {
             var c = iD.osmNode({loc: [3, 3]});
             var w = iD.osmWay({nodes: [a.id, b.id, c.id, a.id]});
             var r = iD.osmRelation({members: [{id: w.id, role: 'inner', type: 'way'}]});
-            var g = iD.coreGraph([a, b, c, w, r]);
+            var g = new iD.Graph([a, b, c, w, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, b.loc, c.loc, a.loc]]]);
         });
@@ -802,7 +802,7 @@ describe('iD.osmRelation', function () {
             var w1 = iD.osmWay({nodes: [a.id, b.id, c.id]});
             var w2 = iD.osmWay();
             var r  = iD.osmRelation({members: [{id: w2.id, type: 'way'}, {id: w1.id, type: 'way'}]});
-            var g  = iD.coreGraph([a, b, c, w1, r]);
+            var g  = new iD.Graph([a, b, c, w1, r]);
 
             expect(r.multipolygon(g)).to.eql([[[a.loc, c.loc, b.loc, a.loc]]]);
         });

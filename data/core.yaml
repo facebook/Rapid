@@ -966,7 +966,7 @@ en:
     key: P
     privacy:
       title: Privacy
-      privacy_link: View the iD privacy policy
+      privacy_link: View the Map with AI privacy policy
       third_party_icons:
         description: Show Third Party Icons
         tooltip: Uncheck this box to avoid loading icons from third party sites such as Wikimedia Commons, Facebook, or Twitter.
@@ -1049,9 +1049,9 @@ en:
     skip_to_rapid: "Learn about RapiD!"
     start: "No thanks, just start mapping"
   rapid_whats_new:
-    welcome: What's New- Esri Datasets in {rapidicon}
-    text: "Come check out our latest experimental feature - Esri datasets that are useable from within {rapidicon}!\nLearn more about it [here](https://tech.fb.com/osm-ready-data-sets/)."
-    ok: Okay, let's go
+    welcome: What's New- a webGL-based {rapidicon} Alpha!
+    text: "Enjoy this alpha v3 of a *completely rewritten* {rapidicon}!  We're hoping community members will join us in testing this version of RapiD out, so we made the bug report button {bugicon} easier to use.  <p>If you'd like more information, here's our [original post](https://github.com/facebookincubator/RapiD/discussions/481) announcing this work. We also maintain a list of [known issues](https://github.com/orgs/facebookincubator/projects/4/views/4?filterQuery=status%3ATriage)."
+    ok: Okay
     nope: No thanks, just take me to RapiD
     dontshowagain: Don't show this again
   rapid_first_edit:
@@ -1493,11 +1493,11 @@ en:
     signs:
       tooltip: "Traffic signs from Mapillary"
     view_on_mapillary: "View this image on Mapillary"
-  openstreetcam_images:
-    tooltip: "Street-level photos from OpenStreetCam"
-  openstreetcam:
-    title: OpenStreetCam
-    view_on_openstreetcam: "View this image on OpenStreetCam"
+  kartaview_images:
+    tooltip: "Street-level photos from KartaView"
+  kartaview:
+    title: KartaView
+    view_on_kartaview: "View this image on KartaView"
   note:
     note: Note
     title: Edit note
@@ -1697,7 +1697,7 @@ en:
       offset_change: "Press the small triangle buttons to adjust the imagery offset in small steps, or hold the {leftclick} left mouse button and drag within the gray square to slide the imagery into alignment."
     streetlevel:
       title: Street Level Photos
-      intro: "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The RapiD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [OpenStreetCam](https://www.openstreetcam.org)."
+      intro: "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The RapiD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [KartaView](https://www.kartaview.org)."
       using_h: "Using Street Level Photos"
       using: "To use street level photos for mapping, open the {data_icon} **{map_data}** panel on the side of the map to enable or disable the available photo overlays."
       photos: "When enabled, the photo overlay displays a line along the sequence of photos. At higher zoom levels, a circle marks at each photo location, and at even higher zoom levels, a cone indicates the direction the camera was facing when the photo was taken."
@@ -2381,14 +2381,12 @@ en:
       select_road: "A single AI-assisted road has shown up on the map. **Select the AI-assisted road with a left-click.**"
       add_road: "Click the 'Use this Feature' button to add the road to the working map."
       add_road_not_saved_yet: "The AI-assisted road has been added as a change to the map. Like any other map change, it will not show up for others until you save it."
+      open_issues: "Now let's open up the issues panel."
       new_lints: "The addition of the road has caused a new issue to appear in the issues panel. RapiD has introduced several new validation checks that will assist you in correcting issues that arise from adding AI-assisted roads."
-      fix_lint: "This particular issue is letting you know that the road you just added isn't quite connected to its neighbor. ** Press the {connect} Connect option to join them. **"
-      fixed_lint: "The roads are now connected! There are other types of helpful issue checks (and fixes) available in RapiD."
-      undo_fix_lint: "If you have second thoughts about using an AI-assisted road, you can always undo it like any other change. **Press on the {button} button to undo the connection you just made.**"
-      undo_road_add: "The issue about the crossed roads is back. Now let's undo again to return things back the way they were. **Press on the {button} button to undo the road addition and return the map to its original state.**"
+      undo_road_add: "We could fix the issue by connecting the roads, but let's instead undo the AI road change to return things back the way they were. **Press on the {button} button to undo the road addition and return the map to its original state.**"
       undo_road_add_aftermath: "The road is removed from your local changes, and has returned to the magenta layer as before!"
       select_road_again: "Next, we'll learn how to ignore roads that you don't want to add. **Select the AI-assisted road again with a left-click.**"
-      ignore_road: "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map. This helps our AI learning algorithms get better over time."
+      ignore_road: "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map."
       help: "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new RapiD-specific shortcuts that speed up your mapping."
       done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). **Click '{next}' to continue.**"
     startediting:
@@ -2495,10 +2493,6 @@ en:
         split: "Split features at the selected points"
         reverse: "Reverse selected features"
         move: "Move selected features"
-        nudge: "Nudge selected features"
-        nudge_more: "Nudge selected features by a lot"
-        scale: "Scale selected features"
-        scale_more: "Scale selected features by a lot"
         rotate: "Rotate selected features"
         orthogonalize: "Square corners of a line or area"
         straighten: "Straighten a line or points"

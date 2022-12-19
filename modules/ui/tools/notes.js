@@ -1,127 +1,121 @@
 import _debounce from 'lodash-es/debounce';
-
 import { select as d3_select } from 'd3-selection';
 
-import {
-    modeAddNote,
-    modeBrowse
-} from '../../modes';
-
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
 
+
 export function uiToolNotes(context) {
+  let tool = {
+    id: 'notes',
+    label: t.html('modes.add_note.label')
+  };
 
-    var tool = {
-        id: 'notes',
-        label: t.html('modes.add_note.label')
-    };
+  const mode = {
+    id: 'add-note',
+    title: t.html('modes.add_note.title'),
+    button: 'note',
+    description: t.html('modes.add_note.description'),
+    key: t('modes.add_note.key')
+  };
 
-    var mode = modeAddNote(context);
 
-    function enabled() {
-        return notesEnabled() && notesEditable();
-    }
+  function notesEnabled() {
+    return context.scene().layers.get('notes')?.enabled;
+  }
 
-    function notesEnabled() {
-        var noteLayer = context.layers().layer('notes');
-        return noteLayer && noteLayer.enabled();
-    }
+  function notesEditable() {
+    return context.mode()?.id !== 'save';
+  }
 
-    function notesEditable() {
-        var mode = context.mode();
-        return context.map().notesEditable() && mode && mode.id !== 'save';
-    }
+  let debouncedUpdate;
 
-    context.keybinding().on(mode.key, function() {
-        if (!enabled(mode)) return;
 
-        if (mode.id === context.mode().id) {
-            context.enter(modeBrowse(context));
-        } else {
-            context.enter(mode);
-        }
+  tool.install = function(selection) {
+    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+
+    context.keybinding().on(mode.key, () => {
+      if (!notesEditable()) return;
+
+      if (mode.id === context.mode().id) {
+        context.enter('browse');
+      } else {
+        context.enter(mode.id);
+      }
     });
 
-    tool.render = function(selection) {
+    context.map()
+      .on('draw', debouncedUpdate);
 
-        var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+    context
+      .on('enter.notes', update);
 
-        context.map()
-            .on('move.notes', debouncedUpdate)
-            .on('drawn.notes', debouncedUpdate);
-
-        context
-            .on('enter.notes', update);
-
-        update();
+    update();
 
 
-        function update() {
-            var showNotes = notesEnabled();
-            var data = showNotes ? [mode] : [];
+    function update() {
+      const data = notesEnabled() ? [mode] : [];
+      let buttons = selection.selectAll('button.add-button')
+        .data(data, d => d.id);
 
-            var buttons = selection.selectAll('button.add-button')
-                .data(data, function(d) { return d.id; });
+      // exit
+      buttons.exit()
+        .remove();
 
-            // exit
-            buttons.exit()
-                .remove();
+      // enter
+      let buttonsEnter = buttons.enter()
+        .append('button')
+        .attr('class', d => `${d.id} add-button bar-button`)
+        .on('click.notes', (d3_event, d) => {
+          if (!notesEditable()) return;
 
-            // enter
-            var buttonsEnter = buttons.enter()
-                .append('button')
-                .attr('class', function(d) { return d.id + ' add-button bar-button'; })
-                .on('click.notes', function(d3_event, d) {
-                    if (!enabled(d)) return;
+          // When drawing, ignore accidental clicks on mode buttons - #4042
+          var currMode = context.mode().id;
+          if (/^draw/.test(currMode)) return;
 
-                    // When drawing, ignore accidental clicks on mode buttons - #4042
-                    var currMode = context.mode().id;
-                    if (/^draw/.test(currMode)) return;
+          if (d.id === currMode) {
+            context.enter('browse');
+          } else {
+            context.enter(d.id);
+          }
+        })
+        .call(uiTooltip()
+          .placement('bottom')
+          .title(d => d.description)
+          .keys(d => [d.key])
+          .scrollContainer(context.container().select('.top-toolbar'))
+        );
 
-                    if (d.id === currMode) {
-                        context.enter(modeBrowse(context));
-                    } else {
-                        context.enter(d);
-                    }
-                })
-                .call(uiTooltip()
-                    .placement('bottom')
-                    .title(function(d) { return d.description; })
-                    .keys(function(d) { return [d.key]; })
-                    .scrollContainer(context.container().select('.top-toolbar'))
-                );
+      buttonsEnter
+        .each((d, i, nodes) => {
+          d3_select(nodes[i])
+            .call(svgIcon(d.icon || `#iD-icon-${d.button}`));
+        });
 
-            buttonsEnter
-                .each(function(d) {
-                    d3_select(this)
-                        .call(svgIcon(d.icon || '#iD-icon-' + d.button));
-                });
+      // if we are adding/removing the buttons, check if toolbar has overflowed
+      if (buttons.enter().size() || buttons.exit().size()) {
+        context.ui().checkOverflow('.top-toolbar', true);
+      }
 
-            // if we are adding/removing the buttons, check if toolbar has overflowed
-            if (buttons.enter().size() || buttons.exit().size()) {
-                context.ui().checkOverflow('.top-toolbar', true);
-            }
+      // update
+      buttons = buttons
+        .merge(buttonsEnter)
+        .classed('disabled', () => !notesEnabled())
+        .classed('active', d => context.mode() && context.mode().id === d.id);
+    }
+  };
 
-            // update
-            buttons = buttons
-                .merge(buttonsEnter)
-                .classed('disabled', function(d) { return !enabled(d); })
-                .classed('active', function(d) { return context.mode() && context.mode().button === d.button; });
-        }
-    };
 
-    tool.uninstall = function() {
-        context
-            .on('enter.editor.notes', null)
-            .on('exit.editor.notes', null)
-            .on('enter.notes', null);
+  tool.uninstall = function() {
+    context.keybinding().off(mode.key);
 
-        context.map()
-            .on('move.notes', null)
-            .on('drawn.notes', null);
-    };
+    context
+      .on('enter.notes', null);
 
-    return tool;
+    context.map()
+      .off('draw', debouncedUpdate);
+  };
+
+  return tool;
 }

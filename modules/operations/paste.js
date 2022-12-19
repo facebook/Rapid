@@ -1,21 +1,19 @@
+import { Extent, vecSubtract } from '@id-sdk/math';
 
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';
 import { modeSelect } from '../modes/select';
-import { vecSubtract } from '@id-sdk/math';
-import { Extent } from '@id-sdk/extent';
 
 import { t } from '../core/localizer';
 import { uiCmd } from '../ui/cmd';
 import { utilDisplayLabel } from '../util/util';
 
-// see also `behaviorPaste`
-export function operationPaste(context) {
 
+// see also `BehaviorPaste`
+export function operationPaste(context) {
     var _pastePoint;
 
     var operation = function() {
-
         if (!_pastePoint) return;
 
         var oldIDs = context.copyIDs();
@@ -52,8 +50,8 @@ export function operationPaste(context) {
 
         // Use the location of the copy operation to offset the paste location,
         // or else use the center of the pasted extent
-        var copyPoint = (context.copyLonLat() && projection(context.copyLonLat())) ||
-            projection(extent.center());
+        var copyPoint = (context.copyLoc() && projection.project(context.copyLoc())) ||
+            projection.project(extent.center());
         var delta = vecSubtract(_pastePoint, copyPoint);
 
         // Move the pasted objects to be anchored at the paste location

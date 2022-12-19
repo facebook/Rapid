@@ -29,9 +29,11 @@ export function validationShortRoad(context) {
     }
 
     function continueDrawing(way, vertex, context) {
+        if (!context.editable()) return;
+
         // make sure the vertex is actually visible and editable
         var map = context.map();
-        if (!map.editable() || !map.trimmedExtent().contains(new Extent(vertex.loc))) {
+        if (!map.trimmedExtent().contains(new Extent(vertex.loc))) {
             map.zoomToEase(vertex);
         }
 

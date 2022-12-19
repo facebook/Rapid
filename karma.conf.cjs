@@ -3,21 +3,14 @@
 
 module.exports = function (config) {
   config.set({
-
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-    plugins: [
-      'karma-coverage',
-      'karma-mocha',
-      'karma-chrome-launcher'
-    ],
+    plugins: ['karma-coverage', 'karma-mocha', 'karma-chrome-launcher', 'karma-json-fixtures-preprocessor'],
 
     // frameworks to use
     // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
     frameworks: ['mocha'],
-
-
 
     // list of files / patterns to load in the browser
     files: [
@@ -29,14 +22,23 @@ module.exports = function (config) {
       { pattern: 'dist/iD.js', included: true },
       { pattern: 'dist/iD.css', included: true },
       { pattern: 'dist/**/*', included: false },
+      { pattern: 'test/spec/renderer/*.json', included: true, served: true},
       'test/spec/spec_helpers.js',
       'test/spec/**/*.js'
     ],
 
-
     // list of files / patterns to exclude
     exclude: [
-      '**/*.js.map'
+      '**/*.js.map',
+      'test/spec/behaviors/*.js',
+      'test/spec/pixi/*.js',
+      'test/spec/renderer/features.js',
+       'test/spec/renderer/map.js',
+
+      //
+      // Comment the next line to run the OSM renderer-specific unit test, which right now merely exercise the code.
+      // These tests don't actually make any assertions and therefore always succeed.
+      'test/spec/renderer/PixiRenderer.js'
     ],
 
     proxies: {
@@ -48,32 +50,27 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
     preprocessors: {
-      'dist/iD.js': ['coverage']
+      'dist/iD.js': ['coverage'],
+      'test/spec/renderer/*.json': ['json_fixtures']
     },
-
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
     reporters: ['progress', 'coverage'],
 
-
     // web server port
     port: 9876,
 
-
     // enable / disable colors in the output (reporters and logs)
     colors: true,
-
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
-
 
     // start these browsers
     // available browser launchers: https://www.npmjs.com/search?q=keywords:karma-launcher

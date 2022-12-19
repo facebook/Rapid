@@ -7,7 +7,6 @@ import { t } from '../../core/localizer';
 import { actionChangeMember } from '../../actions/change_member';
 import { actionDeleteMember } from '../../actions/delete_member';
 import { actionMoveMember } from '../../actions/move_member';
-import { modeBrowse } from '../../modes/browse';
 import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
 import { svgIcon } from '../../svg/icon';
@@ -110,7 +109,7 @@ export function uiSectionRawMemberEditor(context) {
         if (!context.hasEntity(d.relation.id)) {
             // Removing the last member will also delete the relation.
             // If this happens we need to exit the selection mode
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         } else {
             // Changing the mode also runs `validate`, but otherwise we need to
             // rerun it manually

@@ -8,7 +8,7 @@ export function actionScale(ids, pivotLoc, scaleFactor, projection) {
 
             utilGetAllNodes(ids, graph).forEach(function(node) {
 
-                point = projection(node.loc);
+                point = projection.project(node.loc);
                 radial = [
                     point[0] - pivotLoc[0],
                     point[1] - pivotLoc[1]

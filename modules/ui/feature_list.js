@@ -1,12 +1,10 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
 import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
-import { coreGraph } from '../core/graph';
+import { Graph } from '../core/Graph';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { Extent } from '@id-sdk/extent';
 import { modeSelect } from '../modes/select';
@@ -62,8 +60,8 @@ export function uiFeatureList(context) {
 
         context
             .on('exit.feature-list', clearSearch);
-        context.map()
-            .on('drawn.feature-list', mapDrawn);
+//        context.map()
+//            .on('drawn.feature-list', mapDrawn);
 
         context.keybinding()
             .on(uiCmd('⌘F'), focusSearch);
@@ -150,10 +148,17 @@ export function uiFeatureList(context) {
                 });
             }
 
-            var allEntities = graph.entities;
+            // search both local and base graphs
+            // Gather affected ids
+            const base = graph.base.entities;
+            const local = graph.local.entities;
+            const ids = new Set([...base.keys(), ...local.keys()]);
+
+            // var allEntities = graph.entities;
             var localResults = [];
-            for (var id in allEntities) {
-                var entity = allEntities[id];
+            for (var id of ids) {
+                if (local.has(id) && local.get(id) === undefined) continue;  // deleted locally
+                const entity = graph.hasEntity(id);
                 if (!entity) continue;
 
                 var name = utilDisplayName(entity) || '';
@@ -195,7 +200,7 @@ export function uiFeatureList(context) {
                     }
 
                     var tempEntity = osmEntity(attrs);
-                    var tempGraph = coreGraph([tempEntity]);
+                    var tempGraph = new Graph([tempEntity]);
                     var matched = presetManager.match(tempEntity, tempGraph);
                     var type = (matched && matched.name()) || utilDisplayType(id);
 

@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 
 import { uiKeepRightDetails } from './keepRight_details';
@@ -30,7 +29,7 @@ export function uiKeepRightEditor(context) {
     headerEnter
       .append('button')
         .attr('class', 'close')
-        .on('click', () => context.enter(modeBrowse(context)))
+        .on('click', () => context.enter('browse'))
         .call(svgIcon('#iD-icon-close'));
 
     headerEnter
@@ -199,7 +198,6 @@ export function uiKeepRightEditor(context) {
       });
   }
 
-  // NOTE: Don't change method name until UI v3 is merged
   keepRightEditor.error = function(val) {
     if (!arguments.length) return _qaItem;
     _qaItem = val;

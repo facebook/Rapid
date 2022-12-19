@@ -5,7 +5,6 @@ import { marked } from 'marked';
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
-import { modeBrowse } from '../modes';
 import { svgIcon } from '../svg/icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
@@ -14,7 +13,6 @@ import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
 
 export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureToggleKeyDispatcher) {
   const rapidContext = context.rapidContext();
-
   let _modalSelection = d3_select(null);
   let _content = d3_select(null);
   let _viewManageModal;
@@ -43,8 +41,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         window.location.replace('#' + utilQsString(hash, true));  // update hash
       }
 
-      context.enter(modeBrowse(context));   // return to browse mode (in case something was selected)
-      context.map().pan([0,0]);             // trigger a map redraw
+      context.scene().dirtyLayers('rapid');
+      context.enter('browse');   // return to browse mode (in case something was selected)
     }
   }
 
@@ -53,7 +51,9 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     let dataset = datasets[datasetID];
     if (dataset) {
       dataset.color = color;
-      context.map().pan([0,0]);   // trigger a map redraw
+
+      context.scene().dirtyLayers('rapid');
+      context.map().immediateRedraw();
       _content.call(renderModalContent);
 
       // if a RapiD feature is selected, reselect it to update sidebar too
@@ -65,8 +65,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
   }
 
   function toggleRapid() {
-    const rapidLayer = context.layers().layer('ai-features');
-    rapidLayer.enabled(!rapidLayer.enabled());   // toggling the layer will trigger a map redraw
+    context.scene().toggleLayers('rapid');
     _content.call(renderModalContent);
   }
 
@@ -108,7 +107,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
 
 
   function renderModalContent(selection) {
-    const rapidLayer = context.layers().layer('ai-features');
+    const rapidLayer = context.scene().layers.get('rapid');
+    if (!rapidLayer) return;
 
     /* Toggle All */
     let toggleAll = selection.selectAll('.rapid-toggle-all')
@@ -155,7 +155,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .merge(toggleAllEnter);
 
     toggleAll.selectAll('.rapid-feature-checkbox')
-      .property('checked', rapidLayer.showAll());
+      .property('checked', rapidLayer.enabled);
 
 
     /* Dataset List */
@@ -213,8 +213,8 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     const showPreview = prefs('rapid-internal-feature.previewDatasets') === 'true';
     const datasets = Object.values(rapidContext.datasets())
       .filter(d => d.added && (showPreview || !d.beta));    // exclude preview datasets unless user has opted into them
-
-    const rapidLayer = context.layers().layer('ai-features');
+    const rapidLayer = context.scene().layers.get('rapid');
+    if (!rapidLayer) return;
 
     let rows = selection.selectAll('.rapid-checkbox-dataset')
       .data(datasets, d => d.id);
@@ -326,17 +326,17 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     // update
     rows = rows
       .merge(rowsEnter)
-      .classed('disabled', !rapidLayer.showAll());
+      .classed('disabled', !rapidLayer.enabled);
 
     rows.selectAll('.rapid-colorpicker-label')
-      .attr('disabled', rapidLayer.showAll() ? null : true)
+      .attr('disabled', rapidLayer.enabled ? null : true)
       .call(_colorpicker);
 
     rows.selectAll('.rapid-checkbox-label')
-      .classed('disabled', !rapidLayer.showAll());
+      .classed('disabled', !rapidLayer.enabled);
 
     rows.selectAll('.rapid-feature-checkbox')
       .property('checked', datasetEnabled)
-      .attr('disabled', rapidLayer.showAll() ? null : true);
+      .attr('disabled', rapidLayer.enabled ? null : true);
   }
 }

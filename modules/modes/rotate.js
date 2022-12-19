@@ -6,14 +6,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 import { t } from '../core/localizer';
 import { actionRotate } from '../actions/rotate';
 import { actionNoop } from '../actions/noop';
-import { behaviorEdit } from '../behavior/edit';
-import { modeBrowse } from './browse';
 import { modeSelect } from './select';
-import { operationCircularize } from '../operations/circularize';
-import { operationDelete } from '../operations/delete';
-import { operationMove } from '../operations/move';
-import { operationOrthogonalize } from '../operations/orthogonalize';
-import { operationReflectLong, operationReflectShort } from '../operations/reflect';
 import { utilKeybinding } from '../util/keybinding';
 import { utilFastMouse } from '../util/util';
 
@@ -28,15 +21,6 @@ export function modeRotate(context, entityIDs) {
     };
 
     var keybinding = utilKeybinding('rotate');
-    var behaviors = [
-        behaviorEdit(context),
-        operationCircularize(context, entityIDs).behavior,
-        operationDelete(context, entityIDs).behavior,
-        operationMove(context, entityIDs).behavior,
-        operationOrthogonalize(context, entityIDs).behavior,
-        operationReflectLong(context, entityIDs).behavior,
-        operationReflectShort(context, entityIDs).behavior
-    ];
     var annotation = entityIDs.length === 1 ?
         t('operations.rotate.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.rotate.annotation.feature', { n: entityIDs.length });
@@ -45,9 +29,6 @@ export function modeRotate(context, entityIDs) {
     var _prevAngle;
     var _prevTransform;
     var _pivot;
-
-    // use pointer events on supported platforms; fallback to mouse events
-    var _pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
 
 
     function doRotate(d3_event) {
@@ -67,13 +48,13 @@ export function modeRotate(context, entityIDs) {
             currTransform.y !== _prevTransform.y) {
 
             var nodes = utilGetAllNodes(entityIDs, context.graph());
-            var points = nodes.map(function(n) { return projection(n.loc); });
+            var points = nodes.map(function(n) { return projection.project(n.loc); });
             _pivot = getPivot(points);
             _prevAngle = undefined;
         }
 
 
-        var currMouse = context.map().mouse(d3_event);
+        var currMouse = context.map().mouse();
         var currAngle = Math.atan2(currMouse[1] - _pivot[1], currMouse[0] - _pivot[0]);
 
         if (typeof _prevAngle === 'undefined') _prevAngle = currAngle;
@@ -118,7 +99,7 @@ export function modeRotate(context, entityIDs) {
 
 
     function undone() {
-        context.enter(modeBrowse(context));
+        context.enter('browse');
     }
 
 
@@ -126,18 +107,18 @@ export function modeRotate(context, entityIDs) {
         _prevGraph = null;
         context.features().forceVisible(entityIDs);
 
-        behaviors.forEach(context.install);
+        // behaviors.forEach(context.install);
 
         var downEvent;
 
         context.surface()
-            .on(_pointerPrefix + 'down.modeRotate', function(d3_event) {
+            .on('pointerdown.modeRotate', function(d3_event) {
                 downEvent = d3_event;
             });
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.modeRotate', doRotate, true)
-            .on(_pointerPrefix + 'up.modeRotate', function(d3_event) {
+            .on('pointermove.modeRotate', doRotate, true)
+            .on('pointerup.modeRotate', function(d3_event) {
                 if (!downEvent) return;
                 var mapNode = context.container().select('.main-map').node();
                 var pointGetter = utilFastMouse(mapNode);
@@ -156,20 +137,20 @@ export function modeRotate(context, entityIDs) {
             .on('⎋', cancel)
             .on('↩', finish);
 
-        d3_select(document)
-            .call(keybinding);
+        d3_select(document).call(keybinding);
+        return true;
     };
 
 
     mode.exit = function() {
-        behaviors.forEach(context.uninstall);
+        // behaviors.forEach(context.uninstall);
 
         context.surface()
-            .on(_pointerPrefix + 'down.modeRotate', null);
+            .on('pointerdown.modeRotate', null);
 
         d3_select(window)
-            .on(_pointerPrefix + 'move.modeRotate', null, true)
-            .on(_pointerPrefix + 'up.modeRotate', null, true);
+            .on('pointermove.modeRotate', null, true)
+            .on('pointerup.modeRotate', null, true);
 
         context.history()
             .on('undone.modeRotate', null);

@@ -4,7 +4,7 @@ describe('iD.osmIntersection', function() {
     describe('highways', function() {
         // u ==== * ---> w
         it('excludes non-highways', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -15,7 +15,7 @@ describe('iD.osmIntersection', function() {
         });
 
         it('excludes degenerate highways', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmWay({ id: '=', nodes: ['u', '*'], tags: { highway: 'residential' } }),
@@ -26,7 +26,7 @@ describe('iD.osmIntersection', function() {
         });
 
         it('includes line highways', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -38,7 +38,7 @@ describe('iD.osmIntersection', function() {
         });
 
         it('excludes area highways', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -48,7 +48,7 @@ describe('iD.osmIntersection', function() {
         });
 
         it('auto-splits highways at the intersection', function() {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -61,7 +61,7 @@ describe('iD.osmIntersection', function() {
     describe('#turns', function() {
         it('permits turns onto a way forward', function() {
             // u ==== * ---> w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -83,7 +83,7 @@ describe('iD.osmIntersection', function() {
 
         it('permits turns onto a way backward', function() {
             // u ==== * <--- w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -109,7 +109,7 @@ describe('iD.osmIntersection', function() {
             // u === *
             //       |
             //       x
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [1, 1] }),
@@ -140,7 +140,7 @@ describe('iD.osmIntersection', function() {
             // u === *
             //       |
             //       x
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [1, 1] }),
@@ -167,7 +167,7 @@ describe('iD.osmIntersection', function() {
 
         it('permits turns from a oneway forward', function() {
             // u ===> * ----w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -185,7 +185,7 @@ describe('iD.osmIntersection', function() {
 
         it('permits turns from a reverse oneway backward', function() {
             // u <=== * ---- w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -203,7 +203,7 @@ describe('iD.osmIntersection', function() {
 
         it('omits turns from a oneway backward', function() {
             // u <=== * ---- w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -215,7 +215,7 @@ describe('iD.osmIntersection', function() {
 
         it('omits turns from a reverse oneway forward', function() {
             // u ===> * ---- w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -227,7 +227,7 @@ describe('iD.osmIntersection', function() {
 
         it('permits turns onto a oneway forward', function() {
             // u ==== * ---> w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -249,7 +249,7 @@ describe('iD.osmIntersection', function() {
 
         it('permits turns onto a reverse oneway backward', function() {
             // u ==== * <--- w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -271,7 +271,7 @@ describe('iD.osmIntersection', function() {
 
         it('omits turns onto a oneway backward', function() {
             // u ==== * <--- w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -289,7 +289,7 @@ describe('iD.osmIntersection', function() {
 
         it('omits turns onto a reverse oneway forward', function() {
             // u ==== * ---> w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -307,7 +307,7 @@ describe('iD.osmIntersection', function() {
 
         it('restricts turns with a restriction relation', function() {
             // u ==== * ---> w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'w', loc: [2, 0] }),
@@ -339,7 +339,7 @@ describe('iD.osmIntersection', function() {
             // u====*~~~~v
             //      |
             //      w
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'u', loc: [0, 0] }),
                 iD.osmNode({ id: '*', loc: [1, 0] }),
                 iD.osmNode({ id: 'v', loc: [2, 0] }),
@@ -384,7 +384,7 @@ describe('iD.osmIntersection', function() {
             //  |    |
             //  a -- * === u
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -416,7 +416,7 @@ describe('iD.osmIntersection', function() {
             //  |    |
             //  a -- * === u
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -448,7 +448,7 @@ describe('iD.osmIntersection', function() {
             //  |    |
             //  a -- * === u
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -476,7 +476,7 @@ describe('iD.osmIntersection', function() {
             //  |    |
             //  a -- * === u
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -504,7 +504,7 @@ describe('iD.osmIntersection', function() {
             //  |    |
             //  a -- * === u
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -534,7 +534,7 @@ describe('iD.osmIntersection', function() {
             //  |    |
             //  a -- * === u
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [0, 1] }),
                 iD.osmNode({ id: 'c', loc: [1, 1] }),
@@ -570,7 +570,7 @@ describe('iD.osmIntersection', function() {
             //          \
             //           h
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 1] }),
                 iD.osmNode({ id: 'b', loc: [1, 1] }),
                 iD.osmNode({ id: 'c', loc: [2, 1] }),
@@ -661,7 +661,7 @@ describe('iD.osmIntersection', function() {
             //          \
             //           h
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 1] }),
                 iD.osmNode({ id: 'b', loc: [1, 1] }),
                 iD.osmNode({ id: 'c', loc: [2, 1] }),
@@ -761,7 +761,7 @@ describe('iD.osmIntersection', function() {
             //          \
             //           h
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 1] }),
                 iD.osmNode({ id: 'b', loc: [1, 1] }),
                 iD.osmNode({ id: 'c', loc: [2, 1] }),
@@ -870,7 +870,7 @@ describe('iD.osmIntersection', function() {
             //          \
             //           h
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 1] }),
                 iD.osmNode({ id: 'b', loc: [1, 1] }),
                 iD.osmNode({ id: 'c', loc: [2, 1] }),
@@ -1022,7 +1022,7 @@ describe('iD.osmIntersection', function() {
             //          \
             //           h
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 1] }),
                 iD.osmNode({ id: 'b', loc: [1, 1] }),
                 iD.osmNode({ id: 'c', loc: [2, 1] }),
@@ -1181,7 +1181,7 @@ describe('iD.osmIntersection', function() {
             //         ‖
             //  d ~~~> e ≈≈≈> f
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 2] }),
                 iD.osmNode({ id: 'b', loc: [1, 2] }),
                 iD.osmNode({ id: 'c', loc: [2, 2] }),
@@ -1411,7 +1411,7 @@ describe('iD.osmIntersection', function() {
             //          /   \
             //   a --- b === c ~~~ d
             //
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({ id: 'a', loc: [0, 0] }),
                 iD.osmNode({ id: 'b', loc: [1, 0] }),
                 iD.osmNode({ id: 'c', loc: [3, 0] }),
@@ -1572,7 +1572,7 @@ describe('iD.osmIntersection', function() {
 
 
 describe('iD.osmInferRestriction', function() {
-    var projection = d3.geoMercator().scale(250 / Math.PI);
+    var projection = new sdk.Projection().scale(250 / Math.PI);
 
     it('infers the restriction type based on the turn angle', function() {
         //
@@ -1580,7 +1580,7 @@ describe('iD.osmInferRestriction', function() {
         //        |
         //        x
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({id: 'u', loc: [-1,  0]}),
             iD.osmNode({id: '*', loc: [ 0,  0]}),
             iD.osmNode({id: 'w', loc: [ 1,  0]}),
@@ -1634,7 +1634,7 @@ describe('iD.osmInferRestriction', function() {
         //  w2/   \w1        angle ≈22.6°
         //   /     \
         //  u       x
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'u', loc: [0, -5] }),
             iD.osmNode({ id: '*', loc: [1,  0] }),
             iD.osmNode({ id: 'x', loc: [2, -5] }),
@@ -1656,7 +1656,7 @@ describe('iD.osmInferRestriction', function() {
         //  w2/   \w1        angle ≈36.9°
         //   /     \         (no left turn)
         //  u       x
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'u', loc: [0, -3] }),
             iD.osmNode({ id: '*', loc: [1,  0] }),
             iD.osmNode({ id: 'x', loc: [2, -3] }),
@@ -1678,7 +1678,7 @@ describe('iD.osmInferRestriction', function() {
         //  w2/        \w1      angle ≈22.6°
         //   /          \       (no u turn)
         //  u            x
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'u', loc: [0, -5] }),
             iD.osmNode({ id: '*', loc: [1,  0] }),
             iD.osmNode({ id: '+', loc: [2,  0] }),
@@ -1702,7 +1702,7 @@ describe('iD.osmInferRestriction', function() {
         //  w2/        \w1      angle ≈36.9°
         //   /          \       (no u turn)
         //  u            x
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'u', loc: [0, -3] }),
             iD.osmNode({ id: '*', loc: [1,  0] }),
             iD.osmNode({ id: '+', loc: [2,  0] }),

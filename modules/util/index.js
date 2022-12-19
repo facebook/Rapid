@@ -1,7 +1,6 @@
-export { utilAsyncMap } from './util';
 export { utilDetect } from './detect';
 export { utilDisplayName } from './util';
-export { utilDisplayNameForPath } from './util';
+export { utilDisplayPOIName } from './util';
 export { utilDisplayType } from './util';
 export { utilDisplayLabel } from './util';
 export { utilFastMouse } from './util';
@@ -10,8 +9,6 @@ export { utilGetSetValue } from './get_set_value';
 export { utilHighlightEntities } from './util';
 export { utilKeybinding } from './keybinding';
 export { utilNoAuto } from './util';
-export { utilPrefixCSSProperty } from './util';
-export { utilPrefixDOMProperty } from './util';
 export { utilRebind } from './rebind';
 export { utilSetTransform } from './util';
 export { utilTotalExtent } from './util';

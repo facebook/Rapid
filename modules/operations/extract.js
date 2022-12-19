@@ -1,7 +1,7 @@
 import { utilArrayUniq } from '@id-sdk/util';
 
 import { actionExtract } from '../actions/extract';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
@@ -89,8 +89,7 @@ export function operationExtract(context, selectedIDs) {
     operation.id = 'extract';
     operation.keys = [t('operations.extract.key')];
     operation.title = t('operations.extract.title');
-    operation.behavior = behaviorOperation(context).which(operation);
-
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

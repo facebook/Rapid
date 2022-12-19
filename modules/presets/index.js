@@ -3,7 +3,7 @@ import { utilArrayUniq } from '@id-sdk/util';
 
 import { prefs } from '../core/preferences';
 import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { osmNodeGeometriesForTags, osmSetAreaKeys, osmSetPointTags, osmSetVertexTags } from '../osm/tags';
 import { presetCategory } from './category';
 import { presetCollection } from './collection';
@@ -113,6 +113,11 @@ export function presetIndex() {
 
         if (p) {   // add or replace
           const isAddable = !_addablePresetIDs || _addablePresetIDs.has(presetID);
+
+// A few overrides to use better icons than the ones provided by the id-tagging-schema project
+if (presetID === 'address') p.icon ='maki-circle-stroked';
+if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_crosswalk';
+
           p = presetPreset(presetID, p, isAddable, _fields, _presets);
           if (p.locationSet) newLocationSets.push(p);
           _presets[presetID] = p;
@@ -240,13 +245,13 @@ export function presetIndex() {
       }
     }
 
-    if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)){
-      let validLocations = locationManager.locationsAt(loc);
-      if (!validLocations[bestMatch.locationSetID]){
+    if (bestMatch && bestMatch.locationSetID && bestMatch.locationSetID !== '+[Q2]' && Array.isArray(loc)) {
+      const validHere = locationManager.locationSetsAt(loc);
+      if (!validHere[bestMatch.locationSetID]) {
         matchCandidates.sort((a, b) => (a.score < b.score) ? 1 : -1);
         for (let i = 0; i < matchCandidates.length; i++){
           const candidateScore = matchCandidates[i];
-          if (!candidateScore.candidate.locationSetID || validLocations[candidateScore.candidate.locationSetID]){
+          if (!candidateScore.candidate.locationSetID || validHere[candidateScore.candidate.locationSetID]) {
             bestMatch = candidateScore.candidate;
             bestScore = candidateScore.score;
             break;
@@ -401,8 +406,8 @@ export function presetIndex() {
     );
 
     if (Array.isArray(loc)) {
-      const validLocations = locationManager.locationsAt(loc);
-      result.collection = result.collection.filter(a => !a.locationSetID || validLocations[a.locationSetID]);
+      const validHere = locationManager.locationSetsAt(loc);
+      result.collection = result.collection.filter(a => !a.locationSetID || validHere[a.locationSetID]);
     }
 
     return result;

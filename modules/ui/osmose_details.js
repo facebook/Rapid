@@ -1,6 +1,4 @@
-import {
-  select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../presets';
 import { modeSelect } from '../modes/select';
@@ -159,11 +157,7 @@ export function uiOsmoseDetails(context) {
 
                   utilHighlightEntities([entityID], false, context);
 
-                  const osmlayer = context.layers().layer('osm');
-                  if (!osmlayer.enabled()) {
-                    osmlayer.enabled(true);
-                  }
-
+                  context.scene().enableLayers('osm');  // make sure osm layer is even on
                   context.map().centerZoom(d.loc, 20);
 
                   if (entity) {
@@ -195,7 +189,7 @@ export function uiOsmoseDetails(context) {
 
         // Don't hide entities related to this issue - #5880
         context.features().forceVisible(d.elems);
-        context.map().pan([0,0]);  // trigger a redraw
+        context.map().immediateRedraw();
       })
       .catch(err => {
         console.log(err); // eslint-disable-line no-console

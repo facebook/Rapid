@@ -51,7 +51,7 @@ export function uiOsmoseHeader() {
         .attr('width', '13px')
         .attr('height', '13px')
         .attr('transform', 'translate(3.5, 5)')
-        .attr('xlink:href', d => d.icon ? `#{d.icon}` : '');
+        .attr('xlink:href', d => d.icon ? `#${d.icon}` : '');
 
     headerEnter
       .append('div')

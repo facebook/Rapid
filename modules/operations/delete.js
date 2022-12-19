@@ -3,8 +3,7 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';
-import { behaviorOperation } from '../behavior/operation';
-import { modeBrowse } from '../modes/browse';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
@@ -58,10 +57,10 @@ export function operationDelete(context, selectedIDs) {
                 context.enter(modeSelect(context, [nextSelectedID]).follow(true));
             } else {
                 context.map().centerEase(nextSelectedLoc);
-                context.enter(modeBrowse(context));
+                context.enter('browse');
             }
         } else {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         }
 
     };
@@ -150,7 +149,7 @@ export function operationDelete(context, selectedIDs) {
     operation.id = 'delete';
     operation.keys = [uiCmd('⌘⌫'), uiCmd('⌘⌦'), uiCmd('⌦')];
     operation.title = t('operations.delete.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

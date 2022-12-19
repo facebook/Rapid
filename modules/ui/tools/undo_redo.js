@@ -1,169 +1,144 @@
 import _debounce from 'lodash-es/debounce';
-
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 
+
 export function uiToolUndoRedo(context) {
+  let tool = {
+    id: 'undo_redo',
+    label: t.html('toolbar.undo_redo')
+  };
 
-    var tool = {
-        id: 'undo_redo',
-        label: t.html('toolbar.undo_redo')
-    };
-
-    var commands = [{
-        id: 'undo',
-        cmd: uiCmd('⌘Z'),
-        action: function() {
-            context.undo();
-        },
-        annotation: function() {
-            return context.history().undoAnnotation();
-        },
-        icon: 'iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')
-    }, {
-        id: 'redo',
-        cmd: uiCmd('⌘⇧Z'),
-        action: function() {
-            context.redo();
-        },
-        annotation: function() {
-            return context.history().redoAnnotation();
-        },
-        icon: 'iD-icon-' + (localizer.textDirection() === 'rtl' ? 'undo' : 'redo')
-    }];
+  const isRTL = localizer.textDirection() === 'rtl';
+  const commands = [{
+    id: 'undo',
+    key: uiCmd('⌘Z'),
+    action: () => context.undo(),
+    annotation: () => context.history().undoAnnotation(),
+    icon: (isRTL ? 'redo' : 'undo')
+  }, {
+    id: 'redo',
+    key: uiCmd('⌘⇧Z'),
+    action: () => context.redo(),
+    annotation: () => context.history().redoAnnotation(),
+    icon: (isRTL ? 'undo' : 'redo')
+  }];
 
 
-    function editable() {
-        return context.mode() && context.mode().id !== 'save' && context.map().editableDataEnabled(true /* ignore min zoom */);
-    }
+  let debouncedUpdate;
 
-
-    tool.render = function(selection) {
-        var tooltipBehavior = uiTooltip()
-            .placement('bottom')
-            .title(function (d) {
-                // Handle string- or object-style annotations. Object-style
-                // should include "type" and "description" keys, where
-                // "description" is used in place of a string-style annotation.
-                // See ui/rapid_feature_inspector.js for the motivating use case.
-                return (d.annotation() ?
-                    t(d.id + '.tooltip', {
-                        action: d.annotation().description
-                            ? d.annotation().description
-                            : d.annotation(),
-                    }) :
-                    t(d.id + '.nothing'), d.cmd);
-            })
-            .keys(function(d) {
-                return [d.cmd];
-            })
-            .scrollContainer(context.container().select('.top-toolbar'));
-
-        var lastPointerUpType;
-
-        var buttons = selection.selectAll('button')
-            .data(commands)
-            .enter()
-            .append('button')
-            .attr('class', function(d) { return 'disabled ' + d.id + '-button bar-button'; })
-            .on('pointerup', function(d3_event) {
-                // `pointerup` is always called before `click`
-                lastPointerUpType = d3_event.pointerType;
-            })
-            .on('click', function(d3_event, d) {
-                d3_event.preventDefault();
-
-                var annotation = d.annotation();
-
-                if (editable() && annotation) {
-                    d.action();
-                }
-
-                if (editable() && (
-                    lastPointerUpType === 'touch' ||
-                    lastPointerUpType === 'pen')
-                ) {
-                    // there are no tooltips for touch interactions so flash feedback instead
-
-                    var text = annotation ?
-                        t(d.id + '.tooltip', { action: annotation }) :
-                        t(d.id + '.nothing');
-                    context.ui().flash
-                        .duration(2000)
-                        .iconName('#' + d.icon)
-                        .iconClass(annotation ? '' : 'disabled')
-                        .label(text)();
-                }
-                lastPointerUpType = null;
-            })
-            .call(tooltipBehavior);
-
-        buttons.each(function(d) {
-            d3_select(this)
-                .call(svgIcon('#' + d.icon));
-        });
-
-        context.keybinding()
-            .on(commands[0].cmd, function(d3_event) {
-                d3_event.preventDefault();
-                if (editable()) commands[0].action();
-            })
-            .on(commands[1].cmd, function(d3_event) {
-                d3_event.preventDefault();
-                if (editable()) commands[1].action();
-            });
-
-
-        var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
-
-        context.map()
-            .on('move.undo_redo', debouncedUpdate)
-            .on('drawn.undo_redo', debouncedUpdate);
-
-        context.history()
-            .on('change.undo_redo', function(difference) {
-                if (difference) update();
-            });
-
-        context
-            .on('enter.undo_redo', update);
-
-
-        function update() {
-            buttons
-                .classed('disabled', function(d) {
-                    return !editable() || !d.annotation();
-                })
-                .each(function() {
-                    var selection = d3_select(this);
-                    if (!selection.select('.tooltip.in').empty()) {
-                        selection.call(tooltipBehavior.updateContent);
-                    }
-                });
+  tool.install = function(selection) {
+    let tooltipBehavior = uiTooltip()
+      .placement('bottom')
+      .title(d => {
+        // Handle string- or object-style annotations. Object-style
+        // should include "type" and "description" keys, where
+        // "description" is used in place of a string-style annotation.
+        // See ui/rapid_feature_inspector.js for the motivating use case.
+        let str = d.annotation();
+        if (str && str.description) {
+          str = str.description;
         }
-    };
+        return str ? t(`${d.id}.tooltip`, { action: str }) : t(`${d.id}.nothing`);
+      })
+      .keys(d => [d.key])
+      .scrollContainer(context.container().select('.top-toolbar'));
 
-    tool.uninstall = function() {
-        context.keybinding()
-            .off(commands[0].cmd)
-            .off(commands[1].cmd);
+    // var lastPointerUpType;
 
-        context.map()
-            .on('move.undo_redo', null)
-            .on('drawn.undo_redo', null);
+    let buttons = selection.selectAll('button')
+      .data(commands)
+      .enter()
+      .append('button')
+      .attr('class', d => `disabled ${d.id}-button bar-button`)
+      // .on('pointerup', function(d3_event) {
+      //     // `pointerup` is always called before `click`
+      //     lastPointerUpType = d3_event.pointerType;
+      // })
+      .on('click', (d3_event, d) => {
+        d3_event.preventDefault();
 
-        context.history()
-            .on('change.undo_redo', null);
+        const annotation = d.annotation();
+        if (context.editable() && annotation) {
+          d.action();
+        }
 
-        context
-            .on('enter.undo_redo', null);
-    };
+        // if (editable() && (
+        //     lastPointerUpType === 'touch' ||
+        //     lastPointerUpType === 'pen')
+        // ) {
+        //     // there are no tooltips for touch interactions so flash feedback instead
 
-    return tool;
+        //     var text = annotation ?
+        //         t(d.id + '.tooltip', { action: annotation }) :
+        //         t(d.id + '.nothing');
+        //     context.ui().flash
+        //         .duration(2000)
+        //         .iconName('#' + d.icon)
+        //         .iconClass(annotation ? '' : 'disabled')
+        //         .label(text)();
+        // }
+        // lastPointerUpType = null;
+      })
+      .call(tooltipBehavior);
+
+    buttons.each((d, i, nodes) => {
+      d3_select(nodes[i])
+        .call(svgIcon(`#iD-icon-${d.icon}`));
+    });
+
+    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+
+    commands.forEach(command => {
+      context.keybinding().on(command.key, d3_event => {
+        d3_event.preventDefault();
+        if (context.editable()) command.action();
+      });
+    });
+
+    context.map()
+      .on('draw', debouncedUpdate);
+
+    context.history()
+      .on('change.undo_redo', difference => {
+        if (difference) update();
+      });
+
+    context
+      .on('enter.undo_redo', update);
+
+
+    function update() {
+      buttons
+        .classed('disabled', d => !context.editable() || !d.annotation())
+        .each((d, i, nodes) => {
+          const selection = d3_select(nodes[i]);
+          if (!selection.select('.tooltip.in').empty()) {
+            selection.call(tooltipBehavior.updateContent);
+          }
+        });
+    }
+  };
+
+
+  tool.uninstall = function() {
+    commands.forEach(command => {
+      context.keybinding().off(command.key);
+    });
+
+    context.map()
+      .off('draw', debouncedUpdate);
+
+    context.history()
+      .on('change.undo_redo', null);
+
+    context
+      .on('enter.undo_redo', null);
+  };
+
+  return tool;
 }

@@ -233,14 +233,14 @@
 }
 
 
-/* OpenStreetCam Image Layer */
-.layer-openstreetcam {
+/* KartaView Image Layer */
+.layer-kartaview {
     pointer-events: none;
 }
-.layer-openstreetcam .viewfield-group * {
+.layer-kartaview .viewfield-group * {
     fill: #20c4ff;
 }
-.layer-openstreetcam .sequence {
+.layer-kartaview .sequence {
     stroke: #20c4ff;
 }
 
@@ -323,7 +323,7 @@ label.streetside-hires {
     margin-right: 6px;
 }
 
-/* OpenStreetCam viewer */
+/* Kartaview viewer */
 .osc-wrapper {
     position: relative;
     background-color: #000;

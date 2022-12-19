@@ -126,9 +126,9 @@ export function validationYShapedConnection(context) {
         var otherNid = way.nodes[otherNodeIdx];
         var otherNode = graph.entity(otherNid);
 
-        var other = context.projection(otherNode.loc);
-        var conn = context.projection(connNode.loc);
-        var edge = context.projection(edgeNode.loc);
+        var other = context.projection.project(otherNode.loc);
+        var conn = context.projection.project(connNode.loc);
+        var edge = context.projection.project(edgeNode.loc);
         if (otherNodeIdx < edgeNodeIdx) {
             // node order along way: otherNode -> connNode -> edgeNode
             prevEdgeAngle = vecAngle(other, conn);

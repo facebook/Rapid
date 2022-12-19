@@ -1,8 +1,7 @@
 import { utilArrayGroupBy } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { modeDrawLine } from '../modes/draw_line';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
 export function operationContinue(context, selectedIDs) {
@@ -29,9 +28,13 @@ export function operationContinue(context, selectedIDs) {
 
     var operation = function() {
         var candidate = _candidates[0];
-        context.enter(
-            modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(_vertex.id), true)
-        );
+
+        const options = { continueWay:  candidate, continueNode: _vertex };
+        context.enter('draw-line', options);
+
+        // context.enter(
+        //     modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(_vertex.id), true)
+        // );
     };
 
 
@@ -74,7 +77,7 @@ export function operationContinue(context, selectedIDs) {
     operation.id = 'continue';
     operation.keys = [t('operations.continue.key')];
     operation.title = t('operations.continue.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

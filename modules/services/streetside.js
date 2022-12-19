@@ -1,10 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
-import {
-  Extent, Projection, Tiler,
-  geoMetersToLat, geoMetersToLon, geoScaleToZoom,
-  geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
+import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
 import { utilArrayUnion, utilQsString, utilStringQs, utilUniqueString } from '@id-sdk/util';
 import RBush from 'rbush';
 
@@ -71,8 +68,7 @@ function localeTimestamp(s) {
  */
 function loadTiles(which, url, projection, margin) {
   // determine the needed tiles to cover the view
-  const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-  const tiles = tiler.zoomRange(TILEZOOM).margin(margin).getTiles(proj).tiles;
+  const tiles = tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
 
   // abort inflight requests that are no longer needed
   const cache = _ssCache[which];
@@ -228,29 +224,28 @@ function getBubbles(url, tile, callback) {
 }
 
 
-// partition viewport into higher zoom tiles
-function partitionViewport(projection) {
-  const z = geoScaleToZoom(projection.scale());
-  const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-  const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-  const tiles = tiler.zoomRange(z2).margin(0).getTiles(proj).tiles;
-  return tiles.map(tile => tile.wgs84Extent);
-}
-
-
-// no more than `limit` results per partition.
-function searchLimited(limit, projection, rtree) {
-  limit = limit || 5;
-
-  return partitionViewport(projection)
-    .reduce((result, extent) => {
-      let found = rtree.search(extent.bbox())
-        .slice(0, limit)
-        .map(d => d.data);
-
-      return (found.length ? result.concat(found) : result);
-    }, []);
-}
+// // partition viewport into higher zoom tiles
+// function partitionViewport(projection) {
+//   const z = geoScaleToZoom(projection.scale());
+//   const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
+//   const tiles = tiler.zoomRange(z2).margin(0).getTiles(projection).tiles;
+//   return tiles.map(tile => tile.wgs84Extent);
+// }
+//
+//
+// // no more than `limit` results per partition.
+// function searchLimited(limit, projection, rtree) {
+//   limit = limit || 5;
+//
+//   return partitionViewport(projection)
+//     .reduce((result, extent) => {
+//       let found = rtree.search(extent.bbox())
+//         .slice(0, limit)
+//         .map(d => d.data);
+//
+//       return (found.length ? result.concat(found) : result);
+//     }, []);
+// }
 
 
 /**
@@ -425,18 +420,23 @@ export default {
    * bubbles()
    */
   bubbles: function(projection) {
-    const limit = 5;
-    return searchLimited(limit, projection, _ssCache.bubbles.rtree);
+    // const limit = 5;
+    // return searchLimited(limit, projection, _ssCache.bubbles.rtree);
+    const viewport = projection.dimensions();
+    const min = [viewport[0][0], viewport[1][1]];
+    const max = [viewport[1][0], viewport[0][1]];
+    const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
+    return _ssCache.bubbles.rtree.search(box).map(d => d.data);
   },
 
 
   cachedImage: function(imageKey) {
-      return _ssCache.bubbles.points[imageKey];
+    return _ssCache.bubbles.points[imageKey];
   },
 
 
   sequences: function(projection) {
-    const viewport = projection.clipExtent();
+    const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();

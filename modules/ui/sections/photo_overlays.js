@@ -1,324 +1,325 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 import { utilGetSetValue, utilNoAuto } from '../../util';
 
+
 export function uiSectionPhotoOverlays(context) {
+  const section = uiSection('photo-overlays', context)
+    .label(t.html('photo_overlays.title'))
+    .disclosureContent(renderDisclosureContent)
+    .expandedByDefault(false);
 
-    var layers = context.layers();
+  const scene = context.scene();
 
-    var section = uiSection('photo-overlays', context)
-        .label(t.html('photo_overlays.title'))
-        .disclosureContent(renderDisclosureContent)
-        .expandedByDefault(false);
 
-    function renderDisclosureContent(selection) {
-        var container = selection.selectAll('.photo-overlay-container')
-            .data([0]);
+  function renderDisclosureContent(selection) {
+    let container = selection.selectAll('.photo-overlay-container')
+      .data([0]);
 
-        container.enter()
-            .append('div')
-            .attr('class', 'photo-overlay-container')
-            .merge(container)
-            .call(drawPhotoItems)
-            .call(drawPhotoTypeItems)
-            .call(drawDateFilter)
-            .call(drawUsernameFilter);
+    container.enter()
+      .append('div')
+      .attr('class', 'photo-overlay-container')
+      .merge(container)
+      .call(drawPhotoItems)
+      .call(drawPhotoTypeItems)
+      .call(drawDateFilter)
+      .call(drawUsernameFilter);
+  }
+
+
+  function showsLayer(layerID) {
+    const layer = scene.layers.get(layerID);
+    return layer && layer.enabled;
+  }
+
+
+  function setLayer(layerID, val) {
+    // Don't allow layer changes while drawing - #6584
+    const mode = context.mode();
+    if (mode && /^draw/.test(mode.id)) return;
+
+    if (val) {
+      scene.enableLayers(layerID);
+    } else {
+      scene.disableLayers(layerID);
+    }
+  }
+
+
+  function toggleLayer(layerID) {
+    setLayer(layerID, !showsLayer(layerID));
+  }
+
+
+  function drawPhotoItems(selection) {
+    const photoKeys = context.photos().overlayLayerIDs;
+    const photoLayers = photoKeys.map(layerID => scene.layers.get(layerID)).filter(Boolean);
+    const data = photoLayers.filter(layer => layer.supported);
+
+    function layerSupported(d) {
+      return d && d.supported;
+    }
+    function layerEnabled(d) {
+      return layerSupported(d) && d.enabled;
     }
 
-    function drawPhotoItems(selection) {
-        var photoKeys = context.photos().overlayLayerIDs();
-        var photoLayers = layers.all().filter(function(obj) { return photoKeys.indexOf(obj.id) !== -1; });
-        var data = photoLayers.filter(function(obj) { return obj.layer.supported(); });
+    let ul = selection
+      .selectAll('.layer-list-photos')
+      .data([0]);
 
-        function layerSupported(d) {
-            return d.layer && d.layer.supported();
+    ul = ul.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-list-photos')
+      .merge(ul);
+
+    let li = ul.selectAll('.list-item-photos')
+      .data(data);
+
+    li.exit()
+      .remove();
+
+    let liEnter = li.enter()
+      .append('li')
+      .attr('class', function (d) {
+        var classes = 'list-item-photos list-item-' + d.id;
+        if (d.id === 'mapillary-signs' || d.id === 'mapillary-map-features') {
+          classes += ' indented';
         }
-        function layerEnabled(d) {
-            return layerSupported(d) && d.layer.enabled();
-        }
+        return classes;
+      });
 
-        var ul = selection
-            .selectAll('.layer-list-photos')
-            .data([0]);
+    let labelEnter = liEnter
+      .append('label')
+      .each((d, i, nodes) => {
+        let titleID;
+        if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
+        else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
+        else if (d.id === 'kartaview') titleID = 'kartaview_images.tooltip';
+        else titleID = d.id.replace(/-/g, '_') + '.tooltip';
+        d3_select(nodes[i])
+          .call(uiTooltip()
+            .title(t.html(titleID))
+            .placement('top')
+          );
+      });
 
-        ul = ul.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-list-photos')
-            .merge(ul);
+    labelEnter
+      .append('input')
+      .attr('type', 'checkbox')
+      .on('change', (d3_event, d) => toggleLayer(d.id));
 
-        var li = ul.selectAll('.list-item-photos')
-            .data(data);
+    labelEnter
+      .append('span')
+      .html(d => {
+        let titleID = d.id;
+        if (titleID === 'mapillary-signs') titleID = 'photo_overlays.traffic_signs';
+        return t.html(titleID.replace(/-/g, '_') + '.title');
+      });
 
-        li.exit()
-            .remove();
+    // Update
+    li
+      .merge(liEnter)
+      .classed('active', layerEnabled)
+      .selectAll('input')
+      .property('checked', layerEnabled);
+  }
 
-        var liEnter = li.enter()
-            .append('li')
-            .attr('class', function(d) {
-                var classes = 'list-item-photos list-item-' + d.id;
-                if (d.id === 'mapillary-signs' || d.id === 'mapillary-map-features') {
-                    classes += ' indented';
-                }
-                return classes;
-            });
 
-        var labelEnter = liEnter
-            .append('label')
-            .each(function(d) {
-                var titleID;
-                if (d.id === 'mapillary-signs') titleID = 'mapillary.signs.tooltip';
-                else if (d.id === 'mapillary') titleID = 'mapillary_images.tooltip';
-                else if (d.id === 'openstreetcam') titleID = 'openstreetcam_images.tooltip';
-                else titleID = d.id.replace(/-/g, '_') + '.tooltip';
-                d3_select(this)
-                    .call(uiTooltip()
-                        .title(t.html(titleID))
-                        .placement('top')
-                    );
-            });
+  function drawPhotoTypeItems(selection) {
+    const photoTypes = context.photos().allPhotoTypes;
 
-        labelEnter
-            .append('input')
-            .attr('type', 'checkbox')
-            .on('change', function(d3_event, d) { toggleLayer(d.id); });
-
-        labelEnter
-            .append('span')
-            .html(function(d) {
-                var id = d.id;
-                if (id === 'mapillary-signs') id = 'photo_overlays.traffic_signs';
-                return t.html(id.replace(/-/g, '_') + '.title');
-            });
-
-        // Update
-        li
-            .merge(liEnter)
-            .classed('active', layerEnabled)
-            .selectAll('input')
-            .property('checked', layerEnabled);
+    function typeEnabled(d) {
+      return context.photos().showsPhotoType(d);
     }
 
-    function drawPhotoTypeItems(selection) {
-        var data = context.photos().allPhotoTypes();
+    let ul = selection
+      .selectAll('.layer-list-photo-types')
+      .data([0]);
 
-        function typeEnabled(d) {
-            return context.photos().showsPhotoType(d);
-        }
+    ul.exit()
+      .remove();
 
-        var ul = selection
-            .selectAll('.layer-list-photo-types')
-            .data([0]);
+    ul = ul.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-list-photo-types')
+      .merge(ul);
 
-        ul.exit()
-            .remove();
+    let li = ul.selectAll('.list-item-photo-types')
+      .data(context.photos().shouldFilterByPhotoType() ? photoTypes : []);
 
-        ul = ul.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-list-photo-types')
-            .merge(ul);
+    li.exit()
+      .remove();
 
-        var li = ul.selectAll('.list-item-photo-types')
-            .data(context.photos().shouldFilterByPhotoType() ? data : []);
+    let liEnter = li.enter()
+      .append('li')
+      .attr('class', d => `list-item-photo-types list-item-${d}`);
 
-        li.exit()
-            .remove();
+    let labelEnter = liEnter
+      .append('label')
+      .each(function(d) {
+        d3_select(this)
+          .call(uiTooltip()
+            .title(t.html(`photo_overlays.photo_type.${d}.tooltip`))
+            .placement('top')
+          );
+      });
 
-        var liEnter = li.enter()
-            .append('li')
-            .attr('class', function(d) {
-                return 'list-item-photo-types list-item-' + d;
-            });
+    labelEnter
+      .append('input')
+      .attr('type', 'checkbox')
+      .on('change', (d3_event, d) => context.photos().togglePhotoType(d));
 
-        var labelEnter = liEnter
-            .append('label')
-            .each(function(d) {
-                d3_select(this)
-                    .call(uiTooltip()
-                        .title(t.html('photo_overlays.photo_type.' + d + '.tooltip'))
-                        .placement('top')
-                    );
-            });
+    labelEnter
+      .append('span')
+      .html(d => t.html(`photo_overlays.photo_type.${d}.title`));
 
-        labelEnter
-            .append('input')
-            .attr('type', 'checkbox')
-            .on('change', function(d3_event, d) {
-                context.photos().togglePhotoType(d);
-            });
-
-        labelEnter
-            .append('span')
-            .html(function(d) {
-                return t.html('photo_overlays.photo_type.' + d + '.title');
-            });
+    // Update
+    li
+      .merge(liEnter)
+      .classed('active', typeEnabled)
+      .selectAll('input')
+      .property('checked', typeEnabled);
+  }
 
 
-        // Update
-        li
-            .merge(liEnter)
-            .classed('active', typeEnabled)
-            .selectAll('input')
-            .property('checked', typeEnabled);
+  function drawDateFilter(selection) {
+    const dateFilterTypes = context.photos().dateFilters;
+
+    function filterEnabled(d) {
+      return context.photos().dateFilterValue(d);
     }
 
-    function drawDateFilter(selection) {
-        var data = context.photos().dateFilters();
+    let ul = selection
+      .selectAll('.layer-list-date-filter')
+      .data([0]);
 
-        function filterEnabled(d) {
-            return context.photos().dateFilterValue(d);
-        }
+    ul.exit()
+      .remove();
 
-        var ul = selection
-            .selectAll('.layer-list-date-filter')
-            .data([0]);
+    ul = ul.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-list-date-filter')
+      .merge(ul);
 
-        ul.exit()
-            .remove();
+    let li = ul.selectAll('.list-item-date-filter')
+      .data(context.photos().shouldFilterByDate() ? dateFilterTypes : []);
 
-        ul = ul.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-list-date-filter')
-            .merge(ul);
+    li.exit()
+      .remove();
 
-        var li = ul.selectAll('.list-item-date-filter')
-            .data(context.photos().shouldFilterByDate() ? data : []);
+    let liEnter = li.enter()
+      .append('li')
+      .attr('class', 'list-item-date-filter');
 
-        li.exit()
-            .remove();
+    let labelEnter = liEnter
+      .append('label')
+      .each((d, i, nodes) => {
+        d3_select(nodes[i])
+          .call(uiTooltip()
+            .title(t.html(`photo_overlays.date_filter.${d}.tooltip`))
+            .placement('top')
+          );
+      });
 
-        var liEnter = li.enter()
-            .append('li')
-            .attr('class', 'list-item-date-filter');
+    labelEnter
+      .append('span')
+      .html(d => t.html(`photo_overlays.date_filter.${d}.title`));
 
-        var labelEnter = liEnter
-            .append('label')
-            .each(function(d) {
-                d3_select(this)
-                    .call(uiTooltip()
-                        .title(t.html('photo_overlays.date_filter.' + d + '.tooltip'))
-                        .placement('top')
-                    );
-            });
+    labelEnter
+      .append('input')
+      .attr('type', 'date')
+      .attr('class', 'list-item-input')
+      .attr('placeholder', t('units.year_month_day'))
+      .call(utilNoAuto)
+      .each((d, i, nodes) => {
+        utilGetSetValue(d3_select(nodes[i]), context.photos().dateFilterValue(d) || '');
+      })
+      .on('change', function(d3_event, d) {
+        let value = utilGetSetValue(d3_select(this)).trim();
+        context.photos().setDateFilter(d, value, true);
+        // reload the displayed dates
+        li.selectAll('input')
+          .each(function(d) {
+            utilGetSetValue(d3_select(this), context.photos().dateFilterValue(d) || '');
+          });
+      });
 
-        labelEnter
-            .append('span')
-            .html(function(d) {
-                return t.html('photo_overlays.date_filter.' + d + '.title');
-            });
+    li = li
+      .merge(liEnter)
+      .classed('active', filterEnabled);
+  }
 
-        labelEnter
-            .append('input')
-            .attr('type', 'date')
-            .attr('class', 'list-item-input')
-            .attr('placeholder', t('units.year_month_day'))
-            .call(utilNoAuto)
-            .each(function(d) {
-                utilGetSetValue(d3_select(this), context.photos().dateFilterValue(d) || '');
-            })
-            .on('change', function(d3_event, d) {
-                var value = utilGetSetValue(d3_select(this)).trim();
-                context.photos().setDateFilter(d, value, true);
-                // reload the displayed dates
-                li.selectAll('input')
-                    .each(function(d) {
-                        utilGetSetValue(d3_select(this), context.photos().dateFilterValue(d) || '');
-                    });
-            });
 
-        li = li
-            .merge(liEnter)
-            .classed('active', filterEnabled);
+  function drawUsernameFilter(selection) {
+    function filterEnabled() {
+      return context.photos().usernames;
     }
 
-    function drawUsernameFilter(selection) {
-        function filterEnabled() {
-            return context.photos().usernames();
-        }
-        var ul = selection
-            .selectAll('.layer-list-username-filter')
-            .data([0]);
+    let ul = selection
+      .selectAll('.layer-list-username-filter')
+      .data([0]);
 
-        ul.exit()
-            .remove();
+    ul.exit()
+      .remove();
 
-        ul = ul.enter()
-            .append('ul')
-            .attr('class', 'layer-list layer-list-username-filter')
-            .merge(ul);
+    ul = ul.enter()
+      .append('ul')
+      .attr('class', 'layer-list layer-list-username-filter')
+      .merge(ul);
 
-        var li = ul.selectAll('.list-item-username-filter')
-            .data(context.photos().shouldFilterByUsername() ? ['username-filter'] : []);
+    let li = ul.selectAll('.list-item-username-filter')
+      .data(context.photos().shouldFilterByUsername() ? ['username-filter'] : []);
 
-        li.exit()
-            .remove();
+    li.exit()
+      .remove();
 
-        var liEnter = li.enter()
-            .append('li')
-            .attr('class', 'list-item-username-filter');
+    let liEnter = li.enter()
+      .append('li')
+      .attr('class', 'list-item-username-filter');
 
-        var labelEnter = liEnter
-            .append('label')
-            .each(function() {
-                d3_select(this)
-                    .call(uiTooltip()
-                        .title(t.html('photo_overlays.username_filter.tooltip'))
-                        .placement('top')
-                    );
-            });
+    let labelEnter = liEnter
+      .append('label')
+      .each((d, i, nodes) => {
+        d3_select(nodes[i])
+          .call(uiTooltip()
+            .title(t.html('photo_overlays.username_filter.tooltip'))
+            .placement('top')
+          );
+      });
 
-        labelEnter
-            .append('span')
-            .html(t.html('photo_overlays.username_filter.title'));
+    labelEnter
+      .append('span')
+      .html(t.html('photo_overlays.username_filter.title'));
 
-        labelEnter
-            .append('input')
-            .attr('type', 'text')
-            .attr('class', 'list-item-input')
-            .call(utilNoAuto)
-            .property('value', usernameValue)
-            .on('change', function() {
-                var value = d3_select(this).property('value');
-                context.photos().setUsernameFilter(value, true);
-                d3_select(this).property('value', usernameValue);
-            });
+    labelEnter
+      .append('input')
+      .attr('type', 'text')
+      .attr('class', 'list-item-input')
+      .call(utilNoAuto)
+      .property('value', usernameValue)
+      .on('change', function() {
+        let value = d3_select(this).property('value');
+        context.photos().setUsernameFilter(value, true);
+        d3_select(this).property('value', usernameValue);
+      });
 
-        li
-            .merge(liEnter)
-            .classed('active', filterEnabled);
+    li
+      .merge(liEnter)
+      .classed('active', filterEnabled);
 
-        function usernameValue() {
-            var usernames = context.photos().usernames();
-            if (usernames) return usernames.join('; ');
-            return usernames;
-        }
+    function usernameValue() {
+      let usernames = context.photos().usernames;
+      if (usernames) return usernames.join('; ');
+      return usernames;
     }
+  }
 
-    function toggleLayer(which) {
-        setLayer(which, !showsLayer(which));
-    }
 
-    function showsLayer(which) {
-        var layer = layers.layer(which);
-        if (layer) {
-            return layer.enabled();
-        }
-        return false;
-    }
+  context.scene().on('layerchange', section.reRender);
+  context.photos().on('photochange', section.reRender);
 
-    function setLayer(which, enabled) {
-        var layer = layers.layer(which);
-        if (layer) {
-            layer.enabled(enabled);
-        }
-    }
-
-    context.layers().on('change.uiSectionPhotoOverlays', section.reRender);
-    context.photos().on('change.uiSectionPhotoOverlays', section.reRender);
-
-    return section;
+  return section;
 }

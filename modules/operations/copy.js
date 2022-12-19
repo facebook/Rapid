@@ -1,7 +1,7 @@
 import { utilArrayGroupBy } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
 import { uiCmd } from '../ui/cmd';
 import { utilTotalExtent } from '../util';
@@ -51,9 +51,9 @@ export function operationCopy(context, selectedIDs) {
         if (_point &&
             (canCopy.length !== 1 || graph.entity(canCopy[0]).type !== 'node')) {
             // store the anchor coordinates if copying more than a single node
-            context.copyLonLat(context.projection.invert(_point));
+            context.copyLoc(context.projection.invert(_point));
         } else {
-            context.copyLonLat(null);
+            context.copyLoc(null);
         }
 
     };
@@ -138,7 +138,7 @@ export function operationCopy(context, selectedIDs) {
     operation.id = 'copy';
     operation.keys = [uiCmd('⌘C')];
     operation.title = t('operations.copy.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

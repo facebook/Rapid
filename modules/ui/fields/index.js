@@ -48,7 +48,7 @@ import { uiFieldCycleway } from './cycleway';
 import { uiFieldLanes } from './lanes';
 import { uiFieldLocalized } from './localized';
 import { uiFieldRoadspeed } from './roadspeed';
-import { uiFieldRestrictions } from './restrictions';
+// import { uiFieldRestrictions } from './restrictions';
 import { uiFieldTextarea } from './textarea';
 import { uiFieldWikidata } from './wikidata';
 import { uiFieldWikipedia } from './wikipedia';
@@ -72,7 +72,7 @@ export var uiFields = {
     number: uiFieldNumber,
     onewayCheck: uiFieldOnewayCheck,
     radio: uiFieldRadio,
-    restrictions: uiFieldRestrictions,
+    // restrictions: uiFieldRestrictions,
     semiCombo: uiFieldSemiCombo,
     structureRadio: uiFieldStructureRadio,
     tel: uiFieldTel,

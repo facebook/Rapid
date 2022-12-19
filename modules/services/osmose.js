@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
-import { Extent, Projection, Tiler, vecAdd } from '@id-sdk/math';
+import { Extent, Tiler, vecAdd } from '@id-sdk/math';
 import { utilQsString } from '@id-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
@@ -111,8 +111,7 @@ export default {
     };
 
     // determine the needed tiles to cover the view
-    const proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-    const tiles = tiler.getTiles(proj).tiles;
+    const tiles = tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
     abortUnwantedRequests(_cache, tiles);
@@ -296,7 +295,7 @@ export default {
 
   // Get all cached QAItems covering the viewport
   getItems(projection) {
-    const viewport = projection.clipExtent();
+    const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
@@ -305,7 +304,6 @@ export default {
   },
 
   // Get a QAItem from cache
-  // NOTE: Don't change method name until UI v3 is merged
   getError(id) {
     return _cache.data[id];
   },

@@ -62,13 +62,14 @@ describe('iD.osmEntity', function () {
             expect(result1).to.equal(result2);
         });
 
-        it('resets \'id\', \'user\', and \'version\' properties', function () {
-            var n = iD.osmEntity({id: 'n', version: 10, user: 'user'});
+        it('resets \'id\', \'user\', \'version\', and \'v\' properties', function () {
+            var n = iD.osmEntity({ id: 'n', user: 'user', version: 10, v: 100 });
             var copies = {};
             n.copy(null, copies);
             expect(copies.n.isNew()).to.be.ok;
-            expect(copies.n.version).to.be.undefined;
             expect(copies.n.user).to.be.undefined;
+            expect(copies.n.version).to.be.undefined;
+            expect(copies.n.v).to.be.undefined;
         });
 
         it('copies tags', function () {
@@ -108,14 +109,39 @@ describe('iD.osmEntity', function () {
             expect(iD.osmEntity().update({})).not.to.have.ownProperty('update');
         });
 
-        it('sets v to 1 if previously undefined', function() {
-            expect(iD.osmEntity().update({}).v).to.equal(1);
+        it('sets v if undefined', function() {
+            const a = iD.osmEntity();
+            const b = a.update({});
+            const bv = b.v;
+            expect(bv).to.be.a('number');
         });
 
-        it('increments v', function() {
-            expect(iD.osmEntity({v: 1}).update({}).v).to.equal(2);
+        it('updates v if already defined', function() {
+            const a = iD.osmEntity({v: 100});
+            const b = a.update({});
+            const bv = b.v;
+            expect(bv).to.be.a('number');
+            expect(bv).to.be.not.equal(100);
         });
     });
+
+    describe('#touch', function () {
+        it('updates v in place', function () {
+            const a = iD.osmEntity();
+            expect(a.v).to.be.undefined;
+
+            const b = a.touch();
+            const bv = b.v;
+            expect(a).to.equal(b);
+            expect(bv).to.be.a('number');
+
+            const c = b.touch();
+            const cv = c.v;
+            expect(c).to.equal(b);
+            expect(cv).to.be.a('number');
+            expect(cv).to.not.equal(bv);
+        });
+   });
 
     describe('#mergeTags', function () {
         it('returns self if unchanged', function () {
@@ -198,14 +224,14 @@ describe('iD.osmEntity', function () {
         it('returns true for a way with a node within the given extent', function () {
             var node  = iD.osmNode({loc: [0, 0]});
             var way   = iD.osmWay({nodes: [node.id]});
-            var graph = iD.coreGraph([node, way]);
+            var graph = new iD.Graph([node, way]);
             expect(way.intersects(new sdk.Extent([-5, -5], [5, 5]), graph)).to.equal(true);
         });
 
         it('returns false for way with no nodes within the given extent', function () {
             var node  = iD.osmNode({loc: [6, 6]});
             var way   = iD.osmWay({nodes: [node.id]});
-            var graph = iD.coreGraph([node, way]);
+            var graph = new iD.Graph([node, way]);
             expect(way.intersects(new sdk.Extent([-5, -5], [5, 5]), graph)).to.equal(false);
         });
     });
@@ -231,13 +257,13 @@ describe('iD.osmEntity', function () {
         it('returns true for an entity that is a relation member', function () {
             var node = iD.osmNode();
             var relation = iD.osmRelation({members: [{id: node.id}]});
-            var graph = iD.coreGraph([node, relation]);
+            var graph = new iD.Graph([node, relation]);
             expect(node.hasParentRelations(graph)).to.equal(true);
         });
 
         it('returns false for an entity that is not a relation member', function () {
             var node = iD.osmNode();
-            var graph = iD.coreGraph([node]);
+            var graph = new iD.Graph([node]);
             expect(node.hasParentRelations(graph)).to.equal(false);
         });
     });

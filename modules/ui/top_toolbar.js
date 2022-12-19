@@ -1,106 +1,83 @@
 import { select as d3_select } from 'd3-selection';
 import { utilStringQs } from '@id-sdk/util';
-import _debounce from 'lodash-es/debounce';
 
 import {
-    uiToolRapidFeatures, uiToolOldDrawModes, uiToolNotes, uiToolSave,
-    uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
+  uiToolRapidFeatures, uiToolDrawModes, uiToolNotes, uiToolSave,
+  uiToolSidebarToggle, uiToolUndoRedo, uiToolDownloadOsc
 } from './tools';
 
 
 export function uiTopToolbar(context) {
+  const sidebarToggle = uiToolSidebarToggle(context);
+  const rapidFeatures = uiToolRapidFeatures(context);
+  const modes = uiToolDrawModes(context);
+  const notes = uiToolNotes(context);
+  const undoRedo = uiToolUndoRedo(context);
+  const save = uiToolSave(context);
+  const downloadOsc = uiToolDownloadOsc(context);
 
-    var sidebarToggle = uiToolSidebarToggle(context),
-        rapidFeatures = uiToolRapidFeatures(context),
-        modes = uiToolOldDrawModes(context),
-        notes = uiToolNotes(context),
-        undoRedo = uiToolUndoRedo(context),
-        save = uiToolSave(context),
-        downloadOsc = uiToolDownloadOsc(context);
 
-    function notesEnabled() {
-        var noteLayer = context.layers().layer('notes');
-        return noteLayer && noteLayer.enabled();
+  function notesEnabled() {
+    return context.scene().layers.get('notes')?.enabled;
+  }
+
+
+  function update(selection) {
+    let tools = [sidebarToggle, 'spacer', modes, rapidFeatures];
+
+    if (notesEnabled()) {
+      tools.push('spacer', notes);
     }
 
-    function topToolbar(bar) {
+    tools.push('spacer', undoRedo, save);
 
-        bar.on('wheel.topToolbar', function(d3_event) {
-            if (!d3_event.deltaX) {
-                // translate vertical scrolling into horizontal scrolling in case
-                // the user doesn't have an input device that can scroll horizontally
-                bar.node().scrollLeft += d3_event.deltaY;
-            }
-        });
-
-        var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
-        context.layers()
-            .on('change.topToolbar', debouncedUpdate);
-
-        update();
-
-        function update() {
-
-            var tools = [
-                sidebarToggle,
-                'spacer',
-                modes,
-                rapidFeatures
-            //    searchAdd
-            ];
-
-            tools.push('spacer');
-
-            if (notesEnabled()) {
-                tools = tools.concat([notes, 'spacer']);
-            }
-
-            var q = utilStringQs(window.location.hash);
-            if (q.support_download_osc === 'true') {
-                tools.push(downloadOsc);
-            }
-            tools = tools.concat([undoRedo, save]);
-
-            var toolbarItems = bar.selectAll('.toolbar-item')
-                .data(tools, function(d) {
-                    return d.id || d;
-                });
-
-            toolbarItems.exit()
-                .each(function(d) {
-                    if (d.uninstall) {
-                        d.uninstall();
-                    }
-                })
-                .remove();
-
-            var itemsEnter = toolbarItems
-                .enter()
-                .append('div')
-                .attr('class', function(d) {
-                    var classes = 'toolbar-item ' + (d.id || d).replace('_', '-');
-                    if (d.klass) classes += ' ' + d.klass;
-                    return classes;
-                });
-
-            var actionableItems = itemsEnter.filter(function(d) { return d !== 'spacer'; });
-
-            actionableItems
-                .append('div')
-                .attr('class', 'item-content')
-                .each(function(d) {
-                    d3_select(this).call(d.render, bar);
-                });
-
-            actionableItems
-                .append('div')
-                .attr('class', 'item-label')
-                .html(function(d) {
-                    return d.label;
-                });
-        }
-
+    const q = utilStringQs(window.location.hash);
+    if (q.support_download_osc === 'true') {
+      tools.push(downloadOsc);
     }
 
-    return topToolbar;
+    let toolbarItems = selection.selectAll('.toolbar-item')
+      .data(tools, d => d.id || d);
+
+    // exit
+    toolbarItems.exit()
+      .each(d => {
+        if (d.uninstall) d.uninstall();
+      })
+      .remove();
+
+    // enter
+    let itemsEnter = toolbarItems
+      .enter()
+      .append('div')
+      .attr('class', d => {
+        let classes = 'toolbar-item ' + (d.id || d).replace('_', '-');
+        if (d.klass) classes += ' ' + d.klass;
+        return classes;
+      });
+
+    let actionableEnter = itemsEnter
+      .filter(d => d !== 'spacer');
+
+    actionableEnter
+      .append('div')
+      .attr('class', 'item-content')
+      .each((d, i, nodes) => {
+        d3_select(nodes[i])
+          .call(d.install, selection);
+      });
+
+    actionableEnter
+      .append('div')
+      .attr('class', 'item-label')
+      .html(d => d.label);
+  }
+
+
+  function init(selection) {
+    context.scene().on('layerchange', () => update(selection));
+    update(selection);
+  }
+
+  return init;
 }

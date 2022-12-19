@@ -11,52 +11,45 @@ const buildCSS = require('./build_css')(isDevelopment);
 
 
 buildData()
-    .then(function () {
-        return buildSrc();
-    });
+  .then(() => buildSrc());
 
 buildCSS();
 
 if (isDevelopment) {
-    gaze(['css/**/*.css'], function(err, watcher) {
-        watcher.on('all', function() {
-            buildCSS();
-        });
+  gaze(['css/**/*.css'], (err, watcher) => {
+    watcher.on('all', () => {
+      buildCSS();
     });
+  });
 
-    gaze([
-            'data/**/*.{js,json}',
-            'data/core.yaml',
-            'data/rapid_config.yaml',
-            // ignore the output files of `buildData`
-            '!data/presets/categories.json',
-            '!data/rapid_config.json',
-            '!data/presets/fields.json',
-            '!data/presets/presets.json',
-            '!data/presets.yaml',
-            '!data/taginfo.json',
-            '!data/territory-languages.json',
-            '!dist/locales/en.json'
-        ],
-        function(err, watcher) {
-            watcher.on('all', function() {
-                buildData()
-                    .then(function () {
-                        // need to recompute js files when data changes
-                        buildSrc();
-                    });
-            });
-        }
-    );
+  gaze([
+    'data/**/*.{js,json}',
+    'data/core.yaml',
+    // ignore the output files of `buildData`
+    '!data/presets/categories.json',
+    '!data/presets/fields.json',
+    '!data/presets/presets.json',
+    '!data/presets.yaml',
+    '!data/taginfo.json',
+    '!data/territory-languages.json',
+    '!dist/locales/en.json'
+  ],
+    (err, watcher) => {
+      watcher.on('all', () => {
+        buildData()
+          .then(() => buildSrc());
+      });
+    }
+  );
 
-    gaze(['modules/**/*.js'], function(err, watcher) {
-        watcher.on('all', function() {
-            buildSrc();
-        });
+  gaze(['modules/**/*.js'], (err, watcher) => {
+    watcher.on('all', () => {
+      buildSrc();
     });
+  });
 
-    const server = new StaticServer({ rootPath: __dirname, port: 8080, followSymlink: true });
-    server.start(function () {
-        console.log(chalk.yellow('Listening on ' + server.port));
-    });
+  const server = new StaticServer({ rootPath: __dirname, port: 8080, followSymlink: true });
+  server.start(() => {
+    console.log(chalk.yellow('Listening on ' + server.port));
+  });
 }

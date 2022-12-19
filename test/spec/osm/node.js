@@ -32,13 +32,13 @@ describe('iD.osmNode', function () {
         it('returns \'vertex\' if the node is a member of any way', function () {
             var node = iD.osmNode(),
                 way  = iD.osmWay({nodes: [node.id]}),
-                graph = iD.coreGraph([node, way]);
+                graph = new iD.Graph([node, way]);
             expect(node.geometry(graph)).to.equal('vertex');
         });
 
         it('returns \'point\' if the node is not a member of any way', function () {
             var node = iD.osmNode(),
-                graph = iD.coreGraph([node]);
+                graph = new iD.Graph([node]);
             expect(node.geometry(graph)).to.equal('point');
         });
     });
@@ -49,7 +49,7 @@ describe('iD.osmNode', function () {
                 b = iD.osmNode({id: 'b'}),
                 c = iD.osmNode({id: 'c'}),
                 w = iD.osmWay({nodes: ['a', 'b', 'c']}),
-                graph = iD.coreGraph([a, b, c, w]);
+                graph = new iD.Graph([a, b, c, w]);
             expect(a.isEndpoint(graph)).to.equal(true, 'linear way, beginning node');
             expect(b.isEndpoint(graph)).to.equal(false, 'linear way, middle node');
             expect(c.isEndpoint(graph)).to.equal(true, 'linear way, ending node');
@@ -60,7 +60,7 @@ describe('iD.osmNode', function () {
                 b = iD.osmNode({id: 'b'}),
                 c = iD.osmNode({id: 'c'}),
                 w = iD.osmWay({nodes: ['a', 'b', 'c', 'a']}),
-                graph = iD.coreGraph([a, b, c, w]);
+                graph = new iD.Graph([a, b, c, w]);
             expect(a.isEndpoint(graph)).to.equal(false, 'circular way, connector node');
             expect(b.isEndpoint(graph)).to.equal(false, 'circular way, middle node');
             expect(c.isEndpoint(graph)).to.equal(false, 'circular way, ending node');
@@ -72,7 +72,7 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id]}),
                 w2 = iD.osmWay({nodes: [node.id], tags: { highway: 'residential' }}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isConnected(graph)).to.equal(true);
         });
 
@@ -80,7 +80,7 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id], tags: { area: 'yes' }}),
                 w2 = iD.osmWay({nodes: [node.id], tags: { area: 'yes' }}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isConnected(graph)).to.equal(false);
         });
 
@@ -88,14 +88,14 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id]}),
                 w2 = iD.osmWay({nodes: [node.id]}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isConnected(graph)).to.equal(false);
         });
 
         it('returns false for a standalone node on a single parent way', function () {
             var node = iD.osmNode(),
                 way = iD.osmWay({nodes: [node.id]}),
-                graph = iD.coreGraph([node, way]);
+                graph = new iD.Graph([node, way]);
             expect(node.isConnected(graph)).to.equal(false);
         });
 
@@ -104,7 +104,7 @@ describe('iD.osmNode', function () {
                 b = iD.osmNode({id: 'b'}),
                 c = iD.osmNode({id: 'c'}),
                 w = iD.osmWay({nodes: ['a', 'b', 'c', 'b']}),
-                graph = iD.coreGraph([a, b, c, w]);
+                graph = new iD.Graph([a, b, c, w]);
             expect(b.isConnected(graph)).to.equal(true);
         });
 
@@ -113,7 +113,7 @@ describe('iD.osmNode', function () {
                 b = iD.osmNode({id: 'b'}),
                 c = iD.osmNode({id: 'c'}),
                 w = iD.osmWay({nodes: ['a', 'b', 'c', 'a']}),
-                graph = iD.coreGraph([a, b, c, w]);
+                graph = new iD.Graph([a, b, c, w]);
             expect(a.isConnected(graph)).to.equal(false);
         });
     });
@@ -123,7 +123,7 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
                 w2 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isIntersection(graph)).to.equal(true);
         });
 
@@ -131,7 +131,7 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
                 w2 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isIntersection(graph)).to.equal(true);
         });
     });
@@ -141,7 +141,7 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
                 w2 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isHighwayIntersection(graph)).to.equal(true);
         });
 
@@ -149,7 +149,7 @@ describe('iD.osmNode', function () {
             var node = iD.osmNode(),
                 w1 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
                 w2 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
-                graph = iD.coreGraph([node, w1, w2]);
+                graph = new iD.Graph([node, w1, w2]);
             expect(node.isHighwayIntersection(graph)).to.equal(false);
         });
     });
@@ -182,9 +182,10 @@ describe('iD.osmNode', function () {
 
     describe('#directions', function () {
         var projection = function (_) { return _; };
+        projection.project = function (_) { return _; };
         it('returns empty array if no direction tag', function () {
             var node1 = iD.osmNode({ loc: [0, 0], tags: {}});
-            var graph = iD.coreGraph([node1]);
+            var graph = new iD.Graph([node1]);
             expect(node1.directions(graph, projection)).to.eql([], 'no direction tag');
         });
 
@@ -193,7 +194,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ loc: [0, 0], tags: { direction: '' }});
             var node3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NaN' }});
             var node4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'eastwest' }});
-            var graph = iD.coreGraph([node1, node2, node3, node4]);
+            var graph = new iD.Graph([node1, node2, node3, node4]);
 
             expect(node1.directions(graph, projection)).to.eql([], 'nonsense direction tag');
             expect(node2.directions(graph, projection)).to.eql([], 'empty string direction tag');
@@ -207,7 +208,7 @@ describe('iD.osmNode', function () {
             var node3 = iD.osmNode({ loc: [0, 0], tags: { direction: '-45' }});
             var node4 = iD.osmNode({ loc: [0, 0], tags: { direction: '360' }});
             var node5 = iD.osmNode({ loc: [0, 0], tags: { direction: '1000' }});
-            var graph = iD.coreGraph([node1, node2, node3, node4, node5]);
+            var graph = new iD.Graph([node1, node2, node3, node4, node5]);
 
             expect(node1.directions(graph, projection)).to.eql([0], 'numeric 0');
             expect(node2.directions(graph, projection)).to.eql([45], 'numeric 45');
@@ -297,7 +298,7 @@ describe('iD.osmNode', function () {
             var nodeNNW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'northnorthwest' }});
             var nodeNNW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NOrthnorTHWest' }});
 
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 nodeN1, nodeN2, nodeN3, nodeN4,
                 nodeNNE1, nodeNNE2, nodeNNE3, nodeNNE4,
                 nodeNE1, nodeNE2, nodeNE3, nodeNE4,
@@ -402,7 +403,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'forward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
@@ -411,7 +412,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'backward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
@@ -420,7 +421,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'both' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -429,7 +430,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'all' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -438,7 +439,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'forward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
@@ -447,7 +448,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'backward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
@@ -456,7 +457,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'both' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -465,7 +466,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'all' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -474,7 +475,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'forward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
@@ -483,7 +484,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'backward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
@@ -492,7 +493,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'both' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -501,7 +502,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'all' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -510,7 +511,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'forward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
@@ -519,7 +520,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'backward' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
@@ -528,7 +529,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -537,7 +538,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'all' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
@@ -549,7 +550,7 @@ describe('iD.osmNode', function () {
             var node5 = iD.osmNode({ id: 'n5', loc: [0, 1] });
             var way1 = iD.osmWay({ id: 'w1', nodes: ['n1','n2','n3'], tags: { 'highway': 'residential' } });
             var way2 = iD.osmWay({ id: 'w2', nodes: ['n4','n2','n5'], tags: { 'highway': 'residential' } });
-            var graph = iD.coreGraph([node1, node2, node3, node4, node5, way1, way2]);
+            var graph = new iD.Graph([node1, node2, node3, node4, node5, way1, way2]);
             expect(node2.directions(graph, projection)).to.have.members([0, 90, 180, 270]);
         });
 
@@ -561,7 +562,7 @@ describe('iD.osmNode', function () {
             var node5 = iD.osmNode({ id: 'n5', loc: [0, 1], tags: { 'highway': 'stop', 'stop': 'all' } });
             var way1 = iD.osmWay({ id: 'w1', nodes: ['n1','n2','n3'], tags: { 'highway': 'residential' } });
             var way2 = iD.osmWay({ id: 'w2', nodes: ['n4','n2','n5'], tags: { 'highway': 'residential' } });
-            var graph = iD.coreGraph([node1, node2, node3, node4, node5, way1, way2]);
+            var graph = new iD.Graph([node1, node2, node3, node4, node5, way1, way2]);
             expect(node2.directions(graph, projection)).to.eql([]);
         });
 
@@ -571,7 +572,7 @@ describe('iD.osmNode', function () {
             var node3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'north;east' }});
             var node4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'n;s;e;w' }});
             var node5 = iD.osmNode({ loc: [0, 0], tags: { direction: 's;wat' }});
-            var graph = iD.coreGraph([node1, node2, node3, node4, node5]);
+            var graph = new iD.Graph([node1, node2, node3, node4, node5]);
 
             expect(node1.directions(graph, projection)).to.eql([0, 45], 'numeric 0, numeric 45');
             expect(node2.directions(graph, projection)).to.eql([45, 0], 'numeric 45, cardinal north');
@@ -585,7 +586,7 @@ describe('iD.osmNode', function () {
             var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both;ne;60' }});
             var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
             var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = iD.coreGraph([node1, node2, node3, way]);
+            var graph = new iD.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270, 45, 60]);
         });
 

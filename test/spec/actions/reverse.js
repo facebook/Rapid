@@ -3,13 +3,13 @@ describe('iD.actionReverse', function () {
         var node1 = iD.osmNode();
         var node2 = iD.osmNode();
         var way = iD.osmWay({nodes: [node1.id, node2.id]});
-        var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, way]));
+        var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, way]));
         expect(graph.entity(way.id).nodes).to.eql([node2.id, node1.id]);
     });
 
     it('preserves non-directional tags', function () {
         var way = iD.osmWay({tags: {'highway': 'residential'}});
-        var graph = iD.coreGraph([way]);
+        var graph = new iD.Graph([way]);
 
         graph = iD.actionReverse(way.id)(graph);
         expect(graph.entity(way.id).tags).to.eql({'highway': 'residential'});
@@ -18,67 +18,67 @@ describe('iD.actionReverse', function () {
     describe('reverses directional tags on nodes', function () {
         it('reverses relative directions', function () {
             var node1 = iD.osmNode({ tags: { 'direction': 'forward' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': 'backward' });
         });
 
         it('reverses relative directions for arbitrary direction tags', function () {
             var node1 = iD.osmNode({ tags: { 'traffic_sign:direction': 'forward' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'traffic_sign:direction': 'backward' });
         });
 
         it('reverses absolute directions, cardinal compass points', function () {
             var node1 = iD.osmNode({ tags: { 'direction': 'E' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': 'W' });
         });
 
         it('reverses absolute directions, intercardinal compass points', function () {
             var node1 = iD.osmNode({ tags: { 'direction': 'SE' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': 'NW' });
         });
 
         it('reverses absolute directions, secondary intercardinal compass points', function () {
             var node1 = iD.osmNode({ tags: { 'direction': 'NNE' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': 'SSW' });
         });
 
         it('reverses absolute directions, 0 degrees', function () {
             var node1 = iD.osmNode({ tags: { 'direction': '0' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': '180' });
         });
 
         it('reverses absolute directions, positive degrees', function () {
             var node1 = iD.osmNode({ tags: { 'direction': '85.5' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': '265.5' });
         });
 
         it('reverses absolute directions, positive degrees > 360', function () {
             var node1 = iD.osmNode({ tags: { 'direction': '385.5' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': '205.5' });
         });
 
         it('reverses absolute directions, negative degrees', function () {
             var node1 = iD.osmNode({ tags: { 'direction': '-85.5' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': '94.5' });
         });
 
         it('preserves non-directional tags', function () {
             var node1 = iD.osmNode({ tags: { 'traffic_sign': 'maxspeed' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'traffic_sign': 'maxspeed' });
         });
 
         it('preserves non-reversible direction tags', function () {
             var node1 = iD.osmNode({ tags: { 'direction': 'both' } });
-            var graph = iD.actionReverse(node1.id)(iD.coreGraph([node1]));
+            var graph = iD.actionReverse(node1.id)(new iD.Graph([node1]));
             expect(graph.entity(node1.id).tags).to.eql({ 'direction': 'both' });
         });
     });
@@ -86,14 +86,14 @@ describe('iD.actionReverse', function () {
     describe('reverses oneway', function () {
         it('preserves oneway tags', function () {
             var way = iD.osmWay({tags: {'oneway': 'yes'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'oneway': 'yes'});
         });
 
         it('reverses oneway tags if reverseOneway: true is provided', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'yes', tags: {oneway: 'yes'}}),
                 iD.osmWay({id: 'no', tags: {oneway: 'no'}}),
                 iD.osmWay({id: '1', tags: {oneway: '1'}}),
@@ -111,7 +111,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('ignores other oneway tags', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'alternating', tags: {oneway: 'alternating'}}),
                 iD.osmWay({id: 'reversible', tags: {oneway: 'reversible'}}),
                 iD.osmWay({id: 'dummy', tags: {oneway: 'dummy'}})
@@ -130,7 +130,7 @@ describe('iD.actionReverse', function () {
     describe('reverses incline', function () {
         it('transforms incline=up ⟺ incline=down', function () {
             var way = iD.osmWay({tags: {'incline': 'up'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'incline': 'down'});
@@ -141,7 +141,7 @@ describe('iD.actionReverse', function () {
 
         it('negates numeric-valued incline tags', function () {
             var way = iD.osmWay({tags: {'incline': '5%'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'incline': '-5%'});
@@ -150,7 +150,7 @@ describe('iD.actionReverse', function () {
             expect(graph.entity(way.id).tags).to.eql({'incline': '5%'});
 
             way = iD.osmWay({tags: {'incline': '.8°'}});
-            graph = iD.coreGraph([way]);
+            graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'incline': '-.8°'});
@@ -161,7 +161,7 @@ describe('iD.actionReverse', function () {
     describe('reverses directional keys on ways', function () {
         it('transforms *:right=* ⟺ *:left=*', function () {
             var way = iD.osmWay({tags: {'cycleway:right': 'lane'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'cycleway:left': 'lane'});
@@ -172,7 +172,7 @@ describe('iD.actionReverse', function () {
 
         it('transforms *:right:*=* ⟺ *:left:*=*', function () {
             var way = iD.osmWay({tags: {'cycleway:right:surface': 'paved'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'cycleway:left:surface': 'paved'});
@@ -183,7 +183,7 @@ describe('iD.actionReverse', function () {
 
         it('transforms *:forward=* ⟺ *:backward=*', function () {
             var way = iD.osmWay({tags: {'maxspeed:forward': '25'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'maxspeed:backward': '25'});
@@ -194,7 +194,7 @@ describe('iD.actionReverse', function () {
 
         it('transforms multiple directional tags', function () {
             var way = iD.osmWay({tags: {'maxspeed:forward': '25', 'maxspeed:backward': '30'}});
-            var graph = iD.coreGraph([way]);
+            var graph = new iD.Graph([way]);
 
             graph = iD.actionReverse(way.id)(graph);
             expect(graph.entity(way.id).tags).to.eql({'maxspeed:backward': '25', 'maxspeed:forward': '30'});
@@ -204,7 +204,7 @@ describe('iD.actionReverse', function () {
 
     describe('reverses directional values on ways', function () {
         it('transforms *=up ⟺ *=down', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'inclineU', tags: {incline: 'up'}}),
                 iD.osmWay({id: 'directionU', tags: {direction: 'up'}}),
                 iD.osmWay({id: 'inclineD', tags: {incline: 'down'}}),
@@ -223,7 +223,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('skips *=up ⟺ *=down for ignored tags', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'name', tags: {name: 'up'}}),
                 iD.osmWay({id: 'note', tags: {note: 'up'}}),
                 iD.osmWay({id: 'ref', tags: {ref: 'down'}}),
@@ -241,7 +241,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('transforms *=forward ⟺ *=backward', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'conveyingF', tags: {conveying: 'forward'}}),
                 iD.osmWay({id: 'directionF', tags: {direction: 'forward'}}),
                 iD.osmWay({id: 'priorityF', tags: {priority: 'forward'}}),
@@ -272,7 +272,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('drops "s" from forwards/backwards when reversing', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'conveyingF', tags: {conveying: 'forwards'}}),
                 iD.osmWay({id: 'conveyingB', tags: {conveying: 'backwards'}})
             ]);
@@ -284,7 +284,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('skips *=forward ⟺ *=backward for ignored tags', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'name', tags: {name: 'forward'}}),
                 iD.osmWay({id: 'note', tags: {note: 'forwards'}}),
                 iD.osmWay({id: 'ref', tags: {ref: 'backward'}}),
@@ -302,7 +302,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('transforms *=right ⟺ *=left', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'sidewalkR', tags: {sidewalk: 'right'}}),
                 iD.osmWay({id: 'sidewalkL', tags: {sidewalk: 'left'}})
             ]);
@@ -314,7 +314,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('skips *=right ⟺ *=left for ignored tags', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmWay({id: 'name', tags: {name: 'right'}}),
                 iD.osmWay({id: 'note', tags: {note: 'right'}}),
                 iD.osmWay({id: 'ref', tags: {ref: 'left'}}),
@@ -335,7 +335,7 @@ describe('iD.actionReverse', function () {
 
     describe('reverses relation roles', function () {
         it('transforms role=forward ⟺ role=backward in member relations', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'n1'}),
                 iD.osmNode({id: 'n2'}),
                 iD.osmWay({id: 'w1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}}),
@@ -350,7 +350,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('drops "s" from forwards/backwards when reversing', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'n1'}),
                 iD.osmNode({id: 'n2'}),
                 iD.osmWay({id: 'w1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}}),
@@ -365,7 +365,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('doesn\'t transform role=north ⟺ role=south in member relations', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'n1'}),
                 iD.osmNode({id: 'n2'}),
                 iD.osmWay({id: 'w1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}}),
@@ -380,7 +380,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('doesn\'t transform role=east ⟺ role=west in member relations', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'n1'}),
                 iD.osmNode({id: 'n2'}),
                 iD.osmWay({id: 'w1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}}),
@@ -395,7 +395,7 @@ describe('iD.actionReverse', function () {
         });
 
         it('ignores directionless roles in member relations', function () {
-            var graph = iD.coreGraph([
+            var graph = new iD.Graph([
                 iD.osmNode({id: 'n1'}),
                 iD.osmNode({id: 'n2'}),
                 iD.osmWay({id: 'w1', nodes: ['n1', 'n2'], tags: {highway: 'residential'}}),
@@ -418,7 +418,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'direction': 'forward', 'highway': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags.direction).to.eql('backward');
         });
@@ -428,7 +428,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'direction': 'backward', 'highway': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags.direction).to.eql('forward');
         });
@@ -438,7 +438,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'direction': 'left', 'highway': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags.direction).to.eql('right');
         });
@@ -448,7 +448,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'direction': 'right', 'highway': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags.direction).to.eql('left');
         });
@@ -458,7 +458,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'highway': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags.direction).to.be.undefined;
         });
@@ -468,7 +468,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'direction': 'empty', 'highway': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags.direction).to.eql('empty');
         });
@@ -481,7 +481,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'traffic_sign:forward': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_sign:backward']).to.eql('stop');
         });
@@ -491,7 +491,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'traffic_sign:backward': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_sign:forward']).to.eql('stop');
         });
@@ -501,7 +501,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'traffic_sign:left': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_sign:right']).to.eql('stop');
         });
@@ -511,7 +511,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: {'traffic_sign:right': 'stop'}});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_sign:left']).to.eql('stop');
         });
@@ -522,7 +522,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: { 'traffic_signals:direction': 'forward', 'highway': 'traffic_signals' }});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_signals:direction']).to.eql('backward');
         });
@@ -532,7 +532,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: { 'traffic_signals:direction': 'backward', 'highway': 'traffic_signals' }});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_signals:direction']).to.eql('forward');
         });
@@ -542,7 +542,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: { 'traffic_signals:direction': 'left', 'highway': 'traffic_signals' }});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_signals:direction']).to.eql('right');
         });
@@ -552,7 +552,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: { 'traffic_signals:direction': 'right', 'highway': 'traffic_signals' }});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_signals:direction']).to.eql('left');
         });
@@ -562,7 +562,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: { 'highway': 'traffic_signals' }});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_signals:direction']).to.be.undefined;
         });
@@ -572,7 +572,7 @@ describe('iD.actionReverse', function () {
             var node2 = iD.osmNode({tags: { 'traffic_signals:direction': 'empty', 'highway': 'traffic_signals' }});
             var node3 = iD.osmNode();
             var way = iD.osmWay({nodes: [node1.id, node2.id, node3.id]});
-            var graph = iD.actionReverse(way.id)(iD.coreGraph([node1, node2, node3, way]));
+            var graph = iD.actionReverse(way.id)(new iD.Graph([node1, node2, node3, way]));
             var target = graph.entity(node2.id);
             expect(target.tags['traffic_signals:direction']).to.eql('empty');
         });

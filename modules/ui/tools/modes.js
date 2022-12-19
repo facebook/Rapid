@@ -1,146 +1,147 @@
 import _debounce from 'lodash-es/debounce';
-
 import { select as d3_select } from 'd3-selection';
-
-import {
-    modeAddArea,
-    modeAddLine,
-    modeAddPoint,
-    modeBrowse
-} from '../../modes';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg';
+import { svgIcon } from '../../svg/icon';
 import { uiTooltip } from '../tooltip';
 
-export function uiToolOldDrawModes(context) {
 
-    var tool = {
-        id: 'old_modes',
-        label: t.html('toolbar.add_feature')
-    };
+export function uiToolDrawModes(context) {
 
-    var modes = [
-        modeAddPoint(context, {
-            title: t.html('modes.add_point.title'),
-            button: 'point',
-            description: t.html('modes.add_point.description'),
-            preset: presetManager.item('point'),
-            key: '1'
-        }),
-        modeAddLine(context, {
-            title: t.html('modes.add_line.title'),
-            button: 'line',
-            description: t.html('modes.add_line.description'),
-            preset: presetManager.item('line'),
-            key: '2'
-        }),
-        modeAddArea(context, {
-            title: t.html('modes.add_area.title'),
-            button: 'area',
-            description: t.html('modes.add_area.description'),
-            preset: presetManager.item('area'),
-            key: '3'
-        })
-    ];
+  let tool = {
+    id: 'draw_modes',
+    label: t.html('toolbar.add_feature')
+  };
 
-
-    function enabled() {
-        return osmEditable();
+  const modes = [
+    {
+      id: 'add-point',
+      title: t.html('modes.add_point.title'),
+      button: 'point',
+      description: t.html('modes.add_point.description'),
+      preset: presetManager.item('point'),
+      key: '1'
+    },
+    {
+      id: 'draw-line',
+      title: t.html('modes.add_line.title'),
+      button: 'line',
+      description: t.html('modes.add_line.description'),
+      preset: presetManager.item('line'),
+      key: '2'
+    },
+    {
+      id: 'draw-area',
+      title: t.html('modes.add_area.title'),
+      button: 'area',
+      description: t.html('modes.add_area.description'),
+      preset: presetManager.item('area'),
+      key: '3'
     }
+  ];
 
-    function osmEditable() {
-        return context.editable();
-    }
+  let debouncedUpdate;
 
-    modes.forEach(function(mode) {
-        context.keybinding().on(mode.key, function() {
-            if (!enabled(mode)) return;
 
-            if (mode.id === context.mode().id) {
-                context.enter(modeBrowse(context));
-            } else {
-                context.enter(mode);
-            }
-        });
+  tool.install = function(selection) {
+    let wrap = selection
+      .append('div')
+      .attr('class', 'joined')
+      .style('display', 'flex');
+
+    debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
+
+    modes.forEach(d => {
+      context.keybinding().on(d.key, () => {
+        if (!context.editable()) return;
+
+        if (d.id === context.mode().id) {
+          context.enter('browse');
+        } else {
+          context.enter(d.id);
+        }
+      });
     });
 
-    tool.render = function(selection) {
+    context.map()
+      .on('draw', debouncedUpdate);
 
-        var wrap = selection
-            .append('div')
-            .attr('class', 'joined')
-            .style('display', 'flex');
+    context
+      .on('enter.modes', update);
 
-        var debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
-
-        context.map()
-            .on('move.modes', debouncedUpdate)
-            .on('drawn.modes', debouncedUpdate);
-
-        context
-            .on('enter.modes', update);
-
-        update();
+    update();
 
 
-        function update() {
+    function update() {
+      let buttons = wrap.selectAll('button.add-button')
+        .data(modes, d => d.id);
 
-            var buttons = wrap.selectAll('button.add-button')
-                .data(modes, function(d) { return d.id; });
+      // exit
+      buttons.exit()
+        .remove();
 
-            // exit
-            buttons.exit()
-                .remove();
+      // enter
+      let buttonsEnter = buttons.enter()
+        .append('button')
+        .attr('class', d => `${d.id} add-button bar-button`)
+        .on('click.mode-buttons', (d3_event, d) => {
+          if (!context.editable()) return;
 
-            // enter
-            var buttonsEnter = buttons.enter()
-                .append('button')
-                .attr('class', function(d) { return d.id + ' add-button bar-button'; })
-                .on('click.mode-buttons', function(d3_event, d) {
-                    if (!enabled(d)) return;
+          if (d.id === 'add-area') return; //Short-circuit area drawing temporarily.
+          // When drawing, ignore accidental clicks on mode buttons - #4042
+          const currMode = context.mode().id;
+          if (/^draw/.test(currMode)) return;
 
-                    // When drawing, ignore accidental clicks on mode buttons - #4042
-                    var currMode = context.mode().id;
-                    if (/^draw/.test(currMode)) return;
+          if (d.id === currMode) {
+            context.enter('browse');
+          } else {
+            context.enter(d.id);
+          }
+        })
+        .call(uiTooltip()
+          .placement('bottom')
+          .title(d => d.description)
+          .keys(d => [d.key])
+          .scrollContainer(context.container().select('.top-toolbar'))
+        );
 
-                    if (d.id === currMode) {
-                        context.enter(modeBrowse(context));
-                    } else {
-                        context.enter(d);
-                    }
-                })
-                .call(uiTooltip()
-                    .placement('bottom')
-                    .title(function(d) { return d.description; })
-                    .keys(function(d) { return [d.key]; })
-                    .scrollContainer(context.container().select('.top-toolbar'))
-                );
+      buttonsEnter
+        .each((d, i, nodes) => {
+          d3_select(nodes[i])
+            .call(svgIcon(`#iD-icon-${d.button}`));
+        });
 
-            buttonsEnter
-                .each(function(d) {
-                    d3_select(this)
-                        .call(svgIcon('#iD-icon-' + d.button));
-                });
+      buttonsEnter
+        .append('span')
+        .attr('class', 'label')
+        .html(d => d.title);
 
-            buttonsEnter
-                .append('span')
-                .attr('class', 'label')
-                .html(function(mode) { return mode.title; });
+      // if we are adding/removing the buttons, check if toolbar has overflowed
+      if (buttons.enter().size() || buttons.exit().size()) {
+        context.ui().checkOverflow('.top-toolbar', true);
+      }
 
-            // if we are adding/removing the buttons, check if toolbar has overflowed
-            if (buttons.enter().size() || buttons.exit().size()) {
-                context.ui().checkOverflow('.top-toolbar', true);
-            }
+      // update
+      buttons = buttons
+        .merge(buttonsEnter)
+        .classed('disabled', () => !context.editable())
+        .classed('active', d => (context.mode() && context.mode().id === d.id));
+    }
+  };
 
-            // update
-            buttons = buttons
-                .merge(buttonsEnter)
-                .classed('disabled', function(d) { return !enabled(d); })
-                .classed('active', function(d) { return context.mode() && context.mode().button === d.button; });
-        }
-    };
 
-    return tool;
+  tool.uninstall = function () {
+    modes.forEach(d => {
+      context.keybinding().off(d.key);
+    });
+
+    context.map()
+      .off('draw', debouncedUpdate);
+
+    context
+      .on('enter.modes', null);
+  };
+
+  return tool;
 }

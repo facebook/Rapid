@@ -3,7 +3,7 @@ describe('iD.actionUnrestrictTurn', function() {
         //
         // u === * --- w
         //
-        var graph = iD.coreGraph([
+        var graph = new iD.Graph([
             iD.osmNode({ id: 'u' }),
             iD.osmNode({ id: '*' }),
             iD.osmNode({ id: 'w' }),

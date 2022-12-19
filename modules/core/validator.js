@@ -3,7 +3,7 @@ import { Extent } from '@id-sdk/math';
 import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
 
 import { prefs } from './preferences';
-import { coreDifference } from './difference';
+import { Difference } from './Difference';
 import { modeSelect } from '../modes/select';
 import { utilRebind } from '../util';
 import * as Validations from '../validations/index';
@@ -20,7 +20,7 @@ export function coreValidator(context) {
   let _resolvedIssueIDs = new Set();
   let _baseCache = validationCache('base');   // issues before any user edits
   let _headCache = validationCache('head');   // issues after all user edits
-  let _completeDiff = {};                     // complete diff base -> head of what the user changed
+  let _completeDiff = new Map();              // complete diff base -> head of what the user changed
   let _headIsCurrent = false;
 
   let _deferredRIC = {};          // Object( RequestIdleCallback handle : rejectPromise method )
@@ -117,7 +117,7 @@ export function coreValidator(context) {
     _resolvedIssueIDs.clear();
     _baseCache = validationCache('base');
     _headCache = validationCache('head');
-    _completeDiff = {};
+    _completeDiff = new Map();
     _headIsCurrent = false;
   }
 
@@ -197,7 +197,7 @@ export function coreValidator(context) {
         // In the head cache, only count features that the user is responsible for - #8632
         // For example, a user can undo some work and an issue will still present in the
         // head graph, but we don't want to credit the user for causing that issue.
-        const userModified = (issue.entityIds || []).some(id => _completeDiff.hasOwnProperty(id));
+        const userModified = (issue.entityIds || []).some(entityID => _completeDiff.has(entityID));
         if (opts.what === 'edited' && !userModified) return;   // present in head but user didn't touch it
 
         if (!filter(issue)) return;
@@ -306,7 +306,7 @@ export function coreValidator(context) {
 
     if (focusCenter) {  // Adjust the view
       const setZoom = Math.max(context.map().zoom(), 19);
-      context.map().unobscuredCenterZoomEase(focusCenter, setZoom);
+      context.map().centerZoomEase(focusCenter, setZoom);
     }
 
     if (selectID) {  // Enter select mode
@@ -495,8 +495,8 @@ export function coreValidator(context) {
     // If we get here, its time to start validating stuff.
     _headCache.graph = currGraph;  // take snapshot
     _completeDiff = context.history().difference().complete();
-    const incrementalDiff = coreDifference(prevGraph, currGraph);
-    let entityIDs = Object.keys(incrementalDiff.complete());
+    const incrementalDiff = new Difference(prevGraph, currGraph);
+    let entityIDs = [...incrementalDiff.complete().keys()];
     entityIDs = _headCache.withAllRelatedEntities(entityIDs);  // expand set
 
     if (!entityIDs.size) {
@@ -539,8 +539,8 @@ export function coreValidator(context) {
 
   // When merging fetched data, validate base graph:
   context.history()
-    .on('merge.validator', entities => {
-      if (!entities) return;
+    .on('merge.validator', entityIDs => {
+      if (!entityIDs) return;
 
       // Make sure the caches have graphs assigned to them.
       // (we don't do this in `reset` because context is still resetting things and `history.base()` is unstable then)
@@ -548,7 +548,6 @@ export function coreValidator(context) {
       if (!_headCache.graph) _headCache.graph = baseGraph;
       if (!_baseCache.graph) _baseCache.graph = baseGraph;
 
-      let entityIDs = entities.map(entity => entity.id);
       entityIDs = _baseCache.withAllRelatedEntities(entityIDs);  // expand set
       validateEntitiesAsync(entityIDs, _baseCache);
     });
@@ -648,7 +647,7 @@ export function coreValidator(context) {
         // Check if the user did something to one of the entities involved in this issue.
         // (This issue could involve multiple entities, e.g. disconnected routable features)
         const issue = _baseCache.issuesByIssueID[issueID];
-        const userModified = (issue.entityIds || []).some(id => _completeDiff.hasOwnProperty(id));
+        const userModified = (issue.entityIds || []).some(entityID => _completeDiff.has(entityID));
 
         if (userModified && !_headCache.issuesByIssueID[issueID]) {  // issue seems fixed
           _resolvedIssueIDs.add(issueID);

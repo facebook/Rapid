@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { Projection, Tiler } from '@id-sdk/math';
+import { Tiler } from '@id-sdk/math';
 import { utilHashcode } from '@id-sdk/util';
 import deepEqual from 'fast-deep-equal';
 import turf_bboxClip from '@turf/bbox-clip';
@@ -172,8 +172,7 @@ export default {
         var source = _vtCache[sourceID];
         if (!source) return [];
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.getTiles(proj).tiles;
+        var tiles = tiler.getTiles(projection).tiles;
         var seen = {};
         var results = [];
 
@@ -203,8 +202,7 @@ export default {
             source = this.addSource(sourceID, template);
         }
 
-        var proj = new Projection().transform(projection.transform()).dimensions(projection.clipExtent());
-        var tiles = tiler.getTiles(proj).tiles;
+        var tiles = tiler.getTiles(projection).tiles;
 
         // abort inflight requests that are no longer needed
         Object.keys(source.inflight).forEach(function(k) {

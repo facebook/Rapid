@@ -3,7 +3,6 @@ import { utilArrayIdentical, utilArrayUnion } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';
-import { modeBrowse } from '../../modes/browse';
 import { uiField } from '../field';
 import { uiFormFields } from '../form_fields';
 import { uiSection } from '../section';
@@ -73,12 +72,12 @@ export function uiSectionPresetFields(context) {
                 }
             });
 
-            var singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
-            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetsManager.field('restrictions')) {
-                _fieldsArr.push(
-                    uiField(context, presetsManager.field('restrictions'), _entityIDs)
-                );
-            }
+//            var singularEntity = _entityIDs.length === 1 && graph.hasEntity(_entityIDs[0]);
+//            if (singularEntity && singularEntity.isHighwayIntersection(graph) && presetsManager.field('restrictions')) {
+//                _fieldsArr.push(
+//                    uiField(context, presetsManager.field('restrictions'), _entityIDs)
+//                );
+//            }
 
             var additionalFields = utilArrayUnion(sharedMoreFields, presetsManager.universal());
             additionalFields.sort(function(field1, field2) {
@@ -126,7 +125,7 @@ export function uiSectionPresetFields(context) {
                 if (d3_event.keyCode === 13 && // ↩ Return
                     context.container().select('.combobox').empty()) {
 
-                    context.enter(modeBrowse(context));
+                    context.enter('browse');
                 }
             });
     }

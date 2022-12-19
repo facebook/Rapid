@@ -1,143 +1,162 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
 import { uiCmd } from './cmd';
-import { uiInfoPanels } from './panels';
+
+import { UiPanelBackground } from './panels/UiPanelBackground';
+import { UiPanelHistory } from './panels/UiPanelHistory';
+import { UiPanelLocation } from './panels/UiPanelLocation';
+import { UiPanelMeasurement } from './panels/UiPanelMeasurement';
 
 
+/**
+ * uiInfo
+ * This component acts as the container for the information panels.
+ * "Panels" are user interface elements that can float on top of the map
+ * and provide extra information about the map or the selection.
+ */
 export function uiInfo(context) {
-    var ids = Object.keys(uiInfoPanels);
-    var wasActive = ['measurement'];
-    var panels = {};
-    var active = {};
+  const panels = {
+    background:   new UiPanelBackground(context),
+    history:      new UiPanelHistory(context),
+    location:     new UiPanelLocation(context),
+    measurement:  new UiPanelMeasurement(context)
+  };
 
-    // create panels
-    ids.forEach(function(k) {
-        if (!panels[k]) {
-            panels[k] = uiInfoPanels[k](context);
-            active[k] = false;
-        }
-    });
+  const panelIDs = Object.keys(panels);
 
-
-    function info(selection) {
-
-        function redraw() {
-            var activeids = ids.filter(function(k) { return active[k]; }).sort();
-
-            var containers = infoPanels.selectAll('.panel-container')
-                .data(activeids, function(k) { return k; });
-
-            containers.exit()
-                .style('opacity', 1)
-                .transition()
-                .duration(200)
-                .style('opacity', 0)
-                .on('end', function(d) {
-                    d3_select(this)
-                        .call(panels[d].off)
-                        .remove();
-                });
-
-            var enter = containers.enter()
-                .append('div')
-                .attr('class', function(d) { return 'fillD2 panel-container panel-container-' + d; });
-
-            enter
-                .style('opacity', 0)
-                .transition()
-                .duration(200)
-                .style('opacity', 1);
-
-            var title = enter
-                .append('div')
-                .attr('class', 'panel-title fillD2');
-
-            title
-                .append('h3')
-                .html(function(d) { return panels[d].label; });
-
-            title
-                .append('button')
-                .attr('class', 'close')
-                .on('click', function(d3_event, d) {
-                    d3_event.stopImmediatePropagation();
-                    d3_event.preventDefault();
-                    info.toggle(d);
-                })
-                .call(svgIcon('#iD-icon-close'));
-
-            enter
-                .append('div')
-                .attr('class', function(d) { return 'panel-content panel-content-' + d; });
+  let activeIDs = new Set();
+  let wasActiveIDs = new Set();
 
 
-            // redraw the panels
-            infoPanels.selectAll('.panel-content')
-                .each(function(d) {
-                    d3_select(this).call(panels[d]);
-                });
-        }
+  function info(selection) {
 
+    function render() {
+      let panelContainer = infoPanels.selectAll('.panel-container')
+        .data(Array.from(activeIDs), d => d);
 
-        info.toggle = function(which) {
-            var activeids = ids.filter(function(k) { return active[k]; });
-
-            if (which) {  // toggle one
-                active[which] = !active[which];
-                if (activeids.length === 1 && activeids[0] === which) {  // none active anymore
-                    wasActive = [which];
-                }
-
-                context.container().select('.' + which + '-panel-toggle-item')
-                    .classed('active', active[which])
-                    .select('input')
-                    .property('checked', active[which]);
-
-            } else {      // toggle all
-                if (activeids.length) {
-                    wasActive = activeids;
-                    activeids.forEach(function(k) { active[k] = false; });
-                } else {
-                    wasActive.forEach(function(k) { active[k] = true; });
-                }
-            }
-
-            redraw();
-        };
-
-
-        var infoPanels = selection.selectAll('.info-panels')
-            .data([0]);
-
-        infoPanels = infoPanels.enter()
-            .append('div')
-            .attr('class', 'info-panels')
-            .merge(infoPanels);
-
-        redraw();
-
-        context.keybinding()
-            .on(uiCmd('⌘' + t('info_panels.key')), function(d3_event) {
-                d3_event.stopImmediatePropagation();
-                d3_event.preventDefault();
-                info.toggle();
-            });
-
-        ids.forEach(function(k) {
-            var key = t('info_panels.' + k + '.key', { default: null });
-            if (!key) return;
-            context.keybinding()
-                .on(uiCmd('⌘⇧' + key), function(d3_event) {
-                    d3_event.stopImmediatePropagation();
-                    d3_event.preventDefault();
-                    info.toggle(k);
-                });
+      panelContainer.exit()
+        .style('opacity', 1)
+        .transition()
+        .duration(200)
+        .style('opacity', 0)
+        .on('end', (d, i, nodes) => {
+          const selection = d3_select(nodes[i]);
+          panels[d].disable();
+          selection.remove();  // empty DOM
         });
+
+      let panelEnter = panelContainer.enter()
+        .append('div')
+        .attr('class', d => `fillD2 panel-container panel-container-${d}`);
+
+      panelEnter
+        .style('opacity', 0)
+        .transition()
+        .duration(200)
+        .style('opacity', 1);
+
+      let titleEnter = panelEnter
+        .append('div')
+        .attr('class', 'panel-title fillD2');
+
+      titleEnter
+        .append('h3')
+        .html(d => panels[d].label);
+
+      titleEnter
+        .append('button')
+        .attr('class', 'close')
+        .on('click', (e, d) => {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          info.toggle(d);
+        })
+        .call(svgIcon('#iD-icon-close'));
+
+      panelEnter
+        .append('div')
+        .attr('class', d => `panel-content panel-content-${d}`)
+        .each((d, i, nodes) => {
+          const selection = d3_select(nodes[i]);
+          panels[d].enable(selection);
+        });
+
+
+      // Render each panel's content
+      infoPanels.selectAll('.panel-content')
+        .each(d => panels[d].render());
     }
 
-    return info;
+
+    info.toggle = function(panelID) {
+      if (panelID) {   // toggle one
+        if (activeIDs.has(panelID)) {   // panel is active, disable it
+          activeIDs.delete(panelID);
+          if (wasActiveIDs.size > 1) {   // leave at least 1 in wasActiveIDs
+            wasActiveIDs.delete(panelID);
+          }
+        } else {                       // panel not active, enable it
+          activeIDs.add(panelID);
+          wasActiveIDs.add(panelID);
+        }
+
+      } else {      // toggle all
+        if (activeIDs.size) {   // disable all
+          activeIDs.clear();
+        } else {                // enable whatever was active before (or 'measurement')
+          if (!wasActiveIDs.size) {
+            wasActiveIDs.add('measurement');
+          }
+          activeIDs = new Set(wasActiveIDs);
+        }
+      }
+
+      // Update state of checkboxes scattered around the app in random places
+      panelIDs.forEach(id => {
+        context.container().selectAll(`.${id}-panel-toggle-item`)
+          .classed('active', activeIDs.has(id))
+          .select('input')
+          .property('checked', activeIDs.has(id));
+      });
+
+      render();
+    };
+
+
+    // Bootstrap/setup code follows
+    let infoPanels = selection.selectAll('.info-panels')
+      .data([0]);
+
+    infoPanels = infoPanels.enter()
+      .append('div')
+      .attr('class', 'info-panels')
+      .merge(infoPanels);
+
+    render();
+
+    // bind ⌘I to show/hide all panels
+    context.keybinding()
+      .on(uiCmd('⌘' + t('info_panels.key')), e => {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        info.toggle();
+      });
+
+    // bind keys to show/hide individual panels
+    panelIDs.forEach(k => {
+      const key = t(`info_panels.${k}.key`, { default: null });
+      if (!key) return;
+
+      context.keybinding()
+        .on(uiCmd('⌘⇧' + key), e => {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          info.toggle(k);
+        });
+    });
+  }
+
+  return info;
 }

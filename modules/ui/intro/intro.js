@@ -4,13 +4,11 @@ import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';
 import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
-import { coreGraph } from '../../core/graph';
-import { modeBrowse } from '../../modes/browse';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';
-import { uiCurtain } from '../curtain';
 
+import { UiCurtain } from './UiCurtain';
 import { uiIntroWelcome } from './welcome';
 import { uiIntroNavigation } from './navigation';
 import { uiIntroPoint } from './point';
@@ -76,51 +74,45 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
-    context.enter(modeBrowse(context));
+    context.enter('browse');
 
-    // Save current map state
-    let osm = context.connection();
-    let history = context.history().toJSON();
-    let hash = window.location.hash;
-    let center = context.map().center();
-    let zoom = context.map().zoom();
-    let background = context.background().baseLayerSource();
-    let overlays = context.background().overlayLayerSources();
-    let opacity = context.container().selectAll('.main-map .layer-background').style('opacity');
-    let caches = osm && osm.caches();
-    let baseEntities = context.history().graph().base().entities;
+    const osm = context.connection();
+    const imagery = context.imagery();
+    const history = context.history();
+
+    // Save current state
+    const original = {
+      hash: window.location.hash,
+      transform: context.map().transform(),
+      brightness: imagery.brightness,
+      baseLayer: imagery.baseLayerSource(),
+      overlayLayers: imagery.overlayLayerSources(),
+      historyJSON: history.toJSON()
+    };
 
     // Show sidebar and disable the sidebar resizing button
     // (this needs to be before `context.inIntro(true)`)
     context.ui().sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
 
-    // Block saving
+    // Disable saving
     context.inIntro(true);
 
-    // Load semi-real data used in intro
-    if (osm) { osm.toggle(false).reset(); }
-    context.history().reset();
-    context.history().merge(Object.values(coreGraph().load(_introGraph).entities));
-    context.history().checkpoint('initial');
+    // Disable OSM
+    if (osm) {
+      osm.toggle(false).reset();
+    }
+
+    // Load walkthrough data
+    history.reset();
+    history.merge(Object.values(_introGraph));
+    history.checkpoint('initial');
 
     // Setup imagery
-    let imagery = context.background().findSource(INTRO_IMAGERY);
-    if (imagery) {
-      context.background().baseLayerSource(imagery);
-    } else {
-      context.background().bing();
-    }
-    overlays.forEach(d => context.background().toggleOverlayLayer(d));
-
-    // Setup data layers (only OSM & ai-features)
-    let layers = context.layers();
-    layers.all().forEach(item => {
-      // if the layer has the function `enabled`
-      if (typeof item.layer.enabled === 'function') {
-        item.layer.enabled(item.id === 'osm' || item.id === 'ai-features');
-      }
-    });
+    const introSource = imagery.findSource(INTRO_IMAGERY) || imagery.findSource('Bing');
+    imagery.baseLayerSource(introSource);
+    original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+    imagery.brightness = 1;
 
     // Setup RapiD Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();
@@ -140,26 +132,22 @@ export function uiIntro(context, skipToRapid) {
 
     if (services.fbMLRoads) {
       services.fbMLRoads.toggle(false);    // disable network
-      const entities = Object.values(coreGraph().load(_rapidGraph).entities);
-      services.fbMLRoads.merge('rapid_intro_graph', entities);
+      services.fbMLRoads.merge('rapid_intro_graph', Object.values(_rapidGraph));
     }
 
-    context.container().selectAll('.main-map .layer-background').style('opacity', 1);
-
-    let curtain = uiCurtain(context.container().node());
-    selection.call(curtain);
+    const curtain = new UiCurtain(context);
+    selection.call(curtain.enable);
 
     // Store that the user started the walkthrough..
     prefs('walkthrough_started', 'yes');
 
     // Restore previous walkthrough progress..
-    let storedProgress = prefs('walkthrough_progress') || '';
+    const storedProgress = prefs('walkthrough_progress') || '';
     let progress = storedProgress.split(';').filter(Boolean);
 
     let chapters = chapterFlow.map((chapter, i) => {
-      let s = chapterUi[chapter](context, curtain.reveal)
+      let s = chapterUi[chapter](context, curtain)
         .on('done', () => {
-
           buttons
             .filter(d => d.title === s.title)
             .classed('finished', true);
@@ -177,13 +165,14 @@ export function uiIntro(context, skipToRapid) {
       return s;
     });
 
+    // When leaving walkthrough...
     chapters[chapters.length - 1].on('startEditing', () => {
       // Store walkthrough progress..
       progress.push('startEditing');
       prefs('walkthrough_progress', utilArrayUniq(progress).join(';'));
 
       // Store if walkthrough is completed..
-      let incomplete = utilArrayDifference(chapterFlow, progress);
+      const incomplete = utilArrayDifference(chapterFlow, progress);
       if (!incomplete.length) {
         prefs('walkthrough_completed', 'yes');
       }
@@ -197,19 +186,32 @@ export function uiIntro(context, skipToRapid) {
         services.fbMLRoads.toggle(true);
       }
 
-      curtain.remove();
+      curtain.disable();
       navwrap.remove();
-      context.container().selectAll('.main-map .layer-background').style('opacity', opacity);
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
-      if (osm) { osm.toggle(true).reset().caches(caches); }
-      context.history().reset().merge(Object.values(baseEntities));
-      context.background().baseLayerSource(background);
-      overlays.forEach(d => context.background().toggleOverlayLayer(d));
-      if (history) { context.history().fromJSON(history, false); }
-      context.map().centerZoom(center, zoom);
-      window.location.replace(hash);
+
+      // Restore Map State
+      imagery.baseLayerSource(original.baseLayer);
+      original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
+      imagery.brightness = original.brightness;
+      context.map().transform(original.transform);
+      window.location.replace(original.hash);
+
+      // Restore History and Edits
+      history.reset();
+      if (original.historyJSON) {
+        history.fromJSON(original.historyJSON, true);
+      }
+
+      // Enable OSM
+      if (osm) {
+        osm.toggle(true).reset();
+      }
+
+      // Enable Saving
       context.inIntro(false);
     });
+
 
     let navwrap = selection
       .append('div')
@@ -231,7 +233,7 @@ export function uiIntro(context, skipToRapid) {
       .enter()
       .append('button')
       .attr('class', (d, i) => `chapter chapter-${chapterFlow[i]}`)
-      .on('click', enterChapter);
+      .on('click', _enterChapter);
 
     buttons
       .append('span')
@@ -242,11 +244,12 @@ export function uiIntro(context, skipToRapid) {
       .attr('class', 'status')
       .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
 
-    enterChapter(null, chapters[skipToRapid ? 6 : 0]);
+    _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 
-    function enterChapter(d3_event, newChapter) {
+
+    function _enterChapter(d3_event, newChapter) {
       if (_currChapter) _currChapter.exit();
-      context.enter(modeBrowse(context));
+      context.enter('browse');
 
       _currChapter = newChapter;
       _currChapter.enter();

@@ -56,6 +56,14 @@ button.rapid-features.layer-off use {
     border-radius: 2px;
 }
 
+button.bugnub {
+    margin-right: 2px;
+}
+
+/* bug nub */
+.ideditor .icon.bugnub {
+    color: #ff26db;
+}
 
 /* UI Buttons */
 /* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
@@ -424,6 +432,16 @@ button.rapid-features.layer-off use {
     height: unset;  /* big buttons */
     padding: 10px;
 }
+.modal-splash.modal-whatsnew div.modal-actions {
+    justify-content: flex-end;
+}
+
+.modal.rapid-modal.modal-whatsnew .modal-actions > button {
+    height: 50px;
+    width:25%;
+    min-height: unset;
+}
+
 .modal.rapid-modal .modal-actions > button.whats-new-nothanks,
 .modal.rapid-modal .modal-actions > button.rapid-login-to-osm {
     background: #eee;
@@ -435,10 +453,22 @@ button.rapid-features.layer-off use {
     background: #ccc;
 }
 
-.modal.rapid-modal.modal-whatsnew img.whatsnew-image {
+.modal.rapid-modal.modal-whatsnew div.whatsnew-images {
+    display: flex;
+    justify-content: space-around;
     width: 100%;
-    margin-top: 20px;
 }
+
+.modal.rapid-modal.modal-whatsnew img.whatsnew-image {
+    max-width: 150px;
+    max-height: 150px;
+    margin-top: 20px;
+    align-items: center;
+}
+.modal.rapid-modal.modal-whatsnew img.whatsnew-image.wide {
+    max-width: 300px;
+}
+
 .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
     font-size: 16px;
     padding: 0 30px;
@@ -459,6 +489,15 @@ button.rapid-features.layer-off use {
     flex: 0 0 36px;
 }
 
+.modal.rapid-modal.modal-whatsnew div.body.modal-section {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+}
+
+.modal.rapid-modal.modal-whatsnew div.body.modal-section svg.icon.bugnub {
+color: #ff26db;
+}
 /* dark scrollbars */
 .modal.rapid-modal {
     scrollbar-width: thin;

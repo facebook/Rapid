@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { actionSplit } from '../actions/split';
-import { behaviorOperation } from '../behavior/operation';
+import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 
 
@@ -35,13 +35,17 @@ export function operationSplit(context, selectedIDs) {
 
 
     var operation = function() {
-        var difference = context.perform(_action, operation.annotation());
-        // select both the nodes and the ways so the mapper can immediately disconnect them if desired
-        var idsToSelect = _vertexIds.concat(difference.extantIDs().filter(function(id) {
-            // filter out relations that may have had member additions
-            return context.entity(id).type === 'way';
-        }));
-        context.enter(modeSelect(context, idsToSelect));
+      const difference = context.perform(_action, operation.annotation());
+      let idsToSelect = _vertexIds.slice();  // copy
+
+      // select both the nodes and the ways so the mapper can immediately disconnect them if desired
+      for (const [entityID, change] of difference.changes) {
+        const entity = change.head;
+        if (entity && entity.type === 'way') {
+          idsToSelect.push(entityID);
+        }
+      }
+      context.enter(modeSelect(context, idsToSelect));
     };
 
 
@@ -81,7 +85,7 @@ export function operationSplit(context, selectedIDs) {
     operation.id = 'split';
     operation.keys = [t('operations.split.key')];
     operation.title = t('operations.split.title');
-    operation.behavior = behaviorOperation(context).which(operation);
+    operation.behavior = new BehaviorKeyOperation(context, operation);
 
     return operation;
 }

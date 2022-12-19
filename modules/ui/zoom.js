@@ -1,6 +1,4 @@
-import {
-    select as d3_select
-} from 'd3-selection';
+import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
 import { svgIcon } from '../svg/icon';
@@ -124,6 +122,6 @@ export function uiZoom(context) {
 
         updateButtonStates();
 
-        context.map().on('move.uiZoom', updateButtonStates);
+        context.map().on('draw', updateButtonStates);
     };
 }

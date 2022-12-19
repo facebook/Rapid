@@ -1,5 +1,5 @@
-import { t } from '../core/localizer';
-import { behaviorDrawWay } from '../behavior/draw_way';
+// import { t } from '../core/localizer';
+// import { behaviorDrawWay } from '../behaviors/draw_way';
 
 
 export function modeDrawArea(context, wayID, startGraph, button) {
@@ -8,21 +8,23 @@ export function modeDrawArea(context, wayID, startGraph, button) {
         id: 'draw-area'
     };
 
-    var behavior = behaviorDrawWay(context, wayID, mode, startGraph)
-        .on('rejectedSelfIntersection.modeDrawArea', function() {
-            context.ui().flash
-                .iconName('#iD-icon-no')
-                .label(t('self_intersection.error.areas'))();
-        });
+//    var behavior = behaviorDrawWay(context, wayID, mode, startGraph)
+//        .on('rejectedSelfIntersection.modeDrawArea', function() {
+//            context.ui().flash
+//                .iconName('#iD-icon-no')
+//                .label(t('self_intersection.error.areas'))();
+//        });
 
     mode.wayID = wayID;
 
     mode.enter = function() {
-        context.install(behavior);
+      context.enableBehaviors(['hover', 'select', 'map-interaction']);
+      // context.install(behavior);
+      return true;
     };
 
     mode.exit = function() {
-        context.uninstall(behavior);
+        // context.uninstall(behavior);
     };
 
     mode.selectedIDs = function() {
@@ -30,7 +32,7 @@ export function modeDrawArea(context, wayID, startGraph, button) {
     };
 
     mode.activeID = function() {
-        return (behavior && behavior.activeID()) || [];
+        // return (behavior && behavior.activeID()) || [];
     };
 
     return mode;

@@ -1,5 +1,5 @@
-import { t } from '../core/localizer';
-import { behaviorDrawWay } from '../behavior/draw_way';
+// import { t } from '../core/localizer';
+// import { behaviorDrawWay } from '../behaviors/draw_way';
 
 
 export function modeDrawLine(context, wayID, startGraph, button, affix, continuing) {
@@ -8,26 +8,27 @@ export function modeDrawLine(context, wayID, startGraph, button, affix, continui
         id: 'draw-line'
     };
 
-    var behavior = behaviorDrawWay(context, wayID, mode, startGraph)
-        .on('rejectedSelfIntersection.modeDrawLine', function() {
-            context.ui().flash
-                .iconName('#iD-icon-no')
-                .label(t('self_intersection.error.lines'))();
-        });
-
+//    var behavior = behaviorDrawWay(context, wayID, mode, startGraph)
+//        .on('rejectedSelfIntersection.modeDrawLine', function() {
+//            context.ui().flash
+//                .iconName('#iD-icon-no')
+//                .label(t('self_intersection.error.lines'))();
+//        });
+//
     mode.wayID = wayID;
 
     mode.isContinuing = continuing;
 
     mode.enter = function() {
-        behavior
-            .nodeIndex(affix === 'prefix' ? 0 : undefined);
-
-        context.install(behavior);
+      context.enableBehaviors(['hover', 'select', 'map-interaction']);
+      // behavior
+      //   .nodeIndex(affix === 'prefix' ? 0 : undefined);
+      // context.install(behavior);
+      return true;
     };
 
     mode.exit = function() {
-        context.uninstall(behavior);
+        // context.uninstall(behavior);
     };
 
     mode.selectedIDs = function() {
@@ -35,7 +36,7 @@ export function modeDrawLine(context, wayID, startGraph, button, affix, continui
     };
 
     mode.activeID = function() {
-        return (behavior && behavior.activeID()) || [];
+        // return (behavior && behavior.activeID()) || [];
     };
 
     return mode;

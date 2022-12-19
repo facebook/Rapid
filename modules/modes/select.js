@@ -1,27 +1,18 @@
 import { select as d3_select } from 'd3-selection';
-import { geoMetersToLat, geoMetersToLon  } from '@id-sdk/math';
 import {
     utilArrayIntersection, utilArrayUnion, utilDeepMemberSelector,
-    utilEntityOrDeepMemberSelector, utilEntitySelector, utilGetAllNodes
+    utilEntityOrDeepMemberSelector, utilEntitySelector
 } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
-import { locationManager } from '../core/locations';
+import { locationManager } from '../core/LocationManager';
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionDeleteRelation } from '../actions/delete_relation';
-import { actionMove } from '../actions/move';
-import { actionScale } from '../actions/scale';
-import { behaviorBreathe } from '../behavior/breathe';
-import { behaviorHover } from '../behavior/hover';
-import { behaviorLasso } from '../behavior/lasso';
-import { behaviorPaste } from '../behavior/paste';
-import { behaviorSelect } from '../behavior/select';
-import { operationMove } from '../operations/move';
-import { prefs } from '../core/preferences';
+//import { behaviorLasso } from '../behaviors/lasso';
+//import { BehaviorHover } from '../behaviors/BehaviorHover';
+//import { BehaviorPaste } from '../behaviors/BehaviorPaste';
+//import { BehaviorSelect } from '../behaviors/BehaviorSelect';
 import { geoChooseEdge } from '../geo';
-import { modeBrowse } from './browse';
-import { modeDragNode } from './drag_node';
-import { modeDragNote } from './drag_note';
 import { osmNode, osmWay } from '../osm';
 import * as Operations from '../operations/index';
 import { uiCmd } from '../ui/cmd';
@@ -36,10 +27,8 @@ export function modeSelect(context, selectedIDs) {
 
     var keybinding = utilKeybinding('select');
 
-    var _breatheBehavior = behaviorBreathe(context);
-    var _modeDragNode = modeDragNode(context);
-    var _selectBehavior;
-    var _behaviors = [];
+    // var _selectBehavior;
+    // var _behaviors = [];
 
     var _operations = [];
     var _newFeature = false;
@@ -76,7 +65,7 @@ export function modeSelect(context, selectedIDs) {
         }
 
         if (!ids.length) {
-            context.enter(modeBrowse(context));
+            context.enter('browse');
             return false;
         } else if ((selectedIDs.length > 1 && ids.length === 1) || (selectedIDs.length === 1 && ids.length > 1)) {
             // switch between single- and multi-select UI
@@ -180,11 +169,14 @@ export function modeSelect(context, selectedIDs) {
     };
 
 
-    mode.selectBehavior = function(val) {
-        if (!arguments.length) return _selectBehavior;
-        _selectBehavior = val;
-        return mode;
+    mode.selectBehavior = () =>  {
+      console.error('error: do not call modeSelect.selectBehavior anymore'); // eslint-disable-line no-console
     };
+    // mode.selectBehavior = function(val) {
+    //     if (!arguments.length) return _selectBehavior;
+    //     _selectBehavior = val;
+    //     return mode;
+    // };
 
 
     mode.follow = function(val) {
@@ -193,34 +185,33 @@ export function modeSelect(context, selectedIDs) {
         return mode;
     };
 
+
     function loadOperations() {
+      _operations.forEach(o => {
+        if (o.behavior) {
+          o.behavior.disable();
+        }
+      });
 
-        _operations.forEach(function(operation) {
-            if (operation.behavior) {
-                context.uninstall(operation.behavior);
-            }
-        });
+      _operations = Object.values(Operations)
+        .map(o => o(context, selectedIDs))
+        .filter(o => (o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'))
+        .concat([
+            // group copy/downgrade/delete operation together at the end of the list
+            Operations.operationCopy(context, selectedIDs),
+            Operations.operationDowngrade(context, selectedIDs),
+            Operations.operationDelete(context, selectedIDs)
+          ])
+        .filter(o => o.available());
 
-        _operations = Object.values(Operations)
-            .map(function(o) { return o(context, selectedIDs); })
-            .filter(function(o) { return o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'; })
-            .concat([
-                // group copy/downgrade/delete operation together at the end of the list
-                Operations.operationCopy(context, selectedIDs),
-                Operations.operationDowngrade(context, selectedIDs),
-                Operations.operationDelete(context, selectedIDs)
-            ]).filter(function(operation) {
-                return operation.available();
-            });
+      _operations.forEach(o => {
+        if (o.behavior) {
+          o.behavior.enable();
+        }
+      });
 
-        _operations.forEach(function(operation) {
-            if (operation.behavior) {
-                context.install(operation.behavior);
-            }
-        });
-
-        // remove any displayed menu
-        context.ui().closeEditMenu();
+      // remove any displayed menu
+      context.ui().closeEditMenu();
     }
 
     mode.operations = function() {
@@ -229,28 +220,12 @@ export function modeSelect(context, selectedIDs) {
 
 
     mode.enter = function() {
-        if (!checkSelectedIDs()) return;
+        if (!checkSelectedIDs()) return false;
 
         context.features().forceVisible(selectedIDs);
-
-        _modeDragNode.restoreSelectedIDs(selectedIDs);
-
         loadOperations();
 
-        if (!_behaviors.length) {
-            if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
-
-            _behaviors = [
-                behaviorPaste(context),
-                _breatheBehavior,
-                behaviorHover(context).on('hover', context.ui().sidebar.hoverModeSelect),
-                _selectBehavior,
-                behaviorLasso(context),
-                _modeDragNode.behavior,
-                modeDragNote(context).behavior
-            ];
-        }
-        _behaviors.forEach(context.install);
+        context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction']);
 
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -258,18 +233,6 @@ export function modeSelect(context, selectedIDs) {
             .on([']', 'pgdown'], nextVertex)
             .on(['{', uiCmd('⌘['), 'home'], firstVertex)
             .on(['}', uiCmd('⌘]'), 'end'], lastVertex)
-            .on(uiCmd('⇧←'), nudgeSelection([-10, 0]))
-            .on(uiCmd('⇧↑'), nudgeSelection([0, -10]))
-            .on(uiCmd('⇧→'), nudgeSelection([10, 0]))
-            .on(uiCmd('⇧↓'), nudgeSelection([0, 10]))
-            .on(uiCmd('⇧⌥←'), nudgeSelection([-100, 0]))
-            .on(uiCmd('⇧⌥↑'), nudgeSelection([0, -100]))
-            .on(uiCmd('⇧⌥→'), nudgeSelection([100, 0]))
-            .on(uiCmd('⇧⌥↓'), nudgeSelection([0, 100]))
-            .on(utilKeybinding.plusKeys.map((key) => uiCmd('⇧' + key)), scaleSelection(1.05))
-            .on(utilKeybinding.plusKeys.map((key) => uiCmd('⇧⌥' + key)), scaleSelection(Math.pow(1.05, 5)))
-            .on(utilKeybinding.minusKeys.map((key) => uiCmd('⇧' + key)), scaleSelection(1/1.05))
-            .on(utilKeybinding.minusKeys.map((key) => uiCmd('⇧⌥' + key)), scaleSelection(1/Math.pow(1.05, 5)))
             .on(['\\', 'pause'], focusNextParent)
             .on(uiCmd('⌘↑'), selectParent)
             .on(uiCmd('⌘↓'), selectChild)
@@ -283,25 +246,16 @@ export function modeSelect(context, selectedIDs) {
 
         context.history()
             .on('change.select', function() {
-                loadOperations();
                 // reselect after change in case relation members were removed or added
                 selectElements();
             })
             .on('undone.select', checkSelectedIDs)
             .on('redone.select', checkSelectedIDs);
 
-        context.map()
-            .on('drawn.select', selectElements)
-            .on('crossEditableZoom.select', function() {
-                selectElements();
-                _breatheBehavior.restartIfNeeded(context.surface());
-            });
+//        context.map()
+//            .on('drawn.select', selectElements);
 
-        context.map().doubleUpHandler()
-            .on('doubleUp.modeSelect', didDoubleUp);
-
-
-        selectElements();
+//        selectElements();
 
         if (_follow) {
             var extent = utilTotalExtent(selectedIDs, context.graph());
@@ -311,131 +265,34 @@ export function modeSelect(context, selectedIDs) {
             _follow = false;
         }
 
+        return true;
 
-        function nudgeSelection(delta) {
-            return function() {
-                // prevent nudging during low zoom selection
-                if (!context.map().withinEditableZoom()) return;
-
-                var moveOp = operationMove(context, selectedIDs);
-                if (moveOp.disabled()) {
-                    context.ui().flash
-                        .duration(4000)
-                        .iconName('#iD-operation-' + moveOp.id)
-                        .iconClass('operation disabled')
-                        .label(moveOp.tooltip)();
-                } else {
-                    context.perform(actionMove(selectedIDs, delta, context.projection), moveOp.annotation());
-                    context.validator().validate();
-                }
-            };
-        }
-
-        function scaleSelection(factor) {
-            return function() {
-                // prevent scaling during low zoom selection
-                if (!context.map().withinEditableZoom()) return;
-
-                let nodes = utilGetAllNodes(selectedIDs, context.graph());
-
-                let isUp = factor > 1;
-
-                // can only scale if multiple nodes are selected
-                if (nodes.length <= 1) return;
-
-                let extent = utilTotalExtent(selectedIDs, context.graph());
-
-                // These disabled checks would normally be handled by an operation
-                // object, but we don't want an actual scale operation at this point.
-                function scalingDisabled() {
-                    const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-
-                    if (tooSmall()) {
-                        return 'too_small';
-                    } else if (!allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8) {
-                        return 'too_large';
-                    } else if (someMissing() || selectedIDs.some(incompleteRelation)) {
-                        return 'not_downloaded';
-                    } else if (selectedIDs.some(context.hasHiddenConnections)) {
-                        return 'connected_to_hidden';
-                    }
-
-                    return false;
-
-                    function tooSmall() {
-                        if (isUp) return false;
-                        let dLon = Math.abs(extent.max[0] - extent.min[0]);
-                        let dLat = Math.abs(extent.max[1] - extent.min[1]);
-                        return dLon < geoMetersToLon(1, extent.max[1]) &&
-                            dLat < geoMetersToLat(1);
-                    }
-
-                    function someMissing() {
-                        if (context.inIntro()) return false;
-                        let osm = context.connection();
-                        if (osm) {
-                            let missing = nodes.filter(function(n) { return !osm.isDataLoaded(n.loc); });
-                            if (missing.length) {
-                                missing.forEach(function(loc) { context.loadTileAtLoc(loc); });
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    function incompleteRelation(id) {
-                        let entity = context.entity(id);
-                        return entity.type === 'relation' && !entity.isComplete(context.graph());
-                    }
-                }
-
-                const disabled = scalingDisabled();
-
-                if (disabled) {
-                    let multi = (selectedIDs.length === 1 ? 'single' : 'multiple');
-                    context.ui().flash
-                        .duration(4000)
-                        .iconName('#iD-icon-no')
-                        .iconClass('operation disabled')
-                        .label(t('operations.scale.' + disabled + '.' + multi))();
-                } else {
-                    const pivot = context.projection(extent.center());
-                    const annotation = t('operations.scale.annotation.' + (isUp ? 'up' : 'down') + '.feature', { n: selectedIDs.length });
-                    context.perform(actionScale(selectedIDs, pivot, factor, context.projection), annotation);
-                    context.validator().validate();
-                }
-            };
-        }
-
-
-        function didDoubleUp(d3_event, loc) {
-            if (!context.map().withinEditableZoom()) return;
-
-            var target = d3_select(d3_event.target);
-
-            var datum = target.datum();
-            var entity = datum && datum.properties && datum.properties.entity;
-            if (!entity) return;
-
-            if (entity instanceof osmWay && target.classed('target')) {
-                var choice = geoChooseEdge(context.graph().childNodes(entity), loc, context.projection);
-                var prev = entity.nodes[choice.index - 1];
-                var next = entity.nodes[choice.index];
-
-                context.perform(
-                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
-                    t('operations.add.annotation.vertex')
-                );
-                context.validator().validate();
-
-            } else if (entity.type === 'midpoint') {
-                context.perform(
-                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
-                    t('operations.add.annotation.vertex')
-                );
-                context.validator().validate();
-            }
-        }
+//        function didDoubleUp(d3_event, loc) {
+//            var target = d3_select(d3_event.target);
+//
+//            var datum = target.datum();
+//            var entity = datum && datum.properties && datum.properties.entity;
+//            if (!entity) return;
+//
+//            if (entity instanceof osmWay && target.classed('target')) {
+//                var choice = geoChooseEdge(context.graph().childNodes(entity), loc, context.projection);
+//                var prev = entity.nodes[choice.index - 1];
+//                var next = entity.nodes[choice.index];
+//
+//                context.perform(
+//                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
+//                    t('operations.add.annotation.vertex')
+//                );
+//                context.validator().validate();
+//
+//            } else if (entity.type === 'midpoint') {
+//                context.perform(
+//                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
+//                    t('operations.add.annotation.vertex')
+//                );
+//                context.validator().validate();
+//            }
+//        }
 
 
         function selectElements() {
@@ -459,7 +316,7 @@ export function modeSelect(context, selectedIDs) {
                     .classed('related', true);
             }
 
-            if (context.map().withinEditableZoom()) {
+            // if (context.map().withinEditableZoom()) {
                 // Apply selection styling if not in wide selection
 
                 surface
@@ -468,14 +325,14 @@ export function modeSelect(context, selectedIDs) {
                 surface
                     .selectAll(utilEntityOrDeepMemberSelector(selectedIDs, context.graph()))
                     .classed('selected', true);
-            }
+            // }
 
         }
 
 
         function esc() {
             if (context.container().select('.combobox').size()) return;
-            context.enter(modeBrowse(context));
+            context.enter('browse');
         }
 
 
@@ -635,14 +492,15 @@ export function modeSelect(context, selectedIDs) {
 
         _focusedVertexIds = null;
 
-        _operations.forEach(function(operation) {
-            if (operation.behavior) {
-                context.uninstall(operation.behavior);
-            }
+        _operations.forEach(o => {
+          if (o.behavior) {
+            o.behavior.disable();
+          }
         });
         _operations = [];
 
-        _behaviors.forEach(context.uninstall);
+
+        // _behaviors.forEach(context.uninstall);
 
         d3_select(document)
             .call(keybinding.unbind);
@@ -672,7 +530,7 @@ export function modeSelect(context, selectedIDs) {
             .selectAll('.related')
             .classed('related', false);
 
-        context.map().on('drawn.select', null);
+//        context.map().on('drawn.select', null);
         context.ui().sidebar.hide();
         context.features().forceVisible([]);
 

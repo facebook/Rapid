@@ -36,6 +36,194 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.0.0-alpha3.3]
+
+#### 2022-Dec-14
+
+#### :tada: Numerous drawing/node-snapping fixes
+
+We've ironed out a bunch of kinks in your way (ha!) that were preventing snapping, causing excess flickering, and just generally making it weird to interact with shapes on the map.
+
+### Bugfixes:
+* [#689] Fixed snapping during the 'add point' operation.
+* [#635] Multi-select should now properly draw selection halos around EVERY selected item, not just the first.
+* [#664] Hovering over a way should now show its vertices, not just the endpoint/interesting ones.
+* [#718] Area drawing can now correctly snap the drawing area's points into existing ways.
+* [#702] Rejoice, for you can now drag nodes in a way on top of each other to make them disappear!
+* [#691] Adding nodes at the end of a line should now allow you to snap to existing lines and areas.
+
+* [#703], [#704], [#705], [#706], and [#707] were all fixed by last week's [#682] fix.
+* [#709] Removed the keyboard shortcut help text for the 'scale' and 'nudge' operations, as those have been removed.
+* [#717] Restored the tooltip text for the area drawing mode- it incorrectly said 'not implemented'.
+* [#720] Selecting an area should now display midpoints that are draggable.
+
+[#689]: https://github.com/facebook/RapiD/issues/689
+[#635]: https://github.com/facebook/RapiD/issues/635
+[#664]: https://github.com/facebook/RapiD/issues/664
+[#718]: https://github.com/facebook/RapiD/issues/718
+[#702]: https://github.com/facebook/RapiD/issues/702
+[#619]: https://github.com/facebook/RapiD/issues/619
+[#703]: https://github.com/facebook/RapiD/issues/703
+[#704]: https://github.com/facebook/RapiD/issues/704
+[#705]: https://github.com/facebook/RapiD/issues/705
+[#706]: https://github.com/facebook/RapiD/issues/706
+[#707]: https://github.com/facebook/RapiD/issues/707
+[#708]: https://github.com/facebook/RapiD/issues/708
+[#709]: https://github.com/facebook/RapiD/issues/709
+[#717]: https://github.com/facebook/RapiD/issues/717
+[#720]: https://github.com/facebook/RapiD/issues/720
+# [2.0.0-alpha3.2]
+
+#### 2022-Dec-08
+
+#### :tada: Square, Circularize, and related fixes
+
+We've been hot on the trail of fixing issues with many different edit operations- our renderer wasn't picking them up properly and was therefore displaying the wrong shapes under certain conditions. Rotation, Move, Circularize, and Square operations were all affected. They should be working fine now.
+
+### Bugfixes:
+* [#682], [#683] and [#693] Square operation should be working correctly now.
+* [#665] Ghost ways should no longer appear.
+
+# [2.0.0-alpha3.1]
+[#682]: https://github.com/facebook/RapiD/issues/682
+[#683]: https://github.com/facebook/RapiD/issues/683
+[#693]: https://github.com/facebook/RapiD/issues/693
+
+#### 2022-Dec-07
+This is a small refresher release to address a few issues reported by internal testers. Keep those bugs coming!
+
+#### :tada: New code- Graph and history rewrite optimization
+
+This version of the alpha has rewritten substantial portions of our core code. This rewrite was to help solve issues like #665 where 'ghost' nodes or ways are present on the map. This fix is still in flight and not complete yet.
+### Bugfixes:
+* [#685] Fixed the color for mapillary image pins.
+* [#684] Quickly left-then-right clicking a way should now bring up the context menu, NOT add a point to the way.
+* [#699] Privacy Policy link and text have been updated from iD to Map with AI.
+* [#695] Cmd-V to paste features should now work once again.
+* [#681] Area Drawing mode should now render all vertices of the area during the draw.
+* [#687] The map can now be nudged (skootched?) during draw gestures by moving the pointer near the side of the map.
+
+[#685]: https://github.com/facebook/RapiD/issues/685
+[#684]: https://github.com/facebook/RapiD/issues/684
+[#699]: https://github.com/facebook/RapiD/issues/699
+[#695]: https://github.com/facebook/RapiD/issues/695
+[#681]: https://github.com/facebook/RapiD/issues/681
+[#687]: https://github.com/facebook/RapiD/issues/687
+[#665]: https://github.com/facebook/RapiD/issues/665
+# [2.0.0-alpha3]
+
+#### 2022-Nov-21
+
+#### :tada: New Features, Updates, and Improvements
+We have some new area labelling to show off! Areas now get an icon/label associated with them drawn at the 'pole of inaccessibility'.
+
+We have completely rewritten the code that associates an OSM shape with its constituent renderable pixi shapes- allowing us to detect hovers over an area's border, fill, etc. This improves snapping, hovering, and map interactions in general.
+
+All drawing modes are now available and should work well (We do expect some bugs at this point still).
+
+Wireframe mode (w) is back [#497], as well as the feature filtering [#584] for OSM features!
+
+We've substantially reduced the bundle size by rebuilding some dependent projects with pixi v7 [#492], [#632]
+* [#617] Code is now based off Pixi.v7.
+* [#502] The walkthrough has been restored!
+* [#499] All draw modes should now be working & available. Hooray!
+* [#531] Lasso drawing to select OSM Nodes is back!
+* [#538] Way midpoints now render and are interactive (double click, click-to-drag)
+* [#652] double-clicking on a way (or at a midpoint) should now add a node to the way.
+
+
+### Bugfixes:
+* [#493] We've set webGL2 as the preferred method of starting up and haven't seen this issue since.
+* [#495] Not a bug, actually- this was just an 'area-fill' issue before we had partials.
+* [#518] Double-clicking to finish a way no longer zooms the map.
+* [#519] Area drawing mode should work once again.
+* [#521] The 'Notes' layer, hotkeys, and editing should work once again.
+* [#524] Fixed a bug with way moving causing exceptions in rare cases.
+* [#529] Right-clicking an empty part of the map should correctly show the 'paste' option.
+* [#554] Continuing a line should work once again ('a' hotkey)
+* [#555] No more auto-zoom after drawing a feature.
+* [#556], [#569] Fixed a bug that caused keyboard/mouse events to get eaten after exiting a drawing mode.
+* [#558] Fixed a bug with history / state annotations causing too many undo states during line drawing.
+* [#561], [#660] Lines should now be closeable when drawing.
+* [#562] Copy and Paste should now work correctly.
+* [#563] Adding nodes to existing lines should work again in all browsers.
+* [#565] Verified that Black-screen problems during data validation no longer occur.
+* [#566] users should now be able to add nodes to the lines and area features.
+* [#571] Fix a bug that was preventing ESRI buildings from conflating properly.
+* [#572] Snapping to ways that are already on the map should be back to normal.
+* [#580], [#581], and [#582] Added new templates for bug submissions!
+* [#586] Area add button is now available, the mode is implemented!
+* [#608] The preset picker dialog in the sidebar now correctly opens when the user adds a new untagged feature to the map.
+* [#609] Various history fixes have been made to the line and area drawing modes, undo/redo should do the correct things to the change stack now.
+* [#620] Fixed the 'destroy' calls for pixi v7 and bitmap text labels, freeing up more memory.
+* [#627] Loading notes no longer causes a stack trace
+* [#629] Fixed resource loading of textures during tests, also sped up resource loads of spritesheets by making the load promises parallel.
+* [#630] Fixed many, many unit tests to go along with all these fixes/changes.
+* [#637] Adding notes should now work.
+* [#639] Fix the 'a' hotkey for adding to a line.
+* [#646] FIxed a bug where clicking to snap to an area while hovering the fill caused a stack trace.
+* [#648] Fixed a hover/snapping bug that prevented features from attaching to other features mid-draw.
+* [#654] Fixed a bug with right-clicking on multiselections
+* [#661] Cursors should properly update when transitioning in & out of modes.
+* [#670] Double-clicking on a pre-existing node during way-drawing should leave the history in the correct state (with no 'extra' states to undo)
+
+[#497]: https://github.com/facebook/RapiD/issues/497
+[#584]: https://github.com/facebook/RapiD/issues/584
+[#492]: https://github.com/facebook/RapiD/issues/492
+[#632]: https://github.com/facebook/RapiD/issues/632
+
+[#617]: https://github.com/facebook/RapiD/issues/617
+[#502]: https://github.com/facebook/RapiD/issues/502
+[#499]: https://github.com/facebook/RapiD/issues/499
+[#531]: https://github.com/facebook/RapiD/issues/531
+[#538]: https://github.com/facebook/RapiD/issues/538
+[#652]: https://github.com/facebook/RapiD/issues/652
+[#493]: https://github.com/facebook/RapiD/issues/493
+[#495]: https://github.com/facebook/RapiD/issues/495
+[#518]: https://github.com/facebook/RapiD/issues/518
+[#519]: https://github.com/facebook/RapiD/issues/519
+[#521]: https://github.com/facebook/RapiD/issues/521
+[#524]: https://github.com/facebook/RapiD/issues/524
+[#529]: https://github.com/facebook/RapiD/issues/529
+[#554]: https://github.com/facebook/RapiD/issues/554
+[#555]: https://github.com/facebook/RapiD/issues/555
+[#556]: https://github.com/facebook/RapiD/issues/556
+[#558]: https://github.com/facebook/RapiD/issues/558
+[#561]: https://github.com/facebook/RapiD/issues/561
+[#562]: https://github.com/facebook/RapiD/issues/562
+[#563]: https://github.com/facebook/RapiD/issues/563
+[#565]: https://github.com/facebook/RapiD/issues/565
+[#566]: https://github.com/facebook/RapiD/issues/566
+[#571]: https://github.com/facebook/RapiD/issues/571
+[#572]: https://github.com/facebook/RapiD/issues/572
+[#580]: https://github.com/facebook/RapiD/issues/580
+[#581]: https://github.com/facebook/RapiD/issues/581
+[#582]: https://github.com/facebook/RapiD/issues/582
+[#586]: https://github.com/facebook/RapiD/issues/586
+[#608]: https://github.com/facebook/RapiD/issues/608
+[#609]: https://github.com/facebook/RapiD/issues/609
+[#620]: https://github.com/facebook/RapiD/issues/620
+[#627]: https://github.com/facebook/RapiD/issues/627
+[#629]: https://github.com/facebook/RapiD/issues/629
+[#630]: https://github.com/facebook/RapiD/issues/630
+[#637]: https://github.com/facebook/RapiD/issues/637
+[#639]: https://github.com/facebook/RapiD/issues/639
+[#646]: https://github.com/facebook/RapiD/issues/646
+[#648]: https://github.com/facebook/RapiD/issues/648
+[#654]: https://github.com/facebook/RapiD/issues/654
+[#661]: https://github.com/facebook/RapiD/issues/661
+[#670]: https://github.com/facebook/RapiD/issues/670
+
+# [2.0.1-alpha]
+
+#### 2022-Aug-30
+
+
+### Bugfixes:
+
+[#571]
+[#569]
+[#555]
 
 # [1.1.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.9)
 ##### 2022-May-05

@@ -1,6 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { json as d3_json } from 'd3-fetch';
+import { Assets } from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
+import { Projection, geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
@@ -12,17 +13,36 @@ import { prefs } from './preferences';
 import { coreHistory } from './history';
 import { coreValidator } from './validator';
 import { coreUploader } from './uploader';
-import { geoRawMercator } from '../geo/raw_mercator';
-import { modeSelect } from '../modes/select';
+
+import { BehaviorDrag } from '../behaviors/BehaviorDrag';
+import { BehaviorDraw } from '../behaviors/BehaviorDraw';
+import { BehaviorHover } from '../behaviors/BehaviorHover';
+import { BehaviorLasso } from '../behaviors/BehaviorLasso';
+import { BehaviorMapInteraction } from '../behaviors/BehaviorMapInteraction';
+import { BehaviorMapNudging } from '../behaviors/BehaviorMapNudging';
+import { BehaviorPaste } from '../behaviors/BehaviorPaste';
+import { BehaviorSelect } from '../behaviors/BehaviorSelect';
+
+import { ModeAddNote } from '../modes/ModeAddNote';
+import { ModeAddPoint } from '../modes/ModeAddPoint';
+import { ModeBrowse } from '../modes/ModeBrowse';
+import { ModeDragNode } from '../modes/ModeDragNode';
+import { ModeDrawArea } from '../modes/ModeDrawArea';
+import { ModeDrawLine } from '../modes/ModeDrawLine';
+import { ModeSave } from '../modes/ModeSave';
+import { ModeSelect } from '../modes/ModeSelect';  // new
+import { modeSelect } from '../modes/select';      // legacy
+
 import { presetManager } from '../presets';
-import { rendererBackground, rendererFeatures, rendererMap, rendererPhotos } from '../renderer';
+import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
 import { services } from '../services';
 import { uiInit } from '../ui/init';
 import { utilKeybinding, utilRebind } from '../util';
 
+let _loadedImages = false;
 
 export function coreContext() {
-  const dispatch = d3_dispatch('enter', 'exit', 'change');
+  const dispatch = d3_dispatch('enter', 'exit');
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
@@ -79,7 +99,9 @@ export function coreContext() {
   /* User interface and keybinding */
   let _ui;
   context.ui = () => _ui;
-  context.lastPointerType = () => _ui.lastPointerType();
+  // AFAICT this is just used to localize the intro? for now - instead get this from pixi?
+  // context.lastPointerType = () => _ui.lastPointerType();
+  context.lastPointerType = () => 'mouse';
 
   let _keybinding = utilKeybinding('context');
   context.keybinding = () => _keybinding;
@@ -115,7 +137,7 @@ export function coreContext() {
   };
 
 
-  // A string or array or locale codes to prefer over the browser's settings
+  // A String or Array of locale codes to prefer over the browser's settings
   context.locale = function(locale) {
     if (!arguments.length) return localizer.localeCode();
     localizer.preferredLocaleCodes(locale);
@@ -144,7 +166,7 @@ export function coreContext() {
         return;
 
       } else {
-        _history.merge(result.data, result.extent);
+        _history.merge(result.data, result.seenIDs);
         if (typeof callback === 'function') {
           callback(err, result);
         }
@@ -155,9 +177,21 @@ export function coreContext() {
 
 
   context.loadTiles = (projection, callback) => {
+    const MINZOOM = 15;
+    const TILESIZE = 256;
+
+    const z = geoScaleToZoom(projection.scale(), TILESIZE);
+    if (z < MINZOOM) return;  // this would fire off too many API requests
+
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
-      if (_connection && context.editableDataEnabled()) {
+
+      // `projection` may have changed in the time it took to requestIdleCallback!
+      // Double-check that user hasn't zoomed out more in that time.
+      const z = geoScaleToZoom(projection.scale(), TILESIZE);
+      if (z < MINZOOM) return;  // this would fire off too many API requests
+
+      if (_connection && context.editable()) {
         const cid = _connection.getConnectionId();
         _connection.loadTiles(projection, afterLoad(cid, callback));
       }
@@ -168,7 +202,7 @@ export function coreContext() {
   context.loadTileAtLoc = (loc, callback) => {
     const handle = window.requestIdleCallback(() => {
       _deferred.delete(handle);
-      if (_connection && context.editableDataEnabled()) {
+      if (_connection && context.editable()) {
         const cid = _connection.getConnectionId();
         _connection.loadTileAtLoc(loc, afterLoad(cid, callback));
       }
@@ -187,42 +221,28 @@ export function coreContext() {
   };
 
   context.zoomToEntity = (entityID, zoomTo) => {
+    let entity = context.hasEntity(entityID);
 
-    // be sure to load the entity even if we're not going to zoom to it
-    context.loadEntity(entityID, (err, result) => {
-      if (err) return;
-      if (zoomTo !== false) {
-          const entity = result.data.find(e => e.id === entityID);
-          if (entity) {
-            _map.zoomTo(entity);
-          }
-      }
-    });
-
-    _map.on('drawn.zoomToEntity', () => {
-      if (!context.hasEntity(entityID)) return;
-      _map.on('drawn.zoomToEntity', null);
-      context.on('enter.zoomToEntity', null);
+    if (entity) {   // have it already
       context.enter(modeSelect(context, [entityID]));
-    });
-
-    context.on('enter.zoomToEntity', () => {
-      if (_mode.id !== 'browse') {
-        _map.on('drawn.zoomToEntity', null);
-        context.on('enter.zoomToEntity', null);
+      if (zoomTo !== false) {
+        _map.zoomTo(entity);
       }
-    });
+
+    } else {   // need to load it first
+      context.loadEntity(entityID, (err, result) => {
+        if (err) return;
+        const entity = result.data.find(e => e.id === entityID);
+        if (!entity) return;
+
+        context.enter(modeSelect(context, [entityID]));
+        if (zoomTo !== false) {
+          _map.zoomTo(entity);
+        }
+      });
+    }
   };
 
-  let _minEditableZoom = 16;
-  context.minEditableZoom = function(val) {
-    if (!arguments.length) return _minEditableZoom;
-    _minEditableZoom = val;
-    if (_connection) {
-      _connection.tileZoom(val);
-    }
-    return context;
-  };
 
   // String length limits in Unicode characters, not JavaScript UTF-16 code units
   context.maxCharsForTagKey = () => 255;
@@ -260,13 +280,13 @@ export function coreContext() {
   };
 
   // Immediately save the user's history to localstorage, if possible
-  // This is called someteimes, but also on the `window.onbeforeunload` handler
+  // This is called sometimes, but also on the `window.onbeforeunload` handler
   context.save = () => {
     // no history save, no message onbeforeunload
     if (_inIntro || context.container().select('.modal').size()) return;
 
     let canSave;
-    if (_mode && _mode.id === 'save') {
+    if (context._currMode && context._currMode.id === 'save') {
       canSave = false;
 
       // Attempt to prevent user from creating duplicate changes - see #5200
@@ -309,41 +329,184 @@ export function coreContext() {
 
 
   /* Modes */
-  let _mode;
-  context.mode = () => _mode;
-  context.enter = (newMode) => {
-    if (_mode) {
-      _mode.exit();
-      dispatch.call('exit', this, _mode);
+  // "Modes" are editing tasks that the user are allowed to perform.
+  // Each mode is exclusive, i.e only one mode can be active at a time.
+  context.modes = new Map();  // Map (mode.id -> mode)
+
+  // The current mode (`null` until ui.render initializes the map and enters browse mode)
+  context._currMode = null;
+  context.mode = () => context._currMode;
+
+  /**
+   * `enter`
+   * Enters the given mode, with an optional bunch of features selected.
+   * If the mode could not be entered for whatever reason, falls back to entering browse mode.
+   *
+   * @param   `modeOrModeID`  `Object` or `String` identifying the mode to enter
+   * @param   `options`        Optional `Object` of options passed to the new mode
+   * @return  The mode that got entered
+   */
+  context.enter = (modeOrModeID, options) => {
+    const currMode = context._currMode;
+    let newMode;
+
+    if (typeof modeOrModeID === 'string') {
+      newMode = context.modes.get(modeOrModeID);
+    } else {
+      newMode = modeOrModeID;
+    }
+    if (!newMode) {
+      console.error(`context.enter: no such mode: ${modeOrModeID}`);  // eslint-disable-line no-console
+      newMode = context.modes.get('browse');  // fallback
     }
 
-    _mode = newMode;
-    _mode.enter();
-    dispatch.call('enter', this, _mode);
+    // Exit current mode, if any
+    if (currMode) {
+      currMode.exit();
+      _container.classed(`mode-${currMode.id}`, false);
+      dispatch.call('exit', this, currMode);
+    }
+
+    // Try to enter the new mode, fallback to 'browse' mode
+    context._currMode = newMode;
+    const didEnter = context._currMode.enter(options);
+    if (!didEnter) {
+      context._currMode = context.modes.get('browse');
+      context._currMode.enter();
+    }
+    _container.classed(`mode-${context._currMode.id}`, true);
+    dispatch.call('enter', this, context._currMode);
+    return context._currMode;
   };
 
-  context.selectedIDs = () => (_mode && _mode.selectedIDs && _mode.selectedIDs()) || [];
-  context.activeID = () => _mode && _mode.activeID && _mode.activeID();
-
-  let _selectedNoteID;
-  context.selectedNoteID = function(noteID) {
-    if (!arguments.length) return _selectedNoteID;
-    _selectedNoteID = noteID;
-    return context;
+  /**
+   * `selectedData`
+   * Returns a Map containing the current selected features.  It can contain
+   * multiple items of various types (e.g. some OSM data, some RapiD data etc)
+   *
+   * @return  The current selected features, as a `Map(datumID -> datum)`
+   */
+  context.selectedData = () => {
+    if (!context._currMode) return new Map();
+    return context._currMode.selectedData || new Map();
   };
 
-  // NOTE: Don't change the name of this until UI v3 is merged
-  let _selectedErrorID;
-  context.selectedErrorID = function(errorID) {
-    if (!arguments.length) return _selectedErrorID;
-    _selectedErrorID = errorID;
-    return context;
+  /**
+   * `selectedIDs`
+   * @return  Just the keys of the `selectedData`
+   */
+  context.selectedIDs = () => {
+    if (!context._currMode) return [];
+    if (typeof context._currMode.selectedIDs === 'function') {
+      return context._currMode.selectedIDs();         // class function
+    } else {
+      return context._currMode.selectedIDs || [];     // class property
+    }
+  };
+
+  /**
+   * `activeData`
+   * Returns a Map containing the current "active" features.
+   * These are features currently being interacted with, e.g. dragged or drawing
+   * These are features that should not generate interaction events
+   *
+   * @return  The current active features, as a `Map(datumID -> datum)`
+   */
+  context.activeData = () => {
+    if (!context._currMode) return new Map();
+    return context._currMode.activeData || new Map();
+  };
+
+  /**
+   * `activeIDs`
+   * @return  Just the keys of the `activeData`
+   */
+  context.activeIDs = () => {
+    if (!context._currMode) return [];
+    if (typeof context._currMode.activeIDs === 'function') {
+      return context._currMode.activeIDs();         // class function
+    } else {
+      return context._currMode.activeIDs || [];     // class property
+    }
+  };
+
+  context.activeID = () => {
+    console.error('error: do not call context.activeID anymore');   // eslint-disable-line no-console
+    return null;
+  };
+
+// ...and definitely stop doing this...
+//  let _selectedNoteID;
+//  context.selectedNoteID = function(noteID) {
+//    if (!arguments.length) return _selectedNoteID;
+//    _selectedNoteID = noteID;
+//    return context;
+//  };
+//  let _selectedErrorID;
+//  context.selectedErrorID = function(errorID) {
+//    if (!arguments.length) return _selectedErrorID;
+//    _selectedErrorID = errorID;
+//    return context;
+//  };
+  context.selectedNoteID = () => {
+    console.error('error: do not call context.selectedNoteID anymore');   // eslint-disable-line no-console
+    return null;
+  };
+  context.selectedErrorID = () => {
+    console.error('error: do not call context.selectedErrorID anymore');   // eslint-disable-line no-console
+    return null;
   };
 
 
   /* Behaviors */
-  context.install = (behavior) => context.surface().call(behavior);
-  context.uninstall = (behavior) => context.surface().call(behavior.off);
+  // "Behaviors" are bundles of event handlers that we can
+  // enable and disable depending on what the user is doing.
+  context.behaviors = new Map();  // Map (behavior.id -> behavior)
+
+  /**
+   * `enableBehaviors`
+   * The given behaviorIDs will be enabled, all others will be disabled
+   * @param   `enableIDs`  `Array` or `Set` containing behaviorIDs to keep enabled
+   */
+  context.enableBehaviors = function(enableIDs) {
+    if (!(enableIDs instanceof Set)) {
+      enableIDs = new Set([].concat(enableIDs));  // coax ids into a Set
+    }
+
+    context.behaviors.forEach((behavior, behaviorID) => {
+      if (enableIDs.has(behaviorID)) {  // should be enabled
+        if (!behavior.enabled) {
+          behavior.enable();
+        }
+      } else {  // should be disabled
+        if (behavior.enabled) {
+          behavior.disable();
+        }
+      }
+    });
+  };
+
+  context.install = () => {
+    console.error('error: do not call context.install anymore');   // eslint-disable-line no-console
+  };
+  context.uninstall = () => {
+    console.error('error: do not call context.uninstall anymore');   // eslint-disable-line no-console
+  };
+//old redo on every mode change
+//  context.install = (behavior) => {
+//    if (typeof behavior.enable === 'function') {
+//      behavior.enable();
+//    }
+//  };
+//  context.uninstall = (behavior) => {
+//    if (typeof behavior.disable === 'function') {
+//      behavior.disable();
+//    }
+//  };
+//  // context.install = (behavior) =>  { return; };
+//  // context.uninstall = (behavior) => { return; };
+//  // context.install = (behavior) => context.surface().call(behavior);
+//  // context.uninstall = (behavior) => context.surface().call(behavior.off);
 
 
   /* Copy/Paste */
@@ -358,17 +521,18 @@ export function coreContext() {
     return context;
   };
 
-  let _copyLonLat;
-  context.copyLonLat = function(val) {
-    if (!arguments.length) return _copyLonLat;
-    _copyLonLat = val;
+  let _copyLoc;
+  context.copyLoc = function(val) {
+    if (!arguments.length) return _copyLoc;
+    _copyLoc = val;
     return context;
   };
 
 
-  /* Background */
-  let _background;
-  context.background = () => _background;
+  /* Imagery */
+  let _imagery;
+  context.imagery = () => _imagery;
+  context.background = () => _imagery;   // legacy name
 
 
   /* Features */
@@ -389,32 +553,31 @@ export function coreContext() {
   /* Map */
   let _map;
   context.map = () => _map;
-  context.layers = () => _map.layers();
+  context.scene = () => _map.scene;
   context.surface = () => _map.surface;
-  context.editableDataEnabled = () => _map.editableDataEnabled();
   context.surfaceRect = () => _map.surface.node().getBoundingClientRect();
   context.editable = () => {
-    // don't allow editing during save
     const mode = context.mode();
-    if (!mode || mode.id === 'save') return false;
-    return _map.editableDataEnabled();
+    if (!mode || mode.id === 'save') return false;   // don't allow editing during save
+    return true;  // _map.editableDataEnabled();     // todo: disallow editing if OSM layer is off
   };
 
 
   /* Debug */
   let _debugFlags = {
     tile: false,        // tile boundaries
-    collision: false,   // label collision bounding boxes
+    label: false,       // label placement
     imagery: false,     // imagery bounding polygons
     target: false,      // touch targets
     downloaded: false   // downloaded data from osm
   };
   context.debugFlags = () => _debugFlags;
   context.getDebug = (flag) => flag && _debugFlags[flag];
-  context.setDebug = function(flag, val) {
-    if (arguments.length === 1) val = true;
+  context.setDebug = function(flag, val = true) {
     _debugFlags[flag] = val;
-    dispatch.call('change');
+    if (_map) {
+      _map.immediateRedraw();
+    }
     return context;
   };
 
@@ -497,28 +660,47 @@ export function coreContext() {
 
 
   /* Projections */
-  context.projection = geoRawMercator();
-  context.curtainProjection = geoRawMercator();
+  context.projection = new Projection();
+  context.curtainProjection = new Projection();
 
   /* RapiD */
   let _rapidContext;
   context.rapidContext = () => _rapidContext;
 
+   async function loadImages() {
+       let makiPromise = Assets.load(
+        `${_assetPath}img/icons/maki-spritesheet.json`
+      );
+      let temakiPromise = Assets.load(
+        `${_assetPath}img/icons/temaki-spritesheet.json`
+      );
+      let faPromise = Assets.load(
+        `${_assetPath}img/icons/fontawesome-spritesheet.json`
+      );
+      let mapillaryPromise = Assets.load(
+        `${_assetPath}img/icons/mapillary-features-spritesheet.json`
+      );
+      let mapillarySignPromise = Assets.load(
+        `${_assetPath}img/icons/mapillary-signs-spritesheet.json`
+      );
+
+     [context._makiSheet, context._temakiSheet, context._fontAwesomeSheet, context._mapillarySheet, context._mapillarySignSheet] = await Promise.all([makiPromise, temakiPromise, faPromise, mapillaryPromise, mapillarySignPromise]);
+
+
+    }
 
   /* Init */
   context.init = () => {
-
+    loadImages();
     instantiateInternal();
-
     initializeDependents();
-
     return context;
+
 
     // Load variables and properties. No property of `context` should be accessed
     // until this is complete since load statuses are indeterminate. The order
     // of instantiation shouldn't matter.
     function instantiateInternal() {
-
       _history = coreHistory(context);
       context.graph = _history.graph;
       context.pauseChangeDispatch = _history.pauseChangeDispatch;
@@ -530,56 +712,69 @@ export function coreContext() {
       context.undo = withDebouncedSave(_history.undo);
       context.redo = withDebouncedSave(_history.redo);
 
-      _rapidContext = coreRapidContext(context);
+      // Instantiate core classes
       _validator = coreValidator(context);
       _uploader = coreUploader(context);
-
-      _background = rendererBackground(context);
+      _imagery = new RendererImagery(context);
       _features = rendererFeatures(context);
-      _map = rendererMap(context);
-      _photos = rendererPhotos(context);
-
+      _map = new RendererMap(context);
+      _photos = new RendererPhotos(context);
+      _rapidContext = coreRapidContext(context);
       _ui = uiInit(context);
+
+      // Instantiate behaviors
+      [
+        new BehaviorDrag(context),
+        new BehaviorDraw(context),
+        new BehaviorHover(context),
+        new BehaviorLasso(context),
+        new BehaviorMapInteraction(context),
+        new BehaviorMapNudging(context),
+        new BehaviorPaste(context),
+        new BehaviorSelect(context)
+      ].forEach(behavior => context.behaviors.set(behavior.id, behavior));
+
+      // Instantiate modes
+      [
+        new ModeAddNote(context),
+        new ModeAddPoint(context),
+        new ModeBrowse(context),
+        new ModeDragNode(context),
+        new ModeDrawArea(context),
+        new ModeDrawLine(context),
+        new ModeSave(context),
+        new ModeSelect(context)
+      ].forEach(mode => context.modes.set(mode.id, mode));
     }
 
     // Set up objects that might need to access properties of `context`. The order
     // might matter if dependents make calls to each other. Be wary of async calls.
     function initializeDependents() {
-
       if (context.initialHashParams.presets) {
         presetManager.addablePresetIDs(new Set(context.initialHashParams.presets.split(',')));
       }
-
       if (context.initialHashParams.locale) {
         localizer.preferredLocaleCodes(context.initialHashParams.locale);
       }
 
       // kick off some async work
       localizer.ensureLoaded();
-      _background.ensureLoaded();
       presetManager.ensureLoaded();
 
+      // Run initializers - this is where code should be that establishes event listeners
       Object.values(services).forEach(service => {
         if (service && typeof service.init === 'function') {
           service.init();
         }
       });
 
-      _map.init();
       _validator.init();
+      _imagery.init();
       _features.init();
+      _map.init();
       _rapidContext.init();
 
-      if (services.maprules && context.initialHashParams.maprules) {
-        d3_json(context.initialHashParams.maprules)
-          .then(mapcss => {
-            services.maprules.init();
-            mapcss.forEach(mapcssSelector => services.maprules.addRule(mapcssSelector));
-          })
-          .catch(() => { /* ignore */ });
-      }
-
-      // if the container isn't available, e.g. when testing, don't load the UI
+      // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {
         _ui.ensureLoaded()
           .then(() => {

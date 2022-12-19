@@ -5,7 +5,7 @@ describe('iD.Map', function() {
         content = d3.select('body').append('div');
         context = iD.coreContext().assetPath('../dist/').init().container(content);
         map = context.map();
-        content.call(map);
+        map.render(content);
     });
 
     afterEach(function() {
@@ -35,9 +35,8 @@ describe('iD.Map', function() {
         });
 
         it('respects minzoom', function() {
-            map.minzoom(16);
-            map.zoom(15);
-            expect(map.zoom()).to.equal(16);
+            map.zoom(1);
+            expect(map.zoom()).to.equal(2);
         });
     });
 
@@ -62,12 +61,6 @@ describe('iD.Map', function() {
                 expect(map.zoom()).to.be.closeTo(3, 1e-6);
                 done();
             }, 375);
-        });
-    });
-
-    describe('#minzoom', function() {
-        it('is zero by default', function() {
-            expect(map.minzoom()).to.equal(0);
         });
     });
 
@@ -122,7 +115,8 @@ describe('iD.Map', function() {
 
     describe('#extent', function() {
         it('gets and sets extent', function () {
-            map.dimensions([100, 100]).center([0, 0]);
+            map.dimensions = [100,100];
+            map.center([0, 0]);
             var extent;
 
             // get
@@ -154,9 +148,9 @@ describe('iD.Map', function() {
         });
     });
 
-    describe('surface', function() {
-        it('is an SVG element', function() {
-           expect(map.surface.node().tagName).to.equal('svg');
+    describe('surface', function () {
+        it('is a CANVAS element', function() {
+           expect(map.surface.node().tagName).to.equal('CANVAS');
         });
     });
 

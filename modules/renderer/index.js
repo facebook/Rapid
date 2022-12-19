@@ -1,6 +1,6 @@
-export { rendererBackgroundSource } from './background_source';
-export { rendererBackground } from './background';
+export { RendererImagery } from './RendererImagery';
+export { RendererImagerySource } from './RendererImagerySource';
+export { RendererMap } from './RendererMap';
+export { RendererPhotos } from './RendererPhotos';
+
 export { rendererFeatures } from './features';
-export { rendererMap } from './map';
-export { rendererPhotos } from './photos';
-export { rendererTileLayer } from './tile_layer';

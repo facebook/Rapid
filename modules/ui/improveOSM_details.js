@@ -72,11 +72,7 @@ export function uiImproveOsmDetails(context) {
 
             utilHighlightEntities([entityID], false, context);
 
-            const osmlayer = context.layers().layer('osm');
-            if (!osmlayer.enabled()) {
-              osmlayer.enabled(true);
-            }
-
+            context.scene().enableLayers('osm');  // make sure osm layer is even on
             context.map().centerZoom(_qaItem.loc, 20);
 
             if (entity) {
@@ -108,7 +104,7 @@ export function uiImproveOsmDetails(context) {
 
     // Don't hide entities related to this error - #5880
     context.features().forceVisible(relatedEntities);
-    context.map().pan([0,0]);  // trigger a redraw
+    context.map().immediateRedraw();
   }
 
   improveOsmDetails.issue = function(val) {

@@ -10,7 +10,7 @@ export function uiSettingsCustomData(context) {
     var dispatch = d3_dispatch('change');
 
     function render(selection) {
-        var dataLayer = context.layers().layer('data');
+        var dataLayer = context.scene().layers.get('custom-data');
 
         // keep separate copies of original and current settings
         var _origSettings = {

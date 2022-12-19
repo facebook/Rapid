@@ -1,14 +1,9 @@
-import {
-    select as d3_select
-} from 'd3-selection';
-
+import { select as d3_select } from 'd3-selection';
 import { t } from '../core/localizer';
-import { modeBrowse } from '../modes/browse';
 
 
 export function uiSourceSwitch(context) {
     var keys;
-
 
     function click(d3_event) {
         d3_event.preventDefault();
@@ -25,7 +20,7 @@ export function uiSourceSwitch(context) {
             .classed('live');
 
         isLive = !isLive;
-        context.enter(modeBrowse(context));
+        context.enter('browse');
         context.history().clearSaved();          // remove saved history
         context.flush();                         // remove stored data
 
@@ -47,9 +42,9 @@ export function uiSourceSwitch(context) {
     };
 
 
-    sourceSwitch.keys = function(_) {
+    sourceSwitch.keys = function(val) {
         if (!arguments.length) return keys;
-        keys = _;
+        keys = val;
         return sourceSwitch;
     };
 

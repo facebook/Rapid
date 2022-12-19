@@ -1,0 +1,46 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Build
+
+on:
+  push:
+    branches: [ pixi_playground, benchmarking ]
+  pull_request:
+
+jobs:
+  build:
+    name: Benchmark
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.14]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run all
+    - name: Unzip canned data files
+      uses: montudor/action-zip@v1
+      with:
+        args: unzip -qq test/benchmark/tokyo_canned_data.zip -d test/benchmark
+    - name: Install Playwright dependencies
+      run:
+        npx playwright install
+    - name: Start Server
+      run: node scripts/server.js &
+    - name: Run Chromium Benchmarks
+      run:
+        npx playwright test --config=test/benchmark/playwright.config.mjs --project chromium
+    - name: Run Firefox Benchmarks
+      run:
+        npx playwright test --config=test/benchmark/playwright.config.mjs --project firefox
+    - name: Run Webkit Benchmarks
+      run:
+        npx playwright test --config=test/benchmark/playwright.config.mjs --project webkit
+

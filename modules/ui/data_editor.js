@@ -1,5 +1,4 @@
 import { t } from '../core/localizer';
-import { modeBrowse } from '../modes/browse';
 import { svgIcon } from '../svg/icon';
 
 import { uiDataHeader } from './data_header';
@@ -27,7 +26,7 @@ export function uiDataEditor(context) {
             .append('button')
             .attr('class', 'close')
             .on('click', function() {
-                context.enter(modeBrowse(context));
+                context.enter('browse');
             })
             .call(svgIcon('#iD-icon-close'));
 

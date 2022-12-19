@@ -1,0 +1,186 @@
+import { services } from '../services';
+import { AbstractLayer } from './AbstractLayer';
+import { PixiFeatureLine } from './PixiFeatureLine';
+import { PixiFeaturePoint } from './PixiFeaturePoint';
+
+const MINZOOM = 12;
+const STREETSIDE_TEAL = 0xfffc4;
+
+const LINESTYLE = {
+  casing: { alpha: 0 },  // disable
+  stroke: { alpha: 0.9, width: 4, color: STREETSIDE_TEAL }
+};
+
+const MARKERSTYLE = {
+  markerName: 'mediumCircle',
+  markerTint: STREETSIDE_TEAL,
+  viewfieldName: 'viewfield',
+  viewfieldTint: STREETSIDE_TEAL
+};
+
+
+/**
+ * PixiLayerStreetsidePhotos
+ * @class
+ */
+export class PixiLayerStreetsidePhotos extends AbstractLayer {
+
+  /**
+   * @constructor
+   * @param  scene    The Scene that owns this Layer
+   * @param  layerID  Unique string to use for the name of this Layer
+   */
+  constructor(scene, layerID) {
+    super(scene, layerID);
+
+    this._service = null;
+    this.getService();
+  }
+
+
+  /**
+   * Services are loosely coupled in RapiD, so we use a `getService` function
+   * to gain access to them, and bind any event handlers a single time.
+   */
+  getService() {
+    if (services.streetside && !this._service) {
+      this._service = services.streetside;
+      this._service.on('loadedImages', () => this.context.map().deferredRedraw());
+    } else if (!services.streetside && this._service) {
+      this._service = null;
+    }
+
+    return this._service;
+  }
+
+
+  filterImages(images) {
+    const fromDate = this.context.photos().fromDate;
+    const toDate = this.context.photos().toDate;
+    const usernames = this.context.photos().usernames;
+
+    if (fromDate) {
+      const fromTimestamp = new Date(fromDate).getTime();
+      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
+    }
+    if (toDate) {
+      const toTimestamp = new Date(toDate).getTime();
+      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
+    }
+    if (usernames) {
+      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+    }
+    return images;
+  }
+
+
+  filterSequences(sequences) {
+    const fromDate = this.context.photos().fromDate;
+    const toDate = this.context.photos().toDate;
+    const usernames = this.context.photos().usernames;
+
+    if (fromDate) {
+      const fromTimestamp = new Date(fromDate).getTime();
+      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+    }
+    if (toDate) {
+      const toTimestamp = new Date(toDate).getTime();
+      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+    }
+    if (usernames) {
+      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+    }
+    return sequences;
+  }
+
+
+  /**
+   * renderMarkers
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
+   */
+  renderMarkers(frame, projection, zoom) {
+    const service = this.getService();
+    if (!service) return;
+
+    const parentContainer = this.scene.groups.get('streetview');
+    const images = service.bubbles(this.context.projection);
+    const sequences = service.sequences(this.context.projection);
+
+    const sequenceData = this.filterSequences(sequences);
+    const photoData = this.filterImages(images);
+
+    for (const d of sequenceData) {
+      const featureID = `${this.layerID}-sequence-${d.properties.key}`;
+      let feature = this.features.get(featureID);
+
+      if (!feature) {
+        feature = new PixiFeatureLine(this, featureID);
+        feature.geometry.setCoords(d.coordinates);
+        feature.style = LINESTYLE;
+        feature.parentContainer = parentContainer;
+        feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
+        feature.setData(d.properties.key, d);
+      }
+
+      this.syncFeatureClasses(feature);
+      feature.update(projection, zoom);
+      this.retainFeature(feature, frame);
+    }
+
+
+    for (const d of photoData) {
+      const featureID = `${this.layerID}-photo-${d.key}`;
+      let feature = this.features.get(featureID);
+
+      if (!feature) {
+        const style = Object.assign({}, MARKERSTYLE);
+        if (Number.isFinite(d.ca)) {
+          style.viewfieldAngles = [d.ca];   // ca = camera angle
+        }
+
+        feature = new PixiFeaturePoint(this, featureID);
+        feature.geometry.setCoords(d.loc);
+        feature.style = style;
+        feature.parentContainer = parentContainer;
+        feature.setData(d.key, d);
+
+        if (d.sequenceKey) {
+          feature.addChildData(d.sequenceKey, d.key);
+        }
+      }
+
+      this.syncFeatureClasses(feature);
+      feature.update(projection, zoom);
+      this.retainFeature(feature, frame);
+    }
+  }
+
+
+  /**
+   * render
+   * Render any data we have, and schedule fetching more of it to cover the view
+   * @param  frame        Integer frame being rendered
+   * @param  projection   Pixi projection to use for rendering
+   * @param  zoom         Effective zoom to use for rendering
+   */
+  render(frame, projection, zoom) {
+    const service = this.getService();
+    if (!this.enabled || !service || zoom < MINZOOM) return;
+
+    service.loadBubbles(this.context.projection);  // note: context.projection !== pixi projection
+    this.renderMarkers(frame, projection, zoom);
+  }
+
+
+  /**
+   * supported
+   * Whether the Layer's service exists
+   */
+  get supported() {
+    return !!this.getService();
+  }
+
+}
+

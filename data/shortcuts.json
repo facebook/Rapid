@@ -32,10 +32,6 @@
             "separator": ","
           },
           {
-            "shortcuts": ["geolocate.key"],
-            "text": "shortcuts.browsing.navigation.geolocate"
-          },
-          {
             "section": "display_options",
             "text": "shortcuts.browsing.display_options.title"
           },
@@ -312,30 +308,6 @@
           {
             "shortcuts": ["operations.move.key"],
             "text": "shortcuts.editing.operations.move"
-          },
-          {
-            "modifiers": ["⇧"],
-            "shortcuts": ["↓", "↑", "←", "→"],
-            "text": "shortcuts.editing.operations.nudge",
-            "separator": ","
-          },
-          {
-            "modifiers": ["⌥", "⇧"],
-            "shortcuts": ["↓", "↑", "←", "→"],
-            "text": "shortcuts.editing.operations.nudge_more",
-            "separator": ","
-          },
-          {
-            "modifiers": ["⇧"],
-            "shortcuts": ["+", "-"],
-            "text": "shortcuts.editing.operations.scale",
-            "separator": ","
-          },
-          {
-            "modifiers": ["⌥", "⇧"],
-            "shortcuts": ["+", "-"],
-            "text": "shortcuts.editing.operations.scale_more",
-            "separator": ","
           },
           {
             "shortcuts": ["operations.rotate.key"],
