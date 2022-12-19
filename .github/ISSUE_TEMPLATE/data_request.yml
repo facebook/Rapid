@@ -1,0 +1,27 @@
+name: 📒 Data Request
+description: Request new or updated data to be included in RapiD.
+labels: ["Needs: Triage :mag:", "Data Request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide as much information about the new dataset as you can.
+  - type: input
+    id: datatype
+    attributes:
+      label: What kind of data are you inquiring about?
+      placeholder: ex. Roads, Buildings, Bike Paths, etc.
+  - type: textarea
+    id: licensing
+    attributes:
+      label: Data License
+      description: Provide any licence(s) that cover this dataset. If you don't know, you may leave this blank.
+      placeholder: CC-BY 4.0, ODbL, etc.
+  - type: textarea
+    id: download
+    attributes:
+      label: Background / where to download this data
+      description: Please include a link to pages that describe the data, or direct download links to the data.
+      placeholder: ex. https://your.link.here/downloadfolder
+    validations:
+      required: true

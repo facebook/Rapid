@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+    - name: 📃 Open Mapping at Facebook
+      url: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook
+      about: Visit this site to learn more about how Meta maps on OSM.
+    - name: 💫 New v2 Architecture - about the webGL rewrite
+      url: https://github.com/facebookincubator/RapiD/discussions/481
+      about: The RapiD team is in the process of rewriting the entire RapiD renderer in webGL. Read about it here!
+    - name: 🚀 Talk with us on Slack
+      url: osmus.slack.com
+      about: Come find us in the #mapwithai_feedback channel!

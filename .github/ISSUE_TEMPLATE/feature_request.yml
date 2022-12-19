@@ -1,0 +1,15 @@
+name: 🔮 Feature Request
+description: Request a new feature
+labels: ["Needs: Triage :mag:", "Feature Request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+         Please provide as much information about the new feature as you can.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please provide a clear and concise description of the feature you'd like. Please include screenshots or any mockups that you may have!
+    validations:
+      required: true

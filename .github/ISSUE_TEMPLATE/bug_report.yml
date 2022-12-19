@@ -1,0 +1,41 @@
+name: 🐛 Bug Report
+description: Report a reproducible bug or regression in RapiD v2.
+labels: ["Needs: Triage :mag:"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please provide all the information requested. Issues that do not follow this format are likely to stall.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please provide a clear and concise description of what the bug is. Please include screenshots!
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of RapiD does this appear on? *(The version is located in the lower-right of the screen next to your OSM username/icon)*
+      placeholder: ex. 1.1.8, 2.0.0-beta
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: What browser are you seeing the problem on? What version are you running?
+      placeholder: ex. Chrome v103, Safari v15.3, Edge v102, Firefox 100, etc.
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide a detailed list of steps that reproduce the issue.
+  - type: textarea
+    id: URL
+    attributes:
+      label: The browser URL at the time you encountered the bug
+      description: Please copy and paste the contents of the URL bar. 
+      placeholder: ex. https://mapwith.ai/rapid#background=none&datasets=fbRoads,msBuildings&map=2.00/0.0/0.0   
+    validations:
+      required: true

@@ -38,7 +38,7 @@ var oauth = osmAuth({
     client_id: 'O3g0mOUuA2WY5Fs826j5tP260qR3DDX7cIIE2R2WWSc',
     client_secret: 'b4aeHD1cNeapPPQTrvpPoExqQRjybit6JBlNnxh62uE',
     scope: 'read_prefs write_prefs write_api read_gpx write_notes',
-    redirect_uri: redirectPath + 'land.html',
+    redirect_uri: redirectPath,
     loading: authLoading,
     done: authDone
 });
@@ -288,7 +288,6 @@ function parseJSON(payload, callback, options) {
   if (!json.elements) {
     return callback({ message: 'No JSON', status: -1 });
   }
-
   if (json.elements.some(el => el.type === 'error')) {
       // We have received partial data, and so we should ignore this response.
       return callback({ message: 'Partial JSON', status: -1 });
