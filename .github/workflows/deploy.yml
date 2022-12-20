@@ -5,7 +5,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ main, develop, '*staging*' ]
+    branches: [ main, '*staging*' ]
 
 permissions:
   id-token: write # required to use OIDC authentication
@@ -18,10 +18,10 @@ jobs:
 
     steps:
     - name: Checkout 📥
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Use Node.js 16.14 ⚙️
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: 16.14
 
@@ -35,7 +35,7 @@ jobs:
       run: npm run test
 
     - name: Upload artifacts 📤
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: build-artifacts
         path: dist
@@ -48,10 +48,10 @@ jobs:
 
     steps:
     - name: Checkout 📥
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Download artifacts 📥
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: build-artifacts
         path: dist
