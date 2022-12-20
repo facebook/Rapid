@@ -4,11 +4,10 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    versioning-strategy: increase
     directory: "/"
     schedule:
-      interval: "weekly"
-    labels:
-      - "chore-dependabot"
-    ignore:
-      - dependency-name: "editor-layer-index"  # doesn't actually use version numbers
+      interval: "monthly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
