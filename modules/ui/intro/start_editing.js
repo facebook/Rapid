@@ -9,12 +9,15 @@ import { utilRebind } from '../../util/rebind';
 
 export function uiIntroStartEditing(context, curtain) {
   const dispatch = d3_dispatch('done', 'startEditing');
-  let modalSelection = d3_select(null);
-  const chapter = {
-    title: 'intro.startediting.title'
-  };
+  const chapter = { title: 'intro.startediting.title' };
+  const container = context.container();
+
+  let _modalSelection = d3_select(null);
 
 
+  // "You're now ready to edit OpenStreetMap! You can replay this walkthrough anytime
+  // or view more documentation by pressing the help button..."
+  // Click Ok to advance
   function showHelp() {
     curtain.reveal({
       revealSelector: '.map-control.help-control',
@@ -25,6 +28,8 @@ export function uiIntroStartEditing(context, curtain) {
   }
 
 
+  // "You can view a list of commands along with their keyboard shortcuts by pressing the ? key..."
+  // Click Ok to advance
   function shortcuts() {
     curtain.reveal({
       revealSelector: '.map-control.help-control',
@@ -35,8 +40,10 @@ export function uiIntroStartEditing(context, curtain) {
   }
 
 
+  // "Don't forget to regularly save your changes!"
+  // Click Ok to advance
   function showSave() {
-    context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+    container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
     curtain.reveal({
       revealSelector: '.top-toolbar button.save',
       tipHtml: helpHtml('intro.startediting.save'),
@@ -46,17 +53,19 @@ export function uiIntroStartEditing(context, curtain) {
   }
 
 
+  // "Start mapping!"
+  // Click the button to advance
   function showStart() {
-    context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
-    modalSelection = uiModal(context.container());
-    modalSelection.select('.modal').attr('class', 'modal-splash modal');
-    modalSelection.selectAll('.close').remove();
+    container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+    _modalSelection = uiModal(container);
+    _modalSelection.select('.modal').attr('class', 'modal-splash modal');
+    _modalSelection.selectAll('.close').remove();
 
-    const startbutton = modalSelection.select('.content')
+    const startbutton = _modalSelection.select('.content')
       .attr('class', 'fillL')
       .append('button')
       .attr('class', 'modal-section huge-modal-button')
-      .on('click', () => modalSelection.remove());
+      .on('click', () => _modalSelection.remove());
 
     startbutton
       .append('svg')
@@ -72,14 +81,14 @@ export function uiIntroStartEditing(context, curtain) {
   }
 
 
-  chapter.enter = function() {
+  chapter.enter = () => {
     showHelp();
   };
 
 
-  chapter.exit = function() {
-    modalSelection.remove();
-    context.container().selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+  chapter.exit = () => {
+    _modalSelection.remove();
+    container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
   };
 
 

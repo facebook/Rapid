@@ -30,6 +30,7 @@ export class UiCurtain {
 
     this._darknessDirty = true;     // need to recompute the darkness?
     this._tooltipDirty = true;      // need to recompute the tooltip?
+    this._inTransition = false;
 
     this._curtain = d3_select(null);
     this._tooltip = d3_select(null);
@@ -59,6 +60,7 @@ export class UiCurtain {
 
     this._darknessDirty = true;
     this._tooltipDirty = true;
+    this._inTransition = false;
 
     this._curtain = selection
       .append('svg')
@@ -129,7 +131,17 @@ export class UiCurtain {
 
     this._revealRect = null;
     this._darknessDirty = true;
+    this._curtain.selectAll('path').interrupt();
+    this._inTransition = false;
     this.redraw();
+  }
+
+
+  /**
+   * Hide just makes the curtain completely black
+   */
+  hide() {
+    this.reveal({ duration: 0 });
   }
 
 
@@ -158,7 +170,8 @@ export class UiCurtain {
     this._darknessDirty = true;
     this._tooltipDirty = true;
 
-    this.redraw();
+    this.redrawDarkness(this._revealOptions.duration);
+    this.redrawTooltip();
 
     return this._tooltip;
   }
@@ -168,6 +181,7 @@ export class UiCurtain {
    * redraw
    */
   redraw() {
+    if (this._inTransition) return;
     this.redrawDarkness();
     this.redrawTooltip();
   }
@@ -180,7 +194,7 @@ export class UiCurtain {
    * This is only done one time, unless there is a revealExtent that needs
    *  to be reprojected whenver the map moves
    */
-  redrawDarkness() {
+  redrawDarkness(duration = 0) {
     if (!this._darknessDirty) return;  // nothing to do
 
     const container = this._containerRect;
@@ -188,7 +202,6 @@ export class UiCurtain {
     if (!container || !surface) return;   // called too early
 
     const opts = this._revealOptions;
-    const duration = opts?.duration ?? 0;
     const padding = opts?.revealPadding ?? 0;
     let reveal;   // reveal rectangle
     let clampTo;
@@ -264,10 +277,15 @@ export class UiCurtain {
     let update = darkness.merge(enter);
 
     if (duration > 0) {
+      this._inTransition = true;
       update = update
         .transition()
         .duration(duration)
-        .ease(d3_easeLinear);
+        .ease(d3_easeLinear)
+        .on('end interrupt', () => this._inTransition = false);
+
+    } else {
+      this._inTransition = false;
     }
 
     update
@@ -350,12 +368,6 @@ export class UiCurtain {
       let tip = this._copyRect(this._tooltip.node().getBoundingClientRect());
       let placement, tipX, tipY;
 
-      // hack: this will have bottom placement,
-      // so need to reserve extra space for the tooltip illustration.
-      if (opts.tooltipClass === 'intro-mouse') {
-        tip.height += 80;
-      }
-
       // Clamp reveal box to container
       reveal.left   = clamp(reveal.left, container.left, container.right);
       reveal.top    = clamp(reveal.top, container.top, container.bottom);
@@ -420,9 +432,8 @@ export class UiCurtain {
         .style('top', `${shiftY}px`);
 
     } else {
-      this._tooltip
-        .classed('in', false)
-        .call(uiToggle(false));
+      this._tooltip.classed('in', false).call(uiToggle(false));
+      this._tooltipDirty = false;
     }
   }
 

@@ -1,3 +1,4 @@
+import { Extent } from '@id-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { helpHtml } from './helper';
@@ -7,13 +8,17 @@ import { utilRebind } from '../../util/rebind';
 
 export function uiIntroWelcome(context, curtain) {
   const dispatch = d3_dispatch('done');
-  const chapter = {
-    title: 'intro.welcome.title'
-  };
+  const chapter = { title: 'intro.welcome.title' };
+
+  const townHallExtent = new Extent([-85.63654,41.94290], [-85.63632,41.94307]);
 
 
+  // "Welcome! This walkthrough will teach you the basics of editing on OpenStreetMap."
+  // Click Ok to advance
   function welcome() {
-    context.map().centerZoom([-85.63591, 41.94285], 19);
+    const loc = townHallExtent.center();
+    context.map().centerZoom(loc, 19);
+
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-welcome',
       tipHtml: helpHtml('intro.welcome.welcome'),
@@ -22,6 +27,8 @@ export function uiIntroWelcome(context, curtain) {
     });
   }
 
+  // "All of the data in this walkthrough is just for practicing...
+  // Click Ok to advance
   function practice() {
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-welcome',
@@ -31,6 +38,8 @@ export function uiIntroWelcome(context, curtain) {
     });
   }
 
+  // "When we introduce a new word, we'll use *italics*."
+  // Click Ok to advance
   function words() {
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-welcome',
@@ -40,28 +49,27 @@ export function uiIntroWelcome(context, curtain) {
     });
   }
 
+  // "You can use the buttons below to skip chapters at any time..."
+  // Click on Navigation (or another) chapter to advance
   function chapters() {
+    dispatch.call('done');
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-navigation',
       tipHtml: helpHtml('intro.welcome.chapters', { next: t('intro.navigation.title') })
     });
-    dispatch.call('done');
   }
 
 
-  chapter.enter = function() {
+  chapter.enter = () => {
     welcome();
   };
 
 
-  chapter.exit = function() {
-    context.container().select('.curtain-tooltip.intro-mouse')
-      .selectAll('.counter')
-      .remove();
+  chapter.exit = () => {
   };
 
 
-  chapter.restart = function() {
+  chapter.restart = () => {
     chapter.exit();
     chapter.enter();
   };
