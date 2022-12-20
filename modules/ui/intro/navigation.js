@@ -6,27 +6,29 @@ import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { helpHtml, icon, /*pointBox,*/ transitionTime } from './helper';
+import { helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroNavigation(context, curtain) {
   const dispatch = d3_dispatch('done');
-  const chapter = {
-    title: 'intro.navigation.title'
-  };
+  const chapter = { title: 'intro.navigation.title' };
+  const container = context.container();
+  const history = context.history();
+  const map = context.map();
 
-  const hallID = 'n2061';
-  const townHall = [-85.63591, 41.94285];
+  const townHallID = 'n2061';
+  const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
   const springStreetID = 'w397';
-  const springStreetEndID = 'n1834';
-  const springStreet = [-85.63582, 41.94255];
+  const springStreetExtent = new Extent([-85.63588, 41.94155], [-85.63574, 41.94278]);
   const onewayField = presetManager.field('oneway');
   const maxspeedField = presetManager.field('maxspeed');
-  let timeouts = [];
+
+  let _timeouts = [];
+  let _onMove = null;
 
 
   function timeout(fn, t) {
-    timeouts.push(window.setTimeout(fn, t));
+    _timeouts.push(window.setTimeout(fn, t));
   }
 
 
@@ -38,25 +40,29 @@ export function uiIntroNavigation(context, curtain) {
 
   function isTownHallSelected() {
     const ids = context.selectedIDs();
-    return ids.length === 1 && ids[0] === hallID;
+    return ids.length === 1 && ids[0] === townHallID;
   }
 
 
+  // "The main map area shows OpenStreetMap data on top of a background."
+  // Drag the map to advance
   function dragMap() {
     context.enter('browse');
-    context.history().reset('initial');
+    history.reset('initial');
 
-    const msec = transitionTime(townHall, context.map().center());
-    context.map().centerZoomEase(townHall, 19, msec);
+    const loc = townHallExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 19, msec);
 
     timeout(() => {
-      const centerStart = context.map().center();
+      const centerStart = map.center();
       const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
       const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
 
-      const checkDrag = () => {
-        if (vecEqual(centerStart, context.map().center())) return;  // no change
-        context.map().off('move', checkDrag);
+      _onMove = () => {
+        if (vecEqual(centerStart, map.center())) return;  // no change
+        map.off('move', _onMove);
         timeout(zoomMap, 2000);
       };
 
@@ -65,20 +71,21 @@ export function uiIntroNavigation(context, curtain) {
         tipHtml: dragString
       });
 
-      context.map().on('move', checkDrag);
+      map.on('move', _onMove);
 
     }, msec + 100);
   }
 
 
+  // Zoom the map to advance
   function zoomMap() {
-    const zoomStart = context.map().zoom();
+    const zoomStart = map.zoom();
     const textID = context.lastPointerType() === 'mouse' ? 'zoom' : 'zoom_touch';
     const zoomString = helpHtml(`intro.navigation.${textID}`);
 
-    const checkZoom = () => {
-      if (zoomStart === context.map().zoom()) return;  // no change
-      context.map().off('move', checkZoom);
+    _onMove = () => {
+      if (zoomStart === map.zoom()) return;  // no change
+      map.off('move', _onMove);
       timeout(features, 2000);
     };
 
@@ -87,10 +94,12 @@ export function uiIntroNavigation(context, curtain) {
       tipHtml: zoomString
     });
 
-    context.map().on('move', checkZoom);
+    map.on('move', _onMove);
   }
 
 
+  // "We use the word *features* to describe the things that appear on the map..."
+  // Click Ok to advance
   function features() {
     curtain.reveal({
       revealSelector: '.surface',
@@ -101,6 +110,8 @@ export function uiIntroNavigation(context, curtain) {
   }
 
 
+  // "Map features are represented using points, lines, or areas..."
+  // Click Ok to advance
   function pointsLinesAreas() {
     curtain.reveal({
       revealSelector: '.surface',
@@ -111,6 +122,8 @@ export function uiIntroNavigation(context, curtain) {
   }
 
 
+  // "Points are sometimes called nodes and lines and areas are sometimes called ways..."
+  // Click Ok to advance
   function nodesWays() {
     curtain.reveal({
       revealSelector: '.surface',
@@ -121,22 +134,24 @@ export function uiIntroNavigation(context, curtain) {
   }
 
 
+  // Select the town hall to advance
   function clickTownHall() {
     context.enter('browse');
-    context.history().reset('initial');
+    history.reset('initial');
 
-    const entity = context.hasEntity(hallID);
+    const entity = context.hasEntity(townHallID);
     if (!entity) return;
-    context.map().centerZoomEase(entity.loc, 19, 500);
+
+    const loc = townHallExtent.center();
+    map.centerZoomEase(loc, 19, 500);
 
     timeout(() => {
-      const entity = context.hasEntity(hallID);
+      const entity = context.hasEntity(townHallID);
       if (!entity) return;
 
       const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
-
       curtain.reveal({
-        revealExtent: new Extent(entity.loc).padByMeters(20),
+        revealExtent: townHallExtent,
         tipHtml: helpHtml(`intro.navigation.${textID}`)
       });
 
@@ -148,200 +163,195 @@ export function uiIntroNavigation(context, curtain) {
 
     }, 550);  // after centerZoomEase
 
-    context.history().on('change.intro', () => {
-      if (!context.hasEntity(hallID)) {
+    history.on('change.intro', () => {
+      if (!context.hasEntity(townHallID)) {
         continueTo(clickTownHall);
       }
     });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
-      context.history().on('change.intro', null);
+      history.on('change.intro', null);
       nextStep();
     }
   }
 
 
+  // "Great! The point is now selected..."
+  // Click Ok to advance
   function selectedTownHall() {
     if (!isTownHallSelected()) return clickTownHall();
 
-    const entity = context.hasEntity(hallID);
+    const entity = context.hasEntity(townHallID);
     if (!entity) return clickTownHall();
 
-    const onClick = () => { continueTo(editorTownHall); };
-
     curtain.reveal({
-      revealExtent: new Extent(entity.loc).padByMeters(20),
+      revealExtent: townHallExtent,
       tipHtml: helpHtml('intro.navigation.selected_townhall'),
       buttonText: t.html('intro.ok'),
-      buttonCallback: onClick
+      buttonCallback: () => continueTo(editorTownHall)
     });
 
-    context.history().on('change.intro', () => {
-      if (!context.hasEntity(hallID)) {
+    history.on('change.intro', () => {
+      if (!context.hasEntity(townHallID)) {
         continueTo(clickTownHall);
       }
     });
 
     function continueTo(nextStep) {
-      context.history().on('change.intro', null);
+      history.on('change.intro', null);
       nextStep();
     }
   }
 
 
+  // "When a feature is selected, the feature editor is displayed alongside the map."
+  // Click Ok to advance
   function editorTownHall() {
     if (!isTownHallSelected()) return clickTownHall();
 
     // disallow scrolling
-    context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
-
-    const onClick = () => { continueTo(presetTownHall); };
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
       tipHtml: helpHtml('intro.navigation.editor_townhall'),
       buttonText: t.html('intro.ok'),
-      buttonCallback: onClick
+      buttonCallback:  () => continueTo(presetTownHall)
     });
 
-    context.on('exit.intro', () => {
-      continueTo(clickTownHall);
-    });
+    context.on('exit.intro', () => continueTo(clickTownHall));
 
-    context.history().on('change.intro', () => {
-      if (!context.hasEntity(hallID)) {
+    history.on('change.intro', () => {
+      if (!context.hasEntity(townHallID)) {
         continueTo(clickTownHall);
       }
     });
 
     function continueTo(nextStep) {
       context.on('exit.intro', null);
-      context.history().on('change.intro', null);
-      context.container().select('.inspector-wrap').on('wheel.intro', null);
+      history.on('change.intro', null);
+      container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
   }
 
 
+  // "The top part of the feature editor shows the feature's type."
+  // Click Ok to advance
   function presetTownHall() {
     if (!isTownHallSelected()) return clickTownHall();
 
     // reset pane, in case user happened to change it..
-    context.container().select('.inspector-wrap .panewrap').style('right', '0%');
+    container.select('.inspector-wrap .panewrap').style('right', '0%');
     // disallow scrolling
-    context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     // preset match, in case the user happened to change it.
     const entity = context.entity(context.selectedIDs()[0]);
     const preset = presetManager.match(entity, context.graph());
-
-    const onClick = () => { continueTo(fieldsTownHall); };
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane .section-feature-type',
       revealPadding: 5,
       tipHtml: helpHtml('intro.navigation.preset_townhall', { preset: preset.name() }),
       buttonText: t.html('intro.ok'),
-      buttonCallback: onClick
+      buttonCallback: () => continueTo(fieldsTownHall)
     });
 
-    context.on('exit.intro', () => {
-      continueTo(clickTownHall);
-    });
+    context.on('exit.intro', () => continueTo(clickTownHall));
 
-    context.history().on('change.intro', () => {
-      if (!context.hasEntity(hallID)) {
+    history.on('change.intro', () => {
+      if (!context.hasEntity(townHallID)) {
         continueTo(clickTownHall);
       }
     });
 
     function continueTo(nextStep) {
       context.on('exit.intro', null);
-      context.history().on('change.intro', null);
-      context.container().select('.inspector-wrap').on('wheel.intro', null);
+      history.on('change.intro', null);
+      container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
   }
 
 
+  // "The middle part of the feature editor contains fields..."
+  // Click Ok to advance
   function fieldsTownHall() {
     if (!isTownHallSelected()) return clickTownHall();
 
     // reset pane, in case user happened to change it..
-    context.container().select('.inspector-wrap .panewrap').style('right', '0%');
+    container.select('.inspector-wrap .panewrap').style('right', '0%');
     // disallow scrolling
-    context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
-
-    const onClick = () => { continueTo(closeTownHall); };
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane .section-preset-fields',
       revealPadding: 5,
       tipHtml: helpHtml('intro.navigation.fields_townhall'),
       buttonText: t.html('intro.ok'),
-      buttonCallback: onClick
+      buttonCallback: () => continueTo(closeTownHall)
     });
 
-    context.on('exit.intro', () => {
-      continueTo(clickTownHall);
-    });
+    context.on('exit.intro', () => continueTo(clickTownHall));
 
-    context.history().on('change.intro', () => {
-      if (!context.hasEntity(hallID)) {
+    history.on('change.intro', () => {
+      if (!context.hasEntity(townHallID)) {
         continueTo(clickTownHall);
       }
     });
 
     function continueTo(nextStep) {
       context.on('exit.intro', null);
-      context.history().on('change.intro', null);
-      context.container().select('.inspector-wrap').on('wheel.intro', null);
+      history.on('change.intro', null);
+      container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
   }
 
 
+  // Close entity editor / leave select mode to advance
   function closeTownHall() {
     if (!isTownHallSelected()) return clickTownHall();
 
-    const selector = '.entity-editor-pane button.close svg use';
-    const href = d3_select(selector).attr('href') || '#iD-icon-close';
-
+    const iconSelector = '.entity-editor-pane button.close svg use';
+    const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
-      tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(href, 'inline') })
+      tipSelector: '.entity-editor-pane button.close',
+      tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
     });
 
-    context.on('exit.intro', () => {
-      continueTo(searchStreet);
-    });
+    context.on('exit.intro', () => continueTo(searchStreet));
 
-    context.history().on('change.intro', () => {
-      // update the close icon in the tooltip if the user edits something.
-      const selector = '.entity-editor-pane button.close svg use';
-      const href = d3_select(selector).attr('href') || '#iD-icon-close';
-
+    history.on('change.intro', () => {
+      // Update the X icon to a check icon in the tooltip if the user edits something.
+      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(href, 'inline') })
+        tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
       });
     });
 
     function continueTo(nextStep) {
       context.on('exit.intro', null);
-      context.history().on('change.intro', null);
+      history.on('change.intro', null);
       nextStep();
     }
   }
 
 
+  // "You can also search for features in the current view, or worldwide.
+  // Search for Spring Street to advance
   function searchStreet() {
     context.enter('browse');
-    context.history().reset('initial');  // ensure spring street exists
+    history.reset('initial');  // ensure spring street exists
 
-    const msec = transitionTime(springStreet, context.map().center());
-    context.map().centerZoomEase(springStreet, 19, msec);  // ..and user can see it
+    const loc = springStreetExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 19, msec);  // ..and user can see it
 
     timeout(() => {
       curtain.reveal({
@@ -349,36 +359,34 @@ export function uiIntroNavigation(context, curtain) {
         tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
       });
 
-      context.container().select('.search-header input')
+      container.select('.search-header input')
         .on('keyup.intro', checkSearchResult);
     }, msec + 100);
   }
 
-
+  // "Choose Spring Street from the list to select it..."
+  // Click Spring Street item to advance
   function checkSearchResult() {
-    const first = context.container().select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
+    const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
     const firstName = first.select('.entity-name');
     const name = t('intro.graph.name.spring-street');
 
     if (!firstName.empty() && firstName.html() === name) {
       curtain.reveal({
         revealNode: first.node(),
-        tipHtml: helpHtml('intro.navigation.choose_street', { name: name }),
-        duration: 300
+        tipHtml: helpHtml('intro.navigation.choose_street', { name: name })
       });
 
-      context.on('exit.intro', () => {
-        continueTo(selectedStreet);
-      });
+      context.on('exit.intro', () => continueTo(selectedStreet));
 
-      context.container().select('.search-header input')
+      container.select('.search-header input')
         .on('keydown.intro', eventCancel, true)
         .on('keyup.intro', null);
     }
 
     function continueTo(nextStep) {
       context.on('exit.intro', null);
-      context.container().select('.search-header input')
+      container.select('.search-header input')
         .on('keydown.intro', null)
         .on('keyup.intro', null);
       nextStep();
@@ -386,23 +394,26 @@ export function uiIntroNavigation(context, curtain) {
   }
 
 
+  // "Great! Spring Street is now selected..."
+  // Click Ok to advance
   function selectedStreet() {
-    if (!context.hasEntity(springStreetEndID) || !context.hasEntity(springStreetID)) {
-        return searchStreet();
+    if (!context.hasEntity(springStreetID)) {
+      return searchStreet();
     }
 
-    const onClick = () => { continueTo(editorStreet); };
-    const entity = context.entity(springStreetEndID);
-//        const box = pointBox(entity.loc, context);
-//        box.height = 500;
+    // Note, the map is about to try easing to show all of Spring Street
+    // due to the user clicking it in the feature list.
+    // For the purposes of the tutorial, we want to force the map
+    // to show only the `springStreetExtent` instead.
+    const loc = springStreetExtent.center();
+    map.centerZoom(loc, 19);  // force the map to be here
 
     curtain.reveal({
-      revealExtent: new Extent(entity.loc),
+      revealExtent: springStreetExtent,
       revealPadding: 40,
       tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
       buttonText: t.html('intro.ok'),
-      buttonCallback: onClick,
-      duration: 600
+      buttonCallback: () => continueTo(editorStreet)
     });
 
     context.on('enter.intro', mode => {
@@ -411,31 +422,32 @@ export function uiIntroNavigation(context, curtain) {
       }
       const ids = context.selectedIDs();
       if (mode.id !== 'select' || !ids.length || ids[0] !== springStreetID) {
-        // keep Spring Street selected..
-        context.enter(modeSelect(context, [springStreetID]));
+        context.enter(modeSelect(context, [springStreetID]));  // keep Spring Street selected, even if user unselected it
       }
     });
 
-    context.history().on('change.intro', () => {
-      if (!context.hasEntity(springStreetEndID) || !context.hasEntity(springStreetID)) {
+    history.on('change.intro', () => {
+      if (!context.hasEntity(springStreetID)) {
         timeout(() => continueTo(searchStreet), 300);  // after any transition (e.g. if user deleted intersection)
       }
     });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
-      context.history().on('change.intro', null);
+      history.on('change.intro', null);
       nextStep();
     }
   }
 
 
+  // "The fields shown for a street are different than the fields that were shown for the town hall."
+  // Close Entity editor / leave select mode to advance
   function editorStreet() {
-    const selector = '.entity-editor-pane button.close svg use';
-    const href = d3_select(selector).attr('href') || '#iD-icon-close';
+    const iconSelector = '.entity-editor-pane button.close svg use';
+    const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
     const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
       helpHtml('intro.navigation.editor_street', {
-        button: icon(href, 'inline'),
+        button: icon(iconName, 'inline'),
         field1: onewayField.label(),
         field2: maxspeedField.label()
       });
@@ -445,17 +457,14 @@ export function uiIntroNavigation(context, curtain) {
       tipHtml: tipHtml
     });
 
-    context.on('exit.intro', () => {
-      continueTo(play);
-    });
+    context.on('exit.intro', () => continueTo(play));
 
-    context.history().on('change.intro', () => {
-      // update the close icon in the tooltip if the user edits something.
-      const selector = '.entity-editor-pane button.close svg use';
-      const href = d3_select(selector).attr('href') || '#iD-icon-close';
+    history.on('change.intro', () => {
+      // Update the X icon to a check icon in the tooltip if the user edits something.
+      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
       const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
         helpHtml('intro.navigation.editor_street', {
-          button: icon(href, 'inline'),
+          button: icon(iconName, 'inline'),
           field1: onewayField.label(),
           field2: maxspeedField.label()
         });
@@ -468,23 +477,22 @@ export function uiIntroNavigation(context, curtain) {
 
     function continueTo(nextStep) {
       context.on('exit.intro', null);
-      context.history().on('change.intro', null);
+      history.on('change.intro', null);
       nextStep();
     }
   }
 
 
+  // Free play
+  // Click on Points (or another) chapter to advance
   function play() {
     dispatch.call('done');
-
     curtain.reveal({
       revealSelector: '.ideditor',
       tipSelector: '.intro-nav-wrap .chapter-point',
       tipHtml: helpHtml('intro.navigation.play', { next: t('intro.points.title') }),
       buttonText: t.html('intro.ok'),
-      buttonCallback: () => {
-        curtain.reveal({ revealSelector: '.ideditor' });  // re-reveal but without the tooltip
-      }
+      buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
   }
 
@@ -495,11 +503,12 @@ export function uiIntroNavigation(context, curtain) {
 
 
   chapter.exit = () => {
-    timeouts.forEach(window.clearTimeout);
+    _timeouts.forEach(window.clearTimeout);
+    if (_onMove) map.off('move', _onMove);
     context.on('enter.intro exit.intro', null);
-    context.history().on('change.intro', null);
-    context.container().select('.inspector-wrap').on('wheel.intro', null);
-    context.container().select('.search-header input').on('keydown.intro keyup.intro', null);
+    history.on('change.intro', null);
+    container.select('.inspector-wrap').on('wheel.intro', null);
+    container.select('.search-header input').on('keydown.intro keyup.intro', null);
   };
 
 

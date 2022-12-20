@@ -351,9 +351,8 @@ export function uiFeatureList(context) {
 
             } else if (d.entity) {
                 utilHighlightEntities([d.id], false, context);
-
-                context.enter(modeSelect(context, [d.entity.id]));
                 context.map().zoomToEase(d.entity);
+                context.enter(modeSelect(context, [d.entity.id]));
 
             } else {
                 // download, zoom to, and select the entity with the given ID

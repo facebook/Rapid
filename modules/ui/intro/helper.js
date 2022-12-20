@@ -4,46 +4,6 @@ import { geoSphericalDistance } from '@id-sdk/geo';
 import { uiCmd } from '../cmd';
 
 /**
- * pointBox
- */
-export function pointBox(loc, context) {
-  const rect = context.surfaceRect();
-  const [x, y] = context.curtainProjection.project(loc);
-  return {
-    left: x + rect.left - 40,
-    top: y + rect.top - 60,
-    width: 80,
-    height: 90,
-  };
-}
-
-
-/**
- * pad
- */
-export function pad(locOrBox, padding, context) {
-  let box;
-  if (locOrBox instanceof Array) {
-    const rect = context.surfaceRect();
-    const [x, y] = context.curtainProjection.project(locOrBox);
-    box = {
-      left: x + rect.left,
-      top: y + rect.top
-    };
-  } else {
-    box = locOrBox;
-  }
-
-  return {
-    left: box.left - padding,
-    top: box.top - padding,
-    width: (box.width || 0) + 2 * padding,
-    height: (box.width || 0) + 2 * padding
-  };
-}
-
-
-/**
  * icon
  */
 export function icon(name, svgklass, useklass) {
@@ -51,7 +11,6 @@ export function icon(name, svgklass, useklass) {
     '<use xlink:href="' + name + '"' +
     (useklass ? ' class="' + useklass + '"' : '') + '></use></svg>';
 }
-
 
 
 // Returns the localized HTML element for `id` with a standardized set of icon, key, and
@@ -278,16 +237,6 @@ export function isMostlySquare(points) {
 
 
 /**
- * selectMenuItem
- * @param  context
- * @param  operationID
- */
-export function selectMenuItem(context, operationID) {
-  return context.container().select(`.edit-menu .edit-menu-item-${operationID}`);
-}
-
-
-/**
  * transitionTime
  * Take a bit more time if the locations are further apart
  * @param   loc1  `Array` [lon,lat]
@@ -296,9 +245,9 @@ export function selectMenuItem(context, operationID) {
  */
 export function transitionTime(loc1, loc2) {
   const dist = geoSphericalDistance(loc1, loc2);
-  if (dist === 0) {
+  if (dist < 1e-4) {
     return 0;
-  } else if (dist < 80) {
+  } else if (dist < 200) {   // meters
     return 500;
   } else {
     return 1000;

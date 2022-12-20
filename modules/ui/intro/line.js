@@ -1,3 +1,4 @@
+import { Extent } from '@id-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
@@ -6,1065 +7,954 @@ import { t } from '../../core/localizer';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { helpHtml, icon, pad, selectMenuItem, transitionTime } from './helper';
+import { helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroLine(context, curtain) {
-    var dispatch = d3_dispatch('done');
-    var timeouts = [];
-    var _tulipRoadID = null;
-    var flowerRoadID = 'w646';
-    var tulipRoadStart = [-85.6297754121684, 41.95805253325314];
-    var tulipRoadMidpoint = [-85.62975395449628, 41.95787501510204];
-    var tulipRoadIntersection = [-85.62974496187628, 41.95742515554585];
-    var roadCategory = presetManager.item('category-road_minor');
-    var residentialPreset = presetManager.item('highway/residential');
-    var woodRoadID = 'w525';
-    var woodRoadEndID = 'n2862';
-    var woodRoadAddNode = [-85.62390110349587, 41.95397111462291];
-    var woodRoadDragEndpoint = [-85.623867390213, 41.95466987786487];
-    var woodRoadDragMidpoint = [-85.62386254803509, 41.95430395953872];
-    var washingtonStreetID = 'w522';
-    var twelfthAvenueID = 'w1';
-    var eleventhAvenueEndID = 'n3550';
-    var twelfthAvenueEndID = 'n5';
-    var _washingtonSegmentID = null;
-    var eleventhAvenueEnd = context.entity(eleventhAvenueEndID).loc;
-    var twelfthAvenueEnd = context.entity(twelfthAvenueEndID).loc;
-    var deleteLinesLoc = [-85.6219395542764, 41.95228033922477];
-    var twelfthAvenue = [-85.62219310052491, 41.952505413152956];
+  const dispatch = d3_dispatch('done');
+  const chapter = { title: 'intro.lines.title' };
+  const container = context.container();
+  const history = context.history();
+  const map = context.map();
+
+  const flowerStreetID = 'w646';
+  const tulipRoadStartExtent = new Extent([-85.63016, 41.95749], [-85.62937, 41.95843]);
+  const tulipRoadMidExtent = new Extent([-85.63044, 41.95686], [-85.62900, 41.95843]);
+  const tulipRoadIntersection = [-85.629745, 41.95742];
+  const roadCategory = presetManager.item('category-road_minor');
+  const residentialPreset = presetManager.item('highway/residential');
+
+  const woodStreetID = 'w525';
+  const woodStreetEndID = 'n2862';
+  const woodStreetExtent = new Extent([-85.62457, 41.95381], [-85.62326, 41.9548]);
+  const woodStreetAddNode = [-85.62390, 41.95397];
+  const woodStreetDragEndpoint = [-85.62387, 41.95467];
+  const woodStreetDragMidpoint = [-85.62386, 41.95430];
+
+  const washingtonStreetID = 'w522';
+  const twelfthAvenueID = 'w1';
+  const eleventhAvenueEndID = 'n3550';
+  const twelfthAvenueEndID = 'n5';
+  const deleteLinesExtent = new Extent([-85.62304, 41.95084], [-85.62087, 41.95336]);
+  const eleventhAvenueEnd = context.entity(eleventhAvenueEndID).loc;
+  const twelfthAvenueEnd = context.entity(twelfthAvenueEndID).loc;
+  const deleteLinesLoc = [-85.6219395542764, 41.95228033922477];
+  const twelfthAvenue = [-85.62219310052491, 41.952505413152956];
+
+  let _washingtonSegmentID = null;
+  let _timeouts = [];
+  let _tulipRoadID = null;
 
 
-    var chapter = {
-        title: 'intro.lines.title'
-    };
+
+  function timeout(fn, t) {
+    _timeouts.push(window.setTimeout(fn, t));
+  }
 
 
-    function timeout(fn, t) {
-        timeouts.push(window.setTimeout(fn, t));
+  function eventCancel(d3_event) {
+    d3_event.stopPropagation();
+    d3_event.preventDefault();
+  }
+
+
+  // "Lines are used to represent features such as roads, railroads, and rivers."
+  // Click "Add Line" button to advance
+  function addLine() {
+    context.enter('browse');
+    history.reset('initial');
+    _tulipRoadID = null;
+
+    const loc = tulipRoadStartExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18.5, msec);
+
+    timeout(() => {
+      const tooltip = curtain.reveal({
+        revealSelector: 'button.draw-line',
+        tipHtml: helpHtml('intro.lines.add_line')
+      });
+
+      tooltip.selectAll('.popover-inner')
+        .insert('svg', 'span')
+        .attr('class', 'tooltip-illustration')
+        .append('use')
+        .attr('xlink:href', '#iD-graphic-lines');
+
+      context.on('enter.intro', mode => {
+        if (mode.id !== 'draw-line') return;
+        continueTo(startLine);
+      });
+    }, msec + 100);
+
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "Here is a road that is missing. Let's add it!"
+  // Place the first point to advance
+  function startLine() {
+    if (context.mode().id !== 'draw-line') return chapter.restart();
+
+    _tulipRoadID = null;
+
+    function onClick() {
+      if (context.mode().id !== 'draw-line') return chapter.restart();
+      continueTo(drawLine);
     }
 
+    const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
+    const startLineString = helpHtml('intro.lines.missing_road') + '{br}' +
+      helpHtml('intro.lines.line_draw_info') + helpHtml(`intro.lines.${textID}`);
 
-    function eventCancel(d3_event) {
-        d3_event.stopPropagation();
-        d3_event.preventDefault();
+    curtain.reveal({
+      revealExtent: tulipRoadStartExtent,
+      tipHTML: startLineString
+    });
+
+    timeout(() => {
+      context.behaviors.get('draw').on('click', onClick);
+    }, 250);  // after reveal
+
+    function continueTo(nextStep) {
+      context.behaviors.get('draw').off('click', onClick);
+      nextStep();
+    }
+  }
+
+
+  // Helper function to determine if the roads are connected properly
+  function _isTulipRoadConnected() {
+    const tulipRoad = _tulipRoadID && context.hasEntity(_tulipRoadID);
+    const flowerStreet = flowerStreetID && context.hasEntity(flowerStreetID);
+    if (!tulipRoad || !flowerStreet) return false;
+
+    const graph = context.graph();
+    const drawNodes = graph.childNodes(tulipRoad);
+
+    return drawNodes.some(node => {
+      return graph.parentWays(node).some(parent => parent.id === flowerStreetID);
+    });
+  }
+
+
+  // "Continue drawing the line by placing more nodes along the road."
+  // "Place an intersection node on {name} to connect the two lines."
+  function drawLine() {
+    if (context.mode().id !== 'draw-line') return chapter.restart();
+
+    map.centerZoomEase(tulipRoadMidExtent.center(), 18.5, 250);
+
+    function onClick() {
+      if (_isTulipRoadConnected()) {
+        continueTo(continueLine);
+      }
+    }
+    function onFinish() {
+      if (!_isTulipRoadConnected()) {
+        continueTo(retryIntersect);
+      }
     }
 
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: tulipRoadMidExtent,
+        tipHTML: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+      });
 
-    function addLine() {
-        context.enter('browse');
-        context.history().reset('initial');
+      context.behaviors.get('draw').on('click', onClick);
+      context.behaviors.get('draw').on('finish', onFinish);
 
-        var msec = transitionTime(tulipRoadStart, context.map().center());
-        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
-        context.map().centerZoomEase(tulipRoadStart, 18.5, msec);
+    }, 255);  // after easing..
 
-        timeout(function() {
-            var tooltip = curtain.reveal('button.draw-line',
-                helpHtml('intro.lines.add_line'));
+    function continueTo(nextStep) {
+      context.behaviors.get('draw').off('click', onClick);
+      context.behaviors.get('draw').off('finish', onFinish);
+      nextStep();
+    }
+  }
 
-            tooltip.selectAll('.popover-inner')
-                .insert('svg', 'span')
-                .attr('class', 'tooltip-illustration')
-                .append('use')
-                .attr('xlink:href', '#iD-graphic-lines');
 
-            context.on('enter.intro', function(mode) {
-                if (mode.id !== 'draw-line') return;
-                continueTo(startLine);
-            });
-        }, msec + 100);
+  // "The road needs to intersect {name}. Let's try again!"
+  // This step just returns back to beginning after a short delay
+  function retryIntersect() {
+    d3_select(window).on('pointerdown.intro mousedown.intro', eventCancel, true);
 
-        function continueTo(nextStep) {
-            context.on('enter.intro', null);
-            nextStep();
-        }
+    curtain.reveal({
+      revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
+      tipHTML: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+    });
+
+    timeout(chapter.restart, 3000);
+  }
+
+
+  // "Continue drawing the line for the new road. Remember that you can drag and zoom the map if needed."
+  // "When you're finished, click the last node again or press return."
+  // Finish the road to advance
+  function continueLine() {
+    if (context.mode().id !== 'draw-line') return chapter.restart();
+    const entity = _tulipRoadID && context.hasEntity(_tulipRoadID);
+    if (!entity) return chapter.restart();
+
+    map.centerZoomEase(tulipRoadMidExtent.center(), 18.5, 250);
+
+    const continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
+      helpHtml('intro.lines.finish_line_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+      helpHtml('intro.lines.finish_road');
+
+    curtain.reveal({
+      revealSelector: '.surface',
+      tipHTML: continueLineText
+    });
+
+    context.on('enter.intro', mode => {
+      if (mode.id === 'draw-line') {
+        return;
+      } else if (mode.id === 'select') {
+        return continueTo(chooseCategoryRoad);
+      } else {
+        return chapter.restart();
+      }
+    });
+
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "Select Road from the list."
+  // Open the Road category to advance
+  function chooseCategoryRoad() {
+    if (context.mode().id !== 'select') return chapter.restart();
+
+    context.on('exit.intro', () => chapter.restart());
+
+    const button = container.select('.preset-category-road_minor .preset-list-button');
+    if (button.empty()) return chapter.restart();
+
+    // disallow scrolling
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+
+    timeout(() => {
+      // reset pane, in case user somehow happened to change it..
+      container.select('.inspector-wrap .panewrap').style('right', '-100%');
+
+      curtain.reveal({
+        revealNode: button.node(),
+        revealPadding: 5,
+        tipHtml: helpHtml('intro.lines.choose_category_road', { category: roadCategory.name() })
+      });
+
+      button.on('click.intro', () => continueTo(choosePresetResidential));
+
+    }, 400);  // after editor pane visible
+
+    function continueTo(nextStep) {
+      button.on('click.intro', null);
+      container.select('.inspector-wrap').on('wheel.intro', null);
+      container.select('.preset-list-button').on('click.intro', null);
+      context.on('exit.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "There are many different types of roads, but this one is a Residential Road..."
+  // Select a preset to advance
+  function choosePresetResidential() {
+    if (context.mode().id !== 'select') return chapter.restart();
+
+    context.on('exit.intro', () => chapter.restart());
+
+    const subgrid = container.select('.preset-category-road_minor .subgrid');
+    if (subgrid.empty()) return chapter.restart();
+
+    subgrid.selectAll(':not(.preset-highway-residential) .preset-list-button')
+      .on('click.intro', () => continueTo(retryPresetResidential));
+
+    subgrid.selectAll('.preset-highway-residential .preset-list-button')
+      .on('click.intro', () => continueTo(nameRoad));
+
+    timeout(() => {
+      curtain.reveal({
+        revealNode: subgrid.node(),
+        revealPadding: 5,
+        tipSelector: '.preset-highway-residential .preset-list-button',
+        tipHtml: helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
+      });
+
+    }, 300);
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      container.selectAll('.preset-list-button').on('click.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "You didn't select the Residential type."
+  // Click the preset button to advance
+  function retryPresetResidential() {
+    if (context.mode().id !== 'select') return chapter.restart();
+
+    context.on('exit.intro', () => chapter.restart());
+
+    // disallow scrolling
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+
+    timeout(() => {
+      const button = container.select('.entity-editor-pane .preset-list-button');
+      button.on('click.intro', () => continueTo(chooseCategoryRoad));
+
+      curtain.reveal({
+        revealNode: button.node(),
+        revealPadding: 5,
+        tipHtml: helpHtml('intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
+      });
+    }, 500);
+
+    function continueTo(nextStep) {
+      container.select('.inspector-wrap').on('wheel.intro', null);
+      container.select('.preset-list-button').on('click.intro', null);
+      context.on('exit.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "Give this road a name, then press the X button or Esc to close the feature editor."
+  // Close entity editor / leave select mode to advance
+  function nameRoad() {
+    context.on('exit.intro', () => continueTo(didNameRoad));
+
+    timeout(() => {
+      curtain.reveal({
+        revealSelector: '.entity-editor-pane',
+        tipHtml: helpHtml('intro.lines.name_road', { button: icon('#iD-icon-close', 'inline') }),
+        tooltipClass: 'intro-lines-name_road'  // why?
+      });
+    }, 500);
+
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "Looks good! Next we will learn how to update the shape of a line."
+  // Click Ok to advance
+  function didNameRoad() {
+    history.checkpoint('doneAddLine');
+    curtain.reveal({
+      revealSelector: '.surface',
+      tipHtml: helpHtml('intro.lines.did_name_road'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: updateLine
+    });
+  }
+
+
+  // "Sometimes you will need to change the shape of an existing line. Here is a road that doesn't look quite right."
+  // Click Ok to advance
+  function updateLine() {
+    history.reset('doneAddLine');
+    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+      return chapter.restart();
     }
 
+    const loc = woodStreetExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 19, msec);
 
-    function startLine() {
-        if (context.mode().id !== 'draw-line') return chapter.restart();
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: woodStreetExtent,
+        tipHTML: helpHtml('intro.lines.update_line'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: addNode
+      });
+    }, msec + 100);
+  }
 
-        _tulipRoadID = null;
 
-        var padding = 70 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad(tulipRoadStart, padding, context);
-        box.height = box.height + 100;
-
-        var textId = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
-        var startLineString = helpHtml('intro.lines.missing_road') + '{br}' +
-            helpHtml('intro.lines.line_draw_info') +
-            helpHtml('intro.lines.' + textId);
-        curtain.reveal(box, startLineString);
-
-        context.map().on('move draw', function() {
-            padding = 70 * Math.pow(2, context.map().zoom() - 18);
-            box = pad(tulipRoadStart, padding, context);
-            box.height = box.height + 100;
-            curtain.reveal(box, startLineString, { duration: 0 });
-        });
-
-        function onClick() {
-            if (context.mode().id !== 'draw-line') return chapter.restart();
-            continueTo(drawLine);
-        }
-        context.behaviors.get('draw').on('click', onClick );
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.behaviors.get('draw').off('click', onClick);
-            nextStep();
-        }
+  // "We can add some nodes to this line to improve its shape."
+  // "One way to add a node is to double-click the line where you want to add a node."
+  // Create a node on Wood Street to advance
+  function addNode() {
+    history.reset('doneAddLine');
+    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+      return chapter.restart();
     }
 
+    curtain.reveal({
+      revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
+      tipHtml: helpHtml('intro.lines.add_node' + (context.lastPointerType() === 'mouse' ? '' : '_touch'))
+    });
 
-    function drawLine() {
-        if (context.mode().id !== 'draw-line') return chapter.restart();
+    history.on('change.intro', changed => {
+      if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+        return continueTo(updateLine);
+      }
+      if (changed.created().length === 1) {
+        timeout(() => continueTo(startDragEndpoint), 500);
+      }
+    });
 
-        _tulipRoadID = context.selectedIDs()[0];
-        context.map().centerEase(tulipRoadMidpoint, 500);
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'select') {
+        continueTo(updateLine);
+      }
+    });
 
-        function onClick() {
-            if (isLineConnected()) {
-                continueTo(continueLine);
-            }
-        }
+    function continueTo(nextStep) {
+      history.on('change.intro', null);
+      context.on('enter.intro', null);
+      nextStep();
+    }
+  }
 
-        timeout(function() {
-            var padding = 200 * Math.pow(2, context.map().zoom() - 18.5);
-            var box = pad(tulipRoadMidpoint, padding, context);
-            box.height = box.height * 2;
-            curtain.reveal(box,
-                helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
-            );
 
-            context.map().on('move draw', function() {
-                padding = 200 * Math.pow(2, context.map().zoom() - 18.5);
-                box = pad(tulipRoadMidpoint, padding, context);
-                box.height = box.height * 2;
-                curtain.reveal(box,
-                    helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') }),
-                    { duration: 0 }
-                );
-            });
-        }, 550);  // after easing..
+  // "When a line is selected, you can adjust any of its nodes by clicking and holding down the left mouse button while you drag."
+  // Drag the endpoint of Wood Street to the expected location to advance
+  function startDragEndpoint() {
+    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+      return continueTo(updateLine);
+    }
+    const startDragString = helpHtml('intro.lines.start_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch')) +
+      helpHtml('intro.lines.drag_to_intersection');
 
-        context.behaviors.get('draw').on('click', onClick);
+    curtain.reveal({
+      revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
+      tipHtml: startDragString
+    });
 
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.behaviors.get('draw').off('click', onClick);
-            nextStep();
-        }
+    context.behaviors.get('drag').on('move', checkDrag);
+
+
+    function checkDrag() {
+      if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+        return continueTo(updateLine);
+      }
+      const entity = context.entity(woodStreetEndID);
+      if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) <= 4) {   // point is close enough
+        continueTo(finishDragEndpoint);   // advance to next step
+      }
     }
 
+    function continueTo(nextStep) {
+      context.behaviors.get('drag').off('move', checkDrag);
+      nextStep();
+    }
+  }
 
-    function isLineConnected() {
-        var entity = _tulipRoadID && context.hasEntity(_tulipRoadID);
-        if (!entity) return false;
 
-        var drawNodes = context.graph().childNodes(entity);
-        return drawNodes.some(function(node) {
-            return context.graph().parentWays(node).some(function(parent) {
-                return parent.id === flowerRoadID;
-            });
-        });
+  // "This spot looks good. Release the mouse button to finish dragging..."
+  // Leave drag mode to advance
+  function finishDragEndpoint() {
+    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+        return continueTo(updateLine);
     }
 
+    const finishDragString = helpHtml('intro.lines.spot_looks_good') +
+      helpHtml('intro.lines.finish_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch'));
 
-    function retryIntersect() {
-        d3_select(window).on('pointerdown.intro mousedown.intro', eventCancel, true);
+    curtain.reveal({
+      revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
+      tipHtml: finishDragString
+    });
 
-        var box = pad(tulipRoadIntersection, 80, context);
-        curtain.reveal(box,
-            helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') })
-        );
+    context.behaviors.get('drag').on('move', checkDrag);
+    context.on('enter.intro', () => continueTo(startDragMidpoint));
 
-        timeout(chapter.restart, 3000);
+    function checkDrag() {
+      if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+        return continueTo(updateLine);
+      }
+      const entity = context.entity(woodStreetEndID);
+      if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) > 4) {   // point is too far
+        continueTo(startDragEndpoint);   // back to previous step
+      }
     }
 
+    function continueTo(nextStep) {
+      context.behaviors.get('drag').off('move', checkDrag);
+      context.on('enter.intro', null);
+      nextStep();
+    }
+  }
 
-    function continueLine() {
-        if (context.mode().id !== 'draw-line') return chapter.restart();
-        var entity = _tulipRoadID && context.hasEntity(_tulipRoadID);
-        if (!entity) return chapter.restart();
 
-        context.map().centerEase(tulipRoadIntersection, 500);
-
-        var continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
-            helpHtml('intro.lines.finish_line_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-            helpHtml('intro.lines.finish_road');
-
-        curtain.reveal('.surface', continueLineText);
-
-        context.on('enter.intro', function(mode) {
-            if (mode.id === 'draw-line') {
-                return;
-            } else if (mode.id === 'select') {
-                return continueTo(chooseCategoryRoad);
-            } else {
-                return chapter.restart();
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.on('enter.intro', null);
-            nextStep();
-        }
+  // "Small triangles are drawn at the *midpoints* between nodes."
+  // "Another way to create a new node is to drag a midpoint to a new location."
+  // Create a node on Wood Street to advance
+  function startDragMidpoint() {
+    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+      return continueTo(updateLine);
+    }
+    if (context.selectedIDs().indexOf(woodStreetID) === -1) {
+      context.enter(modeSelect(context, [woodStreetID]));
     }
 
+    curtain.reveal({
+      revealExtent: new Extent(woodStreetDragMidpoint).padByMeters(20),
+      tipHtml: helpHtml('intro.lines.start_drag_midpoint')
+    });
 
-    function chooseCategoryRoad() {
-        if (context.mode().id !== 'select') return chapter.restart();
+    history.on('change.intro', changed => {
+      if (changed.created().length === 1) {
+        continueTo(continueDragMidpoint);
+      }
+    });
 
-        context.on('exit.intro', function() {
-            return chapter.restart();
-        });
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'select') {  // keep Wood Street selected so midpoint triangles are drawn..
+        context.enter(modeSelect(context, [woodStreetID]));
+      }
+    });
 
-        var button = context.container().select('.preset-category-road_minor .preset-list-button');
-        if (button.empty()) return chapter.restart();
+    function continueTo(nextStep) {
+      history.on('change.intro', null);
+      context.on('enter.intro', null);
+      nextStep();
+    }
+  }
 
-        // disallow scrolling
-        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
 
-        timeout(function() {
-            // reset pane, in case user somehow happened to change it..
-            context.container().select('.inspector-wrap .panewrap').style('right', '-100%');
-
-            curtain.reveal(button.node(),
-                helpHtml('intro.lines.choose_category_road', { category: roadCategory.name() })
-            );
-
-            button.on('click.intro', function() {
-                continueTo(choosePresetResidential);
-            });
-
-        }, 400);  // after editor pane visible
-
-        function continueTo(nextStep) {
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            context.container().select('.preset-list-button').on('click.intro', null);
-            context.on('exit.intro', null);
-            nextStep();
-        }
+  // "This line is looking much better! Continue to adjust this line until the curve matches the road shape."
+  // "When you're happy with how the line looks, press Ok"
+  // Click Ok to advance
+  function continueDragMidpoint() {
+    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
+      return continueTo(updateLine);
     }
 
+    curtain.reveal({
+      revealExtent: woodStreetExtent,
+      tipHTML: helpHtml('intro.lines.continue_drag_midpoint'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: () => continueTo(deleteLines)
+    });
 
-    function choosePresetResidential() {
-        if (context.mode().id !== 'select') return chapter.restart();
+    function continueTo(nextStep) {
+      history.checkpoint('doneUpdateLine');
+      nextStep();
+    }
+  }
 
-        context.on('exit.intro', function() {
-            return chapter.restart();
-        });
 
-        var subgrid = context.container().select('.preset-category-road_minor .subgrid');
-        if (subgrid.empty()) return chapter.restart();
+  // "It's OK to delete lines for roads that don't exist in the real world..
+  // Click Ok to advance
+  function deleteLines() {
+    history.reset('doneUpdateLine');
+    context.enter('browse');
 
-        subgrid.selectAll(':not(.preset-highway-residential) .preset-list-button')
-            .on('click.intro', function() {
-                continueTo(retryPresetResidential);
-            });
-
-        subgrid.selectAll('.preset-highway-residential .preset-list-button')
-            .on('click.intro', function() {
-                continueTo(nameRoad);
-            });
-
-        timeout(function() {
-            curtain.reveal(subgrid.node(),
-                helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() }),
-                { tooltipBox: '.preset-highway-residential .preset-list-button', duration: 300 }
-            );
-        }, 300);
-
-        function continueTo(nextStep) {
-            context.container().select('.preset-list-button').on('click.intro', null);
-            context.on('exit.intro', null);
-            nextStep();
-        }
+    if (!context.hasEntity(washingtonStreetID) ||
+      !context.hasEntity(twelfthAvenueID) ||
+      !context.hasEntity(eleventhAvenueEndID)
+    ) {
+      return chapter.restart();
     }
 
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
 
-    // selected wrong road type
-    function retryPresetResidential() {
-        if (context.mode().id !== 'select') return chapter.restart();
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHTML: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: rightClickIntersection
+      });
+    }, msec + 100);
+  }
 
-        context.on('exit.intro', function() {
-            return chapter.restart();
-        });
 
-        // disallow scrolling
-        context.container().select('.inspector-wrap').on('wheel.intro', eventCancel);
+  // "We will split Washington Street at this intersection and remove everything above it."
+  // Select point with edit menu open to advance
+  function rightClickIntersection() {
+    history.reset('doneUpdateLine');
+    context.enter('browse');
 
-        timeout(function() {
-            var button = context.container().select('.entity-editor-pane .preset-list-button');
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
 
-            curtain.reveal(button.node(),
-                helpHtml('intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
-            );
+    const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
+    const rightClickString = helpHtml('intro.lines.split_street', {
+      street1: t('intro.graph.name.11th-avenue'),
+      street2: t('intro.graph.name.washington-street')
+    }) + helpHtml(`intro.lines.${textID}`);
 
-            button.on('click.intro', function() {
-                continueTo(chooseCategoryRoad);
-            });
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
+        tipHTML: rightClickString
+      });
 
-        }, 500);
+      context.on('enter.intro', mode => {
+        if (mode.id !== 'select') return;
+        const ids = context.selectedIDs();
+        if (ids.length !== 1 || ids[0] !== eleventhAvenueEndID) return;
 
-        function continueTo(nextStep) {
-            context.container().select('.inspector-wrap').on('wheel.intro', null);
-            context.container().select('.preset-list-button').on('click.intro', null);
-            context.on('exit.intro', null);
-            nextStep();
-        }
+        timeout(() => {
+          const node = container.select('.edit-menu-item-split').node();
+          if (!node) return;
+          continueTo(splitIntersection);
+        }, 50);  // after menu visible
+      });
+
+    }, msec + 100);
+
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "Press the Split button to divide Washington Street"
+  // Split Washington Street to advance
+  function splitIntersection() {
+    if (!context.hasEntity(washingtonStreetID) ||
+      !context.hasEntity(twelfthAvenueID) ||
+      !context.hasEntity(eleventhAvenueEndID)
+    ) {
+      return continueTo(deleteLines);
     }
 
+    const node = container.select('.edit-menu-item-split').node();
+    if (!node) { return continueTo(rightClickIntersection); }
 
-    function nameRoad() {
-        context.on('exit.intro', function() {
-            continueTo(didNameRoad);
-        });
+    _washingtonSegmentID = null;
 
-        timeout(function() {
-            curtain.reveal('.entity-editor-pane',
-                helpHtml('intro.lines.name_road', { button: icon('#iD-icon-close', 'inline') }),
-                { tooltipClass: 'intro-lines-name_road' }
-            );
-        }, 500);
+    curtain.reveal({
+      revealSelector: '.edit-menu',
+      revealPadding: 50,
+      tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
+    });
 
-        function continueTo(nextStep) {
-            context.on('exit.intro', null);
-            nextStep();
+    history.on('change.intro', changed => {
+      timeout(() => {
+        if (history.undoAnnotation() === t('operations.split.annotation.line', { n: 1 })) {
+          _washingtonSegmentID = changed.created()[0].id;
+          continueTo(didSplit);
+        } else {
+          _washingtonSegmentID = null;
+          continueTo(retrySplit);
         }
+      }, 300);  // after any transition (e.g. if user deleted intersection)
+    });
+
+    function continueTo(nextStep) {
+      history.on('change.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "You didn't press the Split button. Try again."
+  // Click Ok to advance
+  function retrySplit() {
+    context.enter('browse');
+
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
+
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHTML: helpHtml('intro.lines.retry_split'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: rightClickIntersection
+      });
+    }, msec + 100);
+  }
+
+
+  // Helper function to ensure that the road segments needed
+  // to complete this part of the tutorial exist in the graph.
+  function _hasAllSegments() {
+    return (
+      _washingtonSegmentID &&
+      context.hasEntity(_washingtonSegmentID) &&
+      context.hasEntity(washingtonStreetID) &&
+      context.hasEntity(twelfthAvenueID) &&
+      context.hasEntity(eleventhAvenueEndID)
+    );
+  }
+
+
+  // "Good job! Washington Street is now split into two pieces."
+  // "The top part can be removed. Select the top part of Washington Street"
+  // Select Washington Street top segment to advance
+  function didSplit() {
+    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
+
+    const ids = context.selectedIDs();
+    const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
+    const street = t('intro.graph.name.washington-street');
+
+//    const padding = 200 * Math.pow(2, map.zoom() - 18);
+//    const box = pad(twelfthAvenue, padding, context);
+//    box.width = box.width / 2;
+//    curtain.reveal(box, helpHtml(string, { street1: street, street2: street }), { duration: 500 } );
+
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHTML: helpHtml(string, { street1: street, street2: street })
+      });
+    }, msec + 100);
+
+    context.on('enter.intro', () => {
+      const ids = context.selectedIDs();
+      if (ids.length === 1 && ids[0] === _washingtonSegmentID) {
+        continueTo(multiSelect);
+      }
+    });
+
+    history.on('change.intro', () => {
+      if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+    });
+
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      history.on('change.intro', null);
+      nextStep();
+    }
+  }
+
+
+  // "Washington Street is now selected. Let's also select 12th Avenue."
+  // "You can hold Shift while clicking to select multiple things."
+  // Multiselect both Washington Street top segment and 12th Avenue to advance
+  function multiSelect() {
+    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+
+    const ids = context.selectedIDs();
+    const hasWashington = ids.indexOf(_washingtonSegmentID) !== -1;
+    const hasTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
+
+    if (hasWashington && hasTwelfth) {
+      return continueTo(multiRightClick);
+    } else if (!hasWashington && !hasTwelfth) {
+      return continueTo(didSplit);
     }
 
+    // map.centerZoomEase(twelfthAvenue, 18, 500);
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
 
-    function didNameRoad() {
-        context.history().checkpoint('doneAddLine');
+    timeout(() => {
+      let selected, other, padding, box;
+      if (hasWashington) {
+        selected = t('intro.graph.name.washington-street');
+        other = t('intro.graph.name.12th-avenue');
+//        padding = 60 * Math.pow(2, map.zoom() - 18);
+//        box = pad(twelfthAvenueEnd, padding, context);
+//        box.width *= 3;
+      } else {
+        selected = t('intro.graph.name.12th-avenue');
+        other = t('intro.graph.name.washington-street');
+//        padding = 200 * Math.pow(2, map.zoom() - 18);
+//        box = pad(twelfthAvenue, padding, context);
+//        box.width /= 2;
+      }
 
-        timeout(function() {
-            curtain.reveal('.surface', helpHtml('intro.lines.did_name_road'), {
-                buttonText: t.html('intro.ok'),
-                buttonCallback: function() { continueTo(updateLine); }
-            });
-        }, 500);
+      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'touch';
+      const string =
+        helpHtml('intro.lines.multi_select', { selected: selected, other1: other }) + ' ' +
+        helpHtml(`intro.lines.add_to_selection_${textID}`, { selected: selected, other2: other });
 
-        function continueTo(nextStep) {
-            nextStep();
-        }
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHTML: string
+      });
+
+    }, msec + 100);
+
+
+    context.on('enter.intro', () => continueTo(multiSelect));
+
+    history.on('change.intro', () => {
+      if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+    });
+
+    function continueTo(nextStep) {
+      context.on('enter.intro', null);
+      history.on('change.intro', null);
+      nextStep();
     }
+  }
 
 
-    function updateLine() {
-        context.history().reset('doneAddLine');
-        if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-            return chapter.restart();
+  // "Good! Both lines to delete are now selected."
+  // "Right-click on one of the lines to show the edit menu."
+  // Open edit menu with both lines multiselected to advance
+  function multiRightClick() {
+    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+
+//    const padding = 200 * Math.pow(2, map.zoom() - 18);
+//    const box = pad(twelfthAvenue, padding, context);
+//    curtain.reveal(box, rightClickString);
+
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
+
+    timeout(() => {
+      const rightClickString = helpHtml('intro.lines.multi_select_success') +
+        helpHtml('intro.lines.multi_' + (context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch'));
+
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHTML: rightClickString
+      });
+    }, msec + 100);
+
+    context.ui().editMenu().on('toggled.intro', open => {
+      if (!open) return;
+
+      timeout(() => {
+        const ids = context.selectedIDs();
+        if (ids.length === 2 && ids.indexOf(twelfthAvenueID) !== -1 && ids.indexOf(_washingtonSegmentID) !== -1) {
+          const node = container.select('.edit-menu-item-delete').node();
+          if (!node) return;
+          continueTo(multiDelete);
+        } else if (ids.length === 1 && ids.indexOf(_washingtonSegmentID) !== -1) {
+          return continueTo(multiSelect);
+        } else {
+          return continueTo(didSplit);
         }
+      }, 300);  // after edit menu visible
+    });
 
-        var msec = transitionTime(woodRoadDragMidpoint, context.map().center());
-        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
-        context.map().centerZoomEase(woodRoadDragMidpoint, 19, msec);
+    history.on('change.intro', () => {
+      if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+    });
 
-        timeout(function() {
-            var padding = 250 * Math.pow(2, context.map().zoom() - 19);
-            var box = pad(woodRoadDragMidpoint, padding, context);
-            var advance = function() { continueTo(addNode); };
-
-            curtain.reveal(box, helpHtml('intro.lines.update_line'),
-                { buttonText: t.html('intro.ok'), buttonCallback: advance }
-            );
-
-            context.map().on('move draw', function() {
-                var padding = 250 * Math.pow(2, context.map().zoom() - 19);
-                var box = pad(woodRoadDragMidpoint, padding, context);
-                curtain.reveal(box, helpHtml('intro.lines.update_line'),
-                    { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: advance }
-                );
-            });
-        }, msec + 100);
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            nextStep();
-        }
+    function continueTo(nextStep) {
+      context.ui().editMenu().on('toggled.intro', null);
+      history.on('change.intro', null);
+      nextStep();
     }
+  }
 
 
-    function addNode() {
-        context.history().reset('doneAddLine');
-        if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-            return chapter.restart();
-        }
+  // "Press the Delete button to remove the extra lines."
+  // Both lines should be deleted to advance
+  function multiDelete() {
+    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
 
-        var padding = 40 * Math.pow(2, context.map().zoom() - 19);
-        var box = pad(woodRoadAddNode, padding, context);
-        var addNodeString = helpHtml('intro.lines.add_node' + (context.lastPointerType() === 'mouse' ? '' : '_touch'));
-        curtain.reveal(box, addNodeString);
+    const node = container.select('.edit-menu-item-delete').node();
+    if (!node) return continueTo(multiRightClick);
 
-        context.map().on('move draw', function() {
-            var padding = 40 * Math.pow(2, context.map().zoom() - 19);
-            var box = pad(woodRoadAddNode, padding, context);
-            curtain.reveal(box, addNodeString, { duration: 0 });
-        });
+    curtain.reveal({
+      revealSelector: '.edit-menu',
+      revealPadding: 50,
+      tipHtml: helpHtml('intro.lines.multi_delete')
+    });
 
-        context.history().on('change.intro', function(changed) {
-            if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-                return continueTo(updateLine);
-            }
-            if (changed.created().length === 1) {
-                timeout(function() { continueTo(startDragEndpoint); }, 500);
-            }
-        });
+    context.on('exit.intro', () => {
+      if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
+        return continueTo(multiSelect);  // exited select mode but roads still exist
+      }
+    });
 
-        context.on('enter.intro', function(mode) {
-            if (mode.id !== 'select') {
-                continueTo(updateLine);
-            }
-        });
+    history.on('change.intro', () => {
+      if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
+        continueTo(retryDelete);   // changed something but roads still exist
+      } else {
+        continueTo(play);
+      }
+    });
 
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.history().on('change.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
-        }
+    function continueTo(nextStep) {
+      context.on('exit.intro', null);
+      history.on('change.intro', null);
+      nextStep();
     }
-
-
-    function startDragEndpoint() {
-        if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-            return continueTo(updateLine);
-        }
-        var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-        var box = pad(woodRoadDragEndpoint, padding, context);
-        var startDragString = helpHtml('intro.lines.start_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch')) +
-            helpHtml('intro.lines.drag_to_intersection');
-        curtain.reveal(box, startDragString);
-
-        context.map().renderer.on('draw', function() {
-            if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-                return continueTo(updateLine);
-            }
-            var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-            var box = pad(woodRoadDragEndpoint, padding, context);
-            curtain.reveal(box, startDragString, { duration: 0 });
-
-            var entity = context.entity(woodRoadEndID);
-            if (geoSphericalDistance(entity.loc, woodRoadDragEndpoint) <= 4) {
-                continueTo(finishDragEndpoint);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().renderer.off('draw', null);
-            nextStep();
-        }
-    }
-
-
-    function finishDragEndpoint() {
-        if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-            return continueTo(updateLine);
-        }
-
-        var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-        var box = pad(woodRoadDragEndpoint, padding, context);
-        var finishDragString = helpHtml('intro.lines.spot_looks_good') +
-            helpHtml('intro.lines.finish_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch'));
-        curtain.reveal(box, finishDragString);
-
-        context.map().on('move draw', function() {
-            if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-                return continueTo(updateLine);
-            }
-            var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-            var box = pad(woodRoadDragEndpoint, padding, context);
-            curtain.reveal(box, finishDragString, { duration: 0 });
-
-            var entity = context.entity(woodRoadEndID);
-            if (geoSphericalDistance(entity.loc, woodRoadDragEndpoint) > 4) {
-                continueTo(startDragEndpoint);
-            }
-        });
-
-        context.on('enter.intro', function() {
-            continueTo(startDragMidpoint);
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.on('enter.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function startDragMidpoint() {
-        if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-            return continueTo(updateLine);
-        }
-        if (context.selectedIDs().indexOf(woodRoadID) === -1) {
-            context.enter(modeSelect(context, [woodRoadID]));
-        }
-
-        var padding = 80 * Math.pow(2, context.map().zoom() - 19);
-        var box = pad(woodRoadDragMidpoint, padding, context);
-        curtain.reveal(box, helpHtml('intro.lines.start_drag_midpoint'));
-
-        context.map().on('move draw', function() {
-            if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-                return continueTo(updateLine);
-            }
-            var padding = 80 * Math.pow(2, context.map().zoom() - 19);
-            var box = pad(woodRoadDragMidpoint, padding, context);
-            curtain.reveal(box, helpHtml('intro.lines.start_drag_midpoint'), { duration: 0 });
-        });
-
-        context.history().on('change.intro', function(changed) {
-            if (changed.created().length === 1) {
-                continueTo(continueDragMidpoint);
-            }
-        });
-
-        context.on('enter.intro', function(mode) {
-            if (mode.id !== 'select') {
-                // keep Wood Road selected so midpoint triangles are drawn..
-                context.enter(modeSelect(context, [woodRoadID]));
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.history().on('change.intro', null);
-            context.on('enter.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function continueDragMidpoint() {
-        if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-            return continueTo(updateLine);
-        }
-
-        var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-        var box = pad(woodRoadDragEndpoint, padding, context);
-        box.height += 400;
-
-        var advance = function() {
-            context.history().checkpoint('doneUpdateLine');
-            continueTo(deleteLines);
-        };
-
-        curtain.reveal(box, helpHtml('intro.lines.continue_drag_midpoint'),
-            { buttonText: t.html('intro.ok'), buttonCallback: advance }
-        );
-
-        context.map().on('move draw', function() {
-            if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
-                return continueTo(updateLine);
-            }
-            var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-            var box = pad(woodRoadDragEndpoint, padding, context);
-            box.height += 400;
-            curtain.reveal(box, helpHtml('intro.lines.continue_drag_midpoint'),
-                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: advance }
-            );
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            nextStep();
-        }
-    }
-
-
-    function deleteLines() {
-        context.history().reset('doneUpdateLine');
-        context.enter('browse');
-
-        if (!context.hasEntity(washingtonStreetID) ||
-            !context.hasEntity(twelfthAvenueID) ||
-            !context.hasEntity(eleventhAvenueEndID)) {
-            return chapter.restart();
-        }
-
-        var msec = transitionTime(deleteLinesLoc, context.map().center());
-        if (msec) { curtain.reveal(null, null, { duration: 0 }); }
-        context.map().centerZoomEase(deleteLinesLoc, 18, msec);
-
-        timeout(function() {
-            var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-            var box = pad(deleteLinesLoc, padding, context);
-            box.top -= 200;
-            box.height += 400;
-            var advance = function() { continueTo(rightClickIntersection); };
-
-            curtain.reveal(box, helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
-                { buttonText: t.html('intro.ok'), buttonCallback: advance }
-            );
-
-            context.map().on('move draw', function() {
-                var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-                var box = pad(deleteLinesLoc, padding, context);
-                box.top -= 200;
-                box.height += 400;
-                curtain.reveal(box, helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
-                    { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: advance }
-                );
-            });
-
-            context.history().on('change.intro', function() {
-                timeout(function() {
-                    continueTo(deleteLines);
-                }, 500);  // after any transition (e.g. if user deleted intersection)
-            });
-
-        }, msec + 100);
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function rightClickIntersection() {
-        context.history().reset('doneUpdateLine');
-        context.enter('browse');
-
-        context.map().centerZoomEase(eleventhAvenueEnd, 18, 500);
-
-        var rightClickString = helpHtml('intro.lines.split_street', {
-                street1: t('intro.graph.name.11th-avenue'),
-                street2: t('intro.graph.name.washington-street')
-            }) +
-            helpHtml('intro.lines.' + (context.lastPointerType() === 'mouse' ? 'rightclick_intersection' : 'edit_menu_intersection_touch'));
-
-        timeout(function() {
-            var padding = 60 * Math.pow(2, context.map().zoom() - 18);
-            var box = pad(eleventhAvenueEnd, padding, context);
-            curtain.reveal(box, rightClickString);
-
-            context.map().on('move draw', function() {
-                var padding = 60 * Math.pow(2, context.map().zoom() - 18);
-                var box = pad(eleventhAvenueEnd, padding, context);
-                curtain.reveal(box, rightClickString,
-                    { duration: 0 }
-                );
-            });
-
-            context.on('enter.intro', function(mode) {
-                if (mode.id !== 'select') return;
-                var ids = context.selectedIDs();
-                if (ids.length !== 1 || ids[0] !== eleventhAvenueEndID) return;
-
-                timeout(function() {
-                    var node = selectMenuItem(context, 'split').node();
-                    if (!node) return;
-                    continueTo(splitIntersection);
-                }, 50);  // after menu visible
-            });
-
-            context.history().on('change.intro', function() {
-                timeout(function() {
-                    continueTo(deleteLines);
-                }, 300);  // after any transition (e.g. if user deleted intersection)
-            });
-
-        }, 600);
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.on('enter.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function splitIntersection() {
-        if (!context.hasEntity(washingtonStreetID) ||
-            !context.hasEntity(twelfthAvenueID) ||
-            !context.hasEntity(eleventhAvenueEndID)) {
-            return continueTo(deleteLines);
-        }
-
-        var node = selectMenuItem(context, 'split').node();
-        if (!node) { return continueTo(rightClickIntersection); }
-
-        var wasChanged = false;
-        _washingtonSegmentID = null;
-
-        curtain.reveal('.edit-menu', helpHtml('intro.lines.split_intersection',
-            { street: t('intro.graph.name.washington-street') }),
-            { padding: 50 }
-        );
-
-        context.map().on('move draw', function() {
-            var node = selectMenuItem(context, 'split').node();
-            if (!wasChanged && !node) { return continueTo(rightClickIntersection); }
-
-            curtain.reveal('.edit-menu', helpHtml('intro.lines.split_intersection',
-                { street: t('intro.graph.name.washington-street') }),
-                { duration: 0, padding: 50 }
-            );
-        });
-
-        context.history().on('change.intro', function(changed) {
-            wasChanged = true;
-            timeout(function() {
-                if (context.history().undoAnnotation() === t('operations.split.annotation.line', { n: 1 })) {
-                    _washingtonSegmentID = changed.created()[0].id;
-                    continueTo(didSplit);
-                } else {
-                    _washingtonSegmentID = null;
-                    continueTo(retrySplit);
-                }
-            }, 300);  // after any transition (e.g. if user deleted intersection)
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function retrySplit() {
-        context.enter('browse');
-        context.map().centerZoomEase(eleventhAvenueEnd, 18, 500);
-        var advance = function() { continueTo(rightClickIntersection); };
-
-        var padding = 60 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad(eleventhAvenueEnd, padding, context);
-        curtain.reveal(box, helpHtml('intro.lines.retry_split'),
-            { buttonText: t.html('intro.ok'), buttonCallback: advance }
-        );
-
-        context.map().on('move draw', function() {
-            var padding = 60 * Math.pow(2, context.map().zoom() - 18);
-            var box = pad(eleventhAvenueEnd, padding, context);
-            curtain.reveal(box, helpHtml('intro.lines.retry_split'),
-                { duration: 0, buttonText: t.html('intro.ok'), buttonCallback: advance }
-            );
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            nextStep();
-        }
-    }
-
-
-    function didSplit() {
-        if (!_washingtonSegmentID ||
-            !context.hasEntity(_washingtonSegmentID) ||
-            !context.hasEntity(washingtonStreetID) ||
-            !context.hasEntity(twelfthAvenueID) ||
-            !context.hasEntity(eleventhAvenueEndID)) {
-            return continueTo(rightClickIntersection);
-        }
-
-        var ids = context.selectedIDs();
-        var string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
-        var street = t('intro.graph.name.washington-street');
-
-        var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad(twelfthAvenue, padding, context);
-        box.width = box.width / 2;
-        curtain.reveal(box, helpHtml(string, { street1: street, street2: street }),
-            { duration: 500 }
-        );
-
-        timeout(function() {
-            context.map().centerZoomEase(twelfthAvenue, 18, 500);
-
-            context.map().on('move draw', function() {
-                var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-                var box = pad(twelfthAvenue, padding, context);
-                box.width = box.width / 2;
-                curtain.reveal(box, helpHtml(string, { street1: street, street2: street }),
-                    { duration: 0 }
-                );
-            });
-        }, 600);  // after initial curtain.reveal and curtain cut
-
-        context.on('enter.intro', function() {
-            var ids = context.selectedIDs();
-            if (ids.length === 1 && ids[0] === _washingtonSegmentID) {
-                continueTo(multiSelect);
-            }
-        });
-
-        context.history().on('change.intro', function() {
-            if (!_washingtonSegmentID ||
-                !context.hasEntity(_washingtonSegmentID) ||
-                !context.hasEntity(washingtonStreetID) ||
-                !context.hasEntity(twelfthAvenueID) ||
-                !context.hasEntity(eleventhAvenueEndID)) {
-                return continueTo(rightClickIntersection);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.on('enter.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function multiSelect() {
-        if (!_washingtonSegmentID ||
-            !context.hasEntity(_washingtonSegmentID) ||
-            !context.hasEntity(washingtonStreetID) ||
-            !context.hasEntity(twelfthAvenueID) ||
-            !context.hasEntity(eleventhAvenueEndID)) {
-            return continueTo(rightClickIntersection);
-        }
-
-        var ids = context.selectedIDs();
-        var hasWashington = ids.indexOf(_washingtonSegmentID) !== -1;
-        var hasTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
-
-        if (hasWashington && hasTwelfth) {
-            return continueTo(multiRightClick);
-        } else if (!hasWashington && !hasTwelfth) {
-            return continueTo(didSplit);
-        }
-
-        context.map().centerZoomEase(twelfthAvenue, 18, 500);
-
-        timeout(function() {
-            var selected, other, padding, box;
-            if (hasWashington) {
-                selected = t('intro.graph.name.washington-street');
-                other = t('intro.graph.name.12th-avenue');
-                padding = 60 * Math.pow(2, context.map().zoom() - 18);
-                box = pad(twelfthAvenueEnd, padding, context);
-                box.width *= 3;
-            } else {
-                selected = t('intro.graph.name.12th-avenue');
-                other = t('intro.graph.name.washington-street');
-                padding = 200 * Math.pow(2, context.map().zoom() - 18);
-                box = pad(twelfthAvenue, padding, context);
-                box.width /= 2;
-            }
-
-            curtain.reveal(box,
-                helpHtml('intro.lines.multi_select',
-                    { selected: selected, other1: other }) + ' ' +
-                helpHtml('intro.lines.add_to_selection_' + (context.lastPointerType() === 'mouse' ? 'click' : 'touch'),
-                    { selected: selected, other2: other })
-            );
-
-            context.map().on('move draw', function() {
-                if (hasWashington) {
-                    selected = t('intro.graph.name.washington-street');
-                    other = t('intro.graph.name.12th-avenue');
-                    padding = 60 * Math.pow(2, context.map().zoom() - 18);
-                    box = pad(twelfthAvenueEnd, padding, context);
-                    box.width *= 3;
-                } else {
-                    selected = t('intro.graph.name.12th-avenue');
-                    other = t('intro.graph.name.washington-street');
-                    padding = 200 * Math.pow(2, context.map().zoom() - 18);
-                    box = pad(twelfthAvenue, padding, context);
-                    box.width /= 2;
-                }
-
-                curtain.reveal(box,
-                    helpHtml('intro.lines.multi_select',
-                        { selected: selected, other1: other }) + ' ' +
-                    helpHtml('intro.lines.add_to_selection_' + (context.lastPointerType() === 'mouse' ? 'click' : 'touch'),
-                        { selected: selected, other2: other }),
-                    { duration: 0 }
-                );
-            });
-
-            context.on('enter.intro', function() {
-                continueTo(multiSelect);
-            });
-
-            context.history().on('change.intro', function() {
-                if (!_washingtonSegmentID ||
-                    !context.hasEntity(_washingtonSegmentID) ||
-                    !context.hasEntity(washingtonStreetID) ||
-                    !context.hasEntity(twelfthAvenueID) ||
-                    !context.hasEntity(eleventhAvenueEndID)) {
-                    return continueTo(rightClickIntersection);
-                }
-            });
-        }, 600);
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.on('enter.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function multiRightClick() {
-        if (!_washingtonSegmentID ||
-            !context.hasEntity(_washingtonSegmentID) ||
-            !context.hasEntity(washingtonStreetID) ||
-            !context.hasEntity(twelfthAvenueID) ||
-            !context.hasEntity(eleventhAvenueEndID)) {
-            return continueTo(rightClickIntersection);
-        }
-
-        var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad(twelfthAvenue, padding, context);
-
-        var rightClickString = helpHtml('intro.lines.multi_select_success') +
-            helpHtml('intro.lines.multi_' + (context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch'));
-        curtain.reveal(box, rightClickString);
-
-        context.map().on('move draw', function() {
-            var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-            var box = pad(twelfthAvenue, padding, context);
-            curtain.reveal(box, rightClickString, { duration: 0 });
-        });
-
-        context.ui().editMenu().on('toggled.intro', function(open) {
-            if (!open) return;
-
-            timeout(function() {
-                var ids = context.selectedIDs();
-                if (ids.length === 2 &&
-                    ids.indexOf(twelfthAvenueID) !== -1 &&
-                    ids.indexOf(_washingtonSegmentID) !== -1) {
-                        var node = selectMenuItem(context, 'delete').node();
-                        if (!node) return;
-                        continueTo(multiDelete);
-                } else if (ids.length === 1 &&
-                    ids.indexOf(_washingtonSegmentID) !== -1) {
-                    return continueTo(multiSelect);
-                } else {
-                    return continueTo(didSplit);
-                }
-            }, 300);  // after edit menu visible
-        });
-
-        context.history().on('change.intro', function() {
-            if (!_washingtonSegmentID ||
-                !context.hasEntity(_washingtonSegmentID) ||
-                !context.hasEntity(washingtonStreetID) ||
-                !context.hasEntity(twelfthAvenueID) ||
-                !context.hasEntity(eleventhAvenueEndID)) {
-                return continueTo(rightClickIntersection);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.ui().editMenu().on('toggled.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function multiDelete() {
-        if (!_washingtonSegmentID ||
-            !context.hasEntity(_washingtonSegmentID) ||
-            !context.hasEntity(washingtonStreetID) ||
-            !context.hasEntity(twelfthAvenueID) ||
-            !context.hasEntity(eleventhAvenueEndID)) {
-            return continueTo(rightClickIntersection);
-        }
-
-        var node = selectMenuItem(context, 'delete').node();
-        if (!node) return continueTo(multiRightClick);
-
-        curtain.reveal('.edit-menu',
-            helpHtml('intro.lines.multi_delete'),
-            { padding: 50 }
-        );
-
-        context.map().on('move draw', function() {
-            curtain.reveal('.edit-menu',
-                helpHtml('intro.lines.multi_delete'),
-                { duration: 0, padding: 50 }
-            );
-        });
-
-        context.on('exit.intro', function() {
-            if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
-                return continueTo(multiSelect);  // left select mode but roads still exist
-            }
-        });
-
-        context.history().on('change.intro', function() {
-            if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
-                continueTo(retryDelete);         // changed something but roads still exist
-            } else {
-                continueTo(play);
-            }
-        });
-
-        function continueTo(nextStep) {
-            context.map().off('move draw', null);
-            context.on('exit.intro', null);
-            context.history().on('change.intro', null);
-            nextStep();
-        }
-    }
-
-
-    function retryDelete() {
-        context.enter('browse');
-
-        var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad(twelfthAvenue, padding, context);
-        curtain.reveal(box, helpHtml('intro.lines.retry_delete'), {
-            buttonText: t.html('intro.ok'),
-            buttonCallback: function() { continueTo(multiSelect); }
-        });
-
-        function continueTo(nextStep) {
-            nextStep();
-        }
-    }
-
-
-    function play() {
-        dispatch.call('done');
-        curtain.reveal('.ideditor',
-            helpHtml('intro.lines.play', { next: t('intro.buildings.title') }), {
-                tooltipBox: '.intro-nav-wrap .chapter-building',
-                buttonText: t.html('intro.ok'),
-                buttonCallback: function() { curtain.reveal('.ideditor'); }
-            }
-        );
-   }
-
-
-    chapter.enter = function() {
-        addLine();
-    };
-
-
-    chapter.exit = function() {
-        timeouts.forEach(window.clearTimeout);
-        d3_select(window).on('pointerdown.intro mousedown.intro', null, true);
-        context.on('enter.intro exit.intro', null);
-        context.map().off('move draw', null);
-        context.history().on('change.intro', null);
-        context.container().select('.inspector-wrap').on('wheel.intro', null);
-        context.container().select('.preset-list-button').on('click.intro', null);
-    };
-
-
-    chapter.restart = function() {
-        chapter.exit();
-        chapter.enter();
-    };
-
-
-    return utilRebind(chapter, dispatch, 'on');
+  }
+
+
+  // "You didn't press the {delete_icon} {delete} button. Try again."
+  // Click Ok to advance
+  function retryDelete() {
+    context.enter('browse');
+
+    const loc = deleteLinesExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
+    map.centerZoomEase(loc, 18, msec);
+
+    timeout(() => {
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHTML: helpHtml('intro.lines.retry_delete'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: multiSelect
+      });
+    }, msec + 100);
+  }
+
+
+  // Free play
+  // Click on Lines (or another) chapter to advance
+  function play() {
+    dispatch.call('done');
+    curtain.reveal({
+      revealSelector: '.ideditor',
+      tipSelector: '.intro-nav-wrap .chapter-building',
+      tipHtml: helpHtml('intro.lines.play', { next: t('intro.buildings.title') }),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
+    });
+  }
+
+
+  chapter.enter = () => {
+    addLine();
+  };
+
+
+  chapter.exit = () => {
+    _timeouts.forEach(window.clearTimeout);
+    d3_select(window).on('pointerdown.intro mousedown.intro', null, true);
+    context.on('enter.intro exit.intro', null);
+    history.on('change.intro', null);
+    container.select('.inspector-wrap').on('wheel.intro', null);
+    container.select('.preset-list-button').on('click.intro', null);
+  };
+
+
+  chapter.restart = () => {
+    chapter.exit();
+    chapter.enter();
+  };
+
+
+  return utilRebind(chapter, dispatch, 'on');
 }
