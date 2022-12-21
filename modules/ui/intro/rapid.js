@@ -279,6 +279,7 @@ export function uiIntroRapid(context, curtain) {
     d3_select('.inspector-wrap').on('wheel.intro', null);
     d3_select('.choice-button-accept').on('click.intro', null);
     d3_select('.choice-button-ignore').on('click.intro', null);
+    context.scene().disableLayers('rapid');
   };
 
 

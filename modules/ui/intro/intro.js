@@ -79,6 +79,7 @@ export function uiIntro(context, skipToRapid) {
     const osm = context.connection();
     const imagery = context.imagery();
     const history = context.history();
+    const rapidLayer = context.scene().layers.get('rapid');
 
     // Save current state
     const original = {
@@ -87,7 +88,8 @@ export function uiIntro(context, skipToRapid) {
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
-      historyJSON: history.toJSON()
+      historyJSON: history.toJSON(),
+      rapidEnabled: rapidLayer.enabled
     };
 
     // Show sidebar and disable the sidebar resizing button
@@ -115,6 +117,7 @@ export function uiIntro(context, skipToRapid) {
     imagery.brightness = 1;
 
     // Setup RapiD Walkthrough dataset and disable service
+    rapidLayer.enabled = false;  // hide except when in the rapid chapter
     let rapidDatasets = context.rapidContext().datasets();
     const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
     Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
@@ -185,6 +188,7 @@ export function uiIntro(context, skipToRapid) {
       if (services.fbMLRoads) {
         services.fbMLRoads.toggle(true);
       }
+      rapidLayer.enabled = original.rapidEnabled;
 
       curtain.disable();
       navwrap.remove();

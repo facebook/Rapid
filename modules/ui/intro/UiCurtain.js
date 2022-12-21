@@ -151,7 +151,7 @@ export class UiCurtain {
    *   - tooltip / action button
    *
    * @param  {Object}    [opts]
-   * @param  {integer}   [opts.duration]        transition time in milliseconds
+   * @param  {integer}   [opts.duration]        transition time in milliseconds (default 250ms)
    * @param  {string}    [opts.revealSelector]  reveal selector
    * @param  {Element}   [opts.revealNode]      reveal node
    * @param  {Extent}    [opts.revealExtent]    reveal Extent in WGS85 coords [lon,lat]
@@ -164,7 +164,7 @@ export class UiCurtain {
    * @param  {function}  [opts.buttonCallback]  the callback for the button
    */
   reveal(opts = {}) {
-    this._revealOptions = Object.assign({}, opts);
+    this._revealOptions = Object.assign({}, opts, { duration: 250 });
 
     this._revealRect = null;
     this._darknessDirty = true;
