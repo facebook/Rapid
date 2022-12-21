@@ -46,25 +46,26 @@ export function uiIntroArea(context, curtain) {
     const loc = playgroundExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 19.5, msec);
 
-    timeout(() => {
-      const tooltip = curtain.reveal({
-        revealSelector: 'button.draw-area',
-        tipHtml: helpHtml('intro.areas.add_playground')
+    map
+      .setCenterZoomAsync(loc, 19.5, msec)
+      .then(() => {
+        const tooltip = curtain.reveal({
+          revealSelector: 'button.draw-area',
+          tipHtml: helpHtml('intro.areas.add_playground')
+        });
+
+        tooltip.selectAll('.popover-inner')
+          .insert('svg', 'span')
+          .attr('class', 'tooltip-illustration')
+          .append('use')
+          .attr('xlink:href', '#iD-graphic-areas');
       });
 
-      tooltip.selectAll('.popover-inner')
-        .insert('svg', 'span')
-        .attr('class', 'tooltip-illustration')
-        .append('use')
-        .attr('xlink:href', '#iD-graphic-areas');
-
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'draw-area') return;
-        continueTo(startPlayground);
-      });
-    }, msec + 100);
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'draw-area') return;
+      continueTo(startPlayground);
+    });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);

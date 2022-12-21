@@ -24,8 +24,8 @@ export class UiCurtain {
     this._enabled = false;
 
     this._revealOptions = null;
-    this._containerRect = null;     // The container covers the entire Rapid application
-    this._surfaceRect = null;       // The surface just covers the map part
+    this._containerRect = null;     // The container rectangle covers the entire Rapid application
+    this._mapRect = null;           // The map rectangle covers just the map part
     this._revealRect = null;        // The hole in the curtain being revealed
 
     this._darknessDirty = true;     // need to recompute the darkness?
@@ -55,7 +55,7 @@ export class UiCurtain {
 
     this._revealOptions = null;
     this._containerRect = null;
-    this._surfaceRect = null;
+    this._mapRect = null;
     this._revealRect = null;
 
     this._darknessDirty = true;
@@ -104,7 +104,7 @@ export class UiCurtain {
 
     this._revealOptions = null;
     this._containerRect = null;
-    this._surfaceRect = null;
+    this._mapRect = null;
     this._revealRect = null;
 
     // unregister event handlers
@@ -115,14 +115,14 @@ export class UiCurtain {
 
   /**
    * resize
-   * Recalculate the dimensions of container and surface and redraw everything
+   * Recalculate the dimensions of container and map rectangles and redraw everything
    */
   resize() {
     const containerNode = this.context.container().node();
     this._containerRect = this._copyRect(containerNode.getBoundingClientRect());
 
-    const surfaceNode = this.context.surface().node();
-    this._surfaceRect = this._copyRect(surfaceNode.getBoundingClientRect());
+    const mapNode = this.context.container().select('.main-map').node();
+    this._mapRect = this._copyRect(mapNode.getBoundingClientRect());
 
     const [w, h] = [this._containerRect.width, this._containerRect.height];
     this._curtain
@@ -198,8 +198,8 @@ export class UiCurtain {
     if (!this._darknessDirty) return;  // nothing to do
 
     const container = this._containerRect;
-    const surface = this._surfaceRect;
-    if (!container || !surface) return;   // called too early
+    const mainmap = this._mapRect;
+    if (!container || !mainmap) return;   // called too early
 
     const opts = this._revealOptions;
     const padding = opts?.revealPadding ?? 0;
@@ -215,13 +215,13 @@ export class UiCurtain {
         let min = proj.project([opts.revealExtent.min[0], opts.revealExtent.max[1]]);  // topLeft
         let max = proj.project([opts.revealExtent.max[0], opts.revealExtent.min[1]]);  // bottomRight
 
-        // Convert map coords on the surface to global coords in the container
-        min = vecAdd(min, [surface.left, surface.top]);
-        max = vecAdd(max, [surface.left, surface.top]);
+        // Convert map coords on the mainmap to global coords in the container
+        min = vecAdd(min, [mainmap.left, mainmap.top]);
+        max = vecAdd(max, [mainmap.left, mainmap.top]);
 
-        // For extent reveals, clamp the dimensions to just the portion that fits in the map surface..
+        // For extent reveals, clamp the dimensions to just the portion that fits in the map mainmap..
         // (otherwise we could pan a point off the map but still reveal a square of sidebar)
-        clampTo = surface;
+        clampTo = mainmap;
 
         reveal = {
           left:   min[0],

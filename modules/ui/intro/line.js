@@ -68,25 +68,26 @@ export function uiIntroLine(context, curtain) {
     const loc = tulipRoadStartExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18.5, msec);
 
-    timeout(() => {
-      const tooltip = curtain.reveal({
-        revealSelector: 'button.draw-line',
-        tipHtml: helpHtml('intro.lines.add_line')
+    map
+      .setCenterZoomAsync(loc, 18.5, msec)
+      .then(() => {
+        const tooltip = curtain.reveal({
+          revealSelector: 'button.draw-line',
+          tipHtml: helpHtml('intro.lines.add_line')
+        });
+
+        tooltip.selectAll('.popover-inner')
+          .insert('svg', 'span')
+          .attr('class', 'tooltip-illustration')
+          .append('use')
+          .attr('xlink:href', '#iD-graphic-lines');
+
+        context.on('enter.intro', mode => {
+          if (mode.id !== 'draw-line') return;
+          continueTo(startLine);
+        });
       });
-
-      tooltip.selectAll('.popover-inner')
-        .insert('svg', 'span')
-        .attr('class', 'tooltip-illustration')
-        .append('use')
-        .attr('xlink:href', '#iD-graphic-lines');
-
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'draw-line') return;
-        continueTo(startLine);
-      });
-    }, msec + 100);
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -116,9 +117,7 @@ export function uiIntroLine(context, curtain) {
       tipHTML: startLineString
     });
 
-    timeout(() => {
-      context.behaviors.get('draw').on('click', onClick);
-    }, 250);  // after reveal
+    context.behaviors.get('draw').on('click', onClick);
 
     function continueTo(nextStep) {
       context.behaviors.get('draw').off('click', onClick);
@@ -147,7 +146,17 @@ export function uiIntroLine(context, curtain) {
   function drawLine() {
     if (context.mode().id !== 'draw-line') return chapter.restart();
 
-    map.centerZoomEase(tulipRoadMidExtent.center(), 18.5, 250);
+    const loc = tulipRoadMidExtent.center();
+    const msec = transitionTime(loc, map.center());
+
+    map
+      .setCenterZoomAsync(loc, 18.5, msec)
+      .then(() => {
+        curtain.reveal({
+          revealExtent: tulipRoadMidExtent,
+          tipHTML: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+        });
+      });
 
     function onClick() {
       if (_isTulipRoadConnected()) {
@@ -160,16 +169,8 @@ export function uiIntroLine(context, curtain) {
       }
     }
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: tulipRoadMidExtent,
-        tipHTML: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
-      });
-
-      context.behaviors.get('draw').on('click', onClick);
-      context.behaviors.get('draw').on('finish', onFinish);
-
-    }, 255);  // after easing..
+    context.behaviors.get('draw').on('click', onClick);
+    context.behaviors.get('draw').on('finish', onFinish);
 
     function continueTo(nextStep) {
       context.behaviors.get('draw').off('click', onClick);
@@ -201,16 +202,21 @@ export function uiIntroLine(context, curtain) {
     const entity = _tulipRoadID && context.hasEntity(_tulipRoadID);
     if (!entity) return chapter.restart();
 
-    map.centerZoomEase(tulipRoadMidExtent.center(), 18.5, 250);
+    const loc = tulipRoadMidExtent.center();
+    const msec = transitionTime(loc, map.center());
 
-    const continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
-      helpHtml('intro.lines.finish_line_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-      helpHtml('intro.lines.finish_road');
+    map
+      .setCenterZoomAsync(loc, 18.5, msec)
+      .then(() => {
+        const continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
+          helpHtml('intro.lines.finish_line_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+          helpHtml('intro.lines.finish_road');
 
-    curtain.reveal({
-      revealSelector: '.surface',
-      tipHTML: continueLineText
-    });
+        curtain.reveal({
+          revealSelector: '.main-map',
+          tipHTML: continueLineText
+        });
+      });
 
     context.on('enter.intro', mode => {
       if (mode.id === 'draw-line') {
@@ -355,7 +361,7 @@ export function uiIntroLine(context, curtain) {
   function didNameRoad() {
     history.checkpoint('doneAddLine');
     curtain.reveal({
-      revealSelector: '.surface',
+      revealSelector: '.main-map',
       tipHtml: helpHtml('intro.lines.did_name_road'),
       buttonText: t.html('intro.ok'),
       buttonCallback: updateLine
@@ -374,16 +380,17 @@ export function uiIntroLine(context, curtain) {
     const loc = woodStreetExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 19, msec);
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: woodStreetExtent,
-        tipHTML: helpHtml('intro.lines.update_line'),
-        buttonText: t.html('intro.ok'),
-        buttonCallback: addNode
+    map
+      .setCenterZoomAsync(loc, 19, msec)
+      .then(() => {
+        curtain.reveal({
+          revealExtent: woodStreetExtent,
+          tipHTML: helpHtml('intro.lines.update_line'),
+          buttonText: t.html('intro.ok'),
+          buttonCallback: addNode
+        });
       });
-    }, msec + 100);
   }
 
 
@@ -462,7 +469,7 @@ export function uiIntroLine(context, curtain) {
   // Leave drag mode to advance
   function finishDragEndpoint() {
     if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-        return continueTo(updateLine);
+      return continueTo(updateLine);
     }
 
     const finishDragString = helpHtml('intro.lines.spot_looks_good') +
@@ -568,16 +575,17 @@ export function uiIntroLine(context, curtain) {
     const loc = deleteLinesExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: deleteLinesExtent,
-        tipHTML: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
-        buttonText: t.html('intro.ok'),
-        buttonCallback: rightClickIntersection
+    map
+      .setCenterZoomAsync(loc, 18, msec)
+      .then(() => {
+        curtain.reveal({
+          revealExtent: deleteLinesExtent,
+          tipHTML: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
+          buttonText: t.html('intro.ok'),
+          buttonCallback: rightClickIntersection
+        });
       });
-    }, msec + 100);
   }
 
 
@@ -587,36 +595,28 @@ export function uiIntroLine(context, curtain) {
     history.reset('doneUpdateLine');
     context.enter('browse');
 
-    const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
-    if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
-
     const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
     const rightClickString = helpHtml('intro.lines.split_street', {
       street1: t('intro.graph.name.11th-avenue'),
       street2: t('intro.graph.name.washington-street')
     }) + helpHtml(`intro.lines.${textID}`);
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
-        tipHTML: rightClickString
-      });
+    curtain.reveal({
+      revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
+      tipHTML: rightClickString
+    });
 
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'select') return;
-        const ids = context.selectedIDs();
-        if (ids.length !== 1 || ids[0] !== eleventhAvenueEndID) return;
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'select') return;
+      const ids = context.selectedIDs();
+      if (ids.length !== 1 || ids[0] !== eleventhAvenueEndID) return;
 
-        timeout(() => {
-          const node = container.select('.edit-menu-item-split').node();
-          if (!node) return;
-          continueTo(splitIntersection);
-        }, 50);  // after menu visible
-      });
-
-    }, msec + 100);
+      timeout(() => {
+        const node = container.select('.edit-menu-item-split').node();
+        if (!node) return;
+        continueTo(splitIntersection);
+      }, 50);  // after menu visible
+    });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -669,20 +669,12 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function retrySplit() {
     context.enter('browse');
-
-    const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
-    if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
-
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: deleteLinesExtent,
-        tipHTML: helpHtml('intro.lines.retry_split'),
-        buttonText: t.html('intro.ok'),
-        buttonCallback: rightClickIntersection
-      });
-    }, msec + 100);
+    curtain.reveal({
+      revealExtent: deleteLinesExtent,
+      tipHTML: helpHtml('intro.lines.retry_split'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: rightClickIntersection
+    });
   }
 
 
@@ -705,11 +697,6 @@ export function uiIntroLine(context, curtain) {
   function didSplit() {
     if (!_hasAllSegments()) return continueTo(rightClickIntersection);
 
-    const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
-    if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
-
     const ids = context.selectedIDs();
     const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
     const street = t('intro.graph.name.washington-street');
@@ -719,12 +706,10 @@ export function uiIntroLine(context, curtain) {
 //    box.width = box.width / 2;
 //    curtain.reveal(box, helpHtml(string, { street1: street, street2: street }), { duration: 500 } );
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: deleteLinesExtent,
-        tipHTML: helpHtml(string, { street1: street, street2: street })
-      });
-    }, msec + 100);
+    curtain.reveal({
+      revealExtent: deleteLinesExtent,
+      tipHTML: helpHtml(string, { street1: street, street2: street })
+    });
 
     context.on('enter.intro', () => {
       const ids = context.selectedIDs();
@@ -762,12 +747,8 @@ export function uiIntroLine(context, curtain) {
     }
 
     // map.centerZoomEase(twelfthAvenue, 18, 500);
-    const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
-    if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
 
-    timeout(() => {
+    // timeout(() => {
       let selected, other, padding, box;
       if (hasWashington) {
         selected = t('intro.graph.name.washington-street');
@@ -793,7 +774,7 @@ export function uiIntroLine(context, curtain) {
         tipHTML: string
       });
 
-    }, msec + 100);
+    // }, msec + 100);
 
 
     context.on('enter.intro', () => continueTo(multiSelect));
@@ -820,12 +801,12 @@ export function uiIntroLine(context, curtain) {
 //    const box = pad(twelfthAvenue, padding, context);
 //    curtain.reveal(box, rightClickString);
 
-    const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
-    if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
+    // const loc = deleteLinesExtent.center();
+    // const msec = transitionTime(loc, map.center());
+    // if (msec > 0) curtain.hide();
+    // map.centerZoomEase(loc, 18, msec);
 
-    timeout(() => {
+    // timeout(() => {
       const rightClickString = helpHtml('intro.lines.multi_select_success') +
         helpHtml('intro.lines.multi_' + (context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch'));
 
@@ -833,7 +814,7 @@ export function uiIntroLine(context, curtain) {
         revealExtent: deleteLinesExtent,
         tipHTML: rightClickString
       });
-    }, msec + 100);
+    // }, msec + 100);
 
     context.ui().editMenu().on('toggled.intro', open => {
       if (!open) return;
@@ -904,20 +885,12 @@ export function uiIntroLine(context, curtain) {
   // Click Ok to advance
   function retryDelete() {
     context.enter('browse');
-
-    const loc = deleteLinesExtent.center();
-    const msec = transitionTime(loc, map.center());
-    if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18, msec);
-
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: deleteLinesExtent,
-        tipHTML: helpHtml('intro.lines.retry_delete'),
-        buttonText: t.html('intro.ok'),
-        buttonCallback: multiSelect
-      });
-    }, msec + 100);
+    curtain.reveal({
+      revealExtent: deleteLinesExtent,
+      tipHTML: helpHtml('intro.lines.retry_delete'),
+      buttonText: t.html('intro.ok'),
+      buttonCallback: multiSelect
+    });
   }
 
 

@@ -284,7 +284,7 @@ export class RendererMap extends EventEmitter {
    * IF setting, will schedule an update of map transform/projection.
    * All convenience methods for adjusting the map go through here.
    *   (the old way did a round trip through the d3-zoom event system)
-   * @param  t          Transform Object with `x`,`y`,`k` properties.
+   * @param  t2         Transform Object with `x`,`y`,`k` properties.
    * @param  duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
    * @return map transform -or- this
    */
@@ -295,8 +295,20 @@ export class RendererMap extends EventEmitter {
     if (duration === undefined) {
       duration = 0;
     }
-    this._renderer.setTransform(t2, duration);
+    this._renderer.setTransformAsync(t2, duration);
     return this;
+  }
+
+
+  /**
+   * setTransformAsync
+   * Newer Promise-returning version of `transform()`
+   * @param   t2         Transform Object with `x`,`y`,`k` properties.
+   * @param   duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return  Promise that resolves when the transform has finished changing
+   */
+  setTransformAsync(t2, duration = 0) {
+    return this._renderer.setTransformAsync(t2, duration);
   }
 
 
@@ -329,7 +341,42 @@ export class RendererMap extends EventEmitter {
     if (this.context.inIntro()) {
       this.context.curtainProjection.transform({ x: t[0], y: t[1], k: k2 });
     }
+
     return this.transform({ x: t[0], y: t[1], k: k2 }, duration);
+  }
+
+
+  /**
+   * setCenterZoomAsync
+   * Newer Promise-returning version of `centerZoom()`
+   * @param   loc2       Array [lon,lat] to set the center to
+   * @param   z2         Number to set the zoom to
+   * @param   duration?  Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return  Promise that resolves when the transform has finished changing
+   */
+  setCenterZoomAsync(loc2, z2, duration = 0) {
+    const c = this.center();
+    const z = this.zoom();
+    if (loc2[0] === c[0] && loc2[1] === c[1] && z2 === z) {  // nothing to do
+      return new Promise.resolve(this.context.projection.transform());
+    }
+
+    const k2 = clamp(geoZoomToScale(z2, TILESIZE), MINK, MAXK);
+    let proj = new Projection();
+    proj.transform(this.context.projection.transform()); // make copy
+    proj.scale(k2);
+
+    let t = proj.translate();
+    const point = proj.project(loc2);
+    const center = this.centerPoint();
+    const delta = vecSubtract(center, point);
+    t = vecAdd(t, delta);
+
+    if (this.context.inIntro()) {
+      this.context.curtainProjection.transform({ x: t[0], y: t[1], k: k2 });
+    }
+
+    return this.setTransformAsync({ x: t[0], y: t[1], k: k2 }, duration);
   }
 
 

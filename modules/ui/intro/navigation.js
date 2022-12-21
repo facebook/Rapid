@@ -53,27 +53,27 @@ export function uiIntroNavigation(context, curtain) {
     const loc = townHallExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 19, msec);
 
-    timeout(() => {
-      const centerStart = map.center();
-      const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
-      const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
+    map
+      .setCenterZoomAsync(loc, 19, msec)
+      .then(() => {
+        const centerStart = map.center();
+        const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
+        const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
 
-      _onMove = () => {
-        if (vecEqual(centerStart, map.center())) return;  // no change
-        map.off('move', _onMove);
-        timeout(zoomMap, 2000);
-      };
+        _onMove = () => {
+          if (vecEqual(centerStart, map.center())) return;  // no change
+          map.off('move', _onMove);
+          timeout(zoomMap, 2000);
+        };
 
-      curtain.reveal({
-        revealSelector: '.surface',
-        tipHtml: dragString
+        curtain.reveal({
+          revealSelector: '.main-map',
+          tipHtml: dragString
+        });
+
+        map.on('move', _onMove);
       });
-
-      map.on('move', _onMove);
-
-    }, msec + 100);
   }
 
 
@@ -90,7 +90,7 @@ export function uiIntroNavigation(context, curtain) {
     };
 
     curtain.reveal({
-      revealSelector: '.surface',
+      revealSelector: '.main-map',
       tipHtml: zoomString
     });
 
@@ -102,7 +102,7 @@ export function uiIntroNavigation(context, curtain) {
   // Click Ok to advance
   function features() {
     curtain.reveal({
-      revealSelector: '.surface',
+      revealSelector: '.main-map',
       tipHtml: helpHtml('intro.navigation.features'),
       buttonText: t.html('intro.ok'),
       buttonCallback: pointsLinesAreas
@@ -114,7 +114,7 @@ export function uiIntroNavigation(context, curtain) {
   // Click Ok to advance
   function pointsLinesAreas() {
     curtain.reveal({
-      revealSelector: '.surface',
+      revealSelector: '.main-map',
       tipHtml: helpHtml('intro.navigation.points_lines_areas'),
       buttonText: t.html('intro.ok'),
       buttonCallback: nodesWays
@@ -126,7 +126,7 @@ export function uiIntroNavigation(context, curtain) {
   // Click Ok to advance
   function nodesWays() {
     curtain.reveal({
-      revealSelector: '.surface',
+      revealSelector: '.main-map',
       tipHtml: helpHtml('intro.navigation.nodes_ways'),
       buttonText: t.html('intro.ok'),
       buttonCallback: clickTownHall
@@ -143,25 +143,28 @@ export function uiIntroNavigation(context, curtain) {
     if (!entity) return;
 
     const loc = townHallExtent.center();
-    map.centerZoomEase(loc, 19, 500);
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
 
-    timeout(() => {
-      const entity = context.hasEntity(townHallID);
-      if (!entity) return;
+    map
+      .setCenterZoomAsync(loc, 19, msec)
+      .then(() => {
+        const entity = context.hasEntity(townHallID);
+        if (!entity) return;
 
-      const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
-      curtain.reveal({
-        revealExtent: townHallExtent,
-        tipHtml: helpHtml(`intro.navigation.${textID}`)
+        const textID = context.lastPointerType() === 'mouse' ? 'click_townhall' : 'tap_townhall';
+        curtain.reveal({
+          revealExtent: townHallExtent,
+          tipHtml: helpHtml(`intro.navigation.${textID}`)
+        });
       });
 
-      context.on('enter.intro', () => {
-        if (isTownHallSelected()) {
-          continueTo(selectedTownHall);
-        }
-      });
 
-    }, 550);  // after centerZoomEase
+    context.on('enter.intro', () => {
+      if (isTownHallSelected()) {
+        continueTo(selectedTownHall);
+      }
+    });
 
     history.on('change.intro', () => {
       if (!context.hasEntity(townHallID)) {
@@ -351,18 +354,20 @@ export function uiIntroNavigation(context, curtain) {
     const loc = springStreetExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 19, msec);  // ..and user can see it
 
-    timeout(() => {
-      curtain.reveal({
-        revealSelector: '.search-header input',
-        tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
+    map
+      .setCenterZoomAsync(loc, 19, msec)
+      .then(() => {
+        curtain.reveal({
+          revealSelector: '.search-header input',
+          tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
+        });
+
+        container.select('.search-header input')
+          .on('keyup.intro', checkSearchResult);
       });
-
-      container.select('.search-header input')
-        .on('keyup.intro', checkSearchResult);
-    }, msec + 100);
   }
+
 
   // "Choose Spring Street from the list to select it..."
   // Click Spring Street item to advance
@@ -406,20 +411,21 @@ export function uiIntroNavigation(context, curtain) {
     // For the purposes of the tutorial, we want to force the map
     // to show only the `springStreetExtent` instead.
     const loc = springStreetExtent.center();
-    map.centerZoom(loc, 19);  // force the map to be here
-
-    curtain.reveal({
-      revealExtent: springStreetExtent,
-      revealPadding: 40,
-      tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: () => continueTo(editorStreet)
-    });
+    map
+      .setCenterZoomAsync(loc, 19, 0 /* asap */)
+      .then(() => {
+        curtain.reveal({
+          revealExtent: springStreetExtent,
+          revealPadding: 40,
+          tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
+          buttonText: t.html('intro.ok'),
+          buttonCallback: () => continueTo(editorStreet)
+        });
+      });
 
     context.on('enter.intro', mode => {
-      if (!context.hasEntity(springStreetID)) {
-        return continueTo(searchStreet);
-      }
+      if (!context.hasEntity(springStreetID)) return continueTo(searchStreet);
+
       const ids = context.selectedIDs();
       if (mode.id !== 'select' || !ids.length || ids[0] !== springStreetID) {
         context.enter(modeSelect(context, [springStreetID]));  // keep Spring Street selected, even if user unselected it

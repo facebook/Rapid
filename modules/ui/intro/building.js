@@ -45,25 +45,26 @@ export function uiIntroBuilding(context, curtain) {
 
     const msec = transitionTime(house, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(house, 19, msec);
 
-    timeout(() => {
-      const tooltip = curtain.reveal({
-        revealSelector: 'button.draw-area',
-        tipHtml: helpHtml('intro.buildings.add_building')
+    map
+      .setCenterZoomAsync(house, 19, msec)
+      .then(() => {
+        const tooltip = curtain.reveal({
+          revealSelector: 'button.draw-area',
+          tipHtml: helpHtml('intro.buildings.add_building')
+        });
+
+        tooltip.selectAll('.popover-inner')
+          .insert('svg', 'span')
+          .attr('class', 'tooltip-illustration')
+          .append('use')
+          .attr('xlink:href', '#iD-graphic-buildings');
       });
 
-      tooltip.selectAll('.popover-inner')
-        .insert('svg', 'span')
-        .attr('class', 'tooltip-illustration')
-        .append('use')
-        .attr('xlink:href', '#iD-graphic-buildings');
-
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'draw-area') return;
-        continueTo(startHouse);
-      });
-    }, msec + 100);
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'draw-area') return;
+      continueTo(startHouse);
+    });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -73,9 +74,7 @@ export function uiIntroBuilding(context, curtain) {
 
 
   function startHouse() {
-    if (context.mode().id !== 'draw-area') {
-      return continueTo(addHouse);
-    }
+    if (context.mode().id !== 'draw-area') return continueTo(addHouse);
 
     function onClick() {
       if (context.mode().id !== 'draw-area') return chapter.restart();
@@ -84,21 +83,21 @@ export function uiIntroBuilding(context, curtain) {
 
     _houseID = null;
 
-    map.zoomEase(20, 500);
-    timeout(() => {
-      const startString = helpHtml('intro.buildings.start_building') +
-        helpHtml('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+    map
+      .setCenterZoomAsync(house, 20, 200)
+      .then(() => {
+        const startString = helpHtml('intro.buildings.start_building') +
+          helpHtml('intro.buildings.building_corner_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
 
-      curtain.reveal({
-        revealExtent: new Extent(house).padByMeters(20),
-        tipHTML: startString
+        curtain.reveal({
+          revealExtent: new Extent(house).padByMeters(20),
+          tipHTML: startString
+        });
       });
 
-      context.behaviors.get('draw').on('click', onClick);
-    }, 550);  // after easing
+    context.behaviors.get('draw').on('click', onClick);
 
     function continueTo(nextStep) {
-      context.on('enter.intro', null);
       context.behaviors.get('draw').off('click', onClick);
       nextStep();
     }
@@ -286,34 +285,32 @@ export function uiIntroBuilding(context, curtain) {
   function rightClickHouse() {
     if (!_houseID) return chapter.restart();
 
-    context.enter('browse');
     history.reset('hasHouse');
-
-    let zoom = map.zoom();
-    if (zoom < 20) {
-      zoom = 20;
-      map.centerZoomEase(house, zoom, 500);
-    }
 
     if (context.selectedIDs().indexOf(_houseID) === -1) {
       context.enter(modeSelect(context, [_houseID]));
     }
 
-    const ids = context.selectedIDs();
-    if (ids.length !== 1 || ids[0] !== _houseID) return;
+    let zoom = map.zoom();
+    if (zoom < 20) {    // make sure user is zoomed in enough to
+      zoom = 20;        // actually see orthagonalize do something
+    }
 
-    const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
-    curtain.reveal({
-      revealExtent: new Extent(house).padByMeters(20),
-      tipHTML: helpHtml(`intro.buildings.${textID}`)
-    });
+    map
+      .setCenterZoomAsync(house, zoom, 100)
+      .then(() => {
+        const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
+        curtain.reveal({
+          revealExtent: new Extent(house).padByMeters(20),
+          tipHTML: helpHtml(`intro.buildings.${textID}`)
+        });
 
-    timeout(() => {
-      const node = container.select('.edit-menu-item-orthogonalize').node();
-      if (!node) return;
-      continueTo(clickSquare);
-    }, 50);  // after menu visible
-
+        timeout(() => {
+          const node = container.select('.edit-menu-item-orthogonalize').node();
+          if (!node) return;
+          continueTo(clickSquare);
+        }, 50);  // after menu visible
+      });
 
     context.ui().editMenu().on('toggled.intro', open => {
       if (!open) return;
@@ -416,19 +413,21 @@ export function uiIntroBuilding(context, curtain) {
     _tankID = null;
 
     const msec = transitionTime(tank, map.center());
-    map.centerZoomEase(tank, 19.5, msec);
+    if (msec > 0) curtain.hide();
 
-    timeout(() => {
-      curtain.reveal({
-        revealSelector: 'button.draw-area',
-        tipHtml: helpHtml('intro.buildings.add_tank')
+    map
+      .setCenterZoomAsync(tank, 19.5, msec)
+      .then(() => {
+        curtain.reveal({
+          revealSelector: 'button.draw-area',
+          tipHtml: helpHtml('intro.buildings.add_tank')
+        });
       });
 
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'draw-area') return;
-        continueTo(startTank);
-      });
-    }, msec + 100);
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'draw-area') return;
+      continueTo(startTank);
+    });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);

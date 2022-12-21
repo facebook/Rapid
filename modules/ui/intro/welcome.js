@@ -9,22 +9,22 @@ import { utilRebind } from '../../util/rebind';
 export function uiIntroWelcome(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.welcome.title' };
-
   const townHallExtent = new Extent([-85.63654,41.94290], [-85.63632,41.94307]);
 
 
   // "Welcome! This walkthrough will teach you the basics of editing on OpenStreetMap."
   // Click Ok to advance
   function welcome() {
-    const loc = townHallExtent.center();
-    context.map().centerZoom(loc, 19);
-
-    curtain.reveal({
-      revealSelector: '.intro-nav-wrap .chapter-welcome',
-      tipHtml: helpHtml('intro.welcome.welcome'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: practice
-    });
+    context.map()
+      .setCenterZoomAsync(townHallExtent.center(), 19)
+      .then(() => {
+        curtain.reveal({
+          revealSelector: '.intro-nav-wrap .chapter-welcome',
+          tipHtml: helpHtml('intro.welcome.welcome'),
+          buttonText: t.html('intro.ok'),
+          buttonCallback: practice
+        });
+      });
   }
 
   // "All of the data in this walkthrough is just for practicing...

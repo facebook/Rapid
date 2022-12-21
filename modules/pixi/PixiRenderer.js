@@ -59,7 +59,7 @@ export class PixiRenderer extends EventEmitter {
     this.pixiProjection = new Projection();
     this._transformDraw = null;      // transform at time of last draw
     this._isTransformed = false;     // is the supersurface transformed?
-    this._transformEaseParams = null;
+    this._transformEase = null;
 
     // Make sure callbacks have `this` bound correctly
     this._tick = this._tick.bind(this);
@@ -288,26 +288,44 @@ export class PixiRenderer extends EventEmitter {
   }
 
   /**
-   * setTransform
+   * setTransformAsync
    * Updates the transform and projection
-   * @param  t           A Transform Object with `x, y, k` properties
-   * @param  duration?   Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @param   t           A Transform Object with `x, y, k` properties
+   * @param   duration?   Duration of the transition in milliseconds, defaults to 0ms (asap)
+   * @return  Promise that resolves when the transform has finished changing
    */
-  setTransform(t, duration = 0) {
-    if (duration > 0) {
-      const now = window.performance.now();
-      this._transformEaseParams = {
+  setTransformAsync(t, duration = 0) {
+    const now = window.performance.now();
+    const tCurr = this.context.projection.transform();
+    let promise;
+
+    // If already easing, resolve before starting a new one
+    if (this._transformEase) {
+      this.context.projection.transform(tCurr);
+      this._transformEase.resolve(tCurr);
+      this._transformEase = null;
+    }
+
+    if (duration > 0) {   // change later
+      let _resolver;      // store resolver function for use outside the promise
+      promise = new Promise(resolve => { _resolver = resolve; });
+
+      this._transformEase = {
         time0: now,
         time1: now + duration,
-        xform0: this.context.projection.transform(),
-        xform1: t
+        xform0: tCurr,
+        xform1: t,
+        promise: promise,
+        resolve: _resolver
       };
 
     } else {   // change immediately
-      this._transformEaseParams = null;
       this.context.projection.transform(t);
+      promise = Promise.resolve(t);
     }
+
     this._appPending = true;
+    return promise;
   }
 
 
@@ -337,8 +355,8 @@ export class PixiRenderer extends EventEmitter {
     if (this._drawPending) return;
 
     // Calculate the transform easing, if any
-    if (this._transformEaseParams) {
-      const { time0, time1, xform0, xform1 } = this._transformEaseParams;
+    if (this._transformEase) {
+      const { time0, time1, xform0, xform1, resolve } = this._transformEase;
       const [x0, y0, k0] = [xform0.x, xform0.y, xform0.k];
       const [x1, y1, k1] = [xform1.x, xform1.y, xform1.k];
       const now = window.performance.now();
@@ -348,11 +366,14 @@ export class PixiRenderer extends EventEmitter {
       const xNow = x0 + ((x1 - x0) * tween);
       const yNow = y0 + ((y1 - y0) * tween);
       const kNow = k0 + ((k1 - k0) * tween);
-      this.context.projection.transform({ x: xNow, y: yNow, k: kNow });
+      const tNow = { x: xNow, y: yNow, k: kNow };
+      this.context.projection.transform(tNow);
 
       if (tween === 1) {  // we're done
-        this._transformEaseParams = null;
+        resolve(tNow);
+        this._transformEase = null;
       }
+
       this._appPending = true;  // needs occasional renders during/after easing
     }
 
@@ -440,5 +461,4 @@ export class PixiRenderer extends EventEmitter {
     this.emit('draw');
     this._frame++;
   }
-
 }

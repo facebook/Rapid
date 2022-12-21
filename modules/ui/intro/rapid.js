@@ -40,16 +40,17 @@ export function uiIntroRapid(context, curtain) {
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
-    map.centerZoomEase(loc, 18.5, msec);
 
-    timeout(() => {
-      curtain.reveal({
-        revealSelector: '.intro-nav-wrap .chapter-rapid',
-        tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
-        buttonText: t.html('intro.ok'),
-        buttonCallback: showHideRoads
+    map
+      .setCenterZoomAsync(loc, 18.5, msec)
+      .then(() => {
+        curtain.reveal({
+          revealSelector: '.intro-nav-wrap .chapter-rapid',
+          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+          buttonText: t.html('intro.ok'),
+          buttonCallback: showHideRoads
+        });
       });
-    }, msec + 100);
   }
 
 

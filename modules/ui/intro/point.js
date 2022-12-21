@@ -46,26 +46,26 @@ export function uiIntroPoint(context, curtain) {
     const loc = buildingExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
- // bug: too hard to place a point in the building at z19 because of snapping to fill #719
-    // map.centerZoomEase(loc, 19, msec);
-    map.centerZoomEase(loc, 20, msec);
 
-    timeout(() => {
-      const tooltip = curtain.reveal({
-        revealSelector: 'button.add-point',
-        tipHtml: helpHtml('intro.points.points_info') + '{br}' + helpHtml('intro.points.add_point')
-      });
-      tooltip.selectAll('.popover-inner')
-        .insert('svg', 'span')
-        .attr('class', 'tooltip-illustration')
-        .append('use')
-        .attr('xlink:href', '#iD-graphic-points');
+    map
+      .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
+      .then(() => {
+        const tooltip = curtain.reveal({
+          revealSelector: 'button.add-point',
+          tipHtml: helpHtml('intro.points.points_info') + '{br}' + helpHtml('intro.points.add_point')
+        });
 
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'add-point') return;
-        continueTo(placePoint);
+        tooltip.selectAll('.popover-inner')
+          .insert('svg', 'span')
+          .attr('class', 'tooltip-illustration')
+          .append('use')
+          .attr('xlink:href', '#iD-graphic-points');
       });
-    }, msec + 100);
+
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'add-point') return;
+      continueTo(placePoint);
+    });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -288,22 +288,20 @@ export function uiIntroPoint(context, curtain) {
     const loc = buildingExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
- // bug: too hard to place a point in the building at z19 because of snapping to fill #719
-    // map.centerZoomEase(loc, 19, msec);
-    map.centerZoomEase(loc, 20, msec);
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: buildingExtent,
-        tipHtml: helpHtml('intro.points.reselect')
+    map
+      .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
+      .then(() => {
+        curtain.reveal({
+          revealExtent: buildingExtent,
+          tipHtml: helpHtml('intro.points.reselect')
+        });
       });
 
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'select') return;
-        continueTo(updatePoint);
-      });
-
-    }, msec + 100);
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'select') return;
+      continueTo(updatePoint);
+    });
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
