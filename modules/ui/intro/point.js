@@ -193,10 +193,10 @@ export function uiIntroPoint(context, curtain) {
     }, 400);
 
     // if user leaves select mode here, just continue with the tutorial.
-    context.on('exit.intro', () => continueTo(reselectPoint));
+    context.on('enter.intro', () => continueTo(reselectPoint));
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -239,10 +239,10 @@ export function uiIntroPoint(context, curtain) {
     history.on('change.intro', () => continueTo(addCloseEditor));
 
     // if user leaves select mode here, just continue with the tutorial.
-    context.on('exit.intro', () => continueTo(reselectPoint));
+    context.on('enter.intro', () => continueTo(reselectPoint));
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       nextStep();
     }
@@ -258,7 +258,7 @@ export function uiIntroPoint(context, curtain) {
     const iconSelector = '.entity-editor-pane button.close svg use';
     const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
 
-    context.on('exit.intro', () => continueTo(reselectPoint));
+    context.on('enter.intro', () => continueTo(reselectPoint));
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
@@ -266,7 +266,7 @@ export function uiIntroPoint(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -320,7 +320,7 @@ export function uiIntroPoint(context, curtain) {
     // reset pane, in case user happened to untag the point..
     container.select('.inspector-wrap .panewrap').style('right', '0%');
 
-    context.on('exit.intro', () => continueTo(reselectPoint));
+    context.on('enter.intro', () => continueTo(reselectPoint));
     history.on('change.intro', () => continueTo(updateCloseEditor));
 
     timeout(() => {
@@ -332,7 +332,7 @@ export function uiIntroPoint(context, curtain) {
     }, 400);
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       nextStep();
     }
@@ -349,7 +349,7 @@ export function uiIntroPoint(context, curtain) {
     // reset pane, in case user happened to change it..
     container.select('.inspector-wrap .panewrap').style('right', '0%');
 
-    context.on('exit.intro', () => continueTo(rightClickPoint));
+    context.on('enter.intro', () => continueTo(rightClickPoint));
 
     timeout(() => {
       curtain.reveal({
@@ -359,7 +359,7 @@ export function uiIntroPoint(context, curtain) {
     }, 500);
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -410,7 +410,7 @@ export function uiIntroPoint(context, curtain) {
       tipHtml: helpHtml('intro.points.delete')
     });
 
-    context.on('exit.intro', () => {
+    context.on('enter.intro', () => {
       if (!_pointID) return chapter.restart();
       const entity = context.hasEntity(_pointID);
       if (entity) return continueTo(rightClickPoint);  // point still exists
@@ -424,7 +424,7 @@ export function uiIntroPoint(context, curtain) {
 
     function continueTo(nextStep) {
       history.on('change.intro', null);
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -469,7 +469,7 @@ export function uiIntroPoint(context, curtain) {
 
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
-    context.on('enter.intro exit.intro', null);
+    context.on('enter.intro', null);
     history.on('change.intro', null);
     editMenu.on('toggled.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);

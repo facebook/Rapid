@@ -84,8 +84,7 @@ export function uiIntroLine(context, curtain) {
           .attr('xlink:href', '#iD-graphic-lines');
 
         context.on('enter.intro', mode => {
-          if (mode.id !== 'draw-line') return;
-          continueTo(startLine);
+          if (mode.id === 'draw-line') continueTo(startLine);
         });
       });
 
@@ -240,7 +239,7 @@ export function uiIntroLine(context, curtain) {
   function chooseCategoryRoad() {
     if (context.mode().id !== 'select') return chapter.restart();
 
-    context.on('exit.intro', () => chapter.restart());
+    context.on('enter.intro', () => chapter.restart());
 
     const button = container.select('.preset-category-road_minor .preset-list-button');
     if (button.empty()) return chapter.restart();
@@ -266,7 +265,7 @@ export function uiIntroLine(context, curtain) {
       button.on('click.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-list-button').on('click.intro', null);
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -277,7 +276,7 @@ export function uiIntroLine(context, curtain) {
   function choosePresetResidential() {
     if (context.mode().id !== 'select') return chapter.restart();
 
-    context.on('exit.intro', () => chapter.restart());
+    context.on('enter.intro', () => chapter.restart());
 
     const subgrid = container.select('.preset-category-road_minor .subgrid');
     if (subgrid.empty()) return chapter.restart();
@@ -295,11 +294,10 @@ export function uiIntroLine(context, curtain) {
         tipSelector: '.preset-highway-residential .preset-list-button',
         tipHtml: helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
       });
-
     }, 300);
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       container.selectAll('.preset-list-button').on('click.intro', null);
       nextStep();
     }
@@ -311,7 +309,7 @@ export function uiIntroLine(context, curtain) {
   function retryPresetResidential() {
     if (context.mode().id !== 'select') return chapter.restart();
 
-    context.on('exit.intro', () => chapter.restart());
+    context.on('enter.intro', () => chapter.restart());
 
     // disallow scrolling
     container.select('.inspector-wrap').on('wheel.intro', eventCancel);
@@ -330,7 +328,7 @@ export function uiIntroLine(context, curtain) {
     function continueTo(nextStep) {
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-list-button').on('click.intro', null);
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -339,7 +337,7 @@ export function uiIntroLine(context, curtain) {
   // "Give this road a name, then press the X button or Esc to close the feature editor."
   // Close entity editor / leave select mode to advance
   function nameRoad() {
-    context.on('exit.intro', () => continueTo(didNameRoad));
+    context.on('enter.intro', () => continueTo(didNameRoad));
 
     timeout(() => {
       curtain.reveal({
@@ -350,7 +348,7 @@ export function uiIntroLine(context, curtain) {
     }, 500);
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -859,7 +857,7 @@ export function uiIntroLine(context, curtain) {
       tipHtml: helpHtml('intro.lines.multi_delete')
     });
 
-    context.on('exit.intro', () => {
+    context.on('enter.intro', () => {
       if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
         return continueTo(multiSelect);  // exited select mode but roads still exist
       }
@@ -874,7 +872,7 @@ export function uiIntroLine(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       nextStep();
     }
@@ -916,7 +914,7 @@ export function uiIntroLine(context, curtain) {
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
     d3_select(window).on('pointerdown.intro mousedown.intro', null, true);
-    context.on('enter.intro exit.intro', null);
+    context.on('enter.intro', null);
     history.on('change.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);
     container.select('.preset-list-button').on('click.intro', null);

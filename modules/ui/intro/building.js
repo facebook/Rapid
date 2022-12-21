@@ -266,7 +266,7 @@ export function uiIntroBuilding(context, curtain) {
     }
 
     history.checkpoint('hasHouse');
-    context.on('exit.intro', () => continueTo(rightClickHouse));
+    context.on('enter.intro', () => continueTo(rightClickHouse));
 
     timeout(() => {
       curtain.reveal({
@@ -276,7 +276,7 @@ export function uiIntroBuilding(context, curtain) {
     }, 500);
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -595,7 +595,7 @@ export function uiIntroBuilding(context, curtain) {
 
     history.checkpoint('hasTank');
 
-    context.on('exit.intro', () => continueTo(rightClickTank));
+    context.on('enter.intro', () => continueTo(rightClickTank));
 
     timeout(() => {
       curtain.reveal({
@@ -605,7 +605,7 @@ export function uiIntroBuilding(context, curtain) {
     }, 500);
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -729,7 +729,7 @@ export function uiIntroBuilding(context, curtain) {
 
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
-    context.on('enter.intro exit.intro', null);
+    context.on('enter.intro', null);
     history.on('change.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);
     container.select('.preset-search-input').on('keydown.intro keyup.intro', null);

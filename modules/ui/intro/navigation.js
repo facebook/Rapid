@@ -223,7 +223,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonCallback:  () => continueTo(presetTownHall)
     });
 
-    context.on('exit.intro', () => continueTo(clickTownHall));
+    context.on('enter.intro', () => continueTo(clickTownHall));
 
     history.on('change.intro', () => {
       if (!context.hasEntity(townHallID)) {
@@ -232,7 +232,7 @@ export function uiIntroNavigation(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
@@ -262,7 +262,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonCallback: () => continueTo(fieldsTownHall)
     });
 
-    context.on('exit.intro', () => continueTo(clickTownHall));
+    context.on('enter.intro', () => continueTo(clickTownHall));
 
     history.on('change.intro', () => {
       if (!context.hasEntity(townHallID)) {
@@ -271,7 +271,7 @@ export function uiIntroNavigation(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
@@ -297,7 +297,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonCallback: () => continueTo(closeTownHall)
     });
 
-    context.on('exit.intro', () => continueTo(clickTownHall));
+    context.on('enter.intro', () => continueTo(clickTownHall));
 
     history.on('change.intro', () => {
       if (!context.hasEntity(townHallID)) {
@@ -306,7 +306,7 @@ export function uiIntroNavigation(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
@@ -326,7 +326,7 @@ export function uiIntroNavigation(context, curtain) {
       tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
     });
 
-    context.on('exit.intro', () => continueTo(searchStreet));
+    context.on('enter.intro', () => continueTo(searchStreet));
 
     history.on('change.intro', () => {
       // Update the X icon to a check icon in the tooltip if the user edits something.
@@ -338,7 +338,7 @@ export function uiIntroNavigation(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       nextStep();
     }
@@ -382,7 +382,7 @@ export function uiIntroNavigation(context, curtain) {
         tipHtml: helpHtml('intro.navigation.choose_street', { name: name })
       });
 
-      context.on('exit.intro', () => continueTo(selectedStreet));
+      context.on('enter.intro', () => continueTo(selectedStreet));
 
       container.select('.search-header input')
         .on('keydown.intro', eventCancel, true)
@@ -390,7 +390,7 @@ export function uiIntroNavigation(context, curtain) {
     }
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       container.select('.search-header input')
         .on('keydown.intro', null)
         .on('keyup.intro', null);
@@ -463,7 +463,7 @@ export function uiIntroNavigation(context, curtain) {
       tipHtml: tipHtml
     });
 
-    context.on('exit.intro', () => continueTo(play));
+    context.on('enter.intro', () => continueTo(play));
 
     history.on('change.intro', () => {
       // Update the X icon to a check icon in the tooltip if the user edits something.
@@ -482,7 +482,7 @@ export function uiIntroNavigation(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       history.on('change.intro', null);
       nextStep();
     }
@@ -511,7 +511,7 @@ export function uiIntroNavigation(context, curtain) {
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
     if (_onMove) map.off('move', _onMove);
-    context.on('enter.intro exit.intro', null);
+    context.on('enter.intro', null);
     history.on('change.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);
     container.select('.search-header input').on('keydown.intro keyup.intro', null);

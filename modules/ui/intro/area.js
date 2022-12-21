@@ -292,12 +292,12 @@ export function uiIntroArea(context, curtain) {
 
     }, 400);  // after editor pane visible
 
-    context.on('exit.intro', () => continueTo(searchPresets));
+    context.on('enter.intro', () => continueTo(searchPresets));
 
     function continueTo(nextStep) {
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.more-fields .combobox-input').on('click.intro', null);
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -343,11 +343,11 @@ export function uiIntroArea(context, curtain) {
       tipHtml: helpHtml('intro.areas.choose_field', { field: descriptionField.label() })
     });
 
-    context.on('exit.intro', () => continueTo(searchPresets));
+    context.on('enter.intro', () => continueTo(searchPresets));
 
     function continueTo(nextStep) {
       if (watcher) window.clearInterval(watcher);
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -371,7 +371,7 @@ export function uiIntroArea(context, curtain) {
       return continueTo(retryChooseDescription);
     }
 
-    context.on('exit.intro', () => continueTo(play));
+    context.on('enter.intro', () => continueTo(play));
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
@@ -379,7 +379,7 @@ export function uiIntroArea(context, curtain) {
     });
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -406,10 +406,10 @@ export function uiIntroArea(context, curtain) {
       buttonCallback: () => continueTo(clickAddField)
     });
 
-    context.on('exit.intro', () => continueTo(searchPresets));
+    context.on('enter.intro', () => continueTo(searchPresets));
 
     function continueTo(nextStep) {
-      context.on('exit.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -436,7 +436,7 @@ export function uiIntroArea(context, curtain) {
 
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
-    context.on('enter.intro exit.intro', null);
+    context.on('enter.intro', null);
     history.on('change.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);
     container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
