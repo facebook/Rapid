@@ -31,7 +31,7 @@ export function modeRotate(context, entityIDs) {
     var _pivot;
 
 
-    function doRotate(d3_event) {
+    function doRotate() {
         var fn;
         if (context.graph() !== _prevGraph) {
             fn = context.perform;

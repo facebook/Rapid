@@ -71,7 +71,6 @@ export function uiPane(id, context) {
         // only do it when we're right about to open the validation pane.
         if (pane.id === 'issues' && shown) {
             context.validator().validate();
-            console.log('firing validator.');
         }
     };
 

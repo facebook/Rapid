@@ -44,7 +44,7 @@ export function uiPresetIcon() {
   //
   // Point border is a map pin
   //
-  function renderPointBorder(container) {
+  function renderPointBorder(container) {   // eslint-disable-line no-unused-vars
     const px = 60;
     const PIN_PATH = 'M 0,0 C -2,-2 -8,-10 -8,-15 C -8,-19 -4,-23 0,-23 C 4,-23 8,-19 8,-15 C 8,-10 2,-2 0,0 Z';
 

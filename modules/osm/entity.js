@@ -140,7 +140,7 @@ osmEntity.prototype = {
     },
 
     // Bump internal version in place
-    touch: function(attrs) {
+    touch: function() {
         this.v = _nextv++;
         return this;
     },

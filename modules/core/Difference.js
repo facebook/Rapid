@@ -1,7 +1,6 @@
 import deepEqual from 'fast-deep-equal';
-
 import { vecEqual } from '@id-sdk/math';
-import { utilArrayDifference, utilArrayUnion } from '@id-sdk/util';
+import { utilArrayUnion } from '@id-sdk/util';
 
 
 /**

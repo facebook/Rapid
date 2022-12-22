@@ -32,7 +32,6 @@ export { uiIssuesInfo } from './issues_info';
 export { uiKeepRightDetails } from './keepRight_details';
 export { uiKeepRightEditor } from './keepRight_editor';
 export { uiKeepRightHeader } from './keepRight_header';
-export { uiLasso } from './lasso';
 export { uiLoading } from './loading';
 export { uiMapInMap } from './map_in_map';
 export { uiModal } from './modal';

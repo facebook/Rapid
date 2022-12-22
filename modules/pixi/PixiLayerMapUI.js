@@ -161,7 +161,6 @@ groupContainer.addChild(container);
       this._lassoPolygonDirty = false;
     }
 
-
     const LASSO_STYLE = {
       alpha: 0.7,
       dash: [6, 3],
@@ -169,30 +168,29 @@ groupContainer.addChild(container);
       color: 0xffffff
     };
 
-    //Simple state machine: If there's lasso data set, ensure that the lasso graphcs are added to the container.
+    // Simple state machine: If there's lasso data set, ensure that the lasso graphcs are added to the container.
     // If there's no lasso data set, remove the graphics from the container and stop rendering.
 
-    //No polygon data? remove the graphics from the container.
+    // No polygon data? remove the graphics from the container.
     if (!this._lassoPolygonData && this._lassoLineGraphics.parent) {
       this.lassoContainer.removeChildren();
+
     } else {
-      //Otherwise, we have polygon data but no parent. Add the graphics to the lasso container.
+      // Otherwise, we have polygon data but no parent. Add the graphics to the lasso container.
       if (!this._lassoLineGraphics.parent) {
         this.lassoContainer.addChild(this._lassoLineGraphics);
         this.lassoContainer.addChild(this._lassoFillGraphics);
       }
 
-        //Update polygon rendered to map UI
+      // Update polygon rendered to map UI
       this._lassoLineGraphics.clear();
       this._lassoFillGraphics.clear();
 
-
-      //Render the data only as long as we have something meaningful.
+      // Render the data only as long as we have something meaningful.
       if (this._lassoPolygonData?.length > 0) {
         const projectedCoords = this._lassoPolygonData.map(coord => projection.project(coord));
         new DashLine(this._lassoLineGraphics, LASSO_STYLE).drawPolygon(projectedCoords.flat());
         this._lassoFillGraphics.beginFill(0xaaaaaa, 0.5).drawPolygon(projectedCoords.flat()).endFill();
-
       }
     }
   }

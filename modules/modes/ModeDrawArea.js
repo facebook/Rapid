@@ -461,9 +461,7 @@ export class ModeDrawArea extends AbstractMode {
       }
 
       if (DEBUG) {
-        console.log(
-          `ModeDrawArea: _clickNode, extending line to ${targetNode.id}`
-        ); // eslint-disable-line no-console
+        console.log(`ModeDrawArea: _clickNode, extending line to ${targetNode.id}`); // eslint-disable-line no-console
       }
 
       this.lastNode = targetNode;
@@ -485,9 +483,7 @@ export class ModeDrawArea extends AbstractMode {
       this.drawWay = context.entity(this.drawWay.id);
     } else {
       if (DEBUG) {
-        console.log(
-          `ModeDrawArea: _clickNode, starting line at ${targetNode.id}`
-        ); // eslint-disable-line no-console
+        console.log(`ModeDrawArea: _clickNode, starting line at ${targetNode.id}`); // eslint-disable-line no-console
       }
 
       const context = this.context;

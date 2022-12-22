@@ -86,7 +86,7 @@ export class BehaviorPaste extends AbstractBehavior {
     e.preventDefault();
     e.stopPropagation();
 
-    const startGraph = context.graph();
+    // const startGraph = context.graph();
     const copyGraph = context.copyGraph();
     const projection = context.projection;
 

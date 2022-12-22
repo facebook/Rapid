@@ -172,7 +172,6 @@ export class ModeDragNode extends AbstractMode {
     const graph = context.graph();
     const projection = context.projection;
     const coord = eventData.coord;
-    let loc = projection.invert(coord);
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
     const target = eventData.target;
@@ -191,12 +190,13 @@ export class ModeDragNode extends AbstractMode {
       if (choice) {
         this.lastLoc = choice.loc;
       }
+
+    // No snap - use the coordinate we get from the event
     } else {
-      this.lastLoc = projection.invert(eventData.coord);
+      this.lastLoc = projection.invert(coord);
     }
 
     this._doMove(projection.project(this.lastLoc));
-
   }
 
 

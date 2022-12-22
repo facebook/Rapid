@@ -177,8 +177,8 @@ export class RendererMap extends EventEmitter {
         if (difference) {
           // todo - maybe only do this if difference.didChange.geometry?
           const complete = difference.complete();
-          for (const [entityID, entity] of complete) {
-            if (entity) {
+          for (const entity of complete.values()) {
+            if (entity) {      // may be undefined if entity was deleted
               entity.touch();  // bump version in place
             }
           }

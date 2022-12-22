@@ -139,7 +139,7 @@ export class AbstractFeature {
    * Override in a subclass with needed logic.
    * @abstract
    */
-  updateHalo(projection, zoom) {
+  updateHalo() {
   }
 
 
