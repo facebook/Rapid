@@ -38,6 +38,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "You can help improve this database by tracing buildings that aren't already mapped."
+  // Click Add Area to advance
   function addHouse() {
     context.enter('browse');
     history.reset('initial');
@@ -73,6 +75,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Let's add this house to the map by tracing its outline."
+  // Place the first point to advance
   function startHouse() {
     if (context.mode().id !== 'draw-area') return continueTo(addHouse);
 
@@ -104,6 +108,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Continue placing nodes to trace the outline of the building."
+  // Enter Select mode to advance
   function continueHouse() {
     if (context.mode().id !== 'draw-area') {
       return continueTo(addHouse);
@@ -149,6 +155,9 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "It looks like you had some trouble placing the nodes at the building corners. Try again!"
+  // This happens if the isMostlySquare check fails on the shape the user drew.
+  // Click Ok to advance
   function retryHouse() {
     curtain.reveal({
       revealExtent: new Extent(house).padByMeters(20),
@@ -156,9 +165,11 @@ export function uiIntroBuilding(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: addHouse
     });
- }
+  }
 
 
+  // "Choose Building Features from the list."
+  // Expand the Building Features category to advance
   function chooseCategoryBuilding() {
     if (!_houseID || !context.hasEntity(_houseID)) {
       return addHouse();
@@ -209,6 +220,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "There are many different types of buildings, but this one is clearly a house."
+  // Select the House preset to advance
   function choosePresetHouse() {
     if (!_houseID || !context.hasEntity(_houseID)) {
       return addHouse();
@@ -256,6 +269,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Press the X button or Esc to close the feature editor."
+  // Close entity editor / leave select mode to advance
   function closeEditorHouse() {
     if (!_houseID || !context.hasEntity(_houseID)) {
       return addHouse();
@@ -282,6 +297,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Right-click to select the building you created and show the edit menu."
+  // Select the house with edit menu open to advance
   function rightClickHouse() {
     if (!_houseID) return chapter.restart();
 
@@ -291,13 +308,11 @@ export function uiIntroBuilding(context, curtain) {
       context.enter(modeSelect(context, [_houseID]));
     }
 
-    let zoom = map.zoom();
-    if (zoom < 20) {    // make sure user is zoomed in enough to
-      zoom = 20;        // actually see orthagonalize do something
-    }
+    // make sure user is zoomed in enough to actually see orthagonalize do something
+    const setZoom = Math.max(map.zoom(), 20);
 
     map
-      .setCenterZoomAsync(house, zoom, 100)
+      .setCenterZoomAsync(house, setZoom, 100)
       .then(() => {
         const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
@@ -336,13 +351,16 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "The house that you just added will look even better with perfectly square corners."
+  // "Press the Square button to tidy up the building's shape."
+  // Square the building to advance
   function clickSquare() {
     if (!_houseID) return chapter.restart();
     const entity = context.hasEntity(_houseID);
     if (!entity) return continueTo(rightClickHouse);
 
     const node = container.select('.edit-menu-item-orthogonalize').node();
-    if (!node) { return continueTo(rightClickHouse); }
+    if (!node) return continueTo(rightClickHouse);
 
     const revealEditMenu = () => {
       curtain.reveal({
@@ -385,6 +403,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "You didn't press the Square button. Try again."
+  // Click Ok to advance
   function retryClickSquare() {
     context.enter('browse');
     curtain.reveal({
@@ -396,6 +416,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "See how the corners of the building moved into place? Let's learn another useful trick."
+  // Click Ok to advance
   function doneSquare() {
     history.checkpoint('doneSquare');
     curtain.reveal({
@@ -407,6 +429,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Next we'll trace this circular storage tank..."
+  // Click Add Area to advance
   function addTank() {
     context.enter('browse');
     history.reset('doneSquare');
@@ -436,24 +460,20 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Don't worry, you won't need to draw a perfect circle. Just draw an area inside the tank that touches its edge."
+  // Place the first point to advance
   function startTank() {
-    if (context.mode().id !== 'draw-area') {
-      return continueTo(addTank);
-    }
+    if (context.mode().id !== 'draw-area') return continueTo(addTank);
 
     _tankID = null;
 
-    timeout(() => {
-      const startString = helpHtml('intro.buildings.start_tank') +
-        helpHtml('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+    const startString = helpHtml('intro.buildings.start_tank') +
+      helpHtml('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
 
-      curtain.reveal({
-        revealExtent: new Extent(tank).padByMeters(20),
-        tipHTML: startString
-      });
-
-    }, 550);  // after easing
-
+    curtain.reveal({
+      revealExtent: new Extent(tank).padByMeters(20),
+      tipHTML: startString
+    });
 
     function onClick() {
       if (context.mode().id !== 'draw-area') return chapter.restart();
@@ -469,10 +489,10 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Add a few more nodes around the edge. The circle will be created outside the nodes that you draw."
+  // Enter Select mode to advance
   function continueTank() {
-    if (context.mode().id !== 'draw-area') {
-      return continueTo(addTank);
-    }
+    if (context.mode().id !== 'draw-area') return continueTo(addTank);
 
     _tankID = null;
 
@@ -503,6 +523,9 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Search for Storage Tank."
+  // "Choose Storage Tank from the list"
+  // Choose the Storage Tank preset to advance
   function searchPresetTank() {
     if (!_tankID || !context.hasEntity(_tankID)) {
       return addTank();
@@ -527,8 +550,8 @@ export function uiIntroBuilding(context, curtain) {
         revealSelector: '.preset-search-input',
         tipHtml: helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
       });
-
     }, 400);  // after preset list pane visible..
+
 
     context.on('enter.intro', mode => {
       if (!_tankID || !context.hasEntity(_tankID)) {
@@ -584,6 +607,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Press the X button or Esc to close the feature editor."
+  // Close entity editor / leave select mode to advance
   function closeEditorTank() {
     if (!_tankID || !context.hasEntity(_tankID)) {
       return addTank();
@@ -594,7 +619,6 @@ export function uiIntroBuilding(context, curtain) {
     }
 
     history.checkpoint('hasTank');
-
     context.on('enter.intro', () => continueTo(rightClickTank));
 
     timeout(() => {
@@ -611,36 +635,34 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Right-click to select the storage tank you created and show the edit menu."
+  // Select the tank with edit menu open to advance
   function rightClickTank() {
     if (!_tankID) return continueTo(addTank);
 
     context.enter('browse');
     history.reset('hasTank');
-    map.centerEase(tank, 500);
 
-    timeout(() => {
-      context.on('enter.intro', mode => {
-        if (mode.id !== 'select') return;
+    const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
+    curtain.reveal({
+      revealExtent: new Extent(tank).padByMeters(20),
+      tipHTML: helpHtml(`intro.buildings.${textID}`)
+    });
 
-        const ids = context.selectedIDs();
-        if (ids.length !== 1 || ids[0] !== _tankID) return;
+    context.on('enter.intro', mode => {
+      if (mode.id !== 'select') return;
 
-        timeout(() => {
-          const node = container.select('.edit-menu-item-circularize').node();
-          if (!node) return;
-          continueTo(clickCircle);
-        }, 50);  // after menu visible
-      });
+      const ids = context.selectedIDs();
+      if (ids.length !== 1 || ids[0] !== _tankID) return;
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
-      curtain.reveal({
-        revealExtent: new Extent(tank).padByMeters(20),
-        tipHTML: helpHtml(`intro.buildings.${textID}`)
-      });
+      timeout(() => {
+        const node = container.select('.edit-menu-item-circularize').node();
+        if (!node) return;
+        continueTo(clickCircle);
+      }, 50);  // after menu visible
+    });
 
-      history.on('change.intro', () => continueTo(rightClickTank));
-
-    }, 600);
+    history.on('change.intro', () => continueTo(rightClickTank));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -650,13 +672,15 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "Press the Circularize button to make the tank a circle."
+  // Circularize the tank to advance
   function clickCircle() {
     if (!_tankID) return chapter.restart();
     const entity = context.hasEntity(_tankID);
     if (!entity) return continueTo(rightClickTank);
 
     const node = container.select('.edit-menu-item-circularize').node();
-    if (!node) { return continueTo(rightClickTank); }
+    if (!node) return continueTo(rightClickTank);
 
     const revealEditMenu = () => {
       curtain.reveal({
@@ -699,6 +723,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // "You didn't press the {circularize_icon} {circularize} button. Try again."
+  // Click Ok to advance
   function retryClickCircle() {
     context.enter('browse');
     curtain.reveal({
@@ -710,6 +736,8 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
+  // Free play
+  // Click on Rapid Features (or another) chapter to advance
   function play() {
     dispatch.call('done');
     curtain.reveal({
