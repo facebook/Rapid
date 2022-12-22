@@ -90,7 +90,7 @@ export function uiIntroArea(context, curtain) {
 
     curtain.reveal({
       revealExtent: playgroundExtent,
-      tipHTML: startDrawString
+      tipHtml: startDrawString
     });
 
     timeout(() => {
@@ -113,7 +113,7 @@ export function uiIntroArea(context, curtain) {
 
     curtain.reveal({
       revealExtent: playgroundExtent,
-      tipHTML: helpHtml('intro.areas.continue_playground')
+      tipHtml: helpHtml('intro.areas.continue_playground')
     });
 
     function onClick() {
@@ -144,7 +144,7 @@ export function uiIntroArea(context, curtain) {
 
     curtain.reveal({
       revealExtent: playgroundExtent,
-      tipHTML: finishString
+      tipHtml: finishString
     });
 
     function onFinish() {

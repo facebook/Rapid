@@ -95,7 +95,7 @@ export function uiIntroBuilding(context, curtain) {
 
         curtain.reveal({
           revealExtent: new Extent(house).padByMeters(20),
-          tipHTML: startString
+          tipHtml: startString
         });
       });
 
@@ -123,7 +123,7 @@ export function uiIntroBuilding(context, curtain) {
 
     curtain.reveal({
       revealExtent: new Extent(house).padByMeters(20),
-      tipHTML: continueString
+      tipHtml: continueString
     });
 
     context.on('enter.intro', mode => {
@@ -161,7 +161,7 @@ export function uiIntroBuilding(context, curtain) {
   function retryHouse() {
     curtain.reveal({
       revealExtent: new Extent(house).padByMeters(20),
-      tipHTML: helpHtml('intro.buildings.retry_building'),
+      tipHtml: helpHtml('intro.buildings.retry_building'),
       buttonText: t.html('intro.ok'),
       buttonCallback: addHouse
     });
@@ -317,7 +317,7 @@ export function uiIntroBuilding(context, curtain) {
         const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
           revealExtent: new Extent(house).padByMeters(20),
-          tipHTML: helpHtml(`intro.buildings.${textID}`)
+          tipHtml: helpHtml(`intro.buildings.${textID}`)
         });
 
         timeout(() => {
@@ -409,7 +409,7 @@ export function uiIntroBuilding(context, curtain) {
     context.enter('browse');
     curtain.reveal({
       revealExtent: new Extent(house).padByMeters(20),
-      tipHTML: helpHtml('intro.buildings.retry_square'),
+      tipHtml: helpHtml('intro.buildings.retry_square'),
       buttonText: t.html('intro.ok'),
       buttonCallback: rightClickHouse
     });
@@ -422,7 +422,7 @@ export function uiIntroBuilding(context, curtain) {
     history.checkpoint('doneSquare');
     curtain.reveal({
       revealExtent: new Extent(house).padByMeters(20),
-      tipHTML: helpHtml('intro.buildings.done_square'),
+      tipHtml: helpHtml('intro.buildings.done_square'),
       buttonText: t.html('intro.ok'),
       buttonCallback: addTank
     });
@@ -472,7 +472,7 @@ export function uiIntroBuilding(context, curtain) {
 
     curtain.reveal({
       revealExtent: new Extent(tank).padByMeters(20),
-      tipHTML: startString
+      tipHtml: startString
     });
 
     function onClick() {
@@ -502,7 +502,7 @@ export function uiIntroBuilding(context, curtain) {
 
     curtain.reveal({
       revealExtent: new Extent(tank).padByMeters(20),
-      tipHTML: continueString
+      tipHtml: continueString
     });
 
     context.on('enter.intro', mode => {
@@ -646,7 +646,7 @@ export function uiIntroBuilding(context, curtain) {
     const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
     curtain.reveal({
       revealExtent: new Extent(tank).padByMeters(20),
-      tipHTML: helpHtml(`intro.buildings.${textID}`)
+      tipHtml: helpHtml(`intro.buildings.${textID}`)
     });
 
     context.on('enter.intro', mode => {
@@ -729,7 +729,7 @@ export function uiIntroBuilding(context, curtain) {
     context.enter('browse');
     curtain.reveal({
       revealExtent: new Extent(tank).padByMeters(20),
-      tipHTML: helpHtml('intro.buildings.retry_circle'),
+      tipHtml: helpHtml('intro.buildings.retry_circle'),
       buttonText: t.html('intro.ok'),
       buttonCallback: rightClickTank
     });

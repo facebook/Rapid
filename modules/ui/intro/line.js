@@ -113,7 +113,7 @@ export function uiIntroLine(context, curtain) {
 
     curtain.reveal({
       revealExtent: tulipRoadStartExtent,
-      tipHTML: startLineString
+      tipHtml: startLineString
     });
 
     context.behaviors.get('draw').on('click', onClick);
@@ -153,7 +153,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => {
         curtain.reveal({
           revealExtent: tulipRoadMidExtent,
-          tipHTML: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+          tipHtml: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
         });
       });
 
@@ -186,7 +186,7 @@ export function uiIntroLine(context, curtain) {
 
     curtain.reveal({
       revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
-      tipHTML: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+      tipHtml: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
     });
 
     timeout(chapter.restart, 3000);
@@ -213,7 +213,7 @@ export function uiIntroLine(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.main-map',
-          tipHTML: continueLineText
+          tipHtml: continueLineText
         });
       });
 
@@ -384,7 +384,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => {
         curtain.reveal({
           revealExtent: woodStreetExtent,
-          tipHTML: helpHtml('intro.lines.update_line'),
+          tipHtml: helpHtml('intro.lines.update_line'),
           buttonText: t.html('intro.ok'),
           buttonCallback: addNode
         });
@@ -545,7 +545,7 @@ export function uiIntroLine(context, curtain) {
 
     curtain.reveal({
       revealExtent: woodStreetExtent,
-      tipHTML: helpHtml('intro.lines.continue_drag_midpoint'),
+      tipHtml: helpHtml('intro.lines.continue_drag_midpoint'),
       buttonText: t.html('intro.ok'),
       buttonCallback: () => continueTo(deleteLines)
     });
@@ -579,7 +579,7 @@ export function uiIntroLine(context, curtain) {
       .then(() => {
         curtain.reveal({
           revealExtent: deleteLinesExtent,
-          tipHTML: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
+          tipHtml: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
           buttonText: t.html('intro.ok'),
           buttonCallback: rightClickIntersection
         });
@@ -601,7 +601,7 @@ export function uiIntroLine(context, curtain) {
 
     curtain.reveal({
       revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
-      tipHTML: rightClickString
+      tipHtml: rightClickString
     });
 
     context.on('enter.intro', mode => {
@@ -669,7 +669,7 @@ export function uiIntroLine(context, curtain) {
     context.enter('browse');
     curtain.reveal({
       revealExtent: deleteLinesExtent,
-      tipHTML: helpHtml('intro.lines.retry_split'),
+      tipHtml: helpHtml('intro.lines.retry_split'),
       buttonText: t.html('intro.ok'),
       buttonCallback: rightClickIntersection
     });
@@ -706,7 +706,7 @@ export function uiIntroLine(context, curtain) {
 
     curtain.reveal({
       revealExtent: deleteLinesExtent,
-      tipHTML: helpHtml(string, { street1: street, street2: street })
+      tipHtml: helpHtml(string, { street1: street, street2: street })
     });
 
     context.on('enter.intro', () => {
@@ -769,7 +769,7 @@ export function uiIntroLine(context, curtain) {
 
       curtain.reveal({
         revealExtent: deleteLinesExtent,
-        tipHTML: string
+        tipHtml: string
       });
 
     // }, msec + 100);
@@ -810,7 +810,7 @@ export function uiIntroLine(context, curtain) {
 
       curtain.reveal({
         revealExtent: deleteLinesExtent,
-        tipHTML: rightClickString
+        tipHtml: rightClickString
       });
     // }, msec + 100);
 
@@ -885,7 +885,7 @@ export function uiIntroLine(context, curtain) {
     context.enter('browse');
     curtain.reveal({
       revealExtent: deleteLinesExtent,
-      tipHTML: helpHtml('intro.lines.retry_delete'),
+      tipHtml: helpHtml('intro.lines.retry_delete'),
       buttonText: t.html('intro.ok'),
       buttonCallback: multiSelect
     });
