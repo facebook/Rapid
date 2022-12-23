@@ -248,7 +248,7 @@ export function uiIntroLine(context, curtain) {
     container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     timeout(() => {
-      // reset pane, in case user somehow happened to change it..
+      // force preset pane open, in case user somehow happened to change it..
       container.select('.inspector-wrap .panewrap').style('right', '-100%');
 
       curtain.reveal({

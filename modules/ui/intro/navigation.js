@@ -4,7 +4,6 @@ import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { helpHtml, icon, transitionTime } from './helper';
 
@@ -38,9 +37,32 @@ export function uiIntroNavigation(context, curtain) {
   }
 
 
-  function isTownHallSelected() {
+  // Helper function to make sure the Town Hall exists _and_ is selected
+  function _isTownHallSelected() {
+    if (!context.hasEntity(townHallID)) return false;
+    if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === townHallID;
+  }
+
+  // Helper function to make sure the Spring Street exists
+  function _doesSpringStreetExist() {
+    return context.hasEntity(springStreetID);
+  }
+
+  // Helper function to make sure Spring Street exists _and_ is selected
+  function _isSpringStreetSelected() {
+    if (!context.hasEntity(springStreetID)) return false;
+    if (context.mode().id !== 'select') return false;
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === springStreetID;
+  }
+
+  // Helper function to force the entity inspector open
+  // These things happen automatically but we want to be sure
+  function _showEntityEditor() {
+    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
+    container.select('.inspector-wrap .panewrap').style('right', '0%');
   }
 
 
@@ -139,9 +161,6 @@ export function uiIntroNavigation(context, curtain) {
     context.enter('browse');
     history.reset('initial');
 
-    const entity = context.hasEntity(townHallID);
-    if (!entity) return;
-
     const loc = townHallExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
@@ -159,22 +178,10 @@ export function uiIntroNavigation(context, curtain) {
         });
       });
 
-
-    context.on('enter.intro', () => {
-      if (isTownHallSelected()) {
-        continueTo(selectedTownHall);
-      }
-    });
-
-    history.on('change.intro', () => {
-      if (!context.hasEntity(townHallID)) {
-        continueTo(clickTownHall);
-      }
-    });
+    context.on('enter.intro', () => continueTo(selectedTownHall));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
-      history.on('change.intro', null);
       nextStep();
     }
   }
@@ -183,38 +190,24 @@ export function uiIntroNavigation(context, curtain) {
   // "Great! The point is now selected..."
   // Click Ok to advance
   function selectedTownHall() {
-    if (!isTownHallSelected()) return clickTownHall();
-
-    const entity = context.hasEntity(townHallID);
-    if (!entity) return clickTownHall();
+    if (!_isTownHallSelected()) return clickTownHall();
 
     curtain.reveal({
       revealExtent: townHallExtent,
       tipHtml: helpHtml('intro.navigation.selected_townhall'),
       buttonText: t.html('intro.ok'),
-      buttonCallback: () => continueTo(editorTownHall)
+      buttonCallback: editorTownHall
     });
-
-    history.on('change.intro', () => {
-      if (!context.hasEntity(townHallID)) {
-        continueTo(clickTownHall);
-      }
-    });
-
-    function continueTo(nextStep) {
-      history.on('change.intro', null);
-      nextStep();
-    }
   }
 
 
   // "When a feature is selected, the feature editor is displayed alongside the map."
   // Click Ok to advance
   function editorTownHall() {
-    if (!isTownHallSelected()) return clickTownHall();
+    if (!_isTownHallSelected()) return clickTownHall();
 
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    _showEntityEditor();
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
@@ -223,17 +216,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonCallback:  () => continueTo(presetTownHall)
     });
 
-    context.on('enter.intro', () => continueTo(clickTownHall));
-
-    history.on('change.intro', () => {
-      if (!context.hasEntity(townHallID)) {
-        continueTo(clickTownHall);
-      }
-    });
-
     function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
@@ -243,12 +226,10 @@ export function uiIntroNavigation(context, curtain) {
   // "The top part of the feature editor shows the feature's type."
   // Click Ok to advance
   function presetTownHall() {
-    if (!isTownHallSelected()) return clickTownHall();
+    if (!_isTownHallSelected()) return clickTownHall();
 
-    // reset pane, in case user happened to change it..
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    _showEntityEditor();
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
 
     // preset match, in case the user happened to change it.
     const entity = context.entity(context.selectedIDs()[0]);
@@ -262,17 +243,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonCallback: () => continueTo(fieldsTownHall)
     });
 
-    context.on('enter.intro', () => continueTo(clickTownHall));
-
-    history.on('change.intro', () => {
-      if (!context.hasEntity(townHallID)) {
-        continueTo(clickTownHall);
-      }
-    });
-
     function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
@@ -282,12 +253,10 @@ export function uiIntroNavigation(context, curtain) {
   // "The middle part of the feature editor contains fields..."
   // Click Ok to advance
   function fieldsTownHall() {
-    if (!isTownHallSelected()) return clickTownHall();
+    if (!_isTownHallSelected()) return clickTownHall();
 
-    // reset pane, in case user happened to change it..
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    _showEntityEditor();
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane .section-preset-fields',
@@ -297,17 +266,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonCallback: () => continueTo(closeTownHall)
     });
 
-    context.on('enter.intro', () => continueTo(clickTownHall));
-
-    history.on('change.intro', () => {
-      if (!context.hasEntity(townHallID)) {
-        continueTo(clickTownHall);
-      }
-    });
-
     function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
@@ -316,8 +275,9 @@ export function uiIntroNavigation(context, curtain) {
 
   // Close entity editor / leave select mode to advance
   function closeTownHall() {
-    if (!isTownHallSelected()) return clickTownHall();
+    if (!_isTownHallSelected()) return clickTownHall();
 
+    _showEntityEditor();
     const iconSelector = '.entity-editor-pane button.close svg use';
     const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
     curtain.reveal({
@@ -328,18 +288,8 @@ export function uiIntroNavigation(context, curtain) {
 
     context.on('enter.intro', () => continueTo(searchStreet));
 
-    history.on('change.intro', () => {
-      // Update the X icon to a check icon in the tooltip if the user edits something.
-      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
-      });
-    });
-
     function continueTo(nextStep) {
       context.on('enter.intro', null);
-      history.on('change.intro', null);
       nextStep();
     }
   }
@@ -372,6 +322,8 @@ export function uiIntroNavigation(context, curtain) {
   // "Choose Spring Street from the list to select it..."
   // Click Spring Street item to advance
   function checkSearchResult() {
+    if (!_doesSpringStreetExist()) return continueTo(searchStreet);
+
     const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
     const firstName = first.select('.entity-name');
     const name = t('intro.graph.name.spring-street');
@@ -402,9 +354,7 @@ export function uiIntroNavigation(context, curtain) {
   // "Great! Spring Street is now selected..."
   // Click Ok to advance
   function selectedStreet() {
-    if (!context.hasEntity(springStreetID)) {
-      return searchStreet();
-    }
+    if (!_isSpringStreetSelected()) return searchStreet();
 
     // Note, the map is about to try easing to show all of Spring Street
     // due to the user clicking it in the feature list.
@@ -419,36 +369,19 @@ export function uiIntroNavigation(context, curtain) {
           revealPadding: 40,
           tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
           buttonText: t.html('intro.ok'),
-          buttonCallback: () => continueTo(editorStreet)
+          buttonCallback: editorStreet
         });
       });
-
-    context.on('enter.intro', mode => {
-      if (!context.hasEntity(springStreetID)) return continueTo(searchStreet);
-
-      const ids = context.selectedIDs();
-      if (mode.id !== 'select' || !ids.length || ids[0] !== springStreetID) {
-        context.enter(modeSelect(context, [springStreetID]));  // keep Spring Street selected, even if user unselected it
-      }
-    });
-
-    history.on('change.intro', () => {
-      if (!context.hasEntity(springStreetID)) {
-        timeout(() => continueTo(searchStreet), 300);  // after any transition (e.g. if user deleted intersection)
-      }
-    });
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
-      nextStep();
-    }
   }
 
 
   // "The fields shown for a street are different than the fields that were shown for the town hall."
   // Close Entity editor / leave select mode to advance
   function editorStreet() {
+    if (!_isSpringStreetSelected()) return searchStreet();
+
+    _showEntityEditor();
+
     const iconSelector = '.entity-editor-pane button.close svg use';
     const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
     const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
@@ -465,25 +398,8 @@ export function uiIntroNavigation(context, curtain) {
 
     context.on('enter.intro', () => continueTo(play));
 
-    history.on('change.intro', () => {
-      // Update the X icon to a check icon in the tooltip if the user edits something.
-      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
-      const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
-        helpHtml('intro.navigation.editor_street', {
-          button: icon(iconName, 'inline'),
-          field1: onewayField.label(),
-          field2: maxspeedField.label()
-        });
-
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: tipHtml
-      });
-    });
-
     function continueTo(nextStep) {
       context.on('enter.intro', null);
-      history.on('change.intro', null);
       nextStep();
     }
   }

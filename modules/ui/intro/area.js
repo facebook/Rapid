@@ -22,7 +22,7 @@ export function uiIntroArea(context, curtain) {
   const descriptionField = presetManager.field('description');
 
   let _timeouts = [];
-  let _areaID;
+  let _areaID = null;
 
 
   function timeout(fn, t) {
@@ -33,6 +33,33 @@ export function uiIntroArea(context, curtain) {
   function eventCancel(d3_event) {
     d3_event.stopPropagation();
     d3_event.preventDefault();
+  }
+
+
+  // Helper function to make sure the area exists
+  function _doesAreaExist() {
+    return _areaID && context.hasEntity(_areaID);
+  }
+
+  // Helper function to make sure the area is selected
+  function _isAreaSelected() {
+    if (context.mode().id !== 'select') return false;
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === _areaID;
+  }
+
+  // Helper function to force the entity inspector open
+  // These things happen automatically but we want to be sure
+  function _showEntityEditor() {
+    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
+    container.select('.inspector-wrap .panewrap').style('right', '0%');
+  }
+
+  // Helper function to force the preset list open
+  // These things happen automatically but we want to be sure
+  function _showPresetList() {
+    container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
+    container.select('.inspector-wrap .panewrap').style('right', '-100%');
   }
 
 
@@ -62,10 +89,7 @@ export function uiIntroArea(context, curtain) {
           .attr('xlink:href', '#iD-graphic-areas');
       });
 
-    context.on('enter.intro', mode => {
-      if (mode.id !== 'draw-area') return;
-      continueTo(startPlayground);
-    });
+    context.on('enter.intro', () => continueTo(startPlayground));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -77,28 +101,33 @@ export function uiIntroArea(context, curtain) {
   // "Let's add this playground to the map by drawing an area..."
   // Click to place the initial point to advance
   function startPlayground() {
-    if (context.mode().id !== 'draw-area') return chapter.restart();
+    if (context.mode().id !== 'draw-area') return continueTo(addArea);
     _areaID = null;
 
-    function onClick() {
-      if (context.mode().id !== 'draw-area') return chapter.restart();
-      continueTo(continuePlayground);
-    }
-
-    const textID = context.lastPointerType() === 'mouse' ? 'starting_node_click' : 'starting_node_tap';
-    const startDrawString = helpHtml('intro.areas.start_playground') + helpHtml(`intro.areas.${textID}`);
+    const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+    const startDrawString = helpHtml('intro.areas.start_playground') +
+      helpHtml(`intro.areas.starting_node_${textID}`);
 
     curtain.reveal({
       revealExtent: playgroundExtent,
       tipHtml: startDrawString
     });
 
-    timeout(() => {
-      context.behaviors.get('draw').on('click', onClick);
-    }, 250);  // after reveal
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      for (const entity of difference.created()) {  // created a node and a way
+        if (entity.type === 'way') {
+          _areaID = entity.id;
+          return continueTo(continuePlayground);
+        }
+      }
+    });
+
+    context.on('enter.intro', () => continueTo(addArea));
 
     function continueTo(nextStep) {
-      context.behaviors.get('draw').off('click', onClick);
+      history.on('change.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -107,28 +136,27 @@ export function uiIntroArea(context, curtain) {
   // "Continue drawing the area by placing more nodes along the playground's edge..."
   // Add at least 5 nodes to advance
   function continuePlayground() {
-    if (context.mode().id !== 'draw-area') return chapter.restart();
-
-    _areaID = context.selectedIDs()[0];
+    if (!_doesAreaExist() || context.mode().id !== 'draw-area') return continueTo(addArea);
 
     curtain.reveal({
       revealExtent: playgroundExtent,
       tipHtml: helpHtml('intro.areas.continue_playground')
     });
 
-    function onClick() {
-      const entity = context.hasEntity(_areaID);
-      if (entity && entity.nodes.length >= 5) {
-        return continueTo(finishPlayground);
-      } else {
-        return;
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      for (const entity of difference.modified()) {  // modified the way
+        if (entity.id === _areaID && entity.nodes.length > 5) {
+          return continueTo(finishPlayground);
+        }
       }
-    }
+    });
 
-    context.behaviors.get('draw').on('click', onClick);
+    context.on('enter.intro', () => continueTo(addArea));
 
     function continueTo(nextStep) {
-      context.behaviors.get('draw').off('click', onClick);
+      history.on('change.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -137,9 +165,10 @@ export function uiIntroArea(context, curtain) {
   // "Finish the area by pressing return, or clicking again on either the first or last node..."
   // Finish the area to advance
   function finishPlayground() {
-    if (context.mode().id !== 'draw-area') return chapter.restart();
+    if (!_doesAreaExist() || context.mode().id !== 'draw-area') return continueTo(addArea);
 
-    const finishString = helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
+    const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+    const finishString = helpHtml(`intro.areas.finish_area_${textID}`) +
       helpHtml('intro.areas.finish_playground');
 
     curtain.reveal({
@@ -147,14 +176,10 @@ export function uiIntroArea(context, curtain) {
       tipHtml: finishString
     });
 
-    function onFinish() {
-      continueTo(searchPresets);
-    }
-
-    context.behaviors.get('draw').on('finish', onFinish);
+    context.on('enter.intro', () => continueTo(searchPresets));
 
     function continueTo(nextStep) {
-      context.behaviors.get('draw').off('finish', onFinish);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -162,21 +187,14 @@ export function uiIntroArea(context, curtain) {
 
   // Search for Playground and select it from the preset search result to advance
   function searchPresets() {
-    if (!_areaID || !context.hasEntity(_areaID)) {
-      return continueTo(addArea);
-    }
-
-    const ids = context.selectedIDs();
-    if (context.mode().id !== 'select' || !ids.length || ids[0] !== _areaID) {
-      context.enter(modeSelect(context, [_areaID]));
-    }
+    if (!_doesAreaExist()) return continueTo(addArea);
+    if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
 
     // disallow scrolling
     container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     timeout(() => {
-      // reset pane, in case user somehow happened to change it..
-      container.select('.inspector-wrap .panewrap').style('right', '-100%');
+      _showPresetList();
 
       container.select('.preset-search-input')
         .on('keydown.intro', null)
@@ -187,12 +205,10 @@ export function uiIntroArea(context, curtain) {
         revealPadding: 5,
         tipHtml: helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
       });
-
     }, 400);  // after preset list pane visible..
 
 
-    history.on('change.intro', null);
-
+    // Get user to choose the Playground preset from the search result
     function checkPresetSearch() {
       const first = container.select('.preset-list-item:first-child');
       if (!first.classed('preset-leisure-playground')) return;
@@ -206,13 +222,26 @@ export function uiIntroArea(context, curtain) {
       container.select('.preset-search-input')
         .on('keydown.intro', eventCancel, true)
         .on('keyup.intro', null);
-
-      history.on('change.intro', () => continueTo(clickAddField));
     }
 
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      const modified = difference.modified();
+      if (modified.length === 1) {
+        if (presetManager.match(modified[0], context.graph()) === playgroundPreset) {
+          return continueTo(clickAddField);
+        } else {
+          return continueTo(searchPresets);  // didn't pick playground, retry
+        }
+      }
+    });
+
+    context.on('enter.intro', () => continueTo(searchPresets));  // retry
+
     function continueTo(nextStep) {
-      container.select('.inspector-wrap').on('wheel.intro', null);
       history.on('change.intro', null);
+      context.on('enter.intro', null);
+      container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
       nextStep();
     }
@@ -223,15 +252,10 @@ export function uiIntroArea(context, curtain) {
   // "Instead let's add some additional details about the playground to the description field..."
   // Expand the Add field combo to advance
   function clickAddField() {
-    if (!_areaID || !context.hasEntity(_areaID)) {
-      return addArea();
-    }
-    const ids = context.selectedIDs();
-    if (context.mode().id !== 'select' || !ids.length || ids[0] !== _areaID) {
-      return searchPresets();
-    }
+    if (!_doesAreaExist()) return continueTo(addArea);
+    if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
 
-    if (!container.select('.form-field-description').empty()) {
+    if (!container.select('.form-field-description').empty()) {  // has description field already
       return continueTo(describePlayground);
     }
 
@@ -239,11 +263,10 @@ export function uiIntroArea(context, curtain) {
     container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     timeout(() => {
-      // reset pane, in case user somehow happened to change it..
-      container.select('.inspector-wrap .panewrap').style('right', '0%');
+      _showEntityEditor();
 
       // It's possible for the user to add a description in a previous step..
-      // If they did this already, just continue to next step.
+      // If they did this already, just complete this chapter
       const entity = context.entity(_areaID);
       if (entity.tags.description) {
         return continueTo(play);
@@ -295,9 +318,9 @@ export function uiIntroArea(context, curtain) {
     context.on('enter.intro', () => continueTo(searchPresets));
 
     function continueTo(nextStep) {
+      context.on('enter.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.more-fields .combobox-input').on('click.intro', null);
-      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -306,15 +329,10 @@ export function uiIntroArea(context, curtain) {
   // "Choose Description from the list..."
   // Add the Description field to advance
   function chooseDescriptionField() {
-    if (!_areaID || !context.hasEntity(_areaID)) {
-      return addArea();
-    }
-    const ids = context.selectedIDs();
-    if (context.mode().id !== 'select' || !ids.length || ids[0] !== _areaID) {
-      return searchPresets();
-    }
+    if (!_doesAreaExist()) return continueTo(addArea);
+    if (!_isAreaSelected()) return continueTo(searchPresets);
 
-    if (!container.select('.form-field-description').empty()) {
+    if (!container.select('.form-field-description').empty()) {  // has description field already
       return continueTo(describePlayground);
     }
 
@@ -337,6 +355,8 @@ export function uiIntroArea(context, curtain) {
       }
     }, 300);
 
+    _showEntityEditor();
+
     curtain.reveal({
       revealSelector: 'div.combobox',
       revealPadding: 5,
@@ -356,27 +376,21 @@ export function uiIntroArea(context, curtain) {
   // "Add a description, then press the X button to close the feature editor..."
   // Close entity editor / leave select mode to advance
   function describePlayground() {
-    if (!_areaID || !context.hasEntity(_areaID)) {
-      return addArea();
-    }
-    const ids = context.selectedIDs();
-    if (context.mode().id !== 'select' || !ids.length || ids[0] !== _areaID) {
-      return searchPresets();
-    }
+    if (!_doesAreaExist()) return continueTo(addArea);
+    if (!_isAreaSelected()) return continueTo(searchPresets);
 
-    // reset pane, in case user happened to change it..
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
-
-    if (container.select('.form-field-description').empty()) {
+    if (container.select('.form-field-description').empty()) {  // no description field
       return continueTo(retryChooseDescription);
     }
 
-    context.on('enter.intro', () => continueTo(play));
+    _showEntityEditor();
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
       tipHtml: helpHtml('intro.areas.describe_playground', { button: icon('#iD-icon-close', 'inline') })
     });
+
+    context.on('enter.intro', () => continueTo(play));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -388,16 +402,9 @@ export function uiIntroArea(context, curtain) {
   // "You didn't select the Description field. Let's try again..."
   // Click Ok to advance
   function retryChooseDescription() {
-    if (!_areaID || !context.hasEntity(_areaID)) {
-      return addArea();
-    }
-    const ids = context.selectedIDs();
-    if (context.mode().id !== 'select' || !ids.length || ids[0] !== _areaID) {
-      return searchPresets();
-    }
-
-    // reset pane, in case user happened to change it..
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
+    if (!_doesAreaExist()) return continueTo(addArea);
+    if (!_isAreaSelected()) return continueTo(searchPresets);
+    _showEntityEditor();
 
     curtain.reveal({
       revealSelector: '.entity-editor-pane',
@@ -436,8 +443,8 @@ export function uiIntroArea(context, curtain) {
 
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
-    context.on('enter.intro', null);
     history.on('change.intro', null);
+    context.on('enter.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);
     container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
     container.select('.more-fields .combobox-input').on('click.intro', null);
