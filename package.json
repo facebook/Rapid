@@ -61,7 +61,7 @@
     "@pixi/filter-adjustment": "^5.0.0",
     "@pixi/filter-convolution": "^5.0.0",
     "@pixi/filter-glow": "^5.1.0",
-    "@tmcw/togeojson": "^5.5.0",
+    "@tmcw/togeojson": "^5.6.0",
     "@turf/bbox-clip": "^6.0.0",
     "create-react-class": "^15.7.0",
     "fast-deep-equal": "~3.1.1",
