@@ -90,7 +90,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@ideditor/temaki": "~5.2.0",
     "@mapbox/maki": "^8.0.1",
-    "@playwright/test": "^1.29.0",
+    "@playwright/test": "^1.29.1",
     "autoprefixer": "^10.4.13",
     "benchmark": "^2.1.4",
     "btoa": "^1.2.1",
