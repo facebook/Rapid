@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
-import { helpHtml, icon, isMostlySquare, transitionTime } from './helper';
+import { helpHtml, isMostlySquare, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, curtain) {
@@ -278,7 +278,7 @@ export function uiIntroBuilding(context, curtain) {
 
   // Set a history checkpoint here, so we can return back to it if needed
   function hasHouse() {
-    if (!_doesHouseExist()) return continueTo(addHouse);
+    if (!_doesHouseExist()) return addHouse();
 
     // Make sure it's still a house, in case user somehow changed it..
     const entity = context.entity(_houseID);
@@ -562,7 +562,7 @@ export function uiIntroBuilding(context, curtain) {
 
   // Set a history checkpoint here, so we can return back to it if needed
   function hasTank() {
-    if (!_doesTankExist()) return continueTo(addTank);
+    if (!_doesTankExist()) return addTank();
 
     // Make sure it's still a tank, in case user somehow changed it..
     const entity = context.entity(_tankID);

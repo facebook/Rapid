@@ -43,7 +43,7 @@ export function uiIntroLine(context, curtain) {
 
   let _washingtonSegmentID = null;
   let _timeouts = [];
-  let _tulipRoadID = null;
+  let _lineID = null;
 
 
 
@@ -58,12 +58,81 @@ export function uiIntroLine(context, curtain) {
   }
 
 
+  // Helper function to make sure the line exists
+  function _doesLineExist() {
+    return _lineID && context.hasEntity(_lineID);
+  }
+
+  // Helper function to make sure the line is selected
+  function _isLineSelected() {
+    if (context.mode().id !== 'select') return false;
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === _lineID;
+  }
+
+  // Helper function to determine if the roads are connected properly
+  function _isLineConnected() {
+    const tulipRoad = _lineID && context.hasEntity(_lineID);
+    const flowerStreet = flowerStreetID && context.hasEntity(flowerStreetID);
+    if (!tulipRoad || !flowerStreet) return false;
+
+    const graph = context.graph();
+    const drawNodes = graph.childNodes(tulipRoad);
+
+    return drawNodes.some(node => {
+      return graph.parentWays(node).some(parent => parent.id === flowerStreetID);
+    });
+  }
+
+  // Helper function to ensure that the Wood Street parts exist in the graph
+  function _hasWoodStreet() {
+    return context.hasEntity(woodStreetID) && context.hasEntity(woodStreetEndID);
+  }
+
+  // Helper function to make sure Wood Street is selected
+  function _isWoodStreetSelected() {
+    if (context.mode().id !== 'select') return false;
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === woodStreetID;
+  }
+
+  // Helper function to ensure that the road segments needed
+  // to complete this part of the tutorial exist in the graph.
+  function _hasAllSegments() {
+    return (
+      _washingtonSegmentID &&
+      context.hasEntity(_washingtonSegmentID) &&
+      context.hasEntity(washingtonStreetID) &&
+      context.hasEntity(twelfthAvenueID) &&
+      context.hasEntity(eleventhAvenueEndID)
+    );
+  }
+
+  // Helper function to force the entity inspector open
+  // These things happen automatically but we want to be sure
+  function _showEntityEditor() {
+    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
+    container.select('.inspector-wrap .preset-list-pane').classed('hide', true);
+    container.select('.inspector-wrap .panewrap').style('right', '0%');
+  }
+
+  // Helper function to force the preset list open
+  // These things happen automatically but we want to be sure
+  function _showPresetList() {
+    container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
+    container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
+    container.select('.inspector-wrap .panewrap').style('right', '-100%');
+  }
+
+
+  /* DRAW TULIP ROAD */
+
   // "Lines are used to represent features such as roads, railroads, and rivers."
   // Click "Add Line" button to advance
   function addLine() {
     context.enter('browse');
     history.reset('initial');
-    _tulipRoadID = null;
+    _lineID = null;
 
     const loc = tulipRoadStartExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -82,11 +151,9 @@ export function uiIntroLine(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#iD-graphic-lines');
-
-        context.on('enter.intro', mode => {
-          if (mode.id === 'draw-line') continueTo(startLine);
-        });
       });
+
+    context.on('enter.intro', () => continueTo(startLine));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -98,14 +165,8 @@ export function uiIntroLine(context, curtain) {
   // "Here is a road that is missing. Let's add it!"
   // Place the first point to advance
   function startLine() {
-    if (context.mode().id !== 'draw-line') return chapter.restart();
-
-    _tulipRoadID = null;
-
-    function onClick() {
-      if (context.mode().id !== 'draw-line') return chapter.restart();
-      continueTo(drawLine);
-    }
+    if (context.mode().id !== 'draw-line') return continueTo(addLine);
+    _lineID = null;
 
     const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
     const startLineString = helpHtml('intro.lines.missing_road') + '{br}' +
@@ -116,34 +177,30 @@ export function uiIntroLine(context, curtain) {
       tipHtml: startLineString
     });
 
-    context.behaviors.get('draw').on('click', onClick);
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      for (const entity of difference.created()) {  // created a node and a way
+        if (entity.type === 'way') {
+          _lineID = entity.id;
+          return continueTo(drawLine);
+        }
+      }
+    });
+
+    context.on('enter.intro', () => continueTo(addLine));
 
     function continueTo(nextStep) {
-      context.behaviors.get('draw').off('click', onClick);
+      history.on('change.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
-  }
-
-
-  // Helper function to determine if the roads are connected properly
-  function _isTulipRoadConnected() {
-    const tulipRoad = _tulipRoadID && context.hasEntity(_tulipRoadID);
-    const flowerStreet = flowerStreetID && context.hasEntity(flowerStreetID);
-    if (!tulipRoad || !flowerStreet) return false;
-
-    const graph = context.graph();
-    const drawNodes = graph.childNodes(tulipRoad);
-
-    return drawNodes.some(node => {
-      return graph.parentWays(node).some(parent => parent.id === flowerStreetID);
-    });
   }
 
 
   // "Continue drawing the line by placing more nodes along the road."
   // "Place an intersection node on {name} to connect the two lines."
   function drawLine() {
-    if (context.mode().id !== 'draw-line') return chapter.restart();
+    if (!_doesLineExist() || context.mode().id !== 'draw-line') return continueTo(addLine);
 
     const loc = tulipRoadMidExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -157,23 +214,17 @@ export function uiIntroLine(context, curtain) {
         });
       });
 
-    function onClick() {
-      if (_isTulipRoadConnected()) {
-        continueTo(continueLine);
+    history.on('change.intro', () => {
+      if (_isLineConnected()) {
+        return continueTo(finishLine);
       }
-    }
-    function onFinish() {
-      if (!_isTulipRoadConnected()) {
-        continueTo(retryIntersect);
-      }
-    }
+    });
 
-    context.behaviors.get('draw').on('click', onClick);
-    context.behaviors.get('draw').on('finish', onFinish);
+    context.on('enter.intro', () => continueTo(retryIntersect));
 
     function continueTo(nextStep) {
-      context.behaviors.get('draw').off('click', onClick);
-      context.behaviors.get('draw').off('finish', onFinish);
+      history.on('change.intro', null);
+      context.on('enter.intro', null);
       nextStep();
     }
   }
@@ -182,11 +233,9 @@ export function uiIntroLine(context, curtain) {
   // "The road needs to intersect {name}. Let's try again!"
   // This step just returns back to beginning after a short delay
   function retryIntersect() {
-    d3_select(window).on('pointerdown.intro mousedown.intro', eventCancel, true);
-
     curtain.reveal({
       revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
-      tipHtml: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
+      tipHtml: helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') })
     });
 
     timeout(chapter.restart, 3000);
@@ -196,10 +245,8 @@ export function uiIntroLine(context, curtain) {
   // "Continue drawing the line for the new road. Remember that you can drag and zoom the map if needed."
   // "When you're finished, click the last node again or press return."
   // Finish the road to advance
-  function continueLine() {
-    if (context.mode().id !== 'draw-line') return chapter.restart();
-    const entity = _tulipRoadID && context.hasEntity(_tulipRoadID);
-    if (!entity) return chapter.restart();
+  function finishLine() {
+    if (!_doesLineExist() || context.mode().id !== 'draw-line') return continueTo(addLine);
 
     const loc = tulipRoadMidExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -217,15 +264,7 @@ export function uiIntroLine(context, curtain) {
         });
       });
 
-    context.on('enter.intro', mode => {
-      if (mode.id === 'draw-line') {
-        return;
-      } else if (mode.id === 'select') {
-        return continueTo(chooseCategoryRoad);
-      } else {
-        return chapter.restart();
-      }
-    });
+    context.on('enter.intro', () => continueTo(chooseCategoryRoad));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -234,35 +273,36 @@ export function uiIntroLine(context, curtain) {
   }
 
 
-  // "Select Road from the list."
-  // Open the Road category to advance
+  // "Select Minor Roads from the list."
+  // Open the Minor Roads category to advance
   function chooseCategoryRoad() {
-    if (context.mode().id !== 'select') return chapter.restart();
+    if (!_doesLineExist()) return continueTo(addLine);
+    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    context.on('enter.intro', () => chapter.restart());
-
-    const button = container.select('.preset-category-road_minor .preset-list-button');
-    if (button.empty()) return chapter.restart();
-
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
 
     timeout(() => {
-      // force preset pane open, in case user somehow happened to change it..
-      container.select('.inspector-wrap .panewrap').style('right', '-100%');
+      _showPresetList();
+
+      const category = container.select('.preset-category-road_minor .preset-list-button');
+      if (category.classed('expanded')) return continueTo(choosePresetResidential);  // advance - already expanded
 
       curtain.reveal({
-        revealNode: button.node(),
+        revealNode: category.node(),
         revealPadding: 5,
         tipHtml: helpHtml('intro.lines.choose_category_road', { category: roadCategory.name() })
       });
 
-      button.on('click.intro', () => continueTo(choosePresetResidential));
+      category.on('click.intro', () => {
+        category.on('click.intro', null);
+        continueTo(choosePresetResidential);
+      });
+    }, 400);  // after animation
 
-    }, 400);  // after editor pane visible
+
+    context.on('enter.intro', () => continueTo(chooseCategoryRoad));  // retry
 
     function continueTo(nextStep) {
-      button.on('click.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-list-button').on('click.intro', null);
       context.on('enter.intro', null);
@@ -274,31 +314,47 @@ export function uiIntroLine(context, curtain) {
   // "There are many different types of roads, but this one is a Residential Road..."
   // Select a preset to advance
   function choosePresetResidential() {
-    if (context.mode().id !== 'select') return chapter.restart();
+    if (!_doesLineExist()) return continueTo(addLine);
+    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    context.on('enter.intro', () => chapter.restart());
-
-    const subgrid = container.select('.preset-category-road_minor .subgrid');
-    if (subgrid.empty()) return chapter.restart();
-
-    subgrid.selectAll(':not(.preset-highway-residential) .preset-list-button')
-      .on('click.intro', () => continueTo(retryPresetResidential));
-
-    subgrid.selectAll('.preset-highway-residential .preset-list-button')
-      .on('click.intro', () => continueTo(nameRoad));
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
 
     timeout(() => {
+      _showPresetList();
+
+      const category = container.select('.preset-category-road_minor .preset-list-button');
+      if (!category.classed('expanded')) return continueTo(chooseCategoryRoad);  // category not expanded - go back
+
+      // reveal all choices - at this point in the tutorial we are giving the user more freedom
+      const subgrid = container.select('.preset-category-road_minor .subgrid');
+      if (subgrid.empty()) return continueTo(addLine);  // no minor road presets?
+
       curtain.reveal({
         revealNode: subgrid.node(),
         revealPadding: 5,
         tipSelector: '.preset-highway-residential .preset-list-button',
         tipHtml: helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
       });
-    }, 300);
+    }, 400);  // after animation
+
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      const modified = difference.modified();
+      if (modified.length === 1) {
+        if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
+          return continueTo(nameRoad);
+        } else {
+          return continueTo(retryPresetResidential);  // didn't pick residential, retry
+        }
+      }
+    });
+
+    context.on('enter.intro', () => continueTo(chooseCategoryRoad));  // retry
 
     function continueTo(nextStep) {
+      history.on('change.intro', null);
       context.on('enter.intro', null);
-      container.selectAll('.preset-list-button').on('click.intro', null);
+      container.select('.inspector-wrap').on('wheel.intro', null);
       nextStep();
     }
   }
@@ -307,23 +363,39 @@ export function uiIntroLine(context, curtain) {
   // "You didn't select the Residential type."
   // Click the preset button to advance
   function retryPresetResidential() {
-    if (context.mode().id !== 'select') return chapter.restart();
+    if (!_doesLineExist()) return continueTo(addLine);
+    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    context.on('enter.intro', () => chapter.restart());
-
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
 
     timeout(() => {
-      const button = container.select('.entity-editor-pane .preset-list-button');
-      button.on('click.intro', () => continueTo(chooseCategoryRoad));
+      _showPresetList();
 
+      const category = container.select('.preset-category-road_minor .preset-list-button');
+      if (!category.classed('expanded')) return continueTo(chooseCategoryRoad);  // category not expanded - go back
+
+      // reveal just the button we want them to click
+      const preset = container.select('.preset-highway-residential .preset-list-button');
       curtain.reveal({
-        revealNode: button.node(),
+        revealNode: preset.node(),
         revealPadding: 5,
         tipHtml: helpHtml('intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
       });
-    }, 500);
+    }, 400);  // after animation
+
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      const modified = difference.modified();
+      if (modified.length === 1) {
+        if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
+          return continueTo(nameRoad);
+        } else {
+          return continueTo(chooseCategoryRoad);
+        }
+      }
+    });
+
+    context.on('enter.intro', () => continueTo(chooseCategoryRoad));  // retry
 
     function continueTo(nextStep) {
       container.select('.inspector-wrap').on('wheel.intro', null);
@@ -337,15 +409,20 @@ export function uiIntroLine(context, curtain) {
   // "Give this road a name, then press the X button or Esc to close the feature editor."
   // Close entity editor / leave select mode to advance
   function nameRoad() {
-    context.on('enter.intro', () => continueTo(didNameRoad));
+    if (!_doesLineExist()) return continueTo(addLine);
+    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
     timeout(() => {
+      _showEntityEditor();
+
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml('intro.lines.name_road', { button: icon('#iD-icon-close', 'inline') }),
-        tooltipClass: 'intro-lines-name_road'  // why?
+        tooltipClass: 'intro-lines-name_road'
       });
-    }, 500);
+    }, 400);
+
+    context.on('enter.intro', () => continueTo(didNameRoad));
 
     function continueTo(nextStep) {
       context.on('enter.intro', null);
@@ -367,13 +444,13 @@ export function uiIntroLine(context, curtain) {
   }
 
 
+  /* REALIGN WOOD STREET */
+
   // "Sometimes you will need to change the shape of an existing line. Here is a road that doesn't look quite right."
   // Click Ok to advance
   function updateLine() {
     history.reset('doneAddLine');
-    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-      return chapter.restart();
-    }
+    if (!_hasWoodStreet()) return chapter.restart();
 
     const loc = woodStreetExtent.center();
     const msec = transitionTime(loc, map.center());
@@ -397,9 +474,7 @@ export function uiIntroLine(context, curtain) {
   // Create a node on Wood Street to advance
   function addNode() {
     history.reset('doneAddLine');
-    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-      return chapter.restart();
-    }
+    if (!_hasWoodStreet()) return chapter.restart();
 
     curtain.reveal({
       revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
@@ -407,9 +482,8 @@ export function uiIntroLine(context, curtain) {
     });
 
     history.on('change.intro', changed => {
-      if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-        return continueTo(updateLine);
-      }
+      if (!_hasWoodStreet()) return continueTo(updateLine);
+
       if (changed.created().length === 1) {
         timeout(() => continueTo(startDragEndpoint), 500);
       }
@@ -432,10 +506,10 @@ export function uiIntroLine(context, curtain) {
   // "When a line is selected, you can adjust any of its nodes by clicking and holding down the left mouse button while you drag."
   // Drag the endpoint of Wood Street to the expected location to advance
   function startDragEndpoint() {
-    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-      return continueTo(updateLine);
-    }
-    const startDragString = helpHtml('intro.lines.start_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch')) +
+    if (!_hasWoodStreet()) return continueTo(updateLine);
+
+    const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
+    const startDragString = helpHtml(`intro.lines.start_drag_endpoint${textID}`) +
       helpHtml('intro.lines.drag_to_intersection');
 
     curtain.reveal({
@@ -443,13 +517,10 @@ export function uiIntroLine(context, curtain) {
       tipHtml: startDragString
     });
 
-    context.behaviors.get('drag').on('move', checkDrag);
+    context.behaviors.get('drag').on('move', _checkDrag);
 
-
-    function checkDrag() {
-      if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-        return continueTo(updateLine);
-      }
+    function _checkDrag() {
+      if (!_hasWoodStreet()) return continueTo(updateLine);
       const entity = context.entity(woodStreetEndID);
       if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) <= 4) {   // point is close enough
         continueTo(finishDragEndpoint);   // advance to next step
@@ -457,7 +528,7 @@ export function uiIntroLine(context, curtain) {
     }
 
     function continueTo(nextStep) {
-      context.behaviors.get('drag').off('move', checkDrag);
+      context.behaviors.get('drag').off('move', _checkDrag);
       nextStep();
     }
   }
@@ -466,25 +537,22 @@ export function uiIntroLine(context, curtain) {
   // "This spot looks good. Release the mouse button to finish dragging..."
   // Leave drag mode to advance
   function finishDragEndpoint() {
-    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-      return continueTo(updateLine);
-    }
+    if (!_hasWoodStreet()) return continueTo(updateLine);
 
+    const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
     const finishDragString = helpHtml('intro.lines.spot_looks_good') +
-      helpHtml('intro.lines.finish_drag_endpoint' + (context.lastPointerType() === 'mouse' ? '' : '_touch'));
+      helpHtml(`intro.lines.finish_drag_endpoint${textID}`);
 
     curtain.reveal({
       revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
       tipHtml: finishDragString
     });
 
-    context.behaviors.get('drag').on('move', checkDrag);
+    context.behaviors.get('drag').on('move', _checkDrag);
     context.on('enter.intro', () => continueTo(startDragMidpoint));
 
-    function checkDrag() {
-      if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-        return continueTo(updateLine);
-      }
+    function _checkDrag() {
+      if (!_hasWoodStreet()) return continueTo(updateLine);
       const entity = context.entity(woodStreetEndID);
       if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) > 4) {   // point is too far
         continueTo(startDragEndpoint);   // back to previous step
@@ -492,7 +560,7 @@ export function uiIntroLine(context, curtain) {
     }
 
     function continueTo(nextStep) {
-      context.behaviors.get('drag').off('move', checkDrag);
+      context.behaviors.get('drag').off('move', _checkDrag);
       context.on('enter.intro', null);
       nextStep();
     }
@@ -503,29 +571,22 @@ export function uiIntroLine(context, curtain) {
   // "Another way to create a new node is to drag a midpoint to a new location."
   // Create a node on Wood Street to advance
   function startDragMidpoint() {
-    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-      return continueTo(updateLine);
-    }
-    if (context.selectedIDs().indexOf(woodStreetID) === -1) {
-      context.enter(modeSelect(context, [woodStreetID]));
-    }
+    if (!_hasWoodStreet()) return continueTo(updateLine);
+    if (!_isWoodStreetSelected()) context.enter(modeSelect(context, [woodStreetID]));
 
     curtain.reveal({
       revealExtent: new Extent(woodStreetDragMidpoint).padByMeters(20),
       tipHtml: helpHtml('intro.lines.start_drag_midpoint')
     });
 
-    history.on('change.intro', changed => {
-      if (changed.created().length === 1) {
-        continueTo(continueDragMidpoint);
+    history.on('change.intro', difference => {
+      if (!difference) return;
+      if (difference.created().length === 1) {
+        return continueTo(continueDragMidpoint);
       }
     });
 
-    context.on('enter.intro', mode => {
-      if (mode.id !== 'select') {  // keep Wood Street selected so midpoint triangles are drawn..
-        context.enter(modeSelect(context, [woodStreetID]));
-      }
-    });
+    context.on('enter.intro', () => continueTo(startDragMidpoint));
 
     function continueTo(nextStep) {
       history.on('change.intro', null);
@@ -539,9 +600,7 @@ export function uiIntroLine(context, curtain) {
   // "When you're happy with how the line looks, press Ok"
   // Click Ok to advance
   function continueDragMidpoint() {
-    if (!context.hasEntity(woodStreetID) || !context.hasEntity(woodStreetEndID)) {
-      return continueTo(updateLine);
-    }
+    if (!_hasWoodStreet()) return continueTo(updateLine);
 
     curtain.reveal({
       revealExtent: woodStreetExtent,
@@ -556,6 +615,8 @@ export function uiIntroLine(context, curtain) {
     }
   }
 
+
+  /* MULTISELECT AND DELETE 12TH AVE */
 
   // "It's OK to delete lines for roads that don't exist in the real world..
   // Click Ok to advance
@@ -675,18 +736,6 @@ export function uiIntroLine(context, curtain) {
     });
   }
 
-
-  // Helper function to ensure that the road segments needed
-  // to complete this part of the tutorial exist in the graph.
-  function _hasAllSegments() {
-    return (
-      _washingtonSegmentID &&
-      context.hasEntity(_washingtonSegmentID) &&
-      context.hasEntity(washingtonStreetID) &&
-      context.hasEntity(twelfthAvenueID) &&
-      context.hasEntity(eleventhAvenueEndID)
-    );
-  }
 
 
   // "Good job! Washington Street is now split into two pieces."
@@ -913,9 +962,8 @@ export function uiIntroLine(context, curtain) {
 
   chapter.exit = () => {
     _timeouts.forEach(window.clearTimeout);
-    d3_select(window).on('pointerdown.intro mousedown.intro', null, true);
-    context.on('enter.intro', null);
     history.on('change.intro', null);
+    context.on('enter.intro', null);
     container.select('.inspector-wrap').on('wheel.intro', null);
     container.select('.preset-list-button').on('click.intro', null);
   };
