@@ -4,6 +4,7 @@ import { utilArrayUniq } from '@id-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
+import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
 import { helpHtml, icon, isMostlySquare, transitionTime } from './helper';
@@ -58,13 +59,6 @@ export function uiIntroBuilding(context, curtain) {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _tankID;
-  }
-
-  // Helper function to force the entity inspector open
-  // These things happen automatically but we want to be sure
-  function _showEntityEditor() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
   }
 
   // Helper function to force the preset list open
@@ -264,7 +258,7 @@ export function uiIntroBuilding(context, curtain) {
       const modified = difference.modified();
       if (modified.length === 1) {
         if (presetManager.match(modified[0], context.graph()) === housePreset) {
-          return continueTo(closeEditorHouse);
+          return continueTo(hasHouse);
         } else {
           return continueTo(chooseCategoryBuilding);  // didn't pick house, retry
         }
@@ -282,35 +276,23 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
-  // "Press the X button or Esc to close the feature editor."
-  // Close entity editor / leave select mode to advance
-  function closeEditorHouse() {
+  // Set a history checkpoint here, so we can return back to it if needed
+  function hasHouse() {
     if (!_doesHouseExist()) return continueTo(addHouse);
-    if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
+
+    // Make sure it's still a house, in case user somehow changed it..
+    const entity = context.entity(_houseID);
+    const oldPreset = presetManager.match(entity, context.graph());
+    context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
     history.checkpoint('hasHouse');
-
-    timeout(() => {
-      _showEntityEditor();
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
-      });
-    }, 400);
-
-    context.on('enter.intro', () => continueTo(rightClickHouse));
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      nextStep();
-    }
+    rightClickHouse();  // advance
   }
 
 
   // "Right-click to select the building you created and show the edit menu."
   // Select the house with edit menu open to advance
   function rightClickHouse() {
-    context.enter('browse');
     history.reset('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
@@ -559,7 +541,7 @@ export function uiIntroBuilding(context, curtain) {
       const modified = difference.modified();
       if (modified.length === 1) {
         if (presetManager.match(modified[0], context.graph()) === tankPreset) {
-          return continueTo(closeEditorTank);
+          return continueTo(hasTank);
         } else {
           return continueTo(searchPresetTank);  // didn't pick tank
         }
@@ -578,35 +560,23 @@ export function uiIntroBuilding(context, curtain) {
   }
 
 
-  // "Press the X button or Esc to close the feature editor."
-  // Close entity editor / leave select mode to advance
-  function closeEditorTank() {
+  // Set a history checkpoint here, so we can return back to it if needed
+  function hasTank() {
     if (!_doesTankExist()) return continueTo(addTank);
-    if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
+
+    // Make sure it's still a tank, in case user somehow changed it..
+    const entity = context.entity(_tankID);
+    const oldPreset = presetManager.match(entity, context.graph());
+    context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
     history.checkpoint('hasTank');
-
-    timeout(() => {
-      _showEntityEditor();
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.buildings.close', { button: icon('#iD-icon-close', 'inline') })
-      });
-    }, 400);
-
-    context.on('enter.intro', () => continueTo(rightClickTank));
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      nextStep();
-    }
+    rightClickTank();  // advance
   }
 
 
   // "Right-click to select the storage tank you created and show the edit menu."
   // Select the tank with edit menu open to advance
   function rightClickTank() {
-    context.enter('browse');
     history.reset('hasTank');
 
     const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';

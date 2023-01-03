@@ -2354,7 +2354,6 @@ en:
       retry_building: "It looks like you had some trouble placing the nodes at the building corners. Try again!"
       choose_category_building: "**Choose {category} from the list.**"
       choose_preset_house: "There are many different types of buildings, but this one is clearly a house.{br}If you're not sure of the type, it's OK to just choose the generic Building type. **Choose the {preset} type.**"
-      close: "**Press the {button} button or `{esc}` to close the feature editor.**"
       rightclick_building: "**{rightclick} Right-click to select the building you created and show the edit menu.**"
       edit_menu_building_touch: "**{longpress_icon} Long-press the building you created to show the edit menu.**"
       square_building: "The house that you just added will look even better with perfectly square corners. **Press the {orthogonalize_icon} {orthogonalize} button to tidy up the building's shape.**"

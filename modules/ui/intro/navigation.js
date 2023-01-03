@@ -310,6 +310,7 @@ export function uiIntroNavigation(context, curtain) {
       .then(() => {
         curtain.reveal({
           revealSelector: '.search-header input',
+          revealPadding: 5,
           tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
         });
 
@@ -331,6 +332,7 @@ export function uiIntroNavigation(context, curtain) {
     if (!firstName.empty() && firstName.html() === name) {
       curtain.reveal({
         revealNode: first.node(),
+        revealPadding: 5,
         tipHtml: helpHtml('intro.navigation.choose_street', { name: name })
       });
 
