@@ -190,6 +190,7 @@ export function uiIntroRapid(context, curtain) {
   // "The road is removed from your local changes, and has returned to the magenta layer as before..."
   // Click Ok to advance
   function afterUndoRoadAdd() {
+    context.ui().togglePanes();   // close issue pane
     curtain.reveal({
       revealExtent: tulipLaneExtent,
       tipHtml: helpHtml('intro.rapid.undo_road_add_aftermath'),
