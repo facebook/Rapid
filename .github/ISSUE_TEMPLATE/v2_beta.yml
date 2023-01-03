@@ -1,4 +1,4 @@
-name: 🐛 Bug Report
+name: 🐛 v2 Bug Report
 description: Report a reproducible bug or regression in RapiD v2.
 labels: ["Needs: Triage :mag:"]
 body:
