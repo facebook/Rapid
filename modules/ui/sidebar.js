@@ -235,7 +235,7 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
-            } else if (!_current && (datum instanceof osmEntity)) {
+            } else if (!_current && (datum instanceof osmEntity) && context.hasEntity(datum)) {
                 featureListWrap
                     .classed('inspector-hidden', true);
 
