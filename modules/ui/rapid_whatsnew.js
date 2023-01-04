@@ -10,7 +10,7 @@ export function uiRapidWhatsNew(context) {
 
 
   return function(selection) {
-    if (prefs('sawWhatsNewGLAlphav3') === 'true') return;
+    if (prefs('sawWhatsNewGLBeta') === 'true') return;
 
     const modalSelection = uiModal(selection);
 
@@ -99,7 +99,7 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .text(t('rapid_whats_new.ok'))
       .on('click', () => {
-        prefs('sawWhatsNewGLAlpha', _dontShowAgain);
+        prefs('sawWhatsNewGLBeta', _dontShowAgain);
         modalSelection.close();
       });
 
