@@ -653,6 +653,7 @@ export function uiIntroLine(context, curtain) {
   function rightClickIntersection() {
     history.reset('doneUpdateLine');
     context.enter('browse');
+    _washingtonSegmentID = null;
 
     const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
     const rightClickString = helpHtml('intro.lines.split_street', {
@@ -665,20 +666,15 @@ export function uiIntroLine(context, curtain) {
       tipHtml: rightClickString
     });
 
-    context.on('enter.intro', mode => {
-      if (mode.id !== 'select') return;
-      const ids = context.selectedIDs();
-      if (ids.length !== 1 || ids[0] !== eleventhAvenueEndID) return;
-
-      timeout(() => {
-        const node = container.select('.edit-menu-item-split').node();
-        if (!node) return;
-        continueTo(splitIntersection);
-      }, 50);  // after menu visible
+    context.ui().editMenu().on('toggled.intro', open => {
+      if (open) return continueTo(splitIntersection);  // user opened menu, advance
     });
 
+    history.on('change.intro', () => continueTo(rightClickIntersection));  // retry
+
     function continueTo(nextStep) {
-      context.on('enter.intro', null);
+      context.ui().editMenu().on('toggled.intro', null);
+      history.on('change.intro', null);
       nextStep();
     }
   }
@@ -695,14 +691,20 @@ export function uiIntroLine(context, curtain) {
     }
 
     const node = container.select('.edit-menu-item-split').node();
-    if (!node) { return continueTo(rightClickIntersection); }
+    if (!node) return continueTo(rightClickIntersection);
 
     _washingtonSegmentID = null;
 
-    curtain.reveal({
-      revealSelector: '.edit-menu',
-      revealPadding: 50,
-      tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
+    timeout(() => {
+      curtain.reveal({
+        revealSelector: '.edit-menu',
+        revealPadding: 50,
+        tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
+      });
+    }, 400);  // after menu visible
+
+    context.ui().editMenu().on('toggled.intro', open => {
+      if (!open) return continueTo(rightClickIntersection);  // user closed menu, go back
     });
 
     history.on('change.intro', changed => {
@@ -718,6 +720,7 @@ export function uiIntroLine(context, curtain) {
     });
 
     function continueTo(nextStep) {
+      context.ui().editMenu().on('toggled.intro', null);
       history.on('change.intro', null);
       nextStep();
     }
@@ -747,11 +750,6 @@ export function uiIntroLine(context, curtain) {
     const ids = context.selectedIDs();
     const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
     const street = t('intro.graph.name.washington-street');
-
-//    const padding = 200 * Math.pow(2, map.zoom() - 18);
-//    const box = pad(twelfthAvenue, padding, context);
-//    box.width = box.width / 2;
-//    curtain.reveal(box, helpHtml(string, { street1: street, street2: street }), { duration: 500 } );
 
     curtain.reveal({
       revealExtent: deleteLinesExtent,
@@ -793,36 +791,24 @@ export function uiIntroLine(context, curtain) {
       return continueTo(didSplit);
     }
 
-    // map.centerZoomEase(twelfthAvenue, 18, 500);
+    let selected, other, padding, box;
+    if (hasWashington) {
+      selected = t('intro.graph.name.washington-street');
+      other = t('intro.graph.name.12th-avenue');
+    } else {
+      selected = t('intro.graph.name.12th-avenue');
+      other = t('intro.graph.name.washington-street');
+    }
 
-    // timeout(() => {
-      let selected, other, padding, box;
-      if (hasWashington) {
-        selected = t('intro.graph.name.washington-street');
-        other = t('intro.graph.name.12th-avenue');
-//        padding = 60 * Math.pow(2, map.zoom() - 18);
-//        box = pad(twelfthAvenueEnd, padding, context);
-//        box.width *= 3;
-      } else {
-        selected = t('intro.graph.name.12th-avenue');
-        other = t('intro.graph.name.washington-street');
-//        padding = 200 * Math.pow(2, map.zoom() - 18);
-//        box = pad(twelfthAvenue, padding, context);
-//        box.width /= 2;
-      }
+    const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'touch';
+    const string =
+      helpHtml('intro.lines.multi_select', { selected: selected, other1: other }) + ' ' +
+      helpHtml(`intro.lines.add_to_selection_${textID}`, { selected: selected, other2: other });
 
-      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'touch';
-      const string =
-        helpHtml('intro.lines.multi_select', { selected: selected, other1: other }) + ' ' +
-        helpHtml(`intro.lines.add_to_selection_${textID}`, { selected: selected, other2: other });
-
-      curtain.reveal({
-        revealExtent: deleteLinesExtent,
-        tipHtml: string
-      });
-
-    // }, msec + 100);
-
+    curtain.reveal({
+      revealExtent: deleteLinesExtent,
+      tipHtml: string
+    });
 
     context.on('enter.intro', () => continueTo(multiSelect));
 
@@ -844,24 +830,13 @@ export function uiIntroLine(context, curtain) {
   function multiRightClick() {
     if (!_hasAllSegments()) return continueTo(rightClickIntersection);
 
-//    const padding = 200 * Math.pow(2, map.zoom() - 18);
-//    const box = pad(twelfthAvenue, padding, context);
-//    curtain.reveal(box, rightClickString);
+    const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
+    const rightClickString = helpHtml('intro.lines.multi_select_success') + helpHtml(`intro.lines.multi_${textID}`);
 
-    // const loc = deleteLinesExtent.center();
-    // const msec = transitionTime(loc, map.center());
-    // if (msec > 0) curtain.hide();
-    // map.centerZoomEase(loc, 18, msec);
-
-    // timeout(() => {
-      const rightClickString = helpHtml('intro.lines.multi_select_success') +
-        helpHtml('intro.lines.multi_' + (context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch'));
-
-      curtain.reveal({
-        revealExtent: deleteLinesExtent,
-        tipHtml: rightClickString
-      });
-    // }, msec + 100);
+    curtain.reveal({
+      revealExtent: deleteLinesExtent,
+      tipHtml: rightClickString
+    });
 
     context.ui().editMenu().on('toggled.intro', open => {
       if (!open) return;
