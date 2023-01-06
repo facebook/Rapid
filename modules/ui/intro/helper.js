@@ -253,3 +253,17 @@ export function transitionTime(loc1, loc2) {
     return 1000;
   }
 }
+
+
+/**
+ * delayAsync
+ * Wait for animations or other stuff to finish before continuing.
+ * We have a bunch of animations that happen all throughout the app.
+ * For example, to open preset picker or side panes.
+ * History transitions finish in 150ms, and the default for d3 transition is 250ms.
+ * @param  ms  milliseconds of delay (defaults to 300)
+ * @return Promise that settles after the delay
+ */
+export function delayAsync(ms = 300) {
+  return new Promise(resolve => window.setTimeout(resolve, ms));  // eslint-disable-line no-promise-executor-return
+}
