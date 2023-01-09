@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
-import { eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroRapid(context, curtain) {
@@ -16,18 +16,23 @@ export function uiIntroRapid(context, curtain) {
   const tulipLaneID = 'w-516';
   const tulipLaneExtent = new Extent([-85.62991, 41.95568], [-85.62700, 41.95638]);
 
-  let _timeouts = [];
+  let _chapterCancelled = false;
+  let _rejectStep = null;
 
 
-  function timeout(fn, t) {
-    _timeouts.push(window.setTimeout(fn, t));
+  function runAsync(currStep) {
+    if (_chapterCancelled) return Promise.reject();
+    if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
+
+    return currStep()
+      .then(nextStep => runAsync(nextStep))   // recurse
+      .catch(() => { /* noop */ });
   }
 
 
   // "This section of the walkthrough will teach you how to use these AI-assisted features..."
   // Click Ok to advance
-  function welcome() {
-    context.scene().enableLayers('rapid');
+  function welcomeAsync() {
     context.enter('browse');
     history.reset('initial');
 
@@ -35,223 +40,261 @@ export function uiIntroRapid(context, curtain) {
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 18.5, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
           tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
           buttonText: t.html('intro.ok'),
-          buttonCallback: showHideRoads
+          buttonCallback: () => resolve(showHideRoadsAsync)
         });
-      });
+      }));
   }
 
 
   // "AI-assisted features are presented in a magenta-colored overlay..."
   // Click Ok to advance
-  function showHideRoads() {
-    curtain.reveal({
-      revealSelector: 'button.rapid-features',
-      tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: selectRoad
+  function showHideRoadsAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: 'button.rapid-features',
+        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(selectRoadAsync)
+      });
     });
   }
 
 
   // "A single AI-assisted road has shown up on the map. Select the AI-assisted road with a left-click..."
   // Select Tulip Lane to advance
-  function selectRoad() {
+  function selectRoadAsync() {
     context.scene().enableLayers('rapid');
 
-    d3_select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: tulipLaneExtent,
-      tipHtml: helpHtml('intro.rapid.select_road')
-    });
+      d3_select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
 
-    context.on('enter.intro', () => {
-      if (context.selectedIDs().indexOf(tulipLaneID) === -1) return;
-      continueTo(addRoad);
-    });
+      curtain.reveal({
+        revealExtent: tulipLaneExtent,
+        tipHtml: helpHtml('intro.rapid.select_road')
+      });
 
-    function continueTo(nextStep) {
+      context.on('enter.intro', () => {
+        if (context.selectedIDs().indexOf(tulipLaneID) === -1) return;
+        resolve(addRoadAsync);
+      });
+    })
+    .finally(cleanup)
+    .catch(() => selectRoadAsync);   // retry
+
+    function cleanup() {
       d3_select('.inspector-wrap').on('wheel.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Click the 'Use this Feature' button to add the road to the working map..."
   // Accept the feature to advance
-  function addRoad() {
-    timeout(() => {
-      curtain.reveal({
-        revealSelector: '.rapid-inspector-choice-accept',
-        tipHtml: helpHtml('intro.rapid.add_road')
-      });
-      d3_select('.choice-button-accept').on('click.intro', () => continueTo(roadAdded));
-    }, 250);
+  function addRoadAsync() {
+    return delayAsync()  // after rapid inspector visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        curtain.reveal({
+          revealSelector: '.rapid-inspector-choice-accept',
+          tipHtml: helpHtml('intro.rapid.add_road')
+        });
+        d3_select('.choice-button-accept')
+          .on('click.intro', () => resolve(roadAddedAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => addRoadAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       d3_select('.choice-button-accept').on('click.intro', null);
-      nextStep();
     }
   }
 
 
   // "The AI-assisted road has been added as a change to the map..."
   // Click Ok to advance
-  function roadAdded() {
-    if (context.mode().id !== 'select') return chapter.restart();
+  function roadAddedAsync() {
+    if (context.mode().id !== 'select') return Promise.resolve(selectRoadAsync);
 
-    timeout(() => {
-      curtain.reveal({
-        revealExtent: tulipLaneExtent,
-        tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
-        buttonText: t('intro.ok'),
-        buttonCallback: showIssuesButton
-      });
-     }, 250);
+    return delayAsync()  // after entity inspector visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        curtain.reveal({
+          revealExtent: tulipLaneExtent,
+          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+          buttonText: t('intro.ok'),
+          buttonCallback: () => resolve(showIssuesButtonAsync)
+        });
+      }));
   }
 
 
   // "Now let's open up the issues panel..."
   // Open Issues panel to advance
-  function showIssuesButton() {
+  function showIssuesButtonAsync() {
     const issuesButton = d3_select('div.map-control.issues-control > button');
 
-    timeout(() => {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
       curtain.reveal({
         revealNode: issuesButton.node(),
         tipHtml: helpHtml('intro.rapid.open_issues')
       });
-    }, 250);
+      issuesButton.on('click.intro', () => resolve(showLintAsync));
+    })
+    .finally(cleanup)
+    .catch(() => showIssuesButtonAsync);   // retry
 
-    issuesButton.on('click.intro', () => continueTo(showLint));
-
-    function continueTo(nextStep) {
+    function cleanup() {
       issuesButton.on('click.intro', null);
-      nextStep();
     }
   }
 
 
   // "The addition of the road has caused a new issue to appear in the issues panel..."
   // Click Ok to advance
-  function showLint() {
-    if (context.mode().id !== 'select') return chapter.restart();
+  function showLintAsync() {
+    if (context.mode().id !== 'select') return Promise.resolve(selectRoadAsync);
 
-    // The timeout is to wait for the issues
-    timeout(() => {
-      const label = d3_select('li.issue.severity-warning');
-      curtain.reveal({
-        revealNode: label.node(),   // "connect these features" is expected to be the first child
-        tipHtml: helpHtml('intro.rapid.new_lints'),
-        buttonText: t('intro.ok'),
-        buttonCallback: undoRoadAdd
-      });
-     }, 250);
+    return delayAsync()  // after issues pane visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        const label = d3_select('li.issue.severity-warning');
+        curtain.reveal({
+          revealNode: label.node(),   // "connect these features" is expected to be the first child
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.rapid.new_lints'),
+          buttonText: t('intro.ok'),
+          buttonCallback: () => resolve(undoRoadAddAsync)
+        });
+      }));
   }
 
 
   // "We could fix the issue by connecting the roads, but let's instead undo..."
   // Click Undo to advance
-  function undoRoadAdd() {
-    if (context.mode().id !== 'select') return chapter.restart();
+  function undoRoadAddAsync() {
+    const undoButton = d3_select('.top-toolbar button.undo-button');
 
-    const button = d3_select('.top-toolbar button.undo-button');
-
-    timeout(() => {
-      button.on('click.intro', () => continueTo(afterUndoRoadAdd));
-
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
       curtain.reveal({
-        revealNode: button.node(),
+        revealNode: undoButton.node(),
         tipHtml: helpHtml('intro.rapid.undo_road_add', { button: icon('#iD-icon-undo', 'pre-text') })
       });
-    }, 250);
 
-    function continueTo(nextStep) {
-      button.on('click.intro', null);
-      nextStep();
+      undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
+    })
+    .finally(cleanup)
+    .catch(() => undoRoadAddAsync);   // retry
+
+    function cleanup() {
+      undoButton.on('click.intro', null);
     }
   }
 
 
   // "The road is removed from your local changes, and has returned to the magenta layer as before..."
   // Click Ok to advance
-  function afterUndoRoadAdd() {
+  function afterUndoRoadAddAsync() {
     context.ui().togglePanes();   // close issue pane
-    curtain.reveal({
-      revealExtent: tulipLaneExtent,
-      tipHtml: helpHtml('intro.rapid.undo_road_add_aftermath'),
-      buttonText: t('intro.ok'),
-      buttonCallback: selectRoadAgain
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: tulipLaneExtent,
+        tipHtml: helpHtml('intro.rapid.undo_road_add_aftermath'),
+        buttonText: t('intro.ok'),
+        buttonCallback: () => resolve(selectRoadAgainAsync)
+      });
     });
   }
 
 
   // "Next, we'll learn how to ignore roads that you don't want to add..."
   // Select Tulip Lane to advance
-  function selectRoadAgain() {
-    curtain.reveal({
-      revealExtent: tulipLaneExtent,
-      tipHtml: helpHtml('intro.rapid.select_road_again')
-    });
+  function selectRoadAgainAsync() {
+    const loc = tulipLaneExtent.center();
+    const msec = transitionTime(loc, map.center());
+    if (msec > 0) curtain.hide();
 
-    context.on('enter.intro', () => {
-      if (context.selectedIDs().indexOf(tulipLaneID) === -1) return;
-      continueTo(ignoreRoad);
-    });
+    return map
+      .setCenterZoomAsync(loc, 18.5, msec)
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        curtain.reveal({
+          revealExtent: tulipLaneExtent,
+          tipHtml: helpHtml('intro.rapid.select_road_again')
+        });
 
-    function continueTo(nextStep) {
+        context.on('enter.intro', () => {
+          if (context.selectedIDs().indexOf(tulipLaneID) === -1) return;
+          resolve(ignoreRoadAsync);
+        });
+      }))
+      .finally(cleanup)
+      .catch(() => selectRoadAgainAsync);   // retry
+
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map..."
   // Ignore the road to advance
-  function ignoreRoad() {
-    timeout(() => {
-      d3_select('.choice-button-ignore').on('click.intro', () => continueTo(showHelp));
+  function ignoreRoadAsync() {
+    return delayAsync()  // after rapid inspector visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        curtain.reveal({
+          revealSelector: '.rapid-inspector-choice-ignore',
+          tipHtml: helpHtml('intro.rapid.ignore_road')
+        });
+        d3_select('.choice-button-ignore')
+          .on('click.intro', () => resolve(showHelpAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => ignoreRoadAsync);   // retry
 
-      curtain.reveal({
-        revealSelector: '.rapid-inspector-choice-ignore',
-        tipHtml: helpHtml('intro.rapid.ignore_road')
-      });
-    }, 250);
-
-    function continueTo(nextStep) {
+    function cleanup() {
       d3_select('.choice-button-ignore').on('click.intro', null);
-      nextStep();
     }
   }
 
 
   // "Once you have had some practice, be sure to look in the Help button..."
   // Click Ok to advance
-  function showHelp() {
-    curtain.reveal({
-      revealSelector: '.map-control.help-control',
-      tipHtml: helpHtml('intro.rapid.help', {
-        rapid: icon('#iD-logo-rapid', 'pre-text'),
-        button: icon('#iD-icon-help', 'pre-text'),
-        key: t('help.key')
-      }),
-      buttonText: t('intro.ok'),
-      buttonCallback: allDone
+  function showHelpAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.map-control.help-control',
+        tipHtml: helpHtml('intro.rapid.help', {
+          rapid: icon('#iD-logo-rapid', 'pre-text'),
+          button: icon('#iD-icon-help', 'pre-text'),
+          key: t('help.key')
+        }),
+        buttonText: t('intro.ok'),
+        buttonCallback: () => resolve(play)
+      });
     });
   }
 
 
   // Free play
   // Click on Start Editing (or another) chapter to advance
-  function allDone() {
+  function play() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -264,17 +307,23 @@ export function uiIntroRapid(context, curtain) {
 
 
   chapter.enter = () => {
-    welcome();
+    context.scene().enableLayers('rapid');
+    _chapterCancelled = false;
+    _rejectStep = null;
+
+    runAsync(welcomeAsync)
+      .catch(() => { /* noop */ });
   };
 
 
   chapter.exit = () => {
-    _timeouts.forEach(window.clearTimeout);
-    context.on('enter.intro', null);
-    d3_select('.inspector-wrap').on('wheel.intro', null);
-    d3_select('.choice-button-accept').on('click.intro', null);
-    d3_select('.choice-button-ignore').on('click.intro', null);
     context.scene().disableLayers('rapid');
+    _chapterCancelled = true;
+
+    if (_rejectStep) {   // bail out of whatever step we are in
+      _rejectStep();
+      _rejectStep = null;
+    }
   };
 
 

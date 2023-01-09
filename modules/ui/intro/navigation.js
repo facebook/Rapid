@@ -92,27 +92,25 @@ export function uiIntroNavigation(context, curtain) {
 
     return map
       .setCenterZoomAsync(loc, 19, msec)
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          _rejectStep = reject;
-          const centerStart = map.center();
-          const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
-          const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        const centerStart = map.center();
+        const textID = context.lastPointerType() === 'mouse' ? 'drag' : 'drag_touch';
+        const dragString = helpHtml('intro.navigation.map_info') + '{br}' + helpHtml(`intro.navigation.${textID}`);
 
-          onMove = () => {
-            if (!vecEqual(centerStart, map.center())) {  // map moved
-              resolve(zoomMapAsync);
-            }
-          };
+        onMove = () => {
+          if (!vecEqual(centerStart, map.center())) {  // map moved
+            resolve(zoomMapAsync);
+          }
+        };
 
-          curtain.reveal({
-            revealSelector: '.main-map',
-            tipHtml: dragString
-          });
-
-          map.on('move', onMove);
+        curtain.reveal({
+          revealSelector: '.main-map',
+          tipHtml: dragString
         });
-      })
+
+        map.on('move', onMove);
+      }))
       .finally(cleanup)
       .then(nextStep => delayAsync(2000).then(nextStep))
       .catch(() => dragMapAsync);   // retry

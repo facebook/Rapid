@@ -484,7 +484,6 @@ export function uiIntroPoint(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: '.top-toolbar button.undo-button',
-        revealPadding: 5,
         tipHtml: helpHtml('intro.points.undo')
       });
       history.on('change.intro', () => resolve(play));
