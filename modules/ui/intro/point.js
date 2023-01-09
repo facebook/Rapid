@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroPoint(context, curtain) {
@@ -25,11 +25,6 @@ export function uiIntroPoint(context, curtain) {
   let _rejectStep = null;
   let _pointID = null;
 
-
-  function eventCancel(d3_event) {
-    d3_event.stopPropagation();
-    d3_event.preventDefault();
-  }
 
 
   // Helper function to make sure the point exists

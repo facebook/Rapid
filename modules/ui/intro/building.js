@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
-import { helpHtml, isMostlySquare, transitionTime } from './helper';
+import { eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, curtain) {
@@ -30,11 +30,6 @@ export function uiIntroBuilding(context, curtain) {
 
   function timeout(fn, t) {
     _timeouts.push(window.setTimeout(fn, t));
-  }
-
-  function eventCancel(d3_event) {
-    d3_event.stopPropagation();
-    d3_event.preventDefault();
   }
 
   // Helper function to make sure the house exists
@@ -201,8 +196,7 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesHouseExist()) return continueTo(addHouse);
     if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
     timeout(() => {
       _showPresetList();
@@ -239,7 +233,7 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesHouseExist()) return continueTo(addHouse);
     if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
     timeout(() => {
       _showPresetList();
@@ -502,7 +496,7 @@ export function uiIntroBuilding(context, curtain) {
     if (!_doesTankExist()) return continueTo(addTank);
     if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
 
-    // disallow scrolling
+    // prevent scrolling
     container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
     timeout(() => {

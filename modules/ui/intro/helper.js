@@ -4,12 +4,21 @@ import { geoSphericalDistance } from '@id-sdk/geo';
 import { uiCmd } from '../cmd';
 
 /**
- * icon
+ * insert an icon
  */
 export function icon(name, svgklass, useklass) {
   return '<svg class="icon ' + (svgklass || '') + '">' +
     '<use xlink:href="' + name + '"' +
     (useklass ? ' class="' + useklass + '"' : '') + '></use></svg>';
+}
+
+
+/**
+ * event handler that just cancels the event
+ */
+export function eventCancel(d3_event) {
+  d3_event.stopPropagation();
+  d3_event.preventDefault();
 }
 
 

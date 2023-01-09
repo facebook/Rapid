@@ -1,5 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
 import { helpHtml } from './helper';
@@ -12,83 +11,118 @@ export function uiIntroStartEditing(context, curtain) {
   const chapter = { title: 'intro.startediting.title' };
   const container = context.container();
 
-  let _modalSelection = d3_select(null);
+  let _chapterCancelled = false;
+  let _rejectStep = null;
+
+
+  function runAsync(currStep) {
+    if (_chapterCancelled) return Promise.reject();
+    if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
+
+    return currStep()
+      .then(nextStep => runAsync(nextStep))   // recurse
+      .catch(() => { /* noop */ });
+  }
 
 
   // "You're now ready to edit OpenStreetMap! You can replay this walkthrough anytime
   // or view more documentation by pressing the help button..."
   // Click Ok to advance
-  function showHelp() {
-    curtain.reveal({
-      revealSelector: '.map-control.help-control',
-      tipHtml: helpHtml('intro.startediting.help'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: shortcuts
+  function showHelpAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.map-control.help-control',
+        tipHtml: helpHtml('intro.startediting.help'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(shortcutsAsync)
+      });
     });
   }
 
 
   // "You can view a list of commands along with their keyboard shortcuts by pressing the ? key..."
   // Click Ok to advance
-  function shortcuts() {
-    curtain.reveal({
-      revealSelector: '.map-control.help-control',
-      tipHtml: helpHtml('intro.startediting.shortcuts'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: showSave
+  function shortcutsAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.map-control.help-control',
+        tipHtml: helpHtml('intro.startediting.shortcuts'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(showSaveAsync)
+      });
     });
   }
 
 
   // "Don't forget to regularly save your changes!"
   // Click Ok to advance
-  function showSave() {
+  function showSaveAsync() {
     container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
-    curtain.reveal({
-      revealSelector: '.top-toolbar button.save',
-      tipHtml: helpHtml('intro.startediting.save'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: showStart
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.top-toolbar button.save',
+        tipHtml: helpHtml('intro.startediting.save'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(showStartAsync)
+      });
     });
   }
 
 
   // "Start mapping!"
   // Click the button to advance
-  function showStart() {
+  function showStartAsync() {
     container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
-    _modalSelection = uiModal(container);
-    _modalSelection.select('.modal').attr('class', 'modal-splash modal');
-    _modalSelection.selectAll('.close').remove();
 
-    const startbutton = _modalSelection.select('.content')
-      .attr('class', 'fillL')
-      .append('button')
-      .attr('class', 'modal-section huge-modal-button')
-      .on('click', () => _modalSelection.remove());
+    let modalSelection = uiModal(container);
+    modalSelection.select('.modal').attr('class', 'modal-splash modal');
+    modalSelection.selectAll('.close').remove();
 
-    startbutton
-      .append('svg')
-      .attr('class', 'illustration')
-      .append('use')
-      .attr('xlink:href', '#iD-logo-walkthrough');
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      dispatch.call('startEditing');
 
-    startbutton
-      .append('h2')
-      .html(t.html('intro.startediting.start'));
+      const startbutton = modalSelection.select('.content')
+        .attr('class', 'fillL')
+        .append('button')
+        .attr('class', 'modal-section huge-modal-button')
+        .on('click', resolve);
 
-    dispatch.call('startEditing');
+      startbutton
+        .append('svg')
+        .attr('class', 'illustration')
+        .append('use')
+        .attr('xlink:href', '#iD-logo-walkthrough');
+
+      startbutton
+        .append('h2')
+        .html(t.html('intro.startediting.start'));
+    })
+    .finally(() => modalSelection.remove());
   }
 
 
   chapter.enter = () => {
-    showHelp();
+    _chapterCancelled = false;
+    _rejectStep = null;
+
+    runAsync(showHelpAsync)
+      .catch(() => { /* noop */ });
   };
 
 
   chapter.exit = () => {
-    _modalSelection.remove();
     container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
+    _chapterCancelled = true;
+
+    if (_rejectStep) {   // bail out of whatever step we are in
+      _rejectStep();
+      _rejectStep = null;
+    }
   };
 
 

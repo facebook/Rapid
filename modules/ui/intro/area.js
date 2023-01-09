@@ -6,7 +6,7 @@ import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroArea(context, curtain) {
@@ -24,12 +24,6 @@ export function uiIntroArea(context, curtain) {
   let _chapterCancelled = false;
   let _rejectStep = null;
   let _areaID = null;
-
-
-  function eventCancel(d3_event) {
-    d3_event.stopPropagation();
-    d3_event.preventDefault();
-  }
 
 
   // Helper function to make sure the area exists

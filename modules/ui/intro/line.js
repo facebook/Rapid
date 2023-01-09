@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { helpHtml, icon, transitionTime } from './helper';
+import { eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroLine(context, curtain) {
@@ -49,12 +49,6 @@ export function uiIntroLine(context, curtain) {
 
   function timeout(fn, t) {
     _timeouts.push(window.setTimeout(fn, t));
-  }
-
-
-  function eventCancel(d3_event) {
-    d3_event.stopPropagation();
-    d3_event.preventDefault();
   }
 
 
@@ -279,7 +273,7 @@ export function uiIntroLine(context, curtain) {
     if (!_doesLineExist()) return continueTo(addLine);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
 
     timeout(() => {
       _showPresetList();
@@ -317,7 +311,7 @@ export function uiIntroLine(context, curtain) {
     if (!_doesLineExist()) return continueTo(addLine);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
 
     timeout(() => {
       _showPresetList();
@@ -366,7 +360,7 @@ export function uiIntroLine(context, curtain) {
     if (!_doesLineExist()) return continueTo(addLine);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
+    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
 
     timeout(() => {
       _showPresetList();

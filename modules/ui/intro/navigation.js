@@ -5,7 +5,7 @@ import { select as d3_select } from 'd3-selection';
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroNavigation(context, curtain) {
@@ -24,12 +24,6 @@ export function uiIntroNavigation(context, curtain) {
 
   let _chapterCancelled = false;
   let _rejectStep = null;
-
-
-  function eventCancel(d3_event) {
-    d3_event.stopPropagation();
-    d3_event.preventDefault();
-  }
 
 
   // Helper function to make sure the Town Hall exists _and_ is selected
@@ -107,7 +101,7 @@ export function uiIntroNavigation(context, curtain) {
 
           onMove = () => {
             if (!vecEqual(centerStart, map.center())) {  // map moved
-              resolve();
+              resolve(zoomMapAsync);
             }
           };
 
@@ -120,7 +114,7 @@ export function uiIntroNavigation(context, curtain) {
         });
       })
       .finally(cleanup)
-      .then(() => delayAsync(2000).then(zoomMapAsync))
+      .then(nextStep => delayAsync(2000).then(nextStep))
       .catch(() => dragMapAsync);   // retry
 
     function cleanup() {
@@ -141,7 +135,7 @@ export function uiIntroNavigation(context, curtain) {
 
       onMove = () => {
         if (zoomStart !== map.zoom()) {  // map zoomed
-          resolve();
+          resolve(featuresAsync);
         }
       };
 
@@ -153,7 +147,7 @@ export function uiIntroNavigation(context, curtain) {
       map.on('move', onMove);
     })
     .finally(cleanup)
-    .then(() => delayAsync(2000).then(featuresAsync))
+    .then(nextStep => delayAsync(2000).then(nextStep))
     .catch(() => zoomMapAsync);   // retry
 
     function cleanup() {
@@ -171,10 +165,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.main-map',
         tipHtml: helpHtml('intro.navigation.features'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(pointsLinesAreasAsync)
       });
     })
-    .then(() => pointsLinesAreasAsync)
     .catch(() => featuresAsync);   // retry
   }
 
@@ -188,10 +181,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.main-map',
         tipHtml: helpHtml('intro.navigation.points_lines_areas'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(nodesWaysAsync)
       });
     })
-    .then(() => nodesWaysAsync)
     .catch(() => pointsLinesAreasAsync);   // retry
   }
 
@@ -205,10 +197,9 @@ export function uiIntroNavigation(context, curtain) {
         revealSelector: '.main-map',
         tipHtml: helpHtml('intro.navigation.nodes_ways'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(clickTownHallAsync)
       });
     })
-    .then(() => clickTownHallAsync)
     .catch(() => nodesWaysAsync);   // retry
   }
 
@@ -233,10 +224,9 @@ export function uiIntroNavigation(context, curtain) {
           tipHtml: helpHtml(`intro.navigation.${textID}`)
         });
 
-        context.on('enter.intro', resolve);
+        context.on('enter.intro', () => resolve(selectedTownHallAsync));
       }))
       .finally(cleanup)
-      .then(() => selectedTownHallAsync)
       .catch(() => clickTownHallAsync);   // retry
 
     function cleanup() {
@@ -257,13 +247,12 @@ export function uiIntroNavigation(context, curtain) {
         revealExtent: townHallExtent,
         tipHtml: helpHtml('intro.navigation.selected_townhall'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(editorTownHallAsync)
       });
 
       context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(cleanup)
-    .then(() => editorTownHallAsync)
     .catch(() => selectedTownHallAsync);   // retry
 
     function cleanup() {
@@ -280,19 +269,18 @@ export function uiIntroNavigation(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _showEntityEditor();
-      container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
+      container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml('intro.navigation.editor_townhall'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(presetTownHallAsync)
       });
 
       context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(cleanup)
-    .then(() => presetTownHallAsync)
     .catch(() => editorTownHallAsync);   // retry
 
     function cleanup() {
@@ -310,7 +298,7 @@ export function uiIntroNavigation(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _showEntityEditor();
-      container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
+      container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
       const entity = context.entity(context.selectedIDs()[0]);
@@ -321,13 +309,12 @@ export function uiIntroNavigation(context, curtain) {
         revealPadding: 5,
         tipHtml: helpHtml('intro.navigation.preset_townhall', { preset: preset.name() }),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(fieldsTownHallAsync)
       });
 
       context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(cleanup)
-    .then(() => fieldsTownHallAsync)
     .catch(() => presetTownHallAsync);   // retry
 
     function cleanup() {
@@ -345,20 +332,19 @@ export function uiIntroNavigation(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _showEntityEditor();
-      container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // disallow scrolling
+      container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane .section-preset-fields',
         revealPadding: 5,
         tipHtml: helpHtml('intro.navigation.fields_townhall'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: resolve
+        buttonCallback: () => resolve(closeTownHallAsync)
       });
 
       context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(cleanup)
-    .then(() => closeTownHallAsync)
     .catch(() => fieldsTownHallAsync);   // retry
 
     function cleanup() {
@@ -383,10 +369,9 @@ export function uiIntroNavigation(context, curtain) {
         tipHtml: helpHtml('intro.navigation.close_townhall', { button: icon(iconName, 'inline') })
       });
 
-      context.on('enter.intro', resolve);
+      context.on('enter.intro', () => resolve(searchStreetAsync));
     })
     .finally(cleanup)
-    .then(() => searchStreetAsync)
     .catch(() => closeTownHallAsync);   // retry
 
     function cleanup() {
@@ -415,10 +400,9 @@ export function uiIntroNavigation(context, curtain) {
           tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
         });
 
-        container.select('.search-header input').on('keyup.intro', resolve);
+        container.select('.search-header input').on('keyup.intro', () => resolve(checkSearchResultAsync));
       }))
       .finally(cleanup)
-      .then(() => checkSearchResultAsync)
       .catch(() => searchStreetAsync);   // retry
 
     function cleanup() {
@@ -435,7 +419,7 @@ export function uiIntroNavigation(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
 
-      context.on('enter.intro', resolve);
+      context.on('enter.intro', () => resolve(selectedStreetAsync));
 
       container.select('.search-header input').on('keyup.intro', () => {
         const first = container.select('.feature-list-item:nth-child(0n+2)');  // skip "No Results" item
@@ -456,7 +440,6 @@ export function uiIntroNavigation(context, curtain) {
       });
     })
     .finally(cleanup)
-    .then(() => selectedStreetAsync)
     .catch(() => checkSearchResultAsync);   // retry
 
     function cleanup() {
@@ -488,13 +471,12 @@ export function uiIntroNavigation(context, curtain) {
           revealPadding: 40,
           tipHtml: helpHtml('intro.navigation.selected_street', { name: t('intro.graph.name.spring-street') }),
           buttonText: t.html('intro.ok'),
-          buttonCallback: resolve
+          buttonCallback: () => resolve(editorStreetAsync)
         });
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(cleanup)
-      .then(() => editorStreetAsync)
       .catch(() => selectedStreetAsync);   // retry
 
     function cleanup() {
@@ -525,10 +507,9 @@ export function uiIntroNavigation(context, curtain) {
         tipHtml: tipHtml
       });
 
-      context.on('enter.intro', resolve);
+      context.on('enter.intro', () => resolve(play));
     })
     .finally(cleanup)
-    .then(() => play)
     .catch(() => editorStreetAsync);   // retry
 
     function cleanup() {

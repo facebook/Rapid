@@ -11,41 +11,61 @@ export function uiIntroWelcome(context, curtain) {
   const chapter = { title: 'intro.welcome.title' };
   const townHallExtent = new Extent([-85.63654,41.94290], [-85.63632,41.94307]);
 
+  let _chapterCancelled = false;
+  let _rejectStep = null;
+
+
+  function runAsync(currStep) {
+    if (_chapterCancelled) return Promise.reject();
+    if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
+
+    return currStep()
+      .then(nextStep => runAsync(nextStep))   // recurse
+      .catch(() => { /* noop */ });
+  }
+
 
   // "Welcome! This walkthrough will teach you the basics of editing on OpenStreetMap."
   // Click Ok to advance
-  function welcome() {
-    context.map()
+  function welcomeAsync() {
+    return context.map()
       .setCenterZoomAsync(townHallExtent.center(), 19)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-welcome',
           tipHtml: helpHtml('intro.welcome.welcome'),
           buttonText: t.html('intro.ok'),
-          buttonCallback: practice
+          buttonCallback: () => resolve(practiceAsync)
         });
-      });
+      }));
   }
 
   // "All of the data in this walkthrough is just for practicing...
   // Click Ok to advance
-  function practice() {
-    curtain.reveal({
-      revealSelector: '.intro-nav-wrap .chapter-welcome',
-      tipHtml: helpHtml('intro.welcome.practice'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: words
+  function practiceAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.intro-nav-wrap .chapter-welcome',
+        tipHtml: helpHtml('intro.welcome.practice'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(wordsAsync)
+      });
     });
   }
 
   // "When we introduce a new word, we'll use *italics*."
   // Click Ok to advance
-  function words() {
-    curtain.reveal({
-      revealSelector: '.intro-nav-wrap .chapter-welcome',
-      tipHtml: helpHtml('intro.welcome.words'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: chapters
+  function wordsAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.intro-nav-wrap .chapter-welcome',
+        tipHtml: helpHtml('intro.welcome.words'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(chapters)
+      });
     });
   }
 
@@ -61,11 +81,21 @@ export function uiIntroWelcome(context, curtain) {
 
 
   chapter.enter = () => {
-    welcome();
+    _chapterCancelled = false;
+    _rejectStep = null;
+
+    runAsync(welcomeAsync)
+      .catch(() => { /* noop */ });
   };
 
 
   chapter.exit = () => {
+    _chapterCancelled = true;
+
+    if (_rejectStep) {   // bail out of whatever step we are in
+      _rejectStep();
+      _rejectStep = null;
+    }
   };
 
 

@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
-import { helpHtml, icon, transitionTime } from './helper';
+import { eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroRapid(context, curtain) {
@@ -21,12 +21,6 @@ export function uiIntroRapid(context, curtain) {
 
   function timeout(fn, t) {
     _timeouts.push(window.setTimeout(fn, t));
-  }
-
-
-  function eventCancel(d3_event) {
-    d3_event.stopPropagation();
-    d3_event.preventDefault();
   }
 
 
@@ -71,7 +65,7 @@ export function uiIntroRapid(context, curtain) {
   function selectRoad() {
     context.scene().enableLayers('rapid');
 
-    d3_select('.inspector-wrap').on('wheel.intro', eventCancel);  // disallow scrolling
+    d3_select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
 
     curtain.reveal({
       revealExtent: tulipLaneExtent,
