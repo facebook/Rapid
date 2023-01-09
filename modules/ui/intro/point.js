@@ -149,8 +149,7 @@ export function uiIntroPoint(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 
-        // disallow scrolling
-        container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         _showPresetList();
 
