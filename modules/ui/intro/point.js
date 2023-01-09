@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroPoint(context, curtain) {
@@ -21,13 +21,9 @@ export function uiIntroPoint(context, curtain) {
   const buildingExtent = new Extent([-85.63261, 41.94391], [-85.63222, 41.94419]);
   const cafePreset = presetManager.item('amenity/cafe');
 
-  let _timeouts = [];
+  let _chapterCancelled = false;
+  let _rejectStep = null;
   let _pointID = null;
-
-
-  function timeout(fn, t) {
-    _timeouts.push(window.setTimeout(fn, t));
-  }
 
 
   function eventCancel(d3_event) {
@@ -62,10 +58,19 @@ export function uiIntroPoint(context, curtain) {
     container.select('.inspector-wrap .panewrap').style('right', '-100%');
   }
 
+  function runAsync(currStep) {
+    if (_chapterCancelled) return Promise.reject();
+    if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
+
+    return currStep()
+      .then(nextStep => runAsync(nextStep))   // recurse
+      .catch(() => { /* noop */ });
+  }
+
 
   // "Points can be used to represent features such as shops, restaurants, and monuments."
   // Click "Add Point" button to advance
-  function addPoint() {
+  function addPointAsync() {
     context.enter('browse');
     history.reset('initial');
     _pointID = null;
@@ -74,9 +79,10 @@ export function uiIntroPoint(context, curtain) {
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.add-point',
           tipHtml: helpHtml('intro.points.points_info') + '{br}' + helpHtml('intro.points.add_point')
@@ -87,190 +93,207 @@ export function uiIntroPoint(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#iD-graphic-points');
-      });
 
-    context.on('enter.intro', () => continueTo(placePoint));
+        context.on('enter.intro', () => resolve(placePointAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => addPointAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // Place a point in the revealed rectangle to advance
-  function placePoint() {
-    if (context.mode().id !== 'add-point') return continueTo(addPoint);
+  function placePointAsync() {
+    if (context.mode().id !== 'add-point') return Promise.resolve(addPointAsync);
     _pointID = null;
 
-    const textID = (context.lastPointerType() === 'mouse') ? 'place_point' : 'place_point_touch';
-    curtain.reveal({
-      revealExtent: buildingExtent,
-      tipHtml: helpHtml(`intro.points.${textID}`)
-    });
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const created = difference.created();
-      if (created.length === 1) {
-        _pointID = created[0].id;
-      }
-    });
+      const textID = (context.lastPointerType() === 'mouse') ? 'place_point' : 'place_point_touch';
+      curtain.reveal({
+        revealExtent: buildingExtent,
+        tipHtml: helpHtml(`intro.points.${textID}`)
+      });
 
-    context.on('enter.intro', () => continueTo(searchPreset));
+      history.on('change.intro', difference => {
+        if (!difference) return;
+        const created = difference.created();
+        if (created.length === 1) {
+          _pointID = created[0].id;
+        }
+      });
 
-    function continueTo(nextStep) {
+      context.on('enter.intro', () => resolve(searchPresetAsync));
+    })
+    .finally(cleanup)
+    .catch(() => placePointAsync);   // retry
+
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "The point you just added is a cafe..."
   // Search for Cafe in the preset search to advance
-  function searchPreset() {
-    if (!_doesPointExist()) return continueTo(addPoint);
+  function searchPresetAsync() {
+    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
     if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
-    // disallow scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    return delayAsync()  // after preset pane visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    timeout(() => {
-      _showPresetList();
+        // disallow scrolling
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);
 
-      container.select('.preset-search-input')
-        .on('keydown.intro', null)
-        .on('keyup.intro', checkPresetSearch);
+        _showPresetList();
 
-      curtain.reveal({
-        revealSelector: '.preset-search-input',
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.points.search_cafe', { preset: cafePreset.name() })
-      });
-    }, 400);  // after preset list pane visible..
+        curtain.reveal({
+          revealSelector: '.preset-search-input',
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.points.search_cafe', { preset: cafePreset.name() })
+        });
+
+        container.select('.preset-search-input')
+          .on('keydown.intro', null)
+          .on('keyup.intro', _checkPresetSearch);
 
 
-    // Get user to choose the Cafe preset from the search result
-    function checkPresetSearch() {
-      const first = container.select('.preset-list-item:first-child');
-      if (!first.classed('preset-amenity-cafe')) return;
+        // Get user to choose the Cafe preset from the search result
+        function _checkPresetSearch() {
+          const first = container.select('.preset-list-item:first-child');
+          if (!first.classed('preset-amenity-cafe')) return;
 
-      curtain.reveal({
-        revealNode: first.select('.preset-list-button').node(),
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.points.choose_cafe', { preset: cafePreset.name() })
-      });
+          curtain.reveal({
+            revealNode: first.select('.preset-list-button').node(),
+            revealPadding: 5,
+            tipHtml: helpHtml('intro.points.choose_cafe', { preset: cafePreset.name() })
+          });
 
-      container.select('.preset-search-input')
-        .on('keydown.intro', eventCancel, true)
-        .on('keyup.intro', null);
-    }
-
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const modified = difference.modified();
-      if (modified.length === 1) {
-        if (presetManager.match(modified[0], context.graph()) === cafePreset) {
-          return continueTo(aboutFeatureEditor);
-        } else {
-          return continueTo(addPoint);  // didn't pick cafe
+          container.select('.preset-search-input')
+            .on('keydown.intro', eventCancel, true)   // no more typing
+            .on('keyup.intro', null);
         }
-      }
-    });
 
-    context.on('enter.intro', () => continueTo(addPoint));
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetManager.match(modified[0], context.graph()) === cafePreset) {
+              resolve(aboutFeatureEditorAsync);
+            } else {
+              reject();  // didn't pick cafe
+            }
+          }
+        });
 
-    function continueTo(nextStep) {
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(cleanup)
+      .catch(() => searchPresetAsync);   // retry
+
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
-      nextStep();
     }
   }
 
 
   // "The point is now marked as a cafe. Using the feature editor, we can add more information about the cafe."
   // Click Ok to advance
-  function aboutFeatureEditor() {
-    if (!_doesPointExist()) return continueTo(addPoint);
+  function aboutFeatureEditorAsync() {
+    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
     if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
-    timeout(() => {
-      _showEntityEditor();
+    return delayAsync()  // after entity editor visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        _showEntityEditor();
 
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.points.feature_editor'),
-        tipClass: 'intro-points-describe',
-        buttonText: t.html('intro.ok'),
-        buttonCallback: () => continueTo(addName)
-      });
-    }, 400);
+        curtain.reveal({
+          revealSelector: '.entity-editor-pane',
+          tipHtml: helpHtml('intro.points.feature_editor'),
+          tipClass: 'intro-points-describe',
+          buttonText: t.html('intro.ok'),
+          buttonCallback: () => resolve(addNameAsync)
+        });
 
-    // If user leaves select mode here, just continue with the tutorial.
-    context.on('enter.intro', () => continueTo(hasPoint));
+        // If user leaves select mode here, just continue with the tutorial.
+        context.on('enter.intro', () => resolve(addNameAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => aboutFeatureEditorAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Let's pretend that you have local knowledge of this cafe, and you know its name..."
   // Make any edit to advance (or click Ok if they happend to add a name already)
-  function addName() {
-    if (!_doesPointExist()) return continueTo(addPoint);
+  function addNameAsync() {
+    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
     if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
-    timeout(() => {
-      _showEntityEditor();
+    return delayAsync()  // after entity editor visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        _showEntityEditor();
 
-      // It's possible for the user to add a name in a previous step..
-      // If so, don't tell them to add the name in this step.
-      // Give them an OK button instead.
-      const entity = context.entity(_pointID);
-      if (entity.tags.name) {
-        const tooltip = curtain.reveal({
-          revealSelector: '.entity-editor-pane',
-          tipHtml: helpHtml('intro.points.fields_info'),
-          buttonText: t.html('intro.ok'),
-          buttonCallback: () => continueTo(addCloseEditor)
-        });
+        // It's possible for the user to add a name in a previous step..
+        // If so, don't tell them to add the name in this step.
+        // Give them an OK button instead.
+        const entity = context.hasEntity(_pointID);
+        if (entity.tags.name) {
+          const tooltip = curtain.reveal({
+            revealSelector: '.entity-editor-pane',
+            tipHtml: helpHtml('intro.points.fields_info'),
+            buttonText: t.html('intro.ok'),
+            buttonCallback: () => resolve(addCloseEditorAsync)
+          });
 
-        tooltip.select('.instruction').style('display', 'none');
+          tooltip.select('.instruction').style('display', 'none');
 
-      } else {
-        curtain.reveal({
-          revealSelector: '.entity-editor-pane',
-          tipHtml: helpHtml('intro.points.fields_info') + '{br}' + helpHtml('intro.points.add_name'),
-          tipClass: 'intro-points-describe'
-        });
-      }
-    }, 400);
+        } else {
+          curtain.reveal({
+            revealSelector: '.entity-editor-pane',
+            tipHtml: helpHtml('intro.points.fields_info') + '{br}' + helpHtml('intro.points.add_name'),
+            tipClass: 'intro-points-describe'
+          });
+        }
 
-    history.on('change.intro', () => continueTo(addCloseEditor));
+        history.on('change.intro', () => resolve(addCloseEditorAsync));
 
-    // If user leaves select mode here, just continue with the tutorial.
-    context.on('enter.intro', () => continueTo(hasPoint));
+        // If user leaves select mode here, just continue with the tutorial.
+        context.on('enter.intro', () => resolve(hasPointAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => addNameAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "The feature editor will remember all of your changes automatically..."
   // Close entity editor / leave select mode to advance
-  function addCloseEditor() {
-    if (!_doesPointExist()) return continueTo(addPoint);
+  function addCloseEditorAsync() {
+    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
     if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
-    timeout(() => {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
       _showEntityEditor();
 
       const iconSelector = '.entity-editor-pane button.close svg use';
@@ -279,21 +302,23 @@ export function uiIntroPoint(context, curtain) {
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml('intro.points.add_close', { button: icon(iconName, 'inline') })
       });
-    }, 400);
 
-    context.on('enter.intro', () => continueTo(hasPoint));
+      context.on('enter.intro', () => resolve(hasPointAsync));
+    })
+    .finally(cleanup)
+    .catch(() => addCloseEditorAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
+      history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // Set a history checkpoint here, so we can return back to it if needed
   // The point exists and it is a cafe and it probably has a name.
-  function hasPoint() {
-    if (!_doesPointExist()) return addPoint();
+  function hasPointAsync() {
+    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
 
     // Make sure it's still a cafe, in case user somehow changed it..
     const entity = context.entity(_pointID);
@@ -301,13 +326,13 @@ export function uiIntroPoint(context, curtain) {
     context.replace(actionChangePreset(_pointID, oldPreset, cafePreset));
 
     history.checkpoint('hasPoint');
-    reselectPoint();  // advance
+    return Promise.resolve(reselectPointAsync);  // advance
   }
 
 
   // "Often points will already exist, but have mistakes or be incomplete..."
   // Reselect the point to advance
-  function reselectPoint() {
+  function reselectPointAsync() {
     context.enter('browse');
     history.reset('hasPoint');
 
@@ -315,155 +340,166 @@ export function uiIntroPoint(context, curtain) {
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 20, msec)   // bug: too hard to place a point in the building at z19 because of snapping to fill #719
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+
         curtain.reveal({
           revealExtent: buildingExtent,
           tipHtml: helpHtml('intro.points.reselect')
         });
-      });
 
-    context.on('enter.intro', () => continueTo(updatePoint));
+        context.on('enter.intro', () => resolve(updatePointAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => reselectPointAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Let's fill in some more details for this cafe..."
   // Make any edit to advance
-  function updatePoint() {
-    if (!_doesPointExist() || !_isPointSelected()) return continueTo(reselectPoint);
+  function updatePointAsync() {
+    if (!_doesPointExist() || !_isPointSelected()) return Promise.resolve(reselectPointAsync);
 
-    timeout(() => {
-      _showEntityEditor();
+    return delayAsync()  // after entity editor visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        _showEntityEditor();
 
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.points.update'),
-        tipClass: 'intro-points-describe'
-      });
-    }, 400);
+        curtain.reveal({
+          revealSelector: '.entity-editor-pane',
+          tipHtml: helpHtml('intro.points.update'),
+          tipClass: 'intro-points-describe'
+        });
 
-    history.on('change.intro', () => continueTo(updateCloseEditor));
-    context.on('enter.intro', () => continueTo(reselectPoint));
+        history.on('change.intro', () => resolve(updateCloseEditorAsync));
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(cleanup)
+      .catch(() => updatePointAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
-  }
+ }
 
 
   // "When you are finished updating the cafe..."
   // Close Entity editor / leave select mode to advance
-  function updateCloseEditor() {
-    if (!_doesPointExist() || !_isPointSelected()) return continueTo(reselectPoint);
+  function updateCloseEditorAsync() {
+    if (!_doesPointExist() || !_isPointSelected()) return Promise.resolve(reselectPointAsync);
 
-    timeout(() => {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
       _showEntityEditor();
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml('intro.points.update_close', { button: icon('#iD-icon-close', 'inline') })
       });
-    }, 400);
 
-    context.on('enter.intro', () => continueTo(rightClickPoint));
+      context.on('enter.intro', () => resolve(rightClickPointAsync));
+    })
+    .finally(cleanup)
+    .catch(() => updateCloseEditorAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "You can right-click on any feature to see the edit menu..."
-  // Select point with edit menu open to advance
-  function rightClickPoint() {
-    if (!_doesPointExist()) return continueTo(reselectPoint);
+  // Select open the edit menu to advance
+  function rightClickPointAsync() {
+    if (!_doesPointExist()) return Promise.resolve(reselectPointAsync);
     context.enter('browse');
 
-    const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
-    curtain.reveal({
-      revealExtent: buildingExtent,
-      tipHtml: helpHtml(`intro.points.${textID}`)
-    });
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    editMenu.on('toggled.intro', open => {
-      if (!open) return;
-      timeout(() => {
-        if (!_isPointSelected()) {
-          return continueTo(rightClickPoint);  // right clicked the wrong thing, try again
-        } else if (container.select('.edit-menu-item-delete').empty()) {
-          return continueTo(rightClickPoint);  // no delete button, try again
-        } else {
-          return continueTo(enterDelete);
-        }
-      }, 300);  // after edit menu visible
-    });
+      const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
+      curtain.reveal({
+        revealExtent: buildingExtent,
+        tipHtml: helpHtml(`intro.points.${textID}`)
+      });
 
-    function continueTo(nextStep) {
+      editMenu.on('toggled.intro', open => {
+        if (open) resolve(enterDeleteAsync);
+      });
+    })
+    .finally(cleanup)
+    .catch(() => rightClickPointAsync);   // retry
+
+    function cleanup() {
       editMenu.on('toggled.intro', null);
-      nextStep();
     }
   }
 
 
   // "It's OK to delete features that don't exist in the real world..."
   // Delete the point to advance
-  function enterDelete() {
-    if (!_doesPointExist() || !_isPointSelected()) return continueTo(rightClickPoint);
+  function enterDeleteAsync() {
+    if (!_doesPointExist() || !_isPointSelected()) return Promise.resolve(rightClickPointAsync);
 
     const node = container.select('.edit-menu-item-delete').node();
-    if (!node) return continueTo(rightClickPoint);   // no delete button, try again
+    if (!node) return Promise.resolve(rightClickPointAsync);   // no delete button, try again
 
-    curtain.reveal({
-      revealSelector: '.edit-menu',
-      revealPadding: 50,
-      tipHtml: helpHtml('intro.points.delete')
-    });
+    return delayAsync()  // after edit menu fully visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const deleted = difference.deleted();
-      if (deleted.length === 1 && deleted[0].id === _pointID) {
-        return continueTo(undo);
-      }
-    });
+        curtain.reveal({
+          revealSelector: '.edit-menu',
+          revealPadding: 50,
+          tipHtml: helpHtml('intro.points.delete')
+        });
 
-    context.on('enter.intro', () => {
-      if (_doesPointExist()) {
-        return continueTo(rightClickPoint);  // point still exists, try again
-      }
-    });
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          const deleted = difference.deleted();
+          if (deleted.length === 1 && deleted[0].id === _pointID) {
+            resolve(undoAsync);
+          }
+        });
 
-    function continueTo(nextStep) {
+        context.on('enter.intro', () => {
+          if (_doesPointExist()) reject();  // point still exists, try again
+        });
+      }))
+      .finally(cleanup)
+      .catch(() => enterDeleteAsync);   // retry
+
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "You can always undo any changes up until you save your edits to OpenStreetMap..."
   // Click undo to advance
-  function undo() {
-    curtain.reveal({
-      revealSelector: '.top-toolbar button.undo-button',
-      revealPadding: 5,
-      tipHtml: helpHtml('intro.points.undo')
-    });
+  function undoAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.top-toolbar button.undo-button',
+        revealPadding: 5,
+        tipHtml: helpHtml('intro.points.undo')
+      });
+      history.on('change.intro', () => resolve(play));
+    })
+    .finally(cleanup)
+    .catch(() => undoAsync);   // retry
 
-    history.on('change.intro', () => continueTo(play));
-
-    function continueTo(nextStep) {
+    function cleanup() {
       history.on('change.intro', null);
-      nextStep();
     }
   }
 
@@ -483,17 +519,21 @@ export function uiIntroPoint(context, curtain) {
 
 
   chapter.enter = () => {
-    addPoint();
+    _chapterCancelled = false;
+    _rejectStep = null;
+
+    runAsync(addPointAsync)
+      .catch(() => { /* noop */ });
   };
 
 
   chapter.exit = () => {
-    _timeouts.forEach(window.clearTimeout);
-    history.on('change.intro', null);
-    context.on('enter.intro', null);
-    editMenu.on('toggled.intro', null);
-    container.select('.inspector-wrap').on('wheel.intro', null);
-    container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
+    _chapterCancelled = true;
+
+    if (_rejectStep) {   // bail out of whatever step we are in
+      _rejectStep();
+      _rejectStep = null;
+    }
   };
 
 
