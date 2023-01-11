@@ -91,11 +91,9 @@ export function uiIntroPoint(context, curtain) {
 
         context.on('enter.intro', () => resolve(placePointAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -123,12 +121,10 @@ export function uiIntroPoint(context, curtain) {
 
       context.on('enter.intro', () => resolve(searchPresetAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -187,14 +183,12 @@ export function uiIntroPoint(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
+      });
   }
 
 
@@ -220,11 +214,9 @@ export function uiIntroPoint(context, curtain) {
         // If user leaves select mode here, just continue with the tutorial.
         context.on('enter.intro', () => resolve(addNameAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -266,12 +258,10 @@ export function uiIntroPoint(context, curtain) {
         // If user leaves select mode here, just continue with the tutorial.
         context.on('enter.intro', () => resolve(hasPointAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -294,12 +284,10 @@ export function uiIntroPoint(context, curtain) {
 
       context.on('enter.intro', () => resolve(hasPointAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -340,11 +328,9 @@ export function uiIntroPoint(context, curtain) {
 
         context.on('enter.intro', () => resolve(updatePointAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -367,12 +353,10 @@ export function uiIntroPoint(context, curtain) {
         history.on('change.intro', () => resolve(updateCloseEditorAsync));
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+      });
  }
 
 
@@ -392,11 +376,9 @@ export function uiIntroPoint(context, curtain) {
 
       context.on('enter.intro', () => resolve(rightClickPointAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -421,12 +403,10 @@ export function uiIntroPoint(context, curtain) {
 
       history.on('change.intro', reject);  // disallow doing anything else
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       editMenu.on('toggled.intro', null);
       history.on('change.intro', null);
-    }
+    });
   }
 
 
@@ -460,12 +440,10 @@ export function uiIntroPoint(context, curtain) {
           if (_doesPointExist()) reject();  // point still exists, try again
         });
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -478,19 +456,17 @@ export function uiIntroPoint(context, curtain) {
         revealSelector: '.top-toolbar button.undo-button',
         tipHtml: helpHtml('intro.points.undo')
       });
-      history.on('change.intro', () => resolve(play));
+      history.on('change.intro', () => resolve(playAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       history.on('change.intro', null);
-    }
+    });
   }
 
 
   // Free play
   // Click on Areas (or another) chapter to advance
-  function play() {
+  function playAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -499,6 +475,7 @@ export function uiIntroPoint(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
+    return Promise.resolve();
   }
 
 

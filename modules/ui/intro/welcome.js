@@ -64,19 +64,20 @@ export function uiIntroWelcome(context, curtain) {
         revealSelector: '.intro-nav-wrap .chapter-welcome',
         tipHtml: helpHtml('intro.welcome.words'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: () => resolve(chapters)
+        buttonCallback: () => resolve(chaptersAsync)
       });
     });
   }
 
   // "You can use the buttons below to skip chapters at any time..."
   // Click on Navigation (or another) chapter to advance
-  function chapters() {
+  function chaptersAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.intro-nav-wrap .chapter-navigation',
       tipHtml: helpHtml('intro.welcome.chapters', { next: t('intro.navigation.title') })
     });
+    return Promise.resolve();
   }
 
 

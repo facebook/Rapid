@@ -67,7 +67,7 @@ export function uiIntroStartEditing(context, curtain) {
         revealSelector: '.top-toolbar button.save',
         tipHtml: helpHtml('intro.startediting.save'),
         buttonText: t.html('intro.ok'),
-        buttonCallback: () => resolve(showStartAsync)
+        buttonCallback: () => resolve(showStartMappingAsync)
       });
     });
   }
@@ -75,7 +75,7 @@ export function uiIntroStartEditing(context, curtain) {
 
   // "Start mapping!"
   // Click the button to advance
-  function showStartAsync() {
+  function showStartMappingAsync() {
     container.selectAll('.shaded').remove();  // in case user opened keyboard shortcuts
 
     let modalSelection = uiModal(container);
@@ -102,7 +102,9 @@ export function uiIntroStartEditing(context, curtain) {
         .append('h2')
         .html(t.html('intro.startediting.start'));
     })
-    .finally(() => modalSelection.remove());
+    .finally(() => {
+      modalSelection.remove();
+    });
   }
 
 

@@ -111,12 +111,10 @@ export function uiIntroNavigation(context, curtain) {
 
         map.on('move', onMove);
       }))
-      .finally(cleanup)
+      .finally(() => {
+        if (onMove) map.off('move', onMove);
+      })
       .then(nextStep => delayAsync(2000).then(nextStep));
-
-    function cleanup() {
-      if (onMove) map.off('move', onMove);
-    }
   }
 
 
@@ -143,12 +141,10 @@ export function uiIntroNavigation(context, curtain) {
 
       map.on('move', onMove);
     })
-    .finally(cleanup)
-    .then(nextStep => delayAsync(2000).then(nextStep));
-
-    function cleanup() {
+    .finally(() => {
       if (onMove) map.off('move', onMove);
-    }
+    })
+    .then(nextStep => delayAsync(2000).then(nextStep));
   }
 
 
@@ -219,11 +215,9 @@ export function uiIntroNavigation(context, curtain) {
 
         context.on('enter.intro', () => resolve(selectedTownHallAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -244,11 +238,9 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -271,12 +263,10 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
-    }
+    });
   }
 
 
@@ -304,12 +294,10 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
-    }
+    });
   }
 
 
@@ -333,12 +321,10 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
-    }
+    });
   }
 
 
@@ -359,11 +345,9 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', () => resolve(searchStreetAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -389,11 +373,9 @@ export function uiIntroNavigation(context, curtain) {
 
         container.select('.search-header input').on('keyup.intro', () => resolve(checkSearchResultAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      container.select('.search-header input').on('keyup.intro', null);
-    }
+      .finally(() => {
+        container.select('.search-header input').on('keyup.intro', null);
+      });
   }
 
 
@@ -425,14 +407,12 @@ export function uiIntroNavigation(context, curtain) {
         }
       });
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
       container.select('.search-header input')
         .on('keydown.intro', null)
         .on('keyup.intro', null);
-    }
+    });
   }
 
 
@@ -461,11 +441,9 @@ export function uiIntroNavigation(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -491,19 +469,17 @@ export function uiIntroNavigation(context, curtain) {
         tipHtml: tipHtml
       });
 
-      context.on('enter.intro', () => resolve(play));
+      context.on('enter.intro', () => resolve(playAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
   // Free play
   // Click on Points (or another) chapter to advance
-  function play() {
+  function playAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -512,6 +488,7 @@ export function uiIntroNavigation(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
+    return Promise.resolve();
   }
 
 

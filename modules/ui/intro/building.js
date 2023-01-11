@@ -99,11 +99,9 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', () => resolve(startHouseAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -138,12 +136,10 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -182,11 +178,9 @@ export function uiIntroBuilding(context, curtain) {
         }
       });
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -230,13 +224,11 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-list-button').on('click.intro', null);
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        container.select('.preset-list-button').on('click.intro', null);
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -274,14 +266,12 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-list-button').on('click.intro', null);
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        container.select('.preset-list-button').on('click.intro', null);
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -302,8 +292,8 @@ export function uiIntroBuilding(context, curtain) {
   // "Right-click to select the building you created and show the edit menu."
   // Open the edit menu to advance
   function rightClickHouseAsync() {
-    history.reset('hasHouse');
     if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
+    history.reset('hasHouse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
     const setZoom = Math.max(map.zoom(), 20);
@@ -325,12 +315,10 @@ export function uiIntroBuilding(context, curtain) {
 
         history.on('change.intro', reject);  // disallow doing anything else
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      editMenu.on('toggled.intro', null);
-      history.on('change.intro', null);
-    }
+      .finally(() => {
+        editMenu.on('toggled.intro', null);
+        history.on('change.intro', null);
+      });
   }
 
 
@@ -380,13 +368,11 @@ export function uiIntroBuilding(context, curtain) {
           return retryClickSquareAsync;
         }
       })
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      if (revealEditMenu) map.off('move', revealEditMenu);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        if (revealEditMenu) map.off('move', revealEditMenu);
+      });
   }
 
 
@@ -445,11 +431,9 @@ export function uiIntroBuilding(context, curtain) {
         });
         context.on('enter.intro', () => resolve(startTankAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -483,12 +467,10 @@ export function uiIntroBuilding(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -517,11 +499,9 @@ export function uiIntroBuilding(context, curtain) {
         }
       });
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -581,14 +561,12 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
+      });
   }
 
 
@@ -609,8 +587,8 @@ export function uiIntroBuilding(context, curtain) {
   // "Right-click to select the storage tank you created and show the edit menu."
   // Open the edit menu to advance
   function rightClickTankAsync() {
-    history.reset('hasTank');
     if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
+    history.reset('hasTank');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -627,12 +605,10 @@ export function uiIntroBuilding(context, curtain) {
 
       history.on('change.intro', reject);  // disallow doing anything else
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       editMenu.on('toggled.intro', null);
       history.on('change.intro', null);
-    }
+    });
   }
 
 
@@ -676,18 +652,16 @@ export function uiIntroBuilding(context, curtain) {
       .then(delayAsync)   // wait for circularize transtion to complete
       .then(() => {       // then check undo annotation to see what the user did
         if (history.undoAnnotation() === t('operations.circularize.annotation.feature', { n: 1 })) {
-          return play;
+          return playAsync;
         } else {
           return retryClickCircleAsync;
         }
       })
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      if (revealEditMenu) map.off('move', revealEditMenu);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        if (revealEditMenu) map.off('move', revealEditMenu);
+      });
   }
 
 
@@ -710,7 +684,7 @@ export function uiIntroBuilding(context, curtain) {
 
   // Free play
   // Click on Rapid Features (or another) chapter to advance
-  function play() {
+  function playAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -719,6 +693,7 @@ export function uiIntroBuilding(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
+    return Promise.resolve();
   }
 
 

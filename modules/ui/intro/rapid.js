@@ -89,12 +89,10 @@ export function uiIntroRapid(context, curtain) {
         resolve(addRoadAsync);
       });
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       d3_select('.inspector-wrap').on('wheel.intro', null);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -108,14 +106,11 @@ export function uiIntroRapid(context, curtain) {
           revealSelector: '.rapid-inspector-choice-accept',
           tipHtml: helpHtml('intro.rapid.add_road')
         });
-        d3_select('.choice-button-accept')
-          .on('click.intro', () => resolve(roadAddedAsync));
+        d3_select('.choice-button-accept').on('click.intro', () => resolve(roadAddedAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      d3_select('.choice-button-accept').on('click.intro', null);
-    }
+      .finally(() => {
+        d3_select('.choice-button-accept').on('click.intro', null);
+      });
   }
 
 
@@ -150,11 +145,9 @@ export function uiIntroRapid(context, curtain) {
       });
       issuesButton.on('click.intro', () => resolve(showLintAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       issuesButton.on('click.intro', null);
-    }
+    });
   }
 
 
@@ -192,11 +185,9 @@ export function uiIntroRapid(context, curtain) {
 
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       undoButton.on('click.intro', null);
-    }
+    });
   }
 
 
@@ -238,11 +229,9 @@ export function uiIntroRapid(context, curtain) {
           resolve(ignoreRoadAsync);
         });
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -256,14 +245,11 @@ export function uiIntroRapid(context, curtain) {
           revealSelector: '.rapid-inspector-choice-ignore',
           tipHtml: helpHtml('intro.rapid.ignore_road')
         });
-        d3_select('.choice-button-ignore')
-          .on('click.intro', () => resolve(showHelpAsync));
+        d3_select('.choice-button-ignore').on('click.intro', () => resolve(showHelpAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      d3_select('.choice-button-ignore').on('click.intro', null);
-    }
+      .finally(() => {
+        d3_select('.choice-button-ignore').on('click.intro', null);
+      });
   }
 
 
@@ -280,7 +266,7 @@ export function uiIntroRapid(context, curtain) {
           key: t('help.key')
         }),
         buttonText: t('intro.ok'),
-        buttonCallback: () => resolve(play)
+        buttonCallback: () => resolve(playAsync)
       });
     });
   }
@@ -288,7 +274,7 @@ export function uiIntroRapid(context, curtain) {
 
   // Free play
   // Click on Start Editing (or another) chapter to advance
-  function play() {
+  function playAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -297,6 +283,7 @@ export function uiIntroRapid(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
+    return Promise.resolve();
   }
 
 

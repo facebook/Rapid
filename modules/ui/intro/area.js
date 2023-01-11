@@ -90,11 +90,9 @@ export function uiIntroArea(context, curtain) {
 
         context.on('enter.intro', () => resolve(startPlaygroundAsync));
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
@@ -128,12 +126,10 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -161,12 +157,10 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -189,11 +183,9 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', () => resolve(searchPresetAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -250,14 +242,12 @@ export function uiIntroArea(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
-    }
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
+      });
   }
 
 
@@ -283,7 +273,7 @@ export function uiIntroArea(context, curtain) {
         // If they did this already, just complete this chapter
         const entity = context.entity(_areaID);
         if (entity.tags.description) {
-          resolve(play);
+          resolve(playAsync);
           return;
         }
 
@@ -330,13 +320,11 @@ export function uiIntroArea(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup);
-
-    function cleanup() {
-      context.on('enter.intro', null);
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.more-fields .combobox-input').on('click.intro', null);
-    }
+      .finally(() => {
+        context.on('enter.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        container.select('.more-fields .combobox-input').on('click.intro', null);
+      });
   }
 
 
@@ -383,12 +371,10 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       if (watcher) window.clearInterval(watcher);
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -411,13 +397,11 @@ export function uiIntroArea(context, curtain) {
         tipHtml: helpHtml('intro.areas.describe_playground', { button: icon('#iD-icon-close', 'inline') })
       });
 
-      context.on('enter.intro', () => resolve(play));
+      context.on('enter.intro', () => resolve(playAsync));
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
@@ -440,17 +424,15 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup);
-
-    function cleanup() {
+    .finally(() => {
       context.on('enter.intro', null);
-    }
+    });
   }
 
 
   // Free play
   // Click on Lines (or another) chapter to advance
-  function play() {
+  function playAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -459,6 +441,7 @@ export function uiIntroArea(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
+    return Promise.resolve();
   }
 
 
