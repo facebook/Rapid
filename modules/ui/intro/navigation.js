@@ -60,10 +60,10 @@ export function uiIntroNavigation(context, curtain) {
   // - Each Promise is responsible for its own setup and cleanup
   // - Each Promise should resolve to what the next step is to run
   //     Normal flow is resolve to the next step
-  //     On rejection/catch, resolve to the current step, and retry it
   //     If precondition not satisfied (feature missing or something weird), resolve to an earlier step
   // - The `runAsync` function will:
   //     Run each Promise recursively until there is no next step
+  //     On rejection/catch, resolve to the current step, and retry it
   //     Reject if the chapter is being cancelled (i.e. ignore whatever the next step is supposed to be)
   // - We keep track of the reject handlers for each Promise in _rejectStep
   //     so that the entire chapter can be cancelled at any time by calling .exit()
@@ -74,8 +74,8 @@ export function uiIntroNavigation(context, curtain) {
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
-      .then(nextStep => runAsync(nextStep))   // recurse
-      .catch(() => { /* noop */ });
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(() => runAsync(currStep));       // recurse and retry
   }
 
 
@@ -112,8 +112,7 @@ export function uiIntroNavigation(context, curtain) {
         map.on('move', onMove);
       }))
       .finally(cleanup)
-      .then(nextStep => delayAsync(2000).then(nextStep))
-      .catch(() => dragMapAsync);   // retry
+      .then(nextStep => delayAsync(2000).then(nextStep));
 
     function cleanup() {
       if (onMove) map.off('move', onMove);
@@ -145,8 +144,7 @@ export function uiIntroNavigation(context, curtain) {
       map.on('move', onMove);
     })
     .finally(cleanup)
-    .then(nextStep => delayAsync(2000).then(nextStep))
-    .catch(() => zoomMapAsync);   // retry
+    .then(nextStep => delayAsync(2000).then(nextStep));
 
     function cleanup() {
       if (onMove) map.off('move', onMove);
@@ -165,8 +163,7 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(pointsLinesAreasAsync)
       });
-    })
-    .catch(() => featuresAsync);   // retry
+    });
   }
 
 
@@ -181,8 +178,7 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(nodesWaysAsync)
       });
-    })
-    .catch(() => pointsLinesAreasAsync);   // retry
+    });
   }
 
 
@@ -197,8 +193,7 @@ export function uiIntroNavigation(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(clickTownHallAsync)
       });
-    })
-    .catch(() => nodesWaysAsync);   // retry
+    });
   }
 
 
@@ -224,8 +219,7 @@ export function uiIntroNavigation(context, curtain) {
 
         context.on('enter.intro', () => resolve(selectedTownHallAsync));
       }))
-      .finally(cleanup)
-      .catch(() => clickTownHallAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -250,8 +244,7 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => selectedTownHallAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -278,8 +271,7 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => editorTownHallAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -312,8 +304,7 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => presetTownHallAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -342,8 +333,7 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => fieldsTownHallAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -369,8 +359,7 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', () => resolve(searchStreetAsync));
     })
-    .finally(cleanup)
-    .catch(() => closeTownHallAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -400,8 +389,7 @@ export function uiIntroNavigation(context, curtain) {
 
         container.select('.search-header input').on('keyup.intro', () => resolve(checkSearchResultAsync));
       }))
-      .finally(cleanup)
-      .catch(() => searchStreetAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       container.select('.search-header input').on('keyup.intro', null);
@@ -437,8 +425,7 @@ export function uiIntroNavigation(context, curtain) {
         }
       });
     })
-    .finally(cleanup)
-    .catch(() => checkSearchResultAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -474,8 +461,7 @@ export function uiIntroNavigation(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => selectedStreetAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -507,8 +493,7 @@ export function uiIntroNavigation(context, curtain) {
 
       context.on('enter.intro', () => resolve(play));
     })
-    .finally(cleanup)
-    .catch(() => editorStreetAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);

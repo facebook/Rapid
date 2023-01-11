@@ -20,8 +20,8 @@ export function uiIntroStartEditing(context, curtain) {
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
-      .then(nextStep => runAsync(nextStep))   // recurse
-      .catch(() => { /* noop */ });
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(() => runAsync(currStep));       // recurse and retry
   }
 
 

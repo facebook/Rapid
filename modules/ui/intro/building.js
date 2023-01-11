@@ -66,8 +66,8 @@ export function uiIntroBuilding(context, curtain) {
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
-      .then(nextStep => runAsync(nextStep))   // recurse
-      .catch(() => { /* noop */ });
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(() => runAsync(currStep));       // recurse and retry
   }
 
 
@@ -99,8 +99,7 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', () => resolve(startHouseAsync));
       }))
-      .finally(cleanup)
-      .catch(() => addHouseAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -139,8 +138,7 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => startHouseAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -184,8 +182,7 @@ export function uiIntroBuilding(context, curtain) {
         }
       });
     })
-    .finally(cleanup)
-    .catch(() => continueHouseAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -205,8 +202,7 @@ export function uiIntroBuilding(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(addHouseAsync)
       });
-    })
-    .catch(() => retryHouseAsync);   // retry
+    });
   }
 
 
@@ -234,9 +230,7 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => chooseCategoryBuildingAsync);   // retry
-
+      .finally(cleanup);
 
     function cleanup() {
       container.select('.inspector-wrap').on('wheel.intro', null);
@@ -280,9 +274,7 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => chooseCategoryBuildingAsync);   // retry
-
+      .finally(cleanup);
 
     function cleanup() {
       container.select('.inspector-wrap').on('wheel.intro', null);
@@ -333,8 +325,7 @@ export function uiIntroBuilding(context, curtain) {
 
         history.on('change.intro', reject);  // disallow doing anything else
       }))
-      .finally(cleanup)
-      .catch(() => rightClickHouseAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       editMenu.on('toggled.intro', null);
@@ -389,8 +380,7 @@ export function uiIntroBuilding(context, curtain) {
           return retryClickSquareAsync;
         }
       })
-      .finally(cleanup)
-      .catch(() => clickSquareAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -413,8 +403,7 @@ export function uiIntroBuilding(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(rightClickHouseAsync)
       });
-    })
-    .catch(() => retryClickSquareAsync);   // retry
+    });
   }
 
 
@@ -431,8 +420,7 @@ export function uiIntroBuilding(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(addTankAsync)
       });
-    })
-    .catch(() => doneSquareAsync);   // retry
+    });
   }
 
 
@@ -457,8 +445,7 @@ export function uiIntroBuilding(context, curtain) {
         });
         context.on('enter.intro', () => resolve(startTankAsync));
       }))
-      .finally(cleanup)
-      .catch(() => addTankAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -496,8 +483,7 @@ export function uiIntroBuilding(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => startTankAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -531,8 +517,7 @@ export function uiIntroBuilding(context, curtain) {
         }
       });
     })
-    .finally(cleanup)
-    .catch(() => continueTankAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -596,8 +581,7 @@ export function uiIntroBuilding(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => searchPresetTankAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -643,8 +627,7 @@ export function uiIntroBuilding(context, curtain) {
 
       history.on('change.intro', reject);  // disallow doing anything else
     })
-    .finally(cleanup)
-    .catch(() => rightClickTankAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       editMenu.on('toggled.intro', null);
@@ -698,8 +681,7 @@ export function uiIntroBuilding(context, curtain) {
           return retryClickCircleAsync;
         }
       })
-      .finally(cleanup)
-      .catch(() => clickCircleAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -722,8 +704,7 @@ export function uiIntroBuilding(context, curtain) {
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(rightClickTankAsync)
       });
-    })
-    .catch(() => retryClickCircleAsync);   // retry
+    });
   }
 
 

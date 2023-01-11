@@ -58,8 +58,8 @@ export function uiIntroPoint(context, curtain) {
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
-      .then(nextStep => runAsync(nextStep))   // recurse
-      .catch(() => { /* noop */ });
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(() => runAsync(currStep));       // recurse and retry
   }
 
 
@@ -91,8 +91,7 @@ export function uiIntroPoint(context, curtain) {
 
         context.on('enter.intro', () => resolve(placePointAsync));
       }))
-      .finally(cleanup)
-      .catch(() => addPointAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -124,8 +123,7 @@ export function uiIntroPoint(context, curtain) {
 
       context.on('enter.intro', () => resolve(searchPresetAsync));
     })
-    .finally(cleanup)
-    .catch(() => placePointAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -189,8 +187,7 @@ export function uiIntroPoint(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => searchPresetAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -223,8 +220,7 @@ export function uiIntroPoint(context, curtain) {
         // If user leaves select mode here, just continue with the tutorial.
         context.on('enter.intro', () => resolve(addNameAsync));
       }))
-      .finally(cleanup)
-      .catch(() => aboutFeatureEditorAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -270,8 +266,7 @@ export function uiIntroPoint(context, curtain) {
         // If user leaves select mode here, just continue with the tutorial.
         context.on('enter.intro', () => resolve(hasPointAsync));
       }))
-      .finally(cleanup)
-      .catch(() => addNameAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -299,8 +294,7 @@ export function uiIntroPoint(context, curtain) {
 
       context.on('enter.intro', () => resolve(hasPointAsync));
     })
-    .finally(cleanup)
-    .catch(() => addCloseEditorAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -346,8 +340,7 @@ export function uiIntroPoint(context, curtain) {
 
         context.on('enter.intro', () => resolve(updatePointAsync));
       }))
-      .finally(cleanup)
-      .catch(() => reselectPointAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -374,8 +367,7 @@ export function uiIntroPoint(context, curtain) {
         history.on('change.intro', () => resolve(updateCloseEditorAsync));
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => updatePointAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -400,8 +392,7 @@ export function uiIntroPoint(context, curtain) {
 
       context.on('enter.intro', () => resolve(rightClickPointAsync));
     })
-    .finally(cleanup)
-    .catch(() => updateCloseEditorAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -430,8 +421,7 @@ export function uiIntroPoint(context, curtain) {
 
       history.on('change.intro', reject);  // disallow doing anything else
     })
-    .finally(cleanup)
-    .catch(() => rightClickPointAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       editMenu.on('toggled.intro', null);
@@ -470,8 +460,7 @@ export function uiIntroPoint(context, curtain) {
           if (_doesPointExist()) reject();  // point still exists, try again
         });
       }))
-      .finally(cleanup)
-      .catch(() => enterDeleteAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -491,8 +480,7 @@ export function uiIntroPoint(context, curtain) {
       });
       history.on('change.intro', () => resolve(play));
     })
-    .finally(cleanup)
-    .catch(() => undoAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);

@@ -57,8 +57,8 @@ export function uiIntroArea(context, curtain) {
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
-      .then(nextStep => runAsync(nextStep))   // recurse
-      .catch(() => { /* noop */ });
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(() => runAsync(currStep));       // recurse and retry
   }
 
 
@@ -90,8 +90,7 @@ export function uiIntroArea(context, curtain) {
 
         context.on('enter.intro', () => resolve(startPlaygroundAsync));
       }))
-      .finally(cleanup)
-      .catch(() => addAreaAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -129,8 +128,7 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => startPlaygroundAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -163,8 +161,7 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => startPlaygroundAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -192,8 +189,7 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', () => resolve(searchPresetAsync));
     })
-    .finally(cleanup)
-    .catch(() => startPlaygroundAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -254,8 +250,7 @@ export function uiIntroArea(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => searchPresetAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       history.on('change.intro', null);
@@ -335,8 +330,7 @@ export function uiIntroArea(context, curtain) {
 
         context.on('enter.intro', reject);   // disallow mode change
       }))
-      .finally(cleanup)
-      .catch(() => clickAddFieldAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -389,8 +383,7 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => chooseDescriptionFieldAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       if (watcher) window.clearInterval(watcher);
@@ -420,8 +413,7 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', () => resolve(play));
     })
-    .finally(cleanup)
-    .catch(() => describePlaygroundAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -448,8 +440,7 @@ export function uiIntroArea(context, curtain) {
 
       context.on('enter.intro', reject);   // disallow mode change
     })
-    .finally(cleanup)
-    .catch(() => retryChooseDescriptionAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);

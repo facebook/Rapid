@@ -25,8 +25,8 @@ export function uiIntroRapid(context, curtain) {
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
-      .then(nextStep => runAsync(nextStep))   // recurse
-      .catch(() => { /* noop */ });
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(() => runAsync(currStep));       // recurse and retry
   }
 
 
@@ -89,8 +89,7 @@ export function uiIntroRapid(context, curtain) {
         resolve(addRoadAsync);
       });
     })
-    .finally(cleanup)
-    .catch(() => selectRoadAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       d3_select('.inspector-wrap').on('wheel.intro', null);
@@ -112,8 +111,7 @@ export function uiIntroRapid(context, curtain) {
         d3_select('.choice-button-accept')
           .on('click.intro', () => resolve(roadAddedAsync));
       }))
-      .finally(cleanup)
-      .catch(() => addRoadAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       d3_select('.choice-button-accept').on('click.intro', null);
@@ -152,8 +150,7 @@ export function uiIntroRapid(context, curtain) {
       });
       issuesButton.on('click.intro', () => resolve(showLintAsync));
     })
-    .finally(cleanup)
-    .catch(() => showIssuesButtonAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       issuesButton.on('click.intro', null);
@@ -195,8 +192,7 @@ export function uiIntroRapid(context, curtain) {
 
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
-    .finally(cleanup)
-    .catch(() => undoRoadAddAsync);   // retry
+    .finally(cleanup);
 
     function cleanup() {
       undoButton.on('click.intro', null);
@@ -242,8 +238,7 @@ export function uiIntroRapid(context, curtain) {
           resolve(ignoreRoadAsync);
         });
       }))
-      .finally(cleanup)
-      .catch(() => selectRoadAgainAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       context.on('enter.intro', null);
@@ -264,8 +259,7 @@ export function uiIntroRapid(context, curtain) {
         d3_select('.choice-button-ignore')
           .on('click.intro', () => resolve(showHelpAsync));
       }))
-      .finally(cleanup)
-      .catch(() => ignoreRoadAsync);   // retry
+      .finally(cleanup);
 
     function cleanup() {
       d3_select('.choice-button-ignore').on('click.intro', null);
