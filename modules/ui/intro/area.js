@@ -210,9 +210,8 @@ export function uiIntroArea(context, curtain) {
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
 
-        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
-
         _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         curtain.reveal({
           revealSelector: '.preset-search-input',

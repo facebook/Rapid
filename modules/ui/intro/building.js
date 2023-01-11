@@ -7,12 +7,13 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
-import { eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.buildings.title' };
+  const editMenu = context.ui().editMenu();
   const container = context.container();
   const history = context.history();
   const map = context.map();
@@ -23,14 +24,11 @@ export function uiIntroBuilding(context, curtain) {
   const housePreset = presetManager.item('building/house');
   const tankPreset = presetManager.item('man_made/storage_tank');
 
-  let _timeouts = [];
+  let _chapterCancelled = false;
+  let _rejectStep = null;
   let _houseID = null;
   let _tankID = null;
 
-
-  function timeout(fn, t) {
-    _timeouts.push(window.setTimeout(fn, t));
-  }
 
   // Helper function to make sure the house exists
   function _doesHouseExist() {
@@ -63,10 +61,19 @@ export function uiIntroBuilding(context, curtain) {
     container.select('.inspector-wrap .panewrap').style('right', '-100%');
   }
 
+  function runAsync(currStep) {
+    if (_chapterCancelled) return Promise.reject();
+    if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
+
+    return currStep()
+      .then(nextStep => runAsync(nextStep))   // recurse
+      .catch(() => { /* noop */ });
+  }
+
 
   // "You can help improve this database by tracing buildings that aren't already mapped."
   // Click Add Area to advance
-  function addHouse() {
+  function addHouseAsync() {
     context.enter('browse');
     history.reset('initial');
     _houseID = null;
@@ -75,9 +82,10 @@ export function uiIntroBuilding(context, curtain) {
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 19, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-area',
           tipHtml: helpHtml('intro.buildings.add_building')
@@ -88,26 +96,28 @@ export function uiIntroBuilding(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#iD-graphic-buildings');
-      });
 
-    context.on('enter.intro', () => continueTo(startHouse));
+        context.on('enter.intro', () => resolve(startHouseAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => addHouseAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Let's add this house to the map by tracing its outline."
   // Place the first point to advance
-  function startHouse() {
-    if (context.mode().id !== 'draw-area') return continueTo(addHouse);
+  function startHouseAsync() {
+    if (context.mode().id !== 'draw-area') return Promise.resolve(addHouseAsync);
     _houseID = null;
 
-    map
+    return map
       .setCenterZoomAsync(houseExtent.center(), 20, 200)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
         const startString = helpHtml('intro.buildings.start_building') +
           helpHtml(`intro.buildings.building_corner_${textID}`);
@@ -116,63 +126,69 @@ export function uiIntroBuilding(context, curtain) {
           revealExtent: houseExtent,
           tipHtml: startString
         });
-      });
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      for (const entity of difference.created()) {  // created a node and a way
-        if (entity.type === 'way') {
-          _houseID = entity.id;
-          return continueTo(continueHouse);
-        }
-      }
-    });
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          for (const entity of difference.created()) {  // created a node and a way
+            if (entity.type === 'way') {
+              _houseID = entity.id;
+              resolve(continueHouseAsync);
+            }
+          }
+        });
 
-    context.on('enter.intro', () => continueTo(addHouse));
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(cleanup)
+      .catch(() => startHouseAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Continue placing nodes to trace the outline of the building."
   // Enter Select mode to advance
-  function continueHouse() {
-    if (!_doesHouseExist() || context.mode().id !== 'draw-area') return continueTo(addHouse);
+  function continueHouseAsync() {
+    if (!_doesHouseExist() || context.mode().id !== 'draw-area') return Promise.resolve(addHouseAsync);
 
-    const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
-    const continueString = helpHtml('intro.buildings.continue_building') + '{br}' +
-      helpHtml(`intro.areas.finish_area_${textID}`) + helpHtml('intro.buildings.finish_building');
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: houseExtent,
-      tipHtml: continueString
-    });
+      const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
+      const continueString = helpHtml('intro.buildings.continue_building') + '{br}' +
+        helpHtml(`intro.areas.finish_area_${textID}`) + helpHtml('intro.buildings.finish_building');
 
-    context.on('enter.intro', () => {
-      if (_doesHouseExist() && _isHouseSelected()) {
-        const graph = context.graph();
-        const way = context.entity(_houseID);
-        const nodes = graph.childNodes(way);
-        const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
+      curtain.reveal({
+        revealExtent: houseExtent,
+        tipHtml: continueString
+      });
 
-        if (isMostlySquare(points)) {
-          return continueTo(chooseCategoryBuilding);
+      context.on('enter.intro', () => {
+        if (_doesHouseExist() && _isHouseSelected()) {
+          const graph = context.graph();
+          const way = context.entity(_houseID);
+          const nodes = graph.childNodes(way);
+          const points = utilArrayUniq(nodes).map(n => context.projection.project(n.loc));
+
+          if (isMostlySquare(points)) {
+            resolve(chooseCategoryBuildingAsync);
+          } else {
+            resolve(retryHouseAsync);
+          }
+
         } else {
-          return continueTo(retryHouse);
+          reject();  // disallow mode change
         }
+      });
+    })
+    .finally(cleanup)
+    .catch(() => continueHouseAsync);   // retry
 
-      } else {
-        return continueTo(addHouse);
-      }
-    });
-
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
@@ -180,49 +196,52 @@ export function uiIntroBuilding(context, curtain) {
   // "It looks like you had some trouble placing the nodes at the building corners. Try again!"
   // This happens if the isMostlySquare check fails on the shape the user drew.
   // Click Ok to advance
-  function retryHouse() {
-    curtain.reveal({
-      revealExtent: houseExtent,
-      tipHtml: helpHtml('intro.buildings.retry_building'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: addHouse
-    });
+  function retryHouseAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: houseExtent,
+        tipHtml: helpHtml('intro.buildings.retry_building'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(addHouseAsync)
+      });
+    })
+    .catch(() => retryHouseAsync);   // retry
   }
 
 
   // "Choose Building Features from the list."
   // Expand the Building Features category to advance
-  function chooseCategoryBuilding() {
-    if (!_doesHouseExist()) return continueTo(addHouse);
+  function chooseCategoryBuildingAsync() {
+    if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
     if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
+    return delayAsync()  // after preset pane visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    timeout(() => {
-      _showPresetList();
+        _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-      const button = container.select('.preset-category-building .preset-list-button');
+        const button = container.select('.preset-category-building .preset-list-button');
+        curtain.reveal({
+          revealNode: button.node(),
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
+        });
 
-      curtain.reveal({
-        revealNode: button.node(),
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.buildings.choose_category_building', { category: buildingCatetory.name() })
-      });
+        button.on('click.intro', () => resolve(choosePresetHouse));
 
-      button.on('click.intro', () => {
-        button.on('click.intro', null);
-        continueTo(choosePresetHouse);
-      });
-    }, 400);
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(cleanup)
+      .catch(() => chooseCategoryBuildingAsync);   // retry
 
 
-    context.on('enter.intro', () => continueTo(chooseCategoryBuilding));  // retry
-
-    function continueTo(nextStep) {
+    function cleanup() {
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-list-button').on('click.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
@@ -230,49 +249,53 @@ export function uiIntroBuilding(context, curtain) {
   // "There are many different types of buildings, but this one is clearly a house."
   // Select the House preset to advance
   function choosePresetHouse() {
-    if (!_doesHouseExist()) return continueTo(addHouse);
+    if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
     if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
+    return delayAsync()  // after preset pane visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    timeout(() => {
-      _showPresetList();
+        _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-      const button = container.select('.preset-building-house .preset-list-button');
+        const button = container.select('.preset-building-house .preset-list-button');
+        curtain.reveal({
+          revealNode: button.node(),
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() })
+        });
 
-      curtain.reveal({
-        revealNode: button.node(),
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.buildings.choose_preset_house', { preset: housePreset.name() })
-      });
-    }, 400);
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetManager.match(modified[0], context.graph()) === housePreset) {
+              resolve(hasHouseAsync);
+            } else {
+              resolve(chooseCategoryBuildingAsync);  // didn't pick house, retry
+            }
+          }
+        });
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const modified = difference.modified();
-      if (modified.length === 1) {
-        if (presetManager.match(modified[0], context.graph()) === housePreset) {
-          return continueTo(hasHouse);
-        } else {
-          return continueTo(chooseCategoryBuilding);  // didn't pick house, retry
-        }
-      }
-    });
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(cleanup)
+      .catch(() => chooseCategoryBuildingAsync);   // retry
 
-    context.on('enter.intro', () => continueTo(chooseCategoryBuilding));  // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
+      container.select('.inspector-wrap').on('wheel.intro', null);
+      container.select('.preset-list-button').on('click.intro', null);
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      nextStep();
     }
   }
 
 
   // Set a history checkpoint here, so we can return back to it if needed
-  function hasHouse() {
-    if (!_doesHouseExist()) return addHouse();
+  function hasHouseAsync() {
+    if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
 
     // Make sure it's still a house, in case user somehow changed it..
     const entity = context.entity(_houseID);
@@ -280,41 +303,42 @@ export function uiIntroBuilding(context, curtain) {
     context.replace(actionChangePreset(_houseID, oldPreset, housePreset));
 
     history.checkpoint('hasHouse');
-    rightClickHouse();  // advance
+    return Promise.resolve(rightClickHouseAsync);  // advance
   }
 
 
   // "Right-click to select the building you created and show the edit menu."
-  // Select the house with edit menu open to advance
-  function rightClickHouse() {
+  // Open the edit menu to advance
+  function rightClickHouseAsync() {
     history.reset('hasHouse');
+    if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
 
     // make sure user is zoomed in enough to actually see orthagonalize do something
     const setZoom = Math.max(map.zoom(), 20);
 
-    map
+    return map
       .setCenterZoomAsync(houseExtent.center(), setZoom, 100)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+
         const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_building' : 'edit_menu_building_touch';
         curtain.reveal({
           revealExtent: houseExtent,
           tipHtml: helpHtml(`intro.buildings.${textID}`)
         });
-      });
 
-    context.ui().editMenu().on('toggled.intro', open => {
-      if (!open) return;
-      timeout(() => {
-        continueTo(clickSquare);
-      }, 300);  // after edit menu visible
-    });
+        editMenu.on('toggled.intro', open => {
+          if (open) resolve(clickSquareAsync);
+        });
 
-    history.on('change.intro', () => continueTo(rightClickHouse));  // retry
+        history.on('change.intro', reject);  // disallow doing anything else
+      }))
+      .finally(cleanup)
+      .catch(() => rightClickHouseAsync);   // retry
 
-    function continueTo(nextStep) {
-      context.ui().editMenu().on('toggled.intro', null);
+    function cleanup() {
+      editMenu.on('toggled.intro', null);
       history.on('change.intro', null);
-      nextStep();
     }
   }
 
@@ -322,84 +346,99 @@ export function uiIntroBuilding(context, curtain) {
   // "The house that you just added will look even better with perfectly square corners."
   // "Press the Square button to tidy up the building's shape."
   // Square the building to advance
-  function clickSquare() {
-    if (!_doesHouseExist() || !_isHouseSelected()) return continueTo(rightClickHouse);
+  function clickSquareAsync() {
+    if (!_doesHouseExist() || !_isHouseSelected()) return Promise.resolve(rightClickHouseAsync);
 
-    const node = container.select('.edit-menu-item-orthogonalize').node();
-    if (!node) return continueTo(rightClickHouse);
+    const buttonNode = container.select('.edit-menu-item-orthogonalize').node();
+    if (!buttonNode) return Promise.resolve(rightClickHouseAsync);   // no Square button, try again
 
-    const revealEditMenu = () => {
-      curtain.reveal({
-        revealSelector: '.edit-menu',
-        revealPadding: 50,
-        tipHtml: helpHtml('intro.buildings.square_building')
-      });
-    };
+    let revealEditMenu;
 
-    revealEditMenu();
-    map.on('move', revealEditMenu);
+    return delayAsync()  // after edit menu fully visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    history.on('change.intro', () => {
-      history.on('change.intro', null);
-      curtain.reveal({ revealExtent: houseExtent });  // watch it change
+        revealEditMenu = (duration = 0) => {
+          const menuNode = container.select('.edit-menu').node();
+          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
+          curtain.reveal({
+            duration: duration,
+            revealNode: menuNode,
+            revealPadding: 50,
+            tipHtml: helpHtml('intro.buildings.square_building')
+          });
+        };
 
-      // Something changed.  Wait for transition to complete and check undo annotation.
-      timeout(() => {
+        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
+        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
+
+        history.on('change.intro', () => {
+          map.off('move', revealEditMenu);
+          history.on('change.intro', null);
+          curtain.reveal({ revealExtent: houseExtent });  // watch it change
+          resolve();
+        });
+
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .then(delayAsync)   // wait for orthogonalize transtion to complete
+      .then(() => {       // then check undo annotation to see what the user did
         if (history.undoAnnotation() === t('operations.orthogonalize.annotation.feature', { n: 1 })) {
-          continueTo(doneSquare);
+          return doneSquareAsync;
         } else {
-          continueTo(retryClickSquare);
+          return retryClickSquareAsync;
         }
-      }, 500);  // after transitioned actions
-    });
+      })
+      .finally(cleanup)
+      .catch(() => clickSquareAsync);   // retry
 
-    context.on('enter.intro', mode => {
-      if (mode.id === 'browse') {
-        continueTo(rightClickHouse);
-      } else if (mode.id === 'move' || mode.id === 'rotate') {
-        continueTo(retryClickSquare);
-      }
-    });
-
-
-    function continueTo(nextStep) {
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      map.off('move', revealEditMenu);
-      nextStep();
+      if (revealEditMenu) map.off('move', revealEditMenu);
     }
   }
 
 
   // "You didn't press the Square button. Try again."
   // Click Ok to advance
-  function retryClickSquare() {
+  function retryClickSquareAsync() {
     context.enter('browse');
-    curtain.reveal({
-      revealExtent: houseExtent,
-      tipHtml: helpHtml('intro.buildings.retry_square'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: rightClickHouse
-    });
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: houseExtent,
+        tipHtml: helpHtml('intro.buildings.retry_square'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(rightClickHouseAsync)
+      });
+    })
+    .catch(() => retryClickSquareAsync);   // retry
   }
 
 
   // "See how the corners of the building moved into place? Let's learn another useful trick."
   // Click Ok to advance
-  function doneSquare() {
+  function doneSquareAsync() {
     history.checkpoint('doneSquare');
-    curtain.reveal({
-      revealExtent: houseExtent,
-      tipHtml: helpHtml('intro.buildings.done_square'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: addTank
-    });
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: houseExtent,
+        tipHtml: helpHtml('intro.buildings.done_square'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(addTankAsync)
+      });
+    })
+    .catch(() => doneSquareAsync);   // retry
   }
 
 
   // "Next we'll trace this circular storage tank..."
   // Click Add Area to advance
-  function addTank() {
+  function addTankAsync() {
     context.enter('browse');
     history.reset('doneSquare');
     _tankID = null;
@@ -408,83 +447,95 @@ export function uiIntroBuilding(context, curtain) {
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 19.5, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         curtain.reveal({
           revealSelector: 'button.draw-area',
           tipHtml: helpHtml('intro.buildings.add_tank')
         });
-      });
+        context.on('enter.intro', () => resolve(startTankAsync));
+      }))
+      .finally(cleanup)
+      .catch(() => addTankAsync);   // retry
 
-    context.on('enter.intro', () => continueTo(startTank));
-
-    function continueTo(nextStep) {
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Don't worry, you won't need to draw a perfect circle. Just draw an area inside the tank that touches its edge."
   // Place the first point to advance
-  function startTank() {
-    if (context.mode().id !== 'draw-area') return continueTo(addTank);
+  function startTankAsync() {
+    if (context.mode().id !== 'draw-area') return Promise.resolve(addTankAsync);
     _tankID = null;
 
-    const startString = helpHtml('intro.buildings.start_tank') +
-      helpHtml('intro.buildings.tank_edge_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap'));
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: tankExtent,
-      tipHtml: startString
-    });
+      const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
+      const startString = helpHtml('intro.buildings.start_tank') +
+        helpHtml(`intro.buildings.tank_edge_${textID}`);
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      for (const entity of difference.created()) {  // created a node and a way
-        if (entity.type === 'way') {
-          _tankID = entity.id;
-          return continueTo(continueTank);
+      curtain.reveal({
+        revealExtent: tankExtent,
+        tipHtml: startString
+      });
+
+      history.on('change.intro', difference => {
+        if (!difference) return;
+        for (const entity of difference.created()) {  // created a node and a way
+          if (entity.type === 'way') {
+            _tankID = entity.id;
+            resolve(continueTankAsync);
+          }
         }
-      }
-    });
+      });
 
-    context.on('enter.intro', () => continueTo(addTank));
+      context.on('enter.intro', reject);   // disallow mode change
+    })
+    .finally(cleanup)
+    .catch(() => startTankAsync);   // retry
 
-    function continueTo(nextStep) {
+    function cleanup() {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
 
   // "Add a few more nodes around the edge. The circle will be created outside the nodes that you draw."
   // Enter Select mode to advance
-  function continueTank() {
-    if (context.mode().id !== 'draw-area') return continueTo(addTank);
+  function continueTankAsync() {
+    if (context.mode().id !== 'draw-area') return Promise.resolve(addTankAsync);
 
-    const continueString = helpHtml('intro.buildings.continue_tank') + '{br}' +
-      helpHtml('intro.areas.finish_area_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-      helpHtml('intro.buildings.finish_tank');
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: tankExtent,
-      tipHtml: continueString
-    });
+      const textID = context.lastPointerType() === 'mouse' ? 'click' : 'tap';
+      const continueString = helpHtml('intro.buildings.continue_tank') + '{br}' +
+        helpHtml(`intro.areas.finish_area_${textID}`) + helpHtml('intro.buildings.finish_tank');
 
-    context.on('enter.intro', () => {
-      if (_doesTankExist() && _isTankSelected()) {
-        return continueTo(searchPresetTank);
-      } else {
-        return continueTo(addTank);
-      }
-    });
+      curtain.reveal({
+        revealExtent: tankExtent,
+        tipHtml: continueString
+      });
 
-    function continueTo(nextStep) {
+      context.on('enter.intro', () => {
+        if (_doesTankExist() && _isTankSelected()) {
+          resolve(searchPresetTankAsync);
+        } else {
+          reject();
+        }
+      });
+    })
+    .finally(cleanup)
+    .catch(() => continueTankAsync);   // retry
+
+    function cleanup() {
       context.on('enter.intro', null);
-      nextStep();
     }
   }
 
@@ -492,71 +543,74 @@ export function uiIntroBuilding(context, curtain) {
   // "Search for Storage Tank."
   // "Choose Storage Tank from the list"
   // Choose the Storage Tank preset to advance
-  function searchPresetTank() {
-    if (!_doesTankExist()) return continueTo(addTank);
+  function searchPresetTankAsync() {
+    if (!_doesTankExist()) return Promise.resolve(addTankAsync);
     if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
 
-    // prevent scrolling
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);
+    return delayAsync()  // after preset pane visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    timeout(() => {
-      _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-      container.select('.preset-search-input')
-        .on('keydown.intro', null)
-        .on('keyup.intro', checkPresetSearch);
+        _showPresetList();
 
-      curtain.reveal({
-        revealSelector: '.preset-search-input',
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
-      });
-    }, 400);
+        curtain.reveal({
+          revealSelector: '.preset-search-input',
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
+        });
+
+        container.select('.preset-search-input')
+          .on('keydown.intro', null)
+          .on('keyup.intro', _checkPresetSearch);
 
 
-    // Get user to choose the Storage Tank preset from the search result
-    function checkPresetSearch() {
-      const first = container.select('.preset-list-item:first-child');
-      if (!first.classed('preset-man_made-storage_tank')) return;
+        // Get user to choose the Tank preset from the search result
+        function _checkPresetSearch() {
+          const first = container.select('.preset-list-item:first-child');
+          if (!first.classed('preset-man_made-storage_tank')) return;
 
-      curtain.reveal({
-        revealNode: first.select('.preset-list-button').node(),
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.buildings.choose_tank', { preset: tankPreset.name() })
-      });
+          curtain.reveal({
+            revealNode: first.select('.preset-list-button').node(),
+            revealPadding: 5,
+            tipHtml: helpHtml('intro.buildings.choose_tank', { preset: tankPreset.name() })
+          });
 
-      container.select('.preset-search-input')
-        .on('keydown.intro', eventCancel, true)
-        .on('keyup.intro', null);
-    }
-
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const modified = difference.modified();
-      if (modified.length === 1) {
-        if (presetManager.match(modified[0], context.graph()) === tankPreset) {
-          return continueTo(hasTank);
-        } else {
-          return continueTo(searchPresetTank);  // didn't pick tank
+          container.select('.preset-search-input')
+            .on('keydown.intro', eventCancel, true)   // no more typing
+            .on('keyup.intro', null);
         }
-      }
-    });
 
-    context.on('enter.intro', () => continueTo(searchPresetTank));
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetManager.match(modified[0], context.graph()) === tankPreset) {
+              resolve(hasTankAsync);
+            } else {
+              reject();  // didn't pick tank
+            }
+          }
+        });
 
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(cleanup)
+      .catch(() => searchPresetTankAsync);   // retry
+
+    function cleanup() {
       history.on('change.intro', null);
+      context.on('enter.intro', null);
       container.select('.inspector-wrap').on('wheel.intro', null);
       container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
-      nextStep();
     }
   }
 
 
   // Set a history checkpoint here, so we can return back to it if needed
-  function hasTank() {
-    if (!_doesTankExist()) return addTank();
+  function hasTankAsync() {
+    if (!_doesTankExist()) return Promise.resolve(addTankAsync);
 
     // Make sure it's still a tank, in case user somehow changed it..
     const entity = context.entity(_tankID);
@@ -564,99 +618,112 @@ export function uiIntroBuilding(context, curtain) {
     context.replace(actionChangePreset(_tankID, oldPreset, tankPreset));
 
     history.checkpoint('hasTank');
-    rightClickTank();  // advance
+    return Promise.resolve(rightClickTankAsync);  // advance
   }
 
 
   // "Right-click to select the storage tank you created and show the edit menu."
-  // Select the tank with edit menu open to advance
-  function rightClickTank() {
+  // Open the edit menu to advance
+  function rightClickTankAsync() {
     history.reset('hasTank');
+    if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
 
-    const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
-    curtain.reveal({
-      revealExtent: tankExtent,
-      tipHtml: helpHtml(`intro.buildings.${textID}`)
-    });
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    context.ui().editMenu().on('toggled.intro', open => {
-      if (!open) return;
-      timeout(() => {
-        continueTo(clickCircle);
-      }, 300);  // after edit menu visible
-    });
+      const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_tank' : 'edit_menu_tank_touch';
+      curtain.reveal({
+        revealExtent: tankExtent,
+        tipHtml: helpHtml(`intro.buildings.${textID}`)
+      });
 
-    history.on('change.intro', () => continueTo(rightClickTank));  // retry
+      editMenu.on('toggled.intro', open => {
+        if (open) resolve(clickCircleAsync);
+      });
 
-    function continueTo(nextStep) {
-      context.ui().editMenu().on('toggled.intro', null);
+      history.on('change.intro', reject);  // disallow doing anything else
+    })
+    .finally(cleanup)
+    .catch(() => rightClickTankAsync);   // retry
+
+    function cleanup() {
+      editMenu.on('toggled.intro', null);
       history.on('change.intro', null);
-      nextStep();
     }
   }
 
 
   // "Press the Circularize button to make the tank a circle."
   // Circularize the tank to advance
-  function clickCircle() {
-    if (!_doesTankExist() || !_isTankSelected()) return continueTo(rightClickTank);
+  function clickCircleAsync() {
+    if (!_doesTankExist() || !_isTankSelected()) return Promise.resolve(rightClickTankAsync);
 
-    const node = container.select('.edit-menu-item-circularize').node();
-    if (!node) return continueTo(rightClickTank);
+    const buttonNode = container.select('.edit-menu-item-circularize').node();
+    if (!buttonNode) return Promise.resolve(rightClickTankAsync);   // no Circularize button, try again
 
-    const revealEditMenu = () => {
-      curtain.reveal({
-        revealSelector: '.edit-menu',
-        revealPadding: 50,
-        tipHtml: helpHtml('intro.buildings.circle_tank')
-      });
-    };
+    let revealEditMenu;
 
-    revealEditMenu();
-    map.on('move', revealEditMenu);
+    return delayAsync()  // after edit menu fully visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    history.on('change.intro', () => {
-      history.on('change.intro', null);
-      curtain.reveal({ revealExtent: tankExtent });  // watch it change
+        revealEditMenu = (duration = 0) => {
+          const menuNode = container.select('.edit-menu').node();
+          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
+          curtain.reveal({
+            duration: duration,
+            revealNode: menuNode,
+            revealPadding: 50,
+            tipHtml: helpHtml('intro.buildings.circle_tank')
+          });
+        };
 
-      // Something changed.  Wait for transition to complete and check undo annotation.
-      timeout(() => {
+        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
+        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
+
+        history.on('change.intro', () => {
+          map.off('move', revealEditMenu);
+          history.on('change.intro', null);
+          curtain.reveal({ revealExtent: tankExtent });  // watch it change
+          resolve();
+        });
+
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .then(delayAsync)   // wait for circularize transtion to complete
+      .then(() => {       // then check undo annotation to see what the user did
         if (history.undoAnnotation() === t('operations.circularize.annotation.feature', { n: 1 })) {
-          continueTo(play);
+          return play;
         } else {
-          continueTo(retryClickCircle);
+          return retryClickCircleAsync;
         }
-      }, 500);  // after transitioned actions
-    });
+      })
+      .finally(cleanup)
+      .catch(() => clickCircleAsync);   // retry
 
-    context.on('enter.intro', mode => {
-      if (mode.id === 'browse') {
-        continueTo(rightClickTank);
-      } else if (mode.id === 'move' || mode.id === 'rotate') {
-        continueTo(retryClickCircle);
-      }
-    });
-
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      map.off('move', revealEditMenu);
+    function cleanup() {
       history.on('change.intro', null);
-      nextStep();
+      context.on('enter.intro', null);
+      if (revealEditMenu) map.off('move', revealEditMenu);
     }
   }
 
 
   // "You didn't press the {circularize_icon} {circularize} button. Try again."
   // Click Ok to advance
-  function retryClickCircle() {
+  function retryClickCircleAsync() {
     context.enter('browse');
-    curtain.reveal({
-      revealExtent: tankExtent,
-      tipHtml: helpHtml('intro.buildings.retry_circle'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: rightClickTank
-    });
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: tankExtent,
+        tipHtml: helpHtml('intro.buildings.retry_circle'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(rightClickTankAsync)
+      });
+    })
+    .catch(() => retryClickCircleAsync);   // retry
   }
 
 
@@ -675,17 +742,21 @@ export function uiIntroBuilding(context, curtain) {
 
 
   chapter.enter = () => {
-    addHouse();
+    _chapterCancelled = false;
+    _rejectStep = null;
+
+    runAsync(addHouseAsync)
+      .catch(() => { /* noop */ });
   };
 
 
   chapter.exit = () => {
-    _timeouts.forEach(window.clearTimeout);
-    context.on('enter.intro', null);
-    history.on('change.intro', null);
-    container.select('.inspector-wrap').on('wheel.intro', null);
-    container.select('.preset-search-input').on('keydown.intro keyup.intro', null);
-    container.select('.more-fields .combobox-input').on('click.intro', null);
+    _chapterCancelled = true;
+
+    if (_rejectStep) {   // bail out of whatever step we are in
+      _rejectStep();
+      _rejectStep = null;
+    }
   };
 
 

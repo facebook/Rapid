@@ -410,10 +410,10 @@ export function uiIntroPoint(context, curtain) {
 
 
   // "You can right-click on any feature to see the edit menu..."
-  // Select open the edit menu to advance
+  // Open the edit menu to advance
   function rightClickPointAsync() {
     if (!_doesPointExist()) return Promise.resolve(reselectPointAsync);
-    context.enter('browse');
+    if (!['browse', 'select'].includes(context.mode().id)) context.enter('browse');
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -427,12 +427,15 @@ export function uiIntroPoint(context, curtain) {
       editMenu.on('toggled.intro', open => {
         if (open) resolve(enterDeleteAsync);
       });
+
+      history.on('change.intro', reject);  // disallow doing anything else
     })
     .finally(cleanup)
     .catch(() => rightClickPointAsync);   // retry
 
     function cleanup() {
       editMenu.on('toggled.intro', null);
+      history.on('change.intro', null);
     }
   }
 
@@ -443,7 +446,7 @@ export function uiIntroPoint(context, curtain) {
     if (!_doesPointExist() || !_isPointSelected()) return Promise.resolve(rightClickPointAsync);
 
     const node = container.select('.edit-menu-item-delete').node();
-    if (!node) return Promise.resolve(rightClickPointAsync);   // no delete button, try again
+    if (!node) return Promise.resolve(rightClickPointAsync);   // no Delete button, try again
 
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
