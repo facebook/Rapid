@@ -67,7 +67,11 @@ export function uiIntroNavigation(context, curtain) {
   //     Reject if the chapter is being cancelled (i.e. ignore whatever the next step is supposed to be)
   // - We keep track of the reject handlers for each Promise in _rejectStep
   //     so that the entire chapter can be cancelled at any time by calling .exit()
-  // - Always .catch, even with a noop, otherwise Chrome debugger will stop on an uncaught rejected promise
+  // - Always .catch, but be aware:
+  //     Without catch, Chrome debugger will stop on an uncaught rejected promise
+  //     Catch with an empty block will swallow actual errors and make debugging difficult
+  //     Log error if it's actually an instanceof Error
+  //     Ignore error if it's just a normal reject being used to control the flow
 
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
@@ -75,7 +79,10 @@ export function uiIntroNavigation(context, curtain) {
 
     return currStep()
       .then(nextStep => runAsync(nextStep))   // recurse and advance
-      .catch(() => runAsync(currStep));       // recurse and retry
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+        return runAsync(currStep);   // recurse and retry
+      });
   }
 
 
@@ -497,7 +504,7 @@ export function uiIntroNavigation(context, curtain) {
     _rejectStep = null;
 
     runAsync(dragMapAsync)
-      .catch(() => { /* noop */ });
+      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
   };
 
 

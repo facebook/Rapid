@@ -3,6 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
+import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
@@ -20,13 +21,28 @@ export function uiIntroRapid(context, curtain) {
   let _rejectStep = null;
 
 
+  // Helper function to make sure the line is selected
+  // (Note that this returns true whether the way lives in the Rapid graph or OSM graph)
+  function _isTulipLaneSelected() {
+    if (context.mode().id !== 'select') return false;
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === tulipLaneID;
+  }
+  function _isTulipLaneAccepted() {
+    return context.hasEntity(tulipLaneID);
+  }
+
+
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
 
     return currStep()
       .then(nextStep => runAsync(nextStep))   // recurse and advance
-      .catch(() => runAsync(currStep));       // recurse and retry
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+        return runAsync(currStep);   // recurse and retry
+      });
   }
 
 
@@ -72,7 +88,10 @@ export function uiIntroRapid(context, curtain) {
   // "A single AI-assisted road has shown up on the map. Select the AI-assisted road with a left-click..."
   // Select Tulip Lane to advance
   function selectRoadAsync() {
+    context.enter('browse');
+    history.reset('initial');
     context.scene().enableLayers('rapid');
+    context.ui().togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -84,10 +103,7 @@ export function uiIntroRapid(context, curtain) {
         tipHtml: helpHtml('intro.rapid.select_road')
       });
 
-      context.on('enter.intro', () => {
-        if (context.selectedIDs().indexOf(tulipLaneID) === -1) return;
-        resolve(addRoadAsync);
-      });
+      context.on('enter.intro', () => resolve(acceptRoadAsync));
     })
     .finally(() => {
       d3_select('.inspector-wrap').on('wheel.intro', null);
@@ -98,7 +114,9 @@ export function uiIntroRapid(context, curtain) {
 
   // "Click the 'Use this Feature' button to add the road to the working map..."
   // Accept the feature to advance
-  function addRoadAsync() {
+  function acceptRoadAsync() {
+    if (!_isTulipLaneSelected()) return Promise.resolve(selectRoadAsync);
+
     return delayAsync()  // after rapid inspector visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -106,18 +124,26 @@ export function uiIntroRapid(context, curtain) {
           revealSelector: '.rapid-inspector-choice-accept',
           tipHtml: helpHtml('intro.rapid.add_road')
         });
-        d3_select('.choice-button-accept').on('click.intro', () => resolve(roadAddedAsync));
+        context.on('enter.intro', resolve);
       }))
+      .then(() => {    // check undo annotation to see what the user did
+        if (history.undoAnnotation()?.type === 'rapid_accept_feature') {
+          return roadAcceptedAsync;
+        } else {
+          return selectRoadAsync;
+        }
+      })
       .finally(() => {
-        d3_select('.choice-button-accept').on('click.intro', null);
+        context.on('enter.intro', null);
       });
   }
 
 
   // "The AI-assisted road has been added as a change to the map..."
   // Click Ok to advance
-  function roadAddedAsync() {
-    if (context.mode().id !== 'select') return Promise.resolve(selectRoadAsync);
+  function roadAcceptedAsync() {
+    if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
+    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
 
     return delayAsync()  // after entity inspector visible
       .then(() => new Promise((resolve, reject) => {
@@ -128,13 +154,20 @@ export function uiIntroRapid(context, curtain) {
           buttonText: t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });
-      }));
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(() => {
+        context.on('enter.intro', null);
+      });
   }
 
 
   // "Now let's open up the issues panel..."
   // Open Issues panel to advance
   function showIssuesButtonAsync() {
+    if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
+    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+
     const issuesButton = d3_select('div.map-control.issues-control > button');
 
     return new Promise((resolve, reject) => {
@@ -143,9 +176,11 @@ export function uiIntroRapid(context, curtain) {
         revealNode: issuesButton.node(),
         tipHtml: helpHtml('intro.rapid.open_issues')
       });
+      context.on('enter.intro', reject);   // disallow mode change
       issuesButton.on('click.intro', () => resolve(showLintAsync));
     })
     .finally(() => {
+      context.on('enter.intro', null);
       issuesButton.on('click.intro', null);
     });
   }
@@ -154,7 +189,8 @@ export function uiIntroRapid(context, curtain) {
   // "The addition of the road has caused a new issue to appear in the issues panel..."
   // Click Ok to advance
   function showLintAsync() {
-    if (context.mode().id !== 'select') return Promise.resolve(selectRoadAsync);
+    if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
+    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
 
     return delayAsync()  // after issues pane visible
       .then(() => new Promise((resolve, reject) => {
@@ -174,6 +210,9 @@ export function uiIntroRapid(context, curtain) {
   // "We could fix the issue by connecting the roads, but let's instead undo..."
   // Click Undo to advance
   function undoRoadAddAsync() {
+    if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
+    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+
     const undoButton = d3_select('.top-toolbar button.undo-button');
 
     return new Promise((resolve, reject) => {
@@ -182,7 +221,6 @@ export function uiIntroRapid(context, curtain) {
         revealNode: undoButton.node(),
         tipHtml: helpHtml('intro.rapid.undo_road_add', { button: icon('#iD-icon-undo', 'pre-text') })
       });
-
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
     .finally(() => {
@@ -194,6 +232,8 @@ export function uiIntroRapid(context, curtain) {
   // "The road is removed from your local changes, and has returned to the magenta layer as before..."
   // Click Ok to advance
   function afterUndoRoadAddAsync() {
+    if (_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);  // should be un-accepted now
+
     context.ui().togglePanes();   // close issue pane
 
     return new Promise((resolve, reject) => {
@@ -211,6 +251,9 @@ export function uiIntroRapid(context, curtain) {
   // "Next, we'll learn how to ignore roads that you don't want to add..."
   // Select Tulip Lane to advance
   function selectRoadAgainAsync() {
+    context.enter('browse');
+    history.reset('initial');
+
     const loc = tulipLaneExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
@@ -238,6 +281,8 @@ export function uiIntroRapid(context, curtain) {
   // "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map..."
   // Ignore the road to advance
   function ignoreRoadAsync() {
+    if (!_isTulipLaneSelected()) return Promise.resolve(selectRoadAgainAsync);
+
     return delayAsync()  // after rapid inspector visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
@@ -245,10 +290,17 @@ export function uiIntroRapid(context, curtain) {
           revealSelector: '.rapid-inspector-choice-ignore',
           tipHtml: helpHtml('intro.rapid.ignore_road')
         });
-        d3_select('.choice-button-ignore').on('click.intro', () => resolve(showHelpAsync));
+        context.on('enter.intro', resolve);
       }))
+      .then(() => {    // check undo annotation to see what the user did
+        if (history.undoAnnotation()?.type === 'rapid_ignore_feature') {
+          return showHelpAsync;
+        } else {
+          return selectRoadAgainAsync;
+        }
+      })
       .finally(() => {
-        d3_select('.choice-button-ignore').on('click.intro', null);
+        context.on('enter.intro', null);
       });
   }
 
@@ -293,7 +345,7 @@ export function uiIntroRapid(context, curtain) {
     _rejectStep = null;
 
     runAsync(welcomeAsync)
-      .catch(() => { /* noop */ });
+      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
   };
 
 

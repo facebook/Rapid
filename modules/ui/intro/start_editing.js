@@ -21,7 +21,10 @@ export function uiIntroStartEditing(context, curtain) {
 
     return currStep()
       .then(nextStep => runAsync(nextStep))   // recurse and advance
-      .catch(() => runAsync(currStep));       // recurse and retry
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+        return runAsync(currStep);   // recurse and retry
+      });
   }
 
 
@@ -113,7 +116,7 @@ export function uiIntroStartEditing(context, curtain) {
     _rejectStep = null;
 
     runAsync(showHelpAsync)
-      .catch(() => { /* noop */ });
+      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
   };
 
 

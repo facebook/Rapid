@@ -58,7 +58,10 @@ export function uiIntroArea(context, curtain) {
 
     return currStep()
       .then(nextStep => runAsync(nextStep))   // recurse and advance
-      .catch(() => runAsync(currStep));       // recurse and retry
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+        return runAsync(currStep);   // recurse and retry
+      });
   }
 
 
@@ -450,7 +453,7 @@ export function uiIntroArea(context, curtain) {
     _rejectStep = null;
 
     runAsync(addAreaAsync)
-      .catch(() => { /* noop */ });
+      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
   };
 
 

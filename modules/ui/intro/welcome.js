@@ -9,7 +9,7 @@ import { utilRebind } from '../../util/rebind';
 export function uiIntroWelcome(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.welcome.title' };
-  const townHallExtent = new Extent([-85.63654,41.94290], [-85.63632,41.94307]);
+  const townHallExtent = new Extent([-85.63654, 41.94290], [-85.63632, 41.94307]);
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -21,7 +21,10 @@ export function uiIntroWelcome(context, curtain) {
 
     return currStep()
       .then(nextStep => runAsync(nextStep))   // recurse and advance
-      .catch(() => runAsync(currStep));       // recurse and retry
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+        return runAsync(currStep);   // recurse and retry
+      });
   }
 
 
@@ -86,7 +89,7 @@ export function uiIntroWelcome(context, curtain) {
     _rejectStep = null;
 
     runAsync(welcomeAsync)
-      .catch(() => { /* noop */ });
+      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
   };
 
 
