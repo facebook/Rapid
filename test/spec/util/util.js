@@ -1,5 +1,9 @@
 describe('iD.util', function() {
 
+    beforeEach(function () {
+        iD.coreContext().assetPath('../dist/').init(false);
+    });
+
     describe('utilDisplayName', function() {
         it('returns the name if tagged with a name', function() {
             expect(iD.utilDisplayName({tags: {name: 'East Coast Greenway'}})).to.eql('East Coast Greenway');

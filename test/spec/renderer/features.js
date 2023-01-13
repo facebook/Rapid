@@ -3,7 +3,7 @@ describe('iD.rendererFeatures', function() {
     var context, content, features, map;
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = iD.coreContext().assetPath('../dist/').init(false);
         content = d3.select(document.createElement('div'))
             .attr('class', 'main-map');
         map = context.map();

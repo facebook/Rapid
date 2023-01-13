@@ -2,7 +2,7 @@ describe('iD.uiFieldAccess', function() {
     var context, selection, field;
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = iD.coreContext().assetPath('../dist/').init(false);
         selection = d3.select(document.createElement('div'));
         field = iD.presetField('access', {
             keys: ['access', 'foot', 'motor_vehicle', 'bicycle', 'horse'],

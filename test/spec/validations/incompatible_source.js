@@ -2,7 +2,7 @@ describe('iD.validations.incompatible_source', function () {
     var context;
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = iD.coreContext().assetPath('../dist/').init(false);
     });
 
     function createWay(tags) {

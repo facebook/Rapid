@@ -25,7 +25,7 @@ describe('iD.serviceOsm', function () {
 
     beforeEach(function () {
         serverXHR = sinon.fakeServer.create();      // authenticated calls use XHR via osm-auth
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = iD.coreContext().assetPath('../dist/').init(false);
         connection = context.connection();
         connection.switch({ url: 'https://www.openstreetmap.org' });
         connection.reset();

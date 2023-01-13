@@ -20,6 +20,12 @@ cached.locales_index_tagging = { en: { rtl: false, pct: 1 } };
 // Use fake data for the 'tagging' scope
 cached.locale_tagging_en = {
   en: {
+    inspector: {
+      display_name: {
+        network_ref_name: '{network} {ref}: {name}',
+        ref_name: '{ref}: {name}',
+      }
+    },
     presets: {
       fields: {
         restrictions: {

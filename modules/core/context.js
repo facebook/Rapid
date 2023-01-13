@@ -686,12 +686,13 @@ export function coreContext() {
 
      [context._makiSheet, context._temakiSheet, context._fontAwesomeSheet, context._mapillarySheet, context._mapillarySignSheet] = await Promise.all([makiPromise, temakiPromise, faPromise, mapillaryPromise, mapillarySignPromise]);
 
-
     }
 
   /* Init */
-  context.init = () => {
-    loadImages();
+  context.init = (shouldLoadImages) => {
+    if (shouldLoadImages) {
+      loadImages();
+    }
     instantiateInternal();
     initializeDependents();
     return context;
