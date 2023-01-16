@@ -1,18 +1,18 @@
 import { Extent } from '@id-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
 
 
 export function uiIntroLine(context, curtain) {
   const dispatch = d3_dispatch('done');
   const chapter = { title: 'intro.lines.title' };
+  const editMenu = context.ui().editMenu();
   const container = context.container();
   const history = context.history();
   const map = context.map();
@@ -41,15 +41,10 @@ export function uiIntroLine(context, curtain) {
   const deleteLinesLoc = [-85.6219395542764, 41.95228033922477];
   const twelfthAvenue = [-85.62219310052491, 41.952505413152956];
 
+  let _chapterCancelled = false;
+  let _rejectStep = null;
   let _washingtonSegmentID = null;
-  let _timeouts = [];
   let _lineID = null;
-
-
-
-  function timeout(fn, t) {
-    _timeouts.push(window.setTimeout(fn, t));
-  }
 
 
   // Helper function to make sure the line exists
@@ -79,8 +74,9 @@ export function uiIntroLine(context, curtain) {
   }
 
   // Helper function to ensure that the Wood Street parts exist in the graph
-  function _hasWoodStreet() {
-    return context.hasEntity(woodStreetID) && context.hasEntity(woodStreetEndID);
+  function _hasWoodStreetParts() {
+    return context.hasEntity(woodStreetID) &&
+      context.hasEntity(woodStreetEndID);
   }
 
   // Helper function to make sure Wood Street is selected
@@ -90,16 +86,16 @@ export function uiIntroLine(context, curtain) {
     return ids.length === 1 && ids[0] === woodStreetID;
   }
 
-  // Helper function to ensure that the road segments needed
-  // to complete this part of the tutorial exist in the graph.
-  function _hasAllSegments() {
-    return (
-      _washingtonSegmentID &&
-      context.hasEntity(_washingtonSegmentID) &&
-      context.hasEntity(washingtonStreetID) &&
+  // Helper function to ensure that the 12th Avenue parts exist in the graph
+  function _has12thAvenueParts() {
+    return context.hasEntity(washingtonStreetID) &&
       context.hasEntity(twelfthAvenueID) &&
-      context.hasEntity(eleventhAvenueEndID)
-    );
+      context.hasEntity(eleventhAvenueEndID);
+  }
+
+  // Helper function to ensure that the road segments exist in the graph
+  function _hasWashingtonSegment() {
+    return _washingtonSegmentID && context.hasEntity(_washingtonSegmentID);
   }
 
   // Helper function to force the entity inspector open
@@ -118,12 +114,24 @@ export function uiIntroLine(context, curtain) {
     container.select('.inspector-wrap .panewrap').style('right', '-100%');
   }
 
+  function runAsync(currStep) {
+    if (_chapterCancelled) return Promise.reject();
+    if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
+
+    return currStep()
+      .then(nextStep => runAsync(nextStep))   // recurse and advance
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+        return runAsync(currStep);   // recurse and retry
+      });
+  }
+
 
   /* DRAW TULIP ROAD */
 
   // "Lines are used to represent features such as roads, railroads, and rivers."
   // Click "Add Line" button to advance
-  function addLine() {
+  function addLineAsync() {
     context.enter('browse');
     history.reset('initial');
     _lineID = null;
@@ -132,9 +140,10 @@ export function uiIntroLine(context, curtain) {
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 18.5, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         const tooltip = curtain.reveal({
           revealSelector: 'button.draw-line',
           tipHtml: helpHtml('intro.lines.add_line')
@@ -145,295 +154,322 @@ export function uiIntroLine(context, curtain) {
           .attr('class', 'tooltip-illustration')
           .append('use')
           .attr('xlink:href', '#iD-graphic-lines');
+
+        context.on('enter.intro', () => resolve(startLineAsync));
+      }))
+      .finally(() => {
+        context.on('enter.intro', null);
       });
-
-    context.on('enter.intro', () => continueTo(startLine));
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      nextStep();
-    }
   }
 
 
   // "Here is a road that is missing. Let's add it!"
   // Place the first point to advance
-  function startLine() {
-    if (context.mode().id !== 'draw-line') return continueTo(addLine);
+  function startLineAsync() {
+    if (context.mode().id !== 'draw-line') return Promise.resolve(addLineAsync);
     _lineID = null;
 
-    const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
-    const startLineString = helpHtml('intro.lines.missing_road') + '{br}' +
-      helpHtml('intro.lines.line_draw_info') + helpHtml(`intro.lines.${textID}`);
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: tulipRoadStartExtent,
-      tipHtml: startLineString
-    });
+      const textID = context.lastPointerType() === 'mouse' ? 'start_line' : 'start_line_tap';
+      const startLineString = helpHtml('intro.lines.missing_road') + '{br}' +
+        helpHtml('intro.lines.line_draw_info') + helpHtml(`intro.lines.${textID}`);
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      for (const entity of difference.created()) {  // created a node and a way
-        if (entity.type === 'way') {
-          _lineID = entity.id;
-          return continueTo(drawLine);
+      curtain.reveal({
+        revealExtent: tulipRoadStartExtent,
+        tipHtml: startLineString
+      });
+
+      history.on('change.intro', difference => {
+        if (!difference) return;
+        for (const entity of difference.created()) {  // created a node and a way
+          if (entity.type === 'way') {
+            _lineID = entity.id;
+            resolve(drawLineAsync);
+          }
         }
-      }
-    });
+      });
 
-    context.on('enter.intro', () => continueTo(addLine));
-
-    function continueTo(nextStep) {
+      context.on('enter.intro', reject);   // disallow mode change
+    })
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
-    }
+    });
   }
 
 
   // "Continue drawing the line by placing more nodes along the road."
   // "Place an intersection node on {name} to connect the two lines."
-  function drawLine() {
-    if (!_doesLineExist() || context.mode().id !== 'draw-line') return continueTo(addLine);
+  function drawLineAsync() {
+    if (!_doesLineExist() || context.mode().id !== 'draw-line') return Promise.resolve(addLineAsync);
 
     const loc = tulipRoadMidExtent.center();
     const msec = transitionTime(loc, map.center());
 
-    map
+    return map
       .setCenterZoomAsync(loc, 18.5, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         curtain.reveal({
           revealExtent: tulipRoadMidExtent,
           tipHtml: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
         });
+
+        history.on('change.intro', () => {
+          if (_isLineConnected()) resolve(finishLineAsync);
+        });
+        context.on('enter.intro', () => resolve(retryIntersectAsync));
+      }))
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
       });
-
-    history.on('change.intro', () => {
-      if (_isLineConnected()) {
-        return continueTo(finishLine);
-      }
-    });
-
-    context.on('enter.intro', () => continueTo(retryIntersect));
-
-    function continueTo(nextStep) {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      nextStep();
-    }
   }
 
 
   // "The road needs to intersect {name}. Let's try again!"
   // This step just returns back to beginning after a short delay
-  function retryIntersect() {
-    curtain.reveal({
-      revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
-      tipHtml: helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') })
-    });
-
-    timeout(chapter.restart, 3000);
+  function retryIntersectAsync() {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
+        tipHtml: helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') })
+      });
+    })
+    .then(() => delayAsync(3000))
+    .then(addLineAsync);
   }
 
 
   // "Continue drawing the line for the new road. Remember that you can drag and zoom the map if needed."
   // "When you're finished, click the last node again or press return."
   // Finish the road to advance
-  function finishLine() {
-    if (!_doesLineExist() || context.mode().id !== 'draw-line') return continueTo(addLine);
+  function finishLineAsync() {
+    if (!_doesLineExist() || context.mode().id !== 'draw-line') return Promise.resolve(addLineAsync);
 
     const loc = tulipRoadMidExtent.center();
     const msec = transitionTime(loc, map.center());
 
-    map
+    return map
       .setCenterZoomAsync(loc, 18.5, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
         const continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
-          helpHtml('intro.lines.finish_line_' + (context.lastPointerType() === 'mouse' ? 'click' : 'tap')) +
-          helpHtml('intro.lines.finish_road');
+          helpHtml(`intro.lines.finish_line_${textID}`) + helpHtml('intro.lines.finish_road');
 
         curtain.reveal({
           revealSelector: '.main-map',
           tipHtml: continueLineText
         });
+
+        context.on('enter.intro', () => resolve(chooseCategoryRoadAsync));
+      }))
+      .finally(() => {
+        context.on('enter.intro', null);
       });
-
-    context.on('enter.intro', () => continueTo(chooseCategoryRoad));
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      nextStep();
-    }
   }
 
 
   // "Select Minor Roads from the list."
   // Open the Minor Roads category to advance
-  function chooseCategoryRoad() {
-    if (!_doesLineExist()) return continueTo(addLine);
+  function chooseCategoryRoadAsync() {
+    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
+    let categoryButton;
 
-    timeout(() => {
-      _showPresetList();
+    return delayAsync()  // after presets visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-      const category = container.select('.preset-category-road_minor .preset-list-button');
-      if (category.classed('expanded')) return continueTo(choosePresetResidential);  // advance - already expanded
+        _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-      curtain.reveal({
-        revealNode: category.node(),
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.lines.choose_category_road', { category: roadCategory.name() })
+        categoryButton = container.select('.preset-category-road_minor .preset-list-button');
+        if (categoryButton.empty()) {
+          reject(new Error('no minor roads category?'));
+          return;
+        }
+        if (categoryButton.classed('expanded')) {
+          resolve(choosePresetResidentialAsync);  // advance - already expanded
+          return;
+        }
+
+        curtain.reveal({
+          revealNode: categoryButton.node(),
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.lines.choose_category_road', { category: roadCategory.name() })
+        });
+
+        categoryButton.on('click.intro', () => resolve(choosePresetResidentialAsync));
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(() => {
+        if (categoryButton) categoryButton.on('click.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+        context.on('enter.intro', null);
       });
-
-      category.on('click.intro', () => {
-        category.on('click.intro', null);
-        continueTo(choosePresetResidential);
-      });
-    }, 400);  // after animation
-
-
-    context.on('enter.intro', () => continueTo(chooseCategoryRoad));  // retry
-
-    function continueTo(nextStep) {
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-list-button').on('click.intro', null);
-      context.on('enter.intro', null);
-      nextStep();
-    }
   }
 
 
   // "There are many different types of roads, but this one is a Residential Road..."
   // Select a preset to advance
-  function choosePresetResidential() {
-    if (!_doesLineExist()) return continueTo(addLine);
+  function choosePresetResidentialAsync() {
+    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
+    return delayAsync()  // after presets visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    timeout(() => {
-      _showPresetList();
+        _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-      const category = container.select('.preset-category-road_minor .preset-list-button');
-      if (!category.classed('expanded')) return continueTo(chooseCategoryRoad);  // category not expanded - go back
-
-      // reveal all choices - at this point in the tutorial we are giving the user more freedom
-      const subgrid = container.select('.preset-category-road_minor .subgrid');
-      if (subgrid.empty()) return continueTo(addLine);  // no minor road presets?
-
-      curtain.reveal({
-        revealNode: subgrid.node(),
-        revealPadding: 5,
-        tipSelector: '.preset-highway-residential .preset-list-button',
-        tipHtml: helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
-      });
-    }, 400);  // after animation
-
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const modified = difference.modified();
-      if (modified.length === 1) {
-        if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
-          return continueTo(nameRoad);
-        } else {
-          return continueTo(retryPresetResidential);  // didn't pick residential, retry
+        const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
+        if (categoryButton.empty()) {
+          reject(new Error('no minor roads category?'));
+          return;
         }
-      }
-    });
+        if (!categoryButton.classed('expanded')) {
+          resolve(chooseCategoryRoadAsync);   // category not expanded - go back
+          return;
+        }
+        // reveal all choices - at this point in the tutorial we are giving the user more freedom
+        const subgrid = container.select('.preset-category-road_minor .subgrid');
+        if (subgrid.empty()) {
+          reject(new Error('no minor roads presets?'));
+          return;
+        }
 
-    context.on('enter.intro', () => continueTo(chooseCategoryRoad));  // retry
+        curtain.reveal({
+          revealNode: subgrid.node(),
+          revealPadding: 5,
+          tipSelector: '.preset-highway-residential .preset-list-button',
+          tipHtml: helpHtml('intro.lines.choose_preset_residential', { preset: residentialPreset.name() })
+        });
 
-    function continueTo(nextStep) {
-      history.on('change.intro', null);
-      context.on('enter.intro', null);
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      nextStep();
-    }
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
+              resolve(nameRoadAsync);
+            } else {
+              resolve(retryPresetResidentialAsync);  // didn't pick residential, retry
+            }
+          }
+        });
+
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+      });
   }
 
 
   // "You didn't select the Residential type."
   // Click the preset button to advance
-  function retryPresetResidential() {
-    if (!_doesLineExist()) return continueTo(addLine);
+  function retryPresetResidentialAsync() {
+    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    container.select('.inspector-wrap').on('wheel.intro', eventCancel);  // prevent scrolling
+    return delayAsync()  // after presets visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    timeout(() => {
-      _showPresetList();
+        _showPresetList();
+        container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-      const category = container.select('.preset-category-road_minor .preset-list-button');
-      if (!category.classed('expanded')) return continueTo(chooseCategoryRoad);  // category not expanded - go back
-
-      // reveal just the button we want them to click
-      const preset = container.select('.preset-highway-residential .preset-list-button');
-      curtain.reveal({
-        revealNode: preset.node(),
-        revealPadding: 5,
-        tipHtml: helpHtml('intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
-      });
-    }, 400);  // after animation
-
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      const modified = difference.modified();
-      if (modified.length === 1) {
-        if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
-          return continueTo(nameRoad);
-        } else {
-          return continueTo(chooseCategoryRoad);
+        const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
+        if (categoryButton.empty()) {
+          reject(new Error('no minor roads category?'));
+          return;
         }
-      }
-    });
+        if (!categoryButton.classed('expanded')) {
+          resolve(chooseCategoryRoadAsync);   // category not expanded - go back
+          return;
+        }
+        // reveal just the button we want them to click
+        const presetButton = container.select('.preset-highway-residential .preset-list-button');
+        if (presetButton.empty()) {
+          reject(new Error('no residential road preset?'));
+          return;
+        }
 
-    context.on('enter.intro', () => continueTo(chooseCategoryRoad));  // retry
+        curtain.reveal({
+          revealNode: presetButton.node(),
+          revealPadding: 5,
+          tipHtml: helpHtml('intro.lines.retry_preset_residential', { preset: residentialPreset.name() })
+        });
 
-    function continueTo(nextStep) {
-      container.select('.inspector-wrap').on('wheel.intro', null);
-      container.select('.preset-list-button').on('click.intro', null);
-      context.on('enter.intro', null);
-      nextStep();
-    }
+        history.on('change.intro', difference => {
+          if (!difference) return;
+          const modified = difference.modified();
+          if (modified.length === 1) {
+            if (presetManager.match(modified[0], context.graph()) === residentialPreset) {
+              resolve(nameRoadAsync);
+            } else {
+              resolve(chooseCategoryRoadAsync);  // didn't pick residential, retry
+            }
+          }
+        });
+
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        container.select('.inspector-wrap').on('wheel.intro', null);
+      });
   }
 
 
   // "Give this road a name, then press the X button or Esc to close the feature editor."
   // Close entity editor / leave select mode to advance
-  function nameRoad() {
-    if (!_doesLineExist()) return continueTo(addLine);
+  function nameRoadAsync() {
+    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
     if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-    timeout(() => {
-      _showEntityEditor();
+    return delayAsync()  // after presets visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+        _showEntityEditor();
 
-      curtain.reveal({
-        revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.lines.name_road', { button: icon('#iD-icon-close', 'inline') }),
-        tooltipClass: 'intro-lines-name_road'
+        curtain.reveal({
+          revealSelector: '.entity-editor-pane',
+          tipHtml: helpHtml('intro.lines.name_road', { button: icon('#iD-icon-close', 'inline') }),
+          tooltipClass: 'intro-lines-name_road'
+        });
+
+        context.on('enter.intro', () => resolve(didNameRoadAsync));
+      }))
+      .finally(() => {
+        context.on('enter.intro', null);
       });
-    }, 400);
-
-    context.on('enter.intro', () => continueTo(didNameRoad));
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      nextStep();
-    }
   }
 
 
   // "Looks good! Next we will learn how to update the shape of a line."
   // Click Ok to advance
-  function didNameRoad() {
+  function didNameRoadAsync() {
+    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
     history.checkpoint('doneAddLine');
-    curtain.reveal({
-      revealSelector: '.main-map',
-      tipHtml: helpHtml('intro.lines.did_name_road'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: updateLine
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealSelector: '.main-map',
+        tipHtml: helpHtml('intro.lines.did_name_road'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(updateLineAsync)
+      });
     });
   }
 
@@ -442,171 +478,194 @@ export function uiIntroLine(context, curtain) {
 
   // "Sometimes you will need to change the shape of an existing line. Here is a road that doesn't look quite right."
   // Click Ok to advance
-  function updateLine() {
+  function updateLineAsync() {
+    context.enter('browse');
     history.reset('doneAddLine');
-    if (!_hasWoodStreet()) return chapter.restart();
+
+    // It's remotely possible that in an earlier step,
+    // the user scrolled over here and deleted some stuff we need.
+    if (!_hasWoodStreetParts()) history.reset('initial');
 
     const loc = woodStreetExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 19, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         curtain.reveal({
           revealExtent: woodStreetExtent,
           tipHtml: helpHtml('intro.lines.update_line'),
           buttonText: t.html('intro.ok'),
-          buttonCallback: addNode
+          buttonCallback: () => resolve(addNodeAsync)
         });
-      });
+      }));
   }
 
 
   // "We can add some nodes to this line to improve its shape."
   // "One way to add a node is to double-click the line where you want to add a node."
   // Create a node on Wood Street to advance
-  function addNode() {
-    history.reset('doneAddLine');
-    if (!_hasWoodStreet()) return chapter.restart();
+  function addNodeAsync() {
+    context.enter('browse');
+    if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
 
-    curtain.reveal({
-      revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
-      tipHtml: helpHtml('intro.lines.add_node' + (context.lastPointerType() === 'mouse' ? '' : '_touch'))
-    });
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    history.on('change.intro', changed => {
-      if (!_hasWoodStreet()) return continueTo(updateLine);
+      const textID = (context.lastPointerType() === 'mouse') ? '' : '_touch';
+      curtain.reveal({
+        revealExtent: new Extent(woodStreetAddNode).padByMeters(15),
+        tipHtml: helpHtml(`intro.lines.add_node${textID}`)
+      });
 
-      if (changed.created().length === 1) {
-        timeout(() => continueTo(startDragEndpoint), 500);
-      }
-    });
+      history.on('change.intro', difference => {
+        if (difference && difference.created().length === 1) {   // expect to create 1 node
+          resolve(startDragEndpointAsync);
+        } else {
+          reject();
+        }
+      });
 
-    context.on('enter.intro', mode => {
-      if (mode.id !== 'select') {
-        continueTo(updateLine);
-      }
-    });
-
-    function continueTo(nextStep) {
+      context.on('enter.intro', mode => {
+        if (mode.id !== 'browse' && mode.id !== 'select') reject();
+      });
+    })
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
-    }
+    });
   }
 
 
   // "When a line is selected, you can adjust any of its nodes by clicking and holding down the left mouse button while you drag."
   // Drag the endpoint of Wood Street to the expected location to advance
-  function startDragEndpoint() {
-    if (!_hasWoodStreet()) return continueTo(updateLine);
+  function startDragEndpointAsync() {
+    if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
+    // if (!_isWoodStreetSelected()) context.enter(modeSelect(context, [woodStreetID]));
 
-    const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
-    const startDragString = helpHtml(`intro.lines.start_drag_endpoint${textID}`) +
-      helpHtml('intro.lines.drag_to_intersection');
+    let checkDrag;
 
-    curtain.reveal({
-      revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
-      tipHtml: startDragString
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+
+      const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
+      const startDragString = helpHtml(`intro.lines.start_drag_endpoint${textID}`) +
+        helpHtml('intro.lines.drag_to_intersection');
+
+      curtain.reveal({
+        revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
+        tipHtml: startDragString
+      });
+
+      checkDrag = () => {
+        if (!_hasWoodStreetParts()) {
+          reject();
+        } else {
+          const entity = context.entity(woodStreetEndID);
+          if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) <= 4) {   // point is close enough
+            resolve(finishDragEndpointAsync);   // advance to next step
+          }
+        }
+      };
+      context.behaviors.get('drag').on('move', checkDrag);
+    })
+    .finally(() => {
+      if (checkDrag) context.behaviors.get('drag').off('move', checkDrag);
     });
-
-    context.behaviors.get('drag').on('move', _checkDrag);
-
-    function _checkDrag() {
-      if (!_hasWoodStreet()) return continueTo(updateLine);
-      const entity = context.entity(woodStreetEndID);
-      if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) <= 4) {   // point is close enough
-        continueTo(finishDragEndpoint);   // advance to next step
-      }
-    }
-
-    function continueTo(nextStep) {
-      context.behaviors.get('drag').off('move', _checkDrag);
-      nextStep();
-    }
   }
 
 
   // "This spot looks good. Release the mouse button to finish dragging..."
   // Leave drag mode to advance
-  function finishDragEndpoint() {
-    if (!_hasWoodStreet()) return continueTo(updateLine);
+  function finishDragEndpointAsync() {
+    if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
 
-    const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
-    const finishDragString = helpHtml('intro.lines.spot_looks_good') +
-      helpHtml(`intro.lines.finish_drag_endpoint${textID}`);
+    let checkDrag;
 
-    curtain.reveal({
-      revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
-      tipHtml: finishDragString
-    });
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    context.behaviors.get('drag').on('move', _checkDrag);
-    context.on('enter.intro', () => continueTo(startDragMidpoint));
+      const textID = context.lastPointerType() === 'mouse' ? '' : '_touch';
+      const finishDragString = helpHtml('intro.lines.spot_looks_good') +
+        helpHtml(`intro.lines.finish_drag_endpoint${textID}`);
 
-    function _checkDrag() {
-      if (!_hasWoodStreet()) return continueTo(updateLine);
-      const entity = context.entity(woodStreetEndID);
-      if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) > 4) {   // point is too far
-        continueTo(startDragEndpoint);   // back to previous step
-      }
-    }
+      curtain.reveal({
+        revealExtent: new Extent(woodStreetDragEndpoint).padByMeters(20),
+        tipHtml: finishDragString
+      });
 
-    function continueTo(nextStep) {
-      context.behaviors.get('drag').off('move', _checkDrag);
+      context.on('enter.intro', () => resolve(startDragMidpointAsync));
+
+      checkDrag = () => {
+        if (!_hasWoodStreetParts()) {
+          reject();
+        } else {
+          const entity = context.entity(woodStreetEndID);
+          if (geoSphericalDistance(entity.loc, woodStreetDragEndpoint) > 4) {   // point is too far
+            resolve(startDragEndpointAsync);   // back to previous step
+          }
+        }
+      };
+      context.behaviors.get('drag').on('move', checkDrag);
+    })
+    .finally(() => {
       context.on('enter.intro', null);
-      nextStep();
-    }
+      if (checkDrag) context.behaviors.get('drag').off('move', checkDrag);
+    });
   }
 
 
   // "Small triangles are drawn at the *midpoints* between nodes."
   // "Another way to create a new node is to drag a midpoint to a new location."
   // Create a node on Wood Street to advance
-  function startDragMidpoint() {
-    if (!_hasWoodStreet()) return continueTo(updateLine);
+  function startDragMidpointAsync() {
+    if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
     if (!_isWoodStreetSelected()) context.enter(modeSelect(context, [woodStreetID]));
 
-    curtain.reveal({
-      revealExtent: new Extent(woodStreetDragMidpoint).padByMeters(20),
-      tipHtml: helpHtml('intro.lines.start_drag_midpoint')
-    });
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    history.on('change.intro', difference => {
-      if (!difference) return;
-      if (difference.created().length === 1) {
-        return continueTo(continueDragMidpoint);
-      }
-    });
+      curtain.reveal({
+        revealExtent: new Extent(woodStreetDragMidpoint).padByMeters(20),
+        tipHtml: helpHtml('intro.lines.start_drag_midpoint')
+      });
 
-    context.on('enter.intro', () => continueTo(startDragMidpoint));
+      history.on('change.intro', difference => {
+        if (difference && difference.created().length === 1) {
+          resolve(continueDragMidpointAsync);
+        }
+      });
 
-    function continueTo(nextStep) {
+      context.on('enter.intro', reject);   // disallow mode change
+    })
+    .finally(() => {
       history.on('change.intro', null);
       context.on('enter.intro', null);
-      nextStep();
-    }
+    });
   }
 
 
   // "This line is looking much better! Continue to adjust this line until the curve matches the road shape."
   // "When you're happy with how the line looks, press Ok"
   // Click Ok to advance
-  function continueDragMidpoint() {
-    if (!_hasWoodStreet()) return continueTo(updateLine);
+  function continueDragMidpointAsync() {
+    if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
 
-    curtain.reveal({
-      revealExtent: woodStreetExtent,
-      tipHtml: helpHtml('intro.lines.continue_drag_midpoint'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: () => continueTo(deleteLines)
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+
+      curtain.reveal({
+        revealExtent: woodStreetExtent,
+        tipHtml: helpHtml('intro.lines.continue_drag_midpoint'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => {
+          history.checkpoint('doneUpdateLine');
+          resolve(deleteLinesAsync);
+        }
+      });
     });
-
-    function continueTo(nextStep) {
-      history.checkpoint('doneUpdateLine');
-      nextStep();
-    }
   }
 
 
@@ -614,122 +673,137 @@ export function uiIntroLine(context, curtain) {
 
   // "It's OK to delete lines for roads that don't exist in the real world..
   // Click Ok to advance
-  function deleteLines() {
-    history.reset('doneUpdateLine');
+  function deleteLinesAsync() {
     context.enter('browse');
+    history.reset('doneUpdateLine');
 
-    if (!context.hasEntity(washingtonStreetID) ||
-      !context.hasEntity(twelfthAvenueID) ||
-      !context.hasEntity(eleventhAvenueEndID)
-    ) {
-      return chapter.restart();
-    }
+    // It's remotely possible that in an earlier step,
+    // the user scrolled over here and deleted some stuff we need.
+    if (!_has12thAvenueParts()) history.reset('initial');
 
     const loc = deleteLinesExtent.center();
     const msec = transitionTime(loc, map.center());
     if (msec > 0) curtain.hide();
 
-    map
+    return map
       .setCenterZoomAsync(loc, 18, msec)
-      .then(() => {
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
         curtain.reveal({
           revealExtent: deleteLinesExtent,
           tipHtml: helpHtml('intro.lines.delete_lines', { street: t('intro.graph.name.12th-avenue') }),
           buttonText: t.html('intro.ok'),
-          buttonCallback: rightClickIntersection
+          buttonCallback: () => resolve(rightClickIntersectionAsync)
         });
-      });
+      }));
   }
 
 
   // "We will split Washington Street at this intersection and remove everything above it."
   // Select point with edit menu open to advance
-  function rightClickIntersection() {
-    history.reset('doneUpdateLine');
+  function rightClickIntersectionAsync() {
     context.enter('browse');
+    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
     _washingtonSegmentID = null;
 
-    const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
-    const rightClickString = helpHtml('intro.lines.split_street', {
-      street1: t('intro.graph.name.11th-avenue'),
-      street2: t('intro.graph.name.washington-street')
-    }) + helpHtml(`intro.lines.${textID}`);
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
-      tipHtml: rightClickString
-    });
+      const textID = (context.lastPointerType() === 'mouse') ? 'rightclick_intersection' : 'edit_menu_intersection_touch';
+      const rightClickString = helpHtml('intro.lines.split_street', {
+        street1: t('intro.graph.name.11th-avenue'),
+        street2: t('intro.graph.name.washington-street')
+      }) + helpHtml(`intro.lines.${textID}`);
 
-    context.ui().editMenu().on('toggled.intro', open => {
-      if (open) return continueTo(splitIntersection);  // user opened menu, advance
-    });
+      curtain.reveal({
+        revealExtent: new Extent(eleventhAvenueEnd).padByMeters(10),
+        tipHtml: rightClickString
+      });
 
-    history.on('change.intro', () => continueTo(rightClickIntersection));  // retry
+      editMenu.on('toggled.intro', open => {
+        if (open) resolve(splitIntersectionAsync);
+      });
 
-    function continueTo(nextStep) {
-      context.ui().editMenu().on('toggled.intro', null);
+      history.on('change.intro', reject);  // disallow doing anything else
+    })
+    .finally(() => {
+      editMenu.on('toggled.intro', null);
       history.on('change.intro', null);
-      nextStep();
-    }
+    });
   }
 
 
   // "Press the Split button to divide Washington Street"
   // Split Washington Street to advance
-  function splitIntersection() {
-    if (!context.hasEntity(washingtonStreetID) ||
-      !context.hasEntity(twelfthAvenueID) ||
-      !context.hasEntity(eleventhAvenueEndID)
-    ) {
-      return continueTo(deleteLines);
-    }
+  function splitIntersectionAsync() {
+    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
 
-    const node = container.select('.edit-menu-item-split').node();
-    if (!node) return continueTo(rightClickIntersection);
+    const buttonNode = container.select('.edit-menu-item-split').node();
+    if (!buttonNode) return Promise.resolve(rightClickIntersectionAsync);   // no Split button, try again
 
+    let revealEditMenu;
     _washingtonSegmentID = null;
 
-    timeout(() => {
-      curtain.reveal({
-        revealSelector: '.edit-menu',
-        revealPadding: 50,
-        tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
-      });
-    }, 400);  // after menu visible
+    return delayAsync()  // after edit menu fully visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
 
-    context.ui().editMenu().on('toggled.intro', open => {
-      if (!open) return continueTo(rightClickIntersection);  // user closed menu, go back
-    });
+        revealEditMenu = (duration = 0) => {
+          const menuNode = container.select('.edit-menu').node();
+          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
+          curtain.reveal({
+            duration: duration,
+            revealNode: menuNode,
+            revealPadding: 50,
+            tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
+          });
+        };
 
-    history.on('change.intro', changed => {
-      timeout(() => {
+        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
+        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
+
+        history.on('change.intro', difference => {
+          map.off('move', revealEditMenu);
+          history.on('change.intro', null);
+          if (difference && difference.created()) {
+            _washingtonSegmentID = difference.created()[0].id;
+            resolve();
+          } else {
+            reject();
+          }
+        });
+
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .then(delayAsync)   // wait for any transtion to complete
+      .then(() => {       // then check undo annotation to see what the user did
         if (history.undoAnnotation() === t('operations.split.annotation.line', { n: 1 })) {
-          _washingtonSegmentID = changed.created()[0].id;
-          continueTo(didSplit);
+          return didSplitAsync;
         } else {
-          _washingtonSegmentID = null;
-          continueTo(retrySplit);
+          return retrySplitAsync;
         }
-      }, 300);  // after any transition (e.g. if user deleted intersection)
-    });
-
-    function continueTo(nextStep) {
-      context.ui().editMenu().on('toggled.intro', null);
-      history.on('change.intro', null);
-      nextStep();
-    }
+      })
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        if (revealEditMenu) map.off('move', revealEditMenu);
+      });
   }
 
 
   // "You didn't press the Split button. Try again."
   // Click Ok to advance
-  function retrySplit() {
+  function retrySplitAsync() {
     context.enter('browse');
-    curtain.reveal({
-      revealExtent: deleteLinesExtent,
-      tipHtml: helpHtml('intro.lines.retry_split'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: rightClickIntersection
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHtml: helpHtml('intro.lines.retry_split'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(rightClickIntersectionAsync)
+      });
     });
   }
 
@@ -738,54 +812,52 @@ export function uiIntroLine(context, curtain) {
   // "Good job! Washington Street is now split into two pieces."
   // "The top part can be removed. Select the top part of Washington Street"
   // Select Washington Street top segment to advance
-  function didSplit() {
-    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+  function didSplitAsync() {
+    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
+    if (!_hasWashingtonSegment()) return Promise.resolve(rightClickIntersectionAsync);
 
-    const ids = context.selectedIDs();
-    const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
-    const street = t('intro.graph.name.washington-street');
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
 
-    curtain.reveal({
-      revealExtent: deleteLinesExtent,
-      tipHtml: helpHtml(string, { street1: street, street2: street })
-    });
-
-    context.on('enter.intro', () => {
       const ids = context.selectedIDs();
-      if (ids.length === 1 && ids[0] === _washingtonSegmentID) {
-        continueTo(multiSelect);
-      }
-    });
+      const string = 'intro.lines.did_split_' + (ids.length > 1 ? 'multi' : 'single');
+      const street = t('intro.graph.name.washington-street');
 
-    history.on('change.intro', () => {
-      if (!_hasAllSegments()) return continueTo(rightClickIntersection);
-    });
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHtml: helpHtml(string, { street1: street, street2: street })
+      });
 
-    function continueTo(nextStep) {
+      context.on('enter.intro', () => resolve(multiSelectAsync));
+      history.on('change.intro', reject);  // disallow doing anything else
+    })
+    .finally(() => {
       context.on('enter.intro', null);
       history.on('change.intro', null);
-      nextStep();
-    }
+    });
   }
 
 
   // "Washington Street is now selected. Let's also select 12th Avenue."
   // "You can hold Shift while clicking to select multiple things."
   // Multiselect both Washington Street top segment and 12th Avenue to advance
-  function multiSelect() {
-    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+  function multiSelectAsync() {
+    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
+    if (!_hasWashingtonSegment()) return Promise.resolve(rightClickIntersectionAsync);
 
+    // This step is for when one thing is selected and we are trying to
+    // teach the user to shift-click to select a second thing.
     const ids = context.selectedIDs();
     const hasWashington = ids.indexOf(_washingtonSegmentID) !== -1;
     const hasTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
 
     if (hasWashington && hasTwelfth) {
-      return continueTo(multiRightClick);
+      return Promise.resolve(multiRightClickAsync);  // both roads selected - go forward
     } else if (!hasWashington && !hasTwelfth) {
-      return continueTo(didSplit);
+      return Promise.resolve(didSplitAsync);         // neither selected - go back
     }
 
-    let selected, other, padding, box;
+    let selected, other;
     if (hasWashington) {
       selected = t('intro.graph.name.washington-street');
       other = t('intro.graph.name.12th-avenue');
@@ -804,115 +876,130 @@ export function uiIntroLine(context, curtain) {
       tipHtml: string
     });
 
-    context.on('enter.intro', () => continueTo(multiSelect));
-
-    history.on('change.intro', () => {
-      if (!_hasAllSegments()) return continueTo(rightClickIntersection);
-    });
-
-    function continueTo(nextStep) {
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      context.on('enter.intro', reject);   // reject will retry this step, which is what we want
+      history.on('change.intro', reject);  // disallow doing anything else
+    })
+    .finally(() => {
       context.on('enter.intro', null);
       history.on('change.intro', null);
-      nextStep();
-    }
+    });
   }
 
 
   // "Good! Both lines to delete are now selected."
   // "Right-click on one of the lines to show the edit menu."
   // Open edit menu with both lines multiselected to advance
-  function multiRightClick() {
-    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+  function multiRightClickAsync() {
+    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
+    if (!_hasWashingtonSegment()) return Promise.resolve(rightClickIntersectionAsync);
 
-    const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
-    const rightClickString = helpHtml('intro.lines.multi_select_success') + helpHtml(`intro.lines.multi_${textID}`);
-
-    curtain.reveal({
-      revealExtent: deleteLinesExtent,
-      tipHtml: rightClickString
-    });
-
-    context.ui().editMenu().on('toggled.intro', open => {
-      if (!open) return;
-
-      timeout(() => {
-        const ids = context.selectedIDs();
-        if (ids.length === 2 && ids.indexOf(twelfthAvenueID) !== -1 && ids.indexOf(_washingtonSegmentID) !== -1) {
-          const node = container.select('.edit-menu-item-delete').node();
-          if (!node) return;
-          continueTo(multiDelete);
-        } else if (ids.length === 1 && ids.indexOf(_washingtonSegmentID) !== -1) {
-          return continueTo(multiSelect);
-        } else {
-          return continueTo(didSplit);
-        }
-      }, 300);  // after edit menu visible
-    });
-
-    history.on('change.intro', () => {
-      if (!_hasAllSegments()) return continueTo(rightClickIntersection);
-    });
-
-    function continueTo(nextStep) {
-      context.ui().editMenu().on('toggled.intro', null);
-      history.on('change.intro', null);
-      nextStep();
+    const ids = context.selectedIDs();
+    const selectedWashington = ids.indexOf(_washingtonSegmentID) !== -1;
+    const selectedTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
+    if (!selectedWashington || !selectedTwelfth) {
+      return Promise.resolve(multiSelectAsync);   // both need to be selected - go back
     }
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+
+      const textID = context.lastPointerType() === 'mouse' ? 'rightclick' : 'edit_menu_touch';
+      const rightClickString = helpHtml('intro.lines.multi_select_success') + helpHtml(`intro.lines.multi_${textID}`);
+
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHtml: rightClickString
+      });
+
+      editMenu.on('toggled.intro', open => {
+        if (open) resolve(multiDeleteAsync);
+      });
+
+      history.on('change.intro', reject);  // disallow doing anything else
+    })
+    .finally(() => {
+      editMenu.on('toggled.intro', null);
+      history.on('change.intro', null);
+    });
   }
 
 
   // "Press the Delete button to remove the extra lines."
   // Both lines should be deleted to advance
-  function multiDelete() {
-    if (!_hasAllSegments()) return continueTo(rightClickIntersection);
+  function multiDeleteAsync() {
+    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
+    if (!_hasWashingtonSegment()) return Promise.resolve(rightClickIntersectionAsync);
 
-    const node = container.select('.edit-menu-item-delete').node();
-    if (!node) return continueTo(multiRightClick);
-
-    curtain.reveal({
-      revealSelector: '.edit-menu',
-      revealPadding: 50,
-      tipHtml: helpHtml('intro.lines.multi_delete')
-    });
-
-    context.on('enter.intro', () => {
-      if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
-        return continueTo(multiSelect);  // exited select mode but roads still exist
-      }
-    });
-
-    history.on('change.intro', () => {
-      if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
-        continueTo(retryDelete);   // changed something but roads still exist
-      } else {
-        continueTo(play);
-      }
-    });
-
-    function continueTo(nextStep) {
-      context.on('enter.intro', null);
-      history.on('change.intro', null);
-      nextStep();
+    const ids = context.selectedIDs();
+    const selectedWashington = ids.indexOf(_washingtonSegmentID) !== -1;
+    const selectedTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
+    if (!selectedWashington || !selectedTwelfth) {
+      return Promise.resolve(multiSelectAsync);   // both need to be selected - go back
     }
+
+    const buttonNode = container.select('.edit-menu-item-delete').node();
+    if (!buttonNode) return Promise.resolve(rightClickIntersectionAsync);   // no Delete button, try again
+
+    let revealEditMenu;
+
+    return delayAsync()  // after edit menu fully visible
+      .then(() => new Promise((resolve, reject) => {
+        _rejectStep = reject;
+
+        revealEditMenu = (duration = 0) => {
+          const menuNode = container.select('.edit-menu').node();
+          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
+          curtain.reveal({
+            duration: duration,
+            revealNode: menuNode,
+            revealPadding: 50,
+            tipHtml: helpHtml('intro.lines.multi_delete')
+          });
+        };
+
+        revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
+        map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
+
+        history.on('change.intro', () => {
+          if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
+            resolve(retryDeleteAsync);   // changed something but roads still exist
+          } else {
+            resolve(playAsync);
+          }
+        });
+
+        context.on('enter.intro', reject);   // disallow mode change
+      }))
+      .finally(() => {
+        history.on('change.intro', null);
+        context.on('enter.intro', null);
+        if (revealEditMenu) map.off('move', revealEditMenu);
+      });
   }
 
 
-  // "You didn't press the {delete_icon} {delete} button. Try again."
+  // "You didn't press the Delete button. Try again."
   // Click Ok to advance
-  function retryDelete() {
+  function retryDeleteAsync() {
     context.enter('browse');
-    curtain.reveal({
-      revealExtent: deleteLinesExtent,
-      tipHtml: helpHtml('intro.lines.retry_delete'),
-      buttonText: t.html('intro.ok'),
-      buttonCallback: multiSelect
+
+    return new Promise((resolve, reject) => {
+      _rejectStep = reject;
+      curtain.reveal({
+        revealExtent: deleteLinesExtent,
+        tipHtml: helpHtml('intro.lines.retry_delete'),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(multiSelectAsync)
+      });
     });
   }
 
 
   // Free play
   // Click on Lines (or another) chapter to advance
-  function play() {
+  function playAsync() {
     dispatch.call('done');
     curtain.reveal({
       revealSelector: '.ideditor',
@@ -921,20 +1008,26 @@ export function uiIntroLine(context, curtain) {
       buttonText: t.html('intro.ok'),
       buttonCallback: () => curtain.reveal({ revealSelector: '.ideditor' })  // re-reveal but without the tooltip
     });
+    return Promise.resolve();
   }
 
 
   chapter.enter = () => {
-    addLine();
+    _chapterCancelled = false;
+    _rejectStep = null;
+
+    runAsync(addLineAsync)
+      .catch(e => { if (e instanceof Error) console.error(e); });  // eslint-disable-line no-console
   };
 
 
   chapter.exit = () => {
-    _timeouts.forEach(window.clearTimeout);
-    history.on('change.intro', null);
-    context.on('enter.intro', null);
-    container.select('.inspector-wrap').on('wheel.intro', null);
-    container.select('.preset-list-button').on('click.intro', null);
+    _chapterCancelled = true;
+
+    if (_rejectStep) {   // bail out of whatever step we are in
+      _rejectStep();
+      _rejectStep = null;
+    }
   };
 
 
