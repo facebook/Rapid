@@ -229,18 +229,18 @@ export function uiIntroLine(context, curtain) {
   }
 
 
-  // "The road needs to intersect {name}. Let's try again!"
+  // "The road needs to intersect Flower Street. Let's try again!"
   // This step just returns back to beginning after a short delay
   function retryIntersectAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       curtain.reveal({
         revealExtent: new Extent(tulipRoadIntersection).padByMeters(15),
-        tipHtml: helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') })
+        tipHtml: helpHtml('intro.lines.retry_intersect', { name: t('intro.graph.name.flower-street') }),
+        buttonText: t.html('intro.ok'),
+        buttonCallback: () => resolve(addLineAsync)
       });
-    })
-    .then(() => delayAsync(3000))
-    .then(addLineAsync);
+    });
   }
 
 
