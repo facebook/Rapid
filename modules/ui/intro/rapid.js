@@ -21,13 +21,14 @@ export function uiIntroRapid(context, curtain) {
   let _rejectStep = null;
 
 
-  // Helper function to make sure the line is selected
+  // Helper functions
   // (Note that this returns true whether the way lives in the Rapid graph or OSM graph)
   function _isTulipLaneSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === tulipLaneID;
   }
+
   function _isTulipLaneAccepted() {
     return context.hasEntity(tulipLaneID);
   }

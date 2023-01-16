@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util';
-import { delayAsync, eventCancel, helpHtml, isMostlySquare, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, isMostlySquare, showPresetList, transitionTime } from './helper';
 
 
 export function uiIntroBuilding(context, curtain) {
@@ -30,37 +30,27 @@ export function uiIntroBuilding(context, curtain) {
   let _tankID = null;
 
 
-  // Helper function to make sure the house exists
+  // Helper functions
   function _doesHouseExist() {
     return _houseID && context.hasEntity(_houseID);
   }
 
-  // Helper function to make sure the house is selected
   function _isHouseSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _houseID;
   }
 
-  // Helper function to make sure the tank exists
   function _doesTankExist() {
     return _tankID && context.hasEntity(_tankID);
   }
 
-  // Helper function to make sure the tank is selected
   function _isTankSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _tankID;
   }
 
-  // Helper function to force the preset list open
-  // These things happen automatically but we want to be sure
-  function _showPresetList() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
-    container.select('.inspector-wrap .panewrap').style('right', '-100%');
-  }
 
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
@@ -214,7 +204,7 @@ export function uiIntroBuilding(context, curtain) {
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
         if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
-        _showPresetList();
+        showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const button = container.select('.preset-category-building .preset-list-button');
@@ -245,7 +235,7 @@ export function uiIntroBuilding(context, curtain) {
         if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
         if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
-        _showPresetList();
+        showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const button = container.select('.preset-building-house .preset-list-button');
@@ -522,11 +512,10 @@ export function uiIntroBuilding(context, curtain) {
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        _showPresetList();
+        showPresetList(container);
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
-          revealPadding: 5,
           tipHtml: helpHtml('intro.buildings.search_tank', { preset: tankPreset.name() })
         });
 

@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { actionChangePreset } from '../../actions/change_preset';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
 
 
 export function uiIntroPoint(context, curtain) {
@@ -26,34 +26,17 @@ export function uiIntroPoint(context, curtain) {
   let _pointID = null;
 
 
-
-  // Helper function to make sure the point exists
+  // Helper functions
   function _doesPointExist() {
     return _pointID && context.hasEntity(_pointID);
   }
 
-  // Helper function to make sure the point is selected
   function _isPointSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _pointID;
   }
 
-  // Helper function to force the entity inspector open
-  // These things happen automatically but we want to be sure
-  function _showEntityEditor() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', true);
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
-  }
-
-  // Helper function to force the preset list open
-  // These things happen automatically but we want to be sure
-  function _showPresetList() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
-    container.select('.inspector-wrap .panewrap').style('right', '-100%');
-  }
 
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
@@ -144,11 +127,10 @@ export function uiIntroPoint(context, curtain) {
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
-        _showPresetList();
+        showPresetList(container);
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
-          revealPadding: 5,
           tipHtml: helpHtml('intro.points.search_cafe', { preset: cafePreset.name() })
         });
 
@@ -205,7 +187,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
         if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
-        _showEntityEditor();
+        showEntityEditor(container);
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
@@ -233,7 +215,7 @@ export function uiIntroPoint(context, curtain) {
         if (!_doesPointExist()) { resolve(addPointAsync); return; }
         if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
-        _showEntityEditor();
+        showEntityEditor(container);
 
         // It's possible for the user to add a name in a previous step..
         // If so, don't tell them to add the name in this step.
@@ -277,7 +259,7 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
@@ -346,7 +328,7 @@ export function uiIntroPoint(context, curtain) {
         _rejectStep = reject;
         if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
 
-        _showEntityEditor();
+        showEntityEditor(container);
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
@@ -371,7 +353,7 @@ export function uiIntroPoint(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',

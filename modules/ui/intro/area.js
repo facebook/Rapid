@@ -6,7 +6,7 @@ import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
 
 
 export function uiIntroArea(context, curtain) {
@@ -26,33 +26,17 @@ export function uiIntroArea(context, curtain) {
   let _areaID = null;
 
 
-  // Helper function to make sure the area exists
+  // Helper functions
   function _doesAreaExist() {
     return _areaID && context.hasEntity(_areaID);
   }
 
-  // Helper function to make sure the area is selected
   function _isAreaSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _areaID;
   }
 
-  // Helper function to force the entity inspector open
-  // These things happen automatically but we want to be sure
-  function _showEntityEditor() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', true);
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
-  }
-
-  // Helper function to force the preset list open
-  // These things happen automatically but we want to be sure
-  function _showPresetList() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
-    container.select('.inspector-wrap .panewrap').style('right', '-100%');
-  }
 
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
@@ -202,12 +186,11 @@ export function uiIntroArea(context, curtain) {
         if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
         if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
 
-        _showPresetList();
+        showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         curtain.reveal({
           revealSelector: '.preset-search-input',
-          revealPadding: 5,
           tipHtml: helpHtml('intro.areas.search_playground', { preset: playgroundPreset.name() })
         });
 
@@ -270,7 +253,7 @@ export function uiIntroArea(context, curtain) {
           return;
         }
 
-        _showEntityEditor();
+        showEntityEditor(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         // It's possible for the user to add a description in a previous step..
@@ -365,7 +348,7 @@ export function uiIntroArea(context, curtain) {
         }
       }, 300);
 
-      _showEntityEditor();
+      showEntityEditor(container);
 
       curtain.reveal({
         revealSelector: 'div.combobox',
@@ -394,7 +377,7 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
@@ -417,7 +400,7 @@ export function uiIntroArea(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',

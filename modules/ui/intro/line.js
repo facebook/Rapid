@@ -6,7 +6,7 @@ import { t } from '../../core/localizer';
 import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';
 
 
 export function uiIntroLine(context, curtain) {
@@ -43,19 +43,17 @@ export function uiIntroLine(context, curtain) {
   let _lineID = null;
 
 
-  // Helper function to make sure the line exists
+  // Helper functions
   function _doesLineExist() {
     return _lineID && context.hasEntity(_lineID);
   }
 
-  // Helper function to make sure the line is selected
   function _isLineSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === _lineID;
   }
 
-  // Helper function to determine if the roads are connected properly
   function _isLineConnected() {
     const tulipRoad = _lineID && context.hasEntity(_lineID);
     const flowerStreet = flowerStreetID && context.hasEntity(flowerStreetID);
@@ -69,52 +67,30 @@ export function uiIntroLine(context, curtain) {
     });
   }
 
-  // Helper function to ensure that the Wood Street parts exist in the graph
   function _hasWoodStreetParts() {
-    return context.hasEntity(woodStreetID) &&
-      context.hasEntity(woodStreetEndID);
+    return context.hasEntity(woodStreetID) && context.hasEntity(woodStreetEndID);
   }
 
-  // Helper function to make sure Wood Street is selected
   function _isWoodStreetSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === woodStreetID;
   }
 
-  // Helper function to ensure that the 12th Avenue parts exist in the graph
   function _has12thAvenueParts() {
-    return context.hasEntity(washingtonStreetID) &&
-      context.hasEntity(twelfthAvenueID) &&
-      context.hasEntity(eleventhAvenueEndID);
+    return context.hasEntity(washingtonStreetID) && context.hasEntity(twelfthAvenueID) && context.hasEntity(eleventhAvenueEndID);
   }
 
-  // Helper function to ensure that the road segments exist in the graph
   function _hasWashingtonSegment() {
     return _washingtonSegmentID && context.hasEntity(_washingtonSegmentID);
   }
-  // Helper function to make sure the intersection is selected
+
   function _is11thAveEndSelected() {
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === eleventhAvenueEndID;
   }
 
-  // Helper function to force the entity inspector open
-  // These things happen automatically but we want to be sure
-  function _showEntityEditor() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', true);
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
-  }
-
-  // Helper function to force the preset list open
-  // These things happen automatically but we want to be sure
-  function _showPresetList() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
-    container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
-    container.select('.inspector-wrap .panewrap').style('right', '-100%');
-  }
 
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
@@ -288,7 +264,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-        _showPresetList();
+        showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -327,7 +303,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-        _showPresetList();
+        showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -384,7 +360,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-        _showPresetList();
+        showPresetList(container);
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
         const categoryButton = container.select('.preset-category-road_minor .preset-list-button');
@@ -440,7 +416,7 @@ export function uiIntroLine(context, curtain) {
         if (!_doesLineExist()) { resolve(addLineAsync); return; }
         if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
-        _showEntityEditor();
+        showEntityEditor(container);
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',

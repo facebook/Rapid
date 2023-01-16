@@ -5,7 +5,7 @@ import { select as d3_select } from 'd3-selection';
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
 import { utilRebind } from '../../util/rebind';
-import { delayAsync, eventCancel, helpHtml, icon, transitionTime } from './helper';
+import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, transitionTime } from './helper';
 
 
 export function uiIntroNavigation(context, curtain) {
@@ -26,7 +26,7 @@ export function uiIntroNavigation(context, curtain) {
   let _rejectStep = null;
 
 
-  // Helper function to make sure the Town Hall exists _and_ is selected
+  // Helper functions
   function _isTownHallSelected() {
     if (!context.hasEntity(townHallID)) return false;
     if (context.mode().id !== 'select') return false;
@@ -34,24 +34,15 @@ export function uiIntroNavigation(context, curtain) {
     return ids.length === 1 && ids[0] === townHallID;
   }
 
-  // Helper function to make sure the Spring Street exists
   function _doesSpringStreetExist() {
     return context.hasEntity(springStreetID);
   }
 
-  // Helper function to make sure Spring Street exists _and_ is selected
   function _isSpringStreetSelected() {
     if (!context.hasEntity(springStreetID)) return false;
     if (context.mode().id !== 'select') return false;
     const ids = context.selectedIDs();
     return ids.length === 1 && ids[0] === springStreetID;
-  }
-
-  // Helper function to force the entity inspector open
-  // These things happen automatically but we want to be sure
-  function _showEntityEditor() {
-    container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
-    container.select('.inspector-wrap .panewrap').style('right', '0%');
   }
 
 
@@ -72,7 +63,6 @@ export function uiIntroNavigation(context, curtain) {
   //     Catch with an empty block will swallow actual errors and make debugging difficult
   //     Log error if it's actually an instanceof Error
   //     Ignore error if it's just a normal reject being used to control the flow
-
   function runAsync(currStep) {
     if (_chapterCancelled) return Promise.reject();
     if (typeof currStep !== 'function') return Promise.resolve();  // guess we're done
@@ -258,7 +248,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
@@ -284,7 +274,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       // preset match, in case the user happened to change it.
@@ -315,7 +305,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
       container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
       curtain.reveal({
@@ -341,7 +331,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
@@ -359,7 +349,8 @@ export function uiIntroNavigation(context, curtain) {
   }
 
 
-  // "You can also search for features in the current view, or worldwide.
+  // "You can also search for features in the current view, or worldwide."
+  // "Search for Spring Street..."
   // Type in the search box to advance
   function searchStreetAsync() {
     context.enter('browse');
@@ -375,7 +366,6 @@ export function uiIntroNavigation(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.search-header input',
-          revealPadding: 5,
           tipHtml: helpHtml('intro.navigation.search_street', { name: t('intro.graph.name.spring-street') })
         });
 
@@ -462,7 +452,7 @@ export function uiIntroNavigation(context, curtain) {
 
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
-      _showEntityEditor();
+      showEntityEditor(container);
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
       const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +

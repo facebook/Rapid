@@ -276,3 +276,29 @@ export function transitionTime(loc1, loc2) {
 export function delayAsync(ms = 300) {
   return new Promise(resolve => window.setTimeout(resolve, ms));  // eslint-disable-line no-promise-executor-return
 }
+
+
+/**
+ * showEntityEditor
+ * Helper function to force the entity inspector open
+ * These things happen automatically but we want to be sure
+ * @param  container   App container to select from
+ */
+export function showEntityEditor(container) {
+  container.select('.inspector-wrap .entity-editor-pane').classed('hide', false);
+  container.select('.inspector-wrap .preset-list-pane').classed('hide', true);
+  container.select('.inspector-wrap .panewrap').style('right', '0%');
+}
+
+
+/**
+ * showPresetList
+ * Helper function to force the entity inspector open
+ * These things happen automatically but we want to be sure
+ * @param  container   App container to select from
+ */
+export function showPresetList(container) {
+  container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
+  container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
+  container.select('.inspector-wrap .panewrap').style('right', '-100%');
+}
