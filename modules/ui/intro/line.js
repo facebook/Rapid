@@ -34,12 +34,8 @@ export function uiIntroLine(context, curtain) {
   const washingtonStreetID = 'w522';
   const twelfthAvenueID = 'w1';
   const eleventhAvenueEndID = 'n3550';
-  const twelfthAvenueEndID = 'n5';
   const deleteLinesExtent = new Extent([-85.62304, 41.95084], [-85.62087, 41.95336]);
   const eleventhAvenueEnd = context.entity(eleventhAvenueEndID).loc;
-  const twelfthAvenueEnd = context.entity(twelfthAvenueEndID).loc;
-  const deleteLinesLoc = [-85.6219395542764, 41.95228033922477];
-  const twelfthAvenue = [-85.62219310052491, 41.952505413152956];
 
   let _chapterCancelled = false;
   let _rejectStep = null;
@@ -96,6 +92,12 @@ export function uiIntroLine(context, curtain) {
   // Helper function to ensure that the road segments exist in the graph
   function _hasWashingtonSegment() {
     return _washingtonSegmentID && context.hasEntity(_washingtonSegmentID);
+  }
+  // Helper function to make sure the intersection is selected
+  function _is11thAveEndSelected() {
+    if (context.mode().id !== 'select') return false;
+    const ids = context.selectedIDs();
+    return ids.length === 1 && ids[0] === eleventhAvenueEndID;
   }
 
   // Helper function to force the entity inspector open
@@ -203,8 +205,6 @@ export function uiIntroLine(context, curtain) {
   // "Continue drawing the line by placing more nodes along the road."
   // "Place an intersection node on {name} to connect the two lines."
   function drawLineAsync() {
-    if (!_doesLineExist() || context.mode().id !== 'draw-line') return Promise.resolve(addLineAsync);
-
     const loc = tulipRoadMidExtent.center();
     const msec = transitionTime(loc, map.center());
 
@@ -212,6 +212,8 @@ export function uiIntroLine(context, curtain) {
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
+
         curtain.reveal({
           revealExtent: tulipRoadMidExtent,
           tipHtml: helpHtml('intro.lines.intersect', { name: t('intro.graph.name.flower-street') })
@@ -220,6 +222,7 @@ export function uiIntroLine(context, curtain) {
         history.on('change.intro', () => {
           if (_isLineConnected()) resolve(finishLineAsync);
         });
+
         context.on('enter.intro', () => resolve(retryIntersectAsync));
       }))
       .finally(() => {
@@ -230,7 +233,7 @@ export function uiIntroLine(context, curtain) {
 
 
   // "The road needs to intersect Flower Street. Let's try again!"
-  // This step just returns back to beginning after a short delay
+  // Click Ok to advance
   function retryIntersectAsync() {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
@@ -248,8 +251,6 @@ export function uiIntroLine(context, curtain) {
   // "When you're finished, click the last node again or press return."
   // Finish the road to advance
   function finishLineAsync() {
-    if (!_doesLineExist() || context.mode().id !== 'draw-line') return Promise.resolve(addLineAsync);
-
     const loc = tulipRoadMidExtent.center();
     const msec = transitionTime(loc, map.center());
 
@@ -257,6 +258,8 @@ export function uiIntroLine(context, curtain) {
       .setCenterZoomAsync(loc, 18.5, msec)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesLineExist() || context.mode().id !== 'draw-line') { resolve(addLineAsync); return; }
+
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
         const continueLineText = helpHtml('intro.lines.continue_line') + '{br}' +
           helpHtml(`intro.lines.finish_line_${textID}`) + helpHtml('intro.lines.finish_road');
@@ -277,14 +280,13 @@ export function uiIntroLine(context, curtain) {
   // "Select Minor Roads from the list."
   // Open the Minor Roads category to advance
   function chooseCategoryRoadAsync() {
-    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
-    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
-
     let categoryButton;
 
     return delayAsync()  // after presets visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesLineExist()) { resolve(addLineAsync); return; }
+        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
         _showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -319,12 +321,11 @@ export function uiIntroLine(context, curtain) {
   // "There are many different types of roads, but this one is a Residential Road..."
   // Select a preset to advance
   function choosePresetResidentialAsync() {
-    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
-    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
-
     return delayAsync()  // after presets visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesLineExist()) { resolve(addLineAsync); return; }
+        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
         _showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -377,12 +378,11 @@ export function uiIntroLine(context, curtain) {
   // "You didn't select the Residential type."
   // Click the preset button to advance
   function retryPresetResidentialAsync() {
-    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
-    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
-
     return delayAsync()  // after presets visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesLineExist()) { resolve(addLineAsync); return; }
+        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
 
         _showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -434,12 +434,12 @@ export function uiIntroLine(context, curtain) {
   // "Give this road a name, then press the X button or Esc to close the feature editor."
   // Close entity editor / leave select mode to advance
   function nameRoadAsync() {
-    if (!_doesLineExist()) return Promise.resolve(addLineAsync);
-    if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
-
     return delayAsync()  // after presets visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesLineExist()) { resolve(addLineAsync); return; }
+        if (!_isLineSelected()) context.enter(modeSelect(context, [_lineID]));
+
         _showEntityEditor();
 
         curtain.reveal({
@@ -543,7 +543,6 @@ export function uiIntroLine(context, curtain) {
   // Drag the endpoint of Wood Street to the expected location to advance
   function startDragEndpointAsync() {
     if (!_hasWoodStreetParts()) return Promise.resolve(updateLineAsync);
-    // if (!_isWoodStreetSelected()) context.enter(modeSelect(context, [woodStreetID]));
 
     let checkDrag;
 
@@ -703,7 +702,12 @@ export function uiIntroLine(context, curtain) {
   // Select point with edit menu open to advance
   function rightClickIntersectionAsync() {
     context.enter('browse');
-    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
+    history.reset('doneUpdateLine');
+
+    // It's remotely possible that in an earlier step,
+    // the user scrolled over here and deleted some stuff we need.
+    if (!_has12thAvenueParts()) history.reset('initial');
+
     _washingtonSegmentID = null;
 
     return new Promise((resolve, reject) => {
@@ -736,8 +740,6 @@ export function uiIntroLine(context, curtain) {
   // "Press the Split button to divide Washington Street"
   // Split Washington Street to advance
   function splitIntersectionAsync() {
-    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
-
     const buttonNode = container.select('.edit-menu-item-split').node();
     if (!buttonNode) return Promise.resolve(rightClickIntersectionAsync);   // no Split button, try again
 
@@ -747,16 +749,21 @@ export function uiIntroLine(context, curtain) {
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_has12thAvenueParts()) { resolve(deleteLinesAsync); return; }
+        if (!_is11thAveEndSelected()) context.enter(modeSelect(context, [eleventhAvenueEndID]));
 
         revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
-          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
-          curtain.reveal({
-            duration: duration,
-            revealNode: menuNode,
-            revealPadding: 50,
-            tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
-          });
+          if (menuNode) {
+            curtain.reveal({
+              duration: duration,
+              revealNode: menuNode,
+              revealPadding: 50,
+              tipHtml: helpHtml('intro.lines.split_intersection', { street: t('intro.graph.name.washington-street') })
+            });
+          } else {
+            reject();   // menu has gone away - user scrolled it offscreen?
+          }
         };
 
         revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
@@ -918,10 +925,12 @@ export function uiIntroLine(context, curtain) {
       });
 
       history.on('change.intro', reject);  // disallow doing anything else
+      context.on('enter.intro', reject);   // disallow mode change
     })
     .finally(() => {
       editMenu.on('toggled.intro', null);
       history.on('change.intro', null);
+      context.on('enter.intro', null);
     });
   }
 
@@ -929,48 +938,63 @@ export function uiIntroLine(context, curtain) {
   // "Press the Delete button to remove the extra lines."
   // Both lines should be deleted to advance
   function multiDeleteAsync() {
-    if (!_has12thAvenueParts()) return Promise.resolve(deleteLinesAsync);
-    if (!_hasWashingtonSegment()) return Promise.resolve(rightClickIntersectionAsync);
-
-    const ids = context.selectedIDs();
-    const selectedWashington = ids.indexOf(_washingtonSegmentID) !== -1;
-    const selectedTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
-    if (!selectedWashington || !selectedTwelfth) {
-      return Promise.resolve(multiSelectAsync);   // both need to be selected - go back
-    }
-
     const buttonNode = container.select('.edit-menu-item-delete').node();
-    if (!buttonNode) return Promise.resolve(rightClickIntersectionAsync);   // no Delete button, try again
+    if (!buttonNode) return Promise.resolve(multiSelectAsync);   // no Delete button, try again
 
     let revealEditMenu;
 
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_has12thAvenueParts()) { resolve(deleteLinesAsync); return; }
+        if (!_hasWashingtonSegment()) { resolve(rightClickIntersectionAsync); return; }
+
+        const ids = context.selectedIDs();
+        const selectedWashington = ids.indexOf(_washingtonSegmentID) !== -1;
+        const selectedTwelfth = ids.indexOf(twelfthAvenueID) !== -1;
+        if (!selectedWashington || !selectedTwelfth) {
+          resolve(multiSelectAsync);   // both need to be selected - go back
+          return;
+        }
 
         revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
-          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
-          curtain.reveal({
-            duration: duration,
-            revealNode: menuNode,
-            revealPadding: 50,
-            tipHtml: helpHtml('intro.lines.multi_delete')
-          });
+          if (menuNode) {
+            curtain.reveal({
+              duration: duration,
+              revealNode: menuNode,
+              revealPadding: 50,
+              tipHtml: helpHtml('intro.lines.multi_delete')
+            });
+          } else {
+            reject();   // menu has gone away - user scrolled it offscreen?
+          }
         };
 
         revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
         map.on('move', revealEditMenu);  // on map moves, have the curtain follow the menu immediately
 
+        // In most cases we receive the history change event before the mode change event..
+        // In this case, we might get them the other way around, because the legacy modeSelect listens for
+        // history change and will switch to browse mode if the previously selected features go away.
+        // To fix this, we'll listen to both events to see whether the road segments have been deleted.
         history.on('change.intro', () => {
-          if (context.hasEntity(_washingtonSegmentID) || context.hasEntity(twelfthAvenueID)) {
-            resolve(retryDeleteAsync);   // changed something but roads still exist
-          } else {
+          history.on('change.intro', null);
+          context.on('enter.intro', null);
+          if (!context.hasEntity(_washingtonSegmentID) && !context.hasEntity(twelfthAvenueID)) {
             resolve(playAsync);
+          } else {
+            resolve(retryDeleteAsync);   // changed something but roads still exist - go back
           }
         });
 
-        context.on('enter.intro', reject);   // disallow mode change
+        context.on('enter.intro', mode => {
+          if (mode.id === 'browse' && !context.hasEntity(_washingtonSegmentID) && !context.hasEntity(twelfthAvenueID)) {
+            resolve(playAsync);
+          } else {
+            resolve(multiSelectAsync);   // lost select mode - go back
+          }
+        });
       }))
       .finally(() => {
         history.on('change.intro', null);

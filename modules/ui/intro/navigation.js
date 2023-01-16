@@ -342,6 +342,7 @@ export function uiIntroNavigation(context, curtain) {
     return new Promise((resolve, reject) => {
       _rejectStep = reject;
       _showEntityEditor();
+
       const iconSelector = '.entity-editor-pane button.close svg use';
       const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
       curtain.reveal({
@@ -426,8 +427,6 @@ export function uiIntroNavigation(context, curtain) {
   // "Great! Spring Street is now selected..."
   // Click Ok to advance
   function selectedStreetAsync() {
-    if (!_isSpringStreetSelected()) return Promise.resolve(searchStreetAsync);
-
     // Note, the map is about to try easing to show all of Spring Street
     // due to the user clicking it in the feature list.
     // For the purposes of the tutorial, we want to force the map
@@ -438,6 +437,8 @@ export function uiIntroNavigation(context, curtain) {
       .setCenterZoomAsync(loc, 19, 0 /* asap */)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_isSpringStreetSelected()) { resolve(searchStreetAsync); return; }
+
         curtain.reveal({
           revealExtent: springStreetExtent,
           revealPadding: 40,

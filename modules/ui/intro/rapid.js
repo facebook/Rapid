@@ -115,15 +115,16 @@ export function uiIntroRapid(context, curtain) {
   // "Click the 'Use this Feature' button to add the road to the working map..."
   // Accept the feature to advance
   function acceptRoadAsync() {
-    if (!_isTulipLaneSelected()) return Promise.resolve(selectRoadAsync);
-
     return delayAsync()  // after rapid inspector visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_isTulipLaneSelected()) { resolve(); return; }
+
         curtain.reveal({
           revealSelector: '.rapid-inspector-choice-accept',
           tipHtml: helpHtml('intro.rapid.add_road')
         });
+
         context.on('enter.intro', resolve);
       }))
       .then(() => {    // check undo annotation to see what the user did
@@ -142,18 +143,19 @@ export function uiIntroRapid(context, curtain) {
   // "The AI-assisted road has been added as a change to the map..."
   // Click Ok to advance
   function roadAcceptedAsync() {
-    if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
-
     return delayAsync()  // after entity inspector visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
+        if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+
         curtain.reveal({
           revealExtent: tulipLaneExtent,
           tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
           buttonText: t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });
+
         context.on('enter.intro', reject);   // disallow mode change
       }))
       .finally(() => {
@@ -189,12 +191,12 @@ export function uiIntroRapid(context, curtain) {
   // "The addition of the road has caused a new issue to appear in the issues panel..."
   // Click Ok to advance
   function showLintAsync() {
-    if (!_isTulipLaneAccepted()) return Promise.resolve(selectRoadAsync);
-    if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
-
     return delayAsync()  // after issues pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_isTulipLaneAccepted()) { resolve(selectRoadAsync); return; }
+        if (!_isTulipLaneSelected()) context.enter(modeSelect(context, [tulipLaneID]));
+
         const label = d3_select('li.issue.severity-warning');
         curtain.reveal({
           revealNode: label.node(),   // "connect these features" is expected to be the first child
@@ -281,15 +283,16 @@ export function uiIntroRapid(context, curtain) {
   // "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map..."
   // Ignore the road to advance
   function ignoreRoadAsync() {
-    if (!_isTulipLaneSelected()) return Promise.resolve(selectRoadAgainAsync);
-
     return delayAsync()  // after rapid inspector visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_isTulipLaneSelected()) { resolve(); return; }
+
         curtain.reveal({
           revealSelector: '.rapid-inspector-choice-ignore',
           tipHtml: helpHtml('intro.rapid.ignore_road')
         });
+
         context.on('enter.intro', resolve);
       }))
       .then(() => {    // check undo annotation to see what the user did

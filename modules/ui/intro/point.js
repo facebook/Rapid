@@ -136,12 +136,11 @@ export function uiIntroPoint(context, curtain) {
   // "The point you just added is a cafe..."
   // Search for Cafe in the preset search to advance
   function searchPresetAsync() {
-    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
-    if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
-
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist()) { resolve(addPointAsync); return; }
+        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -200,12 +199,12 @@ export function uiIntroPoint(context, curtain) {
   // "The point is now marked as a cafe. Using the feature editor, we can add more information about the cafe."
   // Click Ok to advance
   function aboutFeatureEditorAsync() {
-    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
-    if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
-
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist()) { resolve(addPointAsync); return; }
+        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+
         _showEntityEditor();
 
         curtain.reveal({
@@ -228,12 +227,12 @@ export function uiIntroPoint(context, curtain) {
   // "Let's pretend that you have local knowledge of this cafe, and you know its name..."
   // Make any edit to advance (or click Ok if they happend to add a name already)
   function addNameAsync() {
-    if (!_doesPointExist()) return Promise.resolve(addPointAsync);
-    if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
-
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist()) { resolve(addPointAsync); return; }
+        if (!_isPointSelected()) context.enter(modeSelect(context, [_pointID]));
+
         _showEntityEditor();
 
         // It's possible for the user to add a name in a previous step..
@@ -342,11 +341,11 @@ export function uiIntroPoint(context, curtain) {
   // "Let's fill in some more details for this cafe..."
   // Make any edit to advance
   function updatePointAsync() {
-    if (!_doesPointExist() || !_isPointSelected()) return Promise.resolve(reselectPointAsync);
-
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist() || !_isPointSelected()) { resolve(reselectPointAsync); return; }
+
         _showEntityEditor();
 
         curtain.reveal({
@@ -418,14 +417,13 @@ export function uiIntroPoint(context, curtain) {
   // "It's OK to delete features that don't exist in the real world..."
   // Delete the point to advance
   function enterDeleteAsync() {
-    if (!_doesPointExist() || !_isPointSelected()) return Promise.resolve(rightClickPointAsync);
-
     const node = container.select('.edit-menu-item-delete').node();
     if (!node) return Promise.resolve(rightClickPointAsync);   // no Delete button, try again
 
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesPointExist() || !_isPointSelected()) { resolve(rightClickPointAsync); return; }
 
         curtain.reveal({
           revealSelector: '.edit-menu',

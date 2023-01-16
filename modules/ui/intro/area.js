@@ -196,12 +196,11 @@ export function uiIntroArea(context, curtain) {
 
   // Search for Playground and select it from the preset search result to advance
   function searchPresetAsync() {
-    if (!_doesAreaExist()) return Promise.resolve(addAreaAsync);
-    if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
-
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
+        if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
 
         _showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -260,16 +259,16 @@ export function uiIntroArea(context, curtain) {
   // "Instead let's add some additional details about the playground to the description field..."
   // Expand the Add field combo to advance
   function clickAddFieldAsync() {
-    if (!_doesAreaExist()) return Promise.resolve(addAreaAsync);
-    if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
-
-    if (!container.select('.form-field-description').empty()) {  // has description field already
-      return Promise.resolve(describePlaygroundAsync);
-    }
-
     return delayAsync()  // after entity editor visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesAreaExist()) { resolve(addAreaAsync); return; }
+        if (!_isAreaSelected()) context.enter(modeSelect(context, [_areaID]));
+
+        if (!container.select('.form-field-description').empty()) {  // has description field already
+          resolve(describePlaygroundAsync);
+          return;
+        }
 
         _showEntityEditor();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling

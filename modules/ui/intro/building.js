@@ -112,13 +112,14 @@ export function uiIntroBuilding(context, curtain) {
   // "Let's add this house to the map by tracing its outline."
   // Place the first point to advance
   function startHouseAsync() {
-    if (context.mode().id !== 'draw-area') return Promise.resolve(addHouseAsync);
     _houseID = null;
 
     return map
       .setCenterZoomAsync(houseExtent.center(), 20, 200)
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (context.mode().id !== 'draw-area') { resolve(addHouseAsync); return; }
+
         const textID = (context.lastPointerType() === 'mouse') ? 'click' : 'tap';
         const startString = helpHtml('intro.buildings.start_building') +
           helpHtml(`intro.buildings.building_corner_${textID}`);
@@ -207,12 +208,11 @@ export function uiIntroBuilding(context, curtain) {
   // "Choose Building Features from the list."
   // Expand the Building Features category to advance
   function chooseCategoryBuildingAsync() {
-    if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
-    if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
-
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
+        if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
         _showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -239,12 +239,11 @@ export function uiIntroBuilding(context, curtain) {
   // "There are many different types of buildings, but this one is clearly a house."
   // Select the House preset to advance
   function choosePresetHouse() {
-    if (!_doesHouseExist()) return Promise.resolve(addHouseAsync);
-    if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
-
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesHouseExist()) { resolve(addHouseAsync); return; }
+        if (!_isHouseSelected()) context.enter(modeSelect(context, [_houseID]));
 
         _showPresetList();
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
@@ -330,8 +329,6 @@ export function uiIntroBuilding(context, curtain) {
   // "Press the Square button to tidy up the building's shape."
   // Square the building to advance
   function clickSquareAsync() {
-    if (!_doesHouseExist() || !_isHouseSelected()) return Promise.resolve(rightClickHouseAsync);
-
     const buttonNode = container.select('.edit-menu-item-orthogonalize').node();
     if (!buttonNode) return Promise.resolve(rightClickHouseAsync);   // no Square button, try again
 
@@ -340,16 +337,20 @@ export function uiIntroBuilding(context, curtain) {
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesHouseExist() || !_isHouseSelected()) { resolve(rightClickHouseAsync); return; }
 
         revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
-          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
-          curtain.reveal({
-            duration: duration,
-            revealNode: menuNode,
-            revealPadding: 50,
-            tipHtml: helpHtml('intro.buildings.square_building')
-          });
+          if (menuNode) {
+            curtain.reveal({
+              duration: duration,
+              revealNode: menuNode,
+              revealPadding: 50,
+              tipHtml: helpHtml('intro.buildings.square_building')
+            });
+          } else {
+            reject();   // menu has gone away - user scrolled it offscreen?
+          }
         };
 
         revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
@@ -513,12 +514,11 @@ export function uiIntroBuilding(context, curtain) {
   // "Choose Storage Tank from the list"
   // Choose the Storage Tank preset to advance
   function searchPresetTankAsync() {
-    if (!_doesTankExist()) return Promise.resolve(addTankAsync);
-    if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
-
     return delayAsync()  // after preset pane visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesTankExist()) { resolve(addTankAsync); return; }
+        if (!_isTankSelected()) context.enter(modeSelect(context, [_tankID]));
 
         container.select('.inspector-wrap').on('wheel.intro', eventCancel);   // prevent scrolling
 
@@ -619,8 +619,6 @@ export function uiIntroBuilding(context, curtain) {
   // "Press the Circularize button to make the tank a circle."
   // Circularize the tank to advance
   function clickCircleAsync() {
-    if (!_doesTankExist() || !_isTankSelected()) return Promise.resolve(rightClickTankAsync);
-
     const buttonNode = container.select('.edit-menu-item-circularize').node();
     if (!buttonNode) return Promise.resolve(rightClickTankAsync);   // no Circularize button, try again
 
@@ -629,16 +627,20 @@ export function uiIntroBuilding(context, curtain) {
     return delayAsync()  // after edit menu fully visible
       .then(() => new Promise((resolve, reject) => {
         _rejectStep = reject;
+        if (!_doesTankExist() || !_isTankSelected()) { resolve(rightClickTankAsync); return; }
 
         revealEditMenu = (duration = 0) => {
           const menuNode = container.select('.edit-menu').node();
-          if (!menuNode) reject();   // menu has gone away - user scrolled it offscreen?
-          curtain.reveal({
-            duration: duration,
-            revealNode: menuNode,
-            revealPadding: 50,
-            tipHtml: helpHtml('intro.buildings.circle_tank')
-          });
+          if (menuNode) {
+            curtain.reveal({
+              duration: duration,
+              revealNode: menuNode,
+              revealPadding: 50,
+              tipHtml: helpHtml('intro.buildings.circle_tank')
+            });
+          } else {
+            reject();   // menu has gone away - user scrolled it offscreen?
+          }
         };
 
         revealEditMenu(250);             // first time revealing menu, transition curtain to the menu
