@@ -58,6 +58,7 @@ export function uiIntroBuilding(context, curtain) {
   // These things happen automatically but we want to be sure
   function _showPresetList() {
     container.select('.inspector-wrap .entity-editor-pane').classed('hide', true);
+    container.select('.inspector-wrap .preset-list-pane').classed('hide', false);
     container.select('.inspector-wrap .panewrap').style('right', '-100%');
   }
 
