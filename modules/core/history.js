@@ -405,19 +405,31 @@ export function coreHistory(context) {
 
         // restore history state to a given checkpoint or reset completely
         reset: function(key) {
-            if (key !== undefined && _checkpoints.hasOwnProperty(key)) {
-                _stack = _checkpoints[key].stack;
-                _index = _checkpoints[key].index;
-            } else {
-                _stack = [{graph: new Graph()}];
-                _index = 0;
-                _tree = new Tree(_stack[0].graph);
-                _checkpoints = {};
-            }
+          d3_select(document).interrupt('history.perform');
+
+          if (key !== undefined && _checkpoints.hasOwnProperty(key)) {  // reset to given key
+            const fromGraph = _stack[_index].graph;
+
+            _stack = _checkpoints[key].stack;
+            _index = _checkpoints[key].index;
+
+            const toGraph = _stack[_index].graph;
+            const difference = new Difference(fromGraph, toGraph);
+            dispatch.call('reset');
+            dispatch.call('change', this, difference);
+            dispatch.call('restore');
+
+          } else {  // full reset
+            _stack = [{graph: new Graph()}];
+            _index = 0;
+            _tree = new Tree(_stack[0].graph);
+            _checkpoints = {};
             dispatch.call('reset');
             dispatch.call('change');
             dispatch.call('restore');
-            return history;
+          }
+
+          return history;
         },
 
 
