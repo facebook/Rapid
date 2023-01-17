@@ -355,6 +355,7 @@ const STYLE_SELECTORS = {
     'plant': 'pink'
   },
   railway: {
+    platform: 'footway',
     '*': 'railway'
   },
   route: {
