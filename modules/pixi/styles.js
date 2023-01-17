@@ -268,7 +268,8 @@ const STYLE_SELECTORS = {
   },
   highway: {
     bridleway: 'bridleway',
-    bus_guideway: 'special_service',
+    bus_guideway: 'railway',
+    busway: 'special_service',
     corridor: 'corridor',
     cycleway: 'cycleway',
     footway: 'footway',
@@ -378,6 +379,10 @@ const STYLE_SELECTORS = {
     '*': 'stream'
   },
   service: {
+    alley: 'special_service',
+    driveway: 'special_service',
+    'drive-through': 'special_service',
+    parking_aisle: 'special_service',
     '*': 'special_service'
   }
 };
