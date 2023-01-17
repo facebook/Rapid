@@ -227,9 +227,11 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.renderable = true;
       marker.scale.set(1, 1);
 
-      marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
-      this._isCircular = (!vfAngles.length && !style.markerTexture && /(circle|midpoint)$/i.test(style.markerName));
-      if (isPin) {
+      // Replace pins with circles if viewfields are present
+      const textureName = (isPin && vfAngles.length) ? 'largeCircle' : style.markerName;
+      this._isCircular = (!style.markerTexture && /(circle|midpoint)$/i.test(textureName));
+      marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
+      if (isPin && !this._isCircular) {
         marker.anchor.set(0.5, 1);  // middle, bottom
         icon.position.set(0, -14);  // mathematically 0,-15 is center of pin, but looks nicer moved down slightly
       } else {
