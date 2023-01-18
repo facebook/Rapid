@@ -233,7 +233,7 @@ export class BehaviorSelect extends AbstractBehavior {
     // We got ourselves a double click!
     if ( lClick && this.lastUp?.target?.dataID && updist < NEAR_TOLERANCE && this.lastUp?.target?.dataID === up.target?.dataID && up.time - (this.lastUp ? this.lastUp.time : 0) < 500) {
       this.lastClick = this.lastUp = up;  // We will accept this as a click
-      this._doDoubleClick(up.coord, up.target);
+      this._doDoubleClick();
     } else if (dist < NEAR_TOLERANCE || (dist < FAR_TOLERANCE && up.time - down.time < 500)) {
       this.lastClick = this.lastUp = up;  // We will accept this as a click
 
@@ -439,29 +439,31 @@ export class BehaviorSelect extends AbstractBehavior {
    * - If it's on a bare part of the way
    * - If they double clicked right on a midpoint.
    */
-  _doDoubleClick(coord, target) {
+  _doDoubleClick() {
     if (!this._enabled || !this.lastUp) return;
-    const context = this.context;
-    const graph = context.graph();
-    const data = target.data;
-    const isMidPoint = data.type === 'midpoint';
-    const isWay = data instanceof osmWay;
-    const projection = context.projection;
 
-    if (isWay) {
+    const context = this.context;
+    const coord = this.lastUp.coord;
+    const data = this.lastUp.target?.data;
+
+    const isOSMWay = data instanceof osmWay && !data.__fbid__;
+    const isMidpoint = data.type === 'midpoint';
+
+    if (isOSMWay) {
+      const graph = context.graph();
+      const projection = context.projection;
       const loc = projection.invert(coord);
       const choice = geoChooseEdge(graph.childNodes(data), coord, projection);
-      var prev = data.nodes[choice.index - 1];
-      var next = data.nodes[choice.index];
+      const edge = [data.nodes[choice.index - 1], data.nodes[choice.index]];
       context.perform(
-        actionAddMidpoint({ loc: loc, edge: [prev, next] }, osmNode()),
+        actionAddMidpoint({ loc: loc, edge: edge }, osmNode()),
         t('operations.add.annotation.vertex')
       );
       context.validator().validate();
-    } else if (isMidPoint) {
-      const edge = [data.a.id, data.b.id];
 
-      this.context.perform(
+    } else if (isMidpoint) {
+      const edge = [data.a.id, data.b.id];
+      context.perform(
         actionAddMidpoint({ loc: data.loc, edge: edge }, osmNode()),
         t('operations.add.annotation.vertex')
       );

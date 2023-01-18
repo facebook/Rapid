@@ -219,13 +219,11 @@ export class ModeDragNode extends AbstractMode {
 
     if (nope) {   // bounce back
       context.perform(_actionBounceBack(entity.id, this._startLoc));
-    } else if (target && target.type === 'way') {
+    } else if (target && target.type === 'way' && !target.__fbid__) {
       const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, entity.id);
+      const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
       context.replace(
-        actionAddMidpoint({
-          loc: choice.loc,
-          edge: [target.nodes[choice.index - 1], target.nodes[choice.index]]
-        }, entity),
+        actionAddMidpoint({loc: choice.loc, edge: edge }, entity),
         this._connectAnnotation(entity, target)
       );
 
