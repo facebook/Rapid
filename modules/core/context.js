@@ -1,5 +1,4 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { Assets } from 'pixi.js';
 import { select as d3_select } from 'd3-selection';
 import { Projection, geoScaleToZoom } from '@id-sdk/math';
 import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
@@ -667,31 +666,8 @@ export function coreContext() {
   let _rapidContext;
   context.rapidContext = () => _rapidContext;
 
-   async function loadImages() {
-       let makiPromise = Assets.load(
-        `${_assetPath}img/icons/maki-spritesheet.json`
-      );
-      let temakiPromise = Assets.load(
-        `${_assetPath}img/icons/temaki-spritesheet.json`
-      );
-      let faPromise = Assets.load(
-        `${_assetPath}img/icons/fontawesome-spritesheet.json`
-      );
-      let mapillaryPromise = Assets.load(
-        `${_assetPath}img/icons/mapillary-features-spritesheet.json`
-      );
-      let mapillarySignPromise = Assets.load(
-        `${_assetPath}img/icons/mapillary-signs-spritesheet.json`
-      );
-
-     [context._makiSheet, context._temakiSheet, context._fontAwesomeSheet, context._mapillarySheet, context._mapillarySignSheet] = await Promise.all([makiPromise, temakiPromise, faPromise, mapillaryPromise, mapillarySignPromise]);
-
-
-    }
-
   /* Init */
   context.init = () => {
-    loadImages();
     instantiateInternal();
     initializeDependents();
     return context;

@@ -1,4 +1,4 @@
-import {Assets, Texture, Graphics, Rectangle, FORMATS, TYPES} from 'pixi.js';
+import { Assets, Graphics, Rectangle, FORMATS, TYPES } from 'pixi.js';
 import { AtlasAllocator } from 'texture-allocator';
 
 
@@ -7,7 +7,7 @@ import { AtlasAllocator } from 'texture-allocator';
  * The goal is to use common spritesheets to avoid extensive texture swapping
  *
  * Properties you can access:
- *   `loaded`   `true` after the spritesheets have finished loading
+ *   `loaded`   `true` after the spritesheets and textures have finished loading
  */
 export class PixiTextures {
 
@@ -24,53 +24,49 @@ export class PixiTextures {
     // Map(String key -> PIXI.Texture)
     // important to make sure these keys don't conflict
     this.textures = new Map();
-    // make it accessable this way (for now)
-    context.pixi.rapidTextures = this.textures;
 
-    // Load spritesheets
     const assetPath = context.assetPath();
 
-   // During tests we might be reloading the map several times. If so, don't reload the resource spritesheets.
-    //  if (Object.keys(Assets.loader.promiseCache).length === 0) {
+    // Load spritesheets
+    const SHEETS = ['maki', 'temaki', 'fontawesome', 'mapillary-features', 'mapillary-signs'];
+    let sheetBundle = {};
+    for (const k of SHEETS) {
+      sheetBundle[k] = `${assetPath}img/icons/${k}-spritesheet.json`;
+    }
+    Assets.addBundle('spritesheets', sheetBundle);
 
-       this.loaded = true;
+    // Load patterns
+    const PATTERNS = [
+      'bushes', 'cemetery', 'cemetery_buddhist', 'cemetery_christian', 'cemetery_jewish', 'cemetery_muslim',
+      'construction', 'dots', 'farmland', 'farmyard', 'forest', 'forest_broadleaved', 'forest_leafless',
+      'forest_needleleaved', 'grass', 'landfill', 'lines', 'orchard', 'pond', 'quarry', 'vineyard',
+      'waves', 'wetland', 'wetland_bog', 'wetland_marsh', 'wetland_reedbed', 'wetland_swamp'
+    ];
+    let patternBundle = {};
+    for (const k of PATTERNS) {
+      patternBundle[k] = `${assetPath}img/pattern/${k}.png`;
+    }
+    Assets.addBundle('patterns', patternBundle);
 
-       // Load patterns
-       context.pixi.rapidTextureKeys = [
-         'bushes',
-         'cemetery',
-         'cemetery_buddhist',
-         'cemetery_christian',
-         'cemetery_jewish',
-         'cemetery_muslim',
-         'construction',
-         'dots',
-         'farmland',
-         'farmyard',
-         'forest',
-         'forest_broadleaved',
-         'forest_leafless',
-         'forest_needleleaved',
-         'grass',
-         'landfill',
-         'lines',
-         'orchard',
-         'pond',
-         'quarry',
-         'vineyard',
-         'waves',
-         'wetland',
-         'wetland_bog',
-         'wetland_marsh',
-         'wetland_reedbed',
-         'wetland_swamp',
-       ];
-       context.pixi.rapidTextureKeys.forEach((key) => {
-         this.textures.set(
-           key,
-           Texture.from(`${assetPath}img/pattern/${key}.png`)
-         );
-       });
+    Assets.loadBundle(['spritesheets', 'patterns'])
+      .then(result => {
+        // spritesheets - store in context for now :(
+        context._makiSheet = result.spritesheets.maki;
+        context._temakiSheet = result.spritesheets.temaki;
+        context._fontAwesomeSheet = result.spritesheets.fontawesome;
+        context._mapillarySheet = result.spritesheets['mapillary-features'];
+        context._mapillarySignSheet = result.spritesheets['mapillary-signs'];
+
+        // patterns - store textures into the Map to use elsewhere
+        for (const [k, texture] of Object.entries(result.patterns)) {
+          this.textures.set(k, texture);
+        }
+        // store in context for now :(
+        context.pixi.rapidTextures = this.textures;
+
+        this.loaded = true;
+      })
+      .catch(e => console.error(e));  // eslint-disable-line no-console
 
 
     // Convert frequently used graphics to textures/sprites for performance
