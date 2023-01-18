@@ -62,7 +62,7 @@ export function operationDowngrade(context, selectedIDs) {
         return null;
     }
 
-    var buildingKeysToKeep = ['architect', 'building', 'height', 'layer', 'source', 'type', 'wheelchair'];
+    const buildingKeysToRetain = /architect|building|height|layer|nycdoitt:bin|source|type|wheelchair|roof/i;
     var addressKeysToKeep = ['source'];
 
     var operation = function () {
@@ -76,11 +76,8 @@ export function operationDowngrade(context, selectedIDs) {
                 var tags = Object.assign({}, graph.entity(entityID).tags);  // shallow copy
                 for (var key in tags) {
                     if (type === 'address' && addressKeysToKeep.indexOf(key) !== -1) continue;
-                    if (type === 'building') {
-                        if (buildingKeysToKeep.indexOf(key) !== -1 ||
-                            key.match(/^building:.{1,}/) ||
-                            key.match(/^roof:.{1,}/)) continue;
-                    }
+                    if (type === 'building' && buildingKeysToRetain.test(key)) continue;
+
                     if (type !== 'generic') {
                         if (key.match(/^addr:.{1,}/) ||
                             key.match(/^source:.{1,}/)) continue;
