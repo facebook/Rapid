@@ -646,6 +646,7 @@ export function coreContext() {
 
     context.changeset = null;
 
+    _rapidContext.reset();
     _validator.reset();
     _features.reset();
     _history.reset();
