@@ -205,6 +205,11 @@ const STYLES = {
     fill:   { color: 0x8cd05f, alpha: 0.3 },   // rgb(140, 208, 95)
     casing: { alpha: 0 },  // disable
     stroke: { width: 3, color: 0x8cd05f, dash: [10, 5, 1, 5], cap: PIXI.LINE_CAP.ROUND }
+  },
+
+  tree_row: {
+    casing: { width: 7, color: 0x444444 },
+    stroke: { width: 5, color: 0x8cd05f }
   }
 };
 
@@ -348,6 +353,7 @@ const STYLE_SELECTORS = {
     scrub: 'yellow',
     shingle: 'darkgray',
     stone: 'darkgray',
+    tree_row: 'tree_row',
     water: 'blue',
     wetland: 'teal',
     '*': 'green'
