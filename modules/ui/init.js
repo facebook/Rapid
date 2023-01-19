@@ -106,6 +106,10 @@ export function uiInit(context) {
       .attr('lang', localizer.localeCode())
       .attr('dir', localizer.textDirection());
 
+    // setup fullscreen keybindings (no button shown at this time)
+    container
+      .call(uiFullScreen(context));
+
     const map = context.map();
     map.redrawEnabled = false;  // don't draw until we've set zoom/lat/long
 
