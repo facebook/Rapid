@@ -28,6 +28,7 @@ export function rendererFeatures(context) {
     };
 
     var service_roads = {
+        'busway': true,
         'service': true,
         'road': true,
         'track': true
