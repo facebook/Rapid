@@ -11,9 +11,6 @@ export function uiRapidSplash(context) {
     if (prefs('sawRapidSplash')) return;
     prefs('sawRapidSplash', true);
 
-// no walkthrough for now
-return;
-
     const modalSelection = uiModal(selection);
 
     modalSelection.select('.modal')
