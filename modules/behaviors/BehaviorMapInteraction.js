@@ -156,6 +156,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     if (!this.gesture) {   // start dragging?
       const dist = vecLength(down.coord, move.coord);
       const tolerance = (down.originalEvent.pointerType === 'pen') ? FAR_TOLERANCE : NEAR_TOLERANCE;
+      this.was = [move.originalEvent.clientX, move.originalEvent.clientY];
       if (dist >= tolerance) {
         this.gesture = 'pan';
       }
@@ -163,14 +164,15 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     if (this.gesture === 'pan') {
       const original = move.originalEvent;
-      const [dX, dY] = [original.movementX, original.movementY];
       const t = this.context.projection.transform();
-      const tNew = { x: t.x + dX, y: t.y + dY, k: t.k };
+
+      const newX = original.clientX - this.was[0];
+      const newY = original.clientY - this.was[1];
+      this.was = [original.clientX, original.clientY];
+
+      const tNew = { x: t.x + newX, y: t.y + newY, k: t.k };
 
       this.context.map().transform(tNew);
-      if (this.context.inIntro()) {
-        this.context.curtainProjection.transform({ x: t.x - dX, y: t.y - dY, k: t.k });
-      }
     }
   }
 
