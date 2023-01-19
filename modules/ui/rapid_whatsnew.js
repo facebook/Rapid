@@ -32,17 +32,17 @@ export function uiRapidWhatsNew(context) {
       .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid'), bugicon: icon('#iD-icon-bug', 'bugnub') })));
 
 
-    let imageSection = body.append('div').attr('class', 'whatsnew-images');
-
-    imageSection
-      .append('img')
-      .attr('class', 'whatsnew-image wide')
-      .attr('src', context.asset('img/pista_sotm_asia.png'));
-
-    imageSection
-      .append('img')
-      .attr('class', 'whatsnew-image')
-      .attr('src', context.asset('img/foss4g-sotm-oceania-2021_logo_reverse-colour.webp'));
+//    let imageSection = body.append('div').attr('class', 'whatsnew-images');
+//
+//    imageSection
+//      .append('img')
+//      .attr('class', 'whatsnew-image wide')
+//      .attr('src', context.asset('img/pista_sotm_asia.png'));
+//
+//    imageSection
+//      .append('img')
+//      .attr('class', 'whatsnew-image')
+//      .attr('src', context.asset('img/foss4g-sotm-oceania-2021_logo_reverse-colour.webp'));
 
     body.selectAll('p a')
       .attr('target', '_blank');
