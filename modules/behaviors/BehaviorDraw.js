@@ -289,7 +289,7 @@ export class BehaviorDraw extends AbstractBehavior {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const eventManager = this.context.map().renderer.events;
-    if (!eventManager.pointerOverRenderer) return;
+    // if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
