@@ -2443,7 +2443,7 @@ en:
         map_data: "Toggle map data pane"
         issues: "Toggle validation issues pane"
         preferences: "Toggle user preferences pane"
-        fullscreen: "Enter full screen mode"
+        fullscreen: "Toggle full screen mode"
         sidebar: "Toggle sidebar"
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
