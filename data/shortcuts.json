@@ -68,7 +68,7 @@
           },
           {
             "modifiers": ["⌃", "⌘"],
-            "shortcuts": ["F", "F11"],
+            "shortcuts": ["F"],
             "text": "shortcuts.browsing.display_options.fullscreen"
           },
           {
