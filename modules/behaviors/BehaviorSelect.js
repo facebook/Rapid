@@ -293,11 +293,8 @@ export class BehaviorSelect extends AbstractBehavior {
 
     this._cancelLongPress();
 
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
     const eventManager = context.map().renderer.events;
-    if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
@@ -480,11 +477,8 @@ export class BehaviorSelect extends AbstractBehavior {
   _doContextMenu() {
     if (!this._enabled || !this.lastClick) return;  // nothing to do
 
-    // Ignore it if we are not over the canvas
-    // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const context = this.context;
     const eventManager = context.map().renderer.events;
-    if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
     const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
