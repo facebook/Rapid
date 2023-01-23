@@ -377,7 +377,7 @@ export class RendererImagery extends EventEmitter {
 
         let best;
         if (!requested && extent) {
-          best = this.sources(extent).find(s => s.best());
+          best = this.sources(extent).find(s => s.best);
         }
 
         // Decide which base layer to start with..
@@ -435,7 +435,9 @@ export class RendererImagery extends EventEmitter {
           }
         }
       })
-      .catch(() => { /* ignore */ });
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
+      });
   }
 
 

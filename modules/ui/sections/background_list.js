@@ -2,9 +2,11 @@ import _debounce from 'lodash-es/debounce';
 import { descending as d3_descending, ascending as d3_ascending } from 'd3-array';
 import { select as d3_select } from 'd3-selection';
 import { easeCubicInOut as d3_easeCubicInOut } from 'd3-ease';
+
 import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
+import { RendererImagerySource } from '../../renderer/RendererImagerySource';
 import { svgIcon } from '../../svg/icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
@@ -281,7 +283,9 @@ export function uiSectionBackgroundList(context) {
     }
 
     const previousBackground = context.imagery().baseLayerSource();
-    prefs('background-last-used-toggle', previousBackground.id);
+    if (previousBackground instanceof RendererImagerySource) {
+      prefs('background-last-used-toggle', previousBackground.id);
+    }
     prefs('background-last-used', d.id);
     context.imagery().baseLayerSource(d);
     document.activeElement.blur();
