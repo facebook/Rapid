@@ -27,11 +27,11 @@ export function uiFieldText(field, context) {
 
     if (field.type === 'tel') {
         fileFetcher.get('phone_formats')
-            .then(function(d) {
-                _phoneFormats = d;
-                updatePhonePlaceholder();
-            })
-            .catch(function() { /* ignore */ });
+          .then(function(d) {
+            _phoneFormats = d;
+            updatePhonePlaceholder();
+          })
+          .catch(e => console.error(e));  // eslint-disable-line
     }
 
 

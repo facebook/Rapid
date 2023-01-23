@@ -401,9 +401,7 @@ export class RendererImagerySourceEsri extends RendererImagerySource {
         // if any tiles are missing at level 20 we restrict maxZoom to 19
         this.zoomExtent[1] = (hasTiles ? 22 : 19);
       })
-      .catch(() => {
-        /* ignore */
-      });
+      .catch(e => console.error(e));  // eslint-disable-line
   }
 
 

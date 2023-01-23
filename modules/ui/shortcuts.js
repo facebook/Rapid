@@ -34,7 +34,7 @@ export function uiShortcuts(context) {
                 _dataShortcuts = data;
                 content.call(render);
             })
-            .catch(function() { /* ignore */ });
+            .catch(e => console.error(e));  // eslint-disable-line
     }
 
 

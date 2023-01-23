@@ -128,7 +128,10 @@ function loadTilePage(ds, tile, page) {
         delete cache.inflight[tile.id];
       }
     })
-    .catch(() => { /* ignore */ });
+    .catch(e => {
+      if (e.name === 'AbortError') return;
+      console.error(e);  // eslint-disable-line
+    });
 
   cache.inflight[tile.id] = controller;
 }
@@ -343,9 +346,9 @@ export default {
                 resolve(_datasets);
               }
             })
-            .catch(err => {
+            .catch(e => {
               _gotDatasets = false;
-              reject(err);
+              reject(e);
             });
         }
       });
@@ -382,6 +385,9 @@ export default {
 
         return ds.layer;
       })
-      .catch(() => { /* ignore */ });
+      .catch(e => {
+        if (e.name === 'AbortError') return;
+        console.error(e);  // eslint-disable-line
+      });
   }
 };

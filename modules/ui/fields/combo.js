@@ -47,7 +47,7 @@ export function uiFieldCombo(field, context) {
     var _dataDeprecated = [];
     fileFetcher.get('deprecated')
         .then(function(d) { _dataDeprecated = d; })
-        .catch(function() { /* ignore */ });
+        .catch(e => console.error(e));  // eslint-disable-line
 
 
     // ensure multiCombo field.key ends with a ':'

@@ -313,7 +313,8 @@ export default {
               });
             }
           })
-          .catch(() => {
+          .catch(e => {
+            console.error(e);  // eslint-disable-line
             delete _cache.inflightTile[tile.id][k];
             if (!Object.keys(_cache.inflightTile[tile.id]).length) {
               delete _cache.inflightTile[tile.id];
@@ -426,9 +427,9 @@ export default {
           }
           if (callback) callback(null, d);
         })
-        .catch(err => {
+        .catch(e => {
           delete _cache.inflightPost[d.id];
-          if (callback) callback(err.message);
+          if (callback) callback(e.message);
         });
     }
   },

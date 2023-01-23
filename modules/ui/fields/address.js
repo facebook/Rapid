@@ -35,7 +35,7 @@ export function uiFieldAddress(field, context) {
                 _selection.call(address);
             }
         })
-        .catch(function() { /* ignore */ });
+        .catch(e => console.error(e));  // eslint-disable-line
 
 
     function getNearStreets() {

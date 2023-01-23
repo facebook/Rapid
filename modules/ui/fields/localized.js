@@ -29,12 +29,12 @@ export function uiFieldLocalized(field, context) {
     // the language() function will not work immediately.
     fileFetcher.get('languages')
         .then(loadLanguagesArray)
-        .catch(function() { /* ignore */ });
+        .catch(e => console.error(e));  // eslint-disable-line
 
     var _territoryLanguages = {};
     fileFetcher.get('territory_languages')
         .then(function(d) { _territoryLanguages = d; })
-        .catch(function() { /* ignore */ });
+        .catch(e => console.error(e));  // eslint-disable-line
 
     // reuse these combos
     var langCombo = uiCombobox(context, 'localized-lang')

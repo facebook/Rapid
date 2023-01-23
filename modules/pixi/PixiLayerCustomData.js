@@ -399,7 +399,7 @@ export class PixiLayerCustomData extends AbstractLayer {
             this.context.rapidContext().setTaskExtentByGpxData(data);
           }
         })
-        .catch(function() { /* ignore */ });
+        .catch(e => console.error(e));  // eslint-disable-line
     } else {
       this.template(url);
     }

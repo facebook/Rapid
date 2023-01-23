@@ -191,9 +191,7 @@ export function uiOsmoseDetails(context) {
         context.features().forceVisible(d.elems);
         context.map().immediateRedraw();
       })
-      .catch(err => {
-        console.log(err); // eslint-disable-line no-console
-      });
+      .catch(e => console.error(e));  // eslint-disable-line
   }
 
 

@@ -507,7 +507,7 @@ export function coreValidator(context) {
     _headPromise = validateEntitiesAsync(entityIDs, _headCache)
       .then(() => updateResolvedIssues(entityIDs))
       .then(() => dispatch.call('validated'))
-      .catch(() => { /* ignore */ })
+      .catch(e => console.error(e))  // eslint-disable-line
       .then(() => {
         _headPromise = null;
         if (!_headIsCurrent) {
@@ -711,7 +711,7 @@ export function coreValidator(context) {
 
     cache.queuePromise = processQueue(cache)
       .then(() => revalidateProvisionalEntities(cache))
-      .catch(() => { /* ignore */ })
+      .catch(e => console.error(e))  // eslint-disable-line
       .finally(() => cache.queuePromise = null);
 
     return cache.queuePromise;

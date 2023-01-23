@@ -69,9 +69,7 @@ export function uiImproveOsmComments() {
           .append('p')
             .html(d => d.text);
     })
-    .catch(err => {
-      console.log(err); // eslint-disable-line no-console
-    });
+    .catch(e => console.log(e)); // eslint-disable-line no-console
   }
 
   function localeDateString(s) {

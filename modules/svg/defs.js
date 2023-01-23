@@ -175,41 +175,38 @@ export function svgDefs(context) {
 
     // add symbol spritesheets
     addSprites(_spritesheetIds, true);
-}
+  }
 
-function addSprites(ids, overrideColors) {
+  function addSprites(ids, overrideColors) {
     _spritesheetIds = utilArrayUniq(_spritesheetIds.concat(ids));
 
-    var spritesheets = _defsSelection
-        .selectAll('.spritesheet')
-        .data(_spritesheetIds);
+    let spritesheets = _defsSelection
+      .selectAll('.spritesheet')
+      .data(_spritesheetIds);
 
     spritesheets
-        .enter()
-        .append('g')
-        .attr('class', function(d) { return 'spritesheet spritesheet-' + d; })
-        .each(function(d) {
-            var url = context.imagePath(d + '.svg');
-            var node = d3_select(this).node();
+      .enter()
+      .append('g')
+      .attr('class', d => `spritesheet spritesheet-${d}`)
+      .each(function(d) {
+        const url = context.imagePath(d + '.svg');
+        const node = d3_select(this).node();
 
-            d3_svg(url)
-                .then(function(svg) {
-                    node.appendChild(
-                        d3_select(svg.documentElement).attr('id', 'ideditor-' + d).node()
-                    );
-                    if (overrideColors && d !== 'iD-sprite') {   // allow icon colors to be overridden..
-                        d3_select(node).selectAll('path')
-                            .attr('fill', 'currentColor');
-                    }
-                })
-                .catch(function() {
-                    /* ignore */
-                });
-        });
+        d3_svg(url)
+          .then(svg => {
+            node.appendChild(
+              d3_select(svg.documentElement).attr('id', 'ideditor-' + d).node()
+            );
+            if (overrideColors && d !== 'iD-sprite') {   // allow icon colors to be overridden..
+              d3_select(node).selectAll('path').attr('fill', 'currentColor');
+            }
+          })
+          .catch(e => console.error(e));  // eslint-disable-line
+      });
 
     spritesheets
-        .exit()
-        .remove();
+      .exit()
+      .remove();
   }
 
   drawDefs.addSprites = addSprites;

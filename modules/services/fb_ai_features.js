@@ -343,7 +343,10 @@ export default {
                         dispatch.call('loadedData');
                     });
                 })
-                .catch(function() {});
+                .catch(e => {
+                  if (e.name === 'AbortError') return;
+                  console.error(e);  // eslint-disable-line
+                });
 
             cache.inflight[tile.id] = controller;
         });

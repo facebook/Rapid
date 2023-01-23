@@ -161,7 +161,7 @@ export function coreLocalizer() {
         return Promise.all(loadStringsPromises);
       })
       .then(() => updateForCurrentLocale())
-      .catch(err => console.error(err));  // eslint-disable-line
+      .catch(e => console.error(e));  // eslint-disable-line
   };
 
 

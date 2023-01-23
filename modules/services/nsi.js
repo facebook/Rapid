@@ -689,7 +689,10 @@ export default {
       .then(() => loadNsiPresets())
       .then(() => loadNsiData())
       .then(() => _nsiStatus = 'ok')
-      .catch(() => _nsiStatus = 'failed');
+      .catch(e => {
+        console.error(e);  // eslint-disable-line
+        _nsiStatus = 'failed';
+      });
   },
 
 

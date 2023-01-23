@@ -26,7 +26,7 @@ export function uiFieldWikipedia(field, context) {
       _dataWikipedia = d;
       if (_tags) updateForTags(_tags);
     })
-    .catch(() => { /* ignore */ });
+    .catch(e => console.error(e));  // eslint-disable-line
 
 
   const langCombo = uiCombobox(context, 'wikipedia-lang')
