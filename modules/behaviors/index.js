@@ -1,6 +1,5 @@
 export { BehaviorDrag } from './BehaviorDrag';
 export { BehaviorDraw } from './BehaviorDraw';
-export { BehaviorHash } from './BehaviorHash';
 export { BehaviorHover } from './BehaviorHover';
 export { BehaviorKeyOperation } from './BehaviorKeyOperation';
 export { BehaviorLasso } from './BehaviorLasso';

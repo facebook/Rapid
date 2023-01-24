@@ -3,7 +3,6 @@ import { geoSphericalDistance } from '@id-sdk/math';
 import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
-import { AbstractBehavior } from './AbstractBehavior';
 import { t } from '../core/localizer';
 import { modeSelect } from '../modes/select';
 import { utilDisplayLabel } from '../util';
@@ -12,17 +11,17 @@ const MAXLAT = 90 - 1e-8;   // allowable latitude range
 
 
 /**
- * `BehaviorHash` binds to the hashchange event and
+ * `UiHash` binds to the hashchange event and
  *  updates the `window.location.hash` and document title
  */
-export class BehaviorHash extends AbstractBehavior {
+export class UiHash {
 
   /**
    * @constructor
    * @param  `context`  Global shared application context
    */
   constructor(context) {
-    super(context);
+    this.context = context;
     this.id = 'hash';
 
     this._cachedHash = null;   // cached window.location.hash
@@ -59,13 +58,13 @@ export class BehaviorHash extends AbstractBehavior {
       .on('draw', this._throttledUpdateHash);
 
     context.history()
-      .on('change.behaviorHash', this._throttledUpdateTitle);
+      .on('change.UiHash', this._throttledUpdateTitle);
 
     context
-      .on('enter.behaviorHash', this._throttledUpdateHash);
+      .on('enter.UiHash', this._throttledUpdateHash);
 
     d3_select(window)
-      .on('hashchange.behaviorHash', this._hashchange);
+      .on('hashchange.UiHash', this._hashchange);
 
     this._hashchange();
     this._updateTitle(true);  // skipChangeCount = true
@@ -86,17 +85,17 @@ export class BehaviorHash extends AbstractBehavior {
 
     const context = this.context;
 
-   context.map()
-     .off('draw', this._throttledUpdateHash);
+    context.map()
+      .off('draw', this._throttledUpdateHash);
 
     context.history()
-      .on('change.behaviorHash', null);
+      .on('change.UiHash', null);
 
     context
-      .on('enter.behaviorHash', null);
+      .on('enter.UiHash', null);
 
     d3_select(window)
-      .on('hashchange.behaviorHash', null);
+      .on('hashchange.UiHash', null);
 
     window.location.hash = '';
   }

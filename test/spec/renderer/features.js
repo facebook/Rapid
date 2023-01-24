@@ -71,7 +71,7 @@ describe('iD.rendererFeatures', function() {
                 iD.osmWay({id: 'boundary', tags: {boundary: 'administrative'}, version: 1}),
                 iD.osmWay({id: 'fence', tags: {barrier: 'fence'}, version: 1})
             ]);
-            var all = Object.values(graph.base().entities);
+            var all = Object.values(graph.base.entities);
             var stats;
 
             features.gatherStats(all, graph, dimensions);
@@ -237,7 +237,7 @@ describe('iD.rendererFeatures', function() {
                 })
 
         ]);
-        var all = Object.values(graph.base().entities);
+        var all = Object.values(graph.base.entities);
 
 
         function doMatch(rule, ids) {
@@ -545,7 +545,7 @@ describe('iD.rendererFeatures', function() {
             var w = iD.osmWay({id: 'w', nodes: [a.id, b.id], tags: {highway: 'path'}, version: 1});
             var graph = new iD.Graph([a, b, w]);
             var geometry = a.geometry(graph);
-            var all = Object.values(graph.base().entities);
+            var all = Object.values(graph.base.entities);
 
             features.disable('paths');
             features.gatherStats(all, graph, dimensions);
@@ -573,7 +573,7 @@ describe('iD.rendererFeatures', function() {
                 version: 1
             });
             var graph = new iD.Graph([outer, inner1, inner2, inner3, r]);
-            var all = Object.values(graph.base().entities);
+            var all = Object.values(graph.base.entities);
 
             features.disable('landuse');
             features.gatherStats(all, graph, dimensions);
@@ -590,7 +590,7 @@ describe('iD.rendererFeatures', function() {
             var graph = new iD.Graph([a, b]);
             var ageo = a.geometry(graph);
             var bgeo = b.geometry(graph);
-            var all = Object.values(graph.base().entities);
+            var all = Object.values(graph.base.entities);
 
             features.disable('points');
             features.gatherStats(all, graph, dimensions);
@@ -603,7 +603,7 @@ describe('iD.rendererFeatures', function() {
             var a = iD.osmNode({id: 'a', version: 1});
             var graph = new iD.Graph([a]);
             var ageo = a.geometry(graph);
-            var all = Object.values(graph.base().entities);
+            var all = Object.values(graph.base.entities);
 
             features.disable('points');
             features.gatherStats(all, graph, dimensions);
@@ -621,7 +621,7 @@ describe('iD.rendererFeatures', function() {
                 graph.rebase([iD.osmNode({version: 1})], [graph]);
             }
 
-            all = Object.values(graph.base().entities);
+            all = Object.values(graph.base.entities);
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
@@ -632,7 +632,7 @@ describe('iD.rendererFeatures', function() {
 
             graph.rebase([iD.osmNode({version: 1})], [graph]);
 
-            all = Object.values(graph.base().entities);
+            all = Object.values(graph.base.entities);
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
@@ -652,7 +652,7 @@ describe('iD.rendererFeatures', function() {
                 graph.rebase([iD.osmNode({version: 1})], [graph]);
             }
 
-            all = Object.values(graph.base().entities);
+            all = Object.values(graph.base.entities);
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
@@ -663,7 +663,7 @@ describe('iD.rendererFeatures', function() {
 
             graph.rebase([iD.osmNode({version: 1})], [graph]);
 
-            all = Object.values(graph.base().entities);
+            all = Object.values(graph.base.entities);
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();

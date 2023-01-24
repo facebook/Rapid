@@ -3,7 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
-import { BehaviorHash } from '../behaviors/BehaviorHash';
 import { svgDefs } from '../svg/defs';
 import { svgIcon } from '../svg/icon';
 //import React from 'react';
@@ -19,6 +18,7 @@ import { uiFeatureInfo } from './feature_info';
 import { uiFlash } from './flash';
 import { uiFullScreen } from './full_screen';
 import { uiGeolocate } from './geolocate';
+import { UiHash } from './UiHash';
 import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
@@ -336,7 +336,7 @@ export function uiInit(context) {
     ui.onResize();
     map.redrawEnabled = true;
 
-    ui.hash = new BehaviorHash(context);
+    ui.hash = new UiHash(context);
     ui.hash.enable();
 
     if (!context.initialHashParams.map) {  // no `map=` param, go to default location
