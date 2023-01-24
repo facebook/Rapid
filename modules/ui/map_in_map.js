@@ -72,8 +72,8 @@ export function uiMapInMap(context) {
       }
 
       if (_gesture === 'pan') {
-        miniMapTileLayer.container.position.x += tX;
-        miniMapTileLayer.container.position.y += tY;
+        miniMapTileLayer.renderer.stage.x += tX;
+        miniMapTileLayer.renderer.stage.y += tY;
       } else {
         utilSetTransform(canvas, 0, 0, scale);
       }
@@ -118,9 +118,9 @@ export function uiMapInMap(context) {
       _tCurr = projection.transform();
 
       if (_isTransformed) {
-        const tileContainer = miniMapTileLayer.container;
-        tileContainer.position.x = 0;
-        tileContainer.position.y = 0;
+        const tileContainer = miniMapTileLayer.renderer.stage;
+        tileContainer.x = 0;
+        tileContainer.y = 0;
 
         utilSetTransform(canvas, 0, 0);
         _isTransformed = false;
