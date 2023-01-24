@@ -187,11 +187,12 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   renderCustomData(frame, projection, zoom) {
+    let vtService = this.getService();
     let geoData, polygons, lines, points;
-    if (this._template && this.vtService) {   // fetch data from vector tile service
+    if (this._template && vtService) {   // fetch data from vector tile service
       var sourceID = this._template;
-      this.vtService.loadTiles(sourceID, this._template, projection);
-      geoData = this.vtService.data(sourceID, projection);
+      vtService.loadTiles(sourceID, this._template, projection);
+      geoData = vtService.data(sourceID, projection);
     } else {
       geoData = this.getFeatures(this._geojson);
     }
@@ -319,6 +320,47 @@ export class PixiLayerCustomData extends AbstractLayer {
       }
     }
   }
+
+/** template
+ * val
+ * src
+ */
+  template (val, src) {
+    if (!arguments.length) return this._template;
+
+    // test source against OSM imagery blocklists..
+    var osm = this.context.connection();
+    if (osm) {
+        var blocklists = osm.imageryBlocklists();
+        var fail = false;
+        var tested = 0;
+        var regex;
+
+        for (var i = 0; i < blocklists.length; i++) {
+            regex = blocklists[i];
+            fail = regex.test(val);
+            tested++;
+            if (fail) break;
+        }
+
+        // ensure at least one test was run.
+        if (!tested) {
+            regex = /.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/;
+            fail = regex.test(val);
+        }
+    }
+
+    this._template = val;
+    this._fileList = null;
+    this._geojson = null;
+
+    // strip off the querystring/hash from the template,
+    // it often includes the access token
+    this._src = src || ('vectortile:' + val.split(/[?#]/)[0]);
+
+    // dispatch.call('change');
+    return this;
+}
 
 
   /**
