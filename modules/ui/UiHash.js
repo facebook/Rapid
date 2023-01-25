@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@id-sdk/math';
 import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
-import _throttle from 'lodash-es/throttle';
+import throttle from 'lodash-es/throttle';
 
 import { t } from '../core/localizer';
 import { modeSelect } from '../modes/select';
@@ -13,6 +13,10 @@ const MAXLAT = 90 - 1e-8;   // allowable latitude range
 /**
  * `UiHash` binds to the hashchange event and
  *  updates the `window.location.hash` and document title
+ *
+ * Properties you can access:
+ *   `doUpdateTitle`  `true` if we should update the document title, `false` if not (default `true`)
+ *   `titleBase`    The document title to use (default `Rapid`)
  */
 export class UiHash {
 
@@ -24,6 +28,8 @@ export class UiHash {
     this.context = context;
     this.id = 'hash';
 
+    this.doUpdateTitle = true;
+    this.titleBase = 'Rapid';
     this._cachedHash = null;   // cached window.location.hash
 
     const initialID = context.initialHashParams.id;
@@ -34,11 +40,13 @@ export class UiHash {
 
     // Make sure the event handlers have `this` bound correctly
     this._hashchange = this._hashchange.bind(this);
+    this._updateAll = this._updateAll.bind(this);
     this._updateHash = this._updateHash.bind(this);
     this._updateTitle = this._updateTitle.bind(this);
 
-    this._throttledUpdateHash = _throttle(this._updateHash, 500);
-    this._throttledUpdateTitle = _throttle(this._updateTitle, 500);
+    this._throttledUpdateAll = throttle(this._updateAll, 500);
+    this._throttledUpdateHash = throttle(this._updateHash, 500);
+    this._throttledUpdateTitle = throttle(this._updateTitle, 500);
   }
 
 
@@ -48,26 +56,18 @@ export class UiHash {
    */
   enable() {
     if (this._enabled) return;
-
     this._enabled = true;
-    this._cachedHash = null;
 
+    this._cachedHash = null;
     const context = this.context;
 
-    context.map()
-      .on('draw', this._throttledUpdateHash);
-
-    context.history()
-      .on('change.UiHash', this._throttledUpdateTitle);
-
-    context
-      .on('enter.UiHash', this._throttledUpdateHash);
-
-    d3_select(window)
-      .on('hashchange.UiHash', this._hashchange);
+    context.on('enter.UiHash', this._throttledUpdateAll);
+    context.map().on('draw', this._throttledUpdateHash);
+    context.history().on('change.UiHash', this._throttledUpdateTitle);
+    d3_select(window).on('hashchange.UiHash', this._hashchange);
 
     this._hashchange();
-    this._updateTitle(true);  // skipChangeCount = true
+    this._updateTitle();
   }
 
 
@@ -77,27 +77,62 @@ export class UiHash {
    */
   disable() {
     if (!this._enabled) return;
-
     this._enabled = false;
+
     this._cachedHash = null;
+    this._throttledUpdateAll.cancel();
     this._throttledUpdateHash.cancel();
     this._throttledUpdateTitle.cancel();
 
     const context = this.context;
 
-    context.map()
-      .off('draw', this._throttledUpdateHash);
-
-    context.history()
-      .on('change.UiHash', null);
-
-    context
-      .on('enter.UiHash', null);
-
-    d3_select(window)
-      .on('hashchange.UiHash', null);
+    context.on('enter.UiHash', null);
+    context.map().off('draw', this._throttledUpdateHash);
+    context.history().on('change.UiHash', null);
+    d3_select(window).on('hashchange.UiHash', null);
 
     window.location.hash = '';
+  }
+
+
+  /**
+   * _updateAll
+   * Updates hash and title
+   */
+  _updateAll() {
+    this._updateHash();
+    this._updateTitle();
+  }
+
+
+  /**
+   * _updateHash
+   * Updates the hash (by calling `window.history.replaceState()`)
+   * This updates the URL hash without affecting the browser navigation stack.
+   */
+  _updateHash() {
+    if (this.context.inIntro()) return;   // no updates while doing the walkthrough
+
+    const hash = this._computeHash();
+    if (this._cachedHash !== hash) {
+      window.history.replaceState(null, this.titleBase, hash);
+      this._cachedHash = hash;
+    }
+  }
+
+
+  /**
+   * _updateTitle
+   * Updates the title of the tab (by setting `document.title`)
+   */
+  _updateTitle() {
+    if (this.context.inIntro()) return;   // no updates while doing the walkthrough
+    if (!this.doUpdateTitle) return;
+
+    const title = this._computeTitle();
+    if (document.title !== title) {
+      document.title = title;
+    }
   }
 
 
@@ -117,6 +152,7 @@ export class UiHash {
       ['id', 'map', 'comment', 'source', 'hashtags', 'walkthrough']
     );
 
+    // Currently only support OSM ids
     const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
     if (selectedIDs.length) {
       params.id = selectedIDs.join(',');
@@ -131,75 +167,38 @@ export class UiHash {
 
 
   /**
-   * _updateHash
-   * Updates the hash (by calling `window.history.replaceState()`)
-   */
-  _updateHash() {
-    if (this.context.inIntro()) return;   // no updates while doing the walkthrough
-
-    const currHash = this._computeHash();
-    if (this._cachedHash === currHash) return;  // no change
-
-    this._cachedHash = currHash;
-
-    // `title` param to replaceState is currently only used by Safari, and is deprecated
-    const title = this._computeTitle(true);  // skipChangeCount = true
-    // Update the URL hash without affecting the browser navigation stack,
-    window.history.replaceState(null, title, currHash);
-  }
-
-
-  /**
    * _computeTitle
    * Returns the value we think the title should be, but doesn't change anything
-   * @param  `skipChangeCount`    true/false whether to inclue the change count in the title
    */
-  _computeTitle(skipChangeCount) {
+  _computeTitle() {
     const context = this.context;
+    const changeCount = context.history().difference().summary().size;
 
-    const baseTitle = context.documentTitleBase() || 'RapiD';
-    let contextual;
-    let changeCount;
-    let titleType;
-
+    // Currently only support OSM ids
+    let selected;
     const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
-
     if (selectedIDs.length) {
       const firstLabel = utilDisplayLabel(context.entity(selectedIDs[0]), context.graph());
-      if (selectedIDs.length > 1 ) {
-        contextual = t('title.labeled_and_more', { labeled: firstLabel, count: selectedIDs.length - 1 });
+      if (selectedIDs.length > 1) {
+        selected = t('title.labeled_and_more', { labeled: firstLabel, count: selectedIDs.length - 1 });
       } else {
-        contextual = firstLabel;
-      }
-      titleType = 'context';
-    }
-
-    if (!skipChangeCount) {
-      changeCount = context.history().difference().summary().size;
-      if (changeCount > 0) {
-        titleType = contextual ? 'changes_context' : 'changes';
+        selected = firstLabel;
       }
     }
 
-    if (titleType) {
-      return t(`title.format.${titleType}`, { changes: changeCount, base: baseTitle, context: contextual });
+    let format;
+    if (changeCount && selected) {
+      format = 'title.format.changes_context';
+    } else if (changeCount && !selected) {
+      format = 'title.format.changes';
+    } else if (!changeCount && selected) {
+      format = 'title.format.context';
     }
 
-    return baseTitle;
-  }
-
-
-  /**
-   * _updateTitle
-   * Updates the title of the tab (by setting `document.title`)
-   * @param  `skipChangeCount`    true/false whether to inclue the change count in the title
-   */
-  _updateTitle(skipChangeCount) {
-    if (!this.context.setsDocumentTitle()) return;
-
-    const title = this._computeTitle(skipChangeCount);
-    if (document.title !== title) {
-      document.title = title;
+    if (format) {
+      return t(format, { changes: changeCount, base: this.titleBase, context: selected });
+    } else {
+      return this.titleBase;
     }
   }
 
@@ -216,19 +215,20 @@ export class UiHash {
     this._cachedHash = window.location.hash;
 
     const params = utilStringQs(this._cachedHash);
-    const mapArgs = (params.map || '').split('/').map(Number);
+    const mapArgs = (params.map || '').split('/').map(Number);   // zoom/lat/lon
 
     if (mapArgs.length < 3 || mapArgs.some(isNaN)) {  // replace bogus hash
       this._updateHash();
 
     } else {
-      const currHash = this._computeHash();
-      if (this._cachedHash === currHash) return;  // nothing changed
+      const hash = this._computeHash();
+      if (this._cachedHash === hash) return;  // nothing changed
 
       const mode = context.mode();
       context.map().centerZoom([mapArgs[2], Math.min(MAXLAT, Math.max(-MAXLAT, mapArgs[1]))], mapArgs[0]);
 
       if (params.id && mode) {
+        // Currently only support OSM ids
         const ids = params.id.split(',').filter(id => context.hasEntity(id));
         if (ids.length && (mode.id === 'browse' || (mode.id === 'select' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
           context.enter(modeSelect(context, ids));
