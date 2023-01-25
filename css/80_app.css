@@ -3136,6 +3136,10 @@ div.full-screen > button:focus {
     padding-right: 24px;
 }
 
+.list-item-date-filter label > span {
+   flex: 0 0 20%;
+}
+
 .layer-list label > span.background-name {
     display: flex;
     flex: 1;

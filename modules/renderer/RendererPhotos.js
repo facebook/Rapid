@@ -235,16 +235,16 @@ export class RendererPhotos extends EventEmitter {
     let didChange = false;
     if (type === 'fromDate') {
       this._fromDate = val;
+      didChange = true;
       if (this._fromDate && this._toDate && new Date(this._toDate) < new Date(this._fromDate)) {
         this._toDate = this._fromDate;
-        didChange = true;
       }
     }
     if (type === 'toDate') {
       this._toDate = val;
+      didChange = true;
       if (this._fromDate && this._toDate && new Date(this._toDate) < new Date(this._fromDate)) {
         this._fromDate = this._toDate;
-        didChange = true;
       }
     }
 
