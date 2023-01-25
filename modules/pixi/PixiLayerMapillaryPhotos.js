@@ -52,46 +52,46 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
 
     return this._service;
   }
-//
-//
-//  filterImages(images) {
-//    const fromDate = this.context.photos().fromDate;
-//    const toDate = this.context.photos().toDate;
-//    const usernames = this.context.photos().usernames;
-//
-//    if (fromDate) {
-//      const fromTimestamp = new Date(fromDate).getTime();
-//      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
-//    }
-//    if (toDate) {
-//      const toTimestamp = new Date(toDate).getTime();
-//      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
-//    }
-//    if (usernames) {
-//      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
-//    }
-//    return images;
-//  }
-//
-//
-//  filterSequences(sequences) {
-//    const fromDate = this.context.photos().fromDate;
-//    const toDate = this.context.photos().toDate;
-//    const usernames = this.context.photos().usernames;
-//
-//    if (fromDate) {
-//      const fromTimestamp = new Date(fromDate).getTime();
-//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
-//    }
-//    if (toDate) {
-//      const toTimestamp = new Date(toDate).getTime();
-//      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
-//    }
-//    if (usernames) {
-//      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
-//    }
-//    return sequences;
-//  }
+
+
+  filterImages(images) {
+    const fromDate = this.context.photos().fromDate;
+    const toDate = this.context.photos().toDate;
+    const usernames = this.context.photos().usernames;
+
+    if (fromDate) {
+      const fromTimestamp = new Date(fromDate).getTime();
+      images = images.filter(i => new Date(i.captured_at).getTime() >= fromTimestamp);
+    }
+    if (toDate) {
+      const toTimestamp = new Date(toDate).getTime();
+      images = images.filter(i => new Date(i.captured_at).getTime() <= toTimestamp);
+    }
+    if (usernames) {
+      images = images.filter(i => usernames.indexOf(i.captured_by) !== -1);
+    }
+    return images;
+  }
+
+
+  filterSequences(sequences) {
+    const fromDate = this.context.photos().fromDate;
+    const toDate = this.context.photos().toDate;
+    const usernames = this.context.photos().usernames;
+
+    if (fromDate) {
+      const fromTimestamp = new Date(fromDate).getTime();
+      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+    }
+    if (toDate) {
+      const toTimestamp = new Date(toDate).getTime();
+      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+    }
+    if (usernames) {
+      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+    }
+    return sequences;
+  }
 
 
   /**
@@ -108,11 +108,11 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     // const showViewfields = (zoom >= MINVIEWFIELDZOOM);
 
     const parentContainer = this.scene.groups.get('streetview');
-    const sequenceData = service.sequences(this.context.projection);
-    const photoData = service.images(this.context.projection);
+    const sequences = service.sequences(this.context.projection);
+    const images = service.images(this.context.projection);
 
-    // const sequenceData = this.filterSequences(sequences);
-    // const photoData = this.filterImages(images);
+    const sequenceData = this.filterSequences(sequences);
+    const photoData = this.filterImages(images);
 
     for (const d of sequenceData) {
       const featureID = `${this.layerID}-sequence-${d.properties.id}`;
