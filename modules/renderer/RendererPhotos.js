@@ -77,7 +77,7 @@ export class RendererPhotos extends EventEmitter {
         const serviceID = results[1];
         const photoKey = results[2];
         const service = services[serviceID];
-        if (!service || !service.ensureViewerLoaded) return;
+        if (!service || !service.loadViewerAsync) return;
 
         // if we're showing a photo then make sure its layer is enabled too
         scene.enableLayers(serviceID);
@@ -93,7 +93,7 @@ export class RendererPhotos extends EventEmitter {
           if (!service.cachedImage(photoKey)) return;
 
           service.on('loadedImages.rendererPhotos', null);
-          service.ensureViewerLoaded(context)
+          service.loadViewerAsync(context)
             .then(() => {
               service
                 .selectImage(context, photoKey)

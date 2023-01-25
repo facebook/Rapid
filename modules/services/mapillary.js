@@ -110,7 +110,7 @@ function loadTileDataToCache(data, tile, which) {
                 captured_at: feature.properties.captured_at,
                 ca: feature.properties.compass_angle,
                 id: feature.properties.id,
-                is_pano: feature.properties.is_pano,
+                isPano: feature.properties.is_pano,
                 sequence_id: feature.properties.sequence_id,
             };
             cache.forImageId[d.id] = d;
@@ -340,7 +340,7 @@ export default {
 
 
     // Return a promise that resolves when the image viewer (Mapillary JS) library has finished loading
-    ensureViewerLoaded: function(context) {
+    loadViewerAsync: function(context) {
         if (_loadViewerPromise) return _loadViewerPromise;
 
         // add mly-wrapper
@@ -644,7 +644,7 @@ export default {
                 ca: image.originalCompassAngle,
                 id: image.id,
                 loc: [image.originalLngLat.lng, image.originalLngLat.lat],
-                is_pano: image.cameraType === 'spherical',
+                isPano: image.cameraType === 'spherical',
                 sequence_id: image.sequenceId
             };
         } else {

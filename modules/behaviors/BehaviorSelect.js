@@ -387,7 +387,7 @@ export class BehaviorSelect extends AbstractBehavior {
       const photoID = layerID === 'mapillary' ? datum.id : datum.key;
 
       service
-        .ensureViewerLoaded(context)
+        .loadViewerAsync(context)
         .then(() => service.selectImage(context, photoID).showViewer(context));
 
       context.map().centerEase(datum.loc);

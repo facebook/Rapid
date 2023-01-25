@@ -29,6 +29,7 @@ let _resolution = 512;    // higher numbers are slower - 512, 1024, 2048, 4096
 let _currScene = 0;
 let _ssCache;
 let _pannellumViewer;
+let _loadViewerPromise;
 let _sceneOptions = {
   showFullscreenCtrl: false,
   autoLoad: true,
@@ -40,7 +41,6 @@ let _sceneOptions = {
   type: 'cubemap',
   cubeMap: []
 };
-let _loadViewerPromise;
 
 
 /**
@@ -117,7 +117,7 @@ function loadNextTilePage(which, url, tile) {
         // rn: bubble.rn,
         pr: bubble.pr,  // previous
         ne: bubble.ne,  // next
-        pano: true,
+        isPano: true,
         sequenceKey: null
       };
 
@@ -224,44 +224,21 @@ function getBubbles(url, tile, callback) {
 }
 
 
-// // partition viewport into higher zoom tiles
-// function partitionViewport(projection) {
-//   const z = geoScaleToZoom(projection.scale());
-//   const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-//   const tiles = tiler.zoomRange(z2).margin(0).getTiles(projection).tiles;
-//   return tiles.map(tile => tile.wgs84Extent);
-// }
-//
-//
-// // no more than `limit` results per partition.
-// function searchLimited(limit, projection, rtree) {
-//   limit = limit || 5;
-//
-//   return partitionViewport(projection)
-//     .reduce((result, extent) => {
-//       let found = rtree.search(extent.bbox())
-//         .slice(0, limit)
-//         .map(d => d.data);
-//
-//       return (found.length ? result.concat(found) : result);
-//     }, []);
-// }
-
-
 /**
- * loadImage()
+ * loadImageAsync()
  */
-function loadImage(imgInfo) {
+function loadImageAsync(imgInfo) {
   return new Promise(resolve => {
-    let img = new Image();
+    const img = new Image();
     img.onload = () => {
-      let canvas = document.getElementById('ideditor-canvas' + imgInfo.face);
-      let ctx = canvas.getContext('2d');
+      const face = imgInfo.face;
+      const canvas = document.getElementById(`ideditor-canvas${face}`);
+      const ctx = canvas.getContext('2d');
       ctx.drawImage(img, imgInfo.x, imgInfo.y);
       resolve({ imgInfo: imgInfo, status: 'ok' });
     };
     img.onerror = () => {
-      resolve({ data: imgInfo, status: 'error' });
+      resolve({ imgInfo: imgInfo, status: 'error' });
     };
     img.setAttribute('crossorigin', '');
     img.src = imgInfo.url;
@@ -270,26 +247,26 @@ function loadImage(imgInfo) {
 
 
 /**
- * loadCanvas()
+ * loadCanvasAsync()
  */
-function loadCanvas(imageGroup) {
-  return Promise.all(imageGroup.map(loadImage))
-    .then((data) => {
-      let canvas = document.getElementById('ideditor-canvas' + data[0].imgInfo.face);
+function loadCanvasAsync(imageGroup) {
+  return Promise.all(imageGroup.map(loadImageAsync))
+    .then(data => {
+      const face = data[0].imgInfo.face;
+      let canvas = document.getElementById(`ideditor-canvas${face}`);
       const which = { '01': 0, '02': 1, '03': 2, '10': 3, '11': 4, '12': 5 };
-      let face = data[0].imgInfo.face;
       _sceneOptions.cubeMap[which[face]] = canvas.toDataURL('image/jpeg', 1.0);
-      return { status: 'loadCanvas for face ' + data[0].imgInfo.face + 'ok'};
+      return { status: `face ${face} ok` };
     });
 }
 
 
 /**
- * loadFaces()
+ * loadFacesAsync()
  */
-function loadFaces(faceGroup) {
-  return Promise.all(faceGroup.map(loadCanvas))
-    .then(() => { return { status: 'loadFaces done' }; });
+function loadFacesAsync(faceGroup) {
+  return Promise.all(faceGroup.map(loadCanvasAsync))
+    .then(() => { return { status: 'loadFacesAsync done' }; });
 }
 
 
@@ -311,7 +288,7 @@ function setupCanvas(selection, reset) {
     .data(['canvas01', 'canvas02', 'canvas03', 'canvas10', 'canvas11', 'canvas12'])
     .enter()
     .append('canvas')
-    .attr('id', d => 'ideditor-' + d)
+    .attr('id', d => `ideditor-${d}`)
     .attr('width', _resolution)
     .attr('height', _resolution);
 }
@@ -420,8 +397,6 @@ export default {
    * bubbles()
    */
   bubbles: function(projection) {
-    // const limit = 5;
-    // return searchLimited(limit, projection, _ssCache.bubbles.rtree);
     const viewport = projection.dimensions();
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
@@ -440,30 +415,25 @@ export default {
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    let seen = {};
-    let results = [];
+    let result = new Map();  // Map(sequence key -> sequence geojson)
 
-    // all sequences for bubbles in viewport
-    _ssCache.bubbles.rtree.search(bbox)
-      .forEach(d => {
-        const key = d.data.sequenceKey;
-        if (key && !seen[key]) {
-            seen[key] = true;
-            results.push(_ssCache.sequences[key].geojson);
-        }
-      });
-
-    return results;
+    // gather sequences for bubbles in viewport
+    for (const d of _ssCache.bubbles.rtree.search(bbox)) {
+      const key = d.data.sequenceKey;
+      if (!key) continue;  // no sequence for this bubble
+      if (!result.has(key)) {
+        result.set(key, _ssCache.sequences[key].geojson);
+      }
+    }
+    return [...result.values()];
   },
 
 
   /**
    * loadBubbles()
+   * by default: request 2 nearby tiles so we can connect sequences.
    */
-  loadBubbles: function(projection, margin) {
-    // by default: request 2 nearby tiles so we can connect sequences.
-    if (margin === undefined) margin = 2;
-
+  loadBubbles: function(projection, margin = 2) {
     loadTiles('bubbles', bubbleApi, projection, margin);
   },
 
@@ -473,7 +443,7 @@ export default {
   },
 
 
-  initViewer: function () {
+  initViewer: function() {
     if (!window.pannellum) return;
     if (_pannellumViewer) return;
 
@@ -489,8 +459,7 @@ export default {
   },
 
 
-  ensureViewerLoaded: function(context) {
-
+  loadViewerAsync: function(context) {
     if (_loadViewerPromise) return _loadViewerPromise;
 
     // create ms-wrapper, a photo wrapper class
@@ -504,23 +473,21 @@ export default {
       .attr('class', 'photo-wrapper ms-wrapper')
       .classed('hide', true);
 
-    let that = this;
-
-    let pointerPrefix = 'PointerEvent' in window ? 'pointer' : 'mouse';
+    const that = this;
 
     // inject div to support streetside viewer (pannellum) and attribution line
     wrapEnter
       .append('div')
       .attr('id', 'ideditor-viewer-streetside')
-      .on(pointerPrefix + 'down.streetside', () => {
+      .on('pointerdown.streetside', () => {
         d3_select(window)
-          .on(pointerPrefix + 'move.streetside', () => {
+          .on('pointermove.streetside', () => {
             dispatch.call('viewerChanged');
           }, true);
       })
-      .on(pointerPrefix + 'up.streetside pointercancel.streetside', () => {
+      .on('pointerup.streetside pointercancel.streetside', () => {
         d3_select(window)
-          .on(pointerPrefix + 'move.streetside', null);
+          .on('pointermove.streetside', null);
 
         // continue dispatching events for a few seconds, in case viewer has inertia.
         let t = d3_timer(elapsed => {
@@ -563,7 +530,6 @@ export default {
     });
 
     _loadViewerPromise = new Promise((resolve, reject) => {
-
       let loadedCount = 0;
       function loaded() {
         loadedCount += 1;
@@ -583,9 +549,7 @@ export default {
         .attr('crossorigin', 'anonymous')
         .attr('href', context.asset(pannellumViewerCSS))
         .on('load.serviceStreetside', loaded)
-        .on('error.serviceStreetside', function() {
-            reject();
-        });
+        .on('error.serviceStreetside', reject);
 
       // load streetside pannellum viewer js
       head.selectAll('#ideditor-streetside-viewerjs')
@@ -596,13 +560,11 @@ export default {
         .attr('crossorigin', 'anonymous')
         .attr('src', context.asset(pannellumViewerJS))
         .on('load.serviceStreetside', loaded)
-        .on('error.serviceStreetside', function() {
-            reject();
-        });
-      })
-      .catch(function() {
-        _loadViewerPromise = null;
-      });
+        .on('error.serviceStreetside', reject);
+    })
+    .catch(() => {
+      _loadViewerPromise = null;
+    });
 
     return _loadViewerPromise;
 
@@ -692,11 +654,8 @@ export default {
    * showViewer()
    */
   showViewer: function(context) {
-
-    let wrap = context.container().select('.photoviewer')
-      .classed('hide', false);
-
-    let isHidden = wrap.selectAll('.photo-wrapper.ms-wrapper.hide').size();
+    let wrap = context.container().select('.photoviewer').classed('hide', false);
+    const isHidden = wrap.selectAll('.photo-wrapper.ms-wrapper.hide').size();
 
     if (isHidden) {
       wrap
@@ -715,7 +674,7 @@ export default {
   /**
    * hideViewer()
    */
-  hideViewer: function (context) {
+  hideViewer: function(context) {
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
 
@@ -736,9 +695,8 @@ export default {
   /**
    * selectImage().
    */
-  selectImage: function (context, key) {
+  selectImage: function(context, key) {
     let that = this;
-
     let d = this.cachedImage(key);
 
     let viewer = context.container().select('.photoviewer');
@@ -860,8 +818,8 @@ export default {
 
     // Map images to cube faces
     let quadKeys = getQuadKeys();
-    let faces = faceKeys.map((faceKey) => {
-      return quadKeys.map((quadKey) => {
+    let faces = faceKeys.map(faceKey => {
+      return quadKeys.map(quadKey => {
         const xy = qkToXY(quadKey);
         return {
           face: faceKey,
@@ -872,9 +830,8 @@ export default {
       });
     });
 
-    loadFaces(faces)
-      .then(function() {
-
+    loadFacesAsync(faces)
+      .then(() => {
         if (!_pannellumViewer) {
           that.initViewer();
         } else {
@@ -948,7 +905,7 @@ export default {
 
     function viewfieldPath() {
       let d = this.parentNode.__data__;
-      if (d.pano && d.key !== selectedBubbleKey) {
+      if (d.isPano && d.key !== selectedBubbleKey) {
         return 'M 8,13 m -10,0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0';
       } else {
         return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';
@@ -960,15 +917,15 @@ export default {
 
 
   updateUrlImage: function(imageKey) {
-      if (!window.mocha) {
-          var hash = utilStringQs(window.location.hash);
-          if (imageKey) {
-              hash.photo = 'streetside/' + imageKey;
-          } else {
-              delete hash.photo;
-          }
-          window.location.replace('#' + utilQsString(hash, true));
+    if (!window.mocha) {
+      var hash = utilStringQs(window.location.hash);
+      if (imageKey) {
+        hash.photo = 'streetside/' + imageKey;
+      } else {
+        delete hash.photo;
       }
+      window.location.replace('#' + utilQsString(hash, true));
+    }
   },
 
 

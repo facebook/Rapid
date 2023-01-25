@@ -159,7 +159,7 @@ export class PixiFeaturePoint extends AbstractFeature {
           const vfSprite = new PIXI.Sprite(vfTexture);
           vfSprite.interactive = false;
           vfSprite.interactiveChildren = false;
-          vfSprite.anchor.set(0.5, 1);  // middle, top
+          vfSprite.anchor.set(0.5, 0.5);  // middle, middle
           viewfields.addChild(vfSprite);
         });
         this._oldvfLength = vfAngles.length;

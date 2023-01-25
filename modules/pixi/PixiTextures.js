@@ -76,7 +76,7 @@ export class PixiTextures {
     //
     // Viewfields
     //
-    const viewfieldRect = new Rectangle(-13, 0, 26, 26);
+    const viewfieldRect = new Rectangle(-13, 0, 26, 52);
     const viewfield = new Graphics()
       .lineStyle(1, 0x444444)                    //  [-6,21]  ,-___-,  [6,21]
       .beginFill(0xffffff, 0.75)                 //          /       \
@@ -119,16 +119,37 @@ export class PixiTextures {
     }));
 
     this.textures.set('viewfieldOutline', this.toAtlasTexture(viewfieldOutline, {
-        region: viewfieldRect, // texture the whole 26x26 region
-        resolution: 3, // oversample a bit so it looks pretty when rotated
-      })
-    );
+      region: viewfieldRect,  // texture the whole 26x26 region
+      resolution: 3,          // oversample a bit so it looks pretty when rotated
+    }));
+
+    const pano = new Graphics()    // just a full circle - for panoramic / 360° images
+      .lineStyle(1, 0x444444)
+      .beginFill(0xffffff, 0.75)
+      .drawCircle(0, 0, 20)
+      .endFill();
+
+    const panoDark = new Graphics()
+      .lineStyle(1, 0xcccccc)
+      .beginFill(0x333333, 0.75)
+      .drawCircle(0, 0, 20)
+      .endFill();
+
+    const panoOutline = new Graphics()
+      .lineStyle(1, 0xcccccc)
+      .beginFill(0xffffff, 0)
+      .drawCircle(0, 0, 20)
+      .endFill();
+
+    this.textures.set('pano', this.toAtlasTexture(pano, options));
+    this.textures.set('panoDark', this.toAtlasTexture(panoDark, options));
+    this.textures.set('panoOutline', this.toAtlasTexture(panoOutline, options));
 
 
     //
     // Markers
     //
-    const pin = new Graphics()              //              [0,-23]
+    const pin = new Graphics()                   //              [0,-23]
       .lineStyle(1, 0x444444)                    //              _,-+-,_
       .beginFill(0xffffff, 1)                    //            /'       `\
       .moveTo(0, 0)                              //           :           :
@@ -248,7 +269,7 @@ export class PixiTextures {
     //
     // Line markers
     //
-    const midpoint = new Graphics()      // [-3, 4]  ._                +y
+    const midpoint = new Graphics()           // [-3, 4]  ._                +y
       .lineStyle(1, 0x444444)                 //          | "-._             |
       .beginFill(0xffffff, 1)                 //          |    _:>  [7,0]    +-- +x
       .drawPolygon([-3,4, 7,0, -3,-4])        //          |_,-"

@@ -139,6 +139,9 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         if (Number.isFinite(d.ca)) {
           style.viewfieldAngles = [d.ca];   // ca = camera angle
         }
+        if (d.isPano) {
+          style.viewfieldName = 'pano';
+        }
 
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);
