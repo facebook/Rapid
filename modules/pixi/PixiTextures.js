@@ -77,32 +77,31 @@ export class PixiTextures {
     // Viewfields
     //
     const viewfieldRect = new Rectangle(-13, 0, 26, 52);
-    const viewfield = new Graphics()
-      .lineStyle(1, 0x444444)                    //  [-6,21]  ,-___-,  [6,21]
-      .beginFill(0xffffff, 0.75)                 //          /       \
-      .moveTo(-6, 21)                            //         /         \
-      .bezierCurveTo(-5,19, 5,19, 6,21)          //        /           \
-      .lineTo(12, 4)                             //       /             \
-      .bezierCurveTo(12,0, -12,0, -12,4)         //       ""--_______--""         +y
-      .closePath()                               // [-12,4]              [12,4]    |
-      .endFill();                                //            [0,0]               +-- +x
+    const viewfield = new Graphics()            //   [-2,26]  ,---,  [2,26]
+      .lineStyle(1, 0x444444)                   //           /     \
+      .beginFill(0xffffff, 0.75)                //          /       \
+      .moveTo(-2, 26)                           //         /         \
+      .lineTo(2, 26)                            //        /           \
+      .lineTo(12, 4)                            //       /             \
+      .bezierCurveTo(12,0, -12,0, -12,4)        //       ""--_______--""         +y
+      .closePath()                              // [-12,4]              [12,4]    |
+      .endFill();                               //            [0,0]               +-- +x
 
     const viewfieldDark = new Graphics()
-      .lineStyle(1, 0xcccccc)         // same viewfield, but outline light gray
-      .beginFill(0x333333, 0.75)      // and fill dark gray (not intended to be tinted)
-      .moveTo(-6, 21)
-      .bezierCurveTo(-5,19, 5,19, 6,21)
+      .lineStyle(1, 0xcccccc)        // same viewfield, but outline light gray
+      .beginFill(0x333333, 0.75)     // and fill dark gray (not intended to be tinted)
+      .moveTo(-2, 26)
+      .lineTo(2, 26)
       .lineTo(12, 4)
       .bezierCurveTo(12,0, -12,0, -12,4)
       .closePath()
       .endFill();
 
-
     const viewfieldOutline = new Graphics()
-      .lineStyle(1, 0xcccccc) // same viewfield, but with no fill for wireframe mode
+      .lineStyle(1, 0xcccccc)        // same viewfield, but with no fill for wireframe mode
       .beginFill(0xffffff, 0)
-      .moveTo(-6, 21)
-      .bezierCurveTo(-5, 19, 5, 19, 6, 21)
+      .moveTo(-2, 26)
+      .lineTo(2, 26)
       .lineTo(12, 4)
       .bezierCurveTo(12, 0, -12, 0, -12, 4)
       .closePath()
