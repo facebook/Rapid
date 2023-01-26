@@ -36,6 +36,30 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [2.0.0-beta.0]
+
+#### 2023-Jan-26
+
+#### :tada: Beta test kickoff!
+
+
+The Walkthrough has been retooled extensively- it should be much more resilient to going 'off-script' and it is easier for developers to extend and rework.
+
+Mobile interactivity should be much improved now as compared to the earlier Alpha releases of Rapid v2.
+
+Streetside imagery should now work much more cleanly (and without leaving stale imagery in the photo viewer).
+
+
+### Bugfixes:
+* [#539] Streetview image points with 360 degree imagery will no longer render as map pins, just circles.
+* [#679] Fixed stack trace errors that occurred while panning inside the minimap.
+* [#749] Fixed crashes/freezes while panning on mobile. Mobile users should also now be able to draw features.
+* [#572] Custom data: tile server functionality has been restored. Load those .pbfs like a boss!
+
+
+[#539]: https://github.com/facebook/RapiD/issues/539
+[#679]: https://github.com/facebook/RapiD/issues/679
+[#749]: https://github.com/facebook/RapiD/issues/749
 # [2.0.0-alpha3.3]
 
 #### 2022-Dec-14
