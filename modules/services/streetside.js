@@ -229,15 +229,17 @@ function getBubbles(url, tile, callback) {
  */
 function loadImageAsync(imgInfo) {
   return new Promise(resolve => {
+    const face = imgInfo.face;
+    const canvas = document.getElementById(`ideditor-canvas${face}`);
+    const ctx = canvas.getContext('2d');
+
     const img = new Image();
     img.onload = () => {
-      const face = imgInfo.face;
-      const canvas = document.getElementById(`ideditor-canvas${face}`);
-      const ctx = canvas.getContext('2d');
       ctx.drawImage(img, imgInfo.x, imgInfo.y);
       resolve({ imgInfo: imgInfo, status: 'ok' });
     };
     img.onerror = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       resolve({ imgInfo: imgInfo, status: 'error' });
     };
     img.setAttribute('crossorigin', '');
@@ -247,13 +249,13 @@ function loadImageAsync(imgInfo) {
 
 
 /**
- * loadCanvasAsync()
+ * loadFaceAsync()
  */
-function loadCanvasAsync(imageGroup) {
+function loadFaceAsync(imageGroup) {
   return Promise.all(imageGroup.map(loadImageAsync))
     .then(data => {
       const face = data[0].imgInfo.face;
-      let canvas = document.getElementById(`ideditor-canvas${face}`);
+      const canvas = document.getElementById(`ideditor-canvas${face}`);
       const which = { '01': 0, '02': 1, '03': 2, '10': 3, '11': 4, '12': 5 };
       _sceneOptions.cubeMap[which[face]] = canvas.toDataURL('image/jpeg', 1.0);
       return { status: `face ${face} ok` };
@@ -265,16 +267,14 @@ function loadCanvasAsync(imageGroup) {
  * loadFacesAsync()
  */
 function loadFacesAsync(faceGroup) {
-  return Promise.all(faceGroup.map(loadCanvasAsync))
+  return Promise.all(faceGroup.map(loadFaceAsync))
     .then(() => { return { status: 'loadFacesAsync done' }; });
 }
 
 
-function setupCanvas(selection, reset) {
-  if (reset) {
-    selection.selectAll('#ideditor-stitcher-canvases')
-      .remove();
-  }
+function setupCanvas(selection) {
+  selection.selectAll('#ideditor-stitcher-canvases')
+    .remove();
 
   // Add the Streetside working canvases. These are used for 'stitching', or combining,
   // multiple images for each of the six faces, before passing to the Pannellum control as DataUrls
@@ -520,7 +520,7 @@ export default {
     // create working canvas for stitching together images
     wrap = wrap
       .merge(wrapEnter)
-      .call(setupCanvas, true);
+      .call(setupCanvas);
 
     // Register viewer resize handler
     context.ui().photoviewer.on('resize.streetside', () => {
@@ -601,7 +601,7 @@ export default {
         let poly = [p1, p2, p3, p4, p1];
 
         // rotate it to face forward/backward
-        let angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
+        const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
         poly = geomRotatePoints(poly, -angle, origin);
 
         let extent = poly.reduce((extent, point) => {
@@ -708,7 +708,8 @@ export default {
     let attribution = wrap.selectAll('.photo-attribution').html('');
 
     wrap.selectAll('.pnlm-load-box')   // display "loading.."
-      .style('display', 'block');
+      .style('display', 'block')
+      .style('transform', 'translate(-50%, -50%)');
 
     if (!d) return this;
 
@@ -733,14 +734,14 @@ export default {
       .attr('type', 'checkbox')
       .attr('id', hiresDomId)
       .property('checked', _hires)
-      .on('click', (d3_event) => {
+      .on('click', d3_event => {
         d3_event.stopPropagation();
 
         _hires = !_hires;
         _resolution = _hires ? 1024 : 512;
-        wrap.call(setupCanvas, true);
+        wrap.call(setupCanvas);
 
-        let viewstate = {
+        const viewstate = {
           yaw: _pannellumViewer.getYaw(),
           pitch: _pannellumViewer.getPitch(),
           hfov: _pannellumViewer.getHfov()
@@ -769,18 +770,18 @@ export default {
         .attr('class', 'captured_by')
         .attr('target', '_blank')
         .attr('href', 'https://www.microsoft.com/en-us/maps/streetside')
-        .html('©' + yyyy + ' Microsoft');
+        .text(`© ${yyyy} Microsoft`);
 
       captureInfo
         .append('span')
-        .html('|');
+        .text('|');
     }
 
     if (d.captured_at) {
       captureInfo
         .append('span')
         .attr('class', 'captured_at')
-        .html(localeTimestamp(d.captured_at));
+        .text(localeTimestamp(d.captured_at));
     }
 
     // Add image links
@@ -817,8 +818,8 @@ export default {
     const faceKeys = ['01','02','03','10','11','12'];
 
     // Map images to cube faces
-    let quadKeys = getQuadKeys();
-    let faces = faceKeys.map(faceKey => {
+    const quadKeys = getQuadKeys();
+    const faces = faceKeys.map(faceKey => {
       return quadKeys.map(quadKey => {
         const xy = qkToXY(quadKey);
         return {
