@@ -152,8 +152,8 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
 
-        if (d.sequence_id) {
-          feature.addChildData(d.sequence_id, d.id);
+        if (d.sequenceID) {
+          feature.addChildData(d.sequenceID, d.id);
         }
       }
 

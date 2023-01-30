@@ -1,4 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
+import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
 import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
@@ -9,46 +10,32 @@ import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 import { utilRebind } from '../util';
 
-
-const bubbleApi = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';
-const streetsideImagesApi = 'https://t.ssl.ak.tiles.virtualearth.net/tiles/';
 const bubbleAppKey = 'AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrBtNAuEm';
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
-const maxResults = 2000;
 const TILEZOOM = 16.5;
 const tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
 
 const dispatch = d3_dispatch('loadedImages', 'viewerChanged');
-const minHfov = 10;         // zoom in degrees:  20, 10, 5
-const maxHfov = 90;         // zoom out degrees
-const defaultHfov = 45;
 
 let _hires = false;
 let _resolution = 512;    // higher numbers are slower - 512, 1024, 2048, 4096
 let _currScene = 0;
-let _ssCache;
+let _streetsideCache;
 let _pannellumViewer;
-let _loadViewerPromise;
+let _pannellumViewerPromise;
 let _sceneOptions = {
   showFullscreenCtrl: false,
   autoLoad: true,
   compass: true,
   yaw: 0,
-  minHfov: minHfov,
-  maxHfov: maxHfov,
-  hfov: defaultHfov,
+  hfov: 45,      // default field of view degrees
+  minHfov: 10,   // zoom in degrees:  20, 10, 5
+  maxHfov: 90,   // zoom out degrees
   type: 'cubemap',
   cubeMap: []
 };
 
-
-/**
- * abortRequest().
- */
-function abortRequest(i) {
-  i.abort();
-}
 
 
 /**
@@ -66,116 +53,109 @@ function localeTimestamp(s) {
 /**
  * loadTiles() wraps the process of generating tiles and then fetching image points for each tile.
  */
-function loadTiles(which, url, projection, margin) {
-  // determine the needed tiles to cover the view
-  const tiles = tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
+function loadTiles(projection, margin) {
+  // Determine the needed tiles to cover the view
+  const needTiles = tiler.zoomRange(TILEZOOM).margin(margin).getTiles(projection).tiles;
 
-  // abort inflight requests that are no longer needed
-  const cache = _ssCache[which];
-  Object.keys(cache.inflight).forEach(k => {
-    const wanted = tiles.find(tile => k.indexOf(tile.id + ',') === 0);
-    if (!wanted) {
-      abortRequest(cache.inflight[k]);
-      delete cache.inflight[k];
+  // Abort inflight requests that are no longer needed
+  for (const [tileID, inflight] of _streetsideCache.inflight.entries()) {
+    const needed = needTiles.find(tile => tile.id === tileID);
+    if (!needed) {
+      inflight.controller.abort();
     }
-  });
+  }
 
-  tiles.forEach(tile => loadNextTilePage(which, url, tile));
-}
+  // Fetch files that are needed
+  for (const tile of needTiles) {
+    const tileID = tile.id;
+    if (_streetsideCache.loaded.has(tileID) || _streetsideCache.inflight.has(tileID)) continue;
+
+    Promise.all([
+      fetchMetadataAsync(tile),
+      fetchBubblesAsync(tile)
+    ])
+    .then(processResults)
+    .catch(err => {
+      if (err.name === 'AbortError') return;          // ok
+      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+    });
+  }
 
 
-/**
- * loadNextTilePage() load data for the next tile page in line.
- */
-function loadNextTilePage(which, url, tile) {
-  const cache = _ssCache[which];
-  const nextPage = cache.nextPage[tile.id] || 0;
-  const id = tile.id + ',' + String(nextPage);
-  if (cache.loaded[id] || cache.inflight[id]) return;
+  function processResults(results) {
+    const metadata = results[0];
 
-  cache.inflight[id] = getBubbles(url, tile, (bubbles) => {
-    cache.loaded[id] = true;
-    delete cache.inflight[id];
-    if (!bubbles) return;
+    _streetsideCache.loaded.add(results[1].tile.id);
+    const bubbles = results[1].data;
+    if (!bubbles || bubbles.error) return;
 
     // [].shift() removes the first element, some statistics info, not a bubble point
     bubbles.shift();
 
-    const features = bubbles.map(bubble => {
-      if (cache.points[bubble.id]) return null;  // skip duplicates
+    const boxes = bubbles.map(bubble => {
+      if (_streetsideCache.bubbles.has(bubble.id)) return null;  // skip duplicates
 
       const loc = [bubble.lo, bubble.la];
-      const d = {
+      const bubbleData = {
         loc: loc,
-        key: bubble.id,
+        id: bubble.id,
         ca: bubble.he,
         captured_at: bubble.cd,
         captured_by: 'microsoft',
-        // nbn: bubble.nbn,
-        // pbn: bubble.pbn,
-        // ad: bubble.ad,
-        // rn: bubble.rn,
         pr: bubble.pr,  // previous
         ne: bubble.ne,  // next
         isPano: true,
-        sequenceKey: null
+        sequenceID: null
       };
 
-      cache.points[bubble.id] = d;
+      _streetsideCache.bubbles.set(bubble.id,  bubbleData);
 
       // a sequence starts here
       if (bubble.pr === undefined) {
-        cache.leaders.push(bubble.id);
+        _streetsideCache.leaders.push(bubble.id);
       }
 
       return {
-        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
+        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: bubbleData
       };
 
     }).filter(Boolean);
 
-    cache.rtree.load(features);
+    _streetsideCache.rtree.load(boxes);
 
     connectSequences();
-
-    if (which === 'bubbles') {
-      dispatch.call('loadedImages');
-    }
-  });
+    dispatch.call('loadedImages');
+  }
 }
 
 
 // call this sometimes to connect the bubbles into sequences
 function connectSequences() {
-  let cache = _ssCache.bubbles;
   let keepLeaders = [];
 
-  for (let i = 0; i < cache.leaders.length; i++) {
-    let bubble = cache.points[cache.leaders[i]];
+  for (let i = 0; i < _streetsideCache.leaders.length; i++) {
+    let bubble = _streetsideCache.bubbles.get(_streetsideCache.leaders[i]);
     let seen = {};
 
-    // try to make a sequence.. use the key of the leader bubble.
-    let sequence = { key: bubble.key, bubbles: [] };
+    // Try to make a sequence.. use the id of the leader bubble.
+    let sequence = { id: bubble.id, bubbles: [] };
     let complete = false;
 
     do {
       sequence.bubbles.push(bubble);
-      seen[bubble.key] = true;
+      seen[bubble.id] = true;
 
-      if (bubble.ne === undefined) {
+      if (bubble.ne === undefined) {  // no next
         complete = true;
       } else {
-        bubble = cache.points[bubble.ne];  // advance to next
+        bubble = _streetsideCache.bubbles.get(bubble.ne);  // advance to next
       }
-    } while (bubble && !seen[bubble.key] && !complete);
-
+    } while (bubble && !seen[bubble.id] && !complete);
 
     if (complete) {
-      _ssCache.sequences[sequence.key] = sequence;
-
       // assign bubbles to the sequence
       for (let j = 0; j < sequence.bubbles.length; j++) {
-        sequence.bubbles[j].sequenceKey = sequence.key;
+        sequence.bubbles[j].sequenceID = sequence.id;
       }
 
       // create a GeoJSON LineString
@@ -184,43 +164,80 @@ function connectSequences() {
         properties: {
           captured_at: sequence.bubbles[0] ? sequence.bubbles[0].captured_at : null,
           captured_by: sequence.bubbles[0] ? sequence.bubbles[0].captured_by : null,
-          key: sequence.key
+          id: sequence.id
         },
         coordinates: sequence.bubbles.map(d => d.loc)
       };
 
+      _streetsideCache.sequences.set(sequence.id, sequence);
+
     } else {
-      keepLeaders.push(cache.leaders[i]);
+      keepLeaders.push(_streetsideCache.leaders[i]);
     }
   }
 
   // couldn't complete these, save for later
-  cache.leaders = keepLeaders;
+  _streetsideCache.leaders = keepLeaders;
 }
 
 
 /**
- * getBubbles() handles the request to the server for a tile extent of 'bubbles' (streetside image locations).
+ * fetchMetadataAsync()
+ * https://learn.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
  */
-function getBubbles(url, tile, callback) {
-  const rect = tile.wgs84Extent.rectangle();
-  const urlForRequest = url + utilQsString({
-    n: rect[3],
-    s: rect[1],
-    e: rect[2],
-    w: rect[0],
-    c: maxResults,
-    appkey: bubbleAppKey,
-    jsCallback: '{callback}'
+function fetchMetadataAsync(tile) {
+  // only fetch it once
+  if (_streetsideCache.metadataPromise) return _streetsideCache.metadataPromise;
+
+  const [lon, lat] = tile.wgs84Extent.center();
+  const metadataURLBase = 'https://dev.virtualearth.net/REST/v1/Imagery/MetaData/Streetside';
+  const metadataKey = 'AoG8TaQvkPo6o8SlpRVmBs7WJwO_NDQklVRcAfpn7P8oiEMYWNY59XHSJU81sP1Y';
+  const metadataURL = `${metadataURLBase}/${lat},${lon}?key=${metadataKey}`;
+
+  _streetsideCache.metadataPromise = d3_json(metadataURL)
+    .then(data => {
+      if (!data) throw new Error('no data');
+      return data;
+    });
+}
+
+
+/**
+ * fetchBubblesAsync()
+ * bubbles:   undocumented / unsupported API?
+ */
+function fetchBubblesAsync(tile) {
+  const [w, s, e, n] = tile.wgs84Extent.rectangle();
+  const MAXRESULTS = 2000;
+
+  const bubbleURLBase = 'https://dev.virtualearth.net/mapcontrol/HumanScaleServices/GetBubbles.ashx?';
+  const bubbleKey = 'AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrBtNAuEm';
+  const bubbleURL = bubbleURLBase + utilQsString({ n: n, s: s, e: e, w: w, c: MAXRESULTS, appkey: bubbleKey, jsCallback: '{callback}' });
+
+  const inflight = _streetsideCache.inflight.get(tile.id);
+  if (inflight) return inflight.promise;
+
+  // Wrap JSONP request in an abortable Promise
+  const controller = new AbortController();
+  const promise = new Promise((resolve, reject) => {
+    const request = jsonpRequest(bubbleURL, data => {
+      controller.signal.removeEventListener('abort', onAbort);
+      resolve({ data: data, tile: tile });
+    });
+    const onAbort = () => {
+      controller.signal.removeEventListener('abort', onAbort);
+      request.abort();
+      reject(new DOMException('Aborted', 'AbortError'));
+    };
+    controller.signal.addEventListener('abort', onAbort);
+  })
+  .finally(() => {
+    _streetsideCache.inflight.delete(tile.id);
   });
 
-  return jsonpRequest(urlForRequest, (data) => {
-    if (!data || data.error) {
-      callback(null);
-    } else {
-      callback(data);
-    }
-  });
+  _streetsideCache.inflight.set(tile.id, { promise: promise, controller: controller });
+
+  return promise;
 }
 
 
@@ -372,10 +389,9 @@ export default {
    * init() initialize streetside.
    */
   init: function() {
-    if (!_ssCache) {
+    if (!_streetsideCache) {
       this.reset();
     }
-
     this.event = utilRebind(this, dispatch, 'on');
   },
 
@@ -383,15 +399,23 @@ export default {
    * reset() reset the cache.
    */
   reset: function() {
-    if (_ssCache) {
-      Object.values(_ssCache.bubbles.inflight).forEach(abortRequest);
+    if (_streetsideCache) {
+      for (const inflight of _streetsideCache.inflight.values()) {
+        inflight.controller.abort();
+      }
     }
 
-    _ssCache = {
-      bubbles: { inflight: {}, loaded: {}, nextPage: {}, rtree: new RBush(), points: {}, leaders: [] },
-      sequences: {}
+    _streetsideCache = {
+      inflight:  new Map(),   // Map(tileID -> { Promise, AbortController})
+      loaded:    new Set(),   // Set(tileID)
+      bubbles:   new Map(),   // Map(bubbleID -> bubble data)
+      sequences: new Map(),   // Map(sequenceID -> sequence data)
+      rtree:     new RBush(),
+      leaders:   [],
+      metadataPromsie:  null
     };
   },
+
 
   /**
    * bubbles()
@@ -401,12 +425,12 @@ export default {
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    return _ssCache.bubbles.rtree.search(box).map(d => d.data);
+    return _streetsideCache.rtree.search(box).map(d => d.data);
   },
 
 
-  cachedImage: function(imageKey) {
-    return _ssCache.bubbles.points[imageKey];
+  cachedImage: function(bubbleID) {
+    return _streetsideCache.bubbles.get(bubbleID);
   },
 
 
@@ -415,14 +439,14 @@ export default {
     const min = [viewport[0][0], viewport[1][1]];
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-    let result = new Map();  // Map(sequence key -> sequence geojson)
+    let result = new Map();  // Map(sequenceID -> sequence geojson)
 
     // gather sequences for bubbles in viewport
-    for (const d of _ssCache.bubbles.rtree.search(bbox)) {
-      const key = d.data.sequenceKey;
-      if (!key) continue;  // no sequence for this bubble
-      if (!result.has(key)) {
-        result.set(key, _ssCache.sequences[key].geojson);
+    for (const box of _streetsideCache.rtree.search(bbox)) {
+      const sequenceID = box.data.sequenceID;
+      if (!sequenceID) continue;  // no sequence for this bubble
+      if (!result.has(sequenceID)) {
+        result.set(sequenceID, _streetsideCache.sequences.get(sequenceID).geojson);
       }
     }
     return [...result.values()];
@@ -434,7 +458,7 @@ export default {
    * by default: request 2 nearby tiles so we can connect sequences.
    */
   loadBubbles: function(projection, margin = 2) {
-    loadTiles('bubbles', bubbleApi, projection, margin);
+    loadTiles(projection, margin);
   },
 
 
@@ -447,7 +471,7 @@ export default {
     if (!window.pannellum) return;
     if (_pannellumViewer) return;
 
-    _currScene += 1;
+    _currScene++;
     const sceneID = _currScene.toString();
     const options = {
       'default': { firstScene: sceneID },
@@ -460,7 +484,7 @@ export default {
 
 
   loadViewerAsync: function(context) {
-    if (_loadViewerPromise) return _loadViewerPromise;
+    if (_pannellumViewerPromise) return _pannellumViewerPromise;
 
     // create ms-wrapper, a photo wrapper class
     let wrap = context.container().select('.photoviewer').selectAll('.ms-wrapper')
@@ -529,7 +553,7 @@ export default {
       }
     });
 
-    _loadViewerPromise = new Promise((resolve, reject) => {
+    _pannellumViewerPromise = new Promise((resolve, reject) => {
       let loadedCount = 0;
       function loaded() {
         loadedCount += 1;
@@ -562,38 +586,39 @@ export default {
         .on('load.serviceStreetside', loaded)
         .on('error.serviceStreetside', reject);
     })
-    .catch(() => {
-      _loadViewerPromise = null;
+    .catch(err => {
+      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      _pannellumViewerPromise = null;
     });
 
-    return _loadViewerPromise;
+    return _pannellumViewerPromise;
 
     function step(stepBy) {
       return () => {
-        let viewer = context.container().select('.photoviewer');
-        let selected = viewer.empty() ? undefined : viewer.datum();
+        const viewer = context.container().select('.photoviewer');
+        const selected = viewer.empty() ? undefined : viewer.datum();
         if (!selected) return;
 
         let nextID = (stepBy === 1 ? selected.ne : selected.pr);
-        let yaw = _pannellumViewer.getYaw();
-        let ca = selected.ca + yaw;
-        let origin = selected.loc;
+        const yaw = _pannellumViewer.getYaw();
+        const ca = selected.ca + yaw;
+        const origin = selected.loc;
 
         // construct a search trapezoid pointing out from current bubble
         const meters = 35;
-        let p1 = [
+        const p1 = [
           origin[0] + geoMetersToLon(meters / 5, origin[1]),
           origin[1]
         ];
-        let p2 = [
+        const p2 = [
           origin[0] + geoMetersToLon(meters / 2, origin[1]),
           origin[1] + geoMetersToLat(meters)
         ];
-        let p3 = [
+        const p3 = [
           origin[0] - geoMetersToLon(meters / 2, origin[1]),
           origin[1] + geoMetersToLat(meters)
         ];
-        let p4 = [
+        const p4 = [
           origin[0] - geoMetersToLon(meters / 5, origin[1]),
           origin[1]
         ];
@@ -613,30 +638,30 @@ export default {
 
         // find nearest other bubble in the search polygon
         let minDist = Infinity;
-        _ssCache.bubbles.rtree.search(extent.bbox())
+        _streetsideCache.rtree.search(extent.bbox())
           .forEach(d => {
-            if (d.data.key === selected.key) return;
+            if (d.data.id === selected.id) return;
             if (!geomPointInPolygon(d.data.loc, poly)) return;
 
             let dist = vecLength(d.data.loc, selected.loc);
-            let theta = selected.ca - d.data.ca;
-            let minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
+            const theta = selected.ca - d.data.ca;
+            const minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
             if (minTheta > 20) {
               dist += 5;  // penalize distance if camera angles don't match
             }
 
             if (dist < minDist) {
-              nextID = d.data.key;
+              nextID = d.data.id;
               minDist = dist;
             }
           });
 
-        let nextBubble = nextID && that.cachedImage(nextID);
+        const nextBubble = nextID && that.cachedImage(nextID);
         if (!nextBubble) return;
 
         context.map().centerEase(nextBubble.loc);
 
-        that.selectImage(context, nextBubble.key)
+        that.selectImage(context, nextBubble.id)
           .yaw(yaw)
           .showViewer(context);
       };
@@ -695,9 +720,9 @@ export default {
   /**
    * selectImage().
    */
-  selectImage: function(context, key) {
+  selectImage: function(context, bubbleID) {
     let that = this;
-    let d = this.cachedImage(key);
+    let d = this.cachedImage(bubbleID);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(d);
@@ -713,7 +738,7 @@ export default {
 
     if (!d) return this;
 
-    this.updateUrlImage(key);
+    this.updateUrlImage(bubbleID);
 
     _sceneOptions.northOffset = d.ca;
 
@@ -748,7 +773,7 @@ export default {
         };
 
         _sceneOptions = Object.assign(_sceneOptions, viewstate);
-        that.selectImage(context, d.key)
+        that.selectImage(context, d.id)
           .showViewer(context);
       });
 
@@ -802,17 +827,22 @@ export default {
       .attr('class', 'image-report-link')
       .attr('target', '_blank')
       .attr('href', 'https://www.bing.com/maps/privacyreport/streetsideprivacyreport?bubbleid=' +
-        encodeURIComponent(d.key) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
+        encodeURIComponent(d.id) + '&focus=photo&lat=' + d.loc[1] + '&lng=' + d.loc[0] + '&z=17')
       .html(t.html('streetside.report'));
 
 
-    let bubbleIdQuadKey = d.key.toString(4);
+
+// const streetsideImagesApi = 'https://t.ssl.ak.tiles.virtualearth.net/tiles/';
+const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
+
+    let bubbleIdQuadKey = d.id.toString(4);
     const paddingNeeded = 16 - bubbleIdQuadKey.length;
     for (let i = 0; i < paddingNeeded; i++) {
       bubbleIdQuadKey = '0' + bubbleIdQuadKey;
     }
     const imgUrlPrefix = streetsideImagesApi + 'hs' + bubbleIdQuadKey;
-    const imgUrlSuffix = '.jpg?g=6338&n=z';
+    // const imgUrlSuffix = '.jpg?g=6338&n=z';
+    const imgUrlSuffix = '?g=13305&n=z';
 
     // Cubemap face code order matters here: front=01, right=02, back=03, left=10, up=11, down=12
     const faceKeys = ['01','02','03','10','11','12'];
@@ -837,7 +867,7 @@ export default {
           that.initViewer();
         } else {
           // make a new scene
-          _currScene += 1;
+          _currScene++;
           let sceneID = _currScene.toString();
           _pannellumViewer
             .addScene(sceneID, _sceneOptions)
@@ -856,11 +886,6 @@ export default {
   },
 
 
-  getSequenceKeyForBubble: function(d) {
-    return d && d.sequenceKey;
-  },
-
-
   // Updates the currently highlighted sequence and selected bubble.
   // Reset is only necessary when interacting with the viewport because
   // this implicitly changes the currently selected bubble/sequence
@@ -876,29 +901,29 @@ export default {
         .classed('currentView', false);
     }
 
-    let hoveredBubbleKey = hovered && hovered.key;
-    let hoveredSequenceKey = this.getSequenceKeyForBubble(hovered);
-    let hoveredSequence = hoveredSequenceKey && _ssCache.sequences[hoveredSequenceKey];
-    let hoveredBubbleKeys =  (hoveredSequence && hoveredSequence.bubbles.map(d => d.key)) || [];
+    let hoveredBubbleID = hovered?.id;
+    let hoveredSequenceID = hovered?.sequenceID;
+    let hoveredSequence = hoveredSequenceID && _streetsideCache.sequences.get(hoveredSequenceID);
+    let hoveredBubbleIDs =  (hoveredSequence && hoveredSequence.bubbles.map(d => d.id)) || [];
 
     let viewer = context.container().select('.photoviewer');
     let selected = viewer.empty() ? undefined : viewer.datum();
-    let selectedBubbleKey = selected && selected.key;
-    let selectedSequenceKey = this.getSequenceKeyForBubble(selected);
-    let selectedSequence = selectedSequenceKey && _ssCache.sequences[selectedSequenceKey];
-    let selectedBubbleKeys = (selectedSequence && selectedSequence.bubbles.map(d => d.key)) || [];
+    let selectedBubbleID = selected?.id;
+    let selectedSequenceID = selected?.sequenceID;
+    let selectedSequence = selectedSequenceID && _streetsideCache.sequences.get(selectedSequenceID);
+    let selectedBubbleIDs = (selectedSequence && selectedSequence.bubbles.map(d => d.id)) || [];
 
     // highlight sibling viewfields on either the selected or the hovered sequences
-    let highlightedBubbleKeys = utilArrayUnion(hoveredBubbleKeys, selectedBubbleKeys);
+    let highlightedBubbleIDs = utilArrayUnion(hoveredBubbleIDs, selectedBubbleIDs);
 
     context.container().selectAll('.layer-streetside-images .viewfield-group')
-      .classed('highlighted', d => highlightedBubbleKeys.indexOf(d.key) !== -1)
-      .classed('hovered',     d => d.key === hoveredBubbleKey)
-      .classed('currentView', d => d.key === selectedBubbleKey);
+      .classed('highlighted', d => highlightedBubbleIDs.indexOf(d.id) !== -1)
+      .classed('hovered',     d => d.id === hoveredBubbleID)
+      .classed('currentView', d => d.id === selectedBubbleID);
 
     context.container().selectAll('.layer-streetside-images .sequence')
-      .classed('highlighted', d => d.properties.key === hoveredSequenceKey)
-      .classed('currentView', d => d.properties.key === selectedSequenceKey);
+      .classed('highlighted', d => d.properties.id === hoveredSequenceID)
+      .classed('currentView', d => d.properties.id === selectedSequenceID);
 
     // update viewfields if needed
     context.container().selectAll('.layer-streetside-images .viewfield-group .viewfield')
@@ -906,7 +931,7 @@ export default {
 
     function viewfieldPath() {
       let d = this.parentNode.__data__;
-      if (d.isPano && d.key !== selectedBubbleKey) {
+      if (d.isPano && d.id !== selectedBubbleID) {
         return 'M 8,13 m -10,0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0';
       } else {
         return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';
@@ -917,11 +942,11 @@ export default {
   },
 
 
-  updateUrlImage: function(imageKey) {
+  updateUrlImage: function(bubbleID) {
     if (!window.mocha) {
       var hash = utilStringQs(window.location.hash);
-      if (imageKey) {
-        hash.photo = 'streetside/' + imageKey;
+      if (bubbleID) {
+        hash.photo = 'streetside/' + bubbleID;
       } else {
         delete hash.photo;
       }
@@ -934,6 +959,6 @@ export default {
    * cache().
    */
   cache: function () {
-    return _ssCache;
+    return _streetsideCache;
   }
 };

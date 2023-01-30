@@ -112,7 +112,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
     const photoData = this.filterImages(images);
 
     for (const d of sequenceData) {
-      const featureID = `${this.layerID}-sequence-${d.properties.key}`;
+      const featureID = `${this.layerID}-sequence-${d.properties.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -121,7 +121,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         feature.style = LINESTYLE;
         feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        feature.setData(d.properties.key, d);
+        feature.setData(d.properties.id, d);
       }
 
       this.syncFeatureClasses(feature);
@@ -131,7 +131,7 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
 
 
     for (const d of photoData) {
-      const featureID = `${this.layerID}-photo-${d.key}`;
+      const featureID = `${this.layerID}-photo-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
@@ -147,10 +147,10 @@ export class PixiLayerStreetsidePhotos extends AbstractLayer {
         feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.setData(d.key, d);
+        feature.setData(d.id, d);
 
-        if (d.sequenceKey) {
-          feature.addChildData(d.sequenceKey, d.key);
+        if (d.sequenceID) {
+          feature.addChildData(d.sequenceID, d.id);
         }
       }
 

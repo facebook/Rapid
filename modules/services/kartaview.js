@@ -95,30 +95,30 @@ function loadNextTilePage(which, currZoom, url, tile) {
                 throw new Error('No Data');
             }
 
-            var features = data.currentPageItems.map(function(item) {
-                var loc = [+item.lng, +item.lat];
+            var features = data.currentPageItems.map(image => {
+                var loc = [+image.lng, +image.lat];
                 var d;
 
                 if (which === 'images') {
                     d = {
+                        id: image.id,
                         loc: loc,
-                        key: item.id,
-                        ca: +item.heading,
-                        captured_at: (item.shot_date || item.date_added),
-                        captured_by: item.username,
-                        imagePath: item.lth_name,
-                        sequence_id: item.sequence_id,
-                        sequence_index: +item.sequence_index
+                        ca: +image.heading,
+                        captured_at: (image.shot_date || image.date_added),
+                        captured_by: image.username,
+                        imagePath: image.lth_name,
+                        sequenceID: image.sequence_id,
+                        sequenceIndex: +image.sequence_index
                     };
 
                     // cache sequence info
-                    var seq = _oscCache.sequences[d.sequence_id];
+                    var seq = _oscCache.sequences[d.sequenceID];
                     if (!seq) {
                         seq = { rotation: 0, images: [] };
-                        _oscCache.sequences[d.sequence_id] = seq;
+                        _oscCache.sequences[d.sequenceID] = seq;
                     }
-                    seq.images[d.sequence_index] = d;
-                    _oscCache.images.forImageKey[d.key] = d;     // cache imageKey -> image
+                    seq.images[d.sequenceIndex] = d;
+                    _oscCache.images.forImageKey[d.id] = d;     // cache imageKey -> image
                 }
 
                 return {
@@ -146,30 +146,6 @@ function loadNextTilePage(which, currZoom, url, tile) {
 }
 
 
-// // partition viewport into higher zoom tiles
-// function partitionViewport(projection) {
-//     var z = geoScaleToZoom(projection.scale());
-//     var z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-//
-//     var tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
-//     return tiles.map(function(tile) { return tile.wgs84Extent; });
-// }
-//
-//
-// // no more than `limit` results per partition.
-// function searchLimited(limit, projection, rtree) {
-//     limit = limit || 5;
-//
-//     return partitionViewport(projection)
-//         .reduce(function(result, extent) {
-//             var found = rtree.search(extent.bbox())
-//                 .slice(0, limit)
-//                 .map(function(d) { return d.data; });
-//
-//             return (found.length ? result.concat(found) : result);
-//         }, []);
-// }
-
 
 export default {
 
@@ -196,47 +172,42 @@ export default {
 
 
     images: function(projection) {
-        // var limit = 5;
-        // return searchLimited(limit, projection, _oscCache.images.rtree);
-        const viewport = projection.dimensions();
-        const min = [viewport[0][0], viewport[1][1]];
-        const max = [viewport[1][0], viewport[0][1]];
-        const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
-        return _oscCache.images.rtree.search(box).map(d => d.data);
+      const viewport = projection.dimensions();
+      const min = [viewport[0][0], viewport[1][1]];
+      const max = [viewport[1][0], viewport[0][1]];
+      const box = new Extent(projection.invert(min), projection.invert(max)).bbox();
+      return _oscCache.images.rtree.search(box).map(d => d.data);
     },
 
 
     sequences: function(projection) {
-        var viewport = projection.dimensions();
-        var min = [viewport[0][0], viewport[1][1]];
-        var max = [viewport[1][0], viewport[0][1]];
-        var bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-        var sequenceKeys = {};
+      const viewport = projection.dimensions();
+      const min = [viewport[0][0], viewport[1][1]];
+      const max = [viewport[1][0], viewport[0][1]];
+      const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
+      const sequenceIDs = new Set();
 
-        // all sequences for images in viewport
-        _oscCache.images.rtree.search(bbox)
-            .forEach(function(d) { sequenceKeys[d.data.sequence_id] = true; });
+      // Gather all sequences for images in viewport..
+      _oscCache.images.rtree.search(bbox).forEach(d => sequenceIDs.add(d.data.sequenceID));
 
-        // make linestrings from those sequences
-        var lineStrings = [];
-        Object.keys(sequenceKeys)
-            .forEach(function(sequenceKey) {
-                var seq = _oscCache.sequences[sequenceKey];
-                var images = seq && seq.images;
+      // Make GeoJSON LineStrings from those sequences..
+      let lineStrings = [];
+      for (const sequenceID of sequenceIDs) {
+        const sequence = _oscCache.sequences[sequenceID];
+        const images = sequence?.images ?? [];
+        if (!images.length) continue;
 
-                if (images) {
-                    lineStrings.push({
-                        type: 'LineString',
-                        coordinates: images.map(function (d) { return d.loc; }).filter(Boolean),
-                        properties: {
-                            captured_at: images[0] ? images[0].captured_at: null,
-                            captured_by: images[0] ? images[0].captured_by: null,
-                            key: sequenceKey
-                        }
-                    });
-                }
-            });
-        return lineStrings;
+        lineStrings.push({
+          type: 'LineString',
+          coordinates: images.map(d => d.loc).filter(Boolean),
+          properties: {
+            id: sequenceID,
+            captured_at: images[0]?.captured_at,
+            captured_by: images[0]?.captured_by
+          }
+        });
+      }
+      return lineStrings;
     },
 
 
@@ -252,7 +223,6 @@ export default {
 
 
     loadViewerAsync: function(context) {
-
         if (_loadViewerPromise) return _loadViewerPromise;
 
         // add osc-wrapper
@@ -323,8 +293,8 @@ export default {
         function rotate(deg) {
             return function() {
                 if (!_oscSelectedImage) return;
-                var sequenceKey = _oscSelectedImage.sequence_id;
-                var sequence = _oscCache.sequences[sequenceKey];
+                var sequenceID = _oscSelectedImage.sequenceID;
+                var sequence = _oscCache.sequences[sequenceID];
                 if (!sequence) return;
 
                 var r = sequence.rotation || 0;
@@ -351,18 +321,18 @@ export default {
         function step(stepBy) {
             return function() {
                 if (!_oscSelectedImage) return;
-                var sequenceKey = _oscSelectedImage.sequence_id;
-                var sequence = _oscCache.sequences[sequenceKey];
+                var sequenceID = _oscSelectedImage.sequenceID;
+                var sequence = _oscCache.sequences[sequenceID];
                 if (!sequence) return;
 
-                var nextIndex = _oscSelectedImage.sequence_index + stepBy;
+                var nextIndex = _oscSelectedImage.sequenceIndex + stepBy;
                 var nextImage = sequence.images[nextIndex];
                 if (!nextImage) return;
 
                 context.map().centerEase(nextImage.loc);
 
                 that
-                    .selectImage(context, nextImage.key);
+                    .selectImage(context, nextImage.id);
             };
         }
 
@@ -414,9 +384,7 @@ export default {
 
 
     selectImage: function(context, imageKey) {
-
-        var d = this.
-            cachedImage(imageKey);
+        var d = this.cachedImage(imageKey);
 
         _oscSelectedImage = d;
 
@@ -446,7 +414,7 @@ export default {
             .remove();
 
         if (d) {
-            var sequence = _oscCache.sequences[d.sequence_id];
+            var sequence = _oscCache.sequences[d.sequenceID];
             var r = (sequence && sequence.rotation) || 0;
 
             imageWrap
@@ -461,30 +429,30 @@ export default {
                     .attr('class', 'captured_by')
                     .attr('target', '_blank')
                     .attr('href', 'https://kartaview.org/user/' + encodeURIComponent(d.captured_by))
-                    .html('@' + d.captured_by);
+                    .text('@' + d.captured_by);
 
                 attribution
                     .append('span')
-                    .html('|');
+                    .text('|');
             }
 
             if (d.captured_at) {
                 attribution
                     .append('span')
                     .attr('class', 'captured_at')
-                    .html(localeDateString(d.captured_at));
+                    .text(localeDateString(d.captured_at));
 
                 attribution
                     .append('span')
-                    .html('|');
+                    .text('|');
             }
 
             attribution
                 .append('a')
                 .attr('class', 'image-link')
                 .attr('target', '_blank')
-                .attr('href', 'https://kartaview.org/details/' + d.sequence_id + '/' + d.sequence_index)
-                .html('kartaview.org');
+                .attr('href', 'https://kartaview.org/details/' + d.sequenceID + '/' + d.sequenceIndex)
+                .text('kartaview.org');
         }
 
         return this;
@@ -505,11 +473,6 @@ export default {
     },
 
 
-    getSequenceKeyForImage: function(d) {
-        return d && d.sequence_id;
-    },
-
-
     // Updates the currently highlighted sequence and selected bubble.
     // Reset is only necessary when interacting with the viewport because
     // this implicitly changes the currently selected bubble/sequence
@@ -525,29 +488,29 @@ export default {
                 .classed('currentView', false);
         }
 
-        var hoveredImageKey = hovered && hovered.key;
-        var hoveredSequenceKey = this.getSequenceKeyForImage(hovered);
-        var hoveredSequence = hoveredSequenceKey && _oscCache.sequences[hoveredSequenceKey];
-        var hoveredImageKeys = (hoveredSequence && hoveredSequence.images.map(function (d) { return d.key; })) || [];
+        var hoveredImageID = hovered?.id;
+        var hoveredSequenceID = hovered?.sequenceID;
+        var hoveredSequence = hoveredSequenceID && _oscCache.sequences[hoveredSequenceID];
+        var hoveredImageIDs = (hoveredSequence && hoveredSequence.images.map(function (d) { return d.id; })) || [];
 
         var viewer = context.container().select('.photoviewer');
         var selected = viewer.empty() ? undefined : viewer.datum();
-        var selectedImageKey = selected && selected.key;
-        var selectedSequenceKey = this.getSequenceKeyForImage(selected);
-        var selectedSequence = selectedSequenceKey && _oscCache.sequences[selectedSequenceKey];
-        var selectedImageKeys = (selectedSequence && selectedSequence.images.map(function (d) { return d.key; })) || [];
+        var selectedImageID = selected?.id;
+        var selectedSequenceID = selected?.sequenceID;
+        var selectedSequence = selectedSequenceID && _oscCache.sequences[selectedSequenceID];
+        var selectedImageIDs = (selectedSequence && selectedSequence.images.map(function (d) { return d.id; })) || [];
 
         // highlight sibling viewfields on either the selected or the hovered sequences
-        var highlightedImageKeys = utilArrayUnion(hoveredImageKeys, selectedImageKeys);
+        var highlightedImageIDs = utilArrayUnion(hoveredImageIDs, selectedImageIDs);
 
         context.container().selectAll('.layer-kartaview .viewfield-group')
-            .classed('highlighted', function(d) { return highlightedImageKeys.indexOf(d.key) !== -1; })
-            .classed('hovered', function(d) { return d.key === hoveredImageKey; })
-            .classed('currentView', function(d) { return d.key === selectedImageKey; });
+            .classed('highlighted', function(d) { return highlightedImageIDs.indexOf(d.id) !== -1; })
+            .classed('hovered', function(d) { return d.id === hoveredImageID; })
+            .classed('currentView', function(d) { return d.id === selectedImageID; });
 
         context.container().selectAll('.layer-kartaview .sequence')
-            .classed('highlighted', function(d) { return d.properties.key === hoveredSequenceKey; })
-            .classed('currentView', function(d) { return d.properties.key === selectedSequenceKey; });
+            .classed('highlighted', function(d) { return d.properties.id === hoveredSequenceID; })
+            .classed('currentView', function(d) { return d.properties.id === selectedSequenceID; });
 
         // update viewfields if needed
         context.container().selectAll('.layer-kartaview .viewfield-group .viewfield')
@@ -555,7 +518,7 @@ export default {
 
         function viewfieldPath() {
             var d = this.parentNode.__data__;
-            if (d.isPano && d.key !== selectedImageKey) {
+            if (d.isPano && d.id !== selectedImageID) {
                 return 'M 8,13 m -10,0 a 10,10 0 1,0 20,0 a 10,10 0 1,0 -20,0';
             } else {
                 return 'M 6,9 C 8,8.4 8,8.4 10,9 L 16,-2 C 12,-5 4,-5 0,-2 z';

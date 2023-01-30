@@ -35,198 +35,173 @@ let _mlyViewerFilter = ['all'];
 
 // Load all data for the specified type from Mapillary vector tiles
 function loadTiles(which, url, maxZoom, projection) {
-    // determine the needed tiles to cover the view
-    const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(projection).tiles;
-
-    tiles.forEach(function(tile) {
-        loadTile(which, url, tile);
-    });
+  // determine the needed tiles to cover the view
+  const tiles = tiler.zoomRange(minZoom, maxZoom).getTiles(projection).tiles;
+  tiles.forEach(tile => loadTile(which, url, tile));
 }
 
 
 // Load all data for the specified type from one vector tile
 function loadTile(which, url, tile) {
-    const cache = _mlyCache.requests;
-    const tileId = `${tile.id}-${which}`;
-    if (cache.loaded[tileId] || cache.inflight[tileId]) return;
-    const controller = new AbortController();
-    cache.inflight[tileId] = controller;
-    const requestUrl = url
-        .replace('{x}', tile.xyz[0])
-        .replace('{y}', tile.xyz[1])
-        .replace('{z}', tile.xyz[2]);
+  const cache = _mlyCache.requests;
+  const tileID = `${tile.id}-${which}`;
+  if (cache.loaded[tileID] || cache.inflight[tileID]) return;
 
-    fetch(requestUrl, { signal: controller.signal })
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error(response.status + ' ' + response.statusText);
-            }
-            cache.loaded[tileId] = true;
-            delete cache.inflight[tileId];
-            return response.arrayBuffer();
-        })
-        .then(function(data) {
-            if (!data) {
-                throw new Error('No Data');
-            }
-            loadTileDataToCache(data, tile, which);
+  const controller = new AbortController();
+  cache.inflight[tileID] = controller;
+  const requestUrl = url
+    .replace('{x}', tile.xyz[0])
+    .replace('{y}', tile.xyz[1])
+    .replace('{z}', tile.xyz[2]);
 
-            if (which === 'images') {
-                dispatch.call('loadedImages');
-            } else if (which === 'signs') {
-                dispatch.call('loadedSigns');
-            } else if (which === 'points') {
-                dispatch.call('loadedMapFeatures');
-            }
-        })
-        .catch(function() {
-            cache.loaded[tileId] = true;
-            delete cache.inflight[tileId];
-        });
+  fetch(requestUrl, { signal: controller.signal })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.status + ' ' + response.statusText);
+      }
+      cache.loaded[tileID] = true;
+      return response.arrayBuffer();
+    })
+    .then(data => {
+      if (!data) {
+        throw new Error('No Data');
+      }
+      loadTileDataToCache(data, tile, which);
+
+      if (which === 'images') {
+        dispatch.call('loadedImages');
+      } else if (which === 'signs') {
+        dispatch.call('loadedSigns');
+      } else if (which === 'points') {
+        dispatch.call('loadedMapFeatures');
+      }
+    })
+    .catch(err => {
+      if (err.name === 'AbortError') return;          // ok
+      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      cache.loaded[tileID] = true;  // don't retry
+    })
+    .finally(() => {
+      delete cache.inflight[tileID];
+    });
 }
 
 
 // Load the data from the vector tile into cache
 function loadTileDataToCache(data, tile, which) {
-    const vectorTile = new VectorTile(new Protobuf(data));
-    let features,
-        cache,
-        layer,
-        i,
-        feature,
-        loc,
-        d;
+  const vectorTile = new VectorTile(new Protobuf(data));
+  let features, cache, layer, i, feature, loc, d;
 
-    if (vectorTile.layers.hasOwnProperty('image')) {
-        features = [];
-        cache = _mlyCache.images;
-        layer = vectorTile.layers.image;
+  if (vectorTile.layers.hasOwnProperty('image')) {
+    features = [];
+    cache = _mlyCache.images;
+    layer = vectorTile.layers.image;
 
-        for (i = 0; i < layer.length; i++) {
-            feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-            loc = feature.geometry.coordinates;
-            d = {
-                loc: loc,
-                captured_at: feature.properties.captured_at,
-                ca: feature.properties.compass_angle,
-                id: feature.properties.id,
-                isPano: feature.properties.is_pano,
-                sequence_id: feature.properties.sequence_id,
-            };
-            cache.forImageId[d.id] = d;
-            features.push({
-                minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-            });
-        }
-        if (cache.rtree) {
-            cache.rtree.load(features);
-        }
+    for (i = 0; i < layer.length; i++) {
+      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      loc = feature.geometry.coordinates;
+      d = {
+        id: feature.properties.id,
+        loc: loc,
+        captured_at: feature.properties.captured_at,
+        ca: feature.properties.compass_angle,
+        isPano: feature.properties.is_pano,
+        sequenceID: feature.properties.sequence_id,
+      };
+      cache.forImageID[d.id] = d;
+      features.push({
+        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
+      });
     }
-
-    if (vectorTile.layers.hasOwnProperty('sequence')) {
-        features = [];
-        cache = _mlyCache.sequences;
-        layer = vectorTile.layers.sequence;
-
-        for (i = 0; i < layer.length; i++) {
-            feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-            if (cache.lineString[feature.properties.id]) {
-                cache.lineString[feature.properties.id].push(feature);
-            } else {
-                cache.lineString[feature.properties.id] = [feature];
-            }
-        }
+    if (cache.rtree) {
+      cache.rtree.load(features);
     }
+  }
 
-    if (vectorTile.layers.hasOwnProperty('point')) {
-        features = [];
-        cache = _mlyCache[which];
-        layer = vectorTile.layers.point;
+  if (vectorTile.layers.hasOwnProperty('sequence')) {
+    features = [];
+    cache = _mlyCache.sequences;
+    layer = vectorTile.layers.sequence;
 
-        for (i = 0; i < layer.length; i++) {
-            feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-            loc = feature.geometry.coordinates;
-
-            d = {
-                loc: loc,
-                id: feature.properties.id,
-                first_seen_at: feature.properties.first_seen_at,
-                last_seen_at: feature.properties.last_seen_at,
-                value: feature.properties.value
-            };
-            features.push({
-                minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-            });
-        }
-        if (cache.rtree) {
-            cache.rtree.load(features);
-        }
+    for (i = 0; i < layer.length; i++) {
+      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      if (cache.lineString[feature.properties.id]) {
+        cache.lineString[feature.properties.id].push(feature);
+      } else {
+        cache.lineString[feature.properties.id] = [feature];
+      }
     }
+  }
 
-    if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
-        features = [];
-        cache = _mlyCache[which];
-        layer = vectorTile.layers.traffic_sign;
+  if (vectorTile.layers.hasOwnProperty('point')) {
+    features = [];
+    cache = _mlyCache[which];
+    layer = vectorTile.layers.point;
 
-        for (i = 0; i < layer.length; i++) {
-            feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-            loc = feature.geometry.coordinates;
+    for (i = 0; i < layer.length; i++) {
+      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      loc = feature.geometry.coordinates;
 
-            d = {
-                loc: loc,
-                id: feature.properties.id,
-                first_seen_at: feature.properties.first_seen_at,
-                last_seen_at: feature.properties.last_seen_at,
-                value: feature.properties.value
-            };
-            features.push({
-                minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-            });
-        }
-        if (cache.rtree) {
-            cache.rtree.load(features);
-        }
+      d = {
+        id: feature.properties.id,
+        loc: loc,
+        first_seen_at: feature.properties.first_seen_at,
+        last_seen_at: feature.properties.last_seen_at,
+        value: feature.properties.value
+      };
+      features.push({
+        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
+      });
     }
+    if (cache.rtree) {
+      cache.rtree.load(features);
+    }
+  }
+
+  if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
+    features = [];
+    cache = _mlyCache[which];
+    layer = vectorTile.layers.traffic_sign;
+
+    for (i = 0; i < layer.length; i++) {
+      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      loc = feature.geometry.coordinates;
+
+      d = {
+        id: feature.properties.id,
+        loc: loc,
+        first_seen_at: feature.properties.first_seen_at,
+        last_seen_at: feature.properties.last_seen_at,
+        value: feature.properties.value
+      };
+      features.push({
+        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
+      });
+    }
+    if (cache.rtree) {
+      cache.rtree.load(features);
+    }
+  }
 }
 
 
 // Get data from the API
 function loadData(url) {
-    return fetch(url)
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error(response.status + ' ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(function(result) {
-            if (!result) {
-                return [];
-            }
-            return result.data || [];
-        });
+  return fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.status + ' ' + response.statusText);
+      }
+      return response.json();
+    })
+    .then(result => {
+      return result?.data || [];
+    })
+    .catch(err => {
+      if (err.name === 'AbortError') return;          // ok
+      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+    });
 }
-
-
-// // Partition viewport into higher zoom tiles
-// function partitionViewport(projection) {
-//     const z = geoScaleToZoom(projection.scale());
-//     const z2 = (Math.ceil(z * 2) / 2) + 2.5;   // round to next 0.5 and add 2.5
-//     const tiles = tiler.zoomRange(z2).getTiles(projection).tiles;
-//     return tiles.map(tile => tile.wgs84Extent);
-// }
-//
-//
-// // Return no more than `limit` results per partition.
-// function searchLimited(limit, projection, rtree) {
-//     limit = limit || 5;
-//
-//     return partitionViewport(projection)
-//         .reduce(function(result, extent) {
-//             const found = rtree.search(extent.bbox()).slice(0, limit).map(d => d.data);
-//             return (found.length ? result.concat(found) : result);
-//         }, []);
-// }
 
 
 export default {
@@ -246,8 +221,8 @@ export default {
         }
 
         _mlyCache = {
-            images: { rtree: new RBush(), forImageId: {} },
-            image_detections: { forImageId: {} },
+            images: { rtree: new RBush(), forImageID: {} },
+            image_detections: { forImageID: {} },
             signs: { rtree: new RBush() },
             points: { rtree: new RBush() },
             sequences: { rtree: new RBush(), lineString: {} },
@@ -259,8 +234,6 @@ export default {
 
     // Get visible images
     images: function(projection) {
-        // const limit = 5;
-        // return searchLimited(limit, projection, _mlyCache.images.rtree);
         const viewport = projection.dimensions();
         const min = [viewport[0][0], viewport[1][1]];
         const max = [viewport[1][0], viewport[0][1]];
@@ -270,8 +243,6 @@ export default {
 
     // Get visible traffic signs
     signs: function(projection) {
-        // const limit = 5;
-        // return searchLimited(limit, projection, _mlyCache.signs.rtree);
         const viewport = projection.dimensions();
         const min = [viewport[0][0], viewport[1][1]];
         const max = [viewport[1][0], viewport[0][1]];
@@ -281,8 +252,6 @@ export default {
 
     // Get visible map (point) features
     mapFeatures: function(projection) {
-        // const limit = 5;
-        // return searchLimited(limit, projection, _mlyCache.points.rtree);
         const viewport = projection.dimensions();
         const min = [viewport[0][0], viewport[1][1]];
         const max = [viewport[1][0], viewport[0][1]];
@@ -291,8 +260,8 @@ export default {
     },
 
     // Get cached image by id
-    cachedImage: function(imageId) {
-        return _mlyCache.images.forImageId[imageId];
+    cachedImage: function(imageID) {
+        return _mlyCache.images.forImageID[imageID];
     },
 
     // Get visible sequences
@@ -301,17 +270,17 @@ export default {
         const min = [viewport[0][0], viewport[1][1]];
         const max = [viewport[1][0], viewport[0][1]];
         const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
-        const sequenceIds = {};
+        const sequenceIDs = {};
         let lineStrings = [];
 
         _mlyCache.images.rtree.search(bbox)
             .forEach(function(d) {
-                if (d.data.sequence_id) {
-                    sequenceIds[d.data.sequence_id] = true;
+                if (d.data.sequenceID) {
+                    sequenceIDs[d.data.sequenceID] = true;
                 }
             });
 
-        Object.keys(sequenceIds).forEach(function(sequenceId) {
+        Object.keys(sequenceIDs).forEach(function(sequenceId) {
             if (_mlyCache.sequences.lineString[sequenceId]) {
                 lineStrings = lineStrings.concat(_mlyCache.sequences.lineString[sequenceId]);
             }
@@ -521,11 +490,11 @@ export default {
 
 
     // Update the URL with current image id
-    updateUrlImage: function(imageId) {
+    updateUrlImage: function(imageID) {
         if (!window.mocha) {
             const hash = utilStringQs(window.location.hash);
-            if (imageId) {
-                hash.photo = 'mapillary/' + imageId;
+            if (imageID) {
+                hash.photo = 'mapillary/' + imageID;
             } else {
                 delete hash.photo;
             }
@@ -613,9 +582,9 @@ export default {
 
 
     // Move to an image
-    selectImage: function(context, imageId) {
-        if (_mlyViewer && imageId) {
-            _mlyViewer.moveTo(imageId)
+    selectImage: function(context, imageID) {
+        if (_mlyViewer && imageID) {
+            _mlyViewer.moveTo(imageID)
                 .catch(function(e) {
                     console.error('mly3', e); // eslint-disable-line no-console
                 });
@@ -645,7 +614,7 @@ export default {
                 id: image.id,
                 loc: [image.originalLngLat.lng, image.originalLngLat.lat],
                 isPano: image.cameraType === 'spherical',
-                sequence_id: image.sequenceId
+                sequenceID: image.sequenceId
             };
         } else {
             _mlyActiveImage = null;
@@ -656,11 +625,11 @@ export default {
     // Update the currently highlighted sequence and selected bubble.
     setStyles: function(context, hovered) {
         const hoveredImageId = hovered && hovered.id;
-        const hoveredSequenceId = hovered && hovered.sequence_id;
-        const selectedSequenceId = _mlyActiveImage && _mlyActiveImage.sequence_id;
+        const hoveredSequenceId = hovered && hovered.sequenceID;
+        const selectedSequenceId = _mlyActiveImage && _mlyActiveImage.sequenceID;
 
         context.container().selectAll('.layer-mapillary .viewfield-group')
-            .classed('highlighted', function(d) { return (d.sequence_id === selectedSequenceId) || (d.id === hoveredImageId); })
+            .classed('highlighted', function(d) { return (d.sequenceID === selectedSequenceId) || (d.id === hoveredImageId); })
             .classed('hovered', function(d) { return d.id === hoveredImageId; });
 
         context.container().selectAll('.layer-mapillary .sequence')
@@ -672,28 +641,28 @@ export default {
 
 
     // Get detections for the current image and shows them in the image viewer
-    updateDetections: function(imageId, url) {
+    updateDetections: function(imageID, url) {
         if (!_mlyViewer || _mlyFallback) return;
-        if (!imageId) return;
+        if (!imageID) return;
         const cache = _mlyCache.image_detections;
-        if (cache.forImageId[imageId]) {
-            showDetections(_mlyCache.image_detections.forImageId[imageId]);
+        if (cache.forImageID[imageID]) {
+            showDetections(_mlyCache.image_detections.forImageID[imageID]);
         } else {
             loadData(url)
                 .then(detections => {
                     detections.forEach(function(detection) {
-                        if (!cache.forImageId[imageId]) {
-                            cache.forImageId[imageId] = [];
+                        if (!cache.forImageID[imageID]) {
+                            cache.forImageID[imageID] = [];
                         }
-                        cache.forImageId[imageId].push({
+                        cache.forImageID[imageID].push({
                             geometry: detection.geometry,
                             id: detection.id,
-                            image_id: imageId,
+                            image_id: imageID,
                             value:detection.value
                         });
                     });
 
-                    showDetections(_mlyCache.image_detections.forImageId[imageId] || []);
+                    showDetections(_mlyCache.image_detections.forImageID[imageID] || []);
                 });
         }
 
