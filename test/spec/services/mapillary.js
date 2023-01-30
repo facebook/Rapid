@@ -143,10 +143,10 @@ describe('iD.serviceMapillary', () => {
         }
       };
 
-      mapillary.cache().sequences.lineString['-'] = [gj];
+      mapillary.cache().sequences = new Map().set('-', [gj]);
 
       const res = mapillary.sequences(context.projection);
-      expect(res).to.deep.eql([gj]);
+      expect(res).to.deep.eql([[gj]]);
     });
   });
 

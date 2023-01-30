@@ -114,22 +114,27 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     const sequenceData = this.filterSequences(sequences);
     const photoData = this.filterImages(images);
 
-    for (const d of sequenceData) {
-      const featureID = `${this.layerID}-sequence-${d.properties.id}`;
-      let feature = this.features.get(featureID);
+    // For each sequence, expect an Array of LineStrings
+    for (const lineStrings of sequenceData) {
+      for (let i = 0; i < lineStrings.length; ++i) {
+        const d = lineStrings[i];
+        const sequenceID = d.properties.id;
+        const featureID = `${this.layerID}-sequence-${sequenceID}-${i}`;
+        let feature = this.features.get(featureID);
 
-      if (!feature) {
-        feature = new PixiFeatureLine(this, featureID);
-        feature.geometry.setCoords(d.geometry.coordinates);
-        feature.style = LINESTYLE;
-        feature.parentContainer = parentContainer;
-        feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
-        feature.setData(d.properties.id, d);
+        if (!feature) {
+          feature = new PixiFeatureLine(this, featureID);
+          feature.geometry.setCoords(d.geometry.coordinates);
+          feature.style = LINESTYLE;
+          feature.parentContainer = parentContainer;
+          feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
+          feature.setData(sequenceID, d);
+        }
+
+        this.syncFeatureClasses(feature);
+        feature.update(projection, zoom);
+        this.retainFeature(feature, frame);
       }
-
-      this.syncFeatureClasses(feature);
-      feature.update(projection, zoom);
-      this.retainFeature(feature, frame);
     }
 
 

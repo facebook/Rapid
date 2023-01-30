@@ -441,7 +441,7 @@ export default {
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
     let result = new Map();  // Map(sequenceID -> sequence geojson)
 
-    // gather sequences for bubbles in viewport
+    // Gather sequences for bubbles in viewport
     for (const box of _streetsideCache.rtree.search(bbox)) {
       const sequenceID = box.data.sequenceID;
       if (!sequenceID) continue;  // no sequence for this bubble
