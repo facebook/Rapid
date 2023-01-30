@@ -118,7 +118,7 @@ function loadNextTilePage(which, currZoom, url, tile) {
                         _oscCache.sequences[d.sequenceID] = seq;
                     }
                     seq.images[d.sequenceIndex] = d;
-                    _oscCache.images.forImageKey[d.id] = d;     // cache imageKey -> image
+                    _oscCache.images.forImageID[d.id] = d;     // cache imageKey -> image
                 }
 
                 return {
@@ -163,7 +163,7 @@ export default {
         }
 
         _oscCache = {
-            images: { inflight: {}, loaded: {}, nextPage: {}, rtree: new RBush(), forImageKey: {} },
+            images: { inflight: {}, loaded: {}, nextPage: {}, rtree: new RBush(), forImageID: {} },
             sequences: {}
         };
 
@@ -212,7 +212,7 @@ export default {
 
 
     cachedImage: function(imageKey) {
-        return _oscCache.images.forImageKey[imageKey];
+        return _oscCache.images.forImageID[imageKey];
     },
 
 

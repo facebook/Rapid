@@ -10,7 +10,6 @@ import { t, localizer } from '../core/localizer';
 import { jsonpRequest } from '../util/jsonp_request';
 import { utilRebind } from '../util';
 
-const bubbleAppKey = 'AuftgJsO0Xs8Ts4M1xZUQJQXJNsvmh3IV8DkNieCiy3tCwCUMq76-WpkrBtNAuEm';
 const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
 const TILEZOOM = 16.5;
@@ -70,23 +69,22 @@ function loadTiles(projection, margin) {
     const tileID = tile.id;
     if (_streetsideCache.loaded.has(tileID) || _streetsideCache.inflight.has(tileID)) continue;
 
-    Promise.all([
-      fetchMetadataAsync(tile),
-      fetchBubblesAsync(tile)
-    ])
-    .then(processResults)
-    .catch(err => {
-      if (err.name === 'AbortError') return;          // ok
-      if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
-    });
+    // Promise.all([fetchMetadataAsync(tile), fetchBubblesAsync(tile)])
+    fetchBubblesAsync(tile)
+      .then(processResults)
+      .catch(err => {
+        if (err.name === 'AbortError') return;          // ok
+        if (err instanceof Error) console.error(err);   // eslint-disable-line no-console
+      });
   }
 
 
   function processResults(results) {
-    const metadata = results[0];
-
-    _streetsideCache.loaded.add(results[1].tile.id);
-    const bubbles = results[1].data;
+    // const metadata = results[0];
+    // _streetsideCache.loaded.add(results[1].tile.id);
+    // const bubbles = results[1].data;
+    _streetsideCache.loaded.add(results.tile.id);
+    const bubbles = results.data;
     if (!bubbles || bubbles.error) return;
 
     // [].shift() removes the first element, some statistics info, not a bubble point
@@ -220,11 +218,13 @@ function fetchBubblesAsync(tile) {
   // Wrap JSONP request in an abortable Promise
   const controller = new AbortController();
   const promise = new Promise((resolve, reject) => {
+    let onAbort;
     const request = jsonpRequest(bubbleURL, data => {
-      controller.signal.removeEventListener('abort', onAbort);
+      if (onAbort) controller.signal.removeEventListener('abort', onAbort);
       resolve({ data: data, tile: tile });
     });
-    const onAbort = () => {
+
+    onAbort = () => {
       controller.signal.removeEventListener('abort', onAbort);
       request.abort();
       reject(new DOMException('Aborted', 'AbortError'));

@@ -43,7 +43,7 @@ of iD (e.g. `https://mapwith.ai/rapid`), the following parameters are available
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.<br/>
   _Example:_ `offset=-10,5`
 * __`photo_overlay`__ - The street-level photo overlay layers to enable.<br/>
-  _Example:_ `photo_overlay=streetside,mapillary,openstreetcam`<br/>
+  _Example:_ `photo_overlay=streetside,mapillary,kartaview`<br/>
   _Available values:_ `streetside` (Microsoft Bing), `mapillary`, `mapillary-signs`, `mapillary-map-features`, `kartaview`
 * __`photo_dates`__ - The range of capture dates by which to filter street-level photos. Dates are given in YYYY-MM-DD format and separated by `_`. One-sided ranges are supported.<br/>
   _Example:_ `photo_dates=2019-01-01_2020-12-31`, `photo_dates=2019-01-01_`, `photo_dates=_2020-12-31`<br/>
@@ -51,7 +51,7 @@ of iD (e.g. `https://mapwith.ai/rapid`), the following parameters are available
   _Example:_ `photo_user=quincylvania`, `photo_user=quincylvania,chrisbeddow`<br/>
 * __`photo`__ - The service and ID of the street-level photo to show.<br/>
   _Example:_ `photo=streetside/718514589`<br/>
-  _Available prefixes:_ `streetside/`, `mapillary/`, `openstreetcam/`
+  _Available prefixes:_ `streetside/`, `mapillary/`, `kartaview/`
 * __`presets`__ - A comma-separated list of preset IDs. These will be the only presets the user may select.<br/>
   _Example:_ `presets=building,highway/residential,highway/unclassified`
 * __`rtl=true`__ - Force iD into right-to-left mode (useful for testing).
