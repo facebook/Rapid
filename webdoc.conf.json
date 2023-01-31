@@ -1,0 +1,54 @@
+{
+    "tags": {
+        "allowUnknownTags": false
+    },
+    "source": {
+        "include": [
+            "modules"],
+        "excludePattern": "(node_modules|data|test|scripts|config|css|docs)"
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "template": {
+        "outputSourceFiles": true,
+        "readme": "./README.md",
+        "repository": "https://github.com/facebook/RapiD/"
+    },
+    "templates": {
+        "cleverLinks"   : false,
+        "monospaceLinks": false,
+        "default"       : {
+            "outputSourceFiles" : true
+        },
+        "applicationName": "Rapid",
+        "footer"        : "Made with ♥ by the Maps Geo Team at Meta",
+        "copyright"     : "RapiD Copyright © 2017 by iD Contributors.",
+        "disqus": "",
+        "openGraph": {
+            "title": "",
+            "type": "website",
+            "image": "",
+            "site_name": "",
+            "url": ""
+        },
+        "meta": {
+            "title": "RapiD Code Documentation",
+            "description": "Documentation for RapiD Application Source Code",
+            "keyword": "docs, documentation, pixi, pixijs, renderer, html5, javascript, jsdoc, meta, OSM, maps, mapping, editing"
+        },
+        "linenums"      : true
+    },
+    "plugin/markdown"  : {
+        "parser"        : "gfm",
+        "hardwrap"      : false
+    },
+    "opts": {
+        "encoding"      : "utf8",
+        "recurse"       : true,
+        "lenient"       : true,
+        "destination"   : "./dist/docs",
+        "template"      : "./node_modules/@pixi/jsdoc-template",
+        "export"        : "./dist/docs/pixi.api.json"
+    }
+}
