@@ -109,11 +109,12 @@ function loadNextTilePage(currZoom, tile) {
         // cache sequence info
         let sequence = _kartaviewCache.sequences.get(d.sequenceID);
         if (!sequence) {
-          sequence = { rotation: 0, images: [] };
+          sequence = { rotation: 0, images: [], v: 0 };
           _kartaviewCache.sequences.set(d.sequenceID, sequence);
         }
         // add image to sequence - note that `images` may be a sparse array
         sequence.images[d.sequenceIndex] = d;
+        sequence.v++;
 
         return {
           minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
@@ -207,6 +208,7 @@ export default {
         coordinates: images.map(d => d.loc).filter(Boolean),
         properties: {
           id: sequenceID,
+          v: sequence.v,
           captured_at: images[0]?.captured_at,
           captured_by: images[0]?.captured_by
         }

@@ -113,14 +113,20 @@ export class PixiLayerKartaPhotos extends AbstractLayer {
 
     for (const d of sequenceData) {
       const featureID = `${this.layerID}-sequence-${d.properties.id}`;
+      const sequenceVersion = d.properties.v || 0;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         feature = new PixiFeatureLine(this, featureID);
-        feature.geometry.setCoords(d.coordinates);
         feature.style = LINESTYLE;
         feature.parentContainer = parentContainer;
         feature.container.zIndex = -100;  // beneath the markers (which should be [-90..90])
+      }
+
+      // If linestring data has changed, replace it.
+      if (feature.v !== sequenceVersion) {
+        feature.v = sequenceVersion;
+        feature.geometry.setCoords(d.coordinates);
         feature.setData(d.properties.id, d);
       }
 

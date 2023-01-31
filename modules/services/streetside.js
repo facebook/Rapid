@@ -159,9 +159,9 @@ function connectSequences() {
       sequence.geojson = {
         type: 'LineString',
         properties: {
+          id: sequence.id,
           captured_at: sequence.bubbles[0] ? sequence.bubbles[0].captured_at : null,
-          captured_by: sequence.bubbles[0] ? sequence.bubbles[0].captured_by : null,
-          id: sequence.id
+          captured_by: sequence.bubbles[0] ? sequence.bubbles[0].captured_by : null
         },
         coordinates: sequence.bubbles.map(d => d.loc)
       };

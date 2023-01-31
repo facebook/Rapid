@@ -203,7 +203,11 @@ describe('iD.serviceKartaview', () => {
       ];
 
       kartaview.cache().rtree.load(data);
-      kartaview.cache().sequences = new Map().set('100', { rotation: 0, images: [ data[0].data, data[1].data, data[2].data ] });
+      kartaview.cache().sequences = new Map().set('100', {
+        rotation: 0,
+        images: [ data[0].data, data[1].data, data[2].data ],
+        v: 1
+      });
 
       const result = kartaview.sequences(context.projection);
       expect(result).to.deep.eql([{
@@ -211,6 +215,7 @@ describe('iD.serviceKartaview', () => {
         coordinates: [[10,0], [10,0], [10,1]],
         properties: {
           id: '100',
+          v: 1,
           captured_at: undefined,
           captured_by: undefined
         }
