@@ -4,8 +4,8 @@
     },
     "source": {
         "include": [
-            "modules"],
-        "excludePattern": "(node_modules|data|test|scripts|config|css|docs)"
+            "modules", "README.md"],
+        "excludePattern": "(dist|node_modules|data|test|scripts|config|css|docs)"
     },
     "plugins": [
         "plugins/markdown"
@@ -49,6 +49,6 @@
         "lenient"       : true,
         "destination"   : "./dist/docs",
         "template"      : "./node_modules/@pixi/jsdoc-template",
-        "export"        : "./dist/docs/pixi.api.json"
+        "export"        : "./dist/docs/rapid.api.json"
     }
 }
