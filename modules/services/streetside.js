@@ -14,7 +14,6 @@ const pannellumViewerCSS = 'pannellum-streetside/pannellum.css';
 const pannellumViewerJS = 'pannellum-streetside/pannellum.js';
 const TILEZOOM = 16.5;
 const tiler = new Tiler().zoomRange(TILEZOOM).skipNullIsland(true);
-
 const dispatch = d3_dispatch('loadedImages', 'viewerChanged');
 
 let _hires = false;
@@ -326,7 +325,7 @@ function qkToXY(qk) {
 
 
 function getQuadKeys() {
-  let dim = _resolution / 256;
+  const dim = _resolution / 256;
   let quadKeys;
 
   if (dim === 16) {
@@ -532,12 +531,12 @@ export default {
 
     controlsEnter
       .append('button')
-      .on('click.back', step(-1))
+      .on('click.back', () => step(-1))
       .html('◄');
 
     controlsEnter
       .append('button')
-      .on('click.forward', step(1))
+      .on('click.forward', () => step(1))
       .html('►');
 
 
@@ -548,9 +547,7 @@ export default {
 
     // Register viewer resize handler
     context.ui().photoviewer.on('resize.streetside', () => {
-      if (_pannellumViewer) {
-        _pannellumViewer.resize();
-      }
+      if (_pannellumViewer) _pannellumViewer.resize();
     });
 
     _pannellumViewerPromise = new Promise((resolve, reject) => {
@@ -594,77 +591,75 @@ export default {
     return _pannellumViewerPromise;
 
     function step(stepBy) {
-      return () => {
-        const viewer = context.container().select('.photoviewer');
-        const selected = viewer.empty() ? undefined : viewer.datum();
-        if (!selected) return;
+      const viewer = context.container().select('.photoviewer');
+      const selected = viewer.empty() ? undefined : viewer.datum();
+      if (!selected) return;
 
-        let nextID = (stepBy === 1 ? selected.ne : selected.pr);
-        const yaw = _pannellumViewer.getYaw();
-        const ca = selected.ca + yaw;
-        const origin = selected.loc;
+      let nextID = (stepBy === 1 ? selected.ne : selected.pr);
+      const yaw = _pannellumViewer.getYaw();
+      const ca = selected.ca + yaw;
+      const origin = selected.loc;
 
-        // construct a search trapezoid pointing out from current bubble
-        const meters = 35;
-        const p1 = [
-          origin[0] + geoMetersToLon(meters / 5, origin[1]),
-          origin[1]
-        ];
-        const p2 = [
-          origin[0] + geoMetersToLon(meters / 2, origin[1]),
-          origin[1] + geoMetersToLat(meters)
-        ];
-        const p3 = [
-          origin[0] - geoMetersToLon(meters / 2, origin[1]),
-          origin[1] + geoMetersToLat(meters)
-        ];
-        const p4 = [
-          origin[0] - geoMetersToLon(meters / 5, origin[1]),
-          origin[1]
-        ];
+      // construct a search trapezoid pointing out from current bubble
+      const meters = 35;
+      const p1 = [
+        origin[0] + geoMetersToLon(meters / 5, origin[1]),
+        origin[1]
+      ];
+      const p2 = [
+        origin[0] + geoMetersToLon(meters / 2, origin[1]),
+        origin[1] + geoMetersToLat(meters)
+      ];
+      const p3 = [
+        origin[0] - geoMetersToLon(meters / 2, origin[1]),
+        origin[1] + geoMetersToLat(meters)
+      ];
+      const p4 = [
+        origin[0] - geoMetersToLon(meters / 5, origin[1]),
+        origin[1]
+      ];
 
-        let poly = [p1, p2, p3, p4, p1];
+      let poly = [p1, p2, p3, p4, p1];
 
-        // rotate it to face forward/backward
-        const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
-        poly = geomRotatePoints(poly, -angle, origin);
+      // rotate it to face forward/backward
+      const angle = (stepBy === 1 ? ca : ca + 180) * (Math.PI / 180);
+      poly = geomRotatePoints(poly, -angle, origin);
 
-        let extent = poly.reduce((extent, point) => {
-          // update extent in place
-          extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
-          extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
-          return extent;
-        }, new Extent());
+      let extent = poly.reduce((extent, point) => {
+        // update extent in place
+        extent.min = [ Math.min(extent.min[0], point[0]), Math.min(extent.min[1], point[1]) ];
+        extent.max = [ Math.max(extent.max[0], point[0]), Math.max(extent.max[1], point[1]) ];
+        return extent;
+      }, new Extent());
 
-        // find nearest other bubble in the search polygon
-        let minDist = Infinity;
-        _streetsideCache.rtree.search(extent.bbox())
-          .forEach(d => {
-            if (d.data.id === selected.id) return;
-            if (!geomPointInPolygon(d.data.loc, poly)) return;
+      // find nearest other bubble in the search polygon
+      let minDist = Infinity;
+      _streetsideCache.rtree.search(extent.bbox())
+        .forEach(d => {
+          if (d.data.id === selected.id) return;
+          if (!geomPointInPolygon(d.data.loc, poly)) return;
 
-            let dist = vecLength(d.data.loc, selected.loc);
-            const theta = selected.ca - d.data.ca;
-            const minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
-            if (minTheta > 20) {
-              dist += 5;  // penalize distance if camera angles don't match
-            }
+          let dist = vecLength(d.data.loc, selected.loc);
+          const theta = selected.ca - d.data.ca;
+          const minTheta = Math.min(Math.abs(theta), 360 - Math.abs(theta));
+          if (minTheta > 20) {
+            dist += 5;  // penalize distance if camera angles don't match
+          }
 
-            if (dist < minDist) {
-              nextID = d.data.id;
-              minDist = dist;
-            }
-          });
+          if (dist < minDist) {
+            nextID = d.data.id;
+            minDist = dist;
+          }
+        });
 
-        const nextBubble = nextID && that.cachedImage(nextID);
-        if (!nextBubble) return;
+      const nextBubble = nextID && that.cachedImage(nextID);
+      if (!nextBubble) return;
 
-        context.map().centerEase(nextBubble.loc);
+      context.map().centerEase(nextBubble.loc);
 
-        that.selectImage(context, nextBubble.id)
-          .yaw(yaw)
-          .showViewer(context);
-      };
+      that.selectImage(context, nextBubble.id)
+        .yaw(yaw)
+        .showViewer(context);
     }
   },
 
