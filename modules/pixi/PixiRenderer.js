@@ -34,9 +34,10 @@ const THROTTLE = 250;  // throttled rendering milliseconds (for now)
 export class PixiRenderer extends EventEmitter {
 
   /**
-   * @constructor
    * Create a Pixi application rendering to the given canvas.
    * We also add it as `context.pixi` so that other parts of RapiD can use it.
+   * @constructor
+   * @global
    *
    * @param  context        Global shared application context
    * @param  supersurface   D3 selection to the parent `div` "supersurface"
