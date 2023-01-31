@@ -263,7 +263,7 @@ export class LocationManager extends EventEmitter {
    * Returns a locationSetID for a given locationSet (fallback to `+[Q2]`, world)
    * (The locationSet doesn't necessarily need to be resolved to compute its `id`)
    *
-   * @param  `locationSet`  A locationSet Object, e.g. `{ include: ['us'] }`
+   * @param  `locationSet`  A locationSet {Set} Object, e.g. include: [ 'us' ]
    * @return  String locationSetID, e.g. `+[Q30]`
    */
   locationSetID(locationSet) {

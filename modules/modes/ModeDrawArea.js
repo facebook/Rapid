@@ -145,7 +145,9 @@ export class ModeDrawArea extends AbstractMode {
   /**
    * _actionClose
    * Helper function to force the given way to be closed (start and end at same node)
-   */
+   * @param {string} with the osm id of the way
+   * @returns a modified graph with the wayId closed (i.e. the starting node and final node have been joined)
+  */
   _actionClose(wayId) {
     return function (graph) {
       return graph.replace(graph.entity(wayId).close());
@@ -160,7 +162,7 @@ export class ModeDrawArea extends AbstractMode {
    * @param {*} drawNodeId the transient node ID to swap out
    * @param {*} replacementNodeId the node ID to swap out for the draw Node
    * @param {*} index the index at which to make the replacement
-   * @returns
+   * @returns a modified graph with a replacement node swapped in for the current 'draw' node.
    */
   _actionReplaceDrawNode(wayId, drawNode, replacementNode) {
     return function (graph) {
