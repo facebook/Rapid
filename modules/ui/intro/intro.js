@@ -79,7 +79,6 @@ export function uiIntro(context, skipToRapid) {
     const osm = context.connection();
     const imagery = context.imagery();
     const history = context.history();
-    const rapidLayer = context.scene().layers.get('rapid');
 
     // Save current state
     const original = {
@@ -88,9 +87,15 @@ export function uiIntro(context, skipToRapid) {
       brightness: imagery.brightness,
       baseLayer: imagery.baseLayerSource(),
       overlayLayers: imagery.overlayLayerSources(),
-      historyJSON: history.toJSON(),
-      rapidEnabled: rapidLayer.enabled
+      layerEnabled: new Map(),  // Map(layerID -> Boolean)
+      historyJSON: history.toJSON()
     };
+
+    // Remember which layers were enabled before, enable only certain ones in the walkthrough.
+    for (const [layerID, layer] of context.scene().layers) {
+      original.layerEnabled.set(layerID, layer.enabled);
+    }
+    context.scene().onlyLayers(['background','osm','labels']);
 
     // Show sidebar and disable the sidebar resizing button
     // (this needs to be before `context.inIntro(true)`)
@@ -117,7 +122,6 @@ export function uiIntro(context, skipToRapid) {
     imagery.brightness = 1;
 
     // Setup RapiD Walkthrough dataset and disable service
-    rapidLayer.enabled = false;  // hide except when in the rapid chapter
     let rapidDatasets = context.rapidContext().datasets();
     const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
     Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
@@ -188,13 +192,15 @@ export function uiIntro(context, skipToRapid) {
       if (services.fbMLRoads) {
         services.fbMLRoads.toggle(true);
       }
-      rapidLayer.enabled = original.rapidEnabled;
 
       curtain.disable();
       navwrap.remove();
       context.container().selectAll('button.sidebar-toggle').classed('disabled', false);
 
       // Restore Map State
+      for (const [layerID, layer] of context.scene().layers) {
+        layer.enabled = original.layerEnabled.get(layerID);
+      }
       imagery.baseLayerSource(original.baseLayer);
       original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
       imagery.brightness = original.brightness;
