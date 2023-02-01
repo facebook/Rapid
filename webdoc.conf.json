@@ -47,8 +47,8 @@
         "encoding"      : "utf8",
         "recurse"       : true,
         "lenient"       : true,
-        "destination"   : "./dist/docs",
+        "destination"   : "./docs",
         "template"      : "./node_modules/@pixi/jsdoc-template",
-        "export"        : "./dist/docs/rapid.api.json"
+        "export"        : "./docs/rapid.api.json"
     }
 }
