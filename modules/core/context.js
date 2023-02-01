@@ -643,7 +643,6 @@ export function coreContext() {
 
   /* Projections */
   context.projection = new Projection();
-  context.curtainProjection = new Projection();
 
   /* RapiD */
   let _rapidContext;

@@ -211,7 +211,7 @@ export class UiCurtain {
       if (opts.revealExtent instanceof Extent) {    // An Extent in lon/lat coords
         // Watch out, we can't project min/max directly (because Y is flipped).
         // Construct topLeft, bottomRight corners and project those.
-        const proj = this.context.projection;   // or curtainProjection maybe
+        const proj = this.context.projection;
         let min = proj.project([opts.revealExtent.min[0], opts.revealExtent.max[1]]);  // topLeft
         let max = proj.project([opts.revealExtent.max[0], opts.revealExtent.min[1]]);  // bottomRight
 
