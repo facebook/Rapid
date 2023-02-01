@@ -93,7 +93,7 @@
     "@ideditor/temaki": "~5.2.0",
     "@mapbox/maki": "^8.0.1",
     "@pixi/jsdoc-template": "^2.6.0",
-    "@playwright/test": "^1.29.2",
+    "@playwright/test": "^1.30.0",
     "autoprefixer": "^10.4.13",
     "benchmark": "^2.1.4",
     "btoa": "^1.2.1",
