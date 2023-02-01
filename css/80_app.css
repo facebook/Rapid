@@ -5497,7 +5497,7 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 }
 
 .curtain-darkness {
-/*    pointer-events: all;*/
+    pointer-events: all;
     fill-opacity: 0.7;
     fill: #222;
     fill-rule: evenodd;
