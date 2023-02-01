@@ -26,6 +26,11 @@ const _loco = new LocationConflation();    // instance of a location-conflation 
 export class LocationManager extends EventEmitter {
 
   /**
+ * @typedef {Object} LocationSet
+ * @property {Array.<string>} include a list of location names
+ */
+
+  /**
    * @constructor
    */
   constructor() {
@@ -263,7 +268,7 @@ export class LocationManager extends EventEmitter {
    * Returns a locationSetID for a given locationSet (fallback to `+[Q2]`, world)
    * (The locationSet doesn't necessarily need to be resolved to compute its `id`)
    *
-   * @param  `locationSet`  A locationSet {Set} Object, e.g. include: [ 'us' ]
+   * @param  `locationSet`  A {LocationSet} Object, e.g. `{ include: ['us'] }`
    * @return  String locationSetID, e.g. `+[Q30]`
    */
   locationSetID(locationSet) {
