@@ -27,10 +27,16 @@ export class BehaviorLasso extends AbstractBehavior {
   }
 
 
+  /**
+   * enable
+   * Bind event handlers
+   */
   enable() {
     if (this._enabled) return;
-
     this._enabled = true;
+
+    this._lassoing = false;
+    this._extent = null;
 
     const eventManager = this.context.map().renderer.events;
     eventManager.on('pointerdown', this._pointerdown);
@@ -39,11 +45,16 @@ export class BehaviorLasso extends AbstractBehavior {
   }
 
 
+  /**
+   * disable
+   * Unbind event handlers
+   */
   disable() {
     if (!this._enabled) return;
     this._enabled = false;
 
     this._lassoing = false;
+    this._extent = null;
 
     const eventManager = this.context.map().renderer.events;
     eventManager.off('pointerdown', this._pointerdown);
@@ -52,6 +63,11 @@ export class BehaviorLasso extends AbstractBehavior {
   }
 
 
+  /**
+   * _pointerdown
+   * Handler for pointerdown events.
+   * @param  `e`  A Pixi FederatedPointerEvent
+   */
    _pointerdown() {
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
@@ -70,6 +86,11 @@ export class BehaviorLasso extends AbstractBehavior {
   }
 
 
+  /**
+   * _pointermove
+   * Handler for pointermove events.
+   * @param  `e`  A Pixi FederatedPointerEvent
+   */
   _pointermove() {
     if (!this._lassoing) return;
 
@@ -82,20 +103,25 @@ export class BehaviorLasso extends AbstractBehavior {
     this._extent = this._extent.extend(new Extent(coord));
     this._coords.push(coord);
 
-    //Push the polygon data to the map UI for rendering.
+    // Push the polygon data to the map UI for rendering.
     const mapUILayer = this.context.scene().layers.get('map-ui');
     mapUILayer.lassoPolygonData = this._coords;
     this.context.map().immediateRedraw();
   }
 
 
+  /**
+   * _pointerup
+   * Handler for pointerup events.
+   * @param  `e`  A Pixi FederatedPointerEvent
+   */
   _pointerup() {
     if (!this._lassoing) return;
 
     this._lassoing = false;
     const mapUILayer = this.context.scene().layers.get('map-ui');
 
-    var ids = this._lassoed();
+    const ids = this._lassoed();
     this._coords = [];
     mapUILayer.lassoPolygonData = this._coords;
 

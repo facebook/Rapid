@@ -130,6 +130,28 @@ export class PixiEvents extends EventEmitter {
 
 
   /**
+   * setCursor
+   * Sets the cursor to the given style.
+   * Pixi EventSystem uses the CSS cursor styles, but also allows for custom cursors in the EventSystem
+   * see: https://pixijs.download/release/docs/PIXI.EventSystem.html#setCursor
+   * @param  `style` String for one of the given CSS cursor styles (pass 'inherit' to reset)
+   */
+  setCursor(style) {
+    // this.renderer.pixi.renderer.events.setCursor(style);
+    // this.renderer.pixi.renderer.events.rootBoundary.cursor = style;
+
+    // Pixi doesn't make this easy
+    // On next pointerover event, the root event boundary will reset its perferred cursor
+    // to whatever the .cursor property of the target is. (see EventBoundary.ts line 703)
+    // So we set it on the stage.
+    this.renderer.stage.cursor = style;
+    // We don't know when that event will be, next time user happens to shake the mouse?
+    // So we'll also set it directly on the canvas so it locks in now
+    this.renderer.pixi.view.style.cursor = style;
+  }
+
+
+  /**
    * _checkModifierKeys
    * For pointer and keyboard events that contain properties about the modifier keys,
    *   this code checks those properties and updates the modifierKeys set.

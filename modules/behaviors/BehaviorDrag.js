@@ -107,13 +107,12 @@ export class BehaviorDrag extends AbstractBehavior {
    */
   _pointerdown(e) {
     if (this.lastDown) return;   // a pointer is already down
+    if (e.pointerType === 'mouse' && e.button !== 0) return;   // drag with left button only (if a mouse)
 
     const down = this._getEventData(e);
-
     const isNode = down.target?.data instanceof osmNode;
     const isMidpoint = down.target?.data?.type === 'midpoint';
-    const isDraggableTarget =
-      (isNode || isMidpoint) && down.target?.layerID === 'osm';
+    const isDraggableTarget = (isNode || isMidpoint) && down.target?.layerID === 'osm';
     if (!isDraggableTarget) return;
 
     this.lastDown = down;

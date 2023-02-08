@@ -128,18 +128,20 @@ export class BehaviorMapInteraction extends AbstractBehavior {
    */
   _pointerdown(e) {
     if (this.lastDown) return;   // a pointer is already down
+
+    // If shift is pressed it's a lasso, not a map drag
     const eventManager = this.context.map().renderer.events;
-    if (eventManager.modifierKeys.has('Shift')) return; // shift indicates lasso, not panning!
+    if (eventManager.modifierKeys.has('Shift')) return;
 
     const down = this._getEventData(e);
     const isDraggableTarget = (down.target?.data instanceof osmNode && down.target?.layerID === 'osm');
-    if (isDraggableTarget) return;
 
-    const original = down.originalEvent;
-    if (original.button !== 0) return;   // left button only
+    // If left mouse button over a draggable target, user is dragging that target, not the map
+    if (isDraggableTarget && e.pointerType === 'mouse' && e.button === 0) return;
 
     this.lastDown = down;
     this.gesture = null;
+    eventManager.setCursor('grabbing');
   }
 
 
@@ -189,6 +191,9 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     this.lastDown = null;
     this.gesture = null;
+
+    const eventManager = this.context.map().renderer.events;
+    eventManager.setCursor('inherit');
   }
 
 
