@@ -386,6 +386,7 @@ if (choice && choice.distance < SNAP_DIST) {
     const EPSILON = 1e-6;
     const context = this.context;
     const midpoint = { loc: loc, edge: edge };
+    const scene = context.scene();
     context.pauseChangeDispatch();
 
     // Extend line by adding vertex at midpoint on target edge...
@@ -432,6 +433,8 @@ if (choice && choice.distance < SNAP_DIST) {
         actionAddMidpoint(midpoint, this.firstNode),  // Add first node as midpoint on target edge
       );
     }
+    scene.classData('osm', this.drawWay.id, 'drawing');
+    scene.classData('osm', this.drawNode.id, 'drawing');
 
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
@@ -449,6 +452,7 @@ if (choice && choice.distance < SNAP_DIST) {
   _clickNode(loc, targetNode) {
     const EPSILON = 1e-6;
     const context = this.context;
+    const scene = context.scene();
     context.pauseChangeDispatch();
 
     // Extend line by reuse target node as a vertex...
@@ -507,8 +511,8 @@ if (choice && choice.distance < SNAP_DIST) {
         actionAddEntity(this.drawWay),    // Create new draw way
       );
 
-      context.scene().classData('osm', this.drawWay.id, 'drawing');
-
+      scene.classData('osm', this.drawWay.id, 'drawing');
+      scene.classData('osm', this.drawNode.id, 'drawing');
     }
 
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
