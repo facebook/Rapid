@@ -1,4 +1,4 @@
-describe.skip('UiHash', () => {
+describe.skip('UrlHash', () => {
   mocha.globals('__onhashchange.hash');
 
   let hash, context;
@@ -8,7 +8,7 @@ describe.skip('UiHash', () => {
     const container = d3.select(document.createElement('div'));
     context = iD.coreContext().assetPath('../dist/').init().container(container);
     container.call(context.map().render);
-    hash = new iD.UiHash(context);
+    hash = new iD.UrlHash(context);
   });
 
   afterEach(() => {

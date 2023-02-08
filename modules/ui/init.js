@@ -18,7 +18,6 @@ import { uiFeatureInfo } from './feature_info';
 import { uiFlash } from './flash';
 import { uiFullScreen } from './full_screen';
 import { uiGeolocate } from './geolocate';
-import { UiHash } from './UiHash';
 import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
@@ -340,12 +339,9 @@ export function uiInit(context) {
     ui.onResize();
     map.redrawEnabled = true;
 
-    ui.hash = new UiHash(context);
-    ui.hash.enable();
-
-    if (!context.initialHashParams.map) {  // no `map=` param, go to default location
-      map.centerZoom([0, 0], 2);
-    }
+    // if (!context.initialHashParams.map) {  // no `map=` param, go to default location
+    //   map.centerZoom([0, 0], 2);
+    // }
 
     // Bind events
     window.onbeforeunload = function() {

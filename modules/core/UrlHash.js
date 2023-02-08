@@ -11,7 +11,7 @@ const MAXLAT = 90 - 1e-8;   // allowable latitude range
 
 
 /**
- * `UiHash` is responsible for managing the url hash and query parameters.
+ * `UrlHash` is responsible for managing the url hash and query parameters.
  * It updates the `window.location.hash` and document title
  * It also binds to the hashchange event and responds to changes made by the user directly to the url
  *
@@ -20,7 +20,7 @@ const MAXLAT = 90 - 1e-8;   // allowable latitude range
  *   `doUpdateTitle`  `true` if we should update the document title, `false` if not (default `true`)
  *   `titleBase`      The document title to use (default `Rapid`)
  */
-export class UiHash {
+export class UrlHash {
 
   /**
    * @constructor
@@ -106,9 +106,9 @@ Responsive (user can change)
     context.map().on('draw', this.setMapParams);
     context.imagery().on('imagerychange', this.setImageryParams);
     context.photos().on('photochange', this.setPhotoParams);
-    context.history().on('change.UiHash', this.deferredUpdateTitle);
-    context.on('enter.UiHash', this.deferredUpdateAll);
-    d3_select(window).on('hashchange.UiHash', this.parseHash);
+    context.history().on('change.UrlHash', this.deferredUpdateTitle);
+    context.on('enter.UrlHash', this.deferredUpdateAll);
+    d3_select(window).on('hashchange.UrlHash', this.parseHash);
 
     this.parseHash();
     this.updateTitle();
@@ -132,9 +132,9 @@ Responsive (user can change)
     context.map().off('draw', this.setMapParams);
     context.imagery().off('imagerychange', this.setImageryParams);
     context.photos().off('photochange', this.setPhotoParams);
-    context.history().on('change.UiHash', null);
-    context.on('enter.UiHash', null);
-    d3_select(window).on('hashchange.UiHash', null);
+    context.history().on('change.UrlHash', null);
+    context.on('enter.UrlHash', null);
+    d3_select(window).on('hashchange.UrlHash', null);
   }
 
 
@@ -413,8 +413,7 @@ Responsive (user can change)
 
   /**
    * parseHash
-   * Called when enabling the hash behavior and whenever
-   * the user tries changing the hash in the browser url manually
+   * Called on hashchange event (user changes url manually), and when enabling the hash behavior
    */
   parseHash() {
    if (window.location.hash === this._cachedHash) return;   // nothing changed
@@ -447,17 +446,6 @@ Responsive (user can change)
 //        }
 //      }
 //
-//      // Don't allow the hash location to change too much while drawing
-//      // This can happen if the user accidentally hit the back button.  #3996
-//      const center = context.map().center();
-//      const dist = geoSphericalDistance(center, [mapArgs[2], mapArgs[1]]);
-//      const MAXDIST = 500;
-//
-//      if (mode && mode.id.match(/^draw/) !== null && dist > MAXDIST) {
-//        context.enter('browse');
-//        return;
-//      }
-//    }
   }
 
 }
