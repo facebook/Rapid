@@ -187,7 +187,8 @@ export class ModeDragNode extends AbstractMode {
       const activeIDs = context.activeIDs();
       const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
       const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
-      if (choice) {
+const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+if (choice && choice.distance < SNAP_DIST) {
         this.lastLoc = choice.loc;
       }
 
@@ -219,14 +220,22 @@ export class ModeDragNode extends AbstractMode {
 
     if (nope) {   // bounce back
       context.perform(_actionBounceBack(entity.id, this._startLoc));
+
+    // Snap to a Way
     } else if (target && target.type === 'way' && !target.__fbid__) {
       const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, entity.id);
-      const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
-      context.replace(
-        actionAddMidpoint({loc: choice.loc, edge: edge }, entity),
-        this._connectAnnotation(entity, target)
-      );
+const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+if (choice && choice.distance < SNAP_DIST) {
+        const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
+        context.replace(
+          actionAddMidpoint({loc: choice.loc, edge: edge }, entity),
+          this._connectAnnotation(entity, target)
+        );
+} else {
+        context.replace(actionNoop(), this._moveAnnotation(entity));
+}
 
+    // Snap to a Node
     } else if (target && target.type === 'node' && this._canSnapToNode(target)) {
       context.replace(actionConnect([target.id, entity.id]), this._connectAnnotation(entity, target));
 

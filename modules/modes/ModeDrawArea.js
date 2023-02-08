@@ -177,6 +177,8 @@ export class ModeDrawArea extends AbstractMode {
       return graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
     };
   }
+
+
   /**
    * _click
    * Process whatever the user clicked on.
@@ -209,17 +211,10 @@ export class ModeDrawArea extends AbstractMode {
     if (entity && entity.type === 'way') {
       const activeIDs = context.activeIDs();
       const activeID = activeIDs.length ? activeIDs[0] : undefined; // get the first one, if any
-      const choice = geoChooseEdge(
-        graph.childNodes(entity),
-        coord,
-        projection,
-        activeID
-      );
-      if (choice) {
-        const edge = [
-          entity.nodes[choice.index - 1],
-          entity.nodes[choice.index],
-        ];
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+if (choice && choice.distance < SNAP_DIST) {
+        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
         this._clickWay(choice.loc, edge);
         return;
       }
@@ -336,17 +331,13 @@ export class ModeDrawArea extends AbstractMode {
     if (entity && entity.type === 'node') {
       loc = entity.loc;
 
-      // Snap to a way
+    // Snap to a way
     } else if (entity && entity.type === 'way') {
       const activeIDs = context.activeIDs();
       const activeID = activeIDs.length ? activeIDs[0] : undefined; // get the first one, if any
-      const choice = geoChooseEdge(
-        graph.childNodes(entity),
-        coord,
-        projection,
-        activeID
-      );
-      if (choice) {
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
       }
     }

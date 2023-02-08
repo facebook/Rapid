@@ -102,7 +102,8 @@ export class ModeAddPoint extends AbstractMode {
       const activeIDs = context.activeIDs();
       const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
       const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
-      if (choice) {
+const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+if (choice && choice.distance < SNAP_DIST) {
         const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
         this._clickWay(choice.loc, edge);
         return;
