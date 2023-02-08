@@ -207,6 +207,9 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     // After pointercancel, there should be no more `pointermove` or `pointerup` events.
     this.lastDown = null;
     this.gesture = null;
+
+    const eventManager = this.context.map().renderer.events;
+    eventManager.setCursor('inherit');
   }
 
 
