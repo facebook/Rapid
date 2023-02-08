@@ -49,7 +49,8 @@ export class RendererPhotos extends EventEmitter {
     const context = this.context;
     const scene = context.scene();
 
-    let hash = utilStringQs(window.location.hash);
+    // let hash = utilStringQs(window.location.hash);
+
     if (hash.photo_dates) {
       // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
       const parts = /^(.*)[–_](.*)$/g.exec(hash.photo_dates.trim());
@@ -103,7 +104,7 @@ export class RendererPhotos extends EventEmitter {
       }
     }
 
-    scene.on('layerchange', this._updateHash);
+    // scene.on('layerchange', this._updateHash);
   }
 
 
@@ -111,22 +112,20 @@ export class RendererPhotos extends EventEmitter {
    * _updateHash
    */
   _updateHash() {
-    if (window.mocha) return;
-
-    const enabled = [];
-    for (const layer of this.context.scene().layers.values()) {
-      if (this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled) {
-        enabled.push(layer.id);
-      }
-    }
-
-    let hash = utilStringQs(window.location.hash);
-    if (enabled.length) {
-      hash.photo_overlay = enabled.join(',');
-    } else {
-      delete hash.photo_overlay;
-    }
-    window.location.replace('#' + utilQsString(hash, true));
+    // const enabled = [];
+    // for (const layer of this.context.scene().layers.values()) {
+    //   if (this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled) {
+    //     enabled.push(layer.id);
+    //   }
+    // }
+    //
+    // let hash = utilStringQs(window.location.hash);
+    // if (enabled.length) {
+    //   hash.photo_overlay = enabled.join(',');
+    // } else {
+    //   delete hash.photo_overlay;
+    // }
+    // window.location.replace('#' + utilQsString(hash, true));
   }
 
 
@@ -134,17 +133,15 @@ export class RendererPhotos extends EventEmitter {
    * _setUrlFilterValue
    */
   _setUrlFilterValue(property, val) {
-    if (window.mocha) return;
-
-    let hash = utilStringQs(window.location.hash);
-    if (val) {
-      if (hash[property] === val) return;
-      hash[property] = val;
-    } else {
-      if (!(property in hash)) return;
-      delete hash[property];
-    }
-    window.location.replace('#' + utilQsString(hash, true));
+    // let hash = utilStringQs(window.location.hash);
+    // if (val) {
+    //   if (hash[property] === val) return;
+    //   hash[property] = val;
+    // } else {
+    //   if (!(property in hash)) return;
+    //   delete hash[property];
+    // }
+    // window.location.replace('#' + utilQsString(hash, true));
   }
 
 
@@ -249,13 +246,13 @@ export class RendererPhotos extends EventEmitter {
     }
 
     if (didChange) {
-      if (updateURL) {
-        let rangeString;
-        if (this._fromDate || this._toDate) {
-          rangeString = (this._fromDate || '') + '_' + (this._toDate || '');
-        }
-        this._setUrlFilterValue('photo_dates', rangeString);
-      }
+//      if (updateURL) {
+//        let rangeString;
+//        if (this._fromDate || this._toDate) {
+//          rangeString = (this._fromDate || '') + '_' + (this._toDate || '');
+//        }
+//        this._setUrlFilterValue('photo_dates', rangeString);
+//      }
       this.emit('photochange');
     }
   }
@@ -280,11 +277,11 @@ export class RendererPhotos extends EventEmitter {
     this._usernames = val;
 
     if (updateURL) {
-      let hashString;
-      if (this._usernames) {
-        hashString = this._usernames.join(',');
-      }
-      this._setUrlFilterValue('photo_username', hashString);
+//      let hashString;
+//      if (this._usernames) {
+//        hashString = this._usernames.join(',');
+//      }
+//      this._setUrlFilterValue('photo_username', hashString);
     }
 
     this.emit('photochange');

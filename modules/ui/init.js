@@ -403,7 +403,7 @@ export function uiInit(context) {
     context.enter('browse');
 
     const osm = context.connection();
-//    const startWalkthrough = (_initCounter === 0 && context.initialHashParams.startWalkthrough === 'true');
+//    const startWalkthrough = (_initCounter === 0 && context.initialHashParams.walkthrough === 'true');
     const startWalkthrough = false;
 
     if (!_initCounter++) {

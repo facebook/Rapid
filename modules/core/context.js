@@ -258,9 +258,20 @@ export function coreContext() {
   let _inIntro = false;
   context.inIntro = function(val) {
     if (!arguments.length) return _inIntro;
+
     _inIntro = val;
+
+    const uihash = _ui?.uihash;
+    if (uihash) {
+      if (val) {
+        uihash.enable();
+      } else {
+        uihash.disable();
+      }
+    }
     return context;
   };
+
 
   // Immediately save the user's history to localstorage, if possible
   // This is called sometimes, but also on the `window.onbeforeunload` handler

@@ -59,7 +59,7 @@ export class RendererImagery extends EventEmitter {
    * Called one time after all objects have been instantiated.
    */
   init() {
-    this._loadData();
+    this._loadDataAsync();
   }
 
 
@@ -67,45 +67,45 @@ export class RendererImagery extends EventEmitter {
    *
    */
   updateImagery() {
-    let currSource = this._baseLayer;
+    const currSource = this._baseLayer;
     if (this.context.inIntro() || !currSource) return;
 
-    const meters = geoOffsetToMeters(currSource.offset);
-    const EPSILON = 0.01;
-    const x = +meters[0].toFixed(2);
-    const y = +meters[1].toFixed(2);
-    let hash = utilStringQs(window.location.hash);
-
-    let id = currSource.id;
-    if (id === 'custom') {
-      id = `custom:${currSource.template}`;
-    }
-    if (id) {
-      hash.background = id;
-    } else {
-      delete hash.background;
-    }
-
-    const o = this._overlayLayers
-      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
-      .map(d => d.id)
-      .join(',');
-
-    if (o) {
-      hash.overlays = o;
-    } else {
-      delete hash.overlays;
-    }
-
-    if (Math.abs(x) > EPSILON || Math.abs(y) > EPSILON) {
-      hash.offset = `${x},${y}`;
-    } else {
-      delete hash.offset;
-    }
-
-    if (!window.mocha) {
-      window.location.replace('#' + utilQsString(hash, true));
-    }
+//    const meters = geoOffsetToMeters(currSource.offset);
+//    const EPSILON = 0.01;
+//    const x = +meters[0].toFixed(2);
+//    const y = +meters[1].toFixed(2);
+//    let hash = utilStringQs(window.location.hash);
+//
+//    let id = currSource.id;
+//    if (id === 'custom') {
+//      id = `custom:${currSource.template}`;
+//    }
+//    if (id) {
+//      hash.background = id;
+//    } else {
+//      delete hash.background;
+//    }
+//
+//    const o = this._overlayLayers
+//      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
+//      .map(d => d.id)
+//      .join(',');
+//
+//    if (o) {
+//      hash.overlays = o;
+//    } else {
+//      delete hash.overlays;
+//    }
+//
+//    if (Math.abs(x) > EPSILON || Math.abs(y) > EPSILON) {
+//      hash.offset = `${x},${y}`;
+//    } else {
+//      delete hash.offset;
+//    }
+//
+//    if (!window.mocha) {
+//      window.location.replace('#' + utilQsString(hash, true));
+//    }
 
     let imageryUsed = [];
     // let photoOverlaysUsed = [];
@@ -352,26 +352,24 @@ export class RendererImagery extends EventEmitter {
 
 
   /**
-   * _loadData
+   * _loadDataAsync
    * @return  Promise that resolves once everything has been loaded and is ready
    */
-  _loadData() {
-    if (this._loadPromise) {
-      return this._loadPromise;
-    }
+  _loadDataAsync() {
+    if (this._loadPromise) return this._loadPromise;
 
-    function _parseMapParams(qmap) {
-      if (!qmap) return false;
-      const params = qmap.split('/').map(Number);
-      if (params.length < 3 || params.some(isNaN)) return false;
-      return new Extent([params[2], params[1]]);  // lon,lat
-    }
+//    function _parseMapParams(qmap) {
+//      if (!qmap) return false;
+//      const params = qmap.split('/').map(Number);
+//      if (params.length < 3 || params.some(isNaN)) return false;
+//      return new Extent([params[2], params[1]]);  // lon,lat
+//    }
+//
+//    const hash = utilStringQs(window.location.hash);
+//    const requested = hash.background || hash.layer;
+//    let extent = _parseMapParams(hash.map);
 
-    const hash = utilStringQs(window.location.hash);
-    const requested = hash.background || hash.layer;
-    let extent = _parseMapParams(hash.map);
-
-    return this._loadPromise = this._loadImageryIndex()
+    return this._loadPromise = this._loadImageryIndexAsync()
       .then(imageryIndex => {
         const first = imageryIndex.sources.length && imageryIndex.sources[0];
 
@@ -442,7 +440,7 @@ export class RendererImagery extends EventEmitter {
 
 
   /**
-   * _loadImageryIndex
+   * _loadImageryIndexAsync
    * The imagery index loads after RapiD starts.
    * It contains these properties:
    *   {
@@ -452,7 +450,7 @@ export class RendererImagery extends EventEmitter {
    *   }
    * @return  Promise that resolves with the imagery index once it has been loaded
    */
-  _loadImageryIndex() {
+  _loadImageryIndexAsync() {
     return fileFetcher.get('imagery')
       .then(data => {
         if (this._imageryIndex) {
