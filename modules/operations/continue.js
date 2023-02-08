@@ -5,7 +5,6 @@ import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 
 
 export function operationContinue(context, selectedIDs) {
-
     var _entities = selectedIDs.map(function(id) { return context.graph().entity(id); });
     var _geometries = Object.assign(
         { line: [], vertex: [] },
@@ -27,14 +26,7 @@ export function operationContinue(context, selectedIDs) {
 
 
     var operation = function() {
-        var candidate = _candidates[0];
-
-        const options = { continueWay:  candidate, continueNode: _vertex };
-        context.enter('draw-line', options);
-
-        // context.enter(
-        //     modeDrawLine(context, candidate.id, context.graph(), 'line', candidate.affix(_vertex.id), true)
-        // );
+        context.enter('draw-line', { continueWay: _candidates[0], continueNode: _vertex });
     };
 
 

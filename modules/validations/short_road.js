@@ -1,7 +1,6 @@
 import { Extent } from '@id-sdk/extent';
 
 import { geoSphericalDistance } from '@id-sdk/geo';
-import { modeDrawLine } from '../modes';
 import { operationDelete } from '../operations/index';
 import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
@@ -37,9 +36,7 @@ export function validationShortRoad(context) {
             map.zoomToEase(vertex);
         }
 
-        context.enter(
-            modeDrawLine(context, way.id, context.graph(), context.graph(), '', way.affix(vertex.id), true)
-        );
+        context.enter('draw-line', { continueWay: way, continueNode: vertex });
     }
 
 

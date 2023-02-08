@@ -1,12 +1,12 @@
 import { Extent } from '@id-sdk/extent';
 
 import { t, localizer } from '../core/localizer';
-import { modeDrawLine } from '../modes/draw_line';
 import { actionReverse } from '../actions/reverse';
 import { utilDisplayLabel } from '../util';
 import { osmFlowingWaterwayTagValues, osmOneWayTags, osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { services } from '../services';
+
 
 export function validationImpossibleOneway() {
     var type = 'impossible_oneway';
@@ -227,9 +227,7 @@ export function validationImpossibleOneway() {
             map.zoomToEase(vertex);
         }
 
-        context.enter(
-            modeDrawLine(context, way.id, context.graph(), 'line', way.affix(vertex.id), true)
-        );
+        context.enter('draw-line', { continueWay: way, continueNode: vertex });
     }
 
     validation.type = type;

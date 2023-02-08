@@ -1,12 +1,12 @@
 import { Extent } from '@id-sdk/extent';
 
 import { t, localizer } from '../core/localizer';
-import { modeDrawLine } from '../modes/draw_line';
 import { operationDelete } from '../operations/delete';
 import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { services } from '../services';
+
 
 export function validationDisconnectedWay() {
     var type = 'disconnected_way';
@@ -203,9 +203,7 @@ export function validationDisconnectedWay() {
                         map.zoomToEase(vertex);
                     }
 
-                    context.enter(
-                        modeDrawLine(context, wayId, context.graph(), 'line', way.affix(vertexId), true)
-                    );
+                    context.enter('draw-line', { continueWay: way, continueNode: vertex });
                 }
             });
         }
