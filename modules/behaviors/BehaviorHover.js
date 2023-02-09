@@ -97,6 +97,9 @@ export class BehaviorHover extends AbstractBehavior {
   _doHover() {
     if (!this._enabled || !this.lastMove) return;  // nothing to do
 
+    const interaction = this.context.behaviors.get('map-interaction');
+    if (interaction.gesture) return;  // dont change hover while interacting with the map
+
     const eventManager = this.context.map().renderer.events;
     const modifiers = eventManager.modifierKeys;
     const isCancelled = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
