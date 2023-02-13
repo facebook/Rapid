@@ -40,35 +40,45 @@ export function osmRemoveLifecyclePrefix(key) {
     return key;
 }
 
+
+export var osmAreaKeysExceptions = {
+    highway: {
+        elevator: true,
+        rest_area: true,
+        services: true
+    },
+    public_transport: {
+        platform: true
+    },
+    railway: {
+        platform: true,
+        roundhouse: true,
+        station: true,
+        traverser: true,
+        turntable: true,
+        wash: true
+    },
+    traffic_calming: {
+        island: true
+    },
+    waterway: {
+        dam: true
+    }
+};
+
 // returns an object with the tag from `tags` that implies an area geometry, if any
 export function osmTagSuggestingArea(tags) {
     if (tags.area === 'yes') return { area: 'yes' };
     if (tags.area === 'no') return null;
 
-    // `highway` and `railway` are typically linear features, but there
-    // are a few exceptions that should be treated as areas, even in the
-    // absence of a proper `area=yes` or `areaKeys` tag.. see #4194
-    var lineKeys = {
-        highway: {
-            rest_area: true,
-            services: true
-        },
-        railway: {
-            roundhouse: true,
-            station: true,
-            traverser: true,
-            turntable: true,
-            wash: true
-        }
-    };
     var returnTags = {};
     for (var realKey in tags) {
         const key = osmRemoveLifecyclePrefix(realKey);
-        if (key in osmAreaKeys && !(tags[key] in osmAreaKeys[key])) {
+        if (key in osmAreaKeys && !(tags[realKey] in osmAreaKeys[key])) {
             returnTags[realKey] = tags[realKey];
             return returnTags;
         }
-        if (key in lineKeys && tags[key] in lineKeys[key]) {
+        if (key in osmAreaKeysExceptions && tags[realKey] in osmAreaKeysExceptions[key]) {
             returnTags[realKey] = tags[realKey];
             return returnTags;
         }
