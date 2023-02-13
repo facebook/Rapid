@@ -1,6 +1,7 @@
 import { json as d3_json } from 'd3-fetch';
 import { Extent } from '@id-sdk/extent';
 import { utilQsString } from '@id-sdk/util';
+import { localizer } from '../core';
 import RBush from 'rbush';
 
 
@@ -53,7 +54,10 @@ export default {
         var controller = new AbortController();
         _inflight[url] = controller;
 
-        d3_json(url, { signal: controller.signal })
+        d3_json(url, {
+            signal: controller.signal,
+            headers: { 'Accept-Language': localizer.localeCodes().join(',') }
+        })
             .then(function(result) {
                 delete _inflight[url];
                 if (result && result.error) {
@@ -79,7 +83,10 @@ export default {
         var controller = new AbortController();
         _inflight[url] = controller;
 
-        d3_json(url, { signal: controller.signal })
+        d3_json(url, {
+            signal: controller.signal,
+            headers: { 'Accept-Language': localizer.localeCodes().join(',') }
+        })
             .then(function(result) {
                 delete _inflight[url];
                 if (result && result.error) {
