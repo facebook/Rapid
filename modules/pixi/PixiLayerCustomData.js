@@ -191,8 +191,8 @@ export class PixiLayerCustomData extends AbstractLayer {
     let geoData, polygons, lines, points;
     if (this._template && vtService) {   // fetch data from vector tile service
       var sourceID = this._template;
-      vtService.loadTiles(sourceID, this._template, projection);
-      geoData = vtService.data(sourceID, projection);
+      vtService.loadTiles(sourceID, this._template, this.context.projection);
+      geoData = vtService.data(sourceID, this.context.projection);
     } else {
       geoData = this.getFeatures(this._geojson);
     }
@@ -229,14 +229,20 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${d.id}-${i}`;
+        const id = d.id ? d.id : d.__featurehash__.toString();
+        const featureID = `${this.layerID}-${id}-${i}`;
         let feature = this.features.get(featureID);
+        const version = d.v || 0;
 
         if (!feature) {
           feature = new PixiFeaturePolygon(this, featureID);
-          feature.geometry.setCoords(coords);
           feature.style = POLY_STYLE;
           feature.parentContainer = parentContainer;
+        }
+
+        if (feature.v !== version) {
+          feature.v = version;
+          feature.geometry.setCoords(coords);
           feature.setData(d.id, d);
         }
 
@@ -267,14 +273,20 @@ export class PixiLayerCustomData extends AbstractLayer {
 
       for (let i = 0; i < parts.length; ++i) {
         const coords = parts[i];
-        const featureID = `${this.layerID}-${d.id}-${i}`;
+        const id = d.id ? d.id : d.__featurehash__.toString();
+        const featureID = `${this.layerID}-${id}-${i}`;
         let feature = this.features.get(featureID);
+        const version = d.v || 0;
 
         if (!feature) {
           feature = new PixiFeatureLine(this, featureID);
-          feature.geometry.setCoords(coords);
           feature.style = LINE_STYLE;
           feature.parentContainer = parentContainer;
+        }
+
+        if (feature.v !== version) {
+          feature.v = version;
+          feature.geometry.setCoords(coords);
           feature.setData(d.id, d);
         }
 

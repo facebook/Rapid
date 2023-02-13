@@ -59,6 +59,7 @@ function vtToGeoJSON(data, tile, mergeCache) {
                 feature.__layerID__ = layerID.replace(/[^_a-zA-Z0-9\-]/g, '_');
                 feature.__featurehash__ = featurehash;
                 feature.__propertyhash__ = propertyhash;
+                feature.v = 0;
                 features.push(feature);
 
                 // Clipped Polygons at same zoom with identical properties can get merged
@@ -70,11 +71,10 @@ function vtToGeoJSON(data, tile, mergeCache) {
                             feature.geometry.coordinates,
                             other.geometry.coordinates
                         );
-
                         if (!coords || !coords.length) {
                             continue;  // something failed in polygon union
                         }
-
+                        feature.v++;
                         merged.push(feature);
                         for (var j = 0; j < merged.length; j++) {      // all these features get...
                             merged[j].geometry.coordinates = coords;   // same coords
@@ -94,7 +94,6 @@ function vtToGeoJSON(data, tile, mergeCache) {
 
 function loadTile(source, tile) {
     if (source.loaded[tile.id] || source.inflight[tile.id]) return;
-
     var url = source.template
         .replace('{x}', tile.xyz[0])
         .replace('{y}', tile.xyz[1])
