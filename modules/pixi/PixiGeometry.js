@@ -214,7 +214,11 @@ export class PixiGeometry {
       if (this.origCentroid) {   // calculated already, reproject
         this.centroid = projection.project(this.origCentroid);
       } else if (this.hull) {    // recalculate and store as WGS84
-        this.centroid = d3_polygonCentroid(this.hull);
+        if (this.hull.length === 2) {
+          this.centroid = vecInterp(this.hull[0], this.hull[1], 0.5);  // average the 2 points
+        } else {
+          this.centroid = d3_polygonCentroid(this.hull);
+        }
         this.origCentroid = projection.invert(this.centroid);
       }
 
