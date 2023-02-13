@@ -144,12 +144,20 @@ export var osmOneWayTags = {
         'sled': true,
         'yes': true
     },
+    'seamark:type': {
+        'two-way_route': true,
+        'recommended_traffic_lane': true,
+        'separation_lane': true,
+        'separation_roundabout': true
+    },
     'waterway': {
         'canal': true,
         'ditch': true,
         'drain': true,
         'fish_pass': true,
+        'pressurised': true,
         'river': true,
+        'spillway': true,
         'stream': true,
         'tidal_channel': true
     }
@@ -161,6 +169,7 @@ export var osmPavedTags = {
         'paved': true,
         'asphalt': true,
         'concrete': true,
+        'chipseal': true,
         'concrete:lanes': true,
         'concrete:plates': true
     },
