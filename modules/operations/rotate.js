@@ -2,7 +2,6 @@ import { utilGetAllNodes } from '@id-sdk/util';
 
 import { t } from '../core/localizer';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { modeRotate } from '../modes/rotate';
 import { prefs } from '../core/preferences';
 import { utilTotalExtent } from '../util/util';
 
@@ -15,7 +14,11 @@ export function operationRotate(context, selectedIDs) {
 
 
     var operation = function() {
-        context.enter(modeRotate(context, selectedIDs));
+      const selection = new Map();
+      for (const entityID of selectedIDs) {
+        selection.set(entityID, context.entity(entityID));
+      }
+      context.enter('rotate', { selection: selection });
     };
 
 

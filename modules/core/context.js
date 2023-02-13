@@ -28,6 +28,8 @@ import { ModeBrowse } from '../modes/ModeBrowse';
 import { ModeDragNode } from '../modes/ModeDragNode';
 import { ModeDrawArea } from '../modes/ModeDrawArea';
 import { ModeDrawLine } from '../modes/ModeDrawLine';
+import { ModeMove } from '../modes/ModeMove';
+import { ModeRotate } from '../modes/ModeRotate';
 import { ModeSave } from '../modes/ModeSave';
 import { ModeSelect } from '../modes/ModeSelect';  // new
 import { modeSelect } from '../modes/select';      // legacy
@@ -700,6 +702,8 @@ export function coreContext() {
         new ModeDragNode(context),
         new ModeDrawArea(context),
         new ModeDrawLine(context),
+        new ModeMove(context),
+        new ModeRotate(context),
         new ModeSave(context),
         new ModeSelect(context)
       ].forEach(mode => context.modes.set(mode.id, mode));
