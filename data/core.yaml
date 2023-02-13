@@ -826,7 +826,7 @@ en:
         zoom: Zoom to data
       'ai-features':
         tooltip: Features from Facebook's Map With AI
-        title: RapiD Feature Layer
+        title: Rapid Feature Layer
         key: R
     fill_area: Fill Areas
     history_panel:
@@ -1044,15 +1044,15 @@ en:
   rapid_multiselect: Multiple Selection
   rapid_splash:
     welcome: Introducing AI-assisted mapping!
-    text: "Select the {rapidicon} option to start the RapiD walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu."
+    text: "Select the {rapidicon} option to start the Rapid walkthrough. If you're new to OSM and haven't mapped before, select the first {walkthrough} option. Finally, click the last {edit} option if you want to get straight to mapping. You can always access the walkthrough later from the help menu."
     walkthrough: "Start the whole walkthrough"
-    skip_to_rapid: "Learn about RapiD!"
+    skip_to_rapid: "Learn about Rapid!"
     start: "No thanks, just start mapping"
   rapid_whats_new:
     welcome: "{rapidicon} v2 goes Beta!"
-    text: "Enjoy this beta of a webGL-based {rapidicon}!  Please try it out and let us know what yout think. Use the bug report button {bugicon} to submit issues.  <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebookincubator/RapiD/discussions/738). We also maintain a list of [known issues](https://github.com/orgs/facebook/projects/19/views/2?filterQuery=status%3ATriage)."
+    text: "Enjoy this beta of a webGL-based {rapidicon}!  Please try it out and let us know what you think. Use the bug report button {bugicon} to submit issues.  <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebook/RapiD/discussions/738). We also maintain a list of [known issues](https://github.com/orgs/facebook/projects/19/views/2?filterQuery=status%3ATriage)."
     ok: Okay
-    nope: No thanks, just take me to RapiD
+    nope: No thanks, just take me to Rapid
     dontshowagain: Don't show this again
   rapid_first_edit:
     nice: You just added your first {rapidicon} AI-Assisted feature, nice.
@@ -1065,7 +1065,7 @@ en:
     option_accept:
       label: Use This Feature
       description: Does this look like an accurate feature? Select this to start editing it so that you can connect, tag, and save it to OpenStreetMap. 👍
-      annotation: Added a RapiD feature.
+      annotation: Added a Rapid feature.
       tooltip: Add this feature to the map to begin editing.
       disabled: To help improve OSM data quality, we only allow {n} AI features to be added in each mapping session. Please try to fix issues on your edits so far. You will be able to add more AI features after saving.
       disabled_flash: To help improve OSM data quality, we only allow {n} AI Features to be added in each mapping session.
@@ -1073,7 +1073,7 @@ en:
     option_ignore:
       label: Ignore This Feature
       description: Ignoring this feature helps us improve our machine learning. If you are unsure whether or not this is an accurate feature, feel free to leave it as is, nothing will be saved or lost. 👍
-      annotation: Ignored a RapiD feature.
+      annotation: Ignored a Rapid feature.
       tooltip: Ignore this feature.
       key: D
   rapid_feature_license: Facebook's Map With AI License
@@ -1090,7 +1090,7 @@ en:
       license_markdown: "[license](https://github.com/microsoft/USBuildingFootprints/blob/master/LICENCE-DATA)"
     esri:
       title: ArcGIS Datasets
-      about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the RapiD Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
+      about: "These datasets have been provided as open data by the ArcGIS user community for the purpose of improving OpenStreetMap.<br/>You can learn more by visiting [the Rapid Guide](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) or [Esri/ArcGIS dataset page on the OSM Wiki](https://wiki.openstreetmap.org/wiki/Esri/ArcGIS_Datasets)."
       filter_datasets: filter datasets
       any_type: any type
       clear_filters: Clear Filters
@@ -1105,8 +1105,8 @@ en:
   rapid_poweruser_features:
     beta: Beta Feature
     heading:
-      label: RapiD Power User Features
-      description: "for RapiD Insiders"
+      label: Rapid Power User Features
+      description: "for Rapid Insiders"
     previewDatasets:
       label: Show preview datasets
       description: Preview datasets are still in review and not available for all users
@@ -1123,7 +1123,7 @@ en:
       label: Allow large edits
       description: Remove the limitations about editing features that are not currently visible
   version:
-    whats_new: "What's new in RapiD {version}"
+    whats_new: "What's new in Rapid {version}"
   tag_reference:
     description: Description
     on_wiki: "{tag} on wiki.osm.org"
@@ -1528,14 +1528,14 @@ en:
     key: H
     help:
       title: Help
-      welcome: "Welcome to the RapiD editor for [OpenStreetMap](https://www.openstreetmap.org/). RapiD is an enhanced version of the [iD editor](https://github.com/openstreetmap/iD). With this editor you can update OpenStreetMap right from your web browser."
+      welcome: "Welcome to the Rapid editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser."
       open_data_h: "Open Data"
       open_data: "Edits that you make on this map will be visible to everyone who uses OpenStreetMap. Your edits can be based on personal knowledge, on-the-ground surveying, or imagery collected from aerial or street level photos. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright)."
       before_start_h: "Before you start"
-      before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. RapiD contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
+      before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. Rapid contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
       open_source_h: "Open Source"
-      open_source: "The RapiD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebookincubator/RapiD)."
-      open_source_help: "You can help RapiD (and iD) by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebookincubator/RapiD/issues)."
+      open_source: "The Rapid editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebook/RapiD)."
+      open_source_help: "You can help Rapid by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebook/RapiD/issues)."
     overview:
       title: Overview
       navigation_h: "Navigation"
@@ -1640,7 +1640,7 @@ en:
       edit_relation_add: "To add a feature to a relation, select the feature, then press the {plus} add button in the \"{relations}\" section of the feature editor. You can choose from a list of nearby relations, or choose the \"{new_relation}\" option."
       edit_relation_delete: "You can also press the {delete_icon} **{delete}** button to remove the selected feature from the relation. If you remove all of the members from a relation, the relation will be deleted automatically."
       maintain_relation_h: "Maintaining Relations"
-      maintain_relation: "For the most part, RapiD will maintain relations automatically as you edit. You should take care when replacing features that might be members of relations. For example if you delete a section of road and draw a new section of road to replace it, you should add the new section to the same relations (routes, turn restrictions, etc.) as the original."
+      maintain_relation: "For the most part, Rapid will maintain relations automatically as you edit. You should take care when replacing features that might be members of relations. For example if you delete a section of road and draw a new section of road to replace it, you should add the new section to the same relations (routes, turn restrictions, etc.) as the original."
       relation_types_h: "Relation Types"
       multipolygon_h: "Multipolygons"
       multipolygon: "A *multipolygon* relation is a group of one or more *outer* features and one or more inner features. The outer features define the outer edges of the multipolygon, and the inner features define sub-areas or holes cut out from the inside of the multipolygon."
@@ -1697,7 +1697,7 @@ en:
       offset_change: "Press the small triangle buttons to adjust the imagery offset in small steps, or hold the {leftclick} left mouse button and drag within the gray square to slide the imagery into alignment."
     streetlevel:
       title: Street Level Photos
-      intro: "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The RapiD editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [KartaView](https://www.kartaview.org)."
+      intro: "Street level photos are useful for mapping traffic signs, businesses, and other details that you can't see from satellite and aerial images. The Rapid editor supports street level photos from [Bing Streetside](https://www.microsoft.com/en-us/maps/streetside), [Mapillary](https://www.mapillary.com), and [KartaView](https://www.kartaview.org)."
       using_h: "Using Street Level Photos"
       using: "To use street level photos for mapping, open the {data_icon} **{map_data}** panel on the side of the map to enable or disable the available photo overlays."
       photos: "When enabled, the photo overlay displays a line along the sequence of photos. At higher zoom levels, a circle marks at each photo location, and at even higher zoom levels, a cone indicates the direction the camera was facing when the photo was taken."
@@ -2373,7 +2373,7 @@ en:
       retry_circle: "You didn't press the {circularize_icon} {circularize} button. Try again."
       play: "Great Job! Practice tracing a few more buildings, and try some of the other operations in the edit menu. **When you are ready to continue to the next chapter, press '{next}'.**"
     rapid:
-      title: "RapiD Features"
+      title: "Rapid Features"
       start: "{rapid} AI-assisted features are generated from satellite imagery processing with machine-learning algorithms. This section of the walkthrough will teach you how to use these AI-assisted features."
       ai_roads: "AI-assisted features are presented in a magenta-colored overlay. Press 'OK' to enable the AI features layer (In the future, these feature layers can be controlled with the {rapid} button up above)."
       add_road_h: "Adding AI-assisted features"
@@ -2381,12 +2381,12 @@ en:
       add_road: "Click the 'Use this Feature' button to add the road to the working map."
       add_road_not_saved_yet: "The AI-assisted road has been added as a change to the map. Like any other map change, it will not show up for others until you save it."
       open_issues: "Now let's open up the issues panel."
-      new_lints: "The addition of the road has caused a new issue to appear in the issues panel. RapiD has introduced several new validation checks that will assist you in correcting issues that arise from adding AI-assisted roads."
+      new_lints: "The addition of the road has caused a new issue to appear in the issues panel. Rapid has introduced several new validation checks that will assist you in correcting issues that arise from adding AI-assisted roads."
       undo_road_add: "We could fix the issue by connecting the roads, but let's instead undo the AI road change to return things back the way they were. **Press on the {button} button to undo the road addition and return the map to its original state.**"
       undo_road_add_aftermath: "The road is removed from your local changes, and has returned to the magenta layer as before!"
       select_road_again: "Next, we'll learn how to ignore roads that you don't want to add. **Select the AI-assisted road again with a left-click.**"
       ignore_road: "This time, press the 'Ignore this Feature' button to remove the incorrect road from the working map."
-      help: "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new RapiD-specific shortcuts that speed up your mapping."
+      help: "You're now ready to use AI-assisted roads! Once you have had some practice, be sure to look in the {button} Help button for key shortcuts with the {rapid} icon. These indicate new Rapid-specific shortcuts that speed up your mapping."
       done: "You're all done! One final note- AI-assisted roads don't appear everywhere. For the most up-to-date information on feature availability, check the [MapWithAI site](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). **Click '{next}' to continue.**"
     startediting:
       title: "Start Editing"
@@ -2448,7 +2448,7 @@ en:
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
         minimap: "Toggle minimap"
-        rapid_features_data: "Toggle RapiD Features"
+        rapid_features_data: "Toggle Rapid Features"
         highlight_way_edits: "Highlight way edits in current session"
         highlight_edits: "Highlight unsaved edits"
       selecting:
@@ -2508,7 +2508,7 @@ en:
         redo: "Redo last action"
         save: "Save changes"
       rapid:
-        title: "RapiD AI-Assist"
+        title: "Rapid AI-Assist"
         accept_feature: "Add the selected feature"
         ignore_feature: "Ignore the selected feature"
     tools:

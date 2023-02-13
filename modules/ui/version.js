@@ -12,7 +12,7 @@ var isNewUser = false;
 
 export function uiVersion(context) {
 
-    var currVersion = context.rapidContext().version;
+    var currVersion = context.version;
     var matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
 
     if (sawVersion === null && matchedVersion !== null) {

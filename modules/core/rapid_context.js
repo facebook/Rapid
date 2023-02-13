@@ -11,7 +11,6 @@ import { utilRebind } from '../util';
 export function coreRapidContext(context) {
   const dispatch = d3_dispatch('task_extent_set');
   let _rapidContext = {};
-  _rapidContext.version = '2.0.0-beta.0';
   _rapidContext.showPowerUser = context.initialHashParams.poweruser === 'true';
 
   function distinct(value, index, self) {

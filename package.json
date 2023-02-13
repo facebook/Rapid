@@ -1,6 +1,6 @@
 {
-  "name": "RapiD",
-  "version": "2.0.0-beta",
+  "name": "Rapid",
+  "version": "2.0.0-beta.0",
   "description": "An AI-enhanced editor for OpenStreetMap",
   "main": "dist/iD.min.js",
   "repository": "github:facebookincubator/RapiD",

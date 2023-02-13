@@ -92,7 +92,7 @@ export function uiCommit(context) {
         var detected = utilDetect();
         var tags = {
             comment: prefs('comment') || '',
-            created_by: context.cleanTagValue('RapiD ' + context.rapidContext().version),
+            created_by: context.cleanTagValue('Rapid ' + context.version),
             host: context.cleanTagValue(detected.host),
             locale: context.cleanTagValue(localizer.localeCode())
         };
