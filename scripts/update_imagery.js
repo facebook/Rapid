@@ -26,6 +26,7 @@ const discard = {
   'osm-mapnik-no_labels': true,         // 'OpenStreetMap (Mapnik, no labels)'
   'OpenStreetMap-turistautak': true,    // 'OpenStreetMap (turistautak)'
 
+  'cyclosm': true,                      // 'CyclOSM'
   'hike_n_bike': true,                  // 'Hike & Bike'
   'landsat': true,                      // 'Landsat'
   'skobbler': true,                     // 'Skobbler'
