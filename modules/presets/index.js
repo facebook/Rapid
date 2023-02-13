@@ -25,7 +25,9 @@ export { _mainPresetIndex as presetManager };
 //
 export function presetIndex() {
   const dispatch = d3_dispatch('favoritePreset', 'recentsChange');
-  const MAXRECENTS = 30;
+  const MAXRECENTS = 30;         // how many recents to store in localstorage
+  const MAXRECENTS_SHOW = 6;     // how many recents to show on the preset list
+
 
   // seed the preset lists with geometry fallbacks
   const POINT = presetPreset('point', { name: 'Point', tags: {}, geometry: ['point', 'vertex'], matchScore: 0.1 } );
@@ -387,7 +389,7 @@ if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_
   _this.defaults = (geometry, n, startWithRecents, loc) => {
     let recents = [];
     if (startWithRecents) {
-      recents = _this.recent().matchGeometry(geometry).collection.slice(0, 4);
+      recents = _this.recent().matchGeometry(geometry).collection.slice(0, MAXRECENTS_SHOW);
     }
 
     let defaults;
