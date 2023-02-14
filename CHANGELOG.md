@@ -55,11 +55,12 @@ Streetside imagery should now work much more cleanly (and without leaving stale 
 * [#679] Fixed stack trace errors that occurred while panning inside the minimap.
 * [#749] Fixed crashes/freezes while panning on mobile. Mobile users should also now be able to draw features.
 * [#572] Custom data: tile server functionality has been restored. Load those .pbfs like a boss!
-
+* [#795] Further custom data fixes that help performance on large datasets, eliminate black screen/crashes.
 
 [#539]: https://github.com/facebook/RapiD/issues/539
 [#679]: https://github.com/facebook/RapiD/issues/679
 [#749]: https://github.com/facebook/RapiD/issues/749
+[#795]: https://github.com/facebook/RapiD/issues/795
 # [2.0.0-alpha3.3]
 
 #### 2022-Dec-14
