@@ -45,8 +45,8 @@ export class ModeDrawArea extends AbstractMode {
     this._move = this._move.bind(this);
     this._removeDrawNode = this._removeDrawNode.bind(this);
     this._finish = this._finish.bind(this);
-
   }
+
 
   /**
    * enter
@@ -66,6 +66,8 @@ export class ModeDrawArea extends AbstractMode {
     this._insertIndex = undefined;
     this._clicks = 0;
     this._selectedData.clear();
+    this._activeData.clear();
+
     context.history().checkpoint('draw-area-initial'); // save history checkpoint to return to if things go bad
 
     context.enableBehaviors(['hover', 'draw', 'map-nudging']);
@@ -109,17 +111,21 @@ export class ModeDrawArea extends AbstractMode {
     this._insertIndex = undefined;
     this._clicks = 0;
     this._selectedData.clear();
+    this._activeData.clear();
 
-    context.behaviors
-      .get('draw')
-      .off('click', this._start)
-      .off('cancel', this._cancel)
-      .off('finish', this._cancel);
+    // We're done drawing, so ensure that we don't keep the hovered class on things.
+    context.scene().clearClass('drawing');
 
     window.setTimeout(() => {
       context.behaviors.get('map-interaction').doubleClickEnabled = true;
     }, 1000);
+
+    context.behaviors.get('draw')
+      .off('click', this._start)
+      .off('cancel', this._cancel)
+      .off('finish', this._cancel);
   }
+
 
   /**
    * _updateCollections
@@ -146,11 +152,11 @@ export class ModeDrawArea extends AbstractMode {
    * _actionClose
    * Helper function to force the given way to be closed (start and end at same node)
    * @param {string} with the osm id of the way
-   * @returns a modified graph with the wayId closed (i.e. the starting node and final node have been joined)
+   * @returns a modified graph with the wayID closed (i.e. the starting node and final node have been joined)
   */
-  _actionClose(wayId) {
-    return function (graph) {
-      return graph.replace(graph.entity(wayId).close());
+  _actionClose(wayID) {
+    return function(graph) {
+      return graph.replace(graph.entity(wayID).close());
     };
   }
 
@@ -158,23 +164,23 @@ export class ModeDrawArea extends AbstractMode {
    * _actionReplaceDrawNode
    * Helper function to get rid of the transient 'draw' node if we happen to click another node / way.
    * This removes the transient node from the current graph history state, and replaces it with the new point that was clicked on.
-   * @param {*} wayId the id of the way getting one of its nodes swapped out- likely, the draw way
-   * @param {*} drawNodeId the transient node ID to swap out
-   * @param {*} replacementNodeId the node ID to swap out for the draw Node
+   * @param {*} wayID the id of the way getting one of its nodes swapped out- likely, the draw way
+   * @param {*} drawNode the transient node to swap out
+   * @param {*} replacementNode the node to swap out for the draw Node
    * @param {*} index the index at which to make the replacement
    * @returns a modified graph with a replacement node swapped in for the current 'draw' node.
    */
-  _actionReplaceDrawNode(wayId, drawNode, replacementNode) {
-    return function (graph) {
-      graph = graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
-      return graph.replace(graph.entity(wayId).addNode(replacementNode.id, undefined));
+  _actionReplaceDrawNode(wayID, drawNode, replacementNode) {
+    return function(graph) {
+      graph = graph.replace(graph.entity(wayID).removeNode(drawNode.id)).remove(drawNode);
+      return graph.replace(graph.entity(wayID).addNode(replacementNode.id, undefined));
     };
   }
 
 
-  _actionRemoveDrawNode(wayId, drawNode) {
-    return function (graph) {
-      return graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
+  _actionRemoveDrawNode(wayID, drawNode) {
+    return function(graph) {
+      return graph.replace(graph.entity(wayID).removeNode(drawNode.id)).remove(drawNode);
     };
   }
 
@@ -233,7 +239,7 @@ if (choice && choice.distance < SNAP_DIST) {
     const EPSILON = 1e-6;
     context.pauseChangeDispatch();
 
-    //Extend the way by adding vertex at 'loc'
+    // Extend the way by adding vertex at 'loc'
     if (this.drawWay) {
       // The drawNode is at the start or end node, try to finish the line.
       // (Normally this situation would be caught in `_clickNode`, maybe the user held down modifier key?)
@@ -299,6 +305,7 @@ if (choice && choice.distance < SNAP_DIST) {
     this._updateCollections();
   }
 
+
   /**
    * _getAnnotation
    * An annotation is a text associated with the edit, such as "Started a line".
@@ -308,6 +315,7 @@ if (choice && choice.distance < SNAP_DIST) {
     const which = this._clicks > 1 ? 'continue' : 'start';
     return t(`operations.${which}.annotation.area`);
   }
+
 
   /**
    * _move
@@ -363,11 +371,7 @@ if (choice && choice.distance < SNAP_DIST) {
       // The target node needs to be inserted "before" the draw node
       // If draw node is at the beginning, insert target 1 after beginning.
       // If draw node is at the end, insert target 1 before the end.
-      const targetIndex =
-      this.drawWay?.affix(this.drawNode.id) === 'prefix'
-          ? 1
-          : this.drawWay.nodes.length - 1;
-
+      const targetIndex = this.drawWay?.affix(this.drawNode.id) === 'prefix' ? 1 : this.drawWay.nodes.length - 1;
       const oldDrawNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
 
@@ -379,12 +383,13 @@ if (choice && choice.distance < SNAP_DIST) {
       );
 
       this.drawWay = context.entity(this.drawWay.id);
+
     } else {
       // No draw way exists yet, so time to make a new way!
 
       const node = osmNode({ loc: loc });
       const drawNode = osmNode({loc: loc});
-      const way = osmWay({ tags: this.defaultTags});
+      const way = osmWay({ tags: this.defaultTags });
 
       this.drawWay = way;
       this.lastNode = node;
@@ -426,16 +431,11 @@ if (choice && choice.distance < SNAP_DIST) {
     const scene = context.scene();
     context.pauseChangeDispatch();
 
-
-
     if (this.drawWay) {
       // The target node needs to be inserted "before" the draw node
       // If draw node is at the beginning, insert target 1 after beginning.
       // If draw node is at the end, insert target 1 before the end.
-      const targetIndex =
-      this.drawWay?.affix(this.drawNode.id) === 'prefix'
-        ? 1
-        : this.drawWay.nodes.length - 1;
+      const targetIndex = this.drawWay?.affix(this.drawNode.id) === 'prefix' ? 1 : this.drawWay.nodes.length - 1;
 
       // Clicked on first or last node, try to finish the area
       if (
@@ -464,30 +464,22 @@ if (choice && choice.distance < SNAP_DIST) {
 
       context.perform(
         actionAddEntity(this.drawNode),
-        this._actionReplaceDrawNode(
-          this.drawWay.id,
-          oldDrawNode,
-          targetNode,
-          targetIndex
-        ),
+        this._actionReplaceDrawNode(this.drawWay.id, oldDrawNode, targetNode, targetIndex),
         actionAddVertex(this.drawWay.id, this.drawNode.id, targetIndex), // Add draw node to draw way
         this._getAnnotation()
       );
+
       this.drawWay = context.entity(this.drawWay.id);
+
     } else {
       if (DEBUG) {
         console.log(`ModeDrawArea: _clickNode, starting line at ${targetNode.id}`); // eslint-disable-line no-console
       }
 
-      const context = this.context;
-
       this.firstNode = targetNode;
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
-      this.drawWay = osmWay({
-        tags: this.defaultTags,
-        nodes: [this.firstNode.id, this.drawNode.id],
-      });
+      this.drawWay = osmWay({ tags: this.defaultTags, nodes: [this.firstNode.id, this.drawNode.id] });
 
       scene.classData('osm', this.drawWay.id, 'drawing');
       scene.classData('osm', this.firstNode.id, 'drawing');
@@ -500,13 +492,16 @@ if (choice && choice.distance < SNAP_DIST) {
         this._actionClose(this.drawWay.id)
         //No annotation at this point- having an area with a single node location would be pretty weird.
       );
+
       this.drawWay = context.entity(this.drawWay.id); // Refresh draw way
+
       // Perform a no-op edit that will be replaced as the user moves the draw node around.
       context.perform(actionNoop(), this._getAnnotation());
     }
 
     context.resumeChangeDispatch();
   }
+
 
   /**
    * _drawAreaValid
@@ -536,8 +531,6 @@ if (choice && choice.distance < SNAP_DIST) {
     const context = this.context;
     this._removeDrawNode();
     context.resumeChangeDispatch(); // it's possible to get here in a paused state
-    // We're done drawing, so ensure that we don't keep the hovered class on things.
-    context.scene().clearClass('drawing');
 
     if (this.drawWay) {
       if (DEBUG) {
@@ -551,6 +544,7 @@ if (choice && choice.distance < SNAP_DIST) {
       context.enter('browse');
     }
   }
+
 
   /**
    * _undo

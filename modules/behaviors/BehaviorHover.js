@@ -111,9 +111,9 @@ export class BehaviorHover extends AbstractBehavior {
       eventData.target = null;
     }
 
-    // Check if hover target has changed
-    const prevID = this.hoverTarget?.featureID;
-    const currID = eventData?.target?.featureID;
+    // Check if hover target has changed (coerce undefined -> null for fair comparison)
+    const prevID = this.hoverTarget?.featureID || null;
+    const currID = eventData?.target?.featureID || null;
     if (prevID !== currID) {
       this.hoverTarget = Object.assign({}, eventData.target);  // shallow copy
       this.emit('hoverchanged', eventData);

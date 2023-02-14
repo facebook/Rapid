@@ -92,6 +92,7 @@ export class ModeDrawLine extends AbstractMode {
     this._insertIndex = undefined;
     this._clicks = 0;
     this._selectedData.clear();
+    this._activeData.clear();
 
     context.history().checkpoint('draw-line-initial');  // save history checkpoint to return to if things go bad
 
@@ -108,7 +109,6 @@ export class ModeDrawLine extends AbstractMode {
 
       // this._selectedData.set(this.drawWay.id, this.drawWay);
       this._updateCollections();
-
       this._continueFromNode(continueNode);  // create draw node and extend continue way to it
     }
 
@@ -139,13 +139,13 @@ export class ModeDrawLine extends AbstractMode {
    */
   exit() {
     if (!this._active) return;
+    this._active = false;
 
     if (DEBUG) {
       console.log('ModeDrawLine: exiting');  // eslint-disable-line no-console
     }
 
     const context = this.context;
-    this._active = false;
 
     // If there is a temporary draw node, remove it.
     if (this.drawNode) {
@@ -167,6 +167,10 @@ export class ModeDrawLine extends AbstractMode {
     this._insertIndex = undefined;
     this._clicks = 0;
     this._selectedData.clear();
+    this._activeData.clear();
+
+    // We're done drawing, so ensure that we don't keep the drawing class on things.
+    context.scene().clearClass('drawing');
 
     window.setTimeout(() => {
       context.behaviors.get('map-interaction').doubleClickEnabled = true;
@@ -357,18 +361,18 @@ if (choice && choice.distance < SNAP_DIST) {
       this.lastNode = this.firstNode;
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [ this.firstNode.id, this.drawNode.id ] });
+
       scene.classData('osm', this.drawWay.id, 'drawing');
-      //  scene.classData('osm', this.firstNode.id, 'drawing');
-       scene.classData('osm', this.drawNode.id, 'drawing');
+      scene.classData('osm', this.drawNode.id, 'drawing');
 
       context.perform(
         actionAddEntity(this.firstNode),  // Create first node
         actionAddEntity(this.drawNode),   // Create new draw node (end)
         actionAddEntity(this.drawWay),    // Create new draw way
       );
-    // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop(), this._getAnnotation());
 
+      // Perform a no-op edit that will be replaced as the user moves the draw node around.
+      context.perform(actionNoop(), this._getAnnotation());
     }
 
     context.resumeChangeDispatch();
@@ -523,9 +527,10 @@ if (choice && choice.distance < SNAP_DIST) {
     context.resumeChangeDispatch();
   }
 
-  _actionRemoveDrawNode(wayId, drawNode) {
+
+  _actionRemoveDrawNode(wayID, drawNode) {
     return function (graph) {
-      return graph.replace(graph.entity(wayId).removeNode(drawNode.id)).remove(drawNode);
+      return graph.replace(graph.entity(wayID).removeNode(drawNode.id)).remove(drawNode);
     };
   }
 
@@ -561,7 +566,6 @@ if (choice && choice.distance < SNAP_DIST) {
 
 
   _removeDrawNode() {
-
     // In mose cases, we have automatically created a draw node after each click, with a separate history step.
     // In that case, we can simply back it out.
     if (this.drawNode) {
@@ -570,7 +574,6 @@ if (choice && choice.distance < SNAP_DIST) {
     }
 
     //Special case- the final node that was clicked was an already-existing node, which means that we need to just clean up the draw node, not do anything to history itself.
-
     this.drawNode = null;
   }
 
@@ -582,9 +585,8 @@ if (choice && choice.distance < SNAP_DIST) {
   _finish() {
     const context = this.context;
     this._removeDrawNode();
+
     context.resumeChangeDispatch();  // it's possible to get here in a paused state
-    // We're done drawing, so ensure that we don't keep the hovered class on things.
-    context.scene().clearClass('drawing');
 
     if (this.drawWay) {
       if (DEBUG) {
