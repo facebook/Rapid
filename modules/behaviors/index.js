@@ -6,5 +6,3 @@ export { BehaviorLasso } from './BehaviorLasso';
 export { BehaviorMapInteraction } from './BehaviorMapInteraction';
 export { BehaviorPaste } from './BehaviorPaste';
 export { BehaviorSelect } from './BehaviorSelect';
-
-export { behaviorDrawWay } from './draw_way';
