@@ -1,6 +1,4 @@
 import { utilArrayUnion, utilUnicodeCharsTruncated } from '@id-sdk/util';
-
-import { debug } from '../index';
 import { osmIsInterestingTag } from './tags';
 
 
@@ -100,15 +98,6 @@ osmEntity.prototype = {
         }
         if (!this.hasOwnProperty('visible')) {
             this.visible = true;
-        }
-
-        if (debug) {
-            Object.freeze(this);
-            Object.freeze(this.tags);
-
-            if (this.loc) Object.freeze(this.loc);
-            if (this.nodes) Object.freeze(this.nodes);
-            if (this.members) Object.freeze(this.members);
         }
 
         return this;

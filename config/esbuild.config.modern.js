@@ -5,7 +5,7 @@ esbuild
   .build({
     bundle: true,
     sourcemap: true,
-    entryPoints: ['./modules/id.js'],
+    entryPoints: ['./modules/rapid.js'],
     legalComments: 'none',
     logLevel: 'info',
     metafile: true,

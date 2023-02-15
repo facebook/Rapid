@@ -12,9 +12,10 @@ window.requestIdleCallback = window.requestIdleCallback ||
     });
   };
 window.cancelIdleCallback = window.cancelIdleCallback ||
-  function(id) {
-    window.cancelAnimationFrame(id);
+  function(handle) {
+    window.cancelAnimationFrame(handle);
   };
 
-import * as iD from './index';
-window.iD = iD;
+import * as __all__ from './index';
+window.Rapid = __all__;
+window.iD = __all__;

@@ -5,7 +5,7 @@ esbuild
     minify: true,
     bundle: true,
     sourcemap: true,
-    entryPoints: ['./modules/id.js'],
+    entryPoints: ['./modules/rapid.js'],
     legalComments: 'none',
     logLevel: 'info',
     outfile: 'dist/iD.min.js'
