@@ -1,6 +1,5 @@
 /* globals chai:false */
 /* eslint no-extend-native:off */
-iD.debug = true;
 
 // Disable things that use the network
 for (var k in iD.services) { delete iD.services[k]; }

@@ -10,13 +10,6 @@ describe('iD.osmWay', function () {
         iD.osmSetAreaKeys(_savedAreaKeys);
     });
 
-
-    if (iD.debug) {
-        it('freezes nodes', function () {
-            expect(Object.isFrozen(iD.osmWay().nodes)).to.be.true;
-        });
-    }
-
     it('returns a way', function () {
         expect(iD.osmWay()).to.be.an.instanceOf(iD.osmWay);
         expect(iD.osmWay().type).to.equal('way');

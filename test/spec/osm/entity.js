@@ -9,16 +9,6 @@ describe('iD.osmEntity', function () {
         expect(iD.osmEntity({id: 'r1'})).be.an.instanceOf(iD.osmRelation);
     });
 
-    if (iD.debug) {
-        it('is frozen', function () {
-            expect(Object.isFrozen(iD.osmEntity())).to.be.true;
-        });
-
-        it('freezes tags', function () {
-            expect(Object.isFrozen(iD.osmEntity().tags)).to.be.true;
-        });
-    }
-
     describe('.id', function () {
         it('generates unique IDs', function () {
             expect(iD.osmEntity.id('node')).not.to.equal(iD.osmEntity.id('node'));

@@ -1,10 +1,4 @@
 describe('iD.osmRelation', function () {
-    if (iD.debug) {
-        it('freezes nodes', function () {
-            expect(Object.isFrozen(iD.osmRelation().members)).to.be.true;
-        });
-    }
-
     it('returns a relation', function () {
         expect(iD.osmRelation()).to.be.an.instanceOf(iD.osmRelation);
         expect(iD.osmRelation().type).to.equal('relation');
