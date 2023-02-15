@@ -357,16 +357,6 @@ export function uiInit(context) {
       });
 
 
-//    // Global key bindings
-//    function pan(d) {
-//      return function(d3_event) {
-//        if (d3_event.shiftKey) return;
-//        if (context.container().select('.combobox').size()) return;
-//        d3_event.preventDefault();
-//        context.map().pan(d, 100);
-//      };
-//    }
-
     context.keybinding()
       .on('⌫', function(d3_event) { d3_event.preventDefault(); })
       .on([t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
