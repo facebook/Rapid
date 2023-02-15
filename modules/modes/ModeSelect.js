@@ -54,7 +54,7 @@ export class ModeSelect extends AbstractMode {
     this._active = true;
 
     const context = this.context;
-    context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'paste']);
+    context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction', 'lasso', 'paste']);
 
     const sidebar = context.ui().sidebar;
     let sidebarContent = null;

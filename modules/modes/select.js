@@ -225,7 +225,7 @@ export function modeSelect(context, selectedIDs) {
         context.features().forceVisible(selectedIDs);
         loadOperations();
 
-        context.enableBehaviors(['hover', 'select', 'drag', 'map-interaction']);
+        context.enableBehaviors(['hover', 'select', 'drag', 'lasso', 'map-interaction', 'paste']);
 
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)

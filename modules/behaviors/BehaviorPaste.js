@@ -86,7 +86,6 @@ export class BehaviorPaste extends AbstractBehavior {
     e.preventDefault();
     e.stopPropagation();
 
-    // const startGraph = context.graph();
     const copyGraph = context.copyGraph();
     const projection = context.projection;
 
@@ -95,9 +94,9 @@ export class BehaviorPaste extends AbstractBehavior {
     const copies = action.copies();
 
     let extent = new Extent();
-    let pasteIDs = [];
-    let originals = new Set();
-    Object.values(copies).forEach(entity => originals.add(entity.id));
+    let pasteIDs = new Set();
+    let originalIDs = new Set();
+    Object.values(copies).forEach(entity => originalIDs.add(entity.id));
 
     for (const id in copies) {
       const oldEntity = copyGraph.entity(id);
@@ -107,9 +106,9 @@ export class BehaviorPaste extends AbstractBehavior {
 
       // Exclude child nodes from pasteIDs if their parent way was also copied.
       const parents = context.graph().parentWays(newEntity);
-      const parentCopied = parents.some(parent => originals.has(parent.id));
+      const parentCopied = parents.some(parent => originalIDs.has(parent.id));
       if (!parentCopied) {
-        pasteIDs.push(newEntity.id);
+        pasteIDs.add(newEntity.id);
       }
     }
 
@@ -120,8 +119,16 @@ export class BehaviorPaste extends AbstractBehavior {
     const mousePoint = eventManager.coord || context.map().centerPoint();
     const delta = vecSubtract(mousePoint, copyPoint);
 
-    context.perform(actionMove(pasteIDs, delta, projection), t('operations.paste.annotation', { n: context.copyIDs().length }));
-    context.enter('select', { selection: pasteIDs });
+    const annotation = t('operations.paste.annotation', { n: pasteIDs.size });
+    context.perform(actionMove(Array.from(pasteIDs), delta, projection), annotation);
+
+    // Put the user in move mode so they can place the pasted features
+    // Grab the current versions from the graph (because they were just moved).
+    const pasted = new Map();    // Map (entityID -> Entity)
+    for (const pasteID of pasteIDs) {
+      pasted.set(pasteID, context.entity(pasteID));
+    }
+    context.enter('move', { selection: pasted });
   }
 
 }
