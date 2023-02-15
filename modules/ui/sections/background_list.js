@@ -288,7 +288,6 @@ export function uiSectionBackgroundList(context) {
     }
     prefs('background-last-used', d.id);
     context.imagery().baseLayerSource(d);
-    document.activeElement.blur();
   }
 
 

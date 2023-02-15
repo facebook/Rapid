@@ -357,28 +357,19 @@ export function uiInit(context) {
       });
 
 
-    // Global key bindings
-    function pan(d) {
-      return function(d3_event) {
-        if (d3_event.shiftKey) return;
-        if (context.container().select('.combobox').size()) return;
-        d3_event.preventDefault();
-        context.map().pan(d, 100);
-      };
-    }
+//    // Global key bindings
+//    function pan(d) {
+//      return function(d3_event) {
+//        if (d3_event.shiftKey) return;
+//        if (context.container().select('.combobox').size()) return;
+//        d3_event.preventDefault();
+//        context.map().pan(d, 100);
+//      };
+//    }
 
-    const PAN_PIXELS = 80;
     context.keybinding()
       .on('⌫', function(d3_event) { d3_event.preventDefault(); })
       .on([t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
-      .on('←', pan([PAN_PIXELS, 0]))
-      .on('↑', pan([0, PAN_PIXELS]))
-      .on('→', pan([-PAN_PIXELS, 0]))
-      .on('↓', pan([0, -PAN_PIXELS]))
-      .on(uiCmd('⌥←'), pan([map.dimensions[0], 0]))
-      .on(uiCmd('⌥↑'), pan([0, map.dimensions[1]]))
-      .on(uiCmd('⌥→'), pan([-map.dimensions[0], 0]))
-      .on(uiCmd('⌥↓'), pan([0, -map.dimensions[1]]))
       .on(uiCmd('⌘' + t('background.key')), function quickSwitch(d3_event) {
         if (d3_event) {
           d3_event.stopImmediatePropagation();

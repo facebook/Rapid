@@ -15,7 +15,6 @@ export function uiSectionReactContainer(context) {
 
   const chooseBackground = (source) => {
     context.imagery().baseLayerSource(source);
-    document.activeElement.blur();
   };
 
   const content = (selection) => {

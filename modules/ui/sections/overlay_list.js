@@ -93,7 +93,6 @@ export function uiSectionOverlayList(context) {
     d3_event.preventDefault();
     context.imagery().toggleOverlayLayer(d);
     _overlayList.call(updateLayerSelections);
-    document.activeElement.blur();
   }
 
   function filterOverlay(d) {

@@ -39,6 +39,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
+    this._keydown = this._keydown.bind(this);
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
@@ -60,6 +61,7 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     const eventManager = this.context.map().renderer.events;
     eventManager.on('click', this._click);
+    eventManager.on('keydown', this._keydown);
     eventManager.on('pointerdown', this._pointerdown);
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
@@ -81,11 +83,54 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     const eventManager = this.context.map().renderer.events;
     eventManager.off('click', this._click);
+    eventManager.off('keydown', this._keydown);
     eventManager.off('pointerdown', this._pointerdown);
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
     eventManager.off('pointercancel', this._pointercancel);
     eventManager.off('wheel', this._wheel);
+  }
+
+
+  /**
+   * _keydown
+   * Handler for keydown events on the window.
+   * @param  `e`  A DOM KeyboardEvent
+   */
+  _keydown(e) {
+    // Only allow key navigation if the user doesn't have something
+    // more important focused - like a input, textarea, menu, etc.
+    const activeElement = document.activeElement?.tagName ?? 'BODY';
+    if (activeElement !== 'BODY') return;
+
+    const context = this.context;
+    const map = context.map();
+    const EASE = 100;  // milliseconds
+
+    if (e.shiftKey) {
+      return;  // today, ignore - someday, rotate
+
+    } else {
+      const PAN_PIXELS = 80;
+      const [WIDTH, HEIGHT] = map.dimensions;
+      const panMore = (e.altKey || e.metaKey || e.ctrlKey);  // pan more if modifier down
+
+      let delta;
+      if (e.key === 'ArrowLeft') {
+        delta = panMore ? [WIDTH / 2, 0] : [PAN_PIXELS, 0];
+      } else if (e.key === 'ArrowRight') {
+        delta = panMore ? [-WIDTH / 2, 0] : [-PAN_PIXELS, 0];
+      } else if (e.key === 'ArrowUp') {
+        delta = panMore ? [0, HEIGHT / 2] : [0, PAN_PIXELS];
+      } else if (e.key === 'ArrowDown') {
+        delta = panMore ? [0, -HEIGHT / 2] : [0, -PAN_PIXELS];
+      }
+
+      if (delta) {
+        e.preventDefault();
+        map.pan(delta, EASE);
+      }
+    }
   }
 
 
@@ -246,7 +291,6 @@ export class BehaviorMapInteraction extends AbstractBehavior {
     }
 
     this.context.map().transform(tNew);
-
   }
 
 }

@@ -35,7 +35,8 @@ export class ModeBrowse extends AbstractMode {
     this.context.enableBehaviors(['hover', 'select', 'drag', 'paste', 'lasso', 'map-interaction']);
 
     // Get focus on the body.
-    // does this do anything?
+    // I think this was done to remove focus from whatever
+    // field the user was using in the sidebar/inspector?
     if (document.activeElement && document.activeElement.blur) {
       document.activeElement.blur();
     }
