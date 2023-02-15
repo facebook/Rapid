@@ -3,9 +3,9 @@
   "version": "2.0.0-beta.0",
   "description": "An AI-enhanced editor for OpenStreetMap",
   "main": "dist/iD.min.js",
-  "repository": "github:facebookincubator/RapiD",
+  "repository": "github:facebook/RapiD",
   "homepage": "https://mapwith.ai",
-  "bugs": "https://github.com/facebookincubator/RapiD/issues",
+  "bugs": "https://github.com/facebook/RapiD/issues",
   "keywords": [
     "editor",
     "openstreetmap"

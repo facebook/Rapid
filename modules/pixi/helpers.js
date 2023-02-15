@@ -355,7 +355,7 @@ export function getLineSegments(points, spacing, isSided = false, isLimited = fa
         // generate coordinates between `a` and `b`, spaced `spacing` apart
         let coords = [a, p];
 
-// temporary, see https://github.com/facebookincubator/RapiD/issues/544
+// temporary, see https://github.com/facebook/RapiD/issues/544
 // If we are going to generate more than 100 line segments,
 // cap it at 100 so we're not adding thousands of oneway arrows.
 if (isLimited && (span >= spacing * 100)) {

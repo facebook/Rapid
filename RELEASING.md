@@ -40,7 +40,7 @@ $  git commit -m 'Check in build'
 $  git tag rapid-vA.B.C
 $  git push origin -f release rapid-vA.B.C
 ```
-- Open https://github.com/facebookincubator/RapiD/releases
+- Open https://github.com/facebook/RapiD/releases
 
 #### Deploy
 The Release branch contains everything to be deployed. For example:

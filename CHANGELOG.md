@@ -3,7 +3,7 @@
 Thanks to all our contributors, users, and the many people that make RapiD possible! ❤️
 
 The RapiD map editor is an open source project. You can submit bug reports, help out,
-or learn more by visiting our project page on GitHub:  :octocat: https://github.com/facebookincubator/RapiD
+or learn more by visiting our project page on GitHub:  :octocat: https://github.com/facebook/RapiD
 
 If you love RapiD, please star our project on GitHub to show your support! ⭐️
 
@@ -33,7 +33,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * ([#])
 
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
-[#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
+[#xxxx]: https://github.com/facebook/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
 # [2.0.0-beta.0]
@@ -250,7 +250,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [#569]
 [#555]
 
-# [1.1.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.9)
+# [1.1.9](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.9)
 ##### 2022-May-05
 
 #### :newspaper: News
@@ -273,11 +273,11 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * Fix Wikidata field displays `[object Object]` ([iD#9080])
 * Fix deferred promise cleanup in validator ([iD#9021])
 
-[#404]: https://github.com/facebookincubator/RapiD/issues/404
-[#435]: https://github.com/facebookincubator/RapiD/issues/435
-[#456]: https://github.com/facebookincubator/RapiD/issues/456
-[#458]: https://github.com/facebookincubator/RapiD/issues/458
-[#469]: https://github.com/facebookincubator/RapiD/issues/469
+[#404]: https://github.com/facebook/RapiD/issues/404
+[#435]: https://github.com/facebook/RapiD/issues/435
+[#456]: https://github.com/facebook/RapiD/issues/456
+[#458]: https://github.com/facebook/RapiD/issues/458
+[#469]: https://github.com/facebook/RapiD/issues/469
 [iD#8881]: https://github.com/openstreetmap/iD/issues/8881
 [iD#8975]: https://github.com/openstreetmap/iD/issues/8975
 [iD#8988]: https://github.com/openstreetmap/iD/issues/8988
@@ -289,7 +289,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 
 
 
-# [1.1.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.8)
+# [1.1.8](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.8)
 ##### 2021-Oct-25
 
 #### :tada: New Features
@@ -320,9 +320,9 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * Decomission Maxar Standard legacy imagery layer ([iD#8689])
 * Debounce input events in the preset list ([iD#8288])
 
-[#322]: https://github.com/facebookincubator/RapiD/issues/322
-[#328]: https://github.com/facebookincubator/RapiD/issues/328
-[#335]: https://github.com/facebookincubator/RapiD/issues/335
+[#322]: https://github.com/facebook/RapiD/issues/322
+[#328]: https://github.com/facebook/RapiD/issues/328
+[#335]: https://github.com/facebook/RapiD/issues/335
 [iD#8288]: https://github.com/openstreetmap/iD/issues/8288
 [iD#8612]: https://github.com/openstreetmap/iD/issues/8612
 [iD#8675]: https://github.com/openstreetmap/iD/issues/8675
@@ -338,7 +338,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 
 
 
-# [1.1.7](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.7)
+# [1.1.7](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.7)
 ##### 2021-Aug-30
 
 #### :sparkles: Usability & Accessibility
@@ -349,16 +349,16 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * Fix issue involving shift-clicking and lasso-selecting features ([#299], [#301])
 * Fix issue involving copy-paste ([#311])
 
-[#299]: https://github.com/facebookincubator/RapiD/issues/299
-[#300]: https://github.com/facebookincubator/RapiD/issues/300
-[#301]: https://github.com/facebookincubator/RapiD/issues/301
-[#311]: https://github.com/facebookincubator/RapiD/issues/311
+[#299]: https://github.com/facebook/RapiD/issues/299
+[#300]: https://github.com/facebook/RapiD/issues/300
+[#301]: https://github.com/facebook/RapiD/issues/301
+[#311]: https://github.com/facebook/RapiD/issues/311
 [iD#8650]: https://github.com/openstreetmap/iD/issues/8650
 [iD#8655]: https://github.com/openstreetmap/iD/issues/8655
 [iD#8663]: https://github.com/openstreetmap/iD/issues/8663
 
 
-# [1.1.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.6)
+# [1.1.6](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.6)
 ##### 2021-Aug-19
 
 #### :tada: Updates
@@ -402,7 +402,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [NSI#5184]: https://github.com/osmlab/name-suggestion-index/issues/5184
 
 
-# [1.1.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.5)
+# [1.1.5](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.5)
 ##### 2021-Jul-13
 #### :tada: Updates
 * Name Suggestion Index v6.0
@@ -420,18 +420,18 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * If locationSet is missing include, default to worldwide include ([iD#bfb36d5])
 * Fix bug in walkthrough ([#234])
 
-[#220]: https://github.com/facebookincubator/RapiD/issues/220
-[#233]: https://github.com/facebookincubator/RapiD/issues/233
-[#234]: https://github.com/facebookincubator/RapiD/issues/234
-[#236]: https://github.com/facebookincubator/RapiD/issues/236
-[#246]: https://github.com/facebookincubator/RapiD/issues/246
-[#257]: https://github.com/facebookincubator/RapiD/issues/257
-[#265]: https://github.com/facebookincubator/RapiD/issues/265
+[#220]: https://github.com/facebook/RapiD/issues/220
+[#233]: https://github.com/facebook/RapiD/issues/233
+[#234]: https://github.com/facebook/RapiD/issues/234
+[#236]: https://github.com/facebook/RapiD/issues/236
+[#246]: https://github.com/facebook/RapiD/issues/246
+[#257]: https://github.com/facebook/RapiD/issues/257
+[#265]: https://github.com/facebook/RapiD/issues/265
 [iD#8570]: https://github.com/openstreetmap/iD/issues/8570
 [iD#bfb36d5]: https://github.com/openstreetmap/iD/pull/8305/commits/bfb36d572d35271f1a77227d776ebddc7f232ac3
 
 
-# [1.1.4](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.4)
+# [1.1.4](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.4)
 ##### 2021-May-14
 #### :tada: Updates
 * Improved search/filtering panel for Esri datasets ([#146], [#216])
@@ -446,13 +446,13 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [OMaF#19]: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/issues/19
 [iD#8473]: https://github.com/openstreetmap/iD/issues/8473
 [iD#8483]: https://github.com/openstreetmap/iD/issues/8483
-[#138]: https://github.com/facebookincubator/RapiD/issues/138
-[#146]: https://github.com/facebookincubator/RapiD/issues/146
-[#204]: https://github.com/facebookincubator/RapiD/issues/204
-[#216]: https://github.com/facebookincubator/RapiD/issues/216
+[#138]: https://github.com/facebook/RapiD/issues/138
+[#146]: https://github.com/facebook/RapiD/issues/146
+[#204]: https://github.com/facebook/RapiD/issues/204
+[#216]: https://github.com/facebook/RapiD/issues/216
 
 
-# [1.1.3](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.3)
+# [1.1.3](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.3)
 ##### 2021-Apr-22
 #### :tada: Updates
 * Use Mapillary Vector Tile API ([iD#8372])
@@ -471,16 +471,16 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [iD#8372]: https://github.com/openstreetmap/iD/issues/8372
 [iD#8440]: https://github.com/openstreetmap/iD/issues/8440
 [iD#8442]: https://github.com/openstreetmap/iD/issues/8442
-[#80]: https://github.com/facebookincubator/RapiD/issues/80
+[#80]: https://github.com/facebook/RapiD/issues/80
 
 
-# [1.1.2](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.2)
+# [1.1.2](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.2)
 ##### 2021-Mar-09
 #### :trumpet: Updates
 * This is a 'refresh' release, based off iD version 2.19.6.
 
 
-# [1.1.1](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.1)
+# [1.1.1](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.1)
 ##### 2021-Jan-15
 #### :bug: Bugfixes:
 * #195, #196, and #197.
@@ -489,7 +489,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 * This is a 'refresh' release, based off iD version 2.19.5.
 
 
-# [1.1.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.0)
+# [1.1.0](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.0)
 ##### 2020-Dec-07
 #### :trumpet: New Features!
 * This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to RapiD!
@@ -501,20 +501,20 @@ Read the [FAQ](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wi
 * This release fixes issue #168, which prevented users from editing certain types of ways.
 
 
-# [1.0.12](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.12)
+# [1.0.12](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.12)
 ##### 2020-Sept-11
 #### :trumpet: Updates
 * This release fixes issue #168, which prevented users from editing certain types of ways.
 
 
-# [1.0.11](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.11)
+# [1.0.11](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.11)
 ##### 2020-Aug-24
 #### :trumpet: Updates
 * This release fixes issue #158, which prevented some saves from occurring.
 * Other fixes: #163, #164.
 
 
-# [1.0.10](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.10)
+# [1.0.10](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.10)
 ##### 2020-Aug-07
 #### :trumpet: Updates
 * This brings the RapiD code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff.
@@ -522,48 +522,48 @@ Read the [FAQ](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wi
 * Finally, fix issue #144.
 
 
-# [1.0.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.9)
+# [1.0.9](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.9)
 ##### 2020-Jun-09
 #### :trumpet: Updates
 * This removes the FB-Maxar imagery layer. We recommend using the the Maxar Premium (Beta) layer instead.
 
 
-# [1.0.8](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.8)
+# [1.0.8](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.8)
 ##### 2020-Mar-30
 #### :trumpet: Updates
 * This eliminates RapiD's need to contact the facebook.com domain and instead contacts the mapwith.ai domain. This should mean fewer configuration issues for folks using Firefox or similar.
 
 
-# [1.0.7](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.7)
+# [1.0.7](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.7)
 ##### 2020-Feb-18
 
 #### :trumpet: Updates
 * This brings the RapiD code up-to-date with v2.17.2, which re-introduces Maxar Imagery.
 
 
-# [1.0.6](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.6)
+# [1.0.6](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.6)
 ##### 2020-Jan-31
 #### :trumpet: Updates
 * This brings the RapiD code up-to-date with v2.17.1. This also fixes issue #105.
 
 
-# [1.0.5](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.5)
+# [1.0.5](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.5)
 ##### 2019-Dec-12
 #### :trumpet: Updates
 * This brings the RapiD code up-to-date with v2.17. This fixes issue #92.
 
 
-# [1.0.4](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.4)
+# [1.0.4](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.4)
 ##### 2019-Dec-12
 
 #### :bug: Bugfixes
-* Fixed issue #84: https://github.com/facebookincubator/RapiD/issues/84 - With this fix, no more than 50 AI roads or buildings can be added to the map in a single save.
+* Fixed issue #84: https://github.com/facebook/RapiD/issues/84 - With this fix, no more than 50 AI roads or buildings can be added to the map in a single save.
 
 #### :tada: New Features
 * Merged with [iD v2.16](https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#2160) including support for objects detected in Mapillary images & a visual diff hotkey!
 
 
-# [1.0.3](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.3)
+# [1.0.3](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.3)
 ##### 2019-Nov-25
 
 #### :tada: New Features
@@ -576,7 +576,7 @@ For up-to-date availability of roads and buildings, check our continually-update
 * The RapiD button is no longer an AI-roads toggle- instead, a dialog opens allowing you to enable Facebook's road layer, Microsoft's building layer, or nothing at all.
 
 
-# [1.0.2](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.2)
+# [1.0.2](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.2)
 ##### 2019-Oct-14
 
 #### :tada: New Features
@@ -588,7 +588,7 @@ For up-to-date availability of roads and buildings, check our continually-update
 * Added options for drawing 2x2, 3x3, 4x4, 5x5, or 6x6 grids within the task area when working on a TM task with a rectangular shape.
 
 
-# [1.0.1](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.1)
+# [1.0.1](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.1)
 ##### 2019-Jul-31
 
 #### :bug: Bugfixes
@@ -596,7 +596,7 @@ For up-to-date availability of roads and buildings, check our continually-update
 * Fixed lint errors when running with node 8 and 10.
 
 
-# [1.0.0](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.0.0)
+# [1.0.0](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.0)
 ##### 2019-Jul-22
 
 #### :tada: New Features
@@ -613,7 +613,7 @@ For up-to-date availability of roads and buildings, check our continually-update
 * Adjusted validation for Y-shaped connection to flag issues on the excessive nodes around connections.
 
 #### :bug: Bugfixes
-* Updated bug report button to point to https://github.com/facebookincubator/RapiD/issues.
+* Updated bug report button to point to https://github.com/facebook/RapiD/issues.
 
 
 # 0.9.0
