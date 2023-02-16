@@ -62,8 +62,12 @@ export function uiInit(context) {
     const detected = utilDetect();
 
     let browser = `${detected.browser} v${detected.version}`;
+    let os = `${detected.os}`;
+    let userAgent = navigator.userAgent;
 
     link.searchParams.append('browser', browser);
+    link.searchParams.append('os', os);
+    link.searchParams.append('useragent', userAgent);
     link.searchParams.append('URL', window.location.href);
     link.searchParams.append('version', context.version);
 
