@@ -26,6 +26,11 @@ body:
     attributes:
       label: What browser are you seeing the problem on? What version are you running?
       placeholder: ex. Chrome v103, Safari v15.3, Edge v102, Firefox 100, etc.
+  - type: input
+    id: os
+    attributes:
+      label: The OS you're using
+      placeholder: Intel MacOS Ventura 13.2, Linux (please also supply the distro), Windows 10, etc.
   - type: textarea
     id: reproduction
     attributes:
@@ -35,7 +40,12 @@ body:
     id: URL
     attributes:
       label: The browser URL at the time you encountered the bug
-      description: Please copy and paste the contents of the URL bar. 
-      placeholder: ex. https://mapwith.ai/rapid#background=none&datasets=fbRoads,msBuildings&map=2.00/0.0/0.0   
+      description: Please copy and paste the contents of the URL bar.
+      placeholder: ex. https://mapwith.ai/rapid#background=none&datasets=fbRoads,msBuildings&map=2.00/0.0/0.0
     validations:
       required: true
+  - type: input
+    id: useragent
+    attributes:
+      label: The auto-detected useragent string for your browser (leave blank if you're manually filling this form out)
+      placeholder: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
