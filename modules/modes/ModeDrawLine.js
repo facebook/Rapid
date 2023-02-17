@@ -227,6 +227,14 @@ export class ModeDrawLine extends AbstractMode {
     return t(`operations.${which}.annotation.line`);
   }
 
+  /**
+   * An annotation associated with the previous edit one click ago
+   */
+  _prevAnnotation() {
+    const which = (this._clicks - 1 > 1 ? 'continue' : 'start');
+    return t(`operations.${which}.annotation.line`);
+  }
+
 
   /**
    * _move
@@ -459,8 +467,8 @@ if (choice && choice.distance < SNAP_DIST) {
     const scene = context.scene();
     context.pauseChangeDispatch();
 
-    // Extend line by reuse target node as a vertex...
-    // (Note that we don't need to replace the draw node in this scenerio)
+    // Extend line by reusing target node as a vertex...
+    // (Note that we don't need to replace the draw node in this scenario)
     if (this.drawWay) {
       // Clicked on first or last node, try to finish the line
       if (targetNode === this.lastNode || targetNode === this.firstNode ||
@@ -493,12 +501,18 @@ if (choice && choice.distance < SNAP_DIST) {
       // If draw node is at the end, insert target 1 before the end.
       const targetIndex = this.drawWay.affix(this.drawNode.id) === 'prefix' ? 1 : this.drawWay.nodes.length - 1;
 
+        //Time for a switcheroo- replace the 'draw' node with the existing node we're snapping to by removing it and replacing it in the same history slot.
       context.replace(
         actionAddVertex(this.drawWay.id, targetNode.id, targetIndex),   // Add target node to draw way
-        this._getAnnotation()
+        this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),
+        this._prevAnnotation()
       );
 
-
+        //Now add the draw node back to the way in a new history item
+      context.perform(
+          actionAddEntity(this.drawNode), // Create new draw node
+          actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add draw node to draw way
+        );
     // Start a new line at target node...
     } else {
       if (DEBUG) {
@@ -515,6 +529,9 @@ if (choice && choice.distance < SNAP_DIST) {
         actionAddEntity(this.drawWay),    // Create new draw way
       );
 
+      // Perform a no-op edit that will be replaced as the user moves the draw node around.
+      context.perform(actionNoop(), this._getAnnotation());
+
       scene.classData('osm', this.drawWay.id, 'drawing');
       scene.classData('osm', this.drawNode.id, 'drawing');
     }
@@ -522,8 +539,6 @@ if (choice && choice.distance < SNAP_DIST) {
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
 
-    // Perform a no-op edit that will be replaced as the user moves the draw node around.
-    context.perform(actionNoop(), this._getAnnotation());
     context.resumeChangeDispatch();
   }
 
