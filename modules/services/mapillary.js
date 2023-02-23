@@ -66,7 +66,8 @@ function loadTile(which, url, tile) {
       if (!data) {
         throw new Error('No Data');
       }
-      loadTileDataToCache(data, tile, which);
+
+      loadTileDataToCache(data, tile);
 
       if (which === 'images') {
         dispatch.call('loadedImages');
@@ -88,19 +89,21 @@ function loadTile(which, url, tile) {
 
 
 // Load the data from the vector tile into cache
-function loadTileDataToCache(data, tile, which) {
+function loadTileDataToCache(data, tile) {
   const vectorTile = new VectorTile(new Protobuf(data));
-  let features, cache, layer, i, feature, loc, d;
 
   if (vectorTile.layers.hasOwnProperty('image')) {
-    features = [];
-    cache = _mlyCache.images;
-    layer = vectorTile.layers.image;
+    const cache = _mlyCache.images;
+    const layer = vectorTile.layers.image;
+    let boxes = [];
 
-    for (i = 0; i < layer.length; i++) {
-      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-      loc = feature.geometry.coordinates;
-      d = {
+    for (let i = 0; i < layer.length; i++) {
+      const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      if (!feature) continue;
+      if (cache.forImageID[feature.properties.id] !== undefined) continue;  // seen already
+
+      const loc = feature.geometry.coordinates;
+      const d = {
         id: feature.properties.id,
         loc: loc,
         captured_at: feature.properties.captured_at,
@@ -109,80 +112,71 @@ function loadTileDataToCache(data, tile, which) {
         sequenceID: feature.properties.sequence_id,
       };
       cache.forImageID[d.id] = d;
-      features.push({
-        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-      });
+      boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
     }
-    if (cache.rtree) {
-      cache.rtree.load(features);
-    }
+    cache.rtree.load(boxes);
   }
 
   if (vectorTile.layers.hasOwnProperty('sequence')) {
-    features = [];
-    layer = vectorTile.layers.sequence;
+    const cache = _mlyCache.sequences;
+    const layer = vectorTile.layers.sequence;
 
-    for (i = 0; i < layer.length; i++) {
-      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-
+    for (let i = 0; i < layer.length; i++) {
+      const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      if (!feature) continue;
       const sequenceID = feature.properties.id;
-      let lineStrings = _mlyCache.sequences.get(sequenceID);
+
+      let lineStrings = cache.get(sequenceID);
       if (!lineStrings) {
         lineStrings = [];
-        _mlyCache.sequences.set(sequenceID, lineStrings);
+        cache.set(sequenceID, lineStrings);
       }
       lineStrings.push(feature);
     }
   }
 
   if (vectorTile.layers.hasOwnProperty('point')) {
-    features = [];
-    cache = _mlyCache[which];
-    layer = vectorTile.layers.point;
+    const cache = _mlyCache.points;
+    const layer = vectorTile.layers.point;
+    let boxes = [];
 
-    for (i = 0; i < layer.length; i++) {
-      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-      loc = feature.geometry.coordinates;
+    for (let i = 0; i < layer.length; i++) {
+      const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      if (!feature) continue;
 
-      d = {
+      const loc = feature.geometry.coordinates;
+      const d = {
         id: feature.properties.id,
         loc: loc,
         first_seen_at: feature.properties.first_seen_at,
         last_seen_at: feature.properties.last_seen_at,
         value: feature.properties.value
       };
-      features.push({
-        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-      });
+
+      boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
     }
-    if (cache.rtree) {
-      cache.rtree.load(features);
-    }
+    cache.rtree.load(boxes);
   }
 
   if (vectorTile.layers.hasOwnProperty('traffic_sign')) {
-    features = [];
-    cache = _mlyCache[which];
-    layer = vectorTile.layers.traffic_sign;
+    const cache = _mlyCache.signs;
+    const layer = vectorTile.layers.traffic_sign;
+    let boxes = [];
 
-    for (i = 0; i < layer.length; i++) {
-      feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
-      loc = feature.geometry.coordinates;
+    for (let i = 0; i < layer.length; i++) {
+      const feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
+      const loc = feature.geometry.coordinates;
 
-      d = {
+      const d = {
         id: feature.properties.id,
         loc: loc,
         first_seen_at: feature.properties.first_seen_at,
         last_seen_at: feature.properties.last_seen_at,
         value: feature.properties.value
       };
-      features.push({
-        minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d
-      });
+      boxes.push({ minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1], data: d });
     }
-    if (cache.rtree) {
-      cache.rtree.load(features);
-    }
+    cache.rtree.load(boxes);
   }
 }
 
@@ -278,8 +272,11 @@ export default {
     for (const box of _mlyCache.images.rtree.search(bbox)) {
       const sequenceID = box.data.sequenceID;
       if (!sequenceID) continue;  // no sequence for this image
+      const sequence = _mlyCache.sequences.get(sequenceID);
+      if (!sequence) continue;  // sequence not ready
+
       if (!result.has(sequenceID)) {
-        result.set(sequenceID, _mlyCache.sequences.get(sequenceID));
+        result.set(sequenceID, sequence);
       }
     }
     return [...result.values()];
