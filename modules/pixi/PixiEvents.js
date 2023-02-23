@@ -83,7 +83,7 @@ export class PixiEvents extends EventEmitter {
     // Attach wheel to supersurface so that content on the overlay (like the edit menu)
     // doesn't receive the wheel events and prevent panning and zooming.
     const supersurface = this.renderer.supersurface.node();
-    supersurface.addEventListener('wheel', this._wheel);
+    supersurface.addEventListener('wheel', this._wheel, { passive: false });  // false allows preventDefault
 
     const canvas = this.context.pixi.view;
     canvas.addEventListener('pointerover', this._pointerover);
@@ -152,15 +152,15 @@ export class PixiEvents extends EventEmitter {
 
 
   /**
-   * _checkModifierKeys
+   * _observeModifierKeys
    * For pointer and keyboard events that contain properties about the modifier keys,
-   *   this code checks those properties and updates the modifierKeys set.
+   *   this code checks those properties and updates the `modifierKeys` set.
    * It's possible to miss a modifier key if it changed when the window was out of focus
    *   but we will know its state once the pointer events occur on the canvas again.
    *
    * @param  `e`  A Pixi FederatedPointerEvent or DOM KeyboardEvent
    */
-  _checkModifierKeys(e) {
+  _observeModifierKeys(e) {
     const modifiers = this.modifierKeys;
     const toCheck = [
       'Alt',      // ALT key, on Mac: ⌥ (option)
@@ -195,7 +195,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keydown(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.emit('keydown', e);
   }
 
@@ -205,7 +205,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A DOM KeyboardEvent
    */
   _keyup(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.emit('keyup', e);
   }
 
@@ -215,7 +215,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A DOM PointerEvent
    */
   _pointerover(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.pointerOverRenderer = true;
     this.emit('pointerover', e);
   }
@@ -226,7 +226,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A DOM PointerEvent
    */
   _pointerout(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.pointerOverRenderer = false;
     this.emit('pointerout', e);
   }
@@ -237,7 +237,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerdown(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.coord = [e.global.x, e.global.y];
     this.emit('pointerdown', e);
   }
@@ -248,7 +248,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointermove(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.coord = [e.global.x, e.global.y];
     this.emit('pointermove', e);
   }
@@ -259,7 +259,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A Pixi FederatedPointerEvent
    */
   _pointerup(e) {
-    this._checkModifierKeys(e);
+    this._observeModifierKeys(e);
     this.coord = [e.global.x, e.global.y];
     this.emit('pointerup', e);
   }
@@ -279,7 +279,7 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A DOM PointerEvent
    */
   _click(e) {
-    // no need to _checkModifierKeys here, 'click' fires immediately after 'pointerup'
+    // no need to _observeModifierKeys here, 'click' fires immediately after 'pointerup'
     this.emit('click', e);
   }
 
@@ -290,35 +290,58 @@ export class PixiEvents extends EventEmitter {
    * @param  `e`  A DOM WheelEvent
    */
   _wheel(e) {
+    e.preventDefault();             // don't scroll supersurface contents
+    e.stopImmediatePropagation();   // don't scroll page contents either
+
     let [dX, dY] = this._normalizeWheelDelta(e);
     this.coord = [e.offsetX, e.offsetY];
 
+    // There is some code in here to try to detect if the user is 2-finger scrolling
+    // on a trackpad, and if so allow this gesture to pan the map instead of zooming it.
+
+    // Round numbers
+    //   - 2-finger pans on a trackpad
+    //   - mouse wheels (occasionally)
+    // Fractional numbers
+    //   - 2-finger pinch-zooms on a trackpad (`e.ctrlKey` will be true in this case)
+    //   - mouse wheels (usually)
     function isRoundNumber(val) {
       return typeof val === 'number' && isFinite(val) && Math.floor(val) === val;
     }
 
-    // Autodetect whether the user wants to pan or zoom:
-    // Round numbers
-    //   - 2-finger pans on a trackpad
-    // Fractional numbers
-    //   - 2-finger pinch-zooms on a trackpad
-    //   - mouse wheels
-    let isZoom = false;   // default - treat wheel events as a pan gesture
+    // On a multitouch trackpad, this 'wheel' event came from a pinch/unpinch gesture IF:
+    // - dY is a fractional number, AND
+    // - e.ctrlKey is `true`
+    // see https://kenneth.io/post/detecting-multi-touch-trackpad-gestures-in-javascript
+    // (NB: We observe modifier keys elsewhere and can know whether the user really did press ctrlKey)
+    const isPinchZoom = !isRoundNumber(dY) && e.ctrlKey && !this.modifierKeys.has('Control');
 
-    if (!isRoundNumber(dY)) {
-      isZoom = true;
-      dY *= 6;  // slightly scale up whatever the browser gave us
-    } else if (e.shiftKey) {
-      isZoom = true;
-      dY *= 3;  // slightly scale up whatever the browser gave us
+    let gesture = 'zoom';  // Try to guess whether the user wants to zoom or pan.
+    let speed = 1;         // Multiplier to adjust the zoom speed
+
+    if (isPinchZoom) {   // A pinch-zoom gesture on a trackpad...
+      gesture = 'zoom';
+      speed = 6;
+
+    } else if (e.shiftKey) {   // If shift is down, always zoom...
+      gesture = 'zoom';
+      speed = 3;
+
+    // If horizontal scroll present or it's a round number that's not a pinch-zoom...
+    } else if (dX || (isRoundNumber(dY) && !isPinchZoom)) {
+      gesture = 'pan';
+      speed = 1;
+
+    } else {   // Default to zoom
+      gesture = 'zoom';
+      speed = 3;
     }
 
-    // Decorate the wheel event with some useful custom properties.
-    e._normalizedDeltaX = dX;
-    e._normalizedDeltaY = dY;
-    e._gesture = isZoom ? 'zoom' : 'pan';
+    // Decorate the wheel event with whatever we detected.
+    e._gesture = gesture;
+    e._normalizedDeltaX = dX * speed;
+    e._normalizedDeltaY = dY * speed;
 
-    this.coord = [e.offsetX, e.offsetY];
     this.emit('wheel', e);
   }
 
@@ -335,8 +358,9 @@ export class PixiEvents extends EventEmitter {
    * Note that Firefox will now change its behavior depending on how you look at the delta values!
    *   https://github.com/mdn/content/issues/11811
    *   https://bugzilla.mozilla.org/show_bug.cgi?id=1392460#c33
-   * (Because Pixi's `normalizeWheelEvent` code in `EventSystem.ts` reads `deltaMode` before `deltaX/Y`,
-   *   we get LINES sometimes in Firefox, particularly when using a physical mouse with a wheel)
+   * PixiJS reads deltaX/Y/Z before deltaMode in order to get consistent values from Firefox:
+   *   https://github.com/pixijs/pixijs/pull/8972
+   *   https://github.com/pixijs/pixijs/issues/8970
    *
    * Also see https://github.com/basilfx/normalize-wheel/blob/master/src/normalizeWheel.js
    *   for an older version of this sort of code.
@@ -357,13 +381,13 @@ export class PixiEvents extends EventEmitter {
     let [sX, sY] = [Math.sign(dX), Math.sign(dY)];    // signs
     let [mX, mY] = [Math.abs(dX), Math.abs(dY)];      // magnitudes
 
-    // Round numbers are generally generated from 2 finger pans on a trackpad.
-    // We'll try to keep the round numbers round and the fractional numbers fractional.
-    // Also, we want round numbers in LINE or PAGE units to become fractional because they won't be from a trackpad.
+    // Fractional numbers are generated from wheel events on many mouse types, but notably by
+    // 2-finger pinch/unpinch gestues on a trackpad. Because we want to handle these specially,
+    // we'll try to keep the round numbers round and the fractional numbers fractional.
     const isRoundX = (typeof mY === 'number' && isFinite(mX) && Math.floor(mX) === mX);
     const isRoundY = (typeof mY === 'number' && isFinite(mY) && Math.floor(mY) === mY);
-    const fuzzX = (isRoundX && e.deltaMode === WheelEvent.DOM_DELTA_PIXEL) ? 0 : 0.001;
-    const fuzzY = (isRoundY && e.deltaMode === WheelEvent.DOM_DELTA_PIXEL) ? 0 : 0.001;
+    const fuzzX = isRoundX ? 0 : 0.001;
+    const fuzzY = isRoundY ? 0 : 0.001;
 
     // If the wheel delta values are not given in pixels, convert to pixels.
     // (These days only Firefox will _sometimes_ report wheel delta in LINE units).
@@ -383,6 +407,7 @@ export class PixiEvents extends EventEmitter {
     }
 
     // Limit the returned values to prevent user from scrolling too fast.
+    // Add fuzz if needed to keep round numbers round and fractional numbers fractional.
     const MAX = 40;
     const pX = sX * (Math.min(MAX, mX) + fuzzX);
     const pY = sY * (Math.min(MAX, mY) + fuzzY);

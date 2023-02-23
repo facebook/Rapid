@@ -273,17 +273,21 @@ export class BehaviorMapInteraction extends AbstractBehavior {
       return Math.max(min, Math.min(num, max));
     }
 
+    // We aren't going to set `this.gesture` here, because that is for tracking what
+    // the user is doing through a pointerdown-pointermove-pointerup situation..
+
     if (e._gesture === 'zoom') {
-      // local mouse coord to transform origin (was: d3 `transform.invert`)
-      const p1 = [ (x - t.x) / t.k, (y - t.y) / t.k ];
+      // convert mouse coord to transform origin (was: d3 `transform.invert`)
+      const x1 = (x - t.x) / t.k;
+      const y1 = (y - t.y) / t.k;
 
       // rescale
       let k2 = t.k * Math.pow(2, -dY / 500);
       k2 = clamp(k2, MINK, MAXK);
 
       // transform origin back to local coord
-      const x2 = x - p1[0] * k2;
-      const y2 = y - p1[1] * k2;
+      const x2 = x - x1 * k2;
+      const y2 = y - y1 * k2;
       tNew = { x: x2, y: y2, k: k2 };
 
     } else {  // pan
