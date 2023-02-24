@@ -3053,7 +3053,7 @@ div.full-screen > button:focus {
 }
 
 
-/* Background / Map Data Settings
+/* Background / Map Data / Preferences Settings
 ------------------------------------------------------- */
 .imagery-faq {
     margin-bottom: 10px;
@@ -3185,6 +3185,12 @@ div.full-screen > button:focus {
 }
 .map-data-pane .vectortile-container .vectortile-footer {
     padding-bottom: 10px;
+}
+
+.preferences-pane .mouse-wheel-title {
+    color: #444;
+    font-weight: bold;
+    line-height: 2;
 }
 
 

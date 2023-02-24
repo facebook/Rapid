@@ -1,4 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
+import { prefs } from '../core/preferences';
 
 
 /**
@@ -296,8 +297,8 @@ export class PixiEvents extends EventEmitter {
     let [dX, dY] = this._normalizeWheelDelta(e);
     this.coord = [e.offsetX, e.offsetY];
 
-    // There is some code in here to try to detect if the user is 2-finger scrolling
-    // on a trackpad, and if so allow this gesture to pan the map instead of zooming it.
+    // There is some code in here to try to detect when the user is 2-finger scrolling
+    // on a trackpad, and if so allow this gesture to 'pan' the map instead of zooming it.
 
     // Round numbers
     //   - 2-finger pans on a trackpad
@@ -305,19 +306,17 @@ export class PixiEvents extends EventEmitter {
     // Fractional numbers
     //   - 2-finger pinch-zooms on a trackpad (`e.ctrlKey` will be true in this case)
     //   - mouse wheels (usually)
-    function isRoundNumber(val) {
-      return typeof val === 'number' && isFinite(val) && Math.floor(val) === val;
-    }
+    const isRoundNumber = (typeof dY === 'number' && isFinite(dY) && Math.floor(dY) === dY);
 
     // On a multitouch trackpad, this 'wheel' event came from a pinch/unpinch gesture IF:
     // - dY is a fractional number, AND
     // - e.ctrlKey is `true`
     // see https://kenneth.io/post/detecting-multi-touch-trackpad-gestures-in-javascript
     // (NB: We observe modifier keys elsewhere and can know whether the user really did press ctrlKey)
-    const isPinchZoom = !isRoundNumber(dY) && e.ctrlKey && !this.modifierKeys.has('Control');
+    const isPinchZoom = !isRoundNumber && e.ctrlKey && !this.modifierKeys.has('Control');
 
-    let gesture = 'zoom';  // Try to guess whether the user wants to zoom or pan.
-    let speed = 1;         // Multiplier to adjust the zoom speed
+    let gesture = 'zoom';  // Detect this wheel event as 'zoom' or 'pan'
+    let speed = 3;         // Multiplier to adjust the zoom speed
 
     if (isPinchZoom) {   // A pinch-zoom gesture on a trackpad...
       gesture = 'zoom';
@@ -327,14 +326,21 @@ export class PixiEvents extends EventEmitter {
       gesture = 'zoom';
       speed = 3;
 
-    // If horizontal scroll present or it's a round number that's not a pinch-zoom...
-    } else if (dX || (isRoundNumber(dY) && !isPinchZoom)) {
-      gesture = 'pan';
-      speed = 1;
+    } else {  // consider user mouse_wheel preference
+      const wheelPref = prefs('prefs.mouse_wheel.interaction') ?? 'auto';
 
-    } else {   // Default to zoom
-      gesture = 'zoom';
-      speed = 3;
+      // User wants to 'pan' by default OR
+      // We autodetect - either horizontal scroll present or vertical scroll is a round number...
+      if (
+        (wheelPref === 'pan') ||
+        (wheelPref === 'auto' && (dX || isRoundNumber))
+      ) {
+        gesture = 'pan';
+        speed = 1;
+      } else {
+        gesture = 'zoom';
+        speed = 3;
+      }
     }
 
     // Decorate the wheel event with whatever we detected.

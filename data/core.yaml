@@ -970,6 +970,19 @@ en:
       third_party_icons:
         description: Show Third Party Icons
         tooltip: Uncheck this box to avoid loading icons from third party sites such as Wikimedia Commons, Facebook, or Twitter.
+    map_interaction:
+      title: Map Interaction
+      mouse_wheel:
+        title: Mouse Wheel Behavior
+        auto:
+          title: Automatic
+          tooltip: Best for trackpad users.  With 2 fingers, swipe gestures will pan the map, and pinch gestures will zoom and unzoom the map.  Holding down Shift will zoom and unzoom the map.
+        zoom:
+          title: Zoom the Map
+          tooltip: Scrolling with the wheel will always zoom and unzoom the map.
+        pan:
+          title: Pan the Map
+          tooltip: Scrolling with the wheel will pan the map.  Holding down Shift will zoom and unzoom the map.
   restore:
     heading: You have unsaved changes
     description: "Do you wish to restore unsaved changes from a previous editing session?"

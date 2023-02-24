@@ -1,6 +1,7 @@
 import { geoZoomToScale, vecLength } from '@id-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
+import { prefs } from '../core/preferences';
 import { osmNode } from '../osm';
 
 // constants
