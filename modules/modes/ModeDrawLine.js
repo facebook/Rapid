@@ -9,6 +9,7 @@ import { actionNoop } from '../actions/noop';
 
 import { t } from '../core/localizer';
 import { locationManager } from '../core/LocationManager';
+import { geoChooseEdge } from '../geo';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
 // import { prefs } from '../core/preferences';
@@ -578,7 +579,6 @@ export class ModeDrawLine extends AbstractMode {
       document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
     }
   }
-
 
   /**
    * _cancel

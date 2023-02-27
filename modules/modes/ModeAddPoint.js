@@ -5,6 +5,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
 import { t } from '../core/localizer';
 import { locationManager } from '../core/LocationManager';
+import { geoChooseEdge } from '../geo';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
 

@@ -1,7 +1,7 @@
+import { geoScaleToZoom, Projection } from '@id-sdk/math';
+import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
-import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
 import { t } from '../core/localizer';
