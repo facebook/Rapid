@@ -1,7 +1,7 @@
 import { geomViewportNudge, vecSubtract } from '@rapid-sdk/math';
 
-import { services } from '../services';
 import { actionNoop } from '../actions/noop';
+import { services } from '../services';
 
 
 export function modeDragNote(context) {

@@ -1,6 +1,6 @@
-import * as PIXI from 'pixi.js';
 import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from 'pixi-filters';
+import * as PIXI from 'pixi.js';
 
 import { AbstractFeature } from './AbstractFeature';
 import { getLineSegments, lineToPoly } from './helpers';

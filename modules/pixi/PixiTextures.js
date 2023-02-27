@@ -47,8 +47,16 @@ export class PixiTextures {
       patternBundle[k] = `${assetPath}img/pattern/${k}.png`;
     }
     Assets.addBundle('patterns', patternBundle);
-
-    Assets.loadBundle(['spritesheets', 'patterns'])
+    // Load cursors
+    const CURSOR = [
+      'point', 'vertex', 'line', 'area'
+    ];
+    let cursorBundle = {};
+    for (const k of CURSOR) {
+      cursorBundle[k] = `${assetPath}img/cursor/cursor-select-${k}.png`;
+    }
+    Assets.addBundle('cursor', cursorBundle);
+    Assets.loadBundle(['spritesheets', 'patterns', 'cursor'])
       .then(result => {
         // spritesheets - store in context for now :(
         context._makiSheet = result.spritesheets.maki;
@@ -61,13 +69,16 @@ export class PixiTextures {
         for (const [k, texture] of Object.entries(result.patterns)) {
           this.textures.set(k, texture);
         }
+        // cursor - store textures into the Map to use elsewhere
+        for (const [k, texture] of Object.entries(result.cursor)) {
+          this.textures.set(k, texture);
+        }
         // store in context for now :(
         context.pixi.rapidTextures = this.textures;
 
         this.loaded = true;
       })
       .catch(e => console.error(e));  // eslint-disable-line no-console
-
 
     // Convert frequently used graphics to textures/sprites for performance
     // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs

@@ -61,7 +61,7 @@ export class ModeDrawArea extends AbstractMode {
     if (DEBUG) {
       console.log('ModeDrawArea: entering'); // eslint-disable-line no-console
     }
-
+    document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
     const context = this.context;
     this._active = true;
     this.defaultTags = { area: 'yes' };
@@ -84,7 +84,7 @@ export class ModeDrawArea extends AbstractMode {
     context.history().on('undone.ModeDrawArea redone.ModeDrawArea', this._undoOrRedo);
 
     context.behaviors.get('map-interaction').doubleClickEnabled = false;
-
+    context.behaviors.get('hover').on('hoverchanged', this._hover);
     return true;
   }
 
@@ -140,8 +140,7 @@ export class ModeDrawArea extends AbstractMode {
       .off('cancel', this._cancel);
 
     context.history().on('undone.ModeDrawArea redone.ModeDrawArea', null);
-
-    context.resumeChangeDispatch();
+    document.body.style.cursor = 'auto';
   }
 
 
@@ -504,14 +503,29 @@ export class ModeDrawArea extends AbstractMode {
     this.context.enter('browse');
   }
 
-
   /**
-   * _undoOrRedo
-   * Try to restore a known state and continue drawing.
-   * Return to browse mode if we can't do that.
+   * _hover
+   * Hover changed cursor styling based one what geometry is hovered
    */
-  _undoOrRedo() {
-    this._cancel();
+  _hover(eventData) {
+    // Get the current context and graph
+    const context = this.context;
+    const graph = context.graph();
+    // Get the target and associated datum
+    const target = eventData.target;
+    const datum = target && target.data;
+    // Check if the datum is an entity in the graph
+    const entity = datum && graph.hasEntity(datum.id);
+    // Get the geometry of the entity, if it exists
+    const geom = entity && entity.geometry(graph);
+    // Change the cursor of the document body based on the geometry type
+    if (geom && geom === 'vertex') {
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw-connect-vertex.png),auto';
+    } else if (geom && geom === 'line') {
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw-connect-line.png),auto';
+    } else {
+      // If there is no entity or the entity's geometry is unknown, use the grab cursor
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
+    }
   }
-
 }

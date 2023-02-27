@@ -4,17 +4,17 @@ import { Extent } from '@rapid-sdk/math';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
-import { utilFastMouse } from '../util';
+import { localizer } from '../core/localizer';
 import { osmEntity, osmNote, QAItem } from '../osm';
 import { services } from '../services';
+import { utilFastMouse } from '../util';
 import { uiDataEditor } from './data_editor';
 import { uiFeatureList } from './feature_list';
-import { uiInspector } from './inspector';
 import { uiImproveOsmEditor } from './improveOSM_editor';
+import { uiInspector } from './inspector';
 import { uiKeepRightEditor } from './keepRight_editor';
-import { uiOsmoseEditor } from './osmose_editor';
 import { uiNoteEditor } from './note_editor';
-import { localizer } from '../core/localizer';
+import { uiOsmoseEditor } from './osmose_editor';
 
 import { uiRapidFeatureInspector } from './rapid_feature_inspector';
 

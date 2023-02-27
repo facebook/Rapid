@@ -1,13 +1,12 @@
 import { AbstractMode } from './AbstractMode';
 
 import { actionAddEntity } from '../actions/add_entity';
-import { actionChangeTags } from '../actions/change_tags';
 import { actionAddMidpoint } from '../actions/add_midpoint';
-// import { geoChooseEdge } from '../geo';
+import { actionChangeTags } from '../actions/change_tags';
+import { t } from '../core/localizer';
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
-import { t } from '../core/localizer';
 
 const DEBUG = false;
 
@@ -42,6 +41,7 @@ export class ModeAddPoint extends AbstractMode {
       console.log('ModeAddPoint: entering');  // eslint-disable-line no-console
     }
 
+    document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
     this._active = true;
     const context = this.context;
     context.enableBehaviors(['hover', 'draw', 'map-interaction']);
@@ -76,6 +76,7 @@ export class ModeAddPoint extends AbstractMode {
       .off('finish', this._cancel);
 
     context.history().on('undone.ModeAddPoint redone.ModeAddPoint', null);
+    document.body.style.cursor = 'auto';
   }
 
 
@@ -171,7 +172,6 @@ export class ModeAddPoint extends AbstractMode {
     context.perform(actionChangeTags(node.id, tags), annotation);
     context.enter(modeSelect(context, [node.id]).newFeature(true));
   }
-
 
   /**
    * _cancel

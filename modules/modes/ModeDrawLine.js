@@ -6,11 +6,12 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionAddVertex } from '../actions/add_vertex';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-// import { geoChooseEdge } from '../geo';
+
+import { t } from '../core/localizer';
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode, osmWay } from '../osm';
-import { t } from '../core/localizer';
+// import { prefs } from '../core/preferences';
 
 const DEBUG = false;
 
@@ -66,9 +67,10 @@ export class ModeDrawLine extends AbstractMode {
    * @param  `options`  Optional `Object` of options passed to the new mode
    */
   enter(options = {}) {
+    const scene = this.context.scene();
+    document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
     const continueNode = options.continueNode;
     const continueWay = options.continueWay;
-
     // If either parameter is present, make sure they are both valid
     if (continueNode || continueWay) {
       if (!(continueNode instanceof osmNode)) return false;
@@ -126,6 +128,24 @@ export class ModeDrawLine extends AbstractMode {
       );
       this._refreshEntities();
     }
+    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+
+    context.behaviors.get('draw')
+      .on('move', this._move)
+      .on('click', this._click)
+      .on('undo', this._undo)
+      .on('finish', this._finish);
+
+    context.behaviors.get('map-interaction').doubleClickEnabled = false;
+    context.behaviors.get('hover').on('hoverchanged', this._hover);
+
+// figure out how this needs to happen - `this.defaultTags` maybe not ready yet?
+// maybe pass defaultTags in `options` now?
+//    // Rapid tagSources
+//    const tagSources = prefs('rapid-internal-feature.tagSources') === 'true';
+//    if (tagSources && this.defaultTags.highway) {
+//      this.defaultTags.source = 'maxar';
+//    }
 
     return true;
   }
@@ -184,7 +204,7 @@ export class ModeDrawLine extends AbstractMode {
 
     context.history().on('undone.ModeDrawLine redone.ModeDrawLine', null);
 
-    context.resumeChangeDispatch();
+    document.body.style.cursor = 'auto';
   }
 
 
@@ -530,6 +550,32 @@ export class ModeDrawLine extends AbstractMode {
       context.enter(modeSelect(context, [this.drawWay.id]).newFeature(true));
     } else {
       this._cancel();
+    }
+  }
+
+   /**
+   * _hover
+   * Hover changed cursor styling based one what geometry is hovered
+   */
+   _hover(eventData) {
+    // Get the current context and graph
+    const context = this.context;
+    const graph = context.graph();
+    // Get the target and associated datum
+    const target = eventData.target;
+    const datum = target && target.data;
+    // Check if the datum is an entity in the graph
+    const entity = datum && graph.hasEntity(datum.id);
+    // Get the geometry of the entity, if it exists
+    const geom = entity && entity.geometry(graph);
+    // Change the cursor of the document body based on the geometry type
+    if (geom && geom === 'vertex') {
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw-connect-vertex.png),auto';
+    } else if (geom && geom === 'line') {
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw-connect-line.png),auto';
+    } else {
+      // If there is no entity or the entity's geometry is unknown, use the grab cursor
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
     }
   }
 

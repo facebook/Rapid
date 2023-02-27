@@ -1,18 +1,18 @@
+import { geoScaleToZoom, Projection } from '@id-sdk/math';
+import { utilStringQs, utilUnicodeCharsTruncated } from '@id-sdk/util';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { Projection, geoScaleToZoom } from '@rapid-sdk/math';
-import { utilStringQs, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
 import { t } from '../core/localizer';
-import { coreRapidContext } from './rapid_context';
 import { fileFetcher } from './file_fetcher';
+import { coreHistory } from './history';
 import { localizer } from './localizer';
 import { prefs } from './preferences';
-import { coreHistory } from './history';
-import { coreValidator } from './validator';
+import { coreRapidContext } from './rapid_context';
 import { coreUploader } from './uploader';
 import { UrlHash } from './UrlHash';
+import { coreValidator } from './validator';
 
 import { BehaviorDrag } from '../behaviors/BehaviorDrag';
 import { BehaviorDraw } from '../behaviors/BehaviorDraw';
@@ -32,8 +32,8 @@ import { ModeDrawLine } from '../modes/ModeDrawLine';
 import { ModeMove } from '../modes/ModeMove';
 import { ModeRotate } from '../modes/ModeRotate';
 import { ModeSave } from '../modes/ModeSave';
-import { ModeSelect } from '../modes/ModeSelect';  // new
-import { modeSelect } from '../modes/select';      // legacy
+import { ModeSelect } from '../modes/ModeSelect'; // new
+import { modeSelect } from '../modes/select'; // legacy
 
 import { presetManager } from '../presets';
 import { rendererFeatures, RendererImagery, RendererMap, RendererPhotos } from '../renderer';
