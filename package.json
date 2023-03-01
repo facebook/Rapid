@@ -83,7 +83,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "texture-allocator": "github:Bonkles/texture-allocator#1.0.3",
-    "which-polygon": "2.2.0"
+    "which-polygon": "2.2.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
