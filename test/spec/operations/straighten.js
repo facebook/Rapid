@@ -1,12 +1,13 @@
 describe('iD.operationStraighten', function () {
-    var fakeContext;
     var graph;
 
     // Set up the fake context
-    fakeContext = {};
+    var fakeContext = {};
     fakeContext.graph = function() { return graph; };
     fakeContext.entity = function(id) { return graph.entity(id); };
+    fakeContext.hasEntity = function(id) { return graph.hasEntity(id); };
     fakeContext.hasHiddenConnections = function() { return false; };
+    fakeContext.inIntro = function() { return false; };
     fakeContext.keyBinding = function () { return false; };
 
     describe('#available', function () {

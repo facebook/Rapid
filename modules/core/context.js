@@ -306,11 +306,6 @@ export function coreContext() {
   }
 
 
-  /* Graph */
-  context.hasEntity = (id) => _history.graph().hasEntity(id);
-  context.entity = (id) => _history.graph().entity(id);
-
-
   /* Modes */
   // "Modes" are editing tasks that the user are allowed to perform.
   // Each mode is exclusive, i.e only one mode can be active at a time.
@@ -663,6 +658,8 @@ export function coreContext() {
     function instantiateInternal() {
       _history = coreHistory(context);
       context.graph = _history.graph;
+      context.hasEntity = (id) => _history.graph().hasEntity(id);
+      context.entity = (id) => _history.graph().entity(id);
       context.pauseChangeDispatch = _history.pauseChangeDispatch;
       context.resumeChangeDispatch = _history.resumeChangeDispatch;
       context.perform = withDebouncedSave(_history.perform);

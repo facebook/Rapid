@@ -1,82 +1,75 @@
 import { t } from '../core/localizer';
 import { actionChangeTags } from '../actions/index';
+import { actionNoop } from '../actions/noop';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
+import { modeSelect } from '../modes/select';
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {
-    var _entityID = selectedIDs[0];
-    var _entity = context.entity(_entityID);
-    var _prevSelectedIDs;
-    var ROAD_TYPES = ['residential', 'service', 'track', 'unclassified', 'tertiary'];
+  const ROAD_TYPES = ['residential', 'service', 'track', 'unclassified', 'tertiary'];
+  const entities = selectedIDs
+    .map(entityID => context.hasEntity(entityID))
+    .filter(entity => {  // available if there is a highway tag or untagged line
+      return entity?.type === 'way' && (entity.tags.highway || !entity.hasInterestingTags());
+    });
+  const entityIDs = entities.map(entity => entity.id);
 
 
-    var updateHighwayTag = function (tags) {
-        var idx = tags.highway ? ROAD_TYPES.indexOf(tags.highway) : -1;
-        tags.highway = ROAD_TYPES[(idx + 1) % ROAD_TYPES.length];
+  let operation = function() {
+    if (!entities.length) return;
 
-        if (tags.highway === 'track') {
-            tags.surface = 'unpaved';
-        } else {
-            delete tags.surface;
-        }
-    };
+    // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
+    context.perform(actionNoop(), operation.annotation());
 
+    // Pick the next highway tag value..
+    const currVal = entities[0].tags.highway;
+    const index = currVal ? ROAD_TYPES.indexOf(currVal) : -1;
+    const nextVal = ROAD_TYPES[(index + 1) % ROAD_TYPES.length];
 
-    var operation = function() {
-        _entity = context.entity(_entityID);
-        // Calculate whether the changes since the last time this action ran
-        // are only to highway tags.
-        var sameSelection;
-        if (_prevSelectedIDs) {
-             sameSelection = _prevSelectedIDs ? _prevSelectedIDs[0] === selectedIDs[0] : false;
-        }
+    // Update all selected highways...
+    for (const entity of entities) {
+      let tags = Object.assign({}, entity.tags);  // copy
+      tags.highway = nextVal;
 
-        var tags = Object.assign({}, _entity.tags);
-        updateHighwayTag(tags);
+      if (tags.highway === 'track') {
+        tags.surface = 'unpaved';
+      } else {
+        delete tags.surface;
+      }
+      context.replace(actionChangeTags(entity.id, tags), operation.annotation());
+    }
 
-        _prevSelectedIDs = selectedIDs;
-
-        // context peeking tells us the last operation performed. Was it cycle road tags?
-        if (sameSelection && context.history().peekAnnotation() === operation.annotation()) {
-            // Coalesce the update of Highway type tags into the previous tag change
-            context.replace(actionChangeTags(_entityID, tags), operation.annotation());
-        } else {
-            context.perform(actionChangeTags(_entityID, tags), operation.annotation());
-        }
-    };
+    context.enter(modeSelect(context, selectedIDs));  // reselect
+  };
 
 
-    operation.available = function() {
-        return selectedIDs.length === 1 &&
-            _entity.type === 'way' &&
-            new Set(_entity.nodes).size > 1;
-    };
+  operation.available = function() {
+    return entities.length > 0;
+  };
 
 
-    operation.disabled = function() {
-       if ( Object.keys(_entity.tags).length > 0 && !_entity.tags.highway) {
-            return 'restriction';
-       }
-    };
+  operation.disabled = function() {
+    return false;
+  };
 
 
-    operation.tooltip = function() {
-        var disable = operation.disabled();
-        return disable ?
-            t('operations.cycle_highway_tag.' + disable) :
-            t('operations.cycle_highway_tag.description');
-    };
+  operation.tooltip = function() {
+    const disabledReason = operation.disabled();
+    return disabledReason ?
+      t(`operations.cycle_highway_tag.${disabledReason}`) :
+      t('operations.cycle_highway_tag.description');
+  };
 
 
-    operation.annotation = function() {
-        return t('operations.cycle_highway_tag.annotation');
-    };
+  operation.annotation = function() {
+    return t('operations.cycle_highway_tag.annotation');
+  };
 
 
-    operation.id = 'cycle_highway_tag';
-    operation.keys = ['⇧' + t('operations.cycle_highway_tag.key')];
-    operation.title = t('operations.cycle_highway_tag.title');
-    operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.id = 'cycle_highway_tag';
+  operation.keys = [ '⇧' + t('operations.cycle_highway_tag.key') ];
+  operation.title = t('operations.cycle_highway_tag.title');
+  operation.behavior = new BehaviorKeyOperation(context, operation);
 
-    return operation;
+  return operation;
 }

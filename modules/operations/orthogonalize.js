@@ -4,137 +4,128 @@ import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { prefs } from '../core/preferences';
+import { utilTotalExtent } from '../util';
 
 
 export function operationOrthogonalize(context, selectedIDs) {
-    var _extent;
-    var _type;
-    var _actions = selectedIDs.map(chooseAction).filter(Boolean);
-    var _amount = _actions.length === 1 ? 'single' : 'multiple';
-    var _coords = utilGetAllNodes(selectedIDs, context.graph())
-        .map(function(n) { return n.loc; });
+  const multi = selectedIDs.length === 1 ? 'single' : 'multiple';
+  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
+  const isNew = entities.every(entity => entity.isNew());
+  const extent = utilTotalExtent(entities, context.graph());
+
+  let _type;   // 'feature' or 'corner'
+  const actions = entities.map(getAction).filter(Boolean);
+  const coords = utilGetAllNodes(selectedIDs, context.graph()).map(node => node.loc);
 
 
-    function chooseAction(entityID) {
+  function getAction(entity) {
+    const graph = context.graph();
+    const geometry = entity.geometry(graph);
 
-        var entity = context.entity(entityID);
-        var geometry = entity.geometry(context.graph());
+    // square a line/area
+    if (entity.type === 'way' && new Set(entity.nodes).size > 2) {
+      if (_type && _type !== 'feature') return null;
+      _type = 'feature';
+      return actionOrthogonalize(entity.id, context.projection);
 
-        if (!_extent) {
-            _extent =  entity.extent(context.graph());
-        } else {
-            _extent = _extent.extend(entity.extent(context.graph()));
+    // square a single vertex
+    } else if (geometry === 'vertex') {
+      if (_type && _type !== 'corner') return null;
+      _type = 'corner';
+      const parents = graph.parentWays(entity);
+      if (parents.length === 1) {
+        const way = parents[0];
+        if (way.nodes.indexOf(entity.id) !== -1) {
+          return actionOrthogonalize(way.id, context.projection, entity.id);
         }
-
-        // square a line/area
-        if (entity.type === 'way' && new Set(entity.nodes).size > 2 ) {
-            if (_type && _type !== 'feature') return null;
-            _type = 'feature';
-            return actionOrthogonalize(entityID, context.projection);
-
-        // square a single vertex
-        } else if (geometry === 'vertex') {
-            if (_type && _type !== 'corner') return null;
-            _type = 'corner';
-            var graph = context.graph();
-            var parents = graph.parentWays(entity);
-            if (parents.length === 1) {
-                var way = parents[0];
-                if (way.nodes.indexOf(entityID) !== -1) {
-                    return actionOrthogonalize(way.id, context.projection, entityID);
-                }
-            }
-        }
-
-        return null;
+      }
     }
 
-
-    var operation = function() {
-        if (!_actions.length) return;
-
-        var combinedAction = function(graph, t) {
-            _actions.forEach(function(action) {
-                if (!action.disabled(graph)) {
-                    graph = action(graph, t);
-                }
-            });
-            return graph;
-        };
-        combinedAction.transitionable = true;
-
-        context.perform(combinedAction, operation.annotation());
-
-        window.setTimeout(function() {
-            context.validator().validate();
-        }, 300);  // after any transition
-    };
+    return null;
+  }
 
 
-    operation.available = function() {
-        return _actions.length && selectedIDs.length === _actions.length;
-    };
+  let operation = function() {
+    if (!actions.length) return;
 
-
-    // don't cache this because the visible extent could change
-    operation.disabled = function() {
-        if (!_actions.length) return '';
-
-        var actionDisableds = _actions.map(function(action) {
-            return action.disabled(context.graph());
-        }).filter(Boolean);
-
-        const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
-
-        if (actionDisableds.length === _actions.length) {
-            // none of the features can be squared
-            if (new Set(actionDisableds).size > 1) {
-                return 'multiple_blockers';
-            }
-            return actionDisableds[0];
-        } else if (!allowLargeEdits && _extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
-            return 'too_large';
-        } else if (someMissing()) {
-            return 'not_downloaded';
-        } else if (selectedIDs.some(context.hasHiddenConnections)) {
-            return 'connected_to_hidden';
+    let combinedAction = function(graph, t) {
+      actions.forEach(action => {
+        if (!action.disabled(graph)) {
+          graph = action(graph, t);
         }
+      });
+      return graph;
+    };
+    combinedAction.transitionable = true;
 
-        return false;
+    context.perform(combinedAction, operation.annotation());
+    window.setTimeout(() => context.validator().validate(), 300);  // after any transition
+  };
 
 
-        function someMissing() {
-            if (context.inIntro()) return false;
-            var osm = context.connection();
-            if (osm) {
-                var missing = _coords.filter(function(loc) { return !osm.isDataLoaded(loc); });
-                if (missing.length) {
-                    missing.forEach(function(loc) { context.loadTileAtLoc(loc); });
-                    return true;
-                }
-            }
-            return false;
+  operation.available = function() {
+    return actions.length && selectedIDs.length === actions.length;
+  };
+
+
+  operation.disabled = function() {
+    if (!actions.length) return '';
+
+    const disabledReasons = actions.map(action => action.disabled(context.graph())).filter(Boolean);
+    if (disabledReasons.length === actions.length) {   // none of the features can be squared
+      if (new Set(disabledReasons).size > 1) {
+        return 'multiple_blockers';
+      }
+      return disabledReasons[0];
+    } else if (!isNew && tooLarge()) {
+      return 'too_large';
+    } else if (!isNew && notDownloaded()) {
+      return 'not_downloaded';
+    } else if (selectedIDs.some(context.hasHiddenConnections)) {
+      return 'connected_to_hidden';
+    }
+
+    return false;
+
+    // If the selection is not 80% contained in view
+    function tooLarge() {
+      const allowLargeEdits = prefs('rapid-internal-feature.allowLargeEdits') === 'true';
+      return !allowLargeEdits && extent.percentContainedIn(context.map().extent()) < 0.8;
+    }
+
+    // If fhe selection spans tiles that haven't been downloaded yet
+    function notDownloaded() {
+      if (context.inIntro()) return false;
+      const osm = context.connection();
+      if (osm) {
+        const missing = coords.filter(loc => !osm.isDataLoaded(loc));
+        if (missing.length) {
+          missing.forEach(loc => context.loadTileAtLoc(loc));
+          return true;
         }
-    };
+      }
+      return false;
+    }
+  };
 
 
-    operation.tooltip = function() {
-        var disable = operation.disabled();
-        return disable ?
-            t('operations.orthogonalize.' + disable + '.' + _amount) :
-            t('operations.orthogonalize.description.' + _type + '.' + _amount);
-    };
+  operation.tooltip = function() {
+    const disabledReason = operation.disabled();
+    return disabledReason ?
+      t(`operations.orthogonalize.${disabledReason}.${multi}`) :
+      t(`operations.orthogonalize.description.${_type}.${multi}`);
+  };
 
 
-    operation.annotation = function() {
-        return t('operations.orthogonalize.annotation.' + _type, { n: _actions.length });
-    };
+  operation.annotation = function() {
+    return t('operations.orthogonalize.annotation.' + _type, { n: actions.length });
+  };
 
 
-    operation.id = 'orthogonalize';
-    operation.keys = [t('operations.orthogonalize.key')];
-    operation.title = t('operations.orthogonalize.title');
-    operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.id = 'orthogonalize';
+  operation.keys = [ t('operations.orthogonalize.key') ];
+  operation.title = t('operations.orthogonalize.title');
+  operation.behavior = new BehaviorKeyOperation(context, operation);
 
-    return operation;
+  return operation;
 }

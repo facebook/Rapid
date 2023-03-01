@@ -5,87 +5,101 @@ import { modeSelect } from '../modes/select';
 
 
 export function operationSplit(context, selectedIDs) {
-    var _vertexIds = selectedIDs.filter(function(id) {
-        return context.graph().geometry(id) === 'vertex';
-    });
-    var _selectedWayIds = selectedIDs.filter(function(id) {
-        var entity = context.graph().hasEntity(id);
-        return entity && entity.type === 'way';
-    });
-    var _isAvailable = _vertexIds.length > 0 &&
-        _vertexIds.length + _selectedWayIds.length === selectedIDs.length;
-    var _action = actionSplit(_vertexIds);
-    var _ways = [];
-    var _geometry = 'feature';
-    var _waysAmount = 'single';
-    var _nodesAmount = _vertexIds.length === 1 ? 'single' : 'multiple';
+  const graph = context.graph();
+  const entities = selectedIDs.map(entityID => context.hasEntity(entityID)).filter(Boolean);
 
-    if (_isAvailable) {
-        if (_selectedWayIds.length) _action.limitWays(_selectedWayIds);
-        _ways = _action.ways(context.graph());
-        var geometries = {};
-        _ways.forEach(function(way) {
-            geometries[way.geometry(context.graph())] = true;
-        });
-        if (Object.keys(geometries).length === 1) {
-            _geometry = Object.keys(geometries)[0];
-        }
-        _waysAmount = _ways.length === 1 ? 'single' : 'multiple';
+  const vertices = entities.filter(entity => entity.type === 'node' && entity.geometry(graph) === 'vertex');
+  const vertexIDs = vertices.map(entity => entity.id);
+  const vertexMulti = vertexIDs.length === 1 ? 'single' : 'multiple';
+
+  const ways = entities.filter(entity => entity.type === 'way');
+  const wayIDs = ways.map(entity => entity.id);
+
+  const isAvailable = vertices.length > 0 && (vertices.length + ways.length === selectedIDs.length);
+  const action = actionSplit(vertexIDs);
+
+  let _geometry = 'feature';   // 'line', 'area', or 'feature'
+  let _splittable = [];
+  let _waysMulti = 'single';
+
+
+  if (isAvailable) {
+    if (wayIDs.length) {
+      action.limitWays(wayIDs);
     }
 
+    _splittable = action.ways(graph);
 
-    var operation = function() {
-      const difference = context.perform(_action, operation.annotation());
-      let idsToSelect = _vertexIds.slice();  // copy
+    // Check the geometries of the splittable ways (line or area)
+    let geometries = new Set();
+    for (const way of _splittable) {
+      geometries.add(way.geometry(graph));
+    }
+    // Are all splittable ways same geometry?  (line or area)
+    // (this only affects messages shown in annotation and tooltip)
+    if (geometries.size === 1) {
+      _geometry = Array.from(geometries)[0];
+    }
 
-      // select both the nodes and the ways so the mapper can immediately disconnect them if desired
-      for (const [entityID, change] of difference.changes) {
-        const entity = change.head;
-        if (entity && entity.type === 'way') {
-          idsToSelect.push(entityID);
-        }
+    _waysMulti = _splittable.length === 1 ? 'single' : 'multiple';
+  }
+
+
+  let operation = function() {
+    const difference = context.perform(action, operation.annotation());
+    context.validator().validate();
+
+    let idsToSelect = vertexIDs.slice();  // copy
+
+    // select both the nodes and the ways so the mapper can immediately disconnect them if desired
+    for (const [entityID, change] of difference.changes) {
+      const entity = change.head;
+      if (entity && entity.type === 'way') {
+        idsToSelect.push(entityID);
       }
-      context.enter(modeSelect(context, idsToSelect));
-    };
+    }
+    context.enter(modeSelect(context, idsToSelect));
+  };
 
 
-    operation.relatedEntityIds = function() {
-        return _selectedWayIds.length ? [] : _ways.map(way => way.id);
-    };
+  operation.relatedEntityIds = function() {
+    return _splittable.map(way => way.id);
+  };
 
 
-    operation.available = function() {
-        return _isAvailable;
-    };
+  operation.available = function() {
+    return isAvailable;
+  };
 
 
-    operation.disabled = function() {
-        var reason = _action.disabled(context.graph());
-        if (reason) {
-            return reason;
-        } else if (selectedIDs.some(context.hasHiddenConnections)) {
-            return 'connected_to_hidden';
-        }
-        return false;
-    };
+  operation.disabled = function() {
+    const disabledReason = action.disabled(context.graph());
+    if (disabledReason) {
+      return disabledReason;
+    } else if (selectedIDs.some(context.hasHiddenConnections)) {
+      return 'connected_to_hidden';
+    }
+    return false;
+  };
 
 
-    operation.tooltip = function() {
-        var disable = operation.disabled();
-        if (disable) return t('operations.split.' + disable);
-        return t('operations.split.description.' + _geometry + '.' + _waysAmount + '.' + _nodesAmount + '_node');
-    };
+  operation.tooltip = function() {
+    const disabledReason = operation.disabled();
+    return disabledReason ?
+      t(`operations.split.${disabledReason}`) :
+      t(`operations.split.description.${_geometry}.${_waysMulti}.${vertexMulti}_node`);
+  };
 
 
-    operation.annotation = function() {
-        return t('operations.split.annotation.' + _geometry, { n: _ways.length });
-    };
+  operation.annotation = function() {
+    return t(`operations.split.annotation.${_geometry}`, { n: _splittable.length });
+  };
 
 
-    operation.id = 'split';
-    operation.keys = [t('operations.split.key')];
-    operation.title = t('operations.split.title');
-    operation.behavior = new BehaviorKeyOperation(context, operation);
+  operation.id = 'split';
+  operation.keys = [ t('operations.split.key') ];
+  operation.title = t('operations.split.title');
+  operation.behavior = new BehaviorKeyOperation(context, operation);
 
-    return operation;
+  return operation;
 }

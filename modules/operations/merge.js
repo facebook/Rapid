@@ -9,91 +9,95 @@ import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
 import { presetManager } from '../presets';
 
+
 export function operationMerge(context, selectedIDs) {
+  let action = chooseAction();
 
-    var _action = getAction();
+  function chooseAction() {
+    // prefer a non-disabled action first
+    const join = actionJoin(selectedIDs);
+    if (!join.disabled(context.graph())) return join;
 
-    function getAction() {
-        // prefer a non-disabled action first
-        var join = actionJoin(selectedIDs);
-        if (!join.disabled(context.graph())) return join;
+    const merge = actionMerge(selectedIDs);
+    if (!merge.disabled(context.graph())) return merge;
 
-        var merge = actionMerge(selectedIDs);
-        if (!merge.disabled(context.graph())) return merge;
+    const mergePolygon = actionMergePolygon(selectedIDs);
+    if (!mergePolygon.disabled(context.graph())) return mergePolygon;
 
-        var mergePolygon = actionMergePolygon(selectedIDs);
-        if (!mergePolygon.disabled(context.graph())) return mergePolygon;
+    const mergeNodes = actionMergeNodes(selectedIDs);
+    if (!mergeNodes.disabled(context.graph())) return mergeNodes;
 
-        var mergeNodes = actionMergeNodes(selectedIDs);
-        if (!mergeNodes.disabled(context.graph())) return mergeNodes;
+    // otherwise prefer an action with an interesting disabled reason
+    if (join.disabled(context.graph()) !== 'not_eligible') return join;
+    if (merge.disabled(context.graph()) !== 'not_eligible') return merge;
+    if (mergePolygon.disabled(context.graph()) !== 'not_eligible') return mergePolygon;
 
-        // otherwise prefer an action with an interesting disabled reason
-        if (join.disabled(context.graph()) !== 'not_eligible') return join;
-        if (merge.disabled(context.graph()) !== 'not_eligible') return merge;
-        if (mergePolygon.disabled(context.graph()) !== 'not_eligible') return mergePolygon;
+    return mergeNodes;
+  }
 
-        return mergeNodes;
+
+  let operation = function() {
+    if (operation.disabled()) return;
+
+    context.perform(action, operation.annotation());
+    context.validator().validate();
+
+    let successorIDs = selectedIDs.filter(entityID => context.hasEntity(entityID));
+    if (successorIDs.length > 1) {
+      const interestingIDs = successorIDs.filter(entityID => context.entity(entityID).hasInterestingTags());
+      if (interestingIDs.length) {
+        successorIDs = interestingIDs;
+      }
+    }
+    context.enter(modeSelect(context, successorIDs));
+  };
+
+
+  operation.available = function() {
+    return selectedIDs.length >= 2;
+  };
+
+
+  operation.disabled = function() {
+    const actionDisabled = action.disabled(context.graph());
+    if (actionDisabled) return actionDisabled;
+
+    const osm = context.connection();
+    if (osm && action.resultingWayNodesLength && action.resultingWayNodesLength(context.graph()) > osm.maxWayNodes()) {
+      return 'too_many_vertices';
     }
 
-    var operation = function() {
+    return false;
+  };
 
-        if (operation.disabled()) return;
 
-        context.perform(_action, operation.annotation());
+  operation.tooltip = function() {
+    const disabledReason = operation.disabled();
 
-        context.validator().validate();
+    if (disabledReason) {
+      if (disabledReason === 'conflicting_relations') {
+        return t('operations.merge.conflicting_relations');
+      } else if (disabledReason === 'restriction' || disabledReason === 'connectivity') {
+        const preset = presetManager.item('type/' + disabledReason);
+        return t('operations.merge.damage_relation', { relation: preset.name() });
+      } else {
+        return t(`operations.merge.${disabledReason}`);
+      }
+    } else {
+      return t('operations.merge.description');
+    }
+  };
 
-        var resultIDs = selectedIDs.filter(context.hasEntity);
-        if (resultIDs.length > 1) {
-            var interestingIDs = resultIDs.filter(function(id) {
-                return context.entity(id).hasInterestingTags();
-            });
-            if (interestingIDs.length) resultIDs = interestingIDs;
-        }
-        context.enter(modeSelect(context, resultIDs));
-    };
 
-    operation.available = function() {
-        return selectedIDs.length >= 2;
-    };
+  operation.annotation = function() {
+    return t('operations.merge.annotation', { n: selectedIDs.length });
+  };
 
-    operation.disabled = function() {
-        var actionDisabled = _action.disabled(context.graph());
-        if (actionDisabled) return actionDisabled;
 
-        var osm = context.connection();
-        if (osm &&
-            _action.resultingWayNodesLength &&
-            _action.resultingWayNodesLength(context.graph()) > osm.maxWayNodes()) {
-            return 'too_many_vertices';
-        }
+  operation.id = 'merge';
+  operation.keys = [ t('operations.merge.key') ];
+  operation.title = t('operations.merge.title');
+  operation.behavior = new BehaviorKeyOperation(context, operation);
 
-        return false;
-    };
-
-    operation.tooltip = function() {
-        var disabled = operation.disabled();
-        if (disabled) {
-            if (disabled === 'conflicting_relations') {
-                return t('operations.merge.conflicting_relations');
-            }
-            if (disabled === 'restriction' || disabled === 'connectivity') {
-                return t('operations.merge.damage_relation',
-                    { relation: presetManager.item('type/' + disabled).name() });
-            }
-            return t('operations.merge.' + disabled);
-        }
-        return t('operations.merge.description');
-    };
-
-    operation.annotation = function() {
-        return t('operations.merge.annotation', { n: selectedIDs.length });
-    };
-
-    operation.id = 'merge';
-    operation.keys = [t('operations.merge.key')];
-    operation.title = t('operations.merge.title');
-    operation.behavior = new BehaviorKeyOperation(context, operation);
-
-    return operation;
+  return operation;
 }
