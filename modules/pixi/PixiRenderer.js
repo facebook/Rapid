@@ -74,12 +74,8 @@ export class PixiRenderer extends EventEmitter {
       window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
     }
 
-    if (window.mocha) {
-      skipHello();
-    }
-
     // Disable mipmapping, we always want textures near the resolution they are at.
-    PIXI.settings.MIPMAP_TEXTURES = PIXI.MIPMAP_MODES.OFF;
+    PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
 
     // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
