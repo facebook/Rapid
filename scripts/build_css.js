@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import chalk from 'chalk';
 import concat from 'concat-files';
-import glob from 'glob';
+import { glob } from 'glob';
 import fs from 'node:fs';
 import postcss from 'postcss';
 import prepend from 'postcss-selector-prepend';
@@ -25,41 +25,27 @@ export function buildCSS() {
   console.log(START);
   console.time(END);
 
-  return _currBuild =
-    Promise.resolve()
-      .then(() => doGlob('css/**/*.css'))
-      .then(files => doConcat(files, 'dist/iD.css'))
-      .then(() => {
-        const css = fs.readFileSync('dist/iD.css', 'utf8');
-        return postcss([
-            autoprefixer,
-            prepend({ selector: '.ideditor ' })
-          ])
-          .process(css, { from: 'dist/iD.css', to: 'dist/iD.css' });
-      })
-      .then(result => fs.writeFileSync('dist/iD.css', result.css))
-      .then(() => {
-        console.timeEnd(END);
-        console.log('');
-        _currBuild = null;
-      })
-      .catch(err => {
-        console.error(err);
-        console.log('');
-        _currBuild = null;
-        process.exit(1);
-      });
-}
-
-
-function doGlob(pattern) {
-  return new Promise((resolve, reject) => {
-    glob(pattern, (err, files) => {
-      if (err) return reject(err);
-      resolve(files);
+  return _currBuild = glob('css/**/*.css')
+    .then(files => doConcat(files.sort(), 'dist/iD.css'))
+    .then(() => {
+      const css = fs.readFileSync('dist/iD.css', 'utf8');
+      return postcss([ autoprefixer, prepend({ selector: '.ideditor ' }) ])
+        .process(css, { from: 'dist/iD.css', to: 'dist/iD.css' });
+    })
+    .then(result => fs.writeFileSync('dist/iD.css', result.css))
+    .then(() => {
+      console.timeEnd(END);
+      console.log('');
+      _currBuild = null;
+    })
+    .catch(err => {
+      console.error(err);
+      console.log('');
+      _currBuild = null;
+      process.exit(1);
     });
-  });
 }
+
 
 function doConcat(files, output) {
   return new Promise((resolve, reject) => {
