@@ -1,6 +1,4 @@
 import { EventEmitter } from '@pixi/utils';
-import { Extent, geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
-import { utilQsString, utilStringQs } from '@id-sdk/util';
 import whichPolygon from 'which-polygon';
 
 import { prefs } from '../core/preferences';
@@ -97,11 +95,12 @@ export class RendererImagery extends EventEmitter {
   sources(extent, zoom) {
     if (!this._imageryIndex) return [];   // called before init()?
 
-    let visible = {};
+    const visible = new Set();
     (this._imageryIndex.query.bbox(extent.rectangle(), true) || [])
-      .forEach(d => visible[d.id] = true);
+      .forEach(d => visible.add(d.id));
 
     const currSource = this._baseLayer;
+    const sources = [...this._imageryIndex.sources.values()];
 
     // Recheck blocked sources only if we detect new blocklists pulled from the OSM API.
     const osm = this.context.connection();
@@ -110,18 +109,18 @@ export class RendererImagery extends EventEmitter {
       blocklists.some((regex, index) => String(regex) !== this._checkedBlocklists[index]);
 
     if (blocklistChanged) {
-      this._imageryIndex.sources.forEach(source => {
+      for (const source of sources) {
         source.isBlocked = blocklists.some(regex => regex.test(source.template));
-      });
+      }
       this._checkedBlocklists = blocklists.map(regex => String(regex));
     }
 
-    return this._imageryIndex.sources.filter(source => {
+    return sources.filter(source => {
       if (currSource === source) return true;       // always include the current imagery
       if (source.isBlocked) return false;           // even bundled sources may be blocked - #7905
       if (!source.polygon) return true;             // always include imagery with worldwide coverage
       if (zoom && zoom < 6) return false;           // optionally exclude local imagery at low zooms
-      return visible[source.id];                    // include imagery visible in given extent
+      return visible.has(source.id);                // include imagery visible in given extent
     });
   }
 
@@ -142,8 +141,7 @@ export class RendererImagery extends EventEmitter {
     let tested = 0;
     let regex;
 
-    for (let i = 0; i < blocklists.length; i++) {
-      regex = blocklists[i];
+    for (regex of blocklists) {
       fail = regex.test(template);
       tested++;
       if (fail) break;
@@ -185,8 +183,8 @@ export class RendererImagery extends EventEmitter {
    *
    */
   findSource(id) {
-    if (!id || !this._imageryIndex) return null;   // called before init()?
-    return this._imageryIndex.sources.find(d => d.id && d.id === id);
+    if (!this._imageryIndex) return null;   // called before init()?
+    return this._imageryIndex.sources.get(id);
   }
 
 
@@ -337,115 +335,30 @@ export class RendererImagery extends EventEmitter {
 
   /**
    * _setupImageryAsync
-   * @return  Promise that resolves once everything has been loaded and is ready
+   * The imagery index loads after Rapid starts.
+   * It contains these properties:
+   *   {
+   *     features:  Map(id -> GeoJSON feature)
+   *     sources:   Map(id -> ImagerySource)
+   *     query:     A which-polygon index to perform spatial queries against
+   *   }
+   * @return  Promise that resolves with the imagery index once everything has been loaded and is ready
    */
   _setupImageryAsync() {
     if (this._setupPromise) return this._setupPromise;
 
-//    function _parseMapParams(qmap) {
-//      if (!qmap) return false;
-//      const params = qmap.split('/').map(Number);
-//      if (params.length < 3 || params.some(isNaN)) return false;
-//      return new Extent([params[2], params[1]]);  // lon,lat
-//    }
-//
-//    const hash = utilStringQs(window.location.hash);
-//    const requested = hash.background || hash.layer;
-//    let extent = _parseMapParams(hash.map);
-
-    return this._setupPromise = this._loadImageryIndexAsync()
-      .then(imageryIndex => {
-//        const first = imageryIndex.sources.length && imageryIndex.sources[0];
-//
-//        let best;
-//        if (!requested && extent) {
-//          best = this.sources(extent).find(s => s.best);
-//        }
-//
-//        // Decide which base layer to start with..
-//        if (requested && requested.indexOf('custom:') === 0) {
-//          const template = requested.replace(/^custom:/, '');
-//          const custom = this.findSource('custom');
-//          custom.template = template;
-//          this.baseLayerSource(custom);
-//          prefs('background-custom-template', template);
-//
-//        } else {
-//          this.baseLayerSource(
-//            this.findSource(requested) ||
-//            best ||
-//            this.findSource(prefs('background-last-used')) ||
-//            this.findSource('Bing') ||
-//            this.findSource('Maxar-Premium') ||
-//            first ||
-//            this.findSource('none')
-//          );
-//        }
-//
-       // Default the locator overlay to "on"..
-       const locator = this.findSource('mapbox_locator_overlay');
-       if (locator) {
-         this.toggleOverlayLayer(locator);
-       }
-//
-//        // Enable other overlays in url hash..
-//        const overlayIDs = (hash.overlays || '').split(',');
-//        overlayIDs.forEach(overlayID => {
-//          if (overlayID === 'mapbox_locator_overlay') return;
-//          const overlay = this.findSource(overlayID);
-//          if (overlay) {
-//            this.toggleOverlayLayer(overlay);
-//          }
-//        });
-//
-//// does not belong here
-////        if (hash.gpx) {
-////          const gpxLayer = this.context.scene().layers.get('custom-data');
-////          if (gpxLayer) {
-////            gpxLayer.url(hash.gpx, '.gpx');
-////          }
-////        }
-//
-//        if (hash.offset) {   // offset in hash is represented in meters east,north
-//          const offset = hash.offset
-//            .replace(/;/g, ',')
-//            .split(',')
-//            .map(n => !isNaN(n) && n);
-//
-//          if (offset.length === 2) {
-//            this.offset = geoMetersToOffset(offset);  // convert to pixels east,north
-//          }
-//        }
-      })
-      .catch(e => {
-        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
-      });
-  }
-
-
-  /**
-   * _loadImageryIndexAsync
-   * The imagery index loads after Rapid starts.
-   * It contains these properties:
-   *   {
-   *     features:  Array of GeoJSON features for the imagery
-   *     query:     A which-polygon index to perform spatial queries against
-   *     sources:   Instantiated tile source objects for all the imagery
-   *   }
-   * @return  Promise that resolves with the imagery index once it has been loaded
-   */
-  _loadImageryIndexAsync() {
-    return fileFetcher.get('imagery')
+    return this._setupPromise = fileFetcher.get('imagery')
       .then(data => {
-        if (this._imageryIndex) {
-          return this._imageryIndex;
-        }
-
-        this._imageryIndex = { features: {} };
+        this._imageryIndex = {
+          features: new Map(),   // Map(id -> GeoJSON feature)
+          sources: new Map(),    // Map(id -> ImagerySource)
+          query: null            // which-polygon index
+        };
 
         // Extract a GeoJSON feature for each imagery item.
         const features = data.map(d => {
           if (!d.polygon) return null;
+
           // workaround for editor-layer-index weirdness..
           // Add an extra array nest to each element in `d.polygon`
           // so the rings are not treated as a bunch of holes:
@@ -459,7 +372,7 @@ export class RendererImagery extends EventEmitter {
             geometry: { type: 'MultiPolygon', coordinates: rings }
           };
 
-          this._imageryIndex.features[d.id] = feature;
+          this._imageryIndex.features.set(d.id, feature);
           return feature;
         }).filter(Boolean);
 
@@ -467,25 +380,37 @@ export class RendererImagery extends EventEmitter {
         this._imageryIndex.query = whichPolygon({ type: 'FeatureCollection', features: features });
 
         // Instantiate `RendererImagerySource` objects for each imagery item.
-        this._imageryIndex.sources = data.map(d => {
+        for (const d of data) {
+          let source;
           if (d.type === 'bing') {
-            return new RendererImagerySourceBing(d);
+            source = new RendererImagerySourceBing(d);
           } else if (/^EsriWorldImagery/.test(d.id)) {
-            return new RendererImagerySourceEsri(d);
+            source = new RendererImagerySourceEsri(d);
           } else {
-            return new RendererImagerySource(d);
+            source = new RendererImagerySource(d);
           }
-        });
+          this._imageryIndex.sources.set(d.id, source);
+        }
 
         // Add 'None'
-        this._imageryIndex.sources.unshift(new RendererImagerySourceNone());
+        const none = new RendererImagerySourceNone();
+        this._imageryIndex.sources.set(none.id, none);
 
         // Add 'Custom' - seed it with whatever template the user has used previously
         const custom = new RendererImagerySourceCustom();
         custom.template = prefs('background-custom-template') || '';
-        this._imageryIndex.sources.unshift(custom);
+        this._imageryIndex.sources.set(custom.id, custom);
+
+        // Default the locator overlay to "on"..
+        const locator = this._imageryIndex.sources.get('mapbox_locator_overlay');
+        if (locator) {
+          this.toggleOverlayLayer(locator);
+        }
 
         return this._imageryIndex;
+      })
+      .catch(e => {
+        if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
       });
   }
 
