@@ -339,6 +339,8 @@ export function uiInit(context) {
     ui.onResize();
     map.redrawEnabled = true;
 
+// enable it here
+context.urlhash().enable();
     // if (!context.initialHashParams.map) {  // no `map=` param, go to default location
     //   map.centerZoom([0, 0], 2);
     // }

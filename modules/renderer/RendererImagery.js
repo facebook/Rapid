@@ -39,7 +39,7 @@ export class RendererImagery extends EventEmitter {
     super();
     this.context = context;
 
-    this._loadPromise = null;
+    this._setupPromise = null;
     this._imageryIndex = null;
     this._baseLayer = null;
     this._overlayLayers = [];
@@ -59,7 +59,7 @@ export class RendererImagery extends EventEmitter {
    * Called one time after all objects have been instantiated.
    */
   init() {
-    this._loadDataAsync();
+    this._setupImageryAsync();
   }
 
 
@@ -69,43 +69,6 @@ export class RendererImagery extends EventEmitter {
   updateImagery() {
     const currSource = this._baseLayer;
     if (this.context.inIntro() || !currSource) return;
-
-//    const meters = geoOffsetToMeters(currSource.offset);
-//    const EPSILON = 0.01;
-//    const x = +meters[0].toFixed(2);
-//    const y = +meters[1].toFixed(2);
-//    let hash = utilStringQs(window.location.hash);
-//
-//    let id = currSource.id;
-//    if (id === 'custom') {
-//      id = `custom:${currSource.template}`;
-//    }
-//    if (id) {
-//      hash.background = id;
-//    } else {
-//      delete hash.background;
-//    }
-//
-//    const o = this._overlayLayers
-//      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
-//      .map(d => d.id)
-//      .join(',');
-//
-//    if (o) {
-//      hash.overlays = o;
-//    } else {
-//      delete hash.overlays;
-//    }
-//
-//    if (Math.abs(x) > EPSILON || Math.abs(y) > EPSILON) {
-//      hash.offset = `${x},${y}`;
-//    } else {
-//      delete hash.offset;
-//    }
-//
-//    if (!window.mocha) {
-//      window.location.replace('#' + utilQsString(hash, true));
-//    }
 
     let imageryUsed = [];
     // let photoOverlaysUsed = [];
@@ -203,10 +166,29 @@ export class RendererImagery extends EventEmitter {
   /**
    *
    */
+  chooseDefaultSource() {
+    const map = this.context.map();
+    const available = this.sources(map.extent(), map.zoom());
+    const first = available[0];
+    const best = available.find(s => s.best);
+
+    return best ||
+      this.findSource(prefs('background-last-used')) ||
+      this.findSource('Bing') ||
+      this.findSource('Maxar-Premium') ||
+      first ||    // maybe this is a custom Rapid that doesn't include Bing or Maxar?
+      this.findSource('none');
+  }
+
+
+  /**
+   *
+   */
   findSource(id) {
     if (!id || !this._imageryIndex) return null;   // called before init()?
     return this._imageryIndex.sources.find(d => d.id && d.id === id);
   }
+
 
   /**
    *
@@ -216,6 +198,7 @@ export class RendererImagery extends EventEmitter {
     if (!d || !currSource) return false;
     return d.id === currSource.id || this._overlayLayers.some(layer => d.id === layer.id);
   }
+
 
   /**
    *
@@ -261,6 +244,7 @@ export class RendererImagery extends EventEmitter {
       this.emit('imagerychange');
     }
   }
+
 
   /**
    * offset
@@ -352,11 +336,11 @@ export class RendererImagery extends EventEmitter {
 
 
   /**
-   * _loadDataAsync
+   * _setupImageryAsync
    * @return  Promise that resolves once everything has been loaded and is ready
    */
-  _loadDataAsync() {
-    if (this._loadPromise) return this._loadPromise;
+  _setupImageryAsync() {
+    if (this._setupPromise) return this._setupPromise;
 
 //    function _parseMapParams(qmap) {
 //      if (!qmap) return false;
@@ -369,69 +353,69 @@ export class RendererImagery extends EventEmitter {
 //    const requested = hash.background || hash.layer;
 //    let extent = _parseMapParams(hash.map);
 
-    return this._loadPromise = this._loadImageryIndexAsync()
+    return this._setupPromise = this._loadImageryIndexAsync()
       .then(imageryIndex => {
-        const first = imageryIndex.sources.length && imageryIndex.sources[0];
-
-        let best;
-        if (!requested && extent) {
-          best = this.sources(extent).find(s => s.best);
-        }
-
-        // Decide which base layer to start with..
-        if (requested && requested.indexOf('custom:') === 0) {
-          const template = requested.replace(/^custom:/, '');
-          const custom = this.findSource('custom');
-          custom.template = template;
-          this.baseLayerSource(custom);
-          prefs('background-custom-template', template);
-
-        } else {
-          this.baseLayerSource(
-            this.findSource(requested) ||
-            best ||
-            this.findSource(prefs('background-last-used')) ||
-            this.findSource('Maxar-Premium') ||
-            this.findSource('Bing') ||
-            first ||
-            this.findSource('none')
-          );
-        }
-
-        // Default the locator overlay to "on"..
-        const locator = this.findSource('mapbox_locator_overlay');
-        if (locator) {
-          this.toggleOverlayLayer(locator);
-        }
-
-        // Enable other overlays in url hash..
-        const overlayIDs = (hash.overlays || '').split(',');
-        overlayIDs.forEach(overlayID => {
-          if (overlayID === 'mapbox_locator_overlay') return;
-          const overlay = this.findSource(overlayID);
-          if (overlay) {
-            this.toggleOverlayLayer(overlay);
-          }
-        });
-
-// does not belong here
-//        if (hash.gpx) {
-//          const gpxLayer = this.context.scene().layers.get('custom-data');
-//          if (gpxLayer) {
-//            gpxLayer.url(hash.gpx, '.gpx');
+//        const first = imageryIndex.sources.length && imageryIndex.sources[0];
+//
+//        let best;
+//        if (!requested && extent) {
+//          best = this.sources(extent).find(s => s.best);
+//        }
+//
+//        // Decide which base layer to start with..
+//        if (requested && requested.indexOf('custom:') === 0) {
+//          const template = requested.replace(/^custom:/, '');
+//          const custom = this.findSource('custom');
+//          custom.template = template;
+//          this.baseLayerSource(custom);
+//          prefs('background-custom-template', template);
+//
+//        } else {
+//          this.baseLayerSource(
+//            this.findSource(requested) ||
+//            best ||
+//            this.findSource(prefs('background-last-used')) ||
+//            this.findSource('Bing') ||
+//            this.findSource('Maxar-Premium') ||
+//            first ||
+//            this.findSource('none')
+//          );
+//        }
+//
+       // Default the locator overlay to "on"..
+       const locator = this.findSource('mapbox_locator_overlay');
+       if (locator) {
+         this.toggleOverlayLayer(locator);
+       }
+//
+//        // Enable other overlays in url hash..
+//        const overlayIDs = (hash.overlays || '').split(',');
+//        overlayIDs.forEach(overlayID => {
+//          if (overlayID === 'mapbox_locator_overlay') return;
+//          const overlay = this.findSource(overlayID);
+//          if (overlay) {
+//            this.toggleOverlayLayer(overlay);
+//          }
+//        });
+//
+//// does not belong here
+////        if (hash.gpx) {
+////          const gpxLayer = this.context.scene().layers.get('custom-data');
+////          if (gpxLayer) {
+////            gpxLayer.url(hash.gpx, '.gpx');
+////          }
+////        }
+//
+//        if (hash.offset) {   // offset in hash is represented in meters east,north
+//          const offset = hash.offset
+//            .replace(/;/g, ',')
+//            .split(',')
+//            .map(n => !isNaN(n) && n);
+//
+//          if (offset.length === 2) {
+//            this.offset = geoMetersToOffset(offset);  // convert to pixels east,north
 //          }
 //        }
-
-        if (hash.offset) {   // offset in hash is represented in meters east,north
-          const offset = hash.offset
-            .replace(/;/g, ',')
-            .split(',')
-            .map(n => !isNaN(n) && n);
-
-          if (offset.length === 2) {
-            this.offset = geoMetersToOffset(offset);  // convert to pixels east,north
-          }
-        }
       })
       .catch(e => {
         if (e instanceof Error) console.error(e);  // eslint-disable-line no-console
@@ -441,7 +425,7 @@ export class RendererImagery extends EventEmitter {
 
   /**
    * _loadImageryIndexAsync
-   * The imagery index loads after RapiD starts.
+   * The imagery index loads after Rapid starts.
    * It contains these properties:
    *   {
    *     features:  Array of GeoJSON features for the imagery

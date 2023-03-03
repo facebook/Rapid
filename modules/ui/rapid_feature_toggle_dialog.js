@@ -1,5 +1,4 @@
 import { select as d3_select } from 'd3-selection';
-import { utilQsString, utilStringQs } from '@id-sdk/util';
 import { marked } from 'marked';
 
 import { t, localizer } from '../core/localizer';
@@ -31,15 +30,12 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       dataset.enabled = !dataset.enabled;
 
       // update url hash
-      let hash = utilStringQs(window.location.hash);
-      hash.datasets = Object.values(datasets)
+      const urlhash = context.urlhash();
+      const datasetIDs = Object.values(datasets)
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
         .join(',');
-
-      if (!window.mocha) {
-        window.location.replace('#' + utilQsString(hash, true));  // update hash
-      }
+      urlhash.setParam('datasets', datasetIDs);
 
       context.scene().dirtyLayers('rapid');
       context.enter('browse');   // return to browse mode (in case something was selected)

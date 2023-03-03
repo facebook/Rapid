@@ -46,65 +46,65 @@ export class RendererPhotos extends EventEmitter {
    * Handles initial parsing of the url params, and setup of event listeners
    */
   init() {
-    const context = this.context;
-    const scene = context.scene();
-
-    // let hash = utilStringQs(window.location.hash);
-
-    if (hash.photo_dates) {
-      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
-      const parts = /^(.*)[–_](.*)$/g.exec(hash.photo_dates.trim());
-      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
-      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
-    }
-
-    if (hash.photo_username) {
-      this.setUsernameFilter(hash.photo_username, false);
-    }
-
-    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
-    if (hash.photo_overlay) {
-      const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
-      scene.enableLayers(hashOverlayIDs);
-    }
-
-    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
-    if (hash.photo) {
-      const photoIds = hash.photo.replace(/;/g, ',').split(',');
-      const photoId = photoIds.length && photoIds[0].trim();
-      const results = /(.*)\/(.*)/g.exec(photoId);
-
-      if (results && results.length >= 3) {
-        const serviceID = results[1];
-        const photoKey = results[2];
-        const service = services[serviceID];
-        if (!service || !service.loadViewerAsync) return;
-
-        // if we're showing a photo then make sure its layer is enabled too
-        scene.enableLayers(serviceID);
-
-        const startTime = Date.now();
-        service.on('loadedImages.rendererPhotos', () => {
-          // don't open the viewer if too much time has elapsed
-          if (Date.now() - startTime > 45000) {
-            service.on('loadedImages.rendererPhotos', null);
-            return;
-          }
-
-          if (!service.cachedImage(photoKey)) return;
-
-          service.on('loadedImages.rendererPhotos', null);
-          service.loadViewerAsync(context)
-            .then(() => {
-              service
-                .selectImage(context, photoKey)
-                .showViewer(context);
-            });
-        });
-      }
-    }
-
-    // scene.on('layerchange', this._updateHash);
+//    const context = this.context;
+//    const scene = context.scene();
+//
+//    // let hash = utilStringQs(window.location.hash);
+//
+//    if (hash.photo_dates) {
+//      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
+//      const parts = /^(.*)[–_](.*)$/g.exec(hash.photo_dates.trim());
+//      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
+//      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
+//    }
+//
+//    if (hash.photo_username) {
+//      this.setUsernameFilter(hash.photo_username, false);
+//    }
+//
+//    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
+//    if (hash.photo_overlay) {
+//      const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
+//      scene.enableLayers(hashOverlayIDs);
+//    }
+//
+//    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
+//    if (hash.photo) {
+//      const photoIds = hash.photo.replace(/;/g, ',').split(',');
+//      const photoId = photoIds.length && photoIds[0].trim();
+//      const results = /(.*)\/(.*)/g.exec(photoId);
+//
+//      if (results && results.length >= 3) {
+//        const serviceID = results[1];
+//        const photoKey = results[2];
+//        const service = services[serviceID];
+//        if (!service || !service.loadViewerAsync) return;
+//
+//        // if we're showing a photo then make sure its layer is enabled too
+//        scene.enableLayers(serviceID);
+//
+//        const startTime = Date.now();
+//        service.on('loadedImages.rendererPhotos', () => {
+//          // don't open the viewer if too much time has elapsed
+//          if (Date.now() - startTime > 45000) {
+//            service.on('loadedImages.rendererPhotos', null);
+//            return;
+//          }
+//
+//          if (!service.cachedImage(photoKey)) return;
+//
+//          service.on('loadedImages.rendererPhotos', null);
+//          service.loadViewerAsync(context)
+//            .then(() => {
+//              service
+//                .selectImage(context, photoKey)
+//                .showViewer(context);
+//            });
+//        });
+//      }
+//    }
+//
+//    // scene.on('layerchange', this._updateHash);
   }
 
 

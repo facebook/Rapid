@@ -92,7 +92,7 @@ export function coreContext() {
   d3_select(document).call(_keybinding);
 
 
-  // Instantiate the connection here because it doesn't require passing in
+  // Assign `connection` here because it doesn't require passing in
   // `context` and it's needed for pre-init calls like `preauth`
   let _connection = services.osm;
   let _history;
@@ -743,13 +743,14 @@ export function coreContext() {
       _validator.init();
       _imagery.init();
       _features.init();
-      _map.init();
+      _map.init();         // watch out - init doesn't actually create the renderer :(
       _rapidContext.init();
 
       // If the container isn't available, e.g. when testing, don't load the UI
       if (!context.container().empty()) {
         _ui.ensureLoaded()
           .then(() => {
+            _urlhash.init();  // tries to adjust map transform
             _photos.init();
           });
       }

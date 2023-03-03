@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { Extent } from '@id-sdk/math';
-import { utilQsString, utilStringQs } from '@id-sdk/util';
 import { marked } from 'marked';
 
 import { t } from '../core/localizer';
@@ -477,15 +476,13 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     }
 
     // update url hash
-    let hash = utilStringQs(window.location.hash);
-    hash.datasets = Object.values(datasets)
+    const urlhash = context.urlhash();
+    const datasetIDs = Object.values(datasets)
       .filter(ds => ds.added && ds.enabled)
       .map(ds => ds.id)
       .join(',');
+    urlhash.setParam('datasets', datasetIDs);
 
-    if (!window.mocha) {
-      window.location.replace('#' + utilQsString(hash, true));  // update hash
-    }
 
     _content.call(renderModalContent);
 

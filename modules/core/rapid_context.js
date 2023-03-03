@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { gpx } from '@tmcw/togeojson';
 import { Extent } from '@id-sdk/math';
-import { utilQsString, utilStringQs } from '@id-sdk/util';
 
 import { localizer, t } from '../core/localizer';
 import { services } from '../services';
@@ -134,17 +133,15 @@ export function coreRapidContext(context) {
         };
 
         // Parse enabled datasets from url hash
-        let enabled = context.initialHashParams.datasets || '';
-        if (!context.initialHashParams.hasOwnProperty('datasets')) {
-          let hash = utilStringQs(window.location.hash);
-          enabled = hash.datasets = 'fbRoads,msBuildings';  // assign default
-          if (!window.mocha) {
-            window.location.replace('#' + utilQsString(hash, true));  // update hash
-          }
+        const urlhash = context.urlhash();
+        let datasetIDs = urlhash.initialHashParams.get('datasets') || '';
+        if (!urlhash.initialHashParams.has('datasets')) {   // if not set in the urlhash
+          datasetIDs = 'fbRoads,msBuildings';               // use default
+          urlhash.setParam('datasets', datasetIDs);         // and put it in the urlhash
         }
 
         let toLoad = new Set();
-        enabled.split(',').forEach(id => {
+        datasetIDs.split(',').forEach(id => {
           id = id.trim();
           if (_datasets[id]) {
             _datasets[id].enabled = true;

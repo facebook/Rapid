@@ -1,13 +1,10 @@
-import { select as d3_select } from 'd3-selection';
-import { geoSphericalDistance, geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
+import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
 import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
 import throttle from 'lodash-es/throttle';
 
 import { t } from '../core/localizer';
 import { modeSelect } from '../modes/select';
 import { utilDisplayLabel } from '../util';
-
-const MAXLAT = 90 - 1e-8;   // allowable latitude range
 
 
 /**
@@ -56,23 +53,15 @@ Responsive (user can change)
 * __`background`__ - The value of the `id` property of the source in iD's
 * __`datasets`__ - A comma-separated list of dataset IDs to enable<br/>
 * __`id`__ - The character 'n', 'w', or 'r', followed by the OSM ID of a node, way or relation, respectively. Selects the specified entity, and, unless a `map` parameter is also provided, centers the map on it.<br/>
-* __`map`__ - A slash-separated `zoom/latitude/longitude`.<br/>
+* __`map`__ - A slash-separated `zoom/lat/lon/rot`.<br/>
 * __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.<br/>
 **/
 
-    const q = utilStringQs(window.location.hash)
+    const q = utilStringQs(window.location.hash);
     this._initParams = new Map(Object.entries(q));
-    this._prevParams = new Map(this._initParams);  // make copy
     this._currParams = new Map(this._initParams);  // make copy
 
-    this._cachedHash = null;   // cached window.location.hash
-
-    // If the hash started out with a selected id, try to load it
-    const initialID = this._initParams.get(id);
-    const initialMap = this._initParams.get(map);
-    if (initialID) {
-      context.zoomToEntity(initialID.split(',')[0], !initialMap);
-    }
+    this._prevHash = null;   // cached window.location.hash
 
     // Make sure the event handlers have `this` bound correctly
     this.setParam = this.setParam.bind(this);
@@ -93,6 +82,24 @@ Responsive (user can change)
 
 
   /**
+   * init
+   * Called one time after all core objects have been instantiated.
+   */
+  init() {
+    // If the hash started out with a selected id, try to load it
+    const initialID = this._initParams.get('id');
+    const hasMapParam = this._initParams.has('map');
+    if (initialID) {
+      this.context.zoomToEntity(initialID.split(',')[0], !hasMapParam);
+    }
+
+// see ui/init.js
+// for now, enable needs to wait until the map has been rendered once
+//    this.enable();
+  }
+
+
+  /**
    * enable
    * Bind event handlers
    */
@@ -100,7 +107,7 @@ Responsive (user can change)
     if (this._enabled) return;
     this._enabled = true;
 
-    this._cachedHash = null;
+    this._prevHash = null;
 
     const context = this.context;
     context.map().on('draw', this.setMapParams);
@@ -108,7 +115,7 @@ Responsive (user can change)
     context.photos().on('photochange', this.setPhotoParams);
     context.history().on('change.UrlHash', this.deferredUpdateTitle);
     context.on('enter.UrlHash', this.deferredUpdateAll);
-    d3_select(window).on('hashchange.UrlHash', this.parseHash);
+    window.addEventListener('hashchange', this.parseHash);
 
     this.parseHash();
     this.updateTitle();
@@ -123,7 +130,7 @@ Responsive (user can change)
     if (!this._enabled) return;
     this._enabled = false;
 
-    this._cachedHash = null;
+    this._prevHash = null;
     this.deferredUpdateAll.cancel();
     this.deferredUpdateHash.cancel();
     this.deferredUpdateTitle.cancel();
@@ -134,7 +141,17 @@ Responsive (user can change)
     context.photos().off('photochange', this.setPhotoParams);
     context.history().on('change.UrlHash', null);
     context.on('enter.UrlHash', null);
-    d3_select(window).on('hashchange.UrlHash', null);
+    window.removeEventListener('hashchange', this.parseHash);
+  }
+
+
+  /**
+   * initialHashParams
+   * Get the initial hash parameters  (was: `context.initialHashParams`)
+   * @readonly
+   */
+  get initialHashParams() {
+    return this._initParams;
   }
 
 
@@ -177,55 +194,27 @@ Responsive (user can change)
     if (!this._enabled) return;
 
     const map = this.context.map();
-    const [lng, lat] = map.center();
+    const [lon, lat] = map.center();
     const zoom = map.zoom();
     const rot = 0;  // for now
     const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
-    const EPSILON = 0.01;
+    const EPSILON = 0.1;
 
     if (isNaN(zoom) || !isFinite(zoom)) return;
-    if (isNaN(lat) || !isFinite(lat))   return;
-    if (isNaN(lon) || !isFinite(lon))   return;
-    if (isNaN(rot) || !isFinite(rot))   return;
+    if (isNaN(lat) || !isFinite(lat)) return;
+    if (isNaN(lon) || !isFinite(lon)) return;
+    if (isNaN(rot) || !isFinite(rot)) return;
 
     const zoomStr = zoom.toFixed(2);
     const latStr = lat.toFixed(precision);
     const lonStr = lon.toFixed(precision);
-    const rotStr = rot.toFixed(2);
+    const rotStr = rot.toFixed(1);
 
     let v = `${zoomStr}/${latStr}/${lonStr}`;
-    if (Math.abs(rot) > EPSILON !== 0) {
+    if (Math.abs(rot) > EPSILON) {
       v += `/${rotStr}`;
     }
     this.setParam('map', v);
-  }
-
-
-  /**
-   * parseMapParams
-   * @param  q   Object containing the query params
-   */
-  parseMapParams(q) {
-    if (!this._enabled) return;
-    if (typeof q.map !== 'string') return;
-
-    let [zoom, lat, lon, rot] = q.map.split('/', 4).map(Number);
-
-    if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
-    if (isNaN(lat) || !isFinite(lat))   lat = 0;
-    if (isNaN(lon) || !isFinite(lon))   lon = 0;
-    if (isNaN(rot) || !isFinite(rot))   rot = 0;
-
-    zoom = clamp(zoom, 2, 24);
-    lat = clamp(lat, -90, 90);
-    lon = clamp(lon, -180, 180);
-    rot = clamp(rot, 0, 360);
-
-    this.context.map().centerZoom([lon, lat], zoom);
-
-    function clamp(num, min, max) {
-      return Math.max(min, Math.min(num, max));
-    }
   }
 
 
@@ -263,70 +252,14 @@ Responsive (user can change)
 
 
   /**
-   * parseImageryParams
-   * @param  q   Object containing the query params
-   */
-  parseImageryParams(q) {
-    if (!this._enabled) return;
-
-    const imagery = this.context.imagery();
-
-    // background
-    const backgroundID = q.background;
-    if (typeof backgroundID === 'string') {
-      const baseLayer = imagery.findSource(backgroundID);
-      if (baseLayer) {
-        imagery.baseLayerSource(baseLayer);
-      }
-    }
-
-    // overlays
-    const overlayIDs = q.overlays;
-    if (typeof overlayIDs === 'string') {
-      const toEnableIDs = new Set(overlayIDs.split(','));
-
-      for (const overlayLayer of imagery.overlayLayerSources()) {  // for each enabled overlay layer
-        if (overlayLayer.isLocatorOverlay()) continue;
-        if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
-        imagery.toggleOverlayLayer(overlayLayer);        // make disabled
-      }
-    }
-
-    // offset
-    const offset = q.offset;
-    if (typeof offset === 'string') {
-      let [x, y] = offset.replace(/;/g, ',').split(',').map(Number);
-
-      if (isNaN(x) || !isFinite(x))  x = 0;
-      if (isNaN(y) || !isFinite(y))  y = 0;
-
-      const EPSILON = 0.01;
-      if (Math.abs(x) > EPSILON || Math.abs(y) > EPSILON) {
-        imagery.offset = geoMetersToOffset([x, y]);
-      }
-    }
-  }
-
-
-  /**
    * setPhotoParams
    * Updates the parameters related to streetview imagery
    */
   setPhotoParams() {
     if (!this._enabled) return;
 
-    const photos = this.context.photos();
     // todo later
-  }
-
-
-  /**
-   * parsePhotoParams
-   * @param  q   Object containing the query params
-   */
-  parsePhotoParams(q) {
-    if (!this._enabled) return;
-    // todo later
+    // const photos = this.context.photos();
   }
 
 
@@ -348,6 +281,7 @@ Responsive (user can change)
   updateHash() {
     if (!this._enabled) return;
 
+    const context = this.context;
     const toOmit = ['id', 'comment', 'source', 'hashtags', 'walkthrough'];
     let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
 
@@ -357,11 +291,10 @@ Responsive (user can change)
       params.id = selectedIDs.join(',');
     }
 
-    const hash = '#' + utilQsString(params, true);
-
-    if (this._cachedHash !== hash) {
-      window.history.replaceState(null, this.titleBase, hash);
-      this._cachedHash = hash;
+    const currHash = '#' + utilQsString(params, true);
+    if (currHash !== this._prevHash) {
+      window.history.replaceState(null, this.titleBase, currHash);
+      this._prevHash = currHash;
     }
   }
 
@@ -416,37 +349,81 @@ Responsive (user can change)
    * Called on hashchange event (user changes url manually), and when enabling the hash behavior
    */
   parseHash() {
-   if (window.location.hash === this._cachedHash) return;   // nothing changed
-   this._cachedHash = window.location.hash;
+    if (!this._enabled) return;
+    if (window.location.hash === this._prevHash) return;   // nothing changed
+    this._prevHash = window.location.hash;
 
-   const q = utilStringQs(this._cachedHash);
-   this.parseMapParams(q);
-   this.parseImageryParams(q);
-   this.parsePhotoParams(q);
+    const q = utilStringQs(this._prevHash);
 
-//    const context = this.context;
-//    const mapArgs = (params.map || '').split('/').map(Number);   // zoom/lat/lon
-//
-//    if (mapArgs.length < 3 || mapArgs.some(isNaN)) {  // replace bogus hash
-//      this.updateHash();
-//
-//    } else {
-//      const hash = this._computeHash();
-//      if (this._cachedHash === hash) return;  // nothing changed
-//
-//      const mode = context.mode();
-//      context.map().centerZoom([mapArgs[2], Math.min(MAXLAT, Math.max(-MAXLAT, mapArgs[1]))], mapArgs[0]);
-//
-//      if (params.id && mode) {
-//        // Currently only support OSM ids
-//        const ids = params.id.split(',').filter(id => context.hasEntity(id));
-//        if (ids.length && (mode.id === 'browse' || (mode.id === 'select' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
-//          context.enter(modeSelect(context, ids));
-//          return;
-//        }
-//      }
-//
+    const context = this.context;
+    const map = context.map();
+    const imagery = context.imagery();
+
+
+    // id (currently only support OSM ids)
+    if (typeof q.id === 'string') {
+      const ids = q.id.split(',').filter(id => context.hasEntity(id));
+      const mode = context.mode();
+      if (ids.length && (mode?.id === 'browse' || (mode?.id === 'select' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
+        context.enter(modeSelect(context, ids));
+      }
+    }
+
+
+    // map
+    let zoom, lat, lon, rot;
+    if (typeof q.map === 'string') {
+      [zoom, lat, lon, rot] = q.map.split('/', 4).map(Number);
+    }
+    if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
+    if (isNaN(lat) || !isFinite(lat)) lat = 0;
+    if (isNaN(lon) || !isFinite(lon)) lon = 0;
+    if (isNaN(rot) || !isFinite(rot)) rot = 0;
+
+    zoom = clamp(zoom, 2, 24);
+    lat = clamp(lat, -90, 90);
+    lon = clamp(lon, -180, 180);
+    rot = clamp(rot, 0, 360);
+
+    map.centerZoom([lon, lat], zoom);
+
+
+    // background
+    let baseLayer;
+    if (typeof q.background === 'string') {
+      baseLayer = imagery.findSource(q.background);
+    }
+    if (!baseLayer) {
+      baseLayer = imagery.chooseDefaultSource();
+    }
+    imagery.baseLayerSource(baseLayer);
+
+
+    // overlays
+    let toEnableIDs = new Set();
+    if (typeof q.overlays === 'string') {
+      toEnableIDs = new Set(q.overlays.split(','));
+    }
+    for (const overlayLayer of imagery.overlayLayerSources()) {  // for each enabled overlay layer
+      if (overlayLayer.isLocatorOverlay()) continue;
+      if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
+      imagery.toggleOverlayLayer(overlayLayer);        // make disabled
+    }
+
+
+    // offset
+    let x, y;
+    if (typeof q.offset === 'string') {
+      [x, y] = q.offset.replace(/;/g, ',').split(',').map(Number);
+    }
+    if (isNaN(x) || !isFinite(x)) x = 0;
+    if (isNaN(y) || !isFinite(y)) y = 0;
+    imagery.offset = geoMetersToOffset([x, y]);
+
+
+    function clamp(num, min, max) {
+      return Math.max(min, Math.min(num, max));
+    }
   }
 
 }
-
