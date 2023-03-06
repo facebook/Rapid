@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayUnion } from '@id-sdk/util';
 
 import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
@@ -53,20 +53,18 @@ export function rendererFeatures(context) {
 
 
     function update() {
-        if (!window.mocha) {
-            var hash = utilStringQs(window.location.hash);
-            var disabled = features.disabled();
-            if (disabled.length) {
-                hash.disable_features = disabled.join(',');
-            } else {
-                delete hash.disable_features;
-            }
-            window.location.replace('#' + utilQsString(hash, true));
-            prefs('disabled-features', disabled.join(','));
-        }
-        _hidden = features.hidden();
-        dispatch.call('change');
-        dispatch.call('redraw');
+      const ruleIDs = features.disabled().join(',');
+
+      // update url hash
+      const urlhash = context.urlhash();
+      urlhash.setParam('disable_features', ruleIDs.length ? ruleIDs : null);
+
+      // update localstorage
+      prefs('disabled-features', ruleIDs);
+
+      _hidden = features.hidden();
+      dispatch.call('change');
+      dispatch.call('redraw');
     }
 
 
@@ -566,12 +564,6 @@ export function rendererFeatures(context) {
         if (storage) {
             var storageDisabled = storage.replace(/;/g, ',').split(',');
             storageDisabled.forEach(features.disable);
-        }
-
-        var hash = utilStringQs(window.location.hash);
-        if (hash.disable_features) {
-            var hashDisabled = hash.disable_features.replace(/;/g, ',').split(',');
-            hashDisabled.forEach(features.disable);
         }
     };
 

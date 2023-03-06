@@ -1,7 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
 import { Tiler } from '@id-sdk/math';
-import { utilStringQs } from '@id-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
 import { Graph, Tree } from '../core';
@@ -54,19 +53,7 @@ function tileURL(dataset, extent, taskExtent) {
 
     if (taskExtent) qs.crop_bbox = taskExtent.toParam();
 
-    // Note: we are not sure whether the `fb_ml_road_url` and `fb_ml_road_tags` query params are used anymore.
-    var customUrlRoot = utilStringQs(window.location.hash).fb_ml_road_url;
-    var customRoadTags = utilStringQs(window.location.hash).fb_ml_road_tags;
-
-    var urlRoot = customUrlRoot || APIROOT;
-    var url = urlRoot + '?' + fbmlQsString(qs, true);  // true = noencode
-
-    if (customRoadTags) {
-      customRoadTags.split(',').forEach(function (tag) {
-        url += '&allow_tags[]=' + tag;
-      });
-    }
-
+    var url = APIROOT + '?' + fbmlQsString(qs, true);  // true = noencode
     return url;
 
 

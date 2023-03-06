@@ -1,5 +1,4 @@
 import { EventEmitter } from '@pixi/utils';
-import { utilQsString, utilStringQs } from '@id-sdk/util';
 
 import { services } from '../services';
 
@@ -126,8 +125,7 @@ export class RendererPhotos extends EventEmitter {
       }
     }
 
-    const val = enabled.length ? enabled.join(',') : null;
-    urlhash.setParam('photo_overlay', val);
+    urlhash.setParam('photo_overlay', enabled.length ? enabled.join(',') : null);
   }
 
 

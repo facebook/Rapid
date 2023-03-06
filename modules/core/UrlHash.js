@@ -33,7 +33,6 @@ export class UrlHash {
 * Initial only
 * __`comment`__ - Prefills the changeset comment. Pass a url encoded string.
 * __`datasets`__ - A comma-separated list of dataset IDs to enable
-* __`disable_features`__ - Disables features in the list.
 * __`gpx`__ - A custom URL for loading a gpx track.  Specifying a `gpx` parameter will
 * __`hashtags`__ - Prefills the changeset hashtags.  Pass a url encoded list of event
 * __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.
@@ -52,6 +51,7 @@ export class UrlHash {
 *
 * Responsive (user can change)
 * __`background`__ - Imagery source ID for the background imagery layer
+* __`disable_features`__ - Disables features in the list.
 * __`overlays`__ - A comma-separated list of imagery source IDs to display as overlays.
 * __`id`__ - An OSM ID to select.
 * __`map`__ - A slash-separated `zoom/lat/lon/rot`.
@@ -68,7 +68,6 @@ export class UrlHash {
     this.setParam = this.setParam.bind(this);
     this.setMapParams = this.setMapParams.bind(this);
     this.setImageryParams = this.setImageryParams.bind(this);
-    this.setPhotoParams = this.setPhotoParams.bind(this);
 
     this.parseHash = this.parseHash.bind(this);
 
@@ -252,17 +251,6 @@ export class UrlHash {
   }
 
 
-  /**
-   * setPhotoParams
-   * Updates the parameters related to streetview imagery
-   */
-  setPhotoParams() {
-    if (!this._enabled) return;
-
-    // todo later
-    // const photos = this.context.photos();
-  }
-
 
   /**
    * updateAll
@@ -286,7 +274,7 @@ export class UrlHash {
     const toOmit = ['id', 'comment', 'source', 'hashtags', 'walkthrough'];
     let params = utilObjectOmit(Object.fromEntries(this._currParams), toOmit);
 
-    // Currently only support OSM ids
+    // update id
     const selectedIDs = context.selectedIDs().filter(id => context.hasEntity(id));
     if (selectedIDs.length) {
       params.id = selectedIDs.join(',');
@@ -359,6 +347,7 @@ export class UrlHash {
     const context = this.context;
     const map = context.map();
     const imagery = context.imagery();
+    const features = context.features();
 
 
     // id (currently only support OSM ids)
@@ -368,6 +357,15 @@ export class UrlHash {
       if (ids.length && (mode?.id === 'browse' || (mode?.id === 'select' && !utilArrayIdentical(mode.selectedIDs(), ids)))) {
         context.enter(modeSelect(context, ids));
       }
+    }
+
+    // disable_features
+    let ruleIDs = [];
+    if (typeof q.disable_features === 'string') {
+      ruleIDs = q.disable_features.replace(/;/g, ',').split(',');
+    }
+    if (ruleIDs.length) {
+      ruleIDs.forEach(ruleID => features.disable(ruleID));
     }
 
 

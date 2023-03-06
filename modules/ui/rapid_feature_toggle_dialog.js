@@ -35,7 +35,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
         .filter(ds => ds.added && ds.enabled)
         .map(ds => ds.id)
         .join(',');
-      urlhash.setParam('datasets', datasetIDs);
+      urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
 
       context.scene().dirtyLayers('rapid');
       context.enter('browse');   // return to browse mode (in case something was selected)

@@ -1,5 +1,4 @@
 import { select as d3_select } from 'd3-selection';
-import { utilStringQs } from '@id-sdk/util';
 
 import {
   uiToolRapidFeatures, uiToolDrawModes, uiToolNotes, uiToolSave,
@@ -31,8 +30,9 @@ export function uiTopToolbar(context) {
 
     tools.push('spacer', undoRedo, save);
 
-    const q = utilStringQs(window.location.hash);
-    if (q.support_download_osc === 'true') {
+    // Undocumented feature 'support_download_osc'
+    const hash = context.urlhash().initialHashParams;
+    if (hash.get('support_download_osc') === 'true') {
       tools.push(downloadOsc);
     }
 

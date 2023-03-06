@@ -146,7 +146,7 @@ export function coreLocalizer() {
 //          });
 //          // We only need to load locales up until we find one with full coverage
 //          // _currLocaleCodes.slice(0, fullCoverageIndex + 1).forEach(code => {
-// RapiD note:
+// Rapid note:
 // We always need `en` because it contains RapiD strings that are not localized to other languages.
 // This means we can't assume that a language with 100% coverage is an alternative for `en`.
           _currLocaleCodes.forEach(code => {

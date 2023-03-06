@@ -481,7 +481,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .filter(ds => ds.added && ds.enabled)
       .map(ds => ds.id)
       .join(',');
-    urlhash.setParam('datasets', datasetIDs);
+    urlhash.setParam('datasets', datasetIDs.length ? datasetIDs : null);
 
 
     _content.call(renderModalContent);
