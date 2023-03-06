@@ -52,10 +52,11 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       context.map().immediateRedraw();
       _content.call(renderModalContent);
 
-      // if a RapiD feature is selected, reselect it to update sidebar too
+      // If a Rapid feature is already selected, reselect it to update sidebar too
       const mode = context.mode();
-      if (mode && mode.id === 'select-ai-features') {
-        context.enter(mode, mode.selectedDatum());
+      if (mode.id === 'select' && mode.selectedData) {  // new (not legacy) select mode
+        const selection = new Map(mode.selectedData);
+        context.enter('select', { selection: selection });
       }
     }
   }
@@ -77,7 +78,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     _modalSelection = uiModal(selection);
 
     _modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal');   // RapiD styling
+      .attr('class', 'modal rapid-modal');   // Rapid styling
 
     _viewManageModal = uiRapidViewManageDatasets(context, _modalSelection)
       .on('done', () => _content.call(renderModalContent));

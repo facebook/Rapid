@@ -63,7 +63,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
 
     let myModal = myShaded
       .append('div')
-      .attr('class', 'modal rapid-modal modal-view-manage')  // RapiD styling
+      .attr('class', 'modal rapid-modal modal-view-manage')  // Rapid styling
       .style('opacity', 0);
 
     myModal
