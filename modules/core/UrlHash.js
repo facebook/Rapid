@@ -30,31 +30,32 @@ export class UrlHash {
     this.titleBase = 'Rapid';
 
 /**
-Initial only
-* __`comment`__ - Prefills the changeset comment. Pass a url encoded string.<br/>
-* __`disable_features`__ - Disables features in the list.<br/>
+* Initial only
+* __`comment`__ - Prefills the changeset comment. Pass a url encoded string.
+* __`datasets`__ - A comma-separated list of dataset IDs to enable
+* __`disable_features`__ - Disables features in the list.
 * __`gpx`__ - A custom URL for loading a gpx track.  Specifying a `gpx` parameter will
 * __`hashtags`__ - Prefills the changeset hashtags.  Pass a url encoded list of event
-* __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.<br/>
-* __`photo_overlay`__ - The street-level photo overlay layers to enable.<br/>
-* __`photo_dates`__ - The range of capture dates by which to filter street-level photos. Dates are given in YYYY-MM-DD format and separated by `_`. One-sided ranges are supported.<br/>
-* __`photo_username`__ - The Mapillary or KartaView username by which to filter street-level photos. Multiple comma-separated usernames are supported.<br/>
-* __`photo`__ - The service and ID of the street-level photo to show.<br/>
+* __`locale`__ - A code specifying the localization to use, affecting the language, layout, and keyboard shortcuts. Multiple codes may be specified in order of preference. The first valid code will be the locale, while the rest will be used as fallbacks if certain text hasn't been translated. The default locale preferences are set by the browser.
+* __`photo_overlay`__ - The street-level photo overlay layers to enable.
+* __`photo_dates`__ - The range of capture dates by which to filter street-level photos. Dates are given in YYYY-MM-DD format and separated by `_`. One-sided ranges are supported.
+* __`photo_username`__ - The Mapillary or KartaView username by which to filter street-level photos. Multiple comma-separated usernames are supported.
+* __`photo`__ - The service and ID of the street-level photo to show.
 * __`poweruser=true`__
-* __`presets`__ - A comma-separated list of preset IDs. These will be the only presets the user may select.<br/>
+* __`presets`__ - A comma-separated list of preset IDs. These will be the only presets the user may select.
 * __`rtl=true`__ - Force iD into right-to-left mode (useful for testing).
-* __`source`__ - Prefills the changeset source. Pass a url encoded string.<br/>
-* __`validationDisable`__ - The issues identified by these types/subtypes will be disabled (i.e. Issues will not be shown at all). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.<br/>
-* __`validationWarning`__ - The issues identified by these types/subtypes will be treated as warnings (i.e. Issues will be surfaced to the user but not block changeset upload). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.<br/>
-* __`validationError`__ - The issues identified by these types/subtypes will be treated as errors (i.e. Issues will be surfaced to the user but will block changeset upload). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.<br/>
+* __`source`__ - Prefills the changeset source. Pass a url encoded string.
+* __`validationDisable`__ - The issues identified by these types/subtypes will be disabled (i.e. Issues will not be shown at all). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.
+* __`validationWarning`__ - The issues identified by these types/subtypes will be treated as warnings (i.e. Issues will be surfaced to the user but not block changeset upload). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.
+* __`validationError`__ - The issues identified by these types/subtypes will be treated as errors (i.e. Issues will be surfaced to the user but will block changeset upload). Each parameter value should contain a urlencoded, comma-separated list of type/subtype match rules.  An asterisk `*` may be used as a wildcard.
 * __`walkthrough=true`__
-
-Responsive (user can change)
-* __`background`__ - The value of the `id` property of the source in iD's
-* __`datasets`__ - A comma-separated list of dataset IDs to enable<br/>
-* __`id`__ - The character 'n', 'w', or 'r', followed by the OSM ID of a node, way or relation, respectively. Selects the specified entity, and, unless a `map` parameter is also provided, centers the map on it.<br/>
-* __`map`__ - A slash-separated `zoom/lat/lon/rot`.<br/>
-* __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.<br/>
+*
+* Responsive (user can change)
+* __`background`__ - Imagery source ID for the background imagery layer
+* __`overlays`__ - A comma-separated list of imagery source IDs to display as overlays.
+* __`id`__ - An OSM ID to select.
+* __`map`__ - A slash-separated `zoom/lat/lon/rot`.
+* __`offset`__ - Background imagery alignment offset in meters, formatted as `east,north`.
 **/
 
     const q = utilStringQs(window.location.hash);
@@ -112,7 +113,7 @@ Responsive (user can change)
     const context = this.context;
     context.map().on('draw', this.setMapParams);
     context.imagery().on('imagerychange', this.setImageryParams);
-    context.photos().on('photochange', this.setPhotoParams);
+    // context.photos().on('photochange', this.setPhotoParams);
     context.history().on('change.UrlHash', this.deferredUpdateTitle);
     context.on('enter.UrlHash', this.deferredUpdateAll);
     window.addEventListener('hashchange', this.parseHash);
@@ -138,7 +139,7 @@ Responsive (user can change)
     const context = this.context;
     context.map().off('draw', this.setMapParams);
     context.imagery().off('imagerychange', this.setImageryParams);
-    context.photos().off('photochange', this.setPhotoParams);
+    // context.photos().off('photochange', this.setPhotoParams);
     context.history().on('change.UrlHash', null);
     context.on('enter.UrlHash', null);
     window.removeEventListener('hashchange', this.parseHash);

@@ -36,7 +36,7 @@ export class RendererPhotos extends EventEmitter {
     this._usernames = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
-    this._updateHash = this._updateHash.bind(this);
+    this._updateLayers = this._updateLayers.bind(this);
   }
 
 
@@ -46,102 +46,88 @@ export class RendererPhotos extends EventEmitter {
    * Handles initial parsing of the url params, and setup of event listeners
    */
   init() {
-//    const context = this.context;
-//    const scene = context.scene();
-//
-//    // let hash = utilStringQs(window.location.hash);
-//
-//    if (hash.photo_dates) {
-//      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
-//      const parts = /^(.*)[–_](.*)$/g.exec(hash.photo_dates.trim());
-//      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
-//      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
-//    }
-//
-//    if (hash.photo_username) {
-//      this.setUsernameFilter(hash.photo_username, false);
-//    }
-//
-//    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
-//    if (hash.photo_overlay) {
-//      const hashOverlayIDs = hash.photo_overlay.replace(/;/g, ',').split(',');
-//      scene.enableLayers(hashOverlayIDs);
-//    }
-//
-//    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
-//    if (hash.photo) {
-//      const photoIds = hash.photo.replace(/;/g, ',').split(',');
-//      const photoId = photoIds.length && photoIds[0].trim();
-//      const results = /(.*)\/(.*)/g.exec(photoId);
-//
-//      if (results && results.length >= 3) {
-//        const serviceID = results[1];
-//        const photoKey = results[2];
-//        const service = services[serviceID];
-//        if (!service || !service.loadViewerAsync) return;
-//
-//        // if we're showing a photo then make sure its layer is enabled too
-//        scene.enableLayers(serviceID);
-//
-//        const startTime = Date.now();
-//        service.on('loadedImages.rendererPhotos', () => {
-//          // don't open the viewer if too much time has elapsed
-//          if (Date.now() - startTime > 45000) {
-//            service.on('loadedImages.rendererPhotos', null);
-//            return;
-//          }
-//
-//          if (!service.cachedImage(photoKey)) return;
-//
-//          service.on('loadedImages.rendererPhotos', null);
-//          service.loadViewerAsync(context)
-//            .then(() => {
-//              service
-//                .selectImage(context, photoKey)
-//                .showViewer(context);
-//            });
-//        });
-//      }
-//    }
-//
-//    // scene.on('layerchange', this._updateHash);
+    const context = this.context;
+    const scene = context.scene();
+    scene.on('layerchange', this._updateLayers);
+
+    // parse hash params
+    const hash = context.urlhash().initialHashParams;
+
+    const photo_dates = hash.get('photo_dates');
+    if (typeof photo_dates === 'string') {
+      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
+      const parts = /^(.*)[–_](.*)$/g.exec(photo_dates.trim());
+      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
+      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
+    }
+
+    const photo_username = hash.get('photo_username');
+    if (typeof photo_username === 'string') {
+      this.setUsernameFilter(photo_username, false);
+    }
+
+    // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
+    const photo_overlay = hash.get('photo_overlay');
+    if (typeof photo_overlay === 'string') {
+      const hashOverlayIDs = photo_overlay.replace(/;/g, ',').split(',');
+      scene.enableLayers(hashOverlayIDs);
+    }
+
+    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
+    const photo = hash.get('photo');
+    if (typeof photo === 'string') {
+      const photoIDs = photo.replace(/;/g, ',').split(',');
+      const photoID = photoIDs.length && photoIDs[0].trim();
+      const results = /(.*)\/(.*)/g.exec(photoID);
+
+      if (results && results.length >= 3) {
+        const serviceID = results[1];
+        const photoKey = results[2];
+        const service = services[serviceID];
+        if (!service || !service.loadViewerAsync) return;
+
+        // if we're showing a photo then make sure its layer is enabled too
+        scene.enableLayers(serviceID);
+
+        const startTime = Date.now();
+        service.on('loadedImages.rendererPhotos', () => {
+          // don't open the viewer if too much time has elapsed
+          if (Date.now() - startTime > 45000) {
+            service.on('loadedImages.rendererPhotos', null);
+            return;
+          }
+
+          if (!service.cachedImage(photoKey)) return;
+
+          service.on('loadedImages.rendererPhotos', null);
+          service.loadViewerAsync(context)
+            .then(() => {
+              service
+                .selectImage(context, photoKey)
+                .showViewer(context);
+            });
+        });
+      }
+    }
   }
 
 
   /**
-   * _updateHash
+   * _updateLayers
+   * Update the hash to include which layers are currently enabled
    */
-  _updateHash() {
-    // const enabled = [];
-    // for (const layer of this.context.scene().layers.values()) {
-    //   if (this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled) {
-    //     enabled.push(layer.id);
-    //   }
-    // }
-    //
-    // let hash = utilStringQs(window.location.hash);
-    // if (enabled.length) {
-    //   hash.photo_overlay = enabled.join(',');
-    // } else {
-    //   delete hash.photo_overlay;
-    // }
-    // window.location.replace('#' + utilQsString(hash, true));
-  }
+  _updateLayers() {
+    const urlhash = this.context.urlhash();
 
+    let enabled = [];
+    for (const layer of this.context.scene().layers.values()) {
+      if (this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled) {
+        enabled.push(layer.id);
+      }
+    }
 
-  /**
-   * _setUrlFilterValue
-   */
-  _setUrlFilterValue(property, val) {
-    // let hash = utilStringQs(window.location.hash);
-    // if (val) {
-    //   if (hash[property] === val) return;
-    //   hash[property] = val;
-    // } else {
-    //   if (!(property in hash)) return;
-    //   delete hash[property];
-    // }
-    // window.location.replace('#' + utilQsString(hash, true));
+    const val = enabled.length ? enabled.join(',') : null;
+    urlhash.setParam('photo_overlay', val);
   }
 
 
@@ -246,13 +232,14 @@ export class RendererPhotos extends EventEmitter {
     }
 
     if (didChange) {
-//      if (updateURL) {
-//        let rangeString;
-//        if (this._fromDate || this._toDate) {
-//          rangeString = (this._fromDate || '') + '_' + (this._toDate || '');
-//        }
-//        this._setUrlFilterValue('photo_dates', rangeString);
-//      }
+      if (updateURL) {
+        let rangeString;
+        if (this._fromDate || this._toDate) {
+          rangeString = (this._fromDate || '') + '_' + (this._toDate || '');
+        }
+        const urlhash = this.context.urlhash();
+        urlhash.setParam('photo_dates', rangeString);
+      }
       this.emit('photochange');
     }
   }
@@ -277,11 +264,9 @@ export class RendererPhotos extends EventEmitter {
     this._usernames = val;
 
     if (updateURL) {
-//      let hashString;
-//      if (this._usernames) {
-//        hashString = this._usernames.join(',');
-//      }
-//      this._setUrlFilterValue('photo_username', hashString);
+      const usernames = this._usernames ? this._usernames.join(',') : null;
+      const urlhash = this.context.urlhash();
+      urlhash.setParam('photo_username', usernames);
     }
 
     this.emit('photochange');

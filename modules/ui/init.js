@@ -338,12 +338,7 @@ export function uiInit(context) {
     // This should happen after .main-content and toolbars exist.
     ui.onResize();
     map.redrawEnabled = true;
-
-// enable it here
-context.urlhash().enable();
-    // if (!context.initialHashParams.map) {  // no `map=` param, go to default location
-    //   map.centerZoom([0, 0], 2);
-    // }
+    context.urlhash().enable();   // parse the `map=zoom/lat/lon` parameter (or go to default)
 
     // Bind events
     window.onbeforeunload = function() {
@@ -401,10 +396,10 @@ context.urlhash().enable();
     context.enter('browse');
 
     const osm = context.connection();
-//    const startWalkthrough = (_initCounter === 0 && context.initialHashParams.walkthrough === 'true');
-    const startWalkthrough = false;
+    const startWalkthrough = context.urlhash().initialHashParams.get('walkthrough') === 'true';
 
-    if (!_initCounter++) {
+    if (!_initCounter++) {  // first time only
+
       if (!startWalkthrough) {
         if (context.history().lock() && context.history().hasRestorableChanges()) {
           context.container().call(uiRestore(context));
