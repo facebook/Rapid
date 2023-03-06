@@ -79,16 +79,19 @@ export class PixiLayerMapillaryPhotos extends AbstractLayer {
     const toDate = this.context.photos().toDate;
     const usernames = this.context.photos().usernames;
 
+    // note - Sequences now contains an Array of Linestrings, post #776
+    // This is because we can get multiple linestrings for sequences that cross a tile boundary.
+    // We just look at the first item in the array to determine whether to keep/filter the sequence.
     if (fromDate) {
       const fromTimestamp = new Date(fromDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() >= fromTimestamp);
+      sequences = sequences.filter(s => new Date(s[0].properties.captured_at).getTime() >= fromTimestamp);
     }
     if (toDate) {
       const toTimestamp = new Date(toDate).getTime();
-      sequences = sequences.filter(s => new Date(s.properties.captured_at).getTime() <= toTimestamp);
+      sequences = sequences.filter(s => new Date(s[0].properties.captured_at).getTime() <= toTimestamp);
     }
     if (usernames) {
-      sequences = sequences.filter(s => usernames.indexOf(s.properties.captured_by) !== -1);
+      sequences = sequences.filter(s => usernames.indexOf(s[0].properties.captured_by) !== -1);
     }
     return sequences;
   }
