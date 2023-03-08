@@ -42,11 +42,33 @@ export class PixiLayerCustomData extends AbstractLayer {
     this._src = null;
 
     this.setFile = this.setFile.bind(this);
+
+    // Setup event handlers..
+    // drag and drop
+    function over(d3_event) {
+      d3_event.stopPropagation();
+      d3_event.preventDefault();
+      d3_event.dataTransfer.dropEffect = 'copy';
+    }
+    this.context.container()
+      .attr('dropzone', 'copy')
+      .on('dragenter.draganddrop', over)
+      .on('dragexit.draganddrop', over)
+      .on('dragover.draganddrop', over)
+      .on('drop.draganddrop', d3_event => {
+        d3_event.stopPropagation();
+        d3_event.preventDefault();
+        this.fileList(d3_event.dataTransfer.files);
+      });
+
+    // hashchange - pick out the 'gpx' param
+    this.context.urlhash()
+      .on('hashchange', q => this.url(q.gpx || '', '.gpx'));
   }
 
 
   /**
-   * Services are loosely coupled in RapiD, so we use a `getService` function
+   * Services are loosely coupled in Rapid, so we use a `getService` function
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {
@@ -165,14 +187,6 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  zoom         Effective zoom to use for rendering
    */
   render(frame, projection, zoom) {
-    if (!this._loadedUrlData) {
-      const hash = utilStringQs(window.location.hash);
-      if (hash.gpx) {
-        this.url(hash.gpx, '.gpx');
-      }
-      this._loadedUrlData = true;
-    }
-
     if (this.enabled) {
       this.renderCustomData(frame, projection, zoom);
     }
@@ -190,7 +204,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     let vtService = this.getService();
     let geoData, polygons, lines, points;
     if (this._template && vtService) {   // fetch data from vector tile service
-      var sourceID = this._template;
+      const sourceID = this._template;
       vtService.loadTiles(sourceID, this._template, this.context.projection);
       geoData = vtService.data(sourceID, this.context.projection);
     } else {
@@ -333,33 +347,34 @@ export class PixiLayerCustomData extends AbstractLayer {
     }
   }
 
-/** template
- * val
- * src
- */
-  template (val, src) {
+  /**
+   * template
+   * @param  val
+   * @param  src
+   */
+  template(val, src) {
     if (!arguments.length) return this._template;
 
     // test source against OSM imagery blocklists..
-    var osm = this.context.connection();
+    const osm = this.context.connection();
     if (osm) {
-        var blocklists = osm.imageryBlocklists();
-        var fail = false;
-        var tested = 0;
-        var regex;
+      const blocklists = osm.imageryBlocklists();
+      let fail = false;
+      let tested = 0;
+      let regex;
 
-        for (var i = 0; i < blocklists.length; i++) {
-            regex = blocklists[i];
-            fail = regex.test(val);
-            tested++;
-            if (fail) break;
-        }
+      for (let i = 0; i < blocklists.length; i++) {
+        regex = blocklists[i];
+        fail = regex.test(val);
+        tested++;
+        if (fail) break;
+      }
 
-        // ensure at least one test was run.
-        if (!tested) {
-            regex = /.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/;
-            fail = regex.test(val);
-        }
+      // ensure at least one test was run.
+      if (!tested) {
+        regex = /.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/;
+        fail = regex.test(val);
+      }
     }
 
     this._template = val;
@@ -414,7 +429,7 @@ export class PixiLayerCustomData extends AbstractLayer {
     if (!fileList || !fileList.length) return this;
     const f = fileList[0];
     const extension = this.getExtension(f.name);
-    let setFile = this.setFile;
+    const setFile = this.setFile;
 
     const reader = new FileReader();
     reader.onload = (function() {
@@ -444,9 +459,9 @@ export class PixiLayerCustomData extends AbstractLayer {
     const extension = this.getExtension(testUrl) || defaultExtension;
     if (extension) {
       this._template = null;
-      let setFile = this.setFile;
+      const setFile = this.setFile;
       d3_text(url)
-        .then(function(data) {
+        .then(data => {
           setFile(extension, data);
           const isTaskBoundsUrl = extension === '.gpx' && url.indexOf('project') > 0 && url.indexOf('task') > 0;
           if (isTaskBoundsUrl) {

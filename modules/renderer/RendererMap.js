@@ -140,27 +140,6 @@ export class RendererMap extends EventEmitter {
     const scene = this._renderer.scene;
     const thiz = this;
 
-// setup drag and drop - (doesn't really belong here?)
-    // context.imagery().initDragAndDrop();
-    function over(d3_event) {
-      d3_event.stopPropagation();
-      d3_event.preventDefault();
-      d3_event.dataTransfer.dropEffect = 'copy';
-    }
-    context.container()
-      .attr('dropzone', 'copy')
-      .on('dragenter.draganddrop', over)
-      .on('dragexit.draganddrop', over)
-      .on('dragover.draganddrop', over)
-      .on('drop.draganddrop', (d3_event) => {
-        d3_event.stopPropagation();
-        d3_event.preventDefault();
-        const customDataLayer = scene.layers.get('custom-data');
-        if (customDataLayer) {
-          customDataLayer.fileList(d3_event.dataTransfer.files);
-        }
-      });
-
     // Setup events that cause the map to redraw...
 
     function _didUndoOrRedo(targetTransform) {
