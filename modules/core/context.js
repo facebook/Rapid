@@ -750,8 +750,8 @@ export function coreContext() {
       if (!context.container().empty()) {
         _ui.ensureLoaded()
           .then(() => {
-            _urlhash.init();  // tries to adjust map transform
             _photos.init();
+            _urlhash.init();  // tries to adjust map transform
           });
       }
     }

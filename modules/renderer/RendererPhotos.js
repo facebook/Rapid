@@ -7,7 +7,6 @@ import { services } from '../services';
  * `RendererPhotos` maintains the state of the photo viewer
  *
  * Properties available:
- *   `overlayLayerIDs`   List of the layer ids
  *   `allPhotoTypes`     List of all available photo types ('flat', 'panoramic')
  *   `fromDate`          Current fromDate filter value
  *   `toDate`            Current toDate filter value
@@ -33,9 +32,12 @@ export class RendererPhotos extends EventEmitter {
     this._fromDate = null;
     this._toDate = null;
     this._usernames = null;
+    this._currLayerID = null;
+    this._currPhotoID = null;
 
     // Ensure methods used as callbacks always have `this` bound correctly.
-    this._updateLayers = this._updateLayers.bind(this);
+    this._hashchange = this._hashchange.bind(this);
+    this._updateHash = this._updateHash.bind(this);
   }
 
 
@@ -45,87 +47,97 @@ export class RendererPhotos extends EventEmitter {
    * Handles initial parsing of the url params, and setup of event listeners
    */
   init() {
+// warning, depends on scene, which isn't ready until after first map render.
+// for now this init() gets delayed until after ui/init, see context.js
+    const context = this.context;
+    context.scene().on('layerchange', this._updateHash);
+    context.urlhash().on('hashchange', this._hashchange);
+  }
+
+
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  q   Object containing key/value pairs of the current query parameters
+   */
+  _hashchange(q) {
     const context = this.context;
     const scene = context.scene();
-    scene.on('layerchange', this._updateLayers);
 
-    // parse hash params
-    const hash = context.urlhash().initialHashParams;
-
-    const photo_dates = hash.get('photo_dates');
-    if (typeof photo_dates === 'string') {
-      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
-      const parts = /^(.*)[–_](.*)$/g.exec(photo_dates.trim());
-      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1], false);
-      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2], false);
-    }
-
-    const photo_username = hash.get('photo_username');
-    if (typeof photo_username === 'string') {
-      this.setUsernameFilter(photo_username, false);
-    }
-
+    // photo_overlay
     // support enabling photo layers by default via a URL parameter, e.g. `photo_overlay=kartaview;mapillary;streetside`
-    const photo_overlay = hash.get('photo_overlay');
-    if (typeof photo_overlay === 'string') {
-      const hashOverlayIDs = photo_overlay.replace(/;/g, ',').split(',');
-      scene.enableLayers(hashOverlayIDs);
+    let toEnableIDs = new Set();
+    if (typeof q.photo_overlay === 'string') {
+      toEnableIDs = new Set(q.photo_overlay.replace(/;/g, ',').split(','));
+    }
+    for (const layerID of this._LAYERIDS) {
+      const layer = scene.layers.get(layerID);
+      if (!layer) continue;
+      layer.enabled = toEnableIDs.has(layer.id);
     }
 
-    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary-fztgSDtLpa08ohPZFZjeRQ`
-    const photo = hash.get('photo');
-    if (typeof photo === 'string') {
-      const photoIDs = photo.replace(/;/g, ',').split(',');
+    // photo_dates
+    if (typeof q.photo_dates === 'string') {
+      // expect format like `photo_dates=2019-01-01_2020-12-31`, but allow a couple different separators
+      const parts = /^(.*)[–_](.*)$/g.exec(q.photo_dates.trim());
+      this.setDateFilter('fromDate', parts && parts.length >= 2 && parts[1]);
+      this.setDateFilter('toDate', parts && parts.length >= 3 && parts[2]);
+    } else {
+      this._toDate = this._fromDate = null;
+    }
+
+    // photo_username
+    this.setUsernameFilter(q.photo_username);
+
+    // support opening a specific photo via a URL parameter, e.g. `photo=mapillary/fztgSDtLpa08ohPZFZjeRQ`
+    if (typeof q.photo === 'string') {
+      const photoIDs = q.photo.replace(/;/g, ',').split(',');
       const photoID = photoIDs.length && photoIDs[0].trim();
       const results = /(.*)\/(.*)/g.exec(photoID);
 
       if (results && results.length >= 3) {
-        const serviceID = results[1];
-        const photoKey = results[2];
-        const service = services[serviceID];
-        if (!service || !service.loadViewerAsync) return;
-
-        // if we're showing a photo then make sure its layer is enabled too
-        scene.enableLayers(serviceID);
-
-        const startTime = Date.now();
-        service.on('loadedImages.rendererPhotos', () => {
-          // don't open the viewer if too much time has elapsed
-          if (Date.now() - startTime > 45000) {
-            service.on('loadedImages.rendererPhotos', null);
-            return;
-          }
-
-          if (!service.cachedImage(photoKey)) return;
-
-          service.on('loadedImages.rendererPhotos', null);
-          service.loadViewerAsync(context)
-            .then(() => {
-              service
-                .selectImage(context, photoKey)
-                .showViewer(context);
-            });
-        });
+        const layerID = results[1];
+        const photoID = results[2];
+        this.selectPhoto(layerID, photoID);
       }
     }
   }
 
 
   /**
-   * _updateLayers
-   * Update the hash to include which layers are currently enabled
+   * _updateHash
+   * Push changes in photo viewer state to the urlhash
    */
-  _updateLayers() {
+  _updateHash() {
     const urlhash = this.context.urlhash();
+    const scene = this.context.scene();
 
-    let enabled = [];
-    for (const layer of this.context.scene().layers.values()) {
-      if (this._LAYERIDS.includes(layer.id) && layer.supported && layer.enabled) {
-        enabled.push(layer.id);
+    // photo_overlay
+    let enabledIDs = [];
+    for (const layerID of this._LAYERIDS) {
+      const layer = scene.layers.get(layerID);
+      if (layer && layer.supported && layer.enabled) {
+        enabledIDs.push(layerID);
       }
     }
+    urlhash.setParam('photo_overlay', enabledIDs.length ? enabledIDs.join(',') : null);
 
-    urlhash.setParam('photo_overlay', enabled.length ? enabled.join(',') : null);
+    // photo
+    let photoString;
+    if (this._currLayerID && this._currPhotoID) {
+      photoString = `${this._currLayerID}/${this._currPhotoID}`;
+    }
+    urlhash.setParam('photo', photoString);
+
+    // photo_dates
+    let rangeString;
+    if (this._fromDate || this._toDate) {
+      rangeString = (this._fromDate || '') + '_' + (this._toDate || '');
+    }
+    urlhash.setParam('photo_dates', rangeString);
+
+    // photo_username
+    urlhash.setParam('photo_username', this._usernames ? this._usernames.join(',') : null);
   }
 
 
@@ -185,6 +197,46 @@ export class RendererPhotos extends EventEmitter {
 
 
   /**
+   * selectPhoto
+   * Pass `null` or `undefined` to de-select the layer and photo
+   * @param   layerID  The layerID to select
+   * @param   photoID  The photoID to select
+   */
+  selectPhoto(layerID = null, photoID = null) {
+    if (layerID === this._currLayerID && photoID === this._currPhotoID) return;  // nothing to do
+    this._currLayerID = layerID;
+    this._currPhotoID = photoID;
+
+    const context = this.context;
+    const scene = context.scene();
+
+// we're not listening to photochange, so just manually tell the renderer to select-style it, for now
+scene.clearClass('selected');
+
+    if (layerID && photoID) {
+      const service = services[layerID];
+      if (!service || !service.loadViewerAsync) return null;
+
+      // If we're selecting a photo then make sure its layer is enabled too.
+      scene.enableLayers(layerID);
+
+// we're not listening to photochange, so just manually tell the renderer to select-style it, for now
+scene.classData(layerID, photoID, 'selected');
+
+      // Try to show the viewer with the image selected..
+      service.loadViewerAsync(context)
+        .then(() => {
+          service.selectImage(context, photoID);
+          service.showViewer(context);
+        });
+    }
+
+    this._updateHash();
+    this.emit('photochange');
+  }
+
+
+  /**
    * dateFilterValue
    * Gets a date filter value
    * @param   val  'fromDate' or 'toDate'
@@ -200,11 +252,10 @@ export class RendererPhotos extends EventEmitter {
   /**
    * setDateFilter
    * Sets a date filter value
-   * @param   type        'fromDate' or 'toDate'
-   * @param   val         the value to set it to
-   * @param   updateURL   if `true` update the url hash also
+   * @param   type   'fromDate' or 'toDate'
+   * @param   val    the value to set it to
    */
-  setDateFilter(type, val, updateURL) {
+  setDateFilter(type, val) {
     // validate the date
     let date = val && new Date(val);
     if (date && !isNaN(date)) {
@@ -230,14 +281,7 @@ export class RendererPhotos extends EventEmitter {
     }
 
     if (didChange) {
-      if (updateURL) {
-        let rangeString;
-        if (this._fromDate || this._toDate) {
-          rangeString = (this._fromDate || '') + '_' + (this._toDate || '');
-        }
-        const urlhash = this.context.urlhash();
-        urlhash.setParam('photo_dates', rangeString);
-      }
+      this._updateHash();
       this.emit('photochange');
     }
   }
@@ -246,10 +290,9 @@ export class RendererPhotos extends EventEmitter {
   /**
    * setUsernameFilter
    * Sets a username filter value
-   * @param   val         The value to set it to
-   * @param   updateURL   If `true` update the url hash also
+   * @param   val    The value to set it to
    */
-  setUsernameFilter(val, updateURL) {
+  setUsernameFilter(val) {
     if (val && typeof val === 'string') {
       val = val.replace(/;/g, ',').split(',');
     }
@@ -260,13 +303,7 @@ export class RendererPhotos extends EventEmitter {
       }
     }
     this._usernames = val;
-
-    if (updateURL) {
-      const usernames = this._usernames ? this._usernames.join(',') : null;
-      const urlhash = this.context.urlhash();
-      urlhash.setParam('photo_username', usernames);
-    }
-
+    this._updateHash();
     this.emit('photochange');
   }
 

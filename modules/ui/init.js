@@ -334,11 +334,10 @@ export function uiInit(context) {
         .call(uiAccount(context));
     }
 
-    // Setup map dimensions and move map to initial center/zoom.
+    // Setup map dimensions, and allow rendering..
     // This should happen after .main-content and toolbars exist.
     ui.onResize();
     map.redrawEnabled = true;
-    context.urlhash().enable();   // parse the `map=zoom/lat/lon` parameter (or go to default)
 
     // Bind events
     window.onbeforeunload = function() {

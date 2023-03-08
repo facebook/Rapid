@@ -67,6 +67,8 @@ export class RendererMap extends EventEmitter {
 
     // Ensure methods used as callbacks always have `this` bound correctly.
     // (This is also necessary when using `d3-selection.call`)
+    this._hashchange = this._hashchange.bind(this);
+    this._updateHash = this._updateHash.bind(this);
     this.render = this.render.bind(this);
     this.immediateRedraw = this.immediateRedraw.bind(this);
     this.deferredRedraw = this.deferredRedraw.bind(this);
@@ -128,7 +130,10 @@ export class RendererMap extends EventEmitter {
     // Forward the 'move' and 'draw' events from PixiRenderer
     this._renderer
       .on('move', () => this.emit('move'))
-      .on('draw', () => this.emit('draw', { full: true }));  // pass {full: true} for legacy receivers
+      .on('draw', () => {
+        this._updateHash();
+        this.emit('draw', { full: true });  // pass {full: true} for legacy receivers
+      });
 
     this.dimensions = utilGetDimensions(selection);
 
@@ -158,7 +163,7 @@ export class RendererMap extends EventEmitter {
 
     // Setup events that cause the map to redraw...
 
-    function didUndoOrRedo(targetTransform) {
+    function _didUndoOrRedo(targetTransform) {
       const mode = context.mode().id;
       if (mode !== 'browse' && mode !== 'select') return;
       if (targetTransform) {
@@ -188,12 +193,14 @@ export class RendererMap extends EventEmitter {
         }
         this.immediateRedraw();
       })
-      .on('undone', (stack, fromStack) => didUndoOrRedo(fromStack.transform))
-      .on('redone', (stack) => didUndoOrRedo(stack.transform));
+      .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
+      .on('redone', (stack) => _didUndoOrRedo(stack.transform));
 
     context.features().on('redraw', this.immediateRedraw);
     context.imagery().on('imagerychange', this.immediateRedraw);
     context.photos().on('photochange', this.immediateRedraw);
+    context.urlhash().on('hashchange', this._hashchange);
+
 
     const osm = context.connection();
     if (osm) {
@@ -205,6 +212,59 @@ export class RendererMap extends EventEmitter {
         context.imagery().updateImagery();
         this.immediateRedraw();
     });
+  }
+
+
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  q   Object containing key/value pairs of the current query parameters
+   */
+  _hashchange(q) {
+    let zoom, lat, lon, rot;
+    if (typeof q.map === 'string') {
+      [zoom, lat, lon, rot] = q.map.split('/', 4).map(Number);
+    }
+    if (isNaN(zoom) || !isFinite(zoom)) zoom = 2;
+    if (isNaN(lat) || !isFinite(lat)) lat = 0;
+    if (isNaN(lon) || !isFinite(lon)) lon = 0;
+    if (isNaN(rot) || !isFinite(rot)) rot = 0;
+
+    zoom = clamp(zoom, 2, 24);
+    lat = clamp(lat, -90, 90);
+    lon = clamp(lon, -180, 180);
+    rot = clamp(rot, 0, 360);
+
+    this.centerZoom([lon, lat], zoom);
+  }
+
+
+  /**
+   * _updateHash
+   * Push changes in map state to the urlhash
+   */
+  _updateHash() {
+    const [lon, lat] = this.center();
+    const zoom = this.zoom();
+    const rot = 0;  // for now
+    const precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
+    const EPSILON = 0.1;
+
+    if (isNaN(zoom) || !isFinite(zoom)) return;
+    if (isNaN(lat) || !isFinite(lat)) return;
+    if (isNaN(lon) || !isFinite(lon)) return;
+    if (isNaN(rot) || !isFinite(rot)) return;
+
+    const zoomStr = zoom.toFixed(2);
+    const latStr = lat.toFixed(precision);
+    const lonStr = lon.toFixed(precision);
+    const rotStr = rot.toFixed(1);
+
+    let v = `${zoomStr}/${latStr}/${lonStr}`;
+    if (Math.abs(rot) > EPSILON) {
+      v += `/${rotStr}`;
+    }
+    this.context.urlhash().setParam('map', v);
   }
 
 

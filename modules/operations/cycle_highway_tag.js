@@ -12,7 +12,6 @@ export function operationCycleHighwayTag(context, selectedIDs) {
     .filter(entity => {  // available if there is a highway tag or untagged line
       return entity?.type === 'way' && (entity.tags.highway || !entity.hasInterestingTags());
     });
-  const entityIDs = entities.map(entity => entity.id);
 
 
   let operation = function() {

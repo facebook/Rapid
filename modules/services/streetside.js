@@ -3,7 +3,7 @@ import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
 import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
-import { utilArrayUnion, utilQsString, utilStringQs, utilUniqueString } from '@id-sdk/util';
+import { utilArrayUnion, utilQsString, utilUniqueString } from '@id-sdk/util';
 import RBush from 'rbush';
 
 import { t, localizer } from '../core/localizer';
@@ -182,7 +182,7 @@ function connectSequences() {
  * fetchMetadataAsync()
  * https://learn.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata
  */
-function fetchMetadataAsync(tile) {
+function fetchMetadataAsync(tile) {  // eslint-disable-line  no-unused-vars
   // only fetch it once
   if (_streetsideCache.metadataPromise) return _streetsideCache.metadataPromise;
 
@@ -597,6 +597,8 @@ export default {
 
       let nextID = (stepBy === 1 ? selected.ne : selected.pr);
       const yaw = _pannellumViewer.getYaw();
+      _sceneOptions.yaw = yaw;
+
       const ca = selected.ca + yaw;
       const origin = selected.loc;
 
@@ -656,19 +658,10 @@ export default {
       if (!nextBubble) return;
 
       context.map().centerEase(nextBubble.loc);
-
-      that.selectImage(context, nextBubble.id)
-        .yaw(yaw)
-        .showViewer(context);
+      context.photos().selectPhoto('streetside', nextBubble.id);
     }
   },
 
-
-  yaw: function(yaw) {
-    if (typeof yaw !== 'number') return yaw;
-    _sceneOptions.yaw = yaw;
-    return this;
-  },
 
   /**
    * showViewer()
@@ -695,6 +688,8 @@ export default {
    * hideViewer()
    */
   hideViewer: function(context) {
+    context.photos().selectPhoto(null);
+
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
 
@@ -706,14 +701,14 @@ export default {
     context.container().selectAll('.viewfield-group, .sequence, .icon-sign')
       .classed('currentView', false);
 
-    this.updateUrlImage(null);
-
     return this.setStyles(context, null, true);
   },
 
 
   /**
    * selectImage().
+   * note: call `context.photos().selectPhoto(layerID, photoID)` instead
+   * That will deal with the URL and call this function
    */
   selectImage: function(context, bubbleID) {
     let that = this;
@@ -732,8 +727,6 @@ export default {
       .style('transform', 'translate(-50%, -50%)');
 
     if (!d) return this;
-
-    this.updateUrlImage(bubbleID);
 
     _sceneOptions.northOffset = d.ca;
 
@@ -768,8 +761,7 @@ export default {
         };
 
         _sceneOptions = Object.assign(_sceneOptions, viewstate);
-        that.selectImage(context, d.id)
-          .showViewer(context);
+        context.photos().selectPhoto('streetside', d.id);
       });
 
     label
@@ -934,19 +926,6 @@ const streetsideImagesApi = 'http://ecn.t0.tiles.virtualearth.net/tiles/';
     }
 
     return this;
-  },
-
-
-  updateUrlImage: function(bubbleID) {
-    if (!window.mocha) {
-      var hash = utilStringQs(window.location.hash);
-      if (bubbleID) {
-        hash.photo = 'streetside/' + bubbleID;
-      } else {
-        delete hash.photo;
-      }
-      window.location.replace('#' + utilQsString(hash, true));
-    }
   },
 
 

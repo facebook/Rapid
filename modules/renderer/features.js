@@ -52,6 +52,41 @@ export function rendererFeatures(context) {
     var _forceVisible = {};
 
 
+
+    /**
+     * _hashchange
+     * Respond to any changes appearing in the url hash
+     * @param  q   Object containing key/value pairs of the current query parameters
+     */
+    function _hashchange(q) {
+      // disable_features
+      let toDisableIDs = new Set();
+      if (typeof q.disable_features === 'string') {
+        toDisableIDs = new Set(q.disable_features.replace(/;/g, ',').split(','));
+      }
+
+      let didChange = false;
+      for (const k in _rules) {
+        if (_rules[k].enabled && toDisableIDs.has(k)) {
+          _rules[k].disable();
+          didChange = true;
+        } else if (!_rules[k].enabled && !toDisableIDs.has(k)) {
+          _rules[k].enable();
+          didChange = true;
+        }
+      }
+
+      if (didChange) {
+        update();
+      }
+    }
+
+
+    /**
+     *  update
+     *  Called whenever the enabled/disabled rules change
+     *  Used to push changes in state to the urlhash and the localStorage
+     */
     function update() {
       const ruleIDs = features.disabled().join(',');
 
@@ -68,6 +103,9 @@ export function rendererFeatures(context) {
     }
 
 
+    /**
+     *  defineRule
+     */
     function defineRule(k, filter, max) {
         var isEnabled = true;
 
@@ -565,6 +603,8 @@ export function rendererFeatures(context) {
             var storageDisabled = storage.replace(/;/g, ',').split(',');
             storageDisabled.forEach(features.disable);
         }
+
+        context.urlhash().on('hashchange', _hashchange);
     };
 
 

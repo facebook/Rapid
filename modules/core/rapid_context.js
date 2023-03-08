@@ -16,7 +16,6 @@ export function coreRapidContext(context) {
     return self.indexOf(value) === index;
   }
 
-
   /* Task extents */
   let _taskExtent;
   let _isTaskBoundsRect;
@@ -103,7 +102,13 @@ export function coreRapidContext(context) {
   _rapidContext.datasets = () => _datasets;
 
 
+  /**
+   * init
+   * Called one time after all objects have been instantiated.
+   */
   _rapidContext.init = () => {
+    context.urlhash().on('hashchange', _hashchange);
+
     localizer.ensureLoaded()
       .then(() => {
         _datasets = {
@@ -131,75 +136,83 @@ export function coreRapidContext(context) {
             license_markdown: t('rapid_feature_toggle.msBuildings.license_markdown')
           }
         };
-
-        // Parse enabled datasets from url hash
-        const urlhash = context.urlhash();
-        let datasetIDs = urlhash.initialHashParams.get('datasets') || '';
-        if (!urlhash.initialHashParams.has('datasets')) {   // if not set in the urlhash
-          datasetIDs = 'fbRoads,msBuildings';               // use default
-          urlhash.setParam('datasets', datasetIDs);         // and put it in the urlhash
-        }
-
-        let toLoad = new Set();
-        datasetIDs.split(',').forEach(id => {
-          id = id.trim();
-          if (_datasets[id]) {
-            _datasets[id].enabled = true;
-          } else {  // not a known dataset, we will need to look for it in esri
-            toLoad.add(id);
-          }
-        });
-
-        // Load any datasets from esri that aren't known to us
-        const service = services.esriData;
-        if (!service || !toLoad.size) return;
-
-        service.loadDatasets()
-          .then(results => {
-            toLoad.forEach(id => {
-              const d = results[id];
-              if (!d) return;  // dataset with requested id not found, fail silently
-
-              // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
-              service.loadLayer(d.id);   // start fetching layer info (the mapping between attributes and tags)
-
-              const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
-              const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
-              const nextColor = Object.keys(_datasets).length % COLORS.length;
-
-              let dataset = {
-                id: d.id,
-                beta: isBeta,
-                added: true,       // whether it should appear in the list
-                enabled: true,     // whether the user has checked it on
-                conflated: false,
-                service: 'esri',
-                color: COLORS[nextColor],
-                label: d.title,
-                license_markdown: t('rapid_feature_toggle.esri.license_markdown')
-              };
-
-              if (d.extent) {
-                dataset.extent = new Extent(d.extent[0], d.extent[1]);
-              }
-
-              // Test running building layers through FBML conflation service
-              if (isBuildings) {
-                dataset.conflated = true;
-                dataset.service = 'fbml';
-              }
-
-              _datasets[d.id] = dataset;  // add it
-            });
-          });
-
       });
   };
+
 
   /* reset any state here */
   _rapidContext.reset = () => {
     _rapidContext.sources = new Set();
   };
+
+
+  /**
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  q   Object containing key/value pairs of the current query parameters
+   */
+  function _hashchange(q) {
+    // datasets
+    let toEnable = new Set();
+    if (typeof q.datasets === 'string') {
+      toEnable = new Set(q.datasets.split(','));
+    }
+
+    // Update all known datasets
+    for (const datasetID of Object.keys(_datasets)) {
+      const dataset = _datasets[datasetID];
+      if (toEnable.has(datasetID)) {
+        dataset.enabled = true;
+        toEnable.delete(datasetID);  // delete marks it as done
+      } else {
+        dataset.enabled = false;
+      }
+    }
+
+    // If there are remaining datasets to enable, try to load them from Esri.
+    const service = services.esriData;
+    if (!service || !toEnable.size) return;
+
+    service.loadDatasets()
+      .then(results => {
+        toEnable.forEach(datasetID => {
+          const d = results[datasetID];
+          if (!d) return;  // dataset with requested id not found, fail silently
+
+          // *** Code here is copied from `rapid_view_manage_datasets.js` `toggleDataset()` ***
+          service.loadLayer(d.id);   // start fetching layer info (the mapping between attributes and tags)
+
+          const isBeta = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/preview');
+          const isBuildings = d.groupCategories.some(cat => cat.toLowerCase() === '/categories/buildings');
+          const nextColor = Object.keys(_datasets).length % COLORS.length;
+
+          let dataset = {
+            id: d.id,
+            beta: isBeta,
+            added: true,       // whether it should appear in the list
+            enabled: true,     // whether the user has checked it on
+            conflated: false,
+            service: 'esri',
+            color: COLORS[nextColor],
+            label: d.title,
+            license_markdown: t('rapid_feature_toggle.esri.license_markdown')
+          };
+
+          if (d.extent) {
+            dataset.extent = new Extent(d.extent[0], d.extent[1]);
+          }
+
+          // Test running building layers through FBML conflation service
+          if (isBuildings) {
+            dataset.conflated = true;
+            dataset.service = 'fbml';
+          }
+
+          _datasets[d.id] = dataset;  // add it
+        });
+      });
+  }
+
 
 
   return utilRebind(_rapidContext, dispatch, 'on');

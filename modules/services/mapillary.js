@@ -2,7 +2,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 import { Extent, Tiler } from '@id-sdk/math';
-import { utilQsString, utilStringQs } from '@id-sdk/util';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';
@@ -454,6 +453,7 @@ export default {
   // Hide the image viewer and resets map markers
   hideViewer: function(context) {
     _mlyActiveImage = null;
+    context.photos().selectPhoto(null);
 
     if (!_mlyFallback && _mlyViewer) {
       _mlyViewer.getComponent('sequence').stop();
@@ -467,27 +467,11 @@ export default {
       .selectAll('.photo-wrapper')
       .classed('hide', true);
 
-    this.updateUrlImage(null);
-
     dispatch.call('imageChanged');
     dispatch.call('loadedMapFeatures');
     dispatch.call('loadedSigns');
 
     return this.setStyles(context, null);
-  },
-
-
-  // Update the URL with current image id
-  updateUrlImage: function(imageID) {
-    if (window.mocha) return;
-
-    const hash = utilStringQs(window.location.hash);
-    if (imageID) {
-      hash.photo = `mapillary/${imageID}`;
-    } else {
-      delete hash.photo;
-    }
-    window.location.replace('#' + utilQsString(hash, true));
   },
 
 
@@ -553,7 +537,7 @@ export default {
       that.setStyles(context, null);
       const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
       context.map().centerEase(loc);
-      that.updateUrlImage(image.id);
+      context.photos().selectPhoto('mapillary', image.id);
 
       if (_mlyShowFeatureDetections || _mlyShowSignDetections) {
         that.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
@@ -570,6 +554,8 @@ export default {
 
 
   // Move to an image
+  // note: call `context.photos().selectPhoto(layerID, photoID)` instead
+  // That will deal with the URL and call this function
   selectImage: function(context, imageID) {
     if (_mlyViewer && imageID) {
       _mlyViewer

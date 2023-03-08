@@ -1,4 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
+import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
 import whichPolygon from 'which-polygon';
 
 import { prefs } from '../core/preferences';
@@ -49,6 +50,9 @@ export class RendererImagery extends EventEmitter {
     this._saturation = 1;
     this._sharpness = 1;
     this._numGridSplits = 0; // No grid by default.
+
+    // Ensure methods used as callbacks always have `this` bound correctly.
+    this._hashchange = this._hashchange.bind(this);
   }
 
 
@@ -57,31 +61,95 @@ export class RendererImagery extends EventEmitter {
    * Called one time after all objects have been instantiated.
    */
   init() {
-    this._setupImageryAsync();
+    this._setupPromise = this._setupImageryAsync();
+    this.context.urlhash().on('hashchange', this._hashchange);
   }
 
 
   /**
-   *
+   * _hashchange
+   * Respond to any changes appearing in the url hash
+   * @param  q   Object containing key/value pairs of the current query parameters
+   */
+  _hashchange(q) {
+    if (!this._setupPromise) return;  // called too early
+
+    this._setupPromise  // after imagery loaded
+      .then(() => {
+        // background
+        let baseLayer;
+        if (typeof q.background === 'string') {
+          baseLayer = this.findSource(q.background);
+        }
+        if (!baseLayer) {
+          baseLayer = this.chooseDefaultSource();
+        }
+        this.baseLayerSource(baseLayer);
+
+        // overlays
+        let toEnableIDs = new Set();
+        if (typeof q.overlays === 'string') {
+          toEnableIDs = new Set(q.overlays.split(','));
+        }
+        for (const overlayLayer of this.overlayLayerSources()) {  // for each enabled overlay layer
+          if (overlayLayer.isLocatorOverlay()) continue;
+          if (toEnableIDs.has(overlayLayer.id)) continue;  // stay enabled
+          this.toggleOverlayLayer(overlayLayer);           // make disabled
+        }
+
+        // offset
+        let x, y;
+        if (typeof q.offset === 'string') {
+          [x, y] = q.offset.replace(/;/g, ',').split(',').map(Number);
+        }
+        if (isNaN(x) || !isFinite(x)) x = 0;
+        if (isNaN(y) || !isFinite(y)) y = 0;
+        this.offset = geoMetersToOffset([x, y]);
+      });
+  }
+
+
+  /**
+   *  Called whenever the imagery changes
+   *  Also used to push changes in imagery state to the urlhash
    */
   updateImagery() {
-    const currSource = this._baseLayer;
-    if (this.context.inIntro() || !currSource) return;
+    const baseLayer = this._baseLayer;
+    if (this.context.inIntro() || !baseLayer) return;
 
     let imageryUsed = [];
-    // let photoOverlaysUsed = [];
+    let overlayIDs = [];
 
-    const currUsed = currSource.imageryUsed;
-    if (currUsed && this._isValid) {
-      imageryUsed.push(currUsed);
+    // gather info about base imagery
+    const baseUsed = baseLayer.imageryUsed;
+    if (baseUsed && this._isValid) {
+      imageryUsed.push(baseUsed);
+    }
+    let baseID = baseLayer.id;
+    if (baseID === 'custom') {
+      baseID = `custom:${baseLayer.template}`;
     }
 
-    this._overlayLayers
-      .filter(d => !d.isLocatorOverlay() && !d.isHidden())
-      .forEach(d => imageryUsed.push(d.imageryUsed));
+    // Gather info about overlay imagery (ignore locator)
+    const overlays = this._overlayLayers.filter(d => !d.isLocatorOverlay() && !d.isHidden());
+    for (const overlay of overlays) {
+      overlayIDs.push(overlay.id);
+      imageryUsed.push(overlay.imageryUsed);
+    }
 
+    // Update history "imagery used" property
     this.context.history().imageryUsed(imageryUsed);
-    // this.context.history().photoOverlaysUsed(photoOverlaysUsed);
+
+    // Update hash params: 'background', 'overlays', 'offset'
+    const urlhash = this.context.urlhash();
+    urlhash.setParam('background', baseID);
+    urlhash.setParam('overlays', overlayIDs.length ? overlayIDs.join(',') : null);
+
+    const meters = geoOffsetToMeters(baseLayer.offset);
+    const EPSILON = 0.01;
+    const x = +meters[0].toFixed(2);
+    const y = +meters[1].toFixed(2);
+    urlhash.setParam('offset', (Math.abs(x) > EPSILON || Math.abs(y) > EPSILON) ? `${x},${y}` : null);
   }
 
 
@@ -347,7 +415,7 @@ export class RendererImagery extends EventEmitter {
   _setupImageryAsync() {
     if (this._setupPromise) return this._setupPromise;
 
-    return this._setupPromise = fileFetcher.get('imagery')
+    return fileFetcher.get('imagery')
       .then(data => {
         this._imageryIndex = {
           features: new Map(),   // Map(id -> GeoJSON feature)

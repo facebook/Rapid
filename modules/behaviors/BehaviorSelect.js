@@ -325,6 +325,8 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked on nothing
     if (!datum) {
+      context.photos().selectPhoto(null);
+
       const mode = context.mode();
       if (mode.id !== 'browse' && !this._multiSelection.size) {
         context.enter('browse');
@@ -383,16 +385,13 @@ export class BehaviorSelect extends AbstractBehavior {
       const service = services[layerID];
       if (!service) return;
 
-      service
-        .loadViewerAsync(context)
-        .then(() => service.selectImage(context, datum.id).showViewer(context));
-
       context.map().centerEase(datum.loc);
-
-      // No mode change event here, just manually tell the renderer to select it, for now
-      const scene = context.scene();
-      scene.clearClass('selected');
-      scene.classData(layerID, datum.id, 'selected');
+      context.photos().selectPhoto(layerID, datum.id);
+//
+//      // No mode change event here, just manually tell the renderer to select it, for now
+//      const scene = context.scene();
+//      scene.clearClass('selected');
+//      scene.classData(layerID, datum.id, 'selected');
     }
   }
 

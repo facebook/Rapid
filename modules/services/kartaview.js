@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
 import { Extent, Tiler, geoScaleToZoom } from '@id-sdk/math';
-import { utilArrayUnion, utilQsString, utilStringQs } from '@id-sdk/util';
+import { utilArrayUnion, utilQsString } from '@id-sdk/util';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';
@@ -235,8 +235,6 @@ export default {
     let wrap = context.container().select('.photoviewer').selectAll('.osc-wrapper')
       .data([0]);
 
-    let that = this;
-
     let wrapEnter = wrap.enter()
       .append('div')
       .attr('class', 'photo-wrapper osc-wrapper')
@@ -333,7 +331,7 @@ export default {
       if (!nextImage) return;
 
       context.map().centerEase(nextImage.loc);
-      that.selectImage(context, nextImage.id);
+      context.photos().selectPhoto('kartaview', nextImage.id);
     }
 
     // don't need any async loading so resolve immediately
@@ -365,8 +363,7 @@ export default {
 
   hideViewer: function(context) {
     _kartaviewSelectedImage = null;
-
-    this.updateUrlImage(null);
+    context.photos().selectPhoto(null);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(null);
@@ -383,11 +380,11 @@ export default {
   },
 
 
+  // note: call `context.photos().selectPhoto(layerID, photoID)` instead
+  // That will deal with the URL and call this function
   selectImage: function(context, imageKey) {
     let d = this.cachedImage(imageKey);
     _kartaviewSelectedImage = d;
-
-    this.updateUrlImage(imageKey);
 
     let viewer = context.container().select('.photoviewer');
     if (!viewer.empty()) viewer.datum(d);
@@ -525,19 +522,6 @@ export default {
     }
 
     return this;
-  },
-
-
-  updateUrlImage: function(imageKey) {
-    if (window.mocha) return;
-
-    let hash = utilStringQs(window.location.hash);
-    if (imageKey) {
-      hash.photo = 'kartaview/' + imageKey;
-    } else {
-      delete hash.photo;
-    }
-    window.location.replace('#' + utilQsString(hash, true));
   },
 
 
