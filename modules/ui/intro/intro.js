@@ -74,6 +74,7 @@ export function uiIntro(context, skipToRapid) {
 
 
   function startIntro(selection) {
+    context.inIntro(true);
     context.enter('browse');
 
     const osm = context.connection();
@@ -101,9 +102,6 @@ export function uiIntro(context, skipToRapid) {
     // (this needs to be before `context.inIntro(true)`)
     context.ui().sidebar.expand();
     context.container().selectAll('button.sidebar-toggle').classed('disabled', true);
-
-    // Disable saving
-    context.inIntro(true);
 
     // Disable OSM
     if (osm) {
@@ -218,7 +216,6 @@ export function uiIntro(context, skipToRapid) {
         osm.toggle(true).reset();
       }
 
-      // Enable Saving
       context.inIntro(false);
     });
 

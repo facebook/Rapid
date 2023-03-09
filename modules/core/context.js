@@ -265,9 +265,9 @@ export function coreContext() {
 
     if (_urlhash) {
       if (val) {
-        _urlhash.enable();
-      } else {
         _urlhash.disable();
+      } else {
+        _urlhash.enable();
       }
     }
     return context;
