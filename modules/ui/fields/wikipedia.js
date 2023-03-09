@@ -149,7 +149,7 @@ export function uiFieldWikipedia(field, context) {
 
     for (let i in _dataWikipedia) {
       let d = _dataWikipedia[i];
-      // default to the language of iD's current locale
+      // default to the language of Rapid's current locale
       if (d[2] === langCode) return d;
     }
 

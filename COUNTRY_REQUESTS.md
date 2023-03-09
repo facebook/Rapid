@@ -1,8 +1,8 @@
 ## Map With AI Country Requests
 
-This page tracks country requests for RapiD support from the OSM community. Crossed items correspond to countries that we have already rolled out.
+This page tracks country requests for Rapid support from the OSM community. Crossed items correspond to countries that we have already rolled out.
 
-If you would like to get RapiD support for a new country, please [create an issue](https://github.com/facebook/RapiD/issues) in our repo. That will help us prioritize our rollout plan. Happy mapping!
+If you would like to get Rapid support for a new country, please [create an issue](https://github.com/facebook/RapiD/issues) in our repo. That will help us prioritize our rollout plan. Happy mapping!
 
 ### Countries Requested
 

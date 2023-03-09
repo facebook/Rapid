@@ -1,10 +1,4 @@
-# Contributing to RapiD
-We want to make contributing to this project as easy and transparent as possible.
-
-First of all, a big shoutout to the **iD developers** for building an awesome foundation that RapiD is extended from.
-
-If your fix or feature is generally applicable to all iD users, consider [contributing to iD](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md) directly.
-
+# Contributing to Rapid
 
 ## Pull Requests
 We actively welcome your pull requests.
@@ -26,4 +20,4 @@ Complete your CLA here: <https://code.facebook.com/cla>
 We use GitHub issues to track bugs and feature requests. In case of bug reports, please ensure your description is clear and has sufficient instructions for reproducing the bugs.
 
 ## License
-By contributing to RapiD, you agree that your contributions will be licensed under the [LICENSE file](LICENSE.md).
+By contributing to Rapid, you agree that your contributions will be licensed under the [LICENSE file](LICENSE.md).

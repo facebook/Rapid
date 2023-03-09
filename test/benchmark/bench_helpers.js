@@ -2,14 +2,14 @@
 /* eslint no-extend-native:off */
 
 // Disable things that use the network
-for (var k in iD.services) { delete iD.services[k]; }
+for (var k in Rapid.services) { delete Rapid.services[k]; }
 
 // Try not to load imagery
 window.location.hash = '#background=none';
 
 // Run without data for speed (tests which need data can set it up themselves)
-iD.fileFetcher.assetPath('../../dist/');
-var cached = iD.fileFetcher.cache();
+Rapid.fileFetcher.assetPath('../../dist/');
+var cached = Rapid.fileFetcher.cache();
 
 // Initializing `coreContext` will try loading the locale data and English locale strings:
 cached.locales = { en: { rtl: false, pct: 1 } };
@@ -18,7 +18,7 @@ cached.locales_index_tagging = { en: { rtl: false, pct: 1 } };
 
 
 // Load the actual data from `dist/locales/` for the 'general' scope
-iD.localizer.loadLocale('en', 'general', 'locales');
+Rapid.localizer.loadLocale('en', 'general', 'locales');
 
 
 // Initializing `coreContext` initializes `_background`, which tries loading:
@@ -34,9 +34,8 @@ cached.deprecated = [];
 cached.discarded = {};
 
 
-
-window.d3 = iD.d3;   // Remove this if we can avoid exporting all of d3.js
-window.sdk = iD.sdk;
+window.d3 = Rapid.d3;   // Remove this if we can avoid exporting all of d3.js
+window.sdk = Rapid.sdk;
 delete window.PointerEvent;  // force the brower to use mouse events
 
 // // some sticky fallbacks

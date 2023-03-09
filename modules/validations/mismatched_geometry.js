@@ -236,7 +236,7 @@ export function validationMismatchedGeometry() {
 
             var primaryKey = Object.keys(asTarget.tags)[0];
 
-            // special case: buildings-as-points are discouraged by iD, but common in OSM, so ignore them
+            // special case: buildings-as-points not suggested by presets, but common in OSM, so ignore them
             if (primaryKey === 'building') return false;
 
             if (asTarget.tags[primaryKey] === '*') return false;

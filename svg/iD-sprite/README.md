@@ -1,11 +1,11 @@
-These folders contain graphics used by iD.
+These folders contain graphics used by Rapid.
 
 ### Overview
 
 To add a graphic, create a `.svg` file and save it anywhere under here.
 
 Some guidelines:
-* `icons/`:       20x20px solid fill-only, used throughout iD
+* `icons/`:       20x20px solid fill-only, used throughout Rapid
 * `operations/`:  20x20px solid fill-only, used as commands
 * `presets/`:     60x60px large preset icons
 * `turns/`:       various sizes, graphics for turn restrictions
@@ -40,6 +40,6 @@ Elsewhere, in CSS:
 }
 ```
 
-This gives iD a lot of flexibility to control the runtime styling of the graphics.
+This gives Rapid a lot of flexibility to control the runtime styling of the graphics.
 
 The above example means that classing a button as `.disabled` will automatically grey out the colors (you don't need to make separate grey versions of every button).

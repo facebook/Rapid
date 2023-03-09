@@ -12,7 +12,7 @@ Assumptions:
 1a) This can be anything specified here: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
 1b) For github actions, you should have AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY set as secrets, with AWS_DEFAULT_REGION in the environment
 2) You have installed python 3.
-3) You are running from within the iD directory.
+3) You are running from within the Rapid project directory.
 4) Environment variable RAPID_S3_BUCKET_NAME is defined (default: world.ai.rapid)
 5) Environment variable RAPID_WEB_ROOT is defined (default: https://mapwith.ai/)
 6) Environment variable NODE_VERSION is defined

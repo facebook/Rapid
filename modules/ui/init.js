@@ -448,7 +448,7 @@ export function uiInit(context) {
 
   ui.shortcuts = uiShortcuts(context);
 
-  // renders the iD interface into the container node
+  // renders the Rapid interface into the container node
   let _loadPromise;
   ui.ensureLoaded = () => {
     if (_loadPromise) return _loadPromise;
@@ -467,8 +467,8 @@ export function uiInit(context) {
   };
 
 
-  // `ui.restart()` will destroy and rebuild the entire iD interface,
-  // for example to switch the locale while iD is running.
+  // `ui.restart()` will destroy and rebuild the entire Rapid interface,
+  // for example to switch the locale while Rapid is running.
   ui.restart = function() {
     context.keybinding().clear();
     _loadPromise = null;

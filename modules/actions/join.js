@@ -10,7 +10,7 @@ import { prefs } from '../core/preferences';
 
 // Join ways at the end node they share.
 //
-// This is the inverse of `iD.actionSplit`.
+// This is the inverse of `actionSplit`.
 //
 // Reference:
 //   https://github.com/systemed/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/MergeWaysAction.as

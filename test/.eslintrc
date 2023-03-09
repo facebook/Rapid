@@ -8,6 +8,7 @@
         "fakeFetch": true,
         "happen": false,
         "iD": false,
+        "Rapid": false,
         "sdk": false,
         "sinon": false,
         "fetchMock": true

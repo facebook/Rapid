@@ -59,7 +59,7 @@ export function langNamesInNativeLang() {
     unordered[code] = info;
   });
 
-  // CLDR locales don't cover all the languages people might want to use for iD tags,
+  // CLDR locales don't cover all the languages people might want to use for OSM tags,
   // so also add the language names that we have English translations for
   let englishNamesByCode = JSON.parse(fs.readFileSync(`${cldrMainDir}en/languages.json`, 'utf8')).main.en.localeDisplayNames.languages;
   Object.keys(englishNamesByCode).forEach(code => {
