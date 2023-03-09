@@ -114,7 +114,7 @@ export class ModeSelect extends AbstractMode {
       const dataEditor = uiDataEditor(context).datum(datum);
       sidebarContent = dataEditor;
 
-    // Selected RapiD feature...
+    // Selected Rapid feature...
     } else if (datum.__fbid__) {
       this.keybinding = utilKeybinding('select-ai-features');
       const rapidInspector = uiRapidFeatureInspector(context, this.keybinding).datum(datum);

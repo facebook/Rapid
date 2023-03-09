@@ -687,7 +687,7 @@ export function coreHistory(context) {
               });
             }
 
-            // restore RapiD sources
+            // restore Rapid sources
             if (s.annotation && s.annotation.type === 'rapid_accept_feature') {
               const rapidContext = context.rapidContext();
               const sourceTag = s.annotation.source;

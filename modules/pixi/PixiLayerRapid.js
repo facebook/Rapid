@@ -25,7 +25,7 @@ export class PixiLayerRapid extends AbstractLayer {
   constructor(scene, layerID) {
     super(scene, layerID);
 
-    this._enabled = true;  // RapiD features should be enabled by default
+    this._enabled = true;     // Rapid features should be enabled by default
     this._serviceFB = null;
     this._serviceEsri = null;
     this._resolved = new Map();  // Map (entity.id -> GeoJSON feature)
@@ -169,7 +169,7 @@ export class PixiLayerRapid extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled in RapiD, so we use these functions
+   * Services are loosely coupled, so we use these functions
    * to gain access to them, and bind any event handlers a single time.
    */
   getServiceFB() {

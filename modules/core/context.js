@@ -372,7 +372,7 @@ export function coreContext() {
   /**
    * `selectedData`
    * Returns a Map containing the current selected features.  It can contain
-   * multiple items of various types (e.g. some OSM data, some RapiD data etc)
+   * multiple items of various types (e.g. some OSM data, some Rapid data etc)
    *
    * @return  The current selected features, as a `Map(datumID -> datum)`
    */

@@ -23,7 +23,7 @@
         },
         "applicationName": "Rapid",
         "footer"        : "Made with ♥ by the Maps Geo Team at Meta",
-        "copyright"     : "RapiD Copyright © 2017 by iD Contributors.",
+        "copyright"     : "©2023 by Rapid Contributors.",
         "disqus": "",
         "openGraph": {
             "title": "",
@@ -33,8 +33,8 @@
             "url": ""
         },
         "meta": {
-            "title": "RapiD Code Documentation",
-            "description": "Documentation for RapiD Application Source Code",
+            "title": "Rapid Code Documentation",
+            "description": "Documentation for Rapid Application Source Code",
             "keyword": "docs, documentation, pixi, pixijs, renderer, html5, javascript, jsdoc, meta, OSM, maps, mapping, editing"
         },
         "linenums"      : true

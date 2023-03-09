@@ -202,7 +202,7 @@ export class ModeDrawArea extends AbstractMode {
     //Now that the user has clicked, let them nudge the map by moving to the edge.
     context.behaviors.get('map-nudging').allow();
 
-    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const target = eventData.target;
     const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);
@@ -330,7 +330,7 @@ if (choice && choice.distance < SNAP_DIST) {
     const coord = eventData.coord;
     let loc = projection.invert(coord);
 
-    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const target = eventData.target;
     const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);

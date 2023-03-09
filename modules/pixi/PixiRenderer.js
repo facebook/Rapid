@@ -35,7 +35,7 @@ export class PixiRenderer extends EventEmitter {
 
   /**
    * Create a Pixi application rendering to the given canvas.
-   * We also add it as `context.pixi` so that other parts of RapiD can use it.
+   * We also add it as `context.pixi` so that other parts of Rapid can use it.
    * @constructor
    * @global
    *
@@ -211,7 +211,7 @@ export class PixiRenderer extends EventEmitter {
     const ticker = this.pixi.ticker;
     // console.log('FPS=' + ticker.FPS.toFixed(1));
 
-    // For now, we will perform either APP (RapiD prepares scene graph) or DRAW (Pixi render) during a tick.
+    // For now, we will perform either APP (Rapid prepares scene graph) or DRAW (Pixi render) during a tick.
     // GPU work will happen in its own thread, and we don't have direct insight into its timing.
     // For reference:
     //   16.7ms = 60fps
@@ -394,7 +394,7 @@ export class PixiRenderer extends EventEmitter {
 
   /**
    * _app
-   * The "RapiD" part of the drawing.
+   * The "Rapid" part of the drawing.
    * Where we set up the scene graph and tell Pixi what needs to be drawn.
    */
   _app() {

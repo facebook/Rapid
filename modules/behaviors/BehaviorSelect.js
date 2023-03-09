@@ -336,7 +336,7 @@ export class BehaviorSelect extends AbstractBehavior {
 
     // Clicked a non-OSM feature..
     if (
-      datum.__fbid__ || // Clicked a RapiD feature..
+      datum.__fbid__ || // Clicked a Rapid feature..
       datum.__featurehash__ || // Clicked Custom Data (e.g. gpx track)
       datum instanceof osmNote || // Clicked an OSM Note...
       datum instanceof QAItem // Clicked a QA Item (keepright, osmose, improveosm)...
@@ -490,7 +490,7 @@ export class BehaviorSelect extends AbstractBehavior {
       this._showsMenu = false;
 
     } else {                 // menu is off, toggle it on
-      // Only attempt to display the context menu if we're focused on a non-RapiD OSM Entity.
+      // Only attempt to display the context menu if we're focused on a non-Rapid OSM Entity.
         this._showsMenu = true;
         context.ui().showEditMenu(eventData.coord);
     }

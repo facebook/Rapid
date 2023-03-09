@@ -146,7 +146,7 @@ function gotResource(err, results) {
           let coverage = coverageByLocaleCode[code];
           if (coverage === undefined) {
             coverage = 0;
-            // @bhousel note - I dont know what's going on here but RapiD doesn't
+            // @bhousel note - I dont know what's going on here but Rapid doesn't
             //   use these language coverage numbers anyway per 0489e474b
             // console.log('Could not get language coverage');
             // process.exit(1);

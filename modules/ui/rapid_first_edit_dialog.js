@@ -10,7 +10,7 @@ export function uiRapidFirstEditDialog(context) {
     let modalSelection = uiModal(selection);
 
     modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal');   // RapiD styling
+      .attr('class', 'modal rapid-modal');   // Rapid styling
 
     let firstEditModal = modalSelection.select('.content');
 

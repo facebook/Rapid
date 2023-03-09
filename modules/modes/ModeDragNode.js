@@ -173,7 +173,7 @@ export class ModeDragNode extends AbstractMode {
     const projection = context.projection;
     const coord = eventData.coord;
 
-    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const target = eventData.target;
     const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);

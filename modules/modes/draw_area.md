@@ -217,9 +217,7 @@ end
 Note that the history has 'annotations' for the second and third steps. The first step does not. Why is this? 
 
 
-We maintain a complete stack of history changes in memory for RapiD- only changes with annotations are stopped at when the user hits undo/redo. This means that to undo the triangle the user just drew, they would have to hit undo twice:
+We maintain a complete stack of history changes in memory for Rapid-only changes with annotations are stopped at when the user hits undo/redo. This means that to undo the triangle the user just drew, they would have to hit undo twice:
 
 First undo: h3 -> h2.
 Second undo: h2-> h1, but since h1 has no annotation, we go back to the bare graph with no changes.
-
-

@@ -403,7 +403,7 @@ export function uiInit(context) {
         if (context.history().lock() && context.history().hasRestorableChanges()) {
           context.container().call(uiRestore(context));
 
-        // If users have already seen the 'welcome to RapiD' splash screen, don't also
+        // If users have already seen the 'welcome to Rapid' splash screen, don't also
         // show them the what's new screen
         } else if (prefs('sawRapidSplash')) {
           context.container().call(uiRapidWhatsNew(context));

@@ -124,7 +124,7 @@ export class ModeDrawLine extends AbstractMode {
 
 // figure out how this needs to happen - `this.defaultTags` maybe not ready yet?
 // maybe pass defaultTags in `options` now?
-//    // RapiD tagSources
+//    // Rapid tagSources
 //    const tagSources = prefs('rapid-internal-feature.tagSources') === 'true';
 //    if (tagSources && this.defaultTags.highway) {
 //      this.defaultTags.source = 'maxar';
@@ -249,7 +249,7 @@ export class ModeDrawLine extends AbstractMode {
     const coord = eventData.coord;
     let loc = projection.invert(coord);
 
-    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const target = eventData.target;
     const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);
@@ -296,7 +296,7 @@ if (choice && choice.distance < SNAP_DIST) {
     //Now that the user has clicked, let them nudge the map by moving to the edge.
     context.behaviors.get('map-nudging').allow();
 
-    // Allow snapping only for OSM Entities in the actual graph (i.e. not RapiD features)
+    // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const target = eventData.target;
     const datum = target && target.data;
     const entity = datum && graph.hasEntity(datum.id);

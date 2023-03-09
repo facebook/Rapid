@@ -14,7 +14,7 @@ export function uiRapidSplash(context) {
     const modalSelection = uiModal(selection);
 
     modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal modal-splash');   // RapiD styling
+      .attr('class', 'modal rapid-modal modal-splash');   // Rapid styling
 
     let introModal = modalSelection.select('.content');
 

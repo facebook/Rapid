@@ -62,7 +62,7 @@ export function uiRapidPowerUserFeaturesDialog(context) {
     _modalSelection = uiModal(selection);
 
     _modalSelection.select('.modal')
-      .attr('class', 'modal rapid-modal');   // RapiD styling
+      .attr('class', 'modal rapid-modal');   // Rapid styling
 
     _content = _modalSelection.select('.content')
       .append('div')

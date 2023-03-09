@@ -1,7 +1,7 @@
-## **RapiD** Release Checklist
+## **Rapid** Release Checklist
 
 #### If you want to update translations
-- If you don't have a `transifex.auth` file in the root of your RapiD project,
+- If you don't have a `transifex.auth` file in the root of your Rapid project,
 you'll need to create a Transifex account, ask @bhousel for admin rights
 on the iD project, and then create this file with contents like<br>
 ```js

@@ -4,7 +4,7 @@ import shutil
 import subprocess
 import sys
 
-"""Script to upload RapiD to S3 bucket
+"""Script to upload Rapid to S3 bucket
 Usage: python3 aws_deploy.py
 
 Assumptions:
@@ -49,7 +49,7 @@ def deploy():
     newindex = os.path.join(distdir, "index.html")
     with open(index, "r") as input:
         with open(newindex, "w+") as output:
-            # These directives aren't all necessary for the latest RapiD; some are useful in older versions of the index.html.
+            # These directives aren't all necessary for the latest Rapid; some are useful in older versions of the index.html.
             for s in input:
                 s = (
                     s.replace("dist/iD.css", f"/rapid/{distdir}/iD.css")

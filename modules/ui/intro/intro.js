@@ -119,7 +119,7 @@ export function uiIntro(context, skipToRapid) {
     original.overlayLayers.forEach(d => imagery.toggleOverlayLayer(d));
     imagery.brightness = 1;
 
-    // Setup RapiD Walkthrough dataset and disable service
+    // Setup Rapid Walkthrough dataset and disable service
     let rapidDatasets = context.rapidContext().datasets();
     const rapidDatasetsCopy = JSON.parse(JSON.stringify(rapidDatasets));   // deep copy
     Object.keys(rapidDatasets).forEach(id => rapidDatasets[id].enabled = false);
@@ -132,7 +132,7 @@ export function uiIntro(context, skipToRapid) {
       conflated: false,
       service: 'fbml',
       color: '#da26d3',
-      label: 'RapiD Walkthrough'
+      label: 'Rapid Walkthrough'
     };
 
     if (services.fbMLRoads) {
@@ -182,7 +182,7 @@ export function uiIntro(context, skipToRapid) {
         prefs('walkthrough_completed', 'yes');
       }
 
-      // Restore RapiD datasets and service
+      // Restore Rapid datasets and service
       let rapidDatasets = context.rapidContext().datasets();
       delete rapidDatasets.rapid_intro_graph;
       Object.keys(rapidDatasetsCopy).forEach(id => rapidDatasets[id].enabled = rapidDatasetsCopy[id].enabled);

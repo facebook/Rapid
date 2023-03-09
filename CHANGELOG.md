@@ -1,13 +1,13 @@
 # What's New
 
-Thanks to all our contributors, users, and the many people that make RapiD possible! ❤️
+Thanks to all our contributors, users, and the many people that make Rapid possible! ❤️
 
-The RapiD map editor is an open source project. You can submit bug reports, help out,
+The Rapid map editor is an open source project. You can submit bug reports, help out,
 or learn more by visiting our project page on GitHub:  :octocat: https://github.com/facebook/RapiD
 
-If you love RapiD, please star our project on GitHub to show your support! ⭐️
+If you love Rapid, please star our project on GitHub to show your support! ⭐️
 
-_Breaking developer changes, which may affect downstream projects or sites that embed RapiD, are marked with a_ ⚠️
+_Breaking developer changes, which may affect downstream projects or sites that embed Rapid, are marked with a_ ⚠️
 
 <!--
 # A.B.C

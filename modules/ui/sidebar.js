@@ -28,7 +28,7 @@ export function uiSidebar(context) {
     var keepRightEditor = uiKeepRightEditor(context);
     var osmoseEditor = uiOsmoseEditor(context);
     var _current;
-    var _wasRapiD = false;
+    var _wasRapid = false;
     var _wasData = false;
     var _wasNote = false;
     var _wasQaItem = false;
@@ -182,8 +182,8 @@ export function uiSidebar(context) {
                 selection.selectAll('.sidebar-component')
                     .classed('inspector-hover', true);
 
-            } else if (datum && datum.__fbid__) { // hovering on RapiD data
-                _wasRapiD = true;
+            } else if (datum && datum.__fbid__) { // hovering on Rapid data
+                _wasRapid = true;
                 sidebar
                     .show(rapidInspector.datum(datum));
 
@@ -261,8 +261,8 @@ export function uiSidebar(context) {
                 inspector
                     .state('hide');
 
-            } else if (_wasRapiD || _wasData || _wasNote || _wasQaItem) {
-                _wasRapiD = false;
+            } else if (_wasRapid || _wasData || _wasNote || _wasQaItem) {
+                _wasRapid = false;
                 _wasNote = false;
                 _wasData = false;
                 _wasQaItem = false;

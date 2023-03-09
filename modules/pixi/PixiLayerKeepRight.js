@@ -45,7 +45,7 @@ export class PixiLayerKeepRight extends AbstractLayer {
 
 
   /**
-   * Services are loosely coupled in RapiD, so we use a `getService` function
+   * Services are loosely coupled, so we use a `getService` function
    * to gain access to them, and bind any event handlers a single time.
    */
   getService() {

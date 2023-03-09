@@ -136,11 +136,11 @@ export function uiCommit(context) {
             sources.delete('streetlevel imagery');
         }
 
-        // Sync up the used RapiD sources with `sources`
-        var usedRapiD = context.rapidContext().sources;
-        var allRapiD = ['mapwithai', 'esri'];
-        allRapiD.forEach(function(val) { sources.delete(val); });   // reset all
-        usedRapiD.forEach(function(val) { sources.add(val); });
+        // Sync up the used Rapid sources with `sources`
+        var usedRapid = context.rapidContext().sources;
+        var allRapid = ['mapwithai', 'esri'];
+        allRapid.forEach(function(val) { sources.delete(val); });   // reset all
+        usedRapid.forEach(function(val) { sources.add(val); });
 
         // Update `source` tag
         var setSource = context.cleanTagValue(Array.from(sources).filter(Boolean).join(';'));

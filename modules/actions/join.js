@@ -5,8 +5,6 @@ import { actionDeleteRelation } from './delete_relation';
 import { actionDeleteWay } from './delete_way';
 import { osmIsInterestingTag } from '../osm/tags';
 import { osmJoinWays } from '../osm/multipolygon';
-
-// RapiD
 import { prefs } from '../core/preferences';
 
 
@@ -77,7 +75,7 @@ export function actionJoin(ids) {
             graph = actionDeleteWay(way.id)(graph);
         });
 
-        // RapiD tagnosticRoadCombine
+        // Rapid tagnosticRoadCombine
         var tagnosticRoadCombine = prefs('rapid-internal-feature.tagnosticRoadCombine') === 'true';
         if (tagnosticRoadCombine && ways.length && ways[0].tags.highway) {
             var newTags = Object.assign({}, survivor.tags);
@@ -203,7 +201,7 @@ export function actionJoin(ids) {
                 } else if (tags[k] && osmIsInterestingTag(k) && tags[k] !== way.tags[k]) {
                     conflicting = true;
 
-                    // RapiD tagnosticRoadCombine
+                    // Rapid tagnosticRoadCombine
                     var tagnosticRoadCombine = prefs('rapid-internal-feature.tagnosticRoadCombine') === 'true';
                     if (k === 'highway' && tagnosticRoadCombine && !window.mocha) {
                         conflicting = false;
