@@ -49,8 +49,8 @@ export function uiDisclosure(context, key, expandedDefault) {
       .html(_label());
 
     hideToggle.selectAll('.hide-toggle-icon')
-      .attr('xlink:href', _expanded ? '#iD-icon-down'
-        : (localizer.textDirection() === 'rtl') ? '#iD-icon-backward' : '#iD-icon-forward'
+      .attr('xlink:href', _expanded ? '#rapid-icon-down'
+        : (localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'
       );
 
 
@@ -82,8 +82,8 @@ export function uiDisclosure(context, key, expandedDefault) {
         .classed('expanded', _expanded);
 
       hideToggle.selectAll('.hide-toggle-icon')
-        .attr('xlink:href', _expanded ? '#iD-icon-down'
-          : (localizer.textDirection() === 'rtl') ? '#iD-icon-backward' : '#iD-icon-forward'
+        .attr('xlink:href', _expanded ? '#rapid-icon-down'
+          : (localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'
         );
 
       wrap

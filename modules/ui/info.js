@@ -73,7 +73,7 @@ export function uiInfo(context) {
           e.preventDefault();
           info.toggle(d);
         })
-        .call(svgIcon('#iD-icon-close'));
+        .call(svgIcon('#rapid-icon-close'));
 
       panelEnter
         .append('div')

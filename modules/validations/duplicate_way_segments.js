@@ -93,15 +93,15 @@ export function validationDuplicateWaySegments() {
                 dynamicFixes: function() {
                     return [
                         new validationIssueFix({
-                            icon: 'iD-icon-plus',
+                            icon: 'rapid-icon-plus',
                             title: t.html('issues.fix.merge_points.title'),
                         }),
                         new validationIssueFix({
-                            icon: 'iD-operation-delete',
+                            icon: 'rapid-operation-delete',
                             title: t.html('issues.fix.remove_way_segments.title')
                         }),
                         new validationIssueFix({
-                            icon: 'iD-operation-disconnect',
+                            icon: 'rapid-operation-disconnect',
                             title: t.html('issues.fix.move_way_segments_apart.title')
                         })
                     ];

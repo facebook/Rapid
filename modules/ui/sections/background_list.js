@@ -129,7 +129,7 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'imagery-faq')
       .append('a')
       .attr('target', '_blank')
-      .call(svgIcon('#iD-icon-out-link', 'inline'))
+      .call(svgIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/FAQ.md#how-can-i-report-an-issue-with-background-imagery')
       .append('span')
       .text(t('background.imagery_problem_faq'));
@@ -208,7 +208,7 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'background-favorite-button')
       .classed('active', d => !!_favoriteBackgrounds[d.id])
       .attr('tabindex', -1)
-      .call(svgIcon('#iD-icon-favorite'))
+      .call(svgIcon('#rapid-icon-favorite'))
       .on('click', (d3_event, d) => {
         if (_favoriteBackgrounds[d.id]) {
           d3_select(d3_event.currentTarget).classed('active', false);
@@ -243,7 +243,7 @@ export function uiSectionBackgroundList(context) {
         .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
       )
       .on('click', editCustom)
-      .call(svgIcon('#iD-icon-more'));
+      .call(svgIcon('#rapid-icon-more'));
 
     layerLinksEnter.filter(d => d.best)
       .selectAll('label')
@@ -253,7 +253,7 @@ export function uiSectionBackgroundList(context) {
         .title(t('background.best_imagery'))
         .placement('bottom')
       )
-      .call(svgIcon('#iD-icon-best-background'));
+      .call(svgIcon('#rapid-icon-best-background'));
 
     layerList.selectAll('li')
       .sort(sortSources);

@@ -68,7 +68,7 @@ export function validationPrivateData() {
             dynamicFixes: function() {
                 return [
                     new validationIssueFix({
-                        icon: 'iD-operation-delete',
+                        icon: 'rapid-operation-delete',
                         title: t.html('issues.fix.' + fixID + '.title'),
                         onClick: function(context) {
                             context.perform(doUpgrade, t('issues.fix.upgrade_tags.annotation'));

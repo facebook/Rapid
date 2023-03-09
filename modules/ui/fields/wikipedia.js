@@ -133,7 +133,7 @@ export function uiFieldWikipedia(field, context) {
       .append('button')
       .attr('class', 'form-field-button wiki-link')
       .attr('title', t('icons.view_on', { domain: 'wikipedia.org' }))
-      .call(svgIcon('#iD-icon-out-link'))
+      .call(svgIcon('#rapid-icon-out-link'))
       .merge(link);
 
     link

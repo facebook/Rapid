@@ -199,7 +199,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       // .attr('class', 'logo-rapid dark')
       .attr('class', 'logo-rapid')
       .append('use')
-      .attr('xlink:href', '#iD-logo-rapid');
+      .attr('xlink:href', '#rapid-logo-rapid');
 
     headerEnter
       .append('button')
@@ -207,7 +207,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .on('click', () => {
         context.enter('browse');
       })
-      .call(svgIcon('#iD-icon-close'));
+      .call(svgIcon('#rapid-icon-close'));
 
 
     // Body
@@ -229,13 +229,13 @@ export function uiRapidFeatureInspector(context, keybinding) {
     const choiceData = [
       {
         key: 'accept',
-        iconName: '#iD-icon-rapid-plus-circle',
+        iconName: '#rapid-icon-rapid-plus-circle',
         label: t('rapid_feature_inspector.option_accept.label'),
         description: t('rapid_feature_inspector.option_accept.description'),
         onClick: onAcceptFeature
       }, {
         key: 'ignore',
-        iconName: '#iD-icon-rapid-minus-circle',
+        iconName: '#rapid-icon-rapid-minus-circle',
         label: t('rapid_feature_inspector.option_ignore.label'),
         description: t('rapid_feature_inspector.option_ignore.description'),
         onClick: onIgnoreFeature
@@ -323,7 +323,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .on('click', () => {
         choiceReference.classed('expanded', !choiceReference.classed('expanded'));
       })
-      .call(svgIcon('#iD-icon-inspect'));
+      .call(svgIcon('#rapid-icon-inspect'));
   }
 
 

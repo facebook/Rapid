@@ -129,7 +129,7 @@ export function uiFieldText(field, context) {
 
             outlinkButton.enter()
                 .append('button')
-                .call(svgIcon('#iD-icon-out-link'))
+                .call(svgIcon('#rapid-icon-out-link'))
                 .attr('class', 'form-field-button foreign-id-permalink')
                 .attr('title', function() {
                     var domainResults = /^https?:\/\/(.{1,}?)\//.exec(field.urlFormat);
@@ -157,7 +157,7 @@ export function uiFieldText(field, context) {
 
             outlinkButton.enter()
                 .append('button')
-                .call(svgIcon('#iD-icon-out-link'))
+                .call(svgIcon('#rapid-icon-out-link'))
                 .attr('class', 'form-field-button foreign-id-permalink')
                 .attr('title', () => t('icons.visit_website'))
                 .on('click', function(d3_event) {

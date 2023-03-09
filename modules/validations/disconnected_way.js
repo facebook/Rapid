@@ -61,7 +61,7 @@ export function validationDisconnectedWay() {
                 }
 
                 fixes.push(new validationIssueFix({
-                    icon: 'iD-operation-delete',
+                    icon: 'rapid-operation-delete',
                     title: t.html('issues.fix.delete_feature.title'),
                     entityIds: [singleEntity.id],
                     onClick: function(context) {
@@ -186,7 +186,7 @@ export function validationDisconnectedWay() {
                 (whichEnd === 'end' && textDirection === 'rtl');
 
             return new validationIssueFix({
-                icon: 'iD-operation-continue' + (useLeftContinue ? '-left' : ''),
+                icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
                 title: t.html('issues.fix.continue_from_' + whichEnd + '.title'),
                 entityIds: [vertexID],
                 onClick: function(context) {

@@ -70,7 +70,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('button')
       .attr('class', 'close')
       .on('click', _myClose)
-      .call(svgIcon('#iD-icon-close'));
+      .call(svgIcon('#rapid-icon-close'));
 
     _content = myModal
       .append('div')
@@ -103,7 +103,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     line1
       .append('div')
       .attr('class', 'rapid-view-manage-header-icon')
-      .call(svgIcon('#iD-icon-data', 'icon-30'));
+      .call(svgIcon('#rapid-icon-data', 'icon-30'));
 
     line1
       .append('div')
@@ -343,7 +343,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('target', '_blank')
       .attr('href', d => d.itemURL)
       .text(t('rapid_feature_toggle.esri.more_info'))
-      .call(svgIcon('#iD-icon-out-link', 'inline'));
+      .call(svgIcon('#rapid-icon-out-link', 'inline'));
 
     let featuredEnter = labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/featured'))

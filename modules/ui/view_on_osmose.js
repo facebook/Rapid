@@ -26,7 +26,7 @@ export function uiViewOnOsmose() {
         .attr('target', '_blank')
         .attr('rel', 'noopener') // security measure
         .attr('href', d => d)
-        .call(svgIcon('#iD-icon-out-link', 'inline'));
+        .call(svgIcon('#rapid-icon-out-link', 'inline'));
 
     linkEnter
       .append('span')

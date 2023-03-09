@@ -69,7 +69,7 @@ export function validationGenericName() {
             hash: generic,
             fixes: [
                 new validationIssueFix({
-                    icon: 'iD-operation-delete',
+                    icon: 'rapid-operation-delete',
                     title: t('issues.fix.remove_generic_name.title'),
                     onClick: function(context) {
                         var entityId = this.issue.entityIds[0];

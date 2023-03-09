@@ -152,7 +152,7 @@ export class UiPanelHistory extends AbstractUiPanel {
         .attr('class', 'view-history-on-osm')
         .attr('target', '_blank')
         .attr('href', osm.noteURL(note))
-        .call(svgIcon('#iD-icon-out-link', 'inline'))
+        .call(svgIcon('#rapid-icon-out-link', 'inline'))
         .append('span')
         .html(t.html('info_panels.history.note_link_text'));
     }

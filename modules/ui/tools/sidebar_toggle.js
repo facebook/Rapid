@@ -21,7 +21,7 @@ export function uiToolSidebarToggle(context) {
         .keys([t('sidebar.key')])
         .scrollContainer(context.container().select('.top-toolbar'))
       )
-      .call(svgIcon('#iD-icon-sidebar-' + (isRTL ? 'right' : 'left')));
+      .call(svgIcon('#rapid-icon-sidebar-' + (isRTL ? 'right' : 'left')));
   };
 
   return tool;

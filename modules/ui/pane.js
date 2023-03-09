@@ -118,7 +118,7 @@ export function uiPane(id, context) {
         heading
             .append('button')
             .on('click', hidePane)
-            .call(svgIcon('#iD-icon-close'));
+            .call(svgIcon('#rapid-icon-close'));
 
 
         _paneSelection

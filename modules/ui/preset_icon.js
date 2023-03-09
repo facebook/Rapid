@@ -12,7 +12,7 @@ export function uiPresetIcon() {
 
   function getIcon(p, geom) {
     if (p.icon) return p.icon;
-    if (geom === 'line') return 'iD-other-line';
+    if (geom === 'line') return 'rapid-other-line';
     if (geom === 'vertex') return p.isFallback() ? '' : 'temaki-vertex';
     return 'maki-marker-stroked';
   }
@@ -182,18 +182,18 @@ export function uiPresetIcon() {
     container
       .append('div')
       .attr('class', 'preset-icon-route')
-      .call(svgIcon('#iD-route', 'idicon lowered'));
+      .call(svgIcon('#rapid-route', 'rapid-icon lowered'));
   }
 
 
   //
   // Renders the icon at correct size and placement
   //
-  function renderSvgIcon(container, picon, klass, color) {
+  function renderSvgIcon(container, iconName, klass, color) {
     container
       .append('div')
       .attr('class', 'preset-icon')
-      .call(svgIcon(`#${picon}`, klass.join(' ')));
+      .call(svgIcon(`#${iconName}`, klass.join(' ')));
 
     container.selectAll('.preset-icon svg.icon')
       .attr('color', color);
@@ -272,16 +272,16 @@ export function uiPresetIcon() {
     if (picon)  {
       const isRaised = showLine || showRoute;                 // move the icon up a little
       const isShrunk = isCategory || showLine || showRoute;   // make it smaller
-      const isidicon = /^iD-/.test(picon);
+      const isRapidIcon = /^rapid-/.test(picon);
 
       let klass = [];
-      if (isidicon) klass.push('idicon');
+      if (isRapidIcon) klass.push('rapid-icon');
       if (isShrunk) klass.push('shrunk');
       if (isRaised) klass.push('raised');
 
       let color = '#333';
       if (showLine || showRoute) {
-        if (isidicon) {
+        if (isRapidIcon) {
           color = PIXI.utils.hex2string(style.stroke.color);
         }
       }

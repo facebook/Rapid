@@ -80,7 +80,7 @@ export function uiFieldCheck(field, context) {
         var first = entity.first();
         var last = entity.isClosed() ? entity.nodes[entity.nodes.length - 2] : entity.last();
         var pseudoDirection = first < last;
-        var icon = pseudoDirection ? '#iD-icon-forward' : '#iD-icon-backward';
+        var icon = pseudoDirection ? '#rapid-icon-forward' : '#rapid-icon-backward';
 
         selection.selectAll('.reverser-span')
             .html(t.html('inspector.check.reverser'))

@@ -118,7 +118,7 @@ export function uiInit(context) {
 
     container
       .append('svg')
-      .attr('id', 'ideditor-defs')
+      .attr('id', 'rapid-defs')
       .call(ui.svgDefs);
 
     // Sidebar
@@ -314,14 +314,14 @@ export function uiInit(context) {
       .attr('class', 'bugnub')
       .attr('tabindex', -1)
       .on('click', generateBugLink)
-      .call(svgIcon('#iD-icon-bug', 'bugnub'))
+      .call(svgIcon('#rapid-icon-bug', 'bugnub'))
       .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
 
     issueLinks
       .append('a')
       .attr('target', '_blank')
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
-      .call(svgIcon('#iD-icon-translate', 'light'))
+      .call(svgIcon('#rapid-icon-translate', 'light'))
       .call(uiTooltip().title(t.html('help_translate')).placement('top'));
 
     aboutList

@@ -74,14 +74,14 @@ export class PixiLayerOsmNotes extends AbstractLayer {
 
       if (!feature) {
         let color = 0xff3300;  // open (red)
-        // let iconName = '#iD-icon-close'
+        // let iconName = '#rapid-icon-close'
         if (d.status === 'closed') {
           color = 0x55dd00;  // closed (green)
-          // iconName = '#iD-icon-apply'
+          // iconName = '#rapid-icon-apply'
         }
         if (d.isNew()) {
           color = 0xffee00;  // new (yellow)
-          // iconName = '#iD-icon-plus'
+          // iconName = '#rapid-icon-plus'
         }
 
         const style = {

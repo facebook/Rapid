@@ -75,7 +75,7 @@ export function uiIntroArea(context, curtain) {
           .insert('svg', 'span')
           .attr('class', 'tooltip-illustration')
           .append('use')
-          .attr('xlink:href', '#iD-graphic-areas');
+          .attr('xlink:href', '#rapid-graphic-areas');
 
         context.on('enter.intro', () => resolve(startPlaygroundAsync));
       }))
@@ -381,7 +381,7 @@ export function uiIntroArea(context, curtain) {
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.areas.describe_playground', { button: icon('#iD-icon-close', 'inline') })
+        tipHtml: helpHtml('intro.areas.describe_playground', { button: icon('#rapid-icon-close', 'inline') })
       });
 
       context.on('enter.intro', () => resolve(playAsync));

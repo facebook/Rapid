@@ -28,9 +28,9 @@ export function uiRapidSplash(context) {
       .attr('class','modal-section')
       .append('p')
       .html(t('rapid_splash.text', {
-        rapidicon: icon('#iD-logo-rapid', 'logo-rapid'),
-        walkthrough: icon('#iD-logo-walkthrough', 'logo-walkthrough'),
-        edit: icon('#iD-logo-features', 'logo-features')
+        rapidicon: icon('#rapid-logo-rapid', 'logo-rapid'),
+        walkthrough: icon('#rapid-logo-walkthrough', 'logo-walkthrough'),
+        edit: icon('#rapid-logo-features', 'logo-features')
       }));
 
     let buttonWrap = introModal
@@ -49,7 +49,7 @@ export function uiRapidSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-features')
       .append('use')
-      .attr('xlink:href', '#iD-logo-walkthrough');
+      .attr('xlink:href', '#rapid-logo-walkthrough');
 
     walkthrough
       .append('div')
@@ -67,7 +67,7 @@ export function uiRapidSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-rapid')
       .append('use')
-      .attr('xlink:href', '#iD-logo-rapid');
+      .attr('xlink:href', '#rapid-logo-rapid');
 
     rapidWalkthrough
       .append('div')
@@ -84,7 +84,7 @@ export function uiRapidSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-features')
       .append('use')
-      .attr('xlink:href', '#iD-logo-features');
+      .attr('xlink:href', '#rapid-logo-features');
 
     startEditing
       .append('div')

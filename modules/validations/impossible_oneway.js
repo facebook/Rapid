@@ -176,7 +176,7 @@ export function validationImpossibleOneway() {
 
                     if (attachedOneways.length) {
                         fixes.push(new validationIssueFix({
-                            icon: 'iD-operation-reverse',
+                            icon: 'rapid-operation-reverse',
                             title: t.html('issues.fix.reverse_feature.title'),
                             entityIds: [way.id],
                             onClick: function(context) {
@@ -190,7 +190,7 @@ export function validationImpossibleOneway() {
                         var useLeftContinue = (isFirst && textDirection === 'ltr') ||
                             (!isFirst && textDirection === 'rtl');
                         fixes.push(new validationIssueFix({
-                            icon: 'iD-operation-continue' + (useLeftContinue ? '-left' : ''),
+                            icon: 'rapid-operation-continue' + (useLeftContinue ? '-left' : ''),
                             title: t.html('issues.fix.continue_from_' + (isFirst ? 'start' : 'end') + '.title'),
                             onClick: function(context) {
                                 var entityID = this.issue.entityIds[0];

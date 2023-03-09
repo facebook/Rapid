@@ -63,7 +63,7 @@ export function uiIntroRapid(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
-          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#rapid-logo-rapid', 'pre-text') }),
           buttonText: t.html('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
@@ -78,7 +78,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: 'button.rapid-features',
-        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid', 'pre-text') }),
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
@@ -152,7 +152,7 @@ export function uiIntroRapid(context, curtain) {
 
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#iD-logo-rapid', 'pre-text') }),
+          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid', 'pre-text') }),
           buttonText: t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });
@@ -222,7 +222,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealNode: undoButton.node(),
-        tipHtml: helpHtml('intro.rapid.undo_road_add', { button: icon('#iD-icon-undo', 'pre-text') })
+        tipHtml: helpHtml('intro.rapid.undo_road_add', { button: icon('#rapid-icon-undo', 'pre-text') })
       });
       undoButton.on('click.intro', () => resolve(afterUndoRoadAddAsync));
     })
@@ -317,8 +317,8 @@ export function uiIntroRapid(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml('intro.rapid.help', {
-          rapid: icon('#iD-logo-rapid', 'pre-text'),
-          button: icon('#iD-icon-help', 'pre-text'),
+          rapid: icon('#rapid-logo-rapid', 'pre-text'),
+          button: icon('#rapid-icon-help', 'pre-text'),
           key: t('help.key')
         }),
         buttonText: t('intro.ok'),

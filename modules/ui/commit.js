@@ -243,7 +243,7 @@ export function uiCommit(context) {
             .on('click', function() {
                 dispatch.call('cancel', this);
             })
-            .call(svgIcon('#iD-icon-close'));
+            .call(svgIcon('#rapid-icon-close'));
 
         var body = selection.selectAll('.body')
             .data([0]);

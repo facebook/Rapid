@@ -30,7 +30,7 @@ export function uiNoteComments() {
         commentEnter
             .append('div')
             .attr('class', function(d) { return 'comment-avatar user-' + d.uid; })
-            .call(svgIcon('#iD-icon-avatar', 'comment-avatar-icon'));
+            .call(svgIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
 
         var mainEnter = commentEnter
             .append('div')

@@ -54,13 +54,13 @@
 //    var replacements = {
 //        distField: t.html('restriction.controls.distance'),
 //        viaField: t.html('restriction.controls.via'),
-//        fromShadow: icon('#iD-turn-shadow', 'inline shadow from'),
-//        allowShadow: icon('#iD-turn-shadow', 'inline shadow allow'),
-//        restrictShadow: icon('#iD-turn-shadow', 'inline shadow restrict'),
-//        onlyShadow: icon('#iD-turn-shadow', 'inline shadow only'),
-//        allowTurn: icon('#iD-turn-yes', 'inline turn'),
-//        restrictTurn: icon('#iD-turn-no', 'inline turn'),
-//        onlyTurn: icon('#iD-turn-only', 'inline turn')
+//        fromShadow: icon('#rapid-turn-shadow', 'inline shadow from'),
+//        allowShadow: icon('#rapid-turn-shadow', 'inline shadow allow'),
+//        restrictShadow: icon('#rapid-turn-shadow', 'inline shadow restrict'),
+//        onlyShadow: icon('#rapid-turn-shadow', 'inline shadow only'),
+//        allowTurn: icon('#rapid-turn-yes', 'inline turn'),
+//        restrictTurn: icon('#rapid-turn-no', 'inline turn'),
+//        onlyTurn: icon('#rapid-turn-only', 'inline turn')
 //    };
 //
 //
@@ -146,7 +146,7 @@
 //        button.enter()
 //            .append('button')
 //            .attr('class', 'field-help-button')
-//            .call(svgIcon('#iD-icon-help'))
+//            .call(svgIcon('#rapid-icon-help'))
 //            .merge(button)
 //            .on('click', function (d3_event) {
 //                d3_event.stopPropagation();
@@ -204,7 +204,7 @@
 //                d3_event.preventDefault();
 //                hide();
 //            })
-//            .call(svgIcon('#iD-icon-close'));
+//            .call(svgIcon('#rapid-icon-close'));
 //
 //        var navEnter = enter
 //            .append('div')

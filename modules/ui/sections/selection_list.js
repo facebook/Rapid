@@ -98,7 +98,7 @@ export function uiSectionSelectionList(context) {
       .attr('class', 'close')
       .attr('title', t('icons.deselect'))
       .on('click', deselectEntity)
-      .call(svgIcon('#iD-icon-close'));
+      .call(svgIcon('#rapid-icon-close'));
 
     // Update
     items = items.merge(enter);
@@ -107,7 +107,7 @@ export function uiSectionSelectionList(context) {
       .attr('href', (d, i, nodes) => {
         const thiz = d3_select(nodes[i]);
         const entity = thiz._groups[0][0].parentNode.parentNode.__data__;
-        return '#iD-icon-' + entity.geometry(context.graph());
+        return '#rapid-icon-' + entity.geometry(context.graph());
       });
 
     items.selectAll('.entity-type')

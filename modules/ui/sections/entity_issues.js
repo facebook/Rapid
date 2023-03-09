@@ -104,7 +104,7 @@ export function uiSectionEntityIssues(context) {
 
         textEnter
             .each(function(d) {
-                var iconName = '#iD-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
+                var iconName = '#rapid-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
                 d3_select(this)
                     .call(svgIcon(iconName, 'issue-icon'));
             });
@@ -118,7 +118,7 @@ export function uiSectionEntityIssues(context) {
             .append('button')
             .attr('class', 'issue-info-button')
             .attr('title', t('icons.information'))
-            .call(svgIcon('#iD-icon-inspect'));
+            .call(svgIcon('#rapid-icon-inspect'));
 
         infoButton
             .on('click', function (d3_event) {
@@ -232,7 +232,7 @@ export function uiSectionEntityIssues(context) {
 
         buttons
             .each(function(d) {
-                var iconName = d.icon || 'iD-icon-wrench';
+                var iconName = d.icon || 'rapid-icon-wrench';
                 d3_select(this).call(svgIcon(`#${iconName}`, 'fix-icon'));
             });
 

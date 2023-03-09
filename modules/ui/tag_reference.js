@@ -69,7 +69,7 @@ export function uiTagReference(what) {
             .attr('target', '_blank')
             .attr('title', t('inspector.edit_reference'))
             .attr('href', docs.editURL)
-            .call(svgIcon('#iD-icon-edit', 'inline'));
+            .call(svgIcon('#rapid-icon-edit', 'inline'));
 
         if (docs.wiki) {
             _body
@@ -77,7 +77,7 @@ export function uiTagReference(what) {
               .attr('class', 'tag-reference-link')
               .attr('target', '_blank')
               .attr('href', docs.wiki.url)
-              .call(svgIcon('#iD-icon-out-link', 'inline'))
+              .call(svgIcon('#rapid-icon-out-link', 'inline'))
               .append('span')
               .html(t.html(docs.wiki.text));
         }
@@ -88,7 +88,7 @@ export function uiTagReference(what) {
                 .append('a')
                 .attr('class', 'tag-reference-comment-link')
                 .attr('target', '_blank')
-                .call(svgIcon('#iD-icon-out-link', 'inline'))
+                .call(svgIcon('#rapid-icon-out-link', 'inline'))
                 .attr('href', t('commit.about_changeset_comments_link'))
                 .append('span')
                 .html(t.html('commit.about_changeset_comments'));
@@ -113,8 +113,8 @@ export function uiTagReference(what) {
 
         _button.selectAll('svg.icon use').each(function() {
             var iconUse = d3_select(this);
-            if (iconUse.attr('href') === '#iD-icon-info') {
-                iconUse.attr('href', '#iD-icon-info-filled');
+            if (iconUse.attr('href') === '#rapid-icon-info') {
+                iconUse.attr('href', '#rapid-icon-info-filled');
             }
         });
     }
@@ -134,8 +134,8 @@ export function uiTagReference(what) {
 
         _button.selectAll('svg.icon use').each(function() {
             var iconUse = d3_select(this);
-            if (iconUse.attr('href') === '#iD-icon-info-filled') {
-                iconUse.attr('href', '#iD-icon-info');
+            if (iconUse.attr('href') === '#rapid-icon-info-filled') {
+                iconUse.attr('href', '#rapid-icon-info');
             }
         });
 
@@ -150,7 +150,7 @@ export function uiTagReference(what) {
             .append('button')
             .attr('class', 'tag-reference-button ' + (klass || ''))
             .attr('title', t('icons.information'))
-            .call(svgIcon('#iD-icon-' + (iconName || 'inspect')))
+            .call(svgIcon('#rapid-icon-' + (iconName || 'inspect')))
             .merge(_button);
 
         _button

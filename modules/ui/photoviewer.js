@@ -21,7 +21,7 @@ export function uiPhotoviewer(context) {
                 if (services.kartaview) { services.kartaview.hideViewer(context); }
             })
             .append('div')
-            .call(svgIcon('#iD-icon-close'));
+            .call(svgIcon('#rapid-icon-close'));
 
         function preventDefault(d3_event) {
             d3_event.preventDefault();

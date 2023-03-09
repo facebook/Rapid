@@ -67,7 +67,7 @@ export function validationIssue(attrs) {
             // allow ignoring any issue that's not an error
             fixes.push(new validationIssueFix({
                 title: t.html('issues.fix.ignore_issue.title'),
-                icon: 'iD-icon-close',
+                icon: 'rapid-icon-close',
                 onClick: function() {
                     context.validator().ignoreIssue(this.issue.id);
                 }
@@ -93,7 +93,7 @@ export function validationIssueFix(attrs) {
     this.title = attrs.title;                   // Required
     this.onClick = attrs.onClick;               // Optional - the function to run to apply the fix
     this.disabledReason = attrs.disabledReason; // Optional - a string explaining why the fix is unavailable, if any
-    this.icon = attrs.icon;                     // Optional - shows 'iD-icon-wrench' if not set
+    this.icon = attrs.icon;                     // Optional - shows 'rapid-icon-wrench' if not set
     this.entityIds = attrs.entityIds || [];     // Optional - used for hover-higlighting.
 //    this.autoArgs = attrs.autoArgs;             // Optional - pass [actions, annotation] arglist if this fix can automatically run
 

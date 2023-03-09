@@ -109,7 +109,7 @@ export function uiToolDrawModes(context) {
       buttonsEnter
         .each((d, i, nodes) => {
           d3_select(nodes[i])
-            .call(svgIcon(`#iD-icon-${d.button}`));
+            .call(svgIcon(`#rapid-icon-${d.button}`));
         });
 
       buttonsEnter

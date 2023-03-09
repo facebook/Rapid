@@ -74,7 +74,7 @@ export function uiCommitWarnings(context) {
                 });
 
             buttons
-                .call(svgIcon('#iD-icon-alert', 'pre-text'));
+                .call(svgIcon('#rapid-icon-alert', 'pre-text'));
 
             buttons
                 .append('strong')

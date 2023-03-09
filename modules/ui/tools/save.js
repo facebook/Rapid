@@ -91,7 +91,7 @@ export function uiToolSave(context) {
         //     // there are no tooltips for touch interactions so flash feedback instead
         //     context.ui().flash
         //         .duration(2000)
-        //         .iconName('#iD-icon-save')
+        //         .iconName('#rapid-icon-save')
         //         .iconClass('disabled')
         //         .label(t.html('save.no_changes'))();
         // }
@@ -100,7 +100,7 @@ export function uiToolSave(context) {
       .call(tooltip);
 
     button
-      .call(svgIcon('#iD-icon-save'));
+      .call(svgIcon('#rapid-icon-save'));
 
     button
       .append('span')

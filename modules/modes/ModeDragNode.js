@@ -75,7 +75,7 @@ export class ModeDragNode extends AbstractMode {
       if (hasHidden) {
         context.ui().flash
           .duration(4000)
-          .iconName('#iD-icon-no')
+          .iconName('#rapid-icon-no')
           .label(t('modes.drag_node.connected_to_hidden'))();
         return false;
       }
@@ -459,7 +459,7 @@ if (choice && choice.distance < SNAP_DIST) {
 //        if (!nope) {   // about to nope - show hint
 //            context.ui().flash
 //                .duration(4000)
-//                .iconName('#iD-icon-no')
+//                .iconName('#rapid-icon-no')
 //                .label(t('operations.connect.' + isInvalid,
 //                    { relation: presetManager.item('type/restriction').name() }
 //                ))();
@@ -468,7 +468,7 @@ if (choice && choice.distance < SNAP_DIST) {
 //        var errorID = isInvalid === 'line' ? 'lines' : 'areas';
 //        context.ui().flash
 //            .duration(3000)
-//            .iconName('#iD-icon-no')
+//            .iconName('#rapid-icon-no')
 //            .label(t('self_intersection.error.' + errorID))();
 //    } else {
 //        if (nope) {   // about to un-nope, remove hint

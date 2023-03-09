@@ -158,7 +158,7 @@ export function uiSectionRawTagEditor(id, context) {
         addRowEnter
             .append('button')
             .attr('class', 'add-tag')
-            .call(svgIcon('#iD-icon-plus', 'light'))
+            .call(svgIcon('#rapid-icon-plus', 'light'))
             .on('click', addTag);
 
         addRowEnter
@@ -215,7 +215,7 @@ export function uiSectionRawTagEditor(id, context) {
             .append('button')
             .attr('class', 'form-field-button remove')
             .attr('title', t('icons.remove'))
-            .call(svgIcon('#iD-operation-delete'));
+            .call(svgIcon('#rapid-operation-delete'));
 
 
         // Update

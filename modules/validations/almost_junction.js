@@ -88,7 +88,7 @@ export function validationAlmostJunction(context) {
 
     function makeFixes(context) {
       let fixes = [new validationIssueFix({
-        icon: 'iD-icon-abutment',
+        icon: 'rapid-icon-abutment',
         title: t.html('issues.fix.connect_features.title'),
         onClick: function(context) {
           const annotation = t('issues.fix.connect_almost_junction.annotation');

@@ -31,7 +31,7 @@ export function uiImproveOsmComments() {
         commentEnter
           .append('div')
             .attr('class', 'comment-avatar')
-            .call(svgIcon('#iD-icon-avatar', 'comment-avatar-icon'));
+            .call(svgIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
 
         const mainEnter = commentEnter
           .append('div')

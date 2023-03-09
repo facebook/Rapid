@@ -275,7 +275,7 @@ export function uiPaneHelp(context) {
         .key(t('help.key'))
         .label(t.html('help.title'))
         .description(t.html('help.title'))
-        .iconName('iD-icon-help');
+        .iconName('rapid-icon-help');
 
     helpPane.renderContent = function(content) {
 
@@ -314,7 +314,7 @@ export function uiPaneHelp(context) {
                     nextLink
                         .append('span')
                         .html(docs[i + 1].title)
-                        .call(svgIcon((rtl ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'));
+                        .call(svgIcon((rtl ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
                 }
             }
 
@@ -331,7 +331,7 @@ export function uiPaneHelp(context) {
                         });
 
                     prevLink
-                        .call(svgIcon((rtl ? '#iD-icon-forward' : '#iD-icon-backward'), 'inline'))
+                        .call(svgIcon((rtl ? '#rapid-icon-forward' : '#rapid-icon-backward'), 'inline'))
                         .append('span')
                         .html(docs[i - 1].title);
                 }
@@ -395,7 +395,7 @@ export function uiPaneHelp(context) {
            .append('svg')
            .attr('class', 'logo logo-walkthrough')
            .append('use')
-           .attr('xlink:href', '#iD-logo-walkthrough');
+           .attr('xlink:href', '#rapid-logo-walkthrough');
 
        walkthrough
            .append('div')

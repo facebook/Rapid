@@ -202,13 +202,13 @@ export function uiSectionRawMemberEditor(context) {
                         .append('button')
                         .attr('title', t('icons.remove'))
                         .attr('class', 'remove member-delete')
-                        .call(svgIcon('#iD-operation-delete'));
+                        .call(svgIcon('#rapid-operation-delete'));
 
                     label
                         .append('button')
                         .attr('class', 'member-zoom')
                         .attr('title', t('icons.zoom_to'))
-                        .call(svgIcon('#iD-icon-framed-dot', 'monochrome'))
+                        .call(svgIcon('#rapid-icon-framed-dot', 'monochrome'))
                         .on('click', zoomToMember);
 
                 } else {
@@ -230,7 +230,7 @@ export function uiSectionRawMemberEditor(context) {
                         .append('button')
                         .attr('class', 'member-download')
                         .attr('title', t('icons.download'))
-                        .call(svgIcon('#iD-icon-load'))
+                        .call(svgIcon('#rapid-icon-load'))
                         .on('click', downloadMember);
                 }
             });

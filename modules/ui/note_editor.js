@@ -42,7 +42,7 @@ export function uiNoteEditor(context) {
             .on('click', function() {
                 context.enter('browse');
             })
-            .call(svgIcon('#iD-icon-close'));
+            .call(svgIcon('#rapid-icon-close'));
 
         headerEnter
             .append('h3')
@@ -245,7 +245,7 @@ export function uiNoteEditor(context) {
             .style('opacity', 0);
 
         authEnter
-            .call(svgIcon('#iD-icon-alert', 'inline'));
+            .call(svgIcon('#rapid-icon-alert', 'inline'));
 
         authEnter
             .append('span')
@@ -254,7 +254,7 @@ export function uiNoteEditor(context) {
         authEnter
             .append('a')
             .attr('target', '_blank')
-            .call(svgIcon('#iD-icon-out-link', 'inline'))
+            .call(svgIcon('#rapid-icon-out-link', 'inline'))
             .append('span')
             .html(t.html('login'))
             .on('click.note-login', function(d3_event) {

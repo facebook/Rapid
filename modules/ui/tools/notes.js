@@ -90,7 +90,7 @@ export function uiToolNotes(context) {
       buttonsEnter
         .each((d, i, nodes) => {
           d3_select(nodes[i])
-            .call(svgIcon(d.icon || `#iD-icon-${d.button}`));
+            .call(svgIcon(d.icon || `#rapid-icon-${d.button}`));
         });
 
       // if we are adding/removing the buttons, check if toolbar has overflowed

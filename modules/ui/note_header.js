@@ -28,16 +28,16 @@ export function uiNoteHeader() {
         iconEnter
             .append('div')
             .attr('class', 'preset-icon-28')
-            .call(svgIcon('#iD-icon-note', 'note-fill'));
+            .call(svgIcon('#rapid-icon-note', 'note-fill'));
 
         iconEnter.each(function(d) {
             var statusIcon;
             if (d.id < 0) {
-                statusIcon = '#iD-icon-plus';
+                statusIcon = '#rapid-icon-plus';
             } else if (d.status === 'open') {
-                statusIcon = '#iD-icon-close';
+                statusIcon = '#rapid-icon-close';
             } else {
-                statusIcon = '#iD-icon-apply';
+                statusIcon = '#rapid-icon-apply';
             }
             iconEnter
                 .append('div')

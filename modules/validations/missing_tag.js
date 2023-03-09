@@ -98,7 +98,7 @@ export function validationMissingTag(context) {
                 var selectFixType = subtype === 'highway_classification' ? 'select_road_type' : 'select_preset';
 
                 fixes.push(new validationIssueFix({
-                    icon: 'iD-icon-search',
+                    icon: 'rapid-icon-search',
                     title: t.html('issues.fix.' + selectFixType + '.title'),
                     onClick: function(context) {
                         context.ui().sidebar.showPresetList();
@@ -122,7 +122,7 @@ export function validationMissingTag(context) {
 
                 fixes.push(
                     new validationIssueFix({
-                        icon: 'iD-operation-delete',
+                        icon: 'rapid-operation-delete',
                         title: t.html('issues.fix.delete_feature.title'),
                         disabledReason: disabledReasonID ? t('operations.delete.' + disabledReasonID + '.single') : undefined,
                         onClick: deleteOnClick

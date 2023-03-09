@@ -254,16 +254,16 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 ##### 2022-May-05
 
 #### :newspaper: News
-* We've restricted the use of RapiD and MapWithAI around Ukraine per [request of the OSM Ukrainian Community](https://wiki.openstreetmap.org/wiki/Russian%E2%80%93Ukrainian_war).
+* We've restricted the use of Rapid and MapWithAI around Ukraine per [request of the OSM Ukrainian Community](https://wiki.openstreetmap.org/wiki/Russian%E2%80%93Ukrainian_war).
 
 #### :tada: New Features
 * Use OAuth2 for authentication with OSM API ([#458])
 
 #### :bug: Bugfixes
-* Fix selectors in RapiD section of walkthrough
+* Fix selectors in Rapid section of walkthrough
 * Fix keyboard shortcuts screen layout ([#456])
 * Fix missing data from Esri feature layers when exceeding the max records limit ([#404],[#469])
-* Add extra css specificity for lines in RapiD (for use in HOT Task Manager) ([#435])
+* Add extra css specificity for lines in Rapid (for use in HOT Task Manager) ([#435])
 * Ignore Memorial stolpersteins in close node validation ([iD#9089])
 * Consider lifecycle prefixes in tag and preset matching ([iD#8881])
 * Improve Background imagery list styling ([iD#8975])
@@ -293,7 +293,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 ##### 2021-Oct-25
 
 #### :tada: New Features
-* Add `datasets=` url parameter to specify which RapiD datasets are enabled ([#335])
+* Add `datasets=` url parameter to specify which Rapid datasets are enabled ([#335])
 
 #### :sparkles: Usability & Accessibility
 * Show an error if localStorage is full ([iD#8727])
@@ -439,9 +439,9 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 
 #### :bug: Bugfixes
 * Fix bug when adding custom layers ([#204])
-* Restore missing icons for RapiD keyboard shortcuts ([#138])
+* Restore missing icons for Rapid keyboard shortcuts ([#138])
 * CrossEditableZoom event firing fix ([iD#8473])
-* Fix fallback to English language for RapiD strings ([OMaF#19])
+* Fix fallback to English language for Rapid strings ([OMaF#19])
 
 [OMaF#19]: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/issues/19
 [iD#8473]: https://github.com/openstreetmap/iD/issues/8473
@@ -492,7 +492,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 # [1.1.0](https://github.com/facebook/RapiD/releases/tag/rapid-v1.1.0)
 ##### 2020-Dec-07
 #### :trumpet: New Features!
-* This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to RapiD!
+* This release brings the new [Esri ArcGIS data sets](https://openstreetmap.maps.arcgis.com/home/group.html?id=bdf6c800b3ae453b9db239e03d7c1727#overview) to Rapid!
 
 Read the [FAQ](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Esri-ArcGIS-FAQ) and our engineering [blog post](https://tech.fb.com/osm-ready-data-sets/).
 
@@ -517,7 +517,7 @@ Read the [FAQ](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wi
 # [1.0.10](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.10)
 ##### 2020-Aug-07
 #### :trumpet: Updates
-* This brings the RapiD code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff.
+* This brings the Rapid code up-to-date with v2.18.4 (issue #139), which adds a lot of new stuff.
 * Also add a one-time dialog for the rapid-esri collaboration.
 * Finally, fix issue #144.
 
@@ -531,26 +531,26 @@ Read the [FAQ](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wi
 # [1.0.8](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.8)
 ##### 2020-Mar-30
 #### :trumpet: Updates
-* This eliminates RapiD's need to contact the facebook.com domain and instead contacts the mapwith.ai domain. This should mean fewer configuration issues for folks using Firefox or similar.
+* This eliminates Rapid's need to contact the facebook.com domain and instead contacts the mapwith.ai domain. This should mean fewer configuration issues for folks using Firefox or similar.
 
 
 # [1.0.7](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.7)
 ##### 2020-Feb-18
 
 #### :trumpet: Updates
-* This brings the RapiD code up-to-date with v2.17.2, which re-introduces Maxar Imagery.
+* This brings the Rapid code up-to-date with v2.17.2, which re-introduces Maxar Imagery.
 
 
 # [1.0.6](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.6)
 ##### 2020-Jan-31
 #### :trumpet: Updates
-* This brings the RapiD code up-to-date with v2.17.1. This also fixes issue #105.
+* This brings the Rapid code up-to-date with v2.17.1. This also fixes issue #105.
 
 
 # [1.0.5](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.5)
 ##### 2019-Dec-12
 #### :trumpet: Updates
-* This brings the RapiD code up-to-date with v2.17. This fixes issue #92.
+* This brings the Rapid code up-to-date with v2.17. This fixes issue #92.
 
 
 # [1.0.4](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.4)
@@ -573,7 +573,7 @@ https://blogs.bing.com/maps/2019-09/microsoft-releases-18M-building-footprints-i
 For up-to-date availability of roads and buildings, check our continually-updated GeoJSON link here: https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/blob/develop/data/rapid_releases.geojson
 
 #### :sparkles: Usability
-* The RapiD button is no longer an AI-roads toggle- instead, a dialog opens allowing you to enable Facebook's road layer, Microsoft's building layer, or nothing at all.
+* The Rapid button is no longer an AI-roads toggle- instead, a dialog opens allowing you to enable Facebook's road layer, Microsoft's building layer, or nothing at all.
 
 
 # [1.0.2](https://github.com/facebook/RapiD/releases/tag/rapid-v1.0.2)
@@ -581,7 +581,7 @@ For up-to-date availability of roads and buildings, check our continually-update
 
 #### :tada: New Features
 * Merged with [iD v2.15.5](https://github.com/openstreetmap/iD/blob/develop/CHANGELOG.md#2155).
-* Added a framework for enabling custom features on RapiD.
+* Added a framework for enabling custom features on Rapid.
 * Added a custom feature for a halo effect on AI roads that have been added to the map during editing time.
 
 #### :sparkles: Usability
@@ -601,11 +601,11 @@ For up-to-date availability of roads and buildings, check our continually-update
 
 #### :tada: New Features
 * Merged with iD v2.15.3. Updated hotkey for hiding OSM data layer to **OPT + W** to stay consistent with iD.
-* Added walk-through for working with the **RapiD** button and AI-generated roads.
+* Added walk-through for working with the **Rapid** button and AI-generated roads.
 * Added limit for adding up to 50 AI-generated roads in each mapping session under non-TM mode.
 
 #### :sparkles: Usability
-* Added RapiD icon callouts to RapiD hotkeys in the help modal.
+* Added Rapid icon callouts to Rapid hotkeys in the help modal.
 * Added automatic tagging of **surface=unpaved** when **highway=track** is set through the **SHIFT + C** hotkey.
 * Added differentiation between tag changes and geometry changes when highlighting edited features.
 
@@ -626,7 +626,7 @@ For up-to-date availability of roads and buildings, check our continually-update
 * Added logic for cropping AI-generated roads on task boundaries when working on TM tasks.
 
 #### :sparkles: Usability
-* Added RapiD-specific hotkeys:
+* Added Rapid-specific hotkeys:
   * **G** for highlighting way edits in current session
   * **U** for toggling OSM data layer
   * **SHIFT + R** for toggling Map With AI feature layer

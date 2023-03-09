@@ -42,7 +42,7 @@ export function uiKeepRightHeader() {
     iconEnter
       .append('div')
         .attr('class', d => `preset-icon-28 qaItem ${d.service} itemId-${d.id} itemType-${d.parentIssueType}`)
-        .call(svgIcon('#iD-icon-bolt', 'qaItem-fill'));
+        .call(svgIcon('#rapid-icon-bolt', 'qaItem-fill'));
 
     headerEnter
       .append('div')

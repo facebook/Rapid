@@ -40,7 +40,7 @@ export function uiPresetList(context) {
             .append('button')
             .attr('class', 'preset-choose')
             .on('click', function() { dispatch.call('cancel', this); })
-            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#iD-icon-backward' : '#iD-icon-forward'));
+            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'));
 
         function initialKeydown(d3_event) {
             // hack to let delete shortcut work when search is autofocused
@@ -112,7 +112,7 @@ export function uiPresetList(context) {
             .attr('class', 'search-header');
 
         searchWrap
-            .call(svgIcon('#iD-icon-search', 'pre-text'));
+            .call(svgIcon('#rapid-icon-search', 'pre-text'));
 
         var search = searchWrap
             .append('input')
@@ -270,7 +270,7 @@ export function uiPresetList(context) {
             function click() {
                 var isExpanded = d3_select(this).classed('expanded');
                 var iconName = isExpanded ?
-                    (localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward') : '#iD-icon-down';
+                    (localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward') : '#rapid-icon-down';
                 d3_select(this)
                     .classed('expanded', !isExpanded);
                 d3_select(this).selectAll('div.label-inner svg.icon use')
@@ -321,7 +321,7 @@ export function uiPresetList(context) {
             label
                 .append('div')
                 .attr('class', 'namepart')
-                .call(svgIcon((localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward'), 'inline'))
+                .call(svgIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
                 .append('span')
                 .html(function() { return preset.nameLabel() + '&hellip;'; });
 

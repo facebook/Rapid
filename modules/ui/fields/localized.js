@@ -190,7 +190,7 @@ export function uiFieldLocalized(field, context) {
         translateButton = translateButton.enter()
             .append('button')
             .attr('class', 'localized-add form-field-button')
-            .call(svgIcon('#iD-icon-plus'))
+            .call(svgIcon('#rapid-icon-plus'))
             .merge(translateButton);
 
         translateButton
@@ -405,7 +405,7 @@ export function uiFieldLocalized(field, context) {
 
                         renderMultilingual(selection);
                     })
-                    .call(svgIcon('#iD-operation-delete'));
+                    .call(svgIcon('#rapid-operation-delete'));
 
                 wrap
                     .append('input')

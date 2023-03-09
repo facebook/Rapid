@@ -74,14 +74,14 @@ export class BehaviorKeyOperation extends AbstractBehavior {
     if (disabled) {
       context.ui().flash
         .duration(4000)
-        .iconName(`#iD-operation-${operation.id}`)
+        .iconName(`#rapid-operation-${operation.id}`)
         .iconClass('operation disabled')
         .label(operation.tooltip)();
 
     } else {
       context.ui().flash
         .duration(2000)
-        .iconName(`#iD-operation-${operation.id}`)
+        .iconName(`#rapid-operation-${operation.id}`)
         .iconClass('operation')
         .label(operation.annotation() || operation.title)();
 

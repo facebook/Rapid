@@ -131,7 +131,7 @@ export function uiIntroLine(context, curtain) {
           .insert('svg', 'span')
           .attr('class', 'tooltip-illustration')
           .append('use')
-          .attr('xlink:href', '#iD-graphic-lines');
+          .attr('xlink:href', '#rapid-graphic-lines');
 
         context.on('enter.intro', () => resolve(startLineAsync));
       }))
@@ -420,7 +420,7 @@ export function uiIntroLine(context, curtain) {
 
         curtain.reveal({
           revealSelector: '.entity-editor-pane',
-          tipHtml: helpHtml('intro.lines.name_road', { button: icon('#iD-icon-close', 'inline') }),
+          tipHtml: helpHtml('intro.lines.name_road', { button: icon('#rapid-icon-close', 'inline') }),
           tooltipClass: 'intro-lines-name_road'
         });
 

@@ -78,7 +78,7 @@ export function uiToolDownloadOsc(context) {
       .call(tooltip);
 
     button
-      .call(svgIcon('#iD-icon-download-osc'));
+      .call(svgIcon('#rapid-icon-download-osc'));
 
     updateCount();
 

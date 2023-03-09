@@ -182,11 +182,11 @@ export function validationCloseNodes(context) {
                         dynamicFixes: function() {
                             return [
                                 new validationIssueFix({
-                                    icon: 'iD-operation-disconnect',
+                                    icon: 'rapid-operation-disconnect',
                                     title: t.html('issues.fix.move_points_apart.title')
                                 }),
                                 new validationIssueFix({
-                                    icon: 'iD-icon-layers',
+                                    icon: 'rapid-icon-layers',
                                     title: t.html('issues.fix.use_different_layers_or_levels.title')
                                 })
                             ];
@@ -245,7 +245,7 @@ export function validationCloseNodes(context) {
                 dynamicFixes: function() {
                     return [
                         new validationIssueFix({
-                            icon: 'iD-icon-plus',
+                            icon: 'rapid-icon-plus',
                             title: t.html('issues.fix.merge_points.title'),
                             onClick: function(context) {
                                 var entityIds = this.issue.entityIds;
@@ -254,7 +254,7 @@ export function validationCloseNodes(context) {
                             }
                         }),
                         new validationIssueFix({
-                            icon: 'iD-operation-disconnect',
+                            icon: 'rapid-operation-disconnect',
                             title: t.html('issues.fix.move_points_apart.title')
                         })
                     ];

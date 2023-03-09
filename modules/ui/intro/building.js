@@ -89,7 +89,7 @@ export function uiIntroBuilding(context, curtain) {
           .insert('svg', 'span')
           .attr('class', 'tooltip-illustration')
           .append('use')
-          .attr('xlink:href', '#iD-graphic-buildings');
+          .attr('xlink:href', '#rapid-graphic-buildings');
 
         context.on('enter.intro', () => resolve(startHouseAsync));
       }))

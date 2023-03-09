@@ -156,7 +156,7 @@ export function uiSectionBackgroundOffset(context) {
         d3_event.preventDefault();
         resetOffset();
       })
-      .call(svgIcon('#iD-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+      .call(svgIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
 
     updateValue();
   }

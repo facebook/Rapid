@@ -75,7 +75,7 @@ export function uiIntroPoint(context, curtain) {
           .insert('svg', 'span')
           .attr('class', 'tooltip-illustration')
           .append('use')
-          .attr('xlink:href', '#iD-graphic-points');
+          .attr('xlink:href', '#rapid-graphic-points');
 
         context.on('enter.intro', () => resolve(placePointAsync));
       }))
@@ -262,7 +262,7 @@ export function uiIntroPoint(context, curtain) {
       showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
-      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
+      const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipHtml: helpHtml('intro.points.add_close', { button: icon(iconName, 'inline') })
@@ -357,7 +357,7 @@ export function uiIntroPoint(context, curtain) {
 
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
-        tipHtml: helpHtml('intro.points.update_close', { button: icon('#iD-icon-close', 'inline') })
+        tipHtml: helpHtml('intro.points.update_close', { button: icon('#rapid-icon-close', 'inline') })
       });
 
       context.on('enter.intro', () => resolve(rightClickPointAsync));

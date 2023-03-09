@@ -39,7 +39,7 @@ export function uiFeatureList(context) {
             .attr('class', 'search-header');
 
         searchWrap
-            .call(svgIcon('#iD-icon-search', 'pre-text'));
+            .call(svgIcon('#rapid-icon-search', 'pre-text'));
 
         var search = searchWrap
             .append('input')
@@ -255,7 +255,7 @@ export function uiFeatureList(context) {
                 .append('button')
                 .property('disabled', true)
                 .attr('class', 'no-results-item')
-                .call(svgIcon('#iD-icon-alert', 'pre-text'));
+                .call(svgIcon('#rapid-icon-alert', 'pre-text'));
 
             resultsIndicator.append('span')
                 .attr('class', 'entity-name');
@@ -304,7 +304,7 @@ export function uiFeatureList(context) {
             label
                 .each(function(d) {
                     d3_select(this)
-                        .call(svgIcon('#iD-icon-' + d.geometry, 'pre-text'));
+                        .call(svgIcon('#rapid-icon-' + d.geometry, 'pre-text'));
                 });
 
             label

@@ -50,7 +50,7 @@
     transition-duration: 200ms;
 }
 
-#ideditor-defs {
+#rapid-defs {
     /* Can't be display: none or the clippaths are ignored. */
     position: absolute;
     width: 0;
@@ -1161,8 +1161,8 @@ a.hide-toggle {
     height: 28px;
     fill: #333;
 }
-.preset-icon svg.icon.idicon,
-.preset-icon-route svg.icon.idicon {
+.preset-icon svg.icon.rapid-icon,
+.preset-icon-route svg.icon.rapid-icon {
     width: 50px;
     height: 50px;
 }
@@ -4206,14 +4206,6 @@ img.tile-debug {
 
 /* Edit blocks
 ------------------------------------------------------- */
-.blocked {
-  stroke: rgb(0, 0, 0);
-  cursor: not-allowed !important;
-}
-.pattern-color-blocked {
-  fill: rgba(0, 0, 0, 0.6);
-}
-
 .explanation-item {
   padding:  10px;
 }

@@ -101,21 +101,21 @@ export function presetPreset(presetID, preset, addable, allFields, allPresets) {
   };
 
   _this.subtitle = () => {
-      if (_this.suggestion) {
-        let path = presetID.split('/');
-        path.pop();  // remove brand name
-        return t('_tagging.presets.presets.' + path.join('/') + '.name');
-      }
-      return null;
+    if (_this.suggestion) {
+      let path = presetID.split('/');
+      path.pop();  // remove brand name
+      return t('_tagging.presets.presets.' + path.join('/') + '.name');
+    }
+    return null;
   };
 
   _this.subtitleLabel = () => {
-      if (_this.suggestion) {
-        let path = presetID.split('/');
-        path.pop();  // remove brand name
-        return t.html('_tagging.presets.presets.' + path.join('/') + '.name');
-      }
-      return null;
+    if (_this.suggestion) {
+      let path = presetID.split('/');
+      path.pop();  // remove brand name
+      return t.html('_tagging.presets.presets.' + path.join('/') + '.name');
+    }
+    return null;
   };
 
 

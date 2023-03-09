@@ -60,7 +60,7 @@ export function validationMissingRole() {
                     makeAddRoleFix('inner'),
                     makeAddRoleFix('outer'),
                     new validationIssueFix({
-                        icon: 'iD-operation-delete',
+                        icon: 'rapid-operation-delete',
                         title: t.html('issues.fix.remove_from_relation.title'),
                         onClick: function(context) {
                             context.perform(

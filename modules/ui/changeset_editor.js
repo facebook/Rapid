@@ -105,7 +105,7 @@ export function uiChangesetEditor(context) {
         commentEnter
             .append('a')
             .attr('target', '_blank')
-            .call(svgIcon('#iD-icon-alert', 'inline'))
+            .call(svgIcon('#rapid-icon-alert', 'inline'))
             .attr('href', t('commit.google_warning_link'))
             .append('span')
             .html(t.html('commit.google_warning'));

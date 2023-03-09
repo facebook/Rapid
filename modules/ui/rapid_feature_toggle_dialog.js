@@ -124,7 +124,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     toggleAllTextEnter
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#iD-logo-rapid', 'logo-rapid') }));
+      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid', 'logo-rapid') }));
 
     toggleAllTextEnter
       .append('span')
@@ -188,7 +188,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .attr('class', 'rapid-checkbox-inputs')
       .append('div')
       .attr('class', 'rapid-checkbox-label')
-      .call(svgIcon(localizer.textDirection() === 'rtl' ? '#iD-icon-backward' : '#iD-icon-forward', 'icon-30'));
+      .call(svgIcon(localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
 
 
     /* OK Button */

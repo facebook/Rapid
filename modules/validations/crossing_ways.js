@@ -461,7 +461,7 @@ export function validationCrossingWays(context) {
 
                 if (isCrossingIndoors) {
                     fixes.push(new validationIssueFix({
-                        icon: 'iD-icon-layers',
+                        icon: 'rapid-icon-layers',
                         title: t.html('issues.fix.use_different_levels.title')
                     }));
                 } else if (isCrossingTunnels ||
@@ -490,7 +490,7 @@ export function validationCrossingWays(context) {
 
                 // repositioning the features is always an option
                 fixes.push(new validationIssueFix({
-                    icon: 'iD-operation-move',
+                    icon: 'rapid-operation-move',
                     title: t.html('issues.fix.reposition_features.title')
                 }));
 
@@ -764,7 +764,7 @@ export function validationCrossingWays(context) {
             fixTitleID = 'connect_using_ford';
         }
         return new validationIssueFix({
-            icon: 'iD-icon-crossing',
+            icon: 'rapid-icon-crossing',
             title: t.html('issues.fix.' + fixTitleID + '.title'),
             onClick: function(context) {
                 var loc = this.issue.loc;
@@ -779,7 +779,7 @@ export function validationCrossingWays(context) {
 
     function makeChangeLayerFix(higherOrLower) {
         return new validationIssueFix({
-            icon: 'iD-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
+            icon: 'rapid-icon-' + (higherOrLower === 'higher' ? 'up' : 'down'),
             title: t.html('issues.fix.tag_this_as_' + higherOrLower + '.title'),
             onClick: function(context) {
 

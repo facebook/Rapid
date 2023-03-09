@@ -30,7 +30,7 @@ export function uiOsmoseEditor(context) {
       .append('button')
         .attr('class', 'close')
         .on('click', () => context.enter('browse'))
-        .call(svgIcon('#iD-icon-close'));
+        .call(svgIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3')

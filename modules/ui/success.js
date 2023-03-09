@@ -88,7 +88,7 @@ export function uiSuccess(context) {
       .append('button')
       .attr('class', 'close')
       .on('click', () => dispatch.call('cancel'))
-      .call(svgIcon('#iD-icon-close'));
+      .call(svgIcon('#rapid-icon-close'));
 
     let body = selection
       .append('div')
@@ -109,7 +109,7 @@ export function uiSuccess(context) {
       .attr('class', 'link-out')
       .attr('target', '_blank')
       .attr('href', t('success.help_link_url'))
-      .call(svgIcon('#iD-icon-out-link', 'inline'))
+      .call(svgIcon('#rapid-icon-out-link', 'inline'))
       .append('span')
       .html(t.html('success.help_link_text'));
 
@@ -135,7 +135,7 @@ export function uiSuccess(context) {
       .append('svg')
       .attr('class', 'logo-small')
       .append('use')
-      .attr('xlink:href', '#iD-logo-osm');
+      .attr('xlink:href', '#rapid-logo-osm');
 
     let summaryDetail = row
       .append('td')
@@ -232,7 +232,7 @@ export function uiSuccess(context) {
       .append('a')
       .attr('class', 'link-out')
       .attr('target', '_blank')
-      .call(svgIcon('#iD-icon-out-link', 'inline'))
+      .call(svgIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/osmlab/osm-community-index/issues')
       .append('span')
       .html(t.html('success.tell_us'));

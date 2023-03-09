@@ -221,7 +221,7 @@ export function uiSectionDataLayers(context) {
         d3_event.preventDefault();
         editCustom();
       })
-      .call(svgIcon('#iD-icon-more'));
+      .call(svgIcon('#rapid-icon-more'));
 
     liEnter
       .append('button')
@@ -237,7 +237,7 @@ export function uiSectionDataLayers(context) {
         d3_event.stopPropagation();
         dataLayer.fitZoom();
       })
-      .call(svgIcon('#iD-icon-framed-dot', 'monochrome'));
+      .call(svgIcon('#rapid-icon-framed-dot', 'monochrome'));
 
     // Update
     ul = ul

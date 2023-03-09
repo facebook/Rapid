@@ -334,7 +334,7 @@ export function uiIntroNavigation(context, curtain) {
       showEntityEditor(container);
 
       const iconSelector = '.entity-editor-pane button.close svg use';
-      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
+      const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
       curtain.reveal({
         revealSelector: '.entity-editor-pane',
         tipSelector: '.entity-editor-pane button.close',
@@ -454,7 +454,7 @@ export function uiIntroNavigation(context, curtain) {
       _rejectStep = reject;
       showEntityEditor(container);
       const iconSelector = '.entity-editor-pane button.close svg use';
-      const iconName = d3_select(iconSelector).attr('href') || '#iD-icon-close';
+      const iconName = d3_select(iconSelector).attr('href') || '#rapid-icon-close';
       const tipHtml = helpHtml('intro.navigation.street_different_fields') + '{br}' +
         helpHtml('intro.navigation.editor_street', {
           button: icon(iconName, 'inline'),

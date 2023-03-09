@@ -23,13 +23,13 @@ export function uiRapidWhatsNew(context) {
       .append('div')
       .attr('class','modal-section')
       .append('h3')
-      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#iD-logo-rapid', 'logo-rapid') }));
+      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid', 'logo-rapid') }));
 
 
     let body = whatsNewModal
       .append('div')
       .attr('class','modal-section body')
-      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid'), bugicon: icon('#iD-icon-bug', 'bugnub') })));
+      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#rapid-logo-rapid', 'logo-rapid'), bugicon: icon('#rapid-icon-bug', 'bugnub') })));
 
 
 //    let imageSection = body.append('div').attr('class', 'whatsnew-images');

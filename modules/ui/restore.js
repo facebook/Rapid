@@ -41,7 +41,7 @@ export function uiRestore(context) {
       .append('svg')
       .attr('class', 'logo logo-restore')
       .append('use')
-      .attr('xlink:href', '#iD-logo-restore');
+      .attr('xlink:href', '#rapid-logo-restore');
 
     restore
       .append('div')
@@ -59,7 +59,7 @@ export function uiRestore(context) {
       .append('svg')
       .attr('class', 'logo logo-reset')
       .append('use')
-      .attr('xlink:href', '#iD-logo-reset');
+      .attr('xlink:href', '#rapid-logo-reset');
 
     reset
       .append('div')

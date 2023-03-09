@@ -106,7 +106,7 @@ export function uiEditMenu(context) {
         .call(tooltip)
         .append('div')
         .attr('class', 'icon-wrap')
-        .call(svgIcon(`#iD-operation-${d.id}`, 'operation'));
+        .call(svgIcon(`#rapid-operation-${d.id}`, 'operation'));
     });
 
     if (showLabels) {
@@ -142,7 +142,7 @@ export function uiEditMenu(context) {
           // there are no tooltips for touch interactions so flash feedback instead
           context.ui().flash
             .duration(4000)
-            .iconName(`#iD-operation-${operation.id}`)
+            .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation disabled')
             .label(operation.tooltip)();
         }
@@ -150,7 +150,7 @@ export function uiEditMenu(context) {
         if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
           context.ui().flash
             .duration(2000)
-            .iconName(`#iD-operation-${operation.id}`)
+            .iconName(`#rapid-operation-${operation.id}`)
             .iconClass('operation')
             .label(operation.annotation() || operation.title)();
         }

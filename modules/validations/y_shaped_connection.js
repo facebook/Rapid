@@ -56,7 +56,7 @@ export function validationYShapedConnection(context) {
         var fix;
         if (deletable) {
             fix = new validationIssueFix({
-                icon: 'iD-operation-delete',
+                icon: 'rapid-operation-delete',
                 title: t('issues.fix.delete_node_around_conn.title'),
                 entityIds: [node.id],
                 onClick: function() {
@@ -69,7 +69,7 @@ export function validationYShapedConnection(context) {
             });
         } else {
             fix = new validationIssueFix({
-                icon: 'iD-operation-move',
+                icon: 'rapid-operation-move',
                 title: t('issues.fix.move_node_around_conn.title'),
                 entityIds: [node.id]
             });

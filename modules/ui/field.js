@@ -160,7 +160,7 @@ export function uiField(context, presetField, entityIDs, options) {
                     .append('button')
                     .attr('class', 'remove-icon')
                     .attr('title', t('icons.remove'))
-                    .call(svgIcon('#iD-operation-delete'));
+                    .call(svgIcon('#rapid-operation-delete'));
             }
 
             if (options.revert) {
@@ -168,7 +168,7 @@ export function uiField(context, presetField, entityIDs, options) {
                     .append('button')
                     .attr('class', 'modified-icon')
                     .attr('title', t('icons.undo'))
-                    .call(svgIcon((localizer.textDirection() === 'rtl') ? '#iD-icon-redo' : '#iD-icon-undo'));
+                    .call(svgIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-redo' : '#rapid-icon-undo'));
             }
         }
 

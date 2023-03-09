@@ -55,7 +55,7 @@ export function validationShortRoad(context) {
         var fixes = [];
         if (!firstNodeOK) {
             fixes.push(new validationIssueFix({
-                icon: 'iD-operation-continue-left',
+                icon: 'rapid-operation-continue-left',
                 title: t('issues.fix.continue_from_start.title'),
                 entityIds: [entity.first()],
                 onClick: function() {
@@ -66,7 +66,7 @@ export function validationShortRoad(context) {
         }
         if (!lastNodeOK) {
             fixes.push(new validationIssueFix({
-                icon: 'iD-operation-continue',
+                icon: 'rapid-operation-continue',
                 title: t('issues.fix.continue_from_end.title'),
                 entityIds: [entity.last()],
                 onClick: function() {
@@ -77,7 +77,7 @@ export function validationShortRoad(context) {
         }
         if (!operationDelete(context, [entity.id]).disabled()) {
             fixes.push(new validationIssueFix({
-                icon: 'iD-operation-delete',
+                icon: 'rapid-operation-delete',
                 title: t('issues.fix.delete_feature.title'),
                 entityIds: [entity.id],
                 onClick: function() {

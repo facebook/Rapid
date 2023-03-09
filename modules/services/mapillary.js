@@ -361,20 +361,6 @@ export default {
   },
 
 
-  // Load traffic sign image sprites
-  loadSignResources: function(context) {
-    context.ui().svgDefs.addSprites(['mapillary-sprite'], false /* don't override colors */ );
-    return this;
-  },
-
-
-  // Load map (point) feature image sprites
-  loadObjectResources: function(context) {
-    context.ui().svgDefs.addSprites(['mapillary-object-sprite'], false /* don't override colors */ );
-    return this;
-  },
-
-
   // Remove previous detections in image viewer
   resetTags: function() {
     if (_mlyViewer && !_mlyFallback) {

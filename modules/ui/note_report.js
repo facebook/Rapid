@@ -26,7 +26,7 @@ export function uiNoteReport() {
             .attr('class', 'note-report')
             .attr('target', '_blank')
             .attr('href', function(d) { return d; })
-            .call(svgIcon('#iD-icon-out-link', 'inline'));
+            .call(svgIcon('#rapid-icon-out-link', 'inline'));
 
         linkEnter
             .append('span')

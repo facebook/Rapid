@@ -11,14 +11,14 @@ export function uiIssuesInfo(context) {
     var warningsItem = {
         id: 'warnings',
         count: 0,
-        iconID: 'iD-icon-alert',
+        iconID: 'rapid-icon-alert',
         descriptionID: 'issues.warnings_and_errors'
     };
 
     var resolvedItem = {
         id: 'resolved',
         count: 0,
-        iconID: 'iD-icon-apply',
+        iconID: 'rapid-icon-apply',
         descriptionID: 'issues.user_resolved_issues'
     };
 

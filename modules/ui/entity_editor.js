@@ -131,13 +131,13 @@ export function uiEntityEditor(context) {
         headerEnter
             .append('button')
             .attr('class', 'preset-reset preset-choose')
-            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#iD-icon-forward' : '#iD-icon-backward'));
+            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-forward' : '#rapid-icon-backward'));
 
         headerEnter
             .append('button')
             .attr('class', 'close')
             .on('click', function() { context.enter('browse'); })
-            .call(svgIcon(_modified ? '#iD-icon-apply' : '#iD-icon-close'));
+            .call(svgIcon(_modified ? '#rapid-icon-apply' : '#rapid-icon-close'));
 
         headerEnter
             .append('h3');

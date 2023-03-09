@@ -99,7 +99,7 @@ export function uiIntroStartEditing(context, curtain) {
         .append('svg')
         .attr('class', 'illustration')
         .append('use')
-        .attr('xlink:href', '#iD-logo-walkthrough');
+        .attr('xlink:href', '#rapid-logo-walkthrough');
 
       startbutton
         .append('h2')

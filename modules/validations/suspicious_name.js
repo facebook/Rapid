@@ -70,7 +70,7 @@ export function validationSuspiciousName() {
       dynamicFixes: function() {
         return [
           new validationIssueFix({
-            icon: 'iD-operation-delete',
+            icon: 'rapid-operation-delete',
             title: t.html('issues.fix.remove_the_name.title'),
             onClick: function(context) {
               let entityId = this.issue.entityIds[0];
@@ -116,7 +116,7 @@ export function validationSuspiciousName() {
       dynamicFixes: function() {
         return [
           new validationIssueFix({
-            icon: 'iD-operation-delete',
+            icon: 'rapid-operation-delete',
             title: t.html('issues.fix.remove_the_name.title'),
             onClick: function(context) {
               const entityId = this.issue.entityIds[0];

@@ -35,7 +35,7 @@ export function uiSectionValidationStatus(context) {
 
     boxEnter
       .append('div')
-      .call(svgIcon('#iD-icon-apply', 'pre-text'));
+      .call(svgIcon('#rapid-icon-apply', 'pre-text'));
 
     let noIssuesMessage = boxEnter
       .append('span');

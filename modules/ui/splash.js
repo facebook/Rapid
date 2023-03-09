@@ -80,7 +80,7 @@ export function uiSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-walkthrough')
       .append('use')
-      .attr('xlink:href', '#iD-logo-walkthrough');
+      .attr('xlink:href', '#rapid-logo-walkthrough');
 
     walkthrough
       .append('div')
@@ -95,7 +95,7 @@ export function uiSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-features')
       .append('use')
-      .attr('xlink:href', '#iD-logo-features');
+      .attr('xlink:href', '#rapid-logo-features');
 
     startEditing
       .append('div')

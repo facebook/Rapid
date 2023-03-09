@@ -112,7 +112,7 @@ export function validationMismatchedGeometry() {
                 }));
 
                 fixes.push(new validationIssueFix({
-                    icon: 'iD-operation-delete',
+                    icon: 'rapid-operation-delete',
                     title: t.html('issues.fix.remove_tag.title'),
                     onClick: function(context) {
                         var entityId = this.issue.entityIds[0];
@@ -310,7 +310,7 @@ export function validationMismatchedGeometry() {
 
         return [
             new validationIssueFix({
-                icon: 'iD-icon-line',
+                icon: 'rapid-icon-line',
                 title: t.html('issues.fix.convert_to_line.title'),
                 onClick: convertOnClick
             })
@@ -338,7 +338,7 @@ export function validationMismatchedGeometry() {
 
         return [
             new validationIssueFix({
-                icon: 'iD-operation-extract',
+                icon: 'rapid-operation-extract',
                 title: t.html('issues.fix.extract_point.title'),
                 onClick: extractOnClick
             })

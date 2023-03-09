@@ -38,7 +38,7 @@ export function uiAccount(context) {
           .attr('src', user.image_url);
       } else {
         userLink
-          .call(svgIcon('#iD-icon-avatar', 'pre-text light'));
+          .call(svgIcon('#rapid-icon-avatar', 'pre-text light'));
       }
 
       // Add user name

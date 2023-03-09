@@ -77,7 +77,7 @@ export function uiGeolocate(context) {
     if (_enabled) {    // user may have disabled it before the callback fires
       context.ui().flash
         .label(t.html('geolocate.location_unavailable'))
-        .iconName('#iD-icon-geolocate')();
+        .iconName('#rapid-icon-geolocate')();
     }
 
     _enabled = false;
@@ -104,7 +104,7 @@ export function uiGeolocate(context) {
     _button = selection
       .append('button')
       .on('click', click)
-      .call(svgIcon('#iD-icon-geolocate', 'light'))
+      .call(svgIcon('#rapid-icon-geolocate', 'light'))
       .call(uiTooltip()
         .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
         .title(t.html('geolocate.title'))

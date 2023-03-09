@@ -11,7 +11,7 @@ export function uiZoom(context) {
 
     var zooms = [{
         id: 'zoom-in',
-        icon: 'iD-icon-plus',
+        icon: 'rapid-icon-plus',
         title: t.html('zoom.in'),
         action: zoomIn,
         disabled: function() {
@@ -21,7 +21,7 @@ export function uiZoom(context) {
         key: '+'
     }, {
         id: 'zoom-out',
-        icon: 'iD-icon-minus',
+        icon: 'rapid-icon-minus',
         title: t.html('zoom.out'),
         action: zoomOut,
         disabled: function() {

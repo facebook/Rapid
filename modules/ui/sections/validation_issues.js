@@ -97,7 +97,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .append('span')
       .attr('class', 'issue-icon')
       .each((d, i, nodes) => {
-        const iconName = '#iD-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
+        const iconName = '#rapid-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
         d3_select(nodes[i])
           .call(svgIcon(iconName));
       });
@@ -126,7 +126,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
               context.perform.apply(context, d.autoArgs);
               context.validator().validate();
             })
-            .call(svgIcon('#iD-icon-wrench'));
+            .call(svgIcon('#rapid-icon-wrench'));
         });
     }
 
@@ -164,7 +164,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-icon')
-      .call(svgIcon('#iD-icon-wrench'));
+      .call(svgIcon('#rapid-icon-wrench'));
 
     // update
     autoFixAll = autoFixAll

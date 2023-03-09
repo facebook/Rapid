@@ -63,7 +63,7 @@ export function uiSectionChanges(context) {
         buttons
             .each(function(d) {
                 d3_select(this)
-                    .call(svgIcon('#iD-icon-' + d.entity.geometry(d.graph), 'pre-text ' + d.changeType));
+                    .call(svgIcon('#rapid-icon-' + d.entity.geometry(d.graph), 'pre-text ' + d.changeType));
             });
 
         buttons
@@ -125,7 +125,7 @@ export function uiSectionChanges(context) {
         }
 
         linkEnter
-            .call(svgIcon('#iD-icon-load', 'inline'))
+            .call(svgIcon('#rapid-icon-load', 'inline'))
             .append('span')
             .html(t.html('commit.download_changes'));
 

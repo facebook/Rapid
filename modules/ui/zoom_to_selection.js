@@ -22,7 +22,7 @@ export function uiZoomToSelection(context) {
             if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
                 context.ui().flash
                     .duration(2000)
-                    .iconName('#iD-icon-framed-dot')
+                    .iconName('#rapid-icon-framed-dot')
                     .iconClass('disabled')
                     .label(t.html('inspector.zoom_to.no_selection'))();
             }
@@ -52,7 +52,7 @@ export function uiZoomToSelection(context) {
             .append('button')
             .on('pointerup', pointerup)
             .on('click', click)
-            .call(svgIcon('#iD-icon-framed-dot', 'light'))
+            .call(svgIcon('#rapid-icon-framed-dot', 'light'))
             .call(tooltipBehavior);
 
         function setEnabledState() {

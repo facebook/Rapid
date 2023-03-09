@@ -87,7 +87,7 @@ export function validationUnsquareWay(context) {
             dynamicFixes: function() {
                 return [
                     new validationIssueFix({
-                        icon: 'iD-operation-orthogonalize',
+                        icon: 'rapid-operation-orthogonalize',
                         title: t('issues.fix.square_feature.title'),
 //                        autoArgs: autoArgs,
                         onClick: function(context, completionHandler) {

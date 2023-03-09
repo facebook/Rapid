@@ -29,7 +29,7 @@ export function uiViewOnOSM(context) {
             .attr('class', 'view-on-osm')
             .attr('target', '_blank')
             .attr('href', url)
-            .call(svgIcon('#iD-icon-out-link', 'inline'));
+            .call(svgIcon('#rapid-icon-out-link', 'inline'));
 
         linkEnter
             .append('span')

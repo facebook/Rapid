@@ -28,7 +28,7 @@ export function uiDataEditor(context) {
             .on('click', function() {
                 context.enter('browse');
             })
-            .call(svgIcon('#iD-icon-close'));
+            .call(svgIcon('#rapid-icon-close'));
 
         headerEnter
             .append('h3')

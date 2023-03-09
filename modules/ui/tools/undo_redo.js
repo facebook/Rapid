@@ -88,7 +88,7 @@ export function uiToolUndoRedo(context) {
 
     buttons.each((d, i, nodes) => {
       d3_select(nodes[i])
-        .call(svgIcon(`#iD-icon-${d.icon}`));
+        .call(svgIcon(`#rapid-icon-${d.icon}`));
     });
 
     debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });
