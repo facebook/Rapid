@@ -393,6 +393,35 @@ export class BehaviorSelect extends AbstractBehavior {
 //      scene.clearClass('selected');
 //      scene.classData(layerID, datum.id, 'selected');
     }
+
+    // Clicked on a mapillary object detection or traffic sign, so open a streetview
+    // image showing that object/sign
+    if (datum.first_seen_at) {
+      const service = services.mapillary;
+      if (!service) return;
+      this.context.map().centerEase(event.loc);
+
+      const selectedImageId = service.getActiveImage() && service.getActiveImage().id;
+
+      service.getDetections(datum.id).then(detections => {
+          if (detections.length) {
+              const imageId = detections[0].image.id;
+              if (imageId === selectedImageId) {
+                  service
+                      .highlightDetection(detections[0])
+                      .selectImage(context, imageId);
+              } else {
+                  service.loadViewerAsync(context)
+                      .then(function() {
+                          service
+                              .highlightDetection(detections[0])
+                              .selectImage(context, imageId)
+                              .showViewer(context);
+                      });
+              }
+          }
+      });
+    }
   }
 
 
