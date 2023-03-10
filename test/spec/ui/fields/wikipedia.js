@@ -1,27 +1,27 @@
-describe('iD.uiFieldWikipedia', function() {
+describe('uiFieldWikipedia', function() {
     var entity, context, selection, field;
 
     before(function() {
-        iD.fileFetcher.cache().wmf_sitematrix = [
+        Rapid.fileFetcher.cache().wmf_sitematrix = [
           ['German','Deutsch','de'],
           ['English','English','en']
         ];
-        iD.services.wikipedia = iD.serviceWikipedia;
-        iD.services.wikidata = iD.serviceWikidata;
+        Rapid.services.wikipedia = Rapid.serviceWikipedia;
+        Rapid.services.wikidata = Rapid.serviceWikidata;
     });
 
     after(function() {
-        delete iD.fileFetcher.cache().wmf_sitematrix;
-        delete iD.services.wikipedia;
-        delete iD.services.wikidata;
+        delete Rapid.fileFetcher.cache().wmf_sitematrix;
+        delete Rapid.services.wikipedia;
+        delete Rapid.services.wikidata;
     });
 
     beforeEach(function() {
-        entity = iD.osmNode({id: 'n12345'});
-        context = iD.coreContext().assetPath('../dist/').init();
+        entity = Rapid.osmNode({id: 'n12345'});
+        context = Rapid.coreContext().assetPath('../dist/').init();
         context.history().merge([entity]);
         selection = d3.select(document.createElement('div'));
-        field = iD.presetField('wikipedia', {
+        field = Rapid.presetField('wikipedia', {
             key: 'wikipedia',
             keys: ['wikipedia', 'wikidata'],
             type: 'wikipedia'
@@ -56,24 +56,24 @@ describe('iD.uiFieldWikipedia', function() {
         }
 
         if (didChange) {
-            context.perform(iD.actionChangeTags(e.id, tags), annotation);
+            context.perform(Rapid.actionChangeTags(e.id, tags), annotation);
         }
     }
 
     it('recognizes lang:title format', function(done) {
-        var wikipedia = iD.uiFieldWikipedia(field, context);
+        var wikipedia = Rapid.uiFieldWikipedia(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(wikipedia);
             wikipedia.tags({wikipedia: 'en:Title'});
 
-            expect(iD.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('English');
-            expect(iD.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
+            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('English');
+            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
             done();
         }, 20);
     });
 
     it('sets language, value', function(done) {
-        var wikipedia = iD.uiFieldWikipedia(field, context).entityIDs([entity.id]);
+        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
         window.setTimeout(function() {   // async, so data will be available
             wikipedia.on('change', changeTags);
             selection.call(wikipedia);
@@ -81,11 +81,11 @@ describe('iD.uiFieldWikipedia', function() {
             var spy = sinon.spy();
             wikipedia.on('change.spy', spy);
 
-            iD.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
+            Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
             happen.once(selection.selectAll('.wiki-lang').node(), { type: 'change' });
             happen.once(selection.selectAll('.wiki-lang').node(), { type: 'blur' });
 
-            iD.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
+            Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
             happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
             happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
@@ -99,39 +99,39 @@ describe('iD.uiFieldWikipedia', function() {
     });
 
     it('recognizes pasted URLs', function(done) {
-        var wikipedia = iD.uiFieldWikipedia(field, context).entityIDs([entity.id]);
+        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
         window.setTimeout(function() {   // async, so data will be available
             wikipedia.on('change', changeTags);
             selection.call(wikipedia);
 
-            iD.utilGetSetValue(selection.selectAll('.wiki-title'), 'http://de.wikipedia.org/wiki/Title');
+            Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'http://de.wikipedia.org/wiki/Title');
             happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
 
-            expect(iD.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
-            expect(iD.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
+            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
+            expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-title'))).to.equal('Title');
             done();
         }, 20);
     });
 
     // note - currently skipping the tests that use `options` to delay responses
     it('preserves existing language', function(done) {
-        var wikipedia1 = iD.uiFieldWikipedia(field, context);
+        var wikipedia1 = Rapid.uiFieldWikipedia(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(wikipedia1);
-            iD.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
+            Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
 
-            var wikipedia2 = iD.uiFieldWikipedia(field, context);
+            var wikipedia2 = Rapid.uiFieldWikipedia(field, context);
             window.setTimeout(function() {   // async, so data will be available
                 selection.call(wikipedia2);
                 wikipedia2.tags({});
-                expect(iD.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
+                expect(Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'))).to.equal('Deutsch');
                 done();
             }, 20);
         }, 20);
     });
 
     it.skip('does not set delayed wikidata tag if graph has changed', function(done) {
-        var wikipedia = iD.uiFieldWikipedia(field, context).entityIDs([entity.id]);
+        var wikipedia = Rapid.uiFieldWikipedia(field, context).entityIDs([entity.id]);
         wikipedia.on('change', changeTags);
         selection.call(wikipedia);
 
@@ -149,8 +149,8 @@ describe('iD.uiFieldWikipedia', function() {
         });
 
         // Set title to "Skip"
-        iD.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
-        iD.utilGetSetValue(selection.selectAll('.wiki-title'), 'Skip');
+        Rapid.utilGetSetValue(selection.selectAll('.wiki-lang'), 'Deutsch');
+        Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Skip');
         happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
         happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
 
@@ -170,7 +170,7 @@ describe('iD.uiFieldWikipedia', function() {
 
         // t30:  graph change - Set title to "Title"
         window.setTimeout(function() {
-            iD.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
+            Rapid.utilGetSetValue(selection.selectAll('.wiki-title'), 'Title');
             happen.once(selection.selectAll('.wiki-title').node(), { type: 'change' });
             happen.once(selection.selectAll('.wiki-title').node(), { type: 'blur' });
         }, 30);

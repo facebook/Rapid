@@ -2,17 +2,17 @@ describe('maprules', function() {
     var _ruleChecks, _savedAreaKeys, validationRules;
 
     before(function() {
-        _savedAreaKeys = iD.osmAreaKeys;
-        iD.osmSetAreaKeys({ building: {}, amenity: {} });
+        _savedAreaKeys = Rapid.osmAreaKeys;
+        Rapid.osmSetAreaKeys({ building: {}, amenity: {} });
 
-        iD.services.maprules = iD.serviceMapRules;
-        iD.serviceMapRules.init();
-        _ruleChecks = iD.serviceMapRules.ruleChecks();
+        Rapid.services.maprules = Rapid.serviceMapRules;
+        Rapid.serviceMapRules.init();
+        _ruleChecks = Rapid.serviceMapRules.ruleChecks();
     });
 
     after(function() {
-        iD.osmSetAreaKeys(_savedAreaKeys);
-        delete iD.services.maprules;
+        Rapid.osmSetAreaKeys(_savedAreaKeys);
+        delete Rapid.services.maprules;
     });
 
     describe('#filterRuleChecks', function() {
@@ -23,7 +23,7 @@ describe('maprules', function() {
                 absence: 'name',
                 error: '\'Marketplace\' preset must be coupled with name'
             };
-            var filteredChecks = iD.serviceMapRules.filterRuleChecks(selector);
+            var filteredChecks = Rapid.serviceMapRules.filterRuleChecks(selector);
             var equalsCheck = filteredChecks[0];
             var absenceCheck = filteredChecks[1];
             var entityTags = { amenity: 'marketplace' };
@@ -91,7 +91,7 @@ describe('maprules', function() {
                     }
                 }
             ].forEach(function(test) {
-                expect(iD.serviceMapRules.buildTagMap(test.t)).to.eql(test.r);
+                expect(Rapid.serviceMapRules.buildTagMap(test.t)).to.eql(test.r);
             });
         });
     });
@@ -126,24 +126,24 @@ describe('maprules', function() {
             };
 
             var tagMap, geom;
-            tagMap = iD.serviceMapRules.buildTagMap(amenityDerivedArea);
-            geom = iD.serviceMapRules.inferGeometry(tagMap);
+            tagMap = Rapid.serviceMapRules.buildTagMap(amenityDerivedArea);
+            geom = Rapid.serviceMapRules.inferGeometry(tagMap);
             expect(geom).to.be.eql('area');
 
-            tagMap = iD.serviceMapRules.buildTagMap(areaDerivedArea);
-            geom = iD.serviceMapRules.inferGeometry(tagMap);
+            tagMap = Rapid.serviceMapRules.buildTagMap(areaDerivedArea);
+            geom = Rapid.serviceMapRules.inferGeometry(tagMap);
             expect(geom).to.be.eql('area');
 
-            tagMap = iD.serviceMapRules.buildTagMap(badAreaDerivedLine);
-            geom = iD.serviceMapRules.inferGeometry(tagMap);
+            tagMap = Rapid.serviceMapRules.buildTagMap(badAreaDerivedLine);
+            geom = Rapid.serviceMapRules.inferGeometry(tagMap);
             expect(geom).to.be.eql('line');
 
-            tagMap = iD.serviceMapRules.buildTagMap(roundHouseRailwayDerivedArea);
-            geom = iD.serviceMapRules.inferGeometry(tagMap);
+            tagMap = Rapid.serviceMapRules.buildTagMap(roundHouseRailwayDerivedArea);
+            geom = Rapid.serviceMapRules.inferGeometry(tagMap);
             expect(geom).to.be.eql('area');
 
-            tagMap = iD.serviceMapRules.buildTagMap(justClosedWayDerivedLine);
-            geom = iD.serviceMapRules.inferGeometry(tagMap);
+            tagMap = Rapid.serviceMapRules.buildTagMap(justClosedWayDerivedLine);
+            geom = Rapid.serviceMapRules.inferGeometry(tagMap);
             expect(geom).to.be.eql('line');
         });
     });
@@ -156,16 +156,16 @@ describe('maprules', function() {
                 absence:'name',
                 warning:'\'Marketplace\' preset must be coupled with name'
             };
-            expect(iD.serviceMapRules.validationRules()).to.be.empty;
-            iD.serviceMapRules.addRule(selector);
-            expect(iD.serviceMapRules.validationRules().length).to.eql(1);
+            expect(Rapid.serviceMapRules.validationRules()).to.be.empty;
+            Rapid.serviceMapRules.addRule(selector);
+            expect(Rapid.serviceMapRules.validationRules().length).to.eql(1);
         });
     });
     describe('#clearRules', function() {
         it('clears _validationRules array', function() {
-            expect(iD.serviceMapRules.validationRules().length).to.eql(1);
-            iD.serviceMapRules.clearRules();
-            expect(iD.serviceMapRules.validationRules()).to.be.empty;
+            expect(Rapid.serviceMapRules.validationRules().length).to.eql(1);
+            Rapid.serviceMapRules.clearRules();
+            expect(Rapid.serviceMapRules.validationRules()).to.be.empty;
         });
     });
 
@@ -177,8 +177,8 @@ describe('maprules', function() {
                 absence: 'name',
                 error: '\'Marketplace\' preset must be coupled with name'
             };
-            iD.serviceMapRules.addRule(selector);
-            var rules = iD.serviceMapRules.validationRules();
+            Rapid.serviceMapRules.addRule(selector);
+            var rules = Rapid.serviceMapRules.validationRules();
             expect(rules).instanceof(Array);
             expect(rules.length).to.eql(1);
         });
@@ -367,9 +367,9 @@ describe('maprules', function() {
                 }
             ];
 
-            iD.serviceMapRules.clearRules();
-            selectors.forEach(function(selector) { iD.serviceMapRules.addRule(selector); });
-            validationRules = iD.serviceMapRules.validationRules();
+            Rapid.serviceMapRules.clearRules();
+            selectors.forEach(function(selector) { Rapid.serviceMapRules.addRule(selector); });
+            validationRules = Rapid.serviceMapRules.validationRules();
         });
         describe('#matches', function() {
             var selectors, entities;
@@ -430,20 +430,20 @@ describe('maprules', function() {
                     }
                 ];
                 entities = [
-                    iD.osmEntity({ type: 'node', tags: { amenity: 'marketplace' }}),
-                    iD.osmWay({ tags: { building: 'house', amenity: 'clinic' }, nodes: [ 'a', 'b', 'c', 'a' ]}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', 'tower:type': 'communication', height: 5 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 6 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 9 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 5 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 10 }}),
-                    iD.osmWay({ tags: { amenity: 'clinic', emergency: 'definitely' }, nodes: [ 'd', 'e', 'f', 'd' ]}),
-                    iD.osmWay({ tags: { highway: 'residential', structure: 'bridge' }}),
+                    Rapid.osmEntity({ type: 'node', tags: { amenity: 'marketplace' }}),
+                    Rapid.osmWay({ tags: { building: 'house', amenity: 'clinic' }, nodes: [ 'a', 'b', 'c', 'a' ]}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', 'tower:type': 'communication', height: 5 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 6 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 9 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 5 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 10 }}),
+                    Rapid.osmWay({ tags: { amenity: 'clinic', emergency: 'definitely' }, nodes: [ 'd', 'e', 'f', 'd' ]}),
+                    Rapid.osmWay({ tags: { highway: 'residential', structure: 'bridge' }}),
                 ];
 
-                iD.serviceMapRules.clearRules();
-                selectors.forEach(function(selector) { iD.serviceMapRules.addRule(selector); });
-                validationRules = iD.serviceMapRules.validationRules();
+                Rapid.serviceMapRules.clearRules();
+                selectors.forEach(function(selector) { Rapid.serviceMapRules.addRule(selector); });
+                validationRules = Rapid.serviceMapRules.validationRules();
             });
             it('is true when each rule check is \'true\'', function() {
                 validationRules.forEach(function(rule, i) {
@@ -457,10 +457,10 @@ describe('maprules', function() {
                     positiveRegex: { structure: ['embarkment', 'bridge'] },
                     error: '\'suburban road\' structure tag cannot be \'bridge\' or \'tunnel\''
                 };
-                var entity = iD.osmWay({ tags: { highway: 'residential', structure: 'tunnel' }});
-                iD.serviceMapRules.clearRules();
-                iD.serviceMapRules.addRule(selector);
-                var rule = iD.serviceMapRules.validationRules()[0];
+                var entity = Rapid.osmWay({ tags: { highway: 'residential', structure: 'tunnel' }});
+                Rapid.serviceMapRules.clearRules();
+                Rapid.serviceMapRules.addRule(selector);
+                var rule = Rapid.serviceMapRules.validationRules()[0];
 
                 expect(rule.matches(entity)).to.be.false;
             });
@@ -525,29 +525,29 @@ describe('maprules', function() {
                     }
                 ];
                 entities = [
-                    iD.osmEntity({ type: 'node', tags: { amenity: 'marketplace' }}),
-                    iD.osmWay({ tags: { building: 'house', amenity: 'clinic' }, nodes: [ 'a', 'b', 'c', 'a' ]}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', 'tower:type': 'communication', height: 5 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 6 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 9 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 5 }}),
-                    iD.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 10 }}),
-                    iD.osmWay({ tags: { amenity: 'clinic', emergency: 'definitely' }, nodes: [ 'd', 'e', 'f', 'd' ]}),
-                    iD.osmWay({ tags: { highway: 'residential', structure: 'bridge' }}),
+                    Rapid.osmEntity({ type: 'node', tags: { amenity: 'marketplace' }}),
+                    Rapid.osmWay({ tags: { building: 'house', amenity: 'clinic' }, nodes: [ 'a', 'b', 'c', 'a' ]}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', 'tower:type': 'communication', height: 5 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 6 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 9 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 5 }}),
+                    Rapid.osmEntity({ type: 'node', tags: { man_made: 'tower', height: 10 }}),
+                    Rapid.osmWay({ tags: { amenity: 'clinic', emergency: 'definitely' }, nodes: [ 'd', 'e', 'f', 'd' ]}),
+                    Rapid.osmWay({ tags: { highway: 'residential', structure: 'bridge' }}),
                 ];
 
                 var wayNodes = [
-                    iD.osmNode({ id: 'a' }),
-                    iD.osmNode({ id: 'b' }),
-                    iD.osmNode({ id: 'c' }),
-                    iD.osmNode({ id: 'd' }),
-                    iD.osmNode({ id: 'e' }),
-                    iD.osmNode({ id: 'f' }),
+                    Rapid.osmNode({ id: 'a' }),
+                    Rapid.osmNode({ id: 'b' }),
+                    Rapid.osmNode({ id: 'c' }),
+                    Rapid.osmNode({ id: 'd' }),
+                    Rapid.osmNode({ id: 'e' }),
+                    Rapid.osmNode({ id: 'f' }),
                 ];
-                _graph = new iD.Graph(entities.concat(wayNodes));
-                iD.serviceMapRules.clearRules();
-                selectors.forEach(function(selector) { iD.serviceMapRules.addRule(selector); });
-                validationRules = iD.serviceMapRules.validationRules();
+                _graph = new Rapid.Graph(entities.concat(wayNodes));
+                Rapid.serviceMapRules.clearRules();
+                selectors.forEach(function(selector) { Rapid.serviceMapRules.addRule(selector); });
+                validationRules = Rapid.serviceMapRules.validationRules();
             });
             it('finds issues', function() {
                 validationRules.forEach(function(rule, i) {

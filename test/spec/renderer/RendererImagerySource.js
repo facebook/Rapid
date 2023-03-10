@@ -1,11 +1,11 @@
-describe('iD.RendererImagerySource', function() {
+describe('RendererImagerySource', function() {
     it('does not error with blank template', function() {
-        var source = new iD.RendererImagerySource({ template: '', id:'anyid' });
+        var source = new Rapid.RendererImagerySource({ template: '', id:'anyid' });
         expect(source.url([0,1,2])).to.equal('');
     });
 
     it('supports tms replacement tokens', function() {
-        var source = new iD.RendererImagerySource({
+        var source = new Rapid.RendererImagerySource({
             id: 'anyid',
             type: 'tms',
             template: '{z}/{x}/{y}'
@@ -14,7 +14,7 @@ describe('iD.RendererImagerySource', function() {
     });
 
     it('supports wms replacement tokens', function() {
-        var source = new iD.RendererImagerySource({
+        var source = new Rapid.RendererImagerySource({
             id:'anyid',
             type: 'wms',
             projection: 'EPSG:3857',
@@ -37,65 +37,65 @@ describe('iD.RendererImagerySource', function() {
     });
 
     it('supports subdomains', function() {
-        var source = new iD.RendererImagerySource({ id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}'});
+        var source = new Rapid.RendererImagerySource({ id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}'});
         expect(source.url([0,1,2])).to.equal('b/2/0/1');
     });
 
     it('distributes requests between subdomains', function() {
-        var source = new iD.RendererImagerySource({ id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}' });
+        var source = new Rapid.RendererImagerySource({ id:'anyid', template: '{switch:a,b}/{z}/{x}/{y}' });
         expect(source.url([0,1,1])).to.equal('b/1/0/1');
         expect(source.url([0,2,1])).to.equal('a/1/0/2');
     });
 
     it('correctly displays an overlay with no overzoom specified', function() {
-        var source = new iD.RendererImagerySource({ id:'anyid', zoomExtent: [6,16] });
+        var source = new Rapid.RendererImagerySource({ id:'anyid', zoomExtent: [6,16] });
         expect(source.validZoom(10)).to.be.true;
         expect(source.validZoom(3)).to.be.false;
         expect(source.validZoom(17)).to.be.true;
     });
 
     it('correctly displays an overlay with an invalid overzoom', function() {
-        var source = new iD.RendererImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: 'gibberish'});
+        var source = new Rapid.RendererImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: 'gibberish'});
         expect(source.validZoom(10)).to.be.true;
         expect(source.validZoom(3)).to.be.false;
         expect(source.validZoom(17)).to.be.true;
     });
 
     it('correctly displays an overlay with overzoom:true', function() {
-        var source = new iD.RendererImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: true});
+        var source = new Rapid.RendererImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: true});
         expect(source.validZoom(10)).to.be.true;
         expect(source.validZoom(3)).to.be.false;
         expect(source.validZoom(17)).to.be.true;
     });
 
     it('correctly displays an overlay with overzoom:false', function() {
-        var source = new iD.RendererImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: false});
+        var source = new Rapid.RendererImagerySource({ id:'anyid', zoomExtent: [6,16], overzoom: false});
         expect(source.validZoom(10)).to.be.true;
         expect(source.validZoom(3)).to.be.false;
         expect(source.validZoom(17)).to.be.false;
     });
 });
 
-// describe('iD.RendererImagerySourceCustom', function() {
+// describe('RendererImagerySourceCustom', function() {
 //     describe('#imageryUsed', function() {
 //         it('returns an imagery_used string', function() {
-//             var source = new iD.RendererImagerySourceCustom('http://example.com');
+//             var source = new Rapid.RendererImagerySourceCustom('http://example.com');
 //             expect(source.imageryUsed()).to.eql('Custom (http://example.com )');  // note ' )' space
 //         });
 //         it('sanitizes `access_token`', function() {
-//             var source = new iD.RendererImagerySourceCustom('http://example.com?access_token=MYTOKEN');
+//             var source = new Rapid.RendererImagerySourceCustom('http://example.com?access_token=MYTOKEN');
 //             expect(source.imageryUsed()).to.eql('Custom (http://example.com?access_token={apikey} )');
 //         });
 //         it('sanitizes `connectId`', function() {
-//             var source = new iD.RendererImagerySourceCustom('http://example.com?connectId=MYTOKEN');
+//             var source = new Rapid.RendererImagerySourceCustom('http://example.com?connectId=MYTOKEN');
 //             expect(source.imageryUsed()).to.eql('Custom (http://example.com?connectId={apikey} )');
 //         });
 //         it('sanitizes `token`', function() {
-//             var source = new iD.RendererImagerySourceCustom('http://example.com?token=MYTOKEN');
+//             var source = new Rapid.RendererImagerySourceCustom('http://example.com?token=MYTOKEN');
 //             expect(source.imageryUsed()).to.eql('Custom (http://example.com?token={apikey} )');
 //         });
 //         it('sanitizes wms path `token`', function() {
-//             var source = new iD.RendererImagerySourceCustom('http://example.com/wms/v1/token/MYTOKEN/1.0.0/layer');
+//             var source = new Rapid.RendererImagerySourceCustom('http://example.com/wms/v1/token/MYTOKEN/1.0.0/layer');
 //             expect(source.imageryUsed()).to.eql('Custom (http://example.com/wms/v1/token/{apikey}/1.0.0/layer )');
 //         });
 //     });

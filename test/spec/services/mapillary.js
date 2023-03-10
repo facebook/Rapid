@@ -1,18 +1,18 @@
-describe('iD.serviceMapillary', () => {
+describe('serviceMapillary', () => {
   const dimensions = [64, 64];
   let context, mapillary;
 
 
   before(() => {
-    iD.services.mapillary = iD.serviceMapillary;
+    Rapid.services.mapillary = Rapid.serviceMapillary;
   });
 
   after(() => {
-    delete iD.services.mapillary;
+    delete Rapid.services.mapillary;
   });
 
   beforeEach(() => {
-    context = iD.coreContext()
+    context = Rapid.coreContext()
       .assetPath('../dist/')
       .init();
     context.projection
@@ -25,7 +25,7 @@ describe('iD.serviceMapillary', () => {
     // context.photos().showsPanoramic = () => true;
     // context.photos().showsFlat = () => true;
 
-    mapillary = iD.services.mapillary;
+    mapillary = Rapid.services.mapillary;
     mapillary.reset();
   });
 

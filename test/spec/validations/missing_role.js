@@ -1,40 +1,40 @@
-describe('iD.validations.missing_role', function () {
+describe('validations.missing_role', function () {
     var context;
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = Rapid.coreContext().assetPath('../dist/').init();
     });
 
     function createWay(tags) {
-        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
-        var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
+        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(w)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(w)
         );
     }
 
     function createRelation(tags, role) {
-        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
-        var n3 = iD.osmNode({id: 'n-3', loc: [5,5]});
-        var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1']});
-        var r = iD.osmRelation({id: 'r-1', members: [{id: 'w-1', role: role}], tags: tags});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
+        var n3 = Rapid.osmNode({id: 'n-3', loc: [5,5]});
+        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1']});
+        var r = Rapid.osmRelation({id: 'r-1', members: [{id: 'w-1', role: role}], tags: tags});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(n3),
-            iD.actionAddEntity(w),
-            iD.actionAddEntity(r)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(n3),
+            Rapid.actionAddEntity(w),
+            Rapid.actionAddEntity(r)
         );
     }
 
     function validate() {
-        var validator = iD.validationMissingRole(context);
+        var validator = Rapid.validationMissingRole(context);
         var changes = context.history().changes();
         var entities = changes.modified.concat(changes.created);
         var issues = [];

@@ -1,12 +1,12 @@
-describe('iD.coreFileFetcher', function() {
+describe('coreFileFetcher', function() {
 
     describe('#fileMap', function() {
         it('gets the fileMap', function() {
-            var data = iD.coreFileFetcher();
+            var data = Rapid.coreFileFetcher();
             expect(data.fileMap()).to.be.a('object');
         });
         it('sets the fileMap', function() {
-            var data = iD.coreFileFetcher();
+            var data = Rapid.coreFileFetcher();
             var files = { 'intro_graph': 'data/intro_graph.min.json' };
             expect(data.fileMap(files)).to.be.ok;
         });
@@ -14,7 +14,7 @@ describe('iD.coreFileFetcher', function() {
 
     describe('#get', function() {
         it('returns a promise resolved if we already have the data', function(done) {
-            var data = iD.coreFileFetcher();
+            var data = Rapid.coreFileFetcher();
             data.cache().test = { hello: 'world' };
 
             var prom = data.get('test');
@@ -33,7 +33,7 @@ describe('iD.coreFileFetcher', function() {
         });
 
         it('returns a promise rejected if we can not get the data', function(done) {
-            var data = iD.coreFileFetcher().assetPath('../dist/');
+            var data = Rapid.coreFileFetcher().assetPath('../dist/');
             var prom = data.get('wat');
             prom
                 .then(function(data) {
@@ -49,7 +49,7 @@ describe('iD.coreFileFetcher', function() {
 
         it('returns a promise to fetch data if we do not already have the data', function(done) {
             var files = { 'intro_graph': 'data/intro_graph.min.json' };
-            var data = iD.coreFileFetcher().assetPath('../dist/').fileMap(files);
+            var data = Rapid.coreFileFetcher().assetPath('../dist/').fileMap(files);
             var prom = data.get('intro_graph');
             // expect(prom).to.be.a('promise');   // these are polyfilled in phantomjs
             prom

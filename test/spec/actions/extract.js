@@ -1,8 +1,8 @@
-describe('iD.actionExtract', function () {
+describe('actionExtract', function () {
     var tags = { 'name': 'test' };
 
     function createTargetNode(id, lonlat) {
-        return iD.osmNode({ id: id, loc: lonlat, tags: tags });
+        return Rapid.osmNode({ id: id, loc: lonlat, tags: tags });
     }
 
     describe('linear way', function () {
@@ -11,12 +11,12 @@ describe('iD.actionExtract', function () {
             //
             // a -- b -- c -- d
             //
-            graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [2, 0] }),
-                iD.osmNode({ id: 'd', loc: [3, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd'] })
+            graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                Rapid.osmNode({ id: 'd', loc: [3, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd'] })
             ]);
         });
 
@@ -29,7 +29,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change length of way', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // Confirm that the way still has 4 nodes
                 var target = assertionGraph.entity('-');
@@ -38,7 +38,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change order of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // Confirm that the way is ordered correctly
                 var target = assertionGraph.entity('-');
@@ -53,7 +53,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change location of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // Confirm that the nodes have not moved, including the replacement node
                 var nodes = assertionGraph.entity('-').nodes;
@@ -65,7 +65,7 @@ describe('iD.actionExtract', function () {
 
             it('does replace target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 var nodes = assertionGraph.entity('-').nodes;
                 // Confirm that the target is no longer "a"
@@ -76,7 +76,7 @@ describe('iD.actionExtract', function () {
 
             it('does detach target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // confirm that a still exists
                 var targetNode = assertionGraph.entity('a');
@@ -99,7 +99,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change length of way', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // Confirm that the way still has 4 nodes
                 var target = assertionGraph.entity('-');
@@ -108,7 +108,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change order of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // Confirm that the way is ordered correctly
                 var target = assertionGraph.entity('-');
@@ -123,7 +123,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change location of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // Confirm that the nodes have not moved, including the replacement node
                 var nodes = assertionGraph.entity('-').nodes;
@@ -135,7 +135,7 @@ describe('iD.actionExtract', function () {
 
             it('does replace target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 var nodes = assertionGraph.entity('-').nodes;
                 // Confirm that the target is no longer "a"
@@ -146,7 +146,7 @@ describe('iD.actionExtract', function () {
 
             it('does detach target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // confirm that a still exists
                 var targetNode = assertionGraph.entity('b');
@@ -170,12 +170,12 @@ describe('iD.actionExtract', function () {
             //  |    |
             //  a -- b
             //
-            graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [1, 1] }),
-                iD.osmNode({ id: 'd', loc: [0, 1] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a'] })
+            graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [1, 1] }),
+                Rapid.osmNode({ id: 'd', loc: [0, 1] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a'] })
             ]);
         });
 
@@ -188,7 +188,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change length of way', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // Confirm that the way still has 5 nodes
                 var target = assertionGraph.entity('-');
@@ -197,7 +197,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change order of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // Confirm that the way is ordered correctly
                 var target = assertionGraph.entity('-');
@@ -214,7 +214,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change location of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // Confirm that the nodes have not moved, including the replacement node
                 var nodes = assertionGraph.entity('-').nodes;
@@ -227,7 +227,7 @@ describe('iD.actionExtract', function () {
 
             it('does replace target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 var nodes = assertionGraph.entity('-').nodes;
                 // Confirm that the target is no longer "a"
@@ -240,7 +240,7 @@ describe('iD.actionExtract', function () {
 
             it('does detach target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('a')(graph);
+                var assertionGraph = Rapid.actionExtract('a')(graph);
 
                 // confirm that a still exists
                 var targetNode = assertionGraph.entity('a');
@@ -263,7 +263,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change length of way', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // Confirm that the way still has 5 nodes
                 var target = assertionGraph.entity('-');
@@ -272,7 +272,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change order of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // Confirm that the way is ordered correctly
                 var target = assertionGraph.entity('-');
@@ -288,7 +288,7 @@ describe('iD.actionExtract', function () {
 
             it('does not change location of nodes', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // Confirm that the nodes have not moved, including the replacement node
                 var nodes = assertionGraph.entity('-').nodes;
@@ -301,7 +301,7 @@ describe('iD.actionExtract', function () {
 
             it('does replace target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 var nodes = assertionGraph.entity('-').nodes;
                 // Confirm that the target is no longer "a"
@@ -312,7 +312,7 @@ describe('iD.actionExtract', function () {
 
             it('does detach target node', function () {
                 // Act
-                var assertionGraph = iD.actionExtract('b')(graph);
+                var assertionGraph = Rapid.actionExtract('b')(graph);
 
                 // confirm that a still exists
                 var targetNode = assertionGraph.entity('b');
@@ -340,21 +340,21 @@ describe('iD.actionExtract', function () {
             //
             // Node c represents the target
             //
-            graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [2, 0], tags: tags }),
-                iD.osmNode({ id: 'd', loc: [3, 0] }),
-                iD.osmNode({ id: 'e', loc: [2, 1] }),
-                iD.osmNode({ id: 'f', loc: [2, 2] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd'] }),
-                iD.osmWay({ id: '=', nodes: ['c', 'e', 'f'] })
+            graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0], tags: tags }),
+                Rapid.osmNode({ id: 'd', loc: [3, 0] }),
+                Rapid.osmNode({ id: 'e', loc: [2, 1] }),
+                Rapid.osmNode({ id: 'f', loc: [2, 2] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd'] }),
+                Rapid.osmWay({ id: '=', nodes: ['c', 'e', 'f'] })
             ]);
         });
 
         it('does not change length of ways', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // Confirm that the way still has 4 nodes
             var target = assertionGraph.entity('-');
@@ -366,7 +366,7 @@ describe('iD.actionExtract', function () {
 
         it('does not change order of nodes', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // Confirm that the way is ordered correctly
             var target = assertionGraph.entity('-');
@@ -385,7 +385,7 @@ describe('iD.actionExtract', function () {
 
         it('does not change location of nodes', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // Confirm that the nodes have not moved, including the replacement node
             var nodes = assertionGraph.entity('-').nodes;
@@ -402,14 +402,14 @@ describe('iD.actionExtract', function () {
 
         it('uses same replacement node at intersection', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
             // Confirm both ways have the same replacement node
             expect(assertionGraph.entity('-').nodes[2]).to.eql(assertionGraph.entity('=').nodes[0]);
         });
 
         it('does replace target node', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             var nodes = assertionGraph.entity('-').nodes;
             // Confirm that the target is no longer "c"
@@ -422,7 +422,7 @@ describe('iD.actionExtract', function () {
 
         it('does detach target node', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // confirm that a still exists
             var targetNode = assertionGraph.entity('c');
@@ -449,22 +449,22 @@ describe('iD.actionExtract', function () {
             //
             // c is the target node
             //
-            graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [1, 1], tags: tags }),
-                iD.osmNode({ id: 'd', loc: [0, 1] }),
-                iD.osmNode({ id: 'e', loc: [2, 1] }),
-                iD.osmNode({ id: 'f', loc: [2, 2] }),
-                iD.osmNode({ id: 'g', loc: [1, 2] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a'] }),
-                iD.osmWay({ id: '=', nodes: ['c', 'e', 'f', 'g', 'c'] })
+            graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [1, 1], tags: tags }),
+                Rapid.osmNode({ id: 'd', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'e', loc: [2, 1] }),
+                Rapid.osmNode({ id: 'f', loc: [2, 2] }),
+                Rapid.osmNode({ id: 'g', loc: [1, 2] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a'] }),
+                Rapid.osmWay({ id: '=', nodes: ['c', 'e', 'f', 'g', 'c'] })
             ]);
         });
 
         it('does not change length of ways', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // Confirm that the way still has 5 nodes
             var target = assertionGraph.entity('-');
@@ -476,7 +476,7 @@ describe('iD.actionExtract', function () {
 
         it('does not change order of nodes', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // Confirm that the way is ordered correctly
             var target = assertionGraph.entity('-');
@@ -499,7 +499,7 @@ describe('iD.actionExtract', function () {
 
         it('does not change location of nodes', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // Confirm that the nodes have not moved, including the replacement node
             var nodes = assertionGraph.entity('-').nodes;
@@ -518,14 +518,14 @@ describe('iD.actionExtract', function () {
 
         it('uses same replacement node at intersection', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
             // Confirm both ways have the same replacement node
             expect(assertionGraph.entity('-').nodes[2]).to.eql(assertionGraph.entity('=').nodes[0]);
         });
 
         it('does replace target node', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             var nodes = assertionGraph.entity('-').nodes;
             // Confirm that the target is no longer "c"
@@ -539,7 +539,7 @@ describe('iD.actionExtract', function () {
 
         it('does detach target node', function () {
             // Act
-            var assertionGraph = iD.actionExtract('c')(graph);
+            var assertionGraph = Rapid.actionExtract('c')(graph);
 
             // confirm that a still exists
             var targetNode = assertionGraph.entity('c');
@@ -564,12 +564,12 @@ describe('iD.actionExtract', function () {
             // Node b represents the target
             // With a relationship for the way including b
             //
-            graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0], tags: tags }),
-                iD.osmNode({ id: 'c', loc: [2, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-                iD.osmRelation({id: 'r', tags: {type: 'route', route: 'foot'},
+            graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0], tags: tags }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
+                Rapid.osmRelation({id: 'r', tags: {type: 'route', route: 'foot'},
                     members: [
                         { id: 'a', type: 'node', role: 'point' },
                         { id: 'b', type: 'node', role: 'point' },
@@ -580,7 +580,7 @@ describe('iD.actionExtract', function () {
         });
 
         it('detached node not a member of relation', function () {
-            var assertionGraph = iD.actionExtract('b')(graph);
+            var assertionGraph = Rapid.actionExtract('b')(graph);
 
             var targetNode = assertionGraph.entity('b');
             // Confirm is not a member of the relation
@@ -588,7 +588,7 @@ describe('iD.actionExtract', function () {
         });
 
         it('new node is a member of relation', function () {
-            var assertionGraph = iD.actionExtract('b')(graph);
+            var assertionGraph = Rapid.actionExtract('b')(graph);
 
             // Find the new node
             var targetWay = assertionGraph.entity('-');
@@ -603,7 +603,7 @@ describe('iD.actionExtract', function () {
         });
 
         it('Relation membership has the same properties', function () {
-            var assertionGraph = iD.actionExtract('b')(graph);
+            var assertionGraph = Rapid.actionExtract('b')(graph);
 
             // Find the new node
             var targetWay = assertionGraph.entity('-');

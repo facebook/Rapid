@@ -1,48 +1,48 @@
-describe('iD.presetCollection', function() {
+describe('presetCollection', function() {
     // Note: __TEST is added to these because the search uses localized
     //   preset.name() keyed on id, which would use the names from en.json.
     // Except for fallback presets which must have those names because of the logic in fallback()
     var p = {
-        point: iD.presetPreset('point',
+        point: Rapid.presetPreset('point',
             { name: 'Point', tags: {}, geometry: ['point'], matchScore: 0.1 }
         ),
-        line: iD.presetPreset('line',
+        line: Rapid.presetPreset('line',
             { name: 'Line', tags: {}, geometry: ['line'], matchScore: 0.1 }
         ),
-        area: iD.presetPreset('area',
+        area: Rapid.presetPreset('area',
             { name: 'Area', tags: { area: 'yes' }, geometry: ['area'], matchScore: 0.1 }
         ),
-        grill: iD.presetPreset('__TEST/amenity/bbq',
+        grill: Rapid.presetPreset('__TEST/amenity/bbq',
             { name: 'Grill', tags: { amenity: 'bbq' }, geometry: ['point'], terms: [] }
         ),
-        sandpit: iD.presetPreset('__TEST/amenity/grit_bin',
+        sandpit: Rapid.presetPreset('__TEST/amenity/grit_bin',
             { name: 'Sandpit', tags: { amenity: 'grit_bin' }, geometry: ['point'], terms: [] }
         ),
-        residential: iD.presetPreset('__TEST/highway/residential',
+        residential: Rapid.presetPreset('__TEST/highway/residential',
             { name: 'Residential Area', tags: { highway: 'residential' }, geometry: ['point', 'area'], terms: [] }
         ),
-        grass1: iD.presetPreset('__TEST/landuse/grass1',
+        grass1: Rapid.presetPreset('__TEST/landuse/grass1',
             { name: 'Grass', tags: { landuse: 'grass' }, geometry: ['point', 'area'], terms: [] }
         ),
-        grass2: iD.presetPreset('__TEST/landuse/grass2',
+        grass2: Rapid.presetPreset('__TEST/landuse/grass2',
             { name: 'Ğṝȁß', tags: { landuse: 'ğṝȁß' }, geometry: ['point', 'area'], terms: [] }
         ),
-        park: iD.presetPreset('__TEST/leisure/park',
+        park: Rapid.presetPreset('__TEST/leisure/park',
             { name: 'Park', tags: { leisure: 'park' }, geometry: ['point', 'area'], terms: [ 'grass' ], matchScore: 0.5 }
         ),
-        parking: iD.presetPreset('__TEST/amenity/parking',
+        parking: Rapid.presetPreset('__TEST/amenity/parking',
             { name: 'Parking', tags: { amenity: 'parking' }, geometry: ['point', 'area'], terms: [ 'cars' ] }
         ),
-        soccer: iD.presetPreset('__TEST/leisure/pitch/soccer',
+        soccer: Rapid.presetPreset('__TEST/leisure/pitch/soccer',
             { name: 'Soccer Field', tags: { leisure: 'pitch', sport: 'soccer' }, geometry: ['point', 'area'], terms: ['fußball'] }
         ),
-        football: iD.presetPreset('__TEST/leisure/pitch/american_football',
+        football: Rapid.presetPreset('__TEST/leisure/pitch/american_football',
             { name: 'Football Field', tags: { leisure: 'pitch', sport: 'american_football' }, geometry: ['point', 'area'], terms: ['gridiron'] }
         )
     };
 
 
-    var c = iD.presetCollection([
+    var c = Rapid.presetCollection([
         p.point, p.line, p.area, p.grill, p.sandpit, p.residential,
         p.grass1, p.grass2, p.park, p.parking, p.soccer, p.football
     ]);
@@ -117,13 +117,13 @@ describe('iD.presetCollection', function() {
         });
 
         it('excludes presets with searchable: false', function() {
-            var excluded = iD.presetPreset('excluded', {
+            var excluded = Rapid.presetPreset('excluded', {
                 name: 'excluded',
                 tags: { amenity: 'excluded' },
                 geometry: ['point'],
                 searchable: false
             });
-            var collection = iD.presetCollection([excluded, p.point]);
+            var collection = Rapid.presetCollection([excluded, p.point]);
             expect(collection.search('excluded', 'point').collection).not.to.include(excluded);
         });
     });

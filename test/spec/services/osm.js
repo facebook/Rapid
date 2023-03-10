@@ -1,4 +1,4 @@
-describe('iD.serviceOsm', function () {
+describe('serviceOsm', function () {
     var context, connection, spy;
     var serverXHR;
 
@@ -16,16 +16,16 @@ describe('iD.serviceOsm', function () {
     }
 
     before(function() {
-        iD.services.osm = iD.serviceOsm;
+        Rapid.services.osm = Rapid.serviceOsm;
     });
 
     after(function() {
-        delete iD.services.osm;
+        delete Rapid.services.osm;
     });
 
     beforeEach(function () {
         serverXHR = sinon.fakeServer.create();      // authenticated calls use XHR via osm-auth
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = Rapid.coreContext().assetPath('../dist/').init();
         connection = context.connection();
         connection.switch({ url: 'https://www.openstreetmap.org' });
         connection.reset();
@@ -80,34 +80,34 @@ describe('iD.serviceOsm', function () {
 
     describe('#entityURL', function() {
         it('provides an entity url for a node', function() {
-            var e = iD.osmNode({id: 'n1'});
+            var e = Rapid.osmNode({id: 'n1'});
             expect(connection.entityURL(e)).to.eql('https://www.openstreetmap.org/node/1');
         });
 
         it('provides an entity url for a way', function() {
-            var e = iD.osmWay({id: 'w1'});
+            var e = Rapid.osmWay({id: 'w1'});
             expect(connection.entityURL(e)).to.eql('https://www.openstreetmap.org/way/1');
         });
 
         it('provides an entity url for a relation', function() {
-            var e = iD.osmRelation({id: 'r1'});
+            var e = Rapid.osmRelation({id: 'r1'});
             expect(connection.entityURL(e)).to.eql('https://www.openstreetmap.org/relation/1');
         });
     });
 
     describe('#historyURL', function() {
         it('provides a history url for a node', function() {
-            var e = iD.osmNode({id: 'n1'});
+            var e = Rapid.osmNode({id: 'n1'});
             expect(connection.historyURL(e)).to.eql('https://www.openstreetmap.org/node/1/history');
         });
 
         it('provides a history url for a way', function() {
-            var e = iD.osmWay({id: 'w1'});
+            var e = Rapid.osmWay({id: 'w1'});
             expect(connection.historyURL(e)).to.eql('https://www.openstreetmap.org/way/1/history');
         });
 
         it('provides a history url for a relation', function() {
-            var e = iD.osmRelation({id: 'r1'});
+            var e = Rapid.osmRelation({id: 'r1'});
             expect(connection.historyURL(e)).to.eql('https://www.openstreetmap.org/relation/1/history');
         });
     });
@@ -384,7 +384,7 @@ describe('iD.serviceOsm', function () {
             var id = 'n1';
             connection.loadEntity(id, function(err, result) {
                 var entity = result.data.find(function(e) { return e.id === id; });
-                expect(entity).to.be.an.instanceOf(iD.osmNode);
+                expect(entity).to.be.an.instanceOf(Rapid.osmNode);
                 done();
             });
         });
@@ -399,7 +399,7 @@ describe('iD.serviceOsm', function () {
             var id = 'w1';
             connection.loadEntity(id, function(err, result) {
                 var entity = result.data.find(function(e) { return e.id === id; });
-                expect(entity).to.be.an.instanceOf(iD.osmWay);
+                expect(entity).to.be.an.instanceOf(Rapid.osmWay);
                 done();
             });
         });
@@ -414,11 +414,11 @@ describe('iD.serviceOsm', function () {
             var id = 'n1';
             connection.loadEntity(id, function(err1, result1) {
                 var entity1 = result1.data.find(function(e1) { return e1.id === id; });
-                expect(entity1).to.be.an.instanceOf(iD.osmNode);
+                expect(entity1).to.be.an.instanceOf(Rapid.osmNode);
 
                 connection.loadEntity(id, function(err2, result2) {
                     var entity2 = result2.data.find(function(e2) { return e2.id === id; });
-                    expect(entity2).to.be.an.instanceOf(iD.osmNode);
+                    expect(entity2).to.be.an.instanceOf(Rapid.osmNode);
                     done();
                 });
             });
@@ -453,7 +453,7 @@ describe('iD.serviceOsm', function () {
             var id = 'n1';
             connection.loadEntityVersion(id, 1, function(err, result) {
                 var entity = result.data.find(function(e) { return e.id === id; });
-                expect(entity).to.be.an.instanceOf(iD.osmNode);
+                expect(entity).to.be.an.instanceOf(Rapid.osmNode);
                 done();
             });
         });
@@ -468,7 +468,7 @@ describe('iD.serviceOsm', function () {
             var id = 'w1';
             connection.loadEntityVersion(id, 1, function(err, result) {
                 var entity = result.data.find(function(e) { return e.id === id; });
-                expect(entity).to.be.an.instanceOf(iD.osmWay);
+                expect(entity).to.be.an.instanceOf(Rapid.osmWay);
                 done();
             });
         });
@@ -483,11 +483,11 @@ describe('iD.serviceOsm', function () {
             var id = 'n1';
             connection.loadEntityVersion(id, 1, function(err1, result1) {
                 var entity1 = result1.data.find(function(e1) { return e1.id === id; });
-                expect(entity1).to.be.an.instanceOf(iD.osmNode);
+                expect(entity1).to.be.an.instanceOf(Rapid.osmNode);
 
                 connection.loadEntityVersion(id, 1, function(err2, result2) {
                     var entity2 = result2.data.find(function(e2) { return e2.id === id; });
-                    expect(entity2).to.be.an.instanceOf(iD.osmNode);
+                    expect(entity2).to.be.an.instanceOf(Rapid.osmNode);
                     done();
                 });
             });
@@ -622,8 +622,8 @@ describe('iD.serviceOsm', function () {
             });
 
             it('sets/gets a note', function () {
-                var note = iD.osmNote({ id: 1, loc: [0, 0] });
-                var note2 = iD.osmNote({ id: 2, loc: [0, 0] });
+                var note = Rapid.osmNote({ id: 1, loc: [0, 0] });
+                var note2 = Rapid.osmNote({ id: 2, loc: [0, 0] });
                 var obj = {
                     note: { note: { 1: note, 2: note2 } }
                 };
@@ -726,7 +726,7 @@ describe('iD.serviceOsm', function () {
 
     describe('#getNote', function() {
         it('returns a note', function () {
-            var note = iD.osmNote({ id: 1, loc: [0, 0], });
+            var note = Rapid.osmNote({ id: 1, loc: [0, 0], });
             var obj = {
                 note: { note: { 1: note } }
             };
@@ -738,7 +738,7 @@ describe('iD.serviceOsm', function () {
 
     describe('#removeNote', function() {
         it('removes a note that is new', function() {
-            var note = iD.osmNote({ id: -1, loc: [0, 0], });
+            var note = Rapid.osmNote({ id: -1, loc: [0, 0], });
             connection.replaceNote(note);
             connection.removeNote(note);
             var result = connection.getNote(-1);
@@ -749,7 +749,7 @@ describe('iD.serviceOsm', function () {
 
     describe('#replaceNote', function() {
         it('returns a new note', function () {
-            var note = iD.osmNote({ id: 2, loc: [0, 0], });
+            var note = Rapid.osmNote({ id: 2, loc: [0, 0], });
             var result = connection.replaceNote(note);
             expect(result.id).to.eql(2);
             expect(connection.caches().note.note[2]).to.eql(note);
@@ -760,7 +760,7 @@ describe('iD.serviceOsm', function () {
         });
 
         it('replaces a note', function () {
-            var note = iD.osmNote({ id: 2, loc: [0, 0], });
+            var note = Rapid.osmNote({ id: 2, loc: [0, 0], });
             connection.replaceNote(note);
             note.status = 'closed';
             var result = connection.replaceNote(note);

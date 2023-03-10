@@ -1,18 +1,18 @@
-describe('iD.serviceKartaview', () => {
+describe('serviceKartaview', () => {
   const dimensions = [64, 64];
   let context, kartaview;
 
   before(() => {
-    iD.services.kartaview = iD.serviceKartaview;
+    Rapid.services.kartaview = Rapid.serviceKartaview;
     fetchMock.reset();
   });
 
   after(() => {
-    delete iD.services.kartaview;
+    delete Rapid.services.kartaview;
   });
 
   beforeEach(() => {
-    context = iD.coreContext()
+    context = Rapid.coreContext()
       .assetPath('../dist/')
       .init();
     context.projection
@@ -20,7 +20,7 @@ describe('iD.serviceKartaview', () => {
       .translate([-116508, 0])  // 10,0
       .dimensions([[0,0], dimensions]);
 
-    kartaview = iD.services.kartaview;
+    kartaview = Rapid.services.kartaview;
     kartaview.reset();
     fetchMock.reset();
   });

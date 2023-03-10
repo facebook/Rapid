@@ -5,17 +5,16 @@ import { osmNode } from '../osm/node';
 //
 // Optionally, disconnect only the given ways.
 //
-// For testing convenience, accepts an ID to assign to the (first) new node.
-// Normally, this will be undefined and the way will automatically
-// be assigned a new ID.
+// For testing convenience, accepts an `newNodeID` to assign to the (first) new node.
+// (Normally, new entities are automatically assigned the next available number).
 //
-// This is the inverse of `iD.actionConnect`.
+// This is the inverse of `actionConnect`.
 //
 // Reference:
 //   https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/UnjoinNodeAction.as
 //   https://github.com/openstreetmap/josm/blob/mirror/src/org/openstreetmap/josm/actions/UnGlueAction.java
 //
-export function actionDisconnect(nodeId, newNodeId) {
+export function actionDisconnect(nodeId, newNodeID) {
     var wayIds;
 
 
@@ -25,7 +24,7 @@ export function actionDisconnect(nodeId, newNodeId) {
 
         connections.forEach(function(connection) {
             var way = graph.entity(connection.wayID);
-            var newNode = osmNode({id: newNodeId, loc: node.loc, tags: node.tags});
+            var newNode = osmNode({id: newNodeID, loc: node.loc, tags: node.tags});
 
             graph = graph.replace(newNode);
             if (connection.index === 0 && way.isArea()) {

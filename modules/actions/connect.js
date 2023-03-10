@@ -6,13 +6,10 @@ import { actionDeleteWay } from './delete_way';
 
 // Connect the ways at the given nodes.
 //
-// First choose a node to be the survivor, with preference given
-// to an existing (not new) node.
+// First choose a node to be the survivor, with preference given to an existing (not new) node.
+// Tags and relation memberships of of non-surviving nodes are merged to the survivor.
 //
-// Tags and relation memberships of of non-surviving nodes are merged
-// to the survivor.
-//
-// This is the inverse of `iD.actionDisconnect`.
+// This is the inverse of `actionDisconnect`.
 //
 // Reference:
 //   https://github.com/openstreetmap/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/MergeNodesAction.as

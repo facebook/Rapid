@@ -1,8 +1,8 @@
-describe('iD.utilKeybinding', function() {
+describe('utilKeybinding', function() {
     var keybinding, spy, input;
 
     beforeEach(function () {
-        keybinding = iD.utilKeybinding('keybinding-test');
+        keybinding = Rapid.utilKeybinding('keybinding-test');
         spy = sinon.spy();
         input = d3.select('body')
             .append('input');

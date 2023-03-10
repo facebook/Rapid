@@ -1,9 +1,9 @@
-describe('iD.uiFlash', function () {
+describe('uiFlash', function () {
     var context;
 
     beforeEach(function() {
         var container = d3.select('body');
-        context = iD.coreContext().assetPath('../dist/').init().container(container);
+        context = Rapid.coreContext().assetPath('../dist/').init().container(container);
         container
             .append('div')
             .attr('class', 'flash-wrap')
@@ -17,7 +17,7 @@ describe('iD.uiFlash', function () {
     });
 
     it('flash is shown', function() {
-        iD.uiFlash(context).duration(200)();
+        Rapid.uiFlash(context).duration(200)();
         var flashWrap = d3.selectAll('.flash-wrap');
         var footerWrap = d3.selectAll('.main-footer-wrap');
         expect(flashWrap.classed('footer-show')).to.be.ok;
@@ -25,7 +25,7 @@ describe('iD.uiFlash', function () {
     });
 
     it('flash goes away', function(done) {
-        iD.uiFlash(context).duration(200)();
+        Rapid.uiFlash(context).duration(200)();
         window.setTimeout(function() {
             d3.timerFlush();
             var flashWrap = d3.selectAll('.flash-wrap');

@@ -1,18 +1,18 @@
-describe('iD.actionSplit', function () {
+describe('actionSplit', function () {
 
     describe('#disabled', function () {
         it('returns falsy for a non-end node of a single way', function () {
             //
             //  a ---> b ---> c         split at 'b' not disabled
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [2, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] })
             ]);
 
-            expect(iD.actionSplit('b').disabled(graph)).not.to.be.ok;
+            expect(Rapid.actionSplit('b').disabled(graph)).not.to.be.ok;
         });
 
         it('returns falsy for an intersection of two ways', function () {
@@ -23,17 +23,17 @@ describe('iD.actionSplit', function () {
             //         |
             //         d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [-1, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [0, 1] }),
-                iD.osmNode({ id: 'd', loc: [0, -1] }),
-                iD.osmNode({ id: '*', loc: [0, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
-                iD.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'd', loc: [0, -1] }),
+                Rapid.osmNode({ id: '*', loc: [0, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
+                Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
             ]);
 
-            expect(iD.actionSplit('*').disabled(graph)).not.to.be.ok;
+            expect(Rapid.actionSplit('*').disabled(graph)).not.to.be.ok;
         });
 
         it('returns falsy for an intersection of two ways with parent way specified', function () {
@@ -44,17 +44,17 @@ describe('iD.actionSplit', function () {
             //         |
             //         d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [-1, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [0, 1] }),
-                iD.osmNode({ id: 'd', loc: [0, -1] }),
-                iD.osmNode({ id: '*', loc: [0, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
-                iD.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'd', loc: [0, -1] }),
+                Rapid.osmNode({ id: '*', loc: [0, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
+                Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
             ]);
 
-            expect(iD.actionSplit('*').limitWays(['-']).disabled(graph)).not.to.be.ok;
+            expect(Rapid.actionSplit('*').limitWays(['-']).disabled(graph)).not.to.be.ok;
         });
 
         it('returns falsy for a self-intersection', function () {
@@ -65,41 +65,41 @@ describe('iD.actionSplit', function () {
             //  | /
             //  a -- b
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [0, 2] }),
-                iD.osmNode({ id: 'c', loc: [1, 2] }),
-                iD.osmNode({ id: 'd', loc: [1, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'a', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [0, 2] }),
+                Rapid.osmNode({ id: 'c', loc: [1, 2] }),
+                Rapid.osmNode({ id: 'd', loc: [1, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'a', 'd'] })
             ]);
 
-            expect(iD.actionSplit('a').disabled(graph)).not.to.be.ok;
+            expect(Rapid.actionSplit('a').disabled(graph)).not.to.be.ok;
         });
 
         it('returns \'not_eligible\' for the first node of a single way', function () {
             //
             //  a ---> b                split at 'a' disabled - 'not eligible'
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b'] })
             ]);
 
-            expect(iD.actionSplit('a').disabled(graph)).to.equal('not_eligible');
+            expect(Rapid.actionSplit('a').disabled(graph)).to.equal('not_eligible');
         });
 
         it('returns \'not_eligible\' for the last node of a single way', function () {
             //
             //  a ---> b                split at 'b' disabled - 'not eligible'
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b'] })
             ]);
 
-            expect(iD.actionSplit('b').disabled(graph)).to.equal('not_eligible');
+            expect(Rapid.actionSplit('b').disabled(graph)).to.equal('not_eligible');
         });
 
         it('returns \'not_eligible\' for an intersection of two ways with non-parent way specified', function () {
@@ -110,17 +110,17 @@ describe('iD.actionSplit', function () {
             //         |                (there is no '=' here)
             //         d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [-1, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [0, 1] }),
-                iD.osmNode({ id: 'd', loc: [0, -1] }),
-                iD.osmNode({ id: '*', loc: [0, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
-                iD.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'd', loc: [0, -1] }),
+                Rapid.osmNode({ id: '*', loc: [0, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
+                Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
             ]);
 
-            expect(iD.actionSplit('*').limitWays(['-', '=']).disabled(graph)).to.equal('not_eligible');
+            expect(Rapid.actionSplit('*').limitWays(['-', '=']).disabled(graph)).to.equal('not_eligible');
         });
     });
 
@@ -135,14 +135,14 @@ describe('iD.actionSplit', function () {
             // Expected result:
             //    a ---> b ===> c
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [2, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] })
             ]);
 
-            graph = iD.actionSplit('b', ['='])(graph);
+            graph = Rapid.actionSplit('b', ['='])(graph);
 
             expect(graph.entity('-').nodes).to.eql(['a', 'b']);
             expect(graph.entity('=').nodes).to.eql(['b', 'c']);
@@ -150,14 +150,14 @@ describe('iD.actionSplit', function () {
 
         it('copies tags to the new way', function () {
             var tags = { highway: 'residential' };
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [2, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'], tags: tags })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'], tags: tags })
             ]);
 
-            graph = iD.actionSplit('b', ['='])(graph);
+            graph = Rapid.actionSplit('b', ['='])(graph);
 
             // Immutable tags => should be shared by identity.
             expect(graph.entity('-').tags).to.equal(tags);
@@ -176,16 +176,16 @@ describe('iD.actionSplit', function () {
             //           |
             //           d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [-1, 0] }),
-                iD.osmNode({ id: 'b', loc: [0, 0] }),
-                iD.osmNode({ id: 'c', loc: [1, 0] }),
-                iD.osmNode({ id: 'd', loc: [0, -1] }),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                iD.osmWay({id: '|', nodes: ['d', 'b']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'd', loc: [0, -1] }),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                Rapid.osmWay({id: '|', nodes: ['d', 'b']})
             ]);
 
-            graph = iD.actionSplit('b', ['='])(graph);
+            graph = Rapid.actionSplit('b', ['='])(graph);
 
             expect(graph.entity('-').nodes).to.eql(['a', 'b']);
             expect(graph.entity('=').nodes).to.eql(['b', 'c']);
@@ -208,17 +208,17 @@ describe('iD.actionSplit', function () {
             //         ¦
             //         d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [-1, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [0, 1] }),
-                iD.osmNode({ id: 'd', loc: [0, -1] }),
-                iD.osmNode({ id: '*', loc: [0, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
-                iD.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'd', loc: [0, -1] }),
+                Rapid.osmNode({ id: '*', loc: [0, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
+                Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
             ]);
 
-            graph = iD.actionSplit('*', ['=', '¦'])(graph);
+            graph = Rapid.actionSplit('*', ['=', '¦'])(graph);
 
             expect(graph.entity('-').nodes).to.eql(['a', '*']);
             expect(graph.entity('=').nodes).to.eql(['*', 'b']);
@@ -234,27 +234,27 @@ describe('iD.actionSplit', function () {
             //         |
             //         d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [-1, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [0, 1] }),
-                iD.osmNode({ id: 'd', loc: [0, -1] }),
-                iD.osmNode({ id: '*', loc: [0, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
-                iD.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'd', loc: [0, -1] }),
+                Rapid.osmNode({ id: '*', loc: [0, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', '*', 'b'] }),
+                Rapid.osmWay({ id: '|', nodes: ['c', '*', 'd'] })
             ]);
 
-            var g1 = iD.actionSplit('*', ['=']).limitWays(['-'])(graph);
+            var g1 = Rapid.actionSplit('*', ['=']).limitWays(['-'])(graph);
             expect(g1.entity('-').nodes).to.eql(['a', '*']);
             expect(g1.entity('=').nodes).to.eql(['*', 'b']);
             expect(g1.entity('|').nodes).to.eql(['c', '*', 'd']);
 
-            var g2 = iD.actionSplit('*', ['¦']).limitWays(['|'])(graph);
+            var g2 = Rapid.actionSplit('*', ['¦']).limitWays(['|'])(graph);
             expect(g2.entity('-').nodes).to.eql(['a', '*', 'b']);
             expect(g2.entity('|').nodes).to.eql(['c', '*']);
             expect(g2.entity('¦').nodes).to.eql(['*', 'd']);
 
-            var g3 = iD.actionSplit('*', ['=', '¦']).limitWays(['-', '|'])(graph);
+            var g3 = Rapid.actionSplit('*', ['=', '¦']).limitWays(['-', '|'])(graph);
             expect(g3.entity('-').nodes).to.eql(['a', '*']);
             expect(g3.entity('=').nodes).to.eql(['*', 'b']);
             expect(g3.entity('|').nodes).to.eql(['c', '*']);
@@ -277,15 +277,15 @@ describe('iD.actionSplit', function () {
             //          /  |
             //         c - a == d
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [0, 2] }),
-                iD.osmNode({ id: 'c', loc: [-1, 0] }),
-                iD.osmNode({ id: 'd', loc: [1, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'a', 'd'] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [0, 2] }),
+                Rapid.osmNode({ id: 'c', loc: [-1, 0] }),
+                Rapid.osmNode({ id: 'd', loc: [1, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'a', 'd'] })
             ]);
 
-            graph = iD.actionSplit('a', ['='])(graph);
+            graph = Rapid.actionSplit('a', ['='])(graph);
 
             expect(graph.entity('-').nodes).to.eql(['a', 'b', 'c', 'a']);
             expect(graph.entity('=').nodes).to.eql(['a', 'd']);
@@ -298,27 +298,27 @@ describe('iD.actionSplit', function () {
             //    |      |
             //    d ---- c
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 1] }),
-                iD.osmNode({ id: 'b', loc: [1, 1] }),
-                iD.osmNode({ id: 'c', loc: [1, 0] }),
-                iD.osmNode({ id: 'd', loc: [0, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 1] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 1] }),
+                Rapid.osmNode({ id: 'c', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'd', loc: [0, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            var g1 = iD.actionSplit('a', ['='])(graph);
+            var g1 = Rapid.actionSplit('a', ['='])(graph);
             expect(g1.entity('-').nodes).to.eql(['c', 'd', 'a']);
             expect(g1.entity('=').nodes).to.eql(['a', 'b', 'c']);
 
-            var g2 = iD.actionSplit('b', ['='])(graph);
+            var g2 = Rapid.actionSplit('b', ['='])(graph);
             expect(g2.entity('-').nodes).to.eql(['b', 'c', 'd']);
             expect(g2.entity('=').nodes).to.eql(['d', 'a', 'b']);
 
-            var g3 = iD.actionSplit('c', ['='])(graph);
+            var g3 = Rapid.actionSplit('c', ['='])(graph);
             expect(g3.entity('-').nodes).to.eql(['c', 'd', 'a']);
             expect(g3.entity('=').nodes).to.eql(['a', 'b', 'c']);
 
-            var g4 = iD.actionSplit('d', ['='])(graph);
+            var g4 = Rapid.actionSplit('d', ['='])(graph);
             expect(g4.entity('-').nodes).to.eql(['b', 'c', 'd']);
             expect(g4.entity('=').nodes).to.eql(['d', 'a', 'b']);
         });
@@ -342,18 +342,18 @@ describe('iD.actionSplit', function () {
             //    a ---> b ===> c
             //    Relation: ['~', '-', '=']
             //
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, 0] }),
-                iD.osmNode({ id: 'b', loc: [1, 0] }),
-                iD.osmNode({ id: 'c', loc: [2, 0] }),
-                iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-                iD.osmRelation({id: 'r', members: [
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
+                Rapid.osmRelation({id: 'r', members: [
                     { id: '~', type: 'way' },
                     { id: '-', type: 'way' }
                 ]})
             ]);
 
-            graph = iD.actionSplit('b', ['='])(graph);
+            graph = Rapid.actionSplit('b', ['='])(graph);
             expect(members(graph)).to.eql(['~', '-', '=']);
         });
 
@@ -370,17 +370,17 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c
                 //    Relation: ['-', '=']
                 //
-                var graph = new iD.Graph([
-                    iD.osmNode({ id: 'a', loc: [0, 0] }),
-                    iD.osmNode({ id: 'b', loc: [1, 0] }),
-                    iD.osmNode({ id: 'c', loc: [2, 0] }),
-                    iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-                    iD.osmRelation({id: 'r', members: [
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                    Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                    Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                    Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
+                    Rapid.osmRelation({id: 'r', members: [
                         { id: '-', type: 'way', role: 'forward' }
                     ]})
                 ]);
 
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('r').members).to.eql([
                     { id: '-', type: 'way', role: 'forward' },
@@ -398,20 +398,20 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c ~~~> d
                 //    Relation: ['-', '=', '~']
                 //
-                var graph = new iD.Graph([
-                    iD.osmNode({ id: 'a', loc: [0, 0] }),
-                    iD.osmNode({ id: 'b', loc: [1, 0] }),
-                    iD.osmNode({ id: 'c', loc: [2, 0] }),
-                    iD.osmNode({ id: 'd', loc: [3, 0] }),
-                    iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-                    iD.osmWay({ id: '~', nodes: ['c', 'd'] }),
-                    iD.osmRelation({id: 'r', members: [
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                    Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                    Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                    Rapid.osmNode({ id: 'd', loc: [3, 0] }),
+                    Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
+                    Rapid.osmWay({ id: '~', nodes: ['c', 'd'] }),
+                    Rapid.osmRelation({id: 'r', members: [
                         { id: '-', type: 'way' },
                         { id: '~', type: 'way' }
                     ]})
                 ]);
 
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
                 expect(members(graph)).to.eql(['-', '=', '~']);
             });
 
@@ -425,30 +425,30 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c ~~~> d
                 //    Relation: ['~', '=', '-']
                 //
-                var graph = new iD.Graph([
-                    iD.osmNode({ id: 'a', loc: [0, 0] }),
-                    iD.osmNode({ id: 'b', loc: [1, 0] }),
-                    iD.osmNode({ id: 'c', loc: [2, 0] }),
-                    iD.osmNode({ id: 'd', loc: [3, 0] }),
-                    iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-                    iD.osmWay({ id: '~', nodes: ['c', 'd'] }),
-                    iD.osmRelation({id: 'r', members: [
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                    Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                    Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                    Rapid.osmNode({ id: 'd', loc: [3, 0] }),
+                    Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
+                    Rapid.osmWay({ id: '~', nodes: ['c', 'd'] }),
+                    Rapid.osmRelation({id: 'r', members: [
                         { id: '~', type: 'way' },
                         { id: '-', type: 'way' }
                     ]})
                 ]);
 
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
                 expect(members(graph)).to.eql(['~', '=', '-']);
             });
 
             it('reorders members as node, way, relation (for Public Transport routing)', function () {
-                var graph = new iD.Graph([
-                    iD.osmNode({ id: 'a', loc: [0, 0] }),
-                    iD.osmNode({ id: 'b', loc: [1, 0] }),
-                    iD.osmNode({ id: 'c', loc: [2, 0] }),
-                    iD.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
-                    iD.osmRelation({id: 'r', members: [
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({ id: 'a', loc: [0, 0] }),
+                    Rapid.osmNode({ id: 'b', loc: [1, 0] }),
+                    Rapid.osmNode({ id: 'c', loc: [2, 0] }),
+                    Rapid.osmWay({ id: '-', nodes: ['a', 'b', 'c'] }),
+                    Rapid.osmRelation({id: 'r', members: [
                         { id: 'n1', type: 'node', role: 'forward' },
                         { id: '-', type: 'way', role: 'forward' },
                         { id: 'r1', type: 'relation', role: 'forward' },
@@ -456,7 +456,7 @@ describe('iD.actionSplit', function () {
                     ]})
                 ]);
 
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('r').members).to.eql([
                     { id: 'n1', type: 'node', role: 'forward' },
@@ -469,10 +469,10 @@ describe('iD.actionSplit', function () {
         });
 
         describe('splitting out-and-back routes', function () {
-            var a = iD.osmNode({ id: 'a', loc: [0, 0] });
-            var b = iD.osmNode({ id: 'b', loc: [0, 1] });
-            var c = iD.osmNode({ id: 'c', loc: [0, 2] });
-            var d = iD.osmNode({ id: 'd', loc: [0, 3] });
+            var a = Rapid.osmNode({ id: 'a', loc: [0, 0] });
+            var b = Rapid.osmNode({ id: 'b', loc: [0, 1] });
+            var c = Rapid.osmNode({ id: 'c', loc: [0, 2] });
+            var d = Rapid.osmNode({ id: 'd', loc: [0, 3] });
 
             it('splits out-and-back1 route at b', function () {
                 //
@@ -484,18 +484,18 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c ~~~> d
                 //    Relation: ['-', '=', '~', '~', '=', '-']
                 //
-                var graph = new iD.Graph([
+                var graph = new Rapid.Graph([
                     a, b, c, d,
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                    iD.osmWay({id: '~', nodes: ['c', 'd']}),
-                    iD.osmRelation({id: 'r', members: [
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                    Rapid.osmWay({id: '~', nodes: ['c', 'd']}),
+                    Rapid.osmRelation({id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '-', type: 'way'}
                     ]})
                 ]);
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['a', 'b']);
                 expect(graph.entity('=').nodes).to.eql(['b', 'c']);
@@ -513,18 +513,18 @@ describe('iD.actionSplit', function () {
                 //    a <=== b <--- c ~~~> d
                 //    Relation: ['=', '-', '~', '~', '-', '=']
                 //
-                var graph = new iD.Graph([
+                var graph = new Rapid.Graph([
                     a, b, c, d,
-                    iD.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
-                    iD.osmWay({id: '~', nodes: ['c', 'd']}),
-                    iD.osmRelation({id: 'r', members: [
+                    Rapid.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
+                    Rapid.osmWay({id: '~', nodes: ['c', 'd']}),
+                    Rapid.osmRelation({id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '-', type: 'way'}
                     ]})
                 ]);
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['c', 'b']);
                 expect(graph.entity('=').nodes).to.eql(['b', 'a']);
@@ -542,18 +542,18 @@ describe('iD.actionSplit', function () {
                 //    a ---> b ===> c <~~~ d
                 //    Relation: ['-', '=', '~', '~', '=', '-']
                 //
-                var graph = new iD.Graph([
+                var graph = new Rapid.Graph([
                     a, b, c, d,
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                    iD.osmWay({id: '~', nodes: ['d', 'c']}),
-                    iD.osmRelation({id: 'r', members: [
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                    Rapid.osmWay({id: '~', nodes: ['d', 'c']}),
+                    Rapid.osmRelation({id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '-', type: 'way'}
                     ]})
                 ]);
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['a', 'b']);
                 expect(graph.entity('=').nodes).to.eql(['b', 'c']);
@@ -571,18 +571,18 @@ describe('iD.actionSplit', function () {
                 //    a <=== b <--- c <~~~ d
                 //    Relation: ['=', '-', '~', '~', '-', '=']
                 //
-                var graph = new iD.Graph([
+                var graph = new Rapid.Graph([
                     a, b, c, d,
-                    iD.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
-                    iD.osmWay({id: '~', nodes: ['d', 'c']}),
-                    iD.osmRelation({id: 'r', members: [
+                    Rapid.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
+                    Rapid.osmWay({id: '~', nodes: ['d', 'c']}),
+                    Rapid.osmRelation({id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '~', type: 'way'},
                         {id: '-', type: 'way'}
                     ]})
                 ]);
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['c', 'b']);
                 expect(graph.entity('=').nodes).to.eql(['b', 'a']);
@@ -592,11 +592,11 @@ describe('iD.actionSplit', function () {
         });
 
         describe('splitting hat routes', function () {
-            var a = iD.osmNode({id: 'a', loc: [0, 0]});
-            var b = iD.osmNode({id: 'b', loc: [1, 0]});
-            var c = iD.osmNode({id: 'c', loc: [2, 1]});
-            var d = iD.osmNode({id: 'd', loc: [3, 0]});
-            var e = iD.osmNode({id: 'e', loc: [4, 0]});
+            var a = Rapid.osmNode({id: 'a', loc: [0, 0]});
+            var b = Rapid.osmNode({id: 'b', loc: [1, 0]});
+            var c = Rapid.osmNode({id: 'c', loc: [2, 1]});
+            var d = Rapid.osmNode({id: 'd', loc: [3, 0]});
+            var e = Rapid.osmNode({id: 'e', loc: [4, 0]});
 
             //
             // Situation:
@@ -606,13 +606,13 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat1a = new iD.Graph([
+            var hat1a = new Rapid.Graph([
                 a, b, c, d, e,
-                iD.osmWay({id: '-', nodes: ['a', 'b']}),
-                iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
-                iD.osmWay({id: '~', nodes: ['b', 'd']}),
-                iD.osmWay({id: '=', nodes: ['d', 'e']}),
-                iD.osmRelation({
+                Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+                Rapid.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['b', 'd']}),
+                Rapid.osmWay({id: '=', nodes: ['d', 'e']}),
+                Rapid.osmRelation({
                     id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '#', type: 'way'},
@@ -631,13 +631,13 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '~', '#', '~', '=']
             //
-            var hat1b = new iD.Graph([
+            var hat1b = new Rapid.Graph([
                 a, b, c, d, e,
-                iD.osmWay({id: '-', nodes: ['a', 'b']}),
-                iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
-                iD.osmWay({id: '~', nodes: ['b', 'd']}),
-                iD.osmWay({id: '=', nodes: ['d', 'e']}),
-                iD.osmRelation({
+                Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+                Rapid.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['b', 'd']}),
+                Rapid.osmWay({id: '=', nodes: ['d', 'e']}),
+                Rapid.osmRelation({
                     id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '~', type: 'way'},
@@ -656,13 +656,13 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat2 = new iD.Graph([
+            var hat2 = new Rapid.Graph([
                 a, b, c, d, e,
-                iD.osmWay({id: '-', nodes: ['a', 'b']}),
-                iD.osmWay({id: '#', nodes: ['d', 'c', 'b']}),
-                iD.osmWay({id: '~', nodes: ['b', 'd']}),
-                iD.osmWay({id: '=', nodes: ['d', 'e']}),
-                iD.osmRelation({
+                Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+                Rapid.osmWay({id: '#', nodes: ['d', 'c', 'b']}),
+                Rapid.osmWay({id: '~', nodes: ['b', 'd']}),
+                Rapid.osmWay({id: '=', nodes: ['d', 'e']}),
+                Rapid.osmRelation({
                     id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '#', type: 'way'},
@@ -681,13 +681,13 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat3 = new iD.Graph([
+            var hat3 = new Rapid.Graph([
                 a, b, c, d, e,
-                iD.osmWay({id: '-', nodes: ['a', 'b']}),
-                iD.osmWay({id: '#', nodes: ['d', 'c', 'b']}),
-                iD.osmWay({id: '~', nodes: ['d', 'b']}),
-                iD.osmWay({id: '=', nodes: ['d', 'e']}),
-                iD.osmRelation({
+                Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+                Rapid.osmWay({id: '#', nodes: ['d', 'c', 'b']}),
+                Rapid.osmWay({id: '~', nodes: ['d', 'b']}),
+                Rapid.osmWay({id: '=', nodes: ['d', 'e']}),
+                Rapid.osmRelation({
                     id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '#', type: 'way'},
@@ -706,13 +706,13 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat4 = new iD.Graph([
+            var hat4 = new Rapid.Graph([
                 a, b, c, d, e,
-                iD.osmWay({id: '-', nodes: ['a', 'b']}),
-                iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
-                iD.osmWay({id: '~', nodes: ['d', 'b']}),
-                iD.osmWay({id: '=', nodes: ['d', 'e']}),
-                iD.osmRelation({
+                Rapid.osmWay({id: '-', nodes: ['a', 'b']}),
+                Rapid.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['d', 'b']}),
+                Rapid.osmWay({id: '=', nodes: ['d', 'e']}),
+                Rapid.osmRelation({
                     id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '#', type: 'way'},
@@ -731,13 +731,13 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['-', '#', '~', '#', '=']
             //
-            var hat5 = new iD.Graph([
+            var hat5 = new Rapid.Graph([
                 a, b, c, d, e,
-                iD.osmWay({id: '-', nodes: ['b', 'a']}),
-                iD.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
-                iD.osmWay({id: '~', nodes: ['b', 'd']}),
-                iD.osmWay({id: '=', nodes: ['e', 'd']}),
-                iD.osmRelation({
+                Rapid.osmWay({id: '-', nodes: ['b', 'a']}),
+                Rapid.osmWay({id: '#', nodes: ['b', 'c', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['b', 'd']}),
+                Rapid.osmWay({id: '=', nodes: ['e', 'd']}),
+                Rapid.osmRelation({
                     id: 'r', members: [
                         {id: '-', type: 'way'},
                         {id: '#', type: 'way'},
@@ -758,7 +758,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['-', '#', '*', '~', '#', '*', '=']
                 //
                 var graph = hat1a;
-                graph = iD.actionSplit('c', ['*'])(graph);
+                graph = Rapid.actionSplit('c', ['*'])(graph);
 
                 expect(graph.entity('#').nodes).to.eql(['b', 'c']);
                 expect(graph.entity('*').nodes).to.eql(['c', 'd']);
@@ -775,7 +775,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['-', '~', '*', '#', '~', '=']
                 //
                 var graph = hat1b;
-                graph = iD.actionSplit('c', ['*'])(graph);
+                graph = Rapid.actionSplit('c', ['*'])(graph);
 
                 expect(graph.entity('#').nodes).to.eql(['b', 'c']);
                 expect(graph.entity('*').nodes).to.eql(['c', 'd']);
@@ -792,7 +792,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['-', '*', '#', '~', '*', '#', '=']
                 //
                 var graph = hat2;
-                graph = iD.actionSplit('c', ['*'])(graph);
+                graph = Rapid.actionSplit('c', ['*'])(graph);
 
                 expect(graph.entity('#').nodes).to.eql(['d', 'c']);
                 expect(graph.entity('*').nodes).to.eql(['c', 'b']);
@@ -809,7 +809,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['-', '*', '#', '~', '*', '#', '=']
                 //
                 var graph = hat3;
-                graph = iD.actionSplit('c', ['*'])(graph);
+                graph = Rapid.actionSplit('c', ['*'])(graph);
 
                 expect(graph.entity('#').nodes).to.eql(['d', 'c']);
                 expect(graph.entity('*').nodes).to.eql(['c', 'b']);
@@ -826,7 +826,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['-', '*', '#', '~', '*', '#', '=']
                 //
                 var graph = hat4;
-                graph = iD.actionSplit('c', ['*'])(graph);
+                graph = Rapid.actionSplit('c', ['*'])(graph);
 
                 expect(graph.entity('#').nodes).to.eql(['b', 'c']);
                 expect(graph.entity('*').nodes).to.eql(['c', 'd']);
@@ -843,7 +843,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['-', '#', '*', '~', '#', '*', '=']
                 //
                 var graph = hat5;
-                graph = iD.actionSplit('c', ['*'])(graph);
+                graph = Rapid.actionSplit('c', ['*'])(graph);
 
                 expect(graph.entity('#').nodes).to.eql(['b', 'c']);
                 expect(graph.entity('*').nodes).to.eql(['c', 'd']);
@@ -853,12 +853,12 @@ describe('iD.actionSplit', function () {
         });
 
         describe('splitting spoon routes', function () {
-            var a = iD.osmNode({ id: 'a', loc: [0, 0] });
-            var b = iD.osmNode({ id: 'b', loc: [0, 1] });
-            var c = iD.osmNode({ id: 'c', loc: [1, 1] });
-            var d = iD.osmNode({ id: 'd', loc: [1, 0] });
-            var e = iD.osmNode({ id: 'e', loc: [2, 0] });
-            var f = iD.osmNode({ id: 'f', loc: [3, 0] });
+            var a = Rapid.osmNode({ id: 'a', loc: [0, 0] });
+            var b = Rapid.osmNode({ id: 'b', loc: [0, 1] });
+            var c = Rapid.osmNode({ id: 'c', loc: [1, 1] });
+            var d = Rapid.osmNode({ id: 'd', loc: [1, 0] });
+            var e = Rapid.osmNode({ id: 'e', loc: [2, 0] });
+            var f = Rapid.osmNode({ id: 'f', loc: [3, 0] });
 
             //
             // Situation:
@@ -868,11 +868,11 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon1 = new iD.Graph([
+            var spoon1 = new Rapid.Graph([
                 a, b, c, d, e, f,
-                iD.osmWay({id: '-', nodes: ['d', 'a', 'b', 'c', 'd']}),
-                iD.osmWay({id: '~', nodes: ['d', 'e', 'f']}),
-                iD.osmRelation({id: 'r', members: [
+                Rapid.osmWay({id: '-', nodes: ['d', 'a', 'b', 'c', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['d', 'e', 'f']}),
+                Rapid.osmRelation({id: 'r', members: [
                     {id: '~', type: 'way'},
                     {id: '-', type: 'way'},
                     {id: '~', type: 'way'}
@@ -887,11 +887,11 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon2 = new iD.Graph([
+            var spoon2 = new Rapid.Graph([
                 a, b, c, d, e, f,
-                iD.osmWay({id: '-', nodes: ['d', 'c', 'b', 'a', 'd']}),
-                iD.osmWay({id: '~', nodes: ['d', 'e', 'f']}),
-                iD.osmRelation({id: 'r', members: [
+                Rapid.osmWay({id: '-', nodes: ['d', 'c', 'b', 'a', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['d', 'e', 'f']}),
+                Rapid.osmRelation({id: 'r', members: [
                     {id: '~', type: 'way'},
                     {id: '-', type: 'way'},
                     {id: '~', type: 'way'}
@@ -906,11 +906,11 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon3 = new iD.Graph([
+            var spoon3 = new Rapid.Graph([
                 a, b, c, d, e, f,
-                iD.osmWay({id: '-', nodes: ['d', 'a', 'b', 'c', 'd']}),
-                iD.osmWay({id: '~', nodes: ['f', 'e', 'd']}),
-                iD.osmRelation({id: 'r', members: [
+                Rapid.osmWay({id: '-', nodes: ['d', 'a', 'b', 'c', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['f', 'e', 'd']}),
+                Rapid.osmRelation({id: 'r', members: [
                     {id: '~', type: 'way'},
                     {id: '-', type: 'way'},
                     {id: '~', type: 'way'}
@@ -925,11 +925,11 @@ describe('iD.actionSplit', function () {
             //
             //    Relation: ['~', '-', '~']
             //
-            var spoon4 = new iD.Graph([
+            var spoon4 = new Rapid.Graph([
                 a, b, c, d, e, f,
-                iD.osmWay({id: '-', nodes: ['d', 'c', 'b', 'a', 'd']}),
-                iD.osmWay({id: '~', nodes: ['f', 'e', 'd']}),
-                iD.osmRelation({id: 'r', members: [
+                Rapid.osmWay({id: '-', nodes: ['d', 'c', 'b', 'a', 'd']}),
+                Rapid.osmWay({id: '~', nodes: ['f', 'e', 'd']}),
+                Rapid.osmRelation({id: 'r', members: [
                     {id: '~', type: 'way'},
                     {id: '-', type: 'way'},
                     {id: '~', type: 'way'}
@@ -946,7 +946,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['~', '-', '=', '~']
                 //
                 var graph = spoon1;
-                graph = iD.actionSplit('d', ['='])(graph);
+                graph = Rapid.actionSplit('d', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['d', 'a', 'b']);
                 expect(graph.entity('=').nodes).to.eql(['b', 'c', 'd']);
@@ -964,7 +964,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['~', '-', '=', '~']
                 //
                 var graph = spoon2;
-                graph = iD.actionSplit('d', ['='])(graph);
+                graph = Rapid.actionSplit('d', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['b', 'a', 'd']);
                 expect(graph.entity('=').nodes).to.eql(['d', 'c', 'b']);
@@ -982,7 +982,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['~', '-', '=', '~']
                 //
                 var graph = spoon3;
-                graph = iD.actionSplit('d', ['='])(graph);
+                graph = Rapid.actionSplit('d', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['d', 'a', 'b']);
                 expect(graph.entity('=').nodes).to.eql(['b', 'c', 'd']);
@@ -1000,7 +1000,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['~', '-', '=', '~']
                 //
                 var graph = spoon4;
-                graph = iD.actionSplit('d', ['='])(graph);
+                graph = Rapid.actionSplit('d', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['b', 'a', 'd']);
                 expect(graph.entity('=').nodes).to.eql(['d', 'c', 'b']);
@@ -1018,7 +1018,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['=', '~', '-', '~', '=']
                 //
                 var graph = spoon1;
-                graph = iD.actionSplit('e', ['='])(graph);
+                graph = Rapid.actionSplit('e', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['d', 'a', 'b', 'c', 'd']);
                 expect(graph.entity('~').nodes).to.eql(['d', 'e']);
@@ -1036,7 +1036,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['=', '~', '-', '~', '=']
                 //
                 var graph = spoon2;
-                graph = iD.actionSplit('e', ['='])(graph);
+                graph = Rapid.actionSplit('e', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['d', 'c', 'b', 'a', 'd']);
                 expect(graph.entity('~').nodes).to.eql(['d', 'e']);
@@ -1054,7 +1054,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['~', '=', '-', '=', '~']
                 //
                 var graph = spoon3;
-                graph = iD.actionSplit('e', ['='])(graph);
+                graph = Rapid.actionSplit('e', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['d', 'a', 'b', 'c', 'd']);
                 expect(graph.entity('~').nodes).to.eql(['f', 'e']);
@@ -1072,7 +1072,7 @@ describe('iD.actionSplit', function () {
                 //    Relation: ['~', '=', '-', '=', '~']
                 //
                 var graph = spoon4;
-                graph = iD.actionSplit('e', ['='])(graph);
+                graph = Rapid.actionSplit('e', ['='])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['d', 'c', 'b', 'a', 'd']);
                 expect(graph.entity('~').nodes).to.eql(['f', 'e']);
@@ -1098,15 +1098,15 @@ describe('iD.actionSplit', function () {
                 //    ||     |
                 //    d ==== c
                 //
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0,1]}),
-                    iD.osmNode({id: 'b', loc: [1,1]}),
-                    iD.osmNode({id: 'c', loc: [1,0]}),
-                    iD.osmNode({id: 'd', loc: [0,0]}),
-                    iD.osmWay({id: '-', tags: {area: 'yes'}, nodes: ['a', 'b', 'c', 'd', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0,1]}),
+                    Rapid.osmNode({id: 'b', loc: [1,1]}),
+                    Rapid.osmNode({id: 'c', loc: [1,0]}),
+                    Rapid.osmNode({id: 'd', loc: [0,0]}),
+                    Rapid.osmWay({id: '-', tags: {area: 'yes'}, nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
 
-                graph = iD.actionSplit('a', ['='])(graph);
+                graph = Rapid.actionSplit('a', ['='])(graph);
                 expect(graph.entity('-').tags).to.eql({});
                 expect(graph.entity('=').tags).to.eql({});
                 expect(graph.parentRelations(graph.entity('-'))).to.have.length(1);
@@ -1120,15 +1120,15 @@ describe('iD.actionSplit', function () {
             });
 
             it('splits only the line of a node shared by a line and an area', function () {
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0,1]}),
-                    iD.osmNode({id: 'b', loc: [1,1]}),
-                    iD.osmNode({id: 'c', loc: [1,0]}),
-                    iD.osmWay({id: '-',  nodes: ['a', 'b', 'c']}),
-                    iD.osmWay({id: '=',  nodes: ['a', 'b', 'c', 'a'], tags: {area: 'yes'}})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0,1]}),
+                    Rapid.osmNode({id: 'b', loc: [1,1]}),
+                    Rapid.osmNode({id: 'c', loc: [1,0]}),
+                    Rapid.osmWay({id: '-',  nodes: ['a', 'b', 'c']}),
+                    Rapid.osmWay({id: '=',  nodes: ['a', 'b', 'c', 'a'], tags: {area: 'yes'}})
                 ]);
 
-                graph = iD.actionSplit('b', ['~'])(graph);
+                graph = Rapid.actionSplit('b', ['~'])(graph);
 
                 expect(graph.entity('-').nodes).to.eql(['b', 'c']);
                 expect(graph.entity('~').nodes).to.eql(['a', 'b']);
@@ -1137,15 +1137,15 @@ describe('iD.actionSplit', function () {
             });
 
             it('converts simple multipolygon to a proper multipolygon', function () {
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a'}),
-                    iD.osmNode({id: 'b'}),
-                    iD.osmNode({id: 'c'}),
-                    iD.osmWay({'id': '-', nodes: ['a', 'b', 'c'], tags: { area: 'yes' }}),
-                    iD.osmRelation({id: 'r', members: [{id: '-', type: 'way', role: 'outer'}], tags: {type: 'multipolygon'}})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a'}),
+                    Rapid.osmNode({id: 'b'}),
+                    Rapid.osmNode({id: 'c'}),
+                    Rapid.osmWay({'id': '-', nodes: ['a', 'b', 'c'], tags: { area: 'yes' }}),
+                    Rapid.osmRelation({id: 'r', members: [{id: '-', type: 'way', role: 'outer'}], tags: {type: 'multipolygon'}})
                 ]);
 
-                graph = iD.actionSplit('b', ['='])(graph);
+                graph = Rapid.actionSplit('b', ['='])(graph);
 
                 expect(graph.entity('-').tags).to.eql({});
                 expect(graph.entity('r').tags).to.eql({type: 'multipolygon', area: 'yes' });
@@ -1169,21 +1169,21 @@ describe('iD.actionSplit', function () {
                     //    a ----> b ====> c ~~~~ d
                     // A restriction from ==== to ~~~~ via node c.
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                        iD.osmWay({id: '~', nodes: ['c', 'd']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                        Rapid.osmWay({id: '~', nodes: ['c', 'd']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '-', role: 'from', type: 'way'},
                             {id: '~', role: 'to', type: 'way'},
                             {id: 'c', role: 'via', type: 'node'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '=', role: 'from', type: 'way'},
@@ -1203,21 +1203,21 @@ describe('iD.actionSplit', function () {
                     //    a ----> b ====> c ~~~~ d
                     // A restriction from ~~~~ to ==== via node c.
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                        iD.osmWay({id: '~', nodes: ['c', 'd']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                        Rapid.osmWay({id: '~', nodes: ['c', 'd']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '~', role: 'from', type: 'way'},
                             {id: '-', role: 'to', type: 'way'},
                             {id: 'c', role: 'via', type: 'node'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '~', role: 'from', type: 'way'},
@@ -1237,21 +1237,21 @@ describe('iD.actionSplit', function () {
                     //    a ----> b ====> c ~~~~ d
                     // A restriction from ==== to ==== via node c.
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                        iD.osmWay({id: '~', nodes: ['c', 'd']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                        Rapid.osmWay({id: '~', nodes: ['c', 'd']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '-', role: 'from', type: 'way'},
                             {id: '-', role: 'to', type: 'way'},
                             {id: 'c', role: 'via', type: 'node'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '=', role: 'from', type: 'way'},
@@ -1279,23 +1279,23 @@ describe('iD.actionSplit', function () {
                     //
                     // A restriction from ==== to ~~~~ via way |
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmNode({id: 'e'}),
-                        iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                        iD.osmWay({id: '|', nodes: ['c', 'd']}),
-                        iD.osmWay({id: '~', nodes: ['d', 'e']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmNode({id: 'e'}),
+                        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                        Rapid.osmWay({id: '|', nodes: ['c', 'd']}),
+                        Rapid.osmWay({id: '~', nodes: ['d', 'e']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '-', role: 'from', type: 'way'},
                             {id: '~', role: 'to', type: 'way'},
                             {id: '|', role: 'via', type: 'way'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '=', role: 'from', type: 'way'},
@@ -1323,23 +1323,23 @@ describe('iD.actionSplit', function () {
                     //
                     // A restriction from ~~~~ to ==== via way |
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmNode({id: 'e'}),
-                        iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                        iD.osmWay({id: '|', nodes: ['c', 'd']}),
-                        iD.osmWay({id: '~', nodes: ['d', 'e']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmNode({id: 'e'}),
+                        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                        Rapid.osmWay({id: '|', nodes: ['c', 'd']}),
+                        Rapid.osmWay({id: '~', nodes: ['d', 'e']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '~', role: 'from', type: 'way'},
                             {id: '-', role: 'to', type: 'way'},
                             {id: '|', role: 'via', type: 'way'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '~', role: 'from', type: 'way'},
@@ -1368,23 +1368,23 @@ describe('iD.actionSplit', function () {
                     //
                     // A restriction from | to ‖ via ways ----, ====
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmNode({id: 'e'}),
-                        iD.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
-                        iD.osmWay({id: '|', nodes: ['d', 'a']}),
-                        iD.osmWay({id: '‖', nodes: ['e', 'c']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmNode({id: 'e'}),
+                        Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']}),
+                        Rapid.osmWay({id: '|', nodes: ['d', 'a']}),
+                        Rapid.osmWay({id: '‖', nodes: ['e', 'c']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '|', role: 'from', type: 'way'},
                             {id: '-', role: 'via', type: 'way'},
                             {id: '‖', role: 'to', type: 'way'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '|', role: 'from', type: 'way'},
@@ -1405,21 +1405,21 @@ describe('iD.actionSplit', function () {
                     //    a <==== b <---- c ~~~~ d
                     // A restriction from ---- to ~~~~ via c.
                     //
-                    var graph = new iD.Graph([
-                        iD.osmNode({id: 'a'}),
-                        iD.osmNode({id: 'b'}),
-                        iD.osmNode({id: 'c'}),
-                        iD.osmNode({id: 'd'}),
-                        iD.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
-                        iD.osmWay({id: '~', nodes: ['c', 'd']}),
-                        iD.osmRelation({id: 'r', tags: {type: type}, members: [
+                    var graph = new Rapid.Graph([
+                        Rapid.osmNode({id: 'a'}),
+                        Rapid.osmNode({id: 'b'}),
+                        Rapid.osmNode({id: 'c'}),
+                        Rapid.osmNode({id: 'd'}),
+                        Rapid.osmWay({id: '-', nodes: ['c', 'b', 'a']}),
+                        Rapid.osmWay({id: '~', nodes: ['c', 'd']}),
+                        Rapid.osmRelation({id: 'r', tags: {type: type}, members: [
                             {id: '-', role: 'from', type: 'way'},
                             {id: '~', role: 'to', type: 'way'},
                             {id: 'c', role: 'via', type: 'node'}
                         ]})
                     ]);
 
-                    graph = iD.actionSplit('b', ['='])(graph);
+                    graph = Rapid.actionSplit('b', ['='])(graph);
 
                     expect(graph.entity('r').members).to.eql([
                         {id: '-', role: 'from', type: 'way'},

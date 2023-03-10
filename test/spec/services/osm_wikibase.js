@@ -1,16 +1,16 @@
-describe('iD.serviceOsmWikibase', function () {
+describe('serviceOsmWikibase', function () {
   var wikibase;
 
   before(function () {
-    iD.services.osmWikibase = iD.serviceOsmWikibase;
+    Rapid.services.osmWikibase = Rapid.serviceOsmWikibase;
   });
 
   after(function () {
-    delete iD.services.osmWikibase;
+    delete Rapid.services.osmWikibase;
   });
 
   beforeEach(function () {
-    wikibase = iD.services.osmWikibase;
+    wikibase = Rapid.services.osmWikibase;
     wikibase.init();
   });
 

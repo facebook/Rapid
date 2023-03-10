@@ -6,9 +6,9 @@ describe.skip('UrlHash', () => {
   beforeEach(() => {
     window.location.hash = '#background=none';   // Try not to load imagery
     const container = d3.select(document.createElement('div'));
-    context = iD.coreContext().assetPath('../dist/').init().container(container);
+    context = Rapid.coreContext().assetPath('../dist/').init().container(container);
     container.call(context.map().render);
-    hash = new iD.UrlHash(context);
+    hash = new Rapid.UrlHash(context);
   });
 
   afterEach(() => {

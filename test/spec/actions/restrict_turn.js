@@ -1,14 +1,14 @@
-describe('iD.actionRestrictTurn', function() {
+describe('actionRestrictTurn', function() {
     it('adds a via node restriction to an unrestricted turn', function() {
         //
         // u === * --- w
         //
-        var graph = new iD.Graph([
-            iD.osmNode({id: 'u'}),
-            iD.osmNode({id: '*'}),
-            iD.osmNode({id: 'w'}),
-            iD.osmWay({id: '=', nodes: ['u', '*']}),
-            iD.osmWay({id: '-', nodes: ['*', 'w']})
+        var graph = new Rapid.Graph([
+            Rapid.osmNode({id: 'u'}),
+            Rapid.osmNode({id: '*'}),
+            Rapid.osmNode({id: 'w'}),
+            Rapid.osmWay({id: '=', nodes: ['u', '*']}),
+            Rapid.osmWay({id: '-', nodes: ['*', 'w']})
         ]);
 
         var turn = {
@@ -17,7 +17,7 @@ describe('iD.actionRestrictTurn', function() {
             to:   { node: 'w', way: '-' }
         };
 
-        var action = iD.actionRestrictTurn(turn, 'no_straight_on', 'r');
+        var action = Rapid.actionRestrictTurn(turn, 'no_straight_on', 'r');
         graph = action(graph);
 
         var r = graph.entity('r');
@@ -43,14 +43,14 @@ describe('iD.actionRestrictTurn', function() {
         //       |
         // w --- v2
         //
-        var graph = new iD.Graph([
-            iD.osmNode({id: 'u'}),
-            iD.osmNode({id: 'v1'}),
-            iD.osmNode({id: 'v2'}),
-            iD.osmNode({id: 'w'}),
-            iD.osmWay({id: '=', nodes: ['u', 'v1']}),
-            iD.osmWay({id: '|', nodes: ['v1', 'v2']}),
-            iD.osmWay({id: '-', nodes: ['v2', 'w']})
+        var graph = new Rapid.Graph([
+            Rapid.osmNode({id: 'u'}),
+            Rapid.osmNode({id: 'v1'}),
+            Rapid.osmNode({id: 'v2'}),
+            Rapid.osmNode({id: 'w'}),
+            Rapid.osmWay({id: '=', nodes: ['u', 'v1']}),
+            Rapid.osmWay({id: '|', nodes: ['v1', 'v2']}),
+            Rapid.osmWay({id: '-', nodes: ['v2', 'w']})
         ]);
 
         var turn = {
@@ -59,7 +59,7 @@ describe('iD.actionRestrictTurn', function() {
             to:   { node: 'w', way: '-' }
         };
 
-        var action = iD.actionRestrictTurn(turn, 'no_u_turn', 'r');
+        var action = Rapid.actionRestrictTurn(turn, 'no_u_turn', 'r');
         graph = action(graph);
 
         var r = graph.entity('r');

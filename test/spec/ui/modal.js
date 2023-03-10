@@ -1,4 +1,4 @@
-describe('iD.uiModal', function () {
+describe('uiModal', function () {
     var elem;
 
     beforeEach(function() {
@@ -13,17 +13,17 @@ describe('iD.uiModal', function () {
     });
 
     it('can be instantiated', function() {
-        var selection = iD.uiModal(elem);
+        var selection = Rapid.uiModal(elem);
         expect(selection).to.be.ok;
     });
 
     it('has a content section', function () {
-        var selection = iD.uiModal(elem);
+        var selection = Rapid.uiModal(elem);
         expect(selection.selectAll('div.content').size()).to.equal(1);
     });
 
     it('can be dismissed by calling close function', function (done) {
-        var selection = iD.uiModal(elem);
+        var selection = Rapid.uiModal(elem);
         selection.close();
         window.setTimeout(function() {
             d3.timerFlush();
@@ -33,7 +33,7 @@ describe('iD.uiModal', function () {
     });
 
     it('can be dismissed by clicking the close button', function (done) {
-        var selection = iD.uiModal(elem);
+        var selection = Rapid.uiModal(elem);
         happen.click(selection.select('button.close').node());
         window.setTimeout(function() {
             d3.timerFlush();
@@ -43,7 +43,7 @@ describe('iD.uiModal', function () {
     });
 
     it('can be dismissed by pressing escape', function (done) {
-        var selection = iD.uiModal(elem);
+        var selection = Rapid.uiModal(elem);
         happen.keydown(document, {keyCode: 27});
         happen.keyup(document, {keyCode: 27});
         window.setTimeout(function() {
@@ -54,7 +54,7 @@ describe('iD.uiModal', function () {
     });
 
     it('can be dismissed by pressing backspace', function (done) {
-        var selection = iD.uiModal(elem);
+        var selection = Rapid.uiModal(elem);
         happen.keydown(document, {keyCode: 8});
         happen.keyup(document, {keyCode: 8});
         window.setTimeout(function() {

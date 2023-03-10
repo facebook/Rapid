@@ -1,100 +1,100 @@
-describe('iD.actionDeleteWay', function() {
+describe('actionDeleteWay', function() {
     it('removes the way from the graph', function() {
-        var way    = iD.osmWay(),
-            action = iD.actionDeleteWay(way.id),
-            graph  = new iD.Graph([way]).update(action);
+        var way    = Rapid.osmWay(),
+            action = Rapid.actionDeleteWay(way.id),
+            graph  = new Rapid.Graph([way]).update(action);
         expect(graph.hasEntity(way.id)).to.be.undefined;
     });
 
     it('removes a way from parent relations', function() {
-        var way      = iD.osmWay(),
-            relation = iD.osmRelation({members: [{ id: way.id }, { id: 'w-2' }]}),
-            action   = iD.actionDeleteWay(way.id),
-            graph    = new iD.Graph([way, relation]).update(action),
+        var way      = Rapid.osmWay(),
+            relation = Rapid.osmRelation({members: [{ id: way.id }, { id: 'w-2' }]}),
+            action   = Rapid.actionDeleteWay(way.id),
+            graph    = new Rapid.Graph([way, relation]).update(action),
             ids      = graph.entity(relation.id).members.map(function (m) { return m.id; });
         expect(ids).not.to.contain(way.id);
     });
 
     it('deletes member nodes not referenced by another parent', function() {
-        var node   = iD.osmNode(),
-            way    = iD.osmWay({nodes: [node.id]}),
-            action = iD.actionDeleteWay(way.id),
-            graph  = new iD.Graph([node, way]).update(action);
+        var node   = Rapid.osmNode(),
+            way    = Rapid.osmWay({nodes: [node.id]}),
+            action = Rapid.actionDeleteWay(way.id),
+            graph  = new Rapid.Graph([node, way]).update(action);
         expect(graph.hasEntity(node.id)).to.be.undefined;
     });
 
     it('does not delete member nodes referenced by another parent', function() {
-        var node   = iD.osmNode(),
-            way1   = iD.osmWay({nodes: [node.id]}),
-            way2   = iD.osmWay({nodes: [node.id]}),
-            action = iD.actionDeleteWay(way1.id),
-            graph  = new iD.Graph([node, way1, way2]).update(action);
+        var node   = Rapid.osmNode(),
+            way1   = Rapid.osmWay({nodes: [node.id]}),
+            way2   = Rapid.osmWay({nodes: [node.id]}),
+            action = Rapid.actionDeleteWay(way1.id),
+            graph  = new Rapid.Graph([node, way1, way2]).update(action);
         expect(graph.hasEntity(node.id)).not.to.be.undefined;
     });
 
     it('deletes multiple member nodes', function() {
-        var a      = iD.osmNode(),
-            b      = iD.osmNode(),
-            way    = iD.osmWay({nodes: [a.id, b.id]}),
-            action = iD.actionDeleteWay(way.id),
-            graph  = new iD.Graph([a, b, way]).update(action);
+        var a      = Rapid.osmNode(),
+            b      = Rapid.osmNode(),
+            way    = Rapid.osmWay({nodes: [a.id, b.id]}),
+            action = Rapid.actionDeleteWay(way.id),
+            graph  = new Rapid.Graph([a, b, way]).update(action);
         expect(graph.hasEntity(a.id)).to.be.undefined;
         expect(graph.hasEntity(b.id)).to.be.undefined;
     });
 
     it('deletes a circular way\'s start/end node', function() {
-        var a      = iD.osmNode(),
-            b      = iD.osmNode(),
-            c      = iD.osmNode(),
-            way    = iD.osmWay({nodes: [a.id, b.id, c.id, a.id]}),
-            action = iD.actionDeleteWay(way.id),
-            graph  = new iD.Graph([a, b, c, way]).update(action);
+        var a      = Rapid.osmNode(),
+            b      = Rapid.osmNode(),
+            c      = Rapid.osmNode(),
+            way    = Rapid.osmWay({nodes: [a.id, b.id, c.id, a.id]}),
+            action = Rapid.actionDeleteWay(way.id),
+            graph  = new Rapid.Graph([a, b, c, way]).update(action);
         expect(graph.hasEntity(a.id)).to.be.undefined;
         expect(graph.hasEntity(b.id)).to.be.undefined;
         expect(graph.hasEntity(c.id)).to.be.undefined;
     });
 
     it('does not delete member nodes with interesting tags', function() {
-        var node   = iD.osmNode({tags: {highway: 'traffic_signals'}}),
-            way    = iD.osmWay({nodes: [node.id]}),
-            action = iD.actionDeleteWay(way.id),
-            graph  = new iD.Graph([node, way]).update(action);
+        var node   = Rapid.osmNode({tags: {highway: 'traffic_signals'}}),
+            way    = Rapid.osmWay({nodes: [node.id]}),
+            action = Rapid.actionDeleteWay(way.id),
+            graph  = new Rapid.Graph([node, way]).update(action);
         expect(graph.hasEntity(node.id)).not.to.be.undefined;
     });
 
     it('deletes parent relations that become empty', function () {
-        var way      = iD.osmWay(),
-            relation = iD.osmRelation({members: [{ id: way.id }]}),
-            action   = iD.actionDeleteWay(way.id),
-            graph    = new iD.Graph([way, relation]).update(action);
+        var way      = Rapid.osmWay(),
+            relation = Rapid.osmRelation({members: [{ id: way.id }]}),
+            action   = Rapid.actionDeleteWay(way.id),
+            graph    = new Rapid.Graph([way, relation]).update(action);
         expect(graph.hasEntity(relation.id)).to.be.undefined;
     });
 
     // This was moved to operationDelete.  We should test operations and move this test there.
     // describe('#disabled', function () {
     //     it('returns \'part_of_relation\' for members of route and boundary relations', function () {
-    //         var a        = iD.osmWay({id: 'a'}),
-    //             b        = iD.osmWay({id: 'b'}),
-    //             route    = iD.osmRelation({members: [{id: 'a'}], tags: {type: 'route'}}),
-    //             boundary = iD.osmRelation({members: [{id: 'b'}], tags: {type: 'boundary'}}),
-    //             graph    = new iD.Graph([a, b, route, boundary]);
-    //         expect(iD.actionDeleteWay('a').disabled(graph)).to.equal('part_of_relation');
-    //         expect(iD.actionDeleteWay('b').disabled(graph)).to.equal('part_of_relation');
+    //         var a        = Rapid.osmWay({id: 'a'}),
+    //             b        = Rapid.osmWay({id: 'b'}),
+    //             route    = Rapid.osmRelation({members: [{id: 'a'}], tags: {type: 'route'}}),
+    //             boundary = Rapid.osmRelation({members: [{id: 'b'}], tags: {type: 'boundary'}}),
+    //             graph    = new Rapid.Graph([a, b, route, boundary]);
+    //         expect(Rapid.actionDeleteWay('a').disabled(graph)).to.equal('part_of_relation');
+    //         expect(Rapid.actionDeleteWay('b').disabled(graph)).to.equal('part_of_relation');
     //     });
 
     //     it('returns \'part_of_relation\' for outer members of multipolygons', function () {
-    //         var way      = iD.osmWay({id: 'w'}),
-    //             relation = iD.osmRelation({members: [{id: 'w', role: 'outer'}], tags: {type: 'multipolygon'}}),
-    //             graph    = new iD.Graph([way, relation]),
-    //             action   = iD.actionDeleteWay(way.id);
+    //         var way      = Rapid.osmWay({id: 'w'}),
+    //             relation = Rapid.osmRelation({members: [{id: 'w', role: 'outer'}], tags: {type: 'multipolygon'}}),
+    //             graph    = new Rapid.Graph([way, relation]),
+    //             action   = Rapid.actionDeleteWay(way.id);
     //         expect(action.disabled(graph)).to.equal('part_of_relation');
     //     });
 
     //     it('returns falsy for inner members of multipolygons', function () {
-    //         var way      = iD.osmWay({id: 'w'}),
-    //             relation = iD.osmRelation({members: [{id: 'w', role: 'inner'}], tags: {type: 'multipolygon'}}),
-    //             graph    = new iD.Graph([way, relation]),
-    //             action   = iD.actionDeleteWay(way.id);
+    //         var way      = Rapid.osmWay({id: 'w'}),
+    //             relation = Rapid.osmRelation({members: [{id: 'w', role: 'inner'}], tags: {type: 'multipolygon'}}),
+    //             graph    = new Rapid.Graph([way, relation]),
+    //             action   = Rapid.actionDeleteWay(way.id);
     //         expect(action.disabled(graph)).not.ok;
     //     });
     // });

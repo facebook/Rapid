@@ -1,66 +1,66 @@
-describe('iD.osmNode', function () {
+describe('osmNode', function () {
     it('returns a node', function () {
-        expect(iD.osmNode()).to.be.an.instanceOf(iD.osmNode);
-        expect(iD.osmNode().type).to.equal('node');
+        expect(Rapid.osmNode()).to.be.an.instanceOf(Rapid.osmNode);
+        expect(Rapid.osmNode().type).to.equal('node');
     });
 
     it('defaults tags to an empty object', function () {
-        expect(iD.osmNode().tags).to.eql({});
+        expect(Rapid.osmNode().tags).to.eql({});
     });
 
     it('sets tags as specified', function () {
-        expect(iD.osmNode({tags: {foo: 'bar'}}).tags).to.eql({foo: 'bar'});
+        expect(Rapid.osmNode({tags: {foo: 'bar'}}).tags).to.eql({foo: 'bar'});
     });
 
     describe('#extent', function() {
         it('returns a point extent', function() {
-            expect(iD.osmNode({loc: [5, 10]}).extent().equals(new sdk.Extent([5, 10], [5, 10]))).to.be.ok;
+            expect(Rapid.osmNode({loc: [5, 10]}).extent().equals(new sdk.Extent([5, 10], [5, 10]))).to.be.ok;
         });
     });
 
     describe('#intersects', function () {
         it('returns true for a node within the given extent', function () {
-            expect(iD.osmNode({loc: [0, 0]}).intersects(new sdk.Extent([-5, -5], [5, 5]))).to.equal(true);
+            expect(Rapid.osmNode({loc: [0, 0]}).intersects(new sdk.Extent([-5, -5], [5, 5]))).to.equal(true);
         });
 
         it('returns false for a node outside the given extend', function () {
-            expect(iD.osmNode({loc: [6, 6]}).intersects(new sdk.Extent([-5, -5], [5, 5]))).to.equal(false);
+            expect(Rapid.osmNode({loc: [6, 6]}).intersects(new sdk.Extent([-5, -5], [5, 5]))).to.equal(false);
         });
     });
 
     describe('#geometry', function () {
         it('returns \'vertex\' if the node is a member of any way', function () {
-            var node = iD.osmNode(),
-                way  = iD.osmWay({nodes: [node.id]}),
-                graph = new iD.Graph([node, way]);
+            var node = Rapid.osmNode(),
+                way  = Rapid.osmWay({nodes: [node.id]}),
+                graph = new Rapid.Graph([node, way]);
             expect(node.geometry(graph)).to.equal('vertex');
         });
 
         it('returns \'point\' if the node is not a member of any way', function () {
-            var node = iD.osmNode(),
-                graph = new iD.Graph([node]);
+            var node = Rapid.osmNode(),
+                graph = new Rapid.Graph([node]);
             expect(node.geometry(graph)).to.equal('point');
         });
     });
 
     describe('#isEndpoint', function () {
         it('returns true for a node at an endpoint along a linear way', function () {
-            var a = iD.osmNode({id: 'a'}),
-                b = iD.osmNode({id: 'b'}),
-                c = iD.osmNode({id: 'c'}),
-                w = iD.osmWay({nodes: ['a', 'b', 'c']}),
-                graph = new iD.Graph([a, b, c, w]);
+            var a = Rapid.osmNode({id: 'a'}),
+                b = Rapid.osmNode({id: 'b'}),
+                c = Rapid.osmNode({id: 'c'}),
+                w = Rapid.osmWay({nodes: ['a', 'b', 'c']}),
+                graph = new Rapid.Graph([a, b, c, w]);
             expect(a.isEndpoint(graph)).to.equal(true, 'linear way, beginning node');
             expect(b.isEndpoint(graph)).to.equal(false, 'linear way, middle node');
             expect(c.isEndpoint(graph)).to.equal(true, 'linear way, ending node');
         });
 
         it('returns false for nodes along a circular way', function () {
-            var a = iD.osmNode({id: 'a'}),
-                b = iD.osmNode({id: 'b'}),
-                c = iD.osmNode({id: 'c'}),
-                w = iD.osmWay({nodes: ['a', 'b', 'c', 'a']}),
-                graph = new iD.Graph([a, b, c, w]);
+            var a = Rapid.osmNode({id: 'a'}),
+                b = Rapid.osmNode({id: 'b'}),
+                c = Rapid.osmNode({id: 'c'}),
+                w = Rapid.osmWay({nodes: ['a', 'b', 'c', 'a']}),
+                graph = new Rapid.Graph([a, b, c, w]);
             expect(a.isEndpoint(graph)).to.equal(false, 'circular way, connector node');
             expect(b.isEndpoint(graph)).to.equal(false, 'circular way, middle node');
             expect(c.isEndpoint(graph)).to.equal(false, 'circular way, ending node');
@@ -69,114 +69,114 @@ describe('iD.osmNode', function () {
 
     describe('#isConnected', function () {
         it('returns true for a node with multiple parent ways, at least one interesting', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id]}),
-                w2 = iD.osmWay({nodes: [node.id], tags: { highway: 'residential' }}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id]}),
+                w2 = Rapid.osmWay({nodes: [node.id], tags: { highway: 'residential' }}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isConnected(graph)).to.equal(true);
         });
 
         it('returns false for a node with only area parent ways', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id], tags: { area: 'yes' }}),
-                w2 = iD.osmWay({nodes: [node.id], tags: { area: 'yes' }}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id], tags: { area: 'yes' }}),
+                w2 = Rapid.osmWay({nodes: [node.id], tags: { area: 'yes' }}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isConnected(graph)).to.equal(false);
         });
 
         it('returns false for a node with only uninteresting parent ways', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id]}),
-                w2 = iD.osmWay({nodes: [node.id]}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id]}),
+                w2 = Rapid.osmWay({nodes: [node.id]}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isConnected(graph)).to.equal(false);
         });
 
         it('returns false for a standalone node on a single parent way', function () {
-            var node = iD.osmNode(),
-                way = iD.osmWay({nodes: [node.id]}),
-                graph = new iD.Graph([node, way]);
+            var node = Rapid.osmNode(),
+                way = Rapid.osmWay({nodes: [node.id]}),
+                graph = new Rapid.Graph([node, way]);
             expect(node.isConnected(graph)).to.equal(false);
         });
 
         it('returns true for a self-intersecting node on a single parent way', function () {
-            var a = iD.osmNode({id: 'a'}),
-                b = iD.osmNode({id: 'b'}),
-                c = iD.osmNode({id: 'c'}),
-                w = iD.osmWay({nodes: ['a', 'b', 'c', 'b']}),
-                graph = new iD.Graph([a, b, c, w]);
+            var a = Rapid.osmNode({id: 'a'}),
+                b = Rapid.osmNode({id: 'b'}),
+                c = Rapid.osmNode({id: 'c'}),
+                w = Rapid.osmWay({nodes: ['a', 'b', 'c', 'b']}),
+                graph = new Rapid.Graph([a, b, c, w]);
             expect(b.isConnected(graph)).to.equal(true);
         });
 
         it('returns false for the connecting node of a closed way', function () {
-            var a = iD.osmNode({id: 'a'}),
-                b = iD.osmNode({id: 'b'}),
-                c = iD.osmNode({id: 'c'}),
-                w = iD.osmWay({nodes: ['a', 'b', 'c', 'a']}),
-                graph = new iD.Graph([a, b, c, w]);
+            var a = Rapid.osmNode({id: 'a'}),
+                b = Rapid.osmNode({id: 'b'}),
+                c = Rapid.osmNode({id: 'c'}),
+                w = Rapid.osmWay({nodes: ['a', 'b', 'c', 'a']}),
+                graph = new Rapid.Graph([a, b, c, w]);
             expect(a.isConnected(graph)).to.equal(false);
         });
     });
 
     describe('#isIntersection', function () {
         it('returns true for a node shared by more than one highway', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
-                w2 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
+                w2 = Rapid.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isIntersection(graph)).to.equal(true);
         });
 
         it('returns true for a node shared by more than one waterway', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
-                w2 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
+                w2 = Rapid.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isIntersection(graph)).to.equal(true);
         });
     });
 
     describe('#isHighwayIntersection', function () {
         it('returns true for a node shared by more than one highway', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
-                w2 = iD.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
+                w2 = Rapid.osmWay({nodes: [node.id], tags: {highway: 'residential'}}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isHighwayIntersection(graph)).to.equal(true);
         });
 
         it('returns false for a node shared by more than one waterway', function () {
-            var node = iD.osmNode(),
-                w1 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
-                w2 = iD.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
-                graph = new iD.Graph([node, w1, w2]);
+            var node = Rapid.osmNode(),
+                w1 = Rapid.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
+                w2 = Rapid.osmWay({nodes: [node.id], tags: {waterway: 'river'}}),
+                graph = new Rapid.Graph([node, w1, w2]);
             expect(node.isHighwayIntersection(graph)).to.equal(false);
         });
     });
 
     describe('#isDegenerate', function () {
         it('returns true if node has invalid loc', function () {
-            expect(iD.osmNode().isDegenerate()).to.be.equal(true, 'no loc');
-            expect(iD.osmNode({loc: ''}).isDegenerate()).to.be.equal(true, 'empty string loc');
-            expect(iD.osmNode({loc: []}).isDegenerate()).to.be.equal(true, 'empty array loc');
-            expect(iD.osmNode({loc: [0]}).isDegenerate()).to.be.equal(true, '1-array loc');
-            expect(iD.osmNode({loc: [0, 0, 0]}).isDegenerate()).to.be.equal(true, '3-array loc');
-            expect(iD.osmNode({loc: [-181, 0]}).isDegenerate()).to.be.equal(true, '< min lon');
-            expect(iD.osmNode({loc: [181, 0]}).isDegenerate()).to.be.equal(true, '> max lon');
-            expect(iD.osmNode({loc: [0, -91]}).isDegenerate()).to.be.equal(true, '< min lat');
-            expect(iD.osmNode({loc: [0, 91]}).isDegenerate()).to.be.equal(true, '> max lat');
-            expect(iD.osmNode({loc: [Infinity, 0]}).isDegenerate()).to.be.equal(true, 'Infinity lon');
-            expect(iD.osmNode({loc: [0, Infinity]}).isDegenerate()).to.be.equal(true, 'Infinity lat');
-            expect(iD.osmNode({loc: [NaN, 0]}).isDegenerate()).to.be.equal(true, 'NaN lon');
-            expect(iD.osmNode({loc: [0, NaN]}).isDegenerate()).to.be.equal(true, 'NaN lat');
+            expect(Rapid.osmNode().isDegenerate()).to.be.equal(true, 'no loc');
+            expect(Rapid.osmNode({loc: ''}).isDegenerate()).to.be.equal(true, 'empty string loc');
+            expect(Rapid.osmNode({loc: []}).isDegenerate()).to.be.equal(true, 'empty array loc');
+            expect(Rapid.osmNode({loc: [0]}).isDegenerate()).to.be.equal(true, '1-array loc');
+            expect(Rapid.osmNode({loc: [0, 0, 0]}).isDegenerate()).to.be.equal(true, '3-array loc');
+            expect(Rapid.osmNode({loc: [-181, 0]}).isDegenerate()).to.be.equal(true, '< min lon');
+            expect(Rapid.osmNode({loc: [181, 0]}).isDegenerate()).to.be.equal(true, '> max lon');
+            expect(Rapid.osmNode({loc: [0, -91]}).isDegenerate()).to.be.equal(true, '< min lat');
+            expect(Rapid.osmNode({loc: [0, 91]}).isDegenerate()).to.be.equal(true, '> max lat');
+            expect(Rapid.osmNode({loc: [Infinity, 0]}).isDegenerate()).to.be.equal(true, 'Infinity lon');
+            expect(Rapid.osmNode({loc: [0, Infinity]}).isDegenerate()).to.be.equal(true, 'Infinity lat');
+            expect(Rapid.osmNode({loc: [NaN, 0]}).isDegenerate()).to.be.equal(true, 'NaN lon');
+            expect(Rapid.osmNode({loc: [0, NaN]}).isDegenerate()).to.be.equal(true, 'NaN lat');
         });
 
         it('returns false if node has valid loc', function () {
-            expect(iD.osmNode({loc: [0, 0]}).isDegenerate()).to.be.equal(false, '2-array loc');
-            expect(iD.osmNode({loc: [-180, 0]}).isDegenerate()).to.be.equal(false, 'min lon');
-            expect(iD.osmNode({loc: [180, 0]}).isDegenerate()).to.be.equal(false, 'max lon');
-            expect(iD.osmNode({loc: [0, -90]}).isDegenerate()).to.be.equal(false, 'min lat');
-            expect(iD.osmNode({loc: [0, 90]}).isDegenerate()).to.be.equal(false, 'max lat');
+            expect(Rapid.osmNode({loc: [0, 0]}).isDegenerate()).to.be.equal(false, '2-array loc');
+            expect(Rapid.osmNode({loc: [-180, 0]}).isDegenerate()).to.be.equal(false, 'min lon');
+            expect(Rapid.osmNode({loc: [180, 0]}).isDegenerate()).to.be.equal(false, 'max lon');
+            expect(Rapid.osmNode({loc: [0, -90]}).isDegenerate()).to.be.equal(false, 'min lat');
+            expect(Rapid.osmNode({loc: [0, 90]}).isDegenerate()).to.be.equal(false, 'max lat');
         });
     });
 
@@ -184,17 +184,17 @@ describe('iD.osmNode', function () {
         var projection = function (_) { return _; };
         projection.project = function (_) { return _; };
         it('returns empty array if no direction tag', function () {
-            var node1 = iD.osmNode({ loc: [0, 0], tags: {}});
-            var graph = new iD.Graph([node1]);
+            var node1 = Rapid.osmNode({ loc: [0, 0], tags: {}});
+            var graph = new Rapid.Graph([node1]);
             expect(node1.directions(graph, projection)).to.eql([], 'no direction tag');
         });
 
         it('returns empty array if nonsense direction tag', function () {
-            var node1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'blah' }});
-            var node2 = iD.osmNode({ loc: [0, 0], tags: { direction: '' }});
-            var node3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NaN' }});
-            var node4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'eastwest' }});
-            var graph = new iD.Graph([node1, node2, node3, node4]);
+            var node1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'blah' }});
+            var node2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '' }});
+            var node3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'NaN' }});
+            var node4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'eastwest' }});
+            var graph = new Rapid.Graph([node1, node2, node3, node4]);
 
             expect(node1.directions(graph, projection)).to.eql([], 'nonsense direction tag');
             expect(node2.directions(graph, projection)).to.eql([], 'empty string direction tag');
@@ -203,12 +203,12 @@ describe('iD.osmNode', function () {
         });
 
         it('supports numeric direction tag', function () {
-            var node1 = iD.osmNode({ loc: [0, 0], tags: { direction: '0' }});
-            var node2 = iD.osmNode({ loc: [0, 0], tags: { direction: '45' }});
-            var node3 = iD.osmNode({ loc: [0, 0], tags: { direction: '-45' }});
-            var node4 = iD.osmNode({ loc: [0, 0], tags: { direction: '360' }});
-            var node5 = iD.osmNode({ loc: [0, 0], tags: { direction: '1000' }});
-            var graph = new iD.Graph([node1, node2, node3, node4, node5]);
+            var node1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '0' }});
+            var node2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '45' }});
+            var node3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '-45' }});
+            var node4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '360' }});
+            var node5 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '1000' }});
+            var graph = new Rapid.Graph([node1, node2, node3, node4, node5]);
 
             expect(node1.directions(graph, projection)).to.eql([0], 'numeric 0');
             expect(node2.directions(graph, projection)).to.eql([45], 'numeric 45');
@@ -218,87 +218,87 @@ describe('iD.osmNode', function () {
         });
 
         it('supports cardinal direction tags (test abbreviated and mixed case)', function () {
-            var nodeN1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'n' }});
-            var nodeN2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'N' }});
-            var nodeN3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'north' }});
-            var nodeN4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NOrth' }});
+            var nodeN1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'n' }});
+            var nodeN2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'N' }});
+            var nodeN3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'north' }});
+            var nodeN4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'NOrth' }});
 
-            var nodeNNE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'nne' }});
-            var nodeNNE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NnE' }});
-            var nodeNNE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'northnortheast' }});
-            var nodeNNE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NOrthnorTHEast' }});
+            var nodeNNE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'nne' }});
+            var nodeNNE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'NnE' }});
+            var nodeNNE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'northnortheast' }});
+            var nodeNNE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'NOrthnorTHEast' }});
 
-            var nodeNE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'ne' }});
-            var nodeNE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'nE' }});
-            var nodeNE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'northeast' }});
-            var nodeNE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'norTHEast' }});
+            var nodeNE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'ne' }});
+            var nodeNE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'nE' }});
+            var nodeNE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'northeast' }});
+            var nodeNE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'norTHEast' }});
 
-            var nodeENE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'ene' }});
-            var nodeENE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'EnE' }});
-            var nodeENE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'eastnortheast' }});
-            var nodeENE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'EAstnorTHEast' }});
+            var nodeENE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'ene' }});
+            var nodeENE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'EnE' }});
+            var nodeENE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'eastnortheast' }});
+            var nodeENE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'EAstnorTHEast' }});
 
-            var nodeE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'e' }});
-            var nodeE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'E' }});
-            var nodeE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'east' }});
-            var nodeE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'EAst' }});
+            var nodeE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'e' }});
+            var nodeE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'E' }});
+            var nodeE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'east' }});
+            var nodeE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'EAst' }});
 
-            var nodeESE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'ese' }});
-            var nodeESE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'EsE' }});
-            var nodeESE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'eastsoutheast' }});
-            var nodeESE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'EAstsouTHEast' }});
+            var nodeESE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'ese' }});
+            var nodeESE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'EsE' }});
+            var nodeESE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'eastsoutheast' }});
+            var nodeESE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'EAstsouTHEast' }});
 
-            var nodeSE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'se' }});
-            var nodeSE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'sE' }});
-            var nodeSE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'southeast' }});
-            var nodeSE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'souTHEast' }});
+            var nodeSE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'se' }});
+            var nodeSE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'sE' }});
+            var nodeSE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'southeast' }});
+            var nodeSE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'souTHEast' }});
 
-            var nodeSSE1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'sse' }});
-            var nodeSSE2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'SsE' }});
-            var nodeSSE3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'southsoutheast' }});
-            var nodeSSE4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'SOuthsouTHEast' }});
+            var nodeSSE1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'sse' }});
+            var nodeSSE2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'SsE' }});
+            var nodeSSE3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'southsoutheast' }});
+            var nodeSSE4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'SOuthsouTHEast' }});
 
-            var nodeS1 = iD.osmNode({ loc: [0, 0], tags: { direction: 's' }});
-            var nodeS2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'S' }});
-            var nodeS3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'south' }});
-            var nodeS4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'SOuth' }});
+            var nodeS1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 's' }});
+            var nodeS2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'S' }});
+            var nodeS3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'south' }});
+            var nodeS4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'SOuth' }});
 
-            var nodeSSW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'ssw' }});
-            var nodeSSW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'SsW' }});
-            var nodeSSW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'southsouthwest' }});
-            var nodeSSW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'SOuthsouTHWest' }});
+            var nodeSSW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'ssw' }});
+            var nodeSSW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'SsW' }});
+            var nodeSSW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'southsouthwest' }});
+            var nodeSSW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'SOuthsouTHWest' }});
 
-            var nodeSW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'sw' }});
-            var nodeSW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'sW' }});
-            var nodeSW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'southwest' }});
-            var nodeSW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'souTHWest' }});
+            var nodeSW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'sw' }});
+            var nodeSW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'sW' }});
+            var nodeSW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'southwest' }});
+            var nodeSW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'souTHWest' }});
 
-            var nodeWSW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'wsw' }});
-            var nodeWSW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'WsW' }});
-            var nodeWSW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'westsouthwest' }});
-            var nodeWSW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'WEstsouTHWest' }});
+            var nodeWSW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'wsw' }});
+            var nodeWSW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'WsW' }});
+            var nodeWSW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'westsouthwest' }});
+            var nodeWSW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'WEstsouTHWest' }});
 
-            var nodeW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'w' }});
-            var nodeW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'W' }});
-            var nodeW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'west' }});
-            var nodeW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'WEst' }});
+            var nodeW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'w' }});
+            var nodeW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'W' }});
+            var nodeW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'west' }});
+            var nodeW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'WEst' }});
 
-            var nodeWNW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'wnw' }});
-            var nodeWNW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'WnW' }});
-            var nodeWNW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'westnorthwest' }});
-            var nodeWNW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'WEstnorTHWest' }});
+            var nodeWNW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'wnw' }});
+            var nodeWNW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'WnW' }});
+            var nodeWNW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'westnorthwest' }});
+            var nodeWNW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'WEstnorTHWest' }});
 
-            var nodeNW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'nw' }});
-            var nodeNW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'nW' }});
-            var nodeNW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'northwest' }});
-            var nodeNW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'norTHWest' }});
+            var nodeNW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'nw' }});
+            var nodeNW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'nW' }});
+            var nodeNW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'northwest' }});
+            var nodeNW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'norTHWest' }});
 
-            var nodeNNW1 = iD.osmNode({ loc: [0, 0], tags: { direction: 'nnw' }});
-            var nodeNNW2 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NnW' }});
-            var nodeNNW3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'northnorthwest' }});
-            var nodeNNW4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'NOrthnorTHWest' }});
+            var nodeNNW1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'nnw' }});
+            var nodeNNW2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'NnW' }});
+            var nodeNNW3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'northnorthwest' }});
+            var nodeNNW4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'NOrthnorTHWest' }});
 
-            var graph = new iD.Graph([
+            var graph = new Rapid.Graph([
                 nodeN1, nodeN2, nodeN3, nodeN4,
                 nodeNNE1, nodeNNE2, nodeNNE3, nodeNNE4,
                 nodeNE1, nodeNE2, nodeNE3, nodeNE4,
@@ -399,180 +399,180 @@ describe('iD.osmNode', function () {
         });
 
         it('supports direction=forward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'forward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'forward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
         it('supports direction=backward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'backward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'backward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
         it('supports direction=both', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'both' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'both' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports direction=all', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'all' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'direction': 'all' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports traffic_signals:direction=forward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'forward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'forward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
         it('supports traffic_signals:direction=backward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'backward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'backward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
         it('supports traffic_signals:direction=both', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'both' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'both' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports traffic_signals:direction=all', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'all' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'traffic_signals:direction': 'all' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports railway:signal:direction=forward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'forward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'forward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
         it('supports railway:signal:direction=backward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'backward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'backward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
         it('supports railway:signal:direction=both', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'both' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'both' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports railway:signal:direction=all', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'all' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'railway:signal:direction': 'all' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports camera:direction=forward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'forward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'forward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([270]);
         });
 
         it('supports camera:direction=backward', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'backward' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'backward' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.eql([90]);
         });
 
         it('supports camera:direction=both', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('supports camera:direction=all', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'all' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'all' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270]);
         });
 
         it('returns directions for an all-way stop at a highway interstction', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'highway': 'stop', 'stop': 'all' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var node4 = iD.osmNode({ id: 'n4', loc: [0, -1] });
-            var node5 = iD.osmNode({ id: 'n5', loc: [0, 1] });
-            var way1 = iD.osmWay({ id: 'w1', nodes: ['n1','n2','n3'], tags: { 'highway': 'residential' } });
-            var way2 = iD.osmWay({ id: 'w2', nodes: ['n4','n2','n5'], tags: { 'highway': 'residential' } });
-            var graph = new iD.Graph([node1, node2, node3, node4, node5, way1, way2]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'highway': 'stop', 'stop': 'all' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var node4 = Rapid.osmNode({ id: 'n4', loc: [0, -1] });
+            var node5 = Rapid.osmNode({ id: 'n5', loc: [0, 1] });
+            var way1 = Rapid.osmWay({ id: 'w1', nodes: ['n1','n2','n3'], tags: { 'highway': 'residential' } });
+            var way2 = Rapid.osmWay({ id: 'w2', nodes: ['n4','n2','n5'], tags: { 'highway': 'residential' } });
+            var graph = new Rapid.Graph([node1, node2, node3, node4, node5, way1, way2]);
             expect(node2.directions(graph, projection)).to.have.members([0, 90, 180, 270]);
         });
 
         it('does not return directions for an all-way stop not at a highway interstction', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0], tags: { 'highway': 'stop', 'stop': 'all' } });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0] });
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0], tags: { 'highway': 'stop', 'stop': 'all' } });
-            var node4 = iD.osmNode({ id: 'n4', loc: [0, -1], tags: { 'highway': 'stop', 'stop': 'all' } });
-            var node5 = iD.osmNode({ id: 'n5', loc: [0, 1], tags: { 'highway': 'stop', 'stop': 'all' } });
-            var way1 = iD.osmWay({ id: 'w1', nodes: ['n1','n2','n3'], tags: { 'highway': 'residential' } });
-            var way2 = iD.osmWay({ id: 'w2', nodes: ['n4','n2','n5'], tags: { 'highway': 'residential' } });
-            var graph = new iD.Graph([node1, node2, node3, node4, node5, way1, way2]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0], tags: { 'highway': 'stop', 'stop': 'all' } });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0] });
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0], tags: { 'highway': 'stop', 'stop': 'all' } });
+            var node4 = Rapid.osmNode({ id: 'n4', loc: [0, -1], tags: { 'highway': 'stop', 'stop': 'all' } });
+            var node5 = Rapid.osmNode({ id: 'n5', loc: [0, 1], tags: { 'highway': 'stop', 'stop': 'all' } });
+            var way1 = Rapid.osmWay({ id: 'w1', nodes: ['n1','n2','n3'], tags: { 'highway': 'residential' } });
+            var way2 = Rapid.osmWay({ id: 'w2', nodes: ['n4','n2','n5'], tags: { 'highway': 'residential' } });
+            var graph = new Rapid.Graph([node1, node2, node3, node4, node5, way1, way2]);
             expect(node2.directions(graph, projection)).to.eql([]);
         });
 
         it('supports multiple directions delimited by ;', function () {
-            var node1 = iD.osmNode({ loc: [0, 0], tags: { direction: '0;45' }});
-            var node2 = iD.osmNode({ loc: [0, 0], tags: { direction: '45;north' }});
-            var node3 = iD.osmNode({ loc: [0, 0], tags: { direction: 'north;east' }});
-            var node4 = iD.osmNode({ loc: [0, 0], tags: { direction: 'n;s;e;w' }});
-            var node5 = iD.osmNode({ loc: [0, 0], tags: { direction: 's;wat' }});
-            var graph = new iD.Graph([node1, node2, node3, node4, node5]);
+            var node1 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '0;45' }});
+            var node2 = Rapid.osmNode({ loc: [0, 0], tags: { direction: '45;north' }});
+            var node3 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'north;east' }});
+            var node4 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 'n;s;e;w' }});
+            var node5 = Rapid.osmNode({ loc: [0, 0], tags: { direction: 's;wat' }});
+            var graph = new Rapid.Graph([node1, node2, node3, node4, node5]);
 
             expect(node1.directions(graph, projection)).to.eql([0, 45], 'numeric 0, numeric 45');
             expect(node2.directions(graph, projection)).to.eql([45, 0], 'numeric 45, cardinal north');
@@ -582,11 +582,11 @@ describe('iD.osmNode', function () {
         });
 
         it('supports mixing textual, cardinal, numeric directions, delimited by ;', function () {
-            var node1 = iD.osmNode({ id: 'n1', loc: [-1, 0] });
-            var node2 = iD.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both;ne;60' }});
-            var node3 = iD.osmNode({ id: 'n3', loc: [1, 0] });
-            var way = iD.osmWay({ nodes: ['n1','n2','n3'] });
-            var graph = new iD.Graph([node1, node2, node3, way]);
+            var node1 = Rapid.osmNode({ id: 'n1', loc: [-1, 0] });
+            var node2 = Rapid.osmNode({ id: 'n2', loc: [0, 0], tags: { 'camera:direction': 'both;ne;60' }});
+            var node3 = Rapid.osmNode({ id: 'n3', loc: [1, 0] });
+            var way = Rapid.osmWay({ nodes: ['n1','n2','n3'] });
+            var graph = new Rapid.Graph([node1, node2, node3, way]);
             expect(node2.directions(graph, projection)).to.have.members([90, 270, 45, 60]);
         });
 
@@ -594,7 +594,7 @@ describe('iD.osmNode', function () {
 
     describe('#asJXON', function () {
         it('converts a node to jxon', function() {
-            var node = iD.osmNode({id: 'n-1', loc: [-77, 38], tags: {amenity: 'cafe'}});
+            var node = Rapid.osmNode({id: 'n-1', loc: [-77, 38], tags: {amenity: 'cafe'}});
             expect(node.asJXON()).to.eql({node: {
                 '@id': '-1',
                 '@lon': -77,
@@ -604,13 +604,13 @@ describe('iD.osmNode', function () {
         });
 
         it('includes changeset if provided', function() {
-            expect(iD.osmNode({loc: [0, 0]}).asJXON('1234').node['@changeset']).to.equal('1234');
+            expect(Rapid.osmNode({loc: [0, 0]}).asJXON('1234').node['@changeset']).to.equal('1234');
         });
     });
 
     describe('#asGeoJSON', function () {
         it('converts to a GeoJSON Point geometry', function () {
-            var node = iD.osmNode({tags: {amenity: 'cafe'}, loc: [1, 2]}),
+            var node = Rapid.osmNode({tags: {amenity: 'cafe'}, loc: [1, 2]}),
                 json = node.asGeoJSON();
 
             expect(json.type).to.equal('Point');

@@ -12,10 +12,10 @@ describe('PixiRenderer', () => {
     // Entity data is already split into points, vertices, lines, and polygons.
     let osmRenderData = {};
 
-    let points = renderData.points.map(point => iD.osmNode(point));
-    let vertices = renderData.vertices.map(vertex => iD.osmNode(vertex));
-    let lines = renderData.lines.map(line => iD.osmWay(line));
-    let polygons = renderData.polygons.map(polygon => iD.osmWay(polygon));
+    let points = renderData.points.map(point => Rapid.osmNode(point));
+    let vertices = renderData.vertices.map(vertex => Rapid.osmNode(vertex));
+    let lines = renderData.lines.map(line => Rapid.osmWay(line));
+    let polygons = renderData.polygons.map(polygon => Rapid.osmWay(polygon));
 
     osmRenderData.points = points;
     osmRenderData.vertices = vertices;
@@ -31,8 +31,8 @@ describe('PixiRenderer', () => {
     let osmEntities = [];
     for (entityKey in entities) {
       let entity = entities[entityKey];
-      if (entity.id.charAt(0) === 'w') osmEntities.push(new iD.osmWay(entity));
-      if (entity.id.charAt(0) === 'n') osmEntities.push(new iD.osmNode(entity));
+      if (entity.id.charAt(0) === 'w') osmEntities.push(new Rapid.osmWay(entity));
+      if (entity.id.charAt(0) === 'n') osmEntities.push(new Rapid.osmNode(entity));
     }
 
     return osmEntities;
@@ -47,7 +47,7 @@ describe('PixiRenderer', () => {
     //Re-marshal the parsed json data back into osm / projection objects.
     renderData = jsonToOSM(staticData.data);
     graphEntities = castEntities(staticData.entities);
-    projection = new iD.sdk.Projection(staticData.projection._x, staticData.projection._y, staticData.projection._k);
+    projection = new Rapid.sdk.Projection(staticData.projection._x, staticData.projection._y, staticData.projection._k);
     zoom = staticData.zoom;
     done();
   });
@@ -55,7 +55,7 @@ describe('PixiRenderer', () => {
 
   beforeEach(() => {
     content = d3.select('body').append('div');
-    context = iD.coreContext().assetPath('../dist/').init().container(content);
+    context = Rapid.coreContext().assetPath('../dist/').init().container(content);
 
     const graph = context.graph();
     graph.rebase(graphEntities, [graph], false);

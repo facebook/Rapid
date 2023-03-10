@@ -1,8 +1,8 @@
-describe('iD.uiSectionRawTagEditor', function() {
+describe('uiSectionRawTagEditor', function() {
     var taglist, element, entity, context;
 
     function render(tags) {
-        taglist = iD.uiSectionRawTagEditor('raw-tag-editor', context)
+        taglist = Rapid.uiSectionRawTagEditor('raw-tag-editor', context)
             .entityIDs([entity.id])
             .presets([{isFallback: function() { return false; }}])
             .tags(tags)
@@ -15,8 +15,8 @@ describe('iD.uiSectionRawTagEditor', function() {
     }
 
     beforeEach(function () {
-        entity = iD.osmNode({id: 'n12345'});
-        context = iD.coreContext().assetPath('../dist/').init();
+        entity = Rapid.osmNode({id: 'n12345'});
+        context = Rapid.coreContext().assetPath('../dist/').init();
         context.history().merge([entity]);
         render({highway: 'residential'});
     });
@@ -53,7 +53,7 @@ describe('iD.uiSectionRawTagEditor', function() {
             expect(tags).to.eql({highway: undefined});
             done();
         });
-        iD.utilTriggerEvent(element.selectAll('button.remove'), 'mousedown');
+        Rapid.utilTriggerEvent(element.selectAll('button.remove'), 'mousedown');
     });
 
     it('adds tags when pressing the TAB key on last input.value', function (done) {

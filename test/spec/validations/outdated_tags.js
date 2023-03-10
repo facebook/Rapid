@@ -1,49 +1,49 @@
-describe('iD.validations.outdated_tags', function () {
+describe('validations.outdated_tags', function () {
     var context;
 
     before(function() {
-        iD.fileFetcher.cache().deprecated = [
+        Rapid.fileFetcher.cache().deprecated = [
           { old: { highway: 'no' } },
           { old: { highway: 'ford' }, replace: { ford: '*' } }
         ];
     });
 
     after(function() {
-        iD.fileFetcher.cache().deprecated = [];
+        Rapid.fileFetcher.cache().deprecated = [];
     });
 
     beforeEach(function() {
-        context = iD.coreContext()
+        context = Rapid.coreContext()
             .assetPath('../dist/')
             .init();
     });
 
 
     function createWay(tags) {
-        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
-        var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
+        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(w)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(w)
         );
     }
 
     function createRelation(wayTags, relationTags) {
-        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
-        var n3 = iD.osmNode({id: 'n-3', loc: [5,5]});
-        var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1'], tags: wayTags});
-        var r = iD.osmRelation({id: 'r-1', members: [{id: 'w-1'}], tags: relationTags});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
+        var n3 = Rapid.osmNode({id: 'n-3', loc: [5,5]});
+        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2', 'n-3', 'n-1'], tags: wayTags});
+        var r = Rapid.osmRelation({id: 'r-1', members: [{id: 'w-1'}], tags: relationTags});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(n3),
-            iD.actionAddEntity(w),
-            iD.actionAddEntity(r)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(n3),
+            Rapid.actionAddEntity(w),
+            Rapid.actionAddEntity(r)
         );
     }
 
@@ -58,7 +58,7 @@ describe('iD.validations.outdated_tags', function () {
     }
 
     it('has no errors on init', function(done) {
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.have.lengthOf(0);
@@ -68,7 +68,7 @@ describe('iD.validations.outdated_tags', function () {
 
     it('has no errors on good tags', function(done) {
         createWay({'highway': 'unclassified'});
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.have.lengthOf(0);
@@ -78,7 +78,7 @@ describe('iD.validations.outdated_tags', function () {
 
     it('flags deprecated tag with replacement', function(done) {
         createWay({'highway': 'ford'});
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.have.lengthOf(1);
@@ -94,7 +94,7 @@ describe('iD.validations.outdated_tags', function () {
 
     it('flags deprecated tag with no replacement', function(done) {
         createWay({'highway': 'no'});
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.have.lengthOf(1);
@@ -110,7 +110,7 @@ describe('iD.validations.outdated_tags', function () {
 
     it('ignores way with no relations', function(done) {
         createWay({});
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.have.lengthOf(0);
@@ -120,7 +120,7 @@ describe('iD.validations.outdated_tags', function () {
 
     it('ignores multipolygon tagged on the relation', function(done) {
         createRelation({}, { type: 'multipolygon', building: 'yes' });
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.have.lengthOf(0);
@@ -130,7 +130,7 @@ describe('iD.validations.outdated_tags', function () {
 
     it('flags multipolygon tagged on the outer way', function(done) {
         createRelation({ building: 'yes' }, { type: 'multipolygon' });
-        var validator = iD.validationOutdatedTags(context);
+        var validator = Rapid.validationOutdatedTags(context);
         window.setTimeout(function() {   // async, so data will be available
             var issues = validate(validator);
             expect(issues).to.not.have.lengthOf(0);

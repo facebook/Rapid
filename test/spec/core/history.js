@@ -1,35 +1,35 @@
-describe('iD.coreHistory', function () {
+describe('coreHistory', function () {
     var context, history, spy;
     var actionNoop = function(g) { return g; };
     var actionAddNode = function (nodeID) {
         return function(g) {
-            return g.replace(iD.osmNode({ id: nodeID }));
+            return g.replace(Rapid.osmNode({ id: nodeID }));
         };
     };
 
     beforeEach(function () {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = Rapid.coreContext().assetPath('../dist/').init();
         history = context.history();
         spy = sinon.spy();
         // clear lock
-        iD.prefs(history._getKey('lock'), null);
+        Rapid.prefs(history._getKey('lock'), null);
     });
 
     describe('#graph', function () {
         it('returns the current graph', function () {
-            expect(history.graph()).to.be.an.instanceOf(iD.Graph);
+            expect(history.graph()).to.be.an.instanceOf(Rapid.Graph);
         });
     });
 
     describe('#merge', function () {
         it('merges the entities into all graph versions', function () {
-            var n = iD.osmNode({id: 'n'});
+            var n = Rapid.osmNode({id: 'n'});
             history.merge([n]);
             expect(history.graph().entity('n')).to.equal(n);
         });
 
         it('emits a merge event with the new entities', function () {
-            var n = iD.osmNode({id: 'n'});
+            var n = Rapid.osmNode({id: 'n'});
             history.on('merge', spy);
             history.merge([n]);
             expect(spy).to.have.been.calledWith(new Set([n.id]));
@@ -42,7 +42,7 @@ describe('iD.coreHistory', function () {
         });
 
         it('updates the graph', function () {
-            var node = iD.osmNode();
+            var node = Rapid.osmNode();
             history.perform(function (graph) { return graph.replace(node); });
             expect(history.graph().entity(node.id)).to.equal(node);
         });
@@ -60,8 +60,8 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs multiple actions', function () {
-            var action1 = sinon.stub().returns(new iD.Graph());
-            var action2 = sinon.stub().returns(new iD.Graph());
+            var action1 = sinon.stub().returns(new Rapid.Graph());
+            var action2 = sinon.stub().returns(new Rapid.Graph());
             history.perform(action1, action2, 'annotation');
             expect(action1).to.have.been.called;
             expect(action2).to.have.been.called;
@@ -69,7 +69,7 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs transitionable actions in a transition', function (done) {
-            var action1 = function() { return new iD.Graph(); };
+            var action1 = function() { return new Rapid.Graph(); };
             action1.transitionable = true;
             history.on('change', spy);
             history.perform(action1);
@@ -86,7 +86,7 @@ describe('iD.coreHistory', function () {
         });
 
         it('updates the graph', function () {
-            var node = iD.osmNode();
+            var node = Rapid.osmNode();
             history.replace(function (graph) { return graph.replace(node); });
             expect(history.graph().entity(node.id)).to.equal(node);
         });
@@ -104,8 +104,8 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs multiple actions', function () {
-            var action1 = sinon.stub().returns(new iD.Graph());
-            var action2 = sinon.stub().returns(new iD.Graph());
+            var action1 = sinon.stub().returns(new Rapid.Graph());
+            var action2 = sinon.stub().returns(new Rapid.Graph());
             history.replace(action1, action2, 'annotation');
             expect(action1).to.have.been.called;
             expect(action2).to.have.been.called;
@@ -173,7 +173,7 @@ describe('iD.coreHistory', function () {
 
         it('updates the graph', function () {
             history.perform(actionNoop, 'annotation');
-            var node = iD.osmNode();
+            var node = Rapid.osmNode();
             history.overwrite(function (graph) { return graph.replace(node); });
             expect(history.graph().entity(node.id)).to.equal(node);
         });
@@ -198,8 +198,8 @@ describe('iD.coreHistory', function () {
         });
 
         it('performs multiple actions', function () {
-            var action1 = sinon.stub().returns(new iD.Graph());
-            var action2 = sinon.stub().returns(new iD.Graph());
+            var action1 = sinon.stub().returns(new Rapid.Graph());
+            var action2 = sinon.stub().returns(new Rapid.Graph());
             history.perform(actionNoop, 'annotation');
             history.overwrite(action1, action2, 'annotation2');
             expect(action1).to.have.been.called;
@@ -321,13 +321,13 @@ describe('iD.coreHistory', function () {
 
     describe('#changes', function () {
         it('includes created entities', function () {
-            var node = iD.osmNode();
+            var node = Rapid.osmNode();
             history.perform(function (graph) { return graph.replace(node); });
             expect(history.changes().created).to.eql([node]);
         });
 
         it('includes modified entities', function () {
-            var node1 = iD.osmNode({id: 'n1'});
+            var node1 = Rapid.osmNode({id: 'n1'});
             var node2 = node1.update({ tags: { yes: 'no' } });
             history.merge([node1]);
             history.perform(function (graph) { return graph.replace(node2); });
@@ -335,7 +335,7 @@ describe('iD.coreHistory', function () {
         });
 
         it('includes deleted entities', function () {
-            var node = iD.osmNode({id: 'n1'});
+            var node = Rapid.osmNode({id: 'n1'});
             history.merge([node]);
             history.perform(function (graph) { return graph.remove(node); });
             expect(history.changes().deleted).to.eql([node]);
@@ -344,7 +344,7 @@ describe('iD.coreHistory', function () {
 
     describe('#hasChanges', function() {
         it('is true when any of change\'s values are nonempty', function() {
-            var node = iD.osmNode();
+            var node = Rapid.osmNode();
             history.perform(function (graph) { return graph.replace(node); });
             expect(history.hasChanges()).to.eql(true);
         });
@@ -404,15 +404,15 @@ describe('iD.coreHistory', function () {
     describe('#toJSON', function() {
         it('doesn\'t generate unsaveable changes', function() {
             history.perform(actionAddNode('n-1'));
-            history.perform(iD.actionDeleteNode('n-1'));
+            history.perform(Rapid.actionDeleteNode('n-1'));
             expect(history.toJSON()).to.be.not.ok;
         });
 
         it('generates v3 JSON', function() {
-            const node_1 = iD.osmNode({id: 'n-1'});
-            const node1 = iD.osmNode({id: 'n1'});
-            const node2 = iD.osmNode({id: 'n2'});
-            const node3 = iD.osmNode({id: 'n3'});
+            const node_1 = Rapid.osmNode({id: 'n-1'});
+            const node1 = Rapid.osmNode({id: 'n1'});
+            const node2 = Rapid.osmNode({id: 'n2'});
+            const node3 = Rapid.osmNode({id: 'n3'});
 
             const node_1_json = JSON.parse(JSON.stringify(node_1));
             const node1_json = JSON.parse(JSON.stringify(node1));
@@ -420,11 +420,11 @@ describe('iD.coreHistory', function () {
             const node3_json = JSON.parse(JSON.stringify(node3));
 
             history.merge([node1, node2, node3]);                  // merge base entities
-            history.perform(iD.actionAddEntity(node_1));           // add n-1
-            history.perform(iD.actionChangeTags('n2', {k: 'v'}));  // update n2
+            history.perform(Rapid.actionAddEntity(node_1));           // add n-1
+            history.perform(Rapid.actionChangeTags('n2', {k: 'v'}));  // update n2
             const node2upd = history.graph().entity('n2');
             const node2upd_json = JSON.parse(JSON.stringify(node2upd));
-            history.perform(iD.actionDeleteNode('n3'));            // delete n3
+            history.perform(Rapid.actionDeleteNode('n3'));            // delete n3
 
             var json = JSON.parse(history.toJSON());
             expect(json.version).to.eql(3);
@@ -459,10 +459,10 @@ describe('iD.coreHistory', function () {
                 'index': 1
             };
             history.fromJSON(JSON.stringify(json));
-            expect(history.graph().entity('n-1')).to.eql(iD.osmNode({id: 'n-1', loc: [1, 2]}));
+            expect(history.graph().entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
             expect(history.undoAnnotation()).to.eql('Added a point.');
             expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
+            expect(Rapid.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
             expect(history.difference().created().length).to.eql(1);
         });
 
@@ -480,11 +480,11 @@ describe('iD.coreHistory', function () {
                 'index': 1
             };
             history.fromJSON(JSON.stringify(json));
-            history.merge([iD.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see #2135)
-            expect(history.graph().entity('n1')).to.eql(iD.osmNode({id: 'n1', loc: [2, 3], v: 1}));
+            history.merge([Rapid.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see #2135)
+            expect(history.graph().entity('n1')).to.eql(Rapid.osmNode({id: 'n1', loc: [2, 3], v: 1}));
             expect(history.undoAnnotation()).to.eql('Moved a point.');
             expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
+            expect(Rapid.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
             expect(history.difference().modified().length).to.eql(1);
         });
 
@@ -500,11 +500,11 @@ describe('iD.coreHistory', function () {
                 'index': 1
             };
             history.fromJSON(JSON.stringify(json));
-            history.merge([iD.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see #2135)
+            history.merge([Rapid.osmNode({id: 'n1'})]); // Shouldn't be necessary; flaw in v2 format (see #2135)
             expect(history.graph().hasEntity('n1')).to.be.undefined;
             expect(history.undoAnnotation()).to.eql('Deleted a point.');
             expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -1, way: -2, relation: -3});
+            expect(Rapid.osmEntity.id.next).to.eql({node: -1, way: -2, relation: -3});
             expect(history.difference().deleted().length).to.eql(1);
         });
 
@@ -523,10 +523,10 @@ describe('iD.coreHistory', function () {
                 'index': 1
             };
             history.fromJSON(JSON.stringify(json));
-            expect(history.graph().entity('n-1')).to.eql(iD.osmNode({id: 'n-1', loc: [1, 2]}));
+            expect(history.graph().entity('n-1')).to.eql(Rapid.osmNode({id: 'n-1', loc: [1, 2]}));
             expect(history.undoAnnotation()).to.eql('Added a point.');
             expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
+            expect(Rapid.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
             expect(history.difference().created().length).to.eql(1);
         });
 
@@ -545,10 +545,10 @@ describe('iD.coreHistory', function () {
                 'index': 1
             };
             history.fromJSON(JSON.stringify(json));
-            expect(history.graph().entity('n1')).to.eql(iD.osmNode({id: 'n1', loc: [2, 3], v: 1}));
+            expect(history.graph().entity('n1')).to.eql(Rapid.osmNode({id: 'n1', loc: [2, 3], v: 1}));
             expect(history.undoAnnotation()).to.eql('Moved a point.');
             expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
+            expect(Rapid.osmEntity.id.next).to.eql({node: -2, way: -1, relation: -1});
             expect(history.difference().modified().length).to.eql(1);
         });
 
@@ -568,7 +568,7 @@ describe('iD.coreHistory', function () {
             expect(history.graph().hasEntity('n1')).to.be.undefined;
             expect(history.undoAnnotation()).to.eql('Deleted a point.');
             expect(history.imageryUsed()).to.eql(['Bing']);
-            expect(iD.osmEntity.id.next).to.eql({node: -1, way: -2, relation: -3});
+            expect(Rapid.osmEntity.id.next).to.eql({node: -1, way: -2, relation: -3});
             expect(history.difference().deleted().length).to.eql(1);
         });
     });

@@ -3,7 +3,7 @@ describe('PixiLayerMapUI', () => {
 
   beforeEach(() => {
     container = d3.select('body').append('div');
-    context = iD.coreContext().assetPath('../dist/').init().container(container);
+    context = Rapid.coreContext().assetPath('../dist/').init().container(container);
     map = context.map();
     map.render(container);
   });

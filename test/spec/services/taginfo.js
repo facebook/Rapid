@@ -1,17 +1,17 @@
-describe('iD.serviceTaginfo', function() {
+describe('serviceTaginfo', function() {
     var taginfo;
 
 
     before(function() {
-        iD.services.taginfo = iD.serviceTaginfo;
+        Rapid.services.taginfo = Rapid.serviceTaginfo;
     });
 
     after(function() {
-        delete iD.services.taginfo;
+        delete Rapid.services.taginfo;
     });
 
     beforeEach(function() {
-        taginfo = iD.services.taginfo;
+        taginfo = Rapid.services.taginfo;
 
         fetchMock.mock(new RegExp('\/keys\/all.*sortname=values_all'), {
             body: '{"data":[{"count_all":56136034,"key":"name","count_all_fraction":0.0132}]}',

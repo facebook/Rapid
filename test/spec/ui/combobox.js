@@ -10,7 +10,7 @@ describe('uiCombobox', function() {
     ];
 
     function simulateKeypress(key) {
-        var keyCode = iD.utilKeybinding.keyCodes[key];
+        var keyCode = Rapid.utilKeybinding.keyCodes[key];
         var value = input.property('value');
         var start = input.property('selectionStart');
         var finis = input.property('selectionEnd');
@@ -63,10 +63,10 @@ describe('uiCombobox', function() {
     beforeEach(function() {
         body = d3.select('body');
         container = body.append('div').attr('class', 'ideditor');
-        context = iD.coreContext().assetPath('../dist/').init().container(container);
+        context = Rapid.coreContext().assetPath('../dist/').init().container(container);
         content = container.append('div');
         input = content.append('input');
-        combobox = iD.uiCombobox(context);
+        combobox = Rapid.uiCombobox(context);
     });
 
     afterEach(function() {

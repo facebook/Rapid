@@ -1,2 +1,2 @@
-describe('iD.uiInspector', function () {
+describe('uiInspector', function () {
 });

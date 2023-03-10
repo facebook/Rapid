@@ -1,4 +1,4 @@
-describe('iD.actionCircularize', function () {
+describe('actionCircularize', function () {
     var projection = new sdk.Projection().scale(150);
 
     // This makes our projection operate like the d3 default of [480,250].
@@ -54,15 +54,15 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         expect(graph.entity('-').nodes).to.have.length(20);
@@ -72,17 +72,17 @@ describe('iD.actionCircularize', function () {
         //    d,e -- c
         //    |      |
         //    a ---- b
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmNode({id: 'e', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
             ]),
             nodes;
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
 
@@ -98,16 +98,16 @@ describe('iD.actionCircularize', function () {
         //    b ---- a
         //    |      |
         //    c ---- d
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [2, 2]}),
-                iD.osmNode({id: 'b', loc: [-2, 2]}),
-                iD.osmNode({id: 'c', loc: [-2, -2]}),
-                iD.osmNode({id: 'd', loc: [2, -2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']}),
-                iD.osmWay({id: '=', nodes: ['d']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [2, 2]}),
+                Rapid.osmNode({id: 'b', loc: [-2, 2]}),
+                Rapid.osmNode({id: 'c', loc: [-2, -2]}),
+                Rapid.osmNode({id: 'd', loc: [2, -2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']}),
+                Rapid.osmWay({id: '=', nodes: ['d']})
             ]);
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         expect(sdk.vecLength(graph.entity('d').loc, [2, -2])).to.be.lt(0.5);
@@ -117,16 +117,16 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]),
             centroid, points;
 
-        graph = iD.actionCircularize('-', projection, 20)(graph);
+        graph = Rapid.actionCircularize('-', projection, 20)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         points = graph.childNodes(graph.entity('-'))
@@ -144,17 +144,17 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '+', nodes: ['a', 'd', 'c', 'b', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '+', nodes: ['a', 'd', 'c', 'b', 'a']})
             ]);
 
         expect(area('+', graph)).to.be.gt(0);
 
-        graph = iD.actionCircularize('+', projection)(graph);
+        graph = Rapid.actionCircularize('+', projection)(graph);
 
         expect(isCircular('+', graph)).to.be.ok;
         expect(area('+', graph)).to.be.gt(0);
@@ -164,17 +164,17 @@ describe('iD.actionCircularize', function () {
         //    d ---- c
         //    |      |
         //    a ---- b
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
         expect(area('-', graph)).to.be.lt(0);
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         expect(area('-', graph)).to.be.lt(0);
@@ -190,23 +190,23 @@ describe('iD.actionCircularize', function () {
         //  a-b-c-d-e-a is counterclockwise
         //  a-b-f-g-e-a is clockwise
         //
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [ 0,  0]}),
-                iD.osmNode({id: 'b', loc: [ 1,  2]}),
-                iD.osmNode({id: 'c', loc: [-2,  2]}),
-                iD.osmNode({id: 'd', loc: [-2, -2]}),
-                iD.osmNode({id: 'e', loc: [ 1, -2]}),
-                iD.osmNode({id: 'f', loc: [ 3,  2]}),
-                iD.osmNode({id: 'g', loc: [ 3, -2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']}),
-                iD.osmWay({id: '=', nodes: ['a', 'b', 'f', 'g', 'e', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [ 0,  0]}),
+                Rapid.osmNode({id: 'b', loc: [ 1,  2]}),
+                Rapid.osmNode({id: 'c', loc: [-2,  2]}),
+                Rapid.osmNode({id: 'd', loc: [-2, -2]}),
+                Rapid.osmNode({id: 'e', loc: [ 1, -2]}),
+                Rapid.osmNode({id: 'f', loc: [ 3,  2]}),
+                Rapid.osmNode({id: 'g', loc: [ 3, -2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']}),
+                Rapid.osmWay({id: '=', nodes: ['a', 'b', 'f', 'g', 'e', 'a']})
             ]);
 
         expect(intersection(graph.entity('-').nodes, graph.entity('=').nodes).length).to.eql(3);
         expect(graph.entity('-').isConvex(graph)).to.be.false;
         expect(graph.entity('=').isConvex(graph)).to.be.true;
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         expect(intersection(graph.entity('-').nodes, graph.entity('=').nodes).length).to.be.gt(3);
@@ -224,23 +224,23 @@ describe('iD.actionCircularize', function () {
         //  a-b-c-d-e-a is counterclockwise
         //  a-e-g-f-b-a is counterclockwise
         //
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [ 0,  0]}),
-                iD.osmNode({id: 'b', loc: [ 1,  2]}),
-                iD.osmNode({id: 'c', loc: [-2,  2]}),
-                iD.osmNode({id: 'd', loc: [-2, -2]}),
-                iD.osmNode({id: 'e', loc: [ 1, -2]}),
-                iD.osmNode({id: 'f', loc: [ 3,  2]}),
-                iD.osmNode({id: 'g', loc: [ 3, -2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']}),
-                iD.osmWay({id: '=', nodes: ['a', 'e', 'g', 'f', 'b', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [ 0,  0]}),
+                Rapid.osmNode({id: 'b', loc: [ 1,  2]}),
+                Rapid.osmNode({id: 'c', loc: [-2,  2]}),
+                Rapid.osmNode({id: 'd', loc: [-2, -2]}),
+                Rapid.osmNode({id: 'e', loc: [ 1, -2]}),
+                Rapid.osmNode({id: 'f', loc: [ 3,  2]}),
+                Rapid.osmNode({id: 'g', loc: [ 3, -2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']}),
+                Rapid.osmWay({id: '=', nodes: ['a', 'e', 'g', 'f', 'b', 'a']})
             ]);
 
         expect(intersection(graph.entity('-').nodes, graph.entity('=').nodes).length).to.eql(3);
         expect(graph.entity('-').isConvex(graph)).to.be.false;
         expect(graph.entity('=').isConvex(graph)).to.be.true;
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         expect(intersection(graph.entity('-').nodes, graph.entity('=').nodes).length).to.be.gt(3);
@@ -257,21 +257,21 @@ describe('iD.actionCircularize', function () {
         //
         //  a-b-c-d-e-a is extremely concave and 'a' is to the left of centoid..
         //
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [ 0,  0]}),
-                iD.osmNode({id: 'b', loc: [10,  2]}),
-                iD.osmNode({id: 'c', loc: [-2,  2]}),
-                iD.osmNode({id: 'd', loc: [-2, -2]}),
-                iD.osmNode({id: 'e', loc: [10, -2]}),
-                iD.osmNode({id: 'f', loc: [15,  2]}),
-                iD.osmNode({id: 'g', loc: [15, -2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']}),
-                iD.osmWay({id: '=', nodes: ['a', 'b', 'f', 'g', 'e', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [ 0,  0]}),
+                Rapid.osmNode({id: 'b', loc: [10,  2]}),
+                Rapid.osmNode({id: 'c', loc: [-2,  2]}),
+                Rapid.osmNode({id: 'd', loc: [-2, -2]}),
+                Rapid.osmNode({id: 'e', loc: [10, -2]}),
+                Rapid.osmNode({id: 'f', loc: [15,  2]}),
+                Rapid.osmNode({id: 'g', loc: [15, -2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']}),
+                Rapid.osmWay({id: '=', nodes: ['a', 'b', 'f', 'g', 'e', 'a']})
             ]);
 
         expect(graph.entity('-').isConvex(graph)).to.be.false;
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
         expect(graph.entity('-').isConvex(graph)).to.be.true;
@@ -279,42 +279,42 @@ describe('iD.actionCircularize', function () {
     });
 
     it('circularizes a closed single line way', function () {
-        var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'a']})
+        var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'a']})
             ]);
 
         expect(area('-', graph)).to.eql(0);
 
-        graph = iD.actionCircularize('-', projection)(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
 
         expect(isCircular('-', graph)).to.be.ok;
     });
 
     it('not disable circularize when its not circular', function(){
-        var graph = new iD.Graph([
-            iD.osmNode({id: 'a', loc: [0, 0]}),
-            iD.osmNode({id: 'b', loc: [2, 0]}),
-            iD.osmNode({id: 'c', loc: [2, 2]}),
-            iD.osmNode({id: 'd', loc: [0, 2]}),
-            iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        var graph = new Rapid.Graph([
+            Rapid.osmNode({id: 'a', loc: [0, 0]}),
+            Rapid.osmNode({id: 'b', loc: [2, 0]}),
+            Rapid.osmNode({id: 'c', loc: [2, 2]}),
+            Rapid.osmNode({id: 'd', loc: [0, 2]}),
+            Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
         ]);
-        var result = iD.actionCircularize('-', projection).disabled(graph);
+        var result = Rapid.actionCircularize('-', projection).disabled(graph);
         expect(result).to.be.false;
 
     });
 
     it('disable circularize twice', function(){
-        var graph = new iD.Graph([
-            iD.osmNode({id: 'a', loc: [0, 0]}),
-            iD.osmNode({id: 'b', loc: [2, 0]}),
-            iD.osmNode({id: 'c', loc: [2, 2]}),
-            iD.osmNode({id: 'd', loc: [0, 2]}),
-            iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+        var graph = new Rapid.Graph([
+            Rapid.osmNode({id: 'a', loc: [0, 0]}),
+            Rapid.osmNode({id: 'b', loc: [2, 0]}),
+            Rapid.osmNode({id: 'c', loc: [2, 2]}),
+            Rapid.osmNode({id: 'd', loc: [0, 2]}),
+            Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
         ]);
-        graph = iD.actionCircularize('-', projection)(graph);
-        var result = iD.actionCircularize('-', projection).disabled(graph);
+        graph = Rapid.actionCircularize('-', projection)(graph);
+        var result = Rapid.actionCircularize('-', projection).disabled(graph);
         expect(result).to.eql('already_circular');
 
     });
@@ -322,46 +322,46 @@ describe('iD.actionCircularize', function () {
 
     describe('transitions', function () {
         it('is transitionable', function() {
-            expect(iD.actionCircularize().transitionable).to.be.true;
+            expect(Rapid.actionCircularize().transitionable).to.be.true;
         });
 
         it('circularize at t = 0', function() {
-            var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
-            graph = iD.actionCircularize('-', projection)(graph, 0);
+            graph = Rapid.actionCircularize('-', projection)(graph, 0);
             expect(isCircular('-', graph)).to.be.not.ok;
             expect(graph.entity('-').nodes).to.have.length(20);
             expect(area('-', graph)).to.be.closeTo(-4, 1e-2);
         });
 
         it('circularize at t = 0.5', function() {
-            var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
-            graph = iD.actionCircularize('-', projection)(graph, 0.5);
+            graph = Rapid.actionCircularize('-', projection)(graph, 0.5);
             expect(isCircular('-', graph)).to.be.not.ok;
             expect(graph.entity('-').nodes).to.have.length(20);
             expect(area('-', graph)).to.be.closeTo(-4.812, 1e-2);
         });
 
         it('circularize at t = 1', function() {
-            var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
-            graph = iD.actionCircularize('-', projection)(graph, 1);
+            graph = Rapid.actionCircularize('-', projection)(graph, 1);
             expect(isCircular('-', graph)).to.be.ok;
             expect(graph.entity('-').nodes).to.have.length(20);
             expect(area('-', graph)).to.be.closeTo(-6.168, 1e-2);

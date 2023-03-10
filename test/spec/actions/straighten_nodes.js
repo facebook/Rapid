@@ -1,18 +1,18 @@
-describe('iD.actionStraightenNodes', function () {
+describe('actionStraightenNodes', function () {
     var projection = {
         project: function (val) { return val; },
         invert: function (val) { return val; }
     };
 
     it('straightens points', function() {
-        var graph = new iD.Graph([
-            iD.osmNode({ id: 'a', loc: [0, -1] }),
-            iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
-            iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
-            iD.osmNode({ id: 'd', loc: [15, 1] })
+        var graph = new Rapid.Graph([
+            Rapid.osmNode({ id: 'a', loc: [0, -1] }),
+            Rapid.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
+            Rapid.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
+            Rapid.osmNode({ id: 'd', loc: [15, 1] })
         ]);
 
-        graph = iD.actionStraightenNodes(['a','b','c','d'], projection)(graph);
+        graph = Rapid.actionStraightenNodes(['a','b','c','d'], projection)(graph);
         expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
         expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
         expect(graph.entity('b').loc[0]).to.be.closeTo(5, 1e-6);
@@ -26,18 +26,18 @@ describe('iD.actionStraightenNodes', function () {
 
     describe('transitions', function () {
         it('is transitionable', function() {
-            expect(iD.actionStraightenNodes().transitionable).to.be.true;
+            expect(Rapid.actionStraightenNodes().transitionable).to.be.true;
         });
 
         it('straighten at t = 0', function() {
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, -1] }),
-                iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
-                iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
-                iD.osmNode({ id: 'd', loc: [15, 1] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, -1] }),
+                Rapid.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
+                Rapid.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
+                Rapid.osmNode({ id: 'd', loc: [15, 1] })
             ]);
 
-            graph = iD.actionStraightenNodes(['a','b','c','d'], projection)(graph, 0);
+            graph = Rapid.actionStraightenNodes(['a','b','c','d'], projection)(graph, 0);
             expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
             expect(graph.entity('a').loc[1]).to.be.closeTo(-1, 1e-6);
             expect(graph.entity('b').loc[0]).to.be.closeTo(5, 1e-6);
@@ -49,14 +49,14 @@ describe('iD.actionStraightenNodes', function () {
         });
 
         it('straighten at t = 0.5', function() {
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, -1] }),
-                iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
-                iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
-                iD.osmNode({ id: 'd', loc: [15, 1] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, -1] }),
+                Rapid.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
+                Rapid.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
+                Rapid.osmNode({ id: 'd', loc: [15, 1] })
             ]);
 
-            graph = iD.actionStraightenNodes(['a','b','c','d'], projection)(graph, 0.5);
+            graph = Rapid.actionStraightenNodes(['a','b','c','d'], projection)(graph, 0.5);
             expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
             expect(graph.entity('a').loc[1]).to.be.closeTo(-0.5, 1e-6);
             expect(graph.entity('b').loc[0]).to.be.closeTo(5, 1e-6);
@@ -68,14 +68,14 @@ describe('iD.actionStraightenNodes', function () {
         });
 
         it('straighten at t = 1', function() {
-            var graph = new iD.Graph([
-                iD.osmNode({ id: 'a', loc: [0, -1] }),
-                iD.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
-                iD.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
-                iD.osmNode({ id: 'd', loc: [15, 1] })
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({ id: 'a', loc: [0, -1] }),
+                Rapid.osmNode({ id: 'b', loc: [5, 1], tags: { foo: 'bar' } }),
+                Rapid.osmNode({ id: 'c', loc: [10, -1] }),  // untagged
+                Rapid.osmNode({ id: 'd', loc: [15, 1] })
             ]);
 
-            graph = iD.actionStraightenNodes(['a','b','c','d'], projection)(graph, 1);
+            graph = Rapid.actionStraightenNodes(['a','b','c','d'], projection)(graph, 1);
             expect(graph.entity('a').loc[0]).to.be.closeTo(0, 1e-6);
             expect(graph.entity('a').loc[1]).to.be.closeTo(0, 1e-6);
             expect(graph.entity('b').loc[0]).to.be.closeTo(5, 1e-6);

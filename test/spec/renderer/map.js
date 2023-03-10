@@ -1,9 +1,9 @@
-describe('iD.Map', function() {
+describe('Map', function() {
     var content, context, map;
 
     beforeEach(function() {
         content = d3.select('body').append('div');
-        context = iD.coreContext().assetPath('../dist/').init().container(content);
+        context = Rapid.coreContext().assetPath('../dist/').init().container(content);
         map = context.map();
         map.render(content);
     });

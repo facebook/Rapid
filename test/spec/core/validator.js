@@ -1,24 +1,24 @@
-describe('iD.coreValidator', function () {
+describe('coreValidator', function () {
     var context;
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = Rapid.coreContext().assetPath('../dist/').init();
     });
 
     function createInvalidWay() {
-        var n1 = iD.osmNode({id: 'n-1', loc: [4,4]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [4,5]});
-        var w = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2']});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [4,4]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [4,5]});
+        var w = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2']});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(w)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(w)
         );
     }
 
     it('has no issues on init', function() {
-        var validator = new iD.coreValidator(context);
+        var validator = new Rapid.coreValidator(context);
         validator.init();
         var issues = validator.getIssues();
         expect(issues).to.have.lengthOf(0);
@@ -26,7 +26,7 @@ describe('iD.coreValidator', function () {
 
     it('validate returns a promise, fulfilled when the validation has completed', function(done) {
         createInvalidWay();
-        var validator = new iD.coreValidator(context);
+        var validator = new Rapid.coreValidator(context);
         validator.init();
         var issues = validator.getIssues();
         expect(issues).to.have.lengthOf(0);

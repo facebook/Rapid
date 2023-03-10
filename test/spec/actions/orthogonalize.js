@@ -1,4 +1,4 @@
-describe('iD.actionOrthogonalize', function () {
+describe('actionOrthogonalize', function () {
     var projection = {
         project: function (val) { return val; },
         invert: function (val) { return val; }
@@ -9,15 +9,15 @@ describe('iD.actionOrthogonalize', function () {
             //    d --- c
             //    |     |
             //    a --- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(5);
         });
 
@@ -25,15 +25,15 @@ describe('iD.actionOrthogonalize', function () {
             //    d --- c
             //    |     |
             //    a ---  b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(5);
         });
 
@@ -42,14 +42,14 @@ describe('iD.actionOrthogonalize', function () {
             //    | \
             //    |   \
             //     b - c
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 3]}),
-                iD.osmNode({id: 'b', loc: [0.1, 0]}),
-                iD.osmNode({id: 'c', loc: [3, 0]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                Rapid.osmNode({id: 'b', loc: [0.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(4);
         });
 
@@ -57,16 +57,16 @@ describe('iD.actionOrthogonalize', function () {
             //    e - d - c
             //    |       |
             //    a ----- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [1, 2]}),
-                iD.osmNode({id: 'e', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [1, 2]}),
+                Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.hasEntity('d')).to.eq(undefined);
         });
 
@@ -74,16 +74,16 @@ describe('iD.actionOrthogonalize', function () {
             //    e - d - c
             //    |       |
             //    a ----- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [1, 2], tags: {foo: 'bar'}}),
-                iD.osmNode({id: 'e', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [1, 2], tags: {foo: 'bar'}}),
+                Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(6);
             expect(graph.hasEntity('d')).to.not.eq(undefined);
         });
@@ -94,17 +94,17 @@ describe('iD.actionOrthogonalize', function () {
             //    |     d - c
             //    |         |
             //    a -------- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [3.1, 0]}),
-                iD.osmNode({id: 'c', loc: [3, 1]}),
-                iD.osmNode({id: 'd', loc: [2, 1]}),
-                iD.osmNode({id: 'e', loc: [1, 2]}),
-                iD.osmNode({id: 'f', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [3.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [3, 1]}),
+                Rapid.osmNode({id: 'd', loc: [2, 1]}),
+                Rapid.osmNode({id: 'e', loc: [1, 2]}),
+                Rapid.osmNode({id: 'f', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
             expect(diff.changes).to.have.all.keys('a', 'b', 'c', 'f');
         });
 
@@ -114,18 +114,18 @@ describe('iD.actionOrthogonalize', function () {
             //   e --- d - c
             //        |    |
             //        a -- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [ 0, -1]}),
-                iD.osmNode({id: 'b', loc: [ 1, -1]}),
-                iD.osmNode({id: 'c', loc: [ 0,  1]}),
-                iD.osmNode({id: 'd', loc: [ 0.1,  0]}),
-                iD.osmNode({id: 'e', loc: [-1,  0]}),
-                iD.osmNode({id: 'f', loc: [-1,  1]}),
-                iD.osmNode({id: 'g', loc: [ 0,  1]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [ 0, -1]}),
+                Rapid.osmNode({id: 'b', loc: [ 1, -1]}),
+                Rapid.osmNode({id: 'c', loc: [ 0,  1]}),
+                Rapid.osmNode({id: 'd', loc: [ 0.1,  0]}),
+                Rapid.osmNode({id: 'e', loc: [-1,  0]}),
+                Rapid.osmNode({id: 'f', loc: [-1,  1]}),
+                Rapid.osmNode({id: 'g', loc: [ 0,  1]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
             expect(diff.changes).to.not.have.any.keys('d');
             expect(graph.hasEntity('d')).to.be.ok;
         });
@@ -145,15 +145,15 @@ describe('iD.actionOrthogonalize', function () {
             ]];
 
             for (var i = 0; i < tests.length; i++) {
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: tests[i][0]}),
-                    iD.osmNode({id: 'b', loc: tests[i][1]}),
-                    iD.osmNode({id: 'c', loc: tests[i][2]}),
-                    iD.osmNode({id: 'd', loc: tests[i][3]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: tests[i][0]}),
+                    Rapid.osmNode({id: 'b', loc: tests[i][1]}),
+                    Rapid.osmNode({id: 'c', loc: tests[i][2]}),
+                    Rapid.osmNode({id: 'd', loc: tests[i][3]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
                 var initialWidth = sdk.geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
-                graph = iD.actionOrthogonalize('-', projection)(graph);
+                graph = Rapid.actionOrthogonalize('-', projection)(graph);
                 var finalWidth = sdk.geoSphericalDistance(graph.entity('a').loc, graph.entity('b').loc);
                 expect(finalWidth / initialWidth).within(0.90, 1.10);
             }
@@ -166,15 +166,15 @@ describe('iD.actionOrthogonalize', function () {
             //    d --- c
             //          |
             //    a --- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(4);
         });
 
@@ -182,15 +182,15 @@ describe('iD.actionOrthogonalize', function () {
             //    d --- c
             //          |
             //    a ---  b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(4);
         });
 
@@ -199,14 +199,14 @@ describe('iD.actionOrthogonalize', function () {
             //    |
             //    |
             //     b - c
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 3]}),
-                iD.osmNode({id: 'b', loc: [0.1, 0]}),
-                iD.osmNode({id: 'c', loc: [3, 0]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                Rapid.osmNode({id: 'b', loc: [0.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(3);
         });
 
@@ -214,16 +214,16 @@ describe('iD.actionOrthogonalize', function () {
             //    e - d - c
             //            |
             //    a ----- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [1, 2]}),
-                iD.osmNode({id: 'e', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [1, 2]}),
+                Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.hasEntity('d')).to.be.undefined;
         });
 
@@ -231,16 +231,16 @@ describe('iD.actionOrthogonalize', function () {
             //    e - d - c
             //            |
             //    a ----- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [1, 2], tags: {foo: 'bar'}}),
-                iD.osmNode({id: 'e', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [1, 2], tags: {foo: 'bar'}}),
+                Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph);
             expect(graph.entity('-').nodes).to.have.length(5);
             expect(graph.hasEntity('d')).to.be.ok;
         });
@@ -251,17 +251,17 @@ describe('iD.actionOrthogonalize', function () {
             //          d - c
             //              |
             //    a -------- b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [3.1, 0]}),
-                iD.osmNode({id: 'c', loc: [3, 1]}),
-                iD.osmNode({id: 'd', loc: [2, 1]}),
-                iD.osmNode({id: 'e', loc: [1, 2]}),
-                iD.osmNode({id: 'f', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [3.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [3, 1]}),
+                Rapid.osmNode({id: 'd', loc: [2, 1]}),
+                Rapid.osmNode({id: 'e', loc: [1, 2]}),
+                Rapid.osmNode({id: 'f', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
             expect(diff.changes).to.have.all.keys('b', 'c');
         });
 
@@ -269,16 +269,16 @@ describe('iD.actionOrthogonalize', function () {
             //   f -- g
             //   |    |
             //   e --- d - c
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'c', loc: [ 0,  1]}),
-                iD.osmNode({id: 'd', loc: [ 0.1,  0]}),
-                iD.osmNode({id: 'e', loc: [-1,  0]}),
-                iD.osmNode({id: 'f', loc: [-1,  1]}),
-                iD.osmNode({id: 'g', loc: [ 0,  1]}),
-                iD.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'c', loc: [ 0,  1]}),
+                Rapid.osmNode({id: 'd', loc: [ 0.1,  0]}),
+                Rapid.osmNode({id: 'e', loc: [-1,  0]}),
+                Rapid.osmNode({id: 'f', loc: [-1,  1]}),
+                Rapid.osmNode({id: 'g', loc: [ 0,  1]}),
+                Rapid.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection)(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection)(graph));
             expect(diff.changes).to.not.have.any.keys('d');
             expect(graph.hasEntity('d')).to.be.ok;
         });
@@ -290,15 +290,15 @@ describe('iD.actionOrthogonalize', function () {
             //    d --- c
             //    |     |
             //    a ---  b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
             expect(diff.changes).to.have.all.keys('b');
             expect(diff.changes).to.not.have.any.keys('a', 'c', 'd');
         });
@@ -308,14 +308,14 @@ describe('iD.actionOrthogonalize', function () {
             //    | \
             //    |   \
             //     b - c
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 3]}),
-                iD.osmNode({id: 'b', loc: [0.1, 0]}),
-                iD.osmNode({id: 'c', loc: [3, 0]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                Rapid.osmNode({id: 'b', loc: [0.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
             expect(diff.changes).to.have.all.keys('b');
             expect(diff.changes).to.not.have.any.keys('a', 'c');
         });
@@ -324,15 +324,15 @@ describe('iD.actionOrthogonalize', function () {
             //    d --- c
             //          |
             //    a ---  b
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                iD.osmNode({id: 'c', loc: [2, 2]}),
-                iD.osmNode({id: 'd', loc: [0, 2]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
             expect(diff.changes).to.have.all.keys('b');
             expect(diff.changes).to.not.have.any.keys('a', 'c', 'd');
         });
@@ -342,14 +342,14 @@ describe('iD.actionOrthogonalize', function () {
             //    |
             //    |
             //     b - c
-            var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 3]}),
-                iD.osmNode({id: 'b', loc: [0.1, 0]}),
-                iD.osmNode({id: 'c', loc: [3, 0]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c']})
+            var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                Rapid.osmNode({id: 'b', loc: [0.1, 0]}),
+                Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
             ]);
 
-            var diff = new iD.Difference(graph, iD.actionOrthogonalize('-', projection, 'b')(graph));
+            var diff = new Rapid.Difference(graph, Rapid.actionOrthogonalize('-', projection, 'b')(graph));
             expect(diff.changes).to.have.all.keys('b');
             expect(diff.changes).to.not.have.any.keys('a', 'c');
         });
@@ -364,15 +364,15 @@ describe('iD.actionOrthogonalize', function () {
                 //    d ---- c
                 //    |      |
                 //    a ---- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.eql('square_enough');
             });
 
@@ -380,15 +380,15 @@ describe('iD.actionOrthogonalize', function () {
                 //    d --- c
                 //    |     |
                 //    a ---- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'a']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -397,14 +397,14 @@ describe('iD.actionOrthogonalize', function () {
                 //    | \
                 //    |   \
                 //     b - c
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 3]}),
-                    iD.osmNode({id: 'b', loc: [0.1, 0]}),
-                    iD.osmNode({id: 'c', loc: [3, 0]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                    Rapid.osmNode({id: 'b', loc: [0.1, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'a']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -412,16 +412,16 @@ describe('iD.actionOrthogonalize', function () {
                 //    e - d - c
                 //    |       |
                 //    a ----- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [1, 2]}),
-                    iD.osmNode({id: 'e', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
+                    Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'a']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -431,17 +431,17 @@ describe('iD.actionOrthogonalize', function () {
                 //    f        c
                 //     \      /
                 //      a -- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [1, 0]}),
-                    iD.osmNode({id: 'b', loc: [3, 0]}),
-                    iD.osmNode({id: 'c', loc: [4, 2]}),
-                    iD.osmNode({id: 'd', loc: [3, 4]}),
-                    iD.osmNode({id: 'e', loc: [1, 4]}),
-                    iD.osmNode({id: 'f', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [1, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [3, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [3, 4]}),
+                    Rapid.osmNode({id: 'e', loc: [1, 4]}),
+                    Rapid.osmNode({id: 'f', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.eql('not_squarish');
             });
 
@@ -451,18 +451,18 @@ describe('iD.actionOrthogonalize', function () {
                 //   e --- d - c
                 //        |    |
                 //        a -- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [ 0, -1]}),
-                    iD.osmNode({id: 'b', loc: [ 1, -1]}),
-                    iD.osmNode({id: 'c', loc: [ 0,  1]}),
-                    iD.osmNode({id: 'd', loc: [ 0.1,  0]}),
-                    iD.osmNode({id: 'e', loc: [-1,  0]}),
-                    iD.osmNode({id: 'f', loc: [-1,  1]}),
-                    iD.osmNode({id: 'g', loc: [ 0,  1]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [ 0, -1]}),
+                    Rapid.osmNode({id: 'b', loc: [ 1, -1]}),
+                    Rapid.osmNode({id: 'c', loc: [ 0,  1]}),
+                    Rapid.osmNode({id: 'd', loc: [ 0.1,  0]}),
+                    Rapid.osmNode({id: 'e', loc: [-1,  0]}),
+                    Rapid.osmNode({id: 'f', loc: [-1,  1]}),
+                    Rapid.osmNode({id: 'g', loc: [ 0,  1]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'd', 'a']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -475,15 +475,15 @@ describe('iD.actionOrthogonalize', function () {
                 //    d ---- c
                 //           |
                 //    a ---- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.eql('square_enough');
             });
 
@@ -491,15 +491,15 @@ describe('iD.actionOrthogonalize', function () {
                 //    d --- c
                 //          |
                 //    a ---  b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -508,14 +508,14 @@ describe('iD.actionOrthogonalize', function () {
                 //    |
                 //    |
                 //     b - c
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 3]}),
-                    iD.osmNode({id: 'b', loc: [0, 0.1]}),
-                    iD.osmNode({id: 'c', loc: [3, 0]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                    Rapid.osmNode({id: 'b', loc: [0, 0.1]}),
+                    Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -523,16 +523,16 @@ describe('iD.actionOrthogonalize', function () {
                 //    e - d - c
                 //            |
                 //    a ----- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [1, 2]}),
-                    iD.osmNode({id: 'e', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [1, 2]}),
+                    Rapid.osmNode({id: 'e', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -542,17 +542,17 @@ describe('iD.actionOrthogonalize', function () {
                 //    f        c
                 //            /
                 //      a -- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [1, 0]}),
-                    iD.osmNode({id: 'b', loc: [3, 0]}),
-                    iD.osmNode({id: 'c', loc: [4, 2]}),
-                    iD.osmNode({id: 'd', loc: [3, 4]}),
-                    iD.osmNode({id: 'e', loc: [1, 4]}),
-                    iD.osmNode({id: 'f', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [1, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [3, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [3, 4]}),
+                    Rapid.osmNode({id: 'e', loc: [1, 4]}),
+                    Rapid.osmNode({id: 'f', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.eql('not_squarish');
             });
 
@@ -560,16 +560,16 @@ describe('iD.actionOrthogonalize', function () {
                 //   f -- g
                 //   |    |
                 //   e --- d - c
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'c', loc: [ 0,  1]}),
-                    iD.osmNode({id: 'd', loc: [ 0.1,  0]}),
-                    iD.osmNode({id: 'e', loc: [-1,  0]}),
-                    iD.osmNode({id: 'f', loc: [-1,  1]}),
-                    iD.osmNode({id: 'g', loc: [ 0,  1]}),
-                    iD.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'c', loc: [ 0,  1]}),
+                    Rapid.osmNode({id: 'd', loc: [ 0.1,  0]}),
+                    Rapid.osmNode({id: 'e', loc: [-1,  0]}),
+                    Rapid.osmNode({id: 'f', loc: [-1,  1]}),
+                    Rapid.osmNode({id: 'g', loc: [ 0,  1]}),
+                    Rapid.osmWay({id: '-', nodes: ['c', 'd', 'e', 'f', 'g', 'd']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection).disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection).disabled(graph);
                 expect(result).to.be.false;
             });
         });
@@ -580,15 +580,15 @@ describe('iD.actionOrthogonalize', function () {
                 //    d ---- c
                 //           |
                 //    a ---- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
                 expect(result).to.eql('square_enough');
             });
 
@@ -596,15 +596,15 @@ describe('iD.actionOrthogonalize', function () {
                 //    d --- c
                 //          |
                 //    a ---  b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 0]}),
-                    iD.osmNode({id: 'b', loc: [2.1, 0]}),
-                    iD.osmNode({id: 'c', loc: [2, 2]}),
-                    iD.osmNode({id: 'd', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [2.1, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [2, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -613,14 +613,14 @@ describe('iD.actionOrthogonalize', function () {
                 //    |
                 //    |
                 //     b - c
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [0, 3]}),
-                    iD.osmNode({id: 'b', loc: [0, 0.1]}),
-                    iD.osmNode({id: 'c', loc: [3, 0]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [0, 3]}),
+                    Rapid.osmNode({id: 'b', loc: [0, 0.1]}),
+                    Rapid.osmNode({id: 'c', loc: [3, 0]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
                 expect(result).to.be.false;
             });
 
@@ -630,17 +630,17 @@ describe('iD.actionOrthogonalize', function () {
                 //    f        c
                 //            /
                 //      a -- b
-                var graph = new iD.Graph([
-                    iD.osmNode({id: 'a', loc: [1, 0]}),
-                    iD.osmNode({id: 'b', loc: [3, 0]}),
-                    iD.osmNode({id: 'c', loc: [4, 2]}),
-                    iD.osmNode({id: 'd', loc: [3, 4]}),
-                    iD.osmNode({id: 'e', loc: [1, 4]}),
-                    iD.osmNode({id: 'f', loc: [0, 2]}),
-                    iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
+                var graph = new Rapid.Graph([
+                    Rapid.osmNode({id: 'a', loc: [1, 0]}),
+                    Rapid.osmNode({id: 'b', loc: [3, 0]}),
+                    Rapid.osmNode({id: 'c', loc: [4, 2]}),
+                    Rapid.osmNode({id: 'd', loc: [3, 4]}),
+                    Rapid.osmNode({id: 'e', loc: [1, 4]}),
+                    Rapid.osmNode({id: 'f', loc: [0, 2]}),
+                    Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f']})
                 ]);
 
-                var result = iD.actionOrthogonalize('-', projection, 'b').disabled(graph);
+                var result = Rapid.actionOrthogonalize('-', projection, 'b').disabled(graph);
                 expect(result).to.eql('not_squarish');
             });
 
@@ -649,7 +649,7 @@ describe('iD.actionOrthogonalize', function () {
 
     describe('transitions', function () {
         it('is transitionable', function() {
-            expect(iD.actionOrthogonalize().transitionable).to.be.true;
+            expect(Rapid.actionOrthogonalize().transitionable).to.be.true;
         });
 
         //  for all of these:
@@ -659,17 +659,17 @@ describe('iD.actionOrthogonalize', function () {
         //     a -- b -- c -- d
 
         it('orthogonalize at t = 0', function() {
-           var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
-                iD.osmNode({id: 'c', loc: [2, -0.01]}),
-                iD.osmNode({id: 'd', loc: [3, 0]}),
-                iD.osmNode({id: 'e', loc: [3, 1]}),
-                iD.osmNode({id: 'f', loc: [0, 1]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
+           var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
+                Rapid.osmNode({id: 'c', loc: [2, -0.01]}),
+                Rapid.osmNode({id: 'd', loc: [3, 0]}),
+                Rapid.osmNode({id: 'e', loc: [3, 1]}),
+                Rapid.osmNode({id: 'f', loc: [0, 1]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph, 0);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph, 0);
             expect(graph.entity('-').nodes).to.eql(['a', 'b', 'c', 'd', 'e', 'f', 'a']);
             expect(graph.entity('b').loc[0]).to.be.closeTo(1, 1e-6);
             expect(graph.entity('b').loc[1]).to.be.closeTo(0.01, 1e-6);
@@ -679,17 +679,17 @@ describe('iD.actionOrthogonalize', function () {
         });
 
         it('orthogonalize at t = 0.5', function() {
-           var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
-                iD.osmNode({id: 'c', loc: [2, -0.01]}),
-                iD.osmNode({id: 'd', loc: [3, 0]}),
-                iD.osmNode({id: 'e', loc: [3, 1]}),
-                iD.osmNode({id: 'f', loc: [0, 1]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
+           var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
+                Rapid.osmNode({id: 'c', loc: [2, -0.01]}),
+                Rapid.osmNode({id: 'd', loc: [3, 0]}),
+                Rapid.osmNode({id: 'e', loc: [3, 1]}),
+                Rapid.osmNode({id: 'f', loc: [0, 1]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph, 0.5);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph, 0.5);
             expect(graph.entity('-').nodes).to.eql(['a', 'b', 'c', 'd', 'e', 'f', 'a']);
             expect(graph.entity('b').loc[0]).to.be.closeTo(1, 1e-3);
             expect(graph.entity('b').loc[1]).to.be.closeTo(0.005, 1e-3);
@@ -698,17 +698,17 @@ describe('iD.actionOrthogonalize', function () {
         });
 
         it('orthogonalize at t = 1', function() {
-           var graph = new iD.Graph([
-                iD.osmNode({id: 'a', loc: [0, 0]}),
-                iD.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
-                iD.osmNode({id: 'c', loc: [2, -0.01]}),
-                iD.osmNode({id: 'd', loc: [3, 0]}),
-                iD.osmNode({id: 'e', loc: [3, 1]}),
-                iD.osmNode({id: 'f', loc: [0, 1]}),
-                iD.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
+           var graph = new Rapid.Graph([
+                Rapid.osmNode({id: 'a', loc: [0, 0]}),
+                Rapid.osmNode({id: 'b', loc: [1, 0.01], tags: {foo: 'bar'}}),
+                Rapid.osmNode({id: 'c', loc: [2, -0.01]}),
+                Rapid.osmNode({id: 'd', loc: [3, 0]}),
+                Rapid.osmNode({id: 'e', loc: [3, 1]}),
+                Rapid.osmNode({id: 'f', loc: [0, 1]}),
+                Rapid.osmWay({id: '-', nodes: ['a', 'b', 'c', 'd', 'e', 'f', 'a']})
             ]);
 
-            graph = iD.actionOrthogonalize('-', projection)(graph, 1);
+            graph = Rapid.actionOrthogonalize('-', projection)(graph, 1);
             expect(graph.entity('-').nodes).to.eql(['a', 'b', 'd', 'e', 'f', 'a']);
             expect(graph.entity('b').loc[0]).to.be.closeTo(1, 2e-3);
             expect(graph.entity('b').loc[1]).to.be.closeTo(0, 2e-3);

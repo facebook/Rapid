@@ -1,9 +1,9 @@
-describe('iD.actionChangeMember', function () {
+describe('actionChangeMember', function () {
     it('updates the member at the specified index', function () {
-        var node     = iD.osmNode(),
-            relation = iD.osmRelation({members: [{id: node.id}]}),
-            action   = iD.actionChangeMember(relation.id, {id: node.id, role: 'node'}, 0),
-            graph    = action(new iD.Graph([node, relation]));
+        var node     = Rapid.osmNode(),
+            relation = Rapid.osmRelation({members: [{id: node.id}]}),
+            action   = Rapid.actionChangeMember(relation.id, {id: node.id, role: 'node'}, 0),
+            graph    = action(new Rapid.Graph([node, relation]));
         expect(graph.entity(relation.id).members).to.eql([{id: node.id, role: 'node'}]);
     });
 });

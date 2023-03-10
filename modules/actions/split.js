@@ -10,19 +10,17 @@ import { utilWrap } from '../util';
 
 // Split a way at the given node.
 //
-// Optionally, split only the given ways, if multiple ways share
-// the given node.
+// Optionally, split only the given ways, if multiple ways share the given node.
 //
-// This is the inverse of `iD.actionJoin`.
+// For testing convenience, accepts `newWayIDs` to assign to the new ways.
+// (Normally, new entities are automatically assigned the next available number).
 //
-// For testing convenience, accepts an ID to assign to the new way.
-// Normally, this will be undefined and the way will automatically
-// be assigned a new ID.
+// This is the inverse of `actionJoin`.
 //
 // Reference:
 //   https://github.com/systemed/potlatch2/blob/master/net/systemeD/halcyon/connection/actions/SplitWayAction.as
 //
-export function actionSplit(nodeIds, newWayIds) {
+export function actionSplit(nodeIds, newWayIDs) {
     // accept single ID for backwards-compatiblity
     if (typeof nodeIds === 'string') nodeIds = [nodeIds];
 
@@ -270,7 +268,7 @@ export function actionSplit(nodeIds, newWayIds) {
             var nodeId = nodeIds[i];
             var candidates = action.waysForNode(nodeId, graph);
             for (var j = 0; j < candidates.length; j++) {
-                graph = split(graph, nodeId, candidates[j], newWayIds && newWayIds[newWayIndex]);
+                graph = split(graph, nodeId, candidates[j], newWayIDs && newWayIDs[newWayIndex]);
                 newWayIndex += 1;
             }
         }

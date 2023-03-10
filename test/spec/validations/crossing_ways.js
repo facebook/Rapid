@@ -1,60 +1,60 @@
-describe('iD.validations.crossing_ways', function () {
+describe('validations.crossing_ways', function () {
     var context;
 
     beforeEach(function() {
-        context = iD.coreContext().assetPath('../dist/').init();
+        context = Rapid.coreContext().assetPath('../dist/').init();
     });
 
     function createWaysWithOneCrossingPoint(tags1, tags2) {
-        var n1 = iD.osmNode({id: 'n-1', loc: [1,1]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [2,2]});
-        var w1 = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags1});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [1,1]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [2,2]});
+        var w1 = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: tags1});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(w1)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(w1)
         );
 
-        var n3 = iD.osmNode({id: 'n-3', loc: [1,2]});
-        var n4 = iD.osmNode({id: 'n-4', loc: [2,1]});
-        var w2 = iD.osmWay({id: 'w-2', nodes: ['n-3', 'n-4'], tags: tags2});
+        var n3 = Rapid.osmNode({id: 'n-3', loc: [1,2]});
+        var n4 = Rapid.osmNode({id: 'n-4', loc: [2,1]});
+        var w2 = Rapid.osmWay({id: 'w-2', nodes: ['n-3', 'n-4'], tags: tags2});
 
         context.perform(
-            iD.actionAddEntity(n3),
-            iD.actionAddEntity(n4),
-            iD.actionAddEntity(w2)
+            Rapid.actionAddEntity(n3),
+            Rapid.actionAddEntity(n4),
+            Rapid.actionAddEntity(w2)
         );
     }
 
     function createWaysWithTwoCrossingPoint() {
-      var n1 = iD.osmNode({id: 'n-1', loc: [1,1]});
-      var n2 = iD.osmNode({id: 'n-2', loc: [3,3]});
-      var w1 = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: { highway: 'residential' }});
+      var n1 = Rapid.osmNode({id: 'n-1', loc: [1,1]});
+      var n2 = Rapid.osmNode({id: 'n-2', loc: [3,3]});
+      var w1 = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: { highway: 'residential' }});
 
       context.perform(
-          iD.actionAddEntity(n1),
-          iD.actionAddEntity(n2),
-          iD.actionAddEntity(w1)
+          Rapid.actionAddEntity(n1),
+          Rapid.actionAddEntity(n2),
+          Rapid.actionAddEntity(w1)
       );
 
-      var n3 = iD.osmNode({id: 'n-3', loc: [1,2]});
-      var n4 = iD.osmNode({id: 'n-4', loc: [2,1]});
-      var n5 = iD.osmNode({id: 'n-5', loc: [3,2]});
-      var n6 = iD.osmNode({id: 'n-6', loc: [2,3]});
-      var w2 = iD.osmWay({id: 'w-2', nodes: ['n-3', 'n-4', 'n-5', 'n-6'], tags: { highway: 'residential' }});
+      var n3 = Rapid.osmNode({id: 'n-3', loc: [1,2]});
+      var n4 = Rapid.osmNode({id: 'n-4', loc: [2,1]});
+      var n5 = Rapid.osmNode({id: 'n-5', loc: [3,2]});
+      var n6 = Rapid.osmNode({id: 'n-6', loc: [2,3]});
+      var w2 = Rapid.osmWay({id: 'w-2', nodes: ['n-3', 'n-4', 'n-5', 'n-6'], tags: { highway: 'residential' }});
 
       context.perform(
-          iD.actionAddEntity(n3),
-          iD.actionAddEntity(n4),
-          iD.actionAddEntity(n5),
-          iD.actionAddEntity(n6),
-          iD.actionAddEntity(w2)
+          Rapid.actionAddEntity(n3),
+          Rapid.actionAddEntity(n4),
+          Rapid.actionAddEntity(n5),
+          Rapid.actionAddEntity(n6),
+          Rapid.actionAddEntity(w2)
       );
     }
 
     function validate() {
-        var validator = iD.validationCrossingWays(context);
+        var validator = Rapid.validationCrossingWays(context);
         var changes = context.history().changes();
         var entities = changes.modified.concat(changes.created);
         var issues = [];
@@ -404,32 +404,32 @@ describe('iD.validations.crossing_ways', function () {
     });
 
     function createWayAndRelationWithOneCrossingPoint(wayTags, relTags) {
-        var n1 = iD.osmNode({id: 'n-1', loc: [1,1]});
-        var n2 = iD.osmNode({id: 'n-2', loc: [2,2]});
-        var w1 = iD.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: wayTags});
+        var n1 = Rapid.osmNode({id: 'n-1', loc: [1,1]});
+        var n2 = Rapid.osmNode({id: 'n-2', loc: [2,2]});
+        var w1 = Rapid.osmWay({id: 'w-1', nodes: ['n-1', 'n-2'], tags: wayTags});
 
         context.perform(
-            iD.actionAddEntity(n1),
-            iD.actionAddEntity(n2),
-            iD.actionAddEntity(w1)
+            Rapid.actionAddEntity(n1),
+            Rapid.actionAddEntity(n2),
+            Rapid.actionAddEntity(w1)
         );
 
-        var n3 = iD.osmNode({id: 'n-3', loc: [1,2]});
-        var n4 = iD.osmNode({id: 'n-4', loc: [2,1]});
-        var n5 = iD.osmNode({id: 'n-5', loc: [3,2]});
-        var n6 = iD.osmNode({id: 'n-6', loc: [2,3]});
-        var w2 = iD.osmWay({id: 'w-2', nodes: ['n-3', 'n-4', 'n-5'], tags: {}});
-        var w3 = iD.osmWay({id: 'w-3', nodes: ['n-5', 'n-6', 'n-3'], tags: {}});
-        var r1 = iD.osmRelation({id: 'r-1', members: [{id: 'w-2', type: 'way'}, {id: 'w-3', type: 'way'}], tags: relTags});
+        var n3 = Rapid.osmNode({id: 'n-3', loc: [1,2]});
+        var n4 = Rapid.osmNode({id: 'n-4', loc: [2,1]});
+        var n5 = Rapid.osmNode({id: 'n-5', loc: [3,2]});
+        var n6 = Rapid.osmNode({id: 'n-6', loc: [2,3]});
+        var w2 = Rapid.osmWay({id: 'w-2', nodes: ['n-3', 'n-4', 'n-5'], tags: {}});
+        var w3 = Rapid.osmWay({id: 'w-3', nodes: ['n-5', 'n-6', 'n-3'], tags: {}});
+        var r1 = Rapid.osmRelation({id: 'r-1', members: [{id: 'w-2', type: 'way'}, {id: 'w-3', type: 'way'}], tags: relTags});
 
         context.perform(
-            iD.actionAddEntity(n3),
-            iD.actionAddEntity(n4),
-            iD.actionAddEntity(n5),
-            iD.actionAddEntity(n6),
-            iD.actionAddEntity(w2),
-            iD.actionAddEntity(w3),
-            iD.actionAddEntity(r1)
+            Rapid.actionAddEntity(n3),
+            Rapid.actionAddEntity(n4),
+            Rapid.actionAddEntity(n5),
+            Rapid.actionAddEntity(n6),
+            Rapid.actionAddEntity(w2),
+            Rapid.actionAddEntity(w3),
+            Rapid.actionAddEntity(r1)
         );
     }
 

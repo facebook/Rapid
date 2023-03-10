@@ -1,42 +1,42 @@
-describe('iD.presetIndex', function () {
+describe('presetIndex', function () {
     var _savedPresets, _savedAreaKeys;
 
     before(function() {
-        _savedPresets = iD.fileFetcher.cache().preset_presets;
-        _savedAreaKeys = iD.osmAreaKeys;
+        _savedPresets = Rapid.fileFetcher.cache().preset_presets;
+        _savedAreaKeys = Rapid.osmAreaKeys;
     });
 
     after(function() {
-        iD.fileFetcher.cache().preset_presets = _savedPresets;
-        iD.osmSetAreaKeys(_savedAreaKeys);
+        Rapid.fileFetcher.cache().preset_presets = _savedPresets;
+        Rapid.osmSetAreaKeys(_savedAreaKeys);
     });
 
 
     describe('#init', function () {
         it('has a fallback point preset', function () {
-            var node = iD.osmNode({ id: 'n' });
-            var graph = new iD.Graph([node]);
-            var presets = iD.presetIndex();
+            var node = Rapid.osmNode({ id: 'n' });
+            var graph = new Rapid.Graph([node]);
+            var presets = Rapid.presetIndex();
             expect(presets.match(node, graph).id).to.eql('point');
         });
         it('has a fallback line preset', function () {
-            var node = iD.osmNode({ id: 'n' });
-            var way = iD.osmWay({ id: 'w', nodes: ['n'] });
-            var graph = new iD.Graph([node, way]);
-            var presets = iD.presetIndex();
+            var node = Rapid.osmNode({ id: 'n' });
+            var way = Rapid.osmWay({ id: 'w', nodes: ['n'] });
+            var graph = new Rapid.Graph([node, way]);
+            var presets = Rapid.presetIndex();
             expect(presets.match(way, graph).id).to.eql('line');
         });
         it('has a fallback area preset', function () {
-            var node = iD.osmNode({ id: 'n' });
-            var way = iD.osmWay({ id: 'w', nodes: ['n'], tags: { area: 'yes' }});
-            var graph = new iD.Graph([node, way]);
-            var presets = iD.presetIndex();
+            var node = Rapid.osmNode({ id: 'n' });
+            var way = Rapid.osmWay({ id: 'w', nodes: ['n'], tags: { area: 'yes' }});
+            var graph = new Rapid.Graph([node, way]);
+            var presets = Rapid.presetIndex();
             expect(presets.match(way, graph).id).to.eql('area');
         });
         it('has a fallback relation preset', function () {
-            var relation = iD.osmRelation({ id: 'r' });
-            var graph = new iD.Graph([relation]);
-            var presets = iD.presetIndex();
+            var relation = Rapid.osmRelation({ id: 'r' });
+            var graph = new Rapid.Graph([relation]);
+            var presets = Rapid.presetIndex();
             expect(presets.match(relation, graph).id).to.eql('relation');
         });
     });
@@ -49,22 +49,22 @@ describe('iD.presetIndex', function () {
         };
 
         it('returns a collection containing presets matching a geometry and tags', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
-                var way = iD.osmWay({ tags: { highway: 'residential' } });
-                var graph = new iD.Graph([way]);
+                var way = Rapid.osmWay({ tags: { highway: 'residential' } });
+                var graph = new Rapid.Graph([way]);
                 expect(presets.match(way, graph).id).to.eql('residential');
                 done();
             });
         });
 
         it('returns the appropriate fallback preset when no tags match', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
-            var point = iD.osmNode();
-            var line = iD.osmWay({ tags: { foo: 'bar' } });
-            var graph = new iD.Graph([point, line]);
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
+            var point = Rapid.osmNode();
+            var line = Rapid.osmWay({ tags: { foo: 'bar' } });
+            var graph = new Rapid.Graph([point, line]);
 
             presets.ensureLoaded().then(function() {
                 expect(presets.match(point, graph).id).to.eql('point');
@@ -74,11 +74,11 @@ describe('iD.presetIndex', function () {
         });
 
         it('matches vertices on a line as points', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
-            var point = iD.osmNode({ tags: { leisure: 'park' } });
-            var line = iD.osmWay({ nodes: [point.id], tags: { 'highway': 'residential' } });
-            var graph = new iD.Graph([point, line]);
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
+            var point = Rapid.osmNode({ tags: { leisure: 'park' } });
+            var line = Rapid.osmWay({ nodes: [point.id], tags: { 'highway': 'residential' } });
+            var graph = new Rapid.Graph([point, line]);
 
             presets.ensureLoaded().then(function() {
                 expect(presets.match(point, graph).id).to.eql('point');
@@ -87,11 +87,11 @@ describe('iD.presetIndex', function () {
         });
 
         it('matches vertices on an addr:interpolation line as points', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
-            var point = iD.osmNode({ tags: { leisure: 'park' } });
-            var line = iD.osmWay({ nodes: [point.id], tags: { 'addr:interpolation': 'even' } });
-            var graph = new iD.Graph([point, line]);
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
+            var point = Rapid.osmNode({ tags: { leisure: 'park' } });
+            var line = Rapid.osmWay({ nodes: [point.id], tags: { 'addr:interpolation': 'even' } });
+            var graph = new Rapid.Graph([point, line]);
 
             presets.ensureLoaded().then(function() {
                 expect(presets.match(point, graph).id).to.eql('park');
@@ -113,8 +113,8 @@ describe('iD.presetIndex', function () {
         };
 
         it('includes keys for presets with area geometry', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys()).to.include.keys('natural');
                 done();
@@ -122,8 +122,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('discards key-values for presets with a line geometry', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys().natural).to.include.keys('tree_row');
                 expect(presets.areaKeys().natural.tree_row).to.be.true;
@@ -132,8 +132,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('discards key-values for presets with both area and line geometry', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys().leisure).to.include.keys('track');
                 done();
@@ -141,8 +141,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('does not discard key-values for presets with neither area nor line geometry', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys().natural).not.to.include.keys('peak');
                 done();
@@ -150,8 +150,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('does not discard generic \'*\' key-values', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys().natural).not.to.include.keys('natural');
                 done();
@@ -159,8 +159,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('ignores keys like \'highway\' that are assumed to be lines', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys()).not.to.include.keys('highway');
                 done();
@@ -168,8 +168,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('ignores suggestion presets', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.areaKeys()).not.to.include.keys('amenity');
                 done();
@@ -186,8 +186,8 @@ describe('iD.presetIndex', function () {
         };
 
         it('addablePresetIDs is initially null', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 expect(presets.addablePresetIDs()).to.be.null;
                 done();
@@ -195,8 +195,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('can set and get addablePresetIDs', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
 
                 expect(presets.item('residential').addable()).to.be.true;
@@ -218,8 +218,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('ignores invalid IDs in addablePresetIDs', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
 
                 expect(presets.item(null)).to.eql(undefined);
@@ -253,8 +253,8 @@ describe('iD.presetIndex', function () {
         });
 
         it('addablePresetIDs are default presets', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
             presets.ensureLoaded().then(function() {
                 var ids = new Set(['bench', 'residential']);   // can only add presets with these IDs
                 presets.addablePresetIDs(ids);
@@ -279,9 +279,9 @@ describe('iD.presetIndex', function () {
 
     describe.skip('#build', function () {
         it('builds presets from provided', function () {
-            var surfShop = iD.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
-            var graph = new iD.Graph([surfShop]);
-            var presets = iD.presetIndex();
+            var surfShop = Rapid.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
+            var graph = new Rapid.Graph([surfShop]);
+            var presets = Rapid.presetIndex();
             var presetData = {
                 presets: {
                     'amenity/shop/surf': {
@@ -297,11 +297,11 @@ describe('iD.presetIndex', function () {
         });
 
         it('configures presets\' initial visibility', function () {
-            var surfShop = iD.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
-            var firstStreetJetty = iD.osmNode({ tags: { man_made: 'jetty' } });
+            var surfShop = Rapid.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
+            var firstStreetJetty = Rapid.osmNode({ tags: { man_made: 'jetty' } });
             var entities = [surfShop, firstStreetJetty];
-            var graph = new iD.Graph(entities);
-            var presets = iD.presetIndex();
+            var graph = new Rapid.Graph(entities);
+            var presets = Rapid.presetIndex();
             var presetData = {
                 presets: {
                     'amenity/shop/surf': {
@@ -348,10 +348,10 @@ describe('iD.presetIndex', function () {
         };
 
         it('prefers building to multipolygon', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
-            var relation = iD.osmRelation({ tags: { type: 'multipolygon', building: 'yes' } });
-            var graph = new iD.Graph([relation]);
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
+            var relation = Rapid.osmRelation({ tags: { type: 'multipolygon', building: 'yes' } });
+            var graph = new Rapid.Graph([relation]);
             presets.ensureLoaded().then(function() {
                 var match = presets.match(relation, graph);
                 expect(match.id).to.eql('building');
@@ -360,10 +360,10 @@ describe('iD.presetIndex', function () {
         });
 
         it('prefers building to address', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
-            var way = iD.osmWay({ tags: { area: 'yes', building: 'yes', 'addr:housenumber': '1234' } });
-            var graph = new iD.Graph([way]);
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
+            var way = Rapid.osmWay({ tags: { area: 'yes', building: 'yes', 'addr:housenumber': '1234' } });
+            var graph = new Rapid.Graph([way]);
             presets.ensureLoaded().then(function() {
                 var match = presets.match(way, graph);
                 expect(match.id).to.eql('building');
@@ -372,10 +372,10 @@ describe('iD.presetIndex', function () {
         });
 
         it('prefers pedestrian to area', function (done) {
-            iD.fileFetcher.cache().preset_presets = testPresets;
-            var presets = iD.presetIndex();
-            var way = iD.osmWay({ tags: { area: 'yes', highway: 'pedestrian' } });
-            var graph = new iD.Graph([way]);
+            Rapid.fileFetcher.cache().preset_presets = testPresets;
+            var presets = Rapid.presetIndex();
+            var way = Rapid.osmWay({ tags: { area: 'yes', highway: 'pedestrian' } });
+            var graph = new Rapid.Graph([way]);
             presets.ensureLoaded().then(function() {
                 var match = presets.match(way, graph);
                 expect(match.id).to.eql('highway/pedestrian_area');
@@ -416,18 +416,18 @@ describe('iD.presetIndex', function () {
         });
 
         it('builds presets w/external sources set to addable', function () {
-            var surfShop = iD.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
-            var graph = new iD.Graph([surfShop]);
+            var surfShop = Rapid.osmNode({ tags: { amenity: 'shop', 'shop:type': 'surf' } });
+            var graph = new Rapid.Graph([surfShop]);
             var url = 'https://fakemaprules.io/fake.json';
 
             // no exernal presets yet
-            expect(iD.presetIndex().match(surfShop, graph).id).to.eql('point');
+            expect(Rapid.presetIndex().match(surfShop, graph).id).to.eql('point');
 
             // reset graph...
-            graph = new iD.Graph([surfShop]);
+            graph = new Rapid.Graph([surfShop]);
 
             // add the validations query param...
-            iD.presetIndex().fromExternal(url, function (externalPresets) {
+            Rapid.presetIndex().fromExternal(url, function (externalPresets) {
                 expect(externalPresets.match(surfShop, graph).id).to.eql('8bc64d6d');
             });
 
@@ -440,7 +440,7 @@ describe('iD.presetIndex', function () {
         it('makes only the external presets initially addable', function () {
             var url = 'https://fakemaprules.io/fake.json';
 
-            iD.presetIndex().fromExternal(url, function(externalPresets) {
+            Rapid.presetIndex().fromExternal(url, function(externalPresets) {
                 var external = externalPresets.collection.reduce(function(presets, preset) {
                     if (!preset.hasOwnProperty('members') && preset.addable()) {
                         presets.push(preset.id);

@@ -12,10 +12,10 @@ function jsonToOSM(renderData) {
   //Entity data is already split into points, vertices, lines, and polygons.
   let osmRenderData = {};
 
-  let points = renderData.points.map(point => iD.osmNode(point));
-  let vertices = renderData.vertices.map(vertex => iD.osmNode(vertex));
-  let lines = renderData.lines.map(line => iD.osmWay(line));
-  let polygons = renderData.polygons.map(polygon => iD.osmWay(polygon));
+  let points = renderData.points.map(point => Rapid.osmNode(point));
+  let vertices = renderData.vertices.map(vertex => Rapid.osmNode(vertex));
+  let lines = renderData.lines.map(line => Rapid.osmWay(line));
+  let polygons = renderData.polygons.map(polygon => Rapid.osmWay(polygon));
 
   osmRenderData.points = points;
   osmRenderData.vertices = vertices;
@@ -30,8 +30,8 @@ function jsonToOSM(renderData) {
 function instantiateEntities(data) {
   let entities = [];
   for (const props of data) {
-    if (props.id.charAt(0) === 'w') entities.push(new iD.osmWay(props));
-    if (props.id.charAt(0) === 'n') entities.push(new iD.osmNode(props));
+    if (props.id.charAt(0) === 'w') entities.push(new Rapid.osmWay(props));
+    if (props.id.charAt(0) === 'n') entities.push(new Rapid.osmNode(props));
   }
   return entities;
 }
@@ -47,7 +47,7 @@ const timestamp = 1649012524130;
 //Now initialize context in a similar fashion to our unit tests.
 //Benchmark.js doesn't have the concept of a 'before all' or 'before each', so we just do it all here at a single go.
 let content = d3.select('body').append('div');
-let context = iD.coreContext().assetPath('../../dist/').init().container(content);
+let context = Rapid.coreContext().assetPath('../../dist/').init().container(content);
 
 let map = context.map();
 content.call(map);
@@ -67,7 +67,7 @@ function setup(dataBlob) {
   //This dataBlob variable should be the json blob exported in bench.html from a <script src='canned_osm_data.js'> declaration
   renderData = jsonToOSM(dataBlob.data);
   graphEntities = instantiateEntities(dataBlob.entities);
-  projection = new iD.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
+  projection = new Rapid.sdk.Projection(dataBlob.projection._x, dataBlob.projection._y, dataBlob.projection._k);
   zoom = dataBlob.zoom;
   let graph = context.graph();
   graph.rebase(graphEntities, [graph], false);

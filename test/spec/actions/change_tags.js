@@ -1,8 +1,8 @@
-describe('iD.actionChangeTags', function () {
+describe('actionChangeTags', function () {
     it('changes an entity\'s tags', function () {
-        var entity = iD.osmEntity(),
+        var entity = Rapid.osmEntity(),
             tags   = {foo: 'bar'},
-            graph  = iD.actionChangeTags(entity.id, tags)(new iD.Graph([entity]));
+            graph  = Rapid.actionChangeTags(entity.id, tags)(new Rapid.Graph([entity]));
         expect(graph.entity(entity.id).tags).to.eql(tags);
     });
 });

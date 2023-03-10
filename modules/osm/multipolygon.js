@@ -9,7 +9,7 @@ import { osmWay } from './way';
 // 2. One and only one member with the `outer` role. Must be a way with interesting tags.
 // 3. No members without a role.
 //
-// Old multipolygons are no longer recommended but are still rendered as areas by iD.
+// Old multipolygons are no longer recommended but are still rendered as areas.
 
 export function osmOldMultipolygonOuterMemberOfRelation(entity, graph) {
     if (entity.type !== 'relation' ||

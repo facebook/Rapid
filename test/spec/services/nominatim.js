@@ -1,17 +1,17 @@
-describe('iD.serviceNominatim', function() {
+describe('serviceNominatim', function() {
     var nominatim;
 
     before(function() {
-        iD.services.geocoder = iD.serviceNominatim;
+        Rapid.services.geocoder = Rapid.serviceNominatim;
         fetchMock.reset();
     });
 
     after(function() {
-        delete iD.services.geocoder;
+        delete Rapid.services.geocoder;
     });
 
     beforeEach(function() {
-        nominatim = iD.services.geocoder;
+        nominatim = Rapid.services.geocoder;
         nominatim.reset();
     });
 

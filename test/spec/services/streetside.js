@@ -1,17 +1,17 @@
-describe('iD.serviceStreetside', () => {
+describe('serviceStreetside', () => {
   const dimensions = [64, 64];
   let context, streetside;
 
   before(() => {
-    iD.services.streetside = iD.serviceStreetside;
+    Rapid.services.streetside = Rapid.serviceStreetside;
   });
 
   after(() => {
-    delete iD.services.streetside;
+    delete Rapid.services.streetside;
   });
 
   beforeEach(() => {
-    context = iD.coreContext()
+    context = Rapid.coreContext()
       .assetPath('../dist/')
       .init();
     context.projection
@@ -19,7 +19,7 @@ describe('iD.serviceStreetside', () => {
       .translate([-116508, 0])  // 10,0
       .dimensions([[0,0], dimensions]);
 
-    streetside = iD.services.streetside;
+    streetside = Rapid.services.streetside;
     streetside.reset();
   });
 

@@ -25,7 +25,7 @@ describe('LocationManager', () => {
 
   beforeEach(() => {
     // make a new one each time, so we aren't accidentally testing the "global" locationManager
-    locationManager = new iD.LocationManager();
+    locationManager = new Rapid.LocationManager();
   });
 
 
