@@ -433,7 +433,7 @@ export default {
     _cache.inflightPost[d.id] = controller;
 
     // Since this is expected to throw an error just continue as if it worked
-    // (worst case scenario the request truly fails and issue will show up if iD restarts)
+    // (worst case scenario the request truly fails and issue will show up if Rapid restarts)
     d3_json(url, { signal: controller.signal })
       .finally(() => {
         delete _cache.inflightPost[d.id];

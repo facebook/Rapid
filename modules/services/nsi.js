@@ -36,7 +36,7 @@ const notBranches = /(coop|express|wireless|factory|outlet)/i;
 // PRIVATE FUNCTIONS
 
 // `setNsiSources()`
-// Adds the sources to iD's filemap so we can start downloading data.
+// Adds the sources to Rapid's filemap so we can start downloading data.
 //
 function setNsiSources() {
   const sources = {
@@ -57,7 +57,7 @@ function setNsiSources() {
 
 
 // `loadNsiPresets()`
-//  Returns a Promise fulfilled when the presets have been downloaded and merged into iD.
+//  Returns a Promise fulfilled when the presets have been downloaded and merged into Rapid.
 //
 function loadNsiPresets() {
   return (
@@ -67,7 +67,7 @@ function loadNsiPresets() {
     ])
     .then(vals => {
       // Add `suggestion=true` to all the nsi presets
-      // The preset json schema doesn't include it, but the iD code still uses it
+      // The preset json schema doesn't include it, but the Rapid code still uses it
       Object.values(vals[0].presets).forEach(preset => preset.suggestion = true);
 
       presetManager.merge({

@@ -5,50 +5,49 @@ import { uiTooltip } from './tooltip';
 
 
 // these are module variables so they are preserved through a ui.restart()
-var sawVersion = null;
-var isNewVersion = false;
-var isNewUser = false;
+let sawVersion = null;
+let isNewVersion = false;
+let isNewUser = false;
 
 
 export function uiVersion(context) {
+  const currVersion = context.version;
+  const matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
 
-    var currVersion = context.version;
-    var matchedVersion = currVersion.match(/\d+\.\d+\.\d+.*/);
-
-    if (sawVersion === null && matchedVersion !== null) {
-        if (prefs('sawVersion')) {
-            isNewUser = false;
-            isNewVersion = prefs('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
-        } else {
-            isNewUser = true;
-            isNewVersion = true;
-        }
-        prefs('sawVersion', currVersion);
-        sawVersion = currVersion;
+  if (sawVersion === null && matchedVersion !== null) {
+    if (prefs('sawVersion')) {
+      isNewUser = false;
+      isNewVersion = prefs('sawVersion') !== currVersion && currVersion.indexOf('-') === -1;
+    } else {
+      isNewUser = true;
+      isNewVersion = true;
     }
+    prefs('sawVersion', currVersion);
+    sawVersion = currVersion;
+  }
 
-    return function(selection) {
-        selection
-            .append('a')
-            .attr('target', '_blank')
-            .attr('tabindex', -1)
-            .attr('href', 'https://github.com/facebook/RapiD')
-            .text(currVersion);
+  return function render(selection) {
+    selection
+      .append('a')
+      .attr('target', '_blank')
+      .attr('tabindex', -1)
+      .attr('href', 'https://github.com/facebook/RapiD')
+      .text(currVersion);
 
-        // only show new version indicator to users that have used iD before
-        if (isNewVersion && !isNewUser) {
-            selection
-                .append('a')
-                .attr('class', 'badge')
-                .attr('target', '_blank')
-                .attr('tabindex', -1)
-                .attr('href', 'https://github.com/facebook/RapiD/blob/main/CHANGELOG.md')
-                .call(svgIcon('#maki-gift-11'))
-                .call(uiTooltip()
-                    .title(t.html('version.whats_new', { version: currVersion }))
-                    .placement('top')
-                    .scrollContainer(context.container().select('.main-footer-wrap'))
-                );
-        }
-    };
+    // Only show new version indicator to users that have used Rapid before
+    if (isNewVersion && !isNewUser) {
+      selection
+        .append('a')
+        .attr('class', 'badge')
+        .attr('target', '_blank')
+        .attr('tabindex', -1)
+        .attr('href', 'https://github.com/facebook/RapiD/blob/main/CHANGELOG.md')
+        .call(svgIcon('#maki-gift-11'))
+        .call(uiTooltip()
+          .title(t.html('version.whats_new', { version: currVersion }))
+          .placement('top')
+          .scrollContainer(context.container().select('.main-footer-wrap'))
+        );
+    }
+  };
 }
