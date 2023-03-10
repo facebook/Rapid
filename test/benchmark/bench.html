@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Benchmark.js test</title>
+    <title>Rapid benchmarks</title>
     <meta charset="utf-8">
 </head>
 
@@ -32,8 +32,8 @@
     // Second Script:  Always run benchmark helpers
     scripts.unshift('bench_helpers.js');
 
-    // First script: Choose either modern or legacy bundle..
-    scripts.unshift('../../dist/iD.js');
+    // First script: app bundle..
+    scripts.unshift('../../dist/rapid.js');
 
 
     // Create and execute all scripts in specified order..

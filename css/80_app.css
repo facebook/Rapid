@@ -1,6 +1,6 @@
 /* Basics
 ------------------------------------------------------- */
-/* the root element of iD */
+/* the root element of Rapid */
 .ideditor {
     height: 100%;
     width: 100%;
@@ -9,8 +9,8 @@
     border: 0;
     overflow: hidden;
 
-    /* Establish a local stacking context so all elements within iD are on the
-       same layer relative to elements outside iD - #7457.
+    /* Establish a local stacking context so all elements within Rapid are on the
+       same layer relative to elements outside Rapid - #7457.
        https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
     */
     position: relative;
@@ -520,8 +520,6 @@ button.disabled .icon.operation use,
     -ms-overflow-style: none; /* IE, Edge */
 }
 
-/*#id-container>div.main-content.active>div.top-toolbar-wrap>div>div.toolbar-item.draw-modes>
-div.item-content>div>button.add-area.add-button.bar-button*/
 
 .top-toolbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */

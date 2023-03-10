@@ -5,11 +5,11 @@ esbuild
   .build({
     bundle: true,
     sourcemap: true,
-    entryPoints: ['./modules/rapid.js'],
+    entryPoints: ['./modules/main.js'],
     legalComments: 'none',
     logLevel: 'info',
     metafile: true,
-    outfile: 'dist/iD.js',
+    outfile: 'dist/rapid.js',
     loader: { '.js': 'jsx'},
   })
   .then(result => {

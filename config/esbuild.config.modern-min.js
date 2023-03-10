@@ -5,9 +5,9 @@ esbuild
     minify: true,
     bundle: true,
     sourcemap: true,
-    entryPoints: ['./modules/rapid.js'],
+    entryPoints: ['./modules/main.js'],
     legalComments: 'none',
     logLevel: 'info',
-    outfile: 'dist/iD.min.js'
+    outfile: 'dist/rapid.min.js'
   })
   .catch(() => process.exit(1));

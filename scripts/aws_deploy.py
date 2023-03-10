@@ -49,21 +49,15 @@ def deploy():
     newindex = os.path.join(distdir, "index.html")
     with open(index, "r") as input:
         with open(newindex, "w+") as output:
-            # These directives aren't all necessary for the latest Rapid; some are useful in older versions of the index.html.
+            # Point assets at the unique dir we created for this build
             for s in input:
                 s = (
-                    s.replace("dist/iD.css", f"/rapid/{distdir}/iD.css")
-                    .replace("'dist/iD.js'", f"'/rapid/{distdir}/iD.js'")
-                    .replace("'iD.js'", f"'/rapid/{distdir}/iD.js'")
-                    .replace("'dist/iD.legacy.js'", f"'/rapid/{distdir}/iD.legacy.js'")
-                    .replace(
-                        "var id = iD.coreContext();",
-                        f"var id = iD.coreContext().assetPath('/rapid/{distdir}/');",
-                    )
+                    s.replace("dist/rapid.css", f"/rapid/{distdir}/rapid.css")
+                    .replace("'dist/rapid.js'", f"'/rapid/{distdir}/rapid.js'")
+                    .replace("'rapid.js'", f"'/rapid/{distdir}/rapid.js'")
                     .replace(".assetPath('')", f".assetPath('/rapid/{distdir}/')")
-                    .replace("href='iD.css'", f"href='/rapid/{distdir}/iD.css'")
-                    .replace("'iD.min.js'", f"'/rapid/{distdir}/iD.min.js'")
-                    .replace("'iD.legacy.js'", f"'/rapid/{distdir}/iD.legacy.js'")
+                    .replace("href='rapid.css'", f"href='/rapid/{distdir}/rapid.css'")
+                    .replace("'rapid.min.js'", f"'/rapid/{distdir}/rapid.min.js'")
                 )
                 output.write(s)
 

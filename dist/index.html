@@ -3,7 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <title>Rapid</title>
-    <link rel='stylesheet' href='iD.css'>
+    <link rel='stylesheet' href='rapid.css'>
     <link rel='icon' type='image/png' href='data:image/png;base64,iVBORw0KGgo='>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'/>
     <meta name='apple-mobile-web-app-capable' content='yes'/>
@@ -23,25 +23,25 @@
   <body>
     <script>var $buoop={required:{i:15,e:-4,f:-3,o:-3,s:-1,c:-3},reminder:0,noclose:true,no_permanent_hide:true,insecure:true,api:2021.06};</script>
     <script src='https://browser-update.org/update.js'></script>
-    <div id='id-container'></div>
+    <div id='rapid-container'></div>
 
     <script>
-      var container = document.getElementById('id-container');
+      var container = document.getElementById('rapid-container');
       var newScript = document.createElement('script');
       newScript.type = 'text/javascript';
       newScript.onload = checkScript;
       newScript.onerror = checkScript;
-      newScript.src = 'iD.min.js';
+      newScript.src = 'rapid.min.js';
 
       document.getElementsByTagName('head')[0].appendChild(newScript);
 
       function checkScript() {
-        if (typeof iD === 'undefined' || !iD.utilDetect().support) {
+        if (typeof Rapid === 'undefined' || !Rapid.utilDetect().support) {
           container.innerHTML = 'Sorry, your browser is not currently supported.';
           container.style.padding = '20px';
 
         } else {
-          var context = iD.coreContext()
+          var context = Rapid.coreContext()
             .assetPath('')
             .apiConnections([
               {

@@ -19,8 +19,8 @@ module.exports = function (config) {
       'node_modules/sinon-chai/lib/sinon-chai.js',
       'node_modules/happen/happen.js',
       'node_modules/fetch-mock/es5/client-bundle.js',
-      { pattern: 'dist/iD.js', included: true },
-      { pattern: 'dist/iD.css', included: true },
+      { pattern: 'dist/rapid.js', included: true },
+      { pattern: 'dist/rapid.css', included: true },
       { pattern: 'dist/**/*', included: false },
       { pattern: 'test/spec/renderer/*.json', included: true, served: true},
       'test/spec/spec_helpers.js',
@@ -47,7 +47,7 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
     preprocessors: {
-      'dist/iD.js': ['coverage'],
+      'dist/rapid.js': ['coverage'],
       'test/spec/renderer/*.json': ['json_fixtures']
     },
 

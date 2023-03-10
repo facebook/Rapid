@@ -26,13 +26,13 @@ export function buildCSS() {
   console.time(END);
 
   return _currBuild = glob('css/**/*.css')
-    .then(files => doConcat(files.sort(), 'dist/iD.css'))
+    .then(files => doConcat(files.sort(), 'dist/rapid.css'))
     .then(() => {
-      const css = fs.readFileSync('dist/iD.css', 'utf8');
+      const css = fs.readFileSync('dist/rapid.css', 'utf8');
       return postcss([ autoprefixer, prepend({ selector: '.ideditor ' }) ])
-        .process(css, { from: 'dist/iD.css', to: 'dist/iD.css' });
+        .process(css, { from: 'dist/rapid.css', to: 'dist/rapid.css' });
     })
-    .then(result => fs.writeFileSync('dist/iD.css', result.css))
+    .then(result => fs.writeFileSync('dist/rapid.css', result.css))
     .then(() => {
       console.timeEnd(END);
       console.log('');
