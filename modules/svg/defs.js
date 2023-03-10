@@ -13,7 +13,7 @@ export function svgDefs(context) {
       .enter()
       .append('defs');
 
-    const spritesheets = defs.selectAll('.spritesheet')
+    defs.selectAll('.spritesheet')
       .data(spritesheetIDs)
       .enter()
       .append('g')

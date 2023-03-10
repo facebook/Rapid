@@ -5,7 +5,7 @@ import { prefs } from '../core/preferences';
 import { marked } from 'marked';
 
 
-export function uiRapidWhatsNew(context) {
+export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-vars
   let _dontShowAgain = false;
 
 
