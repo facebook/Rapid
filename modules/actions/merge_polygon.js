@@ -1,5 +1,5 @@
-import { geomPolygonContainsPolygon } from '@id-sdk/math';
-import { utilArrayGroupBy, utilArrayIntersection, utilObjectOmit } from '@id-sdk/util';
+import { geomPolygonContainsPolygon } from '@rapid-sdk/math';
+import { utilArrayGroupBy, utilArrayIntersection, utilObjectOmit } from '@rapid-sdk/util';
 
 import { osmJoinWays, osmRelation } from '../osm';
 

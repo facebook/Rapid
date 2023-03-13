@@ -1,4 +1,4 @@
-import { utilArrayUnion, utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUnion, utilArrayUniq } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 import { diff3Merge } from 'node-diff3';
 

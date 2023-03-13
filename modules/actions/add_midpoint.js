@@ -1,5 +1,5 @@
-import { geomEdgeEqual } from '@id-sdk/math';
-import { utilArrayIntersection } from '@id-sdk/util';
+import { geomEdgeEqual } from '@rapid-sdk/math';
+import { utilArrayIntersection } from '@rapid-sdk/util';
 
 
 export function actionAddMidpoint(midpoint, node) {

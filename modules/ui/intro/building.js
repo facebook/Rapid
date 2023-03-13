@@ -1,6 +1,6 @@
-import { Extent } from '@id-sdk/math';
+import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';

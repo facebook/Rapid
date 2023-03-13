@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@id-sdk/util';
+import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@rapid-sdk/util';
 
 import { services } from '../../services';
 import { svgIcon } from '../../svg/icon';

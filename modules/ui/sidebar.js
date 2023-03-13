@@ -1,7 +1,7 @@
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
-import { Extent } from '@id-sdk/math';
-import { utilArrayIdentical } from '@id-sdk/util';
+import { Extent } from '@rapid-sdk/math';
+import { utilArrayIdentical } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle';
 
 import { utilFastMouse } from '../util';

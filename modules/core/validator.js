@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { Extent } from '@id-sdk/math';
-import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@id-sdk/util';
+import { Extent } from '@rapid-sdk/math';
+import { utilArrayChunk, utilArrayGroupBy, utilEntityAndDeepMemberIDs } from '@rapid-sdk/util';
 
 import { prefs } from './preferences';
 import { Difference } from './Difference';

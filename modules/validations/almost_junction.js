@@ -1,7 +1,7 @@
 import {
-  geoMetersToLat, geoMetersToLon, geoSphericalDistance, geoSphericalClosestPoint,
+  Extent, geoMetersToLat, geoMetersToLon, geoSphericalDistance, geoSphericalClosestPoint,
   geomLineIntersection, vecAngle, vecInterp
-} from '@id-sdk/math';
+} from '@rapid-sdk/math';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
@@ -12,7 +12,6 @@ import { utilDisplayLabel } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { services } from '../services';
-import { Extent } from '@id-sdk/extent';
 
 
 /**

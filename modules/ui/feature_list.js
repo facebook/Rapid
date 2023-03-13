@@ -1,12 +1,11 @@
 import { select as d3_select } from 'd3-selection';
+import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import * as sexagesimal from '@mapbox/sexagesimal';
 
 import { presetManager } from '../presets';
 import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
 import { Graph } from '../core/Graph';
-import { geoSphericalDistance } from '@id-sdk/geo';
-import { Extent } from '@id-sdk/extent';
 import { modeSelect } from '../modes/select';
 import { osmEntity } from '../osm/entity';
 import { services } from '../services';

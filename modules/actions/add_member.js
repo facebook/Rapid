@@ -1,4 +1,4 @@
-import { utilArrayGroupBy, utilObjectOmit } from '@id-sdk/util';
+import { utilArrayGroupBy, utilObjectOmit } from '@rapid-sdk/util';
 
 import { osmJoinWays } from '../osm/multipolygon';
 import { osmWay } from '../osm/way';

@@ -1,9 +1,8 @@
-import { Extent } from '@id-sdk/math';
+import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { modeSelect } from '../../modes/select';
 import { utilRebind } from '../../util/rebind';
 import { delayAsync, eventCancel, helpHtml, icon, showEntityEditor, showPresetList, transitionTime } from './helper';

@@ -1,5 +1,5 @@
 import { json as d3_json } from 'd3-fetch';
-import { utilQsString } from '@id-sdk/util';
+import { utilQsString } from '@rapid-sdk/util';
 import _debounce from 'lodash-es/debounce';
 
 import { localizer } from '../core/localizer';

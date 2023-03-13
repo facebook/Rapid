@@ -4,8 +4,8 @@ import {
     polygonHull as d3_polygonHull,
     polygonCentroid as d3_polygonCentroid
 } from 'd3-polygon';
-import { vecInterp, vecLength, vecLengthSquare } from '@id-sdk/math';
-import { utilArrayUniq } from '@id-sdk/util';
+import { vecInterp, vecLength, vecLengthSquare } from '@rapid-sdk/math';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { osmNode } from '../osm/node';
 

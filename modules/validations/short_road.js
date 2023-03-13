@@ -1,6 +1,5 @@
-import { Extent } from '@id-sdk/extent';
+import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
 
-import { geoSphericalDistance } from '@id-sdk/geo';
 import { operationDelete } from '../operations/index';
 import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';

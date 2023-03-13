@@ -31,8 +31,8 @@ export const d3 = {
 };
 
 // Reexport the sdk things that our tests use too
-import * as SDKMATH from '@id-sdk/math';
-import * as SDKUTIL from '@id-sdk/util';
+import * as SDKMATH from '@rapid-sdk/math';
+import * as SDKUTIL from '@rapid-sdk/util';
 export const sdk = {
   Projection: SDKMATH.Projection,
   Extent: SDKMATH.Extent,

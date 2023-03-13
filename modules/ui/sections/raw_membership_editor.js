@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { utilArrayGroupBy, utilArrayIntersection, utilUniqueString } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayIntersection, utilUniqueString } from '@rapid-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t, localizer } from '../../core/localizer';

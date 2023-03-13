@@ -1,4 +1,4 @@
-import { utilArrayDifference, utilArrayUniq } from '@id-sdk/util';
+import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
 import { t, localizer } from '../../core/localizer';
 import { localize } from './helper';

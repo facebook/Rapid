@@ -1,5 +1,5 @@
-import { geomPathIntersections, geomPathLength, vecAdd, vecAngle, vecEqual, vecInterp, vecSubtract } from '@id-sdk/math';
-import { utilArrayIntersection } from '@id-sdk/util';
+import { geomPathIntersections, geomPathLength, vecAdd, vecAngle, vecEqual, vecInterp, vecSubtract } from '@rapid-sdk/math';
+import { utilArrayIntersection } from '@rapid-sdk/util';
 
 import { geoChooseEdge } from '../geo';
 import { osmNode } from '../osm/node';

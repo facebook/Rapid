@@ -1,4 +1,4 @@
-import { utilArrayUniq, utilGetAllNodes } from '@id-sdk/util';
+import { utilArrayUniq, utilGetAllNodes } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDisconnect } from '../actions/disconnect';

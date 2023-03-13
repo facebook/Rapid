@@ -1,6 +1,6 @@
 import { drag as d3_drag } from 'd3-drag';
 import { select as d3_select } from 'd3-selection';
-import { utilUniqueString } from '@id-sdk/util';
+import { utilUniqueString } from '@rapid-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';

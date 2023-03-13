@@ -1,5 +1,5 @@
-import { geomGetSmallestSurroundingRectangle, vecInterp, vecLength } from '@id-sdk/math';
-import { utilGetAllNodes } from '@id-sdk/util';
+import { geomGetSmallestSurroundingRectangle, vecInterp, vecLength } from '@rapid-sdk/math';
+import { utilGetAllNodes } from '@rapid-sdk/util';
 
 
 /* Reflect the given area around its axis of symmetry */

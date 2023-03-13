@@ -1,4 +1,4 @@
-import { vecEqual } from '@id-sdk/math';
+import { vecEqual } from '@rapid-sdk/math';
 import { AbstractMode } from './AbstractMode';
 
 import { actionAddEntity } from '../actions/add_entity';

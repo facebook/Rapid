@@ -1,5 +1,5 @@
-import { geoSphericalDistance } from '@id-sdk/math';
-import { utilArrayIntersection, utilArrayUniq } from '@id-sdk/util';
+import { geoSphericalDistance } from '@rapid-sdk/math';
+import { utilArrayIntersection, utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionAddMember } from './add_member';
 import { osmIsOldMultipolygonOuterMember } from '../osm/multipolygon';

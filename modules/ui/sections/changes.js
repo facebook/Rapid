@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { utilEntityOrMemberSelector } from '@id-sdk/util';
+import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
 import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';

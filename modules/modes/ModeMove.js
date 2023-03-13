@@ -1,4 +1,4 @@
-import { vecSubtract } from '@id-sdk/math';
+import { vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode';
 import { actionMove } from '../actions/move';

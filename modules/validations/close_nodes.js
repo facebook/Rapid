@@ -1,10 +1,11 @@
+import { Extent, geoMetersToLat, geoMetersToLon, geoSphericalDistance } from '@rapid-sdk/math';
+
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { utilDisplayLabel } from '../util';
 import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { osmPathHighwayTagValues } from '../osm/tags';
-import { geoMetersToLat, geoMetersToLon, geoSphericalDistance } from '@id-sdk/geo';
-import { Extent } from '@id-sdk/extent';
+
 
 export function validationCloseNodes(context) {
     var type = 'close_nodes';

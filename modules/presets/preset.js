@@ -1,4 +1,4 @@
-import { utilArrayUniq, utilObjectOmit, utilSafeString } from '@id-sdk/util';
+import { utilArrayUniq, utilObjectOmit, utilSafeString } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { osmAreaKeys } from '../osm/tags';

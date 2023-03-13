@@ -1,4 +1,4 @@
-import { Extent, vecSubtract } from '@id-sdk/math';
+import { Extent, vecSubtract } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { actionCopyEntities } from '../actions/copy_entities';

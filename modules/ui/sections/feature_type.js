@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilArrayIdentical } from '@id-sdk/util';
+import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';

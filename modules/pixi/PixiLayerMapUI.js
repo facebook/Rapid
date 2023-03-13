@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { geoMetersToLon } from '@id-sdk/math';
+import { geoMetersToLon } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
 import { DashLine } from 'pixi-dashed-line';

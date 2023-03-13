@@ -1,4 +1,4 @@
-import { Extent } from '@id-sdk/extent';
+import { Extent } from '@rapid-sdk/math';
 
 import { t, localizer } from '../core/localizer';
 import { actionReverse } from '../actions/reverse';

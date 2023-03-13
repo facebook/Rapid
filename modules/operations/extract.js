@@ -1,4 +1,4 @@
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionExtract } from '../actions/extract';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';

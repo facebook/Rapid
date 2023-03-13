@@ -1,6 +1,5 @@
 import { t, localizer } from '../../core/localizer';
-import { vecNormalizedDot } from '@id-sdk/math';
-import { geoSphericalDistance } from '@id-sdk/geo';
+import { geoSphericalDistance, vecNormalizedDot } from '@rapid-sdk/math';
 import { uiCmd } from '../cmd';
 
 /**

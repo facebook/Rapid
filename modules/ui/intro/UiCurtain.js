@@ -1,4 +1,4 @@
-import { Extent, vecAdd } from '@id-sdk/math';
+import { Extent, vecAdd } from '@rapid-sdk/math';
 import { easeLinear as d3_easeLinear } from 'd3-ease';
 import { select as d3_select } from 'd3-selection';
 

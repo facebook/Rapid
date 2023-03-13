@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { DashLine } from 'pixi-dashed-line';
 import { GlowFilter } from '@pixi/filter-glow';
-import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@id-sdk/math';
+import { /* geomRotatePoints,*/ vecEqual, vecLength /*, vecSubtract */ } from '@rapid-sdk/math';
 
 import { AbstractFeature } from './AbstractFeature';
 import { lineToPoly } from './helpers';

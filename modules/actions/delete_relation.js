@@ -1,4 +1,4 @@
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionDeleteMultiple } from './delete_multiple';
 

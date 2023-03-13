@@ -1,5 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
-import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
+import { utilArrayIdentical, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import throttle from 'lodash-es/throttle';
 
 import { t } from '../core/localizer';

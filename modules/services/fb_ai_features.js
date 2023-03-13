@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { xml as d3_xml } from 'd3-fetch';
-import { Tiler } from '@id-sdk/math';
+import { Tiler } from '@rapid-sdk/math';
 
 import { locationManager } from '../core/LocationManager';
 import { Graph, Tree } from '../core';

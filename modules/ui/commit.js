@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { utilArrayGroupBy, utilUniqueString } from '@id-sdk/util';
+import { utilArrayGroupBy, utilUniqueString } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
 import { prefs } from '../core/preferences';

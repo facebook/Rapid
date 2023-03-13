@@ -1,8 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
-import { Extent, Tiler, geoScaleToZoom } from '@id-sdk/math';
-import { utilArrayUnion, utilQsString } from '@id-sdk/util';
+import { Extent, Tiler, geoScaleToZoom } from '@rapid-sdk/math';
+import { utilArrayUnion, utilQsString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { localizer } from '../core/localizer';

@@ -1,4 +1,4 @@
-import { utilArrayDifference } from '@id-sdk/util';
+import { utilArrayDifference } from '@rapid-sdk/util';
 
 
 /**

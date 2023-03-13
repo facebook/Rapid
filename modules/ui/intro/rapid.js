@@ -1,4 +1,4 @@
-import { Extent } from '@id-sdk/math';
+import { Extent } from '@rapid-sdk/math';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 

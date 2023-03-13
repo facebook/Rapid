@@ -1,4 +1,4 @@
-import { geomViewportNudge  } from '@id-sdk/math';
+import { geomViewportNudge  } from '@rapid-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
 
 // Scalar for how fast we want the map nudging to actually be.

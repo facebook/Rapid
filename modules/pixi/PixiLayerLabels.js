@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { AtlasAllocator } from 'texture-allocator';
 import RBush from 'rbush';
-import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@id-sdk/math';
+import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
 import { localizer } from '../core/localizer';

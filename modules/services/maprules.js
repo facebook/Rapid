@@ -1,4 +1,4 @@
-import { utilArrayIntersection } from '@id-sdk/util';
+import { utilArrayIntersection } from '@rapid-sdk/util';
 
 import { osmAreaKeys as areaKeys } from '../osm/tags';
 import { validationIssue } from '../core/validation';

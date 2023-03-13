@@ -1,5 +1,5 @@
-import { geoSphericalDistance, vecAngle } from '@id-sdk/math';
-import { utilArrayDifference, utilArrayUniq } from '@id-sdk/util';
+import { geoSphericalDistance, vecAngle } from '@rapid-sdk/math';
+import { utilArrayDifference, utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionDeleteRelation } from '../actions/delete_relation';
 import { actionReverse } from '../actions/reverse';

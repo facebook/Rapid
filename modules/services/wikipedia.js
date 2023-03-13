@@ -1,5 +1,5 @@
 import { json as d3_json } from 'd3-fetch';
-import { utilQsString } from '@id-sdk/util';
+import { utilQsString } from '@rapid-sdk/util';
 
 
 var endpoint = 'https://en.wikipedia.org/w/api.php?';

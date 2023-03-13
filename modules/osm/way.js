@@ -1,6 +1,6 @@
 import { geoArea as d3_geoArea } from 'd3-geo';
-import { Extent, vecCross } from '@id-sdk/math';
-import { utilArrayUniq } from '@id-sdk/util';
+import { Extent, vecCross } from '@rapid-sdk/math';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { osmEntity } from './entity';
 import { osmLanes } from './lanes';

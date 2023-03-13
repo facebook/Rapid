@@ -1,5 +1,4 @@
-import { vecDot, vecLength, vecInterp } from '@id-sdk/math';
-import { geomGetSmallestSurroundingRectangle } from '@id-sdk/geom';
+import { geomGetSmallestSurroundingRectangle, vecDot, vecLength, vecInterp } from '@rapid-sdk/math';
 
 
 /* Align nodes along their common axis */

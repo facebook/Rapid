@@ -1,5 +1,5 @@
 import { polygonCentroid as d3_polygonCentroid } from 'd3-polygon';
-import { vecInterp } from '@id-sdk/math';
+import { vecInterp } from '@rapid-sdk/math';
 import { osmNode } from '../osm/node';
 
 

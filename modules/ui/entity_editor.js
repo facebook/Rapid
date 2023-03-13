@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilArrayIdentical, utilCleanTags } from '@id-sdk/util';
+import { utilArrayIdentical, utilCleanTags } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
 import { presetManager } from '../presets';

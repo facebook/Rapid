@@ -1,7 +1,7 @@
 //import { dispatch as d3_dispatch } from 'd3-dispatch';
 //import { select as d3_select } from 'd3-selection';
-//import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@id-sdk/math';
-//import { utilEntitySelector } from '@id-sdk/util';
+//import { Extent, Projection, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
+//import { utilEntitySelector } from '@rapid-sdk/util';
 //
 //import { presetManager } from '../../presets';
 //import { prefs } from '../../core/preferences';

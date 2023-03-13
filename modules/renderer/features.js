@@ -1,5 +1,5 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { utilArrayGroupBy, utilArrayUnion } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayUnion } from '@rapid-sdk/util';
 
 import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';

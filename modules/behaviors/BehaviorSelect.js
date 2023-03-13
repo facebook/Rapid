@@ -1,4 +1,4 @@
-import { vecLength } from '@id-sdk/math';
+import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { modeSelect } from '../modes/select';

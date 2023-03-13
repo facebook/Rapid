@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 import {
     utilArrayIntersection, utilArrayUnion, utilDeepMemberSelector,
     utilEntityOrDeepMemberSelector, utilEntitySelector
-} from '@id-sdk/util';
+} from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { locationManager } from '../core/LocationManager';

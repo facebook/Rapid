@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 
 export function utilKeybinding(namespace) {

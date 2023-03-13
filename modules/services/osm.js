@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json, xml as d3_xml } from 'd3-fetch';
-import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@id-sdk/math';
-import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@id-sdk/util';
+import { Extent, Projection, Tiler, geoZoomToScale, vecAdd } from '@rapid-sdk/math';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilObjectOmit, utilQsString, utilStringQs } from '@rapid-sdk/util';
 import _throttle from 'lodash-es/throttle';
 import { osmAuth } from 'osm-auth';
 import RBush from 'rbush';

@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 import { geoLength as d3_geoLength, geoCentroid as d3_geoCentroid } from 'd3-geo';
-import { Extent, geoSphericalDistance } from '@id-sdk/math';
-import { utilGetAllNodes } from '@id-sdk/util';
+import { Extent, geoSphericalDistance } from '@rapid-sdk/math';
+import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 import { t, localizer } from '../../core/localizer';

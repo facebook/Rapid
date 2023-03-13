@@ -1,9 +1,8 @@
-import { actionDeleteNode } from './delete_node';
 import {
-    vecAdd, vecEqual, vecInterp, vecLength, vecNormalize,
-    vecProject, vecScale, vecSubtract
-} from '@id-sdk/vector';
+  vecAdd, vecEqual, vecInterp, vecLength, vecNormalize, vecProject, vecScale, vecSubtract
+} from '@rapid-sdk/math';
 
+import { actionDeleteNode } from './delete_node';
 import { geoOrthoNormalizedDotProduct, geoOrthoCalcScore, geoOrthoCanOrthogonalize } from '../geo';
 
 

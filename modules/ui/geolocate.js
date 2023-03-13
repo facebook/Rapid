@@ -1,8 +1,8 @@
 import { select as d3_select } from 'd3-selection';
+import { Extent } from '@rapid-sdk/math';
 
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
-import { Extent } from '@id-sdk/extent';
 import { svgIcon } from '../svg/icon';
 import { uiLoading } from './loading';
 

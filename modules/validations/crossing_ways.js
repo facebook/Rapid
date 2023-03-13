@@ -1,18 +1,22 @@
+import {
+  Extent, geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint,
+  geoSphericalDistance, geoMetersToLat, geoMetersToLon
+} from '@rapid-sdk/math';
+
 import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { vecAngle, vecLength, geomLineIntersection } from '@id-sdk/math';
-
-import { geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint, geoSphericalDistance, geoMetersToLat, geoMetersToLon } from '@id-sdk/geo';
-
+import { vecAngle, vecLength, geomLineIntersection } from '@rapid-sdk/math';
 import { osmNode } from '../osm/node';
-import { osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmRoutableAerowayTags, osmRoutableHighwayTagValues } from '../osm/tags';
+import {
+  osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
+  osmRoutableAerowayTags, osmRoutableHighwayTagValues
+} from '../osm/tags';
 import { t } from '../core/localizer';
 import { utilDisplayLabel } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
-import { Extent } from '@id-sdk/extent';
 
 
 export function validationCrossingWays(context) {

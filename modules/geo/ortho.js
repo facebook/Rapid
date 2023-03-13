@@ -1,4 +1,4 @@
-import { vecEqual, vecNormalizedDot } from '@id-sdk/math';
+import { vecEqual, vecNormalizedDot } from '@rapid-sdk/math';
 
 
 export function geoOrthoNormalizedDotProduct(a, b, origin) {

@@ -1,5 +1,5 @@
-import { geomRotatePoints } from '@id-sdk/math';
-import { utilGetAllNodes } from '@id-sdk/util';
+import { geomRotatePoints } from '@rapid-sdk/math';
+import { utilGetAllNodes } from '@rapid-sdk/util';
 
 
 export function actionRotate(rotateIds, pivot, angle, projection) {

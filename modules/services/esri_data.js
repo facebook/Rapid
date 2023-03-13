@@ -1,8 +1,8 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
-import { Tiler } from '@id-sdk/math';
-import { utilQsString } from '@id-sdk/util';
+import { Tiler } from '@rapid-sdk/math';
+import { utilQsString } from '@rapid-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
 import { Graph, Tree } from '../core';

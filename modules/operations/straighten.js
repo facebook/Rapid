@@ -1,4 +1,4 @@
-import { utilArrayDifference, utilGetAllNodes } from '@id-sdk/util';
+import { utilArrayDifference, utilGetAllNodes } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionStraightenNodes } from '../actions/straighten_nodes';

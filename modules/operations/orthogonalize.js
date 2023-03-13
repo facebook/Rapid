@@ -1,4 +1,4 @@
-import { utilGetAllNodes } from '@id-sdk/util';
+import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionOrthogonalize } from '../actions/orthogonalize';

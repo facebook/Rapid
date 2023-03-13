@@ -1,4 +1,4 @@
-import { geoSphericalDistance, vecAngle } from '@id-sdk/math';
+import { geoSphericalDistance, vecAngle } from '@rapid-sdk/math';
 
 import { operationDelete } from '../operations/index';
 import { t } from '../core/localizer';

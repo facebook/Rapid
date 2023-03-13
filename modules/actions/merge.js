@@ -1,4 +1,4 @@
-import { utilArrayGroupBy, utilArrayUniq } from '@id-sdk/util';
+import { utilArrayGroupBy, utilArrayUniq } from '@rapid-sdk/util';
 
 import { osmTagSuggestingArea } from '../osm/tags';
 

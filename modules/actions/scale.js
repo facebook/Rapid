@@ -1,4 +1,4 @@
-import { utilGetAllNodes } from '@id-sdk/util';
+import { utilGetAllNodes } from '@rapid-sdk/util';
 
 
 export function actionScale(ids, pivotLoc, scaleFactor, projection) {

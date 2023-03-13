@@ -1,7 +1,7 @@
 /* global mapillary:false */
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { Extent, Tiler } from '@id-sdk/math';
+import { Extent, Tiler } from '@rapid-sdk/math';
 import { VectorTile } from '@mapbox/vector-tile';
 import Protobuf from 'pbf';
 import RBush from 'rbush';

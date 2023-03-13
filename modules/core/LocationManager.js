@@ -1,5 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
-import LocationConflation from '@ideditor/location-conflation';
+import LocationConflation from '@rapideditor/location-conflation';
 import whichPolygon from 'which-polygon';
 import calcArea from '@mapbox/geojson-area';
 

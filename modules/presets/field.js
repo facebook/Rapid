@@ -1,4 +1,4 @@
-import { utilSafeString } from '@id-sdk/util';
+import { utilSafeString } from '@rapid-sdk/util';
 
 import { localizer, t } from '../core/localizer';
 

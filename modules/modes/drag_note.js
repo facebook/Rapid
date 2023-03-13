@@ -1,4 +1,4 @@
-import { geomViewportNudge, vecSubtract } from '@id-sdk/math';
+import { geomViewportNudge, vecSubtract } from '@rapid-sdk/math';
 
 import { services } from '../services';
 import { actionNoop } from '../actions/noop';

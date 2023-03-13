@@ -1,4 +1,4 @@
-import { geoLonToMeters, geoMetersToLon } from '@id-sdk/geo';
+import { geoLonToMeters, geoMetersToLon } from '@rapid-sdk/math';
 
 import { displayLength } from '../util/units';
 import { localizer } from '../core/localizer';

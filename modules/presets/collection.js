@@ -1,4 +1,4 @@
-import { utilArrayUniq, utilEditDistance } from '@id-sdk/util';
+import { utilArrayUniq, utilEditDistance } from '@rapid-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
 

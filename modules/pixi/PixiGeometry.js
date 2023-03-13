@@ -1,4 +1,4 @@
-import { Extent, geomGetSmallestSurroundingRectangle, vecInterp } from '@id-sdk/math';
+import { Extent, geomGetSmallestSurroundingRectangle, vecInterp } from '@rapid-sdk/math';
 import { polygonHull as d3_polygonHull, polygonCentroid as d3_polygonCentroid } from 'd3-polygon';
 import polylabel from '@mapbox/polylabel';
 

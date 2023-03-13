@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { Tiler } from '@id-sdk/math';
-import { utilHashcode } from '@id-sdk/util';
+import { Tiler } from '@rapid-sdk/math';
+import { utilHashcode } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 import turf_bboxClip from '@turf/bbox-clip';
 import stringify from 'fast-json-stable-stringify';

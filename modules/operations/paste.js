@@ -1,4 +1,4 @@
-import { Extent, vecSubtract } from '@id-sdk/math';
+import { Extent, vecSubtract } from '@rapid-sdk/math';
 
 import { actionCopyEntities } from '../actions/copy_entities';
 import { actionMove } from '../actions/move';

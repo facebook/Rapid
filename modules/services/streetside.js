@@ -2,8 +2,8 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { select as d3_select } from 'd3-selection';
 import { timer as d3_timer } from 'd3-timer';
-import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@id-sdk/math';
-import { utilArrayUnion, utilQsString, utilUniqueString } from '@id-sdk/util';
+import { Extent, Tiler, geoMetersToLat, geoMetersToLon, geomRotatePoints, geomPointInPolygon, vecLength } from '@rapid-sdk/math';
+import { utilArrayUnion, utilQsString, utilUniqueString } from '@rapid-sdk/util';
 import RBush from 'rbush';
 
 import { t, localizer } from '../core/localizer';

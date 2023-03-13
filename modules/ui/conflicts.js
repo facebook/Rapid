@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
-import { Extent } from '@id-sdk/math';
-import { utilEntityOrMemberSelector } from '@id-sdk/util';
+import { Extent } from '@rapid-sdk/math';
+import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { JXON } from '../util/jxon';

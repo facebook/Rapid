@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { utilArrayIdentical } from '@id-sdk/util';
+import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { prefs } from '../../core/preferences';
 import { svgIcon } from '../../svg/icon';

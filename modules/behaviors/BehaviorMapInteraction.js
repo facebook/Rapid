@@ -1,4 +1,4 @@
-import { geoZoomToScale, vecLength } from '@id-sdk/math';
+import { geoZoomToScale, vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
 import { osmNode } from '../osm';

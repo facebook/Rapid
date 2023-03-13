@@ -1,4 +1,4 @@
-import { vecInterp } from '@id-sdk/math';
+import { vecInterp } from '@rapid-sdk/math';
 import { osmNode, osmRelation, osmWay } from '../osm';
 
 

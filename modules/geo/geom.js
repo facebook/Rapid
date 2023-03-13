@@ -1,4 +1,4 @@
-import { geomLineIntersection, vecDot, vecEqual, vecLength, vecSubtract } from '@id-sdk/math';
+import { geomLineIntersection, vecDot, vecEqual, vecLength, vecSubtract } from '@rapid-sdk/math';
 
 
 // Choose the edge with the minimal distance from `coord` to its orthogonal

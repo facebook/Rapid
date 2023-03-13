@@ -1,7 +1,7 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
-import { Extent, Tiler, vecAdd } from '@id-sdk/math';
-import { utilQsString } from '@id-sdk/util';
+import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
+import { utilQsString } from '@rapid-sdk/util';
 import { marked } from 'marked';
 import RBush from 'rbush';
 

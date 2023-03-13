@@ -1,4 +1,4 @@
-import { utilHashcode, utilTagDiff } from '@id-sdk/util';
+import { utilHashcode, utilTagDiff } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';

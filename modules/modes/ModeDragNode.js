@@ -1,5 +1,5 @@
-import { /*geomViewportNudge, */ vecAdd, vecSubtract } from '@id-sdk/math';
-import { utilArrayIntersection } from '@id-sdk/util';
+import { /*geomViewportNudge, */ vecAdd, vecSubtract } from '@rapid-sdk/math';
+import { utilArrayIntersection } from '@rapid-sdk/util';
 
 import { AbstractMode } from './AbstractMode';
 

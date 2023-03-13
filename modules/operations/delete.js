@@ -1,5 +1,5 @@
-import { geoSphericalDistance } from '@id-sdk/math';
-import { utilGetAllNodes } from '@id-sdk/util';
+import { geoSphericalDistance } from '@rapid-sdk/math';
+import { utilGetAllNodes } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { actionDeleteMultiple } from '../actions/delete_multiple';

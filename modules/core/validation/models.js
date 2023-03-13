@@ -1,4 +1,4 @@
-import { Extent } from '@id-sdk/extent';
+import { Extent } from '@rapid-sdk/math';
 import { utilTotalExtent } from '../../util';
 import { t } from '../../core/localizer';
 

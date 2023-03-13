@@ -1,4 +1,4 @@
-import { utilArrayUniq } from '@id-sdk/util';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionDeleteNode } from './delete_node';
 import { actionDeleteWay } from './delete_way';

@@ -1,7 +1,7 @@
 import { EventEmitter } from '@pixi/utils';
 import { select as d3_select } from 'd3-selection';
 
-import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@id-sdk/math';
+import { Projection, Extent, geoMetersToLon, geoScaleToZoom, geoZoomToScale, vecAdd, vecScale, vecSubtract } from '@rapid-sdk/math';
 
 import { PixiRenderer } from '../pixi/PixiRenderer';
 

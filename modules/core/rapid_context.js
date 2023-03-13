@@ -1,6 +1,6 @@
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { gpx } from '@tmcw/togeojson';
-import { Extent } from '@id-sdk/math';
+import { Extent } from '@rapid-sdk/math';
 
 import { localizer, t } from '../core/localizer';
 import { services } from '../services';

@@ -1,6 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
-import { Extent } from '@id-sdk/math';
+import { Extent } from '@rapid-sdk/math';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
 import { t } from '../../core/localizer';

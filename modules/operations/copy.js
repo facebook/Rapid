@@ -1,4 +1,4 @@
-import { utilArrayGroupBy } from '@id-sdk/util';
+import { utilArrayGroupBy } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';

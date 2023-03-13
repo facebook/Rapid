@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
+import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 
 import { t, localizer } from '../../core/localizer';
 import { svgIcon } from '../../svg/icon';

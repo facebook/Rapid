@@ -1,4 +1,4 @@
-import { utilTagDiff } from '@id-sdk/util';
+import { utilTagDiff } from '@rapid-sdk/util';
 
 import { actionChangeTags } from '../actions/change_tags';
 import { t } from '../core/localizer';

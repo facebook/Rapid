@@ -1,4 +1,4 @@
-import { utilStringQs } from '@id-sdk/util';
+import { utilStringQs } from '@rapid-sdk/util';
 
 import { fileFetcher } from './file_fetcher';
 import { utilDetect } from '../util/detect';

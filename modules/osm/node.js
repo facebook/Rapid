@@ -1,5 +1,5 @@
-import { Extent, vecAngle } from '@id-sdk/math';
-import { utilArrayUniq } from '@id-sdk/util';
+import { Extent, vecAngle } from '@rapid-sdk/math';
+import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { osmEntity } from './entity';
 

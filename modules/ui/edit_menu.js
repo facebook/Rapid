@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { vecAdd } from '@id-sdk/math';
+import { vecAdd } from '@rapid-sdk/math';
 import { localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { utilRebind } from '../util/rebind';

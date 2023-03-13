@@ -4,8 +4,8 @@ import { geoBounds as d3_geoBounds } from 'd3-geo';
 
 import stringify from 'fast-json-stable-stringify';
 import { gpx, kml } from '@tmcw/togeojson';
-import { Extent, geomPolygonIntersectsPolygon } from '@id-sdk/math';
-import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@id-sdk/util';
+import { Extent, geomPolygonIntersectsPolygon } from '@rapid-sdk/math';
+import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '@rapid-sdk/util';
 import { services } from '../services';
 import { PixiFeaturePolygon } from './PixiFeaturePolygon';
 

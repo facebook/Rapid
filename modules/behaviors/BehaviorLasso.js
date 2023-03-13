@@ -1,5 +1,5 @@
-import { Extent, geomPointInPolygon } from '@id-sdk/math';
-import { utilArrayIntersection } from '@id-sdk/util';
+import { Extent, geomPointInPolygon } from '@rapid-sdk/math';
+import { utilArrayIntersection } from '@rapid-sdk/util';
 
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';

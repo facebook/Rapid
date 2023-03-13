@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 import { EventEmitter } from '@pixi/utils';
-import { Projection } from '@id-sdk/math';
+import { Projection } from '@rapid-sdk/math';
 
 import { PixiEvents } from './PixiEvents';
 import { PixiScene } from './PixiScene';

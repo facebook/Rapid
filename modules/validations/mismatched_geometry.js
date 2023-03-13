@@ -1,5 +1,5 @@
-import { geoSphericalDistance } from '@id-sdk/math';
-import { utilTagText } from '@id-sdk/util';
+import { geoSphericalDistance } from '@rapid-sdk/math';
+import { utilTagText } from '@rapid-sdk/util';
 import deepEqual from 'fast-deep-equal';
 
 import { actionAddVertex } from '../actions/add_vertex';

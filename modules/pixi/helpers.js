@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { vecAdd, vecAngle, vecEqual, vecLength } from '@id-sdk/math';
+import { vecAdd, vecAngle, vecEqual, vecLength } from '@rapid-sdk/math';
 
 
 /**

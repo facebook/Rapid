@@ -1,4 +1,4 @@
-import { utilArrayUnion, utilUnicodeCharsTruncated } from '@id-sdk/util';
+import { utilArrayUnion, utilUnicodeCharsTruncated } from '@rapid-sdk/util';
 import { osmIsInterestingTag } from './tags';
 
 

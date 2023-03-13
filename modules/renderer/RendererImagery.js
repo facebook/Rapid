@@ -1,5 +1,5 @@
 import { EventEmitter } from '@pixi/utils';
-import { geoMetersToOffset, geoOffsetToMeters } from '@id-sdk/math';
+import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 import whichPolygon from 'which-polygon';
 
 import { prefs } from '../core/preferences';

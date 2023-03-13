@@ -1,5 +1,5 @@
-import { Extent } from '@id-sdk/math';
-import { utilEntityOrDeepMemberSelector } from '@id-sdk/util';
+import { Extent } from '@rapid-sdk/math';
+import { utilEntityOrDeepMemberSelector } from '@rapid-sdk/util';
 
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';

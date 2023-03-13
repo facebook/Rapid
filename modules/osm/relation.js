@@ -1,9 +1,8 @@
 import { geoArea as d3_geoArea } from 'd3-geo';
+import { Extent, geomPolygonContainsPolygon, geomPolygonIntersectsPolygon } from '@rapid-sdk/math';
 
 import { osmEntity } from './entity';
 import { osmJoinWays } from './multipolygon';
-import { geomPolygonContainsPolygon, geomPolygonIntersectsPolygon } from '@id-sdk/geom';
-import { Extent } from '@id-sdk/extent';
 
 
 export function osmRelation() {
