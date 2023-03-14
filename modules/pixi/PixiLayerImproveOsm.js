@@ -78,15 +78,14 @@ export class PixiLayerImproveOsm extends AbstractLayer {
         feature.style = markerStyle;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
-        // was here before
-        // if (feature.icon) {
-        //  // mathematically 0,-15 is center of marker, move up slightly
-        //  feature.icon.position.set(0, -16);
-        // }
       }
 
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
+      if (!feature._isCircular) {  // offset the icon to fit better in the "osmose" pin
+        feature.icon.position.set(0, -17);
+      }
+
       this.retainFeature(feature, frame);
     }
   }

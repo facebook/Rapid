@@ -71,12 +71,14 @@ export class PixiLayerOsmose extends AbstractLayer {
         feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
-        // // mathematically 0,-15 is center of marker, move up slightly
-        // icon.position.set(0, -16);
       }
 
       this.syncFeatureClasses(feature);
       feature.update(projection, zoom);
+      if (!feature._isCircular) {  // offset the icon to fit better in the "osmose" pin
+        feature.icon.position.set(0, -17);
+      }
+
       this.retainFeature(feature, frame);
     }
   }

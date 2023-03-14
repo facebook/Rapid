@@ -15,10 +15,15 @@ const TILEZOOM = 14;
 const tiler = new Tiler().zoomRange(TILEZOOM);
 const dispatch = d3_dispatch('loaded');
 const _osmoseUrlRoot = 'https://osmose.openstreetmap.fr/api/0.3';
-let _osmoseData = { icons: {}, items: [] };
 
-// This gets reassigned if reset
-let _cache;
+// persistent data - loaded at init
+const _osmoseColors = new Map();    // Map (itemType -> hex color)
+const _osmoseStrings = new Map();   // Map (locale -> Object containing strings)
+const _osmoseData = { icons: {}, types: [] };
+
+// cache gets cleared on reset
+let _osmoseCache;
+
 
 function abortRequest(controller) {
   if (controller) {
@@ -42,12 +47,12 @@ function encodeIssueRtree(d) {
 
 // Replace or remove QAItem from rtree
 function updateRtree(item, replace) {
-  _cache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
-
+  _osmoseCache.rtree.remove(item, (a, b) => a.data.id === b.data.id);
   if (replace) {
-    _cache.rtree.insert(item);
+    _osmoseCache.rtree.insert(item);
   }
 }
+
 
 // Issues shouldn't obscure each other
 function preventCoincident(loc) {
@@ -57,85 +62,74 @@ function preventCoincident(loc) {
     let delta = coincident ? [0.00001, 0] : [0, 0.00001];
     loc = vecAdd(loc, delta);
     let bbox = new Extent(loc).bbox();
-    coincident = _cache.rtree.search(bbox).length;
+    coincident = _osmoseCache.rtree.search(bbox).length;
   } while (coincident);
 
   return loc;
 }
 
+
 export default {
   title: 'osmose',
 
   init() {
+    this.reset();
+    this.event = utilRebind(this, dispatch, 'on');
+
     fileFetcher.get('qa_data')
       .then(d => {
-        _osmoseData = d.osmose;
-        _osmoseData.items = Object.keys(d.osmose.icons)
+        _osmoseData.icons = d.osmose.icons;
+        _osmoseData.types = Object.keys(d.osmose.icons)
           .map(s => s.split('-')[0])
           .reduce((unique, item) => unique.indexOf(item) !== -1 ? unique : [...unique, item], []);
-      });
-
-    if (!_cache) {
-      this.reset();
-    }
-
-    this.event = utilRebind(this, dispatch, 'on');
+      })
+      .then(this.loadStringsAsync);
   },
 
+
   reset() {
-    let _strings = {};
-    let _colors = {};
-    if (_cache) {
-      Object.values(_cache.inflightTile).forEach(abortRequest);
-      // Strings and colors are static and should not be re-populated
-      _strings = _cache.strings;
-      _colors = _cache.colors;
+    if (_osmoseCache) {
+      Object.values(_osmoseCache.inflightTile).forEach(abortRequest);
     }
-    _cache = {
-      data: {},
+    _osmoseCache = {
+      issues: new Map(),    // Map (itemID -> QAItem)
       loadedTile: {},
       inflightTile: {},
       inflightPost: {},
       closed: {},
-      rtree: new RBush(),
-      strings: _strings,
-      colors: _colors
+      rtree: new RBush()
     };
   },
 
-  loadIssues(projection) {
-    let params = {
-      // Tiles return a maximum # of issues
-      // So we want to filter our request for only types iD supports
-      item: _osmoseData.items
-    };
 
+  loadIssues(projection) {
     // determine the needed tiles to cover the view
     const tiles = tiler.getTiles(projection).tiles;
 
     // abort inflight requests that are no longer needed
-    abortUnwantedRequests(_cache, tiles);
+    abortUnwantedRequests(_osmoseCache, tiles);
 
     // issue new requests..
     tiles.forEach(tile => {
-      if (_cache.loadedTile[tile.id] || _cache.inflightTile[tile.id]) return;
+      if (_osmoseCache.loadedTile[tile.id] || _osmoseCache.inflightTile[tile.id]) return;
 
-      const [ x, y, z ] = tile.xyz;
+      const [x, y, z] = tile.xyz;
+      const params = { item: _osmoseData.types };   // Only request the types that we support
       const url = `${_osmoseUrlRoot}/issues/${z}/${x}/${y}.json?` + utilQsString(params);
 
-      let controller = new AbortController();
-      _cache.inflightTile[tile.id] = controller;
+      const controller = new AbortController();
+      _osmoseCache.inflightTile[tile.id] = controller;
 
       d3_json(url, { signal: controller.signal })
         .then(data => {
-          delete _cache.inflightTile[tile.id];
-          _cache.loadedTile[tile.id] = true;
+          delete _osmoseCache.inflightTile[tile.id];
+          _osmoseCache.loadedTile[tile.id] = true;
 
           if (data.features) {
             data.features.forEach(issue => {
+              // Osmose issues are uniquely identified by a unique
+              // `item` and `class` combination (both integer values)
               const { item, class: cl, uuid: id } = issue.properties;
-              /* Osmose issues are uniquely identified by a unique
-                `item` and `class` combination (both integer values) */
               const itemType = `${item}-${cl}`;
 
               // Filter out unsupported issue types (some are too specific or advanced)
@@ -145,13 +139,13 @@ export default {
 
                 let d = new QAItem(loc, this, itemType, id, { item });
 
-                // Setting elems here prevents UI detail requests
+                // Assigning `elems` here prevents UI detail requests
                 if (item === 8300 || item === 8360) {
                   d.elems = [];
                 }
 
-                _cache.data[d.id] = d;
-                _cache.rtree.insert(encodeIssueRtree(d));
+                _osmoseCache.issues.set(d.id, d);
+                _osmoseCache.rtree.insert(encodeIssueRtree(d));
               }
             });
           }
@@ -159,58 +153,51 @@ export default {
           dispatch.call('loaded');
         })
         .catch(() => {
-          delete _cache.inflightTile[tile.id];
-          _cache.loadedTile[tile.id] = true;
+          delete _osmoseCache.inflightTile[tile.id];
+          _osmoseCache.loadedTile[tile.id] = true;
         });
     });
   },
 
-  loadIssueDetail(issue) {
+
+  loadIssueDetailAsync(issue) {
     // Issue details only need to be fetched once
-    if (issue.elems !== undefined) {
-      return Promise.resolve(issue);
-    }
+    if (issue.elems !== undefined) return Promise.resolve(issue);
 
     const url = `${_osmoseUrlRoot}/issue/${issue.id}?langs=${localizer.localeCode()}`;
-    const cacheDetails = data => {
+    const handleResponse = (data) => {
       // Associated elements used for highlighting
       // Assign directly for immediate use in the callback
       issue.elems = data.elems.map(e => e.type.substring(0,1) + e.id);
-
       // Some issues have instance specific detail in a subtitle
       issue.detail = data.subtitle ? marked.parse(data.subtitle.auto) : '';
-
       this.replaceItem(issue);
     };
 
-    return d3_json(url).then(cacheDetails).then(() => issue);
+    return d3_json(url)
+      .then(handleResponse)
+      .then(() => issue);
   },
 
-  loadStrings(locale=localizer.localeCode()) {
-    const items = Object.keys(_osmoseData.icons);
 
-    if (
-      locale in _cache.strings
-      && Object.keys(_cache.strings[locale]).length === items.length
-    ) {
-        return Promise.resolve(_cache.strings[locale]);
-    }
-
-    // May be partially populated already if some requests were successful
-    if (!(locale in _cache.strings)) {
-      _cache.strings[locale] = {};
-    }
-
+  // Load the strings for the types of issues that we support
+  loadStringsAsync() {
     // Only need to cache strings for supported issue types
-    // Using multiple individual item + class requests to reduce fetched data size
-    const allRequests = items.map(itemType => {
-      // No need to request data we already have
-      if (itemType in _cache.strings[locale]) return null;
+    const itemTypes = Object.keys(_osmoseData.icons);
 
-      const cacheData = data => {
+    // For now, we only do this one time at init.
+    // Todo: support switching locales
+    let stringData = {};
+    const locale = localizer.localeCode();
+    _osmoseStrings.set(locale, stringData);
+
+    // Using multiple individual item + class requests to reduce fetched data size
+    const allRequests = itemTypes.map(itemType => {
+
+      const handleResponse = (data) => {
         // Bunch of nested single value arrays of objects
-        const [ cat = {items:[]} ] = data.categories;
-        const [ item = {class:[]} ] = cat.items;
+        const [ cat = { items:[] } ] = data.categories;
+        const [ item = { class:[] } ] = cat.items;
         const [ cl = null ] = item.class;
 
         // If null default value is reached, data wasn't as expected (or was empty)
@@ -224,45 +211,47 @@ export default {
         // Cache served item colors to automatically style issue markers later
         const { item: itemInt, color } = item;
         if (/^#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}/.test(color)) {
-          _cache.colors[itemInt] = color;
+          _osmoseColors.set(itemInt, color);
         }
 
         // Value of root key will be null if no string exists
         // If string exists, value is an object with key 'auto' for string
         const { title, detail, fix, trap } = cl;
 
-        // Osmose titles shouldn't contain markdown
         let issueStrings = {};
-        if (title) issueStrings.title = title.auto;
+        // Force title to begin with an uppercase letter
+        if (title)  issueStrings.title = title.auto.charAt(0).toUpperCase() + title.auto.slice(1);
         if (detail) issueStrings.detail = marked.parse(detail.auto);
-        if (trap) issueStrings.trap = marked.parse(trap.auto);
-        if (fix) issueStrings.fix = marked.parse(fix.auto);
+        if (trap)   issueStrings.trap = marked.parse(trap.auto);
+        if (fix)    issueStrings.fix = marked.parse(fix.auto);
 
-        _cache.strings[locale][itemType] = issueStrings;
+        stringData[itemType] = issueStrings;
       };
 
-      const [ item, cl ] = itemType.split('-');
-
       // Osmose API falls back to English strings where untranslated or if locale doesn't exist
+      const [item, cl] = itemType.split('-');
       const url = `${_osmoseUrlRoot}/items/${item}/class/${cl}?langs=${locale}`;
 
-      return d3_json(url).then(cacheData);
+      return d3_json(url).then(handleResponse);
     }).filter(Boolean);
 
-    return Promise.all(allRequests).then(() => _cache.strings[locale]);
+    return Promise.all(allRequests);
   },
 
-  getStrings(itemType, locale=localizer.localeCode()) {
-    // No need to fallback to English, Osmose API handles this for us
-    return (locale in _cache.strings) ? _cache.strings[locale][itemType] : {};
+
+  getStrings(itemType, locale = localizer.localeCode()) {
+    const stringData = _osmoseStrings.get(locale) ?? {};
+    return stringData[itemType] ?? {};
   },
+
 
   getColor(itemType) {
-    return (itemType in _cache.colors) ? _cache.colors[itemType] : '#FFFFFF';
+    return _osmoseColors.get(itemType) ?? '#FFFFFF';
   },
 
+
   postUpdate(issue, callback) {
-    if (_cache.inflightPost[issue.id]) {
+    if (_osmoseCache.inflightPost[issue.id]) {
       return callback({ message: 'Issue update already inflight', status: -2 }, issue);
     }
 
@@ -270,28 +259,29 @@ export default {
     const url = `${_osmoseUrlRoot}/issue/${issue.id}/${issue.newStatus}`;
     const controller = new AbortController();
     const after = () => {
-      delete _cache.inflightPost[issue.id];
+      delete _osmoseCache.inflightPost[issue.id];
 
       this.removeItem(issue);
       if (issue.newStatus === 'done') {
         // Keep track of the number of issues closed per `item` to tag the changeset
-        if (!(issue.item in _cache.closed)) {
-          _cache.closed[issue.item] = 0;
+        if (!(issue.item in _osmoseCache.closed)) {
+          _osmoseCache.closed[issue.item] = 0;
         }
-        _cache.closed[issue.item] += 1;
+        _osmoseCache.closed[issue.item] += 1;
       }
       if (callback) callback(null, issue);
     };
 
-    _cache.inflightPost[issue.id] = controller;
+    _osmoseCache.inflightPost[issue.id] = controller;
 
     fetch(url, { signal: controller.signal })
       .then(after)
       .catch(err => {
-        delete _cache.inflightPost[issue.id];
+        delete _osmoseCache.inflightPost[issue.id];
         if (callback) callback(err.message);
       });
   },
+
 
   // Get all cached QAItems covering the viewport
   getItems(projection) {
@@ -300,40 +290,46 @@ export default {
     const max = [viewport[1][0], viewport[0][1]];
     const bbox = new Extent(projection.invert(min), projection.invert(max)).bbox();
 
-    return _cache.rtree.search(bbox).map(d => d.data);
+    return _osmoseCache.rtree.search(bbox).map(d => d.data);
   },
 
+
   // Get a QAItem from cache
-  getError(id) {
-    return _cache.data[id];
+  getError(issueID) {
+    return _osmoseCache.issues.get(issueID);
   },
+
 
   // get the name of the icon to display for this item
   getIcon(itemType) {
     return _osmoseData.icons[itemType];
   },
 
+
   // Replace a single QAItem in the cache
   replaceItem(item) {
     if (!(item instanceof QAItem) || !item.id) return;
 
-    _cache.data[item.id] = item;
+    _osmoseCache.issues.set(item.id, item);
     updateRtree(encodeIssueRtree(item), true); // true = replace
     return item;
   },
+
 
   // Remove a single QAItem from the cache
   removeItem(item) {
     if (!(item instanceof QAItem) || !item.id) return;
 
-    delete _cache.data[item.id];
+    _osmoseCache.isseus.delete(item.id);
     updateRtree(encodeIssueRtree(item), false); // false = remove
   },
 
+
   // Used to populate `closed:osmose:*` changeset tags
   getClosedCounts() {
-    return _cache.closed;
+    return _osmoseCache.closed;
   },
+
 
   itemURL(item) {
     return `https://osmose.openstreetmap.fr/en/error/${item.id}`;

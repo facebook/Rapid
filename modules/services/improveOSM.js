@@ -150,7 +150,7 @@ export default {
 
   loadIssues(projection) {
     const options = {
-      client: 'iD',
+      client: 'Rapid',
       status: 'OPEN',
       zoom: '19' // Use a high zoom so that clusters aren't returned
     };

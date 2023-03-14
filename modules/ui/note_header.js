@@ -27,7 +27,6 @@ export function uiNoteHeader() {
 
         iconEnter
             .append('div')
-            .attr('class', 'preset-icon-28')
             .call(svgIcon('#rapid-icon-note', 'note-fill'));
 
         iconEnter.each(function(d) {

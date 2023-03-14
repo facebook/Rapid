@@ -66,7 +66,8 @@ export function uiOsmoseEditor(context) {
   }
 
   function osmoseSaveSection(selection) {
-    const isSelected = (_qaItem && _qaItem.id === context.selectedErrorID());
+    const errID = _qaItem?.id;
+    const isSelected = errID && context.selectedData().has(errID);
     const isShown = (_qaItem && isSelected);
     let saveSection = selection.selectAll('.qa-save')
       .data(
@@ -90,7 +91,8 @@ export function uiOsmoseEditor(context) {
   }
 
   function qaSaveButtons(selection) {
-    const isSelected = (_qaItem && _qaItem.id === context.selectedErrorID());
+    const errID = _qaItem?.id;
+    const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
       .data((isSelected ? [_qaItem] : []), d => d.status + d.id);
 

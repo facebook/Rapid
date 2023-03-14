@@ -7,7 +7,6 @@ export function uiOsmoseHeader() {
 
   function issueTitle(d) {
     const unknown = t('inspector.unknown');
-
     if (!d) return unknown;
 
     // Issue titles supplied by Osmose
@@ -32,17 +31,16 @@ export function uiOsmoseHeader() {
     const svgEnter = headerEnter
       .append('div')
         .attr('class', 'qa-header-icon')
-        .classed('new', d => d.id < 0)
       .append('svg')
         .attr('width', '20px')
-        .attr('height', '30px')
-        .attr('viewbox', '0 0 20 30')
-        .attr('class', d => `preset-icon-28 qaItem ${d.service} itemId-${d.id} itemType-${d.itemType}`);
+        .attr('height', '27px')
+        .attr('viewbox', '0 0 20 27')
+        .attr('class', d => `qaItem ${d.service}`);
 
     svgEnter
       .append('polygon')
         .attr('fill', d => services.osmose.getColor(d.item))
-        .attr('class', 'qaItem-fill')
+        .attr('stroke', '#333')
         .attr('points', '16,3 4,3 1,6 1,17 4,20 7,20 10,27 13,20 16,20 19,17.033 19,6');
 
     svgEnter

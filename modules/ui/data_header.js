@@ -26,7 +26,6 @@ export function uiDataHeader() {
 
         iconEnter
             .append('div')
-            .attr('class', 'preset-icon-28')
             .call(svgIcon('#rapid-icon-data', 'note-fill'));
 
         headerEnter

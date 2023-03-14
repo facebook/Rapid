@@ -129,7 +129,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     const wireframeMode = context.map().wireframeMode;
     const textures = context.pixi.rapidTextures;
     const style = this._style;
-    const isPin = (style.markerName === 'pin' || style.markerName === 'boldPin');
+    const isPin = ['pin', 'boldPin', 'improveosm', 'osmose'].includes(style.markerName);
 
     const viewfields = this.viewfields;
     const marker = this.marker;
@@ -218,7 +218,6 @@ export class PixiFeaturePoint extends AbstractFeature {
       marker.texture = style.markerTexture || textures.get(textureName) || PIXI.Texture.WHITE;
       marker.anchor.set(0.5, 0.5);  // middle, middle
       icon.position.set(0, 0);      // middle, middle
-
 
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full

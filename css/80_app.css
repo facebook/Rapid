@@ -2837,6 +2837,15 @@ img.tag-reference-wiki-image {
     float: right;
 }
 
+.qa-header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.qa-header-icon .qaItem {
+  scale: 1.8;
+}
+
 
 /* Custom Data Editor
 ------------------------------------------------------- */

@@ -69,7 +69,8 @@ export function uiKeepRightEditor(context) {
 
 
   function keepRightSaveSection(selection) {
-    const isSelected = (_qaItem && _qaItem.id === context.selectedErrorID());
+    const errID = _qaItem?.id;
+    const isSelected = errID && context.selectedData().has(errID);
     const isShown = (_qaItem && (isSelected || _qaItem.newComment || _qaItem.comment));
     let saveSection = selection.selectAll('.qa-save')
       .data(
@@ -129,7 +130,8 @@ export function uiKeepRightEditor(context) {
 
 
   function qaSaveButtons(selection) {
-    const isSelected = (_qaItem && _qaItem.id === context.selectedErrorID());
+    const errID = _qaItem?.id;
+    const isSelected = errID && context.selectedData().has(errID);
     let buttonSection = selection.selectAll('.buttons')
       .data((isSelected ? [_qaItem] : []), d => d.status + d.id);
 

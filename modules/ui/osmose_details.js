@@ -99,17 +99,13 @@ export function uiOsmoseDetails(context) {
     }
 
     // Save current item to check if UI changed by time request resolves
-    const thisItem = _qaItem;
-    services.osmose.loadIssueDetail(_qaItem)
+    services.osmose.loadIssueDetailAsync(_qaItem)
       .then(d => {
+        // Do nothing if _qaItem has changed by the time Promise resolves
+        if (_qaItem.id !== d.id) return;
+
         // No details to add if there are no associated issue elements
         if (!d.elems || d.elems.length === 0) return;
-
-        // Do nothing if UI has moved on by the time this resolves
-        if (
-          context.selectedErrorID() !== thisItem.id
-          && context.container().selectAll(`.qaItem.osmose.hover.itemId-${thisItem.id}`).empty()
-        ) return;
 
         // Things like keys and values are dynamically added to a subtitle string
         if (d.detail) {
