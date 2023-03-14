@@ -177,7 +177,11 @@ export class RendererMap extends EventEmitter {
       .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
       .on('redone', (stack) => _didUndoOrRedo(stack.transform));
 
-    context.features().on('redraw', this.immediateRedraw);
+    context.features().on('change', () => {
+      scene.dirtyLayers('osm');
+      this.immediateRedraw();
+    });
+
     context.imagery().on('imagerychange', this.immediateRedraw);
     context.photos().on('photochange', this.immediateRedraw);
     context.urlhash().on('hashchange', this._hashchange);

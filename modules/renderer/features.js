@@ -7,7 +7,7 @@ import { utilRebind } from '../util/rebind';
 
 
 export function rendererFeatures(context) {
-    var dispatch = d3_dispatch('change', 'redraw');
+    var dispatch = d3_dispatch('change');
     var features = utilRebind({}, dispatch, 'on');
     var _deferred = new Set();
 
@@ -99,7 +99,6 @@ export function rendererFeatures(context) {
 
       _hidden = features.hidden();
       dispatch.call('change');
-      dispatch.call('redraw');
     }
 
 

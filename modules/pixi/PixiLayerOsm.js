@@ -210,6 +210,7 @@ export class PixiLayerOsm extends AbstractLayer {
     const entities = data.polygons;
     const graph = this.context.graph();
     const pointsContainer = this.scene.groups.get('points');
+    const pointsHidden = this.context.features().hidden('points');
 
     for (const [entityID, entity] of entities) {
       const entityVersion = (entity.v || 0);
@@ -279,7 +280,7 @@ export class PixiLayerOsm extends AbstractLayer {
             poiPreset = presetManager.matchTags(entity.tags, 'point', feature.geometry.origPoi);
           }
 
-          if (poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
+          if (!pointsHidden && poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
             feature.poiFeatureID = `${this.layerID}-${entityID}-poi-${i}`;
             feature.poiPreset = poiPreset;
           } else {
