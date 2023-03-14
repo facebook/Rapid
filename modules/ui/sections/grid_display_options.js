@@ -13,7 +13,7 @@ export function uiSectionGridDisplayOptions(context) {
 
     function chooseGrid(d3_event, d) {
         d3_event.preventDefault();
-        context.background().numGridSplits(d.numSplit);
+        context.imagery().numGridSplits(d.numSplit);
     }
 
 
@@ -47,8 +47,8 @@ export function uiSectionGridDisplayOptions(context) {
             label.append('input')
                 .attr('type', 'radio')
                 .attr('name', 'grids')
-                .property('checked', function(d){
-                    return (d.numSplit === context.background().numGridSplits());
+                .property('checked', function(d) {
+                    return (d.numSplit === context.imagery().numGridSplits());
                 })
                 .on('change', chooseGrid);
 

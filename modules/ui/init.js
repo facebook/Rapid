@@ -361,12 +361,12 @@ export function uiInit(context) {
           d3_event.stopImmediatePropagation();
           d3_event.preventDefault();
         }
-        const previousBackground = context.background().findSource(prefs('background-last-used-toggle'));
+        const previousBackground = context.imagery().findSource(prefs('background-last-used-toggle'));
         if (previousBackground) {
-          const currentBackground = context.background().baseLayerSource();
+          const currentBackground = context.imagery().baseLayerSource();
           prefs('background-last-used-toggle', currentBackground.id);
           prefs('background-last-used', previousBackground.id);
-          context.background().baseLayerSource(previousBackground);
+          context.imagery().baseLayerSource(previousBackground);
         }
       })
       .on(t('area_fill.wireframe.key'), function toggleWireframe(d3_event) {

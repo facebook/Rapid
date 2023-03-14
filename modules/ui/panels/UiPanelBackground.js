@@ -85,9 +85,9 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const background = context.background();
+    const imagery = context.imagery();
 
-    const source = background.baseLayerSource();
+    const source = imagery.baseLayerSource();
     if (!source) return;
 
     // Empty out metadata if source has changed..
@@ -145,9 +145,9 @@ export class UiPanelBackground extends AbstractUiPanel {
 
     const context = this.context;
     const selection = this._selection;
-    const background = context.background();
+    const imagery = context.imagery();
 
-    const source = background.baseLayerSource();
+    const source = imagery.baseLayerSource();
     if (!source) return;
 
     // Empty out metadata if source has changed..

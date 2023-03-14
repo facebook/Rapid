@@ -1,6 +1,7 @@
 import {
   Extent, geoLatToMeters, geoLonToMeters, geoSphericalClosestPoint,
-  geoSphericalDistance, geoMetersToLat, geoMetersToLon
+  geoSphericalDistance, geoMetersToLat, geoMetersToLon, geomLineIntersection,
+  vecAngle, vecLength
 } from '@rapid-sdk/math';
 
 import { actionAddMidpoint } from '../actions/add_midpoint';
@@ -8,7 +9,6 @@ import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { actionSplit } from '../actions/split';
 import { modeSelect } from '../modes/select';
-import { vecAngle, vecLength, geomLineIntersection } from '@rapid-sdk/math';
 import { osmNode } from '../osm/node';
 import {
   osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues,
