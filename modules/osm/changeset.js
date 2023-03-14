@@ -38,7 +38,7 @@ Object.assign(osmChangeset.prototype, {
                         return { '@k': k, '@v': this.tags[k] };
                     }, this),
                     '@version': 0.6,
-                    '@generator': 'iD'
+                    '@generator': 'Rapid'
                 }
             }
         };
@@ -120,7 +120,7 @@ Object.assign(osmChangeset.prototype, {
         return {
             osmChange: {
                 '@version': 0.6,
-                '@generator': 'iD',
+                '@generator': 'Rapid',
                 'create': sort(nest(changes.created.map(rep), ['node', 'way', 'relation'])),
                 'modify': nest(changes.modified.map(rep), ['node', 'way', 'relation']),
                 'delete': Object.assign(nest(changes.deleted.map(rep), ['relation', 'way', 'node']), { '@if-unused': true })

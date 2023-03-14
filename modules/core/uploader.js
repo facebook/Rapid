@@ -318,54 +318,41 @@ export function coreUploader(context) {
     }
 
     function didResultInNoChanges() {
-
         dispatch.call('resultNoChanges', this);
-
         endSave();
-
-        context.flush(); // reset iD
+        context.flush();
     }
 
+
     function didResultInErrors() {
-
         context.history().pop();
-
         dispatch.call('resultErrors', this, _errors);
-
         endSave();
     }
 
 
     function didResultInConflicts(changeset) {
-
         _conflicts.sort(function(a, b) { return b.id.localeCompare(a.id); });
-
         dispatch.call('resultConflicts', this, changeset, _conflicts, _origChanges);
-
         endSave();
     }
 
 
     function didResultInSuccess(changeset) {
-
         // delete the edit stack cached to local storage
         context.history().clearSaved();
-
         dispatch.call('resultSuccess', this, changeset);
 
         // Add delay to allow for postgres replication #1646 #2678
         window.setTimeout(function() {
-
             endSave();
-
-            context.flush(); // reset iD
+            context.flush();
         }, 2500);
     }
 
 
     function endSave() {
         _isSaving = false;
-
         dispatch.call('saveEnded', this);
     }
 
@@ -396,7 +383,6 @@ export function coreUploader(context) {
 
 
     uploader.reset = function() {
-
     };
 
 

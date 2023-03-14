@@ -6,18 +6,14 @@ import { actionDeleteRelation } from './delete_relation';
 export function actionDeleteWay(wayID) {
 
     function canDeleteNode(node, graph) {
-        // don't delete nodes still attached to ways or relations
-        if (graph.parentWays(node).length ||
-            graph.parentRelations(node).length) return false;
+        // Don't delete nodes still attached to ways or relations
+        if (graph.parentWays(node).length || graph.parentRelations(node).length) return false;
 
         var geometries = osmNodeGeometriesForTags(node.tags);
-        // don't delete if this node can be a standalone point
-        if (geometries.point) return false;
-        // delete if this node only be a vertex
-        if (geometries.vertex) return true;
+        if (geometries.point) return false;    // don't delete if this node can be a standalone point
+        if (geometries.vertex) return true;    // do delete if this node can only be a vertex
 
-        // iD doesn't know if this should be a point or vertex,
-        // so only delete if there are no interesting tags
+        // If not sure, only delete if there are no interesting tags
         return !node.hasInterestingTags();
     }
 

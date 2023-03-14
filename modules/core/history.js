@@ -16,7 +16,7 @@ export function coreHistory(context) {
     var dispatch = d3_dispatch('reset', 'change', 'merge', 'restore', 'undone', 'redone', 'storage_error');
     var lock = utilSessionMutex('lock');
 
-    // restorable if iD not open in another window/tab and a saved history exists in localStorage
+    // restorable if Rapid is not open in another window/tab and a saved history exists in localStorage
     var _hasUnresolvedRestorableChanges = lock.lock() && !!prefs(getKey('saved_history'));
 
     var duration = 150;
@@ -100,9 +100,9 @@ export function coreHistory(context) {
     }
 
 
-    // iD uses namespaced keys so multiple installations do not conflict
+    // Rapid uses namespaced keys so multiple installations do not conflict
     function getKey(n) {
-        return 'iD_' + window.location.origin + '_' + n;
+        return 'Rapid_' + window.location.origin + '_' + n;
     }
 
 

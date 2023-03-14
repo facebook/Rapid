@@ -75,7 +75,7 @@ export function coreValidator(context) {
 
 
   // `init()`
-  // Initialize the validator, called once on iD startup
+  // Initialize the validator, called once at app startup
   //
   validator.init = () => {
     Object.values(Validations).forEach(validation => {
@@ -123,7 +123,7 @@ export function coreValidator(context) {
 
 
   // `reset()`
-  // clear caches, called whenever iD resets after a save or switches sources
+  // clear caches, called after a save or when switching OSM API
   // (clears out the _ignoredIssueIDs set also)
   //
   validator.reset = () => {

@@ -296,7 +296,7 @@ if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_
   };
 
 
-  // Because of the open nature of tagging, iD will never have a complete
+  // Because of the open nature of tagging, we will never have a complete
   // list of tags used in OSM, so we want it to have logic like "assume
   // that a closed way with an amenity tag is an area, unless the amenity
   // is one of these specific types". This function computes a structure

@@ -522,7 +522,7 @@ describe('serviceOsm', function () {
                 '<osm>' +
                 '<changeset id="36777543" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">' +
                 '  <tag k="comment" v="Caprice Court has been extended"/>' +
-                '  <tag k="created_by" v="iD 2.0.0"/>' +
+                '  <tag k="created_by" v="Rapid 2.0.0"/>' +
                 '</changeset>' +
                 '</osm>';
 
@@ -531,7 +531,7 @@ describe('serviceOsm', function () {
                 expect(changesets).to.deep.equal([{
                     tags: {
                         comment: 'Caprice Court has been extended',
-                        created_by: 'iD 2.0.0'
+                        created_by: 'Rapid 2.0.0'
                     }
                 }]);
                 connection.logout();
@@ -548,10 +548,10 @@ describe('serviceOsm', function () {
                 '<osm>' +
                 '<changeset id="36777543" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">' +
                 '  <tag k="comment" v="Caprice Court has been extended"/>' +
-                '  <tag k="created_by" v="iD 2.0.0"/>' +
+                '  <tag k="created_by" v="Rapid 2.0.0"/>' +
                 '</changeset>' +
                 '<changeset id="36777544" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">' +
-                '  <tag k="created_by" v="iD 2.0.0"/>' +
+                '  <tag k="created_by" v="Rapid 2.0.0"/>' +
                 '</changeset>' +
                 '</osm>';
 
@@ -560,7 +560,7 @@ describe('serviceOsm', function () {
                 expect(changesets).to.deep.equal([{
                     tags: {
                         comment: 'Caprice Court has been extended',
-                        created_by: 'iD 2.0.0'
+                        created_by: 'Rapid 2.0.0'
                     }
                 }]);
                 connection.logout();
@@ -577,11 +577,11 @@ describe('serviceOsm', function () {
                 '<osm>' +
                 '<changeset id="36777543" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">' +
                 '  <tag k="comment" v="Caprice Court has been extended"/>' +
-                '  <tag k="created_by" v="iD 2.0.0"/>' +
+                '  <tag k="created_by" v="Rapid 2.0.0"/>' +
                 '</changeset>' +
                 '<changeset id="36777544" user="Steve" uid="1" created_at="2016-01-24T15:02:06Z" closed_at="2016-01-24T15:02:07Z" open="false" min_lat="39.3823819" min_lon="-104.8639728" max_lat="39.3834184" max_lon="-104.8618622" comments_count="0">' +
                 '  <tag k="comment" v=""/>' +
-                '  <tag k="created_by" v="iD 2.0.0"/>' +
+                '  <tag k="created_by" v="Rapid 2.0.0"/>' +
                 '</changeset>' +
                 '</osm>';
 
@@ -590,7 +590,7 @@ describe('serviceOsm', function () {
                 expect(changesets).to.deep.equal([{
                     tags: {
                         comment: 'Caprice Court has been extended',
-                        created_by: 'iD 2.0.0'
+                        created_by: 'Rapid 2.0.0'
                     }
                 }]);
                 connection.logout();

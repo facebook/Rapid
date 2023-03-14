@@ -12,11 +12,10 @@ _storage = _storage || (() => {
   };
 })();
 
-//
-// corePreferences is an interface for persisting basic key-value strings
-// within and between iD sessions on the same site.
-//
+
 /**
+ * corePreferences
+ * Interface for persisting basic key-value strings within and between Rapid sessions on the same site.
  * @param {string} k
  * @param {string?} v
  * @returns {boolean} true if the action succeeded
@@ -36,7 +35,6 @@ function corePreferences(k, v) {
     /* eslint-enable no-console */
     return false;
   }
-
 }
 
 export { corePreferences as prefs };

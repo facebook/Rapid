@@ -1,6 +1,6 @@
 describe('coreContext', function() {
     var assets = {
-        'iD/img/loader.gif': '/assets/iD/img/loader-b66184b5c4afbccc25f.gif'
+        'test/img/loader.gif': '/assets/test/img/loader-b66184b5c4afbccc25f.gif'
     };
 
     describe('#assetPath', function() {
@@ -8,8 +8,8 @@ describe('coreContext', function() {
             var context = Rapid.coreContext();
             expect(context.assetPath()).to.eql('');
 
-            context.assetPath('iD/');
-            expect(context.assetPath()).to.eql('iD/');
+            context.assetPath('test/');
+            expect(context.assetPath()).to.eql('test/');
         });
     });
 
@@ -26,7 +26,7 @@ describe('coreContext', function() {
     describe('#asset', function() {
         var context;
         beforeEach(function() {
-            context = Rapid.coreContext().assetPath('iD/').assetMap(assets);
+            context = Rapid.coreContext().assetPath('test/').assetMap(assets);
         });
 
         it('ignores absolute urls', function() {
@@ -34,24 +34,24 @@ describe('coreContext', function() {
             expect(context.asset('https://world')).to.eql('https://world');
         });
         it('looks first in assetMap', function() {
-            expect(context.asset('img/loader.gif')).to.eql('/assets/iD/img/loader-b66184b5c4afbccc25f.gif');
+            expect(context.asset('img/loader.gif')).to.eql('/assets/test/img/loader-b66184b5c4afbccc25f.gif');
         });
         it('falls back to prepending assetPath', function() {
-            expect(context.asset('img/spinner.gif')).to.eql('iD/img/spinner.gif');
+            expect(context.asset('img/spinner.gif')).to.eql('test/img/spinner.gif');
         });
     });
 
     describe('#imagePath', function() {
         var context;
         beforeEach(function() {
-            context = Rapid.coreContext().assetPath('iD/').assetMap(assets);
+            context = Rapid.coreContext().assetPath('test/').assetMap(assets);
         });
 
         it('looks first in assetMap', function() {
-            expect(context.imagePath('loader.gif')).to.eql('/assets/iD/img/loader-b66184b5c4afbccc25f.gif');
+            expect(context.imagePath('loader.gif')).to.eql('/assets/test/img/loader-b66184b5c4afbccc25f.gif');
         });
         it('falls back to prepending assetPath', function() {
-            expect(context.imagePath('spinner.gif')).to.eql('iD/img/spinner.gif');
+            expect(context.imagePath('spinner.gif')).to.eql('test/img/spinner.gif');
         });
     });
 

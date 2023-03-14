@@ -21,7 +21,7 @@ describe('osmChangeset', function () {
                     changeset: {
                         tag: [{ '@k': 'comment', '@v': 'hello' }],
                         '@version': 0.6,
-                        '@generator': 'iD'
+                        '@generator': 'Rapid'
                     }
                 }
             });
@@ -37,7 +37,7 @@ describe('osmChangeset', function () {
             expect(jxon).to.eql({
                 osmChange: {
                     '@version': 0.6,
-                    '@generator': 'iD',
+                    '@generator': 'Rapid',
                     'create': {},
                     'modify': {},
                     'delete': { '@if-unused': true }

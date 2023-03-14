@@ -51,9 +51,8 @@ export function coreContext() {
   context.version = '2.0.0-beta.0';
   context.privacyVersion = '20201202';
 
-  // iD will alter the hash so cache the parameters intended to setup the session
+  // `context.initialHashParams` is older, try to use `context.urlhash()` instead
   context.initialHashParams = window.location.hash ? utilStringQs(window.location.hash) : {};
-
   context.isFirstSession = !prefs('sawSplash') && !prefs('sawPrivacyVersion');
 
   /* Changeset */
