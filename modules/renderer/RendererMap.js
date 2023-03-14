@@ -161,9 +161,11 @@ export class RendererMap extends EventEmitter {
         if (difference) {
           // todo - maybe only do this if difference.didChange.geometry?
           const complete = difference.complete();
+          const features = context.features();
           for (const entity of complete.values()) {
             if (entity) {      // may be undefined if entity was deleted
               entity.touch();  // bump version in place
+              features.clearEntity(entity);  // clear feature filter cache
             }
           }
           // touching entity will bump .v and the renderer should pick it up as dirty?
