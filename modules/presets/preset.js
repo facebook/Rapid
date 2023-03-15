@@ -258,7 +258,7 @@ export function presetPreset(presetID, preset, addable, allFields, allPresets) {
       } else if (allFields[fieldID]) {    // a normal fieldID
         resolved.push(allFields[fieldID]);
       } else {
-        console.log(`Cannot resolve "${fieldID}" found in ${_this.id}.${which}`);  // eslint-disable-line no-console
+        console.warn(`Cannot resolve "${fieldID}" found in ${_this.id}.${which}`);  // eslint-disable-line no-console
       }
     });
 

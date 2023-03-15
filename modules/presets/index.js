@@ -10,6 +10,7 @@ import { presetCollection } from './collection';
 import { presetField } from './field';
 import { presetPreset } from './preset';
 import { utilRebind } from '../util';
+import { uiFields } from '../ui/fields';
 
 export { presetCategory };
 export { presetCollection };
@@ -18,6 +19,21 @@ export { presetPreset };
 
 let _mainPresetIndex = presetIndex(); // singleton
 export { _mainPresetIndex as presetManager };
+
+// These are too hard to generate, for now we'll just replace them in code
+const roentgen = {
+  'roentgen-buses':              'temaki-bus',
+  'roentgen-city_limit_sign':    'maki-information',
+  'roentgen-crane':              'temaki-crane',
+  'roentgen-crane_gantry':       'temaki-crane',
+  'roentgen-crane_portal':       'temaki-crane',
+  'roentgen-diving_1_platforms': 'temaki-diving',
+  'roentgen-pole_dancer':        'temaki-money_hand',
+  'roentgen-slide':              'temaki-slide',
+  'roentgen-slide_and_water':    'temaki-slide',
+  'roentgen-turning_loop':       'maki-circle'
+};
+
 
 //
 // `presetIndex` wraps a `presetCollection`
@@ -98,6 +114,12 @@ export function presetIndex() {
         let f = d.fields[fieldID];
 
         if (f) {   // add or replace
+// field type not supported
+if (!uiFields[f.type]) {
+  console.warn(`"${f.type}" type not supported for ${fieldID}`);  // eslint-disable-line no-console
+  return;
+}
+
           f = presetField(fieldID, f);
           if (f.locationSet) newLocationSets.push(f);
           _fields[fieldID] = f;
@@ -123,6 +145,8 @@ if (p.icon) p.icon = p.icon.replace(/^iD-/, 'rapid-');
 if (presetID === 'address') p.icon ='maki-circle-stroked';
 if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_crosswalk';
 
+const replacement = roentgen[p.icon];
+if (replacement) p.icon = replacement;
 
           p = presetPreset(presetID, p, isAddable, _fields, _presets);
           if (p.locationSet) newLocationSets.push(p);

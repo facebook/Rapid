@@ -8,15 +8,19 @@ import fetch from 'node-fetch';
 
 import * as languageNames from './language_names.js';
 
-// fontawesome icons
+// FontAwesome icons
 import * as fontawesome from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-
-import territoryInfo from 'cldr-core/supplemental/territoryInfo.json' assert {type: 'json'};
-
 fontawesome.library.add(fas, far, fab);
+
+import categoriesJSON from '@openstreetmap/id-tagging-schema/dist/preset_categories.min.json' assert { type: 'json' }
+import fieldsJSON from '@openstreetmap/id-tagging-schema/dist/fields.min.json' assert { type: 'json' }
+import presetsJSON from '@openstreetmap/id-tagging-schema/dist/presets.min.json' assert { type: 'json' }
+import qaDataJSON from '../data/qa_data.json' assert { type: 'json' }
+import territoriesJSON from 'cldr-core/supplemental/territoryInfo.json' assert { type: 'json' };
+
 
 let _currBuild = null;
 
@@ -45,10 +49,10 @@ function buildData() {
     img: 'dist/img'
   };
 
-  for (let target of Object.keys(symlinks)) {
+  for (const [target, source] of Object.entries(symlinks)) {
     if (!shell.test('-L', target)) {
-      console.log(`Creating symlink:  ${target} -> ${symlinks[target]}`);
-      shell.ln('-sf', symlinks[target], target);
+      console.log(`Creating symlink:  ${target} -> ${source}`);
+      shell.ln('-sf', source, target);
     }
   }
 
@@ -60,9 +64,9 @@ function buildData() {
     'svg/fontawesome/*.svg',
   ]);
 
-  // compile Font Awesome icons
-  let faIcons = new Set([
-    // list here the icons we want to use in the UI that aren't tied to other data
+  // Gather icons from various places that we need assembled into a spritesheet.
+  // Start with icons we want to use in the UI that aren't tied to other data.
+  const icons = new Set([
     'fas-filter',
     'fas-i-cursor',
     'fas-lock',
@@ -70,59 +74,31 @@ function buildData() {
     'fas-th-list',
     'fas-user-cog'
   ]);
-  // add icons for QA integrations
-  readQAIssueIcons(faIcons);
+  gatherQAIssueIcons(icons);
+  gatherPresetIcons(icons);
+  writeIcons(icons)
 
-  let territoryLanguages = generateTerritoryLanguages();
+  const territoryLanguages = gatherTerritoryLanguages();
   fs.writeFileSync('data/territory_languages.json', stringify(territoryLanguages, { maxLength: 9999 }) );
-  writeEnJson();
 
   const languageInfo = languageNames.langNamesInNativeLang();
   fs.writeFileSync('data/languages.json', stringify(languageInfo, { maxLength: 200 }));
   fs.writeFileSync('dist/data/languages.min.json', JSON.stringify(languageInfo));
 
-  // Save individual data files
-  let tasks = [
-    minifyJSON('data/address_formats.json', 'dist/data/address_formats.min.json'),
-    minifyJSON('data/imagery.json', 'dist/data/imagery.min.json'),
-    minifyJSON('data/intro_graph.json', 'dist/data/intro_graph.min.json'),
-    minifyJSON('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json'),
-    minifyJSON('data/keepRight.json', 'dist/data/keepRight.min.json'),
-    minifyJSON('data/languages.json', 'dist/data/languages.min.json'),
-    minifyJSON('data/phone_formats.json', 'dist/data/phone_formats.min.json'),
-    minifyJSON('data/qa_data.json', 'dist/data/qa_data.min.json'),
-    minifyJSON('data/shortcuts.json', 'dist/data/shortcuts.min.json'),
-    minifyJSON('data/territory_languages.json', 'dist/data/territory_languages.min.json'),
-    Promise.all([
-      // Fetch the icons that are needed by the expected tagging schema version
-      fetch('https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/presets.min.json'),
-      fetch('https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/preset_categories.min.json'),
-      fetch('https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/fields.min.json')
-      // WARNING: we fetch the bleeding edge data too to make sure we're always hosting the
-      // latest icons, but note that the format could break at any time
-      // fetch('https://raw.githubusercontent.com/openstreetmap/id-tagging-schema/main/dist/presets.min.json'),
-      // fetch('https://raw.githubusercontent.com/openstreetmap/id-tagging-schema/main/dist/preset_categories.min.json'),
-      // fetch('https://raw.githubusercontent.com/openstreetmap/id-tagging-schema/main/dist/fields.min.json')
-    ])
-    .then(responses => Promise.all(responses.map(response => response.json())))
-    .then((results) => {
-      // compile the icons used by all the presets
-      results.forEach(function(data) {
-        for (var key in data) {
-          var datum  = data[key];
-          // fontawesome icon
-          if (datum.icon && /^fa[srb]-/.test(datum.icon)) {
-            faIcons.add(datum.icon);
-          }
-        }
-      });
-      // copy over only those Font Awesome icons that we need
-      writeFaIcons(faIcons);
-    })
-  ];
+  writeEnJson();
 
-  return _currBuild =
-    Promise.all(tasks)
+  minifySync('data/address_formats.json', 'dist/data/address_formats.min.json'),
+  minifySync('data/imagery.json', 'dist/data/imagery.min.json'),
+  minifySync('data/intro_graph.json', 'dist/data/intro_graph.min.json'),
+  minifySync('data/intro_rapid_graph.json', 'dist/data/intro_rapid_graph.min.json'),
+  minifySync('data/keepRight.json', 'dist/data/keepRight.min.json'),
+  minifySync('data/languages.json', 'dist/data/languages.min.json'),
+  minifySync('data/phone_formats.json', 'dist/data/phone_formats.min.json'),
+  minifySync('data/qa_data.json', 'dist/data/qa_data.min.json'),
+  minifySync('data/shortcuts.json', 'dist/data/shortcuts.min.json'),
+  minifySync('data/territory_languages.json', 'dist/data/territory_languages.min.json')
+
+  return _currBuild = Promise.resolve(true)
     .then(() => {
       console.timeEnd(END);
       console.log('');
@@ -137,24 +113,57 @@ function buildData() {
 }
 
 
-function readQAIssueIcons(faIcons) {
-  const qa = JSON.parse(fs.readFileSync('data/qa_data.json', 'utf8'));
-
-  for (const service in qa) {
-    for (const item in qa[service].icons) {
-      const icon = qa[service].icons[item];
-
-      // fontawesome icon, remember for later
-      if (/^fa[srb]-/.test(icon)) {
-        faIcons.add(icon);
+function gatherQAIssueIcons(icons) {
+  for (const data of Object.values(qaDataJSON)) {
+    for (const icon of Object.values(data.icons)) {
+      if (icon) {
+        icons.add(icon);
       }
     }
   }
 }
 
 
-function generateTerritoryLanguages() {
-  let allRawInfo = territoryInfo.supplemental;
+function gatherPresetIcons(icons) {
+  for (const source of [presetsJSON, categoriesJSON, fieldsJSON]) {
+    for (const item of Object.values(source)) {
+      if (item.icon) {
+        icons.add(item.icon);
+      }
+    }
+  }
+}
+
+
+function writeIcons(icons) {
+  for (const icon of icons) {
+    const [prefix, ...rest] = icon.split('-');
+    const name = rest.join('-');
+
+    if (['iD', 'rapid', 'maki', 'temaki'].includes(prefix)) {
+      continue;  // These are expected to live in an existing spritesheet..
+
+    } else if (prefix === 'roentgen') {
+      continue;  // These are too hard to generate, for now we'll just replace them in code..
+
+    } else if (['fas', 'far', 'fab'].includes(prefix)) {   // FontAwesome, must be extracted
+      const def = fontawesome.findIconDefinition({ prefix: prefix, iconName: name });
+      try {
+        fs.writeFileSync(`svg/fontawesome/${icon}.svg`, fontawesome.icon(def).html.toString());
+      } catch (error) {
+        console.error(`Error: No FontAwesome icon for ${icon}`);
+        throw (error);
+      }
+
+    } else {
+      console.warn(`Unknown icon: ${icon}`);
+    }
+  }
+}
+
+
+function gatherTerritoryLanguages() {
+  let allRawInfo = territoriesJSON.supplemental;
   let territoryLanguages = {};
 
   Object.keys(allRawInfo).forEach(territoryCode => {
@@ -163,8 +172,8 @@ function generateTerritoryLanguages() {
     let langCodes = Object.keys(territoryLangInfo);
 
     territoryLanguages[territoryCode.toLowerCase()] = langCodes.sort((langCode1, langCode2) => {
-      let popPercent1 = parseFloat(territoryLangInfo[langCode1]._populationPercent);
-      let popPercent2 = parseFloat(territoryLangInfo[langCode2]._populationPercent);
+      const popPercent1 = parseFloat(territoryLangInfo[langCode1]._populationPercent);
+      const popPercent2 = parseFloat(territoryLangInfo[langCode2]._populationPercent);
       if (popPercent1 === popPercent2) {
         return langCode1.localeCompare(langCode2, 'en', { sensitivity: 'base' });
       }
@@ -177,83 +186,54 @@ function generateTerritoryLanguages() {
 
 
 function writeEnJson() {
-  const readCoreYaml = fs.readFileSync('data/core.yaml', 'utf8');
-  const readImagery = fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8');
-  const readCommunity = fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8');
-  const readManualImagery = fs.readFileSync('data/manual_imagery.json', 'utf8');
+  try {
+    // Start with contents of core.yaml and merge in the other stuff.
+    let enjson = YAML.load(fs.readFileSync('data/core.yaml', 'utf8'));
+    let imagery = YAML.load(fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8'));
+    const community = YAML.load(fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8'));
+    const manualImagery = JSON.parse(fs.readFileSync('data/manual_imagery.json', 'utf8'));
 
-  return Promise.all([readCoreYaml, readImagery, readCommunity, readManualImagery])
-    .then(data => {
-      let core = YAML.load(data[0]);
-      let imagery = YAML.load(data[1]);
-      let community = YAML.load(data[2]);
-      let manualImagery = JSON.parse(data[3]);
+    // Gather strings for additional imagery not included in the imagery index
+    for (const source of manualImagery) {
+      let target = {};
+      if (source.attribution?.text)  target.attribution = { text: source.attribution.text };
+      if (source.name)               target.name = source.name;
+      if (source.description)        target.description = source.description;
 
-      for (let i in manualImagery) {
-        let layer = manualImagery[i];
-        let id = layer.id;
-        for (let key in layer) {
-          if (key === 'attribution') {
-            for (let attrKey in layer[key]) {
-              if (attrKey !== 'text') {
-                delete layer[key][attrKey];
-              }
-            }
-          } else if (['name', 'description'].indexOf(key) === -1) {
-            delete layer[key];
-          }
-        }
-        // tack on strings for additional imagery not included in the index
-        imagery.en.imagery[id] = layer;
-      }
-
-      let enjson = core;
-      let props = ['imagery', 'community', 'languageNames', 'scriptNames'];
-      props.forEach(function(prop) {
-        if (enjson.en[prop]) {
-          console.error(`Error: Reserved property '${prop}' already exists in core strings`);
-          process.exit(1);
-        }
-      });
-
-      enjson.en.imagery = imagery.en.imagery;
-      enjson.en.community = community.en;
-      enjson.en.languageNames = languageNames.languageNamesInLanguageOf('en');
-      enjson.en.scriptNames = languageNames.scriptNamesInLanguageOf('en');
-
-      fs.writeFileSync('dist/locales/en.min.json', JSON.stringify(enjson));
-    });
-}
-
-
-function writeFaIcons(faIcons) {
-  Array.from(faIcons).forEach(function(key) {
-    const prefix = key.substring(0, 3);   // `fas`, `far`, `fab`
-    const name = key.substring(4);
-    const def = fontawesome.findIconDefinition({ prefix: prefix, iconName: name });
-    try {
-      fs.writeFileSync(`svg/fontawesome/${key}.svg`, fontawesome.icon(def).html.toString());
-    } catch (error) {
-      console.error(`Error: No FontAwesome icon for ${key}`);
-      throw (error);
+      imagery.en.imagery[source.id] = target;
     }
-  });
+
+    // Check for these properties before overwriting
+    ['imagery', 'community', 'languageNames', 'scriptNames'].forEach(prop => {
+      if (enjson.en[prop]) {
+        throw(`Reserved property '${prop}' already exists in core strings`);
+      }
+    });
+
+    enjson.en.imagery = imagery.en.imagery;
+    enjson.en.community = community.en;
+    enjson.en.languageNames = languageNames.languageNamesInLanguageOf('en');
+    enjson.en.scriptNames = languageNames.scriptNamesInLanguageOf('en');
+
+    fs.writeFileSync('dist/locales/en.min.json', JSON.stringify(enjson));
+
+  } catch (err) {
+    console.error(chalk.red(`Error - ${err.message}`));
+    process.exit(1);
+  }
 }
 
 
-function minifyJSON(inPath, outPath) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(inPath, 'utf8', (err, data) => {
-      if (err) return reject(err);
-
-      const minified = JSON.stringify(JSON.parse(data));
-      fs.writeFile(outPath, minified, (err) => {
-        if (err) return reject(err);
-        resolve();
-      });
-
-    });
-  });
+function minifySync(inPath, outPath) {
+  try {
+    const contents = fs.readFileSync(inPath, 'utf8');
+    const minified = JSON.stringify(JSON.parse(contents));
+    fs.writeFileSync(outPath, minified);
+  } catch (err) {
+    console.error(chalk.red(`Error - ${err.message} minifying:`));
+    console.error('  ' + chalk.yellow(inPath));
+    process.exit(1);
+  }
 }
 
 
