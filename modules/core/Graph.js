@@ -140,10 +140,13 @@ export class Graph {
 
   /**
    * isPoi
+   * Returns `true` if the Entity is a Node with no parents
    * @param   entity
-   * @return  `true` if no parents
+   * @return  `true` if a Node with no parents
    */
   isPoi(entity) {
+    if (entity.type !== 'node') return false;
+
     const base = this._base.parentWays;
     const local = this._local.parentWays;
     const parentIDs = local.get(entity.id) ?? base.get(entity.id) ?? new Set();
@@ -153,14 +156,32 @@ export class Graph {
 
   /**
    * isShared
+   * Returns `true` if the Entity has multiple connections:
+   *  - a Node with multiple parents, OR
+   *  - a Node connected to a single parent in multiple places.
    * @param   entity
-   * @return  `true` if >1 parents
+   * @return  `true` if a Node has multiple connections
    */
   isShared(entity) {
+    if (entity.type !== 'node') return false;
+
     const base = this._base.parentWays;
     const local = this._local.parentWays;
     const parentIDs = local.get(entity.id) ?? base.get(entity.id) ?? new Set();
-    return parentIDs.size > 1;
+    if (parentIDs.size === 0) return false;  // no parents
+    if (parentIDs.size > 1) return true;     // multiple parents
+
+    // single parent
+    const parentID = [...parentIDs][0];
+    const parent = this.entity(parentID);
+
+    // If parent is a closed loop, don't count the last node in the nodelist as doubly connected
+    const end = parent.isClosed() ? parent.nodes.length - 1 : parent.nodes.length;
+    for (let i = 0, count = 0; i < end; i++) {
+      if (entity.id === parent.nodes[i]) count++;
+      if (count > 1) return true;
+    }
+    return false;
   }
 
 
