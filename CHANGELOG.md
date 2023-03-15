@@ -36,6 +36,11 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#xxxx]: https://github.com/facebookincubator/RapiD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+# [1.1.10](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.10)
+##### 2023-March-15
+
+#### :newspaper: News
+A very small update to bring back the 'what's new' splash screen, advertising the Rapid v2 beta.
 
 # [1.1.9](https://github.com/facebookincubator/RapiD/releases/tag/rapid-v1.1.9)
 ##### 2022-May-05
