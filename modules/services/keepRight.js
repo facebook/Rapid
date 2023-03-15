@@ -19,7 +19,7 @@ let _krData = { errorTypes: {}, localizeStrings: {} };
 // This gets reassigned if reset
 let _cache;
 
-const _krRuleset = [
+const KR_RULES = [
   // no 20 - multiple node on same spot - these are mostly boundaries overlapping roads
   30, 40, 50, 60, 70, 90, 100, 110, 120, 130, 150, 160, 170, 180,
   190, 191, 192, 193, 194, 195, 196, 197, 198,
@@ -28,6 +28,26 @@ const _krRuleset = [
   290, 291, 292, 293, 294, 295, 296, 297, 298, 300, 310, 311, 312, 313,
   320, 350, 360, 370, 380, 390, 400, 401, 402, 410, 411, 412, 413
 ];
+
+// A mapping of KeepRight rule numbers to their respective colors.
+const KR_COLORS = new Map();
+['20', '40', '210', '270', '310', '320', '350'].forEach(key => KR_COLORS.set(key, 0xffff99));
+['60', '70', '90', '100', '110', '150', '220', '380'].forEach(key => KR_COLORS.set(key, 0x55dd00));
+['360', '370', '410'].forEach(key => KR_COLORS.set(key, 0xff99bb));
+KR_COLORS.set('50',  0xffff99);
+KR_COLORS.set('120', 0xcc3355);
+KR_COLORS.set('130', 0xffaa33);
+KR_COLORS.set('160', 0xbb6600);
+KR_COLORS.set('170', 0xffff00);
+KR_COLORS.set('180', 0xaaccee);
+KR_COLORS.set('190', 0xff3333);
+KR_COLORS.set('200', 0xfdbf6f);
+KR_COLORS.set('230', 0xbb6600);
+KR_COLORS.set('280', 0x5f47a0);
+KR_COLORS.set('290', 0xaaccee);
+KR_COLORS.set('300', 0x009900);
+KR_COLORS.set('390', 0x009900);
+KR_COLORS.set('400', 0xcc3355);
 
 
 function abortRequest(controller) {
@@ -289,7 +309,7 @@ export default {
   loadIssues(projection) {
     const options = {
       format: 'geojson',
-      ch: _krRuleset
+      ch: KR_RULES
     };
 
     // determine the needed tiles to cover the view
@@ -470,6 +490,11 @@ export default {
   // Get a QAItem from cache
   getError(id) {
     return _cache.data[id];
+  },
+
+  // Get the color associated with this rule id
+  getColor(parentIssueType) {
+    return KR_COLORS.get(parentIssueType) ?? 0xffffff;
   },
 
   // Replace a single QAItem in the cache

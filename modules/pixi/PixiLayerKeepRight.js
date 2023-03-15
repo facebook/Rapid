@@ -4,26 +4,6 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const MINZOOM = 12;
 
-// A mapping of KeepRight rule numbers to their respective tint colors.
-const TINTS = new Map();
-['20', '40', '210', '270', '310', '320', '350'].forEach(key => TINTS.set(key, 0xffff99));
-['60', '70', '90', '100', '110', '150', '220', '380'].forEach(key => TINTS.set(key, 0x55dd00));
-['360', '370', '410'].forEach(key => TINTS.set(key, 0xff99bb));
-TINTS.set('50',  0xffff99);
-TINTS.set('120', 0xcc3355);
-TINTS.set('130', 0xffaa33);
-TINTS.set('160', 0xbb6600);
-TINTS.set('170', 0xffff00);
-TINTS.set('180', 0xaaccee);
-TINTS.set('190', 0xff3333);
-TINTS.set('200', 0xfdbf6f);
-TINTS.set('230', 0xbb6600);
-TINTS.set('280', 0x5f47a0);
-TINTS.set('290', 0xaaccee);
-TINTS.set('300', 0x009900);
-TINTS.set('390', 0x009900);
-TINTS.set('400', 0xcc3355);
-
 
 /**
  * PixiLayerKeepRight
@@ -74,20 +54,20 @@ export class PixiLayerKeepRight extends AbstractLayer {
     const items = service.getItems(this.context.projection);  // note: context.projection !== pixi projection
 
     for (const d of items) {
-      const featureID = `${this.layerID}-${d.key}`;
+      const featureID = `${this.layerID}-${d.id}`;
       let feature = this.features.get(featureID);
 
       if (!feature) {
         const style = {
           markerName: 'keepright',
-          markerTint: TINTS.get(d.parentIssueType) || 0xffffff
+          markerTint: service.getColor(d.parentIssueType)
         };
 
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);
         feature.style = style;
         feature.parentContainer = parentContainer;
-        feature.setData(d.key, d);
+        feature.setData(d.id, d);
       }
 
       this.syncFeatureClasses(feature);

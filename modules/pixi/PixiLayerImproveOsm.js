@@ -4,15 +4,6 @@ import { PixiFeaturePoint } from './PixiFeaturePoint';
 
 const MINZOOM = 12;
 
-// A mapping of improveOSM rule numbers and their respective tint colors.
-const TINTS = new Map();
-TINTS.set('tr', 0xec1c24);         // turn restrictions
-TINTS.set('ow', 0x1e90ff);         // oneway restrictions
-TINTS.set('mr-road', 0xb452cd);    // missing missing road
-TINTS.set('mr-path', 0xa0522d);    // missing path
-TINTS.set('mr-parking', 0xeeee00); // missing parking
-TINTS.set('mr-both', 0xffa500);    // missing road + parking
-
 
 /**
  * PixiLayerImproveOsm
@@ -67,15 +58,15 @@ export class PixiLayerImproveOsm extends AbstractLayer {
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const markerStyle = {
+        const style = {
           markerName: 'improveosm',
-          markerTint: TINTS.get(d.itemType) || 0xffffff,
+          markerTint: service.getColor(d.itemType),
           iconName: d.icon
         };
 
         feature = new PixiFeaturePoint(this, featureID);
         feature.geometry.setCoords(d.loc);
-        feature.style = markerStyle;
+        feature.style = style;
         feature.parentContainer = parentContainer;
         feature.setData(d.id, d);
       }

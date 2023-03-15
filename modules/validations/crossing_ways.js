@@ -451,9 +451,10 @@ export function validationCrossingWays(context) {
             autoArgs: connectionTags && !connectionTags.ford && getConnectWaysAction(crossing.crossPoint, edges, connectionTags),
             dynamicFixes: function(context) {
                 var mode = context.mode();
-                if (!mode || mode.id !== 'select' || mode.selectedIDs().length !== 1) return [];
+                var selectedIDs = context.selectedIDs();
+                if (!mode || mode.id !== 'select' || selectedIDs.length !== 1) return [];
 
-                var selectedIndex = this.entityIds[0] === mode.selectedIDs()[0] ? 0 : 1;
+                var selectedIndex = this.entityIds[0] === selectedIDs[0] ? 0 : 1;
                 var selectedFeatureType = this.data.featureTypes[selectedIndex];
                 var otherFeatureType = this.data.featureTypes[selectedIndex === 0 ? 1 : 0];
 
@@ -468,11 +469,7 @@ export function validationCrossingWays(context) {
                         icon: 'rapid-icon-layers',
                         title: t.html('issues.fix.use_different_levels.title')
                     }));
-                } else if (isCrossingTunnels ||
-                    isCrossingBridges ||
-                    featureType1 === 'building' ||
-                    featureType2 === 'building')  {
-
+                } else if (isCrossingTunnels || isCrossingBridges || featureType1 === 'building' || featureType2 === 'building')  {
                     fixes.push(makeChangeLayerFix('higher'));
                     fixes.push(makeChangeLayerFix('lower'));
 

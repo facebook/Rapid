@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { json as d3_json } from 'd3-fetch';
 import { Extent, Tiler, vecAdd } from '@rapid-sdk/math';
@@ -211,7 +212,7 @@ export default {
         // Cache served item colors to automatically style issue markers later
         const { item: itemInt, color } = item;
         if (/^#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}/.test(color)) {
-          _osmoseColors.set(itemInt, color);
+          _osmoseColors.set(itemInt, PIXI.utils.string2hex(color));
         }
 
         // Value of root key will be null if no string exists
@@ -245,8 +246,8 @@ export default {
   },
 
 
-  getColor(itemType) {
-    return _osmoseColors.get(itemType) ?? '#FFFFFF';
+  getColor(itemInt) {
+    return _osmoseColors.get(itemInt) ?? 0xffffff;
   },
 
 

@@ -1,4 +1,3 @@
-import * as PIXI from 'pixi.js';
 import { services } from '../services';
 import { AbstractLayer } from './AbstractLayer';
 import { PixiFeaturePoint } from './PixiFeaturePoint';
@@ -59,10 +58,9 @@ export class PixiLayerOsmose extends AbstractLayer {
       let feature = this.features.get(featureID);
 
       if (!feature) {
-        const color = service.getColor(d.item);
         const style = {
           markerName: 'osmose',
-          markerTint: PIXI.utils.string2hex(color),
+          markerTint: service.getColor(d.item),
           iconName: d.icon
         };
 

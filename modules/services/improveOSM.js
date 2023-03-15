@@ -21,6 +21,15 @@ const _impOsmUrls = {
 };
 let _impOsmData = { icons: {} };
 
+// A mapping of improveOSM error types and their respective tint colors.
+const IMPOSM_COLORS = new Map();
+IMPOSM_COLORS.set('tr', 0xec1c24);         // turn restrictions
+IMPOSM_COLORS.set('ow', 0x1e90ff);         // oneway restrictions
+IMPOSM_COLORS.set('mr-road', 0xb452cd);    // missing missing road
+IMPOSM_COLORS.set('mr-path', 0xa0522d);    // missing path
+IMPOSM_COLORS.set('mr-parking', 0xeeee00); // missing parking
+IMPOSM_COLORS.set('mr-both', 0xffa500);    // missing road + parking
+
 
 // This gets reassigned if reset
 let _cache;
@@ -448,6 +457,11 @@ export default {
   // Get a QAItem from cache
   getError(id) {
     return _cache.data[id];
+  },
+
+  // get the color associated with this item type
+  getColor(itemType) {
+    return IMPOSM_COLORS.get(itemType) ?? 0xffffff;
   },
 
   // get the name of the icon to display for this item
