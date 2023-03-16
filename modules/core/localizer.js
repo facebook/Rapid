@@ -112,7 +112,7 @@ export function coreLocalizer() {
 
     const scopes = {
       general: 'locales',
-      tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@3/dist/translations'
+      tagging: 'https://cdn.jsdelivr.net/npm/@openstreetmap/id-tagging-schema@6.0/dist/translations'
     };
 
     let fileMap = fileFetcher.fileMap();
