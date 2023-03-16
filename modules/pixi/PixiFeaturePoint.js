@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { DashLine } from 'pixi-dashed-line';
+import { DashLine } from '@rapideditor/pixi-dashed-line';
 import { GlowFilter } from '@pixi/filter-glow';
 
 import { AbstractFeature } from './AbstractFeature';

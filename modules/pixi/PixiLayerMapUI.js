@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { geoMetersToLon } from '@rapid-sdk/math';
 
 import { AbstractLayer } from './AbstractLayer';
-import { DashLine } from 'pixi-dashed-line';
+import { DashLine } from '@rapideditor/pixi-dashed-line';
 
 
 /**
