@@ -20,8 +20,10 @@ export { presetPreset };
 let _mainPresetIndex = presetIndex(); // singleton
 export { _mainPresetIndex as presetManager };
 
+// warn about v6 preset featues we don't support currently
+const VERBOSE = true;
 // These are too hard to generate, for now we'll just replace them in code
-const roentgen = {
+const ROENTGEN = {
   'roentgen-buses':              'temaki-bus',
   'roentgen-city_limit_sign':    'maki-information',
   'roentgen-crane':              'temaki-crane',
@@ -116,11 +118,10 @@ export function presetIndex() {
         if (f) {   // add or replace
 // field type not supported
 if (!uiFields[f.type]) {
-  console.warn(`"${f.type}" type not supported for ${fieldID}`);  // eslint-disable-line no-console
+  if (VERBOSE) console.warn(`"${f.type}" type not supported for ${fieldID}`);  // eslint-disable-line no-console
   return;
 }
-
-          f = presetField(fieldID, f);
+          f = presetField(fieldID, f, _fields);
           if (f.locationSet) newLocationSets.push(f);
           _fields[fieldID] = f;
 
@@ -145,8 +146,8 @@ if (p.icon) p.icon = p.icon.replace(/^iD-/, 'rapid-');
 if (presetID === 'address') p.icon ='maki-circle-stroked';
 if (presetID === 'highway/crossing/traffic_signals') p.icon ='temaki-pedestrian_crosswalk';
 
-const replacement = roentgen[p.icon];
-if (replacement) p.icon = replacement;
+// No support for Roentgen icons just yet
+if (ROENTGEN[p.icon]) p.icon = ROENTGEN[p.icon];
 
           p = presetPreset(presetID, p, isAddable, _fields, _presets);
           if (p.locationSet) newLocationSets.push(p);

@@ -418,6 +418,27 @@ export function coreLocalizer() {
 
 
   /**
+   * t.append
+   * Safer version of t.html that instead uses a function that appends the localized text to the given d3 selection
+   * @param  {string}   stringId      string identifier
+   * @param  {object?}  replacements  token replacements and default string
+   * @param  {string?}  locale        locale to use (defaults to currentLocale)
+   * @return {Function} Function that accepts a d3 selection and appends the localized text
+   */
+  localizer.t.append = function(stringId, replacements, locale) {
+    const ret = function(selection) {
+      const info = localizer._getString(stringId, replacements, locale);
+      return selection.append('span')
+        .attr('class', 'localized-text')
+        .attr('lang', info.locale || 'und')
+        .text((replacements?.prefix || '') + info.text + (replacements?.suffix || ''));
+    };
+    ret.stringId = stringId;
+    return ret;
+  };
+
+
+  /**
    * htmlForLocalizedText
    * Just returns the given text wrapped in an HTML span element encoding the locale
    * @param  {string}   text          the text content for the span
