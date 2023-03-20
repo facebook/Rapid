@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import { AtlasAllocator } from 'texture-allocator';
+import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 import RBush from 'rbush';
 import { Extent, vecAdd, vecAngle, vecScale, vecSubtract, geomRotatePoints } from '@rapid-sdk/math';
 

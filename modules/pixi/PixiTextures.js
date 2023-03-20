@@ -1,5 +1,5 @@
 import { Assets, Graphics, Rectangle, FORMATS, TYPES } from 'pixi.js';
-import { AtlasAllocator } from 'texture-allocator';
+import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 
 
 /**
