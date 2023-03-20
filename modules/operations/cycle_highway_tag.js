@@ -1,41 +1,78 @@
+import { utilArrayIdentical } from '@rapid-sdk/util';
+
 import { t } from '../core/localizer';
-import { actionChangeTags } from '../actions/index';
+import { actionChangePreset } from '../actions';
 import { actionNoop } from '../actions/noop';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
 import { modeSelect } from '../modes/select';
+import { presetManager } from '../presets';
+
+let _wasSelectedIDs = [];
+let _wasPresetIDs = [];
 
 
 export function operationCycleHighwayTag(context, selectedIDs) {
-  const ROAD_TYPES = ['residential', 'service', 'track', 'unclassified', 'tertiary'];
+  // Allow cycling through lines that match these presets
+  const allowPresetRegex = [
+    /^highway\/(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|track)/,
+    /^line$/
+  ];
+
+  const defaultPresetIDs = [
+    'highway/residential',
+    'highway/service',
+    'highway/track',
+    'highway/unclassified',
+    'highway/tertiary',
+    'line'
+  ];
+
+  // same selection as before?
+  const isSameSelection = utilArrayIdentical(selectedIDs, _wasSelectedIDs);
+  const presetIDs = new Set(isSameSelection ? _wasPresetIDs : defaultPresetIDs);
+
+  // Gather current entities allowed to be cycled
   const entities = selectedIDs
     .map(entityID => context.hasEntity(entityID))
-    .filter(entity => {  // available if there is a highway tag or untagged line
-      return entity?.type === 'way' && (entity.tags.highway || !entity.hasInterestingTags());
+    .filter(entity => {
+      if (entity?.type !== 'way') return false;
+
+      const preset = presetManager.match(entity, context.graph());
+      if (allowPresetRegex.some(regex => regex.test(preset.id))) {
+        if (!presetIDs.has(preset.id)) presetIDs.add(preset.id);  // make sure we can cycle back to the original preset
+        return true;
+      } else {
+        return false;
+      }
     });
+
+  _wasSelectedIDs = selectedIDs.slice();  // copy
+  _wasPresetIDs = Array.from(presetIDs);  // copy
 
 
   let operation = function() {
     if (!entities.length) return;
 
-    // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
-    context.perform(actionNoop(), operation.annotation());
+    // If this is the same selection as before, and the previous edit was also a cycle-tags,
+    // skip this `perform`, then all tag updates will be coalesced into the previous edit.
+    const annotation = operation.annotation();
+    if (!isSameSelection || context.history().undoAnnotation() !== annotation) {
+      // Start with a no-op edit that will be replaced by all the tag updates we end up doing.
+      context.perform(actionNoop(), annotation);
+    }
 
-    // Pick the next highway tag value..
-    const currVal = entities[0].tags.highway;
-    const index = currVal ? ROAD_TYPES.indexOf(currVal) : -1;
-    const nextVal = ROAD_TYPES[(index + 1) % ROAD_TYPES.length];
+    // Pick the next preset..
+    const currPresetIDs = Array.from(presetIDs);
+    const currPreset = presetManager.match(entities[0], context.graph());
+    const index = currPreset ? currPresetIDs.indexOf(currPreset.id) : -1;
+    const newPresetID = currPresetIDs[(index + 1) % currPresetIDs.length];
+    const newPreset = presetManager.item(newPresetID);
 
     // Update all selected highways...
     for (const entity of entities) {
-      let tags = Object.assign({}, entity.tags);  // copy
-      tags.highway = nextVal;
-
-      if (tags.highway === 'track') {
-        tags.surface = 'unpaved';
-      } else {
-        delete tags.surface;
-      }
-      context.replace(actionChangeTags(entity.id, tags), operation.annotation());
+      const oldPreset = presetManager.match(entity, context.graph());
+      const action = actionChangePreset(entity.id, oldPreset, newPreset, true /* skip field defaults */);
+      context.replace(action, annotation);
     }
 
     context.enter(modeSelect(context, selectedIDs));  // reselect
