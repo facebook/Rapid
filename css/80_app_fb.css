@@ -39,8 +39,8 @@ svg.logo-rapid.dark,
 
 /* Toolbar buttons */
 button.rapid-features svg.logo-rapid {
-    width: 46px;
-    height: 22px;
+    width: 60px;
+    height: 16px;
 }
 button.rapid-poweruser-features .beta {
     font-size: 1.2em;
@@ -64,6 +64,18 @@ button.bugnub {
 .ideditor .icon.bugnub {
     color: #ff26db;
 }
+
+/* rapid logo with wordmark embedded in text */
+.curtain-tooltip .popover-inner .icon.pre-text.rapid {
+    vertical-align: text-top;
+    margin-right: 0;
+    margin-left: 0;
+    display: inline-block;
+    width: 60px;
+    fill: #333;
+    color: #da26d3;
+}
+
 
 /* UI Buttons */
 /* There are a lot of rules here to cover all permutations of primary, secondary, disabled */
@@ -392,6 +404,7 @@ button.bugnub {
 }
 .modal.rapid-modal .modal-section .logo-rapid {
     fill: white;
+    margin: 4px 9px 0 9px;
 }
 .modal.rapid-modal p {
     font-size: 14px;

@@ -18,7 +18,7 @@ export function uiRapidFirstEditDialog(context) {
       .append('div')
       .attr('class', 'modal-section')
       .append('h3')
-      .html(t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid', 'logo-rapid') }));
+      .html(t('rapid_first_edit.nice', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
     firstEditModal
       .append('div')

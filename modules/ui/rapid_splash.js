@@ -28,7 +28,7 @@ export function uiRapidSplash(context) {
       .attr('class','modal-section')
       .append('p')
       .html(t('rapid_splash.text', {
-        rapidicon: icon('#rapid-logo-rapid', 'logo-rapid'),
+        rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid'),
         walkthrough: icon('#rapid-logo-walkthrough', 'logo-walkthrough'),
         edit: icon('#rapid-logo-features', 'logo-features')
       }));
@@ -67,7 +67,7 @@ export function uiRapidSplash(context) {
       .append('svg')
       .attr('class', 'logo logo-rapid')
       .append('use')
-      .attr('xlink:href', '#rapid-logo-rapid');
+      .attr('xlink:href', '#rapid-logo-rapid-wordmark');
 
     rapidWalkthrough
       .append('div')

@@ -23,13 +23,16 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .append('div')
       .attr('class','modal-section')
       .append('h3')
-      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid', 'logo-rapid') }));
+      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
 
     let body = whatsNewModal
       .append('div')
       .attr('class','modal-section body')
-      .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#rapid-logo-rapid', 'logo-rapid'), bugicon: icon('#rapid-icon-bug', 'bugnub') })));
+      .html(marked.parse(t('rapid_whats_new.text', {
+        rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid'),
+        bugicon: icon('#rapid-icon-bug', 'bugnub')
+      })));
 
 
 //    let imageSection = body.append('div').attr('class', 'whatsnew-images');

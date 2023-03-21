@@ -63,7 +63,7 @@ export function uiIntroRapid(context, curtain) {
         _rejectStep = reject;
         curtain.reveal({
           revealSelector: '.intro-nav-wrap .chapter-rapid',
-          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#rapid-logo-rapid', 'pre-text') }),
+          tipHtml: helpHtml('intro.rapid.start', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
           buttonText: t.html('intro.ok'),
           buttonCallback: () => resolve(showHideRoadsAsync)
         });
@@ -78,7 +78,7 @@ export function uiIntroRapid(context, curtain) {
       _rejectStep = reject;
       curtain.reveal({
         revealSelector: 'button.rapid-features',
-        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid', 'pre-text') }),
+        tipHtml: helpHtml('intro.rapid.ai_roads', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
         buttonText: t.html('intro.ok'),
         buttonCallback: () => resolve(selectRoadAsync)
       });
@@ -152,7 +152,7 @@ export function uiIntroRapid(context, curtain) {
 
         curtain.reveal({
           revealExtent: tulipLaneExtent,
-          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid', 'pre-text') }),
+          tipHtml: helpHtml('intro.rapid.add_road_not_saved_yet', { rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }),
           buttonText: t('intro.ok'),
           buttonCallback: () => resolve(showIssuesButtonAsync)
         });
@@ -317,7 +317,7 @@ export function uiIntroRapid(context, curtain) {
       curtain.reveal({
         revealSelector: '.map-control.help-control',
         tipHtml: helpHtml('intro.rapid.help', {
-          rapid: icon('#rapid-logo-rapid', 'pre-text'),
+          rapid: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
           button: icon('#rapid-icon-help', 'pre-text'),
           key: t('help.key')
         }),

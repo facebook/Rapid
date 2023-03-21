@@ -87,7 +87,7 @@ export function uiToolRapidFeatures(context) {
         .append('svg')
         .attr('class', 'logo-rapid')
         .append('use')
-        .attr('xlink:href', '#rapid-logo-rapid');
+        .attr('xlink:href', '#rapid-logo-rapid-wordmark');
 
       // update
       rapidButton.merge(rapidButtonEnter)

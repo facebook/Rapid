@@ -199,7 +199,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       // .attr('class', 'logo-rapid dark')
       .attr('class', 'logo-rapid')
       .append('use')
-      .attr('xlink:href', '#rapid-logo-rapid');
+      .attr('xlink:href', '#rapid-logo-rapid-wordmark');
 
     headerEnter
       .append('button')

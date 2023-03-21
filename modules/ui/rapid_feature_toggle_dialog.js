@@ -124,7 +124,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
     toggleAllTextEnter
       .append('div')
       .attr('class', 'rapid-feature-label')
-      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid', 'logo-rapid') }));
+      .html(t('rapid_feature_toggle.toggle_all', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
 
     toggleAllTextEnter
       .append('span')
