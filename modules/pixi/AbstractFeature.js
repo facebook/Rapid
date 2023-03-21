@@ -7,24 +7,25 @@ import { PixiGeometry } from './PixiGeometry';
  * It contains properties that used to manage the Feature in the scene graph
  *
  * Properties you can access:
- *   `id`               Unique string to use for the name of this Feature
- *   `type`             String describing what kind of Feature this is ('point', 'line', 'polygon')
- *   `container`        PIXI.Container() that contains all the graphics needed to draw the Feature
- *   `parentContainer`  PIXI.Container() for the parent - this Feature's container will be added to it.
- *   `geometry`         PixiGeometry() class containing all the information about the geometry
- *   `style`            Object containing style info
- *   `label`            String containing the Feature's label (if any)
- *   `data`             Data bound to this Feature (like `__data__` from the D3.js days)
- *   `dataID`           Data bound to this Feature (like `__data__` from the D3.js days)
- *   `visible`          `true` if the Feature is visible (`false` if it is culled)
- *   `interactive`      `true` if the Feature is interactive (emits Pixi events)
- *   `dirty`            `true` if the Feature needs to be rebuilt
- *   `selected`         `true` if the Feature is selected
- *   `hovered`          `true` if the Feature is hovered
- *   `v`                Version of the Feature, can be used to detect changes
- *   `lod`              Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
- *   `halo`             A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
- *   `sceneBounds`      PIXI.Rectangle() where 0,0 is the origin of the scene
+ *   `id`                Unique string to use for the name of this Feature
+ *   `type`              String describing what kind of Feature this is ('point', 'line', 'polygon')
+ *   `container`         PIXI.Container() that contains all the graphics needed to draw the Feature
+ *   `parentContainer`   PIXI.Container() for the parent - this Feature's container will be added to it.
+ *   `geometry`          PixiGeometry() class containing all the information about the geometry
+ *   `style`             Object containing style info
+ *   `label`             String containing the Feature's label (if any)
+ *   `data`              Data bound to this Feature (like `__data__` from the D3.js days)
+ *   `dataID`            Data bound to this Feature (like `__data__` from the D3.js days)
+ *   `visible`           `true` if the Feature is visible (`false` if it is culled)
+ *   `allowInteraction`  `true` if the Feature is allowed to be interactive (emits Pixi events)
+ *   `active`            `true` if the Feature is currently being interacted with (dragged, etc)
+ *   `dirty`             `true` if the Feature needs to be rebuilt
+ *   `selected`          `true` if the Feature is selected
+ *   `hovered`           `true` if the Feature is hovered
+ *   `v`                 Version of the Feature, can be used to detect changes
+ *   `lod`               Level of detail for the Feature last time it was styled (0 = off, 1 = simplified, 2 = full)
+ *   `halo`              A PIXI.DisplayObject() that contains the graphics for the Feature's halo (if it has one)
+ *   `sceneBounds`       PIXI.Rectangle() where 0,0 is the origin of the scene
  */
 export class AbstractFeature {
 
@@ -50,6 +51,8 @@ export class AbstractFeature {
     container.visible = true;
 
     // By default, make the Feature interactive
+    this._allowInteraction = true;
+    this._active = false;
     container.buttonMode = true;
     container.interactive = true;
     container.interactiveChildren = true;
@@ -184,18 +187,42 @@ export class AbstractFeature {
 
 
   /**
-   * interactive
-   * Whether the Feature is currently interactive
+   * allowInteraction
+   * Whether the Feature is allowed to be interactive
    */
-  get interactive() {
-    return this.container?.interactive;
+  get allowInteraction() {
+    return this._allowInteraction;
   }
-  set interactive(val) {
-    if (!this.container) return;
-    if (val === this.container.interactive) return;  // no change
-    this.container.buttonMode = val;
-    this.container.interactive = val;
-    this.container.interactiveChildren = val;
+  set allowInteraction(val) {
+    if (val === this._allowInteraction) return;  // no change
+    this._allowInteraction = val;
+
+    if (this.container) {
+      const flag = this._allowInteraction && !this._active;
+      this.container.buttonMode = flag;
+      this.container.interactive = flag;
+      this.container.interactiveChildren = flag;
+    }
+  }
+
+
+  /**
+   * isInteractive
+   * Whether the Feature is currently being interacted with
+   */
+  get active() {
+    return this._active;
+  }
+  set active(val) {
+    if (val === this._active) return;  // no change
+    this._active = val;
+
+    if (this.container) {
+      const flag = this._allowInteraction && !this._active;
+      this.container.buttonMode = flag;
+      this.container.interactive = flag;
+      this.container.interactiveChildren = flag;
+    }
   }
 
 
@@ -241,6 +268,7 @@ export class AbstractFeature {
     this._styleDirty = true;
     this._labelDirty = true;
   }
+
 
   /**
    * drawing

@@ -78,7 +78,7 @@ export class BehaviorDrag extends AbstractBehavior {
     const eventData = this.lastMove;
     if (eventData && this.dragTarget) {
       eventData.target = null;
-      this.dragTarget.feature.interactive = true;
+      this.dragTarget.feature.active = false;
       this.emit('cancel', eventData);
     }
 
@@ -169,7 +169,7 @@ export class BehaviorDrag extends AbstractBehavior {
         // This lets us catch events for what other objects it passes over as the user drags it.
         const target = Object.assign({}, down.target);  // shallow copy
         this.dragTarget = target;
-        target.feature.interactive = false;
+        target.feature.active = true;
 
         // Enter Drag Node mode
         const selection = new Map().set(target.data.id, target.data);
@@ -208,7 +208,7 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
 
     if (this.dragTarget) {
-      this.dragTarget.feature.interactive = true;
+      this.dragTarget.feature.active = false;
       this.dragTarget = null;
       this.emit('end', up);
     }
@@ -229,7 +229,7 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastMove = null;
 
     if (this.dragTarget) {
-      this.dragTarget.feature.interactive = true;
+      this.dragTarget.feature.active = false;
       this.dragTarget = null;
       this.emit('cancel', cancel);
     }

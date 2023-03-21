@@ -164,12 +164,14 @@ export class PixiFeaturePolygon extends AbstractFeature {
       }
     }
 
-    // TODO: Move this inside the geometry.dirty block above.
-    // If we're drawing, we shouldn't be able to target ourselves.
-    if (this._drawing) {
-      this.container.interactive = false;
-      this.container.interactiveChildren = false;
-    }
+
+/// I think syncFeatureClasses handles flipping the interactivity now..
+//    // TODO: Move this inside the geometry.dirty block above.
+//    // If we're drawing, we shouldn't be able to target ourselves.
+//    if (this._drawing) {
+//      this.container.interactive = false;
+//      this.container.interactiveChildren = false;
+//    }
 
 
     // Calculate bounds

@@ -482,7 +482,7 @@ export class PixiLayerRapid extends AbstractLayer {
         feature.geometry.setCoords(entity.loc);
         feature.parentContainer = parentContainer;
         feature.rapidFeature = true;
-        feature.interactive = false;   // vertices in this layer don't actually need to be interactive
+        feature.allowInteraction = false;   // vertices in this layer don't actually need to be interactive
         feature.setData(entity.id, entity);
       }
 

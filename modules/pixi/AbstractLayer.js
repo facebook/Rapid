@@ -167,12 +167,15 @@ export class AbstractLayer {
 //
     const classList = this._dataHasClass.get(dataID) ?? new Set();
 
-    // const activeData = this.context.activeData();
-    // feature.interactive = !activeData.has(dataID);  // is this the same as drawing??
     feature.selected = classList.has('selected');
     feature.hovered = classList.has('hovered');
     feature.drawing = classList.has('drawing');
+
+    // const activeData = this.context.activeData();
+    // feature.interactive = !activeData.has(dataID);  // is this the same as drawing??
+    feature.active = classList.has('drawing');
   }
+
 
   /**
    * isDrawing
@@ -184,15 +187,15 @@ export class AbstractLayer {
     return classList?.has('drawing');
   }
 
-    /**
+  /**
    * isHovered
    * @param dataId 'String' dataID (e.g. 'w-123')
    * @returns true or false
    */
-    isHovered(dataID) {
-      const classList = this._dataHasClass.get(dataID);
-      return classList?.has('hovered');
-    }
+  isHovered(dataID) {
+    const classList = this._dataHasClass.get(dataID);
+    return classList?.has('hovered');
+  }
 
 
   /**
