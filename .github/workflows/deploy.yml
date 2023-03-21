@@ -5,7 +5,7 @@ name: Deploy
 
 on:
   push:
-    branches: [ main, develop, '*staging*', rapid-v1.x ]
+    branches: [ main, develop, '*staging*', 'rapid-v1.x' ]
 
 permissions:
   id-token: write # required to use OIDC authentication
