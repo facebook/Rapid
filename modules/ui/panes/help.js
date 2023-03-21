@@ -254,7 +254,10 @@ export function uiPaneHelp(context) {
     // For each section, squash all the texts into a single markdown document
     var docs = docKeys.map(function(key) {
         var helpkey = 'help.' + key[0];
-        var helpPaneReplacements = { version: context.version };
+        var helpPaneReplacements = {
+            version: `**${context.version}**`,
+            rapidicon: `<svg class="icon pre-text rapid"><use xlink:href="#rapid-logo-rapid-wordmark"></use></svg>`
+        };
         var text = key[1].reduce(function(all, part) {
             var subkey = helpkey + '.' + part;
             var depth = headings[subkey];                              // is this subkey a heading?

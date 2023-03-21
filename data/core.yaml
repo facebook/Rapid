@@ -1540,7 +1540,7 @@ en:
     key: H
     help:
       title: Help
-      welcome: "Welcome to the Rapid editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser."
+      welcome: "Welcome to the {rapidicon} editor for [OpenStreetMap](https://www.openstreetmap.org/). With this editor you can update OpenStreetMap right from your web browser."
       open_data_h: "Open Data"
       open_data: "Edits that you make on this map will be visible to everyone who uses OpenStreetMap. Your edits can be based on personal knowledge, on-the-ground surveying, or imagery collected from aerial or street level photos. Copying from commercial sources, like Google Maps, [is strictly forbidden](https://www.openstreetmap.org/copyright)."
       before_start_h: "Before you start"
