@@ -32,10 +32,10 @@ export function uiRapidWhatsNew(context) {
       .html(marked.parse(t('rapid_whats_new.text', {rapidicon: icon('#iD-logo-rapid', 'logo-rapid') })));
 
 
-    // body
-    //   .append('img')
-    //   .attr('class', 'whatsnew-image')
-    //   .attr('src', context.asset('img/rapid-esri-splash.jpg'));
+    body
+      .append('img')
+      .attr('class', 'whatsnew-image')
+      .attr('src', context.asset('img/rapid-v2-splash.png'));
 
     body.select('p a')
       .attr('target', '_blank');
@@ -94,7 +94,6 @@ export function uiRapidWhatsNew(context) {
       .on('click', () => {
         prefs('sawV2WhatsNew', _dontShowAgain);
         modalSelection.close();
-        window.open('https://mapwith.ai/rapid-v2-beta', '_blank');
       });
 
     modalSelection.select('button.close')

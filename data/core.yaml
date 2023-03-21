@@ -1050,7 +1050,7 @@ en:
     start: "No thanks, just start mapping"
   rapid_whats_new:
     welcome: What's New- v2!
-    text: "Come check out the [Rapid v2 beta](https://mapwith.ai/rapid-v2-beta)! Our next release is coming soon. <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebook/RapiD/discussions/738)."
+    text: "Come try out the [Rapid v2 beta](https://mapwith.ai/rapid-v2-beta)! Our next release is coming soon. <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebook/RapiD/discussions/738)."
     ok: OK
     nope: No thanks
     dontshowagain: Don't show this again
