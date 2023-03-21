@@ -37,7 +37,7 @@ export function uiRapidWhatsNew(context) {
       .attr('class', 'whatsnew-image')
       .attr('src', context.asset('img/rapid-v2-splash.png'));
 
-    body.select('p a')
+    body.selectAll('p a')
       .attr('target', '_blank');
 
 
