@@ -12,7 +12,7 @@ import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
 import { uiMapInMap } from '../map_in_map';
 import { uiSection } from '../section';
-
+import { uiModal } from '../modal';
 
 export function uiSectionBackgroundList(context) {
   const section = uiSection('background-list', context)
@@ -331,6 +331,7 @@ export function uiSectionBackgroundList(context) {
       nextBackground = backgrounds[nextBackgroundIndex];
     }
     chooseBackground(undefined, nextBackground);
+    flashChosenBackground(nextBackground.name);
   }
 
   function nextBackground() {
@@ -341,6 +342,15 @@ export function uiSectionBackgroundList(context) {
     chooseBackgroundAtOffset(-1);
   }
 
+  function flashChosenBackground(backgroundName){
+    let modal = uiModal(context.container());
+      modal.select('.modal').attr('class', 'modal rapid-modal').append('div').style('display','flex').style('justify-content','center').style('align-items','center').style('min-height','6rem')
+      .append('h2')
+      .html(backgroundName);
+      setTimeout(() => {
+        modal.close();
+      }, 500);
+  }
 
   context.imagery()
     .on('imagerychange', () => _backgroundList.call(updateLayerSelections));
