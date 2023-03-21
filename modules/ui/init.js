@@ -54,9 +54,9 @@ export function uiInit(context) {
   let _needWidth = {};
 
   let generateBugLink = () => {
-    let link = new URL('https://github.com/facebook/RapiD/issues/new');
+    let link = new URL('https://github.com/facebook/Rapid/issues/new');
 
-    // From the template we set up at https://github.com/facebook/RapiD/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
+    // From the template we set up at https://github.com/facebook/Rapid/blob/main/.github/ISSUE_TEMPLATE/bug_report.yml
     link.searchParams.append('template', 'bug_report.yml');
     const detected = utilDetect();
 

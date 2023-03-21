@@ -3,7 +3,7 @@
 The Rapid editor privacy policy (https://mapwith.ai/doc/license/MapWithAIPrivacyPolicy.pdf) contains all the up-to-date information about use of the Rapid editor.
 ### Source code and website ([https://mapwith.ai](https://mapwith.ai/))
 
-If you choose to interact with the project GitHub page or website hosted by GitHub, you do so in accordance with [GitHub’s Privacy Policy](https://help.github.com/en/articles/github-privacy-statement). If you choose any other communications medium to contact the maintainers of Rapid, that use is governed by the policies of those respective mediums. See [https://github.com/facebook/RapiD](https://github.com/facebook/RapiD) for more information. Rapid may use any feedback you provide.
+If you choose to interact with the project GitHub page or website hosted by GitHub, you do so in accordance with [GitHub’s Privacy Policy](https://help.github.com/en/articles/github-privacy-statement). If you choose any other communications medium to contact the maintainers of Rapid, that use is governed by the policies of those respective mediums. See [https://github.com/facebook/Rapid](https://github.com/facebook/Rapid) for more information. Rapid may use any feedback you provide.
 
 ### Cookies
 
@@ -15,15 +15,15 @@ In order to make edits using Rapid, you must be logged into your OpenStreetMap a
 
 ### Changeset information
 
-When you use Rapid to edit OpenStreetMap, Rapid uses the OpenStreetMap API to contribute edits. For quality control purposes, along with the information typically recorded for an OpenStreetMap edit, Rapid automatically adds tags to each changeset submitted with Rapid which identifies the changeset as one made with Rapid and information that indicates the user’s level of experience with Rapid editor and/or its walkthrough. See [here](https://github.com/facebook/RapiD/blob/release/modules/ui/commit.js) for details. The [OSMF privacy policy](https://wiki.osmfoundation.org/wiki/Privacy_Policy) governs the use of this data in the OpenStreetMap database.
+When you use Rapid to edit OpenStreetMap, Rapid uses the OpenStreetMap API to contribute edits. For quality control purposes, along with the information typically recorded for an OpenStreetMap edit, Rapid automatically adds tags to each changeset submitted with Rapid which identifies the changeset as one made with Rapid and information that indicates the user’s level of experience with Rapid editor and/or its walkthrough. See [here](https://github.com/facebook/Rapid/blob/release/modules/ui/commit.js) for details. The [OSMF privacy policy](https://wiki.osmfoundation.org/wiki/Privacy_Policy) governs the use of this data in the OpenStreetMap database.
 
 ### Editor experience tags
 
-Details on that are [here](https://github.com/facebook/RapiD/blob/release/modules/ui/commit.js).
+Details on that are [here](https://github.com/facebook/Rapid/blob/release/modules/ui/commit.js).
 
 ### Background imagery and other third party services
 
-If you use background or streetside imagery to aid your edits, your browser must fetch information and images from a third-party imagery host. That use is governed by the respective privacy policies of each imagery host. The [Editor Layer Index](https://github.com/osmlab/editor-layer-index) and [Rapid Editor GitHub code](https://github.com/facebook/RapiD/blob/release/modules/ui/map_data.js) provides detailed information as to imagery layers available in Rapid. In addition, you may use third party services to assist your editing or check for errors. If you do not wish to interact with these third parties, do not use these features.
+If you use background or streetside imagery to aid your edits, your browser must fetch information and images from a third-party imagery host. That use is governed by the respective privacy policies of each imagery host. The [Editor Layer Index](https://github.com/osmlab/editor-layer-index) and [Rapid Editor GitHub code](https://github.com/facebook/Rapid/blob/release/modules/ui/map_data.js) provides detailed information as to imagery layers available in Rapid. In addition, you may use third party services to assist your editing or check for errors. If you do not wish to interact with these third parties, do not use these features.
 
 ### Name Suggestion Index
 

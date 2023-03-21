@@ -1062,7 +1062,7 @@ en:
     start: "No thanks, just start mapping"
   rapid_whats_new:
     welcome: "{rapidicon} v2 goes Beta!"
-    text: "Enjoy this beta of a webGL-based {rapidicon}!  Please try it out and let us know what you think. Use the bug report button {bugicon} to submit issues.  <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebook/RapiD/discussions/738). We also maintain a list of [known issues](https://github.com/orgs/facebook/projects/19/views/2?filterQuery=status%3ATriage)."
+    text: "Enjoy this beta of a webGL-based {rapidicon}!  Please try it out and let us know what you think. Use the bug report button {bugicon} to submit issues.  <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebook/Rapid/discussions/738). We also maintain a list of [known issues](https://github.com/orgs/facebook/projects/19/views/2?filterQuery=status%3ATriage)."
     ok: Okay
     nope: No thanks, just take me to Rapid
     dontshowagain: Don't show this again
@@ -1546,8 +1546,8 @@ en:
       before_start_h: "Before you start"
       before_start: "You should be familiar with OpenStreetMap and this editor before you start editing. Rapid contains a walkthrough to teach you the basics of editing OpenStreetMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
       open_source_h: "Open Source"
-      open_source: "The Rapid editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebook/RapiD)."
-      open_source_help: "You can help Rapid by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebook/RapiD/issues)."
+      open_source: "The Rapid editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/facebook/Rapid)."
+      open_source_help: "You can help Rapid by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/facebook/Rapid/issues)."
     overview:
       title: Overview
       navigation_h: "Navigation"

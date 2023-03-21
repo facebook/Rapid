@@ -13,7 +13,7 @@
     "template": {
         "outputSourceFiles": true,
         "readme": "./README.md",
-        "repository": "https://github.com/facebook/RapiD/"
+        "repository": "https://github.com/facebook/Rapid/"
     },
     "templates": {
         "cleverLinks"   : false,

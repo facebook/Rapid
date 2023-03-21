@@ -1,4 +1,4 @@
-[![build](https://github.com/facebook/RapiD/workflows/build/badge.svg)](https://github.com/facebook/RapiD/actions?query=workflow%3A%22build%22)
+[![build](https://github.com/facebook/Rapid/workflows/build/badge.svg)](https://github.com/facebook/Rapid/actions?query=workflow%3A%22build%22)
 
 # Rapid
 
@@ -14,7 +14,7 @@ Rapid is a web-based modern editor for [OpenStreetMap](https://www.openstreetmap
 ## Participate!
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and [Contributing Guide](CONTRIBUTING.md) to learn about how to contribute.
-* See [open issues in the issue tracker](https://github.com/facebook/RapiD/issues?state=open) if you're looking to help on issues.
+* See [open issues in the issue tracker](https://github.com/facebook/Rapid/issues?state=open) if you're looking to help on issues.
 * To help with internationalization, please follow the [general translating page in iD repo](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating).
 
 We're available to chat!  Ping us on the `#mapwithai_feedback` channel on either:
@@ -22,10 +22,10 @@ We're available to chat!  Ping us on the `#mapwithai_feedback` channel on either
 * [HOTOSM Slack](https://slack.hotosm.org/)
 
 ## Country Data Requests
-To request Rapid data for other countries, please submit [a new issue](https://github.com/facebook/RapiD/issues/new).
+To request Rapid data for other countries, please submit [a new issue](https://github.com/facebook/Rapid/issues/new).
 
 ## Available Countries for AI-generated Roads
-Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). If you would like to request roads for a new country, please [create an issue here](https://github.com/facebook/RapiD/issues). We track all the requests and our progress on [this page](COUNTRY_REQUESTS.md).
+Please refer to this [list of Available Countries](https://github.com/facebookmicrosites/Open-Mapping-At-Facebook/wiki/Available-Countries). If you would like to request roads for a new country, please [create an issue here](https://github.com/facebook/Rapid/issues). We track all the requests and our progress on [this page](COUNTRY_REQUESTS.md).
 
 ## License
 

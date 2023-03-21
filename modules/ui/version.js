@@ -31,7 +31,7 @@ export function uiVersion(context) {
       .append('a')
       .attr('target', '_blank')
       .attr('tabindex', -1)
-      .attr('href', 'https://github.com/facebook/RapiD')
+      .attr('href', 'https://github.com/facebook/Rapid')
       .text(currVersion);
 
     // Only show new version indicator to users that have used Rapid before
@@ -41,7 +41,7 @@ export function uiVersion(context) {
         .attr('class', 'badge')
         .attr('target', '_blank')
         .attr('tabindex', -1)
-        .attr('href', 'https://github.com/facebook/RapiD/blob/main/CHANGELOG.md')
+        .attr('href', 'https://github.com/facebook/Rapid/blob/main/CHANGELOG.md')
         .call(svgIcon('#maki-gift-11'))
         .call(uiTooltip()
           .title(t.html('version.whats_new', { version: currVersion }))
