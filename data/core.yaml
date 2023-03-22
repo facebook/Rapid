@@ -1061,8 +1061,8 @@ en:
     skip_to_rapid: "Learn about Rapid!"
     start: "No thanks, just start mapping"
   rapid_whats_new:
-    welcome: "{rapidicon} v2 goes Beta!"
-    text: "Enjoy this beta of a webGL-based {rapidicon}!  Please try it out and let us know what you think. Use the bug report button {bugicon} to submit issues.  <p>If you'd like more information, here's our [beta announcement post](https://github.com/facebook/Rapid/discussions/738). We also maintain a list of [known issues](https://github.com/orgs/facebook/projects/19/views/2?filterQuery=status%3ATriage)."
+    welcome: "{rapidicon} v2.0 goes Beta!"
+    text: "We hope you enjoy this beta version of the new WebGL-based {rapidicon}!<br/><br/>Please try it out and let us know what you think.<br/>Use the bug report button {bugicon} to submit a report to our [GitHub issue tracker](https://github.com/facebook/Rapid/issues).<p>For more information, here's our [beta announcement post](https://github.com/facebook/Rapid/discussions/738)."
     ok: Okay
     nope: No thanks, just take me to Rapid
     dontshowagain: Don't show this again

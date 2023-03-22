@@ -10,7 +10,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
 
 
   return function(selection) {
-    if (prefs('sawWhatsNewGLBeta') === 'true') return;
+    // if (prefs('sawWhatsNewGLBeta') === 'true') return;
 
     const modalSelection = uiModal(selection);
 
@@ -18,22 +18,19 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .attr('class', 'modal rapid-modal modal-splash modal-whatsnew');   // Rapid styling
 
     let whatsNewModal = modalSelection.select('.content');
-
     whatsNewModal
       .append('div')
-      .attr('class','modal-section')
-      .append('h3')
-      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid') }));
-
+      .attr('class', 'modal-section')
+      .append('h2')
+      .html(t('rapid_whats_new.welcome', { rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid') }));
 
     let body = whatsNewModal
       .append('div')
       .attr('class','modal-section body')
       .html(marked.parse(t('rapid_whats_new.text', {
-        rapidicon: icon('#rapid-logo-rapid-wordmark', 'logo-rapid'),
+        rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
         bugicon: icon('#rapid-icon-bug', 'bugnub')
       })));
-
 
 //    let imageSection = body.append('div').attr('class', 'whatsnew-images');
 //

@@ -384,7 +384,11 @@ button.bugnub {
     border: 1px solid #888a;
 }
 
-.modal.rapid-modal h3 {
+.modal.rapid-modal h1,
+.modal.rapid-modal h2,
+.modal.rapid-modal h3,
+.modal.rapid-modal h4,
+.modal.rapid-modal h5 {
     color: #fff;
 }
 
@@ -425,17 +429,24 @@ button.bugnub {
 }
 
 /* Splash, Whats New, Login to OSM */
-.modal.rapid-modal .modal-section p .icon {
-    height: 25px;
-    width: 30px;
-    color: #fff;
-}
-.modal.rapid-modal .modal-section h3 .icon.logo-rapid,
-.modal.rapid-modal .modal-section p .icon.logo-rapid {
-    height: 25px;
-    width: 55px;
-    margin-top: -2px;
+.modal.rapid-modal .modal-section .icon.pre-text.rapid {
     color: #da26d3;
+    fill: #fff;
+    vertical-align: middle;
+}
+.modal.rapid-modal .modal-section h1 .icon.pre-text.rapid,
+.modal.rapid-modal .modal-section h2 .icon.pre-text.rapid {
+    height: 27px;
+    width: 100px;
+    margin: 0 2px;
+}
+.modal.rapid-modal .modal-section h3 .icon.pre-text.rapid,
+.modal.rapid-modal .modal-section h4 .icon.pre-text.rapid,
+.modal.rapid-modal .modal-section h5 .icon.pre-text.rapid,
+.modal.rapid-modal .modal-section p .icon.pre-text.rapid {
+    height: 20px;
+    width: 60px;
+    margin: 0 2px;
 }
 .modal.rapid-modal .modal-actions > button {
     width: 100%;
@@ -451,7 +462,7 @@ button.bugnub {
 
 .modal.rapid-modal.modal-whatsnew .modal-actions > button {
     height: 50px;
-    width:25%;
+    width: 25%;
     min-height: unset;
 }
 
@@ -503,14 +514,14 @@ button.bugnub {
 }
 
 .modal.rapid-modal.modal-whatsnew div.body.modal-section {
-    display:flex;
-    flex-direction:column;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal.rapid-modal.modal-whatsnew div.body.modal-section svg.icon.bugnub {
-color: #ff26db;
+    color: #ff26db;
 }
+
 /* dark scrollbars */
 .modal.rapid-modal {
     scrollbar-width: thin;
