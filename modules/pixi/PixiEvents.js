@@ -1,4 +1,6 @@
 import { EventEmitter } from '@pixi/utils';
+
+import { utilDetect } from '../util/detect';
 import { prefs } from '../core/preferences';
 
 
@@ -41,6 +43,8 @@ export class PixiEvents extends EventEmitter {
     this.pointerOverRenderer = false;
     this.modifierKeys = new Set();
     this.coord = [0, 0];
+
+    this._wheelDefault = utilDetect().os === 'mac' ? 'auto' : 'zoom';
 
     // Make sure the event handlers have `this` bound correctly
     this._click = this._click.bind(this);
@@ -327,7 +331,7 @@ export class PixiEvents extends EventEmitter {
       speed = 3;
 
     } else {  // consider user mouse_wheel preference
-      const wheelPref = prefs('prefs.mouse_wheel.interaction') ?? 'auto';
+      const wheelPref = prefs('prefs.mouse_wheel.interaction') ?? this._wheelDefault;
 
       // User wants to 'pan' by default OR
       // We autodetect - either horizontal scroll present or vertical scroll is a round number...
