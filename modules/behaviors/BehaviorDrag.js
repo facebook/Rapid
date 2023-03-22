@@ -173,7 +173,8 @@ export class BehaviorDrag extends AbstractBehavior {
 
         // Enter Drag Node mode
         const selection = new Map().set(target.data.id, target.data);
-        this.context.enter('drag-node', { selection: selection });
+        const reselectIDs = this.context.selectedIDs();
+        this.context.enter('drag-node', { selection: selection, reselectIDs: reselectIDs });
 
         this.emit('start', down);
       }

@@ -31,10 +31,10 @@ export class ModeDragNode extends AbstractMode {
     super(context);
     this.id = 'drag-node';
 
-    this.dragNode = null;             // The node being dragged
+    this.dragNode = null;         // The node being dragged
     this.drawingParentIDs = [];
-    this._restoreSelectedIDs = null;
-    this._wasMidpoint = false;        // Used to set the correct edit annotation
+    this._reselectIDs = [];       // When finished dragging, restore the selelected ids from before
+    this._wasMidpoint = false;    // Used to set the correct edit annotation
     this._startLoc = null;
     this._clickLoc = null;
 
@@ -54,12 +54,12 @@ export class ModeDragNode extends AbstractMode {
   enter(options = {}) {
     const context = this.context;
 
-    // We will try to restore the selection to what it was when we entered this mode.
-    this._restoreSelectedIDs = context.selectedIDs();
-
     const selection = options.selection;
     if (!(selection instanceof Map)) return false;
     if (!selection.size) return false;
+
+    // When exiting mode, we'll try to restore the selection to what it was when we entered this mode.
+    this._reselectIDs = options.reselectIDs ?? [];
 
     let [entity] = selection.values();   // the first thing in the selection
 
@@ -238,10 +238,8 @@ if (choice && choice.distance < SNAP_DIST) {
     // Snap to a Node
     } else if (target && target.type === 'node' && this._canSnapToNode(target)) {
       context.replace(actionConnect([target.id, entity.id]), this._connectAnnotation(entity, target));
-
     } else if (this._wasMidpoint) {
       context.replace(actionNoop(), t('operations.add.annotation.vertex'));
-
     } else {
       context.replace(actionNoop(), this._moveAnnotation(entity));
     }
@@ -249,13 +247,10 @@ if (choice && choice.distance < SNAP_DIST) {
     // choose next mode
     if (isPoint) {
       context.enter(modeSelect(context, [entity.id]));
+    } else if (this._reselectIDs.length) {
+      context.enter(modeSelect(context, this._reselectIDs));
     } else {
-      const reselection = this._restoreSelectedIDs.filter(id => graph.hasEntity(id));
-      if (reselection.length) {
-        context.enter(modeSelect(context, reselection));
-      } else {
-        context.enter('browse');
-      }
+      context.enter('browse');
     }
 
 
