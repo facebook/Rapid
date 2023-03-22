@@ -1,0 +1,58 @@
+Make the switch to the vector library.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# interactive rebase in progress; onto 59e1bd453
+# Last command done (1 command done):
+#    pick 9923bb805 Make the switch to the vector library.
+# Next command to do (1 remaining command):
+#    pick cf0c992c6 Replace rawMercator with id-sdk Projection.
+# You are currently rebasing branch 'math_conversion_vector' on '59e1bd453'.
+#
+# Changes to be committed:
+#	modified:   modules/actions/circularize.js
+#	modified:   modules/actions/merge_nodes.js
+#	modified:   modules/actions/move.js
+#	modified:   modules/actions/move_node.js
+#	modified:   modules/actions/orthogonalize.js
+#	modified:   modules/actions/rapid_accept_feature.js
+#	modified:   modules/actions/reflect.js
+#	modified:   modules/actions/straighten_nodes.js
+#	modified:   modules/actions/straighten_way.js
+#	modified:   modules/behavior/drag.js
+#	modified:   modules/behavior/draw.js
+#	modified:   modules/behavior/paste.js
+#	modified:   modules/behavior/select.js
+#	modified:   modules/core/difference.js
+#	modified:   modules/geo/geom.js
+#	modified:   modules/geo/index.js
+#	modified:   modules/geo/ortho.js
+#	modified:   modules/geo/raw_mercator.js
+#	modified:   modules/geo/vector.js
+#	modified:   modules/modes/drag_node.js
+#	modified:   modules/modes/drag_note.js
+#	modified:   modules/modes/move.js
+#	modified:   modules/modes/rotate.js
+#	modified:   modules/operations/paste.js
+#	modified:   modules/osm/way.js
+#	modified:   modules/renderer/tile_layer.js
+#	modified:   modules/services/improveOSM.js
+#	modified:   modules/services/keepRight.js
+#	modified:   modules/services/osm.js
+#	modified:   modules/services/osmose.js
+#	modified:   modules/services/streetside.js
+#	modified:   modules/svg/helpers.js
+#	modified:   modules/svg/labels.js
+#	modified:   modules/svg/midpoints.js
+#	modified:   modules/ui/edit_menu.js
+#	modified:   modules/ui/fields/restrictions.js
+#	modified:   modules/ui/intro/helper.js
+#	modified:   modules/ui/map_in_map.js
+#	modified:   modules/util/double_up.js
+#	modified:   modules/validations/almost_junction.js
+#	modified:   modules/validations/crossing_ways.js
+#	modified:   package.json
+#	modified:   test/spec/actions/circularize.js
+#	modified:   test/spec/geo/vector.js
+#
