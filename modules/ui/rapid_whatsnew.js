@@ -10,7 +10,11 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
 
 
   return function(selection) {
-    // if (prefs('sawWhatsNewGLBeta') === 'true') return;
+    // If user has not seen this version of the what's new screen, show it again.
+    // Just bump the version to a higher number to get it to come back.
+    const currWhatsNewVersion = 20230322;
+    const sawWhatsNewVersion = parseInt(prefs('sawWhatsNewVersion'), 10) || 0;
+    if (sawWhatsNewVersion === currWhatsNewVersion) return;
 
     const modalSelection = uiModal(selection);
 
@@ -66,9 +70,9 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .append('input')
       .attr('type', 'checkbox')
       .attr('class', 'rapid-feature-checkbox')
-      .property('checked', false)
-      .on('click', () => {
-        _dontShowAgain = !_dontShowAgain;
+      .property('checked', _dontShowAgain)
+      .on('click', e => {
+        _dontShowAgain = e.target.checked;
       });
 
     checkbox
@@ -76,8 +80,8 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .attr('class', 'rapid-checkbox-custom');
 
     let buttonWrap = whatsNewModal
-    .append('div')
-    .attr('class', 'modal-actions');
+      .append('div')
+      .attr('class', 'modal-actions');
 
     // let nothanks = buttonWrap
     //   .append('button')
@@ -99,7 +103,9 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
       .append('div')
       .text(t('rapid_whats_new.ok'))
       .on('click', () => {
-        prefs('sawWhatsNewGLBeta', _dontShowAgain);
+        if (_dontShowAgain) {
+          prefs('sawWhatsNewVersion', currWhatsNewVersion);
+        }
         modalSelection.close();
       });
 
