@@ -99,9 +99,7 @@ export class ModeAddPoint extends AbstractMode {
 
     // Snap to a way
     if (entity && entity.type === 'way') {
-      const activeIDs = context.activeIDs();
-      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection);
 const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 if (choice && choice.distance < SNAP_DIST) {
         const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];

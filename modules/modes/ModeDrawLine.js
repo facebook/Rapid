@@ -103,12 +103,6 @@ export class ModeDrawLine extends AbstractMode {
       this.lastNode = continueNode;
       this.firstNode = context.entity(oppositeNodeID);
       this.drawWay = continueWay;
-
-      // Add the way to the 'drawing' features set
-      scene.classData('osm', continueWay.id, 'drawing');
-
-      // this._selectedData.set(this.drawWay.id, this.drawWay);
-      this._updateCollections();
       this._continueFromNode(continueNode);  // create draw node and extend continue way to it
     }
 
@@ -147,6 +141,9 @@ export class ModeDrawLine extends AbstractMode {
 
     const context = this.context;
 
+    // We're done drawing, so ensure that we don't keep the drawing class on things.
+    context.scene().clearClass('drawing');
+
     // If there is a temporary draw node, remove it.
     if (this.drawNode) {
       context.replace(actionDeleteNode(this.drawNode.id));
@@ -169,9 +166,6 @@ export class ModeDrawLine extends AbstractMode {
     this._selectedData.clear();
     this._activeData.clear();
 
-    // We're done drawing, so ensure that we don't keep the drawing class on things.
-    context.scene().clearClass('drawing');
-
     window.setTimeout(() => {
       context.behaviors.get('map-interaction').doubleClickEnabled = true;
     }, 1000);
@@ -191,17 +185,20 @@ export class ModeDrawLine extends AbstractMode {
    * - selected should contain the drawWay
    */
   _updateCollections() {
+    const scene = this.context.scene();
+    scene.clearClass('drawing');
     this._selectedData.clear();
+    this._activeData.clear();
+
     if (this.drawWay) {
       this._selectedData.set(this.drawWay.id, this.drawWay);
+      this._activeData.set(this.drawWay.id, this.drawWay);
+      scene.classData('osm', this.drawWay.id, 'drawing');
     }
 
-    this._activeData.clear();
-    if (this.drawWay) {
-      this._activeData.set(this.drawWay.id, this.drawWay);
-    }
     if (this.drawNode) {
       this._activeData.set(this.drawNode.id, this.drawNode);
+      scene.classData('osm', this.drawNode.id, 'drawing');
     }
   }
 
@@ -226,6 +223,7 @@ export class ModeDrawLine extends AbstractMode {
     const which = (this._clicks > 1 ? 'continue' : 'start');
     return t(`operations.${which}.annotation.line`);
   }
+
 
   /**
    * An annotation associated with the previous edit one click ago
@@ -260,9 +258,7 @@ export class ModeDrawLine extends AbstractMode {
 
     // Snap to a way
     } else if (entity && entity.type === 'way') {
-      const activeIDs = context.activeIDs();
-      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, this.drawNode?.id);
 const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
@@ -309,9 +305,7 @@ if (choice && choice.distance < SNAP_DIST) {
 
     // Snap to a way
     if (entity && entity.type === 'way') {
-      const activeIDs = context.activeIDs();
-      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, this.drawNode?.id);
 const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 if (choice && choice.distance < SNAP_DIST) {
         const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
@@ -358,7 +352,6 @@ if (choice && choice.distance < SNAP_DIST) {
       );
 
       this.lastNode = context.entity(this.lastNode.id);
-      this.drawWay = context.entity(this.drawWay.id);
 
     // Start a new line at `loc`...
     } else {
@@ -370,9 +363,6 @@ if (choice && choice.distance < SNAP_DIST) {
       this.drawNode = osmNode({ loc: loc });
       this.drawWay = osmWay({ tags: this.defaultTags, nodes: [ this.firstNode.id, this.drawNode.id ] });
 
-      scene.classData('osm', this.drawWay.id, 'drawing');
-      scene.classData('osm', this.drawNode.id, 'drawing');
-
       context.perform(
         actionAddEntity(this.firstNode),  // Create first node
         actionAddEntity(this.drawNode),   // Create new draw node (end)
@@ -383,10 +373,9 @@ if (choice && choice.distance < SNAP_DIST) {
       context.perform(actionNoop(), this._getAnnotation());
     }
 
-    context.resumeChangeDispatch();
-
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
+    context.resumeChangeDispatch();
   }
 
 
@@ -445,14 +434,12 @@ if (choice && choice.distance < SNAP_DIST) {
         actionAddMidpoint(midpoint, this.firstNode),  // Add first node as midpoint on target edge
       );
     }
-    scene.classData('osm', this.drawWay.id, 'drawing');
-    scene.classData('osm', this.drawNode.id, 'drawing');
-
-    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
-    this._updateCollections();
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop(), this._getAnnotation());
+
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
+    this._updateCollections();
     context.resumeChangeDispatch();
   }
 
@@ -501,18 +488,19 @@ if (choice && choice.distance < SNAP_DIST) {
       // If draw node is at the end, insert target 1 before the end.
       const targetIndex = this.drawWay.affix(this.drawNode.id) === 'prefix' ? 1 : this.drawWay.nodes.length - 1;
 
-        //Time for a switcheroo- replace the 'draw' node with the existing node we're snapping to by removing it and replacing it in the same history slot.
+      // Time for a switcheroo- replace the 'draw' node with the existing node we're snapping to by removing it and replacing it in the same history slot.
       context.replace(
         actionAddVertex(this.drawWay.id, targetNode.id, targetIndex),   // Add target node to draw way
         this._actionRemoveDrawNode(this.drawWay.id, this.drawNode),
         this._prevAnnotation()
       );
 
-        //Now add the draw node back to the way in a new history item
+      // Now add the draw node back to the way in a new history item
       context.perform(
-          actionAddEntity(this.drawNode), // Create new draw node
-          actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add draw node to draw way
-        );
+        actionAddEntity(this.drawNode), // Create new draw node
+        actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add draw node to draw way
+      );
+
     // Start a new line at target node...
     } else {
       if (DEBUG) {
@@ -531,23 +519,23 @@ if (choice && choice.distance < SNAP_DIST) {
 
       // Perform a no-op edit that will be replaced as the user moves the draw node around.
       context.perform(actionNoop(), this._getAnnotation());
-
-      scene.classData('osm', this.drawWay.id, 'drawing');
-      scene.classData('osm', this.drawNode.id, 'drawing');
     }
 
     this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
     this._updateCollections();
-
     context.resumeChangeDispatch();
   }
 
 
+  /**
+   * _actionRemoveDrawNode
+   */
   _actionRemoveDrawNode(wayID, drawNode) {
     return function (graph) {
       return graph.replace(graph.entity(wayID).removeNode(drawNode.id)).remove(drawNode);
     };
   }
+
 
   /**
    * _continueFromNode
@@ -569,17 +557,20 @@ if (choice && choice.distance < SNAP_DIST) {
       actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add draw node to draw way
       this._getAnnotation()
     );
-    context.scene().classData('osm', this.drawWay.id, 'drawing');
-
-    this.drawWay = context.entity(this.drawWay.id);        // Refresh draw way
-    this._updateCollections();
+    // context.scene().classData('osm', this.drawWay.id, 'drawing');
 
     // Perform a no-op edit that will be replaced as the user moves the draw node around.
     context.perform(actionNoop());
+
+    this.drawWay = context.entity(this.drawWay.id);   // Refresh draw way
+    this._updateCollections();
     context.resumeChangeDispatch();
   }
 
 
+  /**
+   * _removeDrawNode
+   */
   _removeDrawNode() {
     // In mose cases, we have automatically created a draw node after each click, with a separate history step.
     // In that case, we can simply back it out.
@@ -591,6 +582,7 @@ if (choice && choice.distance < SNAP_DIST) {
     //Special case- the final node that was clicked was an already-existing node, which means that we need to just clean up the draw node, not do anything to history itself.
     this.drawNode = null;
   }
+
 
   /**
    * _finish
