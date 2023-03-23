@@ -1,6 +1,6 @@
-import { geoScaleToZoom, geoZoomToScale, Projection, vecScale, vecSubtract } from '@id-sdk/math';
 import { select as d3_select } from 'd3-selection';
 import { zoom as d3_zoom, zoomIdentity as d3_zoomIdentity } from 'd3-zoom';
+import { Projection, geoScaleToZoom, geoZoomToScale, vecScale, vecSubtract } from '@rapid-sdk/math';
 import * as PIXI from 'pixi.js';
 
 import { t } from '../core/localizer';
