@@ -241,6 +241,23 @@ export class ModeDrawLine extends AbstractMode {
   _move(eventData) {
     if (!this.drawNode) return;
 
+    //Draw node is not null but its node ID doesn't exist.
+    // It had the rug yoinked out from under it by undo, so reconstruct it.
+    if (!this.context.graph().hasEntity(this.drawNode?.id)) {
+      const coord = eventData.coord;
+      const context = this.context;
+      const projection = context.projection;
+      const loc = projection.invert(coord);
+
+      this.drawNode = osmNode({ loc: loc });
+      context.pauseChangeDispatch();
+      this.lastNode = this.drawNode;
+      context.replace(this._actionAddDrawNode(context.graph(), this.drawWay.id, this.drawNode, this.nodeIndex), this._getAnnotation());
+      context.resumeChangeDispatch();
+    }
+
+    if (!this.drawNode) return;
+
     const context = this.context;
     const graph = context.graph();
     const projection = context.projection;
@@ -526,13 +543,29 @@ if (choice && choice.distance < SNAP_DIST) {
     context.resumeChangeDispatch();
   }
 
+  /**
+   * _actionAddDrawNode
+   * called when the draw node needs updating due to user input- i.e. undo
+   */
+  _actionAddDrawNode(graph, wayId, drawNode, nodeIndex) {
+    // add the draw node to the graph and insert it into the way
+    let way = graph.entity(wayId);
+    return function (graph) {
+      return graph
+        .replace(drawNode)
+        .replace(way.addNode(drawNode.id, nodeIndex));
+    };
+  }
+
 
   /**
    * _actionRemoveDrawNode
    */
   _actionRemoveDrawNode(wayID, drawNode) {
     return function (graph) {
-      return graph.replace(graph.entity(wayID).removeNode(drawNode.id)).remove(drawNode);
+      return graph
+        .replace(graph.entity(wayID).removeNode(drawNode.id))
+        .remove(drawNode);
     };
   }
 

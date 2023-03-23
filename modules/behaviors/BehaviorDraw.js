@@ -1,5 +1,6 @@
 import { vecLength } from '@rapid-sdk/math';
 import { AbstractBehavior } from './AbstractBehavior';
+import { actionNoop } from '../actions/noop';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -49,6 +50,7 @@ export class BehaviorDraw extends AbstractBehavior {
     this._pointerdown = this._pointerdown.bind(this);
     this._pointermove = this._pointermove.bind(this);
     this._pointerup = this._pointerup.bind(this);
+    this._undone = this._undone.bind(this);
   }
 
 
@@ -66,7 +68,7 @@ export class BehaviorDraw extends AbstractBehavior {
     this.lastClick = null;
 
     this._spaceClickDisabled = false;
-
+    this._startGraph = this.context.graph();
     const eventManager = this.context.map().renderer.events;
     eventManager.on('keydown', this._keydown);
     eventManager.on('keyup', this._keyup);
@@ -77,6 +79,7 @@ export class BehaviorDraw extends AbstractBehavior {
     eventManager.on('pointermove', this._pointermove);
     eventManager.on('pointerup', this._pointerup);
     eventManager.on('pointercancel', this._pointercancel);
+    this.context.history().on('undone.draw',this._undone);
   }
 
 
@@ -105,6 +108,8 @@ export class BehaviorDraw extends AbstractBehavior {
     eventManager.off('pointermove', this._pointermove);
     eventManager.off('pointerup', this._pointerup);
     eventManager.off('pointercancel', this._pointercancel);
+    eventManager.off('pointercancel', this._pointercancel);
+    this.context.history().on('undone.draw', null);
   }
 
 
@@ -303,4 +308,45 @@ export class BehaviorDraw extends AbstractBehavior {
     this.emit('click', eventData);
   }
 
+  /**
+   * _undone
+   * This method gets called whenever the user
+   * This may also be fired if we detect a change in the modifier keys.
+   */
+  _undone() {
+    let context = this.context;
+
+    context.pauseChangeDispatch();
+
+    let nextMode;
+
+    if (context.graph() === this._startGraph) {
+        // We've undone back to the initial state before we started drawing.
+        // Just exit the draw mode without undoing whatever we did before
+        // we entered the draw mode.
+      console.log('backed up to the original pre-draw state.');
+
+      // TODO: Is this really necessary?
+      //        nextMode = modeSelect(context, [wayID]);
+
+    } else {
+        // The `undo` only removed the temporary edit, so here we have to
+        // manually undo to actually remove the last node we added. We can't
+        // use the `undo` function since the initial "add" graph doesn't have
+        // an annotation and so cannot be undone to.
+      context.pop(1);
+
+      // TODO
+      //continue drawing
+      // nextMode = mode;
+    }
+
+    // clear the redo stack by adding and removing a blank edit
+    context.perform(actionNoop());
+    context.pop(1);
+
+    context.resumeChangeDispatch();
+    //TODO
+//    context.enter(nextMode);
+  }
 }
