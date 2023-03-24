@@ -10,7 +10,6 @@ esbuild
     logLevel: 'info',
     metafile: true,
     outfile: 'dist/rapid.js',
-    loader: { '.js': 'jsx'},
   })
   .then(result => {
     fs.writeFileSync('./dist/esbuild.json', JSON.stringify(result.metafile, null, 2));

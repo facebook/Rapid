@@ -8,7 +8,6 @@ esbuild
     legalComments: 'none',
     logLevel: 'info',
     outfile: 'dist/rapid.legacy.js',
-    loader: { '.js': 'jsx' },
     target: 'es2016',
   })
   .catch(() => process.exit(1));

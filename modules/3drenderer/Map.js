@@ -1,10 +1,8 @@
 /* eslint-disable */
-import React from 'react';
 import { Map as mapLibreMap } from 'maplibre-gl';
 
-export class Map extends React.Component {
-  constructor(props) {
-      super(props);
+export class Map {
+  constructor(context) {
 
       this.building3dlayerSpec = {
           id: '3D Buildings',
@@ -68,7 +66,7 @@ export class Map extends React.Component {
     });
   }
 
-  componentDidUpdate() {
+  update() {
     const buildingSource = this.map.getSource('osmbuildings');
     buildingSource.setData(this.props.geojson);
     this.map.fitBounds(this.props.bounds);

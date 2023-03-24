@@ -9,6 +9,5 @@ esbuild
     legalComments: 'none',
     logLevel: 'info',
     outfile: 'dist/rapid.min.js',
-    loader: { '.js': 'jsx'},
   })
   .catch(() => process.exit(1));

@@ -1,16 +1,14 @@
 /* eslint-disable */
-import React from 'react';
 import { Map } from './Map';
 
-export class App extends React.Component {
+export class Renderer {
 
-    constructor(props) {
-        super(props);
+    constructor(context) {
         this.state = { active: false,
             features: []
         };
-
-        this.setState = this.setState.bind(this);
+        this.context = context;
+        this.bounds = null;
         this.toggle = this.toggle.bind(this);
     }
 
@@ -49,38 +47,33 @@ export class App extends React.Component {
     }
 
 
-        componentDidMount() {
-            this.setState({
-                bounds: [
-                    this.props.context.map().extent().min,
-                    this.props.context.map().extent().max
-                ]
-            });
-            this.props.context.on('enter.idupwards', (e) => {
+        setup() {
+            const context = this.context;
+            this.bounds = [
+                context.map().extent().min,
+                context.map().extent().max
+            ];
+            context.on('enter.idupwards', (e) => {
                 this.featuresToGeoJSON();
             });
-            this.props.context.history().on('change.idupwards', (e) => {
+            context.history().on('change.idupwards', (e) => {
                 this.featuresToGeoJSON();
             });
-            this.props.context.map().on('move', () => {
-                this.setState({
-                    bounds: [
-                        this.props.context.map().extent().min,
-                        this.props.context.map().extent().max
+            context.map().on('move', () => {
+                this.bounds = [
+                        context.map().extent().min,
+                        context.map().extent().max
                     ]
-                });
             });
         }
 
 
         toggle () {
-            this.setState({
-                active: !this.state.active
-            });
+                this.active = !this.active
         }
 
         render () {
-            var state = this.state;
+
             return <div className='map-control'>
                 {state.active ?
                     <div style={{ zIndex: -1,
@@ -90,7 +83,7 @@ export class App extends React.Component {
                         right: 0,
                         bottom: 0
                     }} className='content'>
-                        <Map bounds={this.state.bounds} geojson={this.state.geojson} />
+                        <Map bounds={this.bounds} geojson={this.geojson} />
                     </div> : null}
                 <button tabIndex='-1' style={{color:'white'}} onClick={this.toggle}>
                     3D
