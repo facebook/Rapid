@@ -89,6 +89,11 @@
             "text": "shortcuts.browsing.display_options.minimap"
           },
           {
+            "modifiers": ["⌥"],
+            "shortcuts": ["backround.3dmap.key"],
+            "text": "shortcuts.browsing.display_options.3dmap"
+          },
+          {
             "shortcuts": ["map_data.highlight_edits.key"],
             "text": "shortcuts.browsing.display_options.highlight_edits"
           },

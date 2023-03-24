@@ -79,7 +79,7 @@ export function uiSectionBackgroundList(context) {
 
       const threeDmapLabelEnter = bgExtrasListEnter
       .append('li')
-      .attr('class', '3dmap-toggle-item')
+      .attr('class', 'three-d-map-toggle-item')
       .append('label')
       .call(uiTooltip()
         .title(t('background.3dmap.tooltip'))

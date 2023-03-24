@@ -45,6 +45,7 @@ import { uiPanePreferences } from './panes/preferences';
 import { uiRapidServiceLicense } from './rapid_service_license';
 import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
+import { ui3DMap } from './3d_map';
 
 
 export function uiInit(context) {
@@ -162,6 +163,9 @@ export function uiInit(context) {
     overMap
       .call(uiMapInMap(context));
 
+    overMap
+      .call(ui3DMap(context));
+ 
     overMap
       .append('div')
       .attr('class', 'spinner')
