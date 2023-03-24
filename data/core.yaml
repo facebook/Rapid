@@ -782,6 +782,10 @@ en:
     contrast: Contrast
     saturation: Saturation
     sharpness: Sharpness
+    3dmap:
+      description: Show 3D map
+      tooltip: Show an inset 3D map.
+      key: '/'
     minimap:
       description: Show Minimap
       tooltip: Show a zoomed out map to help locate the area currently displayed.
@@ -2470,6 +2474,7 @@ en:
         wireframe: "Toggle wireframe mode"
         osm_data: "Toggle OpenStreetMap data"
         minimap: "Toggle minimap"
+        3dmap: "Toggle 3D map"
         rapid_features_data: "Toggle Rapid Features"
         highlight_way_edits: "Highlight way edits in current session"
         highlight_edits: "Highlight unsaved edits"
