@@ -5,7 +5,6 @@ import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
-// import { App } from '../3drenderer/Renderer';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
@@ -165,7 +164,7 @@ export function uiInit(context) {
 
     overMap
       .call(ui3DMap(context));
- 
+
     overMap
       .append('div')
       .attr('class', 'spinner')
