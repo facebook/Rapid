@@ -318,27 +318,17 @@ export class BehaviorDraw extends AbstractBehavior {
 
     context.pauseChangeDispatch();
 
-    let nextMode;
-
     if (context.graph() === this._startGraph) {
         // We've undone back to the initial state before we started drawing.
         // Just exit the draw mode without undoing whatever we did before
         // we entered the draw mode.
-      console.log('backed up to the original pre-draw state.');
 
-      // TODO: Is this really necessary?
-      //        nextMode = modeSelect(context, [wayID]);
+      context.enter('browse');
 
     } else {
-        // The `undo` only removed the temporary edit, so here we have to
-        // manually undo to actually remove the last node we added. We can't
-        // use the `undo` function since the initial "add" graph doesn't have
-        // an annotation and so cannot be undone to.
-      context.pop(1);
-
-      // TODO
-      //continue drawing
-      // nextMode = mode;
+        // The `undo` already fired as part of the key press, so now we may need to conditionally do other stuff to clean up the 'terminal' undo state for drawing.
+      // in v1 we used to always call:
+      // context.pop(1);
     }
 
     // clear the redo stack by adding and removing a blank edit
@@ -346,7 +336,5 @@ export class BehaviorDraw extends AbstractBehavior {
     context.pop(1);
 
     context.resumeChangeDispatch();
-    //TODO
-//    context.enter(nextMode);
   }
 }

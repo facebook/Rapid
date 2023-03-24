@@ -144,8 +144,8 @@ export class ModeDrawLine extends AbstractMode {
     // We're done drawing, so ensure that we don't keep the drawing class on things.
     context.scene().clearClass('drawing');
 
-    // If there is a temporary draw node, remove it.
-    if (this.drawNode) {
+    // If there is a temporary draw node in the graph, remove it.
+    if (this.drawNode && context.graph().hasEntity(this.drawNode.id)) {
       context.replace(actionDeleteNode(this.drawNode.id));
     }
 
