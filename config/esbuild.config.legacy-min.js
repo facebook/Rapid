@@ -10,5 +10,6 @@ esbuild
     logLevel: 'info',
     outfile: 'dist/rapid.legacy.min.js',
     target: 'es2016',
+    loader: { '.js': 'jsx'},
   })
   .catch(() => process.exit(1));

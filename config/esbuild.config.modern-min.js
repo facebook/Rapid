@@ -8,6 +8,7 @@ esbuild
     entryPoints: ['./modules/main.js'],
     legalComments: 'none',
     logLevel: 'info',
-    outfile: 'dist/rapid.min.js'
+    outfile: 'dist/rapid.min.js',
+    loader: { '.js': 'jsx'},
   })
   .catch(() => process.exit(1));

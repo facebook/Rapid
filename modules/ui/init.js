@@ -3,11 +3,9 @@ import { select as d3_select } from 'd3-selection';
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
-//import React from 'react';
-//import { createRoot } from 'react-dom/client';
 import { utilDetect } from '../util/detect';
 import { utilGetDimensions } from '../util/dimensions';
-// import { App } from '../3drenderer/App';
+import { App } from '../3drenderer/App';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
@@ -190,15 +188,15 @@ export function uiInit(context) {
       .attr('class', 'map-control geolocate-control')
       .call(uiGeolocate(context));
 
-    // let buildings3D = new Buildings3D();
+    let buildings3D = new App();
 
-//    controls
-//      .append('div')
-//      // .attr('class', 'map-control ' + Buildings3D.buttonClass)
-//      .attr('id', '3d-buildings');
-//
-//      const root = createRoot(document.getElementById('3d-buildings'));
-//    root.render(<App context={context} />);
+   controls
+     .append('div')
+     // .attr('class', 'map-control ' + Buildings3D.buttonClass)
+     .attr('id', '3d-buildings');
+
+     const root = createRoot(document.getElementById('3d-buildings'));
+   root.render(<App context={context} />);
 
 
     // Panes
