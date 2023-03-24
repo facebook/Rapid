@@ -168,6 +168,8 @@ if (ROENTGEN[p.icon]) p.icon = ROENTGEN[p.icon];
         let c = d.categories[categoryID];
 
         if (c) {   // add or replace
+// Rename icon identifiers to match the rapid spritesheet
+if (c.icon) c.icon = c.icon.replace(/^iD-/, 'rapid-');
           c = presetCategory(categoryID, c, _presets);
           if (c.locationSet) newLocationSets.push(c);
           _categories[categoryID] = c;
