@@ -170,9 +170,6 @@ export class AbstractLayer {
     feature.selected = classList.has('selected');
     feature.hovered = classList.has('hovered');
     feature.drawing = classList.has('drawing');
-
-    // const activeData = this.context.activeData();
-    // feature.interactive = !activeData.has(dataID);  // is this the same as drawing??
     feature.active = classList.has('drawing');
   }
 

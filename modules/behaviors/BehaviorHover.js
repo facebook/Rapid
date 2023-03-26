@@ -100,14 +100,27 @@ export class BehaviorHover extends AbstractBehavior {
     const interaction = this.context.behaviors.get('map-interaction');
     if (interaction.gesture) return;  // dont change hover while interacting with the map
 
-    const eventManager = this.context.map().renderer.events;
+    const context = this.context;
+    const eventManager = context.map().renderer.events;
     const modifiers = eventManager.modifierKeys;
-    const isCancelled = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
     const eventData = Object.assign({}, this.lastMove);  // shallow copy
+
+    // Handle several situations where we don't want to hover a target...
+    let isActiveTarget = false;
+    if (eventData?.target?.layerID === 'osm') {
+      const mode = context.mode();
+      const dataID = eventData?.target?.dataID || null;
+      if (mode?.id === 'draw-line') {
+        // isActiveTarget = dataID === mode.drawWay?.id;
+      } else if (mode?.id === 'drag-node') {
+        // isActiveTarget = dataID === mode.drawWay?.id;
+      }
+    }
 
     // If a modifier key is down, or pointer is not over the renderer, discard the target..
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
-    if (isCancelled || !eventManager.pointerOverRenderer) {
+    if (hasModifierKey || isActiveTarget || !eventManager.pointerOverRenderer) {
       eventData.target = null;
     }
 

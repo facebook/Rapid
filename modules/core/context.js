@@ -393,36 +393,6 @@ export function coreContext() {
     }
   };
 
-  /**
-   * `activeData`
-   * Returns a Map containing the current "active" features.
-   * These are features currently being interacted with, e.g. dragged or drawing
-   * These are features that should not generate interaction events
-   *
-   * @return  The current active features, as a `Map(datumID -> datum)`
-   */
-  context.activeData = () => {
-    if (!context._currMode) return new Map();
-    return context._currMode.activeData || new Map();
-  };
-
-  /**
-   * `activeIDs`
-   * @return  Just the keys of the `activeData`
-   */
-  context.activeIDs = () => {
-    if (!context._currMode) return [];
-    if (typeof context._currMode.activeIDs === 'function') {
-      return context._currMode.activeIDs();         // class function
-    } else {
-      return context._currMode.activeIDs || [];     // class property
-    }
-  };
-
-  context.activeID = () => {
-    console.error('error: do not call context.activeID anymore');   // eslint-disable-line no-console
-    return null;
-  };
 
 // ...and definitely stop doing this...
 //  let _selectedNoteID;

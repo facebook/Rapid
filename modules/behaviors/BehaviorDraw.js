@@ -267,11 +267,23 @@ export class BehaviorDraw extends AbstractBehavior {
     if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
-    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
     const eventData = Object.assign({}, this.lastMove);  // shallow copy
 
+    // Handle several situations where we don't want to snap to a target...
+    let isActiveTarget = false;
+    if (eventData?.target?.layerID === 'osm') {
+      const mode = this.context.mode();
+      const dataID = eventData?.target?.dataID || null;
+      if (mode?.id === 'draw-line') {
+        // isActiveTarget = dataID === mode.drawWay?.id;
+      } else if (mode?.id === 'drag-node') {
+        // isActiveTarget = dataID === mode.drawWay?.id;
+      }
+    }
+
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (disableSnap) {
+    if (hasModifierKey || isActiveTarget) {
       eventData.target = null;
     }
 
@@ -292,11 +304,23 @@ export class BehaviorDraw extends AbstractBehavior {
     // if (!eventManager.pointerOverRenderer) return;
 
     const modifiers = eventManager.modifierKeys;
-    const disableSnap = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
+    const hasModifierKey = modifiers.has('Alt') || modifiers.has('Control') || modifiers.has('Meta');
     const eventData = Object.assign({}, this.lastClick);  // shallow copy
 
+    // Handle several situations where we don't want to snap to a target...
+    let isActiveTarget = false;
+    if (eventData?.target?.layerID === 'osm') {
+      const mode = this.context.mode();
+      const dataID = eventData?.target?.dataID || null;
+      if (mode?.id === 'draw-line') {
+        // isActiveTarget = dataID === mode.drawWay?.id;
+      } else if (mode?.id === 'drag-node') {
+        // isActiveTarget = dataID === mode.drawWay?.id;
+      }
+    }
+
     // If a modifier key is down, discard the target to prevent snap/hover.
-    if (disableSnap) {
+    if (hasModifierKey || isActiveTarget) {
       eventData.target = null;
     }
 

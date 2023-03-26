@@ -7,7 +7,6 @@
  *   `active`       `true` if the mode is active, `false` if not.
  *   `operations`   `Array` of operations allowed on the right-click edit menu
  *   `selectedData` `Map(dataID -> data)` containing selected data
- *   `activeData`   `Map(dataID -> data)` containing active data
  */
 export class AbstractMode {
 
@@ -19,7 +18,6 @@ export class AbstractMode {
     this.context = context;
     this._active = false;
     this._selectedData = new Map();
-    this._activeData = new Map();
     this.operations = [];
   }
 
@@ -63,27 +61,14 @@ export class AbstractMode {
   get selectedData() {
     return this._selectedData;
   }
+
+
   /**
    * selectedIDs
    * @readonly
    */
   get selectedIDs() {
     return Array.from(this._selectedData.keys());
-  }
-
-  /**
-   * activeData
-   * @readonly
-   */
-  get activeData() {
-    return this._activeData;
-  }
-  /**
-   * activeIDs
-   * @readonly
-   */
-  get activeIDs() {
-    return Array.from(this._activeData.keys());
   }
 
 }

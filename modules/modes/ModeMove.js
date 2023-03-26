@@ -143,10 +143,8 @@ export class ModeMove extends AbstractMode {
 
     // Update selected/active collections to contain the moved entities
     this._selectedData.clear();
-    this._activeData.clear();
     for (const entityID of this._entityIDs) {
       this._selectedData.set(entityID, context.entity(entityID));
-      this._activeData.set(entityID, context.entity(entityID));
     }
   }
 

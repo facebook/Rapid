@@ -184,9 +184,7 @@ export class ModeDragNode extends AbstractMode {
 
     // Snap to a way that isn't the node's parent
     } else if (entity && entity.type === 'way' && !graph.parentWays(this.dragNode).includes(entity)) {
-      const activeIDs = context.activeIDs();
-      const activeID = activeIDs.length ? activeIDs[0] : undefined;  // get the first one, if any
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, activeID);
+      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, this.dragNode.id);
 const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 if (choice && choice.distance < SNAP_DIST) {
         this.lastLoc = choice.loc;
@@ -323,14 +321,6 @@ if (choice && choice.distance < SNAP_DIST) {
     this._selectedData.clear();
     if (this.dragNode) {
       this._selectedData.set(this.dragNode.id, this.dragNode);
-    }
-
-    this._activeData.clear();
-//    if (this.drawWay) {
-//      this._activeData.set(this.drawWay.id, this.drawWay);
-//    }
-    if (this.dragNode) {
-      this._activeData.set(this.dragNode.id, this.dragNode);
     }
   }
 
