@@ -7,10 +7,6 @@ on:
   push:
     branches: [ main, '*staging*', 'rapid-v1.x' ]
 
-env:
-  echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> $GITHUB_ENV
-  echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-dist" >> $GITHUB_ENV
-
 permissions:
   id-token: write # required to use OIDC authentication
   contents: read # required to checkout the code from the repo
@@ -67,21 +63,30 @@ jobs:
         role-duration-seconds: 900 # the ttl of the session, in seconds.
         aws-region: us-west-2
 
+    - name: Setup vars 📋
+      id: vars
+      run: |
+        echo ::set-output name=identifier::$(git rev-parse --short ${{ github.sha }})-16.x
+        echo ::set-output name=distdir::$(git rev-parse --short ${{ github.sha }})-16.x-dist
+
     - name: Prep files 🔨
       run: npm run aws_deploy
+      env:
+        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
+        DISTDIR: ${{ steps.vars.outputs.distdir }}
 
     - name: Copy new index file to S3 📤
       run: aws s3 cp $DISTDIR/index.html s3://world.ai.rapid/rapid/$IDENTIFIER-rapid.html --no-progress
       env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
+        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
+        DISTDIR: ${{ steps.vars.outputs.distdir }}
 
     - name: Copy new dist dir to S3 📤
       run: aws s3 cp $DISTDIR s3://world.ai.rapid/rapid/$DISTDIR --recursive --no-progress
       env:
-        IDENTIFIER: ${{ env.identifier }}
-        DISTDIR: ${{ env.distdir }}
+        IDENTIFIER: ${{ steps.vars.outputs.identifier }}
+        DISTDIR: ${{ steps.vars.outputs.distdir }}
 
     - name: Deployment complete! 🚀
       run: |
-        echo "Your build is here: https://mapwith.ai/rapid/${{ env.distdir }}/index.html"
+        echo "Your build is here: https://mapwith.ai/rapid/${{ steps.vars.outputs.distdir }}/index.html"
