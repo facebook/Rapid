@@ -118,14 +118,6 @@ export class BehaviorDrag extends AbstractBehavior {
     this.lastDown = down;
     this.lastMove = null;
     this.dragTarget = null;
-
-    // Calculate the drag offset so that the node we're dragging
-    // appears right over the mouse pointer, not off to the side
-    if (isDraggableTarget) {
-      const centerOfNode = this.context.projection.project(down.target.data.loc);
-      const clickLocation = down.coord;
-      this.dragOffset = [clickLocation[0] - centerOfNode[0], clickLocation[1] -  centerOfNode[1]];
-    }
   }
 
 
@@ -237,7 +229,6 @@ export class BehaviorDrag extends AbstractBehavior {
   }
 
   _snappingDisabled() {
-
     // Ignore it if we are not over the canvas
     // (e.g. sidebar, out of browser window, over a button, toolbar, modal)
     const eventManager = this.context.map().renderer.events;
@@ -262,8 +253,6 @@ export class BehaviorDrag extends AbstractBehavior {
     if (this._snappingDisabled()) {
       eventData.target = null;
     }
-    eventData.coord[0] += this.dragOffset[0];
-    eventData.coord[1] += this.dragOffset[1];
 
     this.emit('move', eventData);
   }
