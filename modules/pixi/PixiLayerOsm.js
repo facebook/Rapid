@@ -178,18 +178,32 @@ export class PixiLayerOsm extends AbstractLayer {
     // At this point, all the visible linear features have been accounted for,
     // and parent-child data links have been established.
 
-    // Gather data related to the selected data
+    // Gather ids related for the selected/hovered/drawing features.
     const selectedIDs = this._classHasData.get('selected') ?? new Set();
-    const descendantIDs = new Set();
-    const siblingIDs = new Set();
-    for (const selectedID of selectedIDs) {
-      this.getSelfAndDescendants(selectedID, descendantIDs);
-      this.getSelfAndSiblings(selectedID, siblingIDs);
+    const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
+    const drawingIDs = this._classHasData.get('drawing') ?? new Set();
+    const dataIDs = new Set([...selectedIDs, ...hoveredIDs, ...drawingIDs]);
+    const interestingIDs = new Set(dataIDs);
+
+    // Gather ids of parent ways for selected/hovered/drawing nodes too..
+    for (const dataID of dataIDs) {
+      const entity = context.hasEntity(dataID);
+      if (!entity || !entity.type === 'node') continue;
+      for (const parent of graph.parentWays(entity)) {
+        interestingIDs.add(parent.id);
+      }
     }
+
+    // Create collections of the sibling and descendant IDs,
+    // These will determine which vertices and midpoints get drawn.
     const related = {
-      descendantIDs: descendantIDs,
-      siblingIDs: siblingIDs
+      descendantIDs: new Set(),
+      siblingIDs: new Set()
     };
+    for (const interestingID of interestingIDs) {
+      this.getSelfAndDescendants(interestingID, related.descendantIDs);
+      this.getSelfAndSiblings(interestingID, related.siblingIDs);
+    }
 
     this.renderVertices(frame, projection, zoom, data, related);
 
@@ -487,6 +501,7 @@ export class PixiLayerOsm extends AbstractLayer {
       return related.descendantIDs.has(entityID) || related.siblingIDs.has(entityID);
     }
 
+
     for (const [nodeID, node] of entities) {
       let parentContainer = null;
 
@@ -495,17 +510,6 @@ export class PixiLayerOsm extends AbstractLayer {
       }
       if (isRelatedVertex(nodeID)) {   // major importance
         parentContainer = selectedContainer;
-      }
-      if ((
-        // If the node in question has a parent being hovered, display it.
-        graph.parentWays(node).filter(way => this.isHovered(way.id)).length > 0) ||
-        // OR if the node itself is being hovered, also display it.
-        this.isHovered(node.id)
-      ) {
-        parentContainer = pointsContainer;
-      }
-      if (this.isDrawing(node.id)) {
-        parentContainer = selectedContainer; // Also major importance
       }
 
       if (!parentContainer) continue;   // this vertex isn't important enough to render
@@ -658,7 +662,7 @@ export class PixiLayerOsm extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  data         Visible OSM data to render, sorted by type
-   * @param  related     Collections of related OSM IDs
+   * @param  related      Collections of related OSM IDs
    */
   renderMidpoints(frame, projection, zoom, data, related) {
     const MIN_MIDPOINT_DIST = 40;   // distance in pixels

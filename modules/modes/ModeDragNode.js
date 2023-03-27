@@ -238,8 +238,15 @@ export class ModeDragNode extends AbstractMode {
     const datum = eventData?.target?.data;
     const target = datum && graph.hasEntity(datum.id);
 
+    // Snap to a Node
+    if (target?.type === 'node' && this._canSnapToNode(target)) {
+      context.replace(
+        actionConnect([ target.id, this.dragNode.id ]),
+        this._connectAnnotation(target)
+      );
+
     // Snap to a Way
-    if (target?.type === 'way') {
+    } else if (target?.type === 'way') {
       const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, this.dragNode.id);
       const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
       if (choice && choice.distance < SNAP_DIST) {
@@ -252,12 +259,6 @@ export class ModeDragNode extends AbstractMode {
         context.replace(actionNoop(), this._moveAnnotation());
       }
 
-    // Snap to a Node
-    } else if (target?.type === 'node' && this._canSnapToNode(target)) {
-      context.replace(
-        actionConnect([ target.id, this.dragNode.id ]),
-        this._connectAnnotation(target)
-      );
     } else if (this._wasMidpoint) {
       context.replace(actionNoop(), t('operations.add.annotation.vertex'));
     } else {
