@@ -435,10 +435,15 @@ button.rapid-features.layer-off use {
     background: #ccc;
 }
 
+.modal.rapid-modal.modal-whatsnew div.content {
+    overflow-y: auto;
+}
+
 .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
-    width: 100%;
+    max-width: 75%;
     margin-top: 20px;
 }
+
 .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
     font-size: 16px;
     padding: 0 30px;
