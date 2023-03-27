@@ -3,7 +3,7 @@ import { AbstractMode } from './AbstractMode';
 import { actionAddEntity } from '../actions/add_entity';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionAddMidpoint } from '../actions/add_midpoint';
-import { geoChooseEdge } from '../geo';
+// import { geoChooseEdge } from '../geo';
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
@@ -87,26 +87,32 @@ export class ModeAddPoint extends AbstractMode {
     if (locationManager.blocksAt(loc).length) return;   // editing is blocked here
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
-    const target = eventData.target;
-    const datum = target && target.data;
-    const entity = datum && graph.hasEntity(datum.id);
+    const datum = eventData?.target?.data;
+    const choice = eventData?.target?.choice;
+    const target = datum && graph.hasEntity(datum.id);
 
     // Snap to a node
-    if (entity && entity.type === 'node') {
-      this._clickNode(entity.loc, entity);
+    if (target?.type === 'node') {
+      this._clickNode(target.loc, target);
       return;
     }
 
     // Snap to a way
-    if (entity && entity.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection);
-const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-if (choice && choice.distance < SNAP_DIST) {
-        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
-        this._clickWay(choice.loc, edge);
-        return;
-      }
+    if (target?.type === 'way' && choice) {
+      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
+      this._clickWay(choice.loc, edge);
+      return;
     }
+
+//    if (target?.type === 'way') {
+//      const choice = geoChooseEdge(graph.childNodes(target), coord, projection);
+//const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+//if (choice && choice.distance < SNAP_DIST) {
+//        const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
+//        this._clickWay(choice.loc, edge);
+//        return;
+//      }
+//    }
 
     this._clickNothing(loc);
   }
