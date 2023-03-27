@@ -7,6 +7,10 @@ on:
   push:
     branches: [ main, '*staging*', 'rapid-v1.x' ]
 
+env:
+  echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> $GITHUB_ENV
+  echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-dist" >> $GITHUB_ENV
+
 permissions:
   id-token: write # required to use OIDC authentication
   contents: read # required to checkout the code from the repo
@@ -62,12 +66,6 @@ jobs:
         role-to-assume: ${{ secrets.AWS_RAPID_DEPLOY_ROLE_ARN }}
         role-duration-seconds: 900 # the ttl of the session, in seconds.
         aws-region: us-west-2
-
-    - name: Setup vars 📋
-      id: vars
-      run: |
-        echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> $GITHUB_ENV
-        echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-dist" >> $GITHUB_ENV
 
     - name: Prep files 🔨
       run: npm run aws_deploy
