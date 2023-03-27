@@ -26,9 +26,15 @@ def deploy():
     )
     hash = output.stdout.decode("utf-8").strip()
     print("\ngithash: " + hash)
+
+    #print all env vars
+    print( '\n'.join([f'{k}: {v}' for k, v in sorted(os.environ.items())]) )
+    
     identifier = os.environ["IDENTIFIER"]
     distdir = os.environ["DISTDIR"]
-    print("\ndistdir: " + distdir)
+    print("\nIDENTIFIER: " + identifier)
+    print("\nDISTDIR: " + distdir)
+
     # Blow away the previous dir, if any.
     if os.path.exists(distdir):
         print(f"Previous distribution dir {distdir} found, removing.")
