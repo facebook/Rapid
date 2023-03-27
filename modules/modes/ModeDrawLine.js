@@ -118,7 +118,7 @@ export class ModeDrawLine extends AbstractMode {
       this.drawNode = osmNode({ loc: context.map().mouseLoc() });
       context.perform(
         actionAddEntity(this.drawNode),                                          // Create new draw node
-        actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex),   // Add draw node to draw way
+        actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex)    // Add draw node to draw way
       );
       this._refreshEntities();
     }
@@ -244,15 +244,15 @@ export class ModeDrawLine extends AbstractMode {
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
-    const entity = datum && graph.hasEntity(datum.id);
+    const target = datum && graph.hasEntity(datum.id);
 
     // Snap to a node
-    if (entity && entity.type === 'node') {
-      loc = entity.loc;
+    if (target && target.type === 'node') {
+      loc = target.loc;
 
     // Snap to a way
-    } else if (entity && entity.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, this.drawNode.id);
+    } else if (target && target.type === 'way') {
+      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.drawNode.id);
 const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 if (choice && choice.distance < SNAP_DIST) {
         loc = choice.loc;
@@ -282,20 +282,20 @@ if (choice && choice.distance < SNAP_DIST) {
 
     // Allow snapping only for OSM Entities in the actual graph (i.e. not Rapid features)
     const datum = eventData?.target?.data;
-    const entity = datum && graph.hasEntity(datum.id);
+    const target = datum && graph.hasEntity(datum.id);
 
     // Snap to a node
-    if (entity?.type === 'node') {
-      this._clickNode(entity.loc, entity);
+    if (target?.type === 'node') {
+      this._clickNode(target.loc, target);
       return;
     }
 
     // Snap to a way
-    if (entity?.type === 'way') {
-      const choice = geoChooseEdge(graph.childNodes(entity), coord, projection, this.drawNode?.id);
+    if (target?.type === 'way') {
+      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.drawNode?.id);
 const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
 if (choice && choice.distance < SNAP_DIST) {
-        const edge = [entity.nodes[choice.index - 1], entity.nodes[choice.index]];
+        const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
         this._clickWay(choice.loc, edge);
         return;
       }
