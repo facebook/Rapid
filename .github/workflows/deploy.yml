@@ -67,7 +67,7 @@ jobs:
       id: vars
       run: |
         echo "{identifier}=$(git rev-parse --short ${{ github.sha }})-16.x" >> $GITHUB_OUTPUT
-        echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-" >> $GITHUB_OUTPUT
+        echo "{distdir}=$(git rev-parse --short ${{ github.sha }})-16.x-dist" >> $GITHUB_OUTPUT
 
     - name: Prep files 🔨
       run: npm run aws_deploy
