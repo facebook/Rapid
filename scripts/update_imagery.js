@@ -1,20 +1,28 @@
 /* eslint-disable no-console */
 import fs from 'node:fs';
 import prettyStringify from 'json-stringify-pretty-compact';
+
 import imageryJSON from 'editor-layer-index/imagery.json' assert {type: 'json'};
+import manualJSON from '../data/manual_imagery.json' assert {type: 'json'};
 
-
-let sources = imageryJSON;
-if (fs.existsSync('./data/manual_imagery.json')) {
-  // we can include additional imagery sources that aren't in the index
-  sources = sources.concat(JSON.parse(fs.readFileSync('./data/manual_imagery.json')));
+// Merge imagery sources - `manualJSON` will override `imageryJSON`
+let sources = new Map();
+for (const source of imageryJSON) {
+  if (!source.id) continue;
+  if (sources.has(source.id)) {
+    console.warn(`duplicate imagery id = ${source.id}`);
+  }
+  sources.set(source.id, source);
+}
+for (const source of manualJSON) {
+  if (!source.id) continue;
+  sources.set(source.id, source);
 }
 
-let imagery = [];
 
-// ignore imagery more than 20 years old..
+// ignore imagery more than 30 years old..
 let cutoffDate = new Date();
-cutoffDate.setFullYear(cutoffDate.getFullYear() - 20);
+cutoffDate.setFullYear(cutoffDate.getFullYear() - 30);
 
 
 const discard = {
@@ -82,33 +90,37 @@ const supportedWMSProjections = [
 ];
 
 
-sources.forEach(source => {
-  if (source.type !== 'tms' && source.type !== 'wms' && source.type !== 'bing') return;
-  if (source.id in discard) return;
 
-  let im = {
-    id: source.id,
+let imagery = [];
+for (const [sourceID, source] of sources) {
+  if (source.type !== 'tms' && source.type !== 'wms' && source.type !== 'bing') continue;
+  if (sourceID in discard) continue;
+
+  let item = {
+    id: sourceID,
     name: source.name,
     type: source.type,
     template: source.url
   };
 
   // Some sources support 512px tiles
-  if (source.id === 'Mapbox') {
-    im.template = im.template.replace('.jpg', '@2x.jpg');
-    im.tileSize = 512;
-  } else if (source.id === 'mtbmap-no') {
-    im.tileSize = 512;
-  } else if (source.id === 'mapbox_locator_overlay') {
-    im.template = im.template.replace('{y}', '{y}{@2x}');
+  if (sourceID === 'mtbmap-no') {
+    item.tileSize = 512;
   }
+
+//  if (sourceID === 'Mapbox') {
+//    item.template = item.template.replace('.jpg', '@2x.jpg');
+//    item.tileSize = 512;
+//  } else if (sourceID === 'mapbox_locator_overlay') {
+//    item.template = item.template.replace('{y}', '{y}{@2x}');
+//  }
 
   // Some WMS sources are supported, check projection
   if (source.type === 'wms') {
     const projection = source.available_projections && supportedWMSProjections.find(p => source.available_projections.indexOf(p) !== -1);
-    if (!projection) return;
-    if (sources.some(other => other.name === source.name && other.type !== source.type)) return;
-    im.projection = projection;
+    if (!projection) continue;
+    // if (sources.some(other => other.name === source.name && other.type !== source.type)) continue;
+    item.projection = projection;
   }
 
 
@@ -118,8 +130,8 @@ sources.forEach(source => {
     endDate = new Date(source.end_date);
     isValid = !isNaN(endDate.getTime());
     if (isValid) {
-      if (endDate <= cutoffDate) return;  // too old
-      im.endDate = endDate;
+      if (endDate <= cutoffDate) continue;  // too old
+      item.endDate = endDate;
     }
   }
 
@@ -127,22 +139,22 @@ sources.forEach(source => {
     startDate = new Date(source.start_date);
     isValid = !isNaN(startDate.getTime());
     if (isValid) {
-      im.startDate = startDate;
+      item.startDate = startDate;
     }
   }
 
   let extent = source.extent || {};
   if (extent.min_zoom || extent.max_zoom) {
-    im.zoomExtent = [
+    item.zoomExtent = [
       extent.min_zoom || 0,
       extent.max_zoom || 22
     ];
   }
 
   if (extent.polygon) {
-    im.polygon = extent.polygon;
+    item.polygon = extent.polygon;
   } else if (extent.bbox) {
-    im.polygon = [[
+    item.polygon = [[
       [extent.bbox.min_lon, extent.bbox.min_lat],
       [extent.bbox.min_lon, extent.bbox.max_lat],
       [extent.bbox.max_lon, extent.bbox.max_lat],
@@ -151,29 +163,29 @@ sources.forEach(source => {
     ]];
   }
 
-  if (source.id === 'mapbox_locator_overlay') {
-    im.overzoom = false;
+  if (sourceID === 'mapbox_locator_overlay') {
+    item.overzoom = false;
   }
 
   const attribution = source.attribution || {};
   if (attribution.url) {
-    im.terms_url = attribution.url;
+    item.terms_url = attribution.url;
   }
   if (attribution.text) {
-    im.terms_text = attribution.text;
+    item.terms_text = attribution.text;
   }
   if (attribution.html) {
-    im.terms_html = attribution.html;
+    item.terms_html = attribution.html;
   }
 
   ['best', 'default', 'description', 'encrypted', 'icon', 'overlay', 'tileSize'].forEach(prop => {
     if (source[prop]) {
-      im[prop] = source[prop];
+      item[prop] = source[prop];
     }
   });
 
-  imagery.push(im);
-});
+  imagery.push(item);
+};
 
 
 imagery.sort((a, b) => a.name.localeCompare(b.name));
