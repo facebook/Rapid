@@ -113,8 +113,7 @@ export class ModeDragNode extends AbstractMode {
       .on('end', this._end)
       .on('cancel', this._cancel);
 
-    context.history()
-      .on('undone.drag-node', this._cancel);
+    context.history().on('undone.ModeDragNode redone.ModeDragNode', this._cancel);
 
     return true;
   }
@@ -139,8 +138,7 @@ export class ModeDragNode extends AbstractMode {
       .off('end', this._end)
       .off('cancel', this._cancel);
 
-    this.context.history()
-      .on('undone.drag-node', null);
+    this.context.history().on('undone.ModeDragNode redone.ModeDragNode', null);
   }
 
 

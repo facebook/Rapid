@@ -35,14 +35,18 @@ export class ModeAddNote extends AbstractMode {
     }
 
     this._active = true;
-    this.context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
-    this.context.behaviors.get('draw')
+    const context = this.context;
+    context.enableBehaviors(['hover', 'draw', 'map-interaction', 'map-nudging']);
+
+    context.behaviors.get('draw')
       .on('click', this._click)
       .on('cancel', this._cancel)
-      .on('undo', this._cancel)
       .on('finish', this._cancel);
 
-    this.context.behaviors.get('map-nudging').allow();
+    context.history().on('undone.ModeAddNote redone.ModeAddNote', this._cancel);
+
+    context.behaviors.get('map-nudging').allow();
+
     return true;
   }
 
@@ -52,17 +56,19 @@ export class ModeAddNote extends AbstractMode {
    */
   exit() {
     if (!this._active) return;
+    this._active = false;
 
     if (DEBUG) {
       console.log('ModeAddNote: exiting');  // eslint-disable-line no-console
     }
 
-    this._active = false;
-    this.context.behaviors.get('draw')
+    const context = this.context;
+    context.behaviors.get('draw')
       .off('click', this._click)
       .off('cancel', this._cancel)
-      .off('undo', this._cancel)
       .off('finish', this._cancel);
+
+    context.history().on('undone.ModeAddNote redone.ModeAddNote', null);
   }
 
 
@@ -83,7 +89,7 @@ export class ModeAddNote extends AbstractMode {
     osm.replaceNote(note);
 
     const selection = new Map().set(note.id, note);
-    this.context.enter('select', { selection: selection });  //.newFeature(true));
+    context.enter('select', { selection: selection });
   }
 
 

@@ -33,7 +33,7 @@ export class ModeRotate extends AbstractMode {
     this._finish = this._finish.bind(this);
     this._keydown = this._keydown.bind(this);
     this._pointermove = this._pointermove.bind(this);
-    this._undone = this._undone.bind(this);
+    this._undoOrRedo = this._undoOrRedo.bind(this);
   }
 
 
@@ -63,7 +63,8 @@ export class ModeRotate extends AbstractMode {
     eventManager.on('keydown', this._keydown);
     eventManager.on('pointercancel', this._cancel);
     eventManager.on('pointermove', this._pointermove);
-    context.history().on('undone.modeMove', this._undone);
+
+    context.history().on('undone.ModeRotate redone.ModeRotate', this._undoOrRedo);
 
     return true;
   }
@@ -88,7 +89,8 @@ export class ModeRotate extends AbstractMode {
     eventManager.off('keydown', this._keydown);
     eventManager.off('pointercancel', this._cancel);
     eventManager.off('pointermove', this._pointermove);
-    context.history().on('undone.modeMove', null);
+
+    context.history().on('undone.ModeRotate redone.ModeRotate', null);
   }
 
 
@@ -244,10 +246,10 @@ export class ModeRotate extends AbstractMode {
 
 
   /**
-   * _undone
+   * _undoOrRedo
    * Return to browse mode without doing anything
    */
-  _undone() {
+  _undoOrRedo() {
     this.context.enter('browse');
   }
 }

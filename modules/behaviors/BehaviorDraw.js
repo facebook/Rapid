@@ -20,9 +20,8 @@ const FAR_TOLERANCE = 12;
  * Events available:
  *   `down`      Fires on initial pointerdown, receives `eventData` Object
  *   `move`      Fires on _any_ pointermove (or change of modifier key), receives `eventData` Object
- *   `cancel`    Fires on pointercancel -or- if the pointer has moved too much for it to be a click, receives `eventData` Object
+ *   `cancel`    Fires on pointercancel -or- if the pointer has moved too much for it to be a click -or- if the user presses Delete or Backspace
  *   `click`     Fires on a successful click (or spacebar), receives `eventData` for the event that triggered the click
- *   `undo`      Fires if user presses delete or backspace
  *   `finish`    Fires if user presses return, enter, or escape
  */
 export class BehaviorDraw extends AbstractBehavior {
@@ -122,7 +121,7 @@ export class BehaviorDraw extends AbstractBehavior {
 
     } else if (['Backspace', 'Delete', 'Del'].includes(e.key)) {
       e.preventDefault();
-      this.emit('undo');
+      this.emit('cancel');
 
     // After spacebar click, user must move pointer or lift spacebar to allow another spacebar click
     } else if (!this._spaceClickDisabled && [' ', 'Spacebar'].includes(e.key)) {

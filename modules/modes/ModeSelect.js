@@ -146,8 +146,7 @@ export class ModeSelect extends AbstractMode {
     this._active = false;
 
     if (this.keybinding) {
-      d3_select(document)
-      .call(this.keybinding.unbind);
+      d3_select(document).call(this.keybinding.unbind);
       this.keybinding = null;
     }
 

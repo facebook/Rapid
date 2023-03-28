@@ -43,12 +43,15 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     this._active = true;
-    this.context.enableBehaviors(['hover', 'draw', 'map-interaction']);
-    this.context.behaviors.get('draw')
+    const context = this.context;
+    context.enableBehaviors(['hover', 'draw', 'map-interaction']);
+
+    context.behaviors.get('draw')
       .on('click', this._click)
       .on('cancel', this._cancel)
-      .on('undo', this._cancel)
       .on('finish', this._cancel);
+
+    context.history().on('undone.ModeAddPoint redone.ModeAddPoint', this._cancel);
 
     return true;
   }
@@ -65,11 +68,14 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     this._active = false;
-    this.context.behaviors.get('draw')
+
+    const context = this.context;
+    context.behaviors.get('draw')
       .off('click', this._click)
       .off('cancel', this._cancel)
-      .off('undo', this._cancel)
       .off('finish', this._cancel);
+
+    context.history().on('undone.ModeAddPoint redone.ModeAddPoint', null);
   }
 
 
@@ -123,10 +129,11 @@ export class ModeAddPoint extends AbstractMode {
    * Clicked on nothing, create the point at given `loc`
    */
   _clickNothing(loc) {
+    const context = this.context;
     const node = osmNode({ loc: loc, tags: this.defaultTags });
     const annotation = t('operations.add.annotation.point');
-    this.context.perform(actionAddEntity(node), annotation);
-    this.context.enter(modeSelect(this.context, [node.id]).newFeature(true));
+    context.perform(actionAddEntity(node), annotation);
+    context.enter(modeSelect(context, [node.id]).newFeature(true));
   }
 
 
@@ -135,10 +142,11 @@ export class ModeAddPoint extends AbstractMode {
    * Clicked on an existing way, add a midpoint along the `edge` at given `loc`
    */
   _clickWay(loc, edge) {
+    const context = this.context;
     const node = osmNode({ tags: this.defaultTags });
     const annotation = t('operations.add.annotation.vertex');
-    this.context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
-    this.context.enter(modeSelect(this.context, [node.id]).newFeature(true));
+    context.perform(actionAddMidpoint({ loc: loc, edge: edge }, node), annotation);
+    context.enter(modeSelect(context, [node.id]).newFeature(true));
   }
 
 
@@ -147,8 +155,10 @@ export class ModeAddPoint extends AbstractMode {
    * Clicked on an existing node, merge `defaultTags` into it, if any, then select the node
    */
   _clickNode(loc, node) {
+    const context = this.context;
+
     if (Object.keys(this.defaultTags).length === 0) {
-      this.context.enter(modeSelect(this.context, [node.id]));
+      context.enter(modeSelect(context, [node.id]));
       return;
     }
 
@@ -158,8 +168,8 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     const annotation = t('operations.add.annotation.point');
-    this.context.perform(actionChangeTags(node.id, tags), annotation);
-    this.context.enter(modeSelect(this.context, [node.id]).newFeature(true));
+    context.perform(actionChangeTags(node.id, tags), annotation);
+    context.enter(modeSelect(context, [node.id]).newFeature(true));
   }
 
 

@@ -50,6 +50,7 @@ export class ModeDrawArea extends AbstractMode {
     this._click = this._click.bind(this);
     this._finish = this._finish.bind(this);
     this._cancel = this._cancel.bind(this);
+    this._undoOrRedo = this._undoOrRedo.bind(this);
   }
 
 
@@ -78,7 +79,9 @@ export class ModeDrawArea extends AbstractMode {
       .on('move', this._move)
       .on('click', this._click)
       .on('finish', this._finish)
-      .on('undo', this._cancel);
+      .on('cancel', this._cancel);
+
+    context.history().on('undone.ModeDrawArea redone.ModeDrawArea', this._undoOrRedo);
 
     context.behaviors.get('map-interaction').doubleClickEnabled = false;
 
@@ -134,7 +137,9 @@ export class ModeDrawArea extends AbstractMode {
       .off('move', this._move)
       .off('click', this._click)
       .off('finish', this._finish)
-      .off('undo', this._cancel);
+      .off('cancel', this._cancel);
+
+    context.history().on('undone.ModeDrawArea redone.ModeDrawArea', null);
 
     context.resumeChangeDispatch();
   }
@@ -294,12 +299,11 @@ export class ModeDrawArea extends AbstractMode {
         console.log(`ModeDrawArea: _clickLoc, extending area to ${loc}`);  // eslint-disable-line no-console
       }
 
+      context.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
+
       // Replace draw node
       this.lastNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
-
-      context.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
-
       context.perform(
         actionAddEntity(this.drawNode),  // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id)  // Add new draw node to draw way
@@ -499,4 +503,15 @@ export class ModeDrawArea extends AbstractMode {
     this.lastNode = null;
     this.context.enter('browse');
   }
+
+
+  /**
+   * _undoOrRedo
+   * Try to restore a known state and continue drawing.
+   * Return to browse mode if we can't do that.
+   */
+  _undoOrRedo() {
+    this._cancel();
+  }
+
 }

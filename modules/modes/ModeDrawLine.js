@@ -53,6 +53,7 @@ export class ModeDrawLine extends AbstractMode {
     this._click = this._click.bind(this);
     this._finish = this._finish.bind(this);
     this._cancel = this._cancel.bind(this);
+    this._undoOrRedo = this._undoOrRedo.bind(this);
   }
 
 
@@ -101,9 +102,12 @@ export class ModeDrawLine extends AbstractMode {
       .on('move', this._move)
       .on('click', this._click)
       .on('finish', this._finish)
-      .on('undo', this._cancel);
+      .on('cancel', this._cancel);
+
+    context.history().on('undone.ModeDrawLine redone.ModeDrawLine', this._undoOrRedo);
 
     context.behaviors.get('map-interaction').doubleClickEnabled = false;
+
 
     // If we are continuing, perform initial actions to create the drawWay and drawNode..
     if (continueNode && continueWay) {
@@ -176,7 +180,9 @@ export class ModeDrawLine extends AbstractMode {
       .off('move', this._move)
       .off('click', this._click)
       .off('finish', this._finish)
-      .off('undo', this._cancel);
+      .off('cancel', this._cancel);
+
+    context.history().on('undone.ModeDrawLine redone.ModeDrawLine', null);
 
     context.resumeChangeDispatch();
   }
@@ -339,12 +345,11 @@ export class ModeDrawLine extends AbstractMode {
         console.log(`ModeDrawLine: _clickLoc, extending line to ${loc}`);  // eslint-disable-line no-console
       }
 
+      context.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
+
       // Replace draw node
       this.lastNode = this.drawNode;
       this.drawNode = osmNode({ loc: loc });
-
-      context.replace(actionNoop(), this._getAnnotation());   // Add annotation so we can undo to here
-
       context.perform(
         actionAddEntity(this.drawNode),  // Create new draw node
         actionAddVertex(this.drawWay.id, this.drawNode.id, this._insertIndex)  // Add new draw node to draw way
@@ -545,4 +550,13 @@ export class ModeDrawLine extends AbstractMode {
     this.context.enter('browse');
   }
 
+
+  /**
+   * _undoOrRedo
+   * Try to restore a known state and continue drawing.
+   * Return to browse mode if we can't do that.
+   */
+  _undoOrRedo() {
+    this._cancel();
+  }
 }

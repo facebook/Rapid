@@ -174,8 +174,8 @@ export class RendererMap extends EventEmitter {
         }
         this.immediateRedraw();
       })
-      .on('undone', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
-      .on('redone', (stack) => _didUndoOrRedo(stack.transform));
+      .on('undone.map', (stack, fromStack) => _didUndoOrRedo(fromStack.transform))
+      .on('redone.map', (stack) => _didUndoOrRedo(stack.transform));
 
     context.features().on('change', () => {
       scene.dirtyLayers('osm');
