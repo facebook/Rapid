@@ -23,25 +23,116 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 #### :white_check_mark: Validation
 #### :bug: Bugfixes
 #### :earth_asia: Localization
+#### :hammer: Development
 #### :hourglass: Performance
 #### :mortar_board: Walkthrough / Help
 #### :rocket: Presets
 ###### New Presets
 ###### Changed Presets
 ###### New and Changed Fields
-#### :hammer: Development
-* ([#])
 
+[#xxx]: https://github.com/facebook/Rapid/issues/xxx
 [iD#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
-[#xxxx]: https://github.com/facebook/Rapid/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
+# [2.0.0-beta.1]
+
+#### 2023-Mar-29
+
+#### :tada: Beta home stretch
+
+We've been working hard at finishing up the code for the general v2.0 release.
+
+You'll also notice that Rapid has a new logo!
+
+#### :hammer: Development
+* [#846] Upgrade presets to id-tagging-schema v6
+* Update imagery and update the Mapbox imagery key
+* [#853] Create a legacy build for Task Manager compatability
+
+### Bugfixes:
+* [#567] Fix Bing Streetside URLs
+* [#696] Improvements to the Cycle Highway Tag operation
+* [#711] Unable to select "Connect the Features" for lines in Issues dialogue box
+* [#719] Avoid snapping lines to the filled edge of a polygon
+* [#728] Update all modes to handle undo/redo without crashing
+* [#758] Fix various issues when snapping and drawing
+* [#771], [#760] Fix reselection of way after dragging a child vertex
+* [#772] Put user in move mode when pasting features
+* [#776] Handle versioning of Mapillary sequences as more data loads from adjacent tiles
+* [#789] Fix surprise hashchanges when entering walkthrough
+* [#795] Add feature versioning to ways and polygons in custom data
+* [#797] Can't start a line from the most recently drawn line
+* [#800] Cleanups in osmose/improveosm/keepright icons, strings, sidebar
+* [#807] Line endpoint snapping results in two 'very close nodes' that need to be merged
+* [#808], [#763] Improve the code for determining which vertices to show
+* [#810] Restore green line styling for ridges
+* [#811] Restore distinctive styling for `highway=path` vs `highway=footway`
+* [#824] Fix crash in Mapillary Photos Layer - lineStrings.length undefined
+* [#827], [#726] Various Improvements to the drawing modes
+* [#838] Add a selection behavior when clicking on Mapillary detected objects and signs
+* [#840] When points are hidden, also hide "virtual" points for POI polygons
+* [#842] Fix missing vertex when hidden features are involved
+* [#844] Vertexes where a way connects to itself should be considered a shared node
+* [#850] Fix jumpy midpoint dragging
+* [#856], [#841], [#680] Allow user to adjust mousewheel behavior, and default to zooming on Windows
+* [#880] Avoid showing vertices / midpoints when a line or polygon is too small or simplified
+* [iD#9315] Validate crossing aeroways
+* [iD#9436] Fix wrong variable used to access tags
+* [iD#9454] Bump recent presets from 4 to 6
+* [iD#9470] Add India address and phone format
+* [iD#9492] Add 4 tags which imply oneway=yes
+* [iD#9493] Render sided arrows for features with lifecycle prefixes
+* [iD#9499] Send 'Accept-Language' header on Nominatim API calls
+
+[#567]: https://github.com/facebook/Rapid/issues/567
+[#680]: https://github.com/facebook/Rapid/issues/680
+[#696]: https://github.com/facebook/Rapid/issues/696
+[#711]: https://github.com/facebook/Rapid/issues/711
+[#719]: https://github.com/facebook/Rapid/issues/719
+[#726]: https://github.com/facebook/Rapid/issues/726
+[#728]: https://github.com/facebook/Rapid/issues/728
+[#758]: https://github.com/facebook/Rapid/issues/758
+[#760]: https://github.com/facebook/Rapid/issues/760
+[#763]: https://github.com/facebook/Rapid/issues/763
+[#771]: https://github.com/facebook/Rapid/issues/771
+[#772]: https://github.com/facebook/Rapid/issues/772
+[#776]: https://github.com/facebook/Rapid/issues/776
+[#789]: https://github.com/facebook/Rapid/issues/789
+[#795]: https://github.com/facebook/Rapid/issues/795
+[#797]: https://github.com/facebook/Rapid/issues/797
+[#800]: https://github.com/facebook/Rapid/issues/800
+[#807]: https://github.com/facebook/Rapid/issues/807
+[#808]: https://github.com/facebook/Rapid/issues/808
+[#810]: https://github.com/facebook/Rapid/issues/810
+[#811]: https://github.com/facebook/Rapid/issues/811
+[#824]: https://github.com/facebook/Rapid/issues/824
+[#827]: https://github.com/facebook/Rapid/issues/827
+[#838]: https://github.com/facebook/Rapid/issues/838
+[#840]: https://github.com/facebook/Rapid/issues/840
+[#841]: https://github.com/facebook/Rapid/issues/841
+[#842]: https://github.com/facebook/Rapid/issues/842
+[#844]: https://github.com/facebook/Rapid/issues/844
+[#846]: https://github.com/facebook/Rapid/issues/846
+[#850]: https://github.com/facebook/Rapid/issues/850
+[#853]: https://github.com/facebook/Rapid/issues/853
+[#856]: https://github.com/facebook/Rapid/issues/856
+[#880]: https://github.com/facebook/Rapid/issues/880
+[iD#9315]: https://github.com/openstreetmap/iD/issues/9315
+[iD#9436]: https://github.com/openstreetmap/iD/issues/9436
+[iD#9454]: https://github.com/openstreetmap/iD/issues/9454
+[iD#9470]: https://github.com/openstreetmap/iD/issues/9470
+[iD#9492]: https://github.com/openstreetmap/iD/issues/9492
+[iD#9493]: https://github.com/openstreetmap/iD/issues/9493
+[iD#9499]: https://github.com/openstreetmap/iD/issues/9499
+
+
 # [2.0.0-beta.0]
 
 #### 2023-Jan-26
 
 #### :tada: Beta test kickoff!
-
 
 The Walkthrough has been retooled extensively- it should be much more resilient to going 'off-script' and it is easier for developers to extend and rework.
 
@@ -61,6 +152,8 @@ Streetside imagery should now work much more cleanly (and without leaving stale 
 [#679]: https://github.com/facebook/Rapid/issues/679
 [#749]: https://github.com/facebook/Rapid/issues/749
 [#795]: https://github.com/facebook/Rapid/issues/795
+
+
 # [2.0.0-alpha3.3]
 
 #### 2022-Dec-14
@@ -97,6 +190,8 @@ We've ironed out a bunch of kinks in your way (ha!) that were preventing snappin
 [#709]: https://github.com/facebook/Rapid/issues/709
 [#717]: https://github.com/facebook/Rapid/issues/717
 [#720]: https://github.com/facebook/Rapid/issues/720
+
+
 # [2.0.0-alpha3.2]
 
 #### 2022-Dec-08
@@ -109,10 +204,13 @@ We've been hot on the trail of fixing issues with many different edit operations
 * [#682], [#683] and [#693] Square operation should be working correctly now.
 * [#665] Ghost ways should no longer appear.
 
-# [2.0.0-alpha3.1]
 [#682]: https://github.com/facebook/Rapid/issues/682
 [#683]: https://github.com/facebook/Rapid/issues/683
 [#693]: https://github.com/facebook/Rapid/issues/693
+[#665]: https://github.com/facebook/Rapid/issues/665
+
+
+# [2.0.0-alpha3.1]
 
 #### 2022-Dec-07
 This is a small refresher release to address a few issues reported by internal testers. Keep those bugs coming!
@@ -120,6 +218,7 @@ This is a small refresher release to address a few issues reported by internal t
 #### :tada: New code- Graph and history rewrite optimization
 
 This version of the alpha has rewritten substantial portions of our core code. This rewrite was to help solve issues like #665 where 'ghost' nodes or ways are present on the map. This fix is still in flight and not complete yet.
+
 ### Bugfixes:
 * [#685] Fixed the color for mapillary image pins.
 * [#684] Quickly left-then-right clicking a way should now bring up the context menu, NOT add a point to the way.
@@ -134,7 +233,8 @@ This version of the alpha has rewritten substantial portions of our core code. T
 [#695]: https://github.com/facebook/Rapid/issues/695
 [#681]: https://github.com/facebook/Rapid/issues/681
 [#687]: https://github.com/facebook/Rapid/issues/687
-[#665]: https://github.com/facebook/Rapid/issues/665
+
+
 # [2.0.0-alpha3]
 
 #### 2022-Nov-21
@@ -239,18 +339,9 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [#661]: https://github.com/facebook/Rapid/issues/661
 [#670]: https://github.com/facebook/Rapid/issues/670
 
-# [2.0.1-alpha]
-
-#### 2022-Aug-30
-
-
-### Bugfixes:
-
-[#571]
-[#569]
-[#555]
 
 # [1.1.9](https://github.com/facebook/Rapid/releases/tag/rapid-v1.1.9)
+
 ##### 2022-May-05
 
 #### :newspaper: News
@@ -335,7 +426,6 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [iD#8741]: https://github.com/openstreetmap/iD/issues/8741
 [iD#8761]: https://github.com/openstreetmap/iD/issues/8761
 [iD#8768]: https://github.com/openstreetmap/iD/issues/8768
-
 
 
 # [1.1.7](https://github.com/facebook/Rapid/releases/tag/rapid-v1.1.7)
