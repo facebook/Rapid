@@ -193,7 +193,8 @@ export class PixiLayerOsm extends AbstractLayer {
       let tooSmall = false;
       for (const featureID of renderedFeatureIDs) {
         const geom = this.features.get(featureID)?.geometry;
-        if (!geom || (geom.width < 25 && geom.height < 25)) {
+        if (!geom || geom.type === 'point') continue;  // lines, polygons only (i.e. ignore virtual poi if any)
+        if (geom.width < 25 && geom.height < 25) {
           tooSmall = true;
           break;
         }
