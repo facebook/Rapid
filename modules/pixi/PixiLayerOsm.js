@@ -183,12 +183,31 @@ export class PixiLayerOsm extends AbstractLayer {
     const hoveredIDs = this._classHasData.get('hovered') ?? new Set();
     const drawingIDs = this._classHasData.get('drawing') ?? new Set();
     const dataIDs = new Set([...selectedIDs, ...hoveredIDs, ...drawingIDs]);
-    const interestingIDs = new Set(dataIDs);
 
-    // Gather ids of parent ways for selected/hovered/drawing nodes too..
+    // Experiment: avoid showing child vertices/midpoints for too small parents
     for (const dataID of dataIDs) {
       const entity = context.hasEntity(dataID);
-      if (!entity || !entity.type === 'node') continue;
+      if (entity?.type === 'node') continue;  // ways, relations only
+
+      const renderedFeatureIDs = this._dataHasFeature.get(dataID);
+      let tooSmall = false;
+      for (const featureID of renderedFeatureIDs) {
+        const geom = this.features.get(featureID)?.geometry;
+        if (!geom || (geom.width < 25 && geom.height < 25)) {
+          tooSmall = true;
+          break;
+        }
+      }
+      if (tooSmall) {
+        dataIDs.delete(dataID);
+      }
+    }
+
+    // Expand set to include parent ways for selected/hovered/drawing nodes too..
+    const interestingIDs = new Set(dataIDs);
+    for (const dataID of dataIDs) {
+      const entity = context.hasEntity(dataID);
+      if (entity?.type !== 'node') continue;   // nodes only
       for (const parent of graph.parentWays(entity)) {
         interestingIDs.add(parent.id);
       }
