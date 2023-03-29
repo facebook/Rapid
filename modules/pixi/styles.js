@@ -124,7 +124,7 @@ const STYLES = {
     stroke: { width: 5, color: 0x998888, dash: [8, 8], cap: PIXI.LINE_CAP.BUTT }
   },
   path: {
-    casing: { width: 5, color: 0xffffff },
+    casing: { width: 5, color: 0xddccaa },
     stroke: { width: 3, color: 0x998888, dash: [6, 6], cap: PIXI.LINE_CAP.BUTT }
   },
   footway: {
