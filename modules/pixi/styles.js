@@ -164,6 +164,9 @@ const STYLES = {
     casing: { width: 7, color: 0x444444 },
     stroke: { width: 5, color: 0x77dddd }
   },
+  ridge: {
+    stroke: { width: 2, color: 0x8cd05f}  // rgb(140, 208, 95)
+  },
 
   runway: {
     casing: { width: 10, color: 0x000000, cap: PIXI.LINE_CAP.BUTT },
@@ -347,6 +350,7 @@ const STYLE_SELECTORS = {
     cave_entrance: 'darkgray',
     cliff: 'darkgray',
     glacier: 'lightgray',
+    ridge: 'ridge',
     rock: 'darkgray',
     sand: 'yellow',
     scree: 'darkgray',
