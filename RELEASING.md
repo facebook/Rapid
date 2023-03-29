@@ -23,7 +23,7 @@ $  git add . && git commit -m 'npm run translations'
 ```
 
 - Update `CHANGELOG.md`
-- Set release version number in `modules/core/rapid_context.js` and `package.json`
+- Set release version number in `modules/core/context.js` and `package.json`
 
 ```bash
 $  git add . && git commit -m 'rapid-vA.B.C'
@@ -48,16 +48,4 @@ The Release branch contains everything to be deployed. For example:
 ```bash
 $  git checkout release
 $  aws s3 cp dist <destination>
-```
-
-#### Prepare `main` branch for further development
-```bash
-$  git checkout main
-```
-
-- Increment version number and add `-dev` suffix in `modules/core/rapid_context.js` and `package.json`, e.g. `2.18.5-dev`
-
-```bash
-$  git add . && git commit -m 'Set development version number'
-$  git push origin main
 ```
