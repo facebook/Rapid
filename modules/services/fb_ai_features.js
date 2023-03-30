@@ -183,6 +183,16 @@ function parseXML(dataset, xml, tile, callback, options) {
         }
 
         var entity = parser(child, uid);
+
+        // Ignore duplicate buildings in the MS Buildings dataset.
+        // They will appear with unique entity id, but with the same nodelist.
+        // See https://github.com/facebook/Rapid/issues/873
+        if (/^msBuildings/.test(dataset.id) && entity.type === 'way') {
+            const firstNodeID = entity.nodes[0];
+            if (cache.firstNodeIDs.has(firstNodeID)) return null;
+            cache.firstNodeIDs.add(firstNodeID);
+        }
+
         var meta = {
             __fbid__: child.attributes.id.value,
             __origid__: origUid,
@@ -203,7 +213,7 @@ export default {
         var datasetID = 'rapid_intro_graph';
         var graph = new Graph();
         var tree = new Tree(graph);
-        var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+        var cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
         var ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
         _datasets[datasetID] = ds;
     },
@@ -220,7 +230,7 @@ export default {
             }
             ds.graph = new Graph();
             ds.tree = new Tree(ds.graph);
-            ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+            ds.cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
         });
 
         return this;
@@ -290,7 +300,7 @@ export default {
             // as tile requests arrive, setup the resources needed to hold the results
             graph = new Graph();
             tree = new Tree(graph);
-            cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {} };
+            cache = { inflight: {}, loaded: {}, seen: {}, origIdTile: {}, firstNodeIDs: new Set() };
             ds = { id: datasetID, graph: graph, tree: tree, cache: cache };
             _datasets[datasetID] = ds;
         }
