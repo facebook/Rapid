@@ -48,13 +48,24 @@ export class PixiTextures {
     }
     Assets.addBundle('patterns', patternBundle);
     // Load cursors
+    // Load cursors
     const CURSOR = [
-      'point', 'vertex', 'line', 'area'
+      'point', 'vertex', 'line', 'area', 'add', 'mapillary', 'remove', 'split', 'grabbing', 'grab', 'draw',
+      'connect-line', 'connect-vertex'
     ];
     let cursorBundle = {};
     for (const k of CURSOR) {
-      cursorBundle[k] = `${assetPath}img/cursor/cursor-select-${k}.png`;
+      let imgPath = `${assetPath}img/cursor/`;
+      if (['grabbing', 'grab', 'draw'].includes(k)) {
+        cursorBundle[k] = `${imgPath}cursor-${k}.png`;
+      } else if (['connect-line', 'connect-vertex'].includes(k)) {
+        cursorBundle[k] = `${imgPath}cursor-draw-${k}.png`;
+      } else {
+        cursorBundle[k] = `${imgPath}cursor-select-${k}.png`;
+      }
     }
+
+
     Assets.addBundle('cursor', cursorBundle);
     Assets.loadBundle(['spritesheets', 'patterns', 'cursor'])
       .then(result => {

@@ -77,7 +77,8 @@ export class ModeAddPoint extends AbstractMode {
       .off('finish', this._cancel);
 
     context.history().on('undone.ModeAddPoint redone.ModeAddPoint', null);
-    document.body.style.cursor = 'auto';
+    document.body.style.cursor = 'url(/img/cursor/cursor-grab.png),auto';
+    this.context.behaviors.get('hover').off('hoverchanged', this._hover);
   }
 
 

@@ -19,6 +19,7 @@ export class ModeBrowse extends AbstractMode {
     super(context);
     this.context = context;
     this.id = 'browse';
+    this._hover = this._hover.bind(this);
   }
 
 
@@ -72,21 +73,18 @@ export class ModeBrowse extends AbstractMode {
    * Changes the cursor styling based on what geometry is hovered
    */
   _hover(eventData) {
-    const context = this.context;
-    const textures = context.pixi.rapidTextures;
+    const { context } = this;
+    const { pixi } = context;
+    const textures = pixi.rapidTextures;
     const graph = context.graph();
-    const target = eventData.target;
-    const datum = target && target.data;
+    const { target } = eventData;
+    const datum = target?.data;
     const entity = datum && graph.hasEntity(datum.id);
-    const geom = entity && entity.geometry(graph);
+    const geom = entity?.geometry(graph) ?? 'grab';
 
-    if (geom && (geom === 'line' || geom === 'vertex' || geom === 'area' || geom === 'point')) {
-      const cursorType = new PIXI.Sprite(textures.get(geom));
-      cursorType.anchor.set(0.5, 0.5);
-      document.body.style.cursor = `url(${cursorType._texture.textureCacheIds[0]}),auto`;
-    } else {
-      document.body.style.cursor = 'url(/img/cursor/cursor-grab.png),auto';
-    }
+    const cursorType = new PIXI.Sprite(textures.get(geom));
+    document.body.style.cursor = `url(${cursorType.texture?.textureCacheIds[0]}), auto`;
   }
+
 }
 

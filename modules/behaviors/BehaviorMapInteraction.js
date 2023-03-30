@@ -186,7 +186,11 @@ export class BehaviorMapInteraction extends AbstractBehavior {
 
     this.lastDown = down;
     this.gesture = null;
-    eventManager.setCursor('grabbing');
+    const context = this.context;
+    const mode = context.mode();
+      if (mode.id === 'browse') {
+        eventManager.setCursor('grabbing');
+      }
   }
 
 

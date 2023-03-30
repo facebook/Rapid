@@ -1,3 +1,4 @@
+import * as PIXI from 'pixi.js';
 import { vecEqual } from '@rapid-sdk/math';
 
 import { AbstractMode } from './AbstractMode';
@@ -51,6 +52,7 @@ export class ModeDrawArea extends AbstractMode {
     this._finish = this._finish.bind(this);
     this._cancel = this._cancel.bind(this);
     this._undoOrRedo = this._undoOrRedo.bind(this);
+    this._hover = this._hover.bind(this);
   }
 
 
@@ -61,7 +63,7 @@ export class ModeDrawArea extends AbstractMode {
     if (DEBUG) {
       console.log('ModeDrawArea: entering'); // eslint-disable-line no-console
     }
-    document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
+    document.body.style.cursor = 'url(/img/cursor/cursor-draw.png) 10 10, auto';
     const context = this.context;
     this._active = true;
     this.defaultTags = { area: 'yes' };
@@ -140,7 +142,8 @@ export class ModeDrawArea extends AbstractMode {
       .off('cancel', this._cancel);
 
     context.history().on('undone.ModeDrawArea redone.ModeDrawArea', null);
-    document.body.style.cursor = 'auto';
+    document.body.style.cursor = 'url(/img/cursor/cursor-grab.png),auto';
+    this.context.behaviors.get('hover').off('hoverchanged', this._hover);
   }
 
 
@@ -508,24 +511,28 @@ export class ModeDrawArea extends AbstractMode {
    * Hover changed cursor styling based one what geometry is hovered
    */
   _hover(eventData) {
-    // Get the current context and graph
-    const context = this.context;
+    const { context } = this;
+    const { pixi } = context;
+    const textures = pixi.rapidTextures;
     const graph = context.graph();
-    // Get the target and associated datum
-    const target = eventData.target;
-    const datum = target && target.data;
-    // Check if the datum is an entity in the graph
+    const { target } = eventData;
+    const datum = target?.data;
     const entity = datum && graph.hasEntity(datum.id);
-    // Get the geometry of the entity, if it exists
     const geom = entity && entity.geometry(graph);
-    // Change the cursor of the document body based on the geometry type
-    if (geom && geom === 'vertex') {
-      document.body.style.cursor = 'url(/img/cursor/cursor-draw-connect-vertex.png),auto';
-    } else if (geom && geom === 'line') {
-      document.body.style.cursor = 'url(/img/cursor/cursor-draw-connect-line.png),auto';
+    if (geom === 'line' || geom === 'vertex') {
+      const cursorType = new PIXI.Sprite(textures.get(`connect-${geom}`));
+      document.body.style.cursor = `url(${cursorType._texture?.textureCacheIds[0]}) 10 10, auto`;
     } else {
-      // If there is no entity or the entity's geometry is unknown, use the grab cursor
-      document.body.style.cursor = 'url(/img/cursor/cursor-draw.png),auto';
+      document.body.style.cursor = 'url(/img/cursor/cursor-draw.png) 10 10, auto';
     }
+  }
+
+  /**
+   * _undoOrRedo
+   * Try to restore a known state and continue drawing.
+   * Return to browse mode if we can't do that.
+   */
+  _undoOrRedo() {
+    this._cancel();
   }
 }
