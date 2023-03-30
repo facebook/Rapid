@@ -189,7 +189,7 @@ export class PixiLayerOsm extends AbstractLayer {
       const entity = context.hasEntity(dataID);
       if (entity?.type === 'node') continue;  // ways, relations only
 
-      const renderedFeatureIDs = this._dataHasFeature.get(dataID);
+      const renderedFeatureIDs = this._dataHasFeature.get(dataID) ?? new Set();
       let tooSmall = false;
       for (const featureID of renderedFeatureIDs) {
         const geom = this.features.get(featureID)?.geometry;
