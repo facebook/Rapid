@@ -6,7 +6,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionConnect } from '../actions/connect';
 import { actionMoveNode } from '../actions/move_node';
 import { actionNoop } from '../actions/noop';
-// import { geoChooseEdge } from '../geo';
+import { geoChooseEdge } from '../geo';
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from './select';
 import { osmNode } from '../osm';
@@ -97,9 +97,9 @@ export class ModeDragNode extends AbstractMode {
     // Set the 'drawing' class so that the dragNode and any parent ways won't emit events
     const scene = context.scene();
     scene.classData('osm', this.dragNode.id, 'drawing');
-//    for (const parent of context.graph().parentWays(this.dragNode)) {
-//      scene.classData('osm', parent.id, 'drawing');
-//    }
+    for (const parent of context.graph().parentWays(this.dragNode)) {
+      scene.classData('osm', parent.id, 'drawing');
+    }
 
     // `_clickLoc` is used later to calculate a drag offset,
     // to correct for where "on the pin" the user grabbed the target.
@@ -188,17 +188,16 @@ export class ModeDragNode extends AbstractMode {
       loc = target.loc;
 
     // Snap to a way
-    } else if (target?.type === 'way' && choice) {
-      loc = choice.loc;
-    }
-
-//    } else if (target?.type === 'way') {
-//      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.dragNode.id);
-//      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-//      if (choice && choice.distance < SNAP_DIST) {
-//        loc = choice.loc;
-//      }
+//    } else if (target?.type === 'way' && choice) {
+//      loc = choice.loc;
 //    }
+    } else if (target?.type === 'way') {
+      const choice = geoChooseEdge(graph.childNodes(target), coord, projection, this.dragNode.id);
+      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+      if (choice && choice.distance < SNAP_DIST) {
+        loc = choice.loc;
+      }
+    }
 
     // No snap - use the coordinate we get from the event
     if (!loc) {
@@ -250,27 +249,28 @@ export class ModeDragNode extends AbstractMode {
       );
 
     // Snap to a Way
-    } else if (target?.type === 'way' && choice) {
-      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
-      context.replace(
-        actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode),
-        this._connectAnnotation(target)
-      );
-//    } else if (target?.type === 'way') {
-//      const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, this.dragNode.id);
-//      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-//      if (choice && choice.distance < SNAP_DIST) {
-//        const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
-//        context.replace(
-//          actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode),
-//          this._connectAnnotation(target)
-//        );
-//      } else {
-//        context.replace(actionNoop(), this._moveAnnotation());
-//      }
+//    } else if (target?.type === 'way' && choice) {
+//      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
+//      context.replace(
+//        actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode),
+//        this._connectAnnotation(target)
+//      );
+    } else if (target?.type === 'way') {
+      const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, context.projection, this.dragNode.id);
+      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+      if (choice && choice.distance < SNAP_DIST) {
+        const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
+        context.replace(
+          actionAddMidpoint({ loc: choice.loc, edge: edge }, this.dragNode),
+          this._connectAnnotation(target)
+        );
+      } else {
+        context.replace(actionNoop(), this._moveAnnotation());
+      }
 
     } else if (this._wasMidpoint) {
       context.replace(actionNoop(), t('operations.add.annotation.vertex'));
+
     } else {
       context.replace(actionNoop(), this._moveAnnotation());
     }

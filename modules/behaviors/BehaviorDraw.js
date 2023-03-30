@@ -1,7 +1,7 @@
 import { vecLength } from '@rapid-sdk/math';
 
 import { AbstractBehavior } from './AbstractBehavior';
-import { geoChooseEdge } from '../geo';
+// import { geoChooseEdge } from '../geo';
 
 const NEAR_TOLERANCE = 4;
 const FAR_TOLERANCE = 12;
@@ -274,37 +274,37 @@ export class BehaviorDraw extends AbstractBehavior {
 
     // Handle situations where we don't want to hover a target way...
     let isActiveTarget = false;
-    if (eventData?.target?.layerID === 'osm') {
-      const mode = context.mode();
-      const target = eventData?.target?.data || null;
-      let activeID;
-      if (mode?.id === 'draw-line') {
-        activeID = mode.drawNode?.id;
-      } else if (mode?.id === 'drag-node') {
-        activeID = mode.dragNode?.id;
-      }
-
-      // If a node being interacted with is on a way being tageted..
-      if (activeID && target?.type === 'way') {
-        const activeIndex = target.nodes.indexOf(activeID);
-        if (activeIndex !== -1) {
-          isActiveTarget = true;
-          const graph = context.graph();
-          const projection = context.projection;
-          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, projection, activeID);
-
-          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-          if (choice && choice.distance < SNAP_DIST) {
-            // We should not target parts of the way that are adjacent ot the active node
-            // but we can target segments of the way that are >2 segments away.
-            if ((choice.index > activeIndex + 2) || (choice.index < activeIndex - 1)) {
-              isActiveTarget = false;
-              eventData.target.choice = choice;
-            }
-          }
-        }
-      }
-    }
+//    if (eventData?.target?.layerID === 'osm') {
+//      const mode = context.mode();
+//      const target = eventData?.target?.data || null;
+//      let activeID;
+//      if (mode?.id === 'draw-line') {
+//        activeID = mode.drawNode?.id;
+//      } else if (mode?.id === 'drag-node') {
+//        activeID = mode.dragNode?.id;
+//      }
+//
+//      // If a node being interacted with is on a way being tageted..
+//      if (activeID && target?.type === 'way') {
+//        const activeIndex = target.nodes.indexOf(activeID);
+//        if (activeIndex !== -1) {
+//          isActiveTarget = true;
+//          const graph = context.graph();
+//          const projection = context.projection;
+//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, projection, activeID);
+//
+//          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+//          if (choice && choice.distance < SNAP_DIST) {
+//            // We should not target parts of the way that are adjacent ot the active node
+//            // but we can target segments of the way that are >2 segments away.
+//            if ((choice.index > activeIndex + 2) || (choice.index < activeIndex - 1)) {
+//              isActiveTarget = false;
+//              eventData.target.choice = choice;
+//            }
+//          }
+//        }
+//      }
+//    }
 
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (hasModifierKey || isActiveTarget) {
@@ -334,37 +334,37 @@ export class BehaviorDraw extends AbstractBehavior {
 
     // Handle situations where we don't want to hover a target way...
     let isActiveTarget = false;
-    if (eventData?.target?.layerID === 'osm') {
-      const mode = context.mode();
-      const target = eventData?.target?.data || null;
-      let activeID;
-      if (mode?.id === 'draw-line') {
-        activeID = mode.drawNode?.id;
-      } else if (mode?.id === 'drag-node') {
-        activeID = mode.dragNode?.id;
-      }
-
-      // If a node being interacted with is on a way being tageted..
-      if (activeID && target?.type === 'way') {
-        const activeIndex = target.nodes.indexOf(activeID);
-        if (activeIndex !== -1) {
-          isActiveTarget = true;
-          const graph = context.graph();
-          const projection = context.projection;
-          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, projection, activeID);
-
-          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-          if (choice && choice.distance < SNAP_DIST) {
-            // We should not target parts of the way that are adjacent ot the active node
-            // but we can target segments of the way that are >2 segments away.
-            if ((choice.index > activeIndex + 2) || (choice.index < activeIndex - 1)) {
-              isActiveTarget = false;
-              eventData.target.choice = choice;
-            }
-          }
-        }
-      }
-    }
+//    if (eventData?.target?.layerID === 'osm') {
+//      const mode = context.mode();
+//      const target = eventData?.target?.data || null;
+//      let activeID;
+//      if (mode?.id === 'draw-line') {
+//        activeID = mode.drawNode?.id;
+//      } else if (mode?.id === 'drag-node') {
+//        activeID = mode.dragNode?.id;
+//      }
+//
+//      // If a node being interacted with is on a way being tageted..
+//      if (activeID && target?.type === 'way') {
+//        const activeIndex = target.nodes.indexOf(activeID);
+//        if (activeIndex !== -1) {
+//          isActiveTarget = true;
+//          const graph = context.graph();
+//          const projection = context.projection;
+//          const choice = geoChooseEdge(graph.childNodes(target), eventData.coord, projection, activeID);
+//
+//          const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+//          if (choice && choice.distance < SNAP_DIST) {
+//            // We should not target parts of the way that are adjacent ot the active node
+//            // but we can target segments of the way that are >2 segments away.
+//            if ((choice.index > activeIndex + 2) || (choice.index < activeIndex - 1)) {
+//              isActiveTarget = false;
+//              eventData.target.choice = choice;
+//            }
+//          }
+//        }
+//      }
+//    }
 
     // If a modifier key is down, discard the target to prevent snap/hover.
     if (hasModifierKey || isActiveTarget) {

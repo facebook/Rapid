@@ -155,18 +155,7 @@ export class AbstractLayer {
     const dataID = this._featureHasData.get(featureID);
     if (!dataID) return;
 
-//    // Gather all classes set on ancestor data..
-//    const classList = new Set();
-//    const ancestorIDs = this.getSelfAndAncestors(dataID);
-//    for (const ancestorID of ancestorIDs) {
-//      const classIDs = this._dataHasClass.get(ancestorID) ?? new Set();
-//      for (const classID of classIDs) {
-//        classList.add(classID);
-//      }
-//    }
-//
     const classList = this._dataHasClass.get(dataID) ?? new Set();
-
     feature.selected = classList.has('selected');
     feature.hovered = classList.has('hovered');
     feature.drawing = classList.has('drawing');

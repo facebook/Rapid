@@ -3,7 +3,7 @@ import { AbstractMode } from './AbstractMode';
 import { actionAddEntity } from '../actions/add_entity';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionAddMidpoint } from '../actions/add_midpoint';
-// import { geoChooseEdge } from '../geo';
+import { geoChooseEdge } from '../geo';
 import { locationManager } from '../core/LocationManager';
 import { modeSelect } from '../modes/select';
 import { osmNode } from '../osm/node';
@@ -104,21 +104,20 @@ export class ModeAddPoint extends AbstractMode {
     }
 
     // Snap to a way
-    if (target?.type === 'way' && choice) {
-      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
-      this._clickWay(choice.loc, edge);
-      return;
-    }
-
-//    if (target?.type === 'way') {
-//      const choice = geoChooseEdge(graph.childNodes(target), coord, projection);
-//const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
-//if (choice && choice.distance < SNAP_DIST) {
-//        const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
-//        this._clickWay(choice.loc, edge);
-//        return;
-//      }
+//    if (target?.type === 'way' && choice) {
+//      const edge = [ target.nodes[choice.index - 1], target.nodes[choice.index] ];
+//      this._clickWay(choice.loc, edge);
+//      return;
 //    }
+    if (target?.type === 'way') {
+      const choice = geoChooseEdge(graph.childNodes(target), coord, projection);
+      const SNAP_DIST = 6;  // hack to avoid snap to fill, see #719
+      if (choice && choice.distance < SNAP_DIST) {
+        const edge = [target.nodes[choice.index - 1], target.nodes[choice.index]];
+        this._clickWay(choice.loc, edge);
+        return;
+      }
+    }
 
     this._clickNothing(loc);
   }
