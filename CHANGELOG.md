@@ -36,6 +36,18 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.0.0-beta.2]
+
+#### 2023-Mar-30
+
+### Bugfixes:
+* [#873] Handle duplicate buildings present in Microsoft Buildings dataset
+* [#874] Fix for "renderedFeatureIDs not iterable" crash
+
+[#873]: https://github.com/facebook/Rapid/issues/873
+[#874]: https://github.com/facebook/Rapid/issues/874
+
+
 # [2.0.0-beta.1]
 
 #### 2023-Mar-29
