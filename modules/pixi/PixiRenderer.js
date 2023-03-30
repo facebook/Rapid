@@ -67,13 +67,6 @@ export class PixiRenderer extends EventEmitter {
     this._onHoverChange = this._onHoverChange.bind(this);
     this._onSelectChange = this._onSelectChange.bind(this);
 
-
-    // Register Pixi with the pixi-inspector extension if it is installed
-    // https://github.com/bfanger/pixi-inspector
-    if (window.__PIXI_INSPECTOR_GLOBAL_HOOK__) {
-      window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
-    }
-
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
 
@@ -91,6 +84,10 @@ export class PixiRenderer extends EventEmitter {
       sharedTicker: true,
       view: surface.node()
     });
+
+    // Register Pixi with the pixi-inspector extension if it is installed
+    // https://github.com/bfanger/pixi-inspector
+    globalThis.__PIXI_APP__ = this.pixi;
 
 // todo - we should stop doing this.. Access to pixi app should be via an instance of PixiRenderer
 // so we can have multiple Pixi renderers - this will make the minimap less hacky & enable restriction editor
