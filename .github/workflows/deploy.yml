@@ -57,7 +57,7 @@ jobs:
         path: dist
 
     - name: Configure AWS credentials 🔐
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: ${{ secrets.AWS_RAPID_DEPLOY_ROLE_ARN }}
         role-duration-seconds: 900 # the ttl of the session, in seconds.
