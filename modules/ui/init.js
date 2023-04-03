@@ -403,14 +403,19 @@ export function uiInit(context) {
         if (context.history().lock() && context.history().hasRestorableChanges()) {
           context.container().call(uiRestore(context));
 
-        // If users have already seen the 'welcome to Rapid' splash screen, don't also
-        // show them the what's new screen
-        } else if (prefs('sawRapidSplash')) {
+// uiRapidSplash is a bit outdated, so just always start with uiRapidWhatsNew
+        } else {
           context.container().call(uiRapidWhatsNew(context));
-
-        } else if (osm && osm.authenticated()) {
-          context.container().call(uiRapidSplash(context));
         }
+
+//        // If users have already seen the 'welcome to Rapid' splash screen, don't also
+//        // show them the what's new screen
+//        } else if (prefs('sawRapidSplash')) {
+//          context.container().call(uiRapidWhatsNew(context));
+//
+//        } else if (osm && osm.authenticated()) {
+//          context.container().call(uiRapidSplash(context));
+//        }
       }
 
 // this seems wrong for it to be in !_initCounter++ block
