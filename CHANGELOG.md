@@ -36,8 +36,17 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
-# [2.0.0-beta.2]
+# 2.0.0
+#### 2023-Apr-04
 
+#### :newspaper: Rapid v2.0 Released!
+
+We hope you enjoy the new WebGL-based Rapid!  We've rewritten the rendering code to be 10x faster for most tasks, especially in places that are mapped in a lot of detail. You'll see more features and better labels than before.
+
+Happy Mapping!
+
+
+# 2.0.0-beta.2
 #### 2023-Mar-30
 
 ### Bugfixes:
@@ -48,12 +57,10 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [#874]: https://github.com/facebook/Rapid/issues/874
 
 
-# [2.0.0-beta.1]
-
+# 2.0.0-beta.1
 #### 2023-Mar-29
 
 #### :tada: Beta home stretch
-
 We've been working hard at finishing up the code for the general v2.0 release.
 
 You'll also notice that Rapid has a new logo!
@@ -140,8 +147,7 @@ You'll also notice that Rapid has a new logo!
 [iD#9499]: https://github.com/openstreetmap/iD/issues/9499
 
 
-# [2.0.0-beta.0]
-
+# 2.0.0-beta.0
 #### 2023-Jan-26
 
 #### :tada: Beta test kickoff!
@@ -166,8 +172,7 @@ Streetside imagery should now work much more cleanly (and without leaving stale 
 [#795]: https://github.com/facebook/Rapid/issues/795
 
 
-# [2.0.0-alpha3.3]
-
+# 2.0.0-alpha3.3
 #### 2022-Dec-14
 
 #### :tada: Numerous drawing/node-snapping fixes
@@ -181,18 +186,17 @@ We've ironed out a bunch of kinks in your way (ha!) that were preventing snappin
 * [#718] Area drawing can now correctly snap the drawing area's points into existing ways.
 * [#702] Rejoice, for you can now drag nodes in a way on top of each other to make them disappear!
 * [#691] Adding nodes at the end of a line should now allow you to snap to existing lines and areas.
-
 * [#703], [#704], [#705], [#706], and [#707] were all fixed by last week's [#682] fix.
 * [#709] Removed the keyboard shortcut help text for the 'scale' and 'nudge' operations, as those have been removed.
 * [#717] Restored the tooltip text for the area drawing mode- it incorrectly said 'not implemented'.
 * [#720] Selecting an area should now display midpoints that are draggable.
 
-[#689]: https://github.com/facebook/Rapid/issues/689
+[#619]: https://github.com/facebook/Rapid/issues/619
 [#635]: https://github.com/facebook/Rapid/issues/635
 [#664]: https://github.com/facebook/Rapid/issues/664
-[#718]: https://github.com/facebook/Rapid/issues/718
+[#689]: https://github.com/facebook/Rapid/issues/689
+[#691]: https://github.com/facebook/Rapid/issues/691
 [#702]: https://github.com/facebook/Rapid/issues/702
-[#619]: https://github.com/facebook/Rapid/issues/619
 [#703]: https://github.com/facebook/Rapid/issues/703
 [#704]: https://github.com/facebook/Rapid/issues/704
 [#705]: https://github.com/facebook/Rapid/issues/705
@@ -201,10 +205,11 @@ We've ironed out a bunch of kinks in your way (ha!) that were preventing snappin
 [#708]: https://github.com/facebook/Rapid/issues/708
 [#709]: https://github.com/facebook/Rapid/issues/709
 [#717]: https://github.com/facebook/Rapid/issues/717
+[#718]: https://github.com/facebook/Rapid/issues/718
 [#720]: https://github.com/facebook/Rapid/issues/720
 
 
-# [2.0.0-alpha3.2]
+# 2.0.0-alpha3.2
 
 #### 2022-Dec-08
 
@@ -216,13 +221,13 @@ We've been hot on the trail of fixing issues with many different edit operations
 * [#682], [#683] and [#693] Square operation should be working correctly now.
 * [#665] Ghost ways should no longer appear.
 
+[#665]: https://github.com/facebook/Rapid/issues/665
 [#682]: https://github.com/facebook/Rapid/issues/682
 [#683]: https://github.com/facebook/Rapid/issues/683
 [#693]: https://github.com/facebook/Rapid/issues/693
-[#665]: https://github.com/facebook/Rapid/issues/665
 
 
-# [2.0.0-alpha3.1]
+# 2.0.0-alpha3.1
 
 #### 2022-Dec-07
 This is a small refresher release to address a few issues reported by internal testers. Keep those bugs coming!
@@ -247,8 +252,7 @@ This version of the alpha has rewritten substantial portions of our core code. T
 [#687]: https://github.com/facebook/Rapid/issues/687
 
 
-# [2.0.0-alpha3]
-
+# 2.0.0-alpha3
 #### 2022-Nov-21
 
 #### :tada: New Features, Updates, and Improvements
@@ -308,7 +312,6 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [#584]: https://github.com/facebook/Rapid/issues/584
 [#492]: https://github.com/facebook/Rapid/issues/492
 [#632]: https://github.com/facebook/Rapid/issues/632
-
 [#617]: https://github.com/facebook/Rapid/issues/617
 [#502]: https://github.com/facebook/Rapid/issues/502
 [#499]: https://github.com/facebook/Rapid/issues/499
@@ -331,6 +334,7 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [#563]: https://github.com/facebook/Rapid/issues/563
 [#565]: https://github.com/facebook/Rapid/issues/565
 [#566]: https://github.com/facebook/Rapid/issues/566
+[#569]: https://github.com/facebook/Rapid/issues/569
 [#571]: https://github.com/facebook/Rapid/issues/571
 [#572]: https://github.com/facebook/Rapid/issues/572
 [#580]: https://github.com/facebook/Rapid/issues/580
@@ -348,12 +352,12 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [#646]: https://github.com/facebook/Rapid/issues/646
 [#648]: https://github.com/facebook/Rapid/issues/648
 [#654]: https://github.com/facebook/Rapid/issues/654
+[#660]: https://github.com/facebook/Rapid/issues/660
 [#661]: https://github.com/facebook/Rapid/issues/661
 [#670]: https://github.com/facebook/Rapid/issues/670
 
 
 # [1.1.9](https://github.com/facebook/Rapid/releases/tag/rapid-v1.1.9)
-
 ##### 2022-May-05
 
 #### :newspaper: News
@@ -389,7 +393,6 @@ We've substantially reduced the bundle size by rebuilding some dependent project
 [iD#9074]: https://github.com/openstreetmap/iD/issues/9074
 [iD#9080]: https://github.com/openstreetmap/iD/issues/9080
 [iD#9089]: https://github.com/openstreetmap/iD/issues/9089
-
 
 
 # [1.1.8](https://github.com/facebook/Rapid/releases/tag/rapid-v1.1.8)

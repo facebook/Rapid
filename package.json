@@ -1,10 +1,10 @@
 {
   "name": "Rapid",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0",
   "description": "An AI-enhanced editor for OpenStreetMap",
   "main": "dist/rapid.min.js",
   "repository": "github:facebook/Rapid",
-  "homepage": "https://mapwith.ai",
+  "homepage": "https://rapideditor.org",
   "bugs": "https://github.com/facebook/Rapid/issues",
   "keywords": [
     "editor",
