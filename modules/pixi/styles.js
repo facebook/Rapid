@@ -182,6 +182,16 @@ const STYLES = {
     stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
   },
 
+  railway_narrow: {
+    casing: { width: 5, color: 0x555555, cap: PIXI.LINE_CAP.BUTT },
+    stroke: { width: 2, color: 0xeeeeee, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+  },
+
+  railway_deemphasized: {
+    casing: { alpha: 0 },
+    stroke: { width: 2, color: 0xaaaaaa, dash: [12, 12], cap: PIXI.LINE_CAP.BUTT,  }
+  },
+
   ferry: {
     casing: { alpha: 0 },  // disable
     stroke: { width: 3, color: 0x58a9ed, dash: [12, 8], cap: PIXI.LINE_CAP.BUTT }
@@ -367,8 +377,59 @@ const STYLE_SELECTORS = {
   },
   railway: {
     platform: 'footway',
-    '*': 'railway'
+    // Main rail lines include preserved lines
+    // TODO perhaps separate these out
+    'rail': 'railway',
+    'preserved': 'railway',
+    // Narrow gauge and tram lines rendered with smaller casing
+    'narrow_gauge': 'railway_narrow',
+    'tram': 'railway_narrow',
+    'light_rail': 'railway_narrow',
+    // construction, abandoned, disused, razed and historic are all treated the same
+    // because they are either not there yet or no longer there.
+    // there is evidence on the ground in all of these cases.
+    'construction': 'railway_deemphasized',
+    'proposed': 'railway_deemphasized',
+    'abandoned': 'railway_deemphasized',
+    'razed': 'railway_deemphasized',
+    'historic': 'railway_deemphasized',
+    'disused': 'railway_deemphasized',
+    // catch-all for all other railway types
+    // '*': 'railway',
+    // dummy rules to make railway be lower priority than highway
+    // TODO: remove this when we have a better way to do this
+    'dummy1': 'railway',
+    'dummy2': 'railway',
+    'dummy3': 'railway',
+    'dummy4': 'railway',
+    'dummy5': 'railway',
+    'dummy6': 'railway',
+    'dummy7': 'railway',
+    'dummy8': 'railway',
+    'dummy9': 'railway',
+    'dummy10': 'railway',
+    'dummy11': 'railway',
+    'dummy12': 'railway',
+    'dummy13': 'railway',
+    'dummy14': 'railway',
+    'dummy15': 'railway',
+    'dummy16': 'railway',
+    'dummy17': 'railway',
+    'dummy18': 'railway',
+    'dummy19': 'railway',
+    'dummy20': 'railway',
+    'dummy21': 'railway',
+    'dummy22': 'railway',
+    'dummy23': 'railway',
+    'dummy24': 'railway',
+    'dummy25': 'railway',
+    'dummy26': 'railway',
+    'dummy27': 'railway',
+    'dummy28': 'railway',
+    'dummy29': 'railway',
+    'dummy30': 'railway',
   },
+
   route: {
     'ferry': 'ferry'
   },
