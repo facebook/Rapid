@@ -104,7 +104,7 @@
     "cldr-localenames-full": "42.0.0",
     "concat-files": "^0.1.1",
     "editor-layer-index": "github:osmlab/editor-layer-index#gh-pages",
-    "esbuild": "^0.17.12",
+    "esbuild": "^0.17.15",
     "esbuild-visualizer": "^0.4.0",
     "eslint": "^8.36.0",
     "eslint-plugin-react": "^7.32.2",
