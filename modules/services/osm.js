@@ -26,9 +26,11 @@ if (q.hasOwnProperty('osm_api_url')) {
 var origin = window.location.origin;
 var redirectPath;
 // We often deploy different test builds to other pathnames, but we can always
-// use the same /rapid/land.html redirect_uri when on mapwith.ai.
+// redirect to the common /rapid/land.html redirect_uri to complete OAuth2 on that domain.
 if (origin === 'https://mapwith.ai') {
     redirectPath = 'https://mapwith.ai/rapid/';
+} else if (origin === 'https://rapideditor.org') {
+    redirectPath = 'https://rapideditor.org/rapid/';
 } else {
     redirectPath = window.location.origin + window.location.pathname;
 }
