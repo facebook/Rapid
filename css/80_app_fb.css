@@ -399,10 +399,6 @@ button.bugnub {
     width: 100%;
 }
 
-.modal.rapid-modal .content {
-    box-shadow: unset;
-    overflow-y: hidden;
-}
 .modal.rapid-modal .modal-section {
     border: 0px;
 }
@@ -484,13 +480,9 @@ button.bugnub {
 }
 
 .modal.rapid-modal.modal-whatsnew img.whatsnew-image {
-    max-width: 150px;
-    max-height: 150px;
     margin-top: 20px;
+    max-height: 350px;
     align-items: center;
-}
-.modal.rapid-modal.modal-whatsnew img.whatsnew-image.wide {
-    max-width: 300px;
 }
 
 .modal.rapid-modal.modal-whatsnew .modal-section.dontshow {
@@ -516,6 +508,7 @@ button.bugnub {
 .modal.rapid-modal.modal-whatsnew div.body.modal-section {
     display: flex;
     flex-direction: column;
+    padding-top: 0;
 }
 
 .modal.rapid-modal.modal-whatsnew div.body.modal-section svg.icon.bugnub {

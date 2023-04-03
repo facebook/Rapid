@@ -12,7 +12,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
   return function(selection) {
     // If user has not seen this version of the what's new screen, show it again.
     // Just bump the version to a higher number to get it to come back.
-    const currWhatsNewVersion = 20230322;
+    const currWhatsNewVersion = 20230323;
     const sawWhatsNewVersion = parseInt(prefs('sawWhatsNewVersion'), 10) || 0;
     if (sawWhatsNewVersion === currWhatsNewVersion) return;
 
@@ -30,19 +30,21 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
 
     let body = whatsNewModal
       .append('div')
-      .attr('class','modal-section body')
+      .attr('class', 'modal-section body')
       .html(marked.parse(t('rapid_whats_new.text', {
         rapidicon: icon('#rapid-logo-rapid-wordmark', 'pre-text rapid'),
         bugicon: icon('#rapid-icon-bug', 'bugnub')
       })));
 
-//    let imageSection = body.append('div').attr('class', 'whatsnew-images');
-//
-//    imageSection
-//      .append('img')
-//      .attr('class', 'whatsnew-image wide')
-//      .attr('src', context.asset('img/pista_sotm_asia.png'));
-//
+    let imageSection = body
+      .append('div')
+      .attr('class', 'whatsnew-images');
+
+    imageSection
+      .append('img')
+      .attr('class', 'whatsnew-image')
+      .attr('src', context.asset('img/rapid-v2-splash.jpg'));
+
 //    imageSection
 //      .append('img')
 //      .attr('class', 'whatsnew-image')
@@ -86,10 +88,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
     // let nothanks = buttonWrap
     //   .append('button')
     //   .attr('class', 'whats-new-nothanks')
-    //   .on('click', () => {
-    //     prefs('sawWhatsNewGL', _dontShowAgain);
-    //     modalSelection.close();
-    //   });
+    //   .on('click', () => {});
 
     // nothanks
     //   .append('div')
@@ -109,7 +108,7 @@ export function uiRapidWhatsNew(context) {   // eslint-disable-line no-unused-va
         modalSelection.close();
       });
 
-    modalSelection.select('button.close')
-      .attr('class','hide');
+//    modalSelection.select('button.close')
+//      .attr('class', 'hide');
   };
 }
