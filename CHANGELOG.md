@@ -36,10 +36,10 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
-# 2.0.0
+# [2.0.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.0)
 #### 2023-Apr-04
 
-#### :newspaper: Rapid v2.0 Released!
+#### :tada: Rapid v2.0 Released!
 
 We hope you enjoy the new WebGL-based Rapid!  We've rewritten the rendering code to be 10x faster for most tasks, especially in places that are mapped in a lot of detail. You'll see more features and better labels than before.
 
