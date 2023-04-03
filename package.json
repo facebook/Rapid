@@ -77,7 +77,7 @@
     "pannellum": "2.5.6",
     "pbf": "^3.2.1",
     "pixi.js": "7.1.0",
-    "pixi-filters": "5.2.0",
+    "pixi-filters": "5.2.1",
     "polygon-clipping": "~0.15.3",
     "prop-types": "^15.8.1",
     "rbush": "3.0.1",
