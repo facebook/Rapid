@@ -76,7 +76,7 @@
     "osm-auth": "2.0.1",
     "pannellum": "2.5.6",
     "pbf": "^3.2.1",
-    "pixi.js": "7.1.0",
+    "pixi.js": "7.2.3",
     "pixi-filters": "5.2.0",
     "polygon-clipping": "~0.15.3",
     "prop-types": "^15.8.1",
