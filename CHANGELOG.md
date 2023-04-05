@@ -36,8 +36,18 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
-# [2.0.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.0)
+# [2.0.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.1)
 #### 2023-Apr-04
+
+### Bugfixes:
+* [#879] Fix issue where dragging the map cancels drawing mode
+
+[#879]: https://github.com/facebook/Rapid/issues/879
+
+
+
+# [2.0.0](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.0)
+#### 2023-Apr-05
 
 #### :tada: Rapid v2.0 Released!
 

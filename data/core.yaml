@@ -1062,7 +1062,7 @@ en:
     start: "No thanks, just start mapping"
   rapid_whats_new:
     welcome: "Welcome to {rapidicon} v2.0!"
-    text: "We hope you enjoy the new WebGL-based {rapidicon}!  We've rewritten the rendering code to be 10x faster for most tasks, especially in places that are mapped in a lot of detail. You'll see more features and better labels than before. <p>Happy Mapping!"
+    text: "We hope you enjoy the new WebGL-based {rapidicon} map editor for OpenStreetMap! <p>We've rewritten the rendering code to be 10x faster for most tasks, especially in places that are mapped in a lot of detail. You'll see more features and better labels than before. <p>Check out [our blog post](https://developers.facebook.com/blog/post/2023/04/04/rapid2/) to learn more about the new Rapid.  Happy Mapping!"
     ok: Okay
     nope: No thanks, just take me to Rapid
     dontshowagain: Don't show this again
