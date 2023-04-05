@@ -20,7 +20,7 @@ const FAR_TOLERANCE = 12;
  * Events available:
  *   `down`      Fires on initial pointerdown, receives `eventData` Object
  *   `move`      Fires on _any_ pointermove (or change of modifier key), receives `eventData` Object
- *   `cancel`    Fires on pointercancel -or- if the pointer has moved too much for it to be a click -or- if the user presses Delete or Backspace
+ *   `cancel`    Fires if the user presses Delete or Backspace
  *   `click`     Fires on a successful click (or spacebar), receives `eventData` for the event that triggered the click
  *   `finish`    Fires if user presses return, enter, or escape
  */
@@ -186,7 +186,6 @@ export class BehaviorDraw extends AbstractBehavior {
       const dist = vecLength(down.coord, move.coord);
       if (dist >= NEAR_TOLERANCE) {
         down.isCancelled = true;
-        this.emit('cancel', move);
       }
     }
 
@@ -222,13 +221,6 @@ export class BehaviorDraw extends AbstractBehavior {
    * @param  `e`  A Pixi InteractionEvent
    */
   _pointercancel(e) {
-    const cancel = this._getEventData(e);
-    const down = this.lastDown;
-
-    if (down && !down.isCancelled) {
-      this.emit('cancel', cancel);
-    }
-
     this.lastDown = null;  // prepare for the next `pointerdown`
   }
 
