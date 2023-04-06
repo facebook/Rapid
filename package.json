@@ -89,7 +89,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-brands-svg-icons": "^6.3.0",
     "@fortawesome/free-regular-svg-icons": "^6.3.0",
-    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@mapbox/maki": "^8.0.1",
     "@openstreetmap/id-tagging-schema": "~6.0.0",
     "@pixi/jsdoc-template": "^2.6.0",
