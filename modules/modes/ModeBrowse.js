@@ -81,7 +81,10 @@ export class ModeBrowse extends AbstractMode {
     const datum = target?.data;
     const entity = datum && graph.hasEntity(datum.id);
     const geom = entity?.geometry(graph) ?? 'grab';
-
+    // console.log(('eventData', eventData.target.layer.layerID));
+    // if (eventData.target.layer.layerID === 'rapid' && !null){
+    //   document.body.style.cursor = 'url(/img/cursor/cursor-select-line.png), auto';
+    // }
     const cursorType = new PIXI.Sprite(textures.get(geom));
     document.body.style.cursor = `url(${cursorType.texture?.textureCacheIds[0]}), auto`;
   }
