@@ -70,8 +70,10 @@ export class PixiRenderer extends EventEmitter {
     // Disable mipmapping, we always want textures near the resolution they are at.
     PIXI.BaseTexture.defaultOptions.mipmap = PIXI.MIPMAP_MODES.OFF;
 
-    // Prefer WebGL 2.0 for now, this is to workaround issue #493 for now.
+    // Prefer WebGL2, though browsers still may give us a WebGL1 context, see #493, #568
+    // Can also swap the commented lines below to force WebGL1 context for testing.
     PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL2;
+    // PIXI.settings.PREFER_ENV = PIXI.ENV.WEBGL;
 
     // Create a Pixi application rendering to the given surface `canvas`
     this.pixi = new PIXI.Application({
