@@ -229,6 +229,12 @@ export function uiMapInMap(context) {
         antialias: true,
         autoDensity: true,
         autoStart: false,
+        events: {
+          move: false,
+          globalMove: false,
+          click: true,
+          wheel: false
+        },
         resolution: window.devicePixelRatio,
         sharedLoader: true,
         sharedTicker: true,

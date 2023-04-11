@@ -80,6 +80,12 @@ export class PixiRenderer extends EventEmitter {
       antialias: true,
       autoDensity: true,
       autoStart: false,        // don't start the ticker yet
+      events: {
+        move: false,
+        globalMove: false,
+        click: true,
+        wheel: false
+      },
       resizeTo: supersurface.node(),
       resolution: window.devicePixelRatio,
       sharedLoader: true,
@@ -121,7 +127,7 @@ export class PixiRenderer extends EventEmitter {
     const stage = this.pixi.stage;
     stage.name = 'stage';
     stage.sortableChildren = true;
-    stage.interactive = true;
+    stage.eventMode = 'static';
     // Add a big hit area to `stage` so that clicks on nothing will generate events
     stage.hitArea = new PIXI.Rectangle(-100000, -100000, 200000, 200000);
     this.stage = stage;

@@ -41,12 +41,12 @@ export class PixiFeaturePolygon extends AbstractFeature {
     lowRes.name = 'lowRes';
     lowRes.anchor.set(0.5, 0.5);  // middle, middle
     lowRes.visible = false;
-    lowRes.interactive = true;
+    lowRes.eventMode = 'static';
     this.lowRes = lowRes;
 
     const fill = new PIXI.Graphics();
     fill.name = 'fill';
-    fill.interactive = true;
+    fill.eventMode = 'static';
     fill.sortableChildren = false;
     this.fill = fill;
 
@@ -64,9 +64,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     // (Ignore the default MeshMaterial - it won't be drawn anyway, it's a mask.)
     const mask = new PIXI.Mesh(null, new PIXI.MeshMaterial(PIXI.Texture.WHITE));
     mask.name = 'mask';
-    mask.buttonMode = true;
-    mask.interactive = true;
-    mask.interactiveChildren = true;
+    mask.eventMode = 'static';
     mask.visible = false;
     this.mask = mask;
 

@@ -53,8 +53,7 @@ export class AbstractFeature {
     // By default, make the Feature interactive
     this._allowInteraction = true;
     this._active = false;
-    container.interactive = true;
-    container.interactiveChildren = true;
+    container.eventMode = 'static';
 
     this.v = -1;
     this.lod = 2;   // full detail
@@ -197,9 +196,7 @@ export class AbstractFeature {
     this._allowInteraction = val;
 
     if (this.container) {
-      const flag = this._allowInteraction && !this._active;
-      this.container.interactive = flag;
-      this.container.interactiveChildren = flag;
+      this.container.eventMode = (this._allowInteraction && !this._active) ? 'static' : 'none';
     }
   }
 
@@ -216,9 +213,7 @@ export class AbstractFeature {
     this._active = val;
 
     if (this.container) {
-      const flag = this._allowInteraction && !this._active;
-      this.container.interactive = flag;
-      this.container.interactiveChildren = flag;
+      this.container.eventMode = (this._allowInteraction && !this._active) ? 'static' : 'none';
     }
   }
 
