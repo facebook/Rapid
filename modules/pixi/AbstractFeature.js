@@ -53,7 +53,6 @@ export class AbstractFeature {
     // By default, make the Feature interactive
     this._allowInteraction = true;
     this._active = false;
-    container.buttonMode = true;
     container.interactive = true;
     container.interactiveChildren = true;
 
@@ -199,7 +198,6 @@ export class AbstractFeature {
 
     if (this.container) {
       const flag = this._allowInteraction && !this._active;
-      this.container.buttonMode = flag;
       this.container.interactive = flag;
       this.container.interactiveChildren = flag;
     }
@@ -219,7 +217,6 @@ export class AbstractFeature {
 
     if (this.container) {
       const flag = this._allowInteraction && !this._active;
-      this.container.buttonMode = flag;
       this.container.interactive = flag;
       this.container.interactiveChildren = flag;
     }

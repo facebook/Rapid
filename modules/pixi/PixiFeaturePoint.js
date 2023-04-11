@@ -35,24 +35,21 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     const viewfields = new PIXI.Container();
     viewfields.name = 'viewfields';
-    viewfields.interactive = false;
-    viewfields.interactiveChildren = false;
+    viewfields.eventMode = 'none';
     viewfields.sortableChildren = false;
     viewfields.visible = false;
     this.viewfields = viewfields;
 
     const marker = new PIXI.Sprite();
     marker.name = 'marker';
-    marker.interactive = false;
-    marker.interactiveChildren = false;
+    marker.eventMode = 'none';
     marker.sortableChildren = false;
     marker.visible = true;
     this.marker = marker;
 
     const icon = new PIXI.Sprite();
     icon.name = 'icon';
-    icon.interactive = false;
-    icon.interactiveChildren = false;
+    icon.eventMode = 'none';
     icon.sortableChildren = false;
     icon.visible = false;
     this.icon = icon;
@@ -157,8 +154,7 @@ export class PixiFeaturePoint extends AbstractFeature {
         viewfields.removeChildren();
         vfAngles.forEach(() => {
           const vfSprite = new PIXI.Sprite(vfTexture);
-          vfSprite.interactive = false;
-          vfSprite.interactiveChildren = false;
+          vfSprite.eventMode = 'none';
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
           viewfields.addChild(vfSprite);
         });

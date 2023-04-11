@@ -38,13 +38,11 @@ export function getIconTexture(context, iconName) {
 export function getViewfieldContainer(texture, directions, tint) {
   const vfContainer = new PIXI.Container();
   vfContainer.name = 'viewfields';
-  vfContainer.interactive = false;
-  vfContainer.interactiveChildren = false;
+  vfContainer.eventMode = 'none';
 
   directions.forEach(direction => {
     const sprite = new PIXI.Sprite(texture);
-    sprite.interactive = false;
-    sprite.interactiveChildren = false;
+    sprite.eventMode = 'none';
     sprite.tint = tint || 0x333333;
     sprite.anchor.set(0.5, 1);  // middle, top
     sprite.angle = direction;
@@ -387,8 +385,7 @@ if (isLimited && (span >= spacing * 100)) {
 
 export function getDebugBBox(x, y, width, height, color, alpha, name) {
   const sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
-  sprite.interactive = false;
-  sprite.interactiveChildren = false;
+  sprite.eventMode = 'none';
   sprite.anchor.set(0, 0);  // top, left
   sprite.position.set(x, y);
   sprite.width = width;

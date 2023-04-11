@@ -36,9 +36,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     // Items in this layer don't need to be interactive
     const groupContainer = this.scene.groups.get('background');
-    groupContainer.buttonMode = false;
-    groupContainer.interactive = false;
-    groupContainer.interactiveChildren = false;
+    groupContainer.eventMode = 'none';
 
     this.filters = {
       brightness: 1,
@@ -328,8 +326,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
             tile.debug.name = `debug-${tile.id}`;
-            tile.debug.interactive = false;
-            tile.debug.interactiveChildren = false;
+            tile.debug.eventMode = 'none';
             tile.debug.sortableChildren = false;
             debugContainer.addChild(tile.debug);
 
@@ -387,9 +384,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     if (!sourceContainer) {
       sourceContainer = new PIXI.Container();
       sourceContainer.name = sourceID;
-      sourceContainer.buttonMode = false;
-      sourceContainer.interactive = false;
-      sourceContainer.interactiveChildren = false;
+      sourceContainer.eventMode = 'none';
       sourceContainer.sortableChildren = true;
       groupContainer.addChild(sourceContainer);
     }

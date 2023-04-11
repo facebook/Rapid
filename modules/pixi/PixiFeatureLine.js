@@ -37,15 +37,13 @@ export class PixiFeatureLine extends AbstractFeature {
 
     const casing = new PIXI.Graphics();
     casing.name = 'casing';
-    casing.interactive = false;
-    casing.interactiveChildren = false;
+    casing.eventMode = 'none';
     casing.sortableChildren = false;
     this.casing = casing;
 
     const stroke = new PIXI.Graphics();
     stroke.name = 'stroke';
-    stroke.interactive = false;
-    stroke.interactiveChildren = false;
+    stroke.eventMode = 'none';
     stroke.sortableChildren = false;
     this.stroke = stroke;
 
@@ -147,7 +145,7 @@ export class PixiFeatureLine extends AbstractFeature {
         if (!lineMarkers) {
           lineMarkers = new PIXI.Container();
           lineMarkers.name = 'lineMarkers';
-          lineMarkers.interactiveChildren = false;
+          lineMarkers.eventMode = 'none';
           lineMarkers.sortableChildren = false;
           lineMarkers.roundPixels = false;
           container.addChild(lineMarkers);
@@ -165,8 +163,7 @@ export class PixiFeatureLine extends AbstractFeature {
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
               const arrow = new PIXI.Sprite(lineMarkerTexture);
-              arrow.interactive = false;
-              arrow.interactiveChildren = false;
+              arrow.eventMode = 'none';
               arrow.sortableChildren = false;
               arrow.anchor.set(0.5, 0.5); // middle, middle
               arrow.position.set(x, y);
@@ -185,8 +182,7 @@ export class PixiFeatureLine extends AbstractFeature {
           segments.forEach(segment => {
             segment.coords.forEach(([x, y]) => {
               const arrow = new PIXI.Sprite(sidedMarkerTexture);
-              arrow.interactive = false;
-              arrow.interactiveChildren = false;
+              arrow.eventMode = 'none';
               arrow.sortableChildren = false;
               arrow.anchor.set(0.5, 0.5); // middle, middle
               arrow.position.set(x, y);

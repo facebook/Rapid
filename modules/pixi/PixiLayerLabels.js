@@ -62,24 +62,18 @@ export class PixiLayerLabels extends AbstractLayer {
 
     // Items in this layer don't actually need to be interactive
     const groupContainer = this.scene.groups.get('labels');
-    groupContainer.buttonMode = false;
-    groupContainer.interactive = false;
-    groupContainer.interactiveChildren = false;
+    groupContainer.eventMode = 'none';
 
     const debugContainer = new PIXI.ParticleContainer(50000);
     debugContainer.name = 'debug';
+    debugContainer.eventMode = 'none';
     debugContainer.roundPixels = false;
-    debugContainer.buttonMode = false;
-    debugContainer.interactive = false;
-    debugContainer.interactiveChildren = false;
     debugContainer.sortableChildren = false;
     this.debugContainer = debugContainer;
 
     const labelContainer = new PIXI.Container();
     labelContainer.name = 'labels';
-    labelContainer.buttonMode = false;
-    labelContainer.interactive = false;
-    labelContainer.interactiveChildren = false;
+    labelContainer.eventMode = 'none';
     labelContainer.sortableChildren = true;
     this.labelContainer = labelContainer;
 
@@ -838,7 +832,6 @@ this.placeRopeLabel(feature, labelObj, coords);
         const rope = new PIXI.SimpleRope(labelObj.texture, points);
         rope.name = labelID;
         rope.autoUpdate = false;
-        rope.interactiveChildren = false;
         rope.sortableChildren = false;
         rope.tint = options.tint || 0xffffff;
 

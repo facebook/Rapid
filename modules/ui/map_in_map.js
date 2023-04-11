@@ -158,9 +158,7 @@ export function uiMapInMap(context) {
       if (!bboxContainer) {
         const bboxContainer = new PIXI.Container();
         bboxContainer.name = 'bbox';
-        bboxContainer.interactiveChildren = false;
-        bboxContainer.buttonMode = false;
-        bboxContainer.interactive = false;
+        bboxContainer.eventMode = 'none';
         stage.addChild(bboxContainer);
 
         const bboxGraphic = new PIXI.Graphics()
@@ -242,8 +240,8 @@ export function uiMapInMap(context) {
       // Setup the stage..
       const stage = _miniPixi.stage;
       stage.name = 'minimap-stage';
+      stage.eventMode = 'none';
       stage.sortableChildren = false;
-      stage.interactive = false;
 
       // Construct the scene..
       const miniRenderer = {    // Mock Renderer

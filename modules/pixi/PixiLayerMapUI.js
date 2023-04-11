@@ -48,9 +48,7 @@ groupContainer.addChild(container);
     this._geolocationDirty = false;
     const geolocationContainer = new PIXI.Container();
     geolocationContainer.name = 'geolocation';
-    geolocationContainer.buttonMode = false;
-    geolocationContainer.interactive = false;
-    geolocationContainer.interactiveChildren = false;
+    geolocationContainer.eventMode = 'none';
     geolocationContainer.sortableChildren = false;
     geolocationContainer.visible = false;
     this.geolocationContainer = geolocationContainer;
@@ -58,9 +56,7 @@ groupContainer.addChild(container);
     // TILE DEBUGGING
     const tileDebugContainer = new PIXI.Container();
     tileDebugContainer.name = 'tile-debug';
-    tileDebugContainer.buttonMode = false;
-    tileDebugContainer.interactive = false;
-    tileDebugContainer.interactiveChildren = false;
+    tileDebugContainer.eventMode = 'none';
     tileDebugContainer.sortableChildren = false;
     tileDebugContainer.visible = false;
     this.tileDebugContainer = tileDebugContainer;
@@ -78,12 +74,13 @@ groupContainer.addChild(container);
     this._lassoLineGraphics = new PIXI.Graphics();
     this._lassoFillGraphics = new PIXI.Graphics();
     const lassoContainer = new PIXI.Container();
-    lassoContainer.addChild(this._lassoLineGraphics);
-    lassoContainer.addChild(this._lassoFillGraphics);
     lassoContainer.name = 'lasso';
+    lassoContainer.eventMode = 'none';
     lassoContainer.sortableChildren = false;
     lassoContainer.visible = true;
+    lassoContainer.addChild(this._lassoLineGraphics, this._lassoFillGraphics);
     this.lassoContainer = lassoContainer;
+
     this.container.addChild(geolocationContainer, tileDebugContainer, selectedContainer, lassoContainer);
   }
 

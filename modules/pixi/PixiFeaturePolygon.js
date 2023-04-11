@@ -52,8 +52,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
 
     const stroke = new PIXI.Graphics();
     stroke.name = 'stroke';
-    stroke.interactive = false;
-    stroke.interactiveChildren = false;
+    stroke.eventMode = 'none';
     stroke.sortableChildren = false;
     this.stroke = stroke;
 
@@ -163,16 +162,6 @@ export class PixiFeaturePolygon extends AbstractFeature {
         };
       }
     }
-
-
-/// I think syncFeatureClasses handles flipping the interactivity now..
-//    // TODO: Move this inside the geometry.dirty block above.
-//    // If we're drawing, we shouldn't be able to target ourselves.
-//    if (this._drawing) {
-//      this.container.interactive = false;
-//      this.container.interactiveChildren = false;
-//    }
-
 
     // Calculate bounds
     const [minX, minY] = this.geometry.extent.min;
