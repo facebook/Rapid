@@ -385,8 +385,6 @@ export class PixiLayerLabels extends AbstractLayer {
         labelObj.name = feature.label;
         // labelObj.anchor.set(0.5, 0.5);   // middle, middle
         labelObj.anchor.set(0.5, 1);     // middle, bottom  - why??
-        labelObj.letterSpacing = -0.4;   // to adjust for lack of kerning
-
       } else {
         labelObj = this.getLabelSprite(feature.label, 'normal');
       }
