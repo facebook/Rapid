@@ -246,6 +246,24 @@ export class PixiLayerOsm extends AbstractLayer {
     const pointsContainer = this.scene.groups.get('points');
     const pointsHidden = this.context.features().hidden('points');
 
+    // For deciding if an unlabeled polygon feature is interesting enough to show a virtual pin.
+    // Note that labeled polygon features will always get a virtual pin.
+    function isInterestingPreset(preset) {
+      if (!preset || preset.isFallback()) return false;
+
+      // These presets probably are not POIs
+      if (/^(address|building|indoor|landuse|man_made|military|natural|playground)/.test(preset.id)) return false;
+
+      // These presets probably are POIs even without a label
+      // See nsi.guide for the sort of things we are looking for.
+      if (/^(club|craft|emergency|healthcare|office|power|shop|telecom|tourism)/.test(preset.id)) return true;
+      if (/^amenity\/(?!parking|shelter)/.test(preset.id)) return true;
+      if (/^leisure\/(?!garden|firepit|picnic_table|pitch|swimming_pool)/.test(preset.id)) return true;
+
+      return false;   // not sure, just ignore it
+    }
+
+
     for (const [entityID, entity] of entities) {
       const entityVersion = (entity.v || 0);
 
@@ -299,6 +317,8 @@ export class PixiLayerOsm extends AbstractLayer {
         this.syncFeatureClasses(feature);
 
         if (feature.dirty) {
+          const preset = presetManager.match(entity, graph);
+
           const style = styleMatch(entity.tags);
           style.labelTint = style.fill.color ?? style.stroke.color ?? 0xeeeeee;
           feature.style = style;
@@ -308,15 +328,10 @@ export class PixiLayerOsm extends AbstractLayer {
 
           // POI = "Point of Interest" -and- "Pole of Inaccessability"
           // For POIs mapped as polygons, we can create a virtual point feature at the pole of inaccessability.
-          let poiPreset;
-          feature.geometry.update(projection);  // update now, so we have `origPoi` calculated
-          if (label && feature.geometry.origPoi) {
-            poiPreset = presetManager.matchTags(entity.tags, 'point', feature.geometry.origPoi);
-          }
-
-          if (!pointsHidden && poiPreset && !poiPreset.isFallback() && poiPreset.id !== 'address') {
+          // Try to show a virtual pin if there is a label or if the preset is interesting enough..
+          if (!pointsHidden && (label || isInterestingPreset(preset))) {
             feature.poiFeatureID = `${this.layerID}-${entityID}-poi-${i}`;
-            feature.poiPreset = poiPreset;
+            feature.poiPreset = preset;
           } else {
             feature.poiFeatureID = null;
             feature.poiPreset = null;
@@ -326,9 +341,9 @@ export class PixiLayerOsm extends AbstractLayer {
         feature.update(projection, zoom);
         this.retainFeature(feature, frame);
 
-
         // Same as above, but for the virtual POI, if any
-        if (feature.poiFeatureID) {
+        // Confirm that `feature.geometry.origPoi` exists - we may have skipped it if `feature.geometry.lod = 0`
+        if (feature.poiFeatureID && feature.poiPreset && feature.geometry.origPoi) {
           let poiFeature = this.features.get(feature.poiFeatureID);
 
           if (!poiFeature) {
@@ -339,7 +354,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
           if (poiFeature.v !== entityVersion) {
             poiFeature.v = entityVersion;
-            poiFeature.geometry.setCoords(feature.geometry.origPoi);
+            poiFeature.geometry.setCoords(feature.geometry.origPoi);  // pole of inaccessability
             poiFeature.setData(entityID, entity);
           }
 
