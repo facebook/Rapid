@@ -217,9 +217,69 @@ export class PixiLayerCustomData extends AbstractLayer {
       points = geoData.filter(d => d.geometry.type === 'Point' || d.geometry.type === 'MultiPoint');
 
       this.renderPolygons(frame, projection, zoom, polygons);
+      const gridLines = this.createGridLines(lines);
+
       this.renderLines(frame, projection, zoom, lines);
+      this.renderLines(frame, projection, zoom, gridLines, { stroke: {width: 0.5, color:0x00ffff, alpha:0.5, cap:PIXI.LINE_CAP.ROUND}});
       this.renderPoints(frame, projection, zoom, points);
     }
+  }
+
+
+  /** createGridLines
+   * creates interstitial grid lines inside the rectangular bounding box, if specified.
+   * @param lines - the line string(s) that may contain a rectangular bounding box
+   * @returns a list of linestrings to draw as gridlines.
+  */
+  createGridLines (lines) {
+    const numSplits = this.context.imagery().numGridSplits;
+    let gridLines = [];
+
+    //'isTaskRectangular' implies one and only one rectangular linestring.
+    if (this.context.rapidContext().isTaskRectangular && numSplits > 0) {
+      const box = lines[0];
+
+      const lats = box.geometry.coordinates.map((f) => f[0]);
+      const lons = box.geometry.coordinates.map((f) => f[1]);
+
+      const minLat = Math.min(...lats);
+      const minLon = Math.min(...lons);
+      const maxLat = Math.max(...lats);
+      const maxLon = Math.max(...lons);
+
+      let latIncrement = (maxLat - minLat) / numSplits;
+      let lonIncrement = (maxLon - minLon) / numSplits;
+
+      // num splits is a grid specificer, so 2 => 2x2 grid, 3 => 3x3 grid, all the way up to 6 => 6x6 grid.
+      for (let i = 1; i < numSplits; i++) {
+        let thisLat = minLat + latIncrement * i;
+        let thisLon = minLon + lonIncrement * i;
+
+        gridLines.push({
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [minLat, thisLon],
+              [maxLat, thisLon],
+            ],
+          },
+          id: numSplits + 'gridcol' + i,
+        });
+        gridLines.push({
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: [
+              [thisLat, minLon],
+              [thisLat, maxLon],
+            ],
+          },
+          id: numSplits + 'gridrow' + i,
+        });
+      }
+    }
+    return gridLines;
   }
 
 
@@ -274,12 +334,15 @@ export class PixiLayerCustomData extends AbstractLayer {
    * @param  projection   Pixi projection to use for rendering
    * @param  zoom         Effective zoom to use for rendering
    * @param  lines        Array of line data
+   * @param styleOverride Custom style
    */
-  renderLines(frame, projection, zoom, lines) {
+  renderLines(frame, projection, zoom, lines, styleOverride) {
     const parentContainer = this.scene.groups.get('basemap');
     const LINE_STYLE = {
       stroke: { width: 2, color: 0x00ffff, alpha: 1, cap: PIXI.LINE_CAP.ROUND }
     };
+
+    let style = styleOverride || LINE_STYLE;
 
     for (const d of lines) {
       const parts = (d.geometry.type === 'LineString') ? [d.geometry.coordinates]
@@ -294,7 +357,7 @@ export class PixiLayerCustomData extends AbstractLayer {
 
         if (!feature) {
           feature = new PixiFeatureLine(this, featureID);
-          feature.style = LINE_STYLE;
+          feature.style = style;
           feature.parentContainer = parentContainer;
         }
 
