@@ -1,8 +1,10 @@
+import { select as d3_select } from 'd3-selection';
+import { geoBounds as d3_geoBounds } from 'd3-geo';
+import { Extent } from '@rapid-sdk/math';
+
 import { AbstractMode } from './AbstractMode';
 import { services } from '../services';
 import { osmNote, QAItem } from '../osm';
-import { select as d3_select } from 'd3-selection';
-
 import { uiDataEditor } from '../ui/data_editor';
 import { uiImproveOsmEditor } from '../ui/improveOSM_editor';
 import { uiKeepRightEditor } from '../ui/keepRight_editor';
@@ -31,6 +33,8 @@ export class ModeSelect extends AbstractMode {
     super(context);
     this.id = 'select';
     this.keybinding = null;
+
+    this.extent = null;
   }
 
 
@@ -58,6 +62,33 @@ export class ModeSelect extends AbstractMode {
 
     const sidebar = context.ui().sidebar;
     let sidebarContent = null;
+
+    // Compute the total extent of selected items
+    this.extent = new Extent();
+
+    for (const datum of selection.values()) {
+      let other;
+
+      if (datum.loc) {   // OSM Note or QA Item
+        other = new Extent(datum.loc);
+
+      } else if (datum.__featurehash__) {   // Custom GeoJSON feature
+        const bounds = d3_geoBounds(datum);
+        other = new Extent(bounds[0], bounds[1]);
+
+      } else if (datum.__fbid__) {  // Rapid feature
+        const service = datum.__service__ === 'esri' ? services.esriData : services.fbMLRoads;
+        if (!service) continue;
+        const graph = service.graph(datum.__datasetid__);
+        if (!graph) continue;
+        other = datum.extent(graph);
+      }
+
+      if (other) {
+        this.extent = this.extent.extend(other);
+      }
+    }
+
 
  // The update handlers feel like they should live with the noteEditor/errorEditor, not here
     // Selected a note...
@@ -144,6 +175,8 @@ export class ModeSelect extends AbstractMode {
   exit() {
     if (!this._active) return;
     this._active = false;
+
+    this.extent = null;
 
     if (this.keybinding) {
       d3_select(document).call(this.keybinding.unbind);

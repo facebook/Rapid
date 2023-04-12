@@ -589,7 +589,9 @@ export class RendererMap extends EventEmitter {
     const zoomDiff = Math.max(hZoomDiff, vZoomDiff);
 
     const currZoom = this.zoom();
-    return isFinite(zoomDiff) ? (currZoom - zoomDiff) : currZoom;
+    const defaultZoom = Math.max(currZoom, 19);
+
+    return isFinite(zoomDiff) ? (currZoom - zoomDiff) : defaultZoom;
   }
 
 
@@ -602,7 +604,7 @@ export class RendererMap extends EventEmitter {
    */
   trimmedExtentZoom(extent) {
     const trimW = 40;
-    const trimH = 120;
+    const trimH = 140;
     const trimmed = vecSubtract(this._dimensions, [trimW, trimH]);
     return this.extentZoom(extent, trimmed);
   }

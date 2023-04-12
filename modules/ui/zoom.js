@@ -8,120 +8,104 @@ import { utilKeybinding } from '../util/keybinding';
 
 
 export function uiZoom(context) {
+  let zooms = [{
+    id: 'zoom-in',
+    icon: 'rapid-icon-plus',
+    title: t('zoom.in'),
+    action: zoomIn,
+    isDisabled: () => !context.map().canZoomIn(),
+    disabledTitle: t('zoom.disabled.in'),
+    key: '+'
+  }, {
+    id: 'zoom-out',
+    icon: 'rapid-icon-minus',
+    title: t('zoom.out'),
+    action: zoomOut,
+    isDisabled: () => !context.map().canZoomOut(),
+    disabledTitle: t('zoom.disabled.out'),
+    key: '-'
+  }];
 
-    var zooms = [{
-        id: 'zoom-in',
-        icon: 'rapid-icon-plus',
-        title: t.html('zoom.in'),
-        action: zoomIn,
-        disabled: function() {
-            return !context.map().canZoomIn();
-        },
-        disabledTitle: t.html('zoom.disabled.in'),
-        key: '+'
-    }, {
-        id: 'zoom-out',
-        icon: 'rapid-icon-minus',
-        title: t.html('zoom.out'),
-        action: zoomOut,
-        disabled: function() {
-            return !context.map().canZoomOut();
-        },
-        disabledTitle: t.html('zoom.disabled.out'),
-        key: '-'
-    }];
+  function zoomIn(d3_event) {
+    if (d3_event.shiftKey) return;
+    d3_event.preventDefault();
+    context.map().zoomIn();
+  }
 
-    function zoomIn(d3_event) {
-        if (d3_event.shiftKey) return;
-        d3_event.preventDefault();
-        context.map().zoomIn();
-    }
+  function zoomOut(d3_event) {
+    if (d3_event.shiftKey) return;
+    d3_event.preventDefault();
+    context.map().zoomOut();
+  }
 
-    function zoomOut(d3_event) {
-        if (d3_event.shiftKey) return;
-        d3_event.preventDefault();
-        context.map().zoomOut();
-    }
+  function zoomInFurther(d3_event) {
+    if (d3_event.shiftKey) return;
+    d3_event.preventDefault();
+    context.map().zoomInFurther();
+  }
 
-    function zoomInFurther(d3_event) {
-        if (d3_event.shiftKey) return;
-        d3_event.preventDefault();
-        context.map().zoomInFurther();
-    }
+  function zoomOutFurther(d3_event) {
+    if (d3_event.shiftKey) return;
+    d3_event.preventDefault();
+    context.map().zoomOutFurther();
+  }
 
-    function zoomOutFurther(d3_event) {
-        if (d3_event.shiftKey) return;
-        d3_event.preventDefault();
-        context.map().zoomOutFurther();
-    }
+  return function(selection) {
+    let tooltipBehavior = uiTooltip()
+      .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
+      .title(d => d.isDisabled() ? d.disabledTitle : d.title)
+      .keys(d => [d.key]);
 
-    return function(selection) {
-        var tooltipBehavior = uiTooltip()
-            .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
-            .title(function(d) {
-                if (d.disabled()) {
-                    return d.disabledTitle;
-                }
-                return d.title;
-            })
-            .keys(function(d) {
-                return [d.key];
-            });
+    let _lastPointerUpType;
 
-        var lastPointerUpType;
-
-        var buttons = selection.selectAll('button')
-            .data(zooms)
-            .enter()
-            .append('button')
-            .attr('class', function(d) { return d.id; })
-            .on('pointerup.editor', function(d3_event) {
-                lastPointerUpType = d3_event.pointerType;
-            })
-            .on('click.editor', function(d3_event, d) {
-                if (!d.disabled()) {
-                    d.action(d3_event);
-                } else if (lastPointerUpType === 'touch' || lastPointerUpType === 'pen') {
-                    context.ui().flash
-                        .duration(2000)
-                        .iconName('#' + d.icon)
-                        .iconClass('disabled')
-                        .label(d.disabledTitle)();
-                }
-                lastPointerUpType = null;
-            })
-            .call(tooltipBehavior);
-
-        buttons.each(function(d) {
-            d3_select(this)
-                .call(svgIcon('#' + d.icon, 'light'));
-        });
-
-        utilKeybinding.plusKeys.forEach(function(key) {
-            context.keybinding().on([key], zoomIn);
-            context.keybinding().on([uiCmd('⌥' + key)], zoomInFurther);
-        });
-
-        utilKeybinding.minusKeys.forEach(function(key) {
-            context.keybinding().on([key], zoomOut);
-            context.keybinding().on([uiCmd('⌥' + key)], zoomOutFurther);
-        });
-
-        function updateButtonStates() {
-            buttons
-                .classed('disabled', function(d) {
-                    return d.disabled();
-                })
-                .each(function() {
-                    var selection = d3_select(this);
-                    if (!selection.select('.tooltip.in').empty()) {
-                        selection.call(tooltipBehavior.updateContent);
-                    }
-                });
+    let buttons = selection.selectAll('button')
+      .data(zooms)
+      .enter()
+      .append('button')
+      .attr('class', d => d.id)
+      .on('pointerup', d3_event => _lastPointerUpType = d3_event.pointerType)
+      .on('click', (d3_event, d) => {
+        if (!d.isDisabled()) {
+          d.action(d3_event);
+        } else if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
+          context.ui().flash
+            .duration(2000)
+            .iconName(`#${d.icon}`)
+            .iconClass('disabled')
+            .label(d.disabledTitle)();
         }
+        _lastPointerUpType = null;
+      })
+      .call(tooltipBehavior);
 
-        updateButtonStates();
+    buttons.each((d, i, nodes) => {
+      d3_select(nodes[i])
+        .call(svgIcon(`#${d.icon}`, 'light'));
+    });
 
-        context.map().on('draw', updateButtonStates);
-    };
+    utilKeybinding.plusKeys.forEach(key => {
+      context.keybinding().on([key], zoomIn);
+      context.keybinding().on([uiCmd('⌥' + key)], zoomInFurther);
+    });
+
+    utilKeybinding.minusKeys.forEach(key => {
+      context.keybinding().on([key], zoomOut);
+      context.keybinding().on([uiCmd('⌥' + key)], zoomOutFurther);
+    });
+
+    function updateButtonStates() {
+      buttons
+        .classed('disabled', d => d.isDisabled())
+        .each((d, i, nodes) => {
+          const selection = d3_select(nodes[i]);
+          if (!selection.select('.tooltip.in').empty()) {
+            selection.call(tooltipBehavior.updateContent);
+          }
+        });
+    }
+
+    updateButtonStates();
+
+    context.map().on('draw', updateButtonStates);
+  };
 }

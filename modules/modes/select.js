@@ -46,12 +46,6 @@ export function modeSelect(context, selectedIDs) {
         }
     }
 
-    function selectedEntities() {
-        return selectedIDs.map(function(id) {
-            return context.hasEntity(id);
-        }).filter(Boolean);
-    }
-
 
     function checkSelectedIDs() {
         var ids = [];
@@ -157,11 +151,6 @@ export function modeSelect(context, selectedIDs) {
     };
 
 
-    mode.zoomToSelected = function() {
-        context.map().zoomToEase(selectedEntities());
-    };
-
-
     mode.newFeature = function(val) {
         if (!arguments.length) return _newFeature;
         _newFeature = val;
@@ -228,7 +217,6 @@ export function modeSelect(context, selectedIDs) {
         context.enableBehaviors(['hover', 'select', 'drag', 'lasso', 'map-interaction', 'paste']);
 
         keybinding
-            .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
             .on(['[', 'pgup'], previousVertex)
             .on([']', 'pgdown'], nextVertex)
             .on(['{', uiCmd('⌘['), 'home'], firstVertex)
@@ -257,9 +245,10 @@ export function modeSelect(context, selectedIDs) {
 
 //        selectElements();
 
+        mode.extent = utilTotalExtent(selectedIDs, context.graph());
+
         if (_follow) {
-            var extent = utilTotalExtent(selectedIDs, context.graph());
-            var loc = extent.center();
+            var loc = mode.extent.center();
             context.map().centerEase(loc);
             // we could enter the mode multiple times, so reset follow for next time
             _follow = false;
@@ -486,6 +475,8 @@ export function modeSelect(context, selectedIDs) {
 
 
     mode.exit = function() {
+
+        mode.extent = null;
 
         // we could enter the mode multiple times but it's only new the first time
         _newFeature = false;
