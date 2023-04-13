@@ -79,8 +79,6 @@ export function uiScale(context) {
       .append('div')
       .attr('class', 'scale-text');
 
-    selection.call(update);
-
     context.map().on('draw', () => {
       window.requestIdleCallback(() => update(selection));
     });
