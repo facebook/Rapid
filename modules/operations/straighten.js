@@ -38,7 +38,7 @@ export function operationStraighten(context, selectedIDs) {
 
       // check the selected ways, gather their start/end nodes
       for (const entity of entities) {
-        if (entity.type === 'node') continue;
+        if (entity.type !== 'way') continue;
         if (entity.type === 'way' && entity.isClosed()) return null;  // exit early, can't straighten these
 
         startNodeIDs.push(entity.first());
