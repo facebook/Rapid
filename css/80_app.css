@@ -4061,48 +4061,6 @@ li.issue-fix-item button:not(.actionable) .fix-icon {
 }
 
 
-/* Raster Background Tiles
-------------------------------------------------------- */
-img.tile {
-    position: absolute;
-    transform-origin: 0 0;
-    user-select: none;
-    pointer-events: none;
-    -webkit-user-drag: none;
-    opacity: 0;
-    /*transition: opacity 200ms linear;*/
-}
-
-img.tile-loaded {
-    opacity: 1;
-}
-
-img.tile-removing {
-    opacity: 0;
-}
-
-.tile-label-debug {
-    font-size: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    position: absolute;
-    text-align: center;
-    padding: 5px;
-    border-radius: 3px;
-    z-index: 2;
-    margin-left: -70px;
-    margin-top: -20px;
-
-    transform-origin: 0 0;
-
-    user-select: none;
-}
-
-img.tile-debug {
-    outline: 1px solid red;
-}
-
-
 /* Map
 ------------------------------------------------------- */
 .main-map {
@@ -5159,46 +5117,6 @@ button.conflicts-button {
 }
 
 
-/* Notices (Zoom in to Edit)
-------------------------------------------------------- */
-.notice {
-    position: absolute;
-    top: 15px;
-    left: 0;
-    right: 0;
-    text-align: center;
-}
-
-.notice .zoom-to {
-    margin: auto;
-    width: 300px;
-    padding: 20px 5px;
-    font-size: 150%;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-.notice .zoom-to:focus,
-.notice .zoom-to:active {
-    background: rgba(0,0,0,0.6);
-}
-@media (hover: hover) {
-    .notice .zoom-to:hover {
-        background: rgba(0,0,0,0.6);
-    }
-}
-
-.notice .zoom-to .icon {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-.ideditor[dir='rtl'] .notice .zoom-to .icon {
-    margin-left: 10px;
-    margin-right: 0;
-}
-
 
 /* Tooltips
 ------------------------------------------------------- */
@@ -5449,16 +5367,6 @@ li.hide + li.version .badge .tooltip .popover-arrow {
 
 .edit-menu-item use {
     pointer-events: none;
-}
-
-/* Lasso
-------------------------------------------------------- */
-.lasso-path {
-    fill-opacity: 0.3;
-    stroke: #fff;
-    stroke-width: 1;
-    stroke-opacity: 1;
-    stroke-dasharray: 5, 5;
 }
 
 
