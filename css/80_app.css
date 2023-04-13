@@ -4118,6 +4118,7 @@ img.tile-debug {
     user-select: none;
     touch-action: none;
     -webkit-touch-callout: none;
+    z-index: 0;
 }
 .main-map * {
     touch-action: none;
