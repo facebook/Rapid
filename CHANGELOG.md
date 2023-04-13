@@ -36,6 +36,40 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@xxxx]: https://github.com/xxxx
 -->
 
+# [2.0.2](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.2)
+#### 2023-Apr-13
+
+#### :sparkles: Usability & Accessibility
+* [#792] Improve area filling appearance around sharp angles
+* [#866] Make "zoom to selection" work for any selection, not just OSM features
+* [#910] Show virtual pins for unlabeled polygons with interesting OSM tags
+* Improve bitmapped label appearance
+
+### Bugfixes:
+* [#568] Fix texture atlas issues when operating with a WebGL1 context
+* [#768] Re-implement the task grid that can be used alongside task manager boundary
+* [#863] Fix line snapping / Upgrade to letest version of Pixi and set `eventMode` properties
+* [#876] Fix bug causing footer to not appear until the user interacted with the map
+* [#913] Fix `numGridSplits` references to use it as a property, not a function
+* [#915] Don't draw the scale bar until the map has actually drawn
+* [#916] Fix bug in `operationStraighten` when a Relation is used in a multiselection
+
+#### :hammer: Development
+* [#500] Remove unused CSS leftover from the SVG renderer
+
+[#500]: https://github.com/facebook/Rapid/issues/500
+[#568]: https://github.com/facebook/Rapid/issues/568
+[#768]: https://github.com/facebook/Rapid/issues/768
+[#792]: https://github.com/facebook/Rapid/issues/792
+[#863]: https://github.com/facebook/Rapid/issues/863
+[#866]: https://github.com/facebook/Rapid/issues/866
+[#876]: https://github.com/facebook/Rapid/issues/876
+[#910]: https://github.com/facebook/Rapid/issues/910
+[#913]: https://github.com/facebook/Rapid/issues/913
+[#915]: https://github.com/facebook/Rapid/issues/915
+[#916]: https://github.com/facebook/Rapid/issues/916
+
+
 # [2.0.1](https://github.com/facebook/Rapid/releases/tag/rapid-v2.0.1)
 #### 2023-Apr-04
 

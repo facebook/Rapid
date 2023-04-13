@@ -48,7 +48,7 @@ export function coreContext() {
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
-  context.version = '2.0.1';
+  context.version = '2.0.2';
   context.privacyVersion = '20201202';
 
   // `context.initialHashParams` is older, try to use `context.urlhash()` instead
