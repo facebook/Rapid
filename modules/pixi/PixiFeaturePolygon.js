@@ -298,8 +298,10 @@ export class PixiFeaturePolygon extends AbstractFeature {
           .lineTextureStyle({
             alpha: 1,
             alignment: 0,  // inside (will do the right thing even for holes, as they are wound correctly)
-            width: PARTIALFILLWIDTH,
             color: 0x000000,
+            cap: PIXI.LINE_CAP.BUTT,
+            join: PIXI.LINE_JOIN.BEVEL,
+            width: PARTIALFILLWIDTH,
             texture: PIXI.Texture.WHITE
           });
 
