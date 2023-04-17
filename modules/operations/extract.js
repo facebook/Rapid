@@ -1,8 +1,9 @@
+import { vecSubtract } from '@rapid-sdk/math';
 import { utilArrayUniq } from '@rapid-sdk/util';
 
 import { actionExtract } from '../actions/extract';
+import { actionMove } from '../actions/move';
 import { BehaviorKeyOperation } from '../behaviors/BehaviorKeyOperation';
-import { modeSelect } from '../modes/select';
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { presetManager } from '../presets';
@@ -30,25 +31,36 @@ export function operationExtract(context, selectedIDs) {
     }
 
     return actionExtract(entity.id, context.projection);
-
   }).filter(Boolean);
 
 
   let operation = function() {
-    let combinedAction = function(graph) {
-      actions.forEach(action => {
-        if (!action.disabled(graph)) {
-          graph = action(graph);
-        }
-      });
+    if (!actions.length) return;
+
+    const combinedAction = (graph) => {
+      for (const action of actions) {
+        graph = action(graph);
+      }
       return graph;
     };
 
     context.perform(combinedAction, operation.annotation());
     context.validator().validate();
 
+    // Move the extracted nodes to the mouse cursor location
+    const projection = context.projection;
     const extractedNodeIDs = actions.map(action => action.getExtractedNodeID());
-    context.enter(modeSelect(context, extractedNodeIDs));
+    const extractPoint = projection.project(extent.center());
+    const delta = vecSubtract(context.map().mouse(), extractPoint);
+    context.perform(actionMove(extractedNodeIDs, delta, projection));  // no annotation, we'll move more after this
+
+    // Put the user in move mode so they can place the extracted nodes where they want.
+    // We use the latest entities from the graph (because they were just moved).
+    const selection = new Map();    // Map (entityID -> Entity)
+    for (const extractedNodeID of extractedNodeIDs) {
+      selection.set(extractedNodeID, context.entity(extractedNodeID));
+    }
+    context.enter('move', { selection: selection });
   };
 
 
