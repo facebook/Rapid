@@ -575,7 +575,7 @@ export class PixiLayerOsm extends AbstractLayer {
 
       if (feature.dirty) {
         const preset = presetManager.match(node, graph);
-        const iconName = preset && preset.icon;
+        const iconName = preset?.icon;
         const directions = node.directions(graph, context.projection);
 
         // set marker style
@@ -655,8 +655,16 @@ export class PixiLayerOsm extends AbstractLayer {
       this.syncFeatureClasses(feature);
 
       if (feature.dirty) {
-        const preset = presetManager.match(node, graph);
-        const iconName = preset && preset.icon;
+        let preset = presetManager.match(node, graph);
+        let iconName = preset?.icon;
+
+        // If we matched a generic preset without an icon, try matching it as a 'vertex'
+        // This is just to choose a better icon for an otherwise empty-looking pin.
+        if (!iconName) {
+          preset = presetManager.matchTags(node.tags, 'vertex');
+          iconName = preset?.icon;
+        }
+
         const directions = node.directions(graph, this.context.projection);
 
         // set marker style
