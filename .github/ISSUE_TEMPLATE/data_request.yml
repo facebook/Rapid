@@ -1,5 +1,5 @@
 name: 📒 Data Request
-description: Request new or updated data to be included in RapiD.
+description: Request new or updated data to be included in Rapid.
 labels: ["Needs: Triage :mag:", "Data Request"]
 body:
   - type: markdown
