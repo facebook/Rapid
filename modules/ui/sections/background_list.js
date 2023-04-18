@@ -7,7 +7,7 @@ import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { RendererImagerySource } from '../../renderer/RendererImagerySource';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
 import { uiMapInMap } from '../map_in_map';
@@ -129,7 +129,7 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'imagery-faq')
       .append('a')
       .attr('target', '_blank')
-      .call(svgIcon('#rapid-icon-out-link', 'inline'))
+      .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/FAQ.md#how-can-i-report-an-issue-with-background-imagery')
       .append('span')
       .text(t('background.imagery_problem_faq'));
@@ -208,7 +208,7 @@ export function uiSectionBackgroundList(context) {
       .attr('class', 'background-favorite-button')
       .classed('active', d => !!_favoriteBackgrounds[d.id])
       .attr('tabindex', -1)
-      .call(svgIcon('#rapid-icon-favorite'))
+      .call(uiIcon('#rapid-icon-favorite'))
       .on('click', (d3_event, d) => {
         if (_favoriteBackgrounds[d.id]) {
           d3_select(d3_event.currentTarget).classed('active', false);
@@ -243,7 +243,7 @@ export function uiSectionBackgroundList(context) {
         .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
       )
       .on('click', editCustom)
-      .call(svgIcon('#rapid-icon-more'));
+      .call(uiIcon('#rapid-icon-more'));
 
     layerLinksEnter.filter(d => d.best)
       .selectAll('label')
@@ -253,7 +253,7 @@ export function uiSectionBackgroundList(context) {
         .title(t('background.best_imagery'))
         .placement('bottom')
       )
-      .call(svgIcon('#rapid-icon-best-background'));
+      .call(uiIcon('#rapid-icon-best-background'));
 
     layerList.selectAll('li')
       .sort(sortSources);

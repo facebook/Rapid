@@ -4,7 +4,7 @@ import { t } from '../core/localizer';
 import { actionNoop, actionRapidAcceptFeature } from '../actions';
 import { modeSelect } from '../modes';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiFlash } from './flash';
 import { uiTooltip } from './tooltip';
 import { uiRapidFirstEditDialog } from './rapid_first_edit_dialog';
@@ -207,7 +207,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .on('click', () => {
         context.enter('browse');
       })
-      .call(svgIcon('#rapid-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
 
     // Body
@@ -323,7 +323,7 @@ export function uiRapidFeatureInspector(context, keybinding) {
       .on('click', () => {
         choiceReference.classed('expanded', !choiceReference.classed('expanded'));
       })
-      .call(svgIcon('#rapid-icon-inspect'));
+      .call(uiIcon('#rapid-icon-inspect'));
   }
 
 

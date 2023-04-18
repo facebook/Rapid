@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiContributors(context) {
@@ -27,7 +27,7 @@ export function uiContributors(context) {
             subset = u.slice(0, u.length > limit ? limit - 1 : limit);
 
         wrap.html('')
-            .call(svgIcon('#rapid-icon-nearby', 'pre-text light'));
+            .call(uiIcon('#rapid-icon-nearby', 'pre-text light'));
 
         var userList = d3_select(document.createElement('span'));
 

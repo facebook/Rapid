@@ -3,7 +3,7 @@ import { utilArrayUniqBy } from '@rapid-sdk/util';
 
 import { presetManager } from '../presets';
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiCombobox} from './combobox';
 import { uiField } from './field';
 import { uiFormFields } from './form_fields';
@@ -105,7 +105,7 @@ export function uiChangesetEditor(context) {
         commentEnter
             .append('a')
             .attr('target', '_blank')
-            .call(svgIcon('#rapid-icon-alert', 'inline'))
+            .call(uiIcon('#rapid-icon-alert', 'inline'))
             .attr('href', t('commit.google_warning_link'))
             .append('span')
             .html(t.html('commit.google_warning'));

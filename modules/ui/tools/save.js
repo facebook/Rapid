@@ -2,7 +2,7 @@ import { interpolateRgb as d3_interpolateRgb } from 'd3-interpolate';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 
@@ -100,7 +100,7 @@ export function uiToolSave(context) {
       .call(tooltip);
 
     button
-      .call(svgIcon('#rapid-icon-save'));
+      .call(uiIcon('#rapid-icon-save'));
 
     button
       .append('span')

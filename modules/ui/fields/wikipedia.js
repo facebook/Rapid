@@ -5,7 +5,7 @@ import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { actionChangeTags } from '../../actions/change_tags';
 import { services } from '../../services/index';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 
@@ -133,7 +133,7 @@ export function uiFieldWikipedia(field, context) {
       .append('button')
       .attr('class', 'form-field-button wiki-link')
       .attr('title', t('icons.view_on', { domain: 'wikipedia.org' }))
-      .call(svgIcon('#rapid-icon-out-link'))
+      .call(uiIcon('#rapid-icon-out-link'))
       .merge(link);
 
     link

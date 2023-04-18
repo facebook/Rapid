@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 
 import { prefs } from '../core/preferences';
 import { styleMatch } from '../pixi/styles';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiPresetIcon() {
@@ -182,7 +182,7 @@ export function uiPresetIcon() {
     container
       .append('div')
       .attr('class', 'preset-icon-route')
-      .call(svgIcon('#rapid-route', 'rapid-icon lowered'));
+      .call(uiIcon('#rapid-route', 'rapid-icon lowered'));
   }
 
 
@@ -193,7 +193,7 @@ export function uiPresetIcon() {
     container
       .append('div')
       .attr('class', 'preset-icon')
-      .call(svgIcon(`#${iconName}`, klass.join(' ')));
+      .call(uiIcon(`#${iconName}`, klass.join(' ')));
 
     container.selectAll('.preset-icon svg.icon')
       .attr('color', color);

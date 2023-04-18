@@ -6,7 +6,7 @@ import { marked } from 'marked';
 import { t } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiCombobox} from './combobox';
 import { utilKeybinding, utilNoAuto, utilRebind } from '../util';
 
@@ -70,7 +70,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .append('button')
       .attr('class', 'close')
       .on('click', _myClose)
-      .call(svgIcon('#rapid-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
     _content = myModal
       .append('div')
@@ -103,7 +103,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
     line1
       .append('div')
       .attr('class', 'rapid-view-manage-header-icon')
-      .call(svgIcon('#rapid-icon-data', 'icon-30'));
+      .call(uiIcon('#rapid-icon-data', 'icon-30'));
 
     line1
       .append('div')
@@ -135,7 +135,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('class', 'rapid-view-manage-filter-search-wrap');
 
     filterSearchEnter
-      .call(svgIcon('#fas-filter', 'inline'));
+      .call(uiIcon('#fas-filter', 'inline'));
 
     filterSearchEnter
       .append('input')
@@ -343,7 +343,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       .attr('target', '_blank')
       .attr('href', d => d.itemURL)
       .text(t('rapid_feature_toggle.esri.more_info'))
-      .call(svgIcon('#rapid-icon-out-link', 'inline'));
+      .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
     let featuredEnter = labelsEnter.selectAll('.rapid-view-manage-dataset-featured')
       .data(d => d.groupCategories.filter(d => d.toLowerCase() === '/categories/featured'))

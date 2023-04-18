@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { actionChangeTags } from '../../actions/change_tags';
 import { services } from '../../services/index';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { uiCombobox } from '../combobox';
 import { t } from '../../core/localizer';
@@ -85,7 +85,7 @@ export function uiFieldWikidata(field, context) {
             .append('button')
             .attr('class', 'form-field-button wiki-link')
             .attr('title', t('icons.view_on', { domain: 'wikidata.org' }))
-            .call(svgIcon('#rapid-icon-out-link'))
+            .call(uiIcon('#rapid-icon-out-link'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
                 if (_wikiURL) window.open(_wikiURL, '_blank');
@@ -121,7 +121,7 @@ export function uiFieldWikidata(field, context) {
             .append('button')
             .attr('class', 'form-field-button')
             .attr('title', t('icons.copy'))
-            .call(svgIcon('#rapid-operation-copy'))
+            .call(uiIcon('#rapid-operation-copy'))
             .on('click', function(d3_event) {
                 d3_event.preventDefault();
                 d3_select(this.parentNode)

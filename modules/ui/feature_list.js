@@ -9,7 +9,7 @@ import { Graph } from '../core/Graph';
 import { modeSelect } from '../modes/select';
 import { osmEntity } from '../osm/entity';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 
 import {
@@ -38,7 +38,7 @@ export function uiFeatureList(context) {
             .attr('class', 'search-header');
 
         searchWrap
-            .call(svgIcon('#rapid-icon-search', 'pre-text'));
+            .call(uiIcon('#rapid-icon-search', 'pre-text'));
 
         var search = searchWrap
             .append('input')
@@ -254,7 +254,7 @@ export function uiFeatureList(context) {
                 .append('button')
                 .property('disabled', true)
                 .attr('class', 'no-results-item')
-                .call(svgIcon('#rapid-icon-alert', 'pre-text'));
+                .call(uiIcon('#rapid-icon-alert', 'pre-text'));
 
             resultsIndicator.append('span')
                 .attr('class', 'entity-name');
@@ -303,7 +303,7 @@ export function uiFeatureList(context) {
             label
                 .each(function(d) {
                     d3_select(this)
-                        .call(svgIcon('#rapid-icon-' + d.geometry, 'pre-text'));
+                        .call(uiIcon('#rapid-icon-' + d.geometry, 'pre-text'));
                 });
 
             label

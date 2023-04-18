@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
 
@@ -90,7 +90,7 @@ export function uiToolNotes(context) {
       buttonsEnter
         .each((d, i, nodes) => {
           d3_select(nodes[i])
-            .call(svgIcon(d.icon || `#rapid-icon-${d.button}`));
+            .call(uiIcon(d.icon || `#rapid-icon-${d.button}`));
         });
 
       // if we are adding/removing the buttons, check if toolbar has overflowed

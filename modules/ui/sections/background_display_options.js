@@ -1,6 +1,6 @@
 import { prefs } from '../../core/preferences';
 import { t, localizer } from '../../core/localizer';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
@@ -89,7 +89,7 @@ export function uiSectionBackgroundDisplayOptions(context) {
         if (d3_event.button !== 0) return;  // left click only
         updateValue(d, 1);
       })
-      .call(svgIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+      .call(uiIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
 
     // reset all button
     containerEnter

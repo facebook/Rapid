@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { utilFunctor } from '../util';
 import { utilRebind } from '../util/rebind';
 import { uiToggle } from './toggle';
@@ -31,7 +31,7 @@ export function uiDisclosure(context, key, expandedDefault) {
       .append('a')
       .attr('href', '#')
       .attr('class', `hide-toggle hide-toggle-${key}`)
-      .call(svgIcon('', 'pre-text', 'hide-toggle-icon'));
+      .call(uiIcon('', 'pre-text', 'hide-toggle-icon'));
 
     hideToggleEnter
       .append('span')

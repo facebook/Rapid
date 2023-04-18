@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 import { geoMetersToOffset, geoOffsetToMeters } from '@rapid-sdk/math';
 
 import { t, localizer } from '../../core/localizer';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
@@ -156,7 +156,7 @@ export function uiSectionBackgroundOffset(context) {
         d3_event.preventDefault();
         resetOffset();
       })
-      .call(svgIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
+      .call(uiIcon('#rapid-icon-' + (localizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
 
     updateValue();
   }

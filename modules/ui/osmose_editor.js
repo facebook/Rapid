@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 import { uiOsmoseDetails } from './osmose_details';
 import { uiOsmoseHeader } from './osmose_header';
@@ -30,7 +30,7 @@ export function uiOsmoseEditor(context) {
       .append('button')
         .attr('class', 'close')
         .on('click', () => context.enter('browse'))
-        .call(svgIcon('#rapid-icon-close'));
+        .call(uiIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3')

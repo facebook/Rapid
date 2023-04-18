@@ -4,7 +4,7 @@ import {
 
 import { t, localizer } from '../core/localizer';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 // Pass `what` object of the form:
@@ -69,7 +69,7 @@ export function uiTagReference(what) {
             .attr('target', '_blank')
             .attr('title', t('inspector.edit_reference'))
             .attr('href', docs.editURL)
-            .call(svgIcon('#rapid-icon-edit', 'inline'));
+            .call(uiIcon('#rapid-icon-edit', 'inline'));
 
         if (docs.wiki) {
             _body
@@ -77,7 +77,7 @@ export function uiTagReference(what) {
               .attr('class', 'tag-reference-link')
               .attr('target', '_blank')
               .attr('href', docs.wiki.url)
-              .call(svgIcon('#rapid-icon-out-link', 'inline'))
+              .call(uiIcon('#rapid-icon-out-link', 'inline'))
               .append('span')
               .html(t.html(docs.wiki.text));
         }
@@ -88,7 +88,7 @@ export function uiTagReference(what) {
                 .append('a')
                 .attr('class', 'tag-reference-comment-link')
                 .attr('target', '_blank')
-                .call(svgIcon('#rapid-icon-out-link', 'inline'))
+                .call(uiIcon('#rapid-icon-out-link', 'inline'))
                 .attr('href', t('commit.about_changeset_comments_link'))
                 .append('span')
                 .html(t.html('commit.about_changeset_comments'));
@@ -150,7 +150,7 @@ export function uiTagReference(what) {
             .append('button')
             .attr('class', 'tag-reference-button ' + (klass || ''))
             .attr('title', t('icons.information'))
-            .call(svgIcon('#rapid-icon-' + (iconName || 'inspect')))
+            .call(uiIcon('#rapid-icon-' + (iconName || 'inspect')))
             .merge(_button);
 
         _button

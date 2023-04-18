@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { QAItem } from '../osm';
 
 export function uiViewOnOsmose() {
@@ -26,7 +26,7 @@ export function uiViewOnOsmose() {
         .attr('target', '_blank')
         .attr('rel', 'noopener') // security measure
         .attr('href', d => d)
-        .call(svgIcon('#rapid-icon-out-link', 'inline'));
+        .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
     linkEnter
       .append('span')

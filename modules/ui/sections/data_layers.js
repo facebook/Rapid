@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSection } from '../section';
 import { uiSettingsCustomData } from '../settings/custom_data';
@@ -221,7 +221,7 @@ export function uiSectionDataLayers(context) {
         d3_event.preventDefault();
         editCustom();
       })
-      .call(svgIcon('#rapid-icon-more'));
+      .call(uiIcon('#rapid-icon-more'));
 
     liEnter
       .append('button')
@@ -237,7 +237,7 @@ export function uiSectionDataLayers(context) {
         d3_event.stopPropagation();
         dataLayer.fitZoom();
       })
-      .call(svgIcon('#rapid-icon-framed-dot', 'monochrome'));
+      .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'));
 
     // Update
     ul = ul

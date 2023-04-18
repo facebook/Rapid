@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 import { uiImproveOsmComments } from './improveOSM_comments';
 import { uiImproveOsmDetails } from './improveOSM_details';
@@ -31,7 +31,7 @@ export function uiImproveOsmEditor(context) {
       .append('button')
         .attr('class', 'close')
         .on('click', () => context.enter('browse'))
-        .call(svgIcon('#rapid-icon-close'));
+        .call(uiIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3')

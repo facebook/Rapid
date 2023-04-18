@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 import { uiTooltip } from './tooltip';
 import { utilKeybinding } from '../util/keybinding';
@@ -80,7 +80,7 @@ export function uiZoom(context) {
 
     buttons.each((d, i, nodes) => {
       d3_select(nodes[i])
-        .call(svgIcon(`#${d.icon}`, 'light'));
+        .call(uiIcon(`#${d.icon}`, 'light'));
     });
 
     utilKeybinding.plusKeys.forEach(key => {

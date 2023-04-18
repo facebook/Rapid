@@ -7,7 +7,7 @@ import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { services } from '../../services';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
@@ -190,7 +190,7 @@ export function uiFieldLocalized(field, context) {
         translateButton = translateButton.enter()
             .append('button')
             .attr('class', 'localized-add form-field-button')
-            .call(svgIcon('#rapid-icon-plus'))
+            .call(uiIcon('#rapid-icon-plus'))
             .merge(translateButton);
 
         translateButton
@@ -405,7 +405,7 @@ export function uiFieldLocalized(field, context) {
 
                         renderMultilingual(selection);
                     })
-                    .call(svgIcon('#rapid-operation-delete'));
+                    .call(uiIcon('#rapid-operation-delete'));
 
                 wrap
                     .append('input')

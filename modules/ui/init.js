@@ -3,8 +3,6 @@ import { select as d3_select } from 'd3-selection';
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { presetManager } from '../presets';
-import { svgDefs } from '../svg/defs';
-import { svgIcon } from '../svg/icon';
 //import React from 'react';
 //import { createRoot } from 'react-dom/client';
 import { utilDetect } from '../util/detect';
@@ -13,11 +11,13 @@ import { utilGetDimensions } from '../util/dimensions';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
+import { uiDefs } from './defs';
 import { uiEditMenu } from './edit_menu';
 import { uiFeatureInfo } from './feature_info';
 import { uiFlash } from './flash';
 import { uiFullScreen } from './full_screen';
 import { uiGeolocate } from './geolocate';
+import { uiIcon } from './icon';
 import { uiInfo } from './info';
 import { uiIntro } from './intro';
 import { uiIssuesInfo } from './issues_info';
@@ -119,7 +119,7 @@ export function uiInit(context) {
     container
       .append('svg')
       .attr('id', 'rapid-defs')
-      .call(ui.svgDefs);
+      .call(ui.defs);
 
     // Sidebar
     container
@@ -314,14 +314,14 @@ export function uiInit(context) {
       .attr('class', 'bugnub')
       .attr('tabindex', -1)
       .on('click', generateBugLink)
-      .call(svgIcon('#rapid-icon-bug', 'bugnub'))
+      .call(uiIcon('#rapid-icon-bug', 'bugnub'))
       .call(uiTooltip().title(t.html('report_a_bug')).placement('top'));
 
     issueLinks
       .append('a')
       .attr('target', '_blank')
       .attr('href', 'https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating')
-      .call(svgIcon('#rapid-icon-translate', 'light'))
+      .call(uiIcon('#rapid-icon-translate', 'light'))
       .call(uiTooltip().title(t.html('help_translate')).placement('top'));
 
     aboutList
@@ -443,7 +443,7 @@ export function uiInit(context) {
 
   let ui = {};
 
-  ui.svgDefs = svgDefs(context);
+  ui.defs = uiDefs(context);
 
   ui.flash = uiFlash(context);
 

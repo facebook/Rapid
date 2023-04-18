@@ -9,7 +9,7 @@ import { actionDeleteMember } from '../../actions/delete_member';
 import { actionMoveMember } from '../../actions/move_member';
 import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { services } from '../../services';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
@@ -202,13 +202,13 @@ export function uiSectionRawMemberEditor(context) {
                         .append('button')
                         .attr('title', t('icons.remove'))
                         .attr('class', 'remove member-delete')
-                        .call(svgIcon('#rapid-operation-delete'));
+                        .call(uiIcon('#rapid-operation-delete'));
 
                     label
                         .append('button')
                         .attr('class', 'member-zoom')
                         .attr('title', t('icons.zoom_to'))
-                        .call(svgIcon('#rapid-icon-framed-dot', 'monochrome'))
+                        .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'))
                         .on('click', zoomToMember);
 
                 } else {
@@ -230,7 +230,7 @@ export function uiSectionRawMemberEditor(context) {
                         .append('button')
                         .attr('class', 'member-download')
                         .attr('title', t('icons.download'))
-                        .call(svgIcon('#rapid-icon-load'))
+                        .call(uiIcon('#rapid-icon-load'))
                         .on('click', downloadMember);
                 }
             });

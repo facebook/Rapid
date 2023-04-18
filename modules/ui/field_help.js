@@ -2,7 +2,7 @@
 //
 //import { marked } from 'marked';
 //import { t, localizer } from '../core/localizer';
-//import { svgIcon } from '../svg/icon';
+//import { uiIcon } from './icon';
 //import { icon } from './intro/helper';
 //
 //
@@ -146,7 +146,7 @@
 //        button.enter()
 //            .append('button')
 //            .attr('class', 'field-help-button')
-//            .call(svgIcon('#rapid-icon-help'))
+//            .call(uiIcon('#rapid-icon-help'))
 //            .merge(button)
 //            .on('click', function (d3_event) {
 //                d3_event.stopPropagation();
@@ -204,7 +204,7 @@
 //                d3_event.preventDefault();
 //                hide();
 //            })
-//            .call(svgIcon('#rapid-icon-close'));
+//            .call(uiIcon('#rapid-icon-close'));
 //
 //        var navEnter = enter
 //            .append('div')

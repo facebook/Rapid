@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 import { uiDataHeader } from './data_header';
 import { uiSectionRawTagEditor } from './sections/raw_tag_editor';
@@ -28,7 +28,7 @@ export function uiDataEditor(context) {
             .on('click', function() {
                 context.enter('browse');
             })
-            .call(svgIcon('#rapid-icon-close'));
+            .call(uiIcon('#rapid-icon-close'));
 
         headerEnter
             .append('h3')

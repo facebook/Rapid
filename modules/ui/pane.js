@@ -2,7 +2,7 @@ import {
     select as d3_select
 } from 'd3-selection';
 
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 
@@ -86,7 +86,7 @@ export function uiPane(id, context) {
         selection
             .append('button')
             .on('click', pane.togglePane)
-            .call(svgIcon('#' + _iconName, 'light'))
+            .call(uiIcon('#' + _iconName, 'light'))
             .call(_paneTooltip);
     };
 
@@ -118,7 +118,7 @@ export function uiPane(id, context) {
         heading
             .append('button')
             .on('click', hidePane)
-            .call(svgIcon('#rapid-icon-close'));
+            .call(uiIcon('#rapid-icon-close'));
 
 
         _paneSelection

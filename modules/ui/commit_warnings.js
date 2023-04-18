@@ -1,7 +1,7 @@
 import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 
 
@@ -74,7 +74,7 @@ export function uiCommitWarnings(context) {
                 });
 
             buttons
-                .call(svgIcon('#rapid-icon-alert', 'pre-text'));
+                .call(uiIcon('#rapid-icon-alert', 'pre-text'));
 
             buttons
                 .append('strong')

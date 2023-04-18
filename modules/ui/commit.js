@@ -6,7 +6,7 @@ import deepEqual from 'fast-deep-equal';
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
 import { osmChangeset } from '../osm';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { services } from '../services';
 import { uiTooltip } from './tooltip';
 import { uiChangesetEditor } from './changeset_editor';
@@ -243,7 +243,7 @@ export function uiCommit(context) {
             .on('click', function() {
                 dispatch.call('cancel', this);
             })
-            .call(svgIcon('#rapid-icon-close'));
+            .call(uiIcon('#rapid-icon-close'));
 
         var body = selection.selectAll('.body')
             .data([0]);

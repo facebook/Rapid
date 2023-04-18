@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { t } from '../core/localizer';
 
 
@@ -47,7 +47,7 @@ export function uiKeepRightHeader() {
       .attr('class', 'qa-header-icon')
       .append('div')
       .attr('class', d => `qaItem ${d.service}`)
-      .call(svgIcon('#rapid-icon-bolt'));
+      .call(uiIcon('#rapid-icon-bolt'));
 
     headerEnter
       .append('div')

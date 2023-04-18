@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { presetManager } from '../../presets';
 import { modeSelect } from '../../modes/select';
 import { osmEntity } from '../../osm';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 import { t } from '../../core/localizer';
 import { utilDisplayName, utilHighlightEntities } from '../../util';
@@ -83,7 +83,7 @@ export function uiSectionSelectionList(context) {
     label
       .append('span')
       .attr('class', 'entity-geom-icon')
-      .call(svgIcon('', 'pre-text'));
+      .call(uiIcon('', 'pre-text'));
 
     label
       .append('span')
@@ -98,7 +98,7 @@ export function uiSectionSelectionList(context) {
       .attr('class', 'close')
       .attr('title', t('icons.deselect'))
       .on('click', deselectEntity)
-      .call(svgIcon('#rapid-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
     // Update
     items = items.merge(enter);

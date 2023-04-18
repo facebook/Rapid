@@ -6,7 +6,7 @@ import { prefs } from '../../core/preferences';
 import { fileFetcher } from '../../core/file_fetcher';
 import { osmEntity } from '../../osm/entity';
 import { services } from '../../services';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 
 import { UiCurtain } from './UiCurtain';
 import { uiIntroWelcome } from './welcome';
@@ -249,7 +249,7 @@ export function uiIntro(context, skipToRapid) {
     buttons
       .append('span')
       .attr('class', 'status')
-      .call(svgIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
+      .call(uiIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
 
     _enterChapter(null, chapters[skipToRapid ? 6 : 0]);
 

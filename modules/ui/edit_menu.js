@@ -6,7 +6,7 @@ import { localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 import { utilRebind } from '../util/rebind';
 import { utilHighlightEntities } from '../util/util';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiEditMenu(context) {
@@ -106,7 +106,7 @@ export function uiEditMenu(context) {
         .call(tooltip)
         .append('div')
         .attr('class', 'icon-wrap')
-        .call(svgIcon(`#rapid-operation-${d.id}`, 'operation'));
+        .call(uiIcon(`#rapid-operation-${d.id}`, 'operation'));
     });
 
     if (showLabels) {

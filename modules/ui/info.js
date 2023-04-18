@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiCmd } from './cmd';
 
 import { UiPanelBackground } from './panels/UiPanelBackground';
@@ -73,7 +73,7 @@ export function uiInfo(context) {
           e.preventDefault();
           info.toggle(d);
         })
-        .call(svgIcon('#rapid-icon-close'));
+        .call(uiIcon('#rapid-icon-close'));
 
       panelEnter
         .append('div')

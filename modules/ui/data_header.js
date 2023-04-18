@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiDataHeader() {
@@ -26,7 +26,7 @@ export function uiDataHeader() {
 
         iconEnter
             .append('div')
-            .call(svgIcon('#rapid-icon-data', 'note-fill'));
+            .call(uiIcon('#rapid-icon-data', 'note-fill'));
 
         headerEnter
             .append('div')

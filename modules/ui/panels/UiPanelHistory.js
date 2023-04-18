@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { AbstractUiPanel } from './AbstractUiPanel';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { t, localizer } from '../../core/localizer';
 
 
@@ -152,7 +152,7 @@ export class UiPanelHistory extends AbstractUiPanel {
         .attr('class', 'view-history-on-osm')
         .attr('target', '_blank')
         .attr('href', osm.noteURL(note))
-        .call(svgIcon('#rapid-icon-out-link', 'inline'))
+        .call(uiIcon('#rapid-icon-out-link', 'inline'))
         .append('span')
         .html(t.html('info_panels.history.note_link_text'));
     }

@@ -5,7 +5,7 @@ import deepEqual from 'fast-deep-equal';
 import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { actionChangeTags } from '../actions/change_tags';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { utilRebind } from '../util';
 
 import { uiSectionEntityIssues } from './sections/entity_issues';
@@ -131,13 +131,13 @@ export function uiEntityEditor(context) {
         headerEnter
             .append('button')
             .attr('class', 'preset-reset preset-choose')
-            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-forward' : '#rapid-icon-backward'));
+            .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-forward' : '#rapid-icon-backward'));
 
         headerEnter
             .append('button')
             .attr('class', 'close')
             .on('click', function() { context.enter('browse'); })
-            .call(svgIcon(_modified ? '#rapid-icon-apply' : '#rapid-icon-close'));
+            .call(uiIcon(_modified ? '#rapid-icon-apply' : '#rapid-icon-close'));
 
         headerEnter
             .append('h3');

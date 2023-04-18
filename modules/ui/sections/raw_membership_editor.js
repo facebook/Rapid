@@ -10,7 +10,7 @@ import { actionDeleteMembers } from '../../actions/delete_members';
 import { modeSelect } from '../../modes/select';
 import { osmEntity, osmRelation } from '../../osm';
 import { services } from '../../services';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTooltip } from '../tooltip';
@@ -354,14 +354,14 @@ export function uiSectionRawMembershipEditor(context) {
         labelEnter
             .append('button')
             .attr('class', 'remove member-delete')
-            .call(svgIcon('#rapid-operation-delete'))
+            .call(uiIcon('#rapid-operation-delete'))
             .on('click', deleteMembership);
 
         labelEnter
             .append('button')
             .attr('class', 'member-zoom')
             .attr('title', t('icons.zoom_to'))
-            .call(svgIcon('#rapid-icon-framed-dot', 'monochrome'))
+            .call(uiIcon('#rapid-icon-framed-dot', 'monochrome'))
             .on('click', zoomToRelation);
 
         var wrapEnter = itemsEnter
@@ -421,7 +421,7 @@ export function uiSectionRawMembershipEditor(context) {
         newLabelEnter
             .append('button')
             .attr('class', 'remove member-delete')
-            .call(svgIcon('#rapid-operation-delete'))
+            .call(uiIcon('#rapid-operation-delete'))
             .on('click', function() {
                 list.selectAll('.member-row-new')
                     .remove();
@@ -464,7 +464,7 @@ export function uiSectionRawMembershipEditor(context) {
             .attr('class', 'add-relation');
 
         addRelationButton
-            .call(svgIcon('#rapid-icon-plus', 'light'));
+            .call(uiIcon('#rapid-icon-plus', 'light'));
         addRelationButton
             .call(uiTooltip().title(t.html('inspector.add_to_relation')).placement(localizer.textDirection() === 'ltr' ? 'right' : 'left'));
 

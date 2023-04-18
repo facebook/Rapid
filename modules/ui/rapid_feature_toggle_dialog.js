@@ -4,7 +4,7 @@ import { marked } from 'marked';
 import { t, localizer } from '../core/localizer';
 import { prefs } from '../core/preferences';
 import { icon } from './intro/helper';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiModal } from './modal';
 import { uiRapidColorpicker } from './rapid_colorpicker';
 import { uiRapidViewManageDatasets } from './rapid_view_manage_datasets';
@@ -188,7 +188,7 @@ export function uiRapidFeatureToggleDialog(context, AIFeatureToggleKey, featureT
       .attr('class', 'rapid-checkbox-inputs')
       .append('div')
       .attr('class', 'rapid-checkbox-label')
-      .call(svgIcon(localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
+      .call(uiIcon(localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward', 'icon-30'));
 
 
     /* OK Button */

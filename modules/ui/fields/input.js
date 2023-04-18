@@ -6,7 +6,7 @@ import { presetManager } from '../../presets';
 import { fileFetcher } from '../../core/file_fetcher';
 import { t, localizer } from '../../core/localizer';
 import { utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 
 export {
     uiFieldText as uiFieldUrl,
@@ -129,7 +129,7 @@ export function uiFieldText(field, context) {
 
             outlinkButton.enter()
                 .append('button')
-                .call(svgIcon('#rapid-icon-out-link'))
+                .call(uiIcon('#rapid-icon-out-link'))
                 .attr('class', 'form-field-button foreign-id-permalink')
                 .attr('title', function() {
                     var domainResults = /^https?:\/\/(.{1,}?)\//.exec(field.urlFormat);
@@ -157,7 +157,7 @@ export function uiFieldText(field, context) {
 
             outlinkButton.enter()
                 .append('button')
-                .call(svgIcon('#rapid-icon-out-link'))
+                .call(uiIcon('#rapid-icon-out-link'))
                 .attr('class', 'form-field-button foreign-id-permalink')
                 .attr('title', () => t('icons.visit_website'))
                 .on('click', function(d3_event) {

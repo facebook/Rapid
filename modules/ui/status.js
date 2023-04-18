@@ -1,7 +1,7 @@
 import _throttle from 'lodash-es/throttle';
 
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiStatus(context) {
@@ -27,7 +27,7 @@ export function uiStatus(context) {
                         .attr('href', '#')
                         .attr('class', 'api-status-login')
                         .attr('target', '_blank')
-                        .call(svgIcon('#rapid-icon-out-link', 'inline'))
+                        .call(uiIcon('#rapid-icon-out-link', 'inline'))
                         .append('span')
                         .html(t.html('login'))
                         .on('click.login', function(d3_event) {

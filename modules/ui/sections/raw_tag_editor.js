@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayDifference, utilArrayIdentical, utilTagDiff } from '@rapid-sdk/util';
 
 import { services } from '../../services';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCombobox } from '../combobox';
 import { uiSection } from '../section';
 import { uiTagReference } from '../tag_reference';
@@ -112,7 +112,7 @@ export function uiSectionRawTagEditor(id, context) {
             })
             .each(function(d) {
                 d3_select(this)
-                    .call(svgIcon(d.icon));
+                    .call(uiIcon(d.icon));
             });
 
 
@@ -158,7 +158,7 @@ export function uiSectionRawTagEditor(id, context) {
         addRowEnter
             .append('button')
             .attr('class', 'add-tag')
-            .call(svgIcon('#rapid-icon-plus', 'light'))
+            .call(uiIcon('#rapid-icon-plus', 'light'))
             .on('click', addTag);
 
         addRowEnter
@@ -215,7 +215,7 @@ export function uiSectionRawTagEditor(id, context) {
             .append('button')
             .attr('class', 'form-field-button remove')
             .attr('title', t('icons.remove'))
-            .call(svgIcon('#rapid-operation-delete'));
+            .call(uiIcon('#rapid-operation-delete'));
 
 
         // Update

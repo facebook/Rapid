@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 import { geoSphericalDistance } from '@rapid-sdk/math';
 
 import { actionNoop } from '../../actions/noop';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
@@ -99,7 +99,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
       .each((d, i, nodes) => {
         const iconName = '#rapid-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
         d3_select(nodes[i])
-          .call(svgIcon(iconName));
+          .call(uiIcon(iconName));
       });
 
     textEnter
@@ -126,7 +126,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
               context.perform.apply(context, d.autoArgs);
               context.validator().validate();
             })
-            .call(svgIcon('#rapid-icon-wrench'));
+            .call(uiIcon('#rapid-icon-wrench'));
         });
     }
 
@@ -164,7 +164,7 @@ export function uiSectionValidationIssues(context, sectionID, severity) {
     linkEnter
       .append('span')
       .attr('class', 'autofix-all-link-icon')
-      .call(svgIcon('#rapid-icon-wrench'));
+      .call(uiIcon('#rapid-icon-wrench'));
 
     // update
     autoFixAll = autoFixAll

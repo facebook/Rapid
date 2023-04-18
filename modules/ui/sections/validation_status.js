@@ -1,6 +1,6 @@
 import _debounce from 'lodash-es/debounce';
 
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { uiSection } from '../section';
@@ -35,7 +35,7 @@ export function uiSectionValidationStatus(context) {
 
     boxEnter
       .append('div')
-      .call(svgIcon('#rapid-icon-apply', 'pre-text'));
+      .call(uiIcon('#rapid-icon-apply', 'pre-text'));
 
     let noIssuesMessage = boxEnter
       .append('span');

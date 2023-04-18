@@ -1,6 +1,6 @@
 import { t } from '../core/localizer';
 import { osmEntity, osmNote } from '../osm';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiViewOnOSM(context) {
@@ -29,7 +29,7 @@ export function uiViewOnOSM(context) {
             .attr('class', 'view-on-osm')
             .attr('target', '_blank')
             .attr('href', url)
-            .call(svgIcon('#rapid-icon-out-link', 'inline'));
+            .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
         linkEnter
             .append('span')

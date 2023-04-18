@@ -1,7 +1,7 @@
 import { t } from '../core/localizer';
 import { osmNote } from '../osm';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiNoteReport() {
@@ -26,7 +26,7 @@ export function uiNoteReport() {
             .attr('class', 'note-report')
             .attr('target', '_blank')
             .attr('href', function(d) { return d; })
-            .call(svgIcon('#rapid-icon-out-link', 'inline'));
+            .call(uiIcon('#rapid-icon-out-link', 'inline'));
 
         linkEnter
             .append('span')

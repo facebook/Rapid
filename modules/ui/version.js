@@ -1,6 +1,6 @@
 import { prefs } from '../core/preferences';
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 
 
@@ -42,7 +42,7 @@ export function uiVersion(context) {
         .attr('target', '_blank')
         .attr('tabindex', -1)
         .attr('href', 'https://github.com/facebook/Rapid/blob/main/CHANGELOG.md')
-        .call(svgIcon('#maki-gift'))
+        .call(uiIcon('#maki-gift'))
         .call(uiTooltip()
           .title(t.html('version.whats_new', { version: currVersion }))
           .placement('top')

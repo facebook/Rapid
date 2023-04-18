@@ -1,5 +1,5 @@
 import { marked } from 'marked';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiIntro } from '../intro/intro';
 import { uiPane } from '../pane';
 
@@ -317,7 +317,7 @@ export function uiPaneHelp(context) {
                     nextLink
                         .append('span')
                         .html(docs[i + 1].title)
-                        .call(svgIcon((rtl ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
+                        .call(uiIcon((rtl ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'));
                 }
             }
 
@@ -334,7 +334,7 @@ export function uiPaneHelp(context) {
                         });
 
                     prevLink
-                        .call(svgIcon((rtl ? '#rapid-icon-forward' : '#rapid-icon-backward'), 'inline'))
+                        .call(uiIcon((rtl ? '#rapid-icon-forward' : '#rapid-icon-backward'), 'inline'))
                         .append('span')
                         .html(docs[i - 1].title);
                 }

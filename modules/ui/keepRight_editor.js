@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 import { uiKeepRightDetails } from './keepRight_details';
 import { uiKeepRightHeader } from './keepRight_header';
@@ -30,7 +30,7 @@ export function uiKeepRightEditor(context) {
       .append('button')
         .attr('class', 'close')
         .on('click', () => context.enter('browse'))
-        .call(svgIcon('#rapid-icon-close'));
+        .call(uiIcon('#rapid-icon-close'));
 
     headerEnter
       .append('h3')

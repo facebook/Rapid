@@ -3,7 +3,7 @@ import { Extent } from '@rapid-sdk/math';
 
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiLoading } from './loading';
 
 const GEOLOCATE_TIMEOUT = 10000;  // 10 sec
@@ -104,7 +104,7 @@ export function uiGeolocate(context) {
     _button = selection
       .append('button')
       .on('click', click)
-      .call(svgIcon('#rapid-icon-geolocate', 'light'))
+      .call(uiIcon('#rapid-icon-geolocate', 'light'))
       .call(uiTooltip()
         .placement((localizer.textDirection() === 'rtl') ? 'right' : 'left')
         .title(t.html('geolocate.title'))

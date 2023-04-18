@@ -6,7 +6,7 @@ import { utilEntityOrMemberSelector } from '@rapid-sdk/util';
 import { t } from '../core/localizer';
 import { JXON } from '../util/jxon';
 import { osmChangeset } from '../osm';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { utilDetect, utilKeybinding, utilRebind, utilWrap } from '../util';
 
 
@@ -52,7 +52,7 @@ export function uiConflicts(context) {
             .append('button')
             .attr('class', 'fr')
             .on('click', cancel)
-            .call(svgIcon('#rapid-icon-close'));
+            .call(uiIcon('#rapid-icon-close'));
 
         headerEnter
             .append('h3')
@@ -98,7 +98,7 @@ export function uiConflicts(context) {
         }
 
         linkEnter
-            .call(svgIcon('#rapid-icon-load', 'inline'))
+            .call(uiIcon('#rapid-icon-load', 'inline'))
             .append('span')
             .html(t.html('save.conflict.download_changes'));
 

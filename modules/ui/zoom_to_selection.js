@@ -1,6 +1,6 @@
 import { t, localizer } from '../core/localizer';
 import { uiTooltip } from './tooltip';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiZoomToSelection(context) {
@@ -18,7 +18,7 @@ export function uiZoomToSelection(context) {
       .append('button')
       .on('pointerup', d3_event => _lastPointerUpType = d3_event.pointerType)
       .on('click', onClick)
-      .call(svgIcon('#rapid-icon-framed-dot', 'light'))
+      .call(uiIcon('#rapid-icon-framed-dot', 'light'))
       .call(tooltip);
 
     context.keybinding().on(KEY, onClick);

@@ -1,5 +1,5 @@
 import { t } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 
 export function uiAccount(context) {
@@ -38,7 +38,7 @@ export function uiAccount(context) {
           .attr('src', user.image_url);
       } else {
         userLink
-          .call(svgIcon('#rapid-icon-avatar', 'pre-text light'));
+          .call(uiIcon('#rapid-icon-avatar', 'pre-text light'));
       }
 
       // Add user name

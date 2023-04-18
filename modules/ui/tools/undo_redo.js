@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../../core/localizer';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiTooltip } from '../tooltip';
 
@@ -88,7 +88,7 @@ export function uiToolUndoRedo(context) {
 
     buttons.each((d, i, nodes) => {
       d3_select(nodes[i])
-        .call(svgIcon(`#rapid-icon-${d.icon}`));
+        .call(uiIcon(`#rapid-icon-${d.icon}`));
     });
 
     debouncedUpdate = _debounce(update, 500, { leading: true, trailing: true });

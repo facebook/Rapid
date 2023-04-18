@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 import { utilArrayIdentical } from '@rapid-sdk/util';
 
 import { prefs } from '../../core/preferences';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { t } from '../../core/localizer';
 import { utilHighlightEntities } from '../../util';
 import { uiSection } from '../section';
@@ -106,7 +106,7 @@ export function uiSectionEntityIssues(context) {
             .each(function(d) {
                 var iconName = '#rapid-icon-' + (d.severity === 'warning' ? 'alert' : 'error');
                 d3_select(this)
-                    .call(svgIcon(iconName, 'issue-icon'));
+                    .call(uiIcon(iconName, 'issue-icon'));
             });
 
         textEnter
@@ -118,7 +118,7 @@ export function uiSectionEntityIssues(context) {
             .append('button')
             .attr('class', 'issue-info-button')
             .attr('title', t('icons.information'))
-            .call(svgIcon('#rapid-icon-inspect'));
+            .call(uiIcon('#rapid-icon-inspect'));
 
         infoButton
             .on('click', function (d3_event) {
@@ -233,7 +233,7 @@ export function uiSectionEntityIssues(context) {
         buttons
             .each(function(d) {
                 var iconName = d.icon || 'rapid-icon-wrench';
-                d3_select(this).call(svgIcon(`#${iconName}`, 'fix-icon'));
+                d3_select(this).call(uiIcon(`#${iconName}`, 'fix-icon'));
             });
 
         buttons

@@ -6,7 +6,7 @@ import { presetManager } from '../presets';
 import { t, localizer } from '../core/localizer';
 import { actionChangePreset } from '../actions/change_preset';
 import { operationDelete } from '../operations/delete';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 import { uiPresetIcon } from './preset_icon';
 import { uiTagReference } from './tag_reference';
@@ -40,7 +40,7 @@ export function uiPresetList(context) {
             .append('button')
             .attr('class', 'preset-choose')
             .on('click', function() { dispatch.call('cancel', this); })
-            .call(svgIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'));
+            .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-backward' : '#rapid-icon-forward'));
 
         function initialKeydown(d3_event) {
             // hack to let delete shortcut work when search is autofocused
@@ -112,7 +112,7 @@ export function uiPresetList(context) {
             .attr('class', 'search-header');
 
         searchWrap
-            .call(svgIcon('#rapid-icon-search', 'pre-text'));
+            .call(uiIcon('#rapid-icon-search', 'pre-text'));
 
         var search = searchWrap
             .append('input')
@@ -321,7 +321,7 @@ export function uiPresetList(context) {
             label
                 .append('div')
                 .attr('class', 'namepart')
-                .call(svgIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
+                .call(uiIcon((localizer.textDirection() === 'rtl' ? '#rapid-icon-backward' : '#rapid-icon-forward'), 'inline'))
                 .append('span')
                 .html(function() { return preset.nameLabel() + '&hellip;'; });
 

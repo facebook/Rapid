@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { presetManager } from '../../presets';
 import { t } from '../../core/localizer';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
 
@@ -109,7 +109,7 @@ export function uiToolDrawModes(context) {
       buttonsEnter
         .each((d, i, nodes) => {
           d3_select(nodes[i])
-            .call(svgIcon(`#rapid-icon-${d.button}`));
+            .call(uiIcon(`#rapid-icon-${d.button}`));
         });
 
       buttonsEnter

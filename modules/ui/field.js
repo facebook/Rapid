@@ -4,7 +4,7 @@ import { utilUniqueString } from '@rapid-sdk/util';
 
 import { t, localizer } from '../core/localizer';
 import { locationManager } from '../core/LocationManager';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiTooltip } from './tooltip';
 // import { uiFieldHelp } from './field_help';
 import { uiFields } from './fields';
@@ -160,7 +160,7 @@ export function uiField(context, presetField, entityIDs, options) {
                     .append('button')
                     .attr('class', 'remove-icon')
                     .attr('title', t('icons.remove'))
-                    .call(svgIcon('#rapid-operation-delete'));
+                    .call(uiIcon('#rapid-operation-delete'));
             }
 
             if (options.revert) {
@@ -168,7 +168,7 @@ export function uiField(context, presetField, entityIDs, options) {
                     .append('button')
                     .attr('class', 'modified-icon')
                     .attr('title', t('icons.undo'))
-                    .call(svgIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-redo' : '#rapid-icon-undo'));
+                    .call(uiIcon((localizer.textDirection() === 'rtl') ? '#rapid-icon-redo' : '#rapid-icon-undo'));
             }
         }
 

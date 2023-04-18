@@ -1,6 +1,6 @@
 import { select as d3_select } from 'd3-selection';
 
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { utilKeybinding } from '../util';
 
 
@@ -56,7 +56,7 @@ export function uiModal(selection, blocking) {
       .append('button')
       .attr('class', 'close')
       .on('click', shaded.close)
-      .call(svgIcon('#rapid-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
     keybinding
       .on('⌫', shaded.close)

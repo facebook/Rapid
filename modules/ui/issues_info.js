@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { prefs } from '../core/preferences';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { t } from '../core/localizer';
 import { uiTooltip } from './tooltip';
 
@@ -74,7 +74,7 @@ export function uiIssuesInfo(context) {
                         context.ui().togglePanes(context.container().select('.map-panes .issues-pane'));
                     });
 
-                chipSelection.call(svgIcon('#' + d.iconID));
+                chipSelection.call(uiIcon('#' + d.iconID));
 
             });
 

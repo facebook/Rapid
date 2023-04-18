@@ -7,7 +7,7 @@ import { fileFetcher } from '../core/file_fetcher';
 import { locationManager } from '../core/LocationManager';
 import { t, localizer } from '../core/localizer';
 
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { uiDisclosure } from '../ui/disclosure';
 import { utilRebind } from '../util/rebind';
 
@@ -88,7 +88,7 @@ export function uiSuccess(context) {
       .append('button')
       .attr('class', 'close')
       .on('click', () => dispatch.call('cancel'))
-      .call(svgIcon('#rapid-icon-close'));
+      .call(uiIcon('#rapid-icon-close'));
 
     let body = selection
       .append('div')
@@ -109,7 +109,7 @@ export function uiSuccess(context) {
       .attr('class', 'link-out')
       .attr('target', '_blank')
       .attr('href', t('success.help_link_url'))
-      .call(svgIcon('#rapid-icon-out-link', 'inline'))
+      .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .append('span')
       .html(t.html('success.help_link_text'));
 
@@ -232,7 +232,7 @@ export function uiSuccess(context) {
       .append('a')
       .attr('class', 'link-out')
       .attr('target', '_blank')
-      .call(svgIcon('#rapid-icon-out-link', 'inline'))
+      .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://github.com/osmlab/osm-community-index/issues')
       .append('span')
       .html(t.html('success.tell_us'));

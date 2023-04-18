@@ -4,7 +4,7 @@ import { select as d3_select } from 'd3-selection';
 /*
  * A standalone SVG `defs` element that contains the icon spritesheets for the user interface
  */
-export function svgDefs(context) {
+export function uiDefs(context) {
   const spritesheetIDs = ['rapid-sprite', 'maki-sprite', 'temaki-sprite', 'fa-sprite', 'community-sprite'];
 
   function render(selection) {

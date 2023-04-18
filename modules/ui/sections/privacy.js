@@ -1,7 +1,7 @@
 import { prefs } from '../../core/preferences';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 
 
@@ -52,7 +52,7 @@ export function uiSectionPrivacy(context) {
       .attr('class', 'privacy-link')
       .append('a')
       .attr('target', '_blank')
-      .call(svgIcon('#rapid-icon-out-link', 'inline'))
+      .call(uiIcon('#rapid-icon-out-link', 'inline'))
       .attr('href', 'https://mapwith.ai/doc/license/MapWithAIPrivacyPolicy.pdf')
       .append('span')
       .html(t.html('preferences.privacy.privacy_link'));

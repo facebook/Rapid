@@ -8,7 +8,7 @@ import { utilRebind } from '../../util/rebind';
 import { t } from '../../core/localizer';
 import { actionReverse } from '../../actions/reverse';
 import { osmOneWayTags } from '../../osm';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 
 export { uiFieldCheck as uiFieldDefaultCheck };
 export { uiFieldCheck as uiFieldOnewayCheck };
@@ -84,7 +84,7 @@ export function uiFieldCheck(field, context) {
 
         selection.selectAll('.reverser-span')
             .html(t.html('inspector.check.reverser'))
-            .call(svgIcon(icon, 'inline'));
+            .call(uiIcon(icon, 'inline'));
 
         return selection;
     }

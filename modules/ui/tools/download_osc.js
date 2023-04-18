@@ -4,7 +4,7 @@ import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { osmChangeset } from '../../osm';
 import { actionDiscardTags } from '../../actions';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiTooltip } from '../tooltip';
 
 
@@ -78,7 +78,7 @@ export function uiToolDownloadOsc(context) {
       .call(tooltip);
 
     button
-      .call(svgIcon('#rapid-icon-download-osc'));
+      .call(uiIcon('#rapid-icon-download-osc'));
 
     updateCount();
 

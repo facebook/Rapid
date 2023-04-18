@@ -7,7 +7,7 @@ import { t } from '../../core/localizer';
 import { JXON } from '../../util/jxon';
 import { actionDiscardTags } from '../../actions/discard_tags';
 import { osmChangeset } from '../../osm';
-import { svgIcon } from '../../svg/icon';
+import { uiIcon } from '../icon';
 import { uiSection } from '../section';
 import { utilDetect, utilDisplayName, utilDisplayType } from '../../util';
 
@@ -63,7 +63,7 @@ export function uiSectionChanges(context) {
         buttons
             .each(function(d) {
                 d3_select(this)
-                    .call(svgIcon('#rapid-icon-' + d.entity.geometry(d.graph), 'pre-text ' + d.changeType));
+                    .call(uiIcon('#rapid-icon-' + d.entity.geometry(d.graph), 'pre-text ' + d.changeType));
             });
 
         buttons
@@ -125,7 +125,7 @@ export function uiSectionChanges(context) {
         }
 
         linkEnter
-            .call(svgIcon('#rapid-icon-load', 'inline'))
+            .call(uiIcon('#rapid-icon-load', 'inline'))
             .append('span')
             .html(t.html('commit.download_changes'));
 

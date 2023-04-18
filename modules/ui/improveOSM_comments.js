@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t, localizer } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { services } from '../services';
 
 export function uiImproveOsmComments() {
@@ -31,7 +31,7 @@ export function uiImproveOsmComments() {
         commentEnter
           .append('div')
             .attr('class', 'comment-avatar')
-            .call(svgIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
+            .call(uiIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
 
         const mainEnter = commentEnter
           .append('div')

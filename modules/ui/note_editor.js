@@ -3,7 +3,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
 import { services } from '../services';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 
 // import { uiField } from './field';
 // import { uiFormFields } from './form_fields';
@@ -42,7 +42,7 @@ export function uiNoteEditor(context) {
             .on('click', function() {
                 context.enter('browse');
             })
-            .call(svgIcon('#rapid-icon-close'));
+            .call(uiIcon('#rapid-icon-close'));
 
         headerEnter
             .append('h3')
@@ -245,7 +245,7 @@ export function uiNoteEditor(context) {
             .style('opacity', 0);
 
         authEnter
-            .call(svgIcon('#rapid-icon-alert', 'inline'));
+            .call(uiIcon('#rapid-icon-alert', 'inline'));
 
         authEnter
             .append('span')
@@ -254,7 +254,7 @@ export function uiNoteEditor(context) {
         authEnter
             .append('a')
             .attr('target', '_blank')
-            .call(svgIcon('#rapid-icon-out-link', 'inline'))
+            .call(uiIcon('#rapid-icon-out-link', 'inline'))
             .append('span')
             .html(t.html('login'))
             .on('click.note-login', function(d3_event) {

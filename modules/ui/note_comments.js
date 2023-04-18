@@ -2,7 +2,7 @@ import { select as d3_select } from 'd3-selection';
 
 import { prefs } from '../core/preferences';
 import { t, localizer } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { services } from '../services';
 
 
@@ -30,7 +30,7 @@ export function uiNoteComments() {
         commentEnter
             .append('div')
             .attr('class', function(d) { return 'comment-avatar user-' + d.uid; })
-            .call(svgIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
+            .call(uiIcon('#rapid-icon-avatar', 'comment-avatar-icon'));
 
         var mainEnter = commentEnter
             .append('div')

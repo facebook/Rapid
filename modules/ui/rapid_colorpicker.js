@@ -2,7 +2,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
 
 import { localizer } from '../core/localizer';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { utilKeybinding, utilRebind } from '../util';
 
 
@@ -61,7 +61,7 @@ export function uiRapidColorpicker(context, parentModal) {
     colorpickerEnter
       .append('div')
       .attr('class', 'rapid-colorpicker-fill')
-      .call(svgIcon('#fas-palette'));
+      .call(uiIcon('#fas-palette'));
 
     // update
     colorpicker

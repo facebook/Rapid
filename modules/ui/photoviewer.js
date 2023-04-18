@@ -1,7 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { svgIcon } from '../svg/icon';
+import { uiIcon } from './icon';
 import { utilGetDimensions } from '../util/dimensions';
 import { utilRebind } from '../util';
 import { services } from '../services';
@@ -21,7 +21,7 @@ export function uiPhotoviewer(context) {
                 if (services.kartaview) { services.kartaview.hideViewer(context); }
             })
             .append('div')
-            .call(svgIcon('#rapid-icon-close'));
+            .call(uiIcon('#rapid-icon-close'));
 
         function preventDefault(d3_event) {
             d3_event.preventDefault();
