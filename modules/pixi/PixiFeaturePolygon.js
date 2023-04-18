@@ -176,7 +176,7 @@ export class PixiFeaturePolygon extends AbstractFeature {
     //
 
     const style = this._style;
-    const textures = this.context.pixi.rapidTextures;
+    const textures = this.renderer.textures;
     const color = style.fill.color || 0xaaaaaa;
     const alpha = style.fill.alpha || 0.3;
     const pattern = style.fill.pattern;

@@ -3,7 +3,7 @@ import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 
 
 /**
- * PixiTextureManager does the work of managing the textures.
+ * PixiTextures does the work of managing the textures.
  * The goal is to use common spritesheets to avoid extensive texture swapping
  *
  * Properties you can access:
@@ -21,9 +21,8 @@ export class PixiTextures {
 
     this._atlasAllocator = new AtlasAllocator();
 
-    // Map(String key -> PIXI.Texture)
-    // important to make sure these keys don't conflict
-    this.textures = new Map();
+    // Important!  Make sure these textureIDs don't conflict
+    this._textures = new Map();   // Map(textureID -> PIXI.Texture)
 
     const assetPath = context.assetPath();
 
@@ -59,10 +58,8 @@ export class PixiTextures {
 
         // patterns - store textures into the Map to use elsewhere
         for (const [k, texture] of Object.entries(result.patterns)) {
-          this.textures.set(k, texture);
+          this._textures.set(k, texture);
         }
-        // store in context for now :(
-        context.pixi.rapidTextures = this.textures;
 
         this.loaded = true;
       })
@@ -107,17 +104,17 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
-    this.textures.set('viewfield', this.toAtlasTexture(viewfield, {
+    this._textures.set('viewfield', this.toAtlasTexture(viewfield, {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     }));
 
-    this.textures.set('viewfieldDark', this.toAtlasTexture(viewfieldDark, {
+    this._textures.set('viewfieldDark', this.toAtlasTexture(viewfieldDark, {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3           // oversample a bit so it looks pretty when rotated
     }));
 
-    this.textures.set('viewfieldOutline', this.toAtlasTexture(viewfieldOutline, {
+    this._textures.set('viewfieldOutline', this.toAtlasTexture(viewfieldOutline, {
       region: viewfieldRect,  // texture the whole 26x26 region
       resolution: 3,          // oversample a bit so it looks pretty when rotated
     }));
@@ -140,9 +137,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 20)
       .endFill();
 
-    this.textures.set('pano', this.toAtlasTexture(pano, options));
-    this.textures.set('panoDark', this.toAtlasTexture(panoDark, options));
-    this.textures.set('panoOutline', this.toAtlasTexture(panoOutline, options));
+    this._textures.set('pano', this.toAtlasTexture(pano, options));
+    this._textures.set('panoDark', this.toAtlasTexture(panoDark, options));
+    this._textures.set('panoOutline', this.toAtlasTexture(panoOutline, options));
 
 
     //
@@ -196,12 +193,12 @@ export class PixiTextures {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    this.textures.set('pin', this.toAtlasTexture(pin, options));
-    this.textures.set('boldPin', this.toAtlasTexture(boldPin, options));
-    this.textures.set('largeCircle', this.toAtlasTexture(largeCircle, options));
-    this.textures.set('mediumCircle', this.toAtlasTexture(mediumCircle, options));
-    this.textures.set('smallCircle', this.toAtlasTexture(smallCircle, options));
-    this.textures.set('taggedCircle', this.toAtlasTexture(taggedCircle, options));
+    this._textures.set('pin', this.toAtlasTexture(pin, options));
+    this._textures.set('boldPin', this.toAtlasTexture(boldPin, options));
+    this._textures.set('largeCircle', this.toAtlasTexture(largeCircle, options));
+    this._textures.set('mediumCircle', this.toAtlasTexture(mediumCircle, options));
+    this._textures.set('smallCircle', this.toAtlasTexture(smallCircle, options));
+    this._textures.set('taggedCircle', this.toAtlasTexture(taggedCircle, options));
 
 
     // KeepRight
@@ -259,10 +256,10 @@ export class PixiTextures {
       .endFill()
       .closePath();
 
-    this.textures.set('keepright', this.toAtlasTexture(keepright, options));
-    this.textures.set('improveosm', this.toAtlasTexture(improveosm, options));
-    this.textures.set('osmnote', this.toAtlasTexture(osmnote, options));
-    this.textures.set('osmose', this.toAtlasTexture(osmose, options));
+    this._textures.set('keepright', this.toAtlasTexture(keepright, options));
+    this._textures.set('improveosm', this.toAtlasTexture(improveosm, options));
+    this._textures.set('osmnote', this.toAtlasTexture(osmnote, options));
+    this._textures.set('osmose', this.toAtlasTexture(osmose, options));
 
 
     //
@@ -284,9 +281,9 @@ export class PixiTextures {
       .drawPolygon([0,5, 5,0, 0,-5])
       .endFill();
 
-    this.textures.set('midpoint', this.toAtlasTexture(midpoint, options));
-    this.textures.set('oneway', this.toAtlasTexture(oneway, options));
-    this.textures.set('sided', this.toAtlasTexture(sided, options));
+    this._textures.set('midpoint', this.toAtlasTexture(midpoint, options));
+    this._textures.set('oneway', this.toAtlasTexture(oneway, options));
+    this._textures.set('sided', this.toAtlasTexture(sided, options));
 
 
     //
@@ -297,7 +294,7 @@ export class PixiTextures {
       .lineStyle(2, 0xffffff)
       .moveTo(0, 0)
       .lineTo(4, 0);
-    this.textures.set('stripe', this.toAtlasTexture(stripe, {
+    this._textures.set('stripe', this.toAtlasTexture(stripe, {
       region: new Rectangle(0, 0, 4, 4),
       resolution: 2
     }));
@@ -326,9 +323,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this.textures.set('lowres-square', this.toAtlasTexture(lowresSquare, options));
-    this.textures.set('lowres-ell', this.toAtlasTexture(lowresEll, options));
-    this.textures.set('lowres-circle', this.toAtlasTexture(lowresCircle, options));
+    this._textures.set('lowres-square', this.toAtlasTexture(lowresSquare, options));
+    this._textures.set('lowres-ell', this.toAtlasTexture(lowresEll, options));
+    this._textures.set('lowres-circle', this.toAtlasTexture(lowresCircle, options));
 
 
     //
@@ -353,16 +350,37 @@ export class PixiTextures {
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this.textures.set('lowres-unfilled-square', this.toAtlasTexture(lowresUnfilledSquare, options));
-    this.textures.set('lowres-unfilled-ell', this.toAtlasTexture(lowresUnfilledEll, options));
-    this.textures.set('lowres-unfilled-circle', this.toAtlasTexture(lowresUnfilledCircle, options));
+    this._textures.set('lowres-unfilled-square', this.toAtlasTexture(lowresUnfilledSquare, options));
+    this._textures.set('lowres-unfilled-ell', this.toAtlasTexture(lowresUnfilledEll, options));
+    this._textures.set('lowres-unfilled-circle', this.toAtlasTexture(lowresUnfilledCircle, options));
+  }
+
+
+  /**
+   * get
+   * @param   textureID
+   * @return  A PIXI.Texture (or null if not found)
+   */
+  get(textureID) {
+    return this._textures.get(textureID);
   }
 
 
   /**
    * toAtlasTexture
-   * @param  graphic   The graphic to turn into a texture
+   * Convert frequently used graphics to textures/sprites for performance
+   * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+   *
+   * For example, rather than drawing a pin, we draw a square with a pin texture on it.
+   * This is much more performant than drawing the graphcs.
+   *
+   * We also pack these graphics into a "texture atlas" so that they all live in the same
+   * BaseTexture.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
+   * swapping between textures as it draws things.
+   *
+   * @param  graphic   A PIXI.Graphic to convert to a texture
    * @param  options   Options passed to `renderer.generateTexture`
+   * @return A PIXI.Texture reference that has been packed into the atlas
    */
   toAtlasTexture(graphic, options) {
     const renderer = this.context.pixi.renderer;
@@ -383,7 +401,7 @@ export class PixiTextures {
 
     const gl = renderer.context.gl;
     const glfb = framebuffer.glFramebuffers[1];
-    const fb = glfb && glfb.framebuffer;
+    const fb = glfb?.framebuffer;
 
     // If we can't get glcontext or glframebuffer, just return the rendertexture
     // Maybe we are running in a test/ci environment?

@@ -119,7 +119,7 @@ export class PixiFeaturePoint extends AbstractFeature {
 
     const context = this.context;
     const wireframeMode = context.map().wireframeMode;
-    const textures = context.pixi.rapidTextures;
+    const textures = this.renderer.textures;
     const style = this._style;
     const isPin = ['pin', 'boldPin', 'improveosm', 'osmose'].includes(style.markerName);
 

@@ -19,7 +19,7 @@ export function svgDefs(context) {
       .append('g')
       .attr('class', d => `spritesheet spritesheet-${d}`)
       .each((d, i, nodes) => {
-        const url = context.imagePath(`${d}.svg`);
+        const url = context.asset(`img/${d}.svg`);
         const group = nodes[i];
 
         d3_svg(url)

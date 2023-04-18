@@ -125,13 +125,13 @@
 //            content
 //                .insert('img', 'p.from_shadow')
 //                .attr('class', 'field-help-image cf')
-//                .attr('src', context.imagePath('tr_inspect.gif'));
+//                .attr('src', context.asset('img/tr_inspect.gif'));
 //
 //        } else if (d.key === 'help.field.restrictions.modifying') {
 //            content
 //                .insert('img', 'p.allow_turn')
 //                .attr('class', 'field-help-image cf')
-//                .attr('src', context.imagePath('tr_modify.gif'));
+//                .attr('src', context.asset('img/tr_modify.gif'));
 //        }
 //    }
 //

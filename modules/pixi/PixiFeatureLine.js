@@ -80,7 +80,7 @@ export class PixiFeatureLine extends AbstractFeature {
 
     const wireframeMode = this.context.map().wireframeMode;
     const context = this.context;
-    const textures = context.pixi.rapidTextures;
+    const textures = this.renderer.textures;
     const container = this.container;
     const style = this._style;
     //

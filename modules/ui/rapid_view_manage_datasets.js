@@ -256,7 +256,7 @@ export function uiRapidViewManageDatasets(context, parentModal) {
       status
         .append('img')
         .attr('class', 'rapid-view-manage-datasets-spinner')
-        .attr('src', context.imagePath('loader-black.gif'));
+        .attr('src', context.asset('img/loader-black.gif'));
 
       service.loadDatasets()
         .then(results => {

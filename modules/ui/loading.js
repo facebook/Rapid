@@ -19,7 +19,7 @@ export function uiLoading(context) {
     loadertext
       .append('img')
       .attr('class', 'loader')
-      .attr('src', context.imagePath('loader-white.gif'));
+      .attr('src', context.asset('img/loader-white.gif'));
 
     loadertext
       .append('h3')

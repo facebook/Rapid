@@ -5,7 +5,7 @@ export function uiSpinner(context) {
     return function(selection) {
         var img = selection
             .append('img')
-            .attr('src', context.imagePath('loader-black.gif'))
+            .attr('src', context.asset('img/loader-black.gif'))
             .style('opacity', 0);
 
         if (osm) {

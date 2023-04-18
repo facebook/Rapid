@@ -41,20 +41,6 @@ describe('coreContext', function() {
         });
     });
 
-    describe('#imagePath', function() {
-        var context;
-        beforeEach(function() {
-            context = Rapid.coreContext().assetPath('test/').assetMap(assets);
-        });
-
-        it('looks first in assetMap', function() {
-            expect(context.imagePath('loader.gif')).to.eql('/assets/test/img/loader-b66184b5c4afbccc25f.gif');
-        });
-        it('falls back to prepending assetPath', function() {
-            expect(context.imagePath('spinner.gif')).to.eql('test/img/spinner.gif');
-        });
-    });
-
     describe('#debug', function() {
         it('sets and gets debug flags', function() {
             var context = Rapid.coreContext();

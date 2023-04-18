@@ -408,11 +408,11 @@ export function coreContext() {
 //    return context;
 //  };
   context.selectedNoteID = () => {
-    console.error('error: do not call context.selectedNoteID anymore');   // eslint-disable-line no-console
+    console.error('deprecated: do not call context.selectedNoteID anymore');   // eslint-disable-line no-console
     return null;
   };
   context.selectedErrorID = () => {
-    console.error('error: do not call context.selectedErrorID anymore');   // eslint-disable-line no-console
+    console.error('deprecated: do not call context.selectedErrorID anymore');   // eslint-disable-line no-console
     return null;
   };
 
@@ -446,10 +446,10 @@ export function coreContext() {
   };
 
   context.install = () => {
-    console.error('error: do not call context.install anymore');   // eslint-disable-line no-console
+    console.error('deprecated: do not call context.install anymore');   // eslint-disable-line no-console
   };
   context.uninstall = () => {
-    console.error('error: do not call context.uninstall anymore');   // eslint-disable-line no-console
+    console.error('deprecated: do not call context.uninstall anymore');   // eslint-disable-line no-console
   };
 //old redo on every mode change
 //  context.install = (behavior) => {
@@ -586,7 +586,10 @@ export function coreContext() {
     return _assetMap[filename] || filename;
   };
 
-  context.imagePath = (val) => context.asset(`img/${val}`);
+  context.imagePath = (val) => {
+    console.error('deprecated: do not call context.imagePath anymore');   // eslint-disable-line no-console
+    return context.asset(`img/${val}`);
+  };
 
 
   /* reset (aka flush) */

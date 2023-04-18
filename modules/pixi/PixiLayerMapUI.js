@@ -224,7 +224,7 @@ groupContainer.addChild(container);
 
         // Show a viewfield for the heading if we have it
         if (d.heading !== null && !isNaN(d.heading)) {
-          const textures = this.context.pixi.rapidTextures;
+          const textures = this.renderer.textures;
           const locatorHeading = new PIXI.Sprite(textures.get('viewfieldDark'));
           locatorHeading.anchor.set(0.5, 1);  // middle, top
           locatorHeading.angle = d.heading;
