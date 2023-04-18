@@ -13,9 +13,9 @@ import { getIconTexture } from './helpers';
  *   `geometry`    PixiGeometry() class containing all the information about the geometry
  *   `style`       Object containing styling data
  *   `container`   PIXI.Container containing the display objects used to draw the point
- *   `viewfields`  PIXI.Container that contains viewfields
  *   `marker`      PIXI.Sprite for the marker
  *   `icon`        PIXI.Sprite for the icon
+ *   `viewfields`  PIXI.Container containing the viewfields (or null if none)
  *
  *   (also all properties inherited from `AbstractFeature`)
  */
@@ -30,15 +30,8 @@ export class PixiFeaturePoint extends AbstractFeature {
     super(layer, featureID);
 
     this.type = 'point';
-    this._oldvfLength = 0;      // to watch for change in # of viewfield sprites
+    this._viewfieldCount = 0;   // to watch for change in # of viewfield sprites
     this._isCircular = false;   // set true to use a circular halo and hit area
-
-    const viewfields = new PIXI.Container();
-    viewfields.name = 'viewfields';
-    viewfields.eventMode = 'none';
-    viewfields.sortableChildren = false;
-    viewfields.visible = false;
-    this.viewfields = viewfields;
 
     const marker = new PIXI.Sprite();
     marker.name = 'marker';
@@ -54,7 +47,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     icon.visible = false;
     this.icon = icon;
 
-    this.container.addChild(viewfields, marker, icon);
+    this.viewfields = null;   // add later only if needed
+
+    this.container.addChild(marker, icon);
   }
 
 
@@ -65,9 +60,9 @@ export class PixiFeaturePoint extends AbstractFeature {
    */
   destroy() {
     super.destroy();
-    this.viewfields = null;
     this.marker = null;
     this.icon = null;
+    this.viewfields = null;
   }
 
 
@@ -111,7 +106,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     // sort markers by latitude ascending
     // sort markers with viewfields above markers without viewfields
     const z = -this.geometry.origCoords[1];  // latitude
-    this.container.zIndex = (this._oldvfLength > 0) ? (z + 1000) : z;
+    this.container.zIndex = (this._viewfieldCount > 0) ? (z + 1000) : z;
   }
 
 
@@ -128,7 +123,6 @@ export class PixiFeaturePoint extends AbstractFeature {
     const style = this._style;
     const isPin = ['pin', 'boldPin', 'improveosm', 'osmose'].includes(style.markerName);
 
-    const viewfields = this.viewfields;
     const marker = this.marker;
     const icon = this.icon;
     const latitude = this.geometry.origCoords[1];
@@ -139,42 +133,53 @@ export class PixiFeaturePoint extends AbstractFeature {
     marker.texture = style.markerTexture || textures.get(style.markerName) || PIXI.Texture.WHITE;
     marker.tint = style.markerTint;
 
+
     //
     // Update viewfields, if any..
     //
     const vfAngles = style.viewfieldAngles || [];
-    if (vfAngles.length) {
+    if (vfAngles.length > 0) {  // Should have viewfields
       const vfTexture = style.viewfieldTexture || textures.get(style.viewfieldName) || PIXI.Texture.WHITE;
 
-      // sort markers with viewfields above markers without viewfields
+      // Sort markers with viewfields above markers without viewfields
       this.container.zIndex = -latitude + 1000;
 
-      // If # of viewfields has changed from before, replace them.
-      if (vfAngles.length !== this._oldvfLength) {
-        viewfields.removeChildren();
-        vfAngles.forEach(() => {
+      // Ensure viewfield container exists
+      if (!this.viewfields) {
+        this.viewfields = new PIXI.Container();
+        this.viewfields.name = 'viewfields';
+        this.viewfields.eventMode = 'none';
+        this.viewfields.sortableChildren = false;
+        this.viewfields.visible = true;
+        this.container.addChildAt(this.viewfields, 0);
+      }
+
+      // # of viewfields has changed, recreate them
+      if (this._viewfieldCount !== vfAngles.length) {
+        this.viewfields.removeChildren();
+        for (let i = 0; i < vfAngles.length; i++) {
           const vfSprite = new PIXI.Sprite(vfTexture);
           vfSprite.eventMode = 'none';
           vfSprite.anchor.set(0.5, 0.5);  // middle, middle
-          viewfields.addChild(vfSprite);
-        });
-        this._oldvfLength = vfAngles.length;
+          this.viewfields.addChild(vfSprite);
+        }
+        this._viewfieldCount = vfAngles.length;
       }
 
       // Update viewfield angles and style
-      vfAngles.forEach((vfAngle, index) => {
-        const vfSprite = viewfields.getChildAt(index);
+      for (let i = 0; i < vfAngles.length; i++) {
+        const vfSprite = this.viewfields.getChildAt(i);
         vfSprite.tint = style.viewfieldTint || 0x333333;
-        vfSprite.angle = vfAngle;
-      });
+        vfSprite.angle = vfAngles[i];
+      }
 
-      viewfields.visible = true;
-
-    } else {  // No viewfields
+    } else if (this.viewfields) {  // Had viewfields before and now should not
+      this.container.removeChild(this.viewfields);
       this.container.zIndex = -latitude;   // restore default marker sorting
-      viewfields.removeChildren();
-      viewfields.visible = false;
+      this._viewfieldCount = 0;
+      this.viewfields = null;
     }
+
 
     //
     // Update icon, if any..
@@ -204,7 +209,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     } else if (zoom < 17 || wireframeMode) {  // Markers drawn but smaller
       this.lod = 1;  // simplified
       this.visible = true;
-      viewfields.renderable = false;
+      if (this.viewfields) this.viewfields.renderable = false;
       marker.renderable = true;
       marker.scale.set(0.8, 0.8);
 
@@ -218,7 +223,7 @@ export class PixiFeaturePoint extends AbstractFeature {
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
       this.visible = true;
-      viewfields.renderable = true;
+      if (this.viewfields) this.viewfields.renderable = true;
       marker.renderable = true;
       marker.scale.set(1, 1);
 
