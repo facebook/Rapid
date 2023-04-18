@@ -24,13 +24,11 @@ export class PixiTextures {
     // Important!  Make sure these textureIDs don't conflict
     this._textures = new Map();   // Map(textureID -> PIXI.Texture)
 
-    const assetPath = context.assetPath();
-
     // Load spritesheets
     const SHEETS = ['maki', 'temaki', 'fontawesome', 'mapillary-features', 'mapillary-signs'];
     let sheetBundle = {};
     for (const k of SHEETS) {
-      sheetBundle[k] = `${assetPath}img/icons/${k}-spritesheet.json`;
+      sheetBundle[k] = context.asset(`img/icons/${k}-spritesheet.json`);
     }
     Assets.addBundle('spritesheets', sheetBundle);
 
@@ -43,7 +41,7 @@ export class PixiTextures {
     ];
     let patternBundle = {};
     for (const k of PATTERNS) {
-      patternBundle[k] = `${assetPath}img/pattern/${k}.png`;
+      patternBundle[k] = context.asset(`img/pattern/${k}.png`);
     }
     Assets.addBundle('patterns', patternBundle);
 
