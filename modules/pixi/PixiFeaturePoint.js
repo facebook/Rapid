@@ -174,10 +174,10 @@ export class PixiFeaturePoint extends AbstractFeature {
       }
 
     } else if (this.viewfields) {  // Had viewfields before and now should not
-      this.container.removeChild(this.viewfields);
+      this.viewfields.destroy({ children: true });
+      this.viewfields = null;
       this.container.zIndex = -latitude;   // restore default marker sorting
       this._viewfieldCount = 0;
-      this.viewfields = null;
     }
 
 
@@ -209,7 +209,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     } else if (zoom < 17 || wireframeMode) {  // Markers drawn but smaller
       this.lod = 1;  // simplified
       this.visible = true;
-      if (this.viewfields) this.viewfields.renderable = false;
+      if (this.viewfields) {
+        this.viewfields.renderable = false;
+      }
       marker.renderable = true;
       marker.scale.set(0.8, 0.8);
 
@@ -223,7 +225,9 @@ export class PixiFeaturePoint extends AbstractFeature {
     } else {  // z >= 17 - Show the requested marker (circles OR pins)
       this.lod = 2;  // full
       this.visible = true;
-      if (this.viewfields) this.viewfields.renderable = true;
+      if (this.viewfields) {
+        this.viewfields.renderable = true;
+      }
       marker.renderable = true;
       marker.scale.set(1, 1);
 
