@@ -22,17 +22,17 @@ export class PixiTextures {
     // We store textures in 3 atlases, each one is for holding similar sized things.
     // Each "atlas" manages its own store of "BaseTextures" - real textures that upload to the GPU.
     // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
-    this._symbolAtlas = new AtlasAllocator();   // small graphics - markers, pins, symbols
-    this._textAtlas = new AtlasAllocator();     // text labels
-    this._tileAtlas = new AtlasAllocator();     // 256 or 512px square imagery tiles
+    this._atlas = {
+      symbol: new AtlasAllocator(),  // small graphics - markers, pins, symbols
+      text: new AtlasAllocator(),    // text labels
+      tile: new AtlasAllocator()     // 256 or 512px square imagery tiles
+    };
 
     // All the named textures we know about.
-    // Each mapping is a string textureID to a PIXI.Texture
+    // Each mapping is a unique identifying key to a PIXI.Texture
     // The Texture is not necessarily packed in an Atlas (but ideally it should be)
     // Important!  Make sure these textureIDs don't conflict
-    this._symbolTextures = new Map();   // Map(textureID -> PIXI.Texture)  (e.g. 'boldPin')
-    this._textTextures = new Map();     // Map(textureID -> PIXI.Texture)  (e.g. 'Main Street')
-    this._tileTextures = new Map();     // Map(textureID -> PIXI.Texture)  (e.g. 'Bing-0,1,2')
+    this._textureData = new Map();   // Map(key -> PIXI.Texture)  (e.g. 'symbol-boldPin')
 
     // Load spritesheets
     const SHEETS = ['maki', 'temaki', 'fontawesome', 'mapillary-features', 'mapillary-signs'];
@@ -68,7 +68,7 @@ export class PixiTextures {
         // note that we can't pack patterns into an atlas yet
         // see PixiFeaturePolygon.js too.
         for (const [textureID, texture] of Object.entries(result.patterns)) {
-          this._symbolTextures.set(textureID, texture);
+          this._textureData.set(textureID, { texture: texture, refcount: 1 });
         }
 
         this.loaded = true;
@@ -89,58 +89,52 @@ export class PixiTextures {
    * @return  A PIXI.Texture (or null if not found)
    */
   get(textureID) {
-    return this.getTexture(textureID, 'symbol');
+    return this.getTexture('symbol', textureID);
   }
 
   /**
    * getTexture
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
    * @return  A PIXI.Texture (or null if not found)
    */
-  getTexture(textureID, atlasID) {
-    if (atlasID === 'symbol') {
-      return this._symbolTextures.get(textureID);
-    } else if (atlasID === 'text') {
-      return this._textTextures.get(textureID);
-    } else if (atlasID === 'tile') {
-      return this._tileTextures.get(textureID);
-    } else {
-      return null;
-    }
+  getTexture(atlasID, textureID) {
+    const key = `${atlasID}-${textureID}`;
+    const tdata = this._textureData.get(key);
+    return tdata?.texture;
   }
 
 
   /**
    * allocate
-   * This packs an asset into one of the atlases and tracks it in the texture map
+   * This packs an asset into one of the atlases and tracks it in the textureData map
    * The asset can be one of: HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
    * @param   width       width in pixels
    * @param   height      height in pixels
    * @param   asset       The thing to pack
    * @return  A PIXI.Texture (or null if it couldn't be packed)
    */
-  allocate(textureID, atlasID, width, height, asset) {
-    let texture = this.getTexture(textureID, atlasID);
+  allocate(atlasID, textureID, width, height, asset) {
+    const atlas = this._atlas[atlasID];
+    if (!atlas) return null;
 
-    if (texture) {
-      this.free(textureID, atlasID);
-      texture = null;
+    const key = `${atlasID}-${textureID}`;
+    const tdata = this._textureData.get(key);
+
+    // We've already allocated this texture in an atlas..
+    // Increment the refcount and return it.
+    if (tdata) {
+      tdata.refcount++;
+      return tdata.texture;
     }
 
-    if (atlasID === 'symbol') {
-      texture = this._symbolAtlas.allocate(width, height, 1, asset);   // 1 = 1px padding
-      this._symbolTextures.set(textureID, texture);
+    const padding = atlasID === 'symbol' ? 1 : 0;
+    const texture = atlas.allocate(width, height, padding, asset);
 
-    } else if (atlasID === 'text') {
-      texture = this._textAtlas.allocate(width, height, 0, asset);   // 0 = no padding
-      this._textTextures.set(textureID, texture);
-
-    } else if (atlasID === 'tile') {
-      texture = this._tileAtlas.allocate(width, height, 0, asset);   // 0 = no padding
-      this._tileTextures.set(textureID, texture);
+    if (texture) {
+      this._textureData.set(key, { texture: texture, refcount: 1 });
     }
 
     return texture;
@@ -149,25 +143,22 @@ export class PixiTextures {
 
   /**
    * free
-   * Unpacks a texture from the atlas and removes from the map
-   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * Unpacks a texture from the atlas
    * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
    */
-  free(textureID, atlasID) {
-    if (atlasID === 'symbol') {
-      const texture = this._symbolTextures.get(textureID);
-      if (texture) this._symbolAtlas.free(texture);
-      this._symbolTextures.delete(textureID);
+  free(atlasID, textureID) {
+    const atlas = this._atlas[atlasID];
+    if (!atlas) return;
 
-    } else if (atlasID === 'text') {
-      const texture = this._textTextures.get(textureID);
-      if (texture) this._textAtlas.free(texture);
-      this._textTextures.delete(textureID);
+    const key = `${atlasID}-${textureID}`;
+    const tdata = this._textureData.get(key);
+    if (!tdata) return;  // free without allocate
 
-    } else if (atlasID === 'tile') {
-      const texture = this._tileTextures.get(textureID);
-      if (texture) this._tileAtlas.free(texture);
-      this._tileTextures.delete(textureID);
+    tdata.refcount--;
+    if (tdata.refcount === 0) {
+      atlas.free(tdata.texture);
+      this._textureData.delete(key);
     }
   }
 
@@ -218,7 +209,7 @@ export class PixiTextures {
     gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
 
     // Store the texture in the symbol atlas
-    const texture = this.allocate(textureID, 'symbol', w, h, pixels);
+    const texture = this.allocate('symbol', textureID, w, h, pixels);
     // These textures are overscaled, but `orig` Rectangle stores the original width/height
     // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
     texture.orig = renderTexture.orig.clone();
