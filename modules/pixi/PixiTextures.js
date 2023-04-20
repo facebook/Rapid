@@ -19,10 +19,20 @@ export class PixiTextures {
     this.context = context;
     this.loaded = false;
 
-    this._atlasAllocator = new AtlasAllocator();
+    // We store textures in 3 atlases, each one is for holding similar sized things.
+    // Each "atlas" manages its own store of "BaseTextures" - real textures that upload to the GPU.
+    // This helps pack them efficiently and avoids swapping frequently as WebGL draws the scene.
+    this._symbolAtlas = new AtlasAllocator();   // small graphics - markers, pins, symbols
+    this._textAtlas = new AtlasAllocator();     // text labels
+    this._tileAtlas = new AtlasAllocator();     // 256 or 512px square imagery tiles
 
+    // All the named textures we know about.
+    // Each mapping is a string textureID to a PIXI.Texture
+    // The Texture is not necessarily packed in an Atlas (but ideally it should be)
     // Important!  Make sure these textureIDs don't conflict
-    this._textures = new Map();   // Map(textureID -> PIXI.Texture)
+    this._symbolTextures = new Map();   // Map(textureID -> PIXI.Texture)  (e.g. 'boldPin')
+    this._textTextures = new Map();     // Map(textureID -> PIXI.Texture)  (e.g. 'Main Street')
+    this._tileTextures = new Map();     // Map(textureID -> PIXI.Texture)  (e.g. 'Bing-0,1,2')
 
     // Load spritesheets
     const SHEETS = ['maki', 'temaki', 'fontawesome', 'mapillary-features', 'mapillary-signs'];
@@ -54,24 +64,190 @@ export class PixiTextures {
         context._mapillarySheet = result.spritesheets['mapillary-features'];
         context._mapillarySignSheet = result.spritesheets['mapillary-signs'];
 
-        // patterns - store textures into the Map to use elsewhere
-        for (const [k, texture] of Object.entries(result.patterns)) {
-          this._textures.set(k, texture);
+        // patterns
+        // note that we can't pack patterns into an atlas yet
+        // see PixiFeaturePolygon.js too.
+        for (const [textureID, texture] of Object.entries(result.patterns)) {
+          this._symbolTextures.set(textureID, texture);
         }
 
         this.loaded = true;
       })
       .catch(e => console.error(e));  // eslint-disable-line no-console
 
+    this._cacheGraphics();
+  }
 
-    // Convert frequently used graphics to textures/sprites for performance
-    // https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+
+
+  /**
+   * get
+   * a legacy accessor - we used to just expose the Map publicly
+   * and other code would just call map.get(textureID) to get what they need
+   *
+   * @param   textureID
+   * @return  A PIXI.Texture (or null if not found)
+   */
+  get(textureID) {
+    return this.getTexture(textureID, 'symbol');
+  }
+
+  /**
+   * getTexture
+   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   * @return  A PIXI.Texture (or null if not found)
+   */
+  getTexture(textureID, atlasID) {
+    if (atlasID === 'symbol') {
+      return this._symbolTextures.get(textureID);
+    } else if (atlasID === 'text') {
+      return this._textTextures.get(textureID);
+    } else if (atlasID === 'tile') {
+      return this._tileTextures.get(textureID);
+    } else {
+      return null;
+    }
+  }
+
+
+  /**
+   * allocate
+   * This packs an asset into one of the atlases and tracks it in the texture map
+   * The asset can be one of: HTMLImageElement | HTMLCanvasElement | ImageBitmap | ImageData | ArrayBufferView
+   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   * @param   width       width in pixels
+   * @param   height      height in pixels
+   * @param   asset       The thing to pack
+   * @return  A PIXI.Texture (or null if it couldn't be packed)
+   */
+  allocate(textureID, atlasID, width, height, asset) {
+    let texture = this.getTexture(textureID, atlasID);
+
+    if (texture) {
+      this.free(textureID, atlasID);
+      texture = null;
+    }
+
+    if (atlasID === 'symbol') {
+      texture = this._symbolAtlas.allocate(width, height, 1, asset);   // 1 = 1px padding
+      this._symbolTextures.set(textureID, texture);
+
+    } else if (atlasID === 'text') {
+      texture = this._textAtlas.allocate(width, height, 0, asset);   // 0 = no padding
+      this._textTextures.set(textureID, texture);
+
+    } else if (atlasID === 'tile') {
+      texture = this._tileAtlas.allocate(width, height, 0, asset);   // 0 = no padding
+      this._tileTextures.set(textureID, texture);
+    }
+
+    return texture;
+  }
+
+
+  /**
+   * free
+   * Unpacks a texture from the atlas and removes from the map
+   * @param   textureID   e.g. 'boldPin', 'Main Street', 'Bing-0,1,2'
+   * @param   atlasID     One of 'symbol', 'text', or 'tile'
+   */
+  free(textureID, atlasID) {
+    if (atlasID === 'symbol') {
+      const texture = this._symbolTextures.get(textureID);
+      if (texture) this._symbolAtlas.free(texture);
+      this._symbolTextures.delete(textureID);
+
+    } else if (atlasID === 'text') {
+      const texture = this._textTextures.get(textureID);
+      if (texture) this._textAtlas.free(texture);
+      this._textTextures.delete(textureID);
+
+    } else if (atlasID === 'tile') {
+      const texture = this._tileTextures.get(textureID);
+      if (texture) this._tileAtlas.free(texture);
+      this._tileTextures.delete(textureID);
+    }
+  }
+
+
+  /**
+   * toSymbolTexture
+   * Convert frequently used graphics to textures/sprites for performance
+   * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+   *
+   * For example, rather than drawing a pin, we draw a square with a pin texture on it.
+   * This is much more performant than drawing the graphcs.
+   *
+   * We also pack these graphics into a "texture atlas" so that they all live in the same
+   * BaseTexture.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
+   * swapping between textures as it draws things.
+   *
+   * @param  textureID   e.g. 'boldPin'
+   * @param  graphic     A PIXI.Graphic to convert to a texture
+   * @param  options     Options passed to `renderer.generateTexture`
+   * @return A PIXI.Texture reference that has been packed into the symbol atlas
+   */
+  toSymbolTexture(textureID, graphic, options) {
+    const renderer = this.context.pixi.renderer;
+    const renderTexture = renderer.generateTexture(graphic, options);
+    const baseTexture = renderTexture.baseTexture;
+
+    if (baseTexture.format !== FORMATS.RGBA) return;       // we could handle other values
+    if (baseTexture.type !== TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
+
+    const framebuffer = baseTexture.framebuffer;
+    // If we can't get framebuffer, just return the rendertexture
+    // Maybe we are running in a test/ci environment?
+    if (!framebuffer) return renderTexture;
+
+    const w = framebuffer.width;
+    const h = framebuffer.height;
+    const pixels = new Uint8Array(w * h * 4);
+
+    const gl = renderer.context.gl;
+    const glfb = framebuffer.glFramebuffers[1];
+    const fb = glfb?.framebuffer;
+
+    // If we can't get glcontext or glframebuffer, just return the rendertexture
+    // Maybe we are running in a test/ci environment?
+    if (!gl || !fb) return renderTexture;
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
+    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
+
+    // Store the texture in the symbol atlas
+    const texture = this.allocate(textureID, 'symbol', w, h, pixels);
+    // These textures are overscaled, but `orig` Rectangle stores the original width/height
+    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
+    texture.orig = renderTexture.orig.clone();
+
+    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
+
+    return texture;
+  }
+
+
+  /**
+   * _cacheGraphics
+   * Convert frequently used graphics to textures/sprites for performance
+   * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
+   * For example, rather than drawing a pin, we draw a square with a pin texture on it.
+   * This is much more performant than drawing the graphcs.
+   */
+  _cacheGraphics() {
     const options = { resolution: 2 };
 
     //
     // Viewfields
     //
     const viewfieldRect = new Rectangle(-13, 0, 26, 52);
+    const viewfieldOptions = {
+      region: viewfieldRect,  // texture the whole 26x26 region
+      resolution: 3           // oversample a bit so it looks pretty when rotated
+    };
+
     const viewfield = new Graphics()            //   [-2,26]  ,---,  [2,26]
       .lineStyle(1, 0x444444)                   //           /     \
       .beginFill(0xffffff, 0.75)                //          /       \
@@ -102,20 +278,10 @@ export class PixiTextures {
       .closePath()
       .endFill();
 
-    this._textures.set('viewfield', this.toAtlasTexture(viewfield, {
-      region: viewfieldRect,  // texture the whole 26x26 region
-      resolution: 3           // oversample a bit so it looks pretty when rotated
-    }));
+    this.toSymbolTexture('viewfield', viewfield, viewfieldOptions);
+    this.toSymbolTexture('viewfieldDark', viewfieldDark, viewfieldOptions);
+    this.toSymbolTexture('viewfieldOutline', viewfieldOutline, viewfieldOptions);
 
-    this._textures.set('viewfieldDark', this.toAtlasTexture(viewfieldDark, {
-      region: viewfieldRect,  // texture the whole 26x26 region
-      resolution: 3           // oversample a bit so it looks pretty when rotated
-    }));
-
-    this._textures.set('viewfieldOutline', this.toAtlasTexture(viewfieldOutline, {
-      region: viewfieldRect,  // texture the whole 26x26 region
-      resolution: 3,          // oversample a bit so it looks pretty when rotated
-    }));
 
     const pano = new Graphics()    // just a full circle - for panoramic / 360° images
       .lineStyle(1, 0x444444)
@@ -135,9 +301,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 20)
       .endFill();
 
-    this._textures.set('pano', this.toAtlasTexture(pano, options));
-    this._textures.set('panoDark', this.toAtlasTexture(panoDark, options));
-    this._textures.set('panoOutline', this.toAtlasTexture(panoOutline, options));
+    this.toSymbolTexture('pano', pano, options);
+    this.toSymbolTexture('panoDark', panoDark, options);
+    this.toSymbolTexture('panoOutline', panoOutline, options);
 
 
     //
@@ -191,12 +357,12 @@ export class PixiTextures {
       .drawCircle(0, 0, 1.5)
       .endFill();
 
-    this._textures.set('pin', this.toAtlasTexture(pin, options));
-    this._textures.set('boldPin', this.toAtlasTexture(boldPin, options));
-    this._textures.set('largeCircle', this.toAtlasTexture(largeCircle, options));
-    this._textures.set('mediumCircle', this.toAtlasTexture(mediumCircle, options));
-    this._textures.set('smallCircle', this.toAtlasTexture(smallCircle, options));
-    this._textures.set('taggedCircle', this.toAtlasTexture(taggedCircle, options));
+    this.toSymbolTexture('pin', pin, options);
+    this.toSymbolTexture('boldPin', boldPin, options);
+    this.toSymbolTexture('largeCircle', largeCircle, options);
+    this.toSymbolTexture('mediumCircle', mediumCircle, options);
+    this.toSymbolTexture('smallCircle', smallCircle, options);
+    this.toSymbolTexture('taggedCircle', taggedCircle, options);
 
 
     // KeepRight
@@ -254,10 +420,10 @@ export class PixiTextures {
       .endFill()
       .closePath();
 
-    this._textures.set('keepright', this.toAtlasTexture(keepright, options));
-    this._textures.set('improveosm', this.toAtlasTexture(improveosm, options));
-    this._textures.set('osmnote', this.toAtlasTexture(osmnote, options));
-    this._textures.set('osmose', this.toAtlasTexture(osmose, options));
+    this.toSymbolTexture('keepright', keepright, options);
+    this.toSymbolTexture('improveosm', improveosm, options);
+    this.toSymbolTexture('osmnote', osmnote, options);
+    this.toSymbolTexture('osmose', osmose, options);
 
 
     //
@@ -279,23 +445,9 @@ export class PixiTextures {
       .drawPolygon([0,5, 5,0, 0,-5])
       .endFill();
 
-    this._textures.set('midpoint', this.toAtlasTexture(midpoint, options));
-    this._textures.set('oneway', this.toAtlasTexture(oneway, options));
-    this._textures.set('sided', this.toAtlasTexture(sided, options));
-
-
-    //
-    // Stripe (experiment)
-    // For drawing stripes on Rapid features
-    //
-    const stripe = new Graphics()
-      .lineStyle(2, 0xffffff)
-      .moveTo(0, 0)
-      .lineTo(4, 0);
-    this._textures.set('stripe', this.toAtlasTexture(stripe, {
-      region: new Rectangle(0, 0, 4, 4),
-      resolution: 2
-    }));
+    this.toSymbolTexture('midpoint', midpoint, options);
+    this.toSymbolTexture('oneway', oneway, options);
+    this.toSymbolTexture('sided', sided, options);
 
 
     //
@@ -321,10 +473,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this._textures.set('lowres-square', this.toAtlasTexture(lowresSquare, options));
-    this._textures.set('lowres-ell', this.toAtlasTexture(lowresEll, options));
-    this._textures.set('lowres-circle', this.toAtlasTexture(lowresCircle, options));
-
+    this.toSymbolTexture('lowres-square', lowresSquare, options);
+    this.toSymbolTexture('lowres-ell', lowresEll, options);
+    this.toSymbolTexture('lowres-circle', lowresCircle, options);
 
     //
     // Low-res unfilled areas
@@ -348,77 +499,9 @@ export class PixiTextures {
       .drawCircle(0, 0, 5)
       .endFill();
 
-    this._textures.set('lowres-unfilled-square', this.toAtlasTexture(lowresUnfilledSquare, options));
-    this._textures.set('lowres-unfilled-ell', this.toAtlasTexture(lowresUnfilledEll, options));
-    this._textures.set('lowres-unfilled-circle', this.toAtlasTexture(lowresUnfilledCircle, options));
-  }
-
-
-  /**
-   * get
-   * @param   textureID
-   * @return  A PIXI.Texture (or null if not found)
-   */
-  get(textureID) {
-    return this._textures.get(textureID);
-  }
-
-
-  /**
-   * toAtlasTexture
-   * Convert frequently used graphics to textures/sprites for performance
-   * https://stackoverflow.com/questions/50940737/how-to-convert-a-graphic-to-a-sprite-in-pixijs
-   *
-   * For example, rather than drawing a pin, we draw a square with a pin texture on it.
-   * This is much more performant than drawing the graphcs.
-   *
-   * We also pack these graphics into a "texture atlas" so that they all live in the same
-   * BaseTexture.  This texture gets sent to the GPU once then reused, so WebGL isn't constantly
-   * swapping between textures as it draws things.
-   *
-   * @param  graphic   A PIXI.Graphic to convert to a texture
-   * @param  options   Options passed to `renderer.generateTexture`
-   * @return A PIXI.Texture reference that has been packed into the atlas
-   */
-  toAtlasTexture(graphic, options) {
-    const renderer = this.context.pixi.renderer;
-    const renderTexture = renderer.generateTexture(graphic, options);
-    const baseTexture = renderTexture.baseTexture;
-
-    if (baseTexture.format !== FORMATS.RGBA) return;       // we could handle other values
-    if (baseTexture.type !== TYPES.UNSIGNED_BYTE) return;  // but probably don't need to.
-
-    const framebuffer = baseTexture.framebuffer;
-    // If we can't get framebuffer, just return the rendertexture
-    // Maybe we are running in a test/ci environment?
-    if (!framebuffer) return renderTexture;
-
-    const w = framebuffer.width;
-    const h = framebuffer.height;
-    const pixels = new Uint8Array(w * h * 4);
-
-    const gl = renderer.context.gl;
-    const glfb = framebuffer.glFramebuffers[1];
-    const fb = glfb?.framebuffer;
-
-    // If we can't get glcontext or glframebuffer, just return the rendertexture
-    // Maybe we are running in a test/ci environment?
-    if (!gl || !fb) return renderTexture;
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, fb);   // should be bound already, but couldn't hurt?
-    gl.readPixels(0, 0, w, h, baseTexture.format, baseTexture.type, pixels);
-
-    // Copy the texture to the atlas
-    const PADDING = 1;
-    const texture = this._atlasAllocator.allocate(w, h, PADDING, pixels);
-    // These textures are overscaled, but `orig` Rectangle stores the original width/height
-    // (i.e. the dimensions that a PIXI.Sprite using this texture will want to make itself)
-    texture.orig = renderTexture.orig.clone();
-
-    renderTexture.destroy(true);  // safe to destroy, the texture is copied to the atlas
-
-    return texture;
+    this.toSymbolTexture('lowres-unfilled-square', lowresUnfilledSquare, options);
+    this.toSymbolTexture('lowres-unfilled-ell', lowresUnfilledEll, options);
+    this.toSymbolTexture('lowres-unfilled-circle', lowresUnfilledCircle, options);
   }
 
 }
-
