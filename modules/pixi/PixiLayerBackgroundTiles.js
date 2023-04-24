@@ -1,6 +1,5 @@
 import * as PIXI from 'pixi.js';
 import { interpolateNumber as d3_interpolateNumber } from 'd3-interpolate';
-import { AtlasAllocator } from '@rapideditor/pixi-texture-allocator';
 import { AdjustmentFilter, ConvolutionFilter } from 'pixi-filters';
 import { Tiler, geoScaleToZoom, vecScale } from '@rapid-sdk/math';
 
@@ -45,8 +44,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       sharpness: 1,
     };
 
-    this._atlasAllocator = new AtlasAllocator();
-    this._tileMaps = new Map();    // Map (sourceID -> Map(tile.id -> Tile))
+    this._tileMaps = new Map();    // Map (sourceID -> Map(tileID -> tile))
     this._failed = new Set();      // Set of failed tileURLs
     this._tiler = new Tiler();
   }
@@ -62,8 +60,8 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const groupContainer = this.scene.groups.get('background');
 
     // Collect tile sources - baselayer and overlays
-    let tileSources = new Map();   // Map (tilesource Object -> zIndex)
-    let tileSourceIDs = new Set();
+    const tileSources = new Map();   // Map (tilesource Object -> zIndex)
+    const tileSourceIDs = new Set();
 
     const base = imagery.baseLayerSource();
     if (base && base.id !== 'none') {
@@ -80,12 +78,12 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     });
 
     // Render each tile source
-    tileSources.forEach((zIndex, source) => {
-      if (!source || source.id === 'none') return;
+    for (const [source, zIndex] of tileSources) {
+      if (!source || source.id === 'none') continue;
 
       let tileMap = this._tileMaps.get(source.id);
       if (!tileMap) {
-        tileMap = new Map();   // Map (tile.id -> Tile)
+        tileMap = new Map();   // Map (tileID -> Tile)
         this._tileMaps.set(source.id, tileMap);
       }
 
@@ -100,32 +98,28 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
       const timestamp = window.performance.now();
       this.renderTileSource(timestamp, projection, source, sourceContainer, tileMap);
-    });
-
+    }
 
     // Remove any tile sourceContainers and data not needed anymore (not in `tileSourceIDs`)
     // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
     let toDestroy = [];
-    groupContainer.children.forEach(sourceContainer => {
+    for (const sourceContainer of groupContainer.children) {
       const sourceID = sourceContainer.name;
       if (!tileSourceIDs.has(sourceID)) {
         toDestroy.push(sourceContainer);
       }
-    });
+    }
 
-    toDestroy.forEach(sourceContainer => {
+    for (const sourceContainer of toDestroy) {
       const sourceID = sourceContainer.name;
-
-      let tileMap = this._tileMaps.get(sourceID);
-      tileMap.forEach(tile => {
+      const tileMap = this._tileMaps.get(sourceID);
+      for (const [tileID, tile] of tileMap) {
         this.destroyTile(tile);
-        tileMap.delete(tile.id);
-      });
-
+        tileMap.delete(tileID);
+      }
       this._tileMaps.delete(sourceID);
-
       sourceContainer.destroy({ children: true });
-    });
+    }
   }
 
 
@@ -178,17 +172,17 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
-    const pixi = this.renderer.pixi;
+    const textures = this.renderer.textures;
     const osm = context.connection();
 
     // The tile debug container lives on the `map-ui` layer so it is drawn over everything
-    let SHOWDEBUG = false;
+    let showDebug = false;
     let debugContainer;
     if (!this.isMinimap) {
-      SHOWDEBUG = context.getDebug('tile');
+      showDebug = context.getDebug('tile');
       const mapUIContainer = this.scene.layers.get('map-ui').container;
       debugContainer = mapUIContainer.getChildByName('tile-debug');
-      debugContainer.visible = SHOWDEBUG;
+      debugContainer.visible = showDebug;
     }
 
     const tileSize = source.tileSize || 256;
@@ -201,7 +195,7 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
     // Determine tiles needed to cover the view at the zoom we want,
     // including any zoomed out tiles if this field contains any holes
-    let needTiles = new Map();                  // Map(tile.id -> tile)
+    let needTiles = new Map();                  // Map(tileID -> tile)
     let maxZoom = Math.round(z);                // the zoom we want
     let minZoom = Math.max(0, maxZoom - 5);     // the mininimum zoom we'll accept
     if (!source.overzoom) {
@@ -218,11 +212,9 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         .getTiles(this.isMinimap ? projection : context.projection);  // minimap passes in its own projection
 
       let hasHoles = false;
-      for (let i = 0; i < result.tiles.length; i++) {
-        const tile = result.tiles[i];
-
+      for (const tile of result.tiles) {
         // skip locator overlay tiles where we have osm data loaded there
-        if (tryZoom >= 10 && osm && source.id === 'mapbox_locator_overlay') {
+        if (!this.isMinimap && tryZoom >= 10 && osm && source.id === 'mapbox_locator_overlay') {
           const loc = tile.wgs84Extent.center();
           if (osm.isDataLoaded(loc)) continue;
         }
@@ -239,54 +231,38 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
 
     // Create a Sprite for each tile
-    needTiles.forEach(tile => {
-      if (tileMap.has(tile.id)) return;   // we made it already
+    for (const [tileID, tile] of needTiles) {
+      if (tileMap.has(tileID)) continue;   // we made it already
 
-      const tileName = `${source.id}-${tile.id}`;
+      const tileName = `${source.id}-${tileID}`;
       const sprite = new PIXI.Sprite();
       sprite.name = tileName;
       sprite.anchor.set(0, 1);    // left, bottom
       sprite.zIndex = tile.xyz[2];   // draw zoomed tiles above unzoomed tiles
       sourceContainer.addChild(sprite);
       tile.sprite = sprite;
-      tileMap.set(tile.id, tile);
+      tileMap.set(tileID, tile);
+
+console.log(`fetching ${tileName}, isMinimap = ${this.isMinimap}`);
 
       // Start loading the image
       const image = new Image();
       image.crossOrigin = 'anonymous';
       image.src = tile.url;
       tile.image = image;
+      tile.loaded = false;
 
       // After the image loads, allocate space for it in the texture atlas
       image.onload = () => {
         this._failed.delete(tile.url);
         if (!tile.sprite || !tile.image) return;  // it's possible that the tile isn't needed anymore and got pruned
 
-        tile.loaded = true;
         const w = tile.image.naturalWidth;
         const h = tile.image.naturalHeight;
+        tile.sprite.texture = textures.allocate('tile', tile.sprite.name, w, h, tile.image);
 
-        let source = tile.image;
-        if (pixi.renderer.context.webGLVersion === 1) {
-          // Convert to ArrayBufferView of pixels when used in a WebGL1 environment - #478
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(image, 0, 0);
-          source = ctx.getImageData(0, 0, w, h);
-        }
-
-        const PADDING = 0;
-        const texture = this._atlasAllocator.allocate(w, h, PADDING, source);
-
-        // Shrink texture coords by half pixel to avoid colors spilling over from adjacent tile in atlas.
-        // https://gamedev.stackexchange.com/a/49585
-        const rect = texture.frame.clone().pad(-0.5);
-        texture.frame = rect;  // `.frame` setter will call updateUVs() automatically
-
-        sprite.texture = texture;
-        tile.image = null;
+        tile.image = null;  // image is copied to the atlas, we can free it
+        tile.loaded = true;
         context.map().deferredRedraw();
       };
 
@@ -295,16 +271,15 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         this._failed.add(tile.url);
         context.map().deferredRedraw();
       };
-
-    });
+    }
 
 
     // Update or remove the existing tiles
-    tileMap.forEach(tile => {
+    for (const [tileID, tile] of tileMap) {
       let keepTile = false;
 
       // Keep this tile if it is in the `needTiles` map.
-      if (needTiles.has(tile.id)) {
+      if (needTiles.has(tileID)) {
         keepTile = true;
         tile.timestamp = timestamp;
 
@@ -321,17 +296,17 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
         tile.sprite.width = size;
         tile.sprite.height = size;
 
-        if (SHOWDEBUG && debugContainer && !source.overlay) {
+        if (showDebug && debugContainer && !source.overlay) {
           // Display debug tile info
           if (!tile.debug) {
             tile.debug = new PIXI.Graphics();
-            tile.debug.name = `debug-${tile.id}`;
+            tile.debug.name = `debug-${tileID}`;
             tile.debug.eventMode = 'none';
             tile.debug.sortableChildren = false;
             debugContainer.addChild(tile.debug);
 
-            const label = new PIXI.BitmapText(tile.id, { fontName: 'debug' });
-            label.name = `label-${tile.id}`;
+            const label = new PIXI.BitmapText(tileID, { fontName: 'debug' });
+            label.name = `label-${tileID}`;
             label.tint = DEBUGCOLOR;
             label.position.set(2, 2);
             tile.debug.addChild(label);
@@ -346,9 +321,9 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
 
       } else {   // tile not needed, can destroy it
         this.destroyTile(tile);
-        tileMap.delete(tile.id);
+        tileMap.delete(tileID);
       }
-    });
+    }
 
   }
 
@@ -360,17 +335,21 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
    */
   destroyTile(tile) {
     if (tile.sprite) {
-      if (tile.sprite.texture && tile.sprite.texture !== PIXI.Texture.EMPTY) {
-        this._atlasAllocator.free(tile.sprite.texture);
+      if (tile.loaded) {
+        this.renderer.textures.free('tile', tile.sprite.name);
       }
-      tile.sprite.destroy({ children: true, texture: true, baseTexture: false });
-      tile.sprite = null;
-      tile.image = null;
+      // note: dont destroy the texture - it may be used by both mainmap / minimap
+      // Above `free` call now has refcounting - we may move the texture destroying to there.
+      tile.sprite.destroy({ children: true, texture: false, baseTexture: false });
     }
+
     if (tile.debug) {
       tile.debug.destroy({ children: true });
-      tile.debug = null;
     }
+
+    tile.sprite = null;
+    tile.image = null;
+    tile.debug = null;
   }
 
 

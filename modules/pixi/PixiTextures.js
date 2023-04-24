@@ -127,15 +127,28 @@ export class PixiTextures {
     // Increment the refcount and return it.
     if (tdata) {
       tdata.refcount++;
+console.log(`no alloc:  refcount = ${tdata.refcount} for ${key}`);
       return tdata.texture;
     }
 
     const padding = atlasID === 'symbol' ? 1 : 0;
     const texture = atlas.allocate(width, height, padding, asset);
-
-    if (texture) {
-      this._textureData.set(key, { texture: texture, refcount: 1 });
+    if (!texture) {
+      throw new Error(`Couldn't allocate texture ${key}`);
     }
+
+    // For tiles we want to preserve their power of 2 dimensions - so no padding!
+    // But we also want to prevent their colors from spilling into an adjacent tile in the atlas.
+    // Shrink texture coords by half pixel to avoid this.
+    // https://gamedev.stackexchange.com/a/49585
+    if (atlasID === 'tile') {
+      const rect = texture.frame.clone().pad(-0.5);
+      texture.frame = rect;  // `.frame` setter will call updateUVs() automatically
+    }
+
+    this._textureData.set(key, { texture: texture, refcount: 1 });
+
+console.log(`alloc:  allocated ${key}`);
 
     return texture;
   }
@@ -157,9 +170,13 @@ export class PixiTextures {
 
     tdata.refcount--;
     if (tdata.refcount === 0) {
+  console.log(`free:  freed ${key}`);
       atlas.free(tdata.texture);
       this._textureData.delete(key);
     }
+else {
+  console.log(`no free:  refcount = ${tdata.refcount} for ${key}`);
+}
   }
 
 

@@ -143,8 +143,6 @@ export function uiMapInMap(context) {
 
     /**
      * drawBoundingBox
-     * Simple bounding box draw assuming that there will only ever be the one bounding box
-     * inside the 'bbox' container. If there is no 'bbox' container on the minimap stage, it will create one.
      */
     function drawBoundingBox() {
       const bbox = context.map().extent().bbox();
@@ -154,27 +152,18 @@ export function uiMapInMap(context) {
       const boxHeight = Math.abs(bottomRightPoint[1] - topLeftPoint[1]);
 
       const stage = _miniPixi.stage;
-      const bboxContainer = stage.getChildByName('bbox');
-      if (!bboxContainer) {
-        const bboxContainer = new PIXI.Container();
-        bboxContainer.name = 'bbox';
-        bboxContainer.eventMode = 'none';
-        stage.addChild(bboxContainer);
-
-        const bboxGraphic = new PIXI.Graphics()
-          .clear()
-          .lineStyle(2, 0x00ffff)
-          .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
-
-        bboxContainer.addChild(bboxGraphic);
-
-      } else {
-        const bboxPolyGraphic = bboxContainer.children[0];
-        bboxPolyGraphic
-          .clear()
-          .lineStyle(2, 0x00ffff)
-          .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
+      let bboxGraphic = stage.getChildByName('bbox');
+      if (!bboxGraphic) {
+        bboxGraphic = new PIXI.Graphics();
+        bboxGraphic.name = 'bbox';
+        bboxGraphic.eventMode = 'none';
+        stage.addChild(bboxGraphic);
       }
+
+      bboxGraphic
+        .clear()
+        .lineStyle(2, 0xffff00)
+        .drawRect(topLeftPoint[0], topLeftPoint[1], boxWidth, boxHeight);
     }
 
 
@@ -228,7 +217,7 @@ export function uiMapInMap(context) {
       _miniPixi = new PIXI.Application({
         antialias: true,
         autoDensity: true,
-        autoStart: false,
+        autoStart: true,
         events: {
           move: false,
           globalMove: false,
@@ -237,7 +226,7 @@ export function uiMapInMap(context) {
         },
         resolution: window.devicePixelRatio,
         sharedLoader: true,
-        sharedTicker: true,
+        sharedTicker: false
       });
 
       const [width, height] = [200, 150];
@@ -249,11 +238,14 @@ export function uiMapInMap(context) {
       stage.eventMode = 'none';
       stage.sortableChildren = false;
 
+      const mainRenderer = context.map().renderer;
+
       // Construct the scene..
       const miniRenderer = {    // Mock Renderer
         context: context,
         pixi: _miniPixi,
-        stage: stage
+        stage: stage,
+        textures: mainRenderer.textures
       };
 
       const miniScene = {   // Mock Scene
@@ -274,12 +266,16 @@ export function uiMapInMap(context) {
       miniMapTileLayer = new PixiLayerBackgroundTiles(miniScene, 'minimap-background', true);  // isMinimap = true
       miniScene.layers.set(miniMapTileLayer.id, miniMapTileLayer);
 
+      // Ticker
+      // Minimap can have a separate, slowed down ticker
+      _miniPixi.ticker.maxFPS = 10;
       _miniPixi.ticker.add(() => {
         if (_isHidden) return;
         window.performance.mark('minimap-start');
         const frame = 0;
-        miniMapTileLayer.render(frame, projection, 10);
+        miniMapTileLayer.render(frame, projection);
         window.performance.mark('minimap-end');
+        window.performance.measure('minimap', 'minimap-start', 'minimap-end');
       });
 
       // Hardcode dimensions - currently can't resize it anyway..
