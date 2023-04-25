@@ -60,117 +60,63 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
     const groupContainer = this.scene.groups.get('background');
 
     // Collect tile sources - baselayer and overlays
-    const tileSources = new Map();   // Map (tilesource Object -> zIndex)
-    const tileSourceIDs = new Set();
+    const showSources = new Map();   // Map (sourceID -> source)
 
     const base = imagery.baseLayerSource();
     if (base && base.id !== 'none') {
-      tileSources.set(base, -1);
-      tileSourceIDs.add(base.id);
+      showSources.set(base.id, base);
     }
 
-    imagery.overlayLayerSources().forEach((overlay, zIndex) => {
-      if (overlay.id === 'mapbox_locator_overlay') {
-        zIndex = 999;  // render locator overlay above all other overlays
-      }
-      tileSources.set(overlay, zIndex);
-      tileSourceIDs.add(overlay.id);
-    });
+    for (const overlay of imagery.overlayLayerSources()) {
+      showSources.set(overlay.id, overlay);
+    }
 
-    // Render each tile source
-    for (const [source, zIndex] of tileSources) {
-      if (!source || source.id === 'none') continue;
-
-      let tileMap = this._tileMaps.get(source.id);
-      if (!tileMap) {
-        tileMap = new Map();   // Map (tileID -> Tile)
-        this._tileMaps.set(source.id, tileMap);
-      }
-
-      // Get a container for the tiles (create if needed)
-      const sourceContainer = this.getSourceContainer(source.id);
-      sourceContainer.zIndex = zIndex;
+    // Render each tile source (iterates in insertion order, base then overlays)
+    let index = 0;
+    for (const [sourceID, source] of showSources) {
+      const sourceContainer = this.getSourceContainer(sourceID);
+      sourceContainer.zIndex = (sourceID === 'mapbox_locator_overlay' ? 999 : index++);
 
       // If this is the base tile layer (and not minimap) apply the filters to it.
-      if (!this.isMinimap && zIndex === -1) {
+      if (!this.isMinimap && source === base) {
         this.applyFilters(sourceContainer);
       }
 
+      let tileMap = this._tileMaps.get(sourceID);
+      if (!tileMap) {
+        tileMap = new Map();   // Map (tileID -> Tile)
+        this._tileMaps.set(sourceID, tileMap);
+      }
+
       const timestamp = window.performance.now();
-      this.renderTileSource(timestamp, projection, source, sourceContainer, tileMap);
+      this.renderSource(timestamp, projection, source, sourceContainer, tileMap);
     }
 
-    // Remove any tile sourceContainers and data not needed anymore (not in `tileSourceIDs`)
+    // Remove any sourceContainers and data not needed anymore
     // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
-    let toDestroy = [];
+    const toDestroy = new Set();
     for (const sourceContainer of groupContainer.children) {
       const sourceID = sourceContainer.name;
-      if (!tileSourceIDs.has(sourceID)) {
-        toDestroy.push(sourceContainer);
+      if (!showSources.has(sourceID)) {
+        toDestroy.add(sourceID);
       }
     }
 
-    for (const sourceContainer of toDestroy) {
-      const sourceID = sourceContainer.name;
-      const tileMap = this._tileMaps.get(sourceID);
-      for (const [tileID, tile] of tileMap) {
-        this.destroyTile(tile);
-        tileMap.delete(tileID);
-      }
-      this._tileMaps.delete(sourceID);
-      sourceContainer.destroy({ children: true });
+    for (const sourceID of toDestroy) {
+      this.destroySource(sourceID);
     }
   }
 
 
   /**
-   * applyFilters
-   * Adds an adjustment filter for brightness/contrast/saturation and
-   * a sharpen/blur filter, depending on the UI slider settings.
-   * @param  sourceContainer   PIXI.Container that contains the tiles
-   */
-  applyFilters(sourceContainer) {
-    const adjustmentFilter = new AdjustmentFilter({
-      brightness: this.filters.brightness,
-      contrast: this.filters.contrast,
-      saturation: this.filters.saturation,
-    });
-
-    sourceContainer.filters = [adjustmentFilter];
-
-    if (this.filters.sharpness > 1) {
-      // The convolution filter consists of adjacent pixels with a negative factor and the central pixel being at least one.
-      // The central pixel (at index 4 of our 3x3 array) starts at 1 and increases
-      const convolutionArray = sharpenMatrix.map((n, i) => {
-        if (i === 4) {
-          const interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
-          const result = n * interp;
-          return result;
-        } else {
-          return n;
-        }
-      });
-
-      this.convolutionFilter = new ConvolutionFilter(convolutionArray);
-      sourceContainer.filters.push(this.convolutionFilter);
-
-    } else if (this.filters.sharpness < 1) {
-      const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
-      this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
-      sourceContainer.filters.push(this.blurFilter);
-    }
-  }
-
-
-  /**
-   * renderTileSource
+   * renderSource
    * @param timestamp          Timestamp in milliseconds
    * @param projection         Pixi projection to use for rendering
    * @param source             Imagery tile source Object
    * @param sourceContainer    PIXI.Container to render the tiles to
    * @param tileMap            Map(tile.id -> Tile) for this tile source
    */
-  renderTileSource(timestamp, projection, source, sourceContainer, tileMap) {
+  renderSource(timestamp, projection, source, sourceContainer, tileMap) {
     const context = this.context;
     const textures = this.renderer.textures;
     const osm = context.connection();
@@ -185,6 +131,8 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       debugContainer.visible = showDebug;
     }
 
+//let transform = projection.transform();
+//console.log(`projection x: ${transform.x}, y: ${transform.y}, k: ${transform.k}`);
     const tileSize = source.tileSize || 256;
     const k = projection.scale();
     const z = geoScaleToZoom(k, tileSize);  // Use actual zoom for this, not effective zoom
@@ -243,7 +191,8 @@ export class PixiLayerBackgroundTiles extends AbstractLayer {
       tile.sprite = sprite;
       tileMap.set(tileID, tile);
 
-console.log(`fetching ${tileName}, isMinimap = ${this.isMinimap}`);
+//const MINI = this.isMinimap ? ' FOR THE MINIMAP' : '';
+//console.log(`fetching ${tileName}  ${MINI}`);
 
       // Start loading the image
       const image = new Image();
@@ -261,8 +210,8 @@ console.log(`fetching ${tileName}, isMinimap = ${this.isMinimap}`);
         const h = tile.image.naturalHeight;
         tile.sprite.texture = textures.allocate('tile', tile.sprite.name, w, h, tile.image);
 
-        tile.image = null;  // image is copied to the atlas, we can free it
         tile.loaded = true;
+        tile.image = null;  // image is copied to the atlas, we can free it
         context.map().deferredRedraw();
       };
 
@@ -329,6 +278,47 @@ console.log(`fetching ${tileName}, isMinimap = ${this.isMinimap}`);
 
 
   /**
+   * destroyAll
+   * Frees all the resources used by all sources
+   */
+  destroyAll() {
+    const groupContainer = this.scene.groups.get('background');
+
+    // Doing this in 2 passes to avoid affecting `.children` while iterating over it.
+    const toDestroy = new Set();
+    for (const sourceContainer of groupContainer.children) {
+      const sourceID = sourceContainer.name;
+      toDestroy.add(sourceID);
+    }
+
+    for (const sourceID of toDestroy) {
+      this.destroySource(sourceID);
+    }
+  }
+
+
+  /**
+   * destroySource
+   * Frees all the resources used by a source
+   * @param  sourceID
+   */
+  destroySource(sourceID) {
+    const tileMap = this._tileMaps.get(sourceID);
+    for (const [tileID, tile] of tileMap) {
+      this.destroyTile(tile);
+      tileMap.delete(tileID);
+    }
+    this._tileMaps.delete(sourceID);
+
+    const groupContainer = this.scene.groups.get('background');
+    let sourceContainer = groupContainer.getChildByName(sourceID);
+    if (sourceContainer) {
+      sourceContainer.destroy({ children: true });
+    }
+  }
+
+
+  /**
    * destroyTile
    * Frees all the resources used by a tile
    * @param  tile  Tile object
@@ -347,15 +337,17 @@ console.log(`fetching ${tileName}, isMinimap = ${this.isMinimap}`);
       tile.debug.destroy({ children: true });
     }
 
-    tile.sprite = null;
     tile.image = null;
+    tile.sprite = null;
     tile.debug = null;
   }
 
 
   /**
    * getSourceContainer
-   * @param  sourceID
+   * Gets a PIXI.Container to hold the tiles for the given sourceID, creating one if needed
+   * @param   sourceID
+   * @return  a PIXI.Container
    */
   getSourceContainer(sourceID) {
     const groupContainer = this.scene.groups.get('background');
@@ -369,6 +361,46 @@ console.log(`fetching ${tileName}, isMinimap = ${this.isMinimap}`);
     }
     return sourceContainer;
   }
+
+
+  /**
+   * applyFilters
+   * Adds an adjustment filter for brightness/contrast/saturation and
+   * a sharpen/blur filter, depending on the UI slider settings.
+   * @param  sourceContainer   PIXI.Container that contains the tiles
+   */
+  applyFilters(sourceContainer) {
+    const adjustmentFilter = new AdjustmentFilter({
+      brightness: this.filters.brightness,
+      contrast: this.filters.contrast,
+      saturation: this.filters.saturation,
+    });
+
+    sourceContainer.filters = [adjustmentFilter];
+
+    if (this.filters.sharpness > 1) {
+      // The convolution filter consists of adjacent pixels with a negative factor and the central pixel being at least one.
+      // The central pixel (at index 4 of our 3x3 array) starts at 1 and increases
+      const convolutionArray = sharpenMatrix.map((n, i) => {
+        if (i === 4) {
+          const interp = d3_interpolateNumber(1, 2)(this.filters.sharpness);
+          const result = n * interp;
+          return result;
+        } else {
+          return n;
+        }
+      });
+
+      this.convolutionFilter = new ConvolutionFilter(convolutionArray);
+      sourceContainer.filters.push(this.convolutionFilter);
+
+    } else if (this.filters.sharpness < 1) {
+      const blurFactor = d3_interpolateNumber(1, 8)(1 - this.filters.sharpness);
+      this.blurFilter = new PIXI.filters.BlurFilter(blurFactor, 4);
+      sourceContainer.filters.push(this.blurFilter);
+    }
+  }
+
 
   setBrightness(val) {
     this.filters.brightness = val;

@@ -127,7 +127,7 @@ export class PixiTextures {
     // Increment the refcount and return it.
     if (tdata) {
       tdata.refcount++;
-console.log(`no alloc:  refcount = ${tdata.refcount} for ${key}`);
+// console.log(`no alloc:  refcount = ${tdata.refcount} for ${key}`);
       return tdata.texture;
     }
 
@@ -148,7 +148,7 @@ console.log(`no alloc:  refcount = ${tdata.refcount} for ${key}`);
 
     this._textureData.set(key, { texture: texture, refcount: 1 });
 
-console.log(`alloc:  allocated ${key}`);
+// console.log(`alloc:  allocated ${key}`);
 
     return texture;
   }
@@ -170,12 +170,12 @@ console.log(`alloc:  allocated ${key}`);
 
     tdata.refcount--;
     if (tdata.refcount === 0) {
-  console.log(`free:  freed ${key}`);
+  // console.log(`free:  freed ${key}`);
       atlas.free(tdata.texture);
       this._textureData.delete(key);
     }
 else {
-  console.log(`no free:  refcount = ${tdata.refcount} for ${key}`);
+  // console.log(`no free:  refcount = ${tdata.refcount} for ${key}`);
 }
   }
 
