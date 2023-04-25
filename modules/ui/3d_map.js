@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-
+import { Map as mapLibreMap } from 'maplibre-gl';
 import { t } from '../core/localizer';
 import { uiCmd } from './cmd';
 
@@ -9,11 +9,23 @@ export function ui3DMap(context) {
   function threeDMap(selection) {
     let wrap = d3_select(null);
     let _isHidden = true;          // start out hidden
+    let _map;
 
     function redraw() {
       if (_isHidden) return;
+      updateProjection();
     }
 
+
+    function updateProjection() {
+      let bounds = [
+        context.map().extent().min,
+        context.map().extent().max
+    ];
+
+      _map.fitBounds(this.bounds = )
+
+    }
 
     function toggle(d3_event) {
       if (d3_event) d3_event.preventDefault();
@@ -56,10 +68,22 @@ export function ui3DMap(context) {
     let wrapEnter = wrap.enter()
       .append('div')
       .attr('class', 'three-d-map')
+      .attr('id', '3d-buildings')
       .style('display', _isHidden ? 'none' : 'block');
 
     wrap = wrapEnter
       .merge(wrap);
+
+    _map = new mapLibreMap({
+        container: '3d-buildings', // container id
+        style: 'https://demotiles.maplibre.org/style.json', // style URL
+        center: [0, 0], // starting position [lng, lat]
+        zoom: 1 // starting zoom
+        });
+
+      context.map().on('draw', () => redraw());
+
+
 
     redraw();
 
