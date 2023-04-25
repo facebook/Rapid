@@ -83,7 +83,7 @@ export function uiSectionBackgroundList(context) {
       .append('label')
       .call(uiTooltip()
         .title(t('background.3dmap.tooltip'))
-        .keys([t('background.3dmap.key')])
+        .keys([uiCmd('⌘' + t('background.3dmap.key'))])
         .placement('top')
       );
 

@@ -89,8 +89,8 @@
             "text": "shortcuts.browsing.display_options.minimap"
           },
           {
-            "modifiers": ["⌥"],
-            "shortcuts": ["backround.3dmap.key"],
+            "modifiers": ["⌘"],
+            "shortcuts": ["background.3dmap.key"],
             "text": "shortcuts.browsing.display_options.3dmap"
           },
           {

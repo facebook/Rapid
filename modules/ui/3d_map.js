@@ -1,6 +1,7 @@
 import { select as d3_select } from 'd3-selection';
 
 import { t } from '../core/localizer';
+import { uiCmd } from './cmd';
 
 
 export function ui3DMap(context) {
@@ -62,7 +63,7 @@ export function ui3DMap(context) {
 
     redraw();
 
-    context.keybinding().on(t('background.3dmap.key'), toggle);
+    context.keybinding().on([uiCmd('⌘' + t('background.3dmap.key'))], toggle);
   }
 
   return threeDMap;
