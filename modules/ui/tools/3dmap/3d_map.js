@@ -1,9 +1,9 @@
 import { select as d3_select } from 'd3-selection';
 
-import { Map } from '../3drenderer/Map';
+import { Map } from '../../../3drenderer/Map';
 
-import { t } from '../core/localizer';
-import { uiCmd } from './cmd';
+import { t } from '../../../core/localizer';
+import { uiCmd } from '../../cmd';
 
 
 export function ui3DMap(context) {

@@ -44,7 +44,7 @@ import { uiPanePreferences } from './panes/preferences';
 import { uiRapidServiceLicense } from './rapid_service_license';
 import { uiRapidWhatsNew } from './rapid_whatsnew';
 import { uiRapidSplash } from './rapid_splash';
-import { ui3DMap } from './3d_map';
+import { ui3DMap } from './tools/3dmap/3d_map';
 
 
 export function uiInit(context) {

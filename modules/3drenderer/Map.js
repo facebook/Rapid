@@ -60,28 +60,4 @@ export class  Map {
       });
   }
 
-  // componentDidMount() {
-
-
-
-
-  //   this.map.fitBounds(this.props.bounds);
-
-
-  // update() {
-  //   const buildingSource = this.map.getSource('osmbuildings');
-  //   buildingSource.setData(this.props.geojson);
-  //   this.map.fitBounds(this.props.bounds);
-  // }
-
-  // render() {
-  //   return (
-  //     <div
-  //       style={{ height: 300, width: 300 }}
-  //       ref={(elem) => {
-  //         this.mapElement = elem;
-  //       }}
-  //     ></div>
-  //   );
-  // }
 }

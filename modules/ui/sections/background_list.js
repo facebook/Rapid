@@ -11,7 +11,7 @@ import { uiIcon } from '../icon';
 import { uiCmd } from '../cmd';
 import { uiSettingsCustomBackground } from '../settings/custom_background';
 import { uiMapInMap } from '../map_in_map';
-import { ui3DMap } from '../3d_map';
+import { ui3DMap } from '../tools/3dmap/3d_map';
 import { uiSection } from '../section';
 
 
