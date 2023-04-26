@@ -11,7 +11,7 @@ export { uiConflicts } from './conflicts';
 export { uiContributors } from './contributors';
 export { uiDataEditor } from './data_editor';
 export { uiDataHeader } from './data_header';
-export { uiDefs } from './defs';
+export { UiDefs } from './UiDefs';
 export { uiDisclosure } from './disclosure';
 export { uiEditMenu } from './edit_menu';
 export { uiEntityEditor } from './entity_editor';

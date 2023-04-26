@@ -32,7 +32,7 @@ export class PixiTextures {
     // Each mapping is a unique identifying key to a PIXI.Texture
     // The Texture is not necessarily packed in an Atlas (but ideally it should be)
     // Important!  Make sure these texture keys don't conflict
-    this._textureData = new Map();   // Map(key -> PIXI.Texture)  (e.g. 'symbol-boldPin')
+    this._textureData = new Map();   // Map(key -> { PIXI.Texture, refcount })  (e.g. 'symbol-boldPin')
 
     // Load spritesheets
     const SHEETS = ['maki', 'temaki', 'fontawesome', 'mapillary-features', 'mapillary-signs'];

@@ -11,7 +11,7 @@ import { utilGetDimensions } from '../util/dimensions';
 import { uiAccount } from './account';
 import { uiAttribution } from './attribution';
 import { uiContributors } from './contributors';
-import { uiDefs } from './defs';
+import { UiDefs } from './UiDefs';
 import { uiEditMenu } from './edit_menu';
 import { uiFeatureInfo } from './feature_info';
 import { uiFlash } from './flash';
@@ -119,7 +119,7 @@ export function uiInit(context) {
     container
       .append('svg')
       .attr('id', 'rapid-defs')
-      .call(ui.defs);
+      .call(ui.defs.render);
 
     // Sidebar
     container
@@ -443,7 +443,7 @@ export function uiInit(context) {
 
   let ui = {};
 
-  ui.defs = uiDefs(context);
+  ui.defs = new UiDefs(context);
 
   ui.flash = uiFlash(context);
 
